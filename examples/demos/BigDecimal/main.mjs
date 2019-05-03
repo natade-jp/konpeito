@@ -1,7 +1,6 @@
 ﻿import Senko from "../../libs/Senko.mjs";
-import SenkoMath from "../../libs/SenkoMath.mjs";
 
-const BigDecimal = SenkoMath.BigDecimal;
+const BigDecimal = Senko.MathX.BigDecimal;
 const Log = Senko.Log;
 
 const testPlainStringAndEngineeringString = function(x) {

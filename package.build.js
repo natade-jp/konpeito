@@ -55,13 +55,7 @@ exec("npm run rollup");
 // 先頭に著作権表記をするターゲット
 const target_file = [
 	"./build/Senko.umd.js",
-	"./build/Senko.module.mjs",
-	"./build/SenkoText.umd.js",
-	"./build/SenkoText.module.mjs",
-	"./build/SenkoS3.umd.js",
-	"./build/SenkoS3.module.mjs",
-	"./build/SenkoMath.umd.js",
-	"./build/SenkoMath.module.mjs"
+	"./build/Senko.module.mjs"
 ];
 
 // ヘッダ追加
@@ -74,20 +68,3 @@ saveTextFile(
 	"./examples/libs/Senko.mjs",
 	"import Senko from \"../../build/Senko.module.mjs\";export default Senko;"
 );
-saveTextFile(
-	"./examples/libs/SenkoText.mjs",
-	"import SenkoText from \"../../build/SenkoText.module.mjs\";export default SenkoText;"
-);
-saveTextFile(
-	"./examples/libs/SenkoS3.mjs",
-	"import SenkoS3 from \"../../build/SenkoS3.module.mjs\";export default SenkoS3;"
-);
-saveTextFile(
-	"./examples/libs/SenkoMath.mjs",
-	"import SenkoMath from \"../../build/SenkoMath.module.mjs\";export default SenkoMath;"
-);
-
-// その他のファイルをコピー
-copy("./src/gui/SComponent.css", "./build/SComponent.css");
-copy("./src/s3/gl/S3GL.fs", "./build/S3GL.fs");
-copy("./src/s3/gl/S3GL.vs", "./build/S3GL.vs");

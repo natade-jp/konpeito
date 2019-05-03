@@ -1,8 +1,7 @@
 ﻿import Senko from "../../libs/Senko.mjs";
-import SenkoMath from "../../libs/SenkoMath.mjs";
 
 const Log = Senko.Log;
-const SMath = SenkoMath.SMath;
+const SMath = Senko.MathX.SMath;
 const Matrix = SMath.Matrix;
 const $ = Matrix.createConstMatrix;
 
