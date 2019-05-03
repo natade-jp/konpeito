@@ -97,7 +97,7 @@ export default class BigDecimal {
 				buff = buff[0].substr(1);
 				this._scale   = this._scale - parseInt(buff, 10);
 			}
-			this.integer = new BigInteger(number_text, 10);
+			this.integer = new BigInteger([number_text, 10]);
 		}
 		if(p3 instanceof MathContext) {
 			const newbigdecimal = this.round(p3);
@@ -758,27 +758,15 @@ export default class BigDecimal {
 		return new BigInteger(x.toPlainString());
 	}
 
-	longValue() {
-		let x = this.toBigInteger();
-		x = x.longValue();
-		return x;
-	}
-
-	longValueExact() {
-		let x = this.toBigIntegerExact();
-		x = x.longValue();
-		return x;
-	}
-
 	intValue() {
 		let x = this.toBigInteger();
-		x = x.intValue();
+		x = x.intValue;
 		return x & 0xFFFFFFFF;
 	}
 
 	intValueExact() {
 		let x = this.toBigIntegerExact();
-		x = x.longValue();
+		x = x.intValue;
 		if((x < -2147483648) || (2147483647 < x)) {
 			throw "ArithmeticException";
 		}

@@ -53,7 +53,7 @@ const main = function() {
 	
 	Log.println("ビット操作");
 	
-	s1 = new BigInteger("1234ffffff0000000000", 16);
+	s1 = new BigInteger(["1234ffffff0000000000", 16]);
 	s2 = s1.negate();
 	
 	Log.println(s1);
@@ -83,7 +83,7 @@ const main = function() {
 		Log.println(i + "\t" + s1.toString(2) + "\tlen " + s1.bitLength() + "\tlsb " + s1.getLowestSetBit());
 	}
 	
-	s1 = new BigInteger("101001000100001000000", 2);
+	s1 = new BigInteger(["101001000100001000000", 2]);
 	
 	Log.println("testBit");
 	Log.println(s1.toString(2));
@@ -106,7 +106,7 @@ const main = function() {
 	Log.println("clearBit");
 	for(let i = 0; i < s2; i++) {
 		if(s1.testBit(i)) {
-			Log.print(s3.clearBit(i).toString(2));
+			Log.println(s3.clearBit(i).toString(2));
 		}
 	}
 	Log.println("");
@@ -114,17 +114,17 @@ const main = function() {
 	Log.println("flipBit");
 	for(let i = 0; i < s2; i++) {
 		s3 = s3.flipBit(i);
-		Log.print(s3.toString(2));
 	}
+	Log.println(s3.toString(2));
 	Log.println("");
 	
 	Log.println("////////////////////////////////");
 	
 	Log.println("ビット演算");
 	
-	s1 = new BigInteger("1234ffffff0000000000", 16);
+	s1 = new BigInteger(["1234ffffff0000000000", 16]);
 	s2 = s1.negate();
-	s3 = new BigInteger("8765ffffff0000000000", 16);
+	s3 = new BigInteger(["8765ffffff0000000000", 16]);
 	const s4 = s3.negate();
 	
 	Log.println("and");
@@ -155,7 +155,7 @@ const main = function() {
 	
 	Log.println("数値の変換");
 
-	s1 = new BigInteger("3334342423423", 16);
+	s1 = new BigInteger("0x3334342423423");
 	
 	Log.println("toString()");
 	Log.println(s1.toString());
@@ -170,16 +170,13 @@ const main = function() {
 	Log.println(s1.toString(16));
 	
 	Log.println("intValue");
-	Log.println(s1.intValue().toString(16));
+	Log.println(s1.intValue.toString(16));
 	
 	Log.println("longValue");
-	Log.println(s1.longValue().toString(16));
-	
-	Log.println("floatValue");
-	Log.println(s1.floatValue());
+	Log.println(s1.longValue.toString(16));
 	
 	Log.println("doubleValue");
-	Log.println(s1.doubleValue());
+	Log.println(s1.doubleValue);
 	
 	Log.println("////////////////////////////////");
 	
@@ -189,7 +186,7 @@ const main = function() {
 	
 	Log.println("new BigInteger(numBits, rnd)");
 	for(let i = 0; i < 3; i++) {
-		Log.printf("% 50s\n", (new BigInteger(50, random)).toString(2) );
+		Log.printf("% 50s\n", BigInteger.createRandomBigInteger(50, random).toString(2) );
 	}
 	
 	Log.println("nextProbablePrime");
@@ -202,7 +199,7 @@ const main = function() {
 	
 	Log.println("isProbablePrime");
 	
-	s1 = new BigInteger("156b14b55", 16);
+	s1 = new BigInteger("0x156b14b55");
 	Log.println(s1 + " は素数か？ -> " + s1.isProbablePrime(100));
 	
 	Log.println("probablePrime");
