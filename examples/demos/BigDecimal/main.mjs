@@ -71,10 +71,10 @@ const main = function() {
 	Log.println("setScale による四捨五入のテスト");
 	x = new BigDecimal("0.5925");
 	Log.println(x);
-	Log.println("小数第一位で四捨五入:" + x.setScale(0, BigDecimal.ROUND_HALF_UP));
-	Log.println("小数第二位で四捨五入:" + x.setScale(1, BigDecimal.ROUND_HALF_UP));
-	Log.println("小数第三位で四捨五入:" + x.setScale(2, BigDecimal.ROUND_HALF_UP));
-	Log.println("小数第四位で四捨五入:" + x.setScale(3, BigDecimal.ROUND_HALF_UP));
+	Log.println("小数第一位で四捨五入:" + x.setScale(0, BigDecimal.RoundingMode.HALF_UP));
+	Log.println("小数第二位で四捨五入:" + x.setScale(1, BigDecimal.RoundingMode.HALF_UP));
+	Log.println("小数第三位で四捨五入:" + x.setScale(2, BigDecimal.RoundingMode.HALF_UP));
+	Log.println("小数第四位で四捨五入:" + x.setScale(3, BigDecimal.RoundingMode.HALF_UP));
 
 	Log.println("");
 	

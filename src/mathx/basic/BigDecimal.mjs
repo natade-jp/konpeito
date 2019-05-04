@@ -10,6 +10,12 @@
 
 import BigInteger from "./BigInteger.mjs";
 
+class DecimalTool {
+
+
+
+}
+
 export default class BigDecimal {
 
 	constructor() {
@@ -222,16 +228,17 @@ export default class BigDecimal {
 		return new BigDecimal(BigInteger.ONE, this.scale());
 	}
 
-	setScale(newScale, roundingMode) {
+	setScale(newScale, roundingMode_) {
 		if(this.scale() === newScale) {
 			// scaleが同一なので処理の必要なし
 			return(this.clone());
 		}
+		let roundingMode;
 		if(arguments.length === 1) {
 			roundingMode = RoundingMode.UNNECESSARY;
 		}
 		else {
-			roundingMode = RoundingMode.getRoundingMode(roundingMode);
+			roundingMode = roundingMode_;
 		}
 		// 文字列を扱ううえで、符号があるとやりにくいので外しておく
 		let text		= this._getUnsignedIntegerString();
@@ -835,213 +842,239 @@ export default class BigDecimal {
 	
 }
 
-const RoundingMode = {
-	
-	// 0 から離れる
-	UP: {
-		toString : function() {
-			return "UP";
-		},
-		getAddNumber : function(x) {
-			x = x % 10;
-			if(x === 0) {
-				return 0;
-			}
-			else if(x > 0) {
-				return 10 - x;
-			}
-			else {
-				return (-(10 + x));
-			}
+/**
+ * 丸めモードの基底クラス
+ */
+class RoundingModeInterface {
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
+	static toString() {
+		return "NONE";
+	}
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
+	static getAddNumber(x) {
+		return 0;
+	}
+}
+
+/**
+ * 絶対値の切り上げ（1桁目が0より大きければ桁上げする）
+ */
+class RoundingMode_UP extends RoundingModeInterface {
+	static toString() {
+		return "UP";
+	}
+	static getAddNumber(x) {
+		x = x % 10;
+		if(x === 0) {
+			return 0;
 		}
-	},
-	
-	// 0 に近づく
-	DOWN: {
-		toString : function() {
-			return "DOWN";
-		},
-		getAddNumber : function(x) {
-			x = x % 10;
+		else if(x > 0) {
+			return 10 - x;
+		}
+		else {
+			return (-(10 + x));
+		}
+	}
+}
+
+/**
+ * 絶対値の切り下げ（1桁目が0より大きければ桁下げする）
+ */
+class RoundingMode_DOWN extends RoundingModeInterface {
+	static toString() {
+		return "DOWN";
+	}
+	static getAddNumber(x) {
+		x = x % 10;
+		return -x;
+	}
+}
+
+/**
+ * 正の無限大に近づく
+ */
+class RoundingMode_CEILING extends RoundingModeInterface {
+	static toString() {
+		return "CEILING";
+	}
+	static getAddNumber(x) {
+		x = x % 10;
+		if(x === 0) {
+			return 0;
+		}
+		else if(x > 0) {
+			return 10 - x;
+		}
+		else {
 			return -x;
 		}
-	},
-	
-	// 正の無限大に近づく
-	CEILING: {
-		toString : function() {
-			return "CEILING";
-		},
-		getAddNumber : function(x) {
-			x = x % 10;
-			if(x === 0) {
-				return 0;
-			}
-			else if(x > 0) {
-				return 10 - x;
-			}
-			else {
-				return -x;
-			}
+	}
+}
+
+/**
+ * 負の無限大に近づく
+ */
+class RoundingMode_FLOOR extends RoundingModeInterface {
+	static toString() {
+		return "FLOOR";
+	}
+	static getAddNumber(x) {
+		x = x % 10;
+		if(x === 0) {
+			return 0;
 		}
-	},
-	
-	// 負の無限大に近づく
-	FLOOR: {
-		toString : function() {
-			return "FLOOR";
-		},
-		getAddNumber : function(x) {
-			x = x % 10;
-			if(x === 0) {
-				return 0;
-			}
-			else if(x > 0) {
-				return -x;
-			}
-			else {
-				return(-(10 + x));
-			}
+		else if(x > 0) {
+			return -x;
 		}
-	},
-	
-	// 四捨五入
-	HALF_UP: {
-		toString : function() {
-			return "HALF_UP";
-		},
-		getAddNumber : function(x) {
-			x = x % 10;
-			const sign = x >= 0 ? 1 : -1;
-			if(Math.abs(x) < 5) {
-				return (x * -1);
-			}
-			else {
-				return (sign * (10 - Math.abs(x)));
-			}
+		else {
+			return(-(10 + x));
 		}
-	},
-	
-	// 五捨六入
-	HALF_DOWN: {
-		toString : function() {
-			return "HALF_DOWN";
-		},
-		getAddNumber : function(x) {
-			x = x % 10;
-			const sign = x >= 0 ? 1 : -1;
-			if(Math.abs(x) < 6) {
-				return (x * -1);
-			}
-			else {
-				return (sign * (10 - Math.abs(x)));
-			}
+	}
+}
+
+/**
+ * 四捨五入
+ */
+class RoundingMode_HALF_UP extends RoundingModeInterface {
+	static toString() {
+		return "HALF_UP";
+	}
+	static getAddNumber(x) {
+		x = x % 10;
+		const sign = x >= 0 ? 1 : -1;
+		if(Math.abs(x) < 5) {
+			return (x * -1);
 		}
-	},
-	
-	// 等間隔なら偶数側へ丸める
-	HALF_EVEN: {
-		toString : function() {
-			return "HALF_EVEN";
-		},
-		getAddNumber : function(x) {
-			x = x % 100;
-			let sign, even;
-			if(x < 0) {
-				sign = -1;
-				even = Math.ceil(x / 10) & 1;
-			}
-			else {
-				sign = 1;
-				even = Math.floor(x / 10) & 1;
-			}
-			let center;
-			if(even === 1) {
-				center = 5;
-			}
-			else {
-				center = 6;
-			}
-			x = x % 10;
-			if(Math.abs(x) < center) {
-				return (x * -1);
-			}
-			else {
-				return (sign * (10 - Math.abs(x)));
-			}
+		else {
+			return (sign * (10 - Math.abs(x)));
 		}
-	},
-	
-	// 丸めない（丸める必要が出る場合はエラー）
-	UNNECESSARY: {
-		toString : function() {
-			return "UNNECESSARY";
-		},
-		getAddNumber : function(x) {
-			x = x % 10;
-			if(x === 0) {
-				return 0;
-			}
-			else {
-				throw "ArithmeticException";
-			}
+	}
+}
+
+/**
+ * 五捨六入
+ */
+class RoundingMode_HALF_DOWN extends RoundingModeInterface {
+	static toString() {
+		return "HALF_DOWN";
+	}
+	static getAddNumber(x) {
+		x = x % 10;
+		const sign = x >= 0 ? 1 : -1;
+		if(Math.abs(x) < 6) {
+			return (x * -1);
 		}
-	},
-	
-	valueOf: function(name) {
+		else {
+			return (sign * (10 - Math.abs(x)));
+		}
+	}
+}
+
+/**
+ * 等間隔なら偶数側へ丸める
+ */
+class RoundingMode_HALF_EVEN extends RoundingModeInterface {
+	static toString() {
+		return "HALF_EVEN";
+	}
+	static getAddNumber(x) {
+		x = x % 100;
+		let sign, even;
+		if(x < 0) {
+			sign = -1;
+			even = Math.ceil(x / 10) & 1;
+		}
+		else {
+			sign = 1;
+			even = Math.floor(x / 10) & 1;
+		}
+		let center;
+		if(even === 1) {
+			center = 5;
+		}
+		else {
+			center = 6;
+		}
+		x = x % 10;
+		if(Math.abs(x) < center) {
+			return (x * -1);
+		}
+		else {
+			return (sign * (10 - Math.abs(x)));
+		}
+	}
+}
+
+/**
+ * 丸めない（丸める必要が出る場合はエラー）
+ */
+class RoundingMode_UNNECESSARY extends RoundingModeInterface {
+	static toString() {
+		return "UNNECESSARY";
+	}
+	static getAddNumber(x) {
+		x = x % 10;
+		if(x === 0) {
+			return 0;
+		}
+		else {
+			throw "ArithmeticException";
+		}
+	}
+}
+
+/**
+ * 丸めモードの一覧
+ */
+const RoundingMode = {
+
+	CEILING : RoundingMode_CEILING,
+	DOWN : RoundingMode_DOWN,
+	FLOOR : RoundingMode_FLOOR,
+	HALF_DOWN : RoundingMode_HALF_DOWN,
+	HALF_EVEN : RoundingMode_HALF_EVEN,
+	HALF_UP : RoundingMode_HALF_UP,
+	UNNECESSARY : RoundingMode_UNNECESSARY,
+	UP : RoundingMode_UP,
+
+	/**
+	 * 指定した文字列で表される丸めクラスを取得する
+	 * @param {string} name - モードの英数名
+	 * @returns {RoundingModeInterface}
+	 */
+	valueOf : function(name) {
 		if(name === null) {
 			throw "NullPointerException";
 		}
-		const values = RoundingMode.values;
-		for(let i = 0; i < values.length; i++) {
-			if(values[i].toString() === name) {
-				return values[i];
+		if(name instanceof RoundingModeInterface) {
+			return name;
+		}
+		const upper_name = name.toUpperCase();
+		for(const key in RoundingMode) {
+			const values = RoundingMode[key];
+			if((values instanceof RoundingModeInterface) && (values.toString() === upper_name)) {
+				return values;
 			}
 		}
-		throw "IllegalArgumentException";
-	},
-	
-	getRoundingMode: function(roundingMode) {
-		let mode;
-		switch(roundingMode) {
-			case RoundingMode.CEILING:
-			case RoundingMode.DOWN:
-			case RoundingMode.FLOOR:
-			case RoundingMode.HALF_DOWN:
-			case RoundingMode.HALF_EVEN:
-			case RoundingMode.HALF_UP:
-			case RoundingMode.UNNECESSARY:
-			case RoundingMode.UP:
-				mode = roundingMode;
-				break;
-			default:
-				if((typeof roundingMode === "number")||(roundingMode instanceof Number)) {
-					mode = RoundingMode.values[roundingMode];
-				}
-				else if((typeof roundingMode === "string")||(roundingMode instanceof String)) {
-					mode = RoundingMode.valueOf(roundingMode);
-				}
-		}
-		if(!mode) {
-			throw "Not RoundingMode";
-		}
-		return mode;
+		throw "IllegalArgumentException : " + name;
 	}
 };
 
-RoundingMode.values = {
-	0	:	RoundingMode.CEILING,
-	1	:	RoundingMode.DOWN,
-	2	:	RoundingMode.FLOOR,
-	3	:	RoundingMode.HALF_DOWN,
-	4	:	RoundingMode.HALF_EVEN,
-	5	:	RoundingMode.HALF_UP,
-	6	:	RoundingMode.UNNECESSARY,
-	7	:	RoundingMode.UP
-};
-
+/**
+ * 環境設定
+ */
 class MathContext {
 
+	/**
+	 * 
+	 */
 	constructor() {
 		this.precision = 0;
 		this.roundingMode = RoundingMode.HALF_UP;
@@ -1104,18 +1137,9 @@ MathContext.UNLIMITED	= new MathContext(0,	RoundingMode.HALF_UP);
 MathContext.DECIMAL32	= new MathContext(7,	RoundingMode.HALF_EVEN);
 MathContext.DECIMAL64	= new MathContext(16,	RoundingMode.HALF_EVEN);
 MathContext.DECIMAL128	= new MathContext(34,	RoundingMode.HALF_EVEN);
-
-BigDecimal.RoundingMode			= RoundingMode;
-BigDecimal.MathContext			= MathContext;
-
+BigDecimal.RoundingMode = RoundingMode;
+BigDecimal.MathContext = MathContext;
 BigDecimal.ZERO					= new BigDecimal(0);
 BigDecimal.ONE					= new BigDecimal(1);
 BigDecimal.TEN					= new BigDecimal(10);
-BigDecimal.ROUND_CEILING		= RoundingMode.CEILING;
-BigDecimal.ROUND_DOWN			= RoundingMode.DOWN;
-BigDecimal.ROUND_FLOOR			= RoundingMode.FLOOR;
-BigDecimal.ROUND_HALF_DOWN		= RoundingMode.HALF_DOWN;
-BigDecimal.ROUND_HALF_EVEN		= RoundingMode.HALF_EVEN;
-BigDecimal.ROUND_HALF_UP		= RoundingMode.HALF_UP;
-BigDecimal.ROUND_UNNECESSARY	= RoundingMode.UNNECESSARY;
-BigDecimal.ROUND_UP				= RoundingMode.UP;
+

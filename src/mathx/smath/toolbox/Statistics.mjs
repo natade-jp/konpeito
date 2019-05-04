@@ -15,8 +15,8 @@ export default class Statistics {
 
 	/**
 	 * gammaln(x) 対数ガンマ関数 
-	 * @param {Number} x
-	 * @returns {Number}
+	 * @param {number} x
+	 * @returns {number}
 	 */
 	static gammaln(x) {
 		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
@@ -62,10 +62,10 @@ export default class Statistics {
 
 	/**
 	 * q_gamma(x, a, gammaln_a) 不完全ガンマ関数 上側
-	 * @param {Number} x
-	 * @param {Number} a
-	 * @param {Number} gammaln_a
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} gammaln_a
+	 * @returns {number}
 	 */
 	static q_gamma(x, a, gammaln_a) {
 		let k;
@@ -94,10 +94,10 @@ export default class Statistics {
 
 	/**
 	 * p_gamma(x, a, gammaln_a) 不完全ガンマ関数 下側
-	 * @param {Number} x
-	 * @param {Number} a
-	 * @param {Number} gammaln_a
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} gammaln_a
+	 * @returns {number}
 	 */
 	static p_gamma(x, a, gammaln_a) {
 		// 参考：奥村,"C言語による最新アルゴリズム事典",p227,技術評論社,1991
@@ -123,8 +123,8 @@ export default class Statistics {
 
 	/**
 	 * gamma(z) ガンマ関数
-	 * @param {Number} z
-	 * @returns {Number}
+	 * @param {number} z
+	 * @returns {number}
 	 */
 	static gamma(z) {
 		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
@@ -136,10 +136,10 @@ export default class Statistics {
 
 	/**
 	 * gammainc(x, a, tail) 不完全ガンマ関数
-	 * @param {Number} x
-	 * @param {Number} a
-	 * @param {String} [tail="lower"] lower(デフォルト)/upper
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {string} [tail="lower"] lower(デフォルト)/upper
+	 * @returns {number}
 	 */
 	static gammainc(x, a, tail) {
 		if(tail === "lower") {
@@ -159,10 +159,10 @@ export default class Statistics {
 	
 	/**
 	 * gampdf(x, k, s) ガンマ分布の確率密度関数
-	 * @param {Number} x
-	 * @param {Number} k - 形状母数
-	 * @param {Number} s - 尺度母数
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} k - 形状母数
+	 * @param {number} s - 尺度母数
+	 * @returns {number}
 	 */
 	static gampdf(x, k, s) {
 		let y = 1.0 / (Statistics.gamma(k) * Math.pow(s, k));
@@ -173,10 +173,10 @@ export default class Statistics {
 
 	/**
 	 * gamcdf(x, k, s) ガンマ分布の累積分布関数
-	 * @param {Number} x
-	 * @param {Number} k - 形状母数
-	 * @param {Number} s - 尺度母数
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} k - 形状母数
+	 * @param {number} s - 尺度母数
+	 * @returns {number}
 	 */
 	static gamcdf(x, k, s) {
 		return Statistics.gammainc(x / s, k);
@@ -184,10 +184,10 @@ export default class Statistics {
 	
 	/**
 	 * gaminv(p, k, s) ガンマ分布の累積分布関数の逆関数
-	 * @param {Number} p
-	 * @param {Number} k - 形状母数
-	 * @param {Number} s - 尺度母数
-	 * @returns {Number}
+	 * @param {number} p
+	 * @param {number} k - 形状母数
+	 * @param {number} s - 尺度母数
+	 * @returns {number}
 	 */
 	static gaminv(p, k, s) {
 		if((p < 0.0) || (p > 1.0)) {
@@ -221,9 +221,9 @@ export default class Statistics {
 
 	/**
 	 * beta(x, y) ベータ関数
-	 * @param {Number} x
-	 * @param {Number} y
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} y
+	 * @returns {number}
 	 */
 	static beta(x, y) {
 		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
@@ -232,10 +232,10 @@ export default class Statistics {
 	
 	/**
 	 * p_beta(x, a, b) 不完全ベータ関数 下側
-	 * @param {Number} x
-	 * @param {Number} a
-	 * @param {Number} b
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
 	 */
 	static p_beta(x, a, b) {
 		// 参考：奥村,"C言語による最新アルゴリズム事典",p231,技術評論社,1991
@@ -283,10 +283,10 @@ export default class Statistics {
 
 	/**
 	 * q_beta(x, a, b) 不完全ベータ関数 上側
-	 * @param {Number} x
-	 * @param {Number} a
-	 * @param {Number} b
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
 	 */
 	static q_beta(x, a, b) {
 		return (1.0 - Statistics.p_beta(x, a, b));
@@ -294,11 +294,11 @@ export default class Statistics {
 
 	/**
 	 * betainc(x, a, b, tail) 不完全ベータ関数
-	 * @param {Number} x
-	 * @param {Number} a
-	 * @param {Number} b
-	 * @param {String} [tail="lower"] {String} lower(デフォルト)/upper
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @param {string} [tail="lower"] {string} lower(デフォルト)/upper
+	 * @returns {number}
 	 */
 	static betainc(x, a, b, tail) {
 		if(tail === "lower") {
@@ -318,10 +318,10 @@ export default class Statistics {
 	
 	/**
 	 * betapdf(x, a, b) ベータ分布の確率密度関数
-	 * @param {Number} x
-	 * @param {Number} a
-	 * @param {Number} b
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
 	 */
 	static betapdf(x, a, b) {
 		//	return(Math.exp((a - 1) * Math.log(x) + (b - 1) * Math.log(1 - x)) / Statistics.beta(a,  b));
@@ -330,10 +330,10 @@ export default class Statistics {
 
 	/**
 	 * betacdf(x, a, b) ベータ分布の累積分布関数
-	 * @param {Number} x
-	 * @param {Number} a
-	 * @param {Number} b
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
 	 */
 	static betacdf(x, a, b) {
 		return Statistics.betainc(x, a, b);
@@ -341,10 +341,10 @@ export default class Statistics {
 	
 	/**
 	 * betainv(p, a, b) ベータ分布の累積分布関数の逆関数
-	 * @param {Number} p
-	 * @param {Number} a
-	 * @param {Number} b
-	 * @returns {Number}
+	 * @param {number} p
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
 	 */
 	static betainv(p, a, b) {
 		if((p < 0.0) || (p > 1.0)) {
@@ -384,8 +384,8 @@ export default class Statistics {
 
 	/**
 	 * factorial(n) = n! 階乗関数
-	 * @param {Number} n
-	 * @returns {Number}
+	 * @param {number} n
+	 * @returns {number}
 	 */
 	static factorial(n) {
 		const y = Statistics.gamma(n + 1.0);
@@ -399,9 +399,9 @@ export default class Statistics {
 
 	/**
 	 * nchoosek(n, k) = nCk 二項係数またはすべての組合わせ
-	 * @param {Number} n
-	 * @param {Number} k
-	 * @returns {Number} nCk
+	 * @param {number} n
+	 * @param {number} k
+	 * @returns {number} nCk
 	 */
 	static nchoosek(n, k) {
 		return (Math.round(Statistics.factorial(n) / (Statistics.factorial(n - k) * Statistics.factorial(k))));
@@ -409,8 +409,8 @@ export default class Statistics {
 
 	/**
 	 * erf(x) 誤差関数
-	 * @param {Number} x
-	 * @returns {Number}
+	 * @param {number} x
+	 * @returns {number}
 	 */
 	static erf(x) {
 		return (Statistics.p_gamma(x * x, 0.5, Math.log(Math.PI) * 0.5) * (x >= 0 ? 1.0 : -1.0));
@@ -418,8 +418,8 @@ export default class Statistics {
 
 	/**
 	 * erfc(x) 相補誤差関数
-	 * @param {Number} x
-	 * @returns {Number}
+	 * @param {number} x
+	 * @returns {number}
 	 */
 	static erfc(x) {
 		return 1.0 - Statistics.erf(x);
@@ -427,10 +427,10 @@ export default class Statistics {
 
 	/**
 	 * normpdf(x, u, s) 正規分布の確率密度関数
-	 * @param {Number} x
-	 * @param {Number} [u=0.0] - 平均値
-	 * @param {Number} [s=1.0] - 分散
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} [u=0.0] - 平均値
+	 * @param {number} [s=1.0] - 分散
+	 * @returns {number}
 	 */
 	static normpdf(x, u, s) {
 		const u_ = typeof u === "number" ? u : 0.0;
@@ -442,10 +442,10 @@ export default class Statistics {
 
 	/**
 	 * normcdf(x, u, s) 正規分布の累積分布関数
-	 * @param {Number} x
-	 * @param {Number} [u=0.0] - 平均値
-	 * @param {Number} [s=1.0] - 分散
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} [u=0.0] - 平均値
+	 * @param {number} [s=1.0] - 分散
+	 * @returns {number}
 	 */
 	static normcdf(x, u, s) {
 		const u_ = typeof u === "number" ? u : 0.0;
@@ -455,10 +455,10 @@ export default class Statistics {
 
 	/**
 	 * norminv(p, u, s) 正規分布の累積分布関数の逆関数
-	 * @param {Number} p - 確率
-	 * @param {Number} [u=0.0] - 平均値
-	 * @param {Number} [s=1.0] - 分散
-	 * @returns {Number}
+	 * @param {number} p - 確率
+	 * @param {number} [u=0.0] - 平均値
+	 * @param {number} [s=1.0] - 分散
+	 * @returns {number}
 	 */
 	static norminv(p, u, s) {
 		if((p < 0.0) || (p > 1.0)) {
@@ -494,9 +494,9 @@ export default class Statistics {
 
 	/**
 	 * tpdf(t, k) t分布の確率密度関数
-	 * @param {Number} t - t値
-	 * @param {Number} v - 自由度
-	 * @returns {Number}
+	 * @param {number} t - t値
+	 * @param {number} v - 自由度
+	 * @returns {number}
 	 */
 	static tpdf(t, v) {
 		let y = 1.0 / (Math.sqrt(v) * Statistics.beta(0.5, v * 0.5));
@@ -506,9 +506,9 @@ export default class Statistics {
 
 	/**
 	 * tcdf(t) t分布の累積分布関数
-	 * @param {Number} t - t値
-	 * @param {Number} v - 自由度
-	 * @returns {Number}
+	 * @param {number} t - t値
+	 * @param {number} v - 自由度
+	 * @returns {number}
 	 */
 	static tcdf(t, v) {
 		const y = (t * t) / (v + t * t) ;
@@ -518,9 +518,9 @@ export default class Statistics {
 
 	/**
 	 * tinv(p, v) t分布の累積分布関数の逆関数
-	 * @param {Number} p - 確率
-	 * @param {Number} v - 自由度
-	 * @returns {Number}
+	 * @param {number} p - 確率
+	 * @param {number} v - 自由度
+	 * @returns {number}
 	 */
 	static tinv(p, v) {
 		if((p < 0) || (p > 1)) {
@@ -544,10 +544,10 @@ export default class Statistics {
 
 	/**
 	 * tdist(t, v, tails) 尾部が指定可能なt分布の累積分布関数
-	 * @param {Number} t - t値
-	 * @param {Number} v - 自由度
-	 * @param {Number} tails - 尾部(1...片側、2...両側)
-	 * @returns {Number}
+	 * @param {number} t - t値
+	 * @param {number} v - 自由度
+	 * @param {number} tails - 尾部(1...片側、2...両側)
+	 * @returns {number}
 	 */
 	static tdist(t, v, tails) {
 		return (1.0 - Statistics.tcdf(t, v)) * tails;
@@ -555,9 +555,9 @@ export default class Statistics {
 
 	/**
 	 * einv2(p, v) 両側検定時のt分布の累積分布関数
-	 * @param {Number} p - 確率
-	 * @param {Number} v - 自由度
-	 * @returns {Number}
+	 * @param {number} p - 確率
+	 * @param {number} v - 自由度
+	 * @returns {number}
 	 */
 	static tinv2(p, v) {
 		return - Statistics.tinv( p * 0.5, v);
@@ -565,9 +565,9 @@ export default class Statistics {
 
 	/**
 	 * chi2pdf(x, v) カイ二乗分布の確率密度関数
-	 * @param {Number} x 
-	 * @param {Number} k - 自由度
-	 * @returns {Number}
+	 * @param {number} x 
+	 * @param {number} k - 自由度
+	 * @returns {number}
 	 */
 	static chi2pdf(x, k) {
 		if(x <= 0.0) {
@@ -580,9 +580,9 @@ export default class Statistics {
 
 	/**
 	 * chi2cdf(x, v) カイ二乗分布の累積分布関数
-	 * @param {Number} x 
-	 * @param {Number} k - 自由度
-	 * @returns {Number}
+	 * @param {number} x 
+	 * @param {number} k - 自由度
+	 * @returns {number}
 	 */
 	static chi2cdf(x, k) {
 		return Statistics.gammainc(x / 2.0, k / 2.0);
@@ -590,9 +590,9 @@ export default class Statistics {
 
 	/**
 	 * chi2inv(p, v) カイ二乗分布の逆累積分布関数
-	 * @param {Number} p - 確率
-	 * @param {Number} k - 自由度
-	 * @returns {Number}
+	 * @param {number} p - 確率
+	 * @param {number} k - 自由度
+	 * @returns {number}
 	 */
 	static chi2inv(p, k) {
 		return Statistics.gaminv(p, k / 2.0, 2);
@@ -600,10 +600,10 @@ export default class Statistics {
 
 	/**
 	 * fpdf(x, d1, d2) F分布の確率密度関数
-	 * @param {Number} x
-	 * @param {Number} d1 - 分子の自由度
-	 * @param {Number} d2 - 分母の自由度
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} d1 - 分子の自由度
+	 * @param {number} d2 - 分母の自由度
+	 * @returns {number}
 	 */
 	static fpdf(x, d1, d2) {
 		let y = 1.0;
@@ -615,10 +615,10 @@ export default class Statistics {
 
 	/**
 	 * fcdf(x, d1, d2) F分布の累積分布関数
-	 * @param {Number} x
-	 * @param {Number} d1 - 分子の自由度
-	 * @param {Number} d2 - 分母の自由度
-	 * @returns {Number}
+	 * @param {number} x
+	 * @param {number} d1 - 分子の自由度
+	 * @param {number} d2 - 分母の自由度
+	 * @returns {number}
 	 */
 	static fcdf(x, d1, d2) {
 		return Statistics.betacdf( d1 * x / (d1 * x + d2), d1 / 2.0, d2 / 2.0 );
@@ -626,10 +626,10 @@ export default class Statistics {
 
 	/**
 	 * finv(p, d1, d2) F分布の累積分布関数の逆関数
-	 * @param {Number} p - 確率
-	 * @param {Number} d1 - 分子の自由度
-	 * @param {Number} d2 - 分母の自由度
-	 * @returns {Number}
+	 * @param {number} p - 確率
+	 * @param {number} d1 - 分子の自由度
+	 * @param {number} d2 - 分母の自由度
+	 * @returns {number}
 	 */
 	static finv(p, d1, d2) {
 		return (1.0 / Statistics.betainv( 1.0 - p, d2 / 2.0, d1 / 2.0 ) - 1.0) * d2 / d1;

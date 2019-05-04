@@ -12,8 +12,8 @@ class FFT {
 
 	/**
 	 * ビット反転
-	 * @param {Number} x - ビット反転させる値（32ビット整数）
-	 * @returns {Number} ビット反転した値
+	 * @param {number} x - ビット反転させる値（32ビット整数）
+	 * @returns {number} ビット反転した値
 	 */
 	static bit_reverse_32(x) {
 		let y = x & 0xffffffff;
@@ -28,8 +28,8 @@ class FFT {
 	
 	/**
 	 * 指定したビット分の数値データをビット反転した配列を返す
-	 * @param bit - ビット数
-	 * @returns {Array} ビット反転した値の配列
+	 * @param {number} bit - ビット数
+	 * @returns {Array<number>} ビット反転した値の配列
 	 */
 	static create_bit_reverse_table(bit) {
 		const size = 1 << bit;
@@ -42,7 +42,7 @@ class FFT {
 
 	/**
 	 * FFTクラスの初期化
-	 * @param {Number} size - 信号の長さ
+	 * @param {number} size - 信号の長さ
 	 */
 	constructor(size) {
 		this.size = size;
@@ -85,9 +85,9 @@ class FFT {
 	
 	/**
 	 * 離散フーリエ変換
-	 * @param {Array} real - 実数部
-	 * @param {Array} imag - 虚数部
-	 * @returns {Object}
+	 * @param {Array<number>} real - 実数部
+	 * @param {Array<number>} imag - 虚数部
+	 * @returns {Object<string, Array<number>>}
 	 */
 	fft(real, imag) {
 		const f_re = new Array(this.size);
@@ -155,7 +155,7 @@ class FFT {
 	 * 逆離散フーリエ変換
 	 * @param {Array} real - 実数部
 	 * @param {Array} imag - 虚数部
-	 * @returns {Object}
+	 * @returns {Object<string, Array<number>>}
 	 */
 	ifft(real, imag) {
 		const f_re = new Array(this.size);
@@ -229,9 +229,8 @@ class Chash {
 	
 	/**
 	 * 簡易キャッシュ
-	 * @param {Number} chash_size - キャッシュの最大サイズ
-	 * @param {Object} object - 作成するオブジェクト
-	 * @returns {Object}
+	 * @param {number} chash_size - キャッシュの最大サイズ
+	 * @param {*} object - 作成するオブジェクト
 	 */
 	constructor(chash_size, object) {
 		this.object = object;
@@ -242,8 +241,8 @@ class Chash {
 
 	/**
 	 * 指定した長さのデータを作成する。キャッシュに存在すればキャッシュから使用する。
-	 * @param {Number} size - 作成するオブジェクトのサイズ
-	 * @returns {Object}
+	 * @param {number} size - 作成するオブジェクトのサイズ
+	 * @returns {*}
 	 */
 	get(size) {
 		for(let index = 0; index < this.table_size; index++) {
@@ -273,7 +272,7 @@ class DCT {
 	
 	/**
 	 * DCTクラスの初期化
-	 * @param {Number} size - 信号の長さ
+	 * @param {number} size - 信号の長さ
 	 */
 	constructor(size) {
 		this.size = size;
@@ -303,8 +302,8 @@ class DCT {
 
 	/**
 	 * DCT-II
-	 * @param {Array} real - 実数部
-	 * @returns {Object}
+	 * @param {Array<number>} real - 実数部
+	 * @returns {Array<number>}
 	 */
 	dct(real) {
 		const re = new Array(this.dct_size);
@@ -323,8 +322,8 @@ class DCT {
 
 	/**
 	 * DCT-III (IDCT)
-	 * @param {Array} real - 実数部
-	 * @returns {Object}
+	 * @param {Array<number>} real - 実数部
+	 * @returns {Array<number>}
 	 */
 	idct(real) {
 		const re = new Array(this.dct_size);
@@ -347,8 +346,8 @@ export default class Signal {
 	
 	/**
 	 * 0が含まれるか
-	 * @param {Array} x - 調べたい配列
-	 * @returns {Boolean}
+	 * @param {Array<number>} x - 調べたい配列
+	 * @returns {boolean}
 	 */
 	static isContainsZero(x) {
 		for(let i = 0; i < x.length; i++) {
@@ -361,9 +360,9 @@ export default class Signal {
 
 	/**
 	 * 離散フーリエ変換
-	 * @param {Array} real - 実数部
-	 * @param {Array} imag - 虚数部
-	 * @returns {Object}
+	 * @param {Array<number>} real - 実数部
+	 * @param {Array<number>} imag - 虚数部
+	 * @returns {Object<string, Array<number>>}
 	 */
 	static fft(real, imag) {
 		const obj = fft_chash.get(real.length);	
@@ -372,9 +371,9 @@ export default class Signal {
 
 	/**
 	 * 逆離散フーリエ変換
-	 * @param {Array} real - 実数部
-	 * @param {Array} imag - 虚数部
-	 * @returns {Object}
+	 * @param {Array<number>} real - 実数部
+	 * @param {Array<number>} imag - 虚数部
+	 * @returns {Object<string, Array<number>>}
 	 */
 	static ifft(real, imag) {
 		const obj = fft_chash.get(real.length);	
@@ -383,8 +382,8 @@ export default class Signal {
 
 	/**
 	 * DCT-II (DCT)
-	 * @param {Array} real - 実数部
-	 * @returns {Object}
+	 * @param {Array<number>} real - 実数部
+	 * @returns {Array<number>}
 	 */
 	static dct(real) {
 		const obj = dct_chash.get(real.length);	
@@ -393,8 +392,8 @@ export default class Signal {
 
 	/**
 	 * DCT-III (IDCT)
-	 * @param {Array} real - 実数部
-	 * @returns {Object}
+	 * @param {Array<number>} real - 実数部
+	 * @returns {Array<number>}
 	 */
 	static idct(real) {
 		const obj = dct_chash.get(real.length);	
@@ -403,9 +402,9 @@ export default class Signal {
 
 	/**
 	 * パワースペクトル密度
-	 * @param {Array} real - 実数部
-	 * @param {Array} imag - 虚数部
-	 * @returns {Object}
+	 * @param {Array<number>} real - 実数部
+	 * @param {Array<number>} imag - 虚数部
+	 * @returns {Array<number>}
 	 */
 	static powerfft(real, imag) {
 		const size = real.length;
@@ -423,7 +422,7 @@ export default class Signal {
 	 * @param {Array} x1_imag - 虚数部
 	 * @param {Array} x2_real - 実数部
 	 * @param {Array} x2_imag - 虚数部
-	 * @returns {Object}
+	 * @returns {Object<string, Array<number>>}
 	 */
 	static conv(x1_real, x1_imag, x2_real, x2_imag) {
 		let is_self = false;
@@ -533,7 +532,7 @@ export default class Signal {
 	 * @param {Array} x1_imag - 虚数部
 	 * @param {Array} x2_real - 実数部
 	 * @param {Array} x2_imag - 虚数部
-	 * @returns {Object}
+	 * @returns {Object<string, Array<number>>}
 	 */
 	static xcorr(x1_real, x1_imag, x2_real, x2_imag) {
 		let is_self = false;
@@ -655,10 +654,10 @@ export default class Signal {
 
 	/**
 	 * 窓を作成する
-	 * @param {String} name - 窓関数の名前
-	 * @param {Number} size - 長さ
+	 * @param {string} name - 窓関数の名前
+	 * @param {number} size - 長さ
 	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
-	 * @returns {Array}
+	 * @returns {Array<number>}
 	 */
 	static window(name, size, isPeriodic) {
 
@@ -753,9 +752,9 @@ export default class Signal {
 
 	/**
 	 * ハニング窓
-	 * @param {Number} size - 長さ
+	 * @param {number} size - 長さ
 	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
-	 * @returns {Array}
+	 * @returns {Array<number>}
 	 */
 	static hann(size, isPeriodic) {
 		return Signal.window("hann", size, isPeriodic);
@@ -763,9 +762,9 @@ export default class Signal {
 	
 	/**
 	 * ハミング窓を作成
-	 * @param {Number} size - 長さ
+	 * @param {number} size - 長さ
 	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
-	 * @returns {Array}
+	 * @returns {Array<number>}
 	 */
 	static hamming(size, isPeriodic) {
 		return Signal.window("hamming", size, isPeriodic);

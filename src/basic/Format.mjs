@@ -14,9 +14,9 @@ export default class Format {
 	 * C言語のprintfを再現
 	 * ロケール、日付時刻等はサポートしていません。
 	 * sprintfの変換指定子のpとnはサポートしていません。
-	 * @param {String} text 
-	 * @param {String} parm パラメータは可変引数
-	 * @returns {String}
+	 * @param {string} text 
+	 * @param {string} parm パラメータは可変引数
+	 * @returns {string}
 	 */
 	static format() {
 		let parm_number = 1;
