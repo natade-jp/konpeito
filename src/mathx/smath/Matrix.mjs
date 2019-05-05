@@ -1356,7 +1356,7 @@ export default class Matrix {
 	 * @param {number} [epsilon] - 誤差
 	 * @returns {boolean}
 	 */
-	isZero(epsilon) {
+	isZeros(epsilon) {
 		let is_zeros = true;
 		const tolerance = epsilon ? epsilon : 1.0e-10;
 		this._each(function(num){
@@ -1514,6 +1514,30 @@ export default class Matrix {
 	size() {
 		// 行列のサイズを取得
 		return new Matrix([[this.row_length, this.column_length]]);
+	}
+
+	/**
+	 * A.compareTo(B) 今の値Aと、指定した値Bとを比較する
+	 * スカラー同士の場合の戻り値は、IF文で利用できるように、number型である。
+	 * 行列同士の場合は行列の中で比較を行い、各項に比較結果が入る
+	 * @param {Object|number|string|Array} number 
+	 * @param {number} [epsilon] - 誤差
+	 * @returns {number|Matrix} A < B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number, epsilon) {
+		const M1 = this;
+		const M2 = Matrix.createConstMatrix(number);
+		// ※スカラー同士の場合は、実数を返す
+		if(M1.isScalar() && M2.isScalar()) {
+			return M1.scalar.compareTo(M2.scalar, epsilon);
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].compareTo(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
 	}
 
 	/**

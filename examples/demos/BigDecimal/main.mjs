@@ -3,10 +3,11 @@
 const BigDecimal = Senko.MathX.BigDecimal;
 const Log = Senko.Log;
 
-const testPlainStringAndEngineeringString = function(x) {
-	const decimal = new BigDecimal(x);
+const testPlainStringAndEngineeringString = function(text) {
+	const decimal = new BigDecimal(text);
 	Log.println(
-		decimal.toString() + "\t" + decimal.toPlainString() + "\t" + decimal.toEngineeringString()
+		text + "\t->\t"
+		+ decimal.toString() + "\t" + decimal.toPlainString() + "\t" + decimal.toEngineeringString()
 		+ "\t( " + decimal.unscaledValue() + " e" + -1 * decimal.scale() + " )");
 };
 
@@ -15,8 +16,8 @@ const getDecimalData = function(x) {
 };
 
 const testDivideAndRemainder = function(x, y) {
-	x = new BigDecimal(x);
-	y = new BigDecimal(y);
+	x = new BigDecimal([x, BigDecimal.CONTEXT_UNLIMITED]);
+	y = new BigDecimal([y, BigDecimal.CONTEXT_UNLIMITED]);
 	const z = x.divideAndRemainder(y);
 	Log.println( x + "\t/\t" + y + "\t\t= " + getDecimalData(z[0]) + "\t... " + getDecimalData(z[1]) );
 };
@@ -51,7 +52,7 @@ const main = function() {
 	testPlainStringAndEngineeringString("123e-5");
 	testPlainStringAndEngineeringString("123e-10");
 	testPlainStringAndEngineeringString("-123e-12");
-	
+
 	Log.println("");
 	
 	Log.println("test ulp");
@@ -86,10 +87,10 @@ const main = function() {
 	Log.println(y + " 精度 = " + y.precision());
 	
 	Log.println("");
-	
+
 	Log.println("割り算を除く四則演算");
-	x = new BigDecimal("3333.3333");
-	y = new BigDecimal("-123.45");
+	x = new BigDecimal(["3333.3333", BigDecimal.CONTEXT_UNLIMITED]);
+	y = new BigDecimal(["-123.45", BigDecimal.CONTEXT_UNLIMITED]);
 	Log.println(x + " + " + y + " = " + x.add(y));
 	Log.println(x + " - " + y + " = " + x.subtract(y));
 	Log.println(x + " * " + y + " = " + x.multiply(y));
@@ -144,16 +145,25 @@ const main = function() {
 	Log.println("割り算のテスト");
 	x = new BigDecimal("4.36");
 	y = new BigDecimal("3.4");
-	z = x.divide(y, BigDecimal.MathContext.DECIMAL128);
+	z = x.divide(y, BigDecimal.CONTEXT_DECIMAL128);
 	Log.println( x + " / " + y + " = " + z);
 	
 	Log.println("");
 	
 	Log.println("割り算のテスト（循環小数）");
-	x = new BigDecimal("1");
-	y = new BigDecimal("7");
+	x = new BigDecimal(["1", BigDecimal.CONTEXT_UNLIMITED]);
+	y = new BigDecimal(["7", BigDecimal.CONTEXT_UNLIMITED]);
 	try {
 		z = x.divide(y);
+		Log.println( x + " / " + y + " = " + z);
+	}
+	catch(e) {
+		Log.println( x + " / " + y + " = " + e);
+	}
+
+	try {
+		z = x.divide(y, { context : BigDecimal.CONTEXT_DECIMAL128 });
+		Log.println( x + " / " + y + " = " + z);
 	}
 	catch(e) {
 		Log.println( x + " / " + y + " = " + e);
@@ -165,13 +175,13 @@ const main = function() {
 	x = new BigDecimal("-1123.00000");
 	Log.println(getDecimalData(x));
 	Log.println("0を削除 -> " + getDecimalData(x.stripTrailingZeros()));
-	Log.println("整数化 -> " + x.intValueExact());
+	Log.println("整数化 -> " + x.intValueExact);
 	
 	Log.println("");
 	
 	Log.println("乗算");
 	x = new BigDecimal("123.456");
-	Log.println(x.pow(30));
+	Log.println(x.pow(30, BigDecimal.CONTEXT_UNLIMITED));
 	
 	// 丸め用のクラスの試験用
 	// 入力値の 1 の位に対して、丸め後の数値へ、いくつ足せばいいかがかえる

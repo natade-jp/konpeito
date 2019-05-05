@@ -10,109 +10,190 @@
 
 import BigInteger from "./BigInteger.mjs";
 
+
+
 class DecimalTool {
 
-
+	static ToBigDecimalFromString(ntext) {
+		let scale = 0;
+		let buff;
+		// 正規化
+		let text = ntext.replace(/\s/g, "").toLowerCase();
+		// +-の符号があるか
+		let number_text = "";
+		buff = text.match(/^[+-]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			if(buff.indexOf("-") !== -1) {
+				number_text += "-";
+			}
+		}
+		// 整数部があるか
+		buff = text.match(/^[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			number_text += buff;
+		}
+		// 小数部があるか
+		buff = text.match(/^\.[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			buff = buff.substr(1);
+			scale = scale + buff.length;
+			number_text += buff;
+		}
+		// 指数表記があるか
+		buff = text.match(/^e[+-]?[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0].substr(1);
+			scale   = scale - parseInt(buff, 10);
+		}
+		return {
+			scale : scale,
+			integer : new BigInteger([number_text, 10])
+		};
+	}
 
 }
 
 export default class BigDecimal {
-
-	constructor() {
-		this.integer = 0;
-		this._scale = 0;
-		let p1 = 0;
-		let p2 = 0;
-		let p3 = null;
-		if(arguments.length >= 1) {
-			p1 = arguments[0];
+	
+	/**
+	 * 任意精度実数演算クラス (immutable)
+	 * 配列で設定する場合は、 BigInteger, [スケール値=0], [環境=default], [精度設定=default]
+	 * オブジェクトで設定する場合は、 integer, [scale=0], [default_context=default], [context=default]
+	 * 精度設定の初期値設定は、設定可能とする予定。
+	 * @param {BigDecimal|BigInteger|number|string} number - 任意精度実数データ
+	 */
+	constructor(number) {
+		this._scale	= 0;
+		this.default_context = BigDecimal.DEFAULT_CONTEXT;
+		let context = null;
+		if(arguments.length > 1) {
+			throw "BigDecimal Unsupported argument[" + arguments.length + "]";
 		}
-		if(arguments.length >= 2) {
-			p2 = arguments[1];
+		if(number instanceof BigDecimal) {
+			this.integer			= number.integer.clone();
+			this._scale				= number._scale;
+			this.int_string			= number.int_string;
+			this.default_context	= number.default_context;
 		}
-		if(arguments.length >= 3) {
-			p3 = arguments[2];
+		else if(number instanceof BigInteger) {
+			this.integer	= number.clone();
 		}
-		// BigDecimal(BigInteger val, MathContext mc)
-		if(p2 instanceof MathContext) {
-			p3 = p2;
-		}
-		if(p1 instanceof BigDecimal) {
-			// Senko.println(p1.integer);
-			this.integer	= p1.integer.clone();
-			this._scale		= p1._scale;
-			this.int_string	= p1.int_string;
-		}
-		else if(p1 instanceof BigInteger) {
-			this.integer = p1.clone();
-			this._scale   = p2;
-		}
-		else if(typeof p1 === "number") {
+		else if(typeof number === "number" || number instanceof Number) {
 			// 整数か
-			if(p1 === Math.floor(p1)) {
-				this.integer = new BigInteger(p1);
-				this._scale   = 0;
+			if(number === Math.floor(number)) {
+				this.integer = new BigInteger(number);
 			}
 			// 実数か
 			else {
-				this._scale = 0;
+				let scale = 0;
+				let x = number;
 				while(true) {
-					p1 = p1 * 10;
-					this._scale = this._scale + 1;
-					if(p1 === Math.floor(p1)) {
+					x = x * 10;
+					scale = scale + 1;
+					if(x === Math.floor(x)) {
 						break;
 					}
 				}
-				this.integer = new BigInteger(p1);
+				this._scale = scale;
+				this.integer = new BigInteger(x);
 			}
 		}
-		else if(typeof p1 === "string") {
-			this._scale = 0;
-			let buff;
-			// 正規化
-			let text = p1.replace(/\s/g, "").toLowerCase();
-			// +-の符号があるか
-			let number_text = "";
-			buff = text.match(/^[+-]+/);
-			if(buff !== null) {
-				buff = buff[0];
-				text = text.substr(buff.length);
-				if(buff.indexOf("-") !== -1) {
-					number_text += "-";
+		else if(number instanceof Array) {
+			if(number.length >= 1) {
+				if(!(typeof number[0] === "string" || number[0] instanceof String)) {
+					this.integer = new BigInteger(number[0]);
+				}
+				else {
+					// 1番目が文字列の場合は、文字列用の設定初期化を行う
+					const data = DecimalTool.ToBigDecimalFromString(number[0]);
+					this.integer	= data.integer;
+					this._scale		= data.scale;
 				}
 			}
-			// 整数部があるか
-			buff = text.match(/^[0-9]+/);
-			if(buff !== null) {
-				buff = buff[0];
-				text = text.substr(buff.length);
-				number_text += buff;
+			if(number.length >= 2) {
+				// スケール値を省略しているかどうかを、数値かどうかで判定している。
+				if(typeof number[1] === "number" || number[1] instanceof Number) {
+					this._scale	= number[1];
+					if(number.length >= 3) {
+						this.default_context = number[2];
+					}
+					if(number.length >= 4) {
+						context = number[3];
+					}
+				}
+				else {
+					if(number.length >= 2) {
+						this.default_context = number[1];
+					}
+					if(number.length >= 3) {
+						context = number[2];
+					}
+				}
 			}
-			// 小数部があるか
-			buff = text.match(/^\.[0-9]+/);
-			if(buff !== null) {
-				buff = buff[0];
-				text = text.substr(buff.length);
-				buff = buff.substr(1);
-				this._scale   = this._scale + buff.length;
-				number_text += buff;
-			}
-			// 指数表記があるか
-			buff = text.match(/^e[+-]?[0-9]+/);
-			if(buff !== null) {
-				buff = buff[0].substr(1);
-				this._scale   = this._scale - parseInt(buff, 10);
-			}
-			this.integer = new BigInteger([number_text, 10]);
 		}
-		if(p3 instanceof MathContext) {
-			const newbigdecimal = this.round(p3);
+		else if(typeof number === "string" || number instanceof String) {
+			const data = DecimalTool.ToBigDecimalFromString(number);
+			this.integer	= data.integer;
+			this._scale		= data.scale;
+		}
+		else if((number instanceof Object) && (number.scale !== undefined && number.default_context !== undefined)) {
+			this.integer	= new BigInteger(number.integer);
+			if(number.scale) {
+				this._scale = number.scale;
+			}
+			if(number.default_context) {
+				this.default_context = number.default_context;
+			}
+			if(number.context) {
+				context = number.context;
+			}
+		}
+		else if((number instanceof Object) && (number.toString !== undefined)) {
+			const data = DecimalTool.ToBigDecimalFromString(number.toString());
+			this.integer	= data.integer;
+			this._scale		= data.scale;
+		}
+		else {
+			throw "BigDecimal Unsupported argument " + arguments;
+		}
+		// データを正規化
+		if(context) {
+			const newbigdecimal = this.round(context);
 			this.integer	= newbigdecimal.integer;
 			this._scale		= newbigdecimal._scale;
+			delete this.int_string;
 		}
-		//	Senko.println(p1 + "\t\n->\t[" + this.integer + "," + this._scale +"]\n\t"+ this.toEngineeringString() );
+		// データが正しいかチェックする
+		if((!(this.integer instanceof BigInteger)) || (!(this.default_context instanceof MathContext))) {
+			throw "BigDecimal Unsupported argument " + arguments;
+		}
 	}
 
+	/**
+	 * 引数から任意精度実数を作成する（作成が不要の場合はnewしない）
+	 * @param {BigDecimal|BigInteger|number|string} number - 任意精度実数データ
+	 * @returns {BigDecimal}
+	 */
+	static createConstBigDecimal(number) {
+		if(number instanceof BigDecimal) {
+			return number;
+		}
+		else {
+			return new BigDecimal(number);
+		}
+	}
+
+	/**
+	 * 絶対値の文字列を作成する
+	 * キャッシュがなければ作成し、キャッシュがあればそれを返す
+	 * @returns {string}
+	 */
 	_getUnsignedIntegerString() {
 		// キャッシュする
 		if(typeof this.int_string === "undefined") {
@@ -121,26 +202,51 @@ export default class BigDecimal {
 		return this.int_string;
 	}
 
+	/**
+	 * ディープコピー
+	 * @returns {BigDecimal} 
+	 */
 	clone() {
 		return new BigDecimal(this);
 	}
 
+	/**
+	 * 倍率
+	 * @returns {number} 
+	 */
 	scale() {
 		return this._scale;
 	}
 
+	/**
+	 * A.signum() 符号値（1, -1）、0の場合は0を返す
+	 * @returns {number}
+	 */
 	signum() {
 		return this.integer.signum();
 	}
 
+	/**
+	 * 精度（下位が0の場合は、制度が低くなる）
+	 * @returns {number} 
+	 */
 	precision() {
 		return this._getUnsignedIntegerString().length;
 	}
 
+	/**
+	 * 拡大させない値
+	 * @returns {BigInteger} 
+	 */
 	unscaledValue() {
 		return new BigInteger(this.integer);
 	}
 
+	/**
+	 * 指定した指数部の桁数で文字列を作成する
+	 * @param {number} e - 表示させる指数部
+	 * @returns {string} 
+	 */
 	toScientificNotation(e) {
 		const text	= this._getUnsignedIntegerString();
 		let s		= this.scale();
@@ -184,6 +290,10 @@ export default class BigDecimal {
 		return x.join("");
 	}
 
+	/**
+	 * 文字列化（指数表記が不要である場合は除く）
+	 * @returns {string} 
+	 */
 	toString() {
 		// 「調整された指数」
 		const x = - this.scale() + (this.precision() - 1);
@@ -196,6 +306,10 @@ export default class BigDecimal {
 		}
 	}
 
+	/**
+	 * 文字列化（指数表記する）
+	 * @returns {string} 
+	 */
 	toEngineeringString() {
 		// 「調整された指数」
 		const x = - this.scale() + (this.precision() - 1);
@@ -209,6 +323,10 @@ export default class BigDecimal {
 		}
 	}
 
+	/**
+	 * 文字列化（指数表記しない）
+	 * @returns {string} 
+	 */
 	toPlainString() {
 		// スケールの変換なし
 		if(this.scale() === 0) {
@@ -224,22 +342,27 @@ export default class BigDecimal {
 		return text.match(/^[^E]*/)[0];
 	}
 
+	/**
+	 * 現在の精度で表すことができる最も小さな値
+	 * @returns {BigDecimal} 
+	 */
 	ulp() {
-		return new BigDecimal(BigInteger.ONE, this.scale());
+		return new BigDecimal([BigInteger.ONE, this.scale(), this.default_context]);
 	}
 
-	setScale(newScale, roundingMode_) {
+	/**
+	 * スケールを切り替える
+	 * @param {number} newScale - 新しいスケール
+	 * @param {RoundingModeInterface} [roundingMode=RoundingMode.UNNECESSARY] - 精度を変換する際の丸め方
+	 * @param {MathContext} [mc] - 切り替え先の設定（これのみ変更する場合は、roundを使用すること）
+	 * @returns {BigDecimal} 
+	 */
+	setScale(newScale, roundingMode=RoundingMode.UNNECESSARY, mc) {
 		if(this.scale() === newScale) {
 			// scaleが同一なので処理の必要なし
 			return(this.clone());
 		}
-		let roundingMode;
-		if(arguments.length === 1) {
-			roundingMode = RoundingMode.UNNECESSARY;
-		}
-		else {
-			roundingMode = roundingMode_;
-		}
+		const context = (mc !== undefined) ? mc : this.default_context;
 		// 文字列を扱ううえで、符号があるとやりにくいので外しておく
 		let text		= this._getUnsignedIntegerString();
 		const sign		= this.signum();
@@ -253,10 +376,10 @@ export default class BigDecimal {
 			for(i = 0; i < delta; i++) {
 				text = text + "0";
 			}
-			return new BigDecimal(new BigInteger(sign_text + text), newScale);
+			return new BigDecimal([new BigInteger(sign_text + text), newScale, context]);
 		}
-		const keta			= text.length + delta;		// 最終的な桁数
-		const keta_marume		= keta + 1;
+		const keta = text.length + delta;		// 最終的な桁数
+		const keta_marume = keta + 1;
 		if(keta <= 0) {
 			// 指定した scale では設定できない場合
 			// 例えば "0.1".setScale(-2), "10".setScale(-3) としても表すことは不可能であるため、
@@ -265,7 +388,7 @@ export default class BigDecimal {
 			// 上記の式は、CEILINGなら必ず1、正でCEILINGなら1、負でFLOORなら1、それ以外は0となり、
 			// さらに元々の数値が 0 なら 0、切り捨て不能なら例外が返る計算式である。
 			// これは Java の動作をまねています。
-			return new BigDecimal(new BigInteger(outdata), newScale);
+			return new BigDecimal([new BigInteger(outdata), newScale, context]);
 		}
 		{
 			// 0を削るだけで解決する場合
@@ -273,7 +396,7 @@ export default class BigDecimal {
 			const zeros			= text.match(/0+$/);
 			const zero_length		= (zeros !== null) ? zeros[0].length : 0;
 			if(( (zero_length + delta) >= 0 ) || (roundingMode === RoundingMode.DOWN)) {
-				return new BigDecimal(new BigInteger(sign_text + text.substring(0, keta)), newScale);
+				return new BigDecimal([new BigInteger(sign_text + text.substring(0, keta)), newScale, context]);
 			}
 		}
 		{
@@ -289,10 +412,15 @@ export default class BigDecimal {
 			const x2 = new BigInteger(roundingMode.getAddNumber(number));
 			text = x1.add(x2).toString();
 			// 丸め後の桁数に戻して
-			return new BigDecimal(new BigInteger(text.substring(0, text.length - 1)), newScale);
+			return new BigDecimal([new BigInteger(text.substring(0, text.length - 1)), newScale, context]);
 		}
 	}
 
+	/**
+	 * 環境設定を切り替える
+	 * @param {MathContext} mc - 切り替え先の設定
+	 * @returns {BigDecimal} 
+	 */
 	round(mc) {
 		if(!(mc instanceof MathContext)) {
 			throw "not MathContext";
@@ -302,7 +430,7 @@ export default class BigDecimal {
 		if((delta === 0)||(newPrecision === 0)) {
 			return this.clone();
 		}
-		const newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode());
+		const newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode(), mc);
 		/* 精度を上げる必要があるため、0を加えた場合 */
 		if(delta > 0) {
 			return newBigDecimal;
@@ -315,56 +443,50 @@ export default class BigDecimal {
 		const sign_text	= newBigDecimal.integer.signum() >= 0 ? "" : "-";
 		const abs_text	= newBigDecimal._getUnsignedIntegerString();
 		const inte_text	= sign_text + abs_text.substring(0, abs_text.length - 1);
-		return new BigDecimal(new BigInteger(inte_text), newBigDecimal.scale() - 1);
+		return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1, mc]);
 	}
 
+	/**
+	 * A.abs() = abs(A)
+	 * @param {MathContext} [mc] - 計算に使用する設定
+	 * @returns {BigDecimal} 
+	 */
 	abs(mc) {
 		const output = this.clone();
 		output.integer = output.integer.abs();
-		if(arguments.length === 1) {
-			return output;
-		}
-		else {
-			if(!(mc instanceof MathContext)) {
-				throw "not MathContext";
-			}
-			return output.round(mc);
-		}
+		return (mc === undefined) ? output : output.round(mc);
 	}
 
+	/**
+	 * A.plus() = + A
+	 * @param {MathContext} [mc] - 計算に使用する設定
+	 * @returns {BigDecimal} 
+	 */
 	plus(mc) {
 		const output = this.clone();
-		if(arguments.length === 1) {
-			return output;
-		}
-		else {
-			if(!(mc instanceof MathContext)) {
-				throw "not MathContext";
-			}
-			return output.round(mc);
-		}
+		return (mc === undefined) ? output : output.round(mc);
 	}
 
+	/**
+	 * A.negate() = - A
+	 * @param {MathContext} [mc] - 計算に使用する設定
+	 * @returns {BigDecimal} 
+	 */
 	negate(mc) {
 		const output = this.clone();
 		output.integer = output.integer.negate();
-		if(arguments.length === 1) {
-			return output;
-		}
-		else {
-			if(!(mc instanceof MathContext)) {
-				throw "not MathContext";
-			}
-			return output.round(mc);
-		}
+		return (mc === undefined) ? output : output.round(mc);
 	}
 
-	compareTo(val) {
-		if(!(val instanceof BigDecimal)) {
-			throw "not BigDecimal";
-		}
-		const src			= this;
-		const tgt			= val;
+	/**
+	 * A.compareTo(B) 値同士で比較する
+	 * @param {Object|number|string|Array} number 
+	 * @returns {number} A < B ? 1 : (A === B ? 0 : -1)（※非Complexオブジェクト）
+	 */
+	compareTo(number) {
+		const val = BigDecimal.createConstBigDecimal(number);
+		const src = this;
+		const tgt = val;
 		// 簡易計算
 		{
 			const src_sign	= src.signum();
@@ -393,17 +515,23 @@ export default class BigDecimal {
 		}
 	}
 
-	equals(x) {
-		if(!(x instanceof BigDecimal)) {
-			throw "not BigDecimal";
-		}
-		return ((this._scale === x._scale) && (this.integer.equals(x.integer)));
+	/**
+	 * A.equals(B) 精度やスケール含めて等しいかをテストする
+	 * @param {Object|number|string|Array} number 
+	 * @returns {boolean} A === B
+	 */
+	equals(number) {
+		const val = BigDecimal.createConstBigDecimal(number);
+		return ((this._scale === val._scale) && (this.integer.equals(val.integer)));
 	}
 
-	min(val) {
-		if(!(val instanceof BigDecimal)) {
-			throw "not BigDecimal";
-		}
+	/**
+	 * A.min(B) = min([A, B])
+	 * @param {Object|number|string|Array} number 
+	 * @returns {BigDecimal} 
+	 */
+	min(number) {
+		const val = BigDecimal.createConstBigDecimal(number);
 		if(this.compareTo(val) <= 0) {
 			return this.clone();
 		}
@@ -412,10 +540,13 @@ export default class BigDecimal {
 		}
 	}
 
-	max(val) {
-		if(!(val instanceof BigDecimal)) {
-			throw "not BigDecimal";
-		}
+	/**
+	 * A.max(B) = max([A, B])
+	 * @param {Object|number|string|Array} number 
+	 * @returns {BigDecimal} 
+	 */
+	max(number) {
+		const val = BigDecimal.createConstBigDecimal(number);
 		if(this.compareTo(val) >= 0) {
 			return this.clone();
 		}
@@ -424,24 +555,43 @@ export default class BigDecimal {
 		}
 	}
 
-	movePointLeft(n) {
-		let output = this.scaleByPowerOfTen( -n );
-		output = output.setScale(Math.max(this.scale() + n, 0));
-		return output;
-	}
-
-	movePointRight(n) {
-		let output = this.scaleByPowerOfTen( n );
-		output = output.setScale(Math.max(this.scale() - n, 0));
-		return output;
-	}
-
+	/**
+	 * A.scaleByPowerOfTen(n) = A * 10^n
+	 * @param {number} n 
+	 * @returns {BigDecimal} 
+	 */
 	scaleByPowerOfTen(n) {
 		const output = this.clone();
 		output._scale = this.scale() - n;
 		return output;
 	}
 
+	/**
+	 * A.movePointLeft(n) = A * 10^(-n)
+	 * @param {number} n 
+	 * @returns {BigDecimal} 
+	 */
+	movePointLeft(n) {
+		let output = this.scaleByPowerOfTen( -n );
+		output = output.setScale(Math.max(this.scale() + n, 0));
+		return output;
+	}
+
+	/**
+	 * A.movePointRight(n) = A * 10^(n)
+	 * @param {number} n 
+	 * @returns {BigDecimal} 
+	 */
+	movePointRight(n) {
+		let output = this.scaleByPowerOfTen( n );
+		output = output.setScale(Math.max(this.scale() - n, 0));
+		return output;
+	}
+
+	/**
+	 * A.stripTrailingZeros() 数字の右側にある0を取り除き、スケールを調整する
+	 * @returns {BigDecimal} 
+	 */
 	stripTrailingZeros() {
 		// 0をできる限り取り除く
 		const sign		= this.signum();
@@ -454,102 +604,110 @@ export default class BigDecimal {
 			zero_length = text.length - 1;
 		}
 		const newScale	= this.scale() - zero_length;
-		return new BigDecimal(new BigInteger(sign_text + text.substring(0, text.length - zero_length)), newScale);
+		return new BigDecimal([new BigInteger(sign_text + text.substring(0, text.length - zero_length)), newScale, this.default_context]);
 	}
 
-	add(augend, mc) {
-		if(arguments.length === 1) {
-			mc = MathContext.UNLIMITED;
-		}
-		if(!(augend instanceof BigDecimal)) {
-			throw "not BigDecimal";
-		}
-		if(!(mc instanceof MathContext)) {
-			throw "not MathContext";
-		}
+	/**
+	 * A.add(B) = A + B
+	 * @param {Object|number|string|Array} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
+	 * @returns {BigDecimal} 
+	 */
+	add(number, context) {
+		const augend = BigDecimal.createConstBigDecimal(number);
+		const mc = context ? context : augend.default_context;
 		const src			= this;
 		const tgt			= augend;
 		const newscale	= Math.max(src._scale, tgt._scale);
 		if(src._scale === tgt._scale) {
 			// 1 e1 + 1 e1 = 1
-			return new BigDecimal(src.integer.add(tgt.integer), newscale, mc);
+			return new BigDecimal([src.integer.add(tgt.integer), newscale, mc, mc]);
 		}
 		else if(src._scale > tgt._scale) {
 			// 1 e-2 + 1 e-1
 			const newdst = tgt.setScale(src._scale);
 			// 0.01 + 0.10 = 0.11 = 11 e-2
-			return new BigDecimal(src.integer.add(newdst.integer), newscale, mc);
+			return new BigDecimal([src.integer.add(newdst.integer), newscale, mc, mc]);
 		}
 		else {
 			// 1 e-1 + 1 e-2
 			const newsrc = src.setScale(tgt._scale);
 			// 0.1 + 0.01 = 0.11 = 11 e-2
-			return new BigDecimal(newsrc.integer.add(tgt.integer), newscale, mc);
+			return new BigDecimal([newsrc.integer.add(tgt.integer), newscale, mc, mc]);
 		}
 	}
 
-	subtract(subtrahend, mc) {
-		if(arguments.length === 1) {
-			mc = MathContext.UNLIMITED;
-		}
-		if(!(subtrahend instanceof BigDecimal)) {
-			throw "not BigDecimal";
-		}
-		if(!(mc instanceof MathContext)) {
-			throw "not MathContext";
-		}
+	/**
+	 * A.subtract(B) = A - B
+	 * @param {Object|number|string|Array} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
+	 * @returns {BigDecimal} 
+	 */
+	subtract(number, context) {
+		const subtrahend = BigDecimal.createConstBigDecimal(number);
+		const mc = context ? context : subtrahend.default_context;
 		const src			= this;
 		const tgt			= subtrahend;
 		const newscale	= Math.max(src._scale, tgt._scale);
 		if(src._scale === tgt._scale) {
-			return new BigDecimal(src.integer.subtract(tgt.integer), newscale, mc);
+			return new BigDecimal([src.integer.subtract(tgt.integer), newscale, mc, mc]);
 		}
 		else if(src._scale > tgt._scale) {
 			const newdst = tgt.setScale(src._scale);
-			return new BigDecimal(src.integer.subtract(newdst.integer), newscale, mc);
+			return new BigDecimal([src.integer.subtract(newdst.integer), newscale, mc, mc]);
 		}
 		else {
 			const newsrc = src.setScale(tgt._scale);
-			return new BigDecimal(newsrc.integer.subtract(tgt.integer), newscale, mc);
+			return new BigDecimal([newsrc.integer.subtract(tgt.integer), newscale, mc, mc]);
 		}
 	}
 
-	sub(...args) {
-		return BigDecimal.subtract.apply(this, args);
+	/**
+	 * A.sub(B) = A - B
+	 * @param {Object|number|string|Array} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
+	 * @returns {BigDecimal} 
+	 */
+	sub(number, context) {
+		return this.subtract(number, context);
 	}
 
-	multiply(multiplicand, mc) {
-		if(arguments.length === 1) {
-			mc = MathContext.UNLIMITED;
-		}
-		if(!(multiplicand instanceof BigDecimal)) {
-			throw "not BigDecimal";
-		}
-		if(!(mc instanceof MathContext)) {
-			throw "not MathContext";
-		}
+	/**
+	 * A.multiply(B) = A * B
+	 * @param {Object|number|string|Array} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
+	 * @returns {BigDecimal} 
+	 */
+	multiply(number, context) {
+		const multiplicand = BigDecimal.createConstBigDecimal(number);
+		const mc = context ? context : multiplicand.default_context;
 		const src			= this;
 		const tgt			= multiplicand;
 		const newinteger	= src.integer.multiply(tgt.integer);
 		// 0.1 * 0.01 = 0.001
 		const newscale	= src._scale + tgt._scale;
-		return new BigDecimal(newinteger, newscale, mc);
+		return new BigDecimal([newinteger, newscale, mc]);
 	}
 
-	mul(...args) {
-		return BigDecimal.multiply.apply(this, args);
+	/**
+	 * A.mul(B) = A * B
+	 * @param {Object|number|string|Array} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
+	 * @returns {BigDecimal} 
+	 */
+	mul(number, context) {
+		return this.multiply(number, context);
 	}
 
-	divideToIntegralValue(divisor, mc) {
-		if(arguments.length === 1) {
-			mc = MathContext.UNLIMITED;
-		}
-		if(!(divisor instanceof BigDecimal)) {
-			throw "not BigDecimal";
-		}
-		if(!(mc instanceof MathContext)) {
-			throw "not MathContext";
-		}
+	/**
+	 * A.divideToIntegralValue(B) = (int)(A / B)
+	 * @param {Object|number|string|Array} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
+	 * @returns {BigDecimal} 
+	 */
+	divideToIntegralValue(number, context) {
+		const divisor = BigDecimal.createConstBigDecimal(number);
+		const mc = context ? context : divisor.default_context;
 		const getDigit  = function( num ) {
 			let i;
 			let text = "1";
@@ -607,26 +765,26 @@ export default class BigDecimal {
 				const zeros			= text.match(/0+$/);
 				const zero_length	= (zeros !== null) ? zeros[0].length : 0;
 				const sign_text		= sign >= 0 ? "" : "-";
-				return(new BigDecimal(new BigInteger(sign_text + text.substring(0, text.length - zero_length)), -zero_length));
+				return new BigDecimal([new BigInteger(sign_text + text.substring(0, text.length - zero_length)), -zero_length, mc]);
 			}
 		}
 
 		let output = new BigDecimal(new_integer);
 		output = output.setScale(newScale, RoundingMode.UP);
 		output = output.round(mc);
+		output.default_context = mc;
 		return output;
 	}
 
-	divideAndRemainder(divisor, mc) {
-		if(arguments.length === 1) {
-			mc = MathContext.UNLIMITED;
-		}
-		if(!(divisor instanceof BigDecimal)) {
-			throw "not BigDecimal";
-		}
-		if(!(mc instanceof MathContext)) {
-			throw "not MathContext";
-		}
+	/**
+	 * A.divideAndRemainder(B) = (int)(A / B) ... mod
+	 * @param {Object|number|string|Array} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
+	 * @returns {Array<BigDecimal>} [C = (int)(A / B), A - C * B]
+	 */
+	divideAndRemainder(number, context) {
+		const divisor = BigDecimal.createConstBigDecimal(number);
+		const mc = context ? context : divisor.default_context;
 
 		// 1000e0		/	1e2				=	1000e-2	... 0e0
 		// 1000e0		/	10e1			=	100e-1	... 0e0
@@ -648,63 +806,71 @@ export default class BigDecimal {
 		return output;
 	}
 
-	rem(...args) {
-		return BigDecimal.divideAndRemainder.apply(this, args)[1];
+	/**
+	 * A.rem(B) = A rem B
+	 * @param {Object|number|string|Array} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
+	 * @returns {BigDecimal}
+	 */
+	rem(number, context) {
+		return this.divideAndRemainder(number, context)[1];
 	}
 
-	mod(...args) {
-		const x = BigDecimal.divideAndRemainder.apply(this, args)[1];
+	/**
+	 * A.mod(B) = A mod B
+	 * @param {Object|number|string|Array} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
+	 * @returns {BigDecimal}
+	 */
+	mod(number, context) {
+		const x = this.rem(number, context);
 		if(x.compareTo(BigDecimal.ZERO) < 0) {
-			return x.add(args[0]);
+			return x.add(number, context);
 		}
 	}
 
-	divide(divisor, p1, p2) {
-		if(!(divisor instanceof BigDecimal)) {
-			throw "not BigDecimal";
-		}
+	/**
+	 * A.divide(B) = A / B
+	 * @param {Object|number|string|Array} number 
+	 * @param {Object<string, Object>} [type] - 計算に使用する scale, context, roundingMode を設定する
+	 * @returns {BigDecimal}
+	 */
+	divide(number, type) {
+		const divisor = BigDecimal.createConstBigDecimal(number);
 		const src			= this;
 		const tgt			= divisor;
 		let roundingMode	= null;
-		let mc				= MathContext.UNLIMITED;
+		let mc				= null;
 		let newScale		= 0;
 		let isPriorityScale	= false;
-		let parm;
-		if(arguments.length === 1) {
-			newScale		 = src.scale() - tgt.scale();
-			isPriorityScale	= true;
-		}
-		else if(arguments.length === 2) {
-			parm = p1;
-			newScale		= src.scale();
-			isPriorityScale	= true;
-			if(parm instanceof MathContext) {
-				mc = parm;
-				roundingMode = mc.getRoundingMode();
-			}
-			else {
-				roundingMode = RoundingMode.getRoundingMode(arguments[0]);
-			}
-		}
-		else if(arguments.length === 3) {
-			if((typeof p1 === "number")||(p1 instanceof Number)) {
-				newScale = p1;
-			}
-			else {
-				throw "scale is not Integer";
-			}
-			parm = p2;
-			if(parm instanceof MathContext) {
-				mc = parm;
-				roundingMode = mc.getRoundingMode();
-			}
-			else {
-				roundingMode = RoundingMode.getRoundingMode(arguments[0]);
-			}
+		if(type && type.scale) {
+			isPriorityScale	= false;
+			newScale = type.scale;
 		}
 		else {
-			throw "The argument is over.";
+			isPriorityScale	= true;
+			if(type && (type.roundingMode || type.context)) {
+				newScale = src.scale();
+			}
+			else {
+				newScale = src.scale() - tgt.scale();
+			}
 		}
+		if(type && type.context) {
+			roundingMode = type.context.getRoundingMode();
+			newScale = type.context.getPrecision();
+			mc = type.context;
+		}
+		else {
+			mc = this.default_context;
+		}
+		if(type && type.roundingMode) {
+			roundingMode = type.roundingMode;
+		}
+		else {
+			roundingMode = mc.getRoundingMode();
+		}
+		
 		if(tgt.compareTo(BigDecimal.ZERO) === 0) {
 			throw "ArithmeticException";
 		}
@@ -751,27 +917,49 @@ export default class BigDecimal {
 		return all_result;
 	}
 
-	div(...args) {
-		return BigDecimal.divide.apply(this, args);
+	/**
+	 * A.divide(B) = A / B
+	 * @param {Object|number|string|Array} number 
+	 * @param {Object<string, Object>} [type] - 計算に使用する scale, context, roundingMode を設定する
+	 * @returns {BigDecimal}
+	 */
+	div(number, type) {
+		return this.divide(number, type);
 	}
 
+	/**
+	 * BigInteger に変換する
+	 * @returns {BigInteger}
+	 */
 	toBigInteger() {
 		const x = this.toPlainString().replace(/\.\d*$/, "");
-		return new BigInteger(x.toPlainString());
+		return new BigInteger(x);
 	}
 
+	/**
+	 * BigInteger に変換する。
+	 * @returns {BigInteger}
+	 */
 	toBigIntegerExact() {
 		const x = this.setScale(0, RoundingMode.UNNECESSARY);
 		return new BigInteger(x.toPlainString());
 	}
 
-	intValue() {
+	/**
+	 * int型に変換
+	 * @returns {number}
+	 */
+	get intValue() {
 		let x = this.toBigInteger();
 		x = x.intValue;
 		return x & 0xFFFFFFFF;
 	}
 
-	intValueExact() {
+	/**
+	 * int型に変換。32ビット整数に収まらない場合はエラーを発生させる。
+	 * @returns {number}
+	 */
+	get intValueExact() {
 		let x = this.toBigIntegerExact();
 		x = x.intValue;
 		if((x < -2147483648) || (2147483647 < x)) {
@@ -780,7 +968,11 @@ export default class BigDecimal {
 		return x;
 	}
 
-	floatValue() {
+	/**
+	 * 32ビットの実数型に変換
+	 * @returns {number}
+	 */
+	get floatValue() {
 		const p = this.precision();
 		if(MathContext.DECIMAL32.getPrecision() < p) {
 			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
@@ -788,7 +980,11 @@ export default class BigDecimal {
 		return parseFloat(p.toEngineeringString());
 	}
 
-	doubleValue() {
+	/**
+	 * 64ビットの実数型に変換
+	 * @returns {number}
+	 */
+	get doubleValue() {
 		const p = this.precision();
 		if(MathContext.DECIMAL64.getPrecision() < p) {
 			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
@@ -796,15 +992,18 @@ export default class BigDecimal {
 		return parseFloat(p.toEngineeringString());
 	}
 
-	pow(n, mc) {
+	/**
+	 * A.pow(B) = A ^ B
+	 * @param {Object|number|string|Array} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
+	 * @returns {BigDecimal}
+	 */
+	pow(number, context) {
+		let n = BigDecimal.createConstBigDecimal(number);
+		const mc = context ? context : n.default_context;
+		n = n.intValue;
 		if(Math.abs(n) > 999999999) {
 			throw "ArithmeticException";
-		}
-		if(arguments.length === 1) {
-			mc = MathContext.UNLIMITED;
-		}
-		if(!(mc instanceof MathContext)) {
-			throw "not MathContext";
 		}
 		if((mc.getPrecision() === 0) && (n < 0)) {
 			throw "ArithmeticException";
@@ -825,19 +1024,19 @@ export default class BigDecimal {
 		return y.round(mc);
 	}
 	
-	static valueOf(val, scale) {
-		if(arguments.length === 1) {
-			return new BigDecimal(val);
+	/**
+	 * 指定した数値から BigInteger 型に変換
+	 * @param {number} x 
+	 * @param {number} [scale] 
+	 * @returns {BigInteger}
+	 */
+	static valueOf(x, scale) {
+		if(!scale) {
+			return new BigDecimal(x);
 		}
-		else if(arguments.length === 2) {
-			if((typeof val === "number") && (val === Math.floor(val))) {
-				return new BigDecimal(new BigInteger(val), scale);
-			}
-			else {
-				throw "IllegalArgumentException";
-			}
+		else {
+			return new BigDecimal([x, scale]);
 		}
-		throw "IllegalArgumentException";
 	}
 	
 }
@@ -1073,52 +1272,51 @@ const RoundingMode = {
 class MathContext {
 
 	/**
-	 * 
+	 * 任意精度の環境設定データ
+	 * @param {string|number} precision_or_name - 精度を数値で指定するか、設定自体を文字列で指定する
+	 * @param {RoundingModeInterface} [roundingMode=RoundingMode.HALF_UP] - 丸めモード
 	 */
-	constructor() {
-		this.precision = 0;
-		this.roundingMode = RoundingMode.HALF_UP;
-		let p1 = 0;
-		let p2 = 0;
-		let buff;
-		if(arguments.length >= 1) {
-			p1 = arguments[0];
-		}
-		if(arguments.length >= 2) {
-			p2 = arguments[1];
-		}
-		if((typeof p1 === "string")||(p1 instanceof String)) {
-			buff = p1.match(/precision=\d+/);
+	constructor(precision_or_name, roundingMode) {
+		this.precision = precision_or_name;
+		this.roundingMode = roundingMode === undefined ? RoundingMode.HALF_UP : roundingMode;
+		if((typeof precision_or_name === "string") || (precision_or_name instanceof String)) {
+			let buff = precision_or_name.match(/precision=\d+/);
 			if(buff !== null) {
 				buff = buff[0].substring("precision=".length, buff[0].length);
 				this.precision = parseInt(buff, 10);
 			}
-			buff = p1.match(/roundingMode=\w+/);
+			buff = precision_or_name.match(/roundingMode=\w+/);
 			if(buff !== null) {
 				buff = buff[0].substring("roundingMode=".length, buff[0].length);
 				this.roundingMode = RoundingMode.valueOf(buff);
 			}	
-		}
-		else if(arguments.length === 1) {
-			this.precision = p1;
-		}
-		else if(arguments.length === 2) {
-			this.precision = p1;
-			this.roundingMode = p2;
 		}
 		if(this.precision < 0) {
 			throw "IllegalArgumentException";
 		}
 	}
 
+	/**
+	 * 精度
+	 * @returns {number}
+	 */
 	getPrecision() {
 		return this.precision;
 	}
 
+	/**
+	 * 丸め方
+	 * @returns {RoundingModeInterface}
+	 */
 	getRoundingMode() {
 		return this.roundingMode;
 	}
 
+	/**
+	 * 環境が等しいか
+	 * @param {MathContext} x - 比較対象
+	 * @returns {boolean}
+	 */
 	equals(x) {
 		if(x instanceof MathContext) {
 			if(x.toString() === this.toString()) {
@@ -1128,6 +1326,10 @@ class MathContext {
 		return false;
 	}
 
+	/**
+	 * 文字列化
+	 * @returns {string}
+	 */
 	toString() {
 		return ("precision=" + this.precision + " roundingMode=" + this.roundingMode.toString());
 	}
@@ -1137,9 +1339,25 @@ MathContext.UNLIMITED	= new MathContext(0,	RoundingMode.HALF_UP);
 MathContext.DECIMAL32	= new MathContext(7,	RoundingMode.HALF_EVEN);
 MathContext.DECIMAL64	= new MathContext(16,	RoundingMode.HALF_EVEN);
 MathContext.DECIMAL128	= new MathContext(34,	RoundingMode.HALF_EVEN);
+
+BigDecimal.DEFAULT_CONTEXT = MathContext.DECIMAL128;
 BigDecimal.RoundingMode = RoundingMode;
 BigDecimal.MathContext = MathContext;
+
 BigDecimal.ZERO					= new BigDecimal(0);
 BigDecimal.ONE					= new BigDecimal(1);
 BigDecimal.TEN					= new BigDecimal(10);
 
+BigDecimal.ROUND_CEILING		= RoundingMode.CEILING;
+BigDecimal.ROUND_DOWN			= RoundingMode.DOWN;
+BigDecimal.ROUND_FLOOR			= RoundingMode.FLOOR;
+BigDecimal.ROUND_HALF_DOWN		= RoundingMode.HALF_DOWN;
+BigDecimal.ROUND_HALF_EVEN		= RoundingMode.HALF_EVEN;
+BigDecimal.ROUND_HALF_UP		= RoundingMode.HALF_UP;
+BigDecimal.ROUND_UNNECESSARY	= RoundingMode.UNNECESSARY;
+BigDecimal.ROUND_UP				= RoundingMode.UP;
+
+BigDecimal.CONTEXT_UNLIMITED	= MathContext.UNLIMITED;
+BigDecimal.CONTEXT_DECIMAL32	= MathContext.DECIMAL32;
+BigDecimal.CONTEXT_DECIMAL64	= MathContext.DECIMAL64;
+BigDecimal.CONTEXT_DECIMAL128	= MathContext.DECIMAL128;

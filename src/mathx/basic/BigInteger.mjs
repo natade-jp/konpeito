@@ -1535,7 +1535,6 @@ export default class BigInteger {
 	 * 指定した数値から BigInteger 型に変換
 	 * @param {number} x 
 	 * @returns {BigInteger}
-	 * 
 	 */
 	static valueOf(x) {
 		return new BigInteger(x);
