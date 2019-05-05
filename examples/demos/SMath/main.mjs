@@ -1,8 +1,7 @@
 ﻿import Senko from "../../libs/Senko.mjs";
 
 const Log = Senko.Log;
-const SMath = Senko.MathX.SMath;
-const Matrix = SMath.Matrix;
+const Matrix = Senko.Matrix;
 const $ = Matrix.createConstMatrix;
 
 const testLUP = function(text) {

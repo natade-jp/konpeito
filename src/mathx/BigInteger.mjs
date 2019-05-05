@@ -8,7 +8,7 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import Random from "./Random.mjs";
+import Random from "./toolbox/Random.mjs";
 
 class IntegerTool {
 

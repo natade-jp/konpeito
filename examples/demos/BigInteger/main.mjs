@@ -1,7 +1,7 @@
 ﻿import Senko from "../../libs/Senko.mjs";
 
-const BigInteger = Senko.MathX.BigInteger;
-const Random = Senko.MathX.Random;
+const BigInteger = Senko.BigInteger;
+const Random = Senko.Random;
 const Log = Senko.Log;
 
 const main = function() {

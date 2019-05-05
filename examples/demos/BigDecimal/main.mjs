@@ -1,6 +1,8 @@
 ﻿import Senko from "../../libs/Senko.mjs";
 
-const BigDecimal = Senko.MathX.BigDecimal;
+const BigDecimal = Senko.BigDecimal;
+const RoundingMode = Senko.RoundingMode;
+const MathContext = Senko.MathContext;
 const Log = Senko.Log;
 
 const testPlainStringAndEngineeringString = function(text) {
@@ -16,8 +18,8 @@ const getDecimalData = function(x) {
 };
 
 const testDivideAndRemainder = function(x, y) {
-	x = new BigDecimal([x, BigDecimal.CONTEXT_UNLIMITED]);
-	y = new BigDecimal([y, BigDecimal.CONTEXT_UNLIMITED]);
+	x = new BigDecimal([x, MathContext.UNLIMITED]);
+	y = new BigDecimal([y, MathContext.UNLIMITED]);
 	const z = x.divideAndRemainder(y);
 	Log.println( x + "\t/\t" + y + "\t\t= " + getDecimalData(z[0]) + "\t... " + getDecimalData(z[1]) );
 };
@@ -63,7 +65,7 @@ const main = function() {
 	
 	Log.println("test scale, precision");
 	x = new BigDecimal("0.0013540");
-	y = x.setScale(5, BigDecimal.RoundingMode.HALF_EVEN);
+	y = x.setScale(5, RoundingMode.HALF_EVEN);
 	Log.println(getDecimalData(x) + " 精度 = " + x.precision());
 	Log.println(getDecimalData(y) + " 精度 = " + y.precision());
 	
@@ -72,16 +74,16 @@ const main = function() {
 	Log.println("setScale による四捨五入のテスト");
 	x = new BigDecimal("0.5925");
 	Log.println(x);
-	Log.println("小数第一位で四捨五入:" + x.setScale(0, BigDecimal.RoundingMode.HALF_UP));
-	Log.println("小数第二位で四捨五入:" + x.setScale(1, BigDecimal.RoundingMode.HALF_UP));
-	Log.println("小数第三位で四捨五入:" + x.setScale(2, BigDecimal.RoundingMode.HALF_UP));
-	Log.println("小数第四位で四捨五入:" + x.setScale(3, BigDecimal.RoundingMode.HALF_UP));
+	Log.println("小数第一位で四捨五入:" + x.setScale(0, RoundingMode.HALF_UP));
+	Log.println("小数第二位で四捨五入:" + x.setScale(1, RoundingMode.HALF_UP));
+	Log.println("小数第三位で四捨五入:" + x.setScale(2, RoundingMode.HALF_UP));
+	Log.println("小数第四位で四捨五入:" + x.setScale(3, RoundingMode.HALF_UP));
 
 	Log.println("");
 	
 	Log.println("round による精度の変換");
 	x = new BigDecimal("999");
-	const mc = new BigDecimal.MathContext(2, BigDecimal.RoundingMode.UP);
+	const mc = new BigDecimal.MathContext(2, RoundingMode.UP);
 	y = x.round(mc);
 	Log.println(x + " 精度 = " + x.precision());
 	Log.println(y + " 精度 = " + y.precision());
@@ -89,8 +91,8 @@ const main = function() {
 	Log.println("");
 
 	Log.println("割り算を除く四則演算");
-	x = new BigDecimal(["3333.3333", BigDecimal.CONTEXT_UNLIMITED]);
-	y = new BigDecimal(["-123.45", BigDecimal.CONTEXT_UNLIMITED]);
+	x = new BigDecimal(["3333.3333", MathContext.UNLIMITED]);
+	y = new BigDecimal(["-123.45", MathContext.UNLIMITED]);
 	Log.println(x + " + " + y + " = " + x.add(y));
 	Log.println(x + " - " + y + " = " + x.subtract(y));
 	Log.println(x + " * " + y + " = " + x.multiply(y));
@@ -145,14 +147,14 @@ const main = function() {
 	Log.println("割り算のテスト");
 	x = new BigDecimal("4.36");
 	y = new BigDecimal("3.4");
-	z = x.divide(y, BigDecimal.CONTEXT_DECIMAL128);
+	z = x.divide(y, MathContext.DECIMAL128);
 	Log.println( x + " / " + y + " = " + z);
 	
 	Log.println("");
 	
 	Log.println("割り算のテスト（循環小数）");
-	x = new BigDecimal(["1", BigDecimal.CONTEXT_UNLIMITED]);
-	y = new BigDecimal(["7", BigDecimal.CONTEXT_UNLIMITED]);
+	x = new BigDecimal(["1", MathContext.UNLIMITED]);
+	y = new BigDecimal(["7", MathContext.UNLIMITED]);
 	try {
 		z = x.divide(y);
 		Log.println( x + " / " + y + " = " + z);
@@ -162,7 +164,7 @@ const main = function() {
 	}
 
 	try {
-		z = x.divide(y, { context : BigDecimal.CONTEXT_DECIMAL128 });
+		z = x.divide(y, { context : MathContext.DECIMAL128 });
 		Log.println( x + " / " + y + " = " + z);
 	}
 	catch(e) {
@@ -181,7 +183,7 @@ const main = function() {
 	
 	Log.println("乗算");
 	x = new BigDecimal("123.456");
-	Log.println(x.pow(30, BigDecimal.CONTEXT_UNLIMITED));
+	Log.println(x.pow(30, MathContext.UNLIMITED));
 	
 	// 丸め用のクラスの試験用
 	// 入力値の 1 の位に対して、丸め後の数値へ、いくつ足せばいいかがかえる

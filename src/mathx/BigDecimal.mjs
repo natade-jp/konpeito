@@ -10,8 +10,6 @@
 
 import BigInteger from "./BigInteger.mjs";
 
-
-
 class DecimalTool {
 
 	static ToBigDecimalFromString(ntext) {

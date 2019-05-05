@@ -8,9 +8,9 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+import Random from "./toolbox/Random.mjs";
 import Signal from "./toolbox/Signal.mjs";
 import Complex from "./Complex.mjs";
-import Random from "../basic/Random.mjs";
 
 class MatrixTool {
 

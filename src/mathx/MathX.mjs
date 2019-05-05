@@ -8,17 +8,21 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import BigDecimal from "./basic/BigDecimal.mjs";
-import BigInteger from "./basic/BigInteger.mjs";
-import Random from "./basic/Random.mjs";
-import SMath from "./smath/SMath.mjs";
+import Random from "./toolbox/Random.mjs";
+import BigDecimal from "./BigDecimal.mjs";
+import BigInteger from "./BigInteger.mjs";
+import Complex from "./Complex.mjs";
+import Matrix from "./Matrix.mjs";
 
 const MathX = {
 	
-	BigDecimal : BigDecimal,
 	BigInteger : BigInteger,
-	Random : Random,
-	SMath : SMath
+	BigDecimal : BigDecimal,
+	RoundingMode : BigDecimal.RoundingMode,
+	MathContext : BigDecimal.MathContext,
+	Complex : Complex,
+	Matrix : Matrix,
+	Random : Random
 
 };
 

@@ -8,8 +8,8 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+import Random from "./toolbox/Random.mjs";
 import Statistics from "./toolbox/Statistics.mjs";
-import Random from "../basic/Random.mjs";
 
 const random_class = new Random();
 
