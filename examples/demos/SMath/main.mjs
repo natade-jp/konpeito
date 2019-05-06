@@ -1,7 +1,7 @@
-﻿import Senko from "../../libs/Senko.mjs";
+﻿import konpeito from "../../libs/konpeito.mjs";
 
-const Log = Senko.Log;
-const Matrix = Senko.Matrix;
+const Log = konpeito.Log;
+const Matrix = konpeito.Matrix;
 const $ = Matrix.create;
 
 const testLUP = function(text) {

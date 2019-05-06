@@ -1,9 +1,9 @@
-﻿import Senko from "../../libs/Senko.mjs";
+﻿import konpeito from "../../libs/konpeito.mjs";
 
-const BigDecimal = Senko.BigDecimal;
-const RoundingMode = Senko.RoundingMode;
-const MathContext = Senko.MathContext;
-const Log = Senko.Log;
+const BigDecimal = konpeito.BigDecimal;
+const RoundingMode = konpeito.RoundingMode;
+const MathContext = konpeito.MathContext;
+const Log = konpeito.Log;
 
 const testPlainStringAndEngineeringString = function(text) {
 	const decimal = new BigDecimal(text);

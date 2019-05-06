@@ -1,8 +1,8 @@
-﻿import Senko from "../../libs/Senko.mjs";
+﻿import konpeito from "../../libs/konpeito.mjs";
 
-const BigInteger = Senko.BigInteger;
-const Random = Senko.Random;
-const Log = Senko.Log;
+const BigInteger = konpeito.BigInteger;
+const Random = konpeito.Random;
+const Log = konpeito.Log;
 
 const main = function() {
 	

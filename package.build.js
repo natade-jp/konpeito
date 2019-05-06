@@ -36,8 +36,8 @@ const addHeader = function(filename) {
 	const build_date = new Date();
 	let header = [];
 	header.push("/*!");
-	header.push(" * SenkoJS");
-	header.push(" * https://github.com/natade-jp/SenkoJS");
+	header.push(" * konpeito");
+	header.push(" * https://github.com/natade-jp/konpeito");
 	header.push(" * Copyright 2013-" + build_date.getFullYear() + " natade");
 	header.push(" *");
 	header.push(" * The MIT license.");
@@ -54,8 +54,8 @@ exec("npx rollup -c rollup.config.js");
 
 // 先頭に著作権表記をするターゲット
 const target_file = [
-	"./build/Senko.umd.js",
-	"./build/Senko.module.mjs"
+	"./build/konpeito.umd.js",
+	"./build/konpeito.module.mjs"
 ];
 
 // ヘッダ追加
@@ -65,6 +65,6 @@ for(const key in target_file) {
 
 // サンプルファイルはbuild内のデータと関連付ける
 saveTextFile(
-	"./examples/libs/Senko.mjs",
-	"import Senko from \"../../build/Senko.module.mjs\";export default Senko;"
+	"./examples/libs/konpeito.mjs",
+	"import konpeito from \"../../build/konpeito.module.mjs\";export default konpeito;"
 );

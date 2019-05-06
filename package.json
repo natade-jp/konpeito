@@ -11,8 +11,8 @@
 	],
 	"license": "MIT",
 	"author": "natade",
-	"main": "./build/Senko.umd.js",
-	"module": "./build/Senko.module.mjs",
+	"main": "./build/konpeito.umd.js",
+	"module": "./build/konpeito.module.mjs",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/natade-jp/konpeito"

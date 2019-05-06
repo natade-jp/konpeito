@@ -11,6 +11,6 @@ const saveTextFile = function(filename, text) {
 
 // サンプルファイルは直接関連付ける
 saveTextFile(
-	"./examples/libs/Senko.mjs",
-	"import Senko from \"../../src/Senko.mjs\";export default Senko;"
+	"./examples/libs/konpeito.mjs",
+	"import konpeito from \"../../src/konpeito.mjs\";export default konpeito;"
 );

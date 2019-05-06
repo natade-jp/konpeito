@@ -20,7 +20,7 @@ import BigInteger from "./math/BigInteger.mjs";
 import Complex from "./math/Complex.mjs";
 import Matrix from "./math/Matrix.mjs";
 
-export default class Senko {
+export default class konpeito {
 
 	static get File() {
 		return File;

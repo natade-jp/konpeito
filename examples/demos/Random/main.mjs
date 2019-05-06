@@ -1,7 +1,7 @@
-import Senko from "../../libs/Senko.mjs";
+import konpeito from "../../libs/konpeito.mjs";
 
-const Random = Senko.Random;
-const Log = Senko.Log;
+const Random = konpeito.Random;
+const Log = konpeito.Log;
 
 const main = function() {
 
