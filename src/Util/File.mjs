@@ -138,6 +138,7 @@ const CSVTool = {
 
 /**
  * 調整中
+ * @ignore
  */
 export default class File {
 	

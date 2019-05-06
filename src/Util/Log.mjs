@@ -251,6 +251,7 @@ let printbuffer = "";
 
 /**
  * 調整中
+ * @ignore
  */
 class Log {
 

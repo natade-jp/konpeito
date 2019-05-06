@@ -8,8 +8,8 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import Random from "./toolbox/Random.mjs";
-import Signal from "./toolbox/Signal.mjs";
+import Random from "../MathUtil/Random.mjs";
+import Signal from "../MathUtil/Signal.mjs";
 import Complex from "./Complex.mjs";
 
 /**

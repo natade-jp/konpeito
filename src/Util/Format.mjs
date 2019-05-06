@@ -8,6 +8,10 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+/**
+  * 
+  * @ignore
+  */
 export default class Format {
 
 	/**
@@ -17,6 +21,7 @@ export default class Format {
 	 * @param {string} text 
 	 * @param {string} parmeter パラメータは可変引数
 	 * @returns {string}
+	 * @ignore
 	 */
 	static format(text, parmeter) {
 		let parm_number = 1;

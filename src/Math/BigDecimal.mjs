@@ -9,8 +9,8 @@
  */
 
 import BigInteger from "./BigInteger.mjs";
-import RoundingMode from "./toolbox/RoundingMode.mjs";
-import MathContext from "./toolbox/MathContext.mjs";
+import RoundingMode from "../MathUtil/RoundingMode.mjs";
+import MathContext from "../MathUtil/MathContext.mjs";
 
 class DecimalTool {
 
@@ -60,12 +60,12 @@ class DecimalTool {
 }
 
 /**
- * 任意精度実数クラス (immutable)
+ * 任意精度浮動小数点演算クラス (immutable)
  */
 export default class BigDecimal {
 	
 	/**
-	 * 任意精度実数を作成
+	 * 任意精度浮動小数点を作成
 	 * 配列で設定する場合は、 BigInteger, [スケール値=0], [環境=default], [精度設定=default]
 	 * オブジェクトで設定する場合は、 integer, [scale=0], [default_context=default], [context=default]
 	 * 精度設定の初期値設定は、設定可能とする予定。

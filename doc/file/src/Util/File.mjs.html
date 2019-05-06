@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/Util/File.mjs | konpeito.js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as GUI, numerical calculation, 3DCG etc."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito.js"><meta property="twitter:description" content="The collection of javascirpt library such as GUI, numerical calculation, 3DCG etc."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.mjs~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">Math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/BigDecimal.mjs~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mathutil">MathUtil</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Random.mjs~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/Util/File.mjs</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+const CSVTool = {
+	
+	parseCSV: function(text, separator) {
+		if(arguments.length &lt; 2) {
+			separator = &quot;,&quot;;
+		}
+		// &#x6539;&#x884C;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x6B63;&#x898F;&#x5316;
+		text = text.replace(/\r\n?|\n/g, &quot;\n&quot;);
+		const CODE_SEPARATOR = separator.charCodeAt(0);
+		const CODE_CR    = 0x0D;
+		const CODE_LF    = 0x0A;
+		const CODE_DOUBLEQUOTES = 0x22;
+		const out = [];
+		const length = text.length;
+		let element = &quot;&quot;;
+		let count_rows    = 0;
+		let count_columns = 0;
+		let isnextelement = false;
+		let isnextline    = false;
+		for(let i = 0; i &lt; length; i++) {
+			let code = text.charCodeAt(i);
+			// &#x8907;&#x6570;&#x884C;&#x306A;&#x3089;&#x4E00;&#x6C17;&#x306B;&#x5168;&#x3066;&#x8AAD;&#x307F;&#x8FBC;&#x3093;&#x3067;&#x3057;&#x307E;&#x3046;(1&#x6587;&#x5B57;&#x76EE;&#x304C;&#x30C0;&#x30D6;&#x30EB;&#x30AF;&#x30A9;&#x30FC;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x304B;&#x3069;&#x3046;&#x304B;)
+			if((code === CODE_DOUBLEQUOTES)&amp;&amp;(element.length === 0)) {
+				i++;
+				for(;i &lt; length;i++) {
+					code = text.charCodeAt(i);
+					if(code === CODE_DOUBLEQUOTES) {
+						// &#x30D5;&#x30A3;&#x30FC;&#x30EB;&#x30C9;&#x306E;&#x7D42;&#x4E86;&#x304B;&#xFF1F;
+						// &#x6587;&#x5B57;&#x3068;&#x3057;&#x3066;&#x306E;&#x30C0;&#x30D6;&#x30EB;&#x30AF;&#x30A9;&#x30FC;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;&#x306A;&#x306E;&#x304B;
+						if((i + 1) !== (length - 1)) {
+							if(text.charCodeAt(i + 1) === CODE_DOUBLEQUOTES) {
+								i++;
+								element += &quot;\&quot;&quot;; 
+							}
+							else {
+								break;
+							}
+						}
+						else {
+							break;
+						}
+					}
+					else {
+						element += text.charAt(i);
+					}
+				}
+			}
+			// &#x8907;&#x6570;&#x884C;&#x4EE5;&#x5916;&#x306A;&#x3089;1&#x6587;&#x5B57;&#x305A;&#x3064;&#x89E3;&#x6790;
+			else {
+				switch(code) {
+					case(CODE_SEPARATOR):
+						isnextelement = true;
+						break;
+					case(CODE_CR):
+					case(CODE_LF):
+						isnextline = true;
+						break;
+					default:
+						break;
+				}
+				if(isnextelement) {
+					isnextelement = false;
+					if(out[count_rows] === undefined) {
+						out[count_rows] = [];
+					}
+					out[count_rows][count_columns] = element;
+					element = &quot;&quot;;
+					count_columns += 1;
+				}
+				else if(isnextline) {
+					isnextline = false;
+					//&#x6587;&#x5B57;&#x304C;&#x3042;&#x3063;&#x305F;&#x308A;&#x3001;&#x6539;&#x884C;&#x304C;&#x3042;&#x308B;&#x5834;&#x5408;&#x306F;&#x51E6;&#x7406;
+					//&#x4F8B;&#x3048;&#x3070; CR+LF &#x3084; &#x6700;&#x5F8C;&#x306E;&#x30D5;&#x30A3;&#x30FC;&#x30EB;&#x30C9; &#x3067;&#x6539;&#x884C;&#x3057;&#x3066;&#x3044;&#x308B;&#x3060;&#x3051;&#x306A;&#x3069;&#x306F;&#x7121;&#x8996;&#x3067;&#x304D;&#x308B;
+					if((element !== &quot;&quot;)||(count_columns !== 0)) {
+						if(out[count_rows] === undefined) {
+							out[count_rows] = [];
+						}
+						out[count_rows][count_columns] = element;
+						element = &quot;&quot;;
+						count_rows    += 1;
+						count_columns  = 0;
+					}
+				}
+				else {
+					element += text.charAt(i);
+				}
+			}
+			// &#x6700;&#x7D42;&#x884C;&#x306B;&#x6539;&#x884C;&#x304C;&#x306A;&#x3044;&#x5834;&#x5408;
+			if(i === length - 1) {
+				if(count_columns !== 0) {
+					out[count_rows][count_columns] = element;
+				}
+			}
+		}
+		return out;
+	},
+	
+	makeCSV: function(text, separator, newline) {
+		if(arguments.length &lt; 2) {
+			separator = &quot;,&quot;;
+		}
+		if(arguments.length &lt; 3) {
+			newline = &quot;\r\n&quot;;
+		}
+		let out = &quot;&quot;;
+		const escape = /[&quot;\r\n,\t]/;
+		if(text !== undefined) {
+			for(let i = 0;i &lt; text.length;i++) {
+				if(text[i] !== undefined) {
+					for(let j = 0;j &lt; text[i].length;j++) {
+						let element = text[i][j];
+						if(escape.test(element)) {
+							element = element.replace(/&quot;/g, &quot;\&quot;\&quot;&quot;);
+							element = &quot;\&quot;&quot; + element + &quot;\&quot;&quot;;
+						}
+						out += element;
+						if(j !== text[i].length - 1) {
+							out += separator;
+						}
+					}
+				}
+				out += newline;
+			}
+		}
+		return out;
+	}
+};
+
+/**
+ * &#x8ABF;&#x6574;&#x4E2D;
+ * @ignore
+ */
+export default class File {
+	
+	constructor(pathname) {
+		this.isHTML = (typeof window !== &quot;undefined&quot;);
+		this.isNode = false;
+		if(arguments.length !== 1) {
+			throw &quot;IllegalArgumentException&quot;;
+		}
+		else if((typeof pathname === &quot;string&quot;)||(pathname instanceof String)) {
+			// \&#x3092;/&#x306B;&#x7F6E;&#x304D;&#x63DB;&#x3048;&#x308B;
+			this.pathname = pathname.replace(/\\/g, &quot;/&quot; );
+		}
+		else if(pathname instanceof File) {
+			this.pathname = pathname.getAbsolutePath();
+		}
+		else {
+			throw &quot;IllegalArgumentException&quot;;
+		}
+	}
+
+	delete_() {
+		throw &quot;IllegalMethod&quot;;
+	}
+	
+	exists() {
+		throw &quot;IllegalMethod&quot;;
+	}
+	
+	copy() {
+		throw &quot;IllegalMethod&quot;;
+	}
+	
+	move() {
+		throw &quot;IllegalMethod&quot;;
+	}
+	
+	toString() {
+		return this.getAbsolutePath();
+	}
+	
+	getName() {
+		if(this.isHTML) {
+			// &#x6700;&#x5F8C;&#x304C;&#x30B9;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3067;&#x7D42;&#x3048;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x306F;&#x3001;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x540D;&#x53D6;&#x5F97;&#x3067;&#x304D;&#x306A;&#x3044;
+			if(this.isDirectory()) {
+				return &quot;&quot;;
+			}
+			const slashsplit = this.pathname.split(&quot;/&quot;);
+			return slashsplit[slashsplit.length - 1];
+		}
+		else if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	// &#x89AA;&#x30D5;&#x30A9;&#x30EB;&#x30C0;&#x306E;&#x7D76;&#x5BFE;&#x30D1;&#x30B9;&#x540D;
+	getParent() {
+		const x = this.getAbsolutePath().match(/.*[/\\]/)[0];
+		return x.substring(0 ,x.length - 1);
+	}
+	
+	getParentFile() {
+		return new File(this.getParent());
+	}
+	
+	getExtensionName() {
+		if(this.isHTML) {
+			const dotlist = this.getName().split(&quot;.&quot;);
+			return dotlist[dotlist.length - 1];
+		}
+		else if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	isAbsolute() {
+		if(this.isHTML) {
+			return this.getAbsolutePath() === this.pathname;
+		}
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	isDirectory() {
+		if(this.isHTML) {
+			// &#x6700;&#x5F8C;&#x304C;&#x30B9;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3067;&#x7D42;&#x3048;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x306F;&#x30C7;&#x30A3;&#x30EC;&#x30AF;&#x30C8;&#x30EA;
+			return /\/$/.test(this.pathname);
+		}
+		else if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	isFile() {
+		if(this.isHTML) {
+			// &#x6700;&#x5F8C;&#x304C;&#x30B9;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3067;&#x7D42;&#x3048;&#x3066;&#x3044;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x30D5;&#x30A1;&#x30A4;&#x30EB;
+			return /[^/]$/.test(this.pathname);
+		}
+		else if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	isHidden() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	lastModified() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	setLastModified() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	length() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	getFiles() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	getSubFolders() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	getNormalizedPathName() {
+		if(this.pathname === &quot;&quot;) {
+			return &quot;.\\&quot;;
+		}
+		let name = this.pathname.replace(/\//g, &quot;\\&quot;);
+		if(name.slice(-1) !== &quot;\\&quot;) {
+			name += &quot;\\&quot;;
+		}
+		return name;
+	}
+	
+	getAllFiles() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	list() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	getAbsolutePath() {
+		if(this.isHTML) {
+			let all_path = null;
+			// URL&#x3092;&#x4E00;&#x5EA6;&#x53D6;&#x5F97;&#x3059;&#x308B;
+			if(/^http/.test(this.pathname)) {
+				all_path = this.pathname;
+			}
+			else {
+				let curdir = window.location.toString();
+				// &#x6700;&#x5F8C;&#x304C;&#x30B9;&#x30E9;&#x30C3;&#x30B7;&#x30E5;&#x3067;&#x7D42;&#x3048;&#x3066;&#x3044;&#x306A;&#x3044;&#x306F;&#x3001;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x90E8;&#x5206;&#x3092;&#x524A;&#x308B;
+				if(!(/\/$/.test(curdir))) {
+					curdir = curdir.match(/.*\//)[0];
+				}
+				all_path = curdir + this.pathname;
+			}
+			// &#x30DB;&#x30B9;&#x30C8;&#x3068;&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x306B;&#x5206;&#x3051;&#x308B;
+			const hosttext = all_path.match(/^http[^/]+\/\/[^/]+\//)[0];
+			const filetext = all_path.substr(hosttext.length);
+			// &#x30D1;&#x30B9;&#x3092;1&#x3064;&#x305A;&#x3064;&#x89E3;&#x6790;&#x3057;&#x306A;&#x304C;&#x3089;&#x8FBF;&#x3063;&#x3066;&#x3044;&#x304F;
+			let name = hosttext;
+			const namelist = filetext.split(&quot;/&quot;);
+			let i;
+			for(i = 0; i &lt; namelist.length; i++) {
+				if((namelist[i] === &quot;&quot;) || (namelist[i] === &quot;.&quot;)) {
+					continue;
+				}
+				if(namelist[i] === &quot;..&quot;) {
+					name = name.substring(0 ,name.length - 1).match(/.*\//)[0];
+					continue;
+				}
+				name += namelist[i];
+				if(i !== namelist.length - 1) {
+					name += &quot;/&quot;;
+				}
+			}
+			return name;
+		}
+		else if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	mkdir() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	mkdirs() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	renameTo() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	run() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	writeLine() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	download(callback) {
+		if(this.isHTML) {
+			const ext = this.getExtensionName().toLocaleString();
+			const that = this;
+			if((ext === &quot;gif&quot;) || (ext === &quot;jpg&quot;) || (ext === &quot;png&quot;) || (ext === &quot;bmp&quot;) || (ext === &quot;svg&quot;) || (ext === &quot;jpeg&quot;)) {
+				const image = new Image();
+				image.onload = function() {
+					that.dataImage = image;
+					callback(that);
+				};
+				image.src = this.pathname;
+			}
+			else {
+				const http = File.createXMLHttpRequest();
+				if(http === null) {
+					return null;
+				}
+				const handleHttpResponse = function (){
+					// readyState === 0 UNSENT
+					// readyState === 1 OPENED
+					// readyState === 2 HEADERS_RECEIVED
+					// readyState === 3 LOADING
+					if(http.readyState === 4) { // DONE
+						if(http.status !== 200) {
+							console.log(&quot;error downloadText &quot; + that.pathname);
+							return null;
+						}
+						that.dataText = http.responseText;
+						callback(that);
+					}
+				};
+				http.onreadystatechange = handleHttpResponse;
+				http.open(&quot;GET&quot;, this.pathname, true);
+				http.send(null);
+			}
+		}
+		else if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	getImage() {
+		if(this.isHTML) {
+			return this.dataImage;
+		}
+	}
+	
+	getText() {
+		if(this.isHTML) {
+			return this.dataText;
+		}
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	setText() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	getCSV(separator, charset, newline) {
+		if(this.isHTML) {
+			return(CSVTool.parseCSV(this.dataText, separator, newline));
+		}
+		else if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+
+	setCSV() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+
+	getByte() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+
+	setByte() {
+		if(this.isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	static createTempFile(){
+		const isHTML = (typeof window !== &quot;undefined&quot;);
+		if(isHTML) {
+			throw &quot;not createTempFile&quot;;
+		}
+		const isNode = false;
+		if(isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	static getCurrentDirectory(){
+		const isHTML = (typeof window !== &quot;undefined&quot;);
+		if(isHTML) {
+			const file = new File(&quot;./&quot;);
+			return file.getParent();
+		}
+		const isNode = false;
+		if(isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	static setCurrentDirectory() {
+		const isHTML = (typeof window !== &quot;undefined&quot;);
+		if(isHTML) {
+			throw &quot;not setCurrentDirectory&quot;;
+		}
+		const isNode = false;
+		if(isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	static searchFile(){
+		const isHTML = (typeof window !== &quot;undefined&quot;);
+		if(isHTML) {
+			throw &quot;not searchFile&quot;;
+		}
+		const isNode = false;
+		if(isNode) {
+			throw &quot;IllegalMethod&quot;;
+		}
+	}
+	
+	static downloadFileList(files, lastCallback, fileCallback) {
+		let downloadcount = 0;
+		let i;
+		const inf = function(filenumber) {
+			return function() {
+				downloadcount++;
+				if(fileCallback &amp;&amp; fileCallback.length &amp;&amp; fileCallback[filenumber] ) {
+					fileCallback[filenumber](files[filenumber]);
+				}
+				if(downloadcount === files.length) {
+					if(lastCallback) {
+						lastCallback(files);
+					}
+				}
+			};
+		};
+		for(i = 0; i &lt; files.length; i++ ) {
+			files[i].download(inf(i));
+		}
+	}
+
+	static createXMLHttpRequest() {
+		return new XMLHttpRequest();
+	}
+	
+	static getCSVTool() {
+		return CSVTool;
+	}
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

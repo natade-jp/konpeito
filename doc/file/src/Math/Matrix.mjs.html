@@ -1,0 +1,3974 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/Math/Matrix.mjs | konpeito.js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as GUI, numerical calculation, 3DCG etc."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito.js"><meta property="twitter:description" content="The collection of javascirpt library such as GUI, numerical calculation, 3DCG etc."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.mjs~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">Math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/BigDecimal.mjs~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mathutil">MathUtil</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Random.mjs~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/Math/Matrix.mjs</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+import Random from &quot;../MathUtil/Random.mjs&quot;;
+import Signal from &quot;../MathUtil/Signal.mjs&quot;;
+import Complex from &quot;./Complex.mjs&quot;;
+
+/**
+ * &#x5185;&#x90E8;&#x306E;&#x884C;&#x5217;&#x306E;&#x8A08;&#x7B97;&#x7528;
+ */
+class MatrixTool {
+
+	/**
+	 * &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x5316;&#x3059;&#x308B;&#xFF08;&#x5B9F;&#x6570;&#x8A08;&#x7B97;&#x5C02;&#x7528;&#xFF09;
+	 * @param {Matrix} M
+	 * @returns {Object&lt;string, Matrix&gt;}
+	 */
+	static tridiagonalize(M) {
+
+		const A = Matrix.create(M);
+		const a = A.getNumberMatrixArray();
+		const tolerance = 1.0e-10;
+		
+		/**
+		 * &#x30D9;&#x30AF;&#x30C8;&#x30EB;x1&#x3068;&#x30D9;&#x30AF;&#x30C8;&#x30EB;x2&#x306E;&#x5185;&#x7A4D;&#x3092;&#x3068;&#x308B;
+		 * @param {Array&lt;number&gt;} x1
+		 * @param {Array&lt;number&gt;} x2
+		 * @param {number} [index_offset=0] - &#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;(&#x3053;&#x306E;&#x5024;&#x304B;&#x3089;&#x884C;&#x3046;)
+		 * @param {number} [index_max=x1.length] - &#x6700;&#x5927;(&#x3053;&#x306E;&#x5024;&#x306F;&#x542B;&#x3081;&#x306A;&#x3044;)
+		 * @returns {number} 
+		 */
+		const innerproduct = function(x1, x2, index_offset, index_max) {
+			let y = 0;
+			const ioffset = index_offset ? index_offset : 0;
+			const imax = index_max ? index_max : x1.length;
+			for(let i = ioffset; i &lt; imax; i++) {
+				y += x1[i] * x2[i];
+			}
+			return y;
+		};
+
+		/**
+		 * &#x30CF;&#x30A6;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x30FC;&#x5909;&#x63DB;
+		 * @param {Array&lt;number&gt;} x - &#x30CF;&#x30A6;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x30FC;&#x5909;&#x63DB;&#x3057;&#x305F;&#x3044;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
+		 * @param {number} [index_offset=0] - &#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;(&#x3053;&#x306E;&#x5024;&#x304B;&#x3089;&#x884C;&#x3046;)
+		 * @param {number} [index_max=x.length] - &#x6700;&#x5927;(&#x3053;&#x306E;&#x5024;&#x306F;&#x542B;&#x3081;&#x306A;&#x3044;)
+		 * @returns {Object&lt;string, Matrix&gt;} 
+		 */
+		const house = function(x, index_offset, index_max) {
+			const ioffset = index_offset ? index_offset : 0;
+			const imax = index_max ? index_max : x.length;
+			// x&#x306E;&#x5185;&#x7A4D;&#x306E;&#x5E73;&#x65B9;&#x6839;&#xFF08;&#x30CE;&#x30EB;&#x30E0;&#xFF09;&#x3092;&#x8A08;&#x7B97;
+			let y1 = Math.sqrt(innerproduct(x, x, ioffset, imax));
+			const v = [];
+			if(Math.abs(y1) &gt;= tolerance) {
+				if(x[ioffset] &lt; 0) {
+					y1 = - y1;
+				}
+				let t;
+				for(let i = ioffset, j = 0; i &lt; imax; i++, j++) {
+					if(i === ioffset) {
+						v[j] = x[i] + y1;
+						t = 1.0 / Math.sqrt(v[j] * y1);
+						v[j] = v[j] * t;
+					}
+					else {
+						v[j] = x[i] * t;
+					}
+				}
+			}
+			return {
+				y1: - y1,	// &#x93E1;&#x50CF;&#x306E;1&#x756A;&#x76EE;&#x306E;&#x8981;&#x7D20;(y2,y3,...&#x306F;0)
+				v : v		// &#x76F4;&#x884C;&#x3059;&#x308B;&#x5358;&#x4F4D;&#x30D9;&#x30AF;&#x30C8;&#x30EB; vT*v = 2
+			};
+		};
+
+		const n = a.length;
+		const d = []; // &#x5BFE;&#x89D2;&#x6210;&#x5206;
+		const e = []; // &#x96A3;&#x306E;&#x6210;&#x5206;
+
+		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;&#x6674;&#x5F66; (1991). C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;.
+		// 3&#x91CD;&#x5BFE;&#x89D2;&#x5316;&#x306E;&#x6210;&#x5206;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;
+		{
+			for(let k = 0; k &lt; n - 2; k++) {
+				const v = a[k];
+				d[k] = v[k];
+				{
+					const H = house(v, k + 1, n);
+					e[k] = H.y1;
+					for(let i = 0; i &lt; H.v.length; i++) {
+						v[k + 1 + i] = H.v[i];
+					}
+				}
+				if(Math.abs(e[k]) &lt; tolerance) {
+					continue;
+				}
+				for(let i = k + 1; i &lt; n; i++) {
+					let s = 0;
+					for(let j = k + 1; j &lt; i; j++) {
+						s += a[j][i] * v[j];
+					}
+					for(let j = i; j &lt; n; j++) {
+						s += a[i][j] * v[j];
+					}
+					d[i] = s;
+				}
+				const t = innerproduct(v, d, k + 1, n) / 2.0;
+				for(let i = n - 1; i &gt; k; i--) {
+					const p = v[i];
+					const q = d[i] - (t * p);
+					d[i] = q;
+					for(let j = i; j &lt; n; j++) {
+						const r = p * d[j] + q * v[j];
+						a[i][j] = a[i][j] - r;
+					}
+				}
+			}
+			if(n &gt;= 2) {
+				d[n - 2] = a[n - 2][n - 2];
+				e[n - 2] = a[n - 2][n - 1];
+			}
+			if(n &gt;= 1) {
+				d[n - 1] = a[n - 1][n - 1];
+			}
+		}
+
+		//&#x5909;&#x63DB;P&#x884C;&#x5217;&#x3092;&#x6C42;&#x3081;&#x308B;
+		for(let k = n - 1; k &gt;= 0; k--) {
+			const v = a[k];
+			if(k &lt; n - 2) {
+				for(let i = k + 1; i &lt; n; i++) {
+					const w = a[i];
+					const t = innerproduct(v, w, k + 1, n);
+					for(let j = k + 1; j &lt; n; j++) {
+						w[j] -= t * v[j];
+					}
+				}
+			}
+			for(let i = 0; i &lt; n; i++) {
+				v[i] = 0.0;
+			}
+			v[k] = 1.0;
+		}
+
+		// d &#x3068; e &#x306E;&#x914D;&#x5217;&#x3092;&#x4F7F;&#x3063;&#x3066;&#x3001;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+		const H = Matrix.createMatrixDoEachCalculation(function(row, col) {
+			if(row === col) {
+				return new Complex(d[row]);
+			}
+			else if(Math.abs(row - col) === 1) {
+				return new Complex(e[((row + col) * 0.5) | 0]);
+			}
+			else {
+				return Complex.ZERO;
+			}
+		}, n, n);
+
+		return {
+			P : (new Matrix(a)).T(),
+			H : H
+		};
+	}
+
+	/**
+	 * &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x56FA;&#x6709;&#x5024;&#x5206;&#x89E3;&#x3059;&#x308B;&#xFF08;&#x5B9F;&#x6570;&#x8A08;&#x7B97;&#x5C02;&#x7528;&#xFF09;
+	 * @param {Matrix} M - &#x5BFE;&#x79F0;&#x884C;&#x5217;
+	 * @returns {Object&lt;string, Matrix&gt;}
+	 */
+	static eig(M) {
+		
+		const A = Matrix.create(M);
+		
+		// QR&#x6CD5;&#x306B;&#x3088;&#x308A;&#x56FA;&#x6709;&#x5024;&#x3092;&#x6C42;&#x3081;&#x308B;
+		let is_error = false;
+		const tolerance = 1.0e-10;
+		const PH = A.tridiagonalize();
+		const a = PH.P.getNumberMatrixArray();
+		const h = PH.H.getNumberMatrixArray();
+		const n = A.row_length;
+
+		// &#x6210;&#x5206;&#x306E;&#x62BD;&#x51FA;
+		const d = []; // &#x5BFE;&#x89D2;&#x6210;&#x5206;
+		const e = []; // &#x96A3;&#x306E;&#x6210;&#x5206;
+		for(let i = 0; i &lt; n; i++) {
+			d[i] = h[i][i];
+			e[i] = (i === 0) ? 0.0 : h[i][i - 1];
+		}
+
+		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;&#x6674;&#x5F66; (1991). C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;.
+		const MAX_ITER = 100;
+		for(let h = n - 1; h &gt; 0; h--) {
+			let j = h;
+			for(j = h;j &gt;= 1; j--) {
+				if(Math.abs(e[j]) &lt;= (tolerance * (Math.abs(d[j - 1]) + Math.abs(d[j])))) {
+					break;
+				}
+			}
+			if(j == h) {
+				continue;
+			}
+			let iter = 0;
+			while(true) {
+				iter++;
+				if(iter &gt; MAX_ITER) {
+					is_error = true;
+					break;
+				}
+				let w = (d[h - 1] - d[h]) / 2.0;
+				let t = e[h] * e[h];
+				let s = Math.sqrt(w * w + t);
+				if(w &lt; 0) {
+					s = - s;
+				}
+				let x = d[j] - d[h] + (t / (w + s));
+				let y = e[j + 1];
+				for(let k = j; k &lt; h; k++) {
+					let c, s;
+					if(Math.abs(x) &gt;= Math.abs(y)) {
+						t = - y / x;
+						c = 1.0 / Math.sqrt(t * t + 1);
+						s = t * c;
+					}
+					else {
+						t = - x / y;
+						s = 1.0 / Math.sqrt(t * t + 1);
+						c = t * s;
+					}
+					w = d[k] - d[k + 1];
+					t = (w * s + 2.0 * c * e[k + 1]) * s;
+					d[k] -= t;
+					d[k + 1] += t;
+					if(k &gt; j) {
+						e[k] = c * e[k] - s * y;
+					}
+					e[k + 1] += s * (c * w - 2.0 * s * e[k + 1]);
+					for(let i = 0; i &lt; n; i++) {
+						x = a[i][k];
+						y = a[i][k + 1];
+						a[i][k    ] = c * x - s * y;
+						a[i][k + 1] = s * x + c * y;
+					}
+					if(k &lt; h - 1) {
+						x = e[k + 1];
+						y = -s * e[k + 2];
+						e[k + 2] *= c;
+					}
+				}
+				if(Math.abs(e[h]) &lt;= tolerance * (Math.abs(d[h - 1]) + Math.abs(d[h]))) {
+					break;
+				}
+			}
+			if(is_error) {
+				break;
+			}
+		}
+
+		// &#x30BD;&#x30FC;&#x30C8;
+		const vd_sort = function(V, d) {
+			const len = d.length;
+			const sortdata = [];
+			for(let i = 0; i &lt; len; i++) {
+				sortdata[i] = {
+					sigma : d[i],
+					index : i
+				};
+			}
+			const compare = function(a, b){
+				if(a === b) {
+					return 0;
+				}
+				return (a &lt; b ? -1 : 1);
+			};
+			sortdata.sort(compare);
+			const MOVE = Matrix.zeros(len);
+			const ND = Matrix.zeros(len);
+			for(let i = 0; i &lt; len; i++) {
+				ND.matrix_array[i][i] = new Complex(sortdata[i].sigma);
+				MOVE.matrix_array[i][sortdata[i].index] = Complex.ONE;
+			}
+			return {
+				V : V.mul(MOVE),
+				D : ND
+			};
+		};
+		const VD = vd_sort(new Matrix(a), d);
+		return VD;
+	}
+}
+
+/**
+ * &#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x7528;&#x306E;&#x95A2;&#x6570;&#x7FA4;
+ */
+const ConstructorTool = {
+
+	/**
+	 * &#x5BFE;&#x8C61;&#x3067;&#x306F;&#x306A;&#x3044;regexp&#x306E;&#x60C5;&#x5831;&#x4EE5;&#x5916;&#x3082;&#x62BD;&#x51FA;match
+	 * @param {string} text - &#x691C;&#x7D22;&#x5BFE;&#x8C61;
+	 * @param {RegExp} regexp - &#x691C;&#x7D22;&#x3057;&#x305F;&#x3044;&#x6B63;&#x898F;&#x8868;&#x73FE;
+	 * @returns {Array&lt;Object&lt;boolean, string&gt;&gt;}
+	 */
+	match2 : function(text, regexp) {
+		// &#x5BFE;&#x8C61;&#x3067;&#x306F;&#x306A;&#x3044;regexp&#x306E;&#x60C5;&#x5831;&#x4EE5;&#x5916;&#x3082;&#x62BD;&#x51FA;match
+		// &#x3064;&#x307E;&#x308A; &quot;1a2b&quot; &#x3067; \d &#x3092;&#x62BD;&#x51FA;&#x3059;&#x308B;&#x3068;&#x3001;&#x6B21;&#x306E;&#x3088;&#x3046;&#x306B;&#x62BD;&#x51FA;&#x3055;&#x308C;&#x308B;
+		// [false &quot;1&quot;]
+		// [true &quot;a&quot;]
+		// [false &quot;2&quot;]
+		// [true &quot;b&quot;]
+		// 0 ... &#x4E00;&#x81F4;&#x3057;&#x305F;&#x304B;&#x3069;&#x3046;&#x304B;
+		// 1 ... &#x4E00;&#x81F4;&#x3057;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3001;&#x3042;&#x308B;&#x3044;&#x306F;&#x4E00;&#x81F4;&#x3057;&#x3066;&#x3044;&#x306A;&#x3044;&#x6587;&#x5B57;&#x5217;
+		const output = [];
+		let search_target = text;
+		let match = true;
+		for(let x = 0; x &lt; 1000; x++) {
+			match = search_target.match(regexp);
+			if(match === null) {
+				if(search_target.length) {
+					output.push([ false, search_target ]);
+				}
+				break;
+			}
+			if(match.index &gt; 0) {
+				output.push([ false, search_target.substr(0, match.index) ]);
+			}
+			output.push([ true, match[0] ]);
+			search_target = search_target.substr(match.index + match[0].length);
+		}
+		return output;
+	},
+	
+	/**
+	 * &#x30D6;&#x30E9;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x56F2;&#x307E;&#x308C;&#x3066;&#x3044;&#x305F;&#x3089;&#x3001;&#x524D;&#x5F8C;&#x306E;&#x30D6;&#x30E9;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x9664;&#x53BB;
+	 * @param {string} text - &#x30D6;&#x30E9;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x9664;&#x53BB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;
+	 * @returns {string|null} &#x9664;&#x53BB;&#x3057;&#x305F;&#x6587;&#x5B57;&#x5217;&#xFF08;&#x30D6;&#x30E9;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x3001;null&#xFF09;
+	 */
+	trimBracket : function(text) {
+		// &#x524D;&#x5F8C;&#x306B;[]&#x304C;&#x3042;&#x308B;&#x304B;&#x78BA;&#x8A8D;
+		if( !(/^\[/).test(text) || !(/\]$/).test(text)) {
+			return null;
+		}
+		// &#x524D;&#x5F8C;&#x306E;[]&#x3092;&#x9664;&#x53BB;
+		return text.substring(1, text.length - 1);
+	},
+
+	/**
+	 * JSON&#x3067;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;Matrix&#x578B;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * @param {string} text - &#x8ABF;&#x67FB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;&#x5217;
+	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Matrix&#x578B;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x306E;&#x914D;&#x5217;
+	 */
+	toMatrixFromStringForArrayJSON : function(text) {
+		const matrix_array = [];
+		// &#x3055;&#x3089;&#x306B;&#x30D6;&#x30E9;&#x30F3;&#x30B1;&#x30C3;&#x30C8;&#x5185;&#x3092;&#x62BD;&#x51FA;
+		let rows = text.match(/\[[^\]]+\]/g);
+		if(rows === null) {
+			// &#x30D6;&#x30E9;&#x30F3;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x3001;1&#x884C;&#x884C;&#x5217;&#x3067;&#x3042;&#x308B;
+			rows = [text];
+		}
+		// &#x5404;&#x30D6;&#x30E9;&#x30F3;&#x30B1;&#x30C3;&#x30C8;&#x5185;&#x3092;&#x5217;&#x3054;&#x3068;&#x306B;&#x8ABF;&#x67FB;
+		for(let row_count = 0; row_count &lt; rows.length; row_count++) {
+			const row = rows[row_count];
+			const column_array = row.substring(1, row.length - 1).split(&quot;,&quot;);
+			const rows_array = [];
+			for(let col_count = 0; col_count &lt; column_array.length; col_count++) {
+				const column = column_array[col_count];
+				rows_array[col_count] = new Complex(column);
+			}
+			matrix_array[row_count] = rows_array;
+		}
+		return matrix_array;
+	},
+
+	/**
+	 * &#x521D;&#x671F;&#x5024;&#x3068;&#x5DEE;&#x5206;&#x5024;&#x3068;&#x6700;&#x7D42;&#x5024;&#x304B;&#x3089;&#x3001;&#x305D;&#x306E;&#x5024;&#x304C;&#x5165;&#x3063;&#x305F;&#x914D;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * @param {number} from - &#x6700;&#x521D;&#x306E;&#x5024;
+	 * @param {number} delta - &#x5DEE;&#x5206;
+	 * @param {number} to - &#x7E70;&#x308A;&#x8FD4;&#x3059;&#x5148;&#x306E;&#x5024;&#xFF08;&#x3053;&#x306E;&#x5024;&#x306F;&#x542B;&#x3081;&#x306A;&#x3044;&#xFF09;
+	 * @returns {Array&lt;number&gt;}
+	 */
+	InterpolationCalculation : function(from, delta, to) {
+		const FromIsGreaterThanTo = to.compareTo(from);
+		if(FromIsGreaterThanTo === 0) {
+			return from;
+		}
+		if(delta.isZero()) {
+			throw &quot;IllegalArgumentException&quot;;
+		}
+		// delta &#x304C;&#x8CA0;&#x306E;&#x305F;&#x3081;&#x3001;&#x3069;&#x308C;&#x3060;&#x3051;&#x305F;&#x3057;&#x3066;&#x3082; to &#x306B;&#x306A;&#x3089;&#x306A;&#x3044;&#x3002;
+		if(delta.isNegative() &amp;&amp; (FromIsGreaterThanTo === -1)) {
+			throw &quot;IllegalArgumentException&quot;;
+		}
+		const rows_array = [];
+		let num = from;
+		rows_array[0] = num;
+		for(let i = 1; i &lt; 0x10000; i++) {
+			num = num.add(delta);
+			if(num.compareTo(to) === FromIsGreaterThanTo) {
+				break;
+			}
+			rows_array[i] = num;
+		}
+		return rows_array;
+	},
+
+	/**
+	 * &#x6587;&#x5B57;&#x5217;&#x304B;&#x3089;Matrix&#x578B;&#x306E;&#x884C;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x884C;&#x90E8;&#x5206;&#x306B;&#x5909;&#x63DB;
+	 * @param {string} row_text - &#x884C;&#x5217;&#x306E;1&#x884C;&#x3092;&#x8868;&#x3059;&#x6587;&#x5B57;&#x5217;
+	 * @returns {Array&lt;Complex&gt;}
+	 */
+	toArrayFromString : function(row_text) {
+		// &#x300C;:&#x300D;&#x306E;&#x307F;&#x8A18;&#x8F09;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x304B;&#x306E;&#x78BA;&#x8A8D;
+		if(row_text.trim() === &quot;:&quot;) {
+			return &quot;:&quot;;
+		}
+		// &#x5DE6;&#x304C;&#x5B9F;&#x6570;&#xFF08;&#x5F37;&#x5236;&#xFF09;&#x3067;&#x53F3;&#x304C;&#x8907;&#x7D20;&#x6570;&#xFF08;&#x4EFB;&#x610F;&#xFF09;&#x30BF;&#x30A4;&#x30D7;
+		const reg1 = /[+-]? *[0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?( *[+-] *[- ]?([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?[ij])?/;
+		// &#x5DE6;&#x304C;&#x8907;&#x7D20;&#x6570;&#xFF08;&#x5F37;&#x5236;&#xFF09;&#x3067;&#x53F3;&#x304C;&#x5B9F;&#x6570;&#xFF08;&#x4EFB;&#x610F;&#xFF09;&#x30BF;&#x30A4;&#x30D7;
+		const reg2 = /[+-]? *([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?[ij]( *[+] *[- ]?([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?)?/;
+		// reg2&#x512A;&#x5148;&#x3067;&#x691C;&#x7D22;
+		const reg3 = new RegExp(&quot;(&quot; + reg2.source + &quot;)|(&quot; + reg1.source + &quot;)&quot;, &quot;i&quot;);
+		// &#x554F;&#x984C;&#x3068;&#x3057;&#x3066; 1 - -j&#x304C;&#x901A;&#x308B;
+		const xs = ConstructorTool.match2(row_text, reg3);
+		const rows_array = [];
+
+		for(let i = 0; i &lt; xs.length; i++) {
+			const xx = xs[i];
+			if(!xx[0]) {
+				// &#x4E00;&#x81F4;&#x3057;&#x3066;&#x3044;&#x306A;&#x3044;&#x30C7;&#x30FC;&#x30BF;&#x3067;&#x3042;&#x308C;&#x3070;&#x6B21;&#x3078;
+				continue;
+			}
+			// &#x300C;:&#x8A18;&#x6CD5;&#x300D; 1:3 &#x306A;&#x3089; 1,2,3&#x3002; 1:2:9 &#x306A;&#x3089; 1:3:5:7:9
+			if((i &lt; xs.length - 2) &amp;&amp; !xs[i + 1][0] &amp;&amp; /:/.test(xs[i + 1][1])) {
+				let from, delta, to;
+				if((i &lt; xs.length - 4) &amp;&amp; !xs[i + 3][0] &amp;&amp; /:/.test(xs[i + 3][1])) {
+					from = new Complex(xx[1]);
+					delta = new Complex(xs[i + 2][1]);
+					to = new Complex(xs[i + 4][1]);
+					i += 4;
+				}
+				else {
+					from = new Complex(xx[1]);
+					delta = Complex.ONE;
+					to = new Complex(xs[i + 2][1]);
+					i += 2;
+				}
+				const ip_array = ConstructorTool.InterpolationCalculation(from, delta, to);
+				for(let j = 0; j &lt; ip_array.length; j++) {
+					rows_array.push(ip_array[j]);
+				}
+			}
+			else {
+				rows_array.push(new Complex(xx[1]));
+			}
+		}
+
+		return rows_array;
+	},
+
+	/**
+	 * JSON&#x4EE5;&#x5916;&#x306E;&#x6587;&#x5B57;&#x5217;&#x3067;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;Matrix&#x578B;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * @param {string} text - &#x8ABF;&#x67FB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;&#x5217;
+	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Matrix&#x578B;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x306E;&#x914D;&#x5217;
+	 */
+	toMatrixFromStringForArrayETC : function(text) {
+		// &#x884C;&#x3054;&#x3068;&#x3092;&#x62BD;&#x51FA;&#x3057;&#x3066;
+		const rows = text.split(&quot;;&quot;);
+		const matrix_array = new Array(rows.length);
+		for(let row_count = 0; row_count &lt; rows.length; row_count++) {
+			// &#x5404;&#x884C;&#x306E;&#x6587;&#x5B57;&#x3092;&#x89E3;&#x6790;
+			matrix_array[row_count] = ConstructorTool.toArrayFromString(rows[row_count]);
+		}
+		return matrix_array;
+	},
+
+	/**
+	 * &#x884C;&#x5217;&#x7528;&#x306E;&#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;&#x69CB;&#x6210;&#x3055;&#x308C;&#x308B;Matrix&#x578B;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * @param {string} text - &#x8ABF;&#x67FB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;&#x5217;
+	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Matrix&#x578B;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x306E;&#x914D;&#x5217;
+	 */
+	toMatrixFromStringForArray : function(text) {
+		// JSON&#x5F62;&#x5F0F;
+		if(/[[\],]/.test(text)) {
+			return ConstructorTool.toMatrixFromStringForArrayJSON(text);
+		}
+		// &#x305D;&#x308C;&#x4EE5;&#x5916;(MATLAB, Octave, Scilab)
+		else {
+			return ConstructorTool.toMatrixFromStringForArrayETC(text);
+		}
+	},
+
+	/**
+	 * &#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;Matrix&#x578B;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * @param {string} text - &#x8ABF;&#x67FB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;&#x5217;
+	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Matrix&#x578B;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x306E;&#x914D;&#x5217;
+	 */
+	toMatrixFromString : function(text) {
+		// &#x524D;&#x5F8C;&#x306E;&#x30B9;&#x30DA;&#x30FC;&#x30B9;&#x3092;&#x9664;&#x53BB;
+		const trimtext = text.replace(/^\s*|\s*$/g, &quot;&quot;);
+		// &#x30D6;&#x30E9;&#x30F3;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x5916;&#x3059;
+		const withoutBracket = ConstructorTool.trimBracket(trimtext);
+		if(withoutBracket) {
+			// &#x914D;&#x5217;&#x7528;&#x306E;&#x521D;&#x671F;&#x5316;
+			return ConstructorTool.toMatrixFromStringForArray(withoutBracket);
+		}
+		else {
+			// &#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x7528;&#x306E;&#x521D;&#x671F;&#x5316;
+			return [[new Complex(text)]];
+		}
+	},
+
+	/**
+	 * Matrix&#x578B;&#x5185;&#x90E8;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x884C;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x3068;&#x3057;&#x3066;&#x6B63;&#x3057;&#x3044;&#x304B;&#x3092;&#x8ABF;&#x3079;&#x308B;
+	 * @param {Array&lt;Array&lt;Complex&gt;&gt;} m_array
+	 * @returns {boolean} 
+	 */
+	isCorrectMatrixArray : function(m_array) {
+		if(m_array.length === 0) {
+			return false;
+		}
+		const num = m_array[0].length;
+		if(num === 0) {
+			return false;
+		}
+		for(let i = 1; i &lt; m_array.length; i++) {
+			if(m_array[i].length !== num) {
+				return false;
+			}
+		}
+		return true;
+	}
+};
+
+/**
+ * &#x8907;&#x7D20;&#x884C;&#x5217;&#x30AF;&#x30E9;&#x30B9; (immutable)
+ */
+export default class Matrix {
+	
+	/**
+	 * &#x8907;&#x7D20;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;
+	 * &#x5F15;&#x6570;&#x306F;&#x6B21;&#x306E;&#x30BF;&#x30A4;&#x30D7;&#x3092;&#x3068;&#x308C;&#x307E;&#x3059;
+	 * &#x30FB;4 				&#x6574;&#x6570;&#x3084;&#x5B9F;&#x6570;
+	 * &#x30FB;&quot;1 + j&quot;		&#x6587;&#x5B57;&#x5217;&#x3067;&#x8907;&#x7D20;&#x6570;&#x3092;&#x308F;&#x305F;&#x3059;
+	 * &#x30FB;[1,2]			1&#x6B21;&#x5143;&#x914D;&#x5217;
+	 * &#x30FB;[[1,2],[3,4]]	&#x884C;&#x5217;
+	 * &#x30FB;[&quot;1+j&quot;, &quot;2+j&quot;]	&#x8907;&#x7D20;&#x6570;&#x3092;&#x542B;&#x3093;&#x3060;&#x884C;&#x5217;
+	 * &#x30FB;&quot;[1 1:0.5:3]&quot;		MATLAB/Octave/Scilab&#x4E92;&#x63DB;
+	 * @param {Object|number|string|Array} number - &#x884C;&#x5217;&#x30C7;&#x30FC;&#x30BF;( &quot;1 + j&quot;, [1 , 1] &#x306A;&#x3069;)
+	 */
+	constructor(number) {
+		let matrix_array = null;
+		let is_check_string = false;
+		if(arguments.length === 1) {
+			const y = number;
+			// &#x884C;&#x5217;&#x578B;&#x306A;&#x3089;&#x4E2D;&#x8EAB;&#x3092;&#x30C7;&#x30A3;&#x30FC;&#x30D7;&#x30B3;&#x30D4;&#x30FC;&#x3059;&#x308B;
+			if(y instanceof Matrix) {
+				matrix_array = new Array(y.row_length);
+				for(let i = 0; i &lt; y.row_length; i++) {
+					matrix_array[i] = new Array(y.column_length);
+					for(let j = 0; j &lt; y.column_length; j++) {
+						matrix_array[i][j] = y.matrix_array[i][j];
+					}
+				}
+			}
+			// &#x8907;&#x7D20;&#x6570;&#x578B;&#x306A;&#x3089;1&#x8981;&#x7D20;&#x306E;&#x884C;&#x5217;
+			else if(y instanceof Complex) {
+				matrix_array = [[y]];
+			}
+			// &#x884C;&#x5217;&#x306E;&#x5834;&#x5408;&#x306F;&#x4E2D;&#x8EAB;&#x3092;&#x89E3;&#x6790;&#x3057;&#x3066;&#x3044;&#x304F;
+			else if(y instanceof Array) {
+				matrix_array = [];
+				for(let row_count = 0; row_count &lt; y.length; row_count++) {
+					// &#x6BCE;&#x884C;&#x3054;&#x3068;&#x8ABF;&#x67FB;
+					const row = y[row_count];
+					// &#x5404;&#x884C;&#x306E;&#x8981;&#x7D20;&#x304C;&#x914D;&#x5217;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x914D;&#x5217;&#x5185;&#x914D;&#x5217;&#x306E;&#x305F;&#x3081;&#x518D;&#x5EA6;for&#x6587;&#x3067;&#x8ABF;&#x3079;&#x3066;&#x3044;&#x304F;
+					if(row instanceof Array) {
+						const rows_array = new Array(row.length);
+						// 1&#x884C;&#x3092;&#x8ABF;&#x67FB;&#x3059;&#x308B;
+						for(let col_count = 0; col_count &lt; row.length; col_count++) {
+							const column = row[col_count];
+							// 1&#x8981;&#x7D20;&#x304C;&#x8907;&#x7D20;&#x6570;&#x306A;&#x3089;&#x305D;&#x306E;&#x307E;&#x307E;&#x4EE3;&#x5165;
+							if(column instanceof Complex) {
+								rows_array[col_count] = column;
+							}
+							// 1&#x8981;&#x7D20;&#x304C;&#x884C;&#x5217;&#x306A;&#x3089;&#x3001;&#x4E2D;&#x8EAB;&#x3092;&#x62BD;&#x51FA;&#x3057;&#x3066;&#x4EE3;&#x5165;
+							else if(column instanceof Matrix) {
+								if(!column.isScalar()) {
+									throw &quot;Matrix in matrix&quot;;
+								}
+								rows_array[col_count] = column.scalar;
+							}
+							// &#x305D;&#x308C;&#x4EE5;&#x5916;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x8907;&#x7D20;&#x6570;&#x30AF;&#x30E9;&#x30B9;&#x306E;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x306B;&#x5224;&#x65AD;&#x3055;&#x305B;&#x308B;
+							else {
+								rows_array[col_count] = new Complex(column);
+							}
+						}
+						matrix_array[row_count] = rows_array;
+					}
+					// 1&#x3064;&#x306E;&#x5024;&#x306E;&#x307F;&#x5BA3;&#x8A00;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x4E2D;&#x306E;&#x914D;&#x5217;&#x3092;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x3057;&#x3066;&#x5B9A;&#x7FA9;&#x3059;&#x308B;
+					else {
+						// &#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x521D;&#x671F;&#x5316;
+						if(row_count === 0) {
+							matrix_array[0] = new Array(y.length);
+						}
+						// 1&#x8981;&#x7D20;&#x304C;&#x8907;&#x7D20;&#x6570;&#x306A;&#x3089;&#x305D;&#x306E;&#x307E;&#x307E;&#x4EE3;&#x5165;
+						if(row instanceof Complex) {
+							matrix_array[0][row_count] = row;
+						}
+						// 1&#x8981;&#x7D20;&#x304C;&#x884C;&#x5217;&#x306A;&#x3089;&#x3001;&#x4E2D;&#x8EAB;&#x3092;&#x62BD;&#x51FA;&#x3057;&#x3066;&#x4EE3;&#x5165;
+						else if(row instanceof Matrix) {
+							if(!row.isScalar()) {
+								throw &quot;Matrix in matrix&quot;;
+							}
+							matrix_array[0][row_count] = row.scalar;
+						}
+						// &#x305D;&#x308C;&#x4EE5;&#x5916;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x8907;&#x7D20;&#x6570;&#x30AF;&#x30E9;&#x30B9;&#x306E;&#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x306B;&#x5224;&#x65AD;&#x3055;&#x305B;&#x308B;
+						else {
+							matrix_array[0][row_count] = new Complex(row);
+						}
+					}
+				}
+			}
+			// &#x6587;&#x5B57;&#x5217;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x6587;&#x5B57;&#x5217;&#x89E3;&#x6790;&#x3092;&#x884C;&#x3046;
+			else if(typeof y === &quot;string&quot; || y instanceof String) {
+				is_check_string = true;
+				matrix_array = ConstructorTool.toMatrixFromString(y);
+			}
+			// &#x6587;&#x5B57;&#x5217;&#x5909;&#x63DB;&#x3067;&#x304D;&#x308B;&#x5834;&#x5408;&#x306F;&#x8FD4;&#x9084;&#x5F8C;&#x306B;&#x3001;&#x6587;&#x5B57;&#x5217;&#x89E3;&#x6790;&#x3092;&#x884C;&#x3046;
+			else if(y instanceof Object &amp;&amp; y.toString) {
+				is_check_string = true;
+				matrix_array = ConstructorTool.toMatrixFromString(y.toString());
+			}
+			// &#x5358;&#x7D14;&#x306A;&#x30D3;&#x30EB;&#x30C8;&#x30A4;&#x30F3;&#x306E;&#x6570;&#x5024;&#x306A;&#x3069;
+			else {
+				matrix_array = [[new Complex(y)]];
+			}
+		}
+		else {
+			throw &quot;Matrix : Many arguments [&quot; + arguments.length + &quot;]&quot;;
+		}
+		if(is_check_string) {
+			// &#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x89E3;&#x6790;&#x306E;&#x5834;&#x5408;&#x3001;&quot;:&quot; &#x30C7;&#x30FC;&#x30BF;&#x304C;&#x7D1B;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x304B;&#x3092;&#x78BA;&#x8A8D;&#x3059;&#x308B;&#x3002;
+			// &#x7D1B;&#x308C;&#x3066;&#x3044;&#x305F;&#x3089;&#x305D;&#x306E;&#x884C;&#x306F;&#x524A;&#x9664;&#x3059;&#x308B;&#x3002;
+			for(let row = 0; row &lt; matrix_array.length; row++) {
+				if(matrix_array[row] === &quot;:&quot;) {
+					matrix_array.splice(row--, 1);
+				}
+			}
+		}
+		if(!ConstructorTool.isCorrectMatrixArray(matrix_array)) {
+			throw &quot;new Matrix IllegalArgumentException&quot;;
+		}
+		this.matrix_array = matrix_array;
+		this.row_length = this.matrix_array.length;
+		this.column_length = this.matrix_array[0].length;
+		this.string_cash = null;
+	}
+
+	/**
+	 * &#x8907;&#x88FD;
+	 * @returns {Matrix}
+	 */
+	clone() {
+		return new Matrix(this.matrix_array);
+	}
+
+	/**
+	 * &#x6587;&#x5B57;&#x5217;&#x5316;
+	 * @returns {string} 
+	 */
+	toString() {
+		if(this.string_cash) {
+			return this.string_cash;
+		}
+		const exp_turn_point = 9;
+		const exp_turn_num = Math.pow(10, exp_turn_point);
+		const exp_point = 4;
+		let isDrawImag = false;
+		let isDrawExp = false;
+		let draw_decimal_position = 0;
+
+		// &#x884C;&#x5217;&#x3092;&#x78BA;&#x8A8D;&#x3057;&#x3066;&#x8868;&#x793A;&#x3059;&#x308B;&#x305F;&#x3081;&#x306E;&#x8868;&#x793A;&#x65B9;&#x6CD5;&#x306E;&#x78BA;&#x8A8D;&#x3059;&#x308B;
+		this._each(
+			function(num) {
+				if(!num.isReal()) {
+					isDrawImag = true;
+				}
+				if(Math.abs(num.real) &gt;= exp_turn_num) {
+					isDrawExp = true;
+				}
+				if(Math.abs(num.imag) &gt;= exp_turn_num) {
+					isDrawExp = true;
+				}
+				draw_decimal_position = Math.max(draw_decimal_position, num.getDecimalPosition());
+			}
+		);
+
+		if(draw_decimal_position &gt; 0) {
+			draw_decimal_position = exp_point;
+		}
+
+		// &#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F5C;&#x6210;&#x3068;&#x3068;&#x3082;&#x306B;&#x3001;&#x6700;&#x5927;&#x306E;&#x9577;&#x3055;&#x3092;&#x8A18;&#x9332;&#x3059;&#x308B;
+		let str_max = 0;
+		const draw_buff = [];
+		// &#x6570;&#x5024;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6587;&#x5B57;&#x5217;&#x306B;&#x3059;&#x308B;&#x95A2;&#x6570;&#xFF08;e&#x306E;&#x6841;&#x304C;&#x3042;&#x308B;&#x5834;&#x5408;&#x306F;&#x4E2D;&#x8EAB;&#x306F;3&#x6841;&#x306B;&#x3059;&#x308B;&#xFF09;
+		const toStrFromFloat = function(number) {
+			if(!isDrawExp) {
+				return number.toFixed(draw_decimal_position);
+			}
+			const str = number.toExponential(exp_point);
+			const split = str.split(&quot;e&quot;);
+			let exp_text = split[1];
+			if(exp_text.length === 2) {
+				exp_text = exp_text.substr(0, 1) + &quot;00&quot; + exp_text.substr(1);
+			}
+			else if(exp_text.length === 3) {
+				exp_text = exp_text.substr(0, 1) + &quot;0&quot; + exp_text.substr(1);
+			}
+			return split[0] + &quot;e&quot; + exp_text;
+		};
+		this._each(
+			function(num) {
+				const data = {};
+				let real = num.real;
+				data.re_sign = real &lt; 0 ? &quot;-&quot; : &quot; &quot;;
+				real = Math.abs(real);
+				data.re_str = toStrFromFloat(real);
+				str_max = Math.max(str_max, data.re_str.length + 1);
+				if(isDrawImag) {
+					let imag = num.imag;
+					data.im_sign = imag &lt; 0 ? &quot;-&quot; : &quot;+&quot;;
+					imag = Math.abs(imag);
+					data.im_str = toStrFromFloat(imag);
+					str_max = Math.max(str_max, data.im_str.length + 1);
+				}
+				draw_buff.push(data);
+			}
+		);
+
+		// &#x53F3;&#x5BC4;&#x305B;&#x7528;&#x95A2;&#x6570;
+		const right = function(text, length) {
+			const space = &quot;                                        &quot;;
+			return space.substr(0, length - text.length) + text;
+		};
+		// &#x51FA;&#x529B;&#x7528;&#x6587;&#x5B57;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+		const output = [];
+		const that = this;
+		this._each(
+			function(num, row, col) {
+				const data = draw_buff.shift();
+				let text = right(data.re_sign + data.re_str, str_max);
+				if(isDrawImag) {
+					text += &quot; &quot; + data.im_sign + right(data.im_str, str_max) + &quot;i&quot;;
+				}
+				output.push(text);
+				output.push((col &lt; that.column_length - 1) ? &quot; &quot; : &quot;\n&quot;);
+			}
+		);
+
+		this.string_cash = output.join(&quot;&quot;);
+
+		return this.string_cash;
+	}
+
+	/**
+	 * A.equals(B) = A === B
+	 * @param {Matrix} number
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {boolean} A === B
+	 */
+	equals(number, epsilon) {
+		const M1 = this;
+		const M2 = Matrix.create(number);
+		if((M1.row_length !== M2.row_length) || (M1.column_length !== M2.column_length)) {
+			return false;
+		}
+		if((M1.row_length === 1) || (M1.column_length ===1)) {
+			return M1.scalar.equals(M2.scalar);
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		for(let row = 0; row &lt; this.row_length; row++) {
+			for(let col = 0; col &lt; this.column_length; col++) {
+				if(!x1[row][col].equals(x2[row][col], epsilon)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x3092;&#x69CB;&#x6210;&#x3059;&#x308B;&#x8907;&#x7D20;&#x6570;&#x306E;&#x5B9F;&#x6570;&#x306E;&#x307F;&#x3092;&#x62BD;&#x51FA;&#x3057;&#x3001;JavaScript&#x3067;&#x6271;&#x3048;&#x308B;&#x914D;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * @returns {Array} JavaScript&#x3067;&#x6271;&#x3048;&#x308B;&#x5B9F;&#x6570;&#x306E;&#x914D;&#x5217;
+	 */
+	getNumberMatrixArray() {
+		const y = new Array(this.row_length);
+		for(let i = 0; i &lt; this.row_length; i++) {
+			y[i] = new Array(this.column_length);
+			for(let j = 0; j &lt; this.column_length; j++) {
+				y[i][j] = this.matrix_array[i][j].real;
+			}
+		}
+		return y;
+	}
+	
+	/**
+	 * &#x884C;&#x5217;&#x3092;&#x69CB;&#x6210;&#x3059;&#x308B;Complex&#x578B;&#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x914D;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * @returns {Array} &#x884C;&#x5217;&#x306E;Complex&#x914D;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;
+	 */
+	getComplexMatrixArray() {
+		const y = new Array(this.row_length);
+		for(let i = 0; i &lt; this.row_length; i++) {
+			y[i] = new Array(this.column_length);
+			for(let j = 0; j &lt; this.column_length; j++) {
+				y[i][j] = this.matrix_array[i][j];
+			}
+		}
+		return y;
+	}
+	
+	/**
+	 * &#x4EFB;&#x610F;&#x306E;&#x5F15;&#x6570;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;&#xFF08;&#x5F15;&#x6570;&#x306B;&#x3088;&#x3063;&#x3066;&#x306F;&#x884C;&#x5217;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x65B0;&#x898F;&#x4F5C;&#x6210;&#x3059;&#x308B;&#xFF09;
+	 * @param {Matrix} number 
+	 * @returns {Matrix}
+	 */
+	static create(number) {
+		if((arguments.length === 1) &amp;&amp; (number instanceof Matrix)) {
+			return number;
+		}
+		else {
+			return new Matrix(number);
+		}
+	}
+	
+	/**
+	 * &#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3092;&#x524A;&#x9664;&#x3059;&#x308B;
+	 */
+	_clearCash() {
+		if(this.string_cash) {
+			delete this.string_cash;
+		}
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x5168;&#x3066;&#x306E;&#x5024;&#x306B;&#x51E6;&#x7406;&#x3092;&#x52A0;&#x3048;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
+	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(num, row, col)
+	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 */
+	_each(eachfunc) {
+		let isclearcash = false;
+		// &#x884C;&#x512A;&#x5148;&#x3067;&#x3059;&#x3079;&#x3066;&#x306E;&#x5024;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x95A2;&#x6570;&#x3092;&#x5B9F;&#x884C;&#x3059;&#x308B;&#x3002;&#x5185;&#x5BB9;&#x3092;&#x66F8;&#x304D;&#x63DB;&#x3048;&#x308B;&#x53EF;&#x80FD;&#x6027;&#x3082;&#x3042;&#x308B;
+		for(let row = 0; row &lt; this.row_length; row++) {
+			for(let col = 0; col &lt; this.column_length; col++) {
+				const ret = eachfunc(this.matrix_array[row][col], row, col);
+				if(ret === undefined) {
+					continue;
+				}
+				else if(ret instanceof Complex) {
+					this.matrix_array[row][col] = ret;
+				}
+				else if(ret instanceof Matrix) {
+					this.matrix_array[row][col] = ret.scalar;
+				}
+				else {
+					this.matrix_array[row][col] = new Complex(ret);
+				}
+				isclearcash = true;
+			}
+		}
+		if(isclearcash) {
+			this._clearCash();
+		}
+		return this;
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x5404;&#x5024;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x521D;&#x671F;&#x5316;&#x3092;&#x884C;&#x3063;&#x305F;&#x884C;&#x5217;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x65B0;&#x898F;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(row, col)
+	 * @param {number} dimension - &#x6B21;&#x5143;&#x6570;
+	 * @param {number} [column_length=dimension] - &#x5217;&#x6570;
+	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 */
+	static createMatrixDoEachCalculation(eachfunc, dimension, column_length) {
+		if((arguments.length === 0) || (arguments.length &gt; 3)) {
+			throw &quot;IllegalArgumentException&quot;;
+		}
+		const y_row_length = dimension;
+		const y_column_length = column_length ? column_length : dimension;
+		const y = new Array(y_row_length);
+		for(let row = 0; row &lt; y_row_length; row++) {
+			y[row] = new Array(y_column_length);
+			for(let col = 0; col &lt; y_column_length; col++) {
+				const ret = eachfunc(row, col);
+				if(ret === undefined) {
+					y[row][col] = Complex.ZERO;
+				}
+				else if(ret instanceof Complex) {
+					y[row][col] = ret;
+				}
+				else if(ret instanceof Matrix) {
+					y[row][col] = ret.scalar;
+				}
+				else {
+					y[row][col] = new Complex(ret);
+				}
+			}
+		}
+		return new Matrix(y);
+	}
+
+	/**
+	 * &#x672C;&#x884C;&#x5217;&#x5185;&#x90E8;&#x306E;&#x5168;&#x3066;&#x306E;&#x5024;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x51E6;&#x7406;&#x3092;&#x52A0;&#x3048;&#x308B;
+	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(num, row, col)
+	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 */
+	cloneMatrixDoEachCalculation(eachfunc) {
+		return this.clone()._each(eachfunc);
+	}
+
+	/**
+	 * &#x5217;&#x512A;&#x5148;&#x3067;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x4F55;&#x304B;&#x51E6;&#x7406;&#x3092;&#x884C;&#x3044;&#x3001;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+	 * @param {function(array: Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
+	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 */
+	__column_oriented_1_dimensional_processing(array_function) {
+		if(this.isRow()) {
+			// 1&#x884C;&#x3067;&#x3042;&#x308C;&#x3070;&#x3001;&#x305D;&#x306E;1&#x884C;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x51E6;&#x7406;&#x3092;&#x884C;&#x3046;
+			const row_array = new Array(this.row_length);
+			for(let col = 0; col &lt; this.column_length; col++) {
+				row_array[col] = this.matrix_array[0][col];
+			}
+			return new Matrix(array_function(row_array));
+		}
+		else {
+			const y = new Matrix(0);
+			y._resize(1, this.column_length);
+			// 1&#x5217;&#x3001;&#x884C;&#x5217;&#x3067;&#x3042;&#x308C;&#x3070;&#x3001;&#x5217;&#x3054;&#x3068;&#x306B;&#x51E6;&#x7406;&#x3092;&#x884C;&#x3046;
+			for(let col = 0; col &lt; this.column_length; col++) {
+				const col_array = new Array(this.row_length);
+				for(let row = 0; row &lt; this.row_length; row++) {
+					col_array[row] = this.matrix_array[row][col];
+				}
+				const col_output = array_function(col_array);
+				y._resize(Math.max(y.row_length, col_output.length), y.column_length);
+				for(let row = 0; row &lt; col_output.length; row++) {
+					y.matrix_array[row][col] = col_output[row];
+				}
+			}
+			return y;
+		}
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x3001;&#x884C;&#x3068;&#x5217;&#x306B;&#x540C;&#x4E00;&#x306E;&#x51E6;&#x7406;&#x3092;&#x884C;&#x3044;&#x3001;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+	 * @param {function(array: Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
+	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 */
+	__column_oriented_2_dimensional_processing(array_function) {
+		const y = new Matrix(0);
+		// &#x884C;&#x3054;&#x3068;&#x306B;&#x51E6;&#x7406;&#x3092;&#x884C;&#x3046;
+		y._resize(this.row_length, 1);
+		for(let row = 0; row &lt; this.row_length; row++) {
+			const row_array = new Array(this.row_length);
+			for(let col = 0; col &lt; this.column_length; col++) {
+				row_array[col] = this.matrix_array[0][col];
+			}
+			const row_output = array_function(row_array);
+			y._resize(y.row_length, Math.max(y.column_length, row_output.length));
+			for(let col = 0; col &lt; row_output.length; col++) {
+				y.matrix_array[row][col] = row_output[col];
+			}
+		}
+		// &#x5217;&#x3054;&#x3068;&#x306B;&#x51E6;&#x7406;&#x3092;&#x884C;&#x3046;
+		for(let col = 0; col &lt; y.column_length; col++) {
+			const col_array = new Array(y.row_length);
+			for(let row = 0; row &lt; y.row_length; row++) {
+				col_array[row] = y.matrix_array[row][col];
+			}
+			const col_output = array_function(col_array);
+			y._resize(Math.max(y.row_length, col_output.length), y.column_length);
+			for(let row = 0; row &lt; col_output.length; row++) {
+				y.matrix_array[row][col] = col_output[row];
+			}
+		}
+		return y;
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#xFF08;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#xFF09;&#x5185;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x7B87;&#x6240;&#x306E;&#x5024;&#x3092;Complex&#x578B;&#x3067;&#x8FD4;&#x3059;&#x3002;
+	 * @param {Matrix} arg1 - &#x4F4D;&#x7F6E;&#xFF0F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x5834;&#x5408;&#x306F;&#x4F55;&#x756A;&#x76EE;&#x306E;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x304B;
+	 * @param {Matrix} [arg2] - &#x5217;&#x756A;&#x53F7;&#xFF08;&#x884C;&#x756A;&#x53F7;&#x3068;&#x5217;&#x756A;&#x53F7;&#x3067;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x5834;&#x5408;&#xFF08;&#x4EFB;&#x610F;&#xFF09;&#xFF09;
+	 * @returns {Complex} 
+	 */
+	getComplex(arg1, arg2) {
+		let arg1_data = null;
+		let arg2_data = null;
+		{
+			if(typeof arg1 === &quot;string&quot; || arg1 instanceof String) {
+				arg1_data = new Matrix(arg1);
+			}
+			else {
+				arg1_data = arg1;
+			}
+		}
+		if(arguments.length === 2) {
+			if(typeof arg2 === &quot;string&quot; || arg2 instanceof String) {
+				arg2_data = new Matrix(arg2);
+			}
+			else {
+				arg2_data = arg2;
+			}
+		}
+		const get_scalar = function(x) {
+			let y;
+			let is_scalar = false;
+			if(typeof arg1 === &quot;number&quot; || arg1 instanceof Number) {
+				y = Math.round(x);
+				is_scalar = true;
+			}
+			else if(arg1 instanceof Complex)  {
+				y = Math.round(x.real);
+				is_scalar = true;
+			}
+			else if((arg1 instanceof Matrix) &amp;&amp; arg1.isScalar()) {
+				y = Math.round(x.doubleValue);
+				is_scalar = true;
+			}
+			return {
+				number : y,
+				is_scalar : is_scalar
+			};
+		};
+		let is_scalar = true;
+		let arg1_scalar = null;
+		let arg2_scalar = null;
+		if(arguments.length === 1) {
+			arg1_scalar = get_scalar(arg1_data);
+			is_scalar &amp;= arg1_scalar.is_scalar;
+		}
+		else if(arguments.length === 2) {
+			arg1_scalar = get_scalar(arg1_data);
+			is_scalar &amp;= arg1_scalar.is_scalar;
+			arg2_scalar = get_scalar(arg2_data);
+			is_scalar &amp;= arg2_scalar.is_scalar;
+		}
+		// 1&#x3064;&#x306E;&#x307F;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x5834;&#x5408;
+		if(is_scalar) {
+			if(this.isRow()) {
+				return this.matrix_array[0][arg1_scalar.number];
+			}
+			else if(this.isColumn()) {
+				return this.matrix_array[arg1_scalar.number][0];
+			}
+			else {
+				return this.matrix_array[arg1_scalar.number][arg2_scalar.number];
+			}
+		}
+		else {
+			throw &quot;getComplex not scalar : &quot; + this;
+		}
+	}
+
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+	// &#x884C;&#x5217;&#x306E;&#x57FA;&#x672C;&#x64CD;&#x4F5C;&#x3001;&#x57FA;&#x672C;&#x60C5;&#x5831;&#x306E;&#x53D6;&#x5F97;
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+	
+	/**
+	 * &#x884C;&#x5217;&#x306E;&#x6700;&#x521D;&#x306E;&#x8981;&#x7D20;&#x306E;&#x6574;&#x6570;&#x5024;&#x3002;&#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x5024;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;&#x3068;&#x304D;&#x306A;&#x3069;&#x3092;&#x60F3;&#x5B9A;&#x3002;
+	 * @returns {number}
+	 */
+	get intValue() {
+		return (this.matrix_array[0][0].real) | 0;
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x306E;&#x6700;&#x521D;&#x306E;&#x8981;&#x7D20;&#x306E;&#x5B9F;&#x6570;&#x5024;&#x3002;&#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x5024;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;&#x3068;&#x304D;&#x306A;&#x3069;&#x3092;&#x60F3;&#x5B9A;&#x3002;
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		return this.matrix_array[0][0].real;
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x306E;&#x6700;&#x521D;&#x306E;&#x8981;&#x7D20;&#x3002;&#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x5024;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;&#x3068;&#x304D;&#x306A;&#x3069;&#x3092;&#x60F3;&#x5B9A;&#x3002;
+	 * @returns {Complex}
+	 */
+	get scalar() {
+		return this.matrix_array[0][0];
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x306E;&#x6700;&#x3082;&#x5927;&#x304D;&#x3044;&#x884C;&#x6570;&#x3001;&#x5217;&#x6570;&#x3092;&#x8FD4;&#x3059;
+	 * @returns {number}
+	 */
+	get length() {
+		return this.row_length &gt; this.column_length ? this.row_length : this.column_length;
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x306E;1&#x30CE;&#x30EB;&#x30E0;
+	 * @returns {number}
+	 */
+	get norm1() {
+		const y = this.matrix_array;
+		// &#x884C;&#x30CE;&#x30EB;&#x30E0;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;
+		if(this.isRow()) {
+			let sum = 0.0;
+			for(let col = 0; col &lt; this.column_length; col++) {
+				sum += y[0][col].norm;
+			}
+			return sum;
+		}
+		// &#x5217;&#x30CE;&#x30EB;&#x30E0;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;
+		else if(this.isColumn()) {
+			let sum = 0.0;
+			for(let row = 0; row &lt; this.row_length; row++) {
+				sum = y[row][0].norm;
+			}
+			return sum;
+		}
+		// &#x5217;&#x306E;&#x548C;&#x306E;&#x6700;&#x5927;&#x5024;
+		let max = 0;
+		// &#x5217;&#x3092;&#x56FA;&#x5B9A;&#x3057;&#x3066;&#x884C;&#x306E;&#x548C;&#x3092;&#x8A08;&#x7B97;
+		for(let col = 0; col &lt; this.column_length; col++) {
+			let sum = 0;
+			for(let row = 0; row &lt; this.row_length; row++) {
+				sum += y[row][col].norm;
+			}
+			if(max &lt; sum) {
+				max = sum;
+			}
+		}
+		return max;
+	}
+	
+	/**
+	 * &#x884C;&#x5217;&#x306E;2&#x30CE;&#x30EB;&#x30E0;
+	 * @returns {number}
+	 */
+	get norm2() {
+		const y = this.matrix_array;
+		// &#x884C;&#x30CE;&#x30EB;&#x30E0;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;
+		if(this.isRow()) {
+			let sum = 0.0;
+			for(let col = 0; col &lt; this.column_length; col++) {
+				sum += y[0][col].square().real;
+			}
+			return Math.sqrt(sum);
+		}
+		// &#x5217;&#x30CE;&#x30EB;&#x30E0;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;
+		else if(this.isColumn()) {
+			let sum = 0.0;
+			for(let row = 0; row &lt; this.row_length; row++) {
+				sum = y[row][0].square().real;
+			}
+			return Math.sqrt(sum);
+		}
+		return this.svd().S.diag().max().scalar.real;
+	}
+
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+	// &#x884C;&#x5217;&#x306E;&#x4F5C;&#x6210;&#x95A2;&#x4FC2;
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+	
+	/**
+	 * &#x5358;&#x4F4D;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;
+	 * @param {number} dimension - &#x6B21;&#x5143;&#x6570;
+	 * @param {number} [column_length] - &#x5217;&#x6570;
+	 * @returns {Matrix}
+	 */
+	static eye(dimension, column_length) {
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return row === col ? Complex.ONE : Complex.ZERO;
+		}, dimension, column_length);
+	}
+	
+	/**
+	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6570;&#x5024;&#x3067;&#x521D;&#x671F;&#x5316;
+	 * @param {Matrix} number - &#x521D;&#x671F;&#x5024;
+	 * @param {number} dimension - &#x6B21;&#x5143;&#x6570;
+	 * @param {number} [column_length] - &#x5217;&#x6570;
+	 * @returns {Matrix}
+	 */
+	static memset(number, dimension, column_length) {
+		if((arguments.length === 0) || (arguments.length &gt; 3)) {
+			throw &quot;IllegalArgumentException&quot;;
+		}
+		if((number instanceof Matrix) &amp;&amp; (!number.isScalar())) {
+			const x = number.matrix_array;
+			const x_row_length = number.row_length;
+			const x_column_length = number.column_length;
+			return Matrix.createMatrixDoEachCalculation(function(row, col) {
+				return x[row % x_row_length][col % x_column_length];
+			}, dimension, column_length);
+		}
+		else {
+			let x = 0;
+			if((number instanceof Matrix) &amp;&amp; (number.isScalar())) {
+				x = number.scalar;
+			}
+			else {
+				x = Complex.create(number);
+			}
+			return Matrix.createMatrixDoEachCalculation(function() {
+				return x;
+			}, dimension, column_length);
+		}
+	}
+
+	/**
+	 * 0&#x3067;&#x521D;&#x671F;&#x5316;
+	 * @param {number} dimension - &#x6B21;&#x5143;&#x6570;
+	 * @param {number} [column_length] - &#x5217;&#x6570;
+	 * @returns {Matrix}
+	 */
+	static zeros(dimension, column_length) {
+		if((arguments.length === 0) || (arguments.length &gt; 2)) {
+			throw &quot;IllegalArgumentException&quot;;
+		}
+		return Matrix.memset(Complex.ZERO, dimension, column_length);
+	}
+
+	/**
+	 * 1&#x3067;&#x521D;&#x671F;&#x5316;
+	 * @param {number} dimension - &#x6B21;&#x5143;&#x6570;
+	 * @param {number} [column_length] - &#x5217;&#x6570;
+	 * @returns {Matrix}
+	 */
+	static ones(dimension, column_length) {
+		if((arguments.length === 0) || (arguments.length &gt; 2)) {
+			throw &quot;IllegalArgumentException&quot;;
+		}
+		return Matrix.memset(Complex.ONE, dimension, column_length);
+	}
+
+	/**
+	 * &#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x5024;&#x3067;&#x521D;&#x671F;&#x5316;
+	 * @param {number} dimension - &#x6B21;&#x5143;&#x6570;
+	 * @param {number} [column_length] - &#x5217;&#x6570;
+	 * @returns {Matrix}
+	 */
+	static rand(dimension, column_length) {
+		return Matrix.createMatrixDoEachCalculation(function() {
+			return Complex.rand();
+		}, dimension, column_length);
+	}
+
+	/**
+	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306B;&#x5F93;&#x3046;&#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x5024;&#x3067;&#x521D;&#x671F;&#x5316;
+	 * @param {number} dimension - &#x6B21;&#x5143;&#x6570;
+	 * @param {number} [column_length] - &#x5217;&#x6570;
+	 * @returns {Matrix}
+	 */
+	static randn(dimension, column_length) {
+		return Matrix.createMatrixDoEachCalculation(function() {
+			return Complex.randn();
+		}, dimension, column_length);
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x306A;&#x3089;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x3092;&#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB; / &#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306A;&#x3089;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x3092;&#x6301;&#x3064;&#x884C;&#x5217;
+	 * @returns {Matrix}
+	 */
+	diag() {
+		if(this.isVector()) {
+			// &#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;
+			const M = this;
+			return Matrix.createMatrixDoEachCalculation(function(row, col) {
+				if(row === col) {
+					return M.getComplex(row);
+				}
+				else {
+					return Complex.ZERO;
+				}
+			}, this.length);
+		}
+		else {
+			// &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x4F5C;&#x6210;
+			const len = Math.min(this.row_length, this.column_length);
+			const y = new Array(len);
+			for(let i = 0; i &lt; len; i++) {
+				y[i] = new Array(1);
+				y[i][0] = this.matrix_array[i][i];
+			}
+			return new Matrix(y);
+		}
+	}
+
+	// TODO &#x884C;&#x5217;&#x306E;&#x7D50;&#x5408;&#x304C;&#x307B;&#x3057;&#x3044;
+
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+	// &#x6BD4;&#x8F03;&#x3084;&#x5224;&#x5B9A;
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+
+	/**
+	 * &#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x5024;&#x306E;&#x5224;&#x5B9A;
+	 * @returns {boolean}
+	 */
+	isScalar() {
+		return this.row_length === 1 &amp;&amp; this.column_length == 1;
+	}
+	
+	/**
+	 * &#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#xFF0F;&#x6A2A;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x5224;&#x5B9A;
+	 * @returns {boolean}
+	 */
+	isRow() {
+		return this.row_length === 1;
+	}
+	
+	/**
+	 * &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#xFF0F;&#x7E26;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x5224;&#x5B9A;
+	 * @returns {boolean}
+	 */
+	isColumn() {
+		return this.column_length === 1;
+	}
+
+	/**
+	 * &#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x5224;&#x5B9A;
+	 * @returns {boolean}
+	 */
+	isVector() {
+		return this.row_length === 1 || this.column_length === 1;
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x306E;&#x5224;&#x5B9A;
+	 * @returns {boolean}
+	 */
+	isMatrix() {
+		return this.row_length !== 1 &amp;&amp; this.column_length !== 1;
+	}
+
+	/**
+	 * &#x6B63;&#x65B9;&#x884C;&#x5217;&#x306E;&#x5224;&#x5B9A;
+	 * @returns {boolean}
+	 */
+	isSquare() {
+		return this.row_length === this.column_length;
+	}
+
+	/**
+	 * &#x5B9F;&#x884C;&#x5217;&#x306E;&#x5224;&#x5B9A;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {boolean}
+	 */
+	isReal(epsilon) {
+		let is_real = true;
+		this._each(function(num){
+			if(is_real &amp;&amp; (num.isComplex(epsilon))) {
+				is_real = false;
+			}
+		});
+		return is_real;
+	}
+
+	/**
+	 * &#x8907;&#x7D20;&#x884C;&#x5217;&#x306E;&#x5224;&#x5B9A;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {boolean}
+	 */
+	isComplex(epsilon) {
+		let is_complex = true;
+		this._each(function(num){
+			if(is_complex &amp;&amp; (num.isReal(epsilon))) {
+				is_complex = false;
+			}
+		});
+		return is_complex;
+	}
+
+	/**
+	 * &#x96F6;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {boolean}
+	 */
+	isZeros(epsilon) {
+		let is_zeros = true;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		this._each(function(num){
+			if(is_zeros &amp;&amp; (!num.isZero(tolerance))) {
+				is_zeros = false;
+			}
+		});
+		return is_zeros;
+	}
+
+	/**
+	 * &#x5358;&#x4F4D;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {boolean}
+	 */
+	isIdentity(epsilon) {
+		if(!this.isDiagonal()) {
+			return false;
+		}
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		for(let row = 0; row &lt; this.row_length; row++) {
+			if(!this.matrix_array[row][row].isOne(tolerance)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * &#x5BFE;&#x89D2;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {boolean}
+	 */
+	isDiagonal(epsilon) {
+		let is_diagonal = true;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		this._each(function(num, row, col){
+			if(is_diagonal &amp;&amp; (row !== col) &amp;&amp; (!num.isZero(tolerance))) {
+				is_diagonal = false;
+			}
+		});
+		return is_diagonal;
+	}
+	
+	/**
+	 * &#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {boolean}
+	 */
+	isTridiagonal(epsilon) {
+		if(!this.isSquare()) {
+			return false;
+		}
+		let is_tridiagonal = true;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		this._each(function(num, row, col){
+			if(is_tridiagonal &amp;&amp; (Math.abs(row - col) &gt; 1) &amp;&amp; (!num.isZero(tolerance))) {
+				is_tridiagonal = false;
+			}
+		});
+		return is_tridiagonal;
+	}
+
+	/**
+	 * &#x6B63;&#x5247;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {boolean}
+	 */
+	isRegular(epsilon) {
+		if(!this.isSquare()) {
+			return false;
+		}
+		// &#x30E9;&#x30F3;&#x30AF;&#x304C;&#x884C;&#x5217;&#x306E;&#x6B21;&#x5143;&#x3068;&#x7B49;&#x3057;&#x3044;&#x304B;&#x3069;&#x3046;&#x304B;&#x3067;&#x5224;&#x5B9A;
+		// det(M) != 0 &#x3067;&#x3082;&#x3088;&#x3044;&#x304C;&#x3001;&#x6642;&#x9593;&#x304C;&#x304B;&#x304B;&#x308B;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#x306E;&#x3067;
+		// &#x8AA4;&#x5DEE;&#x306F;&#x81EA;&#x52D5;&#x3067;&#x8A08;&#x7B97;&#x306A;&#x3069;&#x672C;&#x5F53;&#x306F;&#x3082;&#x3046;&#x3059;&#x3053;&#x3057;&#x826F;&#x3044;&#x65B9;&#x6CD5;&#x3092;&#x8003;&#x3048;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308B;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		return (this.rank(1.0e-10).equals(this.row_length, tolerance));
+	}
+
+	/**
+	 * &#x76F4;&#x884C;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {boolean}
+	 */
+	isOrthogonal(epsilon) {
+		if(!this.isSquare()) {
+			return false;
+		}
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		return (this.mul(this.transpose()).isIdentity(tolerance));
+	}
+
+	/**
+	 * &#x30E6;&#x30CB;&#x30BF;&#x30EA;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {boolean}
+	 */
+	isUnitary(epsilon) {
+		if(!this.isSquare()) {
+			return false;
+		}
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		return (this.mul(this.ctranspose()).isIdentity(tolerance));
+	}
+
+	/**
+	 * &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {boolean}
+	 */
+	isSymmetric(epsilon) {
+		if(!this.isSquare()) {
+			return false;
+		}
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		for(let row = 0; row &lt; this.row_length; row++) {
+			for(let col = row + 1; col &lt; this.column_length; col++) {
+				if(!this.matrix_array[row][col].equals(this.matrix_array[col][row], tolerance)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * &#x30A8;&#x30EB;&#x30DF;&#x30FC;&#x30C8;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {boolean}
+	 */
+	isHermitian(epsilon) {
+		if(!this.isSquare()) {
+			return false;
+		}
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		for(let row = 0; row &lt; this.row_length; row++) {
+			for(let col = row; col &lt; this.column_length; col++) {
+				if(row === col) {
+					if(!this.matrix_array[row][col].isReal(tolerance)) {
+						return false;
+					}
+				}
+				else if(!this.matrix_array[row][col].equals(this.matrix_array[col][row].conj(), tolerance)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * A.size() = [row_length column_length] &#x884C;&#x5217;&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x3092;&#x53D6;&#x5F97;
+	 * @returns {Matrix} &#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB; [row_length column_length]
+	 */
+	size() {
+		// &#x884C;&#x5217;&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x3092;&#x53D6;&#x5F97;
+		return new Matrix([[this.row_length, this.column_length]]);
+	}
+
+	/**
+	 * A.compareTo(B) &#x4ECA;&#x306E;&#x5024;A&#x3068;&#x3001;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x5024;B&#x3068;&#x3092;&#x6BD4;&#x8F03;&#x3059;&#x308B;
+	 * &#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x540C;&#x58EB;&#x306E;&#x5834;&#x5408;&#x306E;&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;IF&#x6587;&#x3067;&#x5229;&#x7528;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;number&#x578B;&#x3067;&#x3042;&#x308B;&#x3002;
+	 * &#x884C;&#x5217;&#x540C;&#x58EB;&#x306E;&#x5834;&#x5408;&#x306F;&#x884C;&#x5217;&#x306E;&#x4E2D;&#x3067;&#x6BD4;&#x8F03;&#x3092;&#x884C;&#x3044;&#x3001;&#x5404;&#x9805;&#x306B;&#x6BD4;&#x8F03;&#x7D50;&#x679C;&#x304C;&#x5165;&#x308B;
+	 * @param {Matrix} number 
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {number|Matrix} A &lt; B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number, epsilon) {
+		const M1 = this;
+		const M2 = Matrix.create(number);
+		// &#x203B;&#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x540C;&#x58EB;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x5B9F;&#x6570;&#x3092;&#x8FD4;&#x3059;
+		if(M1.isScalar() &amp;&amp; M2.isScalar()) {
+			return M1.scalar.compareTo(M2.scalar, epsilon);
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].compareTo(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+
+	/**
+	 * A.max() &#x884C;&#x5217;&#x5185;&#x306E;&#x6700;&#x5927;&#x5024;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3001;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x5185;&#x306E;&#x6700;&#x5927;&#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x5024;&#x3092;&#x53D6;&#x5F97;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {Matrix}
+	 */
+	max(epsilon) {
+		const main = function(data) {
+			let x = data[0];
+			for(let i = 1; i &lt; data.length; i++) {
+				if(x.compareTo(data[i], epsilon) &gt; 0) {
+					x = data[i];
+				}
+			}
+			return [x];
+		};
+		return this.__column_oriented_1_dimensional_processing(main);
+	}
+	
+	/**
+	 * A.min() &#x884C;&#x5217;&#x5185;&#x306E;&#x6700;&#x5C0F;&#x5024;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3001;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x5185;&#x306E;&#x6700;&#x5C0F;&#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x5024;&#x3092;&#x53D6;&#x5F97;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {Matrix}
+	 */
+	min(epsilon) {
+		const main = function(data) {
+			let x = data[0];
+			for(let i = 1; i &lt; data.length; i++) {
+				if(x.compareTo(data[i], epsilon) &lt; 0) {
+					x = data[i];
+				}
+			}
+			return [x];
+		};
+		return this.__column_oriented_1_dimensional_processing(main);
+	}
+
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+	// &#x56DB;&#x5247;&#x6F14;&#x7B97;
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+	
+	/**
+	 * A.add(B) = A + B
+	 * @param {Matrix} number 
+	 * @returns {Matrix}
+	 */
+	add(number) {
+		const M1 = this;
+		const M2 = Matrix.create(number);
+		if((M1.row_length !== M2.row_length) &amp;&amp; (M1.column_length !== M2.column_length)) {
+			throw &quot;Matrix size does not match&quot;;
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].add(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+
+	/**
+	 * A.sub(B) = A - B
+	 * @param {Matrix} number 
+	 * @returns {Matrix}
+	 */
+	sub(number) {
+		const M1 = this;
+		const M2 = Matrix.create(number);
+		if((M1.row_length !== M2.row_length) &amp;&amp; (M1.column_length !== M2.column_length)) {
+			throw &quot;Matrix size does not match&quot;;
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].sub(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+
+	/**
+	 * A.mul(B) = A * B
+	 * @param {Matrix} number 
+	 * @returns {Matrix}
+	 */
+	mul(number) {
+		const M1 = this;
+		const M2 = Matrix.create(number);
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		if(M1.isScalar() &amp;&amp; M2.isScalar()) {
+			return new Matrix(x1.scalar.mul(x2.scalar));
+		}
+		if(M1.isScalar()) {
+			const y = new Array(M2.row_length);
+			for(let row = 0; row &lt; M2.row_length; row++) {
+				y[row] = new Array(M2.column_length);
+				for(let col = 0; col &lt; M2.column_length; col++) {
+					y[row][col] = M1.scalar.mul(x2[row][col]);
+				}
+			}
+			return new Matrix(y);
+		}
+		else if(M2.isScalar()) {
+			const y = new Array(M1.row_length);
+			for(let row = 0; row &lt; M1.row_length; row++) {
+				y[row] = new Array(M1.column_length);
+				for(let col = 0; col &lt; M1.column_length; col++) {
+					y[row][col] = x1[row][col].mul(M2.scalar);
+				}
+			}
+			return new Matrix(y);
+		}
+		if(M1.column_length !== M2.row_length) {
+			throw &quot;Matrix size does not match&quot;;
+		}
+		{
+			const y = new Array(M1.row_length);
+			for(let row = 0; row &lt; M1.row_length; row++) {
+				y[row] = new Array(M2.column_length);
+				for(let col = 0; col &lt; M2.column_length; col++) {
+					let sum = Complex.ZERO;
+					for(let i = 0; i &lt; M1.column_length; i++) {
+						sum = sum.add(x1[row][i].mul(x2[i][col]));
+					}
+					y[row][col] = sum;
+				}
+			}
+			return new Matrix(y);
+		}
+	}
+
+	/**
+	 * A.inv() = &#x5358;&#x4F4D;&#x884C;&#x5217; / A
+	 * @returns {Matrix}
+	 */
+	inv() {
+		if(this.isScalar()) {
+			return new Matrix(Complex.ONE.div(this.scalar));
+		}
+		if(!this.isSquare()) {
+			throw &quot;not square&quot;;
+		}
+		if(this.isDiagonal()) {
+			// &#x5BFE;&#x89D2;&#x884C;&#x5217;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x306E;&#x307F;&#x9006;&#x6570;&#x3092;&#x3068;&#x308B;
+			const y = this.T();
+			const size = Math.min(y.row_length, y.column_length);
+			for(let i = 0; i &lt; size; i++) {
+				y.matrix_array[i][i] = y.matrix_array[i][i].inv();
+			}
+			return y;
+		}
+		// (&#x3053;&#x3053;&#x3067;&#x6B63;&#x898F;&#x76F4;&#x4EA4;&#x884C;&#x5217;&#x306E;&#x5834;&#x5408;&#x306A;&#x3089;&#x3001;&#x8EE2;&#x7F6E;&#x3055;&#x305B;&#x308B;&#x306A;&#x3069;&#x5165;&#x308C;&#x3066;&#x3082;&#x3044;&#x3044;&#xFF1F;&#x5224;&#x5B9A;&#x306F;&#x3067;&#x304D;&#x306A;&#x3044;&#x3051;&#x3069;&#x3082;)
+		const len = this.column_length;
+		// &#x30AC;&#x30A6;&#x30B9;&#x30FB;&#x30B8;&#x30E7;&#x30EB;&#x30C0;&#x30F3;&#x6CD5;
+		// &#x521D;&#x671F;&#x5024;&#x306E;&#x8A2D;&#x5B9A;
+		const M = new Matrix(this);
+		M._concat_left(Matrix.eye(len));
+		const long_matrix_array = M.matrix_array;
+		const long_length = M.column_length;
+
+		//&#x524D;&#x9032;&#x6D88;&#x53BB;
+		for(let k = 0; k &lt; len; k++) {
+			//&#x30D4;&#x30DD;&#x30C3;&#x30C8;&#x306E;&#x9078;&#x629E;
+			{
+				// k&#x5217;&#x76EE;&#x3067;&#x6700;&#x3082;&#x5927;&#x304D;&#x306A;&#x884C;&#x3092;&#x53D6;&#x5F97;(k&#x5217;&#x76EE;&#x304B;&#x3089;&#x8ABF;&#x3079;&#x308B;)
+				const row_num = M._max_row_number(k, k).index;
+				//&#x4EA4;&#x63DB;&#x3092;&#x884C;&#x3046;
+				M._exchange_row(k, row_num);
+			}
+			//&#x30D4;&#x30DD;&#x30C3;&#x30C8;&#x306E;&#x6B63;&#x898F;&#x5316;
+			{
+				const normalize_value = long_matrix_array[k][k].inv();
+				for(let row = k, col = k; col &lt; long_length; col++) {
+					long_matrix_array[row][col] = long_matrix_array[row][col].mul(normalize_value);
+				}
+			}
+			//&#x6D88;&#x53BB;
+			for(let row = 0;row &lt; len; row++) {
+				if(row === k) {
+					continue;
+				}
+				const temp = long_matrix_array[row][k];
+				for(let col = k; col &lt; long_length; col++)
+				{
+					long_matrix_array[row][col] = long_matrix_array[row][col].sub(long_matrix_array[k][col].mul(temp));
+				}
+			}
+		}
+
+		const y = new Array(len);
+		//&#x53F3;&#x306E;&#x5217;&#x3092;&#x629C;&#x304D;&#x53D6;&#x308B;
+		for(let row = 0; row &lt; len; row++) {
+			y[row] = new Array(len);
+			for(let col = 0; col &lt; len; col++) {
+				y[row][col] = long_matrix_array[row][len + col];
+			}
+		}
+
+		return new Matrix(y);
+	}
+
+	/**
+	 * A.div(B) = A / B
+	 * @param {Matrix} number 
+	 * @returns {Matrix}
+	 */
+	div(number) {
+		const M1 = this;
+		const M2 = Matrix.create(number);
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		if(M1.isScalar() &amp;&amp; M2.isScalar()) {
+			return new Matrix(x1.scalar.div(x2.scalar));
+		}
+		if(M2.isScalar()) {
+			const y = new Array(M1.row_length);
+			for(let row = 0; row &lt; M1.row_length; row++) {
+				y[row] = new Array(M1.column_length);
+				for(let col = 0; col &lt; M1.column_length; col++) {
+					y[row][col] = x1[row][col].div(M2.scalar);
+				}
+			}
+			return new Matrix(y);
+		}
+		if(M2.row_length === M2.column_length) {
+			// &#x30E9;&#x30F3;&#x30AF;&#x843D;&#x3061;&#x3057;&#x3066;&#x3044;&#x308B;&#x304B;&#x78BA;&#x8A8D;&#x3057;&#x3066;&#x3044;&#x306A;&#x3044;&#x305F;&#x3081;&#x6CE8;&#x610F;
+			// &#x672C;&#x6765;&#x30E9;&#x30F3;&#x30AF;&#x843D;&#x3061;&#x3057;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x306F;&#x3001;&#x3053;&#x3053;&#x3067;pinv&#x3092;&#x4F7F;&#x7528;&#x3057;&#x305F;&#x65B9;&#x6CD5;&#x306B;&#x5207;&#x308A;&#x66FF;&#x3048;&#x308B;&#x306A;&#x3069;&#x3059;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308B;&#x3002;
+			return this.mul(M2.inv());
+		}
+		if(M1.column_length !== M2.column_length) {
+			throw &quot;Matrix size does not match&quot;;
+		}
+		
+		throw &quot;warning&quot;;
+	}
+
+	/**
+	 * A.nmul(B) = A .* B &#x5404;&#x9805;&#x3054;&#x3068;&#x306E;&#x639B;&#x3051;&#x7B97;
+	 * @param {Matrix} number 
+	 * @returns {Matrix}
+	 */
+	nmul(number) {
+		const M1 = this;
+		const M2 = Matrix.create(number);
+		if((M1.row_length !== M2.row_length) &amp;&amp; (M1.column_length !== M2.column_length)) {
+			throw &quot;Matrix size does not match&quot;;
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].mul(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+
+	/**
+	 * A.ndiv(B) = A ./ B &#x5404;&#x9805;&#x3054;&#x3068;&#x306E;&#x5272;&#x308A;&#x7B97;
+	 * @param {Matrix} number 
+	 * @returns {Matrix}
+	 */
+	ndiv(number) {
+		const M1 = this;
+		const M2 = Matrix.create(number);
+		if((M1.row_length !== M2.row_length) &amp;&amp; (M1.column_length !== M2.column_length)) {
+			throw &quot;Matrix size does not match&quot;;
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].div(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+	// Complex&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306B;&#x3042;&#x308B;&#x6A5F;&#x80FD;&#x3092;&#x884C;&#x5217;&#x3067;&#x4F7F;&#x7528;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3057;&#x305F;&#x3082;&#x306E;
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+
+	/**
+	 * &#x5404;&#x9805;&#x306E;&#x5B9F;&#x90E8;
+	 * @returns {Matrix}
+	 */
+	real() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return new Complex(num.real);
+		});
+	}
+	
+	/**
+	 * &#x5404;&#x9805;&#x306E;&#x865A;&#x90E8;
+	 * @returns {Matrix}
+	 */
+	imag() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return new Complex(num.imag);
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306E;&#x504F;&#x89D2;&#xFF08;&#x6975;&#x5EA7;&#x6A19;&#x306E;&#x89D2;&#x5EA6;&#xFF09;
+	 * @returns {Matrix}
+	 */
+	angle() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return new Complex(num.angle);
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306E;&#x7B26;&#x53F7;&#x5024;
+	 * @returns {Matrix}
+	 */
+	sign() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return new Complex(num.sign());
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306E;&#x6574;&#x6570;&#x3092;&#x5224;&#x5B9A;(1 or 0)
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {Matrix}
+	 */
+	testInteger(epsilon) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isInteger(epsilon) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306E;&#x8907;&#x7D20;&#x6574;&#x6570;&#x3092;&#x5224;&#x5B9A;(1 or 0)
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {Matrix}
+	 */
+	testComplexInteger(epsilon) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isComplexInteger(epsilon) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306E; 0 &#x3092;&#x5224;&#x5B9A;(1 or 0)
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {Matrix}
+	 */
+	testZero(epsilon) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isZero(epsilon) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306E; 1 &#x3092;&#x5224;&#x5B9A;(1 or 0)
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {Matrix}
+	 */
+	testOne(epsilon) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isOne(epsilon) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+	
+	/**
+	 * &#x5404;&#x9805;&#x306E;&#x8907;&#x7D20;&#x6570;&#x3092;&#x5224;&#x5B9A;(1 or 0)
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {Matrix}
+	 */
+	testComplex(epsilon) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isComplex(epsilon) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306E;&#x5B9F;&#x6570;&#x3092;&#x5224;&#x5B9A;(1 or 0)
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {Matrix}
+	 */
+	testReal(epsilon) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isReal(epsilon) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306E;&#x975E;&#x6570;&#x3092;&#x5224;&#x5B9A;(1 or 0)
+	 * @returns {Matrix}
+	 */
+	testNaN() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isNaN() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+
+	/**
+	 * real(x) &gt; 0
+	 * @returns {boolean}
+	 */
+	testPositive() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isPositive() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * real(x) &lt; 0
+	 * @returns {boolean}
+	 */
+	testNegative() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isNegative() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * real(x) &gt;= 0
+	 * @returns {boolean}
+	 */
+	testNotNegative() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isNotNegative() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306E;&#x7121;&#x9650;&#x3092;&#x5224;&#x5B9A;
+	 * @returns {boolean}
+	 */
+	testInfinite() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isInfinite() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+	
+	/**
+	 * &#x5404;&#x9805;&#x306E;&#x6709;&#x9650;&#x6570;&#x3092;&#x5224;&#x5B9A;
+	 * @returns {boolean}
+	 */
+	testFinite() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isFinite() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306E;&#x7D76;&#x5BFE;&#x5024;&#x3092;&#x3068;&#x308B;
+	 * @returns {Matrix}
+	 */
+	abs() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.abs();
+		});
+	}
+
+	/**
+	 * &#x8907;&#x7D20;&#x5171;&#x5F79;&#x884C;&#x5217;
+	 * @returns {Matrix}
+	 */
+	conj() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.conj();
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; -1 &#x3092;&#x639B;&#x3051;&#x7B97;&#x3059;&#x308B;
+	 * @returns {Matrix}
+	 */
+	negate() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.negate();
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; sqrt()
+	 * @returns {Matrix}
+	 */
+	sqrt() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.sqrt();
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; pow(x)
+	 * @param {Matrix} number - &#x30B9;&#x30AB;&#x30E9;&#x30FC;
+	 * @returns {Matrix}
+	 */
+	pow(number) {
+		const M = Matrix.create(number);
+		if(!M.isScalar()) {
+			throw &quot;not set Scalar&quot;;
+		}
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.pow(M.scalar);
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; log()
+	 * @returns {Matrix}
+	 */
+	log() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.log();
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; exp()
+	 * @returns {Matrix}
+	 */
+	exp() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.exp();
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; sin()
+	 * @returns {Matrix}
+	 */
+	sin() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.sin();
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; cos()
+	 * @returns {Matrix}
+	 */
+	cos() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.cos();
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; tan()
+	 * @returns {Matrix}
+	 */
+	tan() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.tan();
+		});
+	}
+	
+	/**
+	 * &#x5404;&#x9805;&#x306B; atan()
+	 * @returns {Matrix}
+	 */
+	atan() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.atan();
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; atan2()
+	 * @param {Matrix} number - &#x30B9;&#x30AB;&#x30E9;&#x30FC;
+	 * @returns {Matrix}
+	 */
+	atan2(number) {
+		const M = Matrix.create(number);
+		if(!M.isScalar) {
+			throw &quot;not set Scalar&quot;;
+		}
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.atan2(M.scalar);
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; floor()
+	 * @returns {Matrix}
+	 */
+	floor() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.floor();
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; ceil()
+	 * @returns {Matrix}
+	 */
+	ceil() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.ceil();
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; round()
+	 * @returns {Matrix}
+	 */
+	round() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.round();
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; fix()
+	 * @returns {Matrix}
+	 */
+	fix() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.fix();
+		});
+	}
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; fract()
+	 * @returns {Matrix}
+	 */
+	fract() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.fract();
+		});
+	}
+
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+	// &#x884C;&#x5217;&#x306E;&#x8A08;&#x7B97;&#x3067;&#x3088;&#x304F;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x51E6;&#x7406;&#x3002;
+	// &#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x5185;&#x90E8;&#x306E;&#x51E6;&#x7406;&#x3092;&#x8A18;&#x8FF0;&#x3059;&#x308B;&#x969B;&#x306B;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3044;&#x308B;&#x3002;
+	// &#x4ED6;&#x304B;&#x3089;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5834;&#x5408;&#x306F;&#x6CE8;&#x610F;&#x304C;&#x5FC5;&#x8981;&#x3067;&#x3042;&#x308B;&#x3002;
+	// &#x524D;&#x63D0;&#x6761;&#x4EF6;&#x304C;&#x3042;&#x308B;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x3001;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3068;&#x306A;&#x3063;&#x3066;&#x3044;&#x308B;&#x3002;
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+
+	/**
+	 * &#x884C;&#x5217;&#x3092;&#x6642;&#x8A08;&#x56DE;&#x308A;&#x306B;&#x56DE;&#x8EE2;&#x3055;&#x305B;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
+	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * @param {number} count - &#x56DE;&#x8EE2;&#x3059;&#x308B;&#x56DE;&#x6570;
+	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 */
+	_rot90(count) {
+		let rot_type = 1;
+		if(arguments.length === 1) {
+			rot_type = ((count % 4) + 4) % 4;
+		}
+		if(rot_type === 0) {
+			return this;
+		}
+		// &#x30D0;&#x30C3;&#x30AF;&#x30A2;&#x30C3;&#x30D7;
+		const x = new Array(this.row_length);
+		for(let i = 0; i &lt; this.row_length; i++) {
+			x[i] = new Array(this.column_length);
+			for(let j = 0; j &lt; this.column_length; j++) {
+				x[i][j] = this.matrix_array[i][j];
+			}
+		}
+		const y = this.matrix_array;
+		if(rot_type === 1) {
+			// 90&#x5EA6;&#x56DE;&#x8EE2;
+			y.splice(this.column_length);
+			for(let col = 0; col &lt; this.column_length; col++) {
+				if(col &lt; this.row_length) {
+					y[col].splice(this.row_length);
+				}
+				else {
+					y[col] = new Array(this.row_length);
+				}
+				for(let row = 0; row &lt; this.row_length; row++) {
+					y[col][row] = x[this.row_length - row - 1][col];
+				}
+			}
+		}
+		else if(rot_type === 2) {
+			// 180&#x5EA6;&#x56DE;&#x8EE2;
+			for(let row = 0; row &lt; this.row_length; row++) {
+				for(let col = 0; col &lt; this.column_length; col++) {
+					y[row][col] = x[this.row_length - row - 1][this.column_length - col - 1];
+				}
+			}
+		}
+		else if(rot_type === 3) {
+			// 270&#x5EA6;&#x56DE;&#x8EE2;
+			y.splice(this.column_length);
+			for(let col = 0; col &lt; this.column_length; col++) {
+				if(col &lt; this.row_length) {
+					y[col].splice(this.row_length);
+				}
+				else {
+					y[col] = new Array(this.row_length);
+				}
+				for(let row = 0; row &lt; this.row_length; row++) {
+					y[col][row] = x[row][this.column_length - col - 1];
+				}
+			}
+		}
+		this.row_length = y.length;
+		this.column_length = y[0].length;
+		this._clearCash();
+		return this;
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x3092;&#x62E1;&#x5F35;&#x3057;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
+	 * &#x62E1;&#x5F35;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;0&#x3092;&#x521D;&#x671F;&#x5024;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;
+	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * @param {number} row_length - &#x65B0;&#x3057;&#x3044;&#x884C;&#x306E;&#x9577;&#x3055;
+	 * @param {number} column_length - &#x65B0;&#x3057;&#x3044;&#x5217;&#x306E;&#x9577;&#x3055;
+	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 */
+	_resize(row_length, column_length) {
+		if((row_length === this.row_length) &amp;&amp; (column_length === this.column_length)) {
+			return this;
+		}
+		if((row_length &lt;= 0) || (column_length &lt;= 0)) {
+			throw &quot;_resize&quot;;
+		}
+		const row_max = Math.max(this.row_length, row_length);
+		const col_max = Math.max(this.column_length, column_length);
+		const y = this.matrix_array;
+		// &#x5927;&#x304D;&#x304F;&#x306A;&#x3063;&#x305F;&#x884C;&#x3068;&#x5217;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x30BC;&#x30ED;&#x3067;&#x57CB;&#x3081;&#x308B;
+		for(let row = 0; row &lt; row_max; row++) {
+			if(row &gt;= this.row_length) {
+				y[row] = new Array(col_max);
+			}
+			for(let col = 0; col &lt; col_max; col++) {
+				if((row &gt;= this.row_length) || (col &gt;= this.column_length)) {
+					y[row][col] = Complex.ZERO;
+				}
+			}
+		}
+		// &#x5C0F;&#x3055;&#x304F;&#x306A;&#x3063;&#x305F;&#x884C;&#x3068;&#x5217;&#x3092;&#x524A;&#x9664;&#x3059;&#x308B;
+		if(this.row_length &gt; row_length) {
+			y.splice(row_length);
+		}
+		if(this.column_length &gt; column_length) {
+			for(let row = 0; row &lt; y.length; row++) {
+				y[row].splice(column_length);
+			}
+		}
+		this.row_length = row_length;
+		this.column_length = column_length;
+		this._clearCash();
+		return this;
+	}
+
+	/**
+	 * &#x884C;&#x3092;&#x6D88;&#x53BB;&#x3057;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
+	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * @param {number} row_index - &#x884C;&#x756A;&#x53F7;
+	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 */
+	_delete_row(row_index) {
+		if((this.row_length === 1) || (this.row_length &lt;= row_index)) {
+			throw &quot;_delete_row&quot;;
+		}
+		this.matrix_array.splice(row_index, 1);
+		this.row_length--;
+		this._clearCash();
+		return this;
+	}
+	
+	/**
+	 * &#x5217;&#x3092;&#x6D88;&#x53BB;&#x3057;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
+	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * @param {number} column_index - &#x5217;&#x756A;&#x53F7;
+	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 */
+	_delete_column(column_index) {
+		if((this.column_length === 1) || (this.column_length &lt;= column_index)) {
+			throw &quot;_delete_column&quot;;
+		}
+		for(let row = 0; row &lt; this.row_length; row++) {
+			this.matrix_array[row].splice(column_index, 1);
+		}
+		this.column_length--;
+		this._clearCash();
+		return this;
+	}
+
+	/**
+	 * &#x884C;&#x3092;&#x4EA4;&#x63DB;&#x3057;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
+	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * @param {number} row_index1 - &#x884C;&#x756A;&#x53F7;1
+	 * @param {number} row_index2 - &#x884C;&#x756A;&#x53F7;2
+	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 */
+	_exchange_row(row_index1, row_index2) {
+		if((this.row_length === 1) || (this.row_length &lt;= row_index1) || (this.row_length &lt;= row_index2)) {
+			throw &quot;_exchange_row&quot;;
+		}
+		if(row_index1 === row_index2) {
+			return this;
+		}
+		const swap = this.matrix_array[row_index1];
+		this.matrix_array[row_index1] = this.matrix_array[row_index2];
+		this.matrix_array[row_index2] = swap;
+		this._clearCash();
+		return this;
+	}
+
+	/**
+	 * &#x884C;&#x3092;&#x4EA4;&#x63DB;&#x3057;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
+	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * @param {number} column_index1 - &#x884C;&#x756A;&#x53F7;1
+	 * @param {number} column_index2 - &#x884C;&#x756A;&#x53F7;2
+	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 */
+	_exchange_column(column_index1, column_index2) {
+		if((this.column_length === 1) || (this.column_length &lt;= column_index1) || (this.column_length &lt;= column_index2)) {
+			throw &quot;_exchange_column&quot;;
+		}
+		if(column_index1 === column_index2) {
+			return this;
+		}
+		for(let row = 0; row &lt; this.row_length; row++) {
+			const swap = this.matrix_array[row][column_index1];
+			this.matrix_array[row][column_index1] = this.matrix_array[row][column_index2];
+			this.matrix_array[row][column_index2] = swap;
+		}
+		this._clearCash();
+		return this;
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x306E;&#x53F3;&#x306B;&#x884C;&#x5217;&#x3092;&#x304F;&#x3063;&#x3064;&#x3051;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
+	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * @param {Matrix} left_matrix - &#x7D50;&#x5408;&#x3057;&#x305F;&#x3044;&#x884C;&#x5217;
+	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 */
+	_concat_left(left_matrix) {
+		const M = Matrix.create(left_matrix);
+		for(let row = 0; row &lt; this.row_length; row++) {
+			for(let col = 0; col &lt; M.column_length; col++) {
+				this.matrix_array[row].push(M.matrix_array[row][col]);
+			}
+		}
+		this.column_length += M.column_length;
+		this._clearCash();
+		return this;
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x306E;&#x4E0B;&#x306B;&#x884C;&#x5217;&#x3092;&#x304F;&#x3063;&#x3064;&#x3051;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
+	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * @param {Matrix} bottom_matrix - &#x7D50;&#x5408;&#x3057;&#x305F;&#x3044;&#x884C;&#x5217;
+	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 */
+	_concat_bottom(bottom_matrix) {
+		const M = Matrix.create(bottom_matrix);
+		for(let row = 0; row &lt; M.row_length; row++) {
+			this.matrix_array.push(M.matrix_array[row]);
+		}
+		this.row_length += M.row_length;
+		this._clearCash();
+		return this;
+	}
+
+	/**
+	 * &#x5217;&#x306E;&#x4E2D;&#x3067;&#x6700;&#x3082;&#x30CE;&#x30EB;&#x30E0;&#x304C;&#x6700;&#x5927;&#x306E;&#x5024;&#x304C;&#x3042;&#x308B;&#x884C;&#x756A;&#x53F7;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
+	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * @param {number} column_index - &#x5217;&#x756A;&#x53F7;
+	 * @param {number} row_index_offset - &#x884C;&#x306E;&#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;(&#x3053;&#x306E;&#x5024;&#x304B;&#x3089;&#x884C;&#x3046;)
+	 * @param {number} row_index_max - &#x884C;&#x306E;&#x6700;&#x5927;(&#x3053;&#x306E;&#x5024;&#x306F;&#x542B;&#x3081;&#x306A;&#x3044;)
+	 * @returns {number} &#x884C;&#x756A;&#x53F7;
+	 */
+	_max_row_number(column_index, row_index_offset, row_index_max) {
+		let row_index = 0;
+		let row_max = 0;
+		let row = row_index_offset ? row_index_offset : 0;
+		const row_imax = row_index_max ? row_index_max : this.row_length;
+		// n&#x5217;&#x76EE;&#x3067;&#x6700;&#x3082;&#x5927;&#x304D;&#x306A;&#x884C;&#x3092;&#x53D6;&#x5F97;
+		for(; row &lt; row_imax; row++) {
+			const norm = this.matrix_array[row][column_index].norm;
+			if(norm &gt; row_max) {
+				row_max = norm;
+				row_index = row;
+			}
+		}
+		return {
+			index : row_index,
+			max : row_max
+		};
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x306E;&#x5404;&#x884C;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x898B;&#x7ACB;&#x3066;&#x3001;&#x7DDA;&#x578B;&#x5F93;&#x5C5E;&#x3057;&#x3066;&#x3044;&#x308B;&#x884C;&#x3092;&#x62BD;&#x51FA;&#x3059;&#x308B;
+	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * @param {number} [epsilon=1.0e-10] - &#x8AA4;&#x5DEE;
+	 * @returns {Array} &#x884C;&#x756A;&#x53F7;&#x306E;&#x884C;&#x5217;(&#x6607;&#x9806;)
+	 */
+	_get_linear_dependence_vector(epsilon) {
+		const M = new Matrix(this);
+		const m = M.matrix_array;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		// &#x78BA;&#x8A8D;&#x3059;&#x308B;&#x884C;&#x756A;&#x53F7;&#xFF08;&#x3053;&#x3053;&#x304B;&#x3089;&#x7D42;&#x308F;&#x3063;&#x305F;&#x884C;&#x306F;&#x524A;&#x9664;&#x3057;&#x3066;&#x3044;&#x304F;&#xFF09;
+		const row_index_array = new Array(this.row_length);
+		for(let i = 0; i &lt; this.row_length; i++) {
+			row_index_array[i] = i;
+		}
+		// &#x30AC;&#x30A6;&#x30B9;&#x306E;&#x6D88;&#x53BB;&#x6CD5;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3001;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x62BD;&#x51FA;&#x3057;&#x3066;&#x3044;&#x304F;
+		for(let col_target = 0; col_target &lt; M.column_length; col_target++) {
+			let row_max_index = 0;
+			{
+				let row_max = 0;
+				let row_max_key = 0;
+				// n&#x5217;&#x76EE;&#x3067;&#x7D76;&#x5BFE;&#x5024;&#x304C;&#x6700;&#x3082;&#x5927;&#x304D;&#x306A;&#x884C;&#x3092;&#x53D6;&#x5F97;
+				for(const row_key in row_index_array) {
+					const row = row_index_array[row_key];
+					const norm = m[row][col_target].norm;
+					if(norm &gt; row_max) {
+						row_max = norm;
+						row_max_key = row_key;
+						row_max_index = row;
+					}
+				}
+				// &#x5927;&#x304D;&#x3044;&#x306E;&#x304C;0&#x3067;&#x3042;&#x308B;&#xFF1D;&#x305D;&#x306E;&#x5217;&#x306F;&#x5168;&#x3066;0&#x3067;&#x3042;&#x308B;
+				if(row_max &lt;= tolerance) {
+					continue;
+				}
+				// &#x5927;&#x304D;&#x306A;&#x5024;&#x304C;&#x3042;&#x3063;&#x305F;&#x884C;&#x306F;&#x3001;&#x30EA;&#x30B9;&#x30C8;&#x304B;&#x3089;&#x9664;&#x53BB;&#x3059;&#x308B;
+				row_index_array.splice(row_max_key, 1);
+				if(col_target === M.column_length - 1) {
+					break;
+				}
+			}
+			// &#x6B21;&#x306E;&#x5217;&#x304B;&#x3089;&#x3001;&#x5927;&#x304D;&#x306A;&#x5024;&#x304C;&#x3042;&#x3063;&#x305F;&#x884C;&#x306E;&#x6210;&#x5206;&#x3092;&#x524A;&#x9664;
+			for(const row_key in row_index_array) {
+				const row = row_index_array[row_key];
+				const inv = m[row][col_target].div(m[row_max_index][col_target]);
+				for(let col = col_target; col &lt; M.column_length; col++) {
+					m[row][col] = m[row][col].sub(m[row_max_index][col].mul(inv));
+				}
+			}
+		}
+		return row_index_array;
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x898B;&#x7ACB;&#x3066;&#x3001;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x5316;&#x3057;&#x3001;Q&#x3068;R&#x306E;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x308B;
+	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * @param {Matrix} M_ - &#x6B63;&#x65B9;&#x884C;&#x5217;
+	 * @returns {Object&lt;string, Matrix&gt;}
+	 */
+	static _gram_schmidt_orthonormalization(M_) {
+		// &#x30B0;&#x30E9;&#x30E0;&#x30FB;&#x30B7;&#x30E5;&#x30DF;&#x30C3;&#x30C8;&#x306E;&#x6B63;&#x898F;&#x76F4;&#x4EA4;&#x5316;&#x6CD5;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
+		// &#x53C2;&#x8003;&#xFF1A;Gilbert Strang (2007). Computational Science and Engineering.
+
+		const M = Matrix.create(M_);
+		const len = M.column_length;
+		const A = M.matrix_array;
+		const Q_Matrix = Matrix.zeros(len);
+		const R_Matrix = Matrix.zeros(len);
+		const Q = Q_Matrix.matrix_array;
+		const R = R_Matrix.matrix_array;
+		const non_orthogonalized = [];
+		const a = new Array(len);
+		
+		for(let col = 0; col &lt; len; col++) {
+			// i&#x5217;&#x76EE;&#x3092;&#x62BD;&#x51FA;
+			for(let row = 0; row &lt; len; row++) {
+				a[row] = A[row][col];
+			}
+			// &#x76F4;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x4F5C;&#x6210;
+			if(col &gt; 0) {
+				// R&#x306E;i&#x5217;&#x76EE;&#x3092;&#x5185;&#x7A4D;&#x3067;&#x8A08;&#x7B97;&#x3059;&#x308B;
+				for(let j = 0; j &lt; col; j++) {
+					for(let k = 0; k &lt; len; k++) {
+						R[j][col] = R[j][col].add(A[k][col].dot(Q[k][j]));
+					}
+				}
+				for(let j = 0; j &lt; col; j++) {
+					for(let k = 0; k &lt; len; k++) {
+						a[k] = a[k].sub(R[j][col].mul(Q[k][j]));
+					}
+				}
+			}
+			{
+				// &#x6B63;&#x898F;&#x5316;&#x3068;&#x8DDD;&#x96E2;&#x3092;1&#x306B;&#x3059;&#x308B;
+				for(let j = 0; j &lt; len; j++) {
+					R[col][col] = R[col][col].add(a[j].mul(a[j]));
+				}
+				R[col][col] = R[col][col].sqrt();
+				if(R[col][col].isZero(1e-10)) {
+					// &#x76F4;&#x884C;&#x5316;&#x304C;&#x4E0D;&#x53EF;&#x80FD;&#x3060;&#x3063;&#x305F;&#x5217;&#x306E;&#x756A;&#x53F7;&#x3092;&#x30E1;&#x30E2;&#x3057;&#x3066;&#x3001;&#x305D;&#x306E;&#x5217;&#x306F;&#x30BC;&#x30ED;&#x3067;&#x57CB;&#x3081;&#x308B;
+					non_orthogonalized.push(col);
+					for(let j = 0;j &lt; len;j++) {
+						Q[j][col] = Complex.ZERO;
+					}
+				}
+				else {
+					// &#x3053;&#x3053;&#x3067; R[i][i] === 0 &#x306E;&#x5834;&#x5408;&#x3001;&#x76F4;&#x884C;&#x3055;&#x305B;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;a&#x306F;0&#x3067;&#x3042;&#x308A;&#x3001;
+					// &#x30E9;&#x30F3;&#x30AF;&#x843D;&#x3061;&#x3057;&#x3066;&#x304A;&#x308A;&#x3001;&#x8A08;&#x7B97;&#x4E0D;&#x53EF;&#x80FD;&#x3067;&#x3042;&#x308B;&#x3002;
+					// 0&#x5272;&#x308A;&#x3057;&#x305F;&#x5024;&#x3092;&#x3001;j&#x5217;&#x76EE;&#x306E;Q&#x306B;&#x8A18;&#x9332;&#x3057;&#x3066;&#x3044;&#x304F;&#x304C;Inf&#x3068;&#x306A;&#x308B;&#x3002;
+					for(let j = 0;j &lt; len;j++) {
+						Q[j][col] = a[j].div(R[col][col]);
+					}
+				}
+			}
+		}
+		return {
+			Q : Q_Matrix,
+			R : R_Matrix,
+			non_orthogonalized : non_orthogonalized
+		};
+	}
+	
+	/**
+	 * &#x884C;&#x5217;&#x306E;&#x5168;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x3001;&#x76F4;&#x884C;&#x3057;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * @param {number} [epsilon=1.0e-10] - &#x8AA4;&#x5DEE;
+	 * @returns {Matrix} &#x76F4;&#x884C;&#x3057;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x304C;&#x306A;&#x3051;&#x308C;&#x3070;NULL&#x3092;&#x8FD4;&#x3059;
+	 */
+	_createOrthogonalVector(epsilon) {
+		const M = new Matrix(this);
+		const m = M.matrix_array;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		// &#x6B63;&#x5247;&#x884C;&#x5217;&#x3092;&#x306A;&#x3059;&#x5834;&#x5408;&#x306B;&#x554F;&#x984C;&#x3068;&#x306A;&#x308B;&#x884C;&#x756A;&#x53F7;&#x3092;&#x53D6;&#x5F97;
+		const not_regular_rows = M._get_linear_dependence_vector(tolerance);
+		// &#x4E0D;&#x8981;&#x306A;&#x884C;&#x3092;&#x524A;&#x9664;&#x3059;&#x308B;
+		{
+			// not_regular_rows&#x306F;&#x6607;&#x9806;&#x30EA;&#x30B9;&#x30C8;&#x306A;&#x306E;&#x3067;&#x3001;&#x5F8C;&#x308D;&#x304B;&#x3089;&#x6D88;&#x3057;&#x3066;&#x3044;&#x304F;
+			for(let i = not_regular_rows.length - 1; i &gt;= 0; i--) {
+				m.splice(not_regular_rows[i], 1);
+				M.row_length--;
+			}
+		}
+		// &#x8FFD;&#x52A0;&#x3067;&#x304D;&#x308B;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x6570;
+		const add_vectors = this.column_length - m.length;
+		if(add_vectors &lt;= 0) {
+			return null;
+		}
+		// &#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#xFF08;seed&#x5024;&#x306F;&#x6BCE;&#x56DE;&#x540C;&#x4E00;&#x3068;&#x3059;&#x308B;&#xFF09;
+		const noise = new Random(0);
+		let orthogonal_matrix = null;
+		for(let i = 0; i &lt; 100; i++) {
+			// &#x76F4;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x4F5C;&#x308B;&#x305F;&#x3081;&#x306B;&#x3001;&#x3044;&#x3063;&#x305F;&#x3093;&#x884C;&#x3068;&#x5217;&#x3092;&#x4EA4;&#x63DB;&#x3059;&#x308B;
+			// &#x3053;&#x308C;&#x306F;&#x3001;&#x30B0;&#x30E9;&#x30E0;&#x30FB;&#x30B7;&#x30E5;&#x30DF;&#x30C3;&#x30C8;&#x306E;&#x6B63;&#x898F;&#x76F4;&#x4EA4;&#x5316;&#x6CD5;&#x304C;&#x5217;&#x3054;&#x3068;&#x306B;&#x884C;&#x3046;&#x624B;&#x6CD5;&#x306E;&#x305F;&#x3081;&#x3002;
+			const M2 = M.T();
+			// &#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+			const R = Matrix.createMatrixDoEachCalculation(function() {
+				return new Complex(noise.nextGaussian());
+			}, M2.row_length, add_vectors);
+			// &#x5217;&#x306B;&#x8FFD;&#x52A0;&#x3059;&#x308B;
+			M2._concat_left(R);
+			// &#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+			orthogonal_matrix = Matrix._gram_schmidt_orthonormalization(M2);
+			// &#x6B63;&#x3057;&#x304F;&#x4F5C;&#x6210;&#x3067;&#x304D;&#x3066;&#x3044;&#x305F;&#x3089;&#x5B8C;&#x4E86;
+			if(orthogonal_matrix.non_orthogonalized.length === 0) {
+				break;
+			}
+		}
+		if(orthogonal_matrix.non_orthogonalized.length !== 0) {
+			// &#x666E;&#x901A;&#x306F;&#x4F5C;&#x6210;&#x3067;&#x304D;&#x306A;&#x3044;&#x3053;&#x3068;&#x306F;&#x306A;&#x3044;&#x304C;&#x30FB;&#x30FB;&#x30FB;
+			console.log(&quot;miss&quot;);
+			return null;
+		}
+		// &#x4F5C;&#x6210;&#x3057;&#x305F;&#x5217;&#x3092;&#x5207;&#x308A;&#x51FA;&#x3059;
+		const y = new Array(add_vectors);
+		const q = orthogonal_matrix.Q.matrix_array;
+		for(let row = 0; row &lt; add_vectors; row++) {
+			y[row] = new Array(this.column_length);
+			for(let col = 0; col &lt; this.column_length; col++) {
+				y[row][col] = q[col][this.column_length - add_vectors + row];
+			}
+		}
+		return new Matrix(y);
+	}
+
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+	// &#x884C;&#x5217;&#x306E;&#x4E00;&#x822C;&#x8A08;&#x7B97;
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+
+	/**
+	 * &#x884C;&#x5217;&#x306E;p&#x30CE;&#x30EB;&#x30E0;
+	 * @returns {number}
+	 */
+	norm(p) {
+		if(arguments.length === 0) {
+			return this.norm2;
+		}
+		if(p === 1) {
+			return this.norm1;
+		}
+		else if(p === 2) {
+			return this.norm2;
+		}
+		else if((p === Number.POSITIVE_INFINITY) || (p === Number.NEGATIVE_INFINITY)) {
+			const y = this.matrix_array;
+			let compare = p === Number.POSITIVE_INFINITY ? 0 : Number.POSITIVE_INFINITY;
+			// &#x884C;&#x3092;&#x56FA;&#x5B9A;&#x3057;&#x3066;&#x5217;&#x306E;&#x548C;&#x3092;&#x8A08;&#x7B97;
+			for(let row = 0; row &lt; this.row_length; row++) {
+				let sum = 0.0;
+				for(let col = 0; col &lt; this.column_length; col++) {
+					sum += y[row][col].norm;
+				}
+				if(p === Number.POSITIVE_INFINITY) {
+					compare = Math.max(compare, sum);
+				}
+				else {
+					compare = Math.min(compare, sum);
+				}
+			}
+			return compare;
+		}
+		if(this.isVector()) {
+			// &#x4E00;&#x822C;&#x5316;&#x30D9;&#x30AF;&#x30C8;&#x30EB;p&#x30CE;&#x30EB;&#x30E0;
+			let sum = 0.0;
+			for(let i = 0; i &lt; this.length; i++) {
+				sum = Math.pow(this.getComplex(i).norm, p);
+			}
+			return Math.pow(sum, 1.0 / p);
+		}
+		// &#x672A;&#x5B9F;&#x88C5;
+		throw &quot;norm&quot;;
+	}
+
+	/**
+	 * A.inner(B) = &#x30C9;&#x30C3;&#x30C8;&#x7A4D;&#xFF08;&#x5185;&#x7A4D;&#xFF09;
+	 * @param {Matrix} number 
+	 * @param {number} [dimension=1] &#x8A08;&#x7B97;&#x3059;&#x308B;&#x3068;&#x304D;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x6B21;&#x5143;&#xFF08;1 or 2&#xFF09;
+	 * @returns {Matrix}
+	 */
+	inner(number, dimension) {
+		const M1 = this;
+		const M2 = Matrix.create(number);
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const dim = dimension ? dimension : 1;
+		if(M1.isScalar() &amp;&amp; M2.isScalar()) {
+			return new Matrix(M1.scalar.dot(M2.scalar));
+		}
+		if(M1.isVector() &amp;&amp; M2.isVector()) {
+			let sum = Complex.ZERO;
+			for(let i = 0; i &lt; M1.length; i++) {
+				sum = sum.add(M1.getComplex(i).dot(M2.getComplex(i)));
+			}
+			return new Matrix(sum);
+		}
+		if((M1.row_length !== M2.row_length) || (M1.column_length !== M2.column_length)) {
+			throw &quot;Matrix size does not match&quot;;
+		}
+		if(dim === 1) {
+			const y = new Array(1);
+			y[0] = new Array(M1.column_length);
+			for(let col = 0; col &lt; M1.column_length; col++) {
+				let sum = Complex.ZERO;
+				for(let row = 0; row &lt; M1.row_length; row++) {
+					sum = sum.add(x1[row][col].dot(x2[row][col]));
+				}
+				y[0][col] = sum;
+			}
+			return new Matrix(y);
+		}
+		else if(dim === 2) {
+			const y = new Array(M1.row_length);
+			for(let row = 0; row &lt; M1.row_length; row++) {
+				let sum = Complex.ZERO;
+				for(let col = 0; col &lt; M1.column_length; col++) {
+					sum = sum.add(x1[row][col].dot(x2[row][col]));
+				}
+				y[row] = [sum];
+			}
+			return new Matrix(y);
+		}
+		else {
+			throw &quot;dim&quot;;
+		}
+	}
+	
+	/**
+	 * &#x884C;&#x5217;&#x306E;&#x30E9;&#x30F3;&#x30AF;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {number}
+	 */
+	rank(epsilon) {
+		return Math.abs(this.row_length, this.column_length) - (this._get_linear_dependence_vector(epsilon)).length;
+	}
+
+	/**
+	 * &#x8EE2;&#x7F6E;&#x884C;&#x5217;
+	 * @returns {Matrix}
+	 */
+	transpose() {
+		const y = new Array(this.column_length);
+		for(let col = 0; col &lt; this.column_length; col++) {
+			y[col] = new Array(this.row_length);
+			for(let row = 0; row &lt; this.row_length; row++) {
+				y[col][row] = this.matrix_array[row][col];
+			}
+		}
+		return new Matrix(y);
+	}
+
+	/**
+	 * &#x30A8;&#x30EB;&#x30DF;&#x30FC;&#x30C8;&#x8EE2;&#x7F6E;&#x884C;&#x5217;
+	 * @returns {Matrix}
+	 */
+	ctranspose() {
+		return this.transpose().conj();
+	}
+
+	/**
+	 * &#x30A8;&#x30EB;&#x30DF;&#x30FC;&#x30C8;&#x8EE2;&#x7F6E;&#x884C;&#x5217;
+	 * @returns {Matrix}
+	 */
+	T() {
+		return this.ctranspose();
+	}
+
+	/**
+	 * A.det() = [A] &#x884C;&#x5217;&#x5F0F;
+	 * @returns {Matrix}
+	 */
+	det() {
+		if(!this.isSquare()) {
+			throw &quot;not square&quot;;
+		}
+		const M = this.matrix_array;
+		const calcDet = function(x) {
+			if(x.length === 2) {
+				// 2&#x6B21;&#x5143;&#x306E;&#x884C;&#x5217;&#x5F0F;&#x306B;&#x306A;&#x3063;&#x305F;&#x3089;&#x3001;&#x305F;&#x3059;&#x304D;&#x639B;&#x3051;&#x8A08;&#x7B97;&#x3059;&#x308B;
+				return x[0][0].mul(x[1][1]).sub(x[0][1].mul(x[1][0]));
+			}
+			let y = Complex.ZERO;
+			for(let i = 0; i &lt; x.length; i++) {
+				// N&#x6B21;&#x5143;&#x306E;&#x884C;&#x5217;&#x5F0F;&#x3092;&#x3001;N-1&#x6B21;&#x5143;&#x306E;&#x884C;&#x5217;&#x5F0F;&#x306B;&#x5206;&#x89E3;&#x3057;&#x3066;&#x3044;&#x304F;
+				const D = [];
+				const a = x[i][0];
+				for(let row = 0, D_low = 0; row &lt; x.length; row++) {
+					if(i === row) {
+						continue;
+					}
+					D[D_low] = [];
+					for(let col = 1, D_col = 0; col &lt; x.length; col++, D_col++) {
+						D[D_low][D_col] = x[row][col];
+					}
+					D_low++;
+				}
+				if((i % 2) === 0) {
+					y = y.add(a.mul(calcDet(D)));
+				}
+				else {
+					y = y.sub(a.mul(calcDet(D)));
+				}
+			}
+			return y;
+		};
+		return new Matrix(calcDet(M));
+	}
+
+	/**
+	 * A.lup() = P&apos;*L*U = A &#x3068;&#x306A;&#x308B; P,L,U&#x3092;&#x89E3;&#x304F;
+	 * @returns {Object&lt;string, Matrix&gt;} {P, L, U}
+	 */
+	lup() {
+		const L = Matrix.zeros(this.row_length);
+		const U = new Matrix(this);
+		const P = Matrix.eye(this.row_length);
+		const l = L.matrix_array;
+		const u = U.matrix_array;
+		// &#x30AC;&#x30A6;&#x30B9;&#x306E;&#x6D88;&#x53BB;&#x6CD5;&#x3067;&#x9023;&#x7ACB;1&#x6B21;&#x65B9;&#x7A0B;&#x5F0F;&#x306E;&#x672A;&#x77E5;&#x6570;&#x3092;&#x6C42;&#x3081;&#x308B;
+		//&#x524D;&#x9032;&#x6D88;&#x53BB;
+		for(let k = 0; k &lt; this.column_length; k++) {
+			// &#x30D4;&#x30DD;&#x30C3;&#x30C8;&#x306E;&#x9078;&#x629E;
+			let pivot;
+			{
+				// k&#x5217;&#x76EE;&#x3067;&#x6700;&#x3082;&#x5927;&#x304D;&#x306A;&#x884C;&#x3092;&#x53D6;&#x5F97;(k&#x5217;&#x76EE;&#x304B;&#x3089;&#x8ABF;&#x3079;&#x308B;)
+				const max_row_number = U._max_row_number(k, k);
+				pivot = max_row_number.index;
+				if(max_row_number.max === 0.0) {
+					continue;
+				}
+				//&#x4EA4;&#x63DB;&#x3092;&#x884C;&#x3046;
+				if(k !== pivot) {
+					L._exchange_row(k, pivot);
+					U._exchange_row(k, pivot);
+					P._exchange_row(k, pivot);
+				}
+			}
+			// &#x6D88;&#x53BB;
+			for(let row = k + 1;row &lt; this.row_length; row++) {
+				const temp = u[row][k].div(u[k][k]);
+				l[row][k] = temp;
+				//l&#x306E;&#x5024;&#x3060;&#x3051;&#x884C;&#x4EA4;&#x63DB;&#x304C;&#x5FC5;&#x8981;&#xFF1F;
+				for(let col = k; col &lt; this.column_length; col++) {
+					u[row][col] = u[row][col].sub(u[k][col].mul(temp));
+				}
+			}
+		}
+		L._resize(this.row_length, Math.min(this.row_length, this.column_length));
+		U._resize(Math.min(this.row_length, this.column_length), this.column_length);
+		// L &#x306E;&#x5BFE;&#x89D2;&#x7DDA;&#x306B;1&#x3092;&#x4EE3;&#x5165;
+		L._each(function(num, row, col) {
+			return row === col ? Complex.ONE : num;
+		});
+		return {
+			L : L,
+			U : U,
+			P : P
+		};
+	}
+
+	/**
+	 * A.linsolve(B) = Ax = B &#x3068;&#x306A;&#x308B; x&#x3092;&#x89E3;&#x304F;
+	 * @param {Matrix} number 
+	 * @returns {Matrix}
+	 */
+	linsolve(number) {
+		if(!this.isSquare()) {
+			throw &quot;Matrix size does not match&quot;;
+		}
+		// &#x9023;&#x7ACB;&#x4E00;&#x6B21;&#x65B9;&#x7A0B;&#x5F0F;&#x3092;&#x89E3;&#x304F;
+		const len = this.column_length;
+		const arg = Matrix.create(number);
+		if((arg.row_length !== this.row_length) || (arg.column_length &gt; 1)) {
+			throw &quot;Matrix size does not match&quot;;
+		}
+		// &#x884C;&#x5217;&#x3092;&#x6E96;&#x5099;&#x3059;&#x308B;
+		const M = new Matrix(this);
+		M._concat_left(arg);
+		const long_matrix_array = M.matrix_array;
+		const long_length = M.column_length;
+		// &#x30AC;&#x30A6;&#x30B9;&#x306E;&#x6D88;&#x53BB;&#x6CD5;&#x3067;&#x9023;&#x7ACB;1&#x6B21;&#x65B9;&#x7A0B;&#x5F0F;&#x306E;&#x672A;&#x77E5;&#x6570;&#x3092;&#x6C42;&#x3081;&#x308B;
+		//&#x524D;&#x9032;&#x6D88;&#x53BB;
+		for(let k = 0; k &lt; (len - 1); k++) {
+			//&#x30D4;&#x30DD;&#x30C3;&#x30C8;&#x306E;&#x9078;&#x629E;
+			{
+				// k&#x5217;&#x76EE;&#x3067;&#x6700;&#x3082;&#x5927;&#x304D;&#x306A;&#x884C;&#x3092;&#x53D6;&#x5F97;(k&#x5217;&#x76EE;&#x304B;&#x3089;&#x8ABF;&#x3079;&#x308B;)
+				const row_num = M._max_row_number(k, k).index;
+				//&#x4EA4;&#x63DB;&#x3092;&#x884C;&#x3046;
+				M._exchange_row(k, row_num);
+			}
+			//&#x30D4;&#x30DD;&#x30C3;&#x30C8;&#x306E;&#x6B63;&#x898F;&#x5316;
+			{
+				const normalize_value = long_matrix_array[k][k].inv();
+				for(let row = k, col = k; col &lt; long_length; col++) {
+					long_matrix_array[row][col] = long_matrix_array[row][col].mul(normalize_value);
+				}
+			}
+			//&#x6D88;&#x53BB;
+			for(let row = k + 1;row &lt; len; row++) {
+				const temp = long_matrix_array[row][k];
+				for(let col = k; col &lt; long_length; col++) {
+					long_matrix_array[row][col] = long_matrix_array[row][col].sub(long_matrix_array[k][col].mul(temp));
+				}
+			}
+		}
+		//&#x5F8C;&#x9000;&#x4EE3;&#x5165;
+		const y = new Array(len);
+		y[len - 1] = long_matrix_array[len - 1][len].div(long_matrix_array[len - 1][len - 1]);
+		for(let row = len - 2; row &gt;= 0; row--) {
+			y[row] = long_matrix_array[row][long_length - 1];
+			for(let j = row + 1; j &lt; len; j++) {
+				y[row] = y[row].sub(long_matrix_array[row][j] * y[j]);
+			}
+			y[row] = y[row].div(long_matrix_array[row][row]);
+		}
+		const y2 = new Array(this.row_length);
+		for(let row = 0; row &lt; this.row_length; row++) {
+			y2[row] = [y[row]];
+		}
+
+		return new Matrix(y2);
+	}
+
+	/**
+	 * {Q, R} = A.qr() QR&#x5206;&#x89E3;&#x3092;&#x884C;&#x3046;
+	 * @returns {Object&lt;string, Matrix&gt;} {Q, R} Q&#x306F;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3001;R&#x306F;&#x4E0A;&#x4E09;&#x89D2;&#x884C;&#x5217;
+	 */
+	qr() {
+		// &#x884C;&#x5217;&#x3092;&#x6E96;&#x5099;&#x3059;&#x308B;
+		const M = new Matrix(this);
+		// &#x4F5C;&#x6210;&#x5F8C;&#x306E;Q&#x3068;R&#x306E;&#x30B5;&#x30A4;&#x30BA;
+		const Q_row_length = this.row_length;
+		const Q_column_length = this.row_length;
+		const R_row_length = this.row_length;
+		const R_column_length = this.column_length;
+		// &#x8A08;&#x7B97;&#x6642;&#x306E;&#x884C;&#x3068;&#x5217;&#x306E;&#x30B5;&#x30A4;&#x30BA;
+		const dummy_size = Math.max(this.row_length, this.column_length);
+		// &#x6B63;&#x65B9;&#x884C;&#x5217;&#x306B;&#x3059;&#x308B;
+		M._resize(dummy_size, dummy_size);
+		// &#x6B63;&#x898F;&#x76F4;&#x884C;&#x5316;
+		const orthogonal_matrix = Matrix._gram_schmidt_orthonormalization(M);
+		// &#x8A08;&#x7B97;&#x3057;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x53D6;&#x5F97;
+		const Q_Matrix = orthogonal_matrix.Q;
+		const R_Matrix = orthogonal_matrix.R;
+		const non_orthogonalized = orthogonal_matrix.non_orthogonalized;
+		// Q&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x3092;&#x6210;&#x578B;&#x3059;&#x308B;
+		if(non_orthogonalized.length !== 0) {
+			// &#x76F4;&#x884C;&#x5316;&#x3067;&#x304D;&#x3066;&#x3044;&#x306A;&#x3044;&#x5217;&#x304C;&#x3042;&#x308B;&#x305F;&#x3081;&#x76F4;&#x884C;&#x5316;&#x3067;&#x304D;&#x3066;&#x306A;&#x3044;&#x5217;&#x4EE5;&#x5916;&#x3092;&#x62BD;&#x51FA;
+			const map = {};
+			for(let i = 0; i &lt; non_orthogonalized.length; i++) {
+				map[non_orthogonalized[i]] = 1;
+			}
+			const orthogonalized = [];
+			for(let i = 0; i &lt; dummy_size; i++) {
+				if(map[i]) {
+					continue;
+				}
+				const array = [];
+				for(let j = 0; j &lt; dummy_size; j++) {
+					array[j] = Q_Matrix.matrix_array[j][i];
+				}
+				orthogonalized.push(array);
+			}
+			// &#x76F4;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+			const orthogonal_vector = (new Matrix(orthogonalized))._createOrthogonalVector();
+			// &#x76F4;&#x884C;&#x5316;&#x3067;&#x304D;&#x3066;&#x3044;&#x306A;&#x3044;&#x5217;&#x3092;&#x5DEE;&#x3057;&#x66FF;&#x3048;&#x308B;
+			for(let i = 0; i &lt; non_orthogonalized.length; i++) {
+				const q_col = non_orthogonalized[i];
+				for(let j = 0; j &lt; dummy_size; j++) {
+					Q_Matrix.matrix_array[j][q_col] = orthogonal_vector.matrix_array[i][j];
+				}
+			}
+		}
+		Q_Matrix._resize(Q_row_length, Q_column_length);
+		// R&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x3092;&#x6210;&#x5F62;&#x3059;&#x308B;
+		R_Matrix._resize(R_row_length, R_column_length);
+		return {
+			Q : Q_Matrix,
+			R : R_Matrix
+		};
+	}
+
+	/**
+	 * {P, H} = A.tridiagonalize() &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x5316;&#x3059;&#x308B; P*H*P&apos;=A
+	 * @returns {Object&lt;string, Matrix&gt;} {P, H} H&#x306F;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x884C;&#x5217;&#x3001;P&#x306F;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3002;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x884C;&#x5217;&#x306E;&#x56FA;&#x6709;&#x5024;&#x306F;&#x5143;&#x306E;&#x884C;&#x5217;&#x3068;&#x4E00;&#x81F4;&#x3059;&#x308B;&#x3002;
+	 */
+	tridiagonalize() {
+		if(!this.isSquare()) {
+			throw &quot;not square matrix&quot;;
+		}
+		if(!this.isSymmetric()) {
+			throw &quot;not Symmetric&quot;;
+		}
+		if(this.isComplex()) {
+			throw &quot;not Real Matrix&quot;;
+		}
+		return MatrixTool.tridiagonalize(this);
+	}
+
+	/**
+	 * {V, D} = A.eig() &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x56FA;&#x6709;&#x5024;&#x5206;&#x89E3; V*D*V&apos;=A
+	 * @returns {Object&lt;string, Matrix&gt;} {V, D} V&#x306F;&#x53F3;&#x56FA;&#x6709;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x5217;&#x306B;&#x3082;&#x3064;&#x884C;&#x5217;&#x3067;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3001;D&#x306F;&#x56FA;&#x6709;&#x5024;&#x3092;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x306B;&#x6301;&#x3064;&#x884C;&#x5217;
+	 */
+	eig() {
+		if(!this.isSquare()) {
+			throw &quot;not square matrix&quot;;
+		}
+		if(!this.isSymmetric()) {
+			throw &quot;not Symmetric&quot;;
+		}
+		if(this.isComplex()) {
+			throw &quot;not Real Matrix&quot;;
+		}
+		return MatrixTool.eig(this);
+	}
+
+	/**
+	 * {U, S, V} = A.svd() &#x7279;&#x7570;&#x5024;&#x5206;&#x89E3; U*S*V&apos; = A
+	 * @returns {Object&lt;string, Matrix&gt;} {U,S,V}
+	 */
+	svd() {
+		if(this.isComplex()) {
+			// &#x8907;&#x7D20;&#x6570;&#x304C;&#x5165;&#x3063;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x306F;&#x3001;eig&#x95A2;&#x6570;&#x304C;&#x4F7F;&#x7528;&#x3067;&#x304D;&#x306A;&#x3044;&#x306E;&#x3067;&#x975E;&#x5BFE;&#x5FDC;
+			throw &quot;Unimplemented&quot;;
+		}
+		const rank = this.rank();
+		// SVD&#x5206;&#x89E3;
+		// &#x53C2;&#x8003;&#xFF1A;Gilbert Strang (2007). Computational Science and Engineering.
+		const VD = this.T().mul(this).eig();
+		const sigma = Matrix.zeros(this.row_length, this.column_length);
+		sigma._each(function(num, row, col) {
+			if((row === col) &amp;&amp; (row &lt; rank)) {
+				return VD.D.getComplex(row, row).sqrt();
+			}
+		});
+		const sing = Matrix.createMatrixDoEachCalculation(function(row, col) {
+			if(row === col) {
+				return sigma.matrix_array[row][row].inv();
+			}
+			else {
+				return Complex.ZERO;
+			}
+		}, rank);
+		const V_rank = (new Matrix(VD.V))._resize(VD.V.row_length, rank);
+		const u = this.mul(V_rank).mul(sing);
+		const QR = u.qr();
+		return {
+			U : QR.Q,
+			S : sigma,
+			V : VD.V
+		};
+	}
+
+	/**
+	 * A.pinv() &#x7591;&#x4F3C;&#x9006;&#x884C;&#x5217;
+	 * @returns {Matrix}
+	 */
+	pinv() {
+		const USV = this.svd();
+		const U = USV.U;
+		const S = USV.S;
+		const V = USV.V;
+		const sing = Matrix.createMatrixDoEachCalculation(function(row, col) {
+			if(row === col) {
+				const x = S.matrix_array[row][row];
+				if(x.isZero()) {
+					return Complex.ZERO;
+				}
+				else {
+					return x.inv();
+				}
+			}
+			else {
+				return Complex.ZERO;
+			}
+		}, this.column_length, this.row_length);
+		return V.mul(sing).mul(U.T());
+	}
+
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+	// statistics &#x7D71;&#x8A08;&#x8A08;&#x7B97;&#x7528;
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+
+	// TODO &#x5E73;&#x5747;&#x3084;&#x5206;&#x6563;&#x306A;&#x3069;&#x7D71;&#x8A08;&#x3067;&#x3088;&#x304F;&#x5229;&#x7528;&#x3059;&#x308B;&#x3082;&#x306E;&#x3092;&#x4F5C;&#x308B;
+
+	/**
+	 * x.gammaln() = gammaln(x) &#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * @returns {Matrix}
+	 */
+	gammaln() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.gammaln();
+		});
+	}
+
+	/**
+	 * z.gamma() = gamma(z) &#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * @returns {Matrix}
+	 */
+	gamma() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.gamma();
+		});
+	}
+
+	/**
+	 * x.gammainc(a, tail) = gammainc(x, a, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * @param {Matrix} a
+	 * @param {string} [tail=&quot;lower&quot;] - lower/upper
+	 * @returns {Matrix}
+	 */
+	gammainc(a, tail) {
+		const a_ = Matrix.create(a).scalar;
+		const tail_ = arguments.length === 1 ? tail : &quot;lower&quot;;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.gammainc(a_, tail_);
+		});
+	}
+
+	/**
+	 * x.gampdf(k, s) = gampdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Matrix} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {Matrix} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @returns {Matrix}
+	 */
+	gampdf(k, s) {
+		const k_ = Matrix.create(k).scalar;
+		const s_ = Matrix.create(s).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.gampdf(k_, s_);
+		});
+	}
+
+	/**
+	 * x.gamcdf(k, s) = gamcdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Matrix} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {Matrix} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @returns {Matrix}
+	 */
+	gamcdf(k, s) {
+		const k_ = Matrix.create(k).scalar;
+		const s_ = Matrix.create(s).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.gamcdf(k_, s_);
+		});
+	}
+
+	/**
+	 * p.gaminv(k, s) = gaminv(p, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Matrix} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {Matrix} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @returns {Matrix}
+	 */
+	gaminv(k, s) {
+		const k_ = Matrix.create(k).scalar;
+		const s_ = Matrix.create(s).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.gaminv(k_, s_);
+		});
+	}
+
+	/**
+	 * x.beta(y) = beta(x, y) &#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * @param {Matrix} y
+	 * @returns {Matrix}
+	 */
+	beta(y) {
+		const y_ = Matrix.create(y).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.beta(y_);
+		});
+	}
+	
+	/**
+	 * x.betainc(a, b, tail) = betainc(x, a, b, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * @param {Matrix} a
+	 * @param {Matrix} b
+	 * @param {string} [tail=&quot;lower&quot;] - lower/upper
+	 * @returns {Matrix}
+	 */
+	betainc(a, b, tail) {
+		const a_ = Matrix.create(a).scalar;
+		const b_ = Matrix.create(b).scalar;
+		const tail_ = arguments.length === 2 ? tail : &quot;lower&quot;;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.betainc(a_, b_, tail_);
+		});
+	}
+
+	/**
+	 * x.betacdf(a, b) = betacdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Matrix} a
+	 * @param {Matrix} b
+	 * @returns {Matrix}
+	 */
+	betacdf(a, b) {
+		const a_ = Matrix.create(a).scalar;
+		const b_ = Matrix.create(b).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.betacdf(a_, b_);
+		});
+	}
+
+	/**
+	 * x.betapdf(a, b) = betapdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Matrix} a
+	 * @param {Matrix} b
+	 * @returns {Matrix}
+	 */
+	betapdf(a, b) {
+		const a_ = Matrix.create(a).scalar;
+		const b_ = Matrix.create(b).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.betapdf(a_, b_);
+		});
+	}
+
+	/**
+	 * p.betainv(a, b) = betainv(p, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Matrix} a
+	 * @param {Matrix} b
+	 * @returns {Matrix}
+	 */
+	betainv(a, b) {
+		const a_ = Matrix.create(a).scalar;
+		const b_ = Matrix.create(b).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.betainv(a_, b_);
+		});
+	}
+
+	/**
+	 * x.factorial() = factorial(x), x! &#x968E;&#x4E57;&#x95A2;&#x6570;
+	 * @returns {Matrix}
+	 */
+	factorial() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.factorial();
+		});
+	}
+	
+	/**
+	 * n.nchoosek(k) = nchoosek(n, k), nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;
+	 * @param {Matrix} k
+	 * @returns {Matrix}
+	 */
+	nchoosek(k) {
+		const k_ = Matrix.create(k).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.nchoosek(k_);
+		});
+	}
+	
+	/**
+	 * x.erf() = erf(x) &#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * @returns {Matrix}
+	 */
+	erf() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.erf();
+		});
+	}
+
+	/**
+	 * x.erfc() = erfc(x) &#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * @returns {Matrix}
+	 */
+	erfc() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.erfc();
+		});
+	}
+	
+	/**
+	 * x.normpdf(u, s) = normpdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {number} [s=1.0] - &#x5206;&#x6563;
+	 * @returns {Matrix}
+	 */
+	normpdf(u, s) {
+		const u_ = arguments.length &lt;= 0 ? Complex.create(u).scalar : Complex.ZERO;
+		const s_ = arguments.length &lt;= 1 ? Complex.create(s).scalar : Complex.ONE;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.normpdf(u_, s_);
+		});
+	}
+
+	/**
+	 * x.normcdf(u, s) = normcdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {number} [s=1.0] - &#x5206;&#x6563;
+	 * @returns {Matrix}
+	 */
+	normcdf(u, s) {
+		const u_ = arguments.length &lt;= 0 ? Complex.create(u).scalar : Complex.ZERO;
+		const s_ = arguments.length &lt;= 1 ? Complex.create(s).scalar : Complex.ONE;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.normcdf(u_, s_);
+		});
+	}
+
+	/**
+	 * x.norminv(u, s) = norminv(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {number} [s=1.0] - &#x5206;&#x6563;
+	 * @returns {Matrix}
+	 */
+	norminv(u, s) {
+		const u_ = arguments.length &lt;= 0 ? Complex.create(u).scalar : Complex.ZERO;
+		const s_ = arguments.length &lt;= 1 ? Complex.create(s).scalar : Complex.ONE;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.norminv(u_, s_);
+		});
+	}
+
+	/**
+	 * t.tpdf(v) = tpdf(t, v) t&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	tpdf(v) {
+		const v_ = Matrix.create(v).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.tpdf(v_);
+		});
+	}
+
+	/**
+	 * t.tcdf(v) = tcdf(t, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	tcdf(v) {
+		const v_ = Matrix.create(v).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.tcdf(v_);
+		});
+	}
+
+	/**
+	 * p.tinv(v) = tinv(p, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	tinv(v) {
+		const v_ = Matrix.create(v).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.tinv(v_);
+		});
+	}
+
+	/**
+	 * t.tdist(v, tails) = tdist(t, v, tails) &#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix} tails - &#x5C3E;&#x90E8;(1...&#x7247;&#x5074;&#x3001;2...&#x4E21;&#x5074;)
+	 * @returns {Matrix}
+	 */
+	tdist(v, tails) {
+		const v_ = Matrix.create(v).scalar;
+		const tails_ = Matrix.create(tails).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.tdist(v_, tails_);
+		});
+	}
+
+	/**
+	 * p.tinv2(v) = tinv2(p, v) &#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	tinv2(v) {
+		const v_ = Matrix.create(v).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.tinv2(v_);
+		});
+	}
+
+	/**
+	 * x.chi2pdf(k) = chi2pdf(x, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Matrix} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	chi2pdf(k) {
+		const k_ = Matrix.create(k).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.chi2pdf(k_);
+		});
+	}
+
+	/**
+	 * x.chi2cdf(k) = chi2cdf(x, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Matrix} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	chi2cdf(k) {
+		const k_ = Matrix.create(k).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.chi2cdf(k_);
+		});
+	}
+	
+	/**
+	 * p.chi2inv(k) = chi2inv(p, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Matrix} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	chi2inv(k) {
+		const k_ = Matrix.create(k).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.chi2inv(k_);
+		});
+	}
+
+	/**
+	 * x.fpdf(d1, d2) = fpdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Matrix} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	fpdf(d1, d2) {
+		const d1_ = Matrix.create(d1).scalar;
+		const d2_ = Matrix.create(d2).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.fpdf(d1_, d2_);
+		});
+	}
+
+	/**
+	 * x.fcdf(d1, d2) = fcdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Matrix} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	fcdf(d1, d2) {
+		const d1_ = Matrix.create(d1).scalar;
+		const d2_ = Matrix.create(d2).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.fcdf(d1_, d2_);
+		});
+	}
+
+	/**
+	 * p.finv(d1, d2) = finv(p, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Matrix} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	finv(d1, d2) {
+		const d1_ = Matrix.create(d1).scalar;
+		const d2_ = Matrix.create(d2).scalar;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.finv(d1_, d2_);
+		});
+	}
+	
+	/**
+	 * A.sum() &#x5408;&#x8A08;
+	 * @returns {Matrix}
+	 */
+	sum() {
+		const main = function(data) {
+			// &#x30AB;&#x30CF;&#x30F3;&#x306E;&#x52A0;&#x7B97;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;
+			let sum = Complex.ZERO;
+			let delta = Complex.ZERO;
+			for(let i = 0; i &lt; data.length; i++) {
+				const new_number = data[i].add(delta);
+				const new_sum = sum.add(new_number);
+				delta = new_sum.sub(sum).sub(new_number);
+				sum = new_sum;
+			}
+			return [sum];
+		};
+		return this.__column_oriented_1_dimensional_processing(main);
+	}
+
+	/**
+	 * A.mean() &#x76F8;&#x52A0;&#x5E73;&#x5747;
+	 * @returns {Matrix}
+	 */
+	mean() {
+		const main = function(data) {
+			// &#x30AB;&#x30CF;&#x30F3;&#x306E;&#x52A0;&#x7B97;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;
+			let sum = Complex.ZERO;
+			let delta = Complex.ZERO;
+			for(let i = 0; i &lt; data.length; i++) {
+				const new_number = data[i].add(delta);
+				const new_sum = sum.add(new_number);
+				delta = new_sum.sub(sum).sub(new_number);
+				sum = new_sum;
+			}
+			return [sum.div(data.length)];
+		};
+		return this.__column_oriented_1_dimensional_processing(main);
+	}
+
+	/**
+	 * A.geomean() &#x76F8;&#x4E57;&#x5E73;&#x5747;&#xFF0F;&#x5E7E;&#x4F55;&#x5E73;&#x5747;
+	 * @returns {Matrix}
+	 */
+	geomean() {
+		const main = function(data) {
+			let x = Complex.ONE;
+			for(let i = 0; i &lt; data.length; i++) {
+				x = x.mul(data[i]);
+			}
+			return [x.sqrt()];
+		};
+		return this.__column_oriented_1_dimensional_processing(main);
+	}
+
+	/**
+	 * A.var() &#x5206;&#x6563;
+	 * @param {Matrix} [cor=0] - &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;&#x5206;&#x6563;), 1(&#x6A19;&#x672C;&#x5206;&#x6563;)
+	 * @returns {Matrix}
+	 */
+	var(cor) {
+		const M = this.mean();
+		let col = 0;
+		const correction = arguments.length === 0 ? 0 : Matrix.create(cor).doubleValue;
+		const main = function(data) {
+			let mean;
+			if(M.isScalar()) {
+				mean = M.scalar;
+			}
+			else {
+				mean = M.getComplex(col++);
+			}
+			let x = Complex.ZERO;
+			for(let i = 0; i &lt; data.length; i++) {
+				const a = data[i].sub(mean);
+				x = x.add(a.dot(a));
+			}
+			if(data.length === 1) {
+				return [x.div(data.length)];
+			}
+			else {
+				return [x.div(data.length - 1 + correction)];
+			}
+		};
+		return this.__column_oriented_1_dimensional_processing(main);
+	}
+
+	/**
+	 * A.std() &#x6A19;&#x6E96;&#x504F;&#x5DEE;
+	 * @param {Matrix} [cor=0] - &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;), 1(&#x6A19;&#x672C;)
+	 * @returns {Matrix}
+	 */
+	std(cor) {
+		const correction = arguments.length === 0 ? 0 : Matrix.create(cor).doubleValue;
+		const M = this.var(correction);
+		M._each(function(num) {
+			return num.sqrt();
+		});
+		return M;
+	}
+
+	/**
+	 * A.cov() &#x5171;&#x5206;&#x6563;&#x884C;&#x5217;
+	 * @param {Matrix} [cor=0] - &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;&#x5206;&#x6563;), 1(&#x6A19;&#x672C;&#x5206;&#x6563;)
+	 * @returns {Matrix}
+	 */
+	cov(cor) {
+		let correction = arguments.length === 0 ? 0 : Matrix.create(cor).doubleValue;
+		if(this.isVector()) {
+			return this.var(correction);
+		}
+		correction = this.row_length === 1 ? 1 : correction;
+		const x = this.matrix_array;
+		const mean = this.mean().matrix_array[0];
+		// &#x4E0A;&#x4E09;&#x89D2;&#x884C;&#x5217;&#x3001;&#x5BFE;&#x89D2;&#x884C;&#x5217;
+		const y = new Array(this.column_length);
+		for(let a = 0; a &lt; this.column_length; a++) {
+			const a_mean = mean[a];
+			y[a] = new Array(this.column_length);
+			for(let b = a; b &lt; this.column_length; b++) {
+				const b_mean = mean[b];
+				let sum = Complex.ZERO;
+				for(let row = 0; row &lt; this.row_length; row++) {
+					sum = sum.add((x[row][a].sub(a_mean)).dot(x[row][b].sub(b_mean)));
+				}
+				y[a][b] = sum.div(this.row_length - 1 + correction);
+			}
+		}
+		// &#x4E0B;&#x4E09;&#x89D2;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x308B;
+		for(let row = 1; row &lt; y[0].length; row++) {
+			for(let col = 0; col &lt; row; col++) {
+				y[row][col] = y[col][row];
+			}
+		}
+		return new Matrix(y);
+	}
+
+	/**
+	 * A.normalize() &#x30B5;&#x30F3;&#x30D7;&#x30EB;&#x3092;&#x5E73;&#x5747;&#x5024;0&#x3001;&#x6A19;&#x6E96;&#x504F;&#x5DEE;1&#x306B;&#x30CE;&#x30FC;&#x30DE;&#x30E9;&#x30A4;&#x30BA;
+	 * @returns {Matrix}
+	 */
+	normalize() {
+		const mean_zero = this.sub(this.mean());
+		const std_one = mean_zero.ndiv(mean_zero.std());
+		return std_one;
+	}
+
+	/**
+	 * A.corrcoef() &#x76F8;&#x95A2;&#x884C;&#x5217;
+	 * @returns {Matrix}
+	 */
+	corrcoef() {
+		return this.normalize().cov();
+	}
+
+
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+	// signal &#x4FE1;&#x53F7;&#x51E6;&#x7406;&#x7528;
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+
+	/**
+	 * &#x5404;&#x9805;&#x306B; sinc()
+	 * @returns {Matrix}
+	 */
+	sinc() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.sinc();
+		});
+	}
+
+	/**
+	 * A.fft() &#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * @returns {Matrix}
+	 */
+	fft(is_2_dimensions = false) {
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = Signal.fft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex([result.real[i], result.imag[i]]);
+			}
+			return y;
+		};
+		return is_2_dimensions ? this.__column_oriented_2_dimensional_processing(main) : this.__column_oriented_1_dimensional_processing(main);
+	}
+
+	/**
+	 * A.ifft() &#x9006;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * @returns {Matrix}
+	 */
+	ifft(is_2_dimensions = false) {
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = Signal.ifft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex([result.real[i], result.imag[i]]);
+			}
+			return y;
+		};
+		return is_2_dimensions ? this.__column_oriented_2_dimensional_processing(main) : this.__column_oriented_1_dimensional_processing(main);
+	}
+
+	/**
+	 * A.powerfft() &#x30D1;&#x30EF;&#x30FC;&#x30B9;&#x30DA;&#x30AF;&#x30C8;&#x30EB;&#x5BC6;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	powerfft() {
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = Signal.powerfft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex([result.real[i], result.imag[i]]);
+			}
+			return y;
+		};
+		return this.__column_oriented_1_dimensional_processing(main);
+	}
+
+	/**
+	 * A.dct() DCT-II (DCT)
+	 * @returns {Matrix}
+	 */
+	dct(is_2_dimensions = false) {
+		if(this.isComplex()) {
+			throw &quot;dct don&apos;t support complex numbers.&quot;;
+		}
+		const main = function(data) {
+			const real = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+			}
+			const result = Signal.dct(real);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex(result[i]);
+			}
+			return y;
+		};
+		return is_2_dimensions ? this.__column_oriented_2_dimensional_processing(main) : this.__column_oriented_1_dimensional_processing(main);
+	}
+
+	/**
+	 * A.idct() DCT-III (IDCT)
+	 * @returns {Matrix}
+	 */
+	idct(is_2_dimensions = false) {
+		if(this.isComplex()) {
+			throw &quot;idct don&apos;t support complex numbers.&quot;;
+		}
+		const main = function(data) {
+			const real = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+			}
+			const result = Signal.idct(real);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex(result[i]);
+			}
+			return y;
+		};
+		return is_2_dimensions ? this.__column_oriented_2_dimensional_processing(main) : this.__column_oriented_1_dimensional_processing(main);
+	}
+
+	/**
+	 * A.fft2() 2&#x6B21;&#x5143;&#x306E;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * @returns {Matrix}
+	 */
+	fft2() {
+		return this.fft(true);
+	}
+
+	/**
+	 * A.ifft2() 2&#x6B21;&#x5143;&#x306E;&#x9006;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * @returns {Matrix}
+	 */
+	ifft2() {
+		return this.ifft(true);
+	}
+
+	/**
+	 * A.dct2() 2&#x6B21;&#x5143;&#x306E;DCT&#x5909;&#x63DB;
+	 * @returns {Matrix}
+	 */
+	dct2() {
+		return this.dct2(true);
+	}
+
+	/**
+	 * A.idct2() 2&#x6B21;&#x5143;&#x306E;&#x9006;DCT&#x5909;&#x63DB;
+	 * @returns {Matrix}
+	 */
+	idct2() {
+		return this.idct(true);
+	}
+
+	/**
+	 * A.conv(B) = conv(A, B) &#x7573;&#x307F;&#x8FBC;&#x307F;&#x7A4D;&#x5206;&#x3001;&#x591A;&#x9805;&#x5F0F;&#x4E57;&#x7B97;
+	 * @param {Matrix} number
+	 * @returns {Matrix}
+	 */
+	conv(number) {
+		const M1 = this;
+		const M2 = Matrix.create(number);
+		if(M1.isMatrix() || M2.isMatrix()) {
+			throw &quot;conv don&apos;t support matrix numbers.&quot;;
+		}
+		const M1_real = new Array(M1.length);
+		const M1_imag = new Array(M1.length);
+		const M2_real = new Array(M2.length);
+		const M2_imag = new Array(M2.length);
+		if(M1.isRow()) {
+			for(let i = 0; i &lt; M1.column_length; i++) {
+				M1_real[i] = M1.matrix_array[0][i].real;
+				M1_imag[i] = M1.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i &lt; M1.row_length; i++) {
+				M1_real[i] = M1.matrix_array[i][0].real;
+				M1_imag[i] = M1.matrix_array[i][0].imag;
+			}
+		}
+		if(M2.isRow()) {
+			for(let i = 0; i &lt; M2.column_length; i++) {
+				M2_real[i] = M2.matrix_array[0][i].real;
+				M2_imag[i] = M2.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i &lt; M2.row_length; i++) {
+				M2_real[i] = M2.matrix_array[i][0].real;
+				M2_imag[i] = M2.matrix_array[i][0].imag;
+			}
+		}
+		const y = Signal.conv(M1_real, M1_imag, M2_real, M2_imag);
+		const m = new Array(y.real.length);
+		for(let i = 0; i &lt; y.real.length; i++) {
+			m[i] = new Complex([y.real[i], y.imag[i]]);
+		}
+		const M = new Matrix([m]);
+		return M2.isRow() ? M : M.transpose();
+	}
+
+	/**
+	 * A.xcorr(B) = xcorr(A, B) &#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x95A2;&#x6570;&#x3001;&#x76F8;&#x4E92;&#x76F8;&#x95A2;&#x95A2;&#x6570;
+	 * @param {Matrix} [number=this] - &#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x95A2;&#x6570;
+	 * @returns {Matrix}
+	 */
+	xcorr(number) {
+		if(!number) {
+			return this.xcorr(this);
+		}
+		const M1 = this;
+		const M2 = Matrix.create(number);
+		if(M1.isMatrix() || M2.isMatrix()) {
+			throw &quot;conv don&apos;t support matrix numbers.&quot;;
+		}
+		const M1_real = new Array(M1.length);
+		const M1_imag = new Array(M1.length);
+		const M2_real = new Array(M2.length);
+		const M2_imag = new Array(M2.length);
+		if(M1.isRow()) {
+			for(let i = 0; i &lt; M1.column_length; i++) {
+				M1_real[i] = M1.matrix_array[0][i].real;
+				M1_imag[i] = M1.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i &lt; M1.row_length; i++) {
+				M1_real[i] = M1.matrix_array[i][0].real;
+				M1_imag[i] = M1.matrix_array[i][0].imag;
+			}
+		}
+		if(M2.isRow()) {
+			for(let i = 0; i &lt; M2.column_length; i++) {
+				M2_real[i] = M2.matrix_array[0][i].real;
+				M2_imag[i] = M2.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i &lt; M2.row_length; i++) {
+				M2_real[i] = M2.matrix_array[i][0].real;
+				M2_imag[i] = M2.matrix_array[i][0].imag;
+			}
+		}
+		const y = Signal.xcorr(M1_real, M1_imag, M2_real, M2_imag);
+		const m = new Array(y.real.length);
+		for(let i = 0; i &lt; y.real.length; i++) {
+			m[i] = new Complex([y.real[i], y.imag[i]]);
+		}
+		const M = new Matrix([m]);
+		return M1.isRow() ? M : M.transpose();
+	}
+
+	/**
+	 * &#x7A93;&#x95A2;&#x6570;
+	 * @param {string} name - &#x7A93;&#x95A2;&#x6570;&#x306E;&#x540D;&#x524D;
+	 * @param {Matrix} size - &#x9577;&#x3055;
+	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
+	 */
+	static window(name, size, isPeriodic) {
+		const size_ = Matrix.create(size).intValue;
+		const y = Signal.window(name, size_, isPeriodic);
+		return (new Matrix(y)).transpose();
+	}
+
+	/**
+	 * &#x30CF;&#x30CB;&#x30F3;&#x30B0;&#x7A93;
+	 * @param {Matrix} size - &#x9577;&#x3055;
+	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
+	 */
+	static hann(size, isPeriodic) {
+		return Matrix.window(&quot;hann&quot;, size, isPeriodic);
+	}
+	
+	/**
+	 * &#x30CF;&#x30DF;&#x30F3;&#x30B0;&#x7A93;
+	 * @param {Matrix} size - &#x9577;&#x3055;
+	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
+	 */
+	static hamming(size, isPeriodic) {
+		return Matrix.window(&quot;hamming&quot;, size, isPeriodic);
+	}
+	
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

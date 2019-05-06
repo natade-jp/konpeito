@@ -1,23 +1,23 @@
-# SenkoJS #
+# konpeito #
 
 ### What ####
-- The collection of javascirpt library such as GUI, numerical calculation, 3DCG etc.
+- The collection of javascirpt library such as numerical calculation.
 
 ### Author ###
 - [natade](https://twitter.com/natadea)
 
-### Home ###
-- [SenkoJS.js](https://natade-jp.github.io/SenkoJS/)
+### Repository ###
+- [konpeito](https://github.com/natade-jp/konpeito)
+
+### Document ###
+- [document](https://natade-jp.github.io/konpeito/doc/)
 
 ### Note ###
 It is a multifunctional library under development, specialized for HTML5.<br>
-Please refer to [SenkoWSH](https://github.com/natade-jp/SenkoWSH) if you use "WSH JScript" specialized library.
 
 ### Demo ###
-- [GUI](https://natade-jp.github.io/SenkoJS/examples/demos/SComponent/index.html)
-- [Image Processing](https://natade-jp.github.io/SenkoJS/examples/demos/ImageProcessing/index.html)
-- [3DCG(canvas)](https://natade-jp.github.io/SenkoJS/examples/demos/S3/index.html)
-- [WebGL](https://natade-jp.github.io/SenkoJS/examples/demos/S3GL/index.html)
-
-...
-[etc](https://natade-jp.github.io/SenkoJS/)
+Please check the console and main.mjs.
+- [BigDecimal](https://natade-jp.github.io/konpeito/doc/examples/demos/BigDecimal/)
+- [BigInteger](https://natade-jp.github.io/konpeito/doc/examples/demos/BigInteger/)
+- [Matrix](https://natade-jp.github.io/konpeito/doc/examples/demos/Matrix/)
+- [Random](https://natade-jp.github.io/konpeito/doc/examples/demos/Random/)

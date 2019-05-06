@@ -34,5 +34,3 @@ const deleteDirectory = function( path ) {
 
 // esdoc
 exec("npx esdoc");
-
-//deleteDirectory(src);
