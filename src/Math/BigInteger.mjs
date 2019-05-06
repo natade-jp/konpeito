@@ -190,8 +190,22 @@ export default class BigInteger {
 	 * @param {BigInteger|number|string|Array<string|number>} number - 整数値
 	 */
 	constructor(number) {
+		
+		/**
+		 * 1要素、16ビット整数の配列
+		 * @private
+		 * @type {Array<number>}
+		 */
 		this.element     = [];
+
+		/**
+		 * 正負（プラスなら+1、マイナスなら-1、0なら0）
+		 * ※計算によってはここの値の再設定をしていない箇所があるので、ここを見る時は注意
+		 * @private
+		 * @type {Array<number>}
+		 */
 		this.sign        = 0;
+
 		if(arguments.length === 0) {
 			this.element     = [];
 			this.sign        = 0;

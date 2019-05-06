@@ -52,6 +52,12 @@ export default class Random {
 		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
 		// 比較的長い 2^521 - 1通りを出力します。
 		// 乱数はCでの動作と同じ値が出ることを確認。(seed = 1として1000番目の値が等しいことを確認)
+
+		/**
+		 * 乱数配列
+		 * @private
+		 * @type {Array<number>}
+		 */
 		this.x = [];
 		for(let i = 0;i < 521;i++) {
 			this.x[i] = 0;
@@ -105,8 +111,26 @@ export default class Random {
 		for(let i = 0; i < 4; i++) {
 			this._rnd521();
 		}
+		
+		/**
+		 * 乱数配列の何番目を使用しているか
+		 * @private
+		 * @type {number}
+		 */
 		this.xi = 0;
+		
+		/**
+		 * ガウシアン分布に基づく乱数を保持しているか
+		 * @private
+		 * @type {boolean}
+		 */
 		this.haveNextNextGaussian = false;
+		
+		/**
+		 * 保持したガウシアン分布に基づく乱数
+		 * @private
+		 * @type {number}
+		 */
 		this.nextNextGaussian = 0;
 	}
 

@@ -119,12 +119,14 @@ export default class BigDecimal {
 	constructor(number) {
 
 		/**
+		 * &#x30B9;&#x30B1;&#x30FC;&#x30EB;
 		 * @private
 		 * @type {number}
 		 */
 		this._scale	= 0;
 		
 		/**
+		 * &#x521D;&#x671F;&#x5316;&#x6642;&#x306B;&#x4F7F;&#x7528;&#x3057;&#x305F;context
 		 * @private
 		 * @type {MathContext}
 		 */
@@ -137,6 +139,7 @@ export default class BigDecimal {
 		if(number instanceof BigDecimal) {
 
 			/**
+			 * &#x6574;&#x6570;&#x90E8;&#x5206;
 			 * @private
 			 * @type {BigInteger}
 			 */
@@ -145,6 +148,7 @@ export default class BigDecimal {
 			this._scale				= number._scale;
 			
 			/**
+			 * &#x6587;&#x5B57;&#x5217;&#x5316;&#x3057;&#x305F;&#x6574;&#x6570;&#x90E8;&#x5206;&#xFF08;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x7528;&#xFF09;
 			 * @private
 			 * @type {string}
 			 */

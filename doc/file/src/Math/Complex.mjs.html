@@ -112,7 +112,19 @@ export default class Complex {
 		if(arguments.length === 1) {
 			const obj = number;
 			if((obj instanceof Complex) || ((obj instanceof Object) &amp;&amp; (obj._re &amp;&amp; obj._im))) {
+				
+				/**
+				 * &#x5B9F;&#x90E8;
+				 * @private
+				 * @type {number}
+				 */
 				this._re = obj._re;
+				
+				/**
+				 * &#x865A;&#x90E8;
+				 * @private
+				 * @type {number}
+				 */
 				this._im = obj._im;
 			}
 			else if(typeof obj === &quot;number&quot; || obj instanceof Number) {

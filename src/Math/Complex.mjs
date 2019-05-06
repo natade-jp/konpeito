@@ -67,7 +67,19 @@ export default class Complex {
 		if(arguments.length === 1) {
 			const obj = number;
 			if((obj instanceof Complex) || ((obj instanceof Object) && (obj._re && obj._im))) {
+				
+				/**
+				 * 実部
+				 * @private
+				 * @type {number}
+				 */
 				this._re = obj._re;
+				
+				/**
+				 * 虚部
+				 * @private
+				 * @type {number}
+				 */
 				this._im = obj._im;
 			}
 			else if(typeof obj === "number" || obj instanceof Number) {

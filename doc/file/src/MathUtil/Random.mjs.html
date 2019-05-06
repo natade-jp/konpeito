@@ -97,6 +97,12 @@ export default class Random {
 		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;&#x6674;&#x5F66; (1991). C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;.
 		// &#x6BD4;&#x8F03;&#x7684;&#x9577;&#x3044; 2^521 - 1&#x901A;&#x308A;&#x3092;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;
 		// &#x4E71;&#x6570;&#x306F;C&#x3067;&#x306E;&#x52D5;&#x4F5C;&#x3068;&#x540C;&#x3058;&#x5024;&#x304C;&#x51FA;&#x308B;&#x3053;&#x3068;&#x3092;&#x78BA;&#x8A8D;&#x3002;(seed = 1&#x3068;&#x3057;&#x3066;1000&#x756A;&#x76EE;&#x306E;&#x5024;&#x304C;&#x7B49;&#x3057;&#x3044;&#x3053;&#x3068;&#x3092;&#x78BA;&#x8A8D;)
+
+		/**
+		 * &#x4E71;&#x6570;&#x914D;&#x5217;
+		 * @private
+		 * @type {Array&lt;number&gt;}
+		 */
 		this.x = [];
 		for(let i = 0;i &lt; 521;i++) {
 			this.x[i] = 0;
@@ -150,8 +156,26 @@ export default class Random {
 		for(let i = 0; i &lt; 4; i++) {
 			this._rnd521();
 		}
+		
+		/**
+		 * &#x4E71;&#x6570;&#x914D;&#x5217;&#x306E;&#x4F55;&#x756A;&#x76EE;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3044;&#x308B;&#x304B;
+		 * @private
+		 * @type {number}
+		 */
 		this.xi = 0;
+		
+		/**
+		 * &#x30AC;&#x30A6;&#x30B7;&#x30A2;&#x30F3;&#x5206;&#x5E03;&#x306B;&#x57FA;&#x3065;&#x304F;&#x4E71;&#x6570;&#x3092;&#x4FDD;&#x6301;&#x3057;&#x3066;&#x3044;&#x308B;&#x304B;
+		 * @private
+		 * @type {boolean}
+		 */
 		this.haveNextNextGaussian = false;
+		
+		/**
+		 * &#x4FDD;&#x6301;&#x3057;&#x305F;&#x30AC;&#x30A6;&#x30B7;&#x30A2;&#x30F3;&#x5206;&#x5E03;&#x306B;&#x57FA;&#x3065;&#x304F;&#x4E71;&#x6570;
+		 * @private
+		 * @type {number}
+		 */
 		this.nextNextGaussian = 0;
 	}
 

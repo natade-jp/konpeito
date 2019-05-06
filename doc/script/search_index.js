@@ -1728,12 +1728,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#_createorthogonalvector",
-    "class/src/Math/Matrix.mjs~Matrix.html#instance-method-_createOrthogonalVector",
-    "src/Math/Matrix.mjs~Matrix#_createOrthogonalVector",
-    "method"
-  ],
-  [
     "src/math/matrix.mjs~matrix#_delete_column",
     "class/src/Math/Matrix.mjs~Matrix.html#instance-method-_delete_column",
     "src/Math/Matrix.mjs~Matrix#_delete_column",
@@ -2637,12 +2631,6 @@ window.esdocSearchIndex = [
     "src/math/matrix.mjs~matrix#xcorr",
     "class/src/Math/Matrix.mjs~Matrix.html#instance-method-xcorr",
     "src/Math/Matrix.mjs~Matrix#xcorr",
-    "method"
-  ],
-  [
-    "src/math/matrix.mjs~matrix._gram_schmidt_orthonormalization",
-    "class/src/Math/Matrix.mjs~Matrix.html#static-method-_gram_schmidt_orthonormalization",
-    "src/Math/Matrix.mjs~Matrix._gram_schmidt_orthonormalization",
     "method"
   ],
   [

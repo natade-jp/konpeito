@@ -74,12 +74,14 @@ export default class BigDecimal {
 	constructor(number) {
 
 		/**
+		 * スケール
 		 * @private
 		 * @type {number}
 		 */
 		this._scale	= 0;
 		
 		/**
+		 * 初期化時に使用したcontext
 		 * @private
 		 * @type {MathContext}
 		 */
@@ -92,6 +94,7 @@ export default class BigDecimal {
 		if(number instanceof BigDecimal) {
 
 			/**
+			 * 整数部分
 			 * @private
 			 * @type {BigInteger}
 			 */
@@ -100,6 +103,7 @@ export default class BigDecimal {
 			this._scale				= number._scale;
 			
 			/**
+			 * 文字列化した整数部分（キャッシュ用）
 			 * @private
 			 * @type {string}
 			 */

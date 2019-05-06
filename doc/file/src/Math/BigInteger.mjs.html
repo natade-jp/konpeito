@@ -235,8 +235,22 @@ export default class BigInteger {
 	 * @param {BigInteger|number|string|Array&lt;string|number&gt;} number - &#x6574;&#x6570;&#x5024;
 	 */
 	constructor(number) {
+		
+		/**
+		 * 1&#x8981;&#x7D20;&#x3001;16&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x306E;&#x914D;&#x5217;
+		 * @private
+		 * @type {Array&lt;number&gt;}
+		 */
 		this.element     = [];
+
+		/**
+		 * &#x6B63;&#x8CA0;&#xFF08;&#x30D7;&#x30E9;&#x30B9;&#x306A;&#x3089;+1&#x3001;&#x30DE;&#x30A4;&#x30CA;&#x30B9;&#x306A;&#x3089;-1&#x3001;0&#x306A;&#x3089;0&#xFF09;
+		 * &#x203B;&#x8A08;&#x7B97;&#x306B;&#x3088;&#x3063;&#x3066;&#x306F;&#x3053;&#x3053;&#x306E;&#x5024;&#x306E;&#x518D;&#x8A2D;&#x5B9A;&#x3092;&#x3057;&#x3066;&#x3044;&#x306A;&#x3044;&#x7B87;&#x6240;&#x304C;&#x3042;&#x308B;&#x306E;&#x3067;&#x3001;&#x3053;&#x3053;&#x3092;&#x898B;&#x308B;&#x6642;&#x306F;&#x6CE8;&#x610F;
+		 * @private
+		 * @type {Array&lt;number&gt;}
+		 */
 		this.sign        = 0;
+
 		if(arguments.length === 0) {
 			this.element     = [];
 			this.sign        = 0;

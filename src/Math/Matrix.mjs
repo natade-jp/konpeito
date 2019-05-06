@@ -292,6 +292,138 @@ class MatrixTool {
 		const VD = vd_sort(new Matrix(a), d);
 		return VD;
 	}
+
+	
+	/**
+	 * 行列をベクトルと見立て、正規直行化し、QとRの行列を作る
+	 * @param {Matrix} M_ - 正方行列
+	 * @returns {Object<string, Matrix>}
+	 */
+	static _gram_schmidt_orthonormalization(M_) {
+		// グラム・シュミットの正規直交化法を使用する
+		// 参考：Gilbert Strang (2007). Computational Science and Engineering.
+
+		const M = Matrix.create(M_);
+		const len = M.column_length;
+		const A = M.matrix_array;
+		const Q_Matrix = Matrix.zeros(len);
+		const R_Matrix = Matrix.zeros(len);
+		const Q = Q_Matrix.matrix_array;
+		const R = R_Matrix.matrix_array;
+		const non_orthogonalized = [];
+		const a = new Array(len);
+		
+		for(let col = 0; col < len; col++) {
+			// i列目を抽出
+			for(let row = 0; row < len; row++) {
+				a[row] = A[row][col];
+			}
+			// 直行ベクトルを作成
+			if(col > 0) {
+				// Rのi列目を内積で計算する
+				for(let j = 0; j < col; j++) {
+					for(let k = 0; k < len; k++) {
+						R[j][col] = R[j][col].add(A[k][col].dot(Q[k][j]));
+					}
+				}
+				for(let j = 0; j < col; j++) {
+					for(let k = 0; k < len; k++) {
+						a[k] = a[k].sub(R[j][col].mul(Q[k][j]));
+					}
+				}
+			}
+			{
+				// 正規化と距離を1にする
+				for(let j = 0; j < len; j++) {
+					R[col][col] = R[col][col].add(a[j].mul(a[j]));
+				}
+				R[col][col] = R[col][col].sqrt();
+				if(R[col][col].isZero(1e-10)) {
+					// 直行化が不可能だった列の番号をメモして、その列はゼロで埋める
+					non_orthogonalized.push(col);
+					for(let j = 0;j < len;j++) {
+						Q[j][col] = Complex.ZERO;
+					}
+				}
+				else {
+					// ここで R[i][i] === 0 の場合、直行させたベクトルaは0であり、
+					// ランク落ちしており、計算不可能である。
+					// 0割りした値を、j列目のQに記録していくがInfとなる。
+					for(let j = 0;j < len;j++) {
+						Q[j][col] = a[j].div(R[col][col]);
+					}
+				}
+			}
+		}
+		return {
+			Q : Q_Matrix,
+			R : R_Matrix,
+			non_orthogonalized : non_orthogonalized
+		};
+	}
+	
+	/**
+	 * 行列の全行ベクトルに対して、直行したベクトルを作成する
+	 * @param {Matrix} M_
+	 * @param {number} [epsilon=1.0e-10] - 誤差
+	 * @returns {Matrix} 直行したベクトルがなければNULLを返す
+	 */
+	static _createOrthogonalVector(M_, epsilon) {
+		const M = new Matrix(M_);
+		const column_length = M.column_length;
+		const m = M.matrix_array;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		// 正則行列をなす場合に問題となる行番号を取得
+		const not_regular_rows = M._get_linear_dependence_vector(tolerance);
+		// 不要な行を削除する
+		{
+			// not_regular_rowsは昇順リストなので、後ろから消していく
+			for(let i = not_regular_rows.length - 1; i >= 0; i--) {
+				m.splice(not_regular_rows[i], 1);
+				M.row_length--;
+			}
+		}
+		// 追加できるベクトルの数
+		const add_vectors = column_length - m.length;
+		if(add_vectors <= 0) {
+			return null;
+		}
+		// ランダムベクトル（seed値は毎回同一とする）
+		const noise = new Random(0);
+		let orthogonal_matrix = null;
+		for(let i = 0; i < 100; i++) {
+			// 直行ベクトルを作るために、いったん行と列を交換する
+			// これは、グラム・シュミットの正規直交化法が列ごとに行う手法のため。
+			const M2 = M.T();
+			// ランダム行列を作成する
+			const R = Matrix.createMatrixDoEachCalculation(function() {
+				return new Complex(noise.nextGaussian());
+			}, M2.row_length, add_vectors);
+			// 列に追加する
+			M2._concat_left(R);
+			// 正規直行行列を作成する
+			orthogonal_matrix = MatrixTool._gram_schmidt_orthonormalization(M2);
+			// 正しく作成できていたら完了
+			if(orthogonal_matrix.non_orthogonalized.length === 0) {
+				break;
+			}
+		}
+		if(orthogonal_matrix.non_orthogonalized.length !== 0) {
+			// 普通は作成できないことはないが・・・
+			console.log("miss");
+			return null;
+		}
+		// 作成した列を切り出す
+		const y = new Array(add_vectors);
+		const q = orthogonal_matrix.Q.matrix_array;
+		for(let row = 0; row < add_vectors; row++) {
+			y[row] = new Array(column_length);
+			for(let col = 0; col < column_length; col++) {
+				y[row][col] = q[col][column_length - add_vectors + row];
+			}
+		}
+		return new Matrix(y);
+	}
 }
 
 /**
@@ -654,9 +786,33 @@ export default class Matrix {
 		if(!ConstructorTool.isCorrectMatrixArray(matrix_array)) {
 			throw "new Matrix IllegalArgumentException";
 		}
+		
+		/**
+		 * 行列を構成する配列
+		 * @private
+		 * @type {Array<Array<number>>}
+		 */
 		this.matrix_array = matrix_array;
+
+		/**
+		 * 行数
+		 * @private
+		 * @type {number}
+		 */
 		this.row_length = this.matrix_array.length;
+		
+		/**
+		 * 列数
+		 * @private
+		 * @type {number}
+		 */
 		this.column_length = this.matrix_array[0].length;
+
+		/**
+		 * 文字列化に使用するキャッシュ
+		 * @private
+		 * @type {string}
+		 */
 		this.string_cash = null;
 	}
 
@@ -2503,135 +2659,6 @@ export default class Matrix {
 		return row_index_array;
 	}
 
-	/**
-	 * 行列をベクトルと見立て、正規直行化し、QとRの行列を作る
-	 * 内部処理用
-	 * @param {Matrix} M_ - 正方行列
-	 * @returns {Object<string, Matrix>}
-	 */
-	static _gram_schmidt_orthonormalization(M_) {
-		// グラム・シュミットの正規直交化法を使用する
-		// 参考：Gilbert Strang (2007). Computational Science and Engineering.
-
-		const M = Matrix.create(M_);
-		const len = M.column_length;
-		const A = M.matrix_array;
-		const Q_Matrix = Matrix.zeros(len);
-		const R_Matrix = Matrix.zeros(len);
-		const Q = Q_Matrix.matrix_array;
-		const R = R_Matrix.matrix_array;
-		const non_orthogonalized = [];
-		const a = new Array(len);
-		
-		for(let col = 0; col < len; col++) {
-			// i列目を抽出
-			for(let row = 0; row < len; row++) {
-				a[row] = A[row][col];
-			}
-			// 直行ベクトルを作成
-			if(col > 0) {
-				// Rのi列目を内積で計算する
-				for(let j = 0; j < col; j++) {
-					for(let k = 0; k < len; k++) {
-						R[j][col] = R[j][col].add(A[k][col].dot(Q[k][j]));
-					}
-				}
-				for(let j = 0; j < col; j++) {
-					for(let k = 0; k < len; k++) {
-						a[k] = a[k].sub(R[j][col].mul(Q[k][j]));
-					}
-				}
-			}
-			{
-				// 正規化と距離を1にする
-				for(let j = 0; j < len; j++) {
-					R[col][col] = R[col][col].add(a[j].mul(a[j]));
-				}
-				R[col][col] = R[col][col].sqrt();
-				if(R[col][col].isZero(1e-10)) {
-					// 直行化が不可能だった列の番号をメモして、その列はゼロで埋める
-					non_orthogonalized.push(col);
-					for(let j = 0;j < len;j++) {
-						Q[j][col] = Complex.ZERO;
-					}
-				}
-				else {
-					// ここで R[i][i] === 0 の場合、直行させたベクトルaは0であり、
-					// ランク落ちしており、計算不可能である。
-					// 0割りした値を、j列目のQに記録していくがInfとなる。
-					for(let j = 0;j < len;j++) {
-						Q[j][col] = a[j].div(R[col][col]);
-					}
-				}
-			}
-		}
-		return {
-			Q : Q_Matrix,
-			R : R_Matrix,
-			non_orthogonalized : non_orthogonalized
-		};
-	}
-	
-	/**
-	 * 行列の全行ベクトルに対して、直行したベクトルを作成する
-	 * @param {number} [epsilon=1.0e-10] - 誤差
-	 * @returns {Matrix} 直行したベクトルがなければNULLを返す
-	 */
-	_createOrthogonalVector(epsilon) {
-		const M = new Matrix(this);
-		const m = M.matrix_array;
-		const tolerance = epsilon ? epsilon : 1.0e-10;
-		// 正則行列をなす場合に問題となる行番号を取得
-		const not_regular_rows = M._get_linear_dependence_vector(tolerance);
-		// 不要な行を削除する
-		{
-			// not_regular_rowsは昇順リストなので、後ろから消していく
-			for(let i = not_regular_rows.length - 1; i >= 0; i--) {
-				m.splice(not_regular_rows[i], 1);
-				M.row_length--;
-			}
-		}
-		// 追加できるベクトルの数
-		const add_vectors = this.column_length - m.length;
-		if(add_vectors <= 0) {
-			return null;
-		}
-		// ランダムベクトル（seed値は毎回同一とする）
-		const noise = new Random(0);
-		let orthogonal_matrix = null;
-		for(let i = 0; i < 100; i++) {
-			// 直行ベクトルを作るために、いったん行と列を交換する
-			// これは、グラム・シュミットの正規直交化法が列ごとに行う手法のため。
-			const M2 = M.T();
-			// ランダム行列を作成する
-			const R = Matrix.createMatrixDoEachCalculation(function() {
-				return new Complex(noise.nextGaussian());
-			}, M2.row_length, add_vectors);
-			// 列に追加する
-			M2._concat_left(R);
-			// 正規直行行列を作成する
-			orthogonal_matrix = Matrix._gram_schmidt_orthonormalization(M2);
-			// 正しく作成できていたら完了
-			if(orthogonal_matrix.non_orthogonalized.length === 0) {
-				break;
-			}
-		}
-		if(orthogonal_matrix.non_orthogonalized.length !== 0) {
-			// 普通は作成できないことはないが・・・
-			console.log("miss");
-			return null;
-		}
-		// 作成した列を切り出す
-		const y = new Array(add_vectors);
-		const q = orthogonal_matrix.Q.matrix_array;
-		for(let row = 0; row < add_vectors; row++) {
-			y[row] = new Array(this.column_length);
-			for(let col = 0; col < this.column_length; col++) {
-				y[row][col] = q[col][this.column_length - add_vectors + row];
-			}
-		}
-		return new Matrix(y);
-	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	// 行列の一般計算
@@ -2947,7 +2974,7 @@ export default class Matrix {
 		// 正方行列にする
 		M._resize(dummy_size, dummy_size);
 		// 正規直行化
-		const orthogonal_matrix = Matrix._gram_schmidt_orthonormalization(M);
+		const orthogonal_matrix = MatrixTool._gram_schmidt_orthonormalization(M);
 		// 計算したデータを取得
 		const Q_Matrix = orthogonal_matrix.Q;
 		const R_Matrix = orthogonal_matrix.R;
@@ -2971,7 +2998,7 @@ export default class Matrix {
 				orthogonalized.push(array);
 			}
 			// 直行ベクトルを作成する
-			const orthogonal_vector = (new Matrix(orthogonalized))._createOrthogonalVector();
+			const orthogonal_vector = MatrixTool._createOrthogonalVector(new Matrix(orthogonalized));
 			// 直行化できていない列を差し替える
 			for(let i = 0; i < non_orthogonalized.length; i++) {
 				const q_col = non_orthogonalized[i];

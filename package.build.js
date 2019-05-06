@@ -65,6 +65,6 @@ for(const key in target_file) {
 
 // サンプルファイルはbuild内のデータと関連付ける
 saveTextFile(
-	"./examples/libs/konpeito.mjs",
-	"import konpeito from \"../../build/konpeito.module.mjs\";export default konpeito;"
+	"./doc/examples/libs/konpeito.mjs",
+	"import konpeito from \"../../../build/konpeito.module.mjs\";export default konpeito;"
 );

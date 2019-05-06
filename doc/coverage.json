@@ -1,7 +1,7 @@
 {
-  "coverage": "81.67%",
+  "coverage": "83.51%",
   "expectCount": 655,
-  "actualCount": 535,
+  "actualCount": 547,
   "files": {
     "src/konpeito.mjs": {
       "expectCount": 11,
@@ -18,33 +18,24 @@
     },
     "src/Math/BigInteger.mjs": {
       "expectCount": 88,
-      "actualCount": 84,
+      "actualCount": 86,
       "undocumentLines": [
         13,
-        193,
-        194,
-        1583
+        1597
       ]
     },
     "src/Math/Complex.mjs": {
       "expectCount": 96,
-      "actualCount": 92,
+      "actualCount": 94,
       "undocumentLines": [
         14,
-        70,
-        71,
-        1294
+        1306
       ]
     },
     "src/Math/Matrix.mjs": {
       "expectCount": 175,
-      "actualCount": 171,
-      "undocumentLines": [
-        657,
-        658,
-        659,
-        660
-      ]
+      "actualCount": 175,
+      "undocumentLines": []
     },
     "src/MathUtil/MathContext.mjs": {
       "expectCount": 13,
@@ -57,13 +48,8 @@
     },
     "src/MathUtil/Random.mjs": {
       "expectCount": 20,
-      "actualCount": 16,
-      "undocumentLines": [
-        55,
-        108,
-        109,
-        110
-      ]
+      "actualCount": 20,
+      "undocumentLines": []
     },
     "src/MathUtil/RoundingMode.mjs": {
       "expectCount": 37,
