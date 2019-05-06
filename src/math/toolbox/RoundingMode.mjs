@@ -12,6 +12,7 @@
  * BigDecimal用の丸めモードの基底クラス
  */
 export class RoundingModeEntity {
+	
 	/**
 	 * 丸めモードの名前を英語の大文字で取得する
 	 * @returns {string} 丸めモード名
@@ -19,6 +20,7 @@ export class RoundingModeEntity {
 	static toString() {
 		return "NONE";
 	}
+
 	/**
 	 * 丸めに必要な加算値
 	 * @param {number} x - 1ケタ目の値
@@ -27,15 +29,27 @@ export class RoundingModeEntity {
 	static getAddNumber(x) {
 		return 0;
 	}
+
 }
 
 /**
  * 絶対値の切り上げ（1桁目が0より大きければ桁上げする）
  */
 class RoundingMode_UP extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
 	static toString() {
 		return "UP";
 	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
 	static getAddNumber(x) {
 		x = x % 10;
 		if(x === 0) {
@@ -48,28 +62,52 @@ class RoundingMode_UP extends RoundingModeEntity {
 			return (-(10 + x));
 		}
 	}
+
 }
 
 /**
  * 絶対値の切り下げ（1桁目が0より大きければ桁下げする）
  */
 class RoundingMode_DOWN extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
 	static toString() {
 		return "DOWN";
 	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
 	static getAddNumber(x) {
 		x = x % 10;
 		return -x;
 	}
+
 }
 
 /**
  * 正の無限大に近づく
  */
 class RoundingMode_CEILING extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
 	static toString() {
 		return "CEILING";
 	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
 	static getAddNumber(x) {
 		x = x % 10;
 		if(x === 0) {
@@ -82,15 +120,27 @@ class RoundingMode_CEILING extends RoundingModeEntity {
 			return -x;
 		}
 	}
+
 }
 
 /**
  * 負の無限大に近づく
  */
 class RoundingMode_FLOOR extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
 	static toString() {
 		return "FLOOR";
 	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
 	static getAddNumber(x) {
 		x = x % 10;
 		if(x === 0) {
@@ -103,15 +153,27 @@ class RoundingMode_FLOOR extends RoundingModeEntity {
 			return(-(10 + x));
 		}
 	}
+
 }
 
 /**
  * 四捨五入
  */
 class RoundingMode_HALF_UP extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
 	static toString() {
 		return "HALF_UP";
 	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
 	static getAddNumber(x) {
 		x = x % 10;
 		const sign = x >= 0 ? 1 : -1;
@@ -122,15 +184,27 @@ class RoundingMode_HALF_UP extends RoundingModeEntity {
 			return (sign * (10 - Math.abs(x)));
 		}
 	}
+
 }
 
 /**
  * 五捨六入
  */
 class RoundingMode_HALF_DOWN extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
 	static toString() {
 		return "HALF_DOWN";
 	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
 	static getAddNumber(x) {
 		x = x % 10;
 		const sign = x >= 0 ? 1 : -1;
@@ -141,15 +215,27 @@ class RoundingMode_HALF_DOWN extends RoundingModeEntity {
 			return (sign * (10 - Math.abs(x)));
 		}
 	}
+
 }
 
 /**
  * 等間隔なら偶数側へ丸める
  */
 class RoundingMode_HALF_EVEN extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
 	static toString() {
 		return "HALF_EVEN";
 	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
 	static getAddNumber(x) {
 		x = x % 100;
 		let sign, even;
@@ -176,15 +262,27 @@ class RoundingMode_HALF_EVEN extends RoundingModeEntity {
 			return (sign * (10 - Math.abs(x)));
 		}
 	}
+
 }
 
 /**
  * 丸めない（丸める必要が出る場合はエラー）
  */
 class RoundingMode_UNNECESSARY extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
 	static toString() {
 		return "UNNECESSARY";
 	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
 	static getAddNumber(x) {
 		x = x % 10;
 		if(x === 0) {
@@ -194,6 +292,7 @@ class RoundingMode_UNNECESSARY extends RoundingModeEntity {
 			throw "ArithmeticException";
 		}
 	}
+
 }
 
 /**

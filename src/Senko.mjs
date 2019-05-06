@@ -8,10 +8,17 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import MathX from "./mathx/MathX.mjs";
 import File from "./basic/File.mjs";
 import Format from "./basic/Format.mjs";
 import Log from "./basic/Log.mjs";
+
+import Random from "./math/toolbox/Random.mjs";
+import RoundingMode from "./math/toolbox/RoundingMode.mjs";
+import MathContext from "./math/toolbox/MathContext.mjs";
+import BigDecimal from "./math/BigDecimal.mjs";
+import BigInteger from "./math/BigInteger.mjs";
+import Complex from "./math/Complex.mjs";
+import Matrix from "./math/Matrix.mjs";
 
 const Senko = {};
 
@@ -19,13 +26,12 @@ Senko._printbuffer = "";
 Senko.File = File;
 Senko.format = Format.format;
 Senko.Log = Log;
-Senko.MathX = MathX;
-Senko.BigInteger = MathX.BigInteger;
-Senko.BigDecimal = MathX.BigDecimal;
-Senko.RoundingMode = MathX.RoundingMode;
-Senko.MathContext = MathX.MathContext;
-Senko.Complex = MathX.Complex;
-Senko.Matrix = MathX.Matrix;
-Senko.Random = MathX.Random;
+Senko.BigInteger = BigInteger;
+Senko.BigDecimal = BigDecimal;
+Senko.RoundingMode = RoundingMode;
+Senko.MathContext = MathContext;
+Senko.Complex = Complex;
+Senko.Matrix = Matrix;
+Senko.Random = Random;
 
 export default Senko;

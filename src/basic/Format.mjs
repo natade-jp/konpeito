@@ -15,10 +15,10 @@ export default class Format {
 	 * ロケール、日付時刻等はサポートしていません。
 	 * sprintfの変換指定子のpとnはサポートしていません。
 	 * @param {string} text 
-	 * @param {string} parm パラメータは可変引数
+	 * @param {string} parmeter パラメータは可変引数
 	 * @returns {string}
 	 */
-	static format() {
+	static format(text, parmeter) {
 		let parm_number = 1;
 		const parm = arguments;
 		const toUnsign  = function(x) {

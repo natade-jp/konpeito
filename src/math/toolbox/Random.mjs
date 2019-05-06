@@ -109,7 +109,7 @@ export default class Random {
 
 	/**
 	 * 32ビットの乱数
-	 * @param {number} 32ビットの乱数
+	 * @returns {number} 32ビットの乱数
 	 */
 	genrand_int32() {
 		// 全て使用したら、再び混ぜる
