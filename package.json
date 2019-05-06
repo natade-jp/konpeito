@@ -1,7 +1,7 @@
 {
 	"name": "konpeito.js",
 	"version": "0.1.0",
-	"description": "The collection of javascirpt library such as GUI, numerical calculation, 3DCG etc.",
+	"description": "The collection of javascirpt library such as numerical calculation.",
 	"keywords": [
 		"konpeito",
 		"biginteger",
