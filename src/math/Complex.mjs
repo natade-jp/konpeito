@@ -1,5 +1,5 @@
 ﻿/**
- * The script is part of SenkoJS.
+ * The script is part of konpeito.
  * 
  * AUTHOR:
  *  natade (http://twitter.com/natadea)
@@ -1281,7 +1281,7 @@ export default class Complex {
 	}
 
 	/**
-	 * HALF
+	 * 0.5
 	 * @returns {Complex}
 	 */
 	static get HALF() {

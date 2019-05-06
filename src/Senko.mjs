@@ -1,5 +1,5 @@
 ﻿/**
- * The script is part of SenkoJS.
+ * The script is part of konpeito.
  * 
  * AUTHOR:
  *  natade (http://twitter.com/natadea)
@@ -20,18 +20,46 @@ import BigInteger from "./math/BigInteger.mjs";
 import Complex from "./math/Complex.mjs";
 import Matrix from "./math/Matrix.mjs";
 
-const Senko = {};
+export default class Senko {
 
-Senko._printbuffer = "";
-Senko.File = File;
-Senko.format = Format.format;
-Senko.Log = Log;
-Senko.BigInteger = BigInteger;
-Senko.BigDecimal = BigDecimal;
-Senko.RoundingMode = RoundingMode;
-Senko.MathContext = MathContext;
-Senko.Complex = Complex;
-Senko.Matrix = Matrix;
-Senko.Random = Random;
+	static get File() {
+		return File;
+	}
 
-export default Senko;
+	static get format() {
+		return Format.format;
+	}
+
+	static get Log() {
+		return Log;
+	}
+
+	static get BigInteger() {
+		return BigInteger;
+	}
+
+	static get BigDecimal() {
+		return BigDecimal;
+	}
+
+	static get RoundingMode() {
+		return RoundingMode;
+	}
+
+	static get MathContext() {
+		return MathContext;
+	}
+
+	static get Complex() {
+		return Complex;
+	}
+
+	static get Matrix() {
+		return Matrix;
+	}
+
+	static get Random() {
+		return Random;
+	}
+	
+}

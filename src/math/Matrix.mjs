@@ -1,5 +1,5 @@
 ﻿/**
- * The script is part of SenkoJS.
+ * The script is part of konpeito.
  * 
  * AUTHOR:
  *  natade (http://twitter.com/natadea)
@@ -767,7 +767,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.equals(B)
+	 * A.equals(B) = A === B
 	 * @param {Matrix} number
 	 * @param {number} [epsilon] - 誤差
 	 * @returns {boolean} A === B

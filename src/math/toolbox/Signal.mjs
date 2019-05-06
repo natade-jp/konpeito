@@ -1,5 +1,5 @@
 /**
- * The script is part of SenkoJS.
+ * The script is part of konpeito.
  * 
  * AUTHOR:
  *  natade (http://twitter.com/natadea)
