@@ -20,7 +20,7 @@
 	"directories": {
 		"src": "src",
 		"build": "build",
-		"example": "examples"
+		"doc": "doc"
 	},
 	"scripts": {
 		"dev": "node ./package.dev.js",
