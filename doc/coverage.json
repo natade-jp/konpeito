@@ -1,7 +1,7 @@
 {
-  "coverage": "83.51%",
-  "expectCount": 655,
-  "actualCount": 547,
+  "coverage": "83.4%",
+  "expectCount": 663,
+  "actualCount": 553,
   "files": {
     "src/konpeito.mjs": {
       "expectCount": 11,
@@ -9,11 +9,13 @@
       "undocumentLines": []
     },
     "src/Math/BigDecimal.mjs": {
-      "expectCount": 52,
-      "actualCount": 50,
+      "expectCount": 60,
+      "actualCount": 56,
       "undocumentLines": [
         15,
-        17
+        17,
+        19,
+        1140
       ]
     },
     "src/Math/BigInteger.mjs": {

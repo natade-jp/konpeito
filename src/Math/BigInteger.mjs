@@ -1561,6 +1561,14 @@ export default class BigInteger {
 	// ----------------------
 	
 	/**
+	 * 0
+	 * @returns {BigInteger}
+	 */
+	static get ZERO() {
+		return DEFINE.ZERO;
+	}
+
+	/**
 	 * 1
 	 * @returns {BigInteger}
 	 */
@@ -1582,14 +1590,6 @@ export default class BigInteger {
 	 */
 	static get TEN() {
 		return DEFINE.TEN;
-	}
-	
-	/**
-	 * 0
-	 * @returns {BigInteger}
-	 */
-	static get ZERO() {
-		return DEFINE.ZERO;
 	}
 
 }

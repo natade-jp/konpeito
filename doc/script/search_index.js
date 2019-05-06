@@ -624,9 +624,45 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.createconstbigdecimal",
-    "class/src/Math/BigDecimal.mjs~BigDecimal.html#static-method-createConstBigDecimal",
-    "src/Math/BigDecimal.mjs~BigDecimal.createConstBigDecimal",
+    "src/math/bigdecimal.mjs~bigdecimal.one",
+    "class/src/Math/BigDecimal.mjs~BigDecimal.html#static-get-ONE",
+    "src/Math/BigDecimal.mjs~BigDecimal.ONE",
+    "member"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal.ten",
+    "class/src/Math/BigDecimal.mjs~BigDecimal.html#static-get-TEN",
+    "src/Math/BigDecimal.mjs~BigDecimal.TEN",
+    "member"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal.two",
+    "class/src/Math/BigDecimal.mjs~BigDecimal.html#static-get-TWO",
+    "src/Math/BigDecimal.mjs~BigDecimal.TWO",
+    "member"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal.zero",
+    "class/src/Math/BigDecimal.mjs~BigDecimal.html#static-get-ZERO",
+    "src/Math/BigDecimal.mjs~BigDecimal.ZERO",
+    "member"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal.create",
+    "class/src/Math/BigDecimal.mjs~BigDecimal.html#static-method-create",
+    "src/Math/BigDecimal.mjs~BigDecimal.create",
+    "method"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal.getdefaultcontext",
+    "class/src/Math/BigDecimal.mjs~BigDecimal.html#static-method-getDefaultContext",
+    "src/Math/BigDecimal.mjs~BigDecimal.getDefaultContext",
+    "method"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal.setdefaultcontext",
+    "class/src/Math/BigDecimal.mjs~BigDecimal.html#static-method-setDefaultContext",
+    "src/Math/BigDecimal.mjs~BigDecimal.setDefaultContext",
     "method"
   ],
   [

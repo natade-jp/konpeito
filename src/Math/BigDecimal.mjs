@@ -12,6 +12,8 @@ import BigInteger from "./BigInteger.mjs";
 import RoundingMode from "../MathUtil/RoundingMode.mjs";
 import MathContext from "../MathUtil/MathContext.mjs";
 
+let DEFAULT_CONTEXT = MathContext.DECIMAL128;
+
 class DecimalTool {
 
 	static ToBigDecimalFromString(ntext) {
@@ -85,9 +87,10 @@ export default class BigDecimal {
 		 * @private
 		 * @type {MathContext}
 		 */
-		this.default_context = BigDecimal.DEFAULT_CONTEXT;
+		this.default_context = DEFAULT_CONTEXT;
 
 		let context = null;
+
 		if(arguments.length > 1) {
 			throw "BigDecimal Unsupported argument[" + arguments.length + "]";
 		}
@@ -200,6 +203,7 @@ export default class BigDecimal {
 			this._scale		= newbigdecimal._scale;
 			delete this.int_string;
 		}
+		
 		// データが正しいかチェックする
 		if((!(this.integer instanceof BigInteger)) || (!(this.default_context instanceof MathContext))) {
 			throw "BigDecimal Unsupported argument " + arguments;
@@ -211,7 +215,7 @@ export default class BigDecimal {
 	 * @param {BigDecimal|BigInteger|number|string} number - 任意精度実数データ
 	 * @returns {BigDecimal}
 	 */
-	static createConstBigDecimal(number) {
+	static create(number) {
 		if(number instanceof BigDecimal) {
 			return number;
 		}
@@ -515,7 +519,7 @@ export default class BigDecimal {
 	 * @returns {number} A < B ? 1 : (A === B ? 0 : -1)（※非Complexオブジェクト）
 	 */
 	compareTo(number) {
-		const val = BigDecimal.createConstBigDecimal(number);
+		const val = BigDecimal.create(number);
 		const src = this;
 		const tgt = val;
 		// 簡易計算
@@ -552,7 +556,7 @@ export default class BigDecimal {
 	 * @returns {boolean} A === B
 	 */
 	equals(number) {
-		const val = BigDecimal.createConstBigDecimal(number);
+		const val = BigDecimal.create(number);
 		return ((this._scale === val._scale) && (this.integer.equals(val.integer)));
 	}
 
@@ -562,7 +566,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	min(number) {
-		const val = BigDecimal.createConstBigDecimal(number);
+		const val = BigDecimal.create(number);
 		if(this.compareTo(val) <= 0) {
 			return this.clone();
 		}
@@ -577,7 +581,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	max(number) {
-		const val = BigDecimal.createConstBigDecimal(number);
+		const val = BigDecimal.create(number);
 		if(this.compareTo(val) >= 0) {
 			return this.clone();
 		}
@@ -645,7 +649,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	add(number, context) {
-		const augend = BigDecimal.createConstBigDecimal(number);
+		const augend = BigDecimal.create(number);
 		const mc = context ? context : augend.default_context;
 		const src			= this;
 		const tgt			= augend;
@@ -675,7 +679,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	subtract(number, context) {
-		const subtrahend = BigDecimal.createConstBigDecimal(number);
+		const subtrahend = BigDecimal.create(number);
 		const mc = context ? context : subtrahend.default_context;
 		const src			= this;
 		const tgt			= subtrahend;
@@ -710,7 +714,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	multiply(number, context) {
-		const multiplicand = BigDecimal.createConstBigDecimal(number);
+		const multiplicand = BigDecimal.create(number);
 		const mc = context ? context : multiplicand.default_context;
 		const src			= this;
 		const tgt			= multiplicand;
@@ -737,7 +741,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	divideToIntegralValue(number, context) {
-		const divisor = BigDecimal.createConstBigDecimal(number);
+		const divisor = BigDecimal.create(number);
 		const mc = context ? context : divisor.default_context;
 		const getDigit  = function( num ) {
 			let i;
@@ -814,7 +818,7 @@ export default class BigDecimal {
 	 * @returns {Array<BigDecimal>} [C = (int)(A / B), A - C * B]
 	 */
 	divideAndRemainder(number, context) {
-		const divisor = BigDecimal.createConstBigDecimal(number);
+		const divisor = BigDecimal.create(number);
 		const mc = context ? context : divisor.default_context;
 
 		// 1000e0		/	1e2				=	1000e-2	... 0e0
@@ -867,7 +871,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal}
 	 */
 	divide(number, type) {
-		const divisor = BigDecimal.createConstBigDecimal(number);
+		const divisor = BigDecimal.create(number);
 		const src			= this;
 		const tgt			= divisor;
 		let roundingMode	= null;
@@ -1030,7 +1034,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal}
 	 */
 	pow(number, context) {
-		let n = BigDecimal.createConstBigDecimal(number);
+		let n = BigDecimal.create(number);
 		const mc = context ? context : n.default_context;
 		n = n.intValue;
 		if(Math.abs(n) > 999999999) {
@@ -1069,26 +1073,76 @@ export default class BigDecimal {
 			return new BigDecimal([x, scale]);
 		}
 	}
+
+	/**
+	 * オブジェクトを新規作成時に環境設定を変更しなかった場合に設定されるデフォルト設定
+	 * @param {MathContext} [context=MathContext.DECIMAL128]
+	 */
+	static setDefaultContext(context) {
+		DEFAULT_CONTEXT = context ? context : MathContext.DECIMAL128;
+	}
+
+	/**
+	 * オブジェクトを新規作成時に環境設定を変更しなかった場合に設定されるデフォルト設定を取得
+	 * @returns {MathContext}
+	 */
+	static getDefaultContext() {
+		return DEFAULT_CONTEXT;
+	}
+
+	// ----------------------
+	// 定数
+	// ----------------------
+	
+	
+	/**
+	 * 0
+	 * @returns {BigDecimal}
+	 */
+	static get ZERO() {
+		const x = new BigDecimal(DEFINE.ZERO);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+
+	/**
+	 * 1
+	 * @returns {BigDecimal}
+	 */
+	static get ONE() {
+		const x = new BigDecimal(DEFINE.ONE);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+	
+	/**
+	 * 2
+	 * @returns {BigDecimal}
+	 */
+	static get TWO() {
+		const x = new BigDecimal(DEFINE.TWO);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+	
+	/**
+	 * 10
+	 * @returns {BigDecimal}
+	 */
+	static get TEN() {
+		const x = new BigDecimal(DEFINE.TEN);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+
 }
 
-BigDecimal.DEFAULT_CONTEXT = MathContext.DECIMAL128;
+const DEFINE = {
+	ZERO : new BigDecimal(0),
+	ONE : new BigDecimal(1),
+	TWO : new BigDecimal(2),
+	TEN : new BigDecimal(10)
+};
+
 BigDecimal.RoundingMode = RoundingMode;
 BigDecimal.MathContext = MathContext;
-
-BigDecimal.ZERO					= new BigDecimal(0);
-BigDecimal.ONE					= new BigDecimal(1);
-BigDecimal.TEN					= new BigDecimal(10);
-
-BigDecimal.ROUND_CEILING		= RoundingMode.CEILING;
-BigDecimal.ROUND_DOWN			= RoundingMode.DOWN;
-BigDecimal.ROUND_FLOOR			= RoundingMode.FLOOR;
-BigDecimal.ROUND_HALF_DOWN		= RoundingMode.HALF_DOWN;
-BigDecimal.ROUND_HALF_EVEN		= RoundingMode.HALF_EVEN;
-BigDecimal.ROUND_HALF_UP		= RoundingMode.HALF_UP;
-BigDecimal.ROUND_UNNECESSARY	= RoundingMode.UNNECESSARY;
-BigDecimal.ROUND_UP				= RoundingMode.UP;
-
-BigDecimal.CONTEXT_UNLIMITED	= MathContext.UNLIMITED;
-BigDecimal.CONTEXT_DECIMAL32	= MathContext.DECIMAL32;
-BigDecimal.CONTEXT_DECIMAL64	= MathContext.DECIMAL64;
-BigDecimal.CONTEXT_DECIMAL128	= MathContext.DECIMAL128;

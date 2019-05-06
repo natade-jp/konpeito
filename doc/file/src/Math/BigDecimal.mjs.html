@@ -8,12 +8,12 @@
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="The collection of javascirpt library such as GUI, numerical calculation, 3DCG etc."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito.js"><meta property="twitter:description" content="The collection of javascirpt library such as GUI, numerical calculation, 3DCG etc."></head>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito.js"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
   <a href="./">Home</a>
-  
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   
@@ -56,6 +56,8 @@
 import BigInteger from &quot;./BigInteger.mjs&quot;;
 import RoundingMode from &quot;../MathUtil/RoundingMode.mjs&quot;;
 import MathContext from &quot;../MathUtil/MathContext.mjs&quot;;
+
+let DEFAULT_CONTEXT = MathContext.DECIMAL128;
 
 class DecimalTool {
 
@@ -130,9 +132,10 @@ export default class BigDecimal {
 		 * @private
 		 * @type {MathContext}
 		 */
-		this.default_context = BigDecimal.DEFAULT_CONTEXT;
+		this.default_context = DEFAULT_CONTEXT;
 
 		let context = null;
+
 		if(arguments.length &gt; 1) {
 			throw &quot;BigDecimal Unsupported argument[&quot; + arguments.length + &quot;]&quot;;
 		}
@@ -245,6 +248,7 @@ export default class BigDecimal {
 			this._scale		= newbigdecimal._scale;
 			delete this.int_string;
 		}
+		
 		// &#x30C7;&#x30FC;&#x30BF;&#x304C;&#x6B63;&#x3057;&#x3044;&#x304B;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3059;&#x308B;
 		if((!(this.integer instanceof BigInteger)) || (!(this.default_context instanceof MathContext))) {
 			throw &quot;BigDecimal Unsupported argument &quot; + arguments;
@@ -256,7 +260,7 @@ export default class BigDecimal {
 	 * @param {BigDecimal|BigInteger|number|string} number - &#x4EFB;&#x610F;&#x7CBE;&#x5EA6;&#x5B9F;&#x6570;&#x30C7;&#x30FC;&#x30BF;
 	 * @returns {BigDecimal}
 	 */
-	static createConstBigDecimal(number) {
+	static create(number) {
 		if(number instanceof BigDecimal) {
 			return number;
 		}
@@ -560,7 +564,7 @@ export default class BigDecimal {
 	 * @returns {number} A &lt; B ? 1 : (A === B ? 0 : -1)&#xFF08;&#x203B;&#x975E;Complex&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#xFF09;
 	 */
 	compareTo(number) {
-		const val = BigDecimal.createConstBigDecimal(number);
+		const val = BigDecimal.create(number);
 		const src = this;
 		const tgt = val;
 		// &#x7C21;&#x6613;&#x8A08;&#x7B97;
@@ -597,7 +601,7 @@ export default class BigDecimal {
 	 * @returns {boolean} A === B
 	 */
 	equals(number) {
-		const val = BigDecimal.createConstBigDecimal(number);
+		const val = BigDecimal.create(number);
 		return ((this._scale === val._scale) &amp;&amp; (this.integer.equals(val.integer)));
 	}
 
@@ -607,7 +611,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	min(number) {
-		const val = BigDecimal.createConstBigDecimal(number);
+		const val = BigDecimal.create(number);
 		if(this.compareTo(val) &lt;= 0) {
 			return this.clone();
 		}
@@ -622,7 +626,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	max(number) {
-		const val = BigDecimal.createConstBigDecimal(number);
+		const val = BigDecimal.create(number);
 		if(this.compareTo(val) &gt;= 0) {
 			return this.clone();
 		}
@@ -690,7 +694,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	add(number, context) {
-		const augend = BigDecimal.createConstBigDecimal(number);
+		const augend = BigDecimal.create(number);
 		const mc = context ? context : augend.default_context;
 		const src			= this;
 		const tgt			= augend;
@@ -720,7 +724,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	subtract(number, context) {
-		const subtrahend = BigDecimal.createConstBigDecimal(number);
+		const subtrahend = BigDecimal.create(number);
 		const mc = context ? context : subtrahend.default_context;
 		const src			= this;
 		const tgt			= subtrahend;
@@ -755,7 +759,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	multiply(number, context) {
-		const multiplicand = BigDecimal.createConstBigDecimal(number);
+		const multiplicand = BigDecimal.create(number);
 		const mc = context ? context : multiplicand.default_context;
 		const src			= this;
 		const tgt			= multiplicand;
@@ -782,7 +786,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	divideToIntegralValue(number, context) {
-		const divisor = BigDecimal.createConstBigDecimal(number);
+		const divisor = BigDecimal.create(number);
 		const mc = context ? context : divisor.default_context;
 		const getDigit  = function( num ) {
 			let i;
@@ -859,7 +863,7 @@ export default class BigDecimal {
 	 * @returns {Array&lt;BigDecimal&gt;} [C = (int)(A / B), A - C * B]
 	 */
 	divideAndRemainder(number, context) {
-		const divisor = BigDecimal.createConstBigDecimal(number);
+		const divisor = BigDecimal.create(number);
 		const mc = context ? context : divisor.default_context;
 
 		// 1000e0		/	1e2				=	1000e-2	... 0e0
@@ -912,7 +916,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal}
 	 */
 	divide(number, type) {
-		const divisor = BigDecimal.createConstBigDecimal(number);
+		const divisor = BigDecimal.create(number);
 		const src			= this;
 		const tgt			= divisor;
 		let roundingMode	= null;
@@ -1075,7 +1079,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal}
 	 */
 	pow(number, context) {
-		let n = BigDecimal.createConstBigDecimal(number);
+		let n = BigDecimal.create(number);
 		const mc = context ? context : n.default_context;
 		n = n.intValue;
 		if(Math.abs(n) &gt; 999999999) {
@@ -1114,29 +1118,79 @@ export default class BigDecimal {
 			return new BigDecimal([x, scale]);
 		}
 	}
+
+	/**
+	 * &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x65B0;&#x898F;&#x4F5C;&#x6210;&#x6642;&#x306B;&#x74B0;&#x5883;&#x8A2D;&#x5B9A;&#x3092;&#x5909;&#x66F4;&#x3057;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x8A2D;&#x5B9A;
+	 * @param {MathContext} [context=MathContext.DECIMAL128]
+	 */
+	static setDefaultContext(context) {
+		DEFAULT_CONTEXT = context ? context : MathContext.DECIMAL128;
+	}
+
+	/**
+	 * &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x65B0;&#x898F;&#x4F5C;&#x6210;&#x6642;&#x306B;&#x74B0;&#x5883;&#x8A2D;&#x5B9A;&#x3092;&#x5909;&#x66F4;&#x3057;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x8A2D;&#x5B9A;&#x3092;&#x53D6;&#x5F97;
+	 * @returns {MathContext}
+	 */
+	static getDefaultContext() {
+		return DEFAULT_CONTEXT;
+	}
+
+	// ----------------------
+	// &#x5B9A;&#x6570;
+	// ----------------------
+	
+	
+	/**
+	 * 0
+	 * @returns {BigDecimal}
+	 */
+	static get ZERO() {
+		const x = new BigDecimal(DEFINE.ZERO);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+
+	/**
+	 * 1
+	 * @returns {BigDecimal}
+	 */
+	static get ONE() {
+		const x = new BigDecimal(DEFINE.ONE);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+	
+	/**
+	 * 2
+	 * @returns {BigDecimal}
+	 */
+	static get TWO() {
+		const x = new BigDecimal(DEFINE.TWO);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+	
+	/**
+	 * 10
+	 * @returns {BigDecimal}
+	 */
+	static get TEN() {
+		const x = new BigDecimal(DEFINE.TEN);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+
 }
 
-BigDecimal.DEFAULT_CONTEXT = MathContext.DECIMAL128;
+const DEFINE = {
+	ZERO : new BigDecimal(0),
+	ONE : new BigDecimal(1),
+	TWO : new BigDecimal(2),
+	TEN : new BigDecimal(10)
+};
+
 BigDecimal.RoundingMode = RoundingMode;
 BigDecimal.MathContext = MathContext;
-
-BigDecimal.ZERO					= new BigDecimal(0);
-BigDecimal.ONE					= new BigDecimal(1);
-BigDecimal.TEN					= new BigDecimal(10);
-
-BigDecimal.ROUND_CEILING		= RoundingMode.CEILING;
-BigDecimal.ROUND_DOWN			= RoundingMode.DOWN;
-BigDecimal.ROUND_FLOOR			= RoundingMode.FLOOR;
-BigDecimal.ROUND_HALF_DOWN		= RoundingMode.HALF_DOWN;
-BigDecimal.ROUND_HALF_EVEN		= RoundingMode.HALF_EVEN;
-BigDecimal.ROUND_HALF_UP		= RoundingMode.HALF_UP;
-BigDecimal.ROUND_UNNECESSARY	= RoundingMode.UNNECESSARY;
-BigDecimal.ROUND_UP				= RoundingMode.UP;
-
-BigDecimal.CONTEXT_UNLIMITED	= MathContext.UNLIMITED;
-BigDecimal.CONTEXT_DECIMAL32	= MathContext.DECIMAL32;
-BigDecimal.CONTEXT_DECIMAL64	= MathContext.DECIMAL64;
-BigDecimal.CONTEXT_DECIMAL128	= MathContext.DECIMAL128;
 </code></pre>
 
 </div>

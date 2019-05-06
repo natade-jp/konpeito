@@ -8,12 +8,12 @@
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="The collection of javascirpt library such as GUI, numerical calculation, 3DCG etc."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito.js"><meta property="twitter:description" content="The collection of javascirpt library such as GUI, numerical calculation, 3DCG etc."></head>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito.js"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
   <a href="./">Home</a>
-  
+  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   
@@ -42,22 +42,89 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="konpeito">konpeito</h1><h3 id="what">What</h3><ul>
-<li>The collection of javascirpt library such as numerical calculation.</li>
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="konpeito-js">konpeito.js</h1><h2 id="what">What</h2><ul>
+<li>The &quot;konpeito.js&quot; is a library for math calculations.</li>
+<li>This code is a module coded in ES6.</li>
 </ul>
-<h3 id="author">Author</h3><ul>
-<li><a href="https://twitter.com/natadea">natade</a></li>
-</ul>
-<h3 id="repository">Repository</h3><ul>
-<li><a href="https://github.com/natade-jp/konpeito">konpeito</a></li>
+<h3 id="usage">Usage</h3><p>This library has 4 functions.</p>
+<ul>
+<li>BigInteger</li>
+<li>BigDecimal</li>
+<li>Complex</li>
+<li>Matrix</li>
 </ul>
 <h3 id="document">Document</h3><ul>
 <li><a href="https://natade-jp.github.io/konpeito/doc/">document</a></li>
 </ul>
-<h3 id="note">Note</h3><p>It is a multifunctional library under development, specialized for HTML5.<br></p>
-<h3 id="demo">Demo</h3><p>Please check the console and main.mjs.</p>
+<h2 id="biginteger">BigInteger</h2><p>arbitrary-precision integer class.</p>
+<h3 id="code">code</h3><pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
+const BigInteger = konpeito.BigInteger;
+const $ = BigInteger.create;
+
+console.log($(&quot;-1234567890&quot;).mul(&quot;987654321098765432109876543210&quot;).toString());
+console.log($(&quot;7&quot;).pow(&quot;50&quot;).toString());</code>
+</code></pre><h3 id="result">result</h3><pre><code><code class="source-code prettyprint">&gt; -1219326311248285321124828532111263526900
+&gt; 1798465042647412146620280340569649349251249</code>
+</code></pre><h2 id="bigdecimal">BigDecimal</h2><p>floating-point math class.</p>
+<h3 id="code">code</h3><pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
+const BigDecimal = konpeito.BigDecimal;
+const MathContext = konpeito.MathContext;
+const $ = BigDecimal.create;
+
+BigDecimal.setDefaultContext(MathContext.UNLIMITED);
+console.log($(&quot;-123456.7890&quot;).mul(&quot;987654321098765.432109876543210&quot;).toString());</code>
+</code></pre><h3 id="result">result</h3><pre><code><code class="source-code prettyprint">&gt; -121932631124828532112.4828532111263526900</code>
+</code></pre><h2 id="complex">Complex</h2><p>complex class.</p>
 <ul>
-<li><a href="https://natade-jp.github.io/konpeito/doc/examples/demos/BigDecimal/">BigDecimal</a></li>
+<li>use the JavaScript standard number.</li>
+</ul>
+<pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
+const Complex = konpeito.Complex;
+const $ = Complex.create;
+
+console.log($(&quot;3 + 4i&quot;).pow(&quot;2 + 8j&quot;).toString());</code>
+</code></pre><pre><code><code class="source-code prettyprint">&gt; -0.0083837 + 0.0124424i</code>
+</code></pre><h2 id="matrix">Matrix</h2><p>complex matrix class.</p>
+<ul>
+<li>use the JavaScript standard number.</li>
+<li>Some methods do not support complex arithmetic.</li>
+</ul>
+<pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
+const Matrix = konpeito.Matrix;
+const $ = Matrix.create;
+
+console.log($(&quot;[1 2;3 4;5 6]&quot;).toString());
+const USV = $(&quot;[1 2;3 4;5 6]&quot;).svd();
+console.log(USV.U.toString());
+console.log(USV.S.toString());
+console.log(USV.V.toString());
+console.log(USV.U.mul(USV.S).mul(USV.V.T()).toString());
+
+console.log($(&quot;[1+j 2-3j -3 -4]&quot;).fft().toString());
+console.log($(&quot;[1 2 30]&quot;).dct().toString());</code>
+</code></pre><pre><code><code class="source-code prettyprint">&gt;
+ 1  2
+ 3  4
+ 5  6
+&gt; 
+-0.2408  0.5247 -0.8165
+ 0.4019  0.8196  0.4082
+&gt; 
+ 0.5143  0.0000
+ 0.0000  9.5255
+ 0.0000  0.0000
+&gt; 
+ 0.7849  0.6196
+-0.6196  0.7849
+&gt; 
+ 1.0000  2.0000
+ 3.0000  4.0000
+ 5.0000  6.0000
+&gt; -4.0000 - 2.0000i  1.0000 - 5.0000i  0.0000 + 4.0000i  7.0000 + 7.0000i
+&gt; 19.0526 -20.5061  11.0227</code>
+</code></pre><h2 id="examples">Examples</h2><p>Please check the console and main.mjs.</p>
+<ul>
+<li><a href="../examples/demos/BigDecimal/">BigDecimal</a></li>
 <li><a href="https://natade-jp.github.io/konpeito/doc/examples/demos/BigInteger/">BigInteger</a></li>
 <li><a href="https://natade-jp.github.io/konpeito/doc/examples/demos/Matrix/">Matrix</a></li>
 <li><a href="https://natade-jp.github.io/konpeito/doc/examples/demos/Random/">Random</a></li>

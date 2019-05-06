@@ -6,7 +6,13 @@
 		{
 			"name": "esdoc-standard-plugin",
 			"option": {
-				"unexportedIdentifier": {"enable": false}
+				"unexportedIdentifier": {"enable": false},
+				"manual": {
+					"index": "./MANUAL.md",
+					"files": [
+						"./MANUAL.md"
+					  ]
+				}
 			}
 		}
 	]

@@ -265,3 +265,14 @@ const main = function() {
 
 main();
 
+
+
+console.log($("[1 2;3 4;5 6]").toString());
+const USV = $("[1 2;3 4;5 6]").svd();
+console.log(USV.U.toString());
+console.log(USV.S.toString());
+console.log(USV.V.toString());
+console.log(USV.U.mul(USV.S).mul(USV.V.T()).toString());
+
+console.log($("[1+j 2-3j -3 -4]").fft().toString());
+console.log($("[1 2 30]").dct().toString());
