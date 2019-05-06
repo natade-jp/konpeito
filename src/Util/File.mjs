@@ -136,6 +136,9 @@ const CSVTool = {
 	}
 };
 
+/**
+ * 調整中
+ */
 export default class File {
 	
 	constructor(pathname) {

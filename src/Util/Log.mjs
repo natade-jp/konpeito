@@ -249,6 +249,9 @@ if (console || (window && window.console)) {
 let show_gui = false;
 let printbuffer = "";
 
+/**
+ * 調整中
+ */
 class Log {
 
 	static setGUI() {
