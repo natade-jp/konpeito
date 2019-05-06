@@ -1,8 +1,7 @@
-npm ls --depth=0
-+-- rollup@0.67.0
-+-- rollup-plugin-buble@0.19.4
-+-- rollup-plugin-uglify@6.0.0
-`-- rollup-plugin-uglify-es@0.0.1
-
-npm ls -g --depth=0
-`-- eslint@5.8.0
+npm install -D rollup
+npm install -D rollup-plugin-buble
+npm install -D rollup-plugin-uglify
+npm install -D rollup-plugin-uglify-es
+npm install -D eslint
+npm install -D esdoc
+npm install -D esdoc-standard-plugin

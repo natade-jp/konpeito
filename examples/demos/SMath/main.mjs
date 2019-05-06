@@ -2,7 +2,7 @@
 
 const Log = Senko.Log;
 const Matrix = Senko.Matrix;
-const $ = Matrix.createConstMatrix;
+const $ = Matrix.create;
 
 const testLUP = function(text) {
 	Log.println("lup");

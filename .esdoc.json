@@ -1,0 +1,12 @@
+{
+	"source": "./docsrc",
+	"destination": "./doc",
+	"plugins": [
+		{
+			"name": "esdoc-standard-plugin",
+			"option": {
+				"unexportedIdentifier": {"enable": false}
+			}
+		}
+	]
+}

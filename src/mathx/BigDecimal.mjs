@@ -9,6 +9,8 @@
  */
 
 import BigInteger from "./BigInteger.mjs";
+import RoundingMode from "./toolbox/RoundingMode.mjs";
+import MathContext from "./toolbox/MathContext.mjs";
 
 class DecimalTool {
 
@@ -57,27 +59,54 @@ class DecimalTool {
 
 }
 
+/**
+ * 任意精度実数クラス (immutable)
+ */
 export default class BigDecimal {
 	
 	/**
-	 * 任意精度実数演算クラス (immutable)
+	 * 任意精度実数を作成
 	 * 配列で設定する場合は、 BigInteger, [スケール値=0], [環境=default], [精度設定=default]
 	 * オブジェクトで設定する場合は、 integer, [scale=0], [default_context=default], [context=default]
 	 * 精度設定の初期値設定は、設定可能とする予定。
 	 * @param {BigDecimal|BigInteger|number|string} number - 任意精度実数データ
 	 */
 	constructor(number) {
+
+		/**
+		 * @private
+		 * @type {number}
+		 */
 		this._scale	= 0;
+		
+		/**
+		 * @private
+		 * @type {MathContext}
+		 */
 		this.default_context = BigDecimal.DEFAULT_CONTEXT;
+
 		let context = null;
 		if(arguments.length > 1) {
 			throw "BigDecimal Unsupported argument[" + arguments.length + "]";
 		}
 		if(number instanceof BigDecimal) {
+
+			/**
+			 * @private
+			 * @type {BigInteger}
+			 */
 			this.integer			= number.integer.clone();
+
 			this._scale				= number._scale;
+			
+			/**
+			 * @private
+			 * @type {string}
+			 */
 			this.int_string			= number.int_string;
+
 			this.default_context	= number.default_context;
+
 		}
 		else if(number instanceof BigInteger) {
 			this.integer	= number.clone();
@@ -351,7 +380,7 @@ export default class BigDecimal {
 	/**
 	 * スケールを切り替える
 	 * @param {number} newScale - 新しいスケール
-	 * @param {RoundingModeInterface} [roundingMode=RoundingMode.UNNECESSARY] - 精度を変換する際の丸め方
+	 * @param {RoundingModeEntity} [roundingMode=RoundingMode.UNNECESSARY] - 精度を変換する際の丸め方
 	 * @param {MathContext} [mc] - 切り替え先の設定（これのみ変更する場合は、roundを使用すること）
 	 * @returns {BigDecimal} 
 	 */
@@ -830,7 +859,7 @@ export default class BigDecimal {
 	/**
 	 * A.divide(B) = A / B
 	 * @param {Object|number|string|Array} number 
-	 * @param {Object<string, Object>} [type] - 計算に使用する scale, context, roundingMode を設定する
+	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - 計算に使用する scale, context, roundingMode を設定する
 	 * @returns {BigDecimal}
 	 */
 	divide(number, type) {
@@ -918,7 +947,7 @@ export default class BigDecimal {
 	/**
 	 * A.divide(B) = A / B
 	 * @param {Object|number|string|Array} number 
-	 * @param {Object<string, Object>} [type] - 計算に使用する scale, context, roundingMode を設定する
+	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - 計算に使用する scale, context, roundingMode を設定する
 	 * @returns {BigDecimal}
 	 */
 	div(number, type) {
@@ -1036,307 +1065,7 @@ export default class BigDecimal {
 			return new BigDecimal([x, scale]);
 		}
 	}
-	
 }
-
-/**
- * 丸めモードの基底クラス
- */
-class RoundingModeInterface {
-	/**
-	 * 丸めモードの名前を英語の大文字で取得する
-	 * @returns {string} 丸めモード名
-	 */
-	static toString() {
-		return "NONE";
-	}
-	/**
-	 * 丸めに必要な加算値
-	 * @param {number} x - 1ケタ目の値
-	 * @returns {number} いくつ足すと丸められるか
-	 */
-	static getAddNumber(x) {
-		return 0;
-	}
-}
-
-/**
- * 絶対値の切り上げ（1桁目が0より大きければ桁上げする）
- */
-class RoundingMode_UP extends RoundingModeInterface {
-	static toString() {
-		return "UP";
-	}
-	static getAddNumber(x) {
-		x = x % 10;
-		if(x === 0) {
-			return 0;
-		}
-		else if(x > 0) {
-			return 10 - x;
-		}
-		else {
-			return (-(10 + x));
-		}
-	}
-}
-
-/**
- * 絶対値の切り下げ（1桁目が0より大きければ桁下げする）
- */
-class RoundingMode_DOWN extends RoundingModeInterface {
-	static toString() {
-		return "DOWN";
-	}
-	static getAddNumber(x) {
-		x = x % 10;
-		return -x;
-	}
-}
-
-/**
- * 正の無限大に近づく
- */
-class RoundingMode_CEILING extends RoundingModeInterface {
-	static toString() {
-		return "CEILING";
-	}
-	static getAddNumber(x) {
-		x = x % 10;
-		if(x === 0) {
-			return 0;
-		}
-		else if(x > 0) {
-			return 10 - x;
-		}
-		else {
-			return -x;
-		}
-	}
-}
-
-/**
- * 負の無限大に近づく
- */
-class RoundingMode_FLOOR extends RoundingModeInterface {
-	static toString() {
-		return "FLOOR";
-	}
-	static getAddNumber(x) {
-		x = x % 10;
-		if(x === 0) {
-			return 0;
-		}
-		else if(x > 0) {
-			return -x;
-		}
-		else {
-			return(-(10 + x));
-		}
-	}
-}
-
-/**
- * 四捨五入
- */
-class RoundingMode_HALF_UP extends RoundingModeInterface {
-	static toString() {
-		return "HALF_UP";
-	}
-	static getAddNumber(x) {
-		x = x % 10;
-		const sign = x >= 0 ? 1 : -1;
-		if(Math.abs(x) < 5) {
-			return (x * -1);
-		}
-		else {
-			return (sign * (10 - Math.abs(x)));
-		}
-	}
-}
-
-/**
- * 五捨六入
- */
-class RoundingMode_HALF_DOWN extends RoundingModeInterface {
-	static toString() {
-		return "HALF_DOWN";
-	}
-	static getAddNumber(x) {
-		x = x % 10;
-		const sign = x >= 0 ? 1 : -1;
-		if(Math.abs(x) < 6) {
-			return (x * -1);
-		}
-		else {
-			return (sign * (10 - Math.abs(x)));
-		}
-	}
-}
-
-/**
- * 等間隔なら偶数側へ丸める
- */
-class RoundingMode_HALF_EVEN extends RoundingModeInterface {
-	static toString() {
-		return "HALF_EVEN";
-	}
-	static getAddNumber(x) {
-		x = x % 100;
-		let sign, even;
-		if(x < 0) {
-			sign = -1;
-			even = Math.ceil(x / 10) & 1;
-		}
-		else {
-			sign = 1;
-			even = Math.floor(x / 10) & 1;
-		}
-		let center;
-		if(even === 1) {
-			center = 5;
-		}
-		else {
-			center = 6;
-		}
-		x = x % 10;
-		if(Math.abs(x) < center) {
-			return (x * -1);
-		}
-		else {
-			return (sign * (10 - Math.abs(x)));
-		}
-	}
-}
-
-/**
- * 丸めない（丸める必要が出る場合はエラー）
- */
-class RoundingMode_UNNECESSARY extends RoundingModeInterface {
-	static toString() {
-		return "UNNECESSARY";
-	}
-	static getAddNumber(x) {
-		x = x % 10;
-		if(x === 0) {
-			return 0;
-		}
-		else {
-			throw "ArithmeticException";
-		}
-	}
-}
-
-/**
- * 丸めモードの一覧
- */
-const RoundingMode = {
-
-	CEILING : RoundingMode_CEILING,
-	DOWN : RoundingMode_DOWN,
-	FLOOR : RoundingMode_FLOOR,
-	HALF_DOWN : RoundingMode_HALF_DOWN,
-	HALF_EVEN : RoundingMode_HALF_EVEN,
-	HALF_UP : RoundingMode_HALF_UP,
-	UNNECESSARY : RoundingMode_UNNECESSARY,
-	UP : RoundingMode_UP,
-
-	/**
-	 * 指定した文字列で表される丸めクラスを取得する
-	 * @param {string} name - モードの英数名
-	 * @returns {RoundingModeInterface}
-	 */
-	valueOf : function(name) {
-		if(name === null) {
-			throw "NullPointerException";
-		}
-		if(name instanceof RoundingModeInterface) {
-			return name;
-		}
-		const upper_name = name.toUpperCase();
-		for(const key in RoundingMode) {
-			const values = RoundingMode[key];
-			if((values instanceof RoundingModeInterface) && (values.toString() === upper_name)) {
-				return values;
-			}
-		}
-		throw "IllegalArgumentException : " + name;
-	}
-};
-
-/**
- * 環境設定
- */
-class MathContext {
-
-	/**
-	 * 任意精度の環境設定データ
-	 * @param {string|number} precision_or_name - 精度を数値で指定するか、設定自体を文字列で指定する
-	 * @param {RoundingModeInterface} [roundingMode=RoundingMode.HALF_UP] - 丸めモード
-	 */
-	constructor(precision_or_name, roundingMode) {
-		this.precision = precision_or_name;
-		this.roundingMode = roundingMode === undefined ? RoundingMode.HALF_UP : roundingMode;
-		if((typeof precision_or_name === "string") || (precision_or_name instanceof String)) {
-			let buff = precision_or_name.match(/precision=\d+/);
-			if(buff !== null) {
-				buff = buff[0].substring("precision=".length, buff[0].length);
-				this.precision = parseInt(buff, 10);
-			}
-			buff = precision_or_name.match(/roundingMode=\w+/);
-			if(buff !== null) {
-				buff = buff[0].substring("roundingMode=".length, buff[0].length);
-				this.roundingMode = RoundingMode.valueOf(buff);
-			}	
-		}
-		if(this.precision < 0) {
-			throw "IllegalArgumentException";
-		}
-	}
-
-	/**
-	 * 精度
-	 * @returns {number}
-	 */
-	getPrecision() {
-		return this.precision;
-	}
-
-	/**
-	 * 丸め方
-	 * @returns {RoundingModeInterface}
-	 */
-	getRoundingMode() {
-		return this.roundingMode;
-	}
-
-	/**
-	 * 環境が等しいか
-	 * @param {MathContext} x - 比較対象
-	 * @returns {boolean}
-	 */
-	equals(x) {
-		if(x instanceof MathContext) {
-			if(x.toString() === this.toString()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * 文字列化
-	 * @returns {string}
-	 */
-	toString() {
-		return ("precision=" + this.precision + " roundingMode=" + this.roundingMode.toString());
-	}
-}
-
-MathContext.UNLIMITED	= new MathContext(0,	RoundingMode.HALF_UP);
-MathContext.DECIMAL32	= new MathContext(7,	RoundingMode.HALF_EVEN);
-MathContext.DECIMAL64	= new MathContext(16,	RoundingMode.HALF_EVEN);
-MathContext.DECIMAL128	= new MathContext(34,	RoundingMode.HALF_EVEN);
 
 BigDecimal.DEFAULT_CONTEXT = MathContext.DECIMAL128;
 BigDecimal.RoundingMode = RoundingMode;

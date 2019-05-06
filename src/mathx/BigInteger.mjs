@@ -128,7 +128,7 @@ class IntegerTool {
 	 * @param {number} [radix=10] - テキストデータの進数
 	 * @returns {Object} 多倍長数値を表すためのデータ 
 	 */
-	static ToBigIntegerFromString(text, number) {
+	static ToBigIntegerFromString(text, radix) {
 		let x = text.replace(/\s/g, "").toLowerCase();
 		let buff = x.match(/^[-+]+/);
 
@@ -142,8 +142,8 @@ class IntegerTool {
 				sign = -1;
 			}
 		}
-		if(number) {
-			element = IntegerTool.string_to_binary_number(x, number);
+		if(radix) {
+			element = IntegerTool.string_to_binary_number(x, radix);
 		}
 		else if(/^0x/.test(x)) {
 			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 16);
@@ -170,7 +170,6 @@ class IntegerTool {
 	}
 }
 
-
 // 内部では1変数内の中の16ビットごとに管理
 // 2変数で16ビット*16ビットで32ビットを表す
 // this.element	...	16ビットごとに管理
@@ -179,10 +178,13 @@ class IntegerTool {
 // 本クラスはイミュータブルです。
 // 内部の「_」から始まるメソッドは内部計算用で非公開です。またミュータブルです。
 
+/**
+ * 多倍長整数演算クラス (immutable)
+ */
 export default class BigInteger {
 
 	/**
-	 * 多倍長整数演算クラス (immutable)
+	 * 多倍長整数を作成
 	 * 文字列で指定する場合は指数表記には非対応。
 	 * 指定した進数で指定する場合は["ff", 16] という配列で指定する。
 	 * @param {BigInteger|number|string|Array<string|number>} number - 整数値
@@ -236,10 +238,10 @@ export default class BigInteger {
 
 	/**
 	 * 引数から多倍長整数を作成する（作成が不要の場合はnewしない）
-	 * @param {BigInteger|number|string|Array<string|number>} number 
+	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
-	static createConstBigInteger(number) {
+	static create(number) {
 		if(number instanceof BigInteger) {
 			return number;
 		}
@@ -304,11 +306,11 @@ export default class BigInteger {
 
 	/**
 	 * A.equals(B)
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {boolean} A === B
 	 */
 	equals(number) {
-		const x = BigInteger.createConstBigInteger(number);
+		const x = BigInteger.create(number);
 		if(this.signum() !==  x.signum()) {
 			return false;
 		}
@@ -547,11 +549,11 @@ export default class BigInteger {
 
 	/**
 	 * A._and(B) = A += B
-	 * @param {BigInteger|number|string|Array<string|number>} number 
+	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
 	_and(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		let e1 = this;
 		let e2 = val;
 		const s1  = e1.signum(), s2 = e2.signum();
@@ -582,7 +584,7 @@ export default class BigInteger {
 
 	/**
 	 * A.and(B) = A + B
-	 * @param {BigInteger|number|string|Array<string|number>} number 
+	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
 	and(number) {
@@ -591,11 +593,11 @@ export default class BigInteger {
 
 	/**
 	 * A._or(B) = A |= B
-	 * @param {BigInteger|number|string|Array<string|number>} number 
+	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
 	_or(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		let e1 = this;
 		let e2 = val;
 		const s1  = e1.signum(), s2 = e2.signum();
@@ -620,7 +622,7 @@ export default class BigInteger {
 
 	/**
 	 * A.or(B) = A | B
-	 * @param {BigInteger|number|string|Array<string|number>} number 
+	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
 	or(number) {
@@ -629,11 +631,11 @@ export default class BigInteger {
 
 	/**
 	 * A._xor(B) = A ^= B
-	 * @param {BigInteger|number|string|Array<string|number>} number 
+	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
 	_xor(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		let e1 = this;
 		let e2 = val;
 		const s1  = e1.signum(), s2 = e2.signum();
@@ -658,7 +660,7 @@ export default class BigInteger {
 
 	/**
 	 * A.xor(B) = A ^ B
-	 * @param {BigInteger|number|string|Array<string|number>} number 
+	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
 	xor(number) {
@@ -683,17 +685,17 @@ export default class BigInteger {
 
 	/**
 	 * A._andNot(B) = A &= (!B)
-	 * @param {BigInteger|number|string|Array<string|number>} number 
+	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
 	_andNot(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		return(this._and(val.not()));
 	}
 
 	/**
 	 * A.andNot(B) = A & (!B)
-	 * @param {BigInteger|number|string|Array<string|number>} number 
+	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
 	andNot(number) {
@@ -733,11 +735,11 @@ export default class BigInteger {
 	/**
 	 * ユークリッド互除法
 	 * x = this, y = number としたとき gcd(x,y)を返す
-	 * @param {BigInteger|number|string|Array<string|number>} number 
+	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
 	gcd(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		// 非再帰
 		let x = this, y = val, z;
 		while(y.signum() !== 0) {
@@ -751,11 +753,11 @@ export default class BigInteger {
 	/**
 	 * 拡張ユークリッド互除法
 	 * x = this, y = number としたとき、 a*x + b*y = c = gcd(x, y) の[a, b, c]を返す
-	 * @param {BigInteger|number|string|Array<string|number>} number 
+	 * @param {BigInteger} number 
 	 * @returns Array<BigInteger> BigInteger が入った配列
 	 */
 	extgcd(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		// 非再帰
 		const ONE  = new BigInteger(1);
 		const ZERO = new BigInteger(0);
@@ -826,11 +828,11 @@ export default class BigInteger {
 
 	/**
 	 * A.compareToAbs(B) 絶対値をとった値同士で比較する
-	 * @param {BigInteger|number|string|Array<string|number>} number 
+	 * @param {BigInteger} number 
 	 * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)（※非Complexオブジェクト）
 	 */
 	compareToAbs(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		if(this.element.length < val.element.length) {
 			return -1;
 		}
@@ -848,11 +850,11 @@ export default class BigInteger {
 
 	/**
 	 * A.compareTo(B) 値同士で比較する
-	 * @param {BigInteger|number|string|Array<string|number>} number 
+	 * @param {BigInteger} number 
 	 * @returns {number} A < B ? 1 : (A === B ? 0 : -1)（※非Complexオブジェクト）
 	 */
 	compareTo(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		if(this.signum() !== val.signum()) {
 			if(this.sign > val.sign) {
 				return 1;
@@ -869,11 +871,11 @@ export default class BigInteger {
 
 	/**
 	 * A.max(B) = max([A, B])
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	max(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		if(this.compareTo(val) >= 0) {
 			return this.clone();
 		}
@@ -884,11 +886,11 @@ export default class BigInteger {
 
 	/**
 	 * A.min(B) = min([A, B])
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	min(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		if(this.compareTo(val) >= 0) {
 			return val.clone();
 		}
@@ -1017,11 +1019,11 @@ export default class BigInteger {
 
 	/**
 	 * A._add(B) = A += B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	_add(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		const o1 = this;
 		const o2 = val;
 		let x1 = o1.element;
@@ -1077,7 +1079,7 @@ export default class BigInteger {
 
 	/**
 	 * A.add(B) = A + B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	add(number) {
@@ -1086,11 +1088,11 @@ export default class BigInteger {
 
 	/**
 	 * A._subtract(B) = A -= B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	_subtract(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		const sign = val.sign;
 		const out  = this._add(val._negate());
 		val.sign = sign;
@@ -1099,7 +1101,7 @@ export default class BigInteger {
 
 	/**
 	 * A.subtract(B) = A - B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	subtract(number) {
@@ -1108,7 +1110,7 @@ export default class BigInteger {
 
 	/**
 	 * A.sub(B) = A - B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	sub(number) {
@@ -1117,7 +1119,7 @@ export default class BigInteger {
 
 	/**
 	 * A._multiply(B) = A *= B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	_multiply(number) {
@@ -1129,11 +1131,11 @@ export default class BigInteger {
 
 	/**
 	 * A.number(B) = A * B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	multiply(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		const out  = new BigInteger();
 		const buff = new BigInteger();
 		const o1 = this;
@@ -1191,7 +1193,7 @@ export default class BigInteger {
 
 	/**
 	 * A.mul(B) = A * B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	mul(number) {
@@ -1200,11 +1202,11 @@ export default class BigInteger {
 
 	/**
 	 * A._divideAndRemainder(B) = A /= B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {Array<BigInteger>} [C = floor(A / B), A - C * B]
 	 */
 	_divideAndRemainder(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		const out = [];
 		if(val.signum() === 0) {
 			out[0] = 1 / 0;
@@ -1248,7 +1250,7 @@ export default class BigInteger {
 
 	/**
 	 * A.divideAndRemainder(B) = A / B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {Array<BigInteger>} [C = floor(A / B), A - C * B]
 	 */
 	divideAndRemainder(number) {
@@ -1257,7 +1259,7 @@ export default class BigInteger {
 
 	/**
 	 * A._divide(B) = A /= B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger} floor(A / B)
 	 */
 	_divide(number) {
@@ -1266,7 +1268,7 @@ export default class BigInteger {
 
 	/**
 	 * A.divide(B) = A / B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger} floor(A / B)
 	 */
 	divide(number) {
@@ -1275,7 +1277,7 @@ export default class BigInteger {
 
 	/**
 	 * A.div(B) = A / B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger} floor(A / B)
 	 */
 	div(number) {
@@ -1284,16 +1286,16 @@ export default class BigInteger {
 
 	/**
 	 * A._remainder(B) = A rem B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
-	_remainder(val) {
-		return this._divideAndRemainder(val)[1];
+	_remainder(number) {
+		return this._divideAndRemainder(number)[1];
 	}
 
 	/**
 	 * A.remainder(B) = A rem B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	remainder(number) {
@@ -1302,7 +1304,7 @@ export default class BigInteger {
 
 	/**
 	 * A.rem(B) = A rem B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	rem(number) {
@@ -1311,11 +1313,11 @@ export default class BigInteger {
 
 	/**
 	 * A._mod(B) = A _mod B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	_mod(number) {
-		const val = BigInteger.createConstBigInteger(number);
+		const val = BigInteger.create(number);
 		if(val.signum() < 0) {
 			return null;
 		}
@@ -1333,7 +1335,7 @@ export default class BigInteger {
 
 	/**
 	 * A.mod(B) = A mod B
-	 * @param {BigInteger|number|string|Array<string|number>} number
+	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	mod(number) {
@@ -1403,7 +1405,7 @@ export default class BigInteger {
 
 	/**
 	 * A.pow(B) = A^B
-	 * @param {BigInteger|number|string|Array<string|number>} exponent
+	 * @param {BigInteger} exponent
 	 * @returns {BigInteger}
 	 */
 	pow(exponent) {
@@ -1422,12 +1424,12 @@ export default class BigInteger {
 
 	/**
 	 * A.modPow(B, m) = A^B mod m
-	 * @param {BigInteger|number|string|Array<string|number>} exponent
-	 * @param {BigInteger|number|string|Array<string|number>} m 
+	 * @param {BigInteger} exponent
+	 * @param {BigInteger} m 
 	 * @returns {BigInteger}
 	 */
 	modPow(exponent, m) {
-		const m_ = BigInteger.createConstBigInteger(m);
+		const m_ = BigInteger.create(m);
 		let x = new BigInteger(this);
 		let y = new BigInteger(1);
 		const e = new BigInteger(exponent);
@@ -1443,11 +1445,11 @@ export default class BigInteger {
 
 	/**
 	 * A.modInverse(m) = A^(-1) mod m
-	 * @param {BigInteger|number|string|Array<string|number>} m
+	 * @param {BigInteger} m
 	 * @returns {BigInteger}
 	 */
 	modInverse(m) {
-		const m_ = BigInteger.createConstBigInteger(m);
+		const m_ = BigInteger.create(m);
 		const y = this.extgcd(m);
 		const ONE  = new BigInteger(1);
 		if(y[2].compareTo(ONE) !== 0) {
@@ -1539,10 +1541,48 @@ export default class BigInteger {
 	static valueOf(x) {
 		return new BigInteger(x);
 	}
+
+	// ----------------------
+	// 定数
+	// ----------------------
 	
+	/**
+	 * 1
+	 * @returns {BigInteger}
+	 */
+	static get ONE() {
+		return DEFINE.ONE;
+	}
+	
+	/**
+	 * 2
+	 * @returns {BigInteger}
+	 */
+	static get TWO() {
+		return DEFINE.TWO;
+	}
+	
+	/**
+	 * 10
+	 * @returns {BigInteger}
+	 */
+	static get TEN() {
+		return DEFINE.TEN;
+	}
+	
+	/**
+	 * 0
+	 * @returns {BigInteger}
+	 */
+	static get ZERO() {
+		return DEFINE.ZERO;
+	}
+
 }
 
-BigInteger.ONE = new BigInteger(1);
-BigInteger.TWO = new BigInteger(2);
-BigInteger.TEN = new BigInteger(10);
-BigInteger.ZERO = new BigInteger(0);
+const DEFINE = {
+	ONE : new BigInteger(1),
+	TWO : new BigInteger(2),
+	TEN : new BigInteger(10),
+	ZERO : new BigInteger(0)
+};

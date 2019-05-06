@@ -50,7 +50,7 @@ const addHeader = function(filename) {
 };
 
 // rollup
-exec("npm run rollup");
+exec("npx rollup -c rollup.config.js");
 
 // 先頭に著作権表記をするターゲット
 const target_file = [

@@ -12,15 +12,19 @@ import Random from "./toolbox/Random.mjs";
 import Signal from "./toolbox/Signal.mjs";
 import Complex from "./Complex.mjs";
 
+/**
+ * 内部の行列の計算用
+ */
 class MatrixTool {
 
 	/**
 	 * 対称行列の三重対角化する（実数計算専用）
-	 * @param {Matrix} A
+	 * @param {Matrix} M
 	 * @returns {Object<string, Matrix>}
 	 */
-	static tridiagonalize(A) {
+	static tridiagonalize(M) {
 
+		const A = Matrix.create(M);
 		const a = A.getNumberMatrixArray();
 		const tolerance = 1.0e-10;
 		
@@ -166,11 +170,13 @@ class MatrixTool {
 
 	/**
 	 * 対称行列の固有値分解する（実数計算専用）
-	 * @param {Matrix} A - 対称行列
+	 * @param {Matrix} M - 対称行列
 	 * @returns {Object<string, Matrix>}
 	 */
-	static eig(A) {
-
+	static eig(M) {
+		
+		const A = Matrix.create(M);
+		
 		// QR法により固有値を求める
 		let is_error = false;
 		const tolerance = 1.0e-10;
@@ -529,10 +535,13 @@ const ConstructorTool = {
 	}
 };
 
+/**
+ * 複素行列クラス (immutable)
+ */
 export default class Matrix {
 	
 	/**
-	 * 複素行列 (immutable)
+	 * 複素行列を作成
 	 * 引数は次のタイプをとれます
 	 * ・4 				整数や実数
 	 * ・"1 + j"		文字列で複素数をわたす
@@ -759,13 +768,13 @@ export default class Matrix {
 
 	/**
 	 * A.equals(B)
-	 * @param {Object|number|string|Array} number
+	 * @param {Matrix} number
 	 * @param {number} [epsilon] - 誤差
 	 * @returns {boolean} A === B
 	 */
 	equals(number, epsilon) {
 		const M1 = this;
-		const M2 = Matrix.createConstMatrix(number);
+		const M2 = Matrix.create(number);
 		if((M1.row_length !== M2.row_length) || (M1.column_length !== M2.column_length)) {
 			return false;
 		}
@@ -816,10 +825,10 @@ export default class Matrix {
 	
 	/**
 	 * 任意の引数データを使用して行列を作成（引数によっては行列オブジェクトを新規作成する）
-	 * @param {Object|number|string|Array} number 
+	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
-	static createConstMatrix(number) {
+	static create(number) {
 		if((arguments.length === 1) && (number instanceof Matrix)) {
 			return number;
 		}
@@ -840,7 +849,7 @@ export default class Matrix {
 	/**
 	 * 行列内の全ての値に処理を加えます。ミュータブルです。
 	 * 内部処理用
-	 * @param {Function} eachfunc - Function(num, row, col)
+	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(num, row, col)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	_each(eachfunc) {
@@ -872,7 +881,7 @@ export default class Matrix {
 
 	/**
 	 * 行列内の各値に対して指定した初期化を行った行列オブジェクトを新規作成する
-	 * @param {Function} eachfunc - Function(row, col)
+	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(row, col)
 	 * @param {number} dimension - 次元数
 	 * @param {number} [column_length=dimension] - 列数
 	 * @returns {Matrix} 処理実行後の行列
@@ -889,7 +898,7 @@ export default class Matrix {
 			for(let col = 0; col < y_column_length; col++) {
 				const ret = eachfunc(row, col);
 				if(ret === undefined) {
-					continue;
+					y[row][col] = Complex.ZERO;
 				}
 				else if(ret instanceof Complex) {
 					y[row][col] = ret;
@@ -907,7 +916,7 @@ export default class Matrix {
 
 	/**
 	 * 本行列内部の全ての値に対して指定した処理を加える
-	 * @param {Function} eachfunc - Function(num, row, col)
+	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(num, row, col)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	cloneMatrixDoEachCalculation(eachfunc) {
@@ -916,7 +925,7 @@ export default class Matrix {
 
 	/**
 	 * 列優先でベクトルに対して何か処理を行い、行列を作成します。
-	 * @param {Function} array_function - Function(array)
+	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	__column_oriented_1_dimensional_processing(array_function) {
@@ -949,7 +958,7 @@ export default class Matrix {
 
 	/**
 	 * 行列に対して、行と列に同一の処理を行い、行列を作成します。
-	 * @param {Function} array_function - Function(array)
+	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	__column_oriented_2_dimensional_processing(array_function) {
@@ -984,8 +993,8 @@ export default class Matrix {
 
 	/**
 	 * 行列（ベクトル）内の指定した箇所の値をComplex型で返す。
-	 * @param {Object|number|string|Array} arg1 - 位置／ベクトルの場合は何番目のベクトルか
-	 * @param {Object|number|string|Array} [arg2] - 列番号（行番号と列番号で指定する場合（任意））
+	 * @param {Matrix} arg1 - 位置／ベクトルの場合は何番目のベクトルか
+	 * @param {Matrix} [arg2] - 列番号（行番号と列番号で指定する場合（任意））
 	 * @returns {Complex} 
 	 */
 	getComplex(arg1, arg2) {
@@ -1019,7 +1028,7 @@ export default class Matrix {
 				is_scalar = true;
 			}
 			else if((arg1 instanceof Matrix) && arg1.isScalar()) {
-				y = Math.round(x.scalar.real);
+				y = Math.round(x.doubleValue);
 				is_scalar = true;
 			}
 			return {
@@ -1061,6 +1070,22 @@ export default class Matrix {
 	// 行列の基本操作、基本情報の取得
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	
+	/**
+	 * 行列の最初の要素の整数値。スカラー値を取得するときなどを想定。
+	 * @returns {number}
+	 */
+	get intValue() {
+		return (this.matrix_array[0][0].real) | 0;
+	}
+
+	/**
+	 * 行列の最初の要素の実数値。スカラー値を取得するときなどを想定。
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		return this.matrix_array[0][0].real;
+	}
+
 	/**
 	 * 行列の最初の要素。スカラー値を取得するときなどを想定。
 	 * @returns {Complex}
@@ -1157,7 +1182,7 @@ export default class Matrix {
 	
 	/**
 	 * 指定した数値で初期化
-	 * @param {Object|number|string|Array} number - 初期値
+	 * @param {Matrix} number - 初期値
 	 * @param {number} dimension - 次元数
 	 * @param {number} [column_length] - 列数
 	 * @returns {Matrix}
@@ -1180,7 +1205,7 @@ export default class Matrix {
 				x = number.scalar;
 			}
 			else {
-				x = Complex.createConstComplex(number);
+				x = Complex.create(number);
 			}
 			return Matrix.createMatrixDoEachCalculation(function() {
 				return x;
@@ -1509,7 +1534,7 @@ export default class Matrix {
 
 	/**
 	 * A.size() = [row_length column_length] 行列のサイズを取得
-	 * @returns {Matix} 行ベクトル [row_length column_length]
+	 * @returns {Matrix} 行ベクトル [row_length column_length]
 	 */
 	size() {
 		// 行列のサイズを取得
@@ -1520,13 +1545,13 @@ export default class Matrix {
 	 * A.compareTo(B) 今の値Aと、指定した値Bとを比較する
 	 * スカラー同士の場合の戻り値は、IF文で利用できるように、number型である。
 	 * 行列同士の場合は行列の中で比較を行い、各項に比較結果が入る
-	 * @param {Object|number|string|Array} number 
+	 * @param {Matrix} number 
 	 * @param {number} [epsilon] - 誤差
 	 * @returns {number|Matrix} A < B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, epsilon) {
 		const M1 = this;
-		const M2 = Matrix.createConstMatrix(number);
+		const M2 = Matrix.create(number);
 		// ※スカラー同士の場合は、実数を返す
 		if(M1.isScalar() && M2.isScalar()) {
 			return M1.scalar.compareTo(M2.scalar, epsilon);
@@ -1543,7 +1568,7 @@ export default class Matrix {
 	/**
 	 * A.max() 行列内の最大値ベクトル、ベクトル内の最大スカラー値を取得
 	 * @param {number} [epsilon] - 誤差
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	max(epsilon) {
 		const main = function(data) {
@@ -1561,7 +1586,7 @@ export default class Matrix {
 	/**
 	 * A.min() 行列内の最小値ベクトル、ベクトル内の最小スカラー値を取得
 	 * @param {number} [epsilon] - 誤差
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	min(epsilon) {
 		const main = function(data) {
@@ -1582,12 +1607,12 @@ export default class Matrix {
 	
 	/**
 	 * A.add(B) = A + B
-	 * @param {Object|number|string|Array} number 
+	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	add(number) {
 		const M1 = this;
-		const M2 = Matrix.createConstMatrix(number);
+		const M2 = Matrix.create(number);
 		if((M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
 			throw "Matrix size does not match";
 		}
@@ -1602,12 +1627,12 @@ export default class Matrix {
 
 	/**
 	 * A.sub(B) = A - B
-	 * @param {Object|number|string|Array} number 
+	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	sub(number) {
 		const M1 = this;
-		const M2 = Matrix.createConstMatrix(number);
+		const M2 = Matrix.create(number);
 		if((M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
 			throw "Matrix size does not match";
 		}
@@ -1622,12 +1647,12 @@ export default class Matrix {
 
 	/**
 	 * A.mul(B) = A * B
-	 * @param {Object|number|string|Array} number 
+	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	mul(number) {
 		const M1 = this;
-		const M2 = Matrix.createConstMatrix(number);
+		const M2 = Matrix.create(number);
 		const x1 = M1.matrix_array;
 		const x2 = M2.matrix_array;
 		if(M1.isScalar() && M2.isScalar()) {
@@ -1744,12 +1769,12 @@ export default class Matrix {
 
 	/**
 	 * A.div(B) = A / B
-	 * @param {Object|number|string|Array} number 
+	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	div(number) {
 		const M1 = this;
-		const M2 = Matrix.createConstMatrix(number);
+		const M2 = Matrix.create(number);
 		const x1 = M1.matrix_array;
 		const x2 = M2.matrix_array;
 		if(M1.isScalar() && M2.isScalar()) {
@@ -1779,12 +1804,12 @@ export default class Matrix {
 
 	/**
 	 * A.nmul(B) = A .* B 各項ごとの掛け算
-	 * @param {Object|number|string|Array} number 
+	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	nmul(number) {
 		const M1 = this;
-		const M2 = Matrix.createConstMatrix(number);
+		const M2 = Matrix.create(number);
 		if((M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
 			throw "Matrix size does not match";
 		}
@@ -1799,12 +1824,12 @@ export default class Matrix {
 
 	/**
 	 * A.ndiv(B) = A ./ B 各項ごとの割り算
-	 * @param {Object|number|string|Array} number 
+	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	ndiv(number) {
 		const M1 = this;
-		const M2 = Matrix.createConstMatrix(number);
+		const M2 = Matrix.create(number);
 		if((M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
 			throw "Matrix size does not match";
 		}
@@ -2030,11 +2055,11 @@ export default class Matrix {
 
 	/**
 	 * 各項に pow(x)
-	 * @param {Object|number|string|Array} number - スカラー
+	 * @param {Matrix} number - スカラー
 	 * @returns {Matrix}
 	 */
 	pow(number) {
-		const M = Matrix.createConstMatrix(number);
+		const M = Matrix.create(number);
 		if(!M.isScalar()) {
 			throw "not set Scalar";
 		}
@@ -2105,11 +2130,11 @@ export default class Matrix {
 
 	/**
 	 * 各項に atan2()
-	 * @param {Object|number|string|Array} number - スカラー
+	 * @param {Matrix} number - スカラー
 	 * @returns {Matrix}
 	 */
 	atan2(number) {
-		const M = Matrix.createConstMatrix(number);
+		const M = Matrix.create(number);
 		if(!M.isScalar) {
 			throw "not set Scalar";
 		}
@@ -2371,12 +2396,13 @@ export default class Matrix {
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	_concat_left(left_matrix) {
+		const M = Matrix.create(left_matrix);
 		for(let row = 0; row < this.row_length; row++) {
-			for(let col = 0; col < left_matrix.column_length; col++) {
-				this.matrix_array[row].push(left_matrix.matrix_array[row][col]);
+			for(let col = 0; col < M.column_length; col++) {
+				this.matrix_array[row].push(M.matrix_array[row][col]);
 			}
 		}
-		this.column_length += left_matrix.column_length;
+		this.column_length += M.column_length;
 		this._clearCash();
 		return this;
 	}
@@ -2384,14 +2410,15 @@ export default class Matrix {
 	/**
 	 * 行列の下に行列をくっつけます。ミュータブルです。
 	 * 内部処理用
-	 * @param {Matrix} left_matrix - 結合したい行列
+	 * @param {Matrix} bottom_matrix - 結合したい行列
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	_concat_bottom(bottom_matrix) {
-		for(let row = 0; row < bottom_matrix.row_length; row++) {
-			this.matrix_array.push(bottom_matrix.matrix_array[row]);
+		const M = Matrix.create(bottom_matrix);
+		for(let row = 0; row < M.row_length; row++) {
+			this.matrix_array.push(M.matrix_array[row]);
 		}
-		this.row_length += bottom_matrix.row_length;
+		this.row_length += M.row_length;
 		this._clearCash();
 		return this;
 	}
@@ -2479,13 +2506,14 @@ export default class Matrix {
 	/**
 	 * 行列をベクトルと見立て、正規直行化し、QとRの行列を作る
 	 * 内部処理用
-	 * @param {Matrix} M - 正方行列
+	 * @param {Matrix} M_ - 正方行列
 	 * @returns {Object<string, Matrix>}
 	 */
-	static _gram_schmidt_orthonormalization(M) {
+	static _gram_schmidt_orthonormalization(M_) {
 		// グラム・シュミットの正規直交化法を使用する
 		// 参考：Gilbert Strang (2007). Computational Science and Engineering.
 
+		const M = Matrix.create(M_);
 		const len = M.column_length;
 		const A = M.matrix_array;
 		const Q_Matrix = Matrix.zeros(len);
@@ -2655,13 +2683,13 @@ export default class Matrix {
 
 	/**
 	 * A.inner(B) = ドット積（内積）
-	 * @param {Object|number|string|Array} number 
+	 * @param {Matrix} number 
 	 * @param {number} [dimension=1] 計算するときに使用する次元（1 or 2）
 	 * @returns {Matrix}
 	 */
 	inner(number, dimension) {
 		const M1 = this;
-		const M2 = Matrix.createConstMatrix(number);
+		const M2 = Matrix.create(number);
 		const x1 = M1.matrix_array;
 		const x2 = M2.matrix_array;
 		const dim = dimension ? dimension : 1;
@@ -2841,7 +2869,7 @@ export default class Matrix {
 
 	/**
 	 * A.linsolve(B) = Ax = B となる xを解く
-	 * @param {Object|number|string|Array} number 
+	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	linsolve(number) {
@@ -2850,7 +2878,7 @@ export default class Matrix {
 		}
 		// 連立一次方程式を解く
 		const len = this.column_length;
-		const arg = Matrix.createConstMatrix(number);
+		const arg = Matrix.create(number);
 		if((arg.row_length !== this.row_length) || (arg.column_length > 1)) {
 			throw "Matrix size does not match";
 		}
@@ -3086,12 +3114,12 @@ export default class Matrix {
 
 	/**
 	 * x.gammainc(a, tail) = gammainc(x, a, tail) 不完全ガンマ関数
-	 * @param {Object|number|string|Array} a
+	 * @param {Matrix} a
 	 * @param {string} [tail="lower"] - lower/upper
 	 * @returns {Matrix}
 	 */
 	gammainc(a, tail) {
-		const a_ = Matrix.createConstMatrix(a).scalar;
+		const a_ = Matrix.create(a).scalar;
 		const tail_ = arguments.length === 1 ? tail : "lower";
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.gammainc(a_, tail_);
@@ -3100,13 +3128,13 @@ export default class Matrix {
 
 	/**
 	 * x.gampdf(k, s) = gampdf(x, k, s) ガンマ分布の確率密度関数
-	 * @param {Object|number|string|Array} k - 形状母数
-	 * @param {Object|number|string|Array} s - 尺度母数
+	 * @param {Matrix} k - 形状母数
+	 * @param {Matrix} s - 尺度母数
 	 * @returns {Matrix}
 	 */
 	gampdf(k, s) {
-		const k_ = Matrix.createConstMatrix(k).scalar;
-		const s_ = Matrix.createConstMatrix(s).scalar;
+		const k_ = Matrix.create(k).scalar;
+		const s_ = Matrix.create(s).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.gampdf(k_, s_);
 		});
@@ -3114,13 +3142,13 @@ export default class Matrix {
 
 	/**
 	 * x.gamcdf(k, s) = gamcdf(x, k, s) ガンマ分布の確率密度関数
-	 * @param {Object|number|string|Array} k - 形状母数
-	 * @param {Object|number|string|Array} s - 尺度母数
+	 * @param {Matrix} k - 形状母数
+	 * @param {Matrix} s - 尺度母数
 	 * @returns {Matrix}
 	 */
 	gamcdf(k, s) {
-		const k_ = Matrix.createConstMatrix(k).scalar;
-		const s_ = Matrix.createConstMatrix(s).scalar;
+		const k_ = Matrix.create(k).scalar;
+		const s_ = Matrix.create(s).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.gamcdf(k_, s_);
 		});
@@ -3128,13 +3156,13 @@ export default class Matrix {
 
 	/**
 	 * p.gaminv(k, s) = gaminv(p, k, s) ガンマ分布の累積分布関数の逆関数
-	 * @param {Object|number|string|Array} k - 形状母数
-	 * @param {Object|number|string|Array} s - 尺度母数
+	 * @param {Matrix} k - 形状母数
+	 * @param {Matrix} s - 尺度母数
 	 * @returns {Matrix}
 	 */
 	gaminv(k, s) {
-		const k_ = Matrix.createConstMatrix(k).scalar;
-		const s_ = Matrix.createConstMatrix(s).scalar;
+		const k_ = Matrix.create(k).scalar;
+		const s_ = Matrix.create(s).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.gaminv(k_, s_);
 		});
@@ -3142,11 +3170,11 @@ export default class Matrix {
 
 	/**
 	 * x.beta(y) = beta(x, y) ベータ関数
-	 * @param {Object|number|string|Array} y
+	 * @param {Matrix} y
 	 * @returns {Matrix}
 	 */
 	beta(y) {
-		const y_ = Matrix.createConstMatrix(y).scalar;
+		const y_ = Matrix.create(y).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.beta(y_);
 		});
@@ -3154,14 +3182,14 @@ export default class Matrix {
 	
 	/**
 	 * x.betainc(a, b, tail) = betainc(x, a, b, tail) 不完全ベータ関数
-	 * @param {Object|number|string|Array} a
-	 * @param {Object|number|string|Array} b
+	 * @param {Matrix} a
+	 * @param {Matrix} b
 	 * @param {string} [tail="lower"] - lower/upper
 	 * @returns {Matrix}
 	 */
 	betainc(a, b, tail) {
-		const a_ = Matrix.createConstMatrix(a).scalar;
-		const b_ = Matrix.createConstMatrix(b).scalar;
+		const a_ = Matrix.create(a).scalar;
+		const b_ = Matrix.create(b).scalar;
 		const tail_ = arguments.length === 2 ? tail : "lower";
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.betainc(a_, b_, tail_);
@@ -3170,13 +3198,13 @@ export default class Matrix {
 
 	/**
 	 * x.betacdf(a, b) = betacdf(x, a, b) ベータ分布の確率密度関数
-	 * @param {Object|number|string|Array} a
-	 * @param {Object|number|string|Array} b
+	 * @param {Matrix} a
+	 * @param {Matrix} b
 	 * @returns {Matrix}
 	 */
 	betacdf(a, b) {
-		const a_ = Matrix.createConstMatrix(a).scalar;
-		const b_ = Matrix.createConstMatrix(b).scalar;
+		const a_ = Matrix.create(a).scalar;
+		const b_ = Matrix.create(b).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.betacdf(a_, b_);
 		});
@@ -3184,13 +3212,13 @@ export default class Matrix {
 
 	/**
 	 * x.betapdf(a, b) = betapdf(x, a, b) ベータ分布の累積分布関数
-	 * @param {Object|number|string|Array} a
-	 * @param {Object|number|string|Array} b
+	 * @param {Matrix} a
+	 * @param {Matrix} b
 	 * @returns {Matrix}
 	 */
 	betapdf(a, b) {
-		const a_ = Matrix.createConstMatrix(a).scalar;
-		const b_ = Matrix.createConstMatrix(b).scalar;
+		const a_ = Matrix.create(a).scalar;
+		const b_ = Matrix.create(b).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.betapdf(a_, b_);
 		});
@@ -3198,13 +3226,13 @@ export default class Matrix {
 
 	/**
 	 * p.betainv(a, b) = betainv(p, a, b) ベータ分布の累積分布関数の逆関数
-	 * @param {Object|number|string|Array} a
-	 * @param {Object|number|string|Array} b
+	 * @param {Matrix} a
+	 * @param {Matrix} b
 	 * @returns {Matrix}
 	 */
 	betainv(a, b) {
-		const a_ = Matrix.createConstMatrix(a).scalar;
-		const b_ = Matrix.createConstMatrix(b).scalar;
+		const a_ = Matrix.create(a).scalar;
+		const b_ = Matrix.create(b).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.betainv(a_, b_);
 		});
@@ -3222,11 +3250,11 @@ export default class Matrix {
 	
 	/**
 	 * n.nchoosek(k) = nchoosek(n, k), nCk 二項係数またはすべての組合わせ
-	 * @param {Object|number|string|Array} k
+	 * @param {Matrix} k
 	 * @returns {Matrix}
 	 */
 	nchoosek(k) {
-		const k_ = Matrix.createConstMatrix(k).scalar;
+		const k_ = Matrix.create(k).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.nchoosek(k_);
 		});
@@ -3259,8 +3287,8 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	normpdf(u, s) {
-		const u_ = arguments.length <= 0 ? Complex.createConstMatrix(u).scalar : Complex.ZERO;
-		const s_ = arguments.length <= 1 ? Complex.createConstMatrix(s).scalar : Complex.ONE;
+		const u_ = arguments.length <= 0 ? Complex.create(u).scalar : Complex.ZERO;
+		const s_ = arguments.length <= 1 ? Complex.create(s).scalar : Complex.ONE;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.normpdf(u_, s_);
 		});
@@ -3273,8 +3301,8 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	normcdf(u, s) {
-		const u_ = arguments.length <= 0 ? Complex.createConstMatrix(u).scalar : Complex.ZERO;
-		const s_ = arguments.length <= 1 ? Complex.createConstMatrix(s).scalar : Complex.ONE;
+		const u_ = arguments.length <= 0 ? Complex.create(u).scalar : Complex.ZERO;
+		const s_ = arguments.length <= 1 ? Complex.create(s).scalar : Complex.ONE;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.normcdf(u_, s_);
 		});
@@ -3287,8 +3315,8 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	norminv(u, s) {
-		const u_ = arguments.length <= 0 ? Complex.createConstMatrix(u).scalar : Complex.ZERO;
-		const s_ = arguments.length <= 1 ? Complex.createConstMatrix(s).scalar : Complex.ONE;
+		const u_ = arguments.length <= 0 ? Complex.create(u).scalar : Complex.ZERO;
+		const s_ = arguments.length <= 1 ? Complex.create(s).scalar : Complex.ONE;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.norminv(u_, s_);
 		});
@@ -3296,11 +3324,11 @@ export default class Matrix {
 
 	/**
 	 * t.tpdf(v) = tpdf(t, v) t分布の確率密度関数
-	 * @param {Object|number|string|Array} v - 自由度
+	 * @param {Matrix} v - 自由度
 	 * @returns {Matrix}
 	 */
 	tpdf(v) {
-		const v_ = Matrix.createConstMatrix(v).scalar;
+		const v_ = Matrix.create(v).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.tpdf(v_);
 		});
@@ -3308,11 +3336,11 @@ export default class Matrix {
 
 	/**
 	 * t.tcdf(v) = tcdf(t, v) t分布の累積分布関数
-	 * @param {Object|number|string|Array} v - 自由度
+	 * @param {Matrix} v - 自由度
 	 * @returns {Matrix}
 	 */
 	tcdf(v) {
-		const v_ = Matrix.createConstMatrix(v).scalar;
+		const v_ = Matrix.create(v).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.tcdf(v_);
 		});
@@ -3320,11 +3348,11 @@ export default class Matrix {
 
 	/**
 	 * p.tinv(v) = tinv(p, v) t分布の累積分布関数の逆関数
-	 * @param {Object|number|string|Array} v - 自由度
+	 * @param {Matrix} v - 自由度
 	 * @returns {Matrix}
 	 */
 	tinv(v) {
-		const v_ = Matrix.createConstMatrix(v).scalar;
+		const v_ = Matrix.create(v).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.tinv(v_);
 		});
@@ -3332,13 +3360,13 @@ export default class Matrix {
 
 	/**
 	 * t.tdist(v, tails) = tdist(t, v, tails) 尾部が指定可能なt分布の累積分布関数
-	 * @param {Object|number|string|Array} v - 自由度
-	 * @param {Object|number|string|Array} tails - 尾部(1...片側、2...両側)
+	 * @param {Matrix} v - 自由度
+	 * @param {Matrix} tails - 尾部(1...片側、2...両側)
 	 * @returns {Matrix}
 	 */
 	tdist(v, tails) {
-		const v_ = Matrix.createConstMatrix(v).scalar;
-		const tails_ = Matrix.createConstMatrix(tails).scalar;
+		const v_ = Matrix.create(v).scalar;
+		const tails_ = Matrix.create(tails).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.tdist(v_, tails_);
 		});
@@ -3346,11 +3374,11 @@ export default class Matrix {
 
 	/**
 	 * p.tinv2(v) = tinv2(p, v) 両側検定時のt分布の累積分布関数
-	 * @param {Object|number|string|Array} v - 自由度
+	 * @param {Matrix} v - 自由度
 	 * @returns {Matrix}
 	 */
 	tinv2(v) {
-		const v_ = Matrix.createConstMatrix(v).scalar;
+		const v_ = Matrix.create(v).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.tinv2(v_);
 		});
@@ -3358,11 +3386,11 @@ export default class Matrix {
 
 	/**
 	 * x.chi2pdf(k) = chi2pdf(x, k) カイ二乗分布の確率密度関数
-	 * @param {Object|number|string|Array} k - 自由度
+	 * @param {Matrix} k - 自由度
 	 * @returns {Matrix}
 	 */
 	chi2pdf(k) {
-		const k_ = Matrix.createConstMatrix(k).scalar;
+		const k_ = Matrix.create(k).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.chi2pdf(k_);
 		});
@@ -3370,11 +3398,11 @@ export default class Matrix {
 
 	/**
 	 * x.chi2cdf(k) = chi2cdf(x, k) カイ二乗分布の累積分布関数
-	 * @param {Object|number|string|Array} k - 自由度
+	 * @param {Matrix} k - 自由度
 	 * @returns {Matrix}
 	 */
 	chi2cdf(k) {
-		const k_ = Matrix.createConstMatrix(k).scalar;
+		const k_ = Matrix.create(k).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.chi2cdf(k_);
 		});
@@ -3382,11 +3410,11 @@ export default class Matrix {
 	
 	/**
 	 * p.chi2inv(k) = chi2inv(p, k) カイ二乗分布の累積分布関数の逆関数
-	 * @param {Object|number|string|Array} k - 自由度
+	 * @param {Matrix} k - 自由度
 	 * @returns {Matrix}
 	 */
 	chi2inv(k) {
-		const k_ = Matrix.createConstMatrix(k).scalar;
+		const k_ = Matrix.create(k).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.chi2inv(k_);
 		});
@@ -3394,13 +3422,13 @@ export default class Matrix {
 
 	/**
 	 * x.fpdf(d1, d2) = fpdf(x, d1, d2) F分布の確率密度関数
-	 * @param {Object|number|string|Array} d1 - 分子の自由度
-	 * @param {Object|number|string|Array} d2 - 分母の自由度
+	 * @param {Matrix} d1 - 分子の自由度
+	 * @param {Matrix} d2 - 分母の自由度
 	 * @returns {Matrix}
 	 */
 	fpdf(d1, d2) {
-		const d1_ = Matrix.createConstMatrix(d1).scalar;
-		const d2_ = Matrix.createConstMatrix(d2).scalar;
+		const d1_ = Matrix.create(d1).scalar;
+		const d2_ = Matrix.create(d2).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.fpdf(d1_, d2_);
 		});
@@ -3408,13 +3436,13 @@ export default class Matrix {
 
 	/**
 	 * x.fcdf(d1, d2) = fcdf(x, d1, d2) F分布の累積分布関数
-	 * @param {Object|number|string|Array} d1 - 分子の自由度
-	 * @param {Object|number|string|Array} d2 - 分母の自由度
+	 * @param {Matrix} d1 - 分子の自由度
+	 * @param {Matrix} d2 - 分母の自由度
 	 * @returns {Matrix}
 	 */
 	fcdf(d1, d2) {
-		const d1_ = Matrix.createConstMatrix(d1).scalar;
-		const d2_ = Matrix.createConstMatrix(d2).scalar;
+		const d1_ = Matrix.create(d1).scalar;
+		const d2_ = Matrix.create(d2).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.fcdf(d1_, d2_);
 		});
@@ -3422,13 +3450,13 @@ export default class Matrix {
 
 	/**
 	 * p.finv(d1, d2) = finv(p, d1, d2) F分布の累積分布関数の逆関数
-	 * @param {Object|number|string|Array} d1 - 分子の自由度
-	 * @param {Object|number|string|Array} d2 - 分母の自由度
-	 * @returns {Complex}
+	 * @param {Matrix} d1 - 分子の自由度
+	 * @param {Matrix} d2 - 分母の自由度
+	 * @returns {Matrix}
 	 */
 	finv(d1, d2) {
-		const d1_ = Matrix.createConstMatrix(d1).scalar;
-		const d2_ = Matrix.createConstMatrix(d2).scalar;
+		const d1_ = Matrix.create(d1).scalar;
+		const d2_ = Matrix.create(d2).scalar;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.finv(d1_, d2_);
 		});
@@ -3436,7 +3464,7 @@ export default class Matrix {
 	
 	/**
 	 * A.sum() 合計
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	sum() {
 		const main = function(data) {
@@ -3456,7 +3484,7 @@ export default class Matrix {
 
 	/**
 	 * A.mean() 相加平均
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	mean() {
 		const main = function(data) {
@@ -3476,7 +3504,7 @@ export default class Matrix {
 
 	/**
 	 * A.geomean() 相乗平均／幾何平均
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	geomean() {
 		const main = function(data) {
@@ -3491,13 +3519,13 @@ export default class Matrix {
 
 	/**
 	 * A.var() 分散
-	 * @param {Object|number|string|Array} [cor=0] - 補正値 0(不偏分散), 1(標本分散)
-	 * @returns {Matix}
+	 * @param {Matrix} [cor=0] - 補正値 0(不偏分散), 1(標本分散)
+	 * @returns {Matrix}
 	 */
 	var(cor) {
 		const M = this.mean();
 		let col = 0;
-		const correction = arguments.length === 0 ? 0 : Matrix.createConstMatrix(cor).scalar.real;
+		const correction = arguments.length === 0 ? 0 : Matrix.create(cor).doubleValue;
 		const main = function(data) {
 			let mean;
 			if(M.isScalar()) {
@@ -3523,11 +3551,11 @@ export default class Matrix {
 
 	/**
 	 * A.std() 標準偏差
-	 * @param {Object|number|string|Array} [cor=0] - 補正値 0(不偏), 1(標本)
-	 * @returns {Matix}
+	 * @param {Matrix} [cor=0] - 補正値 0(不偏), 1(標本)
+	 * @returns {Matrix}
 	 */
 	std(cor) {
-		const correction = arguments.length === 0 ? 0 : Matrix.createConstMatrix(cor).scalar.real;
+		const correction = arguments.length === 0 ? 0 : Matrix.create(cor).doubleValue;
 		const M = this.var(correction);
 		M._each(function(num) {
 			return num.sqrt();
@@ -3537,11 +3565,11 @@ export default class Matrix {
 
 	/**
 	 * A.cov() 共分散行列
-	 * @param {Object|number|string|Array} [cor=0] - 補正値 0(不偏分散), 1(標本分散)
-	 * @returns {Matix}
+	 * @param {Matrix} [cor=0] - 補正値 0(不偏分散), 1(標本分散)
+	 * @returns {Matrix}
 	 */
 	cov(cor) {
-		let correction = arguments.length === 0 ? 0 : Matrix.createConstMatrix(cor).scalar.real;
+		let correction = arguments.length === 0 ? 0 : Matrix.create(cor).doubleValue;
 		if(this.isVector()) {
 			return this.var(correction);
 		}
@@ -3573,7 +3601,7 @@ export default class Matrix {
 
 	/**
 	 * A.normalize() サンプルを平均値0、標準偏差1にノーマライズ
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	normalize() {
 		const mean_zero = this.sub(this.mean());
@@ -3583,7 +3611,7 @@ export default class Matrix {
 
 	/**
 	 * A.corrcoef() 相関行列
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	corrcoef() {
 		return this.normalize().cov();
@@ -3606,7 +3634,7 @@ export default class Matrix {
 
 	/**
 	 * A.fft() 離散フーリエ変換
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	fft(is_2_dimensions = false) {
 		const main = function(data) {
@@ -3628,7 +3656,7 @@ export default class Matrix {
 
 	/**
 	 * A.ifft() 逆離散フーリエ変換
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	ifft(is_2_dimensions = false) {
 		const main = function(data) {
@@ -3650,7 +3678,7 @@ export default class Matrix {
 
 	/**
 	 * A.powerfft() パワースペクトル密度
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	powerfft() {
 		const main = function(data) {
@@ -3672,7 +3700,7 @@ export default class Matrix {
 
 	/**
 	 * A.dct() DCT-II (DCT)
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	dct(is_2_dimensions = false) {
 		if(this.isComplex()) {
@@ -3695,7 +3723,7 @@ export default class Matrix {
 
 	/**
 	 * A.idct() DCT-III (IDCT)
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	idct(is_2_dimensions = false) {
 		if(this.isComplex()) {
@@ -3718,7 +3746,7 @@ export default class Matrix {
 
 	/**
 	 * A.fft2() 2次元の離散フーリエ変換
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	fft2() {
 		return this.fft(true);
@@ -3726,7 +3754,7 @@ export default class Matrix {
 
 	/**
 	 * A.ifft2() 2次元の逆離散フーリエ変換
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	ifft2() {
 		return this.ifft(true);
@@ -3734,7 +3762,7 @@ export default class Matrix {
 
 	/**
 	 * A.dct2() 2次元のDCT変換
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	dct2() {
 		return this.dct2(true);
@@ -3742,7 +3770,7 @@ export default class Matrix {
 
 	/**
 	 * A.idct2() 2次元の逆DCT変換
-	 * @returns {Matix}
+	 * @returns {Matrix}
 	 */
 	idct2() {
 		return this.idct(true);
@@ -3750,12 +3778,12 @@ export default class Matrix {
 
 	/**
 	 * A.conv(B) = conv(A, B) 畳み込み積分、多項式乗算
-	 * @param {Object|number|string|Array} number
-	 * @returns {Matix}
+	 * @param {Matrix} number
+	 * @returns {Matrix}
 	 */
 	conv(number) {
 		const M1 = this;
-		const M2 = Matrix.createConstMatrix(number);
+		const M2 = Matrix.create(number);
 		if(M1.isMatrix() || M2.isMatrix()) {
 			throw "conv don't support matrix numbers.";
 		}
@@ -3798,15 +3826,15 @@ export default class Matrix {
 
 	/**
 	 * A.xcorr(B) = xcorr(A, B) 自己相関関数、相互相関関数
-	 * @param {Object|number|string|Array} [number=this] - 省略した場合は自己相関関数
-	 * @returns {Matix}
+	 * @param {Matrix} [number=this] - 省略した場合は自己相関関数
+	 * @returns {Matrix}
 	 */
 	xcorr(number) {
 		if(!number) {
 			return this.xcorr(this);
 		}
 		const M1 = this;
-		const M2 = Matrix.createConstMatrix(number);
+		const M2 = Matrix.create(number);
 		if(M1.isMatrix() || M2.isMatrix()) {
 			throw "conv don't support matrix numbers.";
 		}
@@ -3848,21 +3876,21 @@ export default class Matrix {
 	}
 
 	/**
-	 * 窓を作成
+	 * 窓関数
 	 * @param {string} name - 窓関数の名前
-	 * @param {Object|number|string|Array} size - 長さ
+	 * @param {Matrix} size - 長さ
 	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
 	 * @returns {Matrix} 列ベクトル
 	 */
 	static window(name, size, isPeriodic) {
-		const size_ = Matrix.createConstMatrix(size).scalar.real;
+		const size_ = Matrix.create(size).intValue;
 		const y = Signal.window(name, size_, isPeriodic);
 		return (new Matrix(y)).transpose();
 	}
 
 	/**
 	 * ハニング窓
-	 * @param {Object|number|string|Array} size - 長さ
+	 * @param {Matrix} size - 長さ
 	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
 	 * @returns {Matrix} 列ベクトル
 	 */
@@ -3871,8 +3899,8 @@ export default class Matrix {
 	}
 	
 	/**
-	 * ハミング窓を作成
-	 * @param {Object|number|string|Array} size - 長さ
+	 * ハミング窓
+	 * @param {Matrix} size - 長さ
 	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
 	 * @returns {Matrix} 列ベクトル
 	 */
