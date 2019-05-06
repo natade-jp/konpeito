@@ -22520,7 +22520,7 @@
   },
   {
     "kind": "index",
-    "content": "# konpeito #\n\n### What ####\n- The collection of javascirpt library such as numerical calculation.\n\n### Author ###\n- [natade](https://twitter.com/natadea)\n\n### Home ###\n- [konpeito](https://natade-jp.github.io/konpeito/)\n\n### Document ###\n- [document](https://natade-jp.github.io/konpeito/doc/)\n\n### Note ###\nIt is a multifunctional library under development, specialized for HTML5.<br>\n\n### Demo ###\nPlease check the console and main.mjs.\n- [BigDecimal](https://natade-jp.github.io/konpeito/examples/demos/BigDecimal/)\n- [BigInteger](https://natade-jp.github.io/konpeito/examples/demos/BigInteger/)\n- [Matrix](https://natade-jp.github.io/konpeito/examples/demos/Matrix/)\n- [Random](https://natade-jp.github.io/konpeito/examples/demos/Random/)\n",
+    "content": "# konpeito #\n\n### What ####\n- The collection of javascirpt library such as numerical calculation.\n\n### Author ###\n- [natade](https://twitter.com/natadea)\n\n### Repository ###\n- [konpeito](https://github.com/natade-jp/konpeito)\n\n### Document ###\n- [document](https://natade-jp.github.io/konpeito/doc/)\n\n### Note ###\nIt is a multifunctional library under development, specialized for HTML5.<br>\n\n### Demo ###\nPlease check the console and main.mjs.\n- [BigDecimal](https://natade-jp.github.io/konpeito/doc/examples/demos/BigDecimal/)\n- [BigInteger](https://natade-jp.github.io/konpeito/doc/examples/demos/BigInteger/)\n- [Matrix](https://natade-jp.github.io/konpeito/doc/examples/demos/Matrix/)\n- [Random](https://natade-jp.github.io/konpeito/doc/examples/demos/Random/)\n",
     "longname": "D:\\JavaScript\\konpeito\\README.md",
     "name": "./README.md",
     "static": true,
