@@ -3,6 +3,7 @@
 const BigInteger = konpeito.BigInteger;
 const Random = konpeito.Random;
 const Log = konpeito.Log;
+const $ = BigInteger.create;
 
 const main = function() {
 	
@@ -16,8 +17,8 @@ const main = function() {
 	let s1, s2, s3;
 	
 	Log.println("四則演算");
-	s1 = new BigInteger("12345678");
-	s2 = new BigInteger("-1234");
+	s1 = $("12345678");
+	s2 = $("-1234");
 
 	Log.println("add");
 	Log.println(s1.add(s1));
@@ -37,8 +38,8 @@ const main = function() {
 	Log.println("divide");
 	Log.println(s1.div(s2));
 	
-	s1 = new BigInteger("-1234567890123456789012345678901234567890");
-	s2 = new BigInteger("123456789012345678901");
+	s1 = $("-1234567890123456789012345678901234567890");
+	s2 = $("123456789012345678901");
 	
 	Log.println("divideAndRemainder");
 	Log.println(s1.divideAndRemainder(s2)[0] + " ... " + s1.divideAndRemainder(s2)[1]);
@@ -53,7 +54,7 @@ const main = function() {
 	
 	Log.println("ビット操作");
 	
-	s1 = new BigInteger(["1234ffffff0000000000", 16]);
+	s1 = $(["1234ffffff0000000000", 16]);
 	s2 = s1.negate();
 	
 	Log.println(s1);
@@ -83,7 +84,7 @@ const main = function() {
 		Log.println(i + "\t" + s1.toString(2) + "\tlen " + s1.bitLength() + "\tlsb " + s1.getLowestSetBit());
 	}
 	
-	s1 = new BigInteger(["101001000100001000000", 2]);
+	s1 = $(["101001000100001000000", 2]);
 	
 	Log.println("testBit");
 	Log.println(s1.toString(2));
@@ -122,9 +123,9 @@ const main = function() {
 	
 	Log.println("ビット演算");
 	
-	s1 = new BigInteger(["1234ffffff0000000000", 16]);
+	s1 = $(["1234ffffff0000000000", 16]);
 	s2 = s1.negate();
-	s3 = new BigInteger(["8765ffffff0000000000", 16]);
+	s3 = $(["8765ffffff0000000000", 16]);
 	const s4 = s3.negate();
 	
 	Log.println("and");
@@ -155,7 +156,7 @@ const main = function() {
 	
 	Log.println("数値の変換");
 
-	s1 = new BigInteger("0x3334342423423");
+	s1 = $("0x3334342423423");
 	
 	Log.println("toString()");
 	Log.println(s1.toString());
@@ -191,7 +192,7 @@ const main = function() {
 	
 	Log.println("nextProbablePrime");
 	
-	s1 = new BigInteger("100000");
+	s1 = $("100000");
 	for(let i = 0; i < 3; i++) {
 		s1 = s1.nextProbablePrime();
 		Log.println(s1);
@@ -199,7 +200,7 @@ const main = function() {
 	
 	Log.println("isProbablePrime");
 	
-	s1 = new BigInteger("0x156b14b55");
+	s1 = $("0x156b14b55");
 	Log.println(s1 + " は素数か？ -> " + s1.isProbablePrime(100));
 	
 	Log.println("probablePrime");
@@ -212,44 +213,39 @@ const main = function() {
 	Log.println("その他の演算");
 	
 	Log.println("+100 remainder & mod");
-	s1 = new BigInteger("100");
+	s1 = $(100);
 	for(let i = -4;i < 0; i++) {
-		s2 = BigInteger.valueOf(i);
-		Log.println(i + "\tremainder -> " + s1.remainder(s2));
+		Log.println(i + "\tremainder -> " + s1.remainder(i));
 	}
 	for(let i = 1;i <= 4; i++) {
-		s2 = BigInteger.valueOf(i);
-		Log.println(i + "\tremainder -> " + s1.remainder(s2) + "\tmod -> " + s1.mod(s2));
+		Log.println(i + "\tremainder -> " + s1.remainder(i) + "\tmod -> " + s1.mod(i));
 	}
 	Log.println("-100 remainder & mod");
-	s1 = new BigInteger("-100");
+	s1 = $(-100);
 	for(let i = -4;i < 0; i++) {
-		s2 = BigInteger.valueOf(i);
-		Log.println(i + "\tremainder -> " + s1.remainder(s2));
+		Log.println(i + "\tremainder -> " + s1.remainder(i));
 	}
 	for(let i = 1;i <= 4; i++) {
-		s2 = BigInteger.valueOf(i);
-		Log.println(i + "\tremainder -> " + s1.remainder(s2) + "\tmod -> " + s1.mod(s2));
+		Log.println(i + "\tremainder -> " + s1.remainder(i) + "\tmod -> " + s1.mod(i));
 	}
 	
 	Log.println("compareTo");
-	Log.println((new BigInteger("200000")).compareTo(new BigInteger("163840")));
-	Log.println((new BigInteger("100000")).compareTo(new BigInteger("81920")));
+	Log.println(($(200000)).compareTo(163840));
+	Log.println(($(100000)).compareTo(81920));
 	
 	Log.println("gcd");
-	Log.println((new BigInteger("12")).gcd(new BigInteger("18")));
+	Log.println(($(12)).gcd(18));
 	
 	Log.println("pow");
-	s1 = new BigInteger("2");
-	Log.println(s1.pow(1000));
+	Log.println($(2).pow(1000));
 	
 	Log.println("modPow");
-	Log.println((new BigInteger("14123999253219")).modPow(new BigInteger("70276475859277"),new BigInteger("86706662670157")));
-	Log.println(BigInteger.valueOf(-324).modPow(BigInteger.valueOf(123), BigInteger.valueOf(55)));
+	Log.println(($("14123999253219")).modPow($("70276475859277"), $("86706662670157")));
+	Log.println($(-324).modPow(123, 55));
 	
 	Log.println("modInverse");
-	Log.println((BigInteger.valueOf(15)).modInverse(BigInteger.valueOf(4)));
-	Log.println((BigInteger.valueOf(19)).modInverse(BigInteger.valueOf(41)));
+	Log.println(($(15)).modInverse(4));
+	Log.println(($(19)).modInverse(41));
 	
 	Log.println("////////////////////////////////");
 	
@@ -259,7 +255,7 @@ const main = function() {
 	let x, y;
 
 	Log.println("2^5000 = ");
-	x = new BigInteger("2");
+	x = $(2);
 	
 	time = currentTimeMillis();
 	x = x.pow(5000);
@@ -270,24 +266,23 @@ const main = function() {
 	Log.println("10進数変換\t" + (currentTimeMillis() - time) + "ms");
 
 	time = currentTimeMillis();
-	x = new BigInteger(y);
+	x = $(y);
 	Log.println("内部変数変換\t" + (currentTimeMillis() - time) + "ms");
 	
 	Log.println("500! = ");
-	x = new BigInteger("1");
+	x = $(1);
 	
 	time = currentTimeMillis();
 	for(let i = 1;i <= 500;i++) {
-		x = x.multiply(BigInteger.valueOf(i));
+		x = x.multiply(i);
 	}
 	Log.println("計算時間\t" + (currentTimeMillis() - time) + "ms");
-	
 	time = currentTimeMillis();
 	y = x.toString();
 	Log.println("10進数変換\t" + (currentTimeMillis() - time) + "ms");
 
 	time = currentTimeMillis();
-	x = new BigInteger(y);
+	x = $(y);
 	Log.println("内部変数変換\t" + (currentTimeMillis() - time) + "ms");
 	
 };

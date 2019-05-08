@@ -13,7 +13,7 @@
 
 <header>
   <a href="./">Home</a>
-  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   
@@ -43,13 +43,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import BigInteger from &apos;<span><a href="file/src/Math/BigInteger.mjs.html#lineNumber184">konpeito.js/src/Math/BigInteger.mjs</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import BigInteger from &apos;<span><a href="file/src/Math/BigInteger.mjs.html#lineNumber189">konpeito.js/src/Math/BigInteger.mjs</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/Math/BigInteger.mjs.html#lineNumber184">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/Math/BigInteger.mjs.html#lineNumber189">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -229,7 +229,7 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x5F15;&#x6570;&#x304B;&#x3089;&#x591A;&#x500D;&#x9577;&#x6574;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#xFF08;&#x4F5C;&#x6210;&#x304C;&#x4E0D;&#x8981;&#x306E;&#x5834;&#x5408;&#x306F;new&#x3057;&#x306A;&#x3044;&#xFF09;</p>
+        <div data-ice="description"><p>BigInteger&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;</p>
 </div>
       </div>
     </td>
@@ -252,13 +252,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#static-method-createRandomBigInteger">createRandomBigInteger</a></span></span><span class="code" data-ice="signature">(bits: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, random: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Random">Random</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#static-method-createRandomBigInteger">createRandomBigInteger</a></span></span><span class="code" data-ice="signature">(bitsize: <span>number</span>, random: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Random">Random</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#x306E;&#x4E71;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;</p>
+        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#x4EE5;&#x5185;&#x306E;&#x4E71;&#x6570;</p>
 </div>
       </div>
     </td>
@@ -281,13 +281,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#static-method-probablePrime">probablePrime</a></span></span><span class="code" data-ice="signature">(bits: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, random: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Random">Random</a></span>, certainty: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#static-method-probablePrime">probablePrime</a></span></span><span class="code" data-ice="signature">(bits: <span>number</span>, random: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Random">Random</a></span>, certainty: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#x306E;&#x7D20;&#x6570;&#x306E;&#x4E71;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;</p>
+        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#x4EE5;&#x5185;&#x306E;&#x7D20;&#x6570;</p>
 </div>
       </div>
     </td>
@@ -310,13 +310,106 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#static-method-valueOf">valueOf</a></span></span><span class="code" data-ice="signature">(x: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#static-method-valueOf">valueOf</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x6570;&#x5024;&#x304B;&#x3089; BigInteger &#x578B;&#x306B;&#x5909;&#x63DB;</p>
+        <div data-ice="description"><p>BigInteger &#x3092;&#x4F5C;&#x6210;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+<table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Static Private Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#static-method-_toBigInteger">_toBigInteger</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>BigInteger &#x3092;&#x4F5C;&#x6210;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#static-method-_toFloat">_toFloat</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>number</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x5B9F;&#x6570;&#x3092;&#x4F5C;&#x6210;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#static-method-_toInteger">_toInteger</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>number</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x6574;&#x6570;&#x3092;&#x4F5C;&#x6210;</p>
 </div>
       </div>
     </td>
@@ -346,7 +439,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(number: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>|<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>&gt;)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/Math/BigInteger.mjs~BigInteger.html">BigInteger|number|string|Array</a></span>&lt;<span>string</span>|<span>number</span>&gt;)</span>
         </p>
       </div>
       <div>
@@ -384,13 +477,14 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-get-doubleValue">doubleValue</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>: <span>*</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-get-doubleValue">doubleValue</a></span></span><span class="code" data-ice="signature">: <span>number</span>: <span>*</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>64&#x30D3;&#x30C3;&#x30C8;&#x5B9F;&#x6570;&#x5024;&#x3068;&#x3057;&#x3066;&#x53D6;&#x5F97;&#x3059;&#x308B;&#xFF08;&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x3068;&#x6B63;&#x78BA;&#x3067;&#x306F;&#x306A;&#x3044;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#xFF09;</p>
+        <div data-ice="description"><p>64&#x30D3;&#x30C3;&#x30C8;&#x5B9F;&#x6570;&#x5024;
+&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x306A;&#x3069;&#x3001;&#x53CE;&#x307E;&#x308A;&#x304D;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x306B;&#x6B63;&#x78BA;&#x306A;&#x6570;&#x5024;&#x306B;&#x306A;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;</p>
 </div>
       </div>
     </td>
@@ -413,13 +507,14 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-get-intValue">intValue</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>: <span>*</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-get-intValue">intValue</a></span></span><span class="code" data-ice="signature">: <span>number</span>: <span>*</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>32&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x5024;&#x3068;&#x3057;&#x3066;&#x53D6;&#x5F97;&#x3059;&#x308B;&#xFF08;&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x3068;&#x6B63;&#x78BA;&#x3067;&#x306F;&#x306A;&#x3044;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#xFF09;</p>
+        <div data-ice="description"><p>32&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x5024;
+&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x306A;&#x3069;&#x3001;&#x53CE;&#x307E;&#x308A;&#x304D;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x306B;&#x6B63;&#x78BA;&#x306A;&#x6570;&#x5024;&#x306B;&#x306A;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;</p>
 </div>
       </div>
     </td>
@@ -442,13 +537,14 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-get-longValue">longValue</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>: <span>*</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-get-longValue">longValue</a></span></span><span class="code" data-ice="signature">: <span>number</span>: <span>*</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>64&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x5024;&#x3068;&#x3057;&#x3066;&#x53D6;&#x5F97;&#x3059;&#x308B;&#xFF08;&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x3068;&#x6B63;&#x78BA;&#x3067;&#x306F;&#x306A;&#x3044;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#xFF09;</p>
+        <div data-ice="description"><p>64&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x5024;
+&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x306A;&#x3069;&#x3001;&#x53CE;&#x307E;&#x308A;&#x304D;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x306B;&#x6B63;&#x78BA;&#x306A;&#x6570;&#x5024;&#x306B;&#x306A;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;</p>
 </div>
       </div>
     </td>
@@ -477,7 +573,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-member-element">element</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>&gt;</span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-member-element">element</a></span></span><span class="code" data-ice="signature">: <span>Array</span>&lt;<span>number</span>&gt;</span>
         </p>
       </div>
       <div>
@@ -506,7 +602,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-member-sign">sign</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>&gt;</span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-member-sign">sign</a></span></span><span class="code" data-ice="signature">: <span>Array</span>&lt;<span>number</span>&gt;</span>
         </p>
       </div>
       <div>
@@ -549,7 +645,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.abs() = abs(A)</p>
+        <div data-ice="description"><p>abs(A)</p>
 </div>
       </div>
     </td>
@@ -578,7 +674,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.add(B) = A + B</p>
+        <div data-ice="description"><p>A + B</p>
 </div>
       </div>
     </td>
@@ -607,7 +703,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.and(B) = A + B</p>
+        <div data-ice="description"><p>A &amp; B</p>
 </div>
       </div>
     </td>
@@ -636,7 +732,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.andNot(B) = A &amp; (!B)</p>
+        <div data-ice="description"><p>A &amp; (!B)</p>
 </div>
       </div>
     </td>
@@ -659,13 +755,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-bitCount">bitCount</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-bitCount">bitCount</a></span></span><span class="code" data-ice="signature">(): <span>number</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>2&#x306E;&#x88DC;&#x6570;&#x8868;&#x73FE;&#x3067;&#x8868;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x3001;&#x3044;&#x304F;&#x3064;&#x30D3;&#x30C3;&#x30C8;&#x304C;&#x7ACB;&#x3064;&#x304B;</p>
+        <div data-ice="description"><p>2&#x306E;&#x88DC;&#x6570;&#x8868;&#x73FE;&#x3067;&#x8868;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x7ACB;&#x3064;&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x6570;</p>
 </div>
       </div>
     </td>
@@ -688,13 +784,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-bitLength">bitLength</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-bitLength">bitLength</a></span></span><span class="code" data-ice="signature">(): <span>number</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>2&#x9032;&#x6570;&#x3067;&#x8868;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x4F55;&#x30D3;&#x30C3;&#x30C8;&#x3067;&#x8868;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x304B;</p>
+        <div data-ice="description"><p>2&#x9032;&#x6570;&#x3067;&#x8868;&#x3057;&#x305F;&#x5834;&#x5408;&#x306E;&#x9577;&#x3055;</p>
 </div>
       </div>
     </td>
@@ -717,13 +813,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-clearBit">clearBit</a></span></span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-clearBit">clearBit</a></span></span><span class="code" data-ice="signature">(bit: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x843D;&#x3068;&#x3059;</p>
+        <div data-ice="description"><p>&#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x4E0B;&#x3052;&#x308B;</p>
 </div>
       </div>
     </td>
@@ -775,13 +871,14 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-compareTo">compareTo</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-compareTo">compareTo</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>number</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>A.compareTo(B) &#x5024;&#x540C;&#x58EB;&#x3067;&#x6BD4;&#x8F03;&#x3059;&#x308B;</p>
+        <div data-ice="description"><p>&#x5024;&#x540C;&#x58EB;&#x3092;&#x6BD4;&#x8F03;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
       </div>
     </td>
@@ -804,13 +901,14 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-compareToAbs">compareToAbs</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-compareToAbs">compareToAbs</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>number</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>A.compareToAbs(B) &#x7D76;&#x5BFE;&#x5024;&#x3092;&#x3068;&#x3063;&#x305F;&#x5024;&#x540C;&#x58EB;&#x3067;&#x6BD4;&#x8F03;&#x3059;&#x308B;</p>
+        <div data-ice="description"><p>&#x7D76;&#x5BFE;&#x5024;&#x3092;&#x3068;&#x3063;&#x305F;&#x5024;&#x540C;&#x58EB;&#x3067;&#x6BD4;&#x8F03;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
       </div>
     </td>
@@ -839,7 +937,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.div(B) = A / B</p>
+        <div data-ice="description"><p>A / B</p>
 </div>
       </div>
     </td>
@@ -868,7 +966,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.divide(B) = A / B</p>
+        <div data-ice="description"><p>A / B</p>
 </div>
       </div>
     </td>
@@ -891,13 +989,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-divideAndRemainder">divideAndRemainder</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-divideAndRemainder">divideAndRemainder</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>Array</span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>A.divideAndRemainder(B) = A / B</p>
+        <div data-ice="description"><p>A / B</p>
 </div>
       </div>
     </td>
@@ -920,13 +1018,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-equals">equals</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-equals">equals</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>boolean</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>A.equals(B)</p>
+        <div data-ice="description"><p>A === B</p>
 </div>
       </div>
     </td>
@@ -949,7 +1047,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-extgcd">extgcd</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>*</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-extgcd">extgcd</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>Array</span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</span>
         </p>
       </div>
       <div>
@@ -979,13 +1077,13 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D;&#x3001; a<em>x + b
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-flipBit">flipBit</a></span></span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-flipBit">flipBit</a></span></span><span class="code" data-ice="signature">(bit: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x53CD;&#x8EE2;&#x3055;&#x305B;&#x308B;</p>
+        <div data-ice="description"><p>&#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x53CD;&#x8EE2;&#x3055;&#x305B;&#x308B;</p>
 </div>
       </div>
     </td>
@@ -1038,7 +1136,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-getLowestSetBit">getLowestSetBit</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-getLowestSetBit">getLowestSetBit</a></span></span><span class="code" data-ice="signature">(): <span>number</span></span>
         </p>
       </div>
       <div>
@@ -1067,13 +1165,13 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-getShort">getShort</a></span></span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-getShort">getShort</a></span></span><span class="code" data-ice="signature">(point: <span>number</span>): <span>number</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>16&#x9032;&#x6570;&#x30C7;&#x30FC;&#x30BF;&#x3067;&#x8868;&#x3055;&#x308C;&#x305F;&#x5185;&#x90E8;&#x5024;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x4F4D;&#x7F6E;&#x306E;&#x5024;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;</p>
+        <div data-ice="description"><p>16&#x9032;&#x6570;&#x3054;&#x3068;&#x306E;&#x914D;&#x5217;&#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x5024;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x4F4D;&#x7F6E;&#x306E;&#x5024;</p>
 </div>
       </div>
     </td>
@@ -1096,37 +1194,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-getTwosComplement">getTwosComplement</a></span></span><span class="code" data-ice="signature">(len: <span>*</span>): <span>*</span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;&#x8868;&#x73FE;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-&#x5185;&#x90E8;&#x8A08;&#x7B97;&#x7528;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-isNegative">isNegative</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-isNegative">isNegative</a></span></span><span class="code" data-ice="signature">(): <span>boolean</span></span>
         </p>
       </div>
       <div>
@@ -1155,7 +1223,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-isPositive">isPositive</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-isPositive">isPositive</a></span></span><span class="code" data-ice="signature">(): <span>boolean</span></span>
         </p>
       </div>
       <div>
@@ -1184,13 +1252,13 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-isProbablePrime">isProbablePrime</a></span></span><span class="code" data-ice="signature">(certainty: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-isProbablePrime">isProbablePrime</a></span></span><span class="code" data-ice="signature">(certainty: <span>number</span>): <span>boolean</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>A.isProbablePrime(certainty) &#x8907;&#x7D20;&#x6570;&#x304B;&#x30DF;&#x30E9;&#x30FC;&#x30E9;&#x30D3;&#x30F3;&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;&#x3067;&#x5224;&#x5B9A;&#x3059;&#x308B;</p>
+        <div data-ice="description"><p>&#x30DF;&#x30E9;&#x30FC;&#x30E9;&#x30D3;&#x30F3;&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;&#x306B;&#x3088;&#x308B;&#x8907;&#x7D20;&#x5224;&#x5B9A;</p>
 </div>
       </div>
     </td>
@@ -1213,7 +1281,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-isZero">isZero</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-isZero">isZero</a></span></span><span class="code" data-ice="signature">(): <span>boolean</span></span>
         </p>
       </div>
       <div>
@@ -1248,7 +1316,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.max(B) = max([A, B])</p>
+        <div data-ice="description"><p>max([A, B])</p>
 </div>
       </div>
     </td>
@@ -1277,7 +1345,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.min(B) = min([A, B])</p>
+        <div data-ice="description"><p>min([A, B])</p>
 </div>
       </div>
     </td>
@@ -1306,7 +1374,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.mod(B) = A mod B</p>
+        <div data-ice="description"><p>A mod B</p>
 </div>
       </div>
     </td>
@@ -1335,7 +1403,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.modInverse(m) = A^(-1) mod m</p>
+        <div data-ice="description"><p>A^(-1) mod m</p>
 </div>
       </div>
     </td>
@@ -1364,7 +1432,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.modPow(B, m) = A^B mod m</p>
+        <div data-ice="description"><p>A^B mod m</p>
 </div>
       </div>
     </td>
@@ -1393,7 +1461,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.mul(B) = A * B</p>
+        <div data-ice="description"><p>A * B</p>
 </div>
       </div>
     </td>
@@ -1422,7 +1490,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.number(B) = A * B</p>
+        <div data-ice="description"><p>A * B</p>
 </div>
       </div>
     </td>
@@ -1451,7 +1519,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.negate() = - A</p>
+        <div data-ice="description"><p>-A</p>
 </div>
       </div>
     </td>
@@ -1480,7 +1548,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.nextProbablePrime() &#x6B21;&#x306E;&#x7D20;&#x6570;&#x3092;&#x6C42;&#x3081;&#x308B;</p>
+        <div data-ice="description"><p>&#x6B21;&#x306E;&#x7D20;&#x6570;</p>
 </div>
       </div>
     </td>
@@ -1509,7 +1577,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.not() = !A</p>
+        <div data-ice="description"><p>!A</p>
 </div>
       </div>
     </td>
@@ -1538,7 +1606,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.or(B) = A | B</p>
+        <div data-ice="description"><p>A | B</p>
 </div>
       </div>
     </td>
@@ -1567,7 +1635,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.pow(B) = A^B</p>
+        <div data-ice="description"><p>pow(A, B)</p>
 </div>
       </div>
     </td>
@@ -1596,7 +1664,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.rem(B) = A rem B</p>
+        <div data-ice="description"><p>A % B</p>
 </div>
       </div>
     </td>
@@ -1625,7 +1693,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.remainder(B) = A rem B</p>
+        <div data-ice="description"><p>A % B</p>
 </div>
       </div>
     </td>
@@ -1648,13 +1716,13 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-setBit">setBit</a></span></span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-setBit">setBit</a></span></span><span class="code" data-ice="signature">(bit: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x7ACB;&#x3066;&#x308B;</p>
+        <div data-ice="description"><p>&#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x7ACB;&#x3066;&#x308B;</p>
 </div>
       </div>
     </td>
@@ -1677,13 +1745,13 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-shift">shift</a></span></span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-shift">shift</a></span></span><span class="code" data-ice="signature">(n: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>A.shift() = A &lt;&lt; n</p>
+        <div data-ice="description"><p>A &lt;&lt; n</p>
 </div>
       </div>
     </td>
@@ -1706,13 +1774,13 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-shiftLeft">shiftLeft</a></span></span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-shiftLeft">shiftLeft</a></span></span><span class="code" data-ice="signature">(n: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>A.shiftLeft() = A &lt;&lt; n</p>
+        <div data-ice="description"><p>A &lt;&lt; n</p>
 </div>
       </div>
     </td>
@@ -1735,13 +1803,13 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-shiftRight">shiftRight</a></span></span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-shiftRight">shiftRight</a></span></span><span class="code" data-ice="signature">(n: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>A.shiftRight() = A &gt;&gt; n</p>
+        <div data-ice="description"><p>A &gt;&gt; n</p>
 </div>
       </div>
     </td>
@@ -1764,13 +1832,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-signum">signum</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-signum">signum</a></span></span><span class="code" data-ice="signature">(): <span>number</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>A.signum() &#x7B26;&#x53F7;&#x5024;&#xFF08;1, -1&#xFF09;&#x3001;0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;</p>
+        <div data-ice="description"><p>&#x7B26;&#x53F7;&#x5024;
+1, -1, 0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;</p>
 </div>
       </div>
     </td>
@@ -1799,7 +1868,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.sub(B) = A - B</p>
+        <div data-ice="description"><p>A - B</p>
 </div>
       </div>
     </td>
@@ -1828,7 +1897,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.subtract(B) = A - B</p>
+        <div data-ice="description"><p>A - B</p>
 </div>
       </div>
     </td>
@@ -1851,13 +1920,13 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-testBit">testBit</a></span></span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-testBit">testBit</a></span></span><span class="code" data-ice="signature">(bit: <span>number</span>): <span>boolean</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x304C;&#x7ACB;&#x3063;&#x3066;&#x3044;&#x308B;&#x304B;</p>
+        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x5224;&#x5B9A;</p>
 </div>
       </div>
     </td>
@@ -1880,7 +1949,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-toString">toString</a></span></span><span class="code" data-ice="signature">(radix: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-toString">toString</a></span></span><span class="code" data-ice="signature">(radix: <span>number</span>): <span>string</span></span>
         </p>
       </div>
       <div>
@@ -1915,7 +1984,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A.xor(B) = A ^ B</p>
+        <div data-ice="description"><p>A ^ B</p>
 </div>
       </div>
     </td>
@@ -1950,7 +2019,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A._abs() = A = abs(A)</p>
+        <div data-ice="description"><p>A = abs(A)</p>
 </div>
       </div>
     </td>
@@ -1979,7 +2048,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A._add(B) = A += B</p>
+        <div data-ice="description"><p>A += B</p>
 </div>
       </div>
     </td>
@@ -2008,7 +2077,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A._and(B) = A += B</p>
+        <div data-ice="description"><p>A &amp;= B</p>
 </div>
       </div>
     </td>
@@ -2037,7 +2106,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A._andNot(B) = A &amp;= (!B)</p>
+        <div data-ice="description"><p>A &amp;= (!B)</p>
 </div>
       </div>
     </td>
@@ -2066,7 +2135,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A._divide(B) = A /= B</p>
+        <div data-ice="description"><p>A /= B</p>
 </div>
       </div>
     </td>
@@ -2089,13 +2158,13 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-_divideAndRemainder">_divideAndRemainder</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-_divideAndRemainder">_divideAndRemainder</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>Array</span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>A._divideAndRemainder(B) = A /= B</p>
+        <div data-ice="description"><p>A /= B</p>
 </div>
       </div>
     </td>
@@ -2118,13 +2187,13 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-_flipBit">_flipBit</a></span></span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-_flipBit">_flipBit</a></span></span><span class="code" data-ice="signature">(bit: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x53CD;&#x8EE2;&#x3055;&#x305B;&#x308B; (mutable)</p>
+        <div data-ice="description"><p>&#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x53CD;&#x8EE2;&#x3055;&#x305B;&#x308B;</p>
 </div>
       </div>
     </td>
@@ -2147,13 +2216,13 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-_memory_allocation">_memory_allocation</a></span></span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-_memory_allocation">_memory_allocation</a></span></span><span class="code" data-ice="signature">(bit_length: <span>number</span>)</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x9577;&#x307E;&#x3067;&#x914D;&#x5217;&#x3092;&#x62E1;&#x5F35;&#x3059;&#x308B;</p>
+        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x9577;&#x307E;&#x3067;&#x914D;&#x5217;&#x3092;&#x62E1;&#x5F35;</p>
 </div>
       </div>
     </td>
@@ -2182,7 +2251,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>&#x4E0D;&#x8981;&#x306A;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x9664;&#x53BB;&#x3059;&#x308B;</p>
+        <div data-ice="description"><p>&#x5185;&#x90E8;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x6B63;&#x898F;&#x5316;</p>
 </div>
       </div>
     </td>
@@ -2211,7 +2280,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A._mod(B) = A _mod B</p>
+        <div data-ice="description"><p>A = A mod B</p>
 </div>
       </div>
     </td>
@@ -2240,7 +2309,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A._multiply(B) = A *= B</p>
+        <div data-ice="description"><p>A *= B</p>
 </div>
       </div>
     </td>
@@ -2269,7 +2338,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A._negate() = A = - A</p>
+        <div data-ice="description"><p>A = -A</p>
 </div>
       </div>
     </td>
@@ -2298,7 +2367,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A._not() = !A (mutable)</p>
+        <div data-ice="description"><p>A = !A</p>
 </div>
       </div>
     </td>
@@ -2327,7 +2396,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A._or(B) = A |= B</p>
+        <div data-ice="description"><p>A |= B</p>
 </div>
       </div>
     </td>
@@ -2356,7 +2425,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A._remainder(B) = A rem B</p>
+        <div data-ice="description"><p>A %= B</p>
 </div>
       </div>
     </td>
@@ -2379,13 +2448,13 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-_setBit">_setBit</a></span></span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-_setBit">_setBit</a></span></span><span class="code" data-ice="signature">(bit: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x7ACB;&#x3066;&#x308B; (mutable)</p>
+        <div data-ice="description"><p>&#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x7ACB;&#x3066;&#x308B;</p>
 </div>
       </div>
     </td>
@@ -2408,13 +2477,13 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-_shift">_shift</a></span></span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-_shift">_shift</a></span></span><span class="code" data-ice="signature">(shift_length: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>A._shift() = A &lt;&lt;= n</p>
+        <div data-ice="description"><p>A &lt;&lt;= n</p>
 </div>
       </div>
     </td>
@@ -2443,7 +2512,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A._subtract(B) = A -= B</p>
+        <div data-ice="description"><p>A -= B</p>
 </div>
       </div>
     </td>
@@ -2472,7 +2541,36 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <div>
         
         
-        <div data-ice="description"><p>A._xor(B) = A ^= B</p>
+        <div data-ice="description"><p>A ^= B</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-getTwosComplement">getTwosComplement</a></span></span><span class="code" data-ice="signature">(bit_length: <span>*</span>): <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x52A0;&#x7B97;&#x306B;&#x9069;&#x7528;&#x3067;&#x304D;&#x308B;&#x6570;&#x5024;&#xFF08;&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;&#x8868;&#x73FE;&#xFF09;</p>
 </div>
       </div>
     </td>
@@ -2501,7 +2599,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1575">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1655">source</a></span></span>
     </span>
   </h3>
 
@@ -2557,7 +2655,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1591">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1671">source</a></span></span>
     </span>
   </h3>
 
@@ -2613,7 +2711,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1583">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1663">source</a></span></span>
     </span>
   </h3>
 
@@ -2669,7 +2767,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1567">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1647">source</a></span></span>
     </span>
   </h3>
 
@@ -2728,14 +2826,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber258">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber263">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x5F15;&#x6570;&#x304B;&#x3089;&#x591A;&#x500D;&#x9577;&#x6574;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#xFF08;&#x4F5C;&#x6210;&#x304C;&#x4E0D;&#x8981;&#x306E;&#x5834;&#x5408;&#x306F;new&#x3057;&#x306A;&#x3044;&#xFF09;</p>
+  <div data-ice="description"><p>BigInteger&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;</p>
 </div>
 
   
@@ -2796,18 +2894,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">createRandomBigInteger</span><span class="code" data-ice="signature">(bits: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, random: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Random">Random</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="code" data-ice="name">createRandomBigInteger</span><span class="code" data-ice="signature">(bitsize: <span>number</span>, random: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Random">Random</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber273">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber338">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#x306E;&#x4E71;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;</p>
+  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#x4EE5;&#x5185;&#x306E;&#x4E71;&#x6570;</p>
 </div>
 
   
@@ -2821,8 +2919,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">bits</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">bitsize</td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>&#x4F5C;&#x6210;&#x3059;&#x308B;&#x4E71;&#x6570;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x6570;</p>
 </td>
@@ -2830,7 +2928,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">random</td>
       <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Random">Random</a></span></td>
-      <td data-ice="appendix"></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"><p>&#x4F5C;&#x6210;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;Random</p>
 </td>
     </tr>
@@ -2876,18 +2974,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">probablePrime</span><span class="code" data-ice="signature">(bits: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, random: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Random">Random</a></span>, certainty: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="code" data-ice="name">probablePrime</span><span class="code" data-ice="signature">(bits: <span>number</span>, random: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Random">Random</a></span>, certainty: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber312">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber376">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#x306E;&#x7D20;&#x6570;&#x306E;&#x4E71;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;</p>
+  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#x4EE5;&#x5185;&#x306E;&#x7D20;&#x6570;</p>
 </div>
 
   
@@ -2902,7 +3000,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">bits</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>&#x4F5C;&#x6210;&#x3059;&#x308B;&#x7D20;&#x6570;&#x306E;&#x4E71;&#x6570;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x6570;</p>
 </td>
@@ -2910,13 +3008,13 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">random</td>
       <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Random">Random</a></span></td>
-      <td data-ice="appendix"></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"><p>&#x4F5C;&#x6210;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;Random</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">certainty</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: 100</li></ul></td>
       <td data-ice="description"><p>&#x30DF;&#x30E9;&#x30FC;&#x30E9;&#x30D3;&#x30F3;&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x56DE;&#x6570;</p>
@@ -2964,18 +3062,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">valueOf</span><span class="code" data-ice="signature">(x: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="code" data-ice="name">valueOf</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1555">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber277">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x6570;&#x5024;&#x304B;&#x3089; BigInteger &#x578B;&#x306B;&#x5909;&#x63DB;</p>
+  <div data-ice="description"><p>BigInteger &#x3092;&#x4F5C;&#x6210;</p>
 </div>
 
   
@@ -2989,8 +3087,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -3028,6 +3126,224 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
   
   
 </div>
+<h2 data-ice="title">Static Private Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-_toBigInteger">
+    <span class="access" data-ice="access">private</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">_toBigInteger</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber287">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>BigInteger &#x3092;&#x4F5C;&#x6210;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-_toFloat">
+    <span class="access" data-ice="access">private</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">_toFloat</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>number</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber302">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x5B9F;&#x6570;&#x3092;&#x4F5C;&#x6210;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>number</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-_toInteger">
+    <span class="access" data-ice="access">private</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">_toInteger</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>number</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber320">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x6574;&#x6570;&#x3092;&#x4F5C;&#x6210;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>number</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
 </div>
 <div data-ice="constructorDetails"><h2 data-ice="title">Public Constructors</h2>
 
@@ -3039,11 +3355,11 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(number: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>|<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>&gt;)</span>
+    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(number: <span><a href="class/src/Math/BigInteger.mjs~BigInteger.html">BigInteger|number|string|Array</a></span>&lt;<span>string</span>|<span>number</span>&gt;)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber192">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber197">source</a></span></span>
     </span>
   </h3>
 
@@ -3067,7 +3383,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">number</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>|<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>&gt;</td>
+      <td data-ice="type" class="code"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html">BigInteger|number|string|Array</a></span>&lt;<span>string</span>|<span>number</span>&gt;</td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>&#x6574;&#x6570;&#x5024;</p>
 </td>
@@ -3105,18 +3421,19 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">doubleValue</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>: <span>*</span></span>
+    <span class="code" data-ice="name">doubleValue</span><span class="code" data-ice="signature">: <span>number</span>: <span>*</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber429">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber494">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>64&#x30D3;&#x30C3;&#x30C8;&#x5B9F;&#x6570;&#x5024;&#x3068;&#x3057;&#x3066;&#x53D6;&#x5F97;&#x3059;&#x308B;&#xFF08;&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x3068;&#x6B63;&#x78BA;&#x3067;&#x306F;&#x306A;&#x3044;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#xFF09;</p>
+  <div data-ice="description"><p>64&#x30D3;&#x30C3;&#x30C8;&#x5B9F;&#x6570;&#x5024;
+&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x306A;&#x3069;&#x3001;&#x53CE;&#x307E;&#x308A;&#x304D;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x306B;&#x6B63;&#x78BA;&#x306A;&#x6570;&#x5024;&#x306B;&#x306A;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;</p>
 </div>
 
   
@@ -3129,7 +3446,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+          <td class="return-type code" data-ice="returnType"><span>number</span></td>
           
         </tr>
       </tbody>
@@ -3161,18 +3478,19 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">intValue</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>: <span>*</span></span>
+    <span class="code" data-ice="name">intValue</span><span class="code" data-ice="signature">: <span>number</span>: <span>*</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber400">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber463">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>32&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x5024;&#x3068;&#x3057;&#x3066;&#x53D6;&#x5F97;&#x3059;&#x308B;&#xFF08;&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x3068;&#x6B63;&#x78BA;&#x3067;&#x306F;&#x306A;&#x3044;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#xFF09;</p>
+  <div data-ice="description"><p>32&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x5024;
+&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x306A;&#x3069;&#x3001;&#x53CE;&#x307E;&#x308A;&#x304D;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x306B;&#x6B63;&#x78BA;&#x306A;&#x6570;&#x5024;&#x306B;&#x306A;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;</p>
 </div>
 
   
@@ -3185,7 +3503,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+          <td class="return-type code" data-ice="returnType"><span>number</span></td>
           
         </tr>
       </tbody>
@@ -3217,18 +3535,19 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">longValue</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>: <span>*</span></span>
+    <span class="code" data-ice="name">longValue</span><span class="code" data-ice="signature">: <span>number</span>: <span>*</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber413">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber477">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>64&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x5024;&#x3068;&#x3057;&#x3066;&#x53D6;&#x5F97;&#x3059;&#x308B;&#xFF08;&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x3068;&#x6B63;&#x78BA;&#x3067;&#x306F;&#x306A;&#x3044;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#xFF09;</p>
+  <div data-ice="description"><p>64&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x5024;
+&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x306A;&#x3069;&#x3001;&#x53CE;&#x307E;&#x308A;&#x304D;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x306B;&#x6B63;&#x78BA;&#x306A;&#x6570;&#x5024;&#x306B;&#x306A;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;</p>
 </div>
 
   
@@ -3241,7 +3560,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+          <td class="return-type code" data-ice="returnType"><span>number</span></td>
           
         </tr>
       </tbody>
@@ -3275,11 +3594,11 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">element</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>&gt;</span>
+    <span class="code" data-ice="name">element</span><span class="code" data-ice="signature">: <span>Array</span>&lt;<span>number</span>&gt;</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber199">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber204">source</a></span></span>
     </span>
   </h3>
 
@@ -3319,11 +3638,11 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">sign</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>&gt;</span>
+    <span class="code" data-ice="name">sign</span><span class="code" data-ice="signature">: <span>Array</span>&lt;<span>number</span>&gt;</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber207">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber212">source</a></span></span>
     </span>
   </h3>
 
@@ -3371,14 +3690,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber811">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber883">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.abs() = abs(A)</p>
+  <div data-ice="description"><p>abs(A)</p>
 </div>
 
   
@@ -3427,14 +3746,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1099">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1178">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.add(B) = A + B</p>
+  <div data-ice="description"><p>A + B</p>
 </div>
 
   
@@ -3499,14 +3818,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber604">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber668">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.and(B) = A + B</p>
+  <div data-ice="description"><p>A &amp; B</p>
 </div>
 
   
@@ -3571,14 +3890,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber715">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber783">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.andNot(B) = A &amp; (!B)</p>
+  <div data-ice="description"><p>A &amp; (!B)</p>
 </div>
 
   
@@ -3639,18 +3958,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">bitCount</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="code" data-ice="name">bitCount</span><span class="code" data-ice="signature">(): <span>number</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber509">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber574">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>2&#x306E;&#x88DC;&#x6570;&#x8868;&#x73FE;&#x3067;&#x8868;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x3001;&#x3044;&#x304F;&#x3064;&#x30D3;&#x30C3;&#x30C8;&#x304C;&#x7ACB;&#x3064;&#x304B;</p>
+  <div data-ice="description"><p>2&#x306E;&#x88DC;&#x6570;&#x8868;&#x73FE;&#x3067;&#x8868;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x7ACB;&#x3064;&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x6570;</p>
 </div>
 
   
@@ -3663,7 +3982,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+          <td class="return-type code" data-ice="returnType"><span>number</span></td>
           
         </tr>
       </tbody>
@@ -3695,18 +4014,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">bitLength</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="code" data-ice="name">bitLength</span><span class="code" data-ice="signature">(): <span>number</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber491">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber556">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>2&#x9032;&#x6570;&#x3067;&#x8868;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x4F55;&#x30D3;&#x30C3;&#x30C8;&#x3067;&#x8868;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x304B;</p>
+  <div data-ice="description"><p>2&#x9032;&#x6570;&#x3067;&#x8868;&#x3057;&#x305F;&#x5834;&#x5408;&#x306E;&#x9577;&#x3055;</p>
 </div>
 
   
@@ -3719,7 +4038,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+          <td class="return-type code" data-ice="returnType"><span>number</span></td>
           
         </tr>
       </tbody>
@@ -3751,18 +4070,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">clearBit</span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="code" data-ice="name">clearBit</span><span class="code" data-ice="signature">(bit: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1404">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1495">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x843D;&#x3068;&#x3059;</p>
+  <div data-ice="description"><p>&#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x4E0B;&#x3052;&#x308B;</p>
 </div>
 
   
@@ -3776,8 +4095,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">n</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">bit</td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -3827,7 +4146,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber437">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber502">source</a></span></span>
     </span>
   </h3>
 
@@ -3879,18 +4198,19 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">compareTo</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="code" data-ice="name">compareTo</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>number</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber870">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber946">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.compareTo(B) &#x5024;&#x540C;&#x58EB;&#x3067;&#x6BD4;&#x8F03;&#x3059;&#x308B;</p>
+  <div data-ice="description"><p>&#x5024;&#x540C;&#x58EB;&#x3092;&#x6BD4;&#x8F03;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
 
   
@@ -3919,8 +4239,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>A &lt; B ? 1 : (A === B ? 0 : -1)&#xFF08;&#x203B;&#x975E;Complex&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#xFF09;</p>
+          <td class="return-type code" data-ice="returnType"><span>number</span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>A &lt; B ? 1 : (A === B ? 0 : -1)</p>
 </td>
         </tr>
       </tbody>
@@ -3952,18 +4272,19 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">compareToAbs</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="code" data-ice="name">compareToAbs</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>number</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber848">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber923">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.compareToAbs(B) &#x7D76;&#x5BFE;&#x5024;&#x3092;&#x3068;&#x3063;&#x305F;&#x5024;&#x540C;&#x58EB;&#x3067;&#x6BD4;&#x8F03;&#x3059;&#x308B;</p>
+  <div data-ice="description"><p>&#x7D76;&#x5BFE;&#x5024;&#x3092;&#x3068;&#x3063;&#x305F;&#x5024;&#x540C;&#x58EB;&#x3067;&#x6BD4;&#x8F03;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
 
   
@@ -3992,8 +4313,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>abs(A) &lt; abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)&#xFF08;&#x203B;&#x975E;Complex&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#xFF09;</p>
+          <td class="return-type code" data-ice="returnType"><span>number</span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>abs(A) &lt; abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)</p>
 </td>
         </tr>
       </tbody>
@@ -4029,14 +4350,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1297">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1380">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.div(B) = A / B</p>
+  <div data-ice="description"><p>A / B</p>
 </div>
 
   
@@ -4102,14 +4423,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1288">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1371">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.divide(B) = A / B</p>
+  <div data-ice="description"><p>A / B</p>
 </div>
 
   
@@ -4171,18 +4492,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">divideAndRemainder</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</span>
+    <span class="code" data-ice="name">divideAndRemainder</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>Array</span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1270">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1352">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.divideAndRemainder(B) = A / B</p>
+  <div data-ice="description"><p>A / B</p>
 </div>
 
   
@@ -4211,7 +4532,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</td>
+          <td class="return-type code" data-ice="returnType"><span>Array</span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</td>
           <td class="return-desc" data-ice="returnDescription"><p>[C = floor(A / B), A - C * B]</p>
 </td>
         </tr>
@@ -4244,18 +4565,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">equals</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="code" data-ice="name">equals</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>boolean</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber326">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber390">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.equals(B)</p>
+  <div data-ice="description"><p>A === B</p>
 </div>
 
   
@@ -4284,9 +4605,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>A === B</p>
-</td>
+          <td class="return-type code" data-ice="returnType"><span>boolean</span></td>
+          
         </tr>
       </tbody>
     </table>
@@ -4317,11 +4637,11 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">extgcd</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>*</span></span>
+    <span class="code" data-ice="name">extgcd</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>Array</span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber773">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber844">source</a></span></span>
     </span>
   </h3>
 
@@ -4358,8 +4678,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D;&#x3001; a<em>x + b
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span>*</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>Array&lt;BigInteger&gt; BigInteger &#x304C;&#x5165;&#x3063;&#x305F;&#x914D;&#x5217;</p>
+          <td class="return-type code" data-ice="returnType"><span>Array</span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</td>
+          <td class="return-desc" data-ice="returnDescription"><p>BigInteger &#x304C;&#x5165;&#x3063;&#x305F;&#x914D;&#x5217;</p>
 </td>
         </tr>
       </tbody>
@@ -4391,18 +4711,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D;&#x3001; a<em>x + b
     
     
     
-    <span class="code" data-ice="name">flipBit</span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="code" data-ice="name">flipBit</span><span class="code" data-ice="signature">(bit: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1395">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1485">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x53CD;&#x8EE2;&#x3055;&#x305B;&#x308B;</p>
+  <div data-ice="description"><p>&#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x53CD;&#x8EE2;&#x3055;&#x305B;&#x308B;</p>
 </div>
 
   
@@ -4416,8 +4736,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D;&#x3001; a<em>x + b
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">n</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">bit</td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -4467,7 +4787,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D;&#x3001; a<em>x + b
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber755">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber826">source</a></span></span>
     </span>
   </h3>
 
@@ -4536,11 +4856,11 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">getLowestSetBit</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="code" data-ice="name">getLowestSetBit</span><span class="code" data-ice="signature">(): <span>number</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber473">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber538">source</a></span></span>
     </span>
   </h3>
 
@@ -4560,7 +4880,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+          <td class="return-type code" data-ice="returnType"><span>number</span></td>
           <td class="return-desc" data-ice="returnDescription"><p>&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F; -1</p>
 </td>
         </tr>
@@ -4593,18 +4913,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">getShort</span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="code" data-ice="name">getShort</span><span class="code" data-ice="signature">(point: <span>number</span>): <span>number</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber389">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber450">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>16&#x9032;&#x6570;&#x30C7;&#x30FC;&#x30BF;&#x3067;&#x8868;&#x3055;&#x308C;&#x305F;&#x5185;&#x90E8;&#x5024;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x4F4D;&#x7F6E;&#x306E;&#x5024;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;</p>
+  <div data-ice="description"><p>16&#x9032;&#x6570;&#x3054;&#x3068;&#x306E;&#x914D;&#x5217;&#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x5024;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x4F4D;&#x7F6E;&#x306E;&#x5024;</p>
 </div>
 
   
@@ -4618,8 +4938,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">n</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">point</td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>&#x4F4D;&#x7F6E;</p>
 </td>
@@ -4634,81 +4954,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-getTwosComplement">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">getTwosComplement</span><span class="code" data-ice="signature">(len: <span>*</span>): <span>*</span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber536">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;&#x8868;&#x73FE;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-&#x5185;&#x90E8;&#x8A08;&#x7B97;&#x7528;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">len</td>
-      <td data-ice="type" class="code"><span>*</span></td>
-      <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>&#x30D3;&#x30C3;&#x30C8;&#x9577;&#xFF08;&#x7701;&#x7565;&#x6642;&#x306F;&#x81EA;&#x52D5;&#x8A08;&#x7B97;&#xFF09;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span>*</span></td>
+          <td class="return-type code" data-ice="returnType"><span>number</span></td>
           
         </tr>
       </tbody>
@@ -4740,11 +4986,11 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">isNegative</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="code" data-ice="name">isNegative</span><span class="code" data-ice="signature">(): <span>boolean</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber448">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber513">source</a></span></span>
     </span>
   </h3>
 
@@ -4764,7 +5010,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+          <td class="return-type code" data-ice="returnType"><span>boolean</span></td>
           
         </tr>
       </tbody>
@@ -4796,11 +5042,11 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">isPositive</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="code" data-ice="name">isPositive</span><span class="code" data-ice="signature">(): <span>boolean</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber465">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber530">source</a></span></span>
     </span>
   </h3>
 
@@ -4820,7 +5066,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+          <td class="return-type code" data-ice="returnType"><span>boolean</span></td>
           
         </tr>
       </tbody>
@@ -4852,18 +5098,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">isProbablePrime</span><span class="code" data-ice="signature">(certainty: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="code" data-ice="name">isProbablePrime</span><span class="code" data-ice="signature">(certainty: <span>number</span>): <span>boolean</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1481">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1574">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.isProbablePrime(certainty) &#x8907;&#x7D20;&#x6570;&#x304B;&#x30DF;&#x30E9;&#x30FC;&#x30E9;&#x30D3;&#x30F3;&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;&#x3067;&#x5224;&#x5B9A;&#x3059;&#x308B;</p>
+  <div data-ice="description"><p>&#x30DF;&#x30E9;&#x30FC;&#x30E9;&#x30D3;&#x30F3;&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;&#x306B;&#x3088;&#x308B;&#x8907;&#x7D20;&#x5224;&#x5B9A;</p>
 </div>
 
   
@@ -4878,9 +5124,10 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">certainty</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x30DF;&#x30E9;&#x30FC;&#x30E9;&#x30D3;&#x30F3;&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x56DE;&#x6570;</p>
+      <td data-ice="type" class="code"><span>number</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: 100</li></ul></td>
+      <td data-ice="description"><p>&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;&#x306E;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x56DE;&#x6570;</p>
 </td>
     </tr>
 </tbody>
@@ -4893,7 +5140,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+          <td class="return-type code" data-ice="returnType"><span>boolean</span></td>
           
         </tr>
       </tbody>
@@ -4925,11 +5172,11 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">isZero</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="code" data-ice="name">isZero</span><span class="code" data-ice="signature">(): <span>boolean</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber456">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber521">source</a></span></span>
     </span>
   </h3>
 
@@ -4949,7 +5196,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+          <td class="return-type code" data-ice="returnType"><span>boolean</span></td>
           
         </tr>
       </tbody>
@@ -4985,14 +5232,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber891">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber967">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.max(B) = max([A, B])</p>
+  <div data-ice="description"><p>max([A, B])</p>
 </div>
 
   
@@ -5057,14 +5304,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber906">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber982">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.min(B) = min([A, B])</p>
+  <div data-ice="description"><p>min([A, B])</p>
 </div>
 
   
@@ -5129,14 +5376,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1355">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1440">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.mod(B) = A mod B</p>
+  <div data-ice="description"><p>A mod B</p>
 </div>
 
   
@@ -5201,14 +5448,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1465">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1558">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.modInverse(m) = A^(-1) mod m</p>
+  <div data-ice="description"><p>A^(-1) mod m</p>
 </div>
 
   
@@ -5273,14 +5520,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1445">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1538">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.modPow(B, m) = A^B mod m</p>
+  <div data-ice="description"><p>A^B mod m</p>
 </div>
 
   
@@ -5351,14 +5598,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1213">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1294">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.mul(B) = A * B</p>
+  <div data-ice="description"><p>A * B</p>
 </div>
 
   
@@ -5423,14 +5670,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1151">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1232">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.number(B) = A * B</p>
+  <div data-ice="description"><p>A * B</p>
 </div>
 
   
@@ -5495,14 +5742,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber828">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber901">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.negate() = - A</p>
+  <div data-ice="description"><p>-A</p>
 </div>
 
   
@@ -5551,14 +5798,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1539">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1628">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.nextProbablePrime() &#x6B21;&#x306E;&#x7D20;&#x6570;&#x3092;&#x6C42;&#x3081;&#x308B;</p>
+  <div data-ice="description"><p>&#x6B21;&#x306E;&#x7D20;&#x6570;</p>
 </div>
 
   
@@ -5607,14 +5854,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber696">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber763">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.not() = !A</p>
+  <div data-ice="description"><p>!A</p>
 </div>
 
   
@@ -5663,14 +5910,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber642">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber707">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.or(B) = A | B</p>
+  <div data-ice="description"><p>A | B</p>
 </div>
 
   
@@ -5735,14 +5982,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1425">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1518">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.pow(B) = A^B</p>
+  <div data-ice="description"><p>pow(A, B)</p>
 </div>
 
   
@@ -5807,14 +6054,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1324">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1408">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.rem(B) = A rem B</p>
+  <div data-ice="description"><p>A % B</p>
 </div>
 
   
@@ -5879,14 +6126,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1315">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1399">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.remainder(B) = A rem B</p>
+  <div data-ice="description"><p>A % B</p>
 </div>
 
   
@@ -5947,18 +6194,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">setBit</span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="code" data-ice="name">setBit</span><span class="code" data-ice="signature">(bit: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1375">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1462">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x7ACB;&#x3066;&#x308B;</p>
+  <div data-ice="description"><p>&#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x7ACB;&#x3066;&#x308B;</p>
 </div>
 
   
@@ -5972,8 +6219,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">n</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">bit</td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -6019,18 +6266,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">shift</span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="code" data-ice="name">shift</span><span class="code" data-ice="signature">(n: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1012">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1090">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.shift() = A &lt;&lt; n</p>
+  <div data-ice="description"><p>A &lt;&lt; n</p>
 </div>
 
   
@@ -6045,7 +6292,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">n</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -6091,18 +6338,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">shiftLeft</span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="code" data-ice="name">shiftLeft</span><span class="code" data-ice="signature">(n: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1021">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1099">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.shiftLeft() = A &lt;&lt; n</p>
+  <div data-ice="description"><p>A &lt;&lt; n</p>
 </div>
 
   
@@ -6117,7 +6364,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">n</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -6163,18 +6410,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">shiftRight</span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="code" data-ice="name">shiftRight</span><span class="code" data-ice="signature">(n: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1030">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1108">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.shiftRight() = A &gt;&gt; n</p>
+  <div data-ice="description"><p>A &gt;&gt; n</p>
 </div>
 
   
@@ -6189,7 +6436,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">n</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -6235,18 +6482,19 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">signum</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="code" data-ice="name">signum</span><span class="code" data-ice="signature">(): <span>number</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber836">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber910">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.signum() &#x7B26;&#x53F7;&#x5024;&#xFF08;1, -1&#xFF09;&#x3001;0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;</p>
+  <div data-ice="description"><p>&#x7B26;&#x53F7;&#x5024;
+1, -1, 0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;</p>
 </div>
 
   
@@ -6259,7 +6507,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+          <td class="return-type code" data-ice="returnType"><span>number</span></td>
           
         </tr>
       </tbody>
@@ -6295,14 +6543,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1130">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1210">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.sub(B) = A - B</p>
+  <div data-ice="description"><p>A - B</p>
 </div>
 
   
@@ -6367,14 +6615,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1121">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1201">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.subtract(B) = A - B</p>
+  <div data-ice="description"><p>A - B</p>
 </div>
 
   
@@ -6435,18 +6683,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">testBit</span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="code" data-ice="name">testBit</span><span class="code" data-ice="signature">(bit: <span>number</span>): <span>boolean</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1416">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1508">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x304C;&#x7ACB;&#x3063;&#x3066;&#x3044;&#x308B;&#x304B;</p>
+  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x5224;&#x5B9A;</p>
 </div>
 
   
@@ -6460,8 +6708,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">n</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">bit</td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -6475,7 +6723,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+          <td class="return-type code" data-ice="returnType"><span>boolean</span></td>
           
         </tr>
       </tbody>
@@ -6507,11 +6755,11 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">toString</span><span class="code" data-ice="signature">(radix: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span class="code" data-ice="name">toString</span><span class="code" data-ice="signature">(radix: <span>number</span>): <span>string</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber347">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber411">source</a></span></span>
     </span>
   </h3>
 
@@ -6533,7 +6781,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">radix</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: 10</li></ul></td>
       <td data-ice="description"><p>&#x6587;&#x5B57;&#x5217;&#x5909;&#x63DB;&#x5F8C;&#x306E;&#x9032;&#x6570;</p>
@@ -6549,7 +6797,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+          <td class="return-type code" data-ice="returnType"><span>string</span></td>
           
         </tr>
       </tbody>
@@ -6585,14 +6833,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber680">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber746">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.xor(B) = A ^ B</p>
+  <div data-ice="description"><p>A ^ B</p>
 </div>
 
   
@@ -6659,14 +6907,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber801">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber873">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._abs() = A = abs(A)</p>
+  <div data-ice="description"><p>A = abs(A)</p>
 </div>
 
   
@@ -6715,14 +6963,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1039">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1118">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._add(B) = A += B</p>
+  <div data-ice="description"><p>A += B</p>
 </div>
 
   
@@ -6787,14 +7035,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber569">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber633">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._and(B) = A += B</p>
+  <div data-ice="description"><p>A &amp;= B</p>
 </div>
 
   
@@ -6859,14 +7107,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber705">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber773">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._andNot(B) = A &amp;= (!B)</p>
+  <div data-ice="description"><p>A &amp;= (!B)</p>
 </div>
 
   
@@ -6931,14 +7179,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1279">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1362">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._divide(B) = A /= B</p>
+  <div data-ice="description"><p>A /= B</p>
 </div>
 
   
@@ -7000,18 +7248,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">_divideAndRemainder</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</span>
+    <span class="code" data-ice="name">_divideAndRemainder</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>): <span>Array</span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1222">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1304">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._divideAndRemainder(B) = A /= B</p>
+  <div data-ice="description"><p>A /= B</p>
 </div>
 
   
@@ -7040,7 +7288,7 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</td>
+          <td class="return-type code" data-ice="returnType"><span>Array</span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</td>
           <td class="return-desc" data-ice="returnDescription"><p>[C = floor(A / B), A - C * B]</p>
 </td>
         </tr>
@@ -7073,18 +7321,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">_flipBit</span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="code" data-ice="name">_flipBit</span><span class="code" data-ice="signature">(bit: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1384">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1473">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x53CD;&#x8EE2;&#x3055;&#x305B;&#x308B; (mutable)</p>
+  <div data-ice="description"><p>&#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x53CD;&#x8EE2;&#x3055;&#x305B;&#x308B;</p>
 </div>
 
   
@@ -7098,8 +7346,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">n</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">bit</td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -7145,18 +7393,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">_memory_allocation</span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>)</span>
+    <span class="code" data-ice="name">_memory_allocation</span><span class="code" data-ice="signature">(bit_length: <span>number</span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber723">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber792">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x9577;&#x307E;&#x3067;&#x914D;&#x5217;&#x3092;&#x62E1;&#x5F35;&#x3059;&#x308B;</p>
+  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x9577;&#x307E;&#x3067;&#x914D;&#x5217;&#x3092;&#x62E1;&#x5F35;</p>
 </div>
 
   
@@ -7170,8 +7418,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">n</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">bit_length</td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>&#x30D3;&#x30C3;&#x30C8;&#x6570;</p>
 </td>
@@ -7210,14 +7458,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber736">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber807">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x4E0D;&#x8981;&#x306A;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x9664;&#x53BB;&#x3059;&#x308B;</p>
+  <div data-ice="description"><p>&#x5185;&#x90E8;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x6B63;&#x898F;&#x5316;</p>
 </div>
 
   
@@ -7254,14 +7502,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1333">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1418">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._mod(B) = A _mod B</p>
+  <div data-ice="description"><p>A = A mod B</p>
 </div>
 
   
@@ -7326,14 +7574,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1139">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1220">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._multiply(B) = A *= B</p>
+  <div data-ice="description"><p>A *= B</p>
 </div>
 
   
@@ -7398,14 +7646,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber819">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber892">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._negate() = A = - A</p>
+  <div data-ice="description"><p>A = -A</p>
 </div>
 
   
@@ -7454,14 +7702,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber688">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber755">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._not() = !A (mutable)</p>
+  <div data-ice="description"><p>A = !A</p>
 </div>
 
   
@@ -7510,14 +7758,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber613">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber678">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._or(B) = A |= B</p>
+  <div data-ice="description"><p>A |= B</p>
 </div>
 
   
@@ -7582,14 +7830,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1306">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1390">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._remainder(B) = A rem B</p>
+  <div data-ice="description"><p>A %= B</p>
 </div>
 
   
@@ -7650,18 +7898,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">_setBit</span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="code" data-ice="name">_setBit</span><span class="code" data-ice="signature">(bit: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1364">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1450">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x7ACB;&#x3066;&#x308B; (mutable)</p>
+  <div data-ice="description"><p>&#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x7ACB;&#x3066;&#x308B;</p>
 </div>
 
   
@@ -7675,8 +7923,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">n</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">bit</td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -7722,18 +7970,18 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     
     
     
-    <span class="code" data-ice="name">_shift</span><span class="code" data-ice="signature">(n: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="code" data-ice="name">_shift</span><span class="code" data-ice="signature">(shift_length: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber921">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber998">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._shift() = A &lt;&lt;= n</p>
+  <div data-ice="description"><p>A &lt;&lt;= n</p>
 </div>
 
   
@@ -7747,8 +7995,8 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">n</td>
-      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">shift_length</td>
+      <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -7798,14 +8046,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1108">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber1188">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._subtract(B) = A -= B</p>
+  <div data-ice="description"><p>A -= B</p>
 </div>
 
   
@@ -7870,14 +8118,14 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber651">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber717">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A._xor(B) = A ^= B</p>
+  <div data-ice="description"><p>A ^= B</p>
 </div>
 
   
@@ -7907,6 +8155,79 @@ x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D; gcd(x,y)&#x3092;&#
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-getTwosComplement">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">getTwosComplement</span><span class="code" data-ice="signature">(bit_length: <span>*</span>): <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/Math/BigInteger.mjs.html#lineNumber601">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x52A0;&#x7B97;&#x306B;&#x9069;&#x7528;&#x3067;&#x304D;&#x308B;&#x6570;&#x5024;&#xFF08;&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;&#x8868;&#x73FE;&#xFF09;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">bit_length</td>
+      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>&#x30D3;&#x30C3;&#x30C8;&#x9577;&#xFF08;&#x7701;&#x7565;&#x6642;&#x306F;&#x81EA;&#x52D5;&#x8A08;&#x7B97;&#xFF09;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>*</span></td>
           
         </tr>
       </tbody>

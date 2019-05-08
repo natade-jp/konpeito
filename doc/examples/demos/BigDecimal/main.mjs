@@ -4,6 +4,7 @@ const BigDecimal = konpeito.BigDecimal;
 const RoundingMode = konpeito.RoundingMode;
 const MathContext = konpeito.MathContext;
 const Log = konpeito.Log;
+const $ = BigDecimal.create;
 
 const testPlainStringAndEngineeringString = function(text) {
 	const decimal = new BigDecimal(text);
@@ -182,8 +183,7 @@ const main = function() {
 	Log.println("");
 	
 	Log.println("乗算");
-	x = new BigDecimal("123.456");
-	Log.println(x.pow(30, MathContext.UNLIMITED));
+	Log.println($("123.456").pow(30, MathContext.UNLIMITED));
 	
 	// 丸め用のクラスの試験用
 	// 入力値の 1 の位に対して、丸め後の数値へ、いくつ足せばいいかがかえる

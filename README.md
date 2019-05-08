@@ -17,7 +17,6 @@ This library has 4 functions.
 ## BigInteger
 arbitrary-precision integer class.
 
-### code
 ```
 import konpeito from "konpeito.mjs";
 const BigInteger = konpeito.BigInteger;
@@ -26,8 +25,6 @@ const $ = BigInteger.create;
 console.log($("-1234567890").mul("987654321098765432109876543210").toString());
 console.log($("7").pow("50").toString());
 ```
-
-### result
 ```
 > -1219326311248285321124828532111263526900
 > 1798465042647412146620280340569649349251249
@@ -36,7 +33,6 @@ console.log($("7").pow("50").toString());
 ## BigDecimal
 floating-point math class.
 
-### code
 ```
 import konpeito from "konpeito.mjs";
 const BigDecimal = konpeito.BigDecimal;
@@ -46,8 +42,6 @@ const $ = BigDecimal.create;
 BigDecimal.setDefaultContext(MathContext.UNLIMITED);
 console.log($("-123456.7890").mul("987654321098765.432109876543210").toString());
 ```
-
-### result
 ```
 > -121932631124828532112.4828532111263526900
 ```
@@ -113,7 +107,7 @@ console.log($("[1 2 30]").dct().toString());
 ## Examples
 
 Please check the console and main.mjs.
-- [BigDecimal](../examples/demos/BigDecimal/)
-- [BigInteger](https://natade-jp.github.io/konpeito/doc/examples/demos/BigInteger/)
-- [Matrix](https://natade-jp.github.io/konpeito/doc/examples/demos/Matrix/)
-- [Random](https://natade-jp.github.io/konpeito/doc/examples/demos/Random/)
+- [BigDecimal](./doc/examples/demos/BigDecimal/)
+- [BigInteger](./doc/doc/examples/demos/BigInteger/)
+- [Matrix](./doc/doc/examples/demos/Matrix/)
+- [Random](./doc/doc/examples/demos/Random/)

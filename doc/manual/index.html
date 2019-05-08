@@ -35,11 +35,7 @@
 <li data-ice="manualNav" class="indent-h2" data-link="manual/MANUAL.html"><a href="manual/MANUAL.html#what" data-ice="link">What</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/MANUAL.html"><a href="manual/MANUAL.html#usage" data-ice="link">Usage</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/MANUAL.html"><a href="manual/MANUAL.html#biginteger" data-ice="link">BigInteger</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/MANUAL.html"><a href="manual/MANUAL.html#code" data-ice="link">code</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/MANUAL.html"><a href="manual/MANUAL.html#result" data-ice="link">result</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/MANUAL.html"><a href="manual/MANUAL.html#bigdecimal" data-ice="link">BigDecimal</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/MANUAL.html"><a href="manual/MANUAL.html#code" data-ice="link">code</a></li>
-<li data-ice="manualNav" class="indent-h3" data-link="manual/MANUAL.html"><a href="manual/MANUAL.html#result" data-ice="link">result</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/MANUAL.html"><a href="manual/MANUAL.html#complex" data-ice="link">Complex</a></li>
 <li data-ice="manualNav" class="indent-h2" data-link="manual/MANUAL.html"><a href="manual/MANUAL.html#matrix" data-ice="link">Matrix</a></li>
 </ul>
@@ -67,23 +63,23 @@
 <li><a href="../examples/demos/Random/">Random</a></li>
 </ul>
 <h2 id="biginteger">BigInteger</h2><p>arbitrary-precision integer class.</p>
-<h3 id="code">code</h3><pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
+<pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
 const BigInteger = konpeito.BigInteger;
 const $ = BigInteger.create;
 
 console.log($(&quot;-1234567890&quot;).mul(&quot;987654321098765432109876543210&quot;).toString());
 console.log($(&quot;7&quot;).pow(&quot;50&quot;).toString());</code>
-</code></pre><h3 id="result">result</h3><pre><code><code class="source-code prettyprint">&gt; -1219326311248285321124828532111263526900
+</code></pre><pre><code><code class="source-code prettyprint">&gt; -1219326311248285321124828532111263526900
 &gt; 1798465042647412146620280340569649349251249</code>
 </code></pre><h2 id="bigdecimal">BigDecimal</h2><p>floating-point math class.</p>
-<h3 id="code">code</h3><pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
+<pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
 const BigDecimal = konpeito.BigDecimal;
 const MathContext = konpeito.MathContext;
 const $ = BigDecimal.create;
 
 BigDecimal.setDefaultContext(MathContext.UNLIMITED);
 console.log($(&quot;-123456.7890&quot;).mul(&quot;987654321098765.432109876543210&quot;).toString());</code>
-</code></pre><h3 id="result">result</h3><pre><code><code class="source-code prettyprint">&gt; -121932631124828532112.4828532111263526900</code>
+</code></pre><pre><code><code class="source-code prettyprint">&gt; -121932631124828532112.4828532111263526900</code>
 </code></pre><h2 id="complex">Complex</h2><p>complex class.</p>
 <ul>
 <li>use the JavaScript standard number.</li>
@@ -153,22 +149,22 @@ console.log($(&quot;[1 2 30]&quot;).dct().toString());</code>
 <li><a href="./manual/../examples/demos/BigInteger/">BigInteger</a></li>
 <li><a href="./manual/../examples/demos/Matrix/">Matrix</a></li>
 <li><a href="./manual/../examples/demos/Random/">Random</a></li>
-</ul><h2>BigInteger</h2><p>arbitrary-precision integer class.</p><h3>code</h3><pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
+</ul><h2>BigInteger</h2><p>arbitrary-precision integer class.</p><pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
 const BigInteger = konpeito.BigInteger;
 const $ = BigInteger.create;
 
 console.log($(&quot;-1234567890&quot;).mul(&quot;987654321098765432109876543210&quot;).toString());
 console.log($(&quot;7&quot;).pow(&quot;50&quot;).toString());</code>
-</code></pre><h3>result</h3><pre><code><code class="source-code prettyprint">&gt; -1219326311248285321124828532111263526900
+</code></pre><pre><code><code class="source-code prettyprint">&gt; -1219326311248285321124828532111263526900
 &gt; 1798465042647412146620280340569649349251249</code>
-</code></pre><h2>BigDecimal</h2><p>floating-point math class.</p><h3>code</h3><pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
+</code></pre><h2>BigDecimal</h2><p>floating-point math class.</p><pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
 const BigDecimal = konpeito.BigDecimal;
 const MathContext = konpeito.MathContext;
 const $ = BigDecimal.create;
 
 BigDecimal.setDefaultContext(MathContext.UNLIMITED);
 console.log($(&quot;-123456.7890&quot;).mul(&quot;987654321098765.432109876543210&quot;).toString());</code>
-</code></pre><h3>result</h3><pre><code><code class="source-code prettyprint">&gt; -121932631124828532112.4828532111263526900</code>
+</code></pre><pre><code><code class="source-code prettyprint">&gt; -121932631124828532112.4828532111263526900</code>
 </code></pre><h2>Complex</h2><p>complex class.</p><ul>
 <li>use the JavaScript standard number.</li>
 </ul><pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;

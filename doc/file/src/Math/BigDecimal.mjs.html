@@ -13,7 +13,7 @@
 
 <header>
   <a href="./">Home</a>
-  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   
@@ -115,7 +115,6 @@ export default class BigDecimal {
 	 * &#x4EFB;&#x610F;&#x7CBE;&#x5EA6;&#x6D6E;&#x52D5;&#x5C0F;&#x6570;&#x70B9;&#x3092;&#x4F5C;&#x6210;
 	 * &#x914D;&#x5217;&#x3067;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x5834;&#x5408;&#x306F;&#x3001; BigInteger, [&#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x5024;=0], [&#x74B0;&#x5883;=default], [&#x7CBE;&#x5EA6;&#x8A2D;&#x5B9A;=default]
 	 * &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3067;&#x8A2D;&#x5B9A;&#x3059;&#x308B;&#x5834;&#x5408;&#x306F;&#x3001; integer, [scale=0], [default_context=default], [context=default]
-	 * &#x7CBE;&#x5EA6;&#x8A2D;&#x5B9A;&#x306E;&#x521D;&#x671F;&#x5024;&#x8A2D;&#x5B9A;&#x306F;&#x3001;&#x8A2D;&#x5B9A;&#x53EF;&#x80FD;&#x3068;&#x3059;&#x308B;&#x4E88;&#x5B9A;&#x3002;
 	 * @param {BigDecimal|BigInteger|number|string} number - &#x4EFB;&#x610F;&#x7CBE;&#x5EA6;&#x5B9F;&#x6570;&#x30C7;&#x30FC;&#x30BF;
 	 */
 	constructor(number) {
@@ -256,7 +255,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * &#x5F15;&#x6570;&#x304B;&#x3089;&#x4EFB;&#x610F;&#x7CBE;&#x5EA6;&#x5B9F;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#xFF08;&#x4F5C;&#x6210;&#x304C;&#x4E0D;&#x8981;&#x306E;&#x5834;&#x5408;&#x306F;new&#x3057;&#x306A;&#x3044;&#xFF09;
+	 * BigDecimal &#x3092;&#x4F5C;&#x6210;
 	 * @param {BigDecimal|BigInteger|number|string} number - &#x4EFB;&#x610F;&#x7CBE;&#x5EA6;&#x5B9F;&#x6570;&#x30C7;&#x30FC;&#x30BF;
 	 * @returns {BigDecimal}
 	 */
@@ -270,7 +269,91 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * &#x7D76;&#x5BFE;&#x5024;&#x306E;&#x6587;&#x5B57;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6570;&#x5024;&#x304B;&#x3089; BigDecimal &#x578B;&#x306B;&#x5909;&#x63DB;
+	 * @param {BigDecimal} x 
+	 * @param {number} [scale] 
+	 * @returns {BigDecimal}
+	 */
+	static valueOf(x, scale) {
+		if(arguments.length === 1) {
+			return new BigDecimal(x);
+		}
+		else {
+			return new BigDecimal([x, scale]);
+		}
+	}
+
+	/**
+	 * BigDecimal &#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * @param {BigDecimal} number 
+	 * @returns {BigDecimal}
+	 * @private
+	 */
+	static _toBigDecimal(number) {
+		if(number instanceof BigDecimal) {
+			return number;
+		}
+		else {
+			return new BigDecimal(number);
+		}
+	}
+
+	/**
+	 * BigInteger &#x3092;&#x4F5C;&#x6210;
+	 * @param {BigDecimal} number 
+	 * @returns {BigInteger}
+	 * @private
+	 */
+	static _toBigInteger(number) {
+		if(number instanceof BigInteger) {
+			return number;
+		}
+		else if(number instanceof BigDecimal) {
+			return number.toBigInteger();
+		}
+		else {
+			return new BigInteger(number);
+		}
+	}
+
+	/**
+	 * &#x5B9F;&#x6570;&#x3092;&#x4F5C;&#x6210;
+	 * @param {BigDecimal} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toFloat(number) {
+		if((typeof number === &quot;number&quot;) || (number instanceof Number)) {
+			return number;
+		}
+		else if(number instanceof BigDecimal) {
+			return number.doubleValue;
+		}
+		else {
+			return (new BigDecimal(number)).doubleValue;
+		}
+	}
+
+	/**
+	 * &#x6574;&#x6570;&#x3092;&#x4F5C;&#x6210;
+	 * @param {BigDecimal} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		if((typeof number === &quot;number&quot;) || (number instanceof Number)) {
+			return number | 0;
+		}
+		else if(number instanceof BigInteger) {
+			return number.intValue;
+		}
+		else {
+			return (new BigInteger(number)).intValue;
+		}
+	}
+
+	/**
+	 * &#x7B26;&#x53F7;&#x3092;&#x9664;&#x3044;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3092;&#x4F5C;&#x6210;
 	 * &#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x304C;&#x306A;&#x3051;&#x308C;&#x3070;&#x4F5C;&#x6210;&#x3057;&#x3001;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x304C;&#x3042;&#x308C;&#x3070;&#x305D;&#x308C;&#x3092;&#x8FD4;&#x3059;
 	 * @returns {string}
 	 */
@@ -299,7 +382,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.signum() &#x7B26;&#x53F7;&#x5024;&#xFF08;1, -1&#xFF09;&#x3001;0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;
+	 * &#x7B26;&#x53F7;&#x5024;
+	 * 1, -1, 0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;
 	 * @returns {number}
 	 */
 	signum() {
@@ -307,7 +391,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * &#x7CBE;&#x5EA6;&#xFF08;&#x4E0B;&#x4F4D;&#x304C;0&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x5236;&#x5EA6;&#x304C;&#x4F4E;&#x304F;&#x306A;&#x308B;&#xFF09;
+	 * &#x7CBE;&#x5EA6;
 	 * @returns {number} 
 	 */
 	precision() {
@@ -315,7 +399,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * &#x62E1;&#x5927;&#x3055;&#x305B;&#x306A;&#x3044;&#x5024;
+	 * &#x6307;&#x6570;&#x8868;&#x8A18;&#x90E8;&#x5206;&#x3092;&#x53D6;&#x308A;&#x9664;&#x3044;&#x305F;&#x6574;&#x6570;
 	 * @returns {BigInteger} 
 	 */
 	unscaledValue() {
@@ -323,11 +407,12 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6307;&#x6570;&#x90E8;&#x306E;&#x6841;&#x6570;&#x3067;&#x6587;&#x5B57;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-	 * @param {number} e - &#x8868;&#x793A;&#x3055;&#x305B;&#x308B;&#x6307;&#x6570;&#x90E8;
+	 * &#x79D1;&#x5B66;&#x7684;&#x8868;&#x8A18;&#x6CD5;&#x306B;&#x3088;&#x308B;&#x6587;&#x5B57;&#x5217;&#x5316;
+	 * @param {number} e_len - &#x6307;&#x6570;&#x90E8;&#x306E;&#x6841;&#x6570;
 	 * @returns {string} 
 	 */
-	toScientificNotation(e) {
+	toScientificNotation(e_len) {
+		const e		= BigDecimal._toInteger(e_len);
 		const text	= this._getUnsignedIntegerString();
 		let s		= this.scale();
 		const x		= [];
@@ -371,7 +456,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * &#x6587;&#x5B57;&#x5217;&#x5316;&#xFF08;&#x6307;&#x6570;&#x8868;&#x8A18;&#x304C;&#x4E0D;&#x8981;&#x3067;&#x3042;&#x308B;&#x5834;&#x5408;&#x306F;&#x9664;&#x304F;&#xFF09;
+	 * &#x6587;&#x5B57;&#x5217;&#x5316;
+	 * &#x6307;&#x6570;&#x304C;&#x4E0D;&#x8981;&#x306E;&#x5834;&#x5408;&#x306F;&#x6307;&#x6570;&#x8868;&#x8A18;&#x306A;&#x3057;
 	 * @returns {string} 
 	 */
 	toString() {
@@ -387,7 +473,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * &#x6587;&#x5B57;&#x5217;&#x5316;&#xFF08;&#x6307;&#x6570;&#x8868;&#x8A18;&#x3059;&#x308B;&#xFF09;
+	 * &#x6280;&#x8853;&#x8868;&#x8A18;&#x6CD5;&#x306B;&#x3088;&#x308B;&#x6587;&#x5B57;&#x5217;&#x5316;
+	 * &#x6307;&#x6570;&#x304C;&#x4E0D;&#x8981;&#x306E;&#x5834;&#x5408;&#x306F;&#x6307;&#x6570;&#x8868;&#x8A18;&#x306A;&#x3057;
 	 * @returns {string} 
 	 */
 	toEngineeringString() {
@@ -404,7 +491,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * &#x6587;&#x5B57;&#x5217;&#x5316;&#xFF08;&#x6307;&#x6570;&#x8868;&#x8A18;&#x3057;&#x306A;&#x3044;&#xFF09;
+	 * &#x6307;&#x6570;&#x8868;&#x8A18;&#x306A;&#x3057;&#x306E;&#x6587;&#x5B57;&#x5217;&#x5316;
 	 * @returns {string} 
 	 */
 	toPlainString() {
@@ -423,7 +510,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * &#x73FE;&#x5728;&#x306E;&#x7CBE;&#x5EA6;&#x3067;&#x8868;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x6700;&#x3082;&#x5C0F;&#x3055;&#x306A;&#x5024;
+	 * &#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x7CBE;&#x5EA6;&#x3067;&#x8868;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x6700;&#x3082;&#x5C0F;&#x3055;&#x306A;&#x5024;
 	 * @returns {BigDecimal} 
 	 */
 	ulp() {
@@ -431,13 +518,14 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * &#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x3092;&#x5207;&#x308A;&#x66FF;&#x3048;&#x308B;
-	 * @param {number} newScale - &#x65B0;&#x3057;&#x3044;&#x30B9;&#x30B1;&#x30FC;&#x30EB;
+	 * &#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x306E;&#x518D;&#x8A2D;&#x5B9A;
+	 * @param {number} new_scale - &#x65B0;&#x3057;&#x3044;&#x30B9;&#x30B1;&#x30FC;&#x30EB;
 	 * @param {RoundingModeEntity} [roundingMode=RoundingMode.UNNECESSARY] - &#x7CBE;&#x5EA6;&#x3092;&#x5909;&#x63DB;&#x3059;&#x308B;&#x969B;&#x306E;&#x4E38;&#x3081;&#x65B9;
 	 * @param {MathContext} [mc] - &#x5207;&#x308A;&#x66FF;&#x3048;&#x5148;&#x306E;&#x8A2D;&#x5B9A;&#xFF08;&#x3053;&#x308C;&#x306E;&#x307F;&#x5909;&#x66F4;&#x3059;&#x308B;&#x5834;&#x5408;&#x306F;&#x3001;round&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x3053;&#x3068;&#xFF09;
 	 * @returns {BigDecimal} 
 	 */
-	setScale(newScale, roundingMode=RoundingMode.UNNECESSARY, mc) {
+	setScale(new_scale, roundingMode=RoundingMode.UNNECESSARY, mc) {
+		const newScale = BigDecimal._toInteger(new_scale);
 		if(this.scale() === newScale) {
 			// scale&#x304C;&#x540C;&#x4E00;&#x306A;&#x306E;&#x3067;&#x51E6;&#x7406;&#x306E;&#x5FC5;&#x8981;&#x306A;&#x3057;
 			return(this.clone());
@@ -527,7 +615,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.abs() = abs(A)
+	 * abs(A)
 	 * @param {MathContext} [mc] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A2D;&#x5B9A;
 	 * @returns {BigDecimal} 
 	 */
@@ -538,7 +626,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.plus() = + A
+	 * +A
 	 * @param {MathContext} [mc] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A2D;&#x5B9A;
 	 * @returns {BigDecimal} 
 	 */
@@ -548,7 +636,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.negate() = - A
+	 * -A
 	 * @param {MathContext} [mc] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A2D;&#x5B9A;
 	 * @returns {BigDecimal} 
 	 */
@@ -559,14 +647,13 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.compareTo(B) &#x5024;&#x540C;&#x58EB;&#x3067;&#x6BD4;&#x8F03;&#x3059;&#x308B;
-	 * @param {Object|number|string|Array} number 
+	 * &#x5024;&#x540C;&#x58EB;&#x3092;&#x6BD4;&#x8F03;
+	 * @param {BigDecimal} number 
 	 * @returns {number} A &lt; B ? 1 : (A === B ? 0 : -1)&#xFF08;&#x203B;&#x975E;Complex&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#xFF09;
 	 */
 	compareTo(number) {
-		const val = BigDecimal.create(number);
 		const src = this;
-		const tgt = val;
+		const tgt = BigDecimal._toBigDecimal(number);
 		// &#x7C21;&#x6613;&#x8A08;&#x7B97;
 		{
 			const src_sign	= src.signum();
@@ -596,22 +683,31 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.equals(B) &#x7CBE;&#x5EA6;&#x3084;&#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x542B;&#x3081;&#x3066;&#x7B49;&#x3057;&#x3044;&#x304B;&#x3092;&#x30C6;&#x30B9;&#x30C8;&#x3059;&#x308B;
-	 * @param {Object|number|string|Array} number 
+	 * A === B
+	 * &#x7CBE;&#x5EA6;&#x3084;&#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x542B;&#x3081;&#x3066;&#x7B49;&#x3057;&#x3044;&#x304B;&#x3092;&#x30C6;&#x30B9;&#x30C8;&#x3059;&#x308B;
+	 * @param {BigDecimal} number 
 	 * @returns {boolean} A === B
 	 */
 	equals(number) {
-		const val = BigDecimal.create(number);
-		return ((this._scale === val._scale) &amp;&amp; (this.integer.equals(val.integer)));
+		if(number instanceof BigDecimal) {
+			return ((this._scale === number._scale) &amp;&amp; (this.integer.equals(number.integer)));
+		}
+		else if((typeof number === &quot;string&quot;) || (number instanceof String)) {
+			const val = BigDecimal._toBigDecimal(number);
+			return ((this._scale === val._scale) &amp;&amp; (this.integer.equals(val.integer)));
+		}
+		else {
+			return this.compareTo(number) === 0;
+		}
 	}
 
 	/**
-	 * A.min(B) = min([A, B])
-	 * @param {Object|number|string|Array} number 
+	 * min([A, B])
+	 * @param {BigDecimal} number 
 	 * @returns {BigDecimal} 
 	 */
 	min(number) {
-		const val = BigDecimal.create(number);
+		const val = BigDecimal._toBigDecimal(number);
 		if(this.compareTo(val) &lt;= 0) {
 			return this.clone();
 		}
@@ -621,12 +717,12 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.max(B) = max([A, B])
-	 * @param {Object|number|string|Array} number 
+	 * max([A, B])
+	 * @param {BigDecimal} number
 	 * @returns {BigDecimal} 
 	 */
 	max(number) {
-		const val = BigDecimal.create(number);
+		const val = BigDecimal._toBigDecimal(number);
 		if(this.compareTo(val) &gt;= 0) {
 			return this.clone();
 		}
@@ -636,40 +732,43 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.scaleByPowerOfTen(n) = A * 10^n
+	 * A * 10^floor(n)
 	 * @param {number} n 
 	 * @returns {BigDecimal} 
 	 */
 	scaleByPowerOfTen(n) {
+		const x = BigDecimal._toBigInteger(n);
 		const output = this.clone();
-		output._scale = this.scale() - n;
+		output._scale = this.scale() - x;
 		return output;
 	}
 
 	/**
-	 * A.movePointLeft(n) = A * 10^(-n)
+	 * &#x5C0F;&#x6570;&#x70B9;&#x306E;&#x4F4D;&#x7F6E;&#x3092;&#x5DE6;&#x3078;&#x79FB;&#x52D5;
 	 * @param {number} n 
 	 * @returns {BigDecimal} 
 	 */
 	movePointLeft(n) {
-		let output = this.scaleByPowerOfTen( -n );
-		output = output.setScale(Math.max(this.scale() + n, 0));
+		const x = BigDecimal._toBigInteger(n);
+		let output = this.scaleByPowerOfTen( -x );
+		output = output.setScale(Math.max(this.scale() + x, 0));
 		return output;
 	}
 
 	/**
-	 * A.movePointRight(n) = A * 10^(n)
+	 * &#x5C0F;&#x6570;&#x70B9;&#x306E;&#x4F4D;&#x7F6E;&#x3092;&#x53F3;&#x3078;&#x79FB;&#x52D5;
 	 * @param {number} n 
 	 * @returns {BigDecimal} 
 	 */
 	movePointRight(n) {
-		let output = this.scaleByPowerOfTen( n );
-		output = output.setScale(Math.max(this.scale() - n, 0));
+		const x = BigDecimal._toBigInteger(n);
+		let output = this.scaleByPowerOfTen( x );
+		output = output.setScale(Math.max(this.scale() - x, 0));
 		return output;
 	}
 
 	/**
-	 * A.stripTrailingZeros() &#x6570;&#x5B57;&#x306E;&#x53F3;&#x5074;&#x306B;&#x3042;&#x308B;0&#x3092;&#x53D6;&#x308A;&#x9664;&#x304D;&#x3001;&#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x3092;&#x8ABF;&#x6574;&#x3059;&#x308B;
+	 * &#x6570;&#x5B57;&#x306E;&#x53F3;&#x5074;&#x306B;&#x3042;&#x308B;0&#x3092;&#x53D6;&#x308A;&#x9664;&#x304D;&#x3001;&#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x3092;&#x6B63;&#x898F;&#x5316;
 	 * @returns {BigDecimal} 
 	 */
 	stripTrailingZeros() {
@@ -688,13 +787,13 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.add(B) = A + B
-	 * @param {Object|number|string|Array} number 
+	 * A + B
+	 * @param {BigDecimal} number 
 	 * @param {MathContext} [context] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A2D;&#x5B9A;&#x3001;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x8A2D;&#x5B9A;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
 	 * @returns {BigDecimal} 
 	 */
 	add(number, context) {
-		const augend = BigDecimal.create(number);
+		const augend = BigDecimal._toBigDecimal(number);
 		const mc = context ? context : augend.default_context;
 		const src			= this;
 		const tgt			= augend;
@@ -718,13 +817,13 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.subtract(B) = A - B
-	 * @param {Object|number|string|Array} number 
+	 * A - B
+	 * @param {BigDecimal} number 
 	 * @param {MathContext} [context] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A2D;&#x5B9A;&#x3001;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x8A2D;&#x5B9A;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
 	 * @returns {BigDecimal} 
 	 */
 	subtract(number, context) {
-		const subtrahend = BigDecimal.create(number);
+		const subtrahend = BigDecimal._toBigDecimal(number);
 		const mc = context ? context : subtrahend.default_context;
 		const src			= this;
 		const tgt			= subtrahend;
@@ -743,8 +842,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.sub(B) = A - B
-	 * @param {Object|number|string|Array} number 
+	 * A - B
+	 * @param {BigDecimal} number 
 	 * @param {MathContext} [context] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A2D;&#x5B9A;&#x3001;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x8A2D;&#x5B9A;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
 	 * @returns {BigDecimal} 
 	 */
@@ -753,13 +852,13 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.multiply(B) = A * B
-	 * @param {Object|number|string|Array} number 
+	 * A * B
+	 * @param {BigDecimal} number
 	 * @param {MathContext} [context] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A2D;&#x5B9A;&#x3001;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x8A2D;&#x5B9A;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
 	 * @returns {BigDecimal} 
 	 */
 	multiply(number, context) {
-		const multiplicand = BigDecimal.create(number);
+		const multiplicand = BigDecimal._toBigDecimal(number);
 		const mc = context ? context : multiplicand.default_context;
 		const src			= this;
 		const tgt			= multiplicand;
@@ -770,8 +869,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.mul(B) = A * B
-	 * @param {Object|number|string|Array} number 
+	 * A * B
+	 * @param {BigDecimal} number
 	 * @param {MathContext} [context] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A2D;&#x5B9A;&#x3001;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x8A2D;&#x5B9A;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
 	 * @returns {BigDecimal} 
 	 */
@@ -780,13 +879,13 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.divideToIntegralValue(B) = (int)(A / B)
-	 * @param {Object|number|string|Array} number 
+	 * (int)(A / B)
+	 * @param {BigDecimal} number
 	 * @param {MathContext} [context] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A2D;&#x5B9A;&#x3001;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x8A2D;&#x5B9A;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
 	 * @returns {BigDecimal} 
 	 */
 	divideToIntegralValue(number, context) {
-		const divisor = BigDecimal.create(number);
+		const divisor = BigDecimal._toBigDecimal(number);
 		const mc = context ? context : divisor.default_context;
 		const getDigit  = function( num ) {
 			let i;
@@ -857,13 +956,13 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.divideAndRemainder(B) = (int)(A / B) ... mod
-	 * @param {Object|number|string|Array} number 
+	 *  (int)(A / B) &#x3068;&#x5272;&#x308A;&#x7B97;&#x306E;&#x4F59;&#x308A;
+	 * @param {BigDecimal} number
 	 * @param {MathContext} [context] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A2D;&#x5B9A;&#x3001;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x8A2D;&#x5B9A;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
 	 * @returns {Array&lt;BigDecimal&gt;} [C = (int)(A / B), A - C * B]
 	 */
 	divideAndRemainder(number, context) {
-		const divisor = BigDecimal.create(number);
+		const divisor = BigDecimal._toBigDecimal(number);
 		const mc = context ? context : divisor.default_context;
 
 		// 1000e0		/	1e2				=	1000e-2	... 0e0
@@ -887,8 +986,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.rem(B) = A rem B
-	 * @param {Object|number|string|Array} number 
+	 * A rem B
+	 * @param {BigDecimal} number
 	 * @param {MathContext} [context] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A2D;&#x5B9A;&#x3001;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x8A2D;&#x5B9A;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
 	 * @returns {BigDecimal}
 	 */
@@ -897,8 +996,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.mod(B) = A mod B
-	 * @param {Object|number|string|Array} number 
+	 * A mod B
+	 * @param {BigDecimal} number
 	 * @param {MathContext} [context] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A2D;&#x5B9A;&#x3001;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x8A2D;&#x5B9A;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
 	 * @returns {BigDecimal}
 	 */
@@ -910,13 +1009,13 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.divide(B) = A / B
-	 * @param {Object|number|string|Array} number 
-	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B; scale, context, roundingMode &#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;
+	 * A / B
+	 * @param {BigDecimal} number
+	 * @param {{?scale: number, ?context: MathContext, ?roundingMode: RoundingModeEntity}} [type] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B; scale, context, roundingMode &#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;
 	 * @returns {BigDecimal}
 	 */
 	divide(number, type) {
-		const divisor = BigDecimal.create(number);
+		const divisor = BigDecimal._toBigDecimal(number);
 		const src			= this;
 		const tgt			= divisor;
 		let roundingMode	= null;
@@ -998,9 +1097,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.divide(B) = A / B
-	 * @param {Object|number|string|Array} number 
-	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B; scale, context, roundingMode &#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;
+	 * A / B
+	 * @param {BigDecimal} number
+	 * @param {{?scale: number, ?context: MathContext, ?roundingMode: RoundingModeEntity}} [type] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B; scale, context, roundingMode &#x3092;&#x8A2D;&#x5B9A;&#x3059;&#x308B;
 	 * @returns {BigDecimal}
 	 */
 	div(number, type) {
@@ -1008,7 +1107,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * BigInteger &#x306B;&#x5909;&#x63DB;&#x3059;&#x308B;
+	 * BigInteger &#x306B;&#x5909;&#x63DB;
 	 * @returns {BigInteger}
 	 */
 	toBigInteger() {
@@ -1017,7 +1116,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * BigInteger &#x306B;&#x5909;&#x63DB;&#x3059;&#x308B;&#x3002;
+	 * BigInteger &#x306B;&#x5909;&#x63DB;
+	 * &#x5909;&#x63DB;&#x306B;&#x5931;&#x6557;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x4F8B;&#x5916;
 	 * @returns {BigInteger}
 	 */
 	toBigIntegerExact() {
@@ -1026,7 +1126,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * int&#x578B;&#x306B;&#x5909;&#x63DB;
+	 * 32&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x306B;&#x5909;&#x63DB;
 	 * @returns {number}
 	 */
 	get intValue() {
@@ -1036,7 +1136,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * int&#x578B;&#x306B;&#x5909;&#x63DB;&#x3002;32&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x306B;&#x53CE;&#x307E;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x30A8;&#x30E9;&#x30FC;&#x3092;&#x767A;&#x751F;&#x3055;&#x305B;&#x308B;&#x3002;
+	 * 32&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x306B;&#x5909;&#x63DB;
+	 * &#x5909;&#x63DB;&#x306B;&#x5931;&#x6557;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x4F8B;&#x5916;
 	 * @returns {number}
 	 */
 	get intValueExact() {
@@ -1049,7 +1150,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 32&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x5B9F;&#x6570;&#x578B;&#x306B;&#x5909;&#x63DB;
+	 * 32&#x30D3;&#x30C3;&#x30C8;&#x5B9F;&#x6570;&#x306B;&#x5909;&#x63DB;
 	 * @returns {number}
 	 */
 	get floatValue() {
@@ -1061,7 +1162,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 64&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x5B9F;&#x6570;&#x578B;&#x306B;&#x5909;&#x63DB;
+	 * 64&#x30D3;&#x30C3;&#x30C8;&#x5B9F;&#x6570;&#x306B;&#x5909;&#x63DB;
 	 * @returns {number}
 	 */
 	get doubleValue() {
@@ -1073,15 +1174,15 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A.pow(B) = A ^ B
-	 * @param {Object|number|string|Array} number 
+	 * pow(A, B)
+	 * &#x5DE8;&#x5927;&#x306A;&#x4E57;&#x7B97;&#x3092;&#x3059;&#x308B;&#x5834;&#x5408;&#x306F;&#x4F8B;&#x5916;&#x3092;&#x767A;&#x751F;&#x3055;&#x305B;&#x308B;
+	 * @param {number} number 
 	 * @param {MathContext} [context] - &#x8A08;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A2D;&#x5B9A;&#x3001;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x8A2D;&#x5B9A;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
 	 * @returns {BigDecimal}
 	 */
 	pow(number, context) {
-		let n = BigDecimal.create(number);
+		let n = BigDecimal._toInteger(number);
 		const mc = context ? context : n.default_context;
-		n = n.intValue;
 		if(Math.abs(n) &gt; 999999999) {
 			throw &quot;ArithmeticException&quot;;
 		}
@@ -1105,21 +1206,6 @@ export default class BigDecimal {
 	}
 	
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6570;&#x5024;&#x304B;&#x3089; BigInteger &#x578B;&#x306B;&#x5909;&#x63DB;
-	 * @param {number} x 
-	 * @param {number} [scale] 
-	 * @returns {BigInteger}
-	 */
-	static valueOf(x, scale) {
-		if(!scale) {
-			return new BigDecimal(x);
-		}
-		else {
-			return new BigDecimal([x, scale]);
-		}
-	}
-
-	/**
 	 * &#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x65B0;&#x898F;&#x4F5C;&#x6210;&#x6642;&#x306B;&#x74B0;&#x5883;&#x8A2D;&#x5B9A;&#x3092;&#x5909;&#x66F4;&#x3057;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x308B;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x8A2D;&#x5B9A;
 	 * @param {MathContext} [context=MathContext.DECIMAL128]
 	 */
@@ -1138,7 +1224,6 @@ export default class BigDecimal {
 	// ----------------------
 	// &#x5B9A;&#x6570;
 	// ----------------------
-	
 	
 	/**
 	 * 0

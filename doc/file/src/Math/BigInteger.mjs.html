@@ -13,7 +13,7 @@
 
 <header>
   <a href="./">Home</a>
-  <a href="./manual/index.html" data-ice="manualHeaderLink">Manual</a>
+  
   <a href="identifiers.html">Reference</a>
   <a href="source.html">Source</a>
   
@@ -55,6 +55,11 @@
 
 import Random from &quot;../MathUtil/Random.mjs&quot;;
 
+/**
+ * &#x6307;&#x5B9A;&#x3055;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x30AF;&#x30E9;&#x30B9;
+ */
+const DEFAULT_RANDOM = new Random();
+
 class IntegerTool {
 
 	/**
@@ -68,7 +73,6 @@ class IntegerTool {
 		// v0.03 &#x51FA;&#x6765;&#x308B;&#x9650;&#x308A;&#x307E;&#x3068;&#x3081;&#x3066;n&#x9032;&#x6570;&#x5909;&#x63DB;&#x3059;&#x308B;
 		const max_num = 0x3FFFFFFF;
 		const keta = Math.floor( Math.log(max_num) / Math.log(radix) );
-		const calcradix = Math.round(Math.pow(radix, keta));
 		let x = [];
 		const y = [];
 		const len = Math.ceil(text.length / keta);
@@ -82,7 +86,7 @@ class IntegerTool {
 				x[i] = parseInt(text.substring(0, offset + keta), radix);
 			}
 		}
-		radix = calcradix;
+		const calcradix = Math.round(Math.pow(radix, keta));
 		// v0.03&#x3053;&#x3053;&#x307E;&#x3067;
 		// 2&#x3067;&#x5272;&#x3063;&#x3066;&#x3044;&#x304F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x3067;2&#x9032;&#x6570;&#x306B;&#x5909;&#x63DB;&#x3059;&#x308B;
 		while(x.length !==  0) {
@@ -90,7 +94,7 @@ class IntegerTool {
 			// &#x96A3;&#x306E;&#x6841;&#x3067;&#x305F;carry&#x306F;radix&#x9032;&#x6570;&#x3092;&#x304B;&#x3051;&#x3066;&#x6841;&#x4E0A;&#x3052;&#x3057;&#x3066;&#x308B;
 			let carry = 0;
 			for(let i = x.length - 1; i &gt;= 0; i--) {
-				const a = x[i] + carry * radix;
+				const a = x[i] + carry * calcradix;
 				x[i]  = a &gt;&gt;&gt; 1;
 				carry = a &amp; 1;
 			}
@@ -118,16 +122,17 @@ class IntegerTool {
 		if(x &gt; 0xFFFFFFFF) {
 			return IntegerTool.string_to_binary_number(x.toFixed(), 10);
 		}
+		let num = x;
 		const y = [];
-		while(x !==  0) {
-			y[y.length] = x &amp; 1;
-			x &gt;&gt;&gt;= 1;
+		while(num !==  0) {
+			y[y.length] = num &amp; 1;
+			num &gt;&gt;&gt;= 1;
 		}
-		x = [];
+		const z = [];
 		for(let i = 0; i &lt; y.length; i++) {
-			x[i &gt;&gt;&gt; 4] |= y[i] &lt;&lt; (i &amp; 0xF);
+			z[i &gt;&gt;&gt; 4] |= y[i] &lt;&lt; (i &amp; 0xF);
 		}
-		return x;
+		return z;
 	}
 
 	/**
@@ -296,7 +301,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * &#x5F15;&#x6570;&#x304B;&#x3089;&#x591A;&#x500D;&#x9577;&#x6574;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#xFF08;&#x4F5C;&#x6210;&#x304C;&#x4E0D;&#x8981;&#x306E;&#x5834;&#x5408;&#x306F;new&#x3057;&#x306A;&#x3044;&#xFF09;
+	 * BigInteger&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
 	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
@@ -310,25 +315,84 @@ export default class BigInteger {
 	}
 
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#x306E;&#x4E71;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;
-	 * @param {number} bits - &#x4F5C;&#x6210;&#x3059;&#x308B;&#x4E71;&#x6570;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x6570;
-	 * @param {Random} random - &#x4F5C;&#x6210;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;Random
+	 * BigInteger &#x3092;&#x4F5C;&#x6210;
+	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
-	static createRandomBigInteger(bits, random) {
-		if(!(random instanceof Random)) {
-			throw &quot;createRandomBigInteger&quot;;
+	static valueOf(number) {
+		return BigInteger.create(number);
+	}
+
+	/**
+	 * BigInteger &#x3092;&#x4F5C;&#x6210;
+	 * @param {BigInteger} number 
+	 * @returns {BigInteger}
+	 * @private
+	 */
+	static _toBigInteger(number) {
+		if(number instanceof BigInteger) {
+			return number;
 		}
+		else {
+			return new BigInteger(number);
+		}
+	}
+
+	/**
+	 * &#x5B9F;&#x6570;&#x3092;&#x4F5C;&#x6210;
+	 * @param {BigInteger} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toFloat(number) {
+		if((typeof number === &quot;number&quot;) || (number instanceof Number)) {
+			return number;
+		}
+		else if(number instanceof BigInteger) {
+			return number.doubleValue;
+		}
+		else {
+			return (new BigInteger(number)).doubleValue;
+		}
+	}
+
+	/**
+	 * &#x6574;&#x6570;&#x3092;&#x4F5C;&#x6210;
+	 * @param {BigInteger} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		if((typeof number === &quot;number&quot;) || (number instanceof Number)) {
+			return number | 0;
+		}
+		else if(number instanceof BigInteger) {
+			return number.intValue;
+		}
+		else {
+			return (new BigInteger(number)).intValue;
+		}
+	}
+
+	/**
+	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#x4EE5;&#x5185;&#x306E;&#x4E71;&#x6570;
+	 * @param {number} bitsize - &#x4F5C;&#x6210;&#x3059;&#x308B;&#x4E71;&#x6570;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x6570;
+	 * @param {Random} [random] - &#x4F5C;&#x6210;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;Random
+	 * @returns {BigInteger}
+	 */
+	static createRandomBigInteger(bitsize, random) {
+		const rand = (random &amp;&amp; (random instanceof Random)) ? random : DEFAULT_RANDOM;
 		const x = new BigInteger();
 		x.sign = 1;
+		const bits = BigInteger._toInteger(bitsize);
 		const size = ((bits - 1) &gt;&gt; 4) + 1;
 		let r;
 		if(bits === 0) {
-			return;
+			return BigInteger.ZERO;
 		}
 		for(let i = 0, j = 0; i &lt; size; i++) {
 			if(j === 0) {
-				r = random.nextInt(); // 32&#x30D3;&#x30C3;&#x30C8;&#x305A;&#x3064;&#x4F5C;&#x6210;&#x3059;&#x308B;
+				r = rand.nextInt(); // 32&#x30D3;&#x30C3;&#x30C8;&#x305A;&#x3064;&#x4F5C;&#x6210;&#x3059;&#x308B;
 				x.element[i] = r &amp; 0xFFFF;
 				j = 1;
 			}
@@ -348,9 +412,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#x306E;&#x7D20;&#x6570;&#x306E;&#x4E71;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;
+	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#x4EE5;&#x5185;&#x306E;&#x7D20;&#x6570;
 	 * @param {number} bits - &#x4F5C;&#x6210;&#x3059;&#x308B;&#x7D20;&#x6570;&#x306E;&#x4E71;&#x6570;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x6570;
-	 * @param {Random} random - &#x4F5C;&#x6210;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;Random
+	 * @param {Random} [random] - &#x4F5C;&#x6210;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;Random
 	 * @param {number} [certainty=100] - &#x30DF;&#x30E9;&#x30FC;&#x30E9;&#x30D3;&#x30F3;&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x56DE;&#x6570;
 	 * @returns {BigInteger}
 	 */
@@ -364,12 +428,12 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.equals(B)
+	 * A === B
 	 * @param {BigInteger} number
-	 * @returns {boolean} A === B
+	 * @returns {boolean}
 	 */
 	equals(number) {
-		const x = BigInteger.create(number);
+		const x = BigInteger._toBigInteger(number);
 		if(this.signum() !==  x.signum()) {
 			return false;
 		}
@@ -389,10 +453,7 @@ export default class BigInteger {
 	 * @param {number} [radix=10] - &#x6587;&#x5B57;&#x5217;&#x5909;&#x63DB;&#x5F8C;&#x306E;&#x9032;&#x6570;
 	 * @returns {string}
 	 */
-	toString(radix) {
-		if(arguments.length === 0) {
-			radix = 10;
-		}
+	toString(radix = 10) {
 		// int&#x578B;&#x3067;&#x6271;&#x3048;&#x308B;&#x6570;&#x5024;&#x3067; toString &#x304C;&#x53EF;&#x80FD;&#x306A;&#x306E;&#x3067;&#x3001;
 		// &#x305B;&#x3063;&#x304B;&#x304F;&#x3060;&#x304B;&#x3089;&#x3088;&#x308A;&#x5927;&#x304D;&#x306A;&#x9032;&#x6570;&#x3067;&#x8A08;&#x7B97;&#x3057;&#x3066;&#x3044;&#x3051;&#x3070;&#x3001;&#x3042;&#x3068;&#x3067;toString&#x3059;&#x308B;&#x56DE;&#x6570;&#x304C;&#x6E1B;&#x308B;&#x30C6;&#x30AF;&#x30CB;&#x30C3;&#x30AF;
 		// 2&#x9032;&#x6570;&#x3067;&#x3042;&#x308C;&#x3070;&#x3001;2^n&#x4E57;&#x3067;&#x8A08;&#x7B97;&#x3057;&#x3066;&#x3082;&#x554F;&#x984C;&#x304C;&#x306A;&#x3044; 4&#x9032;&#x6570;&#x3084;8&#x9032;&#x6570;&#x3067;&#x8A08;&#x7B97;&#x3057;&#x3066;&#x3001;2&#x9032;&#x6570;&#x306B;&#x623B;&#x305B;&#x3070;&#x5DE1;&#x56DE;&#x5C11;&#x6570;&#x306A;&#x3057;
@@ -427,11 +488,12 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 16&#x9032;&#x6570;&#x30C7;&#x30FC;&#x30BF;&#x3067;&#x8868;&#x3055;&#x308C;&#x305F;&#x5185;&#x90E8;&#x5024;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x4F4D;&#x7F6E;&#x306E;&#x5024;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;
-	 * @param {number} n - &#x4F4D;&#x7F6E;
+	 * 16&#x9032;&#x6570;&#x3054;&#x3068;&#x306E;&#x914D;&#x5217;&#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x5024;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x4F4D;&#x7F6E;&#x306E;&#x5024;
+	 * @param {number} point - &#x4F4D;&#x7F6E;
 	 * @returns {number}
 	 */
-	getShort(n) {
+	getShort(point) {
+		const n = BigInteger._toInteger(point);
 		if((n &lt; 0) || (this.element.length &lt;= n)) {
 			return 0;
 		}
@@ -439,7 +501,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 32&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x5024;&#x3068;&#x3057;&#x3066;&#x53D6;&#x5F97;&#x3059;&#x308B;&#xFF08;&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x3068;&#x6B63;&#x78BA;&#x3067;&#x306F;&#x306A;&#x3044;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#xFF09;
+	 * 32&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x5024;
+	 * &#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x306A;&#x3069;&#x3001;&#x53CE;&#x307E;&#x308A;&#x304D;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x306B;&#x6B63;&#x78BA;&#x306A;&#x6570;&#x5024;&#x306B;&#x306A;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;
 	 * @returns {number}
 	 */
 	get intValue() {
@@ -452,7 +515,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 64&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x5024;&#x3068;&#x3057;&#x3066;&#x53D6;&#x5F97;&#x3059;&#x308B;&#xFF08;&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x3068;&#x6B63;&#x78BA;&#x3067;&#x306F;&#x306A;&#x3044;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#xFF09;
+	 * 64&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x5024;
+	 * &#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x306A;&#x3069;&#x3001;&#x53CE;&#x307E;&#x308A;&#x304D;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x306B;&#x6B63;&#x78BA;&#x306A;&#x6570;&#x5024;&#x306B;&#x306A;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;
 	 * @returns {number}
 	 */
 	get longValue() {
@@ -468,7 +532,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 64&#x30D3;&#x30C3;&#x30C8;&#x5B9F;&#x6570;&#x5024;&#x3068;&#x3057;&#x3066;&#x53D6;&#x5F97;&#x3059;&#x308B;&#xFF08;&#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x3068;&#x6B63;&#x78BA;&#x3067;&#x306F;&#x306A;&#x3044;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#xFF09;
+	 * 64&#x30D3;&#x30C3;&#x30C8;&#x5B9F;&#x6570;&#x5024;
+	 * &#x6570;&#x5024;&#x304C;&#x5927;&#x304D;&#x3044;&#x306A;&#x3069;&#x3001;&#x53CE;&#x307E;&#x308A;&#x304D;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x306B;&#x6B63;&#x78BA;&#x306A;&#x6570;&#x5024;&#x306B;&#x306A;&#x3089;&#x306A;&#x3044;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;
 	 * @returns {number}
 	 */
 	get doubleValue() {
@@ -530,7 +595,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 2&#x9032;&#x6570;&#x3067;&#x8868;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x4F55;&#x30D3;&#x30C3;&#x30C8;&#x3067;&#x8868;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x308B;&#x304B;
+	 * 2&#x9032;&#x6570;&#x3067;&#x8868;&#x3057;&#x305F;&#x5834;&#x5408;&#x306E;&#x9577;&#x3055;
 	 * @returns {number}
 	 */
 	bitLength() {
@@ -548,7 +613,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 2&#x306E;&#x88DC;&#x6570;&#x8868;&#x73FE;&#x3067;&#x8868;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x3001;&#x3044;&#x304F;&#x3064;&#x30D3;&#x30C3;&#x30C8;&#x304C;&#x7ACB;&#x3064;&#x304B;
+	 * 2&#x306E;&#x88DC;&#x6570;&#x8868;&#x73FE;&#x3067;&#x8868;&#x3057;&#x305F;&#x5834;&#x5408;&#x306B;&#x7ACB;&#x3064;&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x6570;
 	 * @returns {number}
 	 */
 	bitCount() {
@@ -574,11 +639,11 @@ export default class BigInteger {
 	}
 
 	/**
-	 * &#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;&#x8868;&#x73FE;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-	 * &#x5185;&#x90E8;&#x8A08;&#x7B97;&#x7528;
-	 * @param [len] - &#x30D3;&#x30C3;&#x30C8;&#x9577;&#xFF08;&#x7701;&#x7565;&#x6642;&#x306F;&#x81EA;&#x52D5;&#x8A08;&#x7B97;&#xFF09;
+	 * &#x52A0;&#x7B97;&#x306B;&#x9069;&#x7528;&#x3067;&#x304D;&#x308B;&#x6570;&#x5024;&#xFF08;&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;&#x8868;&#x73FE;&#xFF09;
+	 * @param [bit_length] - &#x30D3;&#x30C3;&#x30C8;&#x9577;&#xFF08;&#x7701;&#x7565;&#x6642;&#x306F;&#x81EA;&#x52D5;&#x8A08;&#x7B97;&#xFF09;
+	 * @private
 	 */
-	getTwosComplement(len) {
+	getTwosComplement(bit_length) {
 		const y = this.clone();
 		if(y.sign &gt;= 0) {
 			return y;
@@ -587,9 +652,7 @@ export default class BigInteger {
 			// &#x6B63;&#x306B;&#x3059;&#x308B;
 			y.sign = 1;
 			// &#x30D3;&#x30C3;&#x30C8;&#x306E;&#x6570;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x6570;&#x3048;&#x308B;
-			if(arguments.length === 0) {
-				len = y.bitLength();
-			}
+			const len = (arguments.length !== 0) ? bit_length : y.bitLength();
 			const e = y.element;
 			// &#x30D3;&#x30C3;&#x30C8;&#x53CD;&#x8EE2;&#x5F8C;
 			for(let i = 0; i &lt; e.length; i++) {
@@ -607,12 +670,13 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._and(B) = A += B
+	 * A &amp;= B
 	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
+	 * @private
 	 */
 	_and(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		let e1 = this;
 		let e2 = val;
 		const s1  = e1.signum(), s2 = e2.signum();
@@ -642,7 +706,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.and(B) = A + B
+	 * A &amp; B
 	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
@@ -651,12 +715,13 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._or(B) = A |= B
+	 * A |= B
 	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
+	 * @private
 	 */
 	_or(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		let e1 = this;
 		let e2 = val;
 		const s1  = e1.signum(), s2 = e2.signum();
@@ -680,7 +745,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.or(B) = A | B
+	 * A | B
 	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
@@ -689,12 +754,13 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._xor(B) = A ^= B
+	 * A ^= B
 	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
+	 * @private
 	 */
 	_xor(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		let e1 = this;
 		let e2 = val;
 		const s1  = e1.signum(), s2 = e2.signum();
@@ -718,7 +784,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.xor(B) = A ^ B
+	 * A ^ B
 	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
@@ -727,15 +793,16 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._not() = !A (mutable)
+	 * A = !A
 	 * @returns {BigInteger}
+	 * @private
 	 */
 	_not() {
 		return(this._add(new BigInteger(1))._negate());
 	}
 
 	/**
-	 * A.not() = !A
+	 * !A
 	 * @returns {BigInteger}
 	 */
 	not() {
@@ -743,17 +810,18 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._andNot(B) = A &amp;= (!B)
+	 * A &amp;= (!B)
 	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
+	 * @private
 	 */
 	_andNot(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		return(this._and(val.not()));
 	}
 
 	/**
-	 * A.andNot(B) = A &amp; (!B)
+	 * A &amp; (!B)
 	 * @param {BigInteger} number 
 	 * @returns {BigInteger}
 	 */
@@ -762,10 +830,12 @@ export default class BigInteger {
 	}
 
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x9577;&#x307E;&#x3067;&#x914D;&#x5217;&#x3092;&#x62E1;&#x5F35;&#x3059;&#x308B;
-	 * @param {number} n - &#x30D3;&#x30C3;&#x30C8;&#x6570;
+	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x9577;&#x307E;&#x3067;&#x914D;&#x5217;&#x3092;&#x62E1;&#x5F35;
+	 * @param {number} bit_length - &#x30D3;&#x30C3;&#x30C8;&#x6570;
+	 * @private
 	 */
-	_memory_allocation(n) {
+	_memory_allocation(bit_length) {
+		const n = BigInteger._toInteger(bit_length);
 		const elementsize = this.element.length &lt;&lt; 4;
 		if(elementsize &lt; n) {
 			const addsize = (((n - elementsize - 1) &amp; 0xFFFFFFF0) &gt;&gt;&gt; 4) + 1;
@@ -776,7 +846,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * &#x4E0D;&#x8981;&#x306A;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x9664;&#x53BB;&#x3059;&#x308B;
+	 * &#x5185;&#x90E8;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x6B63;&#x898F;&#x5316;
+	 * @private
 	 */
 	_memory_reduction() {
 		for(let i = this.element.length - 1;i &gt;= 0;i--) {
@@ -798,7 +869,7 @@ export default class BigInteger {
 	 * @returns {BigInteger}
 	 */
 	gcd(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		// &#x975E;&#x518D;&#x5E30;
 		let x = this, y = val, z;
 		while(y.signum() !== 0) {
@@ -813,10 +884,10 @@ export default class BigInteger {
 	 * &#x62E1;&#x5F35;&#x30E6;&#x30FC;&#x30AF;&#x30EA;&#x30C3;&#x30C9;&#x4E92;&#x9664;&#x6CD5;
 	 * x = this, y = number &#x3068;&#x3057;&#x305F;&#x3068;&#x304D;&#x3001; a*x + b*y = c = gcd(x, y) &#x306E;[a, b, c]&#x3092;&#x8FD4;&#x3059;
 	 * @param {BigInteger} number 
-	 * @returns Array&lt;BigInteger&gt; BigInteger &#x304C;&#x5165;&#x3063;&#x305F;&#x914D;&#x5217;
+	 * @returns {Array&lt;BigInteger&gt;} BigInteger &#x304C;&#x5165;&#x3063;&#x305F;&#x914D;&#x5217;
 	 */
 	extgcd(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		// &#x975E;&#x518D;&#x5E30;
 		const ONE  = new BigInteger(1);
 		const ZERO = new BigInteger(0);
@@ -840,8 +911,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._abs() = A = abs(A)
+	 * A = abs(A)
 	 * @returns {BigInteger}
+	 * @private
 	 */
 	_abs() {
 		// -1 -&gt; 1, 0 -&gt; 0, 1 -&gt; 1
@@ -850,7 +922,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.abs() = abs(A)
+	 * abs(A)
 	 * @returns {BigInteger}
 	 */
 	abs() {
@@ -858,8 +930,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._negate() = A = - A
+	 * A = -A
 	 * @returns {BigInteger}
+	 * @private
 	 */
 	_negate() {
 		this.sign *= -1;
@@ -867,7 +940,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.negate() = - A
+	 * -A
 	 * @returns {BigInteger}
 	 */
 	negate() {
@@ -875,7 +948,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.signum() &#x7B26;&#x53F7;&#x5024;&#xFF08;1, -1&#xFF09;&#x3001;0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;
+	 * &#x7B26;&#x53F7;&#x5024;
+	 * 1, -1, 0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;
 	 * @returns {number}
 	 */
 	signum() {
@@ -886,12 +960,13 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.compareToAbs(B) &#x7D76;&#x5BFE;&#x5024;&#x3092;&#x3068;&#x3063;&#x305F;&#x5024;&#x540C;&#x58EB;&#x3067;&#x6BD4;&#x8F03;&#x3059;&#x308B;
+	 * &#x7D76;&#x5BFE;&#x5024;&#x3092;&#x3068;&#x3063;&#x305F;&#x5024;&#x540C;&#x58EB;&#x3067;&#x6BD4;&#x8F03;
+	 * &#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;
 	 * @param {BigInteger} number 
-	 * @returns {number} abs(A) &lt; abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)&#xFF08;&#x203B;&#x975E;Complex&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#xFF09;
+	 * @returns {number} abs(A) &lt; abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
 	 */
 	compareToAbs(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		if(this.element.length &lt; val.element.length) {
 			return -1;
 		}
@@ -908,12 +983,13 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.compareTo(B) &#x5024;&#x540C;&#x58EB;&#x3067;&#x6BD4;&#x8F03;&#x3059;&#x308B;
+	 * &#x5024;&#x540C;&#x58EB;&#x3092;&#x6BD4;&#x8F03;
+	 * &#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;
 	 * @param {BigInteger} number 
-	 * @returns {number} A &lt; B ? 1 : (A === B ? 0 : -1)&#xFF08;&#x203B;&#x975E;Complex&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#xFF09;
+	 * @returns {number} A &lt; B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		if(this.signum() !== val.signum()) {
 			if(this.sign &gt; val.sign) {
 				return 1;
@@ -929,12 +1005,12 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.max(B) = max([A, B])
+	 * max([A, B])
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	max(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		if(this.compareTo(val) &gt;= 0) {
 			return this.clone();
 		}
@@ -944,12 +1020,12 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.min(B) = min([A, B])
+	 * min([A, B])
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	min(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		if(this.compareTo(val) &gt;= 0) {
 			return val.clone();
 		}
@@ -959,11 +1035,13 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._shift() = A &lt;&lt;= n
-	 * @param {number} n
+	 * A &lt;&lt;= n
+	 * @param {number} shift_length
 	 * @returns {BigInteger}
+	 * @private
 	 */
-	_shift(n) {
+	_shift(shift_length) {
+		let n = BigInteger._toInteger(shift_length);
 		if(n === 0) {
 			return this;
 		}
@@ -1050,7 +1128,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.shift() = A &lt;&lt; n
+	 * A &lt;&lt; n
 	 * @param {number} n
 	 * @returns {BigInteger}
 	 */
@@ -1059,7 +1137,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.shiftLeft() = A &lt;&lt; n
+	 * A &lt;&lt; n
 	 * @param {number} n
 	 * @returns {BigInteger}
 	 */
@@ -1068,7 +1146,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.shiftRight() = A &gt;&gt; n
+	 * A &gt;&gt; n
 	 * @param {number} n
 	 * @returns {BigInteger}
 	 */
@@ -1077,12 +1155,13 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._add(B) = A += B
+	 * A += B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
+	 * @private
 	 */
 	_add(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		const o1 = this;
 		const o2 = val;
 		let x1 = o1.element;
@@ -1137,7 +1216,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.add(B) = A + B
+	 * A + B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
@@ -1146,12 +1225,13 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._subtract(B) = A -= B
+	 * A -= B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
+	 * @private
 	 */
 	_subtract(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		const sign = val.sign;
 		const out  = this._add(val._negate());
 		val.sign = sign;
@@ -1159,7 +1239,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.subtract(B) = A - B
+	 * A - B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
@@ -1168,7 +1248,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.sub(B) = A - B
+	 * A - B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
@@ -1177,9 +1257,10 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._multiply(B) = A *= B
+	 * A *= B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
+	 * @private
 	 */
 	_multiply(number) {
 		const x = this.multiply(number);
@@ -1189,12 +1270,12 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.number(B) = A * B
+	 * A * B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
 	multiply(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		const out  = new BigInteger();
 		const buff = new BigInteger();
 		const o1 = this;
@@ -1251,7 +1332,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.mul(B) = A * B
+	 * A * B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
@@ -1260,12 +1341,13 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._divideAndRemainder(B) = A /= B
+	 * A /= B
 	 * @param {BigInteger} number
 	 * @returns {Array&lt;BigInteger&gt;} [C = floor(A / B), A - C * B]
+	 * @private
 	 */
 	_divideAndRemainder(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		const out = [];
 		if(val.signum() === 0) {
 			out[0] = 1 / 0;
@@ -1308,7 +1390,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.divideAndRemainder(B) = A / B
+	 * A / B
 	 * @param {BigInteger} number
 	 * @returns {Array&lt;BigInteger&gt;} [C = floor(A / B), A - C * B]
 	 */
@@ -1317,16 +1399,17 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._divide(B) = A /= B
+	 * A /= B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger} floor(A / B)
+	 * @private
 	 */
 	_divide(number) {
 		return this._divideAndRemainder(number)[0];
 	}
 
 	/**
-	 * A.divide(B) = A / B
+	 * A / B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger} floor(A / B)
 	 */
@@ -1335,7 +1418,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.div(B) = A / B
+	 * A / B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger} floor(A / B)
 	 */
@@ -1344,16 +1427,17 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._remainder(B) = A rem B
+	 * A %= B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
+	 * @private
 	 */
 	_remainder(number) {
 		return this._divideAndRemainder(number)[1];
 	}
 
 	/**
-	 * A.remainder(B) = A rem B
+	 * A % B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
@@ -1362,7 +1446,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.rem(B) = A rem B
+	 * A % B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
@@ -1371,12 +1455,13 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A._mod(B) = A _mod B
+	 * A = A mod B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
+	 * @private
 	 */
 	_mod(number) {
-		const val = BigInteger.create(number);
+		const val = BigInteger._toBigInteger(number);
 		if(val.signum() &lt; 0) {
 			return null;
 		}
@@ -1393,7 +1478,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.mod(B) = A mod B
+	 * A mod B
 	 * @param {BigInteger} number
 	 * @returns {BigInteger}
 	 */
@@ -1402,51 +1487,58 @@ export default class BigInteger {
 	}
 
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x7ACB;&#x3066;&#x308B; (mutable)
-	 * @param {number} n 
+	 * &#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x7ACB;&#x3066;&#x308B;
+	 * @param {number} bit
 	 * @returns {BigInteger}
+	 * @private
 	 */
-	_setBit(n) {
+	_setBit(bit) {
+		const n = BigInteger._toInteger(bit);
 		this._memory_allocation(n + 1);
 		this.element[n &gt;&gt;&gt; 4] |= 1 &lt;&lt; (n &amp; 0xF);
 		return this;
 	}
 
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x7ACB;&#x3066;&#x308B;
-	 * @param {number} n 
+	 * &#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x7ACB;&#x3066;&#x308B;
+	 * @param {number} bit
 	 * @returns {BigInteger}
 	 */
-	setBit(n) {
+	setBit(bit) {
+		const n = BigInteger._toInteger(bit);
 		return this.clone()._setBit(n);
 	}
 
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x53CD;&#x8EE2;&#x3055;&#x305B;&#x308B; (mutable)
-	 * @param {number} n 
+	 * &#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x53CD;&#x8EE2;&#x3055;&#x305B;&#x308B;
+	 * @param {number} bit
 	 * @returns {BigInteger}
+	 * @private
 	 */
-	_flipBit(n) {
+	_flipBit(bit) {
+		const n = BigInteger._toInteger(bit);
 		this._memory_allocation(n + 1);
 		this.element[n &gt;&gt;&gt; 4] ^= 1 &lt;&lt; (n &amp; 0xF);
 		return this;
 	}
 
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x53CD;&#x8EE2;&#x3055;&#x305B;&#x308B;
-	 * @param {number} n 
+	 * &#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x53CD;&#x8EE2;&#x3055;&#x305B;&#x308B;
+	 * @param {number} bit
 	 * @returns {BigInteger}
 	 */
-	flipBit(n) {
+	flipBit(bit) {
+		const n = BigInteger._toInteger(bit);
 		return this.clone()._flipBit(n);
 	}
 
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x843D;&#x3068;&#x3059;
-	 * @param {number} n 
+	 * &#x7279;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x4E0B;&#x3052;&#x308B;
+	 * @param {number} bit 
 	 * @returns {BigInteger}
 	 */
-	clearBit(n) {
+	clearBit(bit) {
+		const n = BigInteger._toInteger(bit);
 		const y = this.clone();
 		y.element[n &gt;&gt;&gt; 4] &amp;= ~(1 &lt;&lt; (n &amp; 0xF));
 		y._memory_reduction();
@@ -1454,16 +1546,17 @@ export default class BigInteger {
 	}
 
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x304C;&#x7ACB;&#x3063;&#x3066;&#x3044;&#x308B;&#x304B;
-	 * @param {number} n 
+	 * &#x6307;&#x5B9A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x5224;&#x5B9A;
+	 * @param {number} bit
 	 * @returns {boolean}
 	 */
-	testBit(n) {
+	testBit(bit) {
+		const n = BigInteger._toInteger(bit);
 		return ((this.element[n &gt;&gt;&gt; 4] &gt;&gt;&gt; (n &amp; 0xF)) &amp; 1) !== 0;
 	}
 
 	/**
-	 * A.pow(B) = A^B
+	 * pow(A, B)
 	 * @param {BigInteger} exponent
 	 * @returns {BigInteger}
 	 */
@@ -1482,13 +1575,13 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.modPow(B, m) = A^B mod m
+	 * A^B mod m
 	 * @param {BigInteger} exponent
 	 * @param {BigInteger} m 
 	 * @returns {BigInteger}
 	 */
 	modPow(exponent, m) {
-		const m_ = BigInteger.create(m);
+		const m_ = BigInteger._toBigInteger(m);
 		let x = new BigInteger(this);
 		let y = new BigInteger(1);
 		const e = new BigInteger(exponent);
@@ -1503,12 +1596,12 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.modInverse(m) = A^(-1) mod m
+	 * A^(-1) mod m
 	 * @param {BigInteger} m
 	 * @returns {BigInteger}
 	 */
 	modInverse(m) {
-		const m_ = BigInteger.create(m);
+		const m_ = BigInteger._toBigInteger(m);
 		const y = this.extgcd(m);
 		const ONE  = new BigInteger(1);
 		if(y[2].compareTo(ONE) !== 0) {
@@ -1519,8 +1612,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.isProbablePrime(certainty) &#x8907;&#x7D20;&#x6570;&#x304B;&#x30DF;&#x30E9;&#x30FC;&#x30E9;&#x30D3;&#x30F3;&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;&#x3067;&#x5224;&#x5B9A;&#x3059;&#x308B;
-	 * @param {number} certainty - &#x30DF;&#x30E9;&#x30FC;&#x30E9;&#x30D3;&#x30F3;&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x56DE;&#x6570;
+	 * &#x30DF;&#x30E9;&#x30FC;&#x30E9;&#x30D3;&#x30F3;&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;&#x306B;&#x3088;&#x308B;&#x8907;&#x7D20;&#x5224;&#x5B9A;
+	 * @param {number} [certainty=100] - &#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;&#x306E;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x56DE;&#x6570;
 	 * @returns {boolean}
 	 */
 	isProbablePrime(certainty) {
@@ -1533,12 +1626,9 @@ export default class BigInteger {
 		else if( ((e[0] &amp; 1) === 0) || (certainty &lt;= 0) ) {
 			return false;
 		}
-		if(typeof Random === &quot;undefined&quot;) {
-			return false;
-		}
 		// &#x30DF;&#x30E9;&#x30FC;&#x30E9;&#x30D3;&#x30F3;&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;
 		// &#x304B;&#x306A;&#x308A;&#x51E6;&#x7406;&#x304C;&#x91CD;&#x305F;&#x3044;&#x3067;&#x3059;&#x3002;&#x307E;&#x3042;&#x304A;&#x904A;&#x3073;&#x7A0B;&#x5EA6;&#x306B;&#x4F7F;&#x7528;&#x3068;&#x3044;&#x3046;&#x611F;&#x3058;&#x3067;&#x3002;
-		certainty	= certainty &gt;&gt; 1;
+		const loop	= certainty ? (BigInteger._toInteger(certainty) &gt;&gt; 1) : 50;
 		const ZERO	= new BigInteger(0);
 		const ONE	= new BigInteger(1);
 		const n		= this;
@@ -1546,20 +1636,19 @@ export default class BigInteger {
 		const n_1	= n.subtract(ONE);
 		const s 	= n_1.getLowestSetBit();
 		const d 	= n_1.shift(-s);
-		const random = new Random();
 		let a;
 		let isComposite;
-		for(let i = 0; i &lt; certainty; i++ ) {
+		for(let i = 0; i &lt; loop; i++ ) {
 			//[ 1, n - 1] &#x306E;&#x7BC4;&#x56F2;&#x304B;&#x3089; a &#x3092;&#x9078;&#x629E;
 			do {
-				a = BigInteger.createRandomBigInteger(LEN, random);
+				a = BigInteger.createRandomBigInteger(LEN);
 			} while(( a.compareTo(ZERO) === 0 )||( a.compareTo(n) !== -1 ));
 			// a^d != 1 mod n
 			a = a.modPow(d, n);
 			if( a.compareTo(ONE) === 0 ) {
 				continue;
 			}
-			// x ^ 4 % 2 = ((x ^ 2 % 2) ^ 2 % 2) &#x306E;&#x3088;&#x3046;&#x306B;&#x5206;&#x89E3;&#x3057;&#x3066;&#x304A;&#x304F;
+			// x ^ 4 % 2 = ((x ^ 2 % 2) ^ 2 % 2) &#x306E;&#x3088;&#x3046;&#x306B;&#x5206;&#x89E3;
 			isComposite = true;
 			for(let j = 0; j &lt;= s; j++) {
 				if(a.compareTo(n_1) === 0) {
@@ -1578,7 +1667,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A.nextProbablePrime() &#x6B21;&#x306E;&#x7D20;&#x6570;&#x3092;&#x6C42;&#x3081;&#x308B;
+	 * &#x6B21;&#x306E;&#x7D20;&#x6570;
 	 * @returns {BigInteger}
 	 */
 	nextProbablePrime() {
@@ -1590,15 +1679,6 @@ export default class BigInteger {
 			}
 		}
 		return x;
-	}
-	
-	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6570;&#x5024;&#x304B;&#x3089; BigInteger &#x578B;&#x306B;&#x5909;&#x63DB;
-	 * @param {number} x 
-	 * @returns {BigInteger}
-	 */
-	static valueOf(x) {
-		return new BigInteger(x);
 	}
 
 	// ----------------------

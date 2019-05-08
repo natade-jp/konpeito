@@ -12,15 +12,14 @@ This library has 4 functions.
 - Matrix
 
 Please check the console and main.mjs.
-- [BigDecimal](../examples/demos/BigDecimal/)
-- [BigInteger](../examples/demos/BigInteger/)
-- [Matrix](../examples/demos/Matrix/)
-- [Random](../examples/demos/Random/)
+- [BigDecimal](./examples/demos/BigDecimal/)
+- [BigInteger](./examples/demos/BigInteger/)
+- [Matrix](./examples/demos/Matrix/)
+- [Random](./examples/demos/Random/)
 
 ## BigInteger
 arbitrary-precision integer class.
 
-### code
 ```
 import konpeito from "konpeito.mjs";
 const BigInteger = konpeito.BigInteger;
@@ -29,17 +28,14 @@ const $ = BigInteger.create;
 console.log($("-1234567890").mul("987654321098765432109876543210").toString());
 console.log($("7").pow("50").toString());
 ```
-
-### result
 ```
 > -1219326311248285321124828532111263526900
 > 1798465042647412146620280340569649349251249
 ```
 
-## BigDecimal ##
+## BigDecimal
 floating-point math class.
 
-### code
 ```
 import konpeito from "konpeito.mjs";
 const BigDecimal = konpeito.BigDecimal;
@@ -49,13 +45,11 @@ const $ = BigDecimal.create;
 BigDecimal.setDefaultContext(MathContext.UNLIMITED);
 console.log($("-123456.7890").mul("987654321098765.432109876543210").toString());
 ```
-
-### result
 ```
 > -121932631124828532112.4828532111263526900
 ```
 
-## Complex ##
+## Complex
 complex class.
 - use the JavaScript standard number.
 
@@ -70,7 +64,7 @@ console.log($("3 + 4i").pow("2 + 8j").toString());
 > -0.0083837 + 0.0124424i
 ```
 
-## Matrix ##
+## Matrix
 complex matrix class.
 - use the JavaScript standard number.
 - Some methods do not support complex arithmetic.
