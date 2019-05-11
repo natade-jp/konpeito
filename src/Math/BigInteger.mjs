@@ -11,10 +11,13 @@
 import Random from "../MathUtil/Random.mjs";
 
 /**
- * 指定されなかった場合に使用するランダムクラス
+ * 乱数用クラスを指定しなかった場合に使用するデフォルト乱数クラス
  */
 const DEFAULT_RANDOM = new Random();
 
+/**
+ * BigInteger 内で使用する関数群
+ */
 class IntegerTool {
 
 	/**
@@ -138,13 +141,13 @@ class IntegerTool {
 		let buff = x.match(/^[-+]+/);
 
 		let element     = [];
-		let sign        = 1;
+		let _sign        = 1;
 
 		if(buff !== null) {
 			buff = buff[0];
 			x = x.substring(buff.length, x.length);
 			if(buff.indexOf("-") !== -1) {
-				sign = -1;
+				_sign = -1;
 			}
 		}
 		if(radix) {
@@ -165,12 +168,12 @@ class IntegerTool {
 		// "0"の場合がある為
 		if((element.length === 1)&&(element[0] === 0)) {
 			element = [];
-			sign = 0;
+			_sign = 0;
 		}
 
 		return {
 			element : element,
-			sign : sign
+			_sign : _sign
 		};
 	}
 }
@@ -178,7 +181,7 @@ class IntegerTool {
 // 内部では1変数内の中の16ビットごとに管理
 // 2変数で16ビット*16ビットで32ビットを表す
 // this.element	...	16ビットごとに管理
-// this.sign	...	負なら-1、正なら1、ゼロなら0
+// this._sign	...	負なら-1、正なら1、ゼロなら0
 //
 // 本クラスはイミュータブルです。
 // 内部の「_」から始まるメソッドは内部計算用で非公開です。またミュータブルです。
@@ -209,24 +212,24 @@ export default class BigInteger {
 		 * @private
 		 * @type {Array<number>}
 		 */
-		this.sign        = 0;
+		this._sign        = 0;
 
 		if(arguments.length === 0) {
 			this.element     = [];
-			this.sign        = 0;
+			this._sign        = 0;
 		}
 		else if(arguments.length === 1) {
-			this.sign = 1;
+			this._sign = 1;
 			if(number instanceof BigInteger) {
 				for(let i = 0; i < number.element.length; i++) {
 					this.element[i] = number.element[i];
 				}
-				this.sign = arguments[0].sign;
+				this._sign = arguments[0]._sign;
 			}
 			else if((typeof number === "number") || (number instanceof Number)) {
 				let x = number;
 				if(x < 0) {
-					this.sign = -1;
+					this._sign = -1;
 					x = -x;
 				}
 				this.element = IntegerTool.number_to_binary_number(x);
@@ -234,17 +237,17 @@ export default class BigInteger {
 			else if((typeof number === "string") || (number instanceof String)) {
 				const x = IntegerTool.ToBigIntegerFromString(number);
 				this.element = x.element;
-				this.sign = x.sign;
+				this._sign = x._sign;
 			}
 			else if(number instanceof Array) {
 				const x = IntegerTool.ToBigIntegerFromString(number[0], number[1]);
 				this.element = x.element;
-				this.sign = x.sign;
+				this._sign = x._sign;
 			}
 			else if(number instanceof Object && number.toString) {
 				const x = IntegerTool.ToBigIntegerFromString(number.toString());
 				this.element = x.element;
-				this.sign = x.sign;
+				this._sign = x._sign;
 			}
 			else {
 				throw "BigInteger Unsupported argument " + number;
@@ -338,7 +341,7 @@ export default class BigInteger {
 	static createRandomBigInteger(bitsize, random) {
 		const rand = (random && (random instanceof Random)) ? random : DEFAULT_RANDOM;
 		const x = new BigInteger();
-		x.sign = 1;
+		x._sign = 1;
 		const bits = BigInteger._toInteger(bitsize);
 		const size = ((bits - 1) >> 4) + 1;
 		let r;
@@ -463,7 +466,7 @@ export default class BigInteger {
 	get intValue() {
 		let x = this.getShort(0) + (this.getShort(1) << 16);
 		x &= 0xFFFFFFFF;
-		if((x > 0)&&(this.sign < 0)) {
+		if((x > 0)&&(this._sign < 0)) {
 			x = -x;
 		}
 		return x;
@@ -480,7 +483,7 @@ export default class BigInteger {
 			x *= 65536;
 			x += this.getShort(i);
 		}
-		if(this.sign < 0) {
+		if(this._sign < 0) {
 			x = -x;
 		}
 		return x;
@@ -502,7 +505,7 @@ export default class BigInteger {
 	clone() {
 		const y = new BigInteger();
 		y.element = this.element.slice(0);
-		y.sign    = this.sign;
+		y._sign    = this._sign;
 		return y;
 	}
 
@@ -511,7 +514,7 @@ export default class BigInteger {
 	 * @returns {boolean}
 	 */
 	isNegative() {
-		return this.sign < 0;
+		return this._sign < 0;
 	}
 
 	/**
@@ -520,7 +523,7 @@ export default class BigInteger {
 	 */
 	isZero() {
 		this._memory_reduction();
-		return this.sign === 0;
+		return this._sign === 0;
 	}
 	
 	/**
@@ -528,7 +531,7 @@ export default class BigInteger {
 	 * @returns {boolean}
 	 */
 	isPositive() {
-		return this.sign > 0;
+		return this._sign > 0;
 	}
 
 	/**
@@ -573,7 +576,7 @@ export default class BigInteger {
 	 */
 	bitCount() {
 		let target;
-		if(this.sign >= 0) {
+		if(this._sign >= 0) {
 			target = this;
 		}
 		else {
@@ -600,12 +603,12 @@ export default class BigInteger {
 	 */
 	getTwosComplement(bit_length) {
 		const y = this.clone();
-		if(y.sign >= 0) {
+		if(y._sign >= 0) {
 			return y;
 		}
 		else {
 			// 正にする
-			y.sign = 1;
+			y._sign = 1;
 			// ビットの数が存在しない場合は数える
 			const len = (arguments.length !== 0) ? bit_length : y.bitLength();
 			const e = y.element;
@@ -648,13 +651,13 @@ export default class BigInteger {
 		}
 		if(this.bitLength() === 0) {
 			this.element = [];
-			this.sign = 0;
+			this._sign = 0;
 		}
 		if((s1 === 1)||(s2 === 1)) {
-			this.sign = 1;
+			this._sign = 1;
 		}
 		// 出力が負の場合は、2の補数
-		else if(this.sign === -1) {
+		else if(this._sign === -1) {
 			this.element = this.getTwosComplement(len).element;
 		}
 		return this;
@@ -691,9 +694,9 @@ export default class BigInteger {
 			const x2 = (i >= e2.length) ? 0 : e2[i];
 			this.element[i] = x1 | x2;
 		}
-		this.sign = ((s1 === -1)||(s2 === -1)) ? -1 : Math.max(s1, s2);
+		this._sign = ((s1 === -1)||(s2 === -1)) ? -1 : Math.max(s1, s2);
 		// 出力が負の場合は、2の補数
-		if(this.sign === -1) {
+		if(this._sign === -1) {
 			this.element = this.getTwosComplement(len).element;
 		}
 		return this;
@@ -730,9 +733,9 @@ export default class BigInteger {
 			const x2 = (i >= e2.length) ? 0 : e2[i];
 			this.element[i] = x1 ^ x2;
 		}
-		this.sign = ((s1 !== 0)&&(s1 !== s2)) ? -1 : 1;
+		this._sign = ((s1 !== 0)&&(s1 !== s2)) ? -1 : 1;
 		// 出力が負の場合は、2の補数
-		if(this.sign === -1) {
+		if(this._sign === -1) {
 			this.element = this.getTwosComplement(len).element;
 		}
 		return this;
@@ -813,7 +816,7 @@ export default class BigInteger {
 				return;
 			}
 		}
-		this.sign = 0;
+		this._sign = 0;
 		this.element = [];
 	}
 
@@ -872,7 +875,7 @@ export default class BigInteger {
 	 */
 	_abs() {
 		// -1 -> 1, 0 -> 0, 1 -> 1
-		this.sign *= this.sign;
+		this._sign *= this._sign;
 		return this;
 	}
 
@@ -890,7 +893,7 @@ export default class BigInteger {
 	 * @private
 	 */
 	_negate() {
-		this.sign *= -1;
+		this._sign *= -1;
 		return this;
 	}
 
@@ -911,7 +914,16 @@ export default class BigInteger {
 		if(this.element.length === 0) {
 			return 0;
 		}
-		return this.sign;
+		return this._sign;
+	}
+
+	/**
+	 * 符号値
+	 * 1, -1, 0の場合は0を返す
+	 * @returns {number}
+	 */
+	sign() {
+		return this.signum();
 	}
 
 	/**
@@ -946,7 +958,7 @@ export default class BigInteger {
 	compareTo(number) {
 		const val = BigInteger._toBigInteger(number);
 		if(this.signum() !== val.signum()) {
-			if(this.sign > val.sign) {
+			if(this._sign > val._sign) {
 				return 1;
 			}
 			else {
@@ -956,7 +968,7 @@ export default class BigInteger {
 		else if(this.signum() === 0) {
 			return 0;
 		}
-		return this.compareToAbs(val) * this.sign;
+		return this.compareToAbs(val) * this._sign;
 	}
 
 	/**
@@ -1121,7 +1133,7 @@ export default class BigInteger {
 		const o2 = val;
 		let x1 = o1.element;
 		let x2 = o2.element;
-		if(o1.sign === o2.sign) {
+		if(o1._sign === o2._sign) {
 			//足し算
 			this._memory_allocation(x2.length << 4);
 			let carry = 0;
@@ -1144,11 +1156,11 @@ export default class BigInteger {
 			const compare = o1.compareToAbs(o2);
 			if(compare === 0) {
 				this.element = [];
-				this.sign = 1;
+				this._sign = 1;
 				return this;
 			}
 			else if(compare === -1) {
-				this.sign = o2.sign;
+				this._sign = o2._sign;
 				const swap = x1;
 				x1 = x2.slice(0);
 				x2 = swap;
@@ -1187,9 +1199,9 @@ export default class BigInteger {
 	 */
 	_subtract(number) {
 		const val = BigInteger._toBigInteger(number);
-		const sign = val.sign;
+		const _sign = val._sign;
 		const out  = this._add(val._negate());
-		val.sign = sign;
+		val._sign = _sign;
 		return out;
 	}
 
@@ -1220,7 +1232,7 @@ export default class BigInteger {
 	_multiply(number) {
 		const x = this.multiply(number);
 		this.element = x.element;
-		this.sign    = x.sign;
+		this._sign    = x._sign;
 		return this;
 	}
 
@@ -1282,7 +1294,7 @@ export default class BigInteger {
 				y[y.length] = carry;
 			}
 		}
-		out.sign = this.sign * val.sign;
+		out._sign = this._sign * val._sign;
 		return out;
 	}
 
@@ -1317,7 +1329,7 @@ export default class BigInteger {
 		}
 		else if(compare === 0) {
 			out[0] = new BigInteger(1);
-			out[0].sign = this.sign * val.sign;
+			out[0]._sign = this._sign * val._sign;
 			out[1] = new BigInteger(0);
 			return out;
 		}
@@ -1338,9 +1350,9 @@ export default class BigInteger {
 			y._shift(1);
 		}
 		out[0] = y;
-		out[0].sign = this.sign * val.sign;
+		out[0]._sign = this._sign * val._sign;
 		out[1] = x1;
-		out[1].sign = this.sign;
+		out[1]._sign = this._sign;
 		return out;
 	}
 
@@ -1674,6 +1686,9 @@ export default class BigInteger {
 
 }
 
+/**
+ * 内部で使用する定数値
+ */
 const DEFINE = {
 	ONE : new BigInteger(1),
 	TWO : new BigInteger(2),

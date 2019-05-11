@@ -34,9 +34,12 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mathutil">MathUtil</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mathutil">MathUtil</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Signal.mjs~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
 </ul>
 </div>
@@ -53,423 +56,10 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import Random from &quot;../MathUtil/Random.mjs&quot;;
+import LinearAlgebra from &quot;../MathUtil/LinearAlgebra.mjs&quot;;
+import Statistics from &quot;../MathUtil/Statistics.mjs&quot;;
 import Signal from &quot;../MathUtil/Signal.mjs&quot;;
 import Complex from &quot;./Complex.mjs&quot;;
-
-/**
- * &#x5185;&#x90E8;&#x306E;&#x884C;&#x5217;&#x306E;&#x8A08;&#x7B97;&#x7528;
- */
-class MatrixTool {
-
-	/**
-	 * &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x5316;&#x3059;&#x308B;&#xFF08;&#x5B9F;&#x6570;&#x8A08;&#x7B97;&#x5C02;&#x7528;&#xFF09;
-	 * @param {Matrix} M
-	 * @returns {Object&lt;string, Matrix&gt;}
-	 */
-	static tridiagonalize(M) {
-
-		const A = Matrix.create(M);
-		const a = A.getNumberMatrixArray();
-		const tolerance = 1.0e-10;
-		
-		/**
-		 * &#x30D9;&#x30AF;&#x30C8;&#x30EB;x1&#x3068;&#x30D9;&#x30AF;&#x30C8;&#x30EB;x2&#x306E;&#x5185;&#x7A4D;&#x3092;&#x3068;&#x308B;
-		 * @param {Array&lt;number&gt;} x1
-		 * @param {Array&lt;number&gt;} x2
-		 * @param {number} [index_offset=0] - &#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;(&#x3053;&#x306E;&#x5024;&#x304B;&#x3089;&#x884C;&#x3046;)
-		 * @param {number} [index_max=x1.length] - &#x6700;&#x5927;(&#x3053;&#x306E;&#x5024;&#x306F;&#x542B;&#x3081;&#x306A;&#x3044;)
-		 * @returns {number} 
-		 */
-		const innerproduct = function(x1, x2, index_offset, index_max) {
-			let y = 0;
-			const ioffset = index_offset ? index_offset : 0;
-			const imax = index_max ? index_max : x1.length;
-			for(let i = ioffset; i &lt; imax; i++) {
-				y += x1[i] * x2[i];
-			}
-			return y;
-		};
-
-		/**
-		 * &#x30CF;&#x30A6;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x30FC;&#x5909;&#x63DB;
-		 * @param {Array&lt;number&gt;} x - &#x30CF;&#x30A6;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x30FC;&#x5909;&#x63DB;&#x3057;&#x305F;&#x3044;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
-		 * @param {number} [index_offset=0] - &#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;(&#x3053;&#x306E;&#x5024;&#x304B;&#x3089;&#x884C;&#x3046;)
-		 * @param {number} [index_max=x.length] - &#x6700;&#x5927;(&#x3053;&#x306E;&#x5024;&#x306F;&#x542B;&#x3081;&#x306A;&#x3044;)
-		 * @returns {Object&lt;string, Matrix&gt;} 
-		 */
-		const house = function(x, index_offset, index_max) {
-			const ioffset = index_offset ? index_offset : 0;
-			const imax = index_max ? index_max : x.length;
-			// x&#x306E;&#x5185;&#x7A4D;&#x306E;&#x5E73;&#x65B9;&#x6839;&#xFF08;&#x30CE;&#x30EB;&#x30E0;&#xFF09;&#x3092;&#x8A08;&#x7B97;
-			let y1 = Math.sqrt(innerproduct(x, x, ioffset, imax));
-			const v = [];
-			if(Math.abs(y1) &gt;= tolerance) {
-				if(x[ioffset] &lt; 0) {
-					y1 = - y1;
-				}
-				let t;
-				for(let i = ioffset, j = 0; i &lt; imax; i++, j++) {
-					if(i === ioffset) {
-						v[j] = x[i] + y1;
-						t = 1.0 / Math.sqrt(v[j] * y1);
-						v[j] = v[j] * t;
-					}
-					else {
-						v[j] = x[i] * t;
-					}
-				}
-			}
-			return {
-				y1: - y1,	// &#x93E1;&#x50CF;&#x306E;1&#x756A;&#x76EE;&#x306E;&#x8981;&#x7D20;(y2,y3,...&#x306F;0)
-				v : v		// &#x76F4;&#x884C;&#x3059;&#x308B;&#x5358;&#x4F4D;&#x30D9;&#x30AF;&#x30C8;&#x30EB; vT*v = 2
-			};
-		};
-
-		const n = a.length;
-		const d = []; // &#x5BFE;&#x89D2;&#x6210;&#x5206;
-		const e = []; // &#x96A3;&#x306E;&#x6210;&#x5206;
-
-		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;&#x6674;&#x5F66; (1991). C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;.
-		// 3&#x91CD;&#x5BFE;&#x89D2;&#x5316;&#x306E;&#x6210;&#x5206;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;
-		{
-			for(let k = 0; k &lt; n - 2; k++) {
-				const v = a[k];
-				d[k] = v[k];
-				{
-					const H = house(v, k + 1, n);
-					e[k] = H.y1;
-					for(let i = 0; i &lt; H.v.length; i++) {
-						v[k + 1 + i] = H.v[i];
-					}
-				}
-				if(Math.abs(e[k]) &lt; tolerance) {
-					continue;
-				}
-				for(let i = k + 1; i &lt; n; i++) {
-					let s = 0;
-					for(let j = k + 1; j &lt; i; j++) {
-						s += a[j][i] * v[j];
-					}
-					for(let j = i; j &lt; n; j++) {
-						s += a[i][j] * v[j];
-					}
-					d[i] = s;
-				}
-				const t = innerproduct(v, d, k + 1, n) / 2.0;
-				for(let i = n - 1; i &gt; k; i--) {
-					const p = v[i];
-					const q = d[i] - (t * p);
-					d[i] = q;
-					for(let j = i; j &lt; n; j++) {
-						const r = p * d[j] + q * v[j];
-						a[i][j] = a[i][j] - r;
-					}
-				}
-			}
-			if(n &gt;= 2) {
-				d[n - 2] = a[n - 2][n - 2];
-				e[n - 2] = a[n - 2][n - 1];
-			}
-			if(n &gt;= 1) {
-				d[n - 1] = a[n - 1][n - 1];
-			}
-		}
-
-		//&#x5909;&#x63DB;P&#x884C;&#x5217;&#x3092;&#x6C42;&#x3081;&#x308B;
-		for(let k = n - 1; k &gt;= 0; k--) {
-			const v = a[k];
-			if(k &lt; n - 2) {
-				for(let i = k + 1; i &lt; n; i++) {
-					const w = a[i];
-					const t = innerproduct(v, w, k + 1, n);
-					for(let j = k + 1; j &lt; n; j++) {
-						w[j] -= t * v[j];
-					}
-				}
-			}
-			for(let i = 0; i &lt; n; i++) {
-				v[i] = 0.0;
-			}
-			v[k] = 1.0;
-		}
-
-		// d &#x3068; e &#x306E;&#x914D;&#x5217;&#x3092;&#x4F7F;&#x3063;&#x3066;&#x3001;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-		const H = Matrix.createMatrixDoEachCalculation(function(row, col) {
-			if(row === col) {
-				return new Complex(d[row]);
-			}
-			else if(Math.abs(row - col) === 1) {
-				return new Complex(e[((row + col) * 0.5) | 0]);
-			}
-			else {
-				return Complex.ZERO;
-			}
-		}, n, n);
-
-		return {
-			P : (new Matrix(a)).T(),
-			H : H
-		};
-	}
-
-	/**
-	 * &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x56FA;&#x6709;&#x5024;&#x5206;&#x89E3;&#x3059;&#x308B;&#xFF08;&#x5B9F;&#x6570;&#x8A08;&#x7B97;&#x5C02;&#x7528;&#xFF09;
-	 * @param {Matrix} M - &#x5BFE;&#x79F0;&#x884C;&#x5217;
-	 * @returns {Object&lt;string, Matrix&gt;}
-	 */
-	static eig(M) {
-		
-		const A = Matrix.create(M);
-		
-		// QR&#x6CD5;&#x306B;&#x3088;&#x308A;&#x56FA;&#x6709;&#x5024;&#x3092;&#x6C42;&#x3081;&#x308B;
-		let is_error = false;
-		const tolerance = 1.0e-10;
-		const PH = A.tridiagonalize();
-		const a = PH.P.getNumberMatrixArray();
-		const h = PH.H.getNumberMatrixArray();
-		const n = A.row_length;
-
-		// &#x6210;&#x5206;&#x306E;&#x62BD;&#x51FA;
-		const d = []; // &#x5BFE;&#x89D2;&#x6210;&#x5206;
-		const e = []; // &#x96A3;&#x306E;&#x6210;&#x5206;
-		for(let i = 0; i &lt; n; i++) {
-			d[i] = h[i][i];
-			e[i] = (i === 0) ? 0.0 : h[i][i - 1];
-		}
-
-		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;&#x6674;&#x5F66; (1991). C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;.
-		const MAX_ITER = 100;
-		for(let h = n - 1; h &gt; 0; h--) {
-			let j = h;
-			for(j = h;j &gt;= 1; j--) {
-				if(Math.abs(e[j]) &lt;= (tolerance * (Math.abs(d[j - 1]) + Math.abs(d[j])))) {
-					break;
-				}
-			}
-			if(j == h) {
-				continue;
-			}
-			let iter = 0;
-			while(true) {
-				iter++;
-				if(iter &gt; MAX_ITER) {
-					is_error = true;
-					break;
-				}
-				let w = (d[h - 1] - d[h]) / 2.0;
-				let t = e[h] * e[h];
-				let s = Math.sqrt(w * w + t);
-				if(w &lt; 0) {
-					s = - s;
-				}
-				let x = d[j] - d[h] + (t / (w + s));
-				let y = e[j + 1];
-				for(let k = j; k &lt; h; k++) {
-					let c, s;
-					if(Math.abs(x) &gt;= Math.abs(y)) {
-						t = - y / x;
-						c = 1.0 / Math.sqrt(t * t + 1);
-						s = t * c;
-					}
-					else {
-						t = - x / y;
-						s = 1.0 / Math.sqrt(t * t + 1);
-						c = t * s;
-					}
-					w = d[k] - d[k + 1];
-					t = (w * s + 2.0 * c * e[k + 1]) * s;
-					d[k] -= t;
-					d[k + 1] += t;
-					if(k &gt; j) {
-						e[k] = c * e[k] - s * y;
-					}
-					e[k + 1] += s * (c * w - 2.0 * s * e[k + 1]);
-					for(let i = 0; i &lt; n; i++) {
-						x = a[i][k];
-						y = a[i][k + 1];
-						a[i][k    ] = c * x - s * y;
-						a[i][k + 1] = s * x + c * y;
-					}
-					if(k &lt; h - 1) {
-						x = e[k + 1];
-						y = -s * e[k + 2];
-						e[k + 2] *= c;
-					}
-				}
-				if(Math.abs(e[h]) &lt;= tolerance * (Math.abs(d[h - 1]) + Math.abs(d[h]))) {
-					break;
-				}
-			}
-			if(is_error) {
-				break;
-			}
-		}
-
-		// &#x30BD;&#x30FC;&#x30C8;
-		const vd_sort = function(V, d) {
-			const len = d.length;
-			const sortdata = [];
-			for(let i = 0; i &lt; len; i++) {
-				sortdata[i] = {
-					sigma : d[i],
-					index : i
-				};
-			}
-			const compare = function(a, b){
-				if(a === b) {
-					return 0;
-				}
-				return (a &lt; b ? -1 : 1);
-			};
-			sortdata.sort(compare);
-			const MOVE = Matrix.zeros(len);
-			const ND = Matrix.zeros(len);
-			for(let i = 0; i &lt; len; i++) {
-				ND.matrix_array[i][i] = new Complex(sortdata[i].sigma);
-				MOVE.matrix_array[i][sortdata[i].index] = Complex.ONE;
-			}
-			return {
-				V : V.mul(MOVE),
-				D : ND
-			};
-		};
-		const VD = vd_sort(new Matrix(a), d);
-		return VD;
-	}
-
-	
-	/**
-	 * &#x884C;&#x5217;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x898B;&#x7ACB;&#x3066;&#x3001;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x5316;&#x3057;&#x3001;Q&#x3068;R&#x306E;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x308B;
-	 * @param {Matrix} M_ - &#x6B63;&#x65B9;&#x884C;&#x5217;
-	 * @returns {Object&lt;string, Matrix&gt;}
-	 */
-	static _gram_schmidt_orthonormalization(M_) {
-		// &#x30B0;&#x30E9;&#x30E0;&#x30FB;&#x30B7;&#x30E5;&#x30DF;&#x30C3;&#x30C8;&#x306E;&#x6B63;&#x898F;&#x76F4;&#x4EA4;&#x5316;&#x6CD5;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
-		// &#x53C2;&#x8003;&#xFF1A;Gilbert Strang (2007). Computational Science and Engineering.
-
-		const M = Matrix.create(M_);
-		const len = M.column_length;
-		const A = M.matrix_array;
-		const Q_Matrix = Matrix.zeros(len);
-		const R_Matrix = Matrix.zeros(len);
-		const Q = Q_Matrix.matrix_array;
-		const R = R_Matrix.matrix_array;
-		const non_orthogonalized = [];
-		const a = new Array(len);
-		
-		for(let col = 0; col &lt; len; col++) {
-			// i&#x5217;&#x76EE;&#x3092;&#x62BD;&#x51FA;
-			for(let row = 0; row &lt; len; row++) {
-				a[row] = A[row][col];
-			}
-			// &#x76F4;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x4F5C;&#x6210;
-			if(col &gt; 0) {
-				// R&#x306E;i&#x5217;&#x76EE;&#x3092;&#x5185;&#x7A4D;&#x3067;&#x8A08;&#x7B97;&#x3059;&#x308B;
-				for(let j = 0; j &lt; col; j++) {
-					for(let k = 0; k &lt; len; k++) {
-						R[j][col] = R[j][col].add(A[k][col].dot(Q[k][j]));
-					}
-				}
-				for(let j = 0; j &lt; col; j++) {
-					for(let k = 0; k &lt; len; k++) {
-						a[k] = a[k].sub(R[j][col].mul(Q[k][j]));
-					}
-				}
-			}
-			{
-				// &#x6B63;&#x898F;&#x5316;&#x3068;&#x8DDD;&#x96E2;&#x3092;1&#x306B;&#x3059;&#x308B;
-				for(let j = 0; j &lt; len; j++) {
-					R[col][col] = R[col][col].add(a[j].mul(a[j]));
-				}
-				R[col][col] = R[col][col].sqrt();
-				if(R[col][col].isZero(1e-10)) {
-					// &#x76F4;&#x884C;&#x5316;&#x304C;&#x4E0D;&#x53EF;&#x80FD;&#x3060;&#x3063;&#x305F;&#x5217;&#x306E;&#x756A;&#x53F7;&#x3092;&#x30E1;&#x30E2;&#x3057;&#x3066;&#x3001;&#x305D;&#x306E;&#x5217;&#x306F;&#x30BC;&#x30ED;&#x3067;&#x57CB;&#x3081;&#x308B;
-					non_orthogonalized.push(col);
-					for(let j = 0;j &lt; len;j++) {
-						Q[j][col] = Complex.ZERO;
-					}
-				}
-				else {
-					// &#x3053;&#x3053;&#x3067; R[i][i] === 0 &#x306E;&#x5834;&#x5408;&#x3001;&#x76F4;&#x884C;&#x3055;&#x305B;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;a&#x306F;0&#x3067;&#x3042;&#x308A;&#x3001;
-					// &#x30E9;&#x30F3;&#x30AF;&#x843D;&#x3061;&#x3057;&#x3066;&#x304A;&#x308A;&#x3001;&#x8A08;&#x7B97;&#x4E0D;&#x53EF;&#x80FD;&#x3067;&#x3042;&#x308B;&#x3002;
-					// 0&#x5272;&#x308A;&#x3057;&#x305F;&#x5024;&#x3092;&#x3001;j&#x5217;&#x76EE;&#x306E;Q&#x306B;&#x8A18;&#x9332;&#x3057;&#x3066;&#x3044;&#x304F;&#x304C;Inf&#x3068;&#x306A;&#x308B;&#x3002;
-					for(let j = 0;j &lt; len;j++) {
-						Q[j][col] = a[j].div(R[col][col]);
-					}
-				}
-			}
-		}
-		return {
-			Q : Q_Matrix,
-			R : R_Matrix,
-			non_orthogonalized : non_orthogonalized
-		};
-	}
-	
-	/**
-	 * &#x884C;&#x5217;&#x306E;&#x5168;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x3001;&#x76F4;&#x884C;&#x3057;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-	 * @param {Matrix} M_
-	 * @param {number} [epsilon=1.0e-10] - &#x8AA4;&#x5DEE;
-	 * @returns {Matrix} &#x76F4;&#x884C;&#x3057;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x304C;&#x306A;&#x3051;&#x308C;&#x3070;NULL&#x3092;&#x8FD4;&#x3059;
-	 */
-	static _createOrthogonalVector(M_, epsilon) {
-		const M = new Matrix(M_);
-		const column_length = M.column_length;
-		const m = M.matrix_array;
-		const tolerance = epsilon ? epsilon : 1.0e-10;
-		// &#x6B63;&#x5247;&#x884C;&#x5217;&#x3092;&#x306A;&#x3059;&#x5834;&#x5408;&#x306B;&#x554F;&#x984C;&#x3068;&#x306A;&#x308B;&#x884C;&#x756A;&#x53F7;&#x3092;&#x53D6;&#x5F97;
-		const not_regular_rows = M._get_linear_dependence_vector(tolerance);
-		// &#x4E0D;&#x8981;&#x306A;&#x884C;&#x3092;&#x524A;&#x9664;&#x3059;&#x308B;
-		{
-			// not_regular_rows&#x306F;&#x6607;&#x9806;&#x30EA;&#x30B9;&#x30C8;&#x306A;&#x306E;&#x3067;&#x3001;&#x5F8C;&#x308D;&#x304B;&#x3089;&#x6D88;&#x3057;&#x3066;&#x3044;&#x304F;
-			for(let i = not_regular_rows.length - 1; i &gt;= 0; i--) {
-				m.splice(not_regular_rows[i], 1);
-				M.row_length--;
-			}
-		}
-		// &#x8FFD;&#x52A0;&#x3067;&#x304D;&#x308B;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x6570;
-		const add_vectors = column_length - m.length;
-		if(add_vectors &lt;= 0) {
-			return null;
-		}
-		// &#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#xFF08;seed&#x5024;&#x306F;&#x6BCE;&#x56DE;&#x540C;&#x4E00;&#x3068;&#x3059;&#x308B;&#xFF09;
-		const noise = new Random(0);
-		let orthogonal_matrix = null;
-		for(let i = 0; i &lt; 100; i++) {
-			// &#x76F4;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x4F5C;&#x308B;&#x305F;&#x3081;&#x306B;&#x3001;&#x3044;&#x3063;&#x305F;&#x3093;&#x884C;&#x3068;&#x5217;&#x3092;&#x4EA4;&#x63DB;&#x3059;&#x308B;
-			// &#x3053;&#x308C;&#x306F;&#x3001;&#x30B0;&#x30E9;&#x30E0;&#x30FB;&#x30B7;&#x30E5;&#x30DF;&#x30C3;&#x30C8;&#x306E;&#x6B63;&#x898F;&#x76F4;&#x4EA4;&#x5316;&#x6CD5;&#x304C;&#x5217;&#x3054;&#x3068;&#x306B;&#x884C;&#x3046;&#x624B;&#x6CD5;&#x306E;&#x305F;&#x3081;&#x3002;
-			const M2 = M.T();
-			// &#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-			const R = Matrix.createMatrixDoEachCalculation(function() {
-				return new Complex(noise.nextGaussian());
-			}, M2.row_length, add_vectors);
-			// &#x5217;&#x306B;&#x8FFD;&#x52A0;&#x3059;&#x308B;
-			M2._concat_left(R);
-			// &#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-			orthogonal_matrix = MatrixTool._gram_schmidt_orthonormalization(M2);
-			// &#x6B63;&#x3057;&#x304F;&#x4F5C;&#x6210;&#x3067;&#x304D;&#x3066;&#x3044;&#x305F;&#x3089;&#x5B8C;&#x4E86;
-			if(orthogonal_matrix.non_orthogonalized.length === 0) {
-				break;
-			}
-		}
-		if(orthogonal_matrix.non_orthogonalized.length !== 0) {
-			// &#x666E;&#x901A;&#x306F;&#x4F5C;&#x6210;&#x3067;&#x304D;&#x306A;&#x3044;&#x3053;&#x3068;&#x306F;&#x306A;&#x3044;&#x304C;&#x30FB;&#x30FB;&#x30FB;
-			console.log(&quot;miss&quot;);
-			return null;
-		}
-		// &#x4F5C;&#x6210;&#x3057;&#x305F;&#x5217;&#x3092;&#x5207;&#x308A;&#x51FA;&#x3059;
-		const y = new Array(add_vectors);
-		const q = orthogonal_matrix.Q.matrix_array;
-		for(let row = 0; row &lt; add_vectors; row++) {
-			y[row] = new Array(column_length);
-			for(let col = 0; col &lt; column_length; col++) {
-				y[row][col] = q[col][column_length - add_vectors + row];
-			}
-		}
-		return new Matrix(y);
-	}
-}
 
 /**
  * &#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x7528;&#x306E;&#x95A2;&#x6570;&#x7FA4;
@@ -862,7 +452,102 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x8907;&#x88FD;
+	 * Matrix &#x3092;&#x4F5C;&#x6210;
+	 * @param {Object|number|string|Array} number 
+	 * @returns {Matrix}
+	 */
+	static create(number) {
+		if((arguments.length === 1) &amp;&amp; (number instanceof Matrix)) {
+			return number;
+		}
+		else {
+			return new Matrix(number);
+		}
+	}
+	
+	/**
+	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6570;&#x5024;&#x304B;&#x3089; Matrix &#x578B;&#x306B;&#x5909;&#x63DB;
+	 * @param {Matrix} number
+	 * @returns {Matrix}
+	 */
+	static valueOf(number) {
+		return Matrix.valueOf(number);
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;
+	 * @param {Matrix} number 
+	 * @returns {Matrix}
+	 * @private
+	 */
+	static _toMatrix(number) {
+		if(number instanceof Matrix) {
+			return number;
+		}
+		else {
+			return new Matrix(number);
+		}
+	}
+
+	/**
+	 * &#x8907;&#x7D20;&#x6570;&#x3092;&#x4F5C;&#x6210;
+	 * @param {Matrix} number 
+	 * @returns {Complex}
+	 * @private
+	 */
+	static _toComplex(number) {
+		if(number instanceof Complex) {
+			return number;
+		}
+		const M = Matrix._toMatrix(number);
+		if(M.isScalar()) {
+			return M.scalar;
+		}
+		else {
+			throw &quot;not scalar.&quot;;
+		}
+	}
+
+	/**
+	 * &#x5B9F;&#x6570;&#x3092;&#x4F5C;&#x6210;
+	 * @param {Matrix} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toFloat(number) {
+		if((typeof number === &quot;number&quot;) || (number instanceof Number)) {
+			return number;
+		}
+		const x = Matrix._toComplex(number);
+		if(x.isReal()) {
+			return (new Complex(number)).real;
+		}
+		else {
+			throw &quot;not support complex numbers.&quot;;
+		}
+	}
+
+	/**
+	 * &#x6574;&#x6570;&#x3092;&#x4F5C;&#x6210;
+	 * @param {Matrix} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		return Matrix._toFloat(number) | 0;
+	}
+
+	/**
+	 * &#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3092;&#x524A;&#x9664;
+	 */
+	_clearCash() {
+		if(this.string_cash) {
+			delete this.string_cash;
+		}
+	}
+
+	/**
+	 * &#x30C7;&#x30A3;&#x30FC;&#x30D7;&#x30B3;&#x30D4;&#x30FC;
 	 * @returns {Matrix}
 	 */
 	clone() {
@@ -968,14 +653,14 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.equals(B) = A === B
+	 * A === B
 	 * @param {Matrix} number
 	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
 	 * @returns {boolean} A === B
 	 */
 	equals(number, epsilon) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		if((M1.row_length !== M2.row_length) || (M1.column_length !== M2.column_length)) {
 			return false;
 		}
@@ -995,8 +680,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x69CB;&#x6210;&#x3059;&#x308B;&#x8907;&#x7D20;&#x6570;&#x306E;&#x5B9F;&#x6570;&#x306E;&#x307F;&#x3092;&#x62BD;&#x51FA;&#x3057;&#x3001;JavaScript&#x3067;&#x6271;&#x3048;&#x308B;&#x914D;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-	 * @returns {Array} JavaScript&#x3067;&#x6271;&#x3048;&#x308B;&#x5B9F;&#x6570;&#x306E;&#x914D;&#x5217;
+	 * &#x884C;&#x5217;&#x3092;&#x69CB;&#x6210;&#x3059;&#x308B;&#x8907;&#x7D20;&#x6570;&#x306E;&#x5B9F;&#x90E8;&#x306E;&#x914D;&#x5217;
+	 * @returns {Array&lt;Array&lt;number&gt;&gt;}
 	 */
 	getNumberMatrixArray() {
 		const y = new Array(this.row_length);
@@ -1010,8 +695,8 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x69CB;&#x6210;&#x3059;&#x308B;Complex&#x578B;&#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x914D;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-	 * @returns {Array} &#x884C;&#x5217;&#x306E;Complex&#x914D;&#x5217;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;
+	 * &#x884C;&#x5217;&#x3092;&#x69CB;&#x6210;&#x3059;&#x308B;&#x8907;&#x7D20;&#x6570;&#x306E;Complex&#x578B;&#x306E;&#x914D;&#x5217;
+	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;}
 	 */
 	getComplexMatrixArray() {
 		const y = new Array(this.row_length);
@@ -1025,33 +710,11 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x4EFB;&#x610F;&#x306E;&#x5F15;&#x6570;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;&#xFF08;&#x5F15;&#x6570;&#x306B;&#x3088;&#x3063;&#x3066;&#x306F;&#x884C;&#x5217;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x65B0;&#x898F;&#x4F5C;&#x6210;&#x3059;&#x308B;&#xFF09;
-	 * @param {Matrix} number 
-	 * @returns {Matrix}
-	 */
-	static create(number) {
-		if((arguments.length === 1) &amp;&amp; (number instanceof Matrix)) {
-			return number;
-		}
-		else {
-			return new Matrix(number);
-		}
-	}
-	
-	/**
-	 * &#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3092;&#x524A;&#x9664;&#x3059;&#x308B;
-	 */
-	_clearCash() {
-		if(this.string_cash) {
-			delete this.string_cash;
-		}
-	}
-
-	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x5168;&#x3066;&#x306E;&#x5024;&#x306B;&#x51E6;&#x7406;&#x3092;&#x52A0;&#x3048;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
-	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * &#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x5185;&#x306E;&#x5168;&#x8981;&#x7D20;&#x306B;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
+	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
 	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(num, row, col)
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @private
 	 */
 	_each(eachfunc) {
 		let isclearcash = false;
@@ -1081,7 +744,16 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x5404;&#x5024;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x521D;&#x671F;&#x5316;&#x3092;&#x884C;&#x3063;&#x305F;&#x884C;&#x5217;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3092;&#x65B0;&#x898F;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * &#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x5185;&#x306E;&#x5168;&#x8981;&#x7D20;&#x306B;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
+	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(num, row, col)
+	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 */
+	cloneMatrixDoEachCalculation(eachfunc) {
+		return this.clone()._each(eachfunc);
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x5404;&#x5024;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x521D;&#x671F;&#x5316;&#x3092;&#x884C;&#x3063;&#x305F;Matrix&#x3092;&#x4F5C;&#x6210;
 	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(row, col)
 	 * @param {number} dimension - &#x6B21;&#x5143;&#x6570;
 	 * @param {number} [column_length=dimension] - &#x5217;&#x6570;
@@ -1091,8 +763,8 @@ export default class Matrix {
 		if((arguments.length === 0) || (arguments.length &gt; 3)) {
 			throw &quot;IllegalArgumentException&quot;;
 		}
-		const y_row_length = dimension;
-		const y_column_length = column_length ? column_length : dimension;
+		const y_row_length = Matrix._toInteger(dimension);
+		const y_column_length = column_length ? Matrix._toInteger(column_length) : y_row_length;
 		const y = new Array(y_row_length);
 		for(let row = 0; row &lt; y_row_length; row++) {
 			y[row] = new Array(y_column_length);
@@ -1101,14 +773,8 @@ export default class Matrix {
 				if(ret === undefined) {
 					y[row][col] = Complex.ZERO;
 				}
-				else if(ret instanceof Complex) {
-					y[row][col] = ret;
-				}
-				else if(ret instanceof Matrix) {
-					y[row][col] = ret.scalar;
-				}
 				else {
-					y[row][col] = new Complex(ret);
+					y[row][col] = Matrix._toComplex(ret);
 				}
 			}
 		}
@@ -1116,16 +782,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x672C;&#x884C;&#x5217;&#x5185;&#x90E8;&#x306E;&#x5168;&#x3066;&#x306E;&#x5024;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x51E6;&#x7406;&#x3092;&#x52A0;&#x3048;&#x308B;
-	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(num, row, col)
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
-	 */
-	cloneMatrixDoEachCalculation(eachfunc) {
-		return this.clone()._each(eachfunc);
-	}
-
-	/**
-	 * &#x5217;&#x512A;&#x5148;&#x3067;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x4F55;&#x304B;&#x51E6;&#x7406;&#x3092;&#x884C;&#x3044;&#x3001;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+	 * &#x884C;&#x5217;&#x306E;&#x5404;&#x5217;&#x53CA;&#x3073;&#x884C;&#xFF08;&#x5217;&#x512A;&#x5148;&#xFF09;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x307F;&#x306A;&#x3057;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
 	 * @param {function(array: Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
 	 */
@@ -1158,7 +815,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x3001;&#x884C;&#x3068;&#x5217;&#x306B;&#x540C;&#x4E00;&#x306E;&#x51E6;&#x7406;&#x3092;&#x884C;&#x3044;&#x3001;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
+	 * &#x884C;&#x5217;&#x306E;&#x884C;&#x3068;&#x5217;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x307F;&#x306A;&#x3057;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
+	 * &#x5148;&#x306B;&#x884C;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;&#x306B;&#x5BFE;&#x3057;&#x3001;&#x5217;&#x3054;&#x3068;&#x306B;&#x3055;&#x3089;&#x306B;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;&#x3059;&#x308B;
 	 * @param {function(array: Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
 	 */
@@ -1193,10 +851,11 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#xFF08;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#xFF09;&#x5185;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x7B87;&#x6240;&#x306E;&#x5024;&#x3092;Complex&#x578B;&#x3067;&#x8FD4;&#x3059;&#x3002;
+	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x7B87;&#x6240;&#x306E;&#x5024;
 	 * @param {Matrix} arg1 - &#x4F4D;&#x7F6E;&#xFF0F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x5834;&#x5408;&#x306F;&#x4F55;&#x756A;&#x76EE;&#x306E;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x304B;
 	 * @param {Matrix} [arg2] - &#x5217;&#x756A;&#x53F7;&#xFF08;&#x884C;&#x756A;&#x53F7;&#x3068;&#x5217;&#x756A;&#x53F7;&#x3067;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x5834;&#x5408;&#xFF08;&#x4EFB;&#x610F;&#xFF09;&#xFF09;
 	 * @returns {Complex} 
+	 * @todo 1&#x3064;&#x3057;&#x304B;&#x6307;&#x5B9A;&#x3067;&#x304D;&#x306A;&#x3044;&#x306E;&#x3067;&#x8907;&#x6570;&#x6307;&#x5B9A;&#x3067;&#x304D;&#x308B;&#x3082;&#x306E;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x305F;&#x3044;
 	 */
 	getComplex(arg1, arg2) {
 		let arg1_data = null;
@@ -1272,7 +931,7 @@ export default class Matrix {
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 	
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x6700;&#x521D;&#x306E;&#x8981;&#x7D20;&#x306E;&#x6574;&#x6570;&#x5024;&#x3002;&#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x5024;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;&#x3068;&#x304D;&#x306A;&#x3069;&#x3092;&#x60F3;&#x5B9A;&#x3002;
+	 * &#x884C;&#x5217;&#x306E;&#x6700;&#x521D;&#x306E;&#x8981;&#x7D20;&#x306E;&#x6574;&#x6570;&#x5024;
 	 * @returns {number}
 	 */
 	get intValue() {
@@ -1280,7 +939,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x6700;&#x521D;&#x306E;&#x8981;&#x7D20;&#x306E;&#x5B9F;&#x6570;&#x5024;&#x3002;&#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x5024;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;&#x3068;&#x304D;&#x306A;&#x3069;&#x3092;&#x60F3;&#x5B9A;&#x3002;
+	 * &#x884C;&#x5217;&#x306E;&#x6700;&#x521D;&#x306E;&#x8981;&#x7D20;&#x306E;&#x5B9F;&#x6570;&#x5024;
 	 * @returns {number}
 	 */
 	get doubleValue() {
@@ -1288,7 +947,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x6700;&#x521D;&#x306E;&#x8981;&#x7D20;&#x3002;&#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x5024;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;&#x3068;&#x304D;&#x306A;&#x3069;&#x3092;&#x60F3;&#x5B9A;&#x3002;
+	 * &#x884C;&#x5217;&#x306E;&#x6700;&#x521D;&#x306E;&#x8981;&#x7D20;
 	 * @returns {Complex}
 	 */
 	get scalar() {
@@ -1296,7 +955,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x6700;&#x3082;&#x5927;&#x304D;&#x3044;&#x884C;&#x6570;&#x3001;&#x5217;&#x6570;&#x3092;&#x8FD4;&#x3059;
+	 * &#x884C;&#x6570;&#x53CA;&#x3073;&#x5217;&#x6570;&#x306E;&#x6700;&#x5927;&#x5024;
 	 * @returns {number}
 	 */
 	get length() {
@@ -1308,36 +967,7 @@ export default class Matrix {
 	 * @returns {number}
 	 */
 	get norm1() {
-		const y = this.matrix_array;
-		// &#x884C;&#x30CE;&#x30EB;&#x30E0;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;
-		if(this.isRow()) {
-			let sum = 0.0;
-			for(let col = 0; col &lt; this.column_length; col++) {
-				sum += y[0][col].norm;
-			}
-			return sum;
-		}
-		// &#x5217;&#x30CE;&#x30EB;&#x30E0;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;
-		else if(this.isColumn()) {
-			let sum = 0.0;
-			for(let row = 0; row &lt; this.row_length; row++) {
-				sum = y[row][0].norm;
-			}
-			return sum;
-		}
-		// &#x5217;&#x306E;&#x548C;&#x306E;&#x6700;&#x5927;&#x5024;
-		let max = 0;
-		// &#x5217;&#x3092;&#x56FA;&#x5B9A;&#x3057;&#x3066;&#x884C;&#x306E;&#x548C;&#x3092;&#x8A08;&#x7B97;
-		for(let col = 0; col &lt; this.column_length; col++) {
-			let sum = 0;
-			for(let row = 0; row &lt; this.row_length; row++) {
-				sum += y[row][col].norm;
-			}
-			if(max &lt; sum) {
-				max = sum;
-			}
-		}
-		return max;
+		return LinearAlgebra.norm(this, 1);
 	}
 	
 	/**
@@ -1345,41 +975,21 @@ export default class Matrix {
 	 * @returns {number}
 	 */
 	get norm2() {
-		const y = this.matrix_array;
-		// &#x884C;&#x30CE;&#x30EB;&#x30E0;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;
-		if(this.isRow()) {
-			let sum = 0.0;
-			for(let col = 0; col &lt; this.column_length; col++) {
-				sum += y[0][col].square().real;
-			}
-			return Math.sqrt(sum);
-		}
-		// &#x5217;&#x30CE;&#x30EB;&#x30E0;&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;
-		else if(this.isColumn()) {
-			let sum = 0.0;
-			for(let row = 0; row &lt; this.row_length; row++) {
-				sum = y[row][0].square().real;
-			}
-			return Math.sqrt(sum);
-		}
-		return this.svd().S.diag().max().scalar.real;
+		return LinearAlgebra.norm(this, 2);
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x306E;p&#x30CE;&#x30EB;&#x30E0;
+	 * @param {number} [p=2]
+	 * @returns {number}
+	 */
+	norm(p) {
+		return LinearAlgebra.norm(this, p);
 	}
 
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 	// &#x884C;&#x5217;&#x306E;&#x4F5C;&#x6210;&#x95A2;&#x4FC2;
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
-	
-	/**
-	 * &#x5358;&#x4F4D;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;
-	 * @param {number} dimension - &#x6B21;&#x5143;&#x6570;
-	 * @param {number} [column_length] - &#x5217;&#x6570;
-	 * @returns {Matrix}
-	 */
-	static eye(dimension, column_length) {
-		return Matrix.createMatrixDoEachCalculation(function(row, col) {
-			return row === col ? Complex.ONE : Complex.ZERO;
-		}, dimension, column_length);
-	}
 	
 	/**
 	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6570;&#x5024;&#x3067;&#x521D;&#x671F;&#x5316;
@@ -1401,13 +1011,7 @@ export default class Matrix {
 			}, dimension, column_length);
 		}
 		else {
-			let x = 0;
-			if((number instanceof Matrix) &amp;&amp; (number.isScalar())) {
-				x = number.scalar;
-			}
-			else {
-				x = Complex.create(number);
-			}
+			const x = Matrix._toComplex(number);
 			return Matrix.createMatrixDoEachCalculation(function() {
 				return x;
 			}, dimension, column_length);
@@ -1415,7 +1019,19 @@ export default class Matrix {
 	}
 
 	/**
-	 * 0&#x3067;&#x521D;&#x671F;&#x5316;
+	 * &#x5358;&#x4F4D;&#x884C;&#x5217;&#x3092;&#x751F;&#x6210;
+	 * @param {number} dimension - &#x6B21;&#x5143;&#x6570;
+	 * @param {number} [column_length] - &#x5217;&#x6570;
+	 * @returns {Matrix}
+	 */
+	static eye(dimension, column_length) {
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return row === col ? Complex.ONE : Complex.ZERO;
+		}, dimension, column_length);
+	}
+	
+	/**
+	 * &#x96F6;&#x884C;&#x5217;&#x3092;&#x751F;&#x6210;
 	 * @param {number} dimension - &#x6B21;&#x5143;&#x6570;
 	 * @param {number} [column_length] - &#x5217;&#x6570;
 	 * @returns {Matrix}
@@ -1428,7 +1044,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 1&#x3067;&#x521D;&#x671F;&#x5316;
+	 * 1&#x3067;&#x69CB;&#x6210;&#x3057;&#x305F;&#x884C;&#x5217;&#x3092;&#x751F;&#x6210;
 	 * @param {number} dimension - &#x6B21;&#x5143;&#x6570;
 	 * @param {number} [column_length] - &#x5217;&#x6570;
 	 * @returns {Matrix}
@@ -1441,7 +1057,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x5024;&#x3067;&#x521D;&#x671F;&#x5316;
+	 * &#x4E71;&#x6570;&#x3067;&#x69CB;&#x6210;&#x3057;&#x305F;&#x884C;&#x5217;&#x3092;&#x751F;&#x6210;
 	 * @param {number} dimension - &#x6B21;&#x5143;&#x6570;
 	 * @param {number} [column_length] - &#x5217;&#x6570;
 	 * @returns {Matrix}
@@ -1453,7 +1069,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306B;&#x5F93;&#x3046;&#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x5024;&#x3067;&#x521D;&#x671F;&#x5316;
+	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306B;&#x5F93;&#x3046;&#x4E71;&#x6570;&#x3067;&#x69CB;&#x6210;&#x3057;&#x305F;&#x884C;&#x5217;&#x3092;&#x751F;&#x6210;
 	 * @param {number} dimension - &#x6B21;&#x5143;&#x6570;
 	 * @param {number} [column_length] - &#x5217;&#x6570;
 	 * @returns {Matrix}
@@ -1465,7 +1081,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306A;&#x3089;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x3092;&#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB; / &#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306A;&#x3089;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x3092;&#x6301;&#x3064;&#x884C;&#x5217;
+	 * &#x884C;&#x5217;&#x306A;&#x3089;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x3092;&#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x751F;&#x6210;&#x3001;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306A;&#x3089;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x3092;&#x6301;&#x3064;&#x884C;&#x5217;&#x3092;&#x751F;&#x6210;
 	 * @returns {Matrix}
 	 */
 	diag() {
@@ -1734,8 +1350,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.size() = [row_length column_length] &#x884C;&#x5217;&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x3092;&#x53D6;&#x5F97;
-	 * @returns {Matrix} &#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB; [row_length column_length]
+	 * &#x884C;&#x5217;&#x306E;&#x884C;&#x6570;&#x3068;&#x5217;&#x6570;
+	 * @returns {Matrix} [row_length column_length]
 	 */
 	size() {
 		// &#x884C;&#x5217;&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x3092;&#x53D6;&#x5F97;
@@ -1743,16 +1359,16 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.compareTo(B) &#x4ECA;&#x306E;&#x5024;A&#x3068;&#x3001;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x5024;B&#x3068;&#x3092;&#x6BD4;&#x8F03;&#x3059;&#x308B;
-	 * &#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x540C;&#x58EB;&#x306E;&#x5834;&#x5408;&#x306E;&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;IF&#x6587;&#x3067;&#x5229;&#x7528;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;number&#x578B;&#x3067;&#x3042;&#x308B;&#x3002;
-	 * &#x884C;&#x5217;&#x540C;&#x58EB;&#x306E;&#x5834;&#x5408;&#x306F;&#x884C;&#x5217;&#x306E;&#x4E2D;&#x3067;&#x6BD4;&#x8F03;&#x3092;&#x884C;&#x3044;&#x3001;&#x5404;&#x9805;&#x306B;&#x6BD4;&#x8F03;&#x7D50;&#x679C;&#x304C;&#x5165;&#x308B;
+	 * &#x5024;&#x540C;&#x58EB;&#x3092;&#x6BD4;&#x8F03;
+	 * &#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x540C;&#x58EB;&#x306E;&#x5834;&#x5408;&#x306E;&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number&#x578B;&#x3002;
+	 * &#x884C;&#x5217;&#x540C;&#x58EB;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x5404;&#x9805;&#x306E;&#x6BD4;&#x8F03;&#x7D50;&#x679C;&#x304C;&#x5165;&#x3063;&#x305F;&#x3001;Matrix&#x578B;&#x3002;
 	 * @param {Matrix} number 
 	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
 	 * @returns {number|Matrix} A &lt; B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, epsilon) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		// &#x203B;&#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x540C;&#x58EB;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x5B9F;&#x6570;&#x3092;&#x8FD4;&#x3059;
 		if(M1.isScalar() &amp;&amp; M2.isScalar()) {
 			return M1.scalar.compareTo(M2.scalar, epsilon);
@@ -1767,7 +1383,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.max() &#x884C;&#x5217;&#x5185;&#x306E;&#x6700;&#x5927;&#x5024;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3001;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x5185;&#x306E;&#x6700;&#x5927;&#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x5024;&#x3092;&#x53D6;&#x5F97;
+	 * max([A, B])
 	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
 	 * @returns {Matrix}
 	 */
@@ -1785,7 +1401,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * A.min() &#x884C;&#x5217;&#x5185;&#x306E;&#x6700;&#x5C0F;&#x5024;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3001;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x5185;&#x306E;&#x6700;&#x5C0F;&#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x5024;&#x3092;&#x53D6;&#x5F97;
+	 * min([A, B])
 	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
 	 * @returns {Matrix}
 	 */
@@ -1807,13 +1423,13 @@ export default class Matrix {
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 	
 	/**
-	 * A.add(B) = A + B
+	 * A + B
 	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	add(number) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		if((M1.row_length !== M2.row_length) &amp;&amp; (M1.column_length !== M2.column_length)) {
 			throw &quot;Matrix size does not match&quot;;
 		}
@@ -1827,13 +1443,13 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.sub(B) = A - B
+	 * A - B
 	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	sub(number) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		if((M1.row_length !== M2.row_length) &amp;&amp; (M1.column_length !== M2.column_length)) {
 			throw &quot;Matrix size does not match&quot;;
 		}
@@ -1847,13 +1463,13 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.mul(B) = A * B
+	 * A * B
 	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	mul(number) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		const x1 = M1.matrix_array;
 		const x2 = M2.matrix_array;
 		if(M1.isScalar() &amp;&amp; M2.isScalar()) {
@@ -1899,83 +1515,13 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.inv() = &#x5358;&#x4F4D;&#x884C;&#x5217; / A
-	 * @returns {Matrix}
-	 */
-	inv() {
-		if(this.isScalar()) {
-			return new Matrix(Complex.ONE.div(this.scalar));
-		}
-		if(!this.isSquare()) {
-			throw &quot;not square&quot;;
-		}
-		if(this.isDiagonal()) {
-			// &#x5BFE;&#x89D2;&#x884C;&#x5217;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x306E;&#x307F;&#x9006;&#x6570;&#x3092;&#x3068;&#x308B;
-			const y = this.T();
-			const size = Math.min(y.row_length, y.column_length);
-			for(let i = 0; i &lt; size; i++) {
-				y.matrix_array[i][i] = y.matrix_array[i][i].inv();
-			}
-			return y;
-		}
-		// (&#x3053;&#x3053;&#x3067;&#x6B63;&#x898F;&#x76F4;&#x4EA4;&#x884C;&#x5217;&#x306E;&#x5834;&#x5408;&#x306A;&#x3089;&#x3001;&#x8EE2;&#x7F6E;&#x3055;&#x305B;&#x308B;&#x306A;&#x3069;&#x5165;&#x308C;&#x3066;&#x3082;&#x3044;&#x3044;&#xFF1F;&#x5224;&#x5B9A;&#x306F;&#x3067;&#x304D;&#x306A;&#x3044;&#x3051;&#x3069;&#x3082;)
-		const len = this.column_length;
-		// &#x30AC;&#x30A6;&#x30B9;&#x30FB;&#x30B8;&#x30E7;&#x30EB;&#x30C0;&#x30F3;&#x6CD5;
-		// &#x521D;&#x671F;&#x5024;&#x306E;&#x8A2D;&#x5B9A;
-		const M = new Matrix(this);
-		M._concat_left(Matrix.eye(len));
-		const long_matrix_array = M.matrix_array;
-		const long_length = M.column_length;
-
-		//&#x524D;&#x9032;&#x6D88;&#x53BB;
-		for(let k = 0; k &lt; len; k++) {
-			//&#x30D4;&#x30DD;&#x30C3;&#x30C8;&#x306E;&#x9078;&#x629E;
-			{
-				// k&#x5217;&#x76EE;&#x3067;&#x6700;&#x3082;&#x5927;&#x304D;&#x306A;&#x884C;&#x3092;&#x53D6;&#x5F97;(k&#x5217;&#x76EE;&#x304B;&#x3089;&#x8ABF;&#x3079;&#x308B;)
-				const row_num = M._max_row_number(k, k).index;
-				//&#x4EA4;&#x63DB;&#x3092;&#x884C;&#x3046;
-				M._exchange_row(k, row_num);
-			}
-			//&#x30D4;&#x30DD;&#x30C3;&#x30C8;&#x306E;&#x6B63;&#x898F;&#x5316;
-			{
-				const normalize_value = long_matrix_array[k][k].inv();
-				for(let row = k, col = k; col &lt; long_length; col++) {
-					long_matrix_array[row][col] = long_matrix_array[row][col].mul(normalize_value);
-				}
-			}
-			//&#x6D88;&#x53BB;
-			for(let row = 0;row &lt; len; row++) {
-				if(row === k) {
-					continue;
-				}
-				const temp = long_matrix_array[row][k];
-				for(let col = k; col &lt; long_length; col++)
-				{
-					long_matrix_array[row][col] = long_matrix_array[row][col].sub(long_matrix_array[k][col].mul(temp));
-				}
-			}
-		}
-
-		const y = new Array(len);
-		//&#x53F3;&#x306E;&#x5217;&#x3092;&#x629C;&#x304D;&#x53D6;&#x308B;
-		for(let row = 0; row &lt; len; row++) {
-			y[row] = new Array(len);
-			for(let col = 0; col &lt; len; col++) {
-				y[row][col] = long_matrix_array[row][len + col];
-			}
-		}
-
-		return new Matrix(y);
-	}
-
-	/**
-	 * A.div(B) = A / B
+	 * A / B
 	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	div(number) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		const x1 = M1.matrix_array;
 		const x2 = M2.matrix_array;
 		if(M1.isScalar() &amp;&amp; M2.isScalar()) {
@@ -2004,13 +1550,14 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.nmul(B) = A .* B &#x5404;&#x9805;&#x3054;&#x3068;&#x306E;&#x639B;&#x3051;&#x7B97;
+	 * A .* B
+	 * &#x5404;&#x9805;&#x3054;&#x3068;&#x306E;&#x639B;&#x3051;&#x7B97;
 	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	nmul(number) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		if((M1.row_length !== M2.row_length) &amp;&amp; (M1.column_length !== M2.column_length)) {
 			throw &quot;Matrix size does not match&quot;;
 		}
@@ -2024,13 +1571,14 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.ndiv(B) = A ./ B &#x5404;&#x9805;&#x3054;&#x3068;&#x306E;&#x5272;&#x308A;&#x7B97;
+	 * A ./ B
+	 * &#x5404;&#x9805;&#x3054;&#x3068;&#x306E;&#x5272;&#x308A;&#x7B97;
 	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	ndiv(number) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		if((M1.row_length !== M2.row_length) &amp;&amp; (M1.column_length !== M2.column_length)) {
 			throw &quot;Matrix size does not match&quot;;
 		}
@@ -2044,7 +1592,7 @@ export default class Matrix {
 	}
 
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
-	// Complex&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306B;&#x3042;&#x308B;&#x6A5F;&#x80FD;&#x3092;&#x884C;&#x5217;&#x3067;&#x4F7F;&#x7528;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3057;&#x305F;&#x3082;&#x306E;
+	// Complex&#x306E;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306B;&#x3042;&#x308B;&#x6A5F;&#x80FD;
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 
 	/**
@@ -2068,7 +1616,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x504F;&#x89D2;&#xFF08;&#x6975;&#x5EA7;&#x6A19;&#x306E;&#x89D2;&#x5EA6;&#xFF09;
+	 * &#x5404;&#x9805;&#x306E;&#x504F;&#x89D2;
 	 * @returns {Matrix}
 	 */
 	angle() {
@@ -2088,9 +1636,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x6574;&#x6570;&#x3092;&#x5224;&#x5B9A;(1 or 0)
+	 * &#x5404;&#x9805;&#x306E;&#x6574;&#x6570;&#x3092;&#x5224;&#x5B9A;
 	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
-	 * @returns {Matrix}
+	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
 	 */
 	testInteger(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2099,9 +1647,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x8907;&#x7D20;&#x6574;&#x6570;&#x3092;&#x5224;&#x5B9A;(1 or 0)
+	 * &#x5404;&#x9805;&#x306E;&#x8907;&#x7D20;&#x6574;&#x6570;&#x3092;&#x5224;&#x5B9A;
 	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
-	 * @returns {Matrix}
+	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
 	 */
 	testComplexInteger(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2110,9 +1658,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E; 0 &#x3092;&#x5224;&#x5B9A;(1 or 0)
+	 * &#x5404;&#x9805;&#x306E; 0 &#x3092;&#x5224;&#x5B9A;
 	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
-	 * @returns {Matrix}
+	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
 	 */
 	testZero(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2121,9 +1669,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E; 1 &#x3092;&#x5224;&#x5B9A;(1 or 0)
+	 * &#x5404;&#x9805;&#x306E; 1 &#x3092;&#x5224;&#x5B9A;
 	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
-	 * @returns {Matrix}
+	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
 	 */
 	testOne(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2132,9 +1680,9 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x8907;&#x7D20;&#x6570;&#x3092;&#x5224;&#x5B9A;(1 or 0)
+	 * &#x5404;&#x9805;&#x306E;&#x8907;&#x7D20;&#x6570;&#x3092;&#x5224;&#x5B9A;
 	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
-	 * @returns {Matrix}
+	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
 	 */
 	testComplex(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2143,9 +1691,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x5B9F;&#x6570;&#x3092;&#x5224;&#x5B9A;(1 or 0)
+	 * &#x5404;&#x9805;&#x306E;&#x5B9F;&#x6570;&#x3092;&#x5224;&#x5B9A;
 	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
-	 * @returns {Matrix}
+	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
 	 */
 	testReal(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2154,8 +1702,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x975E;&#x6570;&#x3092;&#x5224;&#x5B9A;(1 or 0)
-	 * @returns {Matrix}
+	 * &#x5404;&#x9805;&#x306E;&#x975E;&#x6570;&#x3092;&#x5224;&#x5B9A;
+	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
 	 */
 	testNaN() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2166,7 +1714,7 @@ export default class Matrix {
 
 	/**
 	 * real(x) &gt; 0
-	 * @returns {boolean}
+	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
 	 */
 	testPositive() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2176,7 +1724,7 @@ export default class Matrix {
 
 	/**
 	 * real(x) &lt; 0
-	 * @returns {boolean}
+	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
 	 */
 	testNegative() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2186,7 +1734,7 @@ export default class Matrix {
 
 	/**
 	 * real(x) &gt;= 0
-	 * @returns {boolean}
+	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
 	 */
 	testNotNegative() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2196,7 +1744,7 @@ export default class Matrix {
 
 	/**
 	 * &#x5404;&#x9805;&#x306E;&#x7121;&#x9650;&#x3092;&#x5224;&#x5B9A;
-	 * @returns {boolean}
+	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
 	 */
 	testInfinite() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2206,7 +1754,7 @@ export default class Matrix {
 	
 	/**
 	 * &#x5404;&#x9805;&#x306E;&#x6709;&#x9650;&#x6570;&#x3092;&#x5224;&#x5B9A;
-	 * @returns {boolean}
+	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
 	 */
 	testFinite() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2215,7 +1763,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x7D76;&#x5BFE;&#x5024;&#x3092;&#x3068;&#x308B;
+	 * abs(A)
 	 * @returns {Matrix}
 	 */
 	abs() {
@@ -2235,7 +1783,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; -1 &#x3092;&#x639B;&#x3051;&#x7B97;&#x3059;&#x308B;
+	 * -A
 	 * @returns {Matrix}
 	 */
 	negate() {
@@ -2245,7 +1793,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; sqrt()
+	 * sqrt(A)
 	 * @returns {Matrix}
 	 */
 	sqrt() {
@@ -2255,22 +1803,19 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; pow(x)
+	 * pow(A, B)
 	 * @param {Matrix} number - &#x30B9;&#x30AB;&#x30E9;&#x30FC;
 	 * @returns {Matrix}
 	 */
 	pow(number) {
-		const M = Matrix.create(number);
-		if(!M.isScalar()) {
-			throw &quot;not set Scalar&quot;;
-		}
+		const X = Matrix._toComplex(number);
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.pow(M.scalar);
+			return num.pow(X);
 		});
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; log()
+	 * log(A)
 	 * @returns {Matrix}
 	 */
 	log() {
@@ -2280,7 +1825,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; exp()
+	 * exp(A)
 	 * @returns {Matrix}
 	 */
 	exp() {
@@ -2290,7 +1835,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; sin()
+	 * sin(A)
 	 * @returns {Matrix}
 	 */
 	sin() {
@@ -2300,7 +1845,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; cos()
+	 * cos(A)
 	 * @returns {Matrix}
 	 */
 	cos() {
@@ -2310,7 +1855,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; tan()
+	 * tan(A)
 	 * @returns {Matrix}
 	 */
 	tan() {
@@ -2320,7 +1865,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x5404;&#x9805;&#x306B; atan()
+	 * atan(A)
 	 * @returns {Matrix}
 	 */
 	atan() {
@@ -2330,22 +1875,19 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; atan2()
+	 * atan2(Y, X)
 	 * @param {Matrix} number - &#x30B9;&#x30AB;&#x30E9;&#x30FC;
 	 * @returns {Matrix}
 	 */
 	atan2(number) {
-		const M = Matrix.create(number);
-		if(!M.isScalar) {
-			throw &quot;not set Scalar&quot;;
-		}
+		const X = Matrix._toComplex(number);
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.atan2(M.scalar);
+			return num.atan2(X);
 		});
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; floor()
+	 * floor(A)
 	 * @returns {Matrix}
 	 */
 	floor() {
@@ -2355,7 +1897,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; ceil()
+	 * ceil(A)
 	 * @returns {Matrix}
 	 */
 	ceil() {
@@ -2365,7 +1907,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; round()
+	 * round(A)
 	 * @returns {Matrix}
 	 */
 	round() {
@@ -2375,7 +1917,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; fix()
+	 * fix(A)
 	 * @returns {Matrix}
 	 */
 	fix() {
@@ -2385,12 +1927,22 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; fract()
+	 * fract(A)
 	 * @returns {Matrix}
 	 */
 	fract() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.fract();
+		});
+	}
+
+	/**
+	 * sinc(A)
+	 * @returns {Matrix}
+	 */
+	sinc() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.sinc();
 		});
 	}
 
@@ -2402,12 +1954,14 @@ export default class Matrix {
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x6642;&#x8A08;&#x56DE;&#x308A;&#x306B;&#x56DE;&#x8EE2;&#x3055;&#x305B;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
-	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
-	 * @param {number} count - &#x56DE;&#x8EE2;&#x3059;&#x308B;&#x56DE;&#x6570;
+	 * &#x884C;&#x5217;&#x3092;&#x6642;&#x8A08;&#x56DE;&#x308A;&#x306B;&#x56DE;&#x8EE2;
+	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
+	 * @param {number} rot_90_count - &#x56DE;&#x8EE2;&#x3059;&#x308B;&#x56DE;&#x6570;
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @private
 	 */
-	_rot90(count) {
+	_rot90(rot_90_count) {
+		const count = Matrix._toInteger(rot_90_count);
 		let rot_type = 1;
 		if(arguments.length === 1) {
 			rot_type = ((count % 4) + 4) % 4;
@@ -2469,12 +2023,12 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x62E1;&#x5F35;&#x3057;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
-	 * &#x62E1;&#x5F35;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;0&#x3092;&#x521D;&#x671F;&#x5024;&#x306B;&#x3057;&#x307E;&#x3059;&#x3002;
-	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * &#x884C;&#x5217;&#x3092;&#x62E1;&#x5F35;&#x3001;&#x62E1;&#x5F35;&#x3057;&#x305F;&#x9805;&#x306F;&#x3001;0&#x3067;&#x521D;&#x671F;&#x5316;&#x3002;
+	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
 	 * @param {number} row_length - &#x65B0;&#x3057;&#x3044;&#x884C;&#x306E;&#x9577;&#x3055;
 	 * @param {number} column_length - &#x65B0;&#x3057;&#x3044;&#x5217;&#x306E;&#x9577;&#x3055;
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @private
 	 */
 	_resize(row_length, column_length) {
 		if((row_length === this.row_length) &amp;&amp; (column_length === this.column_length)) {
@@ -2513,10 +2067,11 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x3092;&#x6D88;&#x53BB;&#x3057;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
-	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x884C;&#x3092;&#x6D88;&#x53BB;
+	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
 	 * @param {number} row_index - &#x884C;&#x756A;&#x53F7;
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @private
 	 */
 	_delete_row(row_index) {
 		if((this.row_length === 1) || (this.row_length &lt;= row_index)) {
@@ -2529,10 +2084,11 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x5217;&#x3092;&#x6D88;&#x53BB;&#x3057;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
-	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x5217;&#x3092;&#x6D88;&#x53BB;
+	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
 	 * @param {number} column_index - &#x5217;&#x756A;&#x53F7;
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @private
 	 */
 	_delete_column(column_index) {
 		if((this.column_length === 1) || (this.column_length &lt;= column_index)) {
@@ -2547,11 +2103,12 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x3092;&#x4EA4;&#x63DB;&#x3057;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
-	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x884C;&#x3092;&#x4EA4;&#x63DB;
+	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
 	 * @param {number} row_index1 - &#x884C;&#x756A;&#x53F7;1
 	 * @param {number} row_index2 - &#x884C;&#x756A;&#x53F7;2
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @private
 	 */
 	_exchange_row(row_index1, row_index2) {
 		if((this.row_length === 1) || (this.row_length &lt;= row_index1) || (this.row_length &lt;= row_index2)) {
@@ -2568,11 +2125,12 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x3092;&#x4EA4;&#x63DB;&#x3057;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
-	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x5217;&#x3092;&#x4EA4;&#x63DB;
+	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
 	 * @param {number} column_index1 - &#x884C;&#x756A;&#x53F7;1
 	 * @param {number} column_index2 - &#x884C;&#x756A;&#x53F7;2
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @private
 	 */
 	_exchange_column(column_index1, column_index2) {
 		if((this.column_length === 1) || (this.column_length &lt;= column_index1) || (this.column_length &lt;= column_index2)) {
@@ -2591,13 +2149,14 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x53F3;&#x306B;&#x884C;&#x5217;&#x3092;&#x304F;&#x3063;&#x3064;&#x3051;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
-	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * &#x884C;&#x5217;&#x306E;&#x53F3;&#x306B;&#x884C;&#x5217;&#x3092;&#x7D50;&#x5408;
+	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
 	 * @param {Matrix} left_matrix - &#x7D50;&#x5408;&#x3057;&#x305F;&#x3044;&#x884C;&#x5217;
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @private
 	 */
 	_concat_left(left_matrix) {
-		const M = Matrix.create(left_matrix);
+		const M = Matrix._toMatrix(left_matrix);
 		for(let row = 0; row &lt; this.row_length; row++) {
 			for(let col = 0; col &lt; M.column_length; col++) {
 				this.matrix_array[row].push(M.matrix_array[row][col]);
@@ -2609,13 +2168,14 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x4E0B;&#x306B;&#x884C;&#x5217;&#x3092;&#x304F;&#x3063;&#x3064;&#x3051;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
-	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
+	 * &#x884C;&#x5217;&#x306E;&#x4E0B;&#x306B;&#x884C;&#x5217;&#x3092;&#x7D50;&#x5408;
+	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
 	 * @param {Matrix} bottom_matrix - &#x7D50;&#x5408;&#x3057;&#x305F;&#x3044;&#x884C;&#x5217;
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @private
 	 */
 	_concat_bottom(bottom_matrix) {
-		const M = Matrix.create(bottom_matrix);
+		const M = Matrix._toMatrix(bottom_matrix);
 		for(let row = 0; row &lt; M.row_length; row++) {
 			this.matrix_array.push(M.matrix_array[row]);
 		}
@@ -2624,196 +2184,9 @@ export default class Matrix {
 		return this;
 	}
 
-	/**
-	 * &#x5217;&#x306E;&#x4E2D;&#x3067;&#x6700;&#x3082;&#x30CE;&#x30EB;&#x30E0;&#x304C;&#x6700;&#x5927;&#x306E;&#x5024;&#x304C;&#x3042;&#x308B;&#x884C;&#x756A;&#x53F7;&#x3092;&#x8FD4;&#x3057;&#x307E;&#x3059;&#x3002;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
-	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
-	 * @param {number} column_index - &#x5217;&#x756A;&#x53F7;
-	 * @param {number} row_index_offset - &#x884C;&#x306E;&#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;(&#x3053;&#x306E;&#x5024;&#x304B;&#x3089;&#x884C;&#x3046;)
-	 * @param {number} row_index_max - &#x884C;&#x306E;&#x6700;&#x5927;(&#x3053;&#x306E;&#x5024;&#x306F;&#x542B;&#x3081;&#x306A;&#x3044;)
-	 * @returns {number} &#x884C;&#x756A;&#x53F7;
-	 */
-	_max_row_number(column_index, row_index_offset, row_index_max) {
-		let row_index = 0;
-		let row_max = 0;
-		let row = row_index_offset ? row_index_offset : 0;
-		const row_imax = row_index_max ? row_index_max : this.row_length;
-		// n&#x5217;&#x76EE;&#x3067;&#x6700;&#x3082;&#x5927;&#x304D;&#x306A;&#x884C;&#x3092;&#x53D6;&#x5F97;
-		for(; row &lt; row_imax; row++) {
-			const norm = this.matrix_array[row][column_index].norm;
-			if(norm &gt; row_max) {
-				row_max = norm;
-				row_index = row;
-			}
-		}
-		return {
-			index : row_index,
-			max : row_max
-		};
-	}
-
-	/**
-	 * &#x884C;&#x5217;&#x306E;&#x5404;&#x884C;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x898B;&#x7ACB;&#x3066;&#x3001;&#x7DDA;&#x578B;&#x5F93;&#x5C5E;&#x3057;&#x3066;&#x3044;&#x308B;&#x884C;&#x3092;&#x62BD;&#x51FA;&#x3059;&#x308B;
-	 * &#x5185;&#x90E8;&#x51E6;&#x7406;&#x7528;
-	 * @param {number} [epsilon=1.0e-10] - &#x8AA4;&#x5DEE;
-	 * @returns {Array} &#x884C;&#x756A;&#x53F7;&#x306E;&#x884C;&#x5217;(&#x6607;&#x9806;)
-	 */
-	_get_linear_dependence_vector(epsilon) {
-		const M = new Matrix(this);
-		const m = M.matrix_array;
-		const tolerance = epsilon ? epsilon : 1.0e-10;
-		// &#x78BA;&#x8A8D;&#x3059;&#x308B;&#x884C;&#x756A;&#x53F7;&#xFF08;&#x3053;&#x3053;&#x304B;&#x3089;&#x7D42;&#x308F;&#x3063;&#x305F;&#x884C;&#x306F;&#x524A;&#x9664;&#x3057;&#x3066;&#x3044;&#x304F;&#xFF09;
-		const row_index_array = new Array(this.row_length);
-		for(let i = 0; i &lt; this.row_length; i++) {
-			row_index_array[i] = i;
-		}
-		// &#x30AC;&#x30A6;&#x30B9;&#x306E;&#x6D88;&#x53BB;&#x6CD5;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3001;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x62BD;&#x51FA;&#x3057;&#x3066;&#x3044;&#x304F;
-		for(let col_target = 0; col_target &lt; M.column_length; col_target++) {
-			let row_max_index = 0;
-			{
-				let row_max = 0;
-				let row_max_key = 0;
-				// n&#x5217;&#x76EE;&#x3067;&#x7D76;&#x5BFE;&#x5024;&#x304C;&#x6700;&#x3082;&#x5927;&#x304D;&#x306A;&#x884C;&#x3092;&#x53D6;&#x5F97;
-				for(const row_key in row_index_array) {
-					const row = row_index_array[row_key];
-					const norm = m[row][col_target].norm;
-					if(norm &gt; row_max) {
-						row_max = norm;
-						row_max_key = row_key;
-						row_max_index = row;
-					}
-				}
-				// &#x5927;&#x304D;&#x3044;&#x306E;&#x304C;0&#x3067;&#x3042;&#x308B;&#xFF1D;&#x305D;&#x306E;&#x5217;&#x306F;&#x5168;&#x3066;0&#x3067;&#x3042;&#x308B;
-				if(row_max &lt;= tolerance) {
-					continue;
-				}
-				// &#x5927;&#x304D;&#x306A;&#x5024;&#x304C;&#x3042;&#x3063;&#x305F;&#x884C;&#x306F;&#x3001;&#x30EA;&#x30B9;&#x30C8;&#x304B;&#x3089;&#x9664;&#x53BB;&#x3059;&#x308B;
-				row_index_array.splice(row_max_key, 1);
-				if(col_target === M.column_length - 1) {
-					break;
-				}
-			}
-			// &#x6B21;&#x306E;&#x5217;&#x304B;&#x3089;&#x3001;&#x5927;&#x304D;&#x306A;&#x5024;&#x304C;&#x3042;&#x3063;&#x305F;&#x884C;&#x306E;&#x6210;&#x5206;&#x3092;&#x524A;&#x9664;
-			for(const row_key in row_index_array) {
-				const row = row_index_array[row_key];
-				const inv = m[row][col_target].div(m[row_max_index][col_target]);
-				for(let col = col_target; col &lt; M.column_length; col++) {
-					m[row][col] = m[row][col].sub(m[row_max_index][col].mul(inv));
-				}
-			}
-		}
-		return row_index_array;
-	}
-
-
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 	// &#x884C;&#x5217;&#x306E;&#x4E00;&#x822C;&#x8A08;&#x7B97;
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
-
-	/**
-	 * &#x884C;&#x5217;&#x306E;p&#x30CE;&#x30EB;&#x30E0;
-	 * @returns {number}
-	 */
-	norm(p) {
-		if(arguments.length === 0) {
-			return this.norm2;
-		}
-		if(p === 1) {
-			return this.norm1;
-		}
-		else if(p === 2) {
-			return this.norm2;
-		}
-		else if((p === Number.POSITIVE_INFINITY) || (p === Number.NEGATIVE_INFINITY)) {
-			const y = this.matrix_array;
-			let compare = p === Number.POSITIVE_INFINITY ? 0 : Number.POSITIVE_INFINITY;
-			// &#x884C;&#x3092;&#x56FA;&#x5B9A;&#x3057;&#x3066;&#x5217;&#x306E;&#x548C;&#x3092;&#x8A08;&#x7B97;
-			for(let row = 0; row &lt; this.row_length; row++) {
-				let sum = 0.0;
-				for(let col = 0; col &lt; this.column_length; col++) {
-					sum += y[row][col].norm;
-				}
-				if(p === Number.POSITIVE_INFINITY) {
-					compare = Math.max(compare, sum);
-				}
-				else {
-					compare = Math.min(compare, sum);
-				}
-			}
-			return compare;
-		}
-		if(this.isVector()) {
-			// &#x4E00;&#x822C;&#x5316;&#x30D9;&#x30AF;&#x30C8;&#x30EB;p&#x30CE;&#x30EB;&#x30E0;
-			let sum = 0.0;
-			for(let i = 0; i &lt; this.length; i++) {
-				sum = Math.pow(this.getComplex(i).norm, p);
-			}
-			return Math.pow(sum, 1.0 / p);
-		}
-		// &#x672A;&#x5B9F;&#x88C5;
-		throw &quot;norm&quot;;
-	}
-
-	/**
-	 * A.inner(B) = &#x30C9;&#x30C3;&#x30C8;&#x7A4D;&#xFF08;&#x5185;&#x7A4D;&#xFF09;
-	 * @param {Matrix} number 
-	 * @param {number} [dimension=1] &#x8A08;&#x7B97;&#x3059;&#x308B;&#x3068;&#x304D;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x6B21;&#x5143;&#xFF08;1 or 2&#xFF09;
-	 * @returns {Matrix}
-	 */
-	inner(number, dimension) {
-		const M1 = this;
-		const M2 = Matrix.create(number);
-		const x1 = M1.matrix_array;
-		const x2 = M2.matrix_array;
-		const dim = dimension ? dimension : 1;
-		if(M1.isScalar() &amp;&amp; M2.isScalar()) {
-			return new Matrix(M1.scalar.dot(M2.scalar));
-		}
-		if(M1.isVector() &amp;&amp; M2.isVector()) {
-			let sum = Complex.ZERO;
-			for(let i = 0; i &lt; M1.length; i++) {
-				sum = sum.add(M1.getComplex(i).dot(M2.getComplex(i)));
-			}
-			return new Matrix(sum);
-		}
-		if((M1.row_length !== M2.row_length) || (M1.column_length !== M2.column_length)) {
-			throw &quot;Matrix size does not match&quot;;
-		}
-		if(dim === 1) {
-			const y = new Array(1);
-			y[0] = new Array(M1.column_length);
-			for(let col = 0; col &lt; M1.column_length; col++) {
-				let sum = Complex.ZERO;
-				for(let row = 0; row &lt; M1.row_length; row++) {
-					sum = sum.add(x1[row][col].dot(x2[row][col]));
-				}
-				y[0][col] = sum;
-			}
-			return new Matrix(y);
-		}
-		else if(dim === 2) {
-			const y = new Array(M1.row_length);
-			for(let row = 0; row &lt; M1.row_length; row++) {
-				let sum = Complex.ZERO;
-				for(let col = 0; col &lt; M1.column_length; col++) {
-					sum = sum.add(x1[row][col].dot(x2[row][col]));
-				}
-				y[row] = [sum];
-			}
-			return new Matrix(y);
-		}
-		else {
-			throw &quot;dim&quot;;
-		}
-	}
-	
-	/**
-	 * &#x884C;&#x5217;&#x306E;&#x30E9;&#x30F3;&#x30AF;
-	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
-	 * @returns {number}
-	 */
-	rank(epsilon) {
-		return Math.abs(this.row_length, this.column_length) - (this._get_linear_dependence_vector(epsilon)).length;
-	}
 
 	/**
 	 * &#x8EE2;&#x7F6E;&#x884C;&#x5217;
@@ -2847,1104 +2220,536 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.det() = [A] &#x884C;&#x5217;&#x5F0F;
+	 * &#x884C;&#x5217;&#x306E;&#x30E9;&#x30F3;&#x30AF;
+	 * @param {number} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @returns {number}
+	 */
+	rank(epsilon) {
+		return LinearAlgebra.rank(this, epsilon);
+	}
+
+	/**
+	 * &#x30C9;&#x30C3;&#x30C8;&#x7A4D;&#xFF08;&#x5185;&#x7A4D;&#xFF09; A&#x30FB;B
+	 * @param {Matrix} number 
+	 * @param {number} [dimension=1] &#x8A08;&#x7B97;&#x3059;&#x308B;&#x3068;&#x304D;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x6B21;&#x5143;&#xFF08;1 or 2&#xFF09;
+	 * @returns {Matrix}
+	 */
+	inner(number, dimension=1) {
+		return LinearAlgebra.inner(this, number, dimension);
+	}
+	
+	/**
+	 * &#x884C;&#x5217;&#x5F0F; |A|
 	 * @returns {Matrix}
 	 */
 	det() {
-		if(!this.isSquare()) {
-			throw &quot;not square&quot;;
-		}
-		const M = this.matrix_array;
-		const calcDet = function(x) {
-			if(x.length === 2) {
-				// 2&#x6B21;&#x5143;&#x306E;&#x884C;&#x5217;&#x5F0F;&#x306B;&#x306A;&#x3063;&#x305F;&#x3089;&#x3001;&#x305F;&#x3059;&#x304D;&#x639B;&#x3051;&#x8A08;&#x7B97;&#x3059;&#x308B;
-				return x[0][0].mul(x[1][1]).sub(x[0][1].mul(x[1][0]));
-			}
-			let y = Complex.ZERO;
-			for(let i = 0; i &lt; x.length; i++) {
-				// N&#x6B21;&#x5143;&#x306E;&#x884C;&#x5217;&#x5F0F;&#x3092;&#x3001;N-1&#x6B21;&#x5143;&#x306E;&#x884C;&#x5217;&#x5F0F;&#x306B;&#x5206;&#x89E3;&#x3057;&#x3066;&#x3044;&#x304F;
-				const D = [];
-				const a = x[i][0];
-				for(let row = 0, D_low = 0; row &lt; x.length; row++) {
-					if(i === row) {
-						continue;
-					}
-					D[D_low] = [];
-					for(let col = 1, D_col = 0; col &lt; x.length; col++, D_col++) {
-						D[D_low][D_col] = x[row][col];
-					}
-					D_low++;
-				}
-				if((i % 2) === 0) {
-					y = y.add(a.mul(calcDet(D)));
-				}
-				else {
-					y = y.sub(a.mul(calcDet(D)));
-				}
-			}
-			return y;
-		};
-		return new Matrix(calcDet(M));
+		return LinearAlgebra.det(this);
 	}
 
 	/**
-	 * A.lup() = P&apos;*L*U = A &#x3068;&#x306A;&#x308B; P,L,U&#x3092;&#x89E3;&#x304F;
-	 * @returns {Object&lt;string, Matrix&gt;} {P, L, U}
+	 * P&apos;*L*U=A &#x3068;&#x306A;&#x308B;LUP&#x5206;&#x89E3;
+	 * @returns {{P: Matrix, L: Matrix, U: Matrix}}
 	 */
 	lup() {
-		const L = Matrix.zeros(this.row_length);
-		const U = new Matrix(this);
-		const P = Matrix.eye(this.row_length);
-		const l = L.matrix_array;
-		const u = U.matrix_array;
-		// &#x30AC;&#x30A6;&#x30B9;&#x306E;&#x6D88;&#x53BB;&#x6CD5;&#x3067;&#x9023;&#x7ACB;1&#x6B21;&#x65B9;&#x7A0B;&#x5F0F;&#x306E;&#x672A;&#x77E5;&#x6570;&#x3092;&#x6C42;&#x3081;&#x308B;
-		//&#x524D;&#x9032;&#x6D88;&#x53BB;
-		for(let k = 0; k &lt; this.column_length; k++) {
-			// &#x30D4;&#x30DD;&#x30C3;&#x30C8;&#x306E;&#x9078;&#x629E;
-			let pivot;
-			{
-				// k&#x5217;&#x76EE;&#x3067;&#x6700;&#x3082;&#x5927;&#x304D;&#x306A;&#x884C;&#x3092;&#x53D6;&#x5F97;(k&#x5217;&#x76EE;&#x304B;&#x3089;&#x8ABF;&#x3079;&#x308B;)
-				const max_row_number = U._max_row_number(k, k);
-				pivot = max_row_number.index;
-				if(max_row_number.max === 0.0) {
-					continue;
-				}
-				//&#x4EA4;&#x63DB;&#x3092;&#x884C;&#x3046;
-				if(k !== pivot) {
-					L._exchange_row(k, pivot);
-					U._exchange_row(k, pivot);
-					P._exchange_row(k, pivot);
-				}
-			}
-			// &#x6D88;&#x53BB;
-			for(let row = k + 1;row &lt; this.row_length; row++) {
-				const temp = u[row][k].div(u[k][k]);
-				l[row][k] = temp;
-				//l&#x306E;&#x5024;&#x3060;&#x3051;&#x884C;&#x4EA4;&#x63DB;&#x304C;&#x5FC5;&#x8981;&#xFF1F;
-				for(let col = k; col &lt; this.column_length; col++) {
-					u[row][col] = u[row][col].sub(u[k][col].mul(temp));
-				}
-			}
-		}
-		L._resize(this.row_length, Math.min(this.row_length, this.column_length));
-		U._resize(Math.min(this.row_length, this.column_length), this.column_length);
-		// L &#x306E;&#x5BFE;&#x89D2;&#x7DDA;&#x306B;1&#x3092;&#x4EE3;&#x5165;
-		L._each(function(num, row, col) {
-			return row === col ? Complex.ONE : num;
-		});
-		return {
-			L : L,
-			U : U,
-			P : P
-		};
+		return LinearAlgebra.lup(this);
 	}
 
 	/**
-	 * A.linsolve(B) = Ax = B &#x3068;&#x306A;&#x308B; x&#x3092;&#x89E3;&#x304F;
+	 * Ax=B &#x3068;&#x306A;&#x308B; x &#x3092;&#x89E3;&#x304F;
 	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	linsolve(number) {
-		if(!this.isSquare()) {
-			throw &quot;Matrix size does not match&quot;;
-		}
-		// &#x9023;&#x7ACB;&#x4E00;&#x6B21;&#x65B9;&#x7A0B;&#x5F0F;&#x3092;&#x89E3;&#x304F;
-		const len = this.column_length;
-		const arg = Matrix.create(number);
-		if((arg.row_length !== this.row_length) || (arg.column_length &gt; 1)) {
-			throw &quot;Matrix size does not match&quot;;
-		}
-		// &#x884C;&#x5217;&#x3092;&#x6E96;&#x5099;&#x3059;&#x308B;
-		const M = new Matrix(this);
-		M._concat_left(arg);
-		const long_matrix_array = M.matrix_array;
-		const long_length = M.column_length;
-		// &#x30AC;&#x30A6;&#x30B9;&#x306E;&#x6D88;&#x53BB;&#x6CD5;&#x3067;&#x9023;&#x7ACB;1&#x6B21;&#x65B9;&#x7A0B;&#x5F0F;&#x306E;&#x672A;&#x77E5;&#x6570;&#x3092;&#x6C42;&#x3081;&#x308B;
-		//&#x524D;&#x9032;&#x6D88;&#x53BB;
-		for(let k = 0; k &lt; (len - 1); k++) {
-			//&#x30D4;&#x30DD;&#x30C3;&#x30C8;&#x306E;&#x9078;&#x629E;
-			{
-				// k&#x5217;&#x76EE;&#x3067;&#x6700;&#x3082;&#x5927;&#x304D;&#x306A;&#x884C;&#x3092;&#x53D6;&#x5F97;(k&#x5217;&#x76EE;&#x304B;&#x3089;&#x8ABF;&#x3079;&#x308B;)
-				const row_num = M._max_row_number(k, k).index;
-				//&#x4EA4;&#x63DB;&#x3092;&#x884C;&#x3046;
-				M._exchange_row(k, row_num);
-			}
-			//&#x30D4;&#x30DD;&#x30C3;&#x30C8;&#x306E;&#x6B63;&#x898F;&#x5316;
-			{
-				const normalize_value = long_matrix_array[k][k].inv();
-				for(let row = k, col = k; col &lt; long_length; col++) {
-					long_matrix_array[row][col] = long_matrix_array[row][col].mul(normalize_value);
-				}
-			}
-			//&#x6D88;&#x53BB;
-			for(let row = k + 1;row &lt; len; row++) {
-				const temp = long_matrix_array[row][k];
-				for(let col = k; col &lt; long_length; col++) {
-					long_matrix_array[row][col] = long_matrix_array[row][col].sub(long_matrix_array[k][col].mul(temp));
-				}
-			}
-		}
-		//&#x5F8C;&#x9000;&#x4EE3;&#x5165;
-		const y = new Array(len);
-		y[len - 1] = long_matrix_array[len - 1][len].div(long_matrix_array[len - 1][len - 1]);
-		for(let row = len - 2; row &gt;= 0; row--) {
-			y[row] = long_matrix_array[row][long_length - 1];
-			for(let j = row + 1; j &lt; len; j++) {
-				y[row] = y[row].sub(long_matrix_array[row][j] * y[j]);
-			}
-			y[row] = y[row].div(long_matrix_array[row][row]);
-		}
-		const y2 = new Array(this.row_length);
-		for(let row = 0; row &lt; this.row_length; row++) {
-			y2[row] = [y[row]];
-		}
-
-		return new Matrix(y2);
+		return LinearAlgebra.linsolve(this, number);
 	}
 
 	/**
-	 * {Q, R} = A.qr() QR&#x5206;&#x89E3;&#x3092;&#x884C;&#x3046;
-	 * @returns {Object&lt;string, Matrix&gt;} {Q, R} Q&#x306F;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3001;R&#x306F;&#x4E0A;&#x4E09;&#x89D2;&#x884C;&#x5217;
+	 * Q*R=A &#x3068;&#x306A;&#x308B;QR&#x5206;&#x89E3;
+	 * Q&#x306F;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3001;R&#x306F;&#x4E0A;&#x4E09;&#x89D2;&#x884C;&#x5217;
+	 * @returns {{Q: Matrix, R: Matrix}}
 	 */
 	qr() {
-		// &#x884C;&#x5217;&#x3092;&#x6E96;&#x5099;&#x3059;&#x308B;
-		const M = new Matrix(this);
-		// &#x4F5C;&#x6210;&#x5F8C;&#x306E;Q&#x3068;R&#x306E;&#x30B5;&#x30A4;&#x30BA;
-		const Q_row_length = this.row_length;
-		const Q_column_length = this.row_length;
-		const R_row_length = this.row_length;
-		const R_column_length = this.column_length;
-		// &#x8A08;&#x7B97;&#x6642;&#x306E;&#x884C;&#x3068;&#x5217;&#x306E;&#x30B5;&#x30A4;&#x30BA;
-		const dummy_size = Math.max(this.row_length, this.column_length);
-		// &#x6B63;&#x65B9;&#x884C;&#x5217;&#x306B;&#x3059;&#x308B;
-		M._resize(dummy_size, dummy_size);
-		// &#x6B63;&#x898F;&#x76F4;&#x884C;&#x5316;
-		const orthogonal_matrix = MatrixTool._gram_schmidt_orthonormalization(M);
-		// &#x8A08;&#x7B97;&#x3057;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x53D6;&#x5F97;
-		const Q_Matrix = orthogonal_matrix.Q;
-		const R_Matrix = orthogonal_matrix.R;
-		const non_orthogonalized = orthogonal_matrix.non_orthogonalized;
-		// Q&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x3092;&#x6210;&#x578B;&#x3059;&#x308B;
-		if(non_orthogonalized.length !== 0) {
-			// &#x76F4;&#x884C;&#x5316;&#x3067;&#x304D;&#x3066;&#x3044;&#x306A;&#x3044;&#x5217;&#x304C;&#x3042;&#x308B;&#x305F;&#x3081;&#x76F4;&#x884C;&#x5316;&#x3067;&#x304D;&#x3066;&#x306A;&#x3044;&#x5217;&#x4EE5;&#x5916;&#x3092;&#x62BD;&#x51FA;
-			const map = {};
-			for(let i = 0; i &lt; non_orthogonalized.length; i++) {
-				map[non_orthogonalized[i]] = 1;
-			}
-			const orthogonalized = [];
-			for(let i = 0; i &lt; dummy_size; i++) {
-				if(map[i]) {
-					continue;
-				}
-				const array = [];
-				for(let j = 0; j &lt; dummy_size; j++) {
-					array[j] = Q_Matrix.matrix_array[j][i];
-				}
-				orthogonalized.push(array);
-			}
-			// &#x76F4;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-			const orthogonal_vector = MatrixTool._createOrthogonalVector(new Matrix(orthogonalized));
-			// &#x76F4;&#x884C;&#x5316;&#x3067;&#x304D;&#x3066;&#x3044;&#x306A;&#x3044;&#x5217;&#x3092;&#x5DEE;&#x3057;&#x66FF;&#x3048;&#x308B;
-			for(let i = 0; i &lt; non_orthogonalized.length; i++) {
-				const q_col = non_orthogonalized[i];
-				for(let j = 0; j &lt; dummy_size; j++) {
-					Q_Matrix.matrix_array[j][q_col] = orthogonal_vector.matrix_array[i][j];
-				}
-			}
-		}
-		Q_Matrix._resize(Q_row_length, Q_column_length);
-		// R&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x3092;&#x6210;&#x5F62;&#x3059;&#x308B;
-		R_Matrix._resize(R_row_length, R_column_length);
-		return {
-			Q : Q_Matrix,
-			R : R_Matrix
-		};
+		return LinearAlgebra.qr(this);
 	}
 
 	/**
-	 * {P, H} = A.tridiagonalize() &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x5316;&#x3059;&#x308B; P*H*P&apos;=A
-	 * @returns {Object&lt;string, Matrix&gt;} {P, H} H&#x306F;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x884C;&#x5217;&#x3001;P&#x306F;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3002;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x884C;&#x5217;&#x306E;&#x56FA;&#x6709;&#x5024;&#x306F;&#x5143;&#x306E;&#x884C;&#x5217;&#x3068;&#x4E00;&#x81F4;&#x3059;&#x308B;&#x3002;
+	 * P*H*P&apos;=A &#x3068;&#x306A;&#x308B;&#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x5316;
+	 * H&#x306F;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x884C;&#x5217;&#x3001;P&#x306F;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3001;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x884C;&#x5217;&#x306E;&#x56FA;&#x6709;&#x5024;&#x306F;&#x5143;&#x306E;&#x884C;&#x5217;&#x3068;&#x4E00;&#x81F4;
+	 * @returns {{P: Matrix, H: Matrix}}
 	 */
 	tridiagonalize() {
-		if(!this.isSquare()) {
-			throw &quot;not square matrix&quot;;
-		}
-		if(!this.isSymmetric()) {
-			throw &quot;not Symmetric&quot;;
-		}
-		if(this.isComplex()) {
-			throw &quot;not Real Matrix&quot;;
-		}
-		return MatrixTool.tridiagonalize(this);
+		return LinearAlgebra.tridiagonalize(this);
 	}
 
 	/**
-	 * {V, D} = A.eig() &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x56FA;&#x6709;&#x5024;&#x5206;&#x89E3; V*D*V&apos;=A
-	 * @returns {Object&lt;string, Matrix&gt;} {V, D} V&#x306F;&#x53F3;&#x56FA;&#x6709;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x5217;&#x306B;&#x3082;&#x3064;&#x884C;&#x5217;&#x3067;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3001;D&#x306F;&#x56FA;&#x6709;&#x5024;&#x3092;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x306B;&#x6301;&#x3064;&#x884C;&#x5217;
+	 * V*D*V&apos;=A &#x3068;&#x306A;&#x308B;&#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x56FA;&#x6709;&#x5024;&#x5206;&#x89E3;
+	 * V&#x306F;&#x53F3;&#x56FA;&#x6709;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x5217;&#x306B;&#x3082;&#x3064;&#x884C;&#x5217;&#x3067;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3001;D&#x306F;&#x56FA;&#x6709;&#x5024;&#x3092;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x306B;&#x6301;&#x3064;&#x884C;&#x5217;
+	 * @returns {{V: Matrix, D: Matrix}}
 	 */
 	eig() {
-		if(!this.isSquare()) {
-			throw &quot;not square matrix&quot;;
-		}
-		if(!this.isSymmetric()) {
-			throw &quot;not Symmetric&quot;;
-		}
-		if(this.isComplex()) {
-			throw &quot;not Real Matrix&quot;;
-		}
-		return MatrixTool.eig(this);
+		return LinearAlgebra.eig(this);
 	}
 
 	/**
-	 * {U, S, V} = A.svd() &#x7279;&#x7570;&#x5024;&#x5206;&#x89E3; U*S*V&apos; = A
-	 * @returns {Object&lt;string, Matrix&gt;} {U,S,V}
+	 * U*S*V&apos;=A &#x3068;&#x306A;&#x308B;&#x7279;&#x7570;&#x5024;&#x5206;&#x89E3;
+	 * @returns {{U: Matrix, S: Matrix, V: Matrix}}
 	 */
 	svd() {
-		if(this.isComplex()) {
-			// &#x8907;&#x7D20;&#x6570;&#x304C;&#x5165;&#x3063;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x306F;&#x3001;eig&#x95A2;&#x6570;&#x304C;&#x4F7F;&#x7528;&#x3067;&#x304D;&#x306A;&#x3044;&#x306E;&#x3067;&#x975E;&#x5BFE;&#x5FDC;
-			throw &quot;Unimplemented&quot;;
-		}
-		const rank = this.rank();
-		// SVD&#x5206;&#x89E3;
-		// &#x53C2;&#x8003;&#xFF1A;Gilbert Strang (2007). Computational Science and Engineering.
-		const VD = this.T().mul(this).eig();
-		const sigma = Matrix.zeros(this.row_length, this.column_length);
-		sigma._each(function(num, row, col) {
-			if((row === col) &amp;&amp; (row &lt; rank)) {
-				return VD.D.getComplex(row, row).sqrt();
-			}
-		});
-		const sing = Matrix.createMatrixDoEachCalculation(function(row, col) {
-			if(row === col) {
-				return sigma.matrix_array[row][row].inv();
-			}
-			else {
-				return Complex.ZERO;
-			}
-		}, rank);
-		const V_rank = (new Matrix(VD.V))._resize(VD.V.row_length, rank);
-		const u = this.mul(V_rank).mul(sing);
-		const QR = u.qr();
-		return {
-			U : QR.Q,
-			S : sigma,
-			V : VD.V
-		};
+		return LinearAlgebra.svd(this);
 	}
 
 	/**
-	 * A.pinv() &#x7591;&#x4F3C;&#x9006;&#x884C;&#x5217;
+	 * &#x9006;&#x884C;&#x5217;
+	 * @returns {Matrix}
+	 */
+	inv() {
+		return LinearAlgebra.inv(this);
+	}
+
+	/**
+	 * &#x7591;&#x4F3C;&#x9006;&#x884C;&#x5217;
 	 * @returns {Matrix}
 	 */
 	pinv() {
-		const USV = this.svd();
-		const U = USV.U;
-		const S = USV.S;
-		const V = USV.V;
-		const sing = Matrix.createMatrixDoEachCalculation(function(row, col) {
-			if(row === col) {
-				const x = S.matrix_array[row][row];
-				if(x.isZero()) {
-					return Complex.ZERO;
-				}
-				else {
-					return x.inv();
-				}
-			}
-			else {
-				return Complex.ZERO;
-			}
-		}, this.column_length, this.row_length);
-		return V.mul(sing).mul(U.T());
+		return LinearAlgebra.pinv(this);
 	}
 
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 	// statistics &#x7D71;&#x8A08;&#x8A08;&#x7B97;&#x7528;
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 
-	// TODO &#x5E73;&#x5747;&#x3084;&#x5206;&#x6563;&#x306A;&#x3069;&#x7D71;&#x8A08;&#x3067;&#x3088;&#x304F;&#x5229;&#x7528;&#x3059;&#x308B;&#x3082;&#x306E;&#x3092;&#x4F5C;&#x308B;
-
 	/**
-	 * x.gammaln() = gammaln(x) &#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * &#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
 	 * @returns {Matrix}
 	 */
 	gammaln() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.gammaln();
-		});
+		return Statistics.gammaln(this);
 	}
 
 	/**
-	 * z.gamma() = gamma(z) &#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * &#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
 	 * @returns {Matrix}
 	 */
 	gamma() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.gamma();
-		});
+		return Statistics.gamma(this);
 	}
 
 	/**
-	 * x.gammainc(a, tail) = gammainc(x, a, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
 	 * @param {Matrix} a
 	 * @param {string} [tail=&quot;lower&quot;] - lower/upper
 	 * @returns {Matrix}
 	 */
 	gammainc(a, tail) {
-		const a_ = Matrix.create(a).scalar;
-		const tail_ = arguments.length === 1 ? tail : &quot;lower&quot;;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.gammainc(a_, tail_);
-		});
+		return Statistics.gammainc(this, a, tail);
 	}
 
 	/**
-	 * x.gampdf(k, s) = gampdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
 	 * @param {Matrix} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
 	 * @param {Matrix} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
 	 * @returns {Matrix}
 	 */
 	gampdf(k, s) {
-		const k_ = Matrix.create(k).scalar;
-		const s_ = Matrix.create(s).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.gampdf(k_, s_);
-		});
+		return Statistics.gampdf(this, k, s);
 	}
 
 	/**
-	 * x.gamcdf(k, s) = gamcdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
 	 * @param {Matrix} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
 	 * @param {Matrix} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
 	 * @returns {Matrix}
 	 */
 	gamcdf(k, s) {
-		const k_ = Matrix.create(k).scalar;
-		const s_ = Matrix.create(s).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.gamcdf(k_, s_);
-		});
+		return Statistics.gampdf(this, k, s);
 	}
 
 	/**
-	 * p.gaminv(k, s) = gaminv(p, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
 	 * @param {Matrix} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
 	 * @param {Matrix} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
 	 * @returns {Matrix}
 	 */
 	gaminv(k, s) {
-		const k_ = Matrix.create(k).scalar;
-		const s_ = Matrix.create(s).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.gaminv(k_, s_);
-		});
+		return Statistics.gaminv(this, k, s);
 	}
 
 	/**
-	 * x.beta(y) = beta(x, y) &#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * &#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
 	 * @param {Matrix} y
 	 * @returns {Matrix}
 	 */
 	beta(y) {
-		const y_ = Matrix.create(y).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.beta(y_);
-		});
+		return Statistics.beta(this, y);
 	}
 	
 	/**
-	 * x.betainc(a, b, tail) = betainc(x, a, b, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
 	 * @param {Matrix} a
 	 * @param {Matrix} b
 	 * @param {string} [tail=&quot;lower&quot;] - lower/upper
 	 * @returns {Matrix}
 	 */
 	betainc(a, b, tail) {
-		const a_ = Matrix.create(a).scalar;
-		const b_ = Matrix.create(b).scalar;
-		const tail_ = arguments.length === 2 ? tail : &quot;lower&quot;;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.betainc(a_, b_, tail_);
-		});
+		return Statistics.betainc(this, a, b, tail);
 	}
 
 	/**
-	 * x.betacdf(a, b) = betacdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
 	 * @param {Matrix} a
 	 * @param {Matrix} b
 	 * @returns {Matrix}
 	 */
 	betacdf(a, b) {
-		const a_ = Matrix.create(a).scalar;
-		const b_ = Matrix.create(b).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.betacdf(a_, b_);
-		});
+		return Statistics.betacdf(this, a, b);
 	}
 
 	/**
-	 * x.betapdf(a, b) = betapdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
 	 * @param {Matrix} a
 	 * @param {Matrix} b
 	 * @returns {Matrix}
 	 */
 	betapdf(a, b) {
-		const a_ = Matrix.create(a).scalar;
-		const b_ = Matrix.create(b).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.betapdf(a_, b_);
-		});
+		return Statistics.betapdf(this, a, b);
 	}
 
 	/**
-	 * p.betainv(a, b) = betainv(p, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
 	 * @param {Matrix} a
 	 * @param {Matrix} b
 	 * @returns {Matrix}
 	 */
 	betainv(a, b) {
-		const a_ = Matrix.create(a).scalar;
-		const b_ = Matrix.create(b).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.betainv(a_, b_);
-		});
+		return Statistics.betainv(this, a, b);
 	}
 
 	/**
-	 * x.factorial() = factorial(x), x! &#x968E;&#x4E57;&#x95A2;&#x6570;
+	 * x! &#x968E;&#x4E57;&#x95A2;&#x6570;
 	 * @returns {Matrix}
 	 */
 	factorial() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.factorial();
-		});
+		return Statistics.factorial(this);
 	}
 	
 	/**
-	 * n.nchoosek(k) = nchoosek(n, k), nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;
+	 * nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;
 	 * @param {Matrix} k
 	 * @returns {Matrix}
 	 */
 	nchoosek(k) {
-		const k_ = Matrix.create(k).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.nchoosek(k_);
-		});
+		return Statistics.nchoosek(this, k);
 	}
 	
 	/**
-	 * x.erf() = erf(x) &#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * &#x8AA4;&#x5DEE;&#x95A2;&#x6570;
 	 * @returns {Matrix}
 	 */
 	erf() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.erf();
-		});
+		return Statistics.erf(this);
 	}
 
 	/**
-	 * x.erfc() = erfc(x) &#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * &#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;
 	 * @returns {Matrix}
 	 */
 	erfc() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.erfc();
-		});
+		return Statistics.erfc(this);
 	}
 	
 	/**
-	 * x.normpdf(u, s) = normpdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
 	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
 	 * @param {number} [s=1.0] - &#x5206;&#x6563;
 	 * @returns {Matrix}
 	 */
-	normpdf(u, s) {
-		const u_ = arguments.length &lt;= 0 ? Complex.create(u).scalar : Complex.ZERO;
-		const s_ = arguments.length &lt;= 1 ? Complex.create(s).scalar : Complex.ONE;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.normpdf(u_, s_);
-		});
+	normpdf(u=0.0, s=1.0) {
+		return Statistics.normpdf(this, u, s);
 	}
 
 	/**
-	 * x.normcdf(u, s) = normcdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
 	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
 	 * @param {number} [s=1.0] - &#x5206;&#x6563;
 	 * @returns {Matrix}
 	 */
-	normcdf(u, s) {
-		const u_ = arguments.length &lt;= 0 ? Complex.create(u).scalar : Complex.ZERO;
-		const s_ = arguments.length &lt;= 1 ? Complex.create(s).scalar : Complex.ONE;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.normcdf(u_, s_);
-		});
+	normcdf(u=0.0, s=1.0) {
+		return Statistics.normcdf(this, u, s);
 	}
 
 	/**
-	 * x.norminv(u, s) = norminv(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
 	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
 	 * @param {number} [s=1.0] - &#x5206;&#x6563;
 	 * @returns {Matrix}
 	 */
-	norminv(u, s) {
-		const u_ = arguments.length &lt;= 0 ? Complex.create(u).scalar : Complex.ZERO;
-		const s_ = arguments.length &lt;= 1 ? Complex.create(s).scalar : Complex.ONE;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.norminv(u_, s_);
-		});
+	norminv(u=0.0, s=1.0) {
+		return Statistics.norminv(this, u, s);
 	}
 
 	/**
-	 * t.tpdf(v) = tpdf(t, v) t&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * t&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
 	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Matrix}
 	 */
 	tpdf(v) {
-		const v_ = Matrix.create(v).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.tpdf(v_);
-		});
+		return Statistics.tpdf(this, v);
 	}
 
 	/**
-	 * t.tcdf(v) = tcdf(t, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
 	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Matrix}
 	 */
 	tcdf(v) {
-		const v_ = Matrix.create(v).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.tcdf(v_);
-		});
+		return Statistics.tcdf(this, v);
 	}
 
 	/**
-	 * p.tinv(v) = tinv(p, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
 	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Matrix}
 	 */
 	tinv(v) {
-		const v_ = Matrix.create(v).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.tinv(v_);
-		});
+		return Statistics.tinv(this, v);
 	}
 
 	/**
-	 * t.tdist(v, tails) = tdist(t, v, tails) &#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * &#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
 	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
 	 * @param {Matrix} tails - &#x5C3E;&#x90E8;(1...&#x7247;&#x5074;&#x3001;2...&#x4E21;&#x5074;)
 	 * @returns {Matrix}
 	 */
 	tdist(v, tails) {
-		const v_ = Matrix.create(v).scalar;
-		const tails_ = Matrix.create(tails).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.tdist(v_, tails_);
-		});
+		return Statistics.tdist(this, v, tails);
 	}
 
 	/**
-	 * p.tinv2(v) = tinv2(p, v) &#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * &#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
 	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Matrix}
 	 */
 	tinv2(v) {
-		const v_ = Matrix.create(v).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.tinv2(v_);
-		});
+		return Statistics.tinv2(this, v);
 	}
 
 	/**
-	 * x.chi2pdf(k) = chi2pdf(x, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
 	 * @param {Matrix} k - &#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Matrix}
 	 */
 	chi2pdf(k) {
-		const k_ = Matrix.create(k).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.chi2pdf(k_);
-		});
+		return Statistics.chi2pdf(this, k);
 	}
 
 	/**
-	 * x.chi2cdf(k) = chi2cdf(x, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
 	 * @param {Matrix} k - &#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Matrix}
 	 */
 	chi2cdf(k) {
-		const k_ = Matrix.create(k).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.chi2cdf(k_);
-		});
+		return Statistics.chi2cdf(this, k);
 	}
 	
 	/**
-	 * p.chi2inv(k) = chi2inv(p, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
 	 * @param {Matrix} k - &#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Matrix}
 	 */
 	chi2inv(k) {
-		const k_ = Matrix.create(k).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.chi2inv(k_);
-		});
+		return Statistics.chi2inv(this, k);
 	}
 
 	/**
-	 * x.fpdf(d1, d2) = fpdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
 	 * @param {Matrix} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
 	 * @param {Matrix} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Matrix}
 	 */
 	fpdf(d1, d2) {
-		const d1_ = Matrix.create(d1).scalar;
-		const d2_ = Matrix.create(d2).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.fpdf(d1_, d2_);
-		});
+		return Statistics.fpdf(this, d1, d2);
 	}
 
 	/**
-	 * x.fcdf(d1, d2) = fcdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
 	 * @param {Matrix} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
 	 * @param {Matrix} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Matrix}
 	 */
 	fcdf(d1, d2) {
-		const d1_ = Matrix.create(d1).scalar;
-		const d2_ = Matrix.create(d2).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.fcdf(d1_, d2_);
-		});
+		return Statistics.fcdf(this, d1, d2);
 	}
 
 	/**
-	 * p.finv(d1, d2) = finv(p, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
 	 * @param {Matrix} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
 	 * @param {Matrix} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Matrix}
 	 */
 	finv(d1, d2) {
-		const d1_ = Matrix.create(d1).scalar;
-		const d2_ = Matrix.create(d2).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.finv(d1_, d2_);
-		});
+		return Statistics.finv(this, d1, d2);
 	}
 	
 	/**
-	 * A.sum() &#x5408;&#x8A08;
+	 * &#x5408;&#x8A08;
 	 * @returns {Matrix}
 	 */
 	sum() {
-		const main = function(data) {
-			// &#x30AB;&#x30CF;&#x30F3;&#x306E;&#x52A0;&#x7B97;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;
-			let sum = Complex.ZERO;
-			let delta = Complex.ZERO;
-			for(let i = 0; i &lt; data.length; i++) {
-				const new_number = data[i].add(delta);
-				const new_sum = sum.add(new_number);
-				delta = new_sum.sub(sum).sub(new_number);
-				sum = new_sum;
-			}
-			return [sum];
-		};
-		return this.__column_oriented_1_dimensional_processing(main);
+		return Statistics.sum(this);
 	}
 
 	/**
-	 * A.mean() &#x76F8;&#x52A0;&#x5E73;&#x5747;
+	 * &#x76F8;&#x52A0;&#x5E73;&#x5747;
 	 * @returns {Matrix}
 	 */
 	mean() {
-		const main = function(data) {
-			// &#x30AB;&#x30CF;&#x30F3;&#x306E;&#x52A0;&#x7B97;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;
-			let sum = Complex.ZERO;
-			let delta = Complex.ZERO;
-			for(let i = 0; i &lt; data.length; i++) {
-				const new_number = data[i].add(delta);
-				const new_sum = sum.add(new_number);
-				delta = new_sum.sub(sum).sub(new_number);
-				sum = new_sum;
-			}
-			return [sum.div(data.length)];
-		};
-		return this.__column_oriented_1_dimensional_processing(main);
+		return Statistics.mean(this);
 	}
 
 	/**
-	 * A.geomean() &#x76F8;&#x4E57;&#x5E73;&#x5747;&#xFF0F;&#x5E7E;&#x4F55;&#x5E73;&#x5747;
+	 * &#x76F8;&#x4E57;&#x5E73;&#x5747;&#xFF0F;&#x5E7E;&#x4F55;&#x5E73;&#x5747;
 	 * @returns {Matrix}
 	 */
 	geomean() {
-		const main = function(data) {
-			let x = Complex.ONE;
-			for(let i = 0; i &lt; data.length; i++) {
-				x = x.mul(data[i]);
-			}
-			return [x.sqrt()];
-		};
-		return this.__column_oriented_1_dimensional_processing(main);
+		return Statistics.geomean(this);
 	}
 
 	/**
-	 * A.var() &#x5206;&#x6563;
-	 * @param {Matrix} [cor=0] - &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;&#x5206;&#x6563;), 1(&#x6A19;&#x672C;&#x5206;&#x6563;)
+	 * &#x5206;&#x6563;
+	 * @param {number} [cor=0] - &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;&#x5206;&#x6563;), 1(&#x6A19;&#x672C;&#x5206;&#x6563;)
 	 * @returns {Matrix}
 	 */
-	var(cor) {
-		const M = this.mean();
-		let col = 0;
-		const correction = arguments.length === 0 ? 0 : Matrix.create(cor).doubleValue;
-		const main = function(data) {
-			let mean;
-			if(M.isScalar()) {
-				mean = M.scalar;
-			}
-			else {
-				mean = M.getComplex(col++);
-			}
-			let x = Complex.ZERO;
-			for(let i = 0; i &lt; data.length; i++) {
-				const a = data[i].sub(mean);
-				x = x.add(a.dot(a));
-			}
-			if(data.length === 1) {
-				return [x.div(data.length)];
-			}
-			else {
-				return [x.div(data.length - 1 + correction)];
-			}
-		};
-		return this.__column_oriented_1_dimensional_processing(main);
+	var(cor=0) {
+		return Statistics.var(this, cor);
 	}
 
 	/**
-	 * A.std() &#x6A19;&#x6E96;&#x504F;&#x5DEE;
+	 * &#x6A19;&#x6E96;&#x504F;&#x5DEE;
 	 * @param {Matrix} [cor=0] - &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;), 1(&#x6A19;&#x672C;)
 	 * @returns {Matrix}
 	 */
-	std(cor) {
-		const correction = arguments.length === 0 ? 0 : Matrix.create(cor).doubleValue;
-		const M = this.var(correction);
-		M._each(function(num) {
-			return num.sqrt();
-		});
-		return M;
+	std(cor=0) {
+		return Statistics.std(this, cor);
 	}
 
 	/**
-	 * A.cov() &#x5171;&#x5206;&#x6563;&#x884C;&#x5217;
+	 * &#x5171;&#x5206;&#x6563;&#x884C;&#x5217;
 	 * @param {Matrix} [cor=0] - &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;&#x5206;&#x6563;), 1(&#x6A19;&#x672C;&#x5206;&#x6563;)
 	 * @returns {Matrix}
 	 */
-	cov(cor) {
-		let correction = arguments.length === 0 ? 0 : Matrix.create(cor).doubleValue;
-		if(this.isVector()) {
-			return this.var(correction);
-		}
-		correction = this.row_length === 1 ? 1 : correction;
-		const x = this.matrix_array;
-		const mean = this.mean().matrix_array[0];
-		// &#x4E0A;&#x4E09;&#x89D2;&#x884C;&#x5217;&#x3001;&#x5BFE;&#x89D2;&#x884C;&#x5217;
-		const y = new Array(this.column_length);
-		for(let a = 0; a &lt; this.column_length; a++) {
-			const a_mean = mean[a];
-			y[a] = new Array(this.column_length);
-			for(let b = a; b &lt; this.column_length; b++) {
-				const b_mean = mean[b];
-				let sum = Complex.ZERO;
-				for(let row = 0; row &lt; this.row_length; row++) {
-					sum = sum.add((x[row][a].sub(a_mean)).dot(x[row][b].sub(b_mean)));
-				}
-				y[a][b] = sum.div(this.row_length - 1 + correction);
-			}
-		}
-		// &#x4E0B;&#x4E09;&#x89D2;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x308B;
-		for(let row = 1; row &lt; y[0].length; row++) {
-			for(let col = 0; col &lt; row; col++) {
-				y[row][col] = y[col][row];
-			}
-		}
-		return new Matrix(y);
+	cov(cor=0) {
+		return Statistics.cov(this, cor);
 	}
 
 	/**
-	 * A.normalize() &#x30B5;&#x30F3;&#x30D7;&#x30EB;&#x3092;&#x5E73;&#x5747;&#x5024;0&#x3001;&#x6A19;&#x6E96;&#x504F;&#x5DEE;1&#x306B;&#x30CE;&#x30FC;&#x30DE;&#x30E9;&#x30A4;&#x30BA;
+	 * &#x6A19;&#x672C;&#x306E;&#x6A19;&#x6E96;&#x5316;
+	 * &#x5E73;&#x5747;&#x5024;0&#x3001;&#x6A19;&#x6E96;&#x504F;&#x5DEE;1&#x306B;&#x5909;&#x66F4;&#x3059;&#x308B;
 	 * @returns {Matrix}
 	 */
 	normalize() {
-		const mean_zero = this.sub(this.mean());
-		const std_one = mean_zero.ndiv(mean_zero.std());
-		return std_one;
+		return Statistics.normalize(this);
 	}
 
 	/**
-	 * A.corrcoef() &#x76F8;&#x95A2;&#x884C;&#x5217;
+	 * &#x76F8;&#x95A2;&#x884C;&#x5217;
 	 * @returns {Matrix}
 	 */
 	corrcoef() {
-		return this.normalize().cov();
+		return Statistics.corrcoef(this);
 	}
-
 
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 	// signal &#x4FE1;&#x53F7;&#x51E6;&#x7406;&#x7528;
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 
 	/**
-	 * &#x5404;&#x9805;&#x306B; sinc()
+	 * &#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
 	 * @returns {Matrix}
 	 */
-	sinc() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.sinc();
-		});
+	fft() {
+		return Signal.fft(this);
 	}
 
 	/**
-	 * A.fft() &#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * &#x9006;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
 	 * @returns {Matrix}
 	 */
-	fft(is_2_dimensions = false) {
-		const main = function(data) {
-			const real = new Array(data.length);
-			const imag = new Array(data.length);
-			for(let i = 0; i &lt; data.length; i++) {
-				real[i] = data[i].real;
-				imag[i] = data[i].imag;
-			}
-			const result = Signal.fft(real, imag);
-			const y = new Array(data.length);
-			for(let i = 0; i &lt; data.length; i++) {
-				y[i] = new Complex([result.real[i], result.imag[i]]);
-			}
-			return y;
-		};
-		return is_2_dimensions ? this.__column_oriented_2_dimensional_processing(main) : this.__column_oriented_1_dimensional_processing(main);
+	ifft() {
+		return Signal.ifft(this);
 	}
 
 	/**
-	 * A.ifft() &#x9006;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
-	 * @returns {Matrix}
-	 */
-	ifft(is_2_dimensions = false) {
-		const main = function(data) {
-			const real = new Array(data.length);
-			const imag = new Array(data.length);
-			for(let i = 0; i &lt; data.length; i++) {
-				real[i] = data[i].real;
-				imag[i] = data[i].imag;
-			}
-			const result = Signal.ifft(real, imag);
-			const y = new Array(data.length);
-			for(let i = 0; i &lt; data.length; i++) {
-				y[i] = new Complex([result.real[i], result.imag[i]]);
-			}
-			return y;
-		};
-		return is_2_dimensions ? this.__column_oriented_2_dimensional_processing(main) : this.__column_oriented_1_dimensional_processing(main);
-	}
-
-	/**
-	 * A.powerfft() &#x30D1;&#x30EF;&#x30FC;&#x30B9;&#x30DA;&#x30AF;&#x30C8;&#x30EB;&#x5BC6;&#x5EA6;
+	 * &#x30D1;&#x30EF;&#x30FC;&#x30B9;&#x30DA;&#x30AF;&#x30C8;&#x30EB;&#x5BC6;&#x5EA6;
 	 * @returns {Matrix}
 	 */
 	powerfft() {
-		const main = function(data) {
-			const real = new Array(data.length);
-			const imag = new Array(data.length);
-			for(let i = 0; i &lt; data.length; i++) {
-				real[i] = data[i].real;
-				imag[i] = data[i].imag;
-			}
-			const result = Signal.powerfft(real, imag);
-			const y = new Array(data.length);
-			for(let i = 0; i &lt; data.length; i++) {
-				y[i] = new Complex([result.real[i], result.imag[i]]);
-			}
-			return y;
-		};
-		return this.__column_oriented_1_dimensional_processing(main);
+		return Signal.powerfft(this);
 	}
 
 	/**
-	 * A.dct() DCT-II (DCT)
+	 * &#x96E2;&#x6563;&#x30B3;&#x30B5;&#x30A4;&#x30F3;&#x5909;&#x63DB;
 	 * @returns {Matrix}
 	 */
-	dct(is_2_dimensions = false) {
-		if(this.isComplex()) {
-			throw &quot;dct don&apos;t support complex numbers.&quot;;
-		}
-		const main = function(data) {
-			const real = new Array(data.length);
-			for(let i = 0; i &lt; data.length; i++) {
-				real[i] = data[i].real;
-			}
-			const result = Signal.dct(real);
-			const y = new Array(data.length);
-			for(let i = 0; i &lt; data.length; i++) {
-				y[i] = new Complex(result[i]);
-			}
-			return y;
-		};
-		return is_2_dimensions ? this.__column_oriented_2_dimensional_processing(main) : this.__column_oriented_1_dimensional_processing(main);
+	dct() {
+		return Signal.dct(this);
 	}
 
 	/**
-	 * A.idct() DCT-III (IDCT)
+	 * &#x9006;&#x96E2;&#x6563;&#x30B3;&#x30B5;&#x30A4;&#x30F3;&#x5909;&#x63DB;
 	 * @returns {Matrix}
 	 */
-	idct(is_2_dimensions = false) {
-		if(this.isComplex()) {
-			throw &quot;idct don&apos;t support complex numbers.&quot;;
-		}
-		const main = function(data) {
-			const real = new Array(data.length);
-			for(let i = 0; i &lt; data.length; i++) {
-				real[i] = data[i].real;
-			}
-			const result = Signal.idct(real);
-			const y = new Array(data.length);
-			for(let i = 0; i &lt; data.length; i++) {
-				y[i] = new Complex(result[i]);
-			}
-			return y;
-		};
-		return is_2_dimensions ? this.__column_oriented_2_dimensional_processing(main) : this.__column_oriented_1_dimensional_processing(main);
+	idct() {
+		return Signal.idct(this);
 	}
 
 	/**
-	 * A.fft2() 2&#x6B21;&#x5143;&#x306E;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * 2&#x6B21;&#x5143;&#x306E;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
 	 * @returns {Matrix}
 	 */
 	fft2() {
-		return this.fft(true);
+		return Signal.fft2(this);
 	}
 
 	/**
-	 * A.ifft2() 2&#x6B21;&#x5143;&#x306E;&#x9006;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * 2&#x6B21;&#x5143;&#x306E;&#x9006;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
 	 * @returns {Matrix}
 	 */
 	ifft2() {
-		return this.ifft(true);
+		return Signal.ifft2(this);
 	}
 
 	/**
-	 * A.dct2() 2&#x6B21;&#x5143;&#x306E;DCT&#x5909;&#x63DB;
+	 * 2&#x6B21;&#x5143;&#x306E;&#x96E2;&#x6563;&#x30B3;&#x30B5;&#x30A4;&#x30F3;&#x5909;&#x63DB;
 	 * @returns {Matrix}
 	 */
 	dct2() {
-		return this.dct2(true);
+		return Signal.dct2(this);
 	}
 
 	/**
-	 * A.idct2() 2&#x6B21;&#x5143;&#x306E;&#x9006;DCT&#x5909;&#x63DB;
+	 * 2&#x6B21;&#x5143;&#x306E;&#x9006;&#x96E2;&#x6563;&#x30B3;&#x30B5;&#x30A4;&#x30F3;&#x5909;&#x63DB;
 	 * @returns {Matrix}
 	 */
 	idct2() {
-		return this.idct(true);
+		return Signal.idct2(this);
 	}
 
 	/**
-	 * A.conv(B) = conv(A, B) &#x7573;&#x307F;&#x8FBC;&#x307F;&#x7A4D;&#x5206;&#x3001;&#x591A;&#x9805;&#x5F0F;&#x4E57;&#x7B97;
+	 * &#x7573;&#x307F;&#x8FBC;&#x307F;&#x7A4D;&#x5206;&#x3001;&#x591A;&#x9805;&#x5F0F;&#x4E57;&#x7B97;
 	 * @param {Matrix} number
 	 * @returns {Matrix}
 	 */
 	conv(number) {
-		const M1 = this;
-		const M2 = Matrix.create(number);
-		if(M1.isMatrix() || M2.isMatrix()) {
-			throw &quot;conv don&apos;t support matrix numbers.&quot;;
-		}
-		const M1_real = new Array(M1.length);
-		const M1_imag = new Array(M1.length);
-		const M2_real = new Array(M2.length);
-		const M2_imag = new Array(M2.length);
-		if(M1.isRow()) {
-			for(let i = 0; i &lt; M1.column_length; i++) {
-				M1_real[i] = M1.matrix_array[0][i].real;
-				M1_imag[i] = M1.matrix_array[0][i].imag;
-			}
-		}
-		else {
-			for(let i = 0; i &lt; M1.row_length; i++) {
-				M1_real[i] = M1.matrix_array[i][0].real;
-				M1_imag[i] = M1.matrix_array[i][0].imag;
-			}
-		}
-		if(M2.isRow()) {
-			for(let i = 0; i &lt; M2.column_length; i++) {
-				M2_real[i] = M2.matrix_array[0][i].real;
-				M2_imag[i] = M2.matrix_array[0][i].imag;
-			}
-		}
-		else {
-			for(let i = 0; i &lt; M2.row_length; i++) {
-				M2_real[i] = M2.matrix_array[i][0].real;
-				M2_imag[i] = M2.matrix_array[i][0].imag;
-			}
-		}
-		const y = Signal.conv(M1_real, M1_imag, M2_real, M2_imag);
-		const m = new Array(y.real.length);
-		for(let i = 0; i &lt; y.real.length; i++) {
-			m[i] = new Complex([y.real[i], y.imag[i]]);
-		}
-		const M = new Matrix([m]);
-		return M2.isRow() ? M : M.transpose();
+		return Signal.conv(this, number);
 	}
 
 	/**
-	 * A.xcorr(B) = xcorr(A, B) &#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x95A2;&#x6570;&#x3001;&#x76F8;&#x4E92;&#x76F8;&#x95A2;&#x95A2;&#x6570;
-	 * @param {Matrix} [number=this] - &#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x95A2;&#x6570;
+	 * &#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x95A2;&#x6570;&#x3001;&#x76F8;&#x4E92;&#x76F8;&#x95A2;&#x95A2;&#x6570;
+	 * @param {Matrix} [number] - &#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x95A2;&#x6570;
 	 * @returns {Matrix}
 	 */
 	xcorr(number) {
-		if(!number) {
-			return this.xcorr(this);
-		}
-		const M1 = this;
-		const M2 = Matrix.create(number);
-		if(M1.isMatrix() || M2.isMatrix()) {
-			throw &quot;conv don&apos;t support matrix numbers.&quot;;
-		}
-		const M1_real = new Array(M1.length);
-		const M1_imag = new Array(M1.length);
-		const M2_real = new Array(M2.length);
-		const M2_imag = new Array(M2.length);
-		if(M1.isRow()) {
-			for(let i = 0; i &lt; M1.column_length; i++) {
-				M1_real[i] = M1.matrix_array[0][i].real;
-				M1_imag[i] = M1.matrix_array[0][i].imag;
-			}
-		}
-		else {
-			for(let i = 0; i &lt; M1.row_length; i++) {
-				M1_real[i] = M1.matrix_array[i][0].real;
-				M1_imag[i] = M1.matrix_array[i][0].imag;
-			}
-		}
-		if(M2.isRow()) {
-			for(let i = 0; i &lt; M2.column_length; i++) {
-				M2_real[i] = M2.matrix_array[0][i].real;
-				M2_imag[i] = M2.matrix_array[0][i].imag;
-			}
-		}
-		else {
-			for(let i = 0; i &lt; M2.row_length; i++) {
-				M2_real[i] = M2.matrix_array[i][0].real;
-				M2_imag[i] = M2.matrix_array[i][0].imag;
-			}
-		}
-		const y = Signal.xcorr(M1_real, M1_imag, M2_real, M2_imag);
-		const m = new Array(y.real.length);
-		for(let i = 0; i &lt; y.real.length; i++) {
-			m[i] = new Complex([y.real[i], y.imag[i]]);
-		}
-		const M = new Matrix([m]);
-		return M1.isRow() ? M : M.transpose();
+		return Signal.xcorr(this, number);
 	}
 
 	/**
@@ -3955,9 +2760,7 @@ export default class Matrix {
 	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
 	 */
 	static window(name, size, isPeriodic) {
-		const size_ = Matrix.create(size).intValue;
-		const y = Signal.window(name, size_, isPeriodic);
-		return (new Matrix(y)).transpose();
+		return Signal.window(name, size, isPeriodic);
 	}
 
 	/**
@@ -3967,7 +2770,7 @@ export default class Matrix {
 	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
 	 */
 	static hann(size, isPeriodic) {
-		return Matrix.window(&quot;hann&quot;, size, isPeriodic);
+		return Signal.hann(size, isPeriodic);
 	}
 	
 	/**
@@ -3977,10 +2780,9 @@ export default class Matrix {
 	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
 	 */
 	static hamming(size, isPeriodic) {
-		return Matrix.window(&quot;hamming&quot;, size, isPeriodic);
+		return Signal.hamming(size, isPeriodic);
 	}
 	
-
 }
 </code></pre>
 

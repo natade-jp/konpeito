@@ -103,11 +103,3 @@ console.log($("[1 2 30]").dct().toString());
 > -4.0000 - 2.0000i  1.0000 - 5.0000i  0.0000 + 4.0000i  7.0000 + 7.0000i
 > 19.0526 -20.5061  11.0227
 ```
-
-## Examples
-
-Please check the console and main.mjs.
-- [BigDecimal](./doc/examples/demos/BigDecimal/)
-- [BigInteger](./doc/doc/examples/demos/BigInteger/)
-- [Matrix](./doc/doc/examples/demos/Matrix/)
-- [Random](./doc/doc/examples/demos/Random/)

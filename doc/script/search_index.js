@@ -18,6 +18,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "konpeito.js/src/mathutil/linearalgebra.mjs~linearalgebra",
+    "class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html",
+    "<span>LinearAlgebra</span> <span class=\"search-result-import-path\">konpeito.js/src/MathUtil/LinearAlgebra.mjs</span>",
+    "class"
+  ],
+  [
     "konpeito.js/src/mathutil/mathcontext.mjs~mathcontext",
     "class/src/MathUtil/MathContext.mjs~MathContext.html",
     "<span>MathContext</span> <span class=\"search-result-import-path\">konpeito.js/src/MathUtil/MathContext.mjs</span>",
@@ -45,6 +51,18 @@ window.esdocSearchIndex = [
     "konpeito.js/src/mathutil/roundingmode.mjs~roundingmodeentity",
     "class/src/MathUtil/RoundingMode.mjs~RoundingModeEntity.html",
     "<span>RoundingModeEntity</span> <span class=\"search-result-import-path\">konpeito.js/src/MathUtil/RoundingMode.mjs</span>",
+    "class"
+  ],
+  [
+    "konpeito.js/src/mathutil/signal.mjs~signal",
+    "class/src/MathUtil/Signal.mjs~Signal.html",
+    "<span>Signal</span> <span class=\"search-result-import-path\">konpeito.js/src/MathUtil/Signal.mjs</span>",
+    "class"
+  ],
+  [
+    "konpeito.js/src/mathutil/statistics.mjs~statistics",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html",
+    "<span>Statistics</span> <span class=\"search-result-import-path\">konpeito.js/src/MathUtil/Statistics.mjs</span>",
     "class"
   ],
   [
@@ -267,6 +285,12 @@ window.esdocSearchIndex = [
     "src/math/bigdecimal.mjs~bigdecimal#setscale",
     "class/src/Math/BigDecimal.mjs~BigDecimal.html#instance-method-setScale",
     "src/Math/BigDecimal.mjs~BigDecimal#setScale",
+    "method"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal#sign",
+    "class/src/Math/BigDecimal.mjs~BigDecimal.html#instance-method-sign",
+    "src/Math/BigDecimal.mjs~BigDecimal#sign",
     "method"
   ],
   [
@@ -520,6 +544,12 @@ window.esdocSearchIndex = [
     "class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-_shift",
     "src/Math/BigInteger.mjs~BigInteger#_shift",
     "method"
+  ],
+  [
+    "src/math/biginteger.mjs~biginteger#_sign",
+    "class/src/Math/BigInteger.mjs~BigInteger.html#instance-member-_sign",
+    "src/Math/BigInteger.mjs~BigInteger#_sign",
+    "member"
   ],
   [
     "src/math/biginteger.mjs~biginteger#_subtract",
@@ -817,9 +847,9 @@ window.esdocSearchIndex = [
   ],
   [
     "src/math/biginteger.mjs~biginteger#sign",
-    "class/src/Math/BigInteger.mjs~BigInteger.html#instance-member-sign",
+    "class/src/Math/BigInteger.mjs~BigInteger.html#instance-method-sign",
     "src/Math/BigInteger.mjs~BigInteger#sign",
-    "member"
+    "method"
   ],
   [
     "src/math/biginteger.mjs~biginteger#signum",
@@ -972,57 +1002,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#beta",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-beta",
-    "src/Math/Complex.mjs~Complex#beta",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#betacdf",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-betacdf",
-    "src/Math/Complex.mjs~Complex#betacdf",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#betainc",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-betainc",
-    "src/Math/Complex.mjs~Complex#betainc",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#betainv",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-betainv",
-    "src/Math/Complex.mjs~Complex#betainv",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#betapdf",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-betapdf",
-    "src/Math/Complex.mjs~Complex#betapdf",
-    "method"
-  ],
-  [
     "src/math/complex.mjs~complex#ceil",
     "class/src/Math/Complex.mjs~Complex.html#instance-method-ceil",
     "src/Math/Complex.mjs~Complex#ceil",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#chi2cdf",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-chi2cdf",
-    "src/Math/Complex.mjs~Complex#chi2cdf",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#chi2inv",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-chi2inv",
-    "src/Math/Complex.mjs~Complex#chi2inv",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#chi2pdf",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-chi2pdf",
-    "src/Math/Complex.mjs~Complex#chi2pdf",
     "method"
   ],
   [
@@ -1074,39 +1056,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#erf",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-erf",
-    "src/Math/Complex.mjs~Complex#erf",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#erfc",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-erfc",
-    "src/Math/Complex.mjs~Complex#erfc",
-    "method"
-  ],
-  [
     "src/math/complex.mjs~complex#exp",
     "class/src/Math/Complex.mjs~Complex.html#instance-method-exp",
     "src/Math/Complex.mjs~Complex#exp",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#factorial",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-factorial",
-    "src/Math/Complex.mjs~Complex#factorial",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#fcdf",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-fcdf",
-    "src/Math/Complex.mjs~Complex#fcdf",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#finv",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-finv",
-    "src/Math/Complex.mjs~Complex#finv",
     "method"
   ],
   [
@@ -1122,51 +1074,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#fpdf",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-fpdf",
-    "src/Math/Complex.mjs~Complex#fpdf",
-    "method"
-  ],
-  [
     "src/math/complex.mjs~complex#fract",
     "class/src/Math/Complex.mjs~Complex.html#instance-method-fract",
     "src/Math/Complex.mjs~Complex#fract",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#gamcdf",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-gamcdf",
-    "src/Math/Complex.mjs~Complex#gamcdf",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#gaminv",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-gaminv",
-    "src/Math/Complex.mjs~Complex#gaminv",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#gamma",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-gamma",
-    "src/Math/Complex.mjs~Complex#gamma",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#gammainc",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-gammainc",
-    "src/Math/Complex.mjs~Complex#gammainc",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#gammaln",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-gammaln",
-    "src/Math/Complex.mjs~Complex#gammaln",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#gampdf",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-gampdf",
-    "src/Math/Complex.mjs~Complex#gampdf",
     "method"
   ],
   [
@@ -1290,12 +1200,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#nchoosek",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-nchoosek",
-    "src/Math/Complex.mjs~Complex#nchoosek",
-    "method"
-  ],
-  [
     "src/math/complex.mjs~complex#negate",
     "class/src/Math/Complex.mjs~Complex.html#instance-method-negate",
     "src/Math/Complex.mjs~Complex#negate",
@@ -1306,24 +1210,6 @@ window.esdocSearchIndex = [
     "class/src/Math/Complex.mjs~Complex.html#instance-get-norm",
     "src/Math/Complex.mjs~Complex#norm",
     "member"
-  ],
-  [
-    "src/math/complex.mjs~complex#normcdf",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-normcdf",
-    "src/Math/Complex.mjs~Complex#normcdf",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#norminv",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-norminv",
-    "src/Math/Complex.mjs~Complex#norminv",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#normpdf",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-normpdf",
-    "src/Math/Complex.mjs~Complex#normpdf",
-    "method"
   ],
   [
     "src/math/complex.mjs~complex#pow",
@@ -1386,30 +1272,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#tcdf",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-tcdf",
-    "src/Math/Complex.mjs~Complex#tcdf",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#tdist",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-tdist",
-    "src/Math/Complex.mjs~Complex#tdist",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#tinv",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-tinv",
-    "src/Math/Complex.mjs~Complex#tinv",
-    "method"
-  ],
-  [
-    "src/math/complex.mjs~complex#tinv2",
-    "class/src/Math/Complex.mjs~Complex.html#instance-method-tinv2",
-    "src/Math/Complex.mjs~Complex#tinv2",
-    "method"
-  ],
-  [
     "src/math/complex.mjs~complex#tostring",
     "class/src/Math/Complex.mjs~Complex.html#instance-method-toString",
     "src/Math/Complex.mjs~Complex#toString",
@@ -1464,6 +1326,24 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/math/complex.mjs~complex._tocomplex",
+    "class/src/Math/Complex.mjs~Complex.html#static-method-_toComplex",
+    "src/Math/Complex.mjs~Complex._toComplex",
+    "method"
+  ],
+  [
+    "src/math/complex.mjs~complex._tofloat",
+    "class/src/Math/Complex.mjs~Complex.html#static-method-_toFloat",
+    "src/Math/Complex.mjs~Complex._toFloat",
+    "method"
+  ],
+  [
+    "src/math/complex.mjs~complex._tointeger",
+    "class/src/Math/Complex.mjs~Complex.html#static-method-_toInteger",
+    "src/Math/Complex.mjs~Complex._toInteger",
+    "method"
+  ],
+  [
     "src/math/complex.mjs~complex.create",
     "class/src/Math/Complex.mjs~Complex.html#static-method-create",
     "src/Math/Complex.mjs~Complex.create",
@@ -1479,6 +1359,12 @@ window.esdocSearchIndex = [
     "src/math/complex.mjs~complex.randn",
     "class/src/Math/Complex.mjs~Complex.html#static-method-randn",
     "src/Math/Complex.mjs~Complex.randn",
+    "method"
+  ],
+  [
+    "src/math/complex.mjs~complex.valueof",
+    "class/src/Math/Complex.mjs~Complex.html#static-method-valueOf",
+    "src/Math/Complex.mjs~Complex.valueOf",
     "method"
   ],
   [
@@ -1551,18 +1437,6 @@ window.esdocSearchIndex = [
     "src/math/matrix.mjs~matrix#_exchange_row",
     "class/src/Math/Matrix.mjs~Matrix.html#instance-method-_exchange_row",
     "src/Math/Matrix.mjs~Matrix#_exchange_row",
-    "method"
-  ],
-  [
-    "src/math/matrix.mjs~matrix#_get_linear_dependence_vector",
-    "class/src/Math/Matrix.mjs~Matrix.html#instance-method-_get_linear_dependence_vector",
-    "src/Math/Matrix.mjs~Matrix#_get_linear_dependence_vector",
-    "method"
-  ],
-  [
-    "src/math/matrix.mjs~matrix#_max_row_number",
-    "class/src/Math/Matrix.mjs~Matrix.html#instance-method-_max_row_number",
-    "src/Math/Matrix.mjs~Matrix#_max_row_number",
     "method"
   ],
   [
@@ -2430,6 +2304,30 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/matrix.mjs~matrix._tocomplex",
+    "class/src/Math/Matrix.mjs~Matrix.html#static-method-_toComplex",
+    "src/Math/Matrix.mjs~Matrix._toComplex",
+    "method"
+  ],
+  [
+    "src/math/matrix.mjs~matrix._tofloat",
+    "class/src/Math/Matrix.mjs~Matrix.html#static-method-_toFloat",
+    "src/Math/Matrix.mjs~Matrix._toFloat",
+    "method"
+  ],
+  [
+    "src/math/matrix.mjs~matrix._tointeger",
+    "class/src/Math/Matrix.mjs~Matrix.html#static-method-_toInteger",
+    "src/Math/Matrix.mjs~Matrix._toInteger",
+    "method"
+  ],
+  [
+    "src/math/matrix.mjs~matrix._tomatrix",
+    "class/src/Math/Matrix.mjs~Matrix.html#static-method-_toMatrix",
+    "src/Math/Matrix.mjs~Matrix._toMatrix",
+    "method"
+  ],
+  [
     "src/math/matrix.mjs~matrix.create",
     "class/src/Math/Matrix.mjs~Matrix.html#static-method-create",
     "src/Math/Matrix.mjs~Matrix.create",
@@ -2484,6 +2382,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/matrix.mjs~matrix.valueof",
+    "class/src/Math/Matrix.mjs~Matrix.html#static-method-valueOf",
+    "src/Math/Matrix.mjs~Matrix.valueOf",
+    "method"
+  ],
+  [
     "src/math/matrix.mjs~matrix.window",
     "class/src/Math/Matrix.mjs~Matrix.html#static-method-window",
     "src/Math/Matrix.mjs~Matrix.window",
@@ -2493,6 +2397,84 @@ window.esdocSearchIndex = [
     "src/math/matrix.mjs~matrix.zeros",
     "class/src/Math/Matrix.mjs~Matrix.html#static-method-zeros",
     "src/Math/Matrix.mjs~Matrix.zeros",
+    "method"
+  ],
+  [
+    "src/mathutil/linearalgebra.mjs",
+    "file/src/MathUtil/LinearAlgebra.mjs.html",
+    "src/MathUtil/LinearAlgebra.mjs",
+    "file"
+  ],
+  [
+    "src/mathutil/linearalgebra.mjs~linearalgebra.det",
+    "class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html#static-method-det",
+    "src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.det",
+    "method"
+  ],
+  [
+    "src/mathutil/linearalgebra.mjs~linearalgebra.eig",
+    "class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html#static-method-eig",
+    "src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.eig",
+    "method"
+  ],
+  [
+    "src/mathutil/linearalgebra.mjs~linearalgebra.inner",
+    "class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html#static-method-inner",
+    "src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.inner",
+    "method"
+  ],
+  [
+    "src/mathutil/linearalgebra.mjs~linearalgebra.inv",
+    "class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html#static-method-inv",
+    "src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.inv",
+    "method"
+  ],
+  [
+    "src/mathutil/linearalgebra.mjs~linearalgebra.linsolve",
+    "class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html#static-method-linsolve",
+    "src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.linsolve",
+    "method"
+  ],
+  [
+    "src/mathutil/linearalgebra.mjs~linearalgebra.lup",
+    "class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html#static-method-lup",
+    "src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.lup",
+    "method"
+  ],
+  [
+    "src/mathutil/linearalgebra.mjs~linearalgebra.norm",
+    "class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html#static-method-norm",
+    "src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.norm",
+    "method"
+  ],
+  [
+    "src/mathutil/linearalgebra.mjs~linearalgebra.pinv",
+    "class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html#static-method-pinv",
+    "src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.pinv",
+    "method"
+  ],
+  [
+    "src/mathutil/linearalgebra.mjs~linearalgebra.qr",
+    "class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html#static-method-qr",
+    "src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.qr",
+    "method"
+  ],
+  [
+    "src/mathutil/linearalgebra.mjs~linearalgebra.rank",
+    "class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html#static-method-rank",
+    "src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.rank",
+    "method"
+  ],
+  [
+    "src/mathutil/linearalgebra.mjs~linearalgebra.svd",
+    "class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html#static-method-svd",
+    "src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.svd",
+    "method"
+  ],
+  [
+    "src/mathutil/linearalgebra.mjs~linearalgebra.tridiagonalize",
+    "class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html#static-method-tridiagonalize",
+    "src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.tridiagonalize",
     "method"
   ],
   [
@@ -2748,10 +2730,316 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/mathutil/signal.mjs~signal.conv",
+    "class/src/MathUtil/Signal.mjs~Signal.html#static-method-conv",
+    "src/MathUtil/Signal.mjs~Signal.conv",
+    "method"
+  ],
+  [
+    "src/mathutil/signal.mjs~signal.dct",
+    "class/src/MathUtil/Signal.mjs~Signal.html#static-method-dct",
+    "src/MathUtil/Signal.mjs~Signal.dct",
+    "method"
+  ],
+  [
+    "src/mathutil/signal.mjs~signal.dct2",
+    "class/src/MathUtil/Signal.mjs~Signal.html#static-method-dct2",
+    "src/MathUtil/Signal.mjs~Signal.dct2",
+    "method"
+  ],
+  [
+    "src/mathutil/signal.mjs~signal.fft",
+    "class/src/MathUtil/Signal.mjs~Signal.html#static-method-fft",
+    "src/MathUtil/Signal.mjs~Signal.fft",
+    "method"
+  ],
+  [
+    "src/mathutil/signal.mjs~signal.fft2",
+    "class/src/MathUtil/Signal.mjs~Signal.html#static-method-fft2",
+    "src/MathUtil/Signal.mjs~Signal.fft2",
+    "method"
+  ],
+  [
+    "src/mathutil/signal.mjs~signal.hamming",
+    "class/src/MathUtil/Signal.mjs~Signal.html#static-method-hamming",
+    "src/MathUtil/Signal.mjs~Signal.hamming",
+    "method"
+  ],
+  [
+    "src/mathutil/signal.mjs~signal.hann",
+    "class/src/MathUtil/Signal.mjs~Signal.html#static-method-hann",
+    "src/MathUtil/Signal.mjs~Signal.hann",
+    "method"
+  ],
+  [
+    "src/mathutil/signal.mjs~signal.idct",
+    "class/src/MathUtil/Signal.mjs~Signal.html#static-method-idct",
+    "src/MathUtil/Signal.mjs~Signal.idct",
+    "method"
+  ],
+  [
+    "src/mathutil/signal.mjs~signal.idct2",
+    "class/src/MathUtil/Signal.mjs~Signal.html#static-method-idct2",
+    "src/MathUtil/Signal.mjs~Signal.idct2",
+    "method"
+  ],
+  [
+    "src/mathutil/signal.mjs~signal.ifft",
+    "class/src/MathUtil/Signal.mjs~Signal.html#static-method-ifft",
+    "src/MathUtil/Signal.mjs~Signal.ifft",
+    "method"
+  ],
+  [
+    "src/mathutil/signal.mjs~signal.ifft2",
+    "class/src/MathUtil/Signal.mjs~Signal.html#static-method-ifft2",
+    "src/MathUtil/Signal.mjs~Signal.ifft2",
+    "method"
+  ],
+  [
+    "src/mathutil/signal.mjs~signal.powerfft",
+    "class/src/MathUtil/Signal.mjs~Signal.html#static-method-powerfft",
+    "src/MathUtil/Signal.mjs~Signal.powerfft",
+    "method"
+  ],
+  [
+    "src/mathutil/signal.mjs~signal.window",
+    "class/src/MathUtil/Signal.mjs~Signal.html#static-method-window",
+    "src/MathUtil/Signal.mjs~Signal.window",
+    "method"
+  ],
+  [
+    "src/mathutil/signal.mjs~signal.xcorr",
+    "class/src/MathUtil/Signal.mjs~Signal.html#static-method-xcorr",
+    "src/MathUtil/Signal.mjs~Signal.xcorr",
+    "method"
+  ],
+  [
     "src/mathutil/statistics.mjs",
     "file/src/MathUtil/Statistics.mjs.html",
     "src/MathUtil/Statistics.mjs",
     "file"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.beta",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-beta",
+    "src/MathUtil/Statistics.mjs~Statistics.beta",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.betacdf",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-betacdf",
+    "src/MathUtil/Statistics.mjs~Statistics.betacdf",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.betainc",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-betainc",
+    "src/MathUtil/Statistics.mjs~Statistics.betainc",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.betainv",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-betainv",
+    "src/MathUtil/Statistics.mjs~Statistics.betainv",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.betapdf",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-betapdf",
+    "src/MathUtil/Statistics.mjs~Statistics.betapdf",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.chi2cdf",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-chi2cdf",
+    "src/MathUtil/Statistics.mjs~Statistics.chi2cdf",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.chi2inv",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-chi2inv",
+    "src/MathUtil/Statistics.mjs~Statistics.chi2inv",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.chi2pdf",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-chi2pdf",
+    "src/MathUtil/Statistics.mjs~Statistics.chi2pdf",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.corrcoef",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-corrcoef",
+    "src/MathUtil/Statistics.mjs~Statistics.corrcoef",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.cov",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-cov",
+    "src/MathUtil/Statistics.mjs~Statistics.cov",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.erf",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-erf",
+    "src/MathUtil/Statistics.mjs~Statistics.erf",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.erfc",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-erfc",
+    "src/MathUtil/Statistics.mjs~Statistics.erfc",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.factorial",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-factorial",
+    "src/MathUtil/Statistics.mjs~Statistics.factorial",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.fcdf",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-fcdf",
+    "src/MathUtil/Statistics.mjs~Statistics.fcdf",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.finv",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-finv",
+    "src/MathUtil/Statistics.mjs~Statistics.finv",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.fpdf",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-fpdf",
+    "src/MathUtil/Statistics.mjs~Statistics.fpdf",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.gamcdf",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-gamcdf",
+    "src/MathUtil/Statistics.mjs~Statistics.gamcdf",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.gaminv",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-gaminv",
+    "src/MathUtil/Statistics.mjs~Statistics.gaminv",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.gamma",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-gamma",
+    "src/MathUtil/Statistics.mjs~Statistics.gamma",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.gammainc",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-gammainc",
+    "src/MathUtil/Statistics.mjs~Statistics.gammainc",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.gammaln",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-gammaln",
+    "src/MathUtil/Statistics.mjs~Statistics.gammaln",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.gampdf",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-gampdf",
+    "src/MathUtil/Statistics.mjs~Statistics.gampdf",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.geomean",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-geomean",
+    "src/MathUtil/Statistics.mjs~Statistics.geomean",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.mean",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-mean",
+    "src/MathUtil/Statistics.mjs~Statistics.mean",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.nchoosek",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-nchoosek",
+    "src/MathUtil/Statistics.mjs~Statistics.nchoosek",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.normalize",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-normalize",
+    "src/MathUtil/Statistics.mjs~Statistics.normalize",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.normcdf",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-normcdf",
+    "src/MathUtil/Statistics.mjs~Statistics.normcdf",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.norminv",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-norminv",
+    "src/MathUtil/Statistics.mjs~Statistics.norminv",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.normpdf",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-normpdf",
+    "src/MathUtil/Statistics.mjs~Statistics.normpdf",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.std",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-std",
+    "src/MathUtil/Statistics.mjs~Statistics.std",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.sum",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-sum",
+    "src/MathUtil/Statistics.mjs~Statistics.sum",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.tcdf",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-tcdf",
+    "src/MathUtil/Statistics.mjs~Statistics.tcdf",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.tdist",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-tdist",
+    "src/MathUtil/Statistics.mjs~Statistics.tdist",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.tinv",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-tinv",
+    "src/MathUtil/Statistics.mjs~Statistics.tinv",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.tinv2",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-tinv2",
+    "src/MathUtil/Statistics.mjs~Statistics.tinv2",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.tpdf",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-tpdf",
+    "src/MathUtil/Statistics.mjs~Statistics.tpdf",
+    "method"
+  ],
+  [
+    "src/mathutil/statistics.mjs~statistics.var",
+    "class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-var",
+    "src/MathUtil/Statistics.mjs~Statistics.var",
+    "method"
   ],
   [
     "src/util/file.mjs",

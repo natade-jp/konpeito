@@ -1,0 +1,4163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">Statistics | konpeito.js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito.js"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.mjs~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">Math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/BigDecimal.mjs~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mathutil">MathUtil</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Random.mjs~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Signal.mjs~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="header-notice">
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Statistics from &apos;<span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1075">konpeito.js/src/MathUtil/Statistics.mjs</a></span>&apos;</code></pre></div>
+  <span data-ice="access">public</span>
+  <span data-ice="kind">class</span>
+  
+  
+  
+  <span data-ice="source">| <span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1075">source</a></span></span>
+</div>
+
+<div class="self-detail detail">
+  <h1 data-ice="name">Statistics</h1>
+
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  <div class="description" data-ice="description"><p>Matrix&#x7528;&#x306E;&#x7D71;&#x8A08;&#x51E6;&#x7406;&#x7528;&#x306E;&#x8A08;&#x7B97;&#x30AF;&#x30E9;&#x30B9;</p>
+</div>
+  
+
+  
+
+  
+
+  
+
+  
+</div>
+
+
+<div data-ice="staticMethodSummary"><h2>Static Method Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Static Public Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-beta">beta</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, y: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-betacdf">betacdf</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-betainc">betainc</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, tail: <span>string</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-betainv">betainv</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-betapdf">betapdf</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-chi2cdf">chi2cdf</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-chi2inv">chi2inv</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-chi2pdf">chi2pdf</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-corrcoef">corrcoef</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x76F8;&#x95A2;&#x884C;&#x5217;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-cov">cov</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, cor: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x5171;&#x5206;&#x6563;&#x884C;&#x5217;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-erf">erf</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x8AA4;&#x5DEE;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-erfc">erfc</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-factorial">factorial</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>x! &#x968E;&#x4E57;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-fcdf">fcdf</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, d1: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, d2: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-finv">finv</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, d1: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, d2: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-fpdf">fpdf</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, d1: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, d2: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-gamcdf">gamcdf</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-gaminv">gaminv</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-gamma">gamma</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-gammainc">gammainc</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, tail: <span>string</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-gammaln">gammaln</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-gampdf">gampdf</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-geomean">geomean</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x76F8;&#x4E57;&#x5E73;&#x5747;&#xFF0F;&#x5E7E;&#x4F55;&#x5E73;&#x5747;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-mean">mean</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x76F8;&#x52A0;&#x5E73;&#x5747;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-nchoosek">nchoosek</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-normalize">normalize</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x6A19;&#x672C;&#x306E;&#x6A19;&#x6E96;&#x5316;
+&#x5E73;&#x5747;&#x5024;0&#x3001;&#x6A19;&#x6E96;&#x504F;&#x5DEE;1&#x306B;&#x5909;&#x66F4;&#x3059;&#x308B;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-normcdf">normcdf</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, u: <span>number</span>, s: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-norminv">norminv</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, u: <span>number</span>, s: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-normpdf">normpdf</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, u: <span>number</span>, s: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-std">std</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, cor: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x6A19;&#x6E96;&#x504F;&#x5DEE;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-sum">sum</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x5408;&#x8A08;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-tcdf">tcdf</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-tdist">tdist</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, tails: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-tinv">tinv</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-tinv2">tinv2</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-tpdf">tpdf</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>t&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html#static-method-var">var</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, cor: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x5206;&#x6563;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+
+
+
+
+
+
+<div data-ice="staticMethodDetails"><h2 data-ice="title">Static Public Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-beta">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">beta</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, y: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1165">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">y</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-betacdf">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">betacdf</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1196">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">a</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">b</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-betainc">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">betainc</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, tail: <span>string</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1180">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">a</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">b</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">tail</td>
+      <td data-ice="type" class="code"><span>string</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: &quot;lower&quot;</li></ul></td>
+      <td data-ice="description"><p>lower/upper</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-betainv">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">betainv</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1226">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">a</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">b</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-betapdf">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">betapdf</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1211">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">a</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">b</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-chi2cdf">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">chi2cdf</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1411">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">k</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-chi2inv">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">chi2inv</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1424">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">k</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-chi2pdf">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">chi2pdf</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1398">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">k</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-corrcoef">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">corrcoef</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1636">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x76F8;&#x95A2;&#x884C;&#x5217;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-cov">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">cov</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, cor: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1588">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x5171;&#x5206;&#x6563;&#x884C;&#x5217;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">cor</td>
+      <td data-ice="type" class="code"><span>number</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: 0</li></ul></td>
+      <td data-ice="description"><p>&#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;&#x5206;&#x6563;), 1(&#x6A19;&#x672C;&#x5206;&#x6563;)</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-erf">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">erf</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1263">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x8AA4;&#x5DEE;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-erfc">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">erfc</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1274">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-factorial">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">factorial</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1239">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>x! &#x968E;&#x4E57;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-fcdf">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">fcdf</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, d1: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, d2: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1453">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">d1</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">d2</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-finv">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">finv</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, d1: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, d2: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1468">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">d1</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">d2</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-fpdf">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">fpdf</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, d1: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, d2: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1438">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">d1</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">d2</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-gamcdf">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">gamcdf</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1136">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">k</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x5F62;&#x72B6;&#x6BCD;&#x6570;</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">s</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x5C3A;&#x5EA6;&#x6BCD;&#x6570;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-gaminv">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">gaminv</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1151">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">k</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x5F62;&#x72B6;&#x6BCD;&#x6570;</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">s</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x5C3A;&#x5EA6;&#x6BCD;&#x6570;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-gamma">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">gamma</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1093">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-gammainc">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">gammainc</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, tail: <span>string</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1106">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">a</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">tail</td>
+      <td data-ice="type" class="code"><span>string</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: &quot;lower&quot;</li></ul></td>
+      <td data-ice="description"><p>lower/upper</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-gammaln">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">gammaln</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1082">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-gampdf">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">gampdf</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1121">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">k</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x5F62;&#x72B6;&#x6BCD;&#x6570;</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">s</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x5C3A;&#x5EA6;&#x6BCD;&#x6570;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-geomean">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">geomean</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1523">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x76F8;&#x4E57;&#x5E73;&#x5747;&#xFF0F;&#x5E7E;&#x4F55;&#x5E73;&#x5747;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-mean">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">mean</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1502">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x76F8;&#x52A0;&#x5E73;&#x5747;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-nchoosek">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">nchoosek</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1251">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">k</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-normalize">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">normalize</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1625">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x6A19;&#x672C;&#x306E;&#x6A19;&#x6E96;&#x5316;
+&#x5E73;&#x5747;&#x5024;0&#x3001;&#x6A19;&#x6E96;&#x504F;&#x5DEE;1&#x306B;&#x5909;&#x66F4;&#x3059;&#x308B;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-normcdf">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">normcdf</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, u: <span>number</span>, s: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1302">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">u</td>
+      <td data-ice="type" class="code"><span>number</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: 0.0</li></ul></td>
+      <td data-ice="description"><p>&#x5E73;&#x5747;&#x5024;</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">s</td>
+      <td data-ice="type" class="code"><span>number</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: 1.0</li></ul></td>
+      <td data-ice="description"><p>&#x5206;&#x6563;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-norminv">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">norminv</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, u: <span>number</span>, s: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1317">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">u</td>
+      <td data-ice="type" class="code"><span>number</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: 0.0</li></ul></td>
+      <td data-ice="description"><p>&#x5E73;&#x5747;&#x5024;</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">s</td>
+      <td data-ice="type" class="code"><span>number</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: 1.0</li></ul></td>
+      <td data-ice="description"><p>&#x5206;&#x6563;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-normpdf">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">normpdf</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, u: <span>number</span>, s: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1287">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">u</td>
+      <td data-ice="type" class="code"><span>number</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: 0.0</li></ul></td>
+      <td data-ice="description"><p>&#x5E73;&#x5747;&#x5024;</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">s</td>
+      <td data-ice="type" class="code"><span>number</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: 1.0</li></ul></td>
+      <td data-ice="description"><p>&#x5206;&#x6563;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-std">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">std</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, cor: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1573">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x6A19;&#x6E96;&#x504F;&#x5DEE;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">cor</td>
+      <td data-ice="type" class="code"><span>number</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: 0</li></ul></td>
+      <td data-ice="description"><p>&#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;), 1(&#x6A19;&#x672C;)</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-sum">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">sum</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1481">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x5408;&#x8A08;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-tcdf">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">tcdf</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1344">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">v</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-tdist">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">tdist</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, tails: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1371">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">v</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">tails</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x5C3E;&#x90E8;(1...&#x7247;&#x5074;&#x3001;2...&#x4E21;&#x5074;)</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-tinv">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">tinv</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1357">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">v</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-tinv2">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">tinv2</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1385">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">v</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-tpdf">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">tpdf</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1331">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>t&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">v</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-var">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">var</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, cor: <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/MathUtil/Statistics.mjs.html#lineNumber1540">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x5206;&#x6563;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">mat</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">cor</td>
+      <td data-ice="type" class="code"><span>number</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: 0</li></ul></td>
+      <td data-ice="description"><p>&#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;&#x5206;&#x6563;), 1(&#x6A19;&#x672C;&#x5206;&#x6563;)</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+
+
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -8,6 +8,12 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+import Complex from "../Math/Complex.mjs";
+import Matrix from "../Math/Matrix.mjs";
+
+/**
+ * 高速フーリエ変換用クラス
+ */
 class FFT {
 
 	/**
@@ -45,12 +51,40 @@ class FFT {
 	 * @param {number} size - 信号の長さ
 	 */
 	constructor(size) {
+		
+		/**
+		 * 信号の長さ
+		 */
 		this.size = size;
+
+		/**
+		 * 信号の長さの逆数
+		 */
 		this.inv_size = 1.0 / this.size;
+
+		/**
+		 * 信号の長さをビット数で表した場合の値
+		 */
 		this.bit_size = Math.round(Math.log(this.size)/Math.log(2));
+
+		/**
+		 * FFTのアルゴリズムが使用できるか
+		 */
 		this.is_fast = (1 << this.bit_size) === this.size;
+
+		/**
+		 * バタフライ演算用のビットリバーステーブル
+		 */
 		this.bitrv = null;
+
+		/**
+		 * 複素数同士の掛け算に使用する実部テーブル
+		 */
 		this.fft_re = new Array(this.size);
+		
+		/**
+		 * 複素数同士の掛け算に使用する虚部テーブル
+		 */
 		this.fft_im = new Array(this.size);
 		{
 			const delta = - 2.0 * Math.PI / this.size;
@@ -122,7 +156,7 @@ class FFT {
 			}
 		}
 		else {
-			if(!Signal.isContainsZero(imag)) {
+			if(!SignalTool.isContainsZero(imag)) {
 				// 実数部分のみのフーリエ変換
 				for(let t = 0; t < this.size; t++) {
 					f_re[t] = 0.0;
@@ -191,7 +225,7 @@ class FFT {
 			}
 		}
 		else {
-			if(!Signal.isContainsZero(imag)) {
+			if(!SignalTool.isContainsZero(imag)) {
 				// 実数部分のみの逆フーリエ変換
 				for(let x = 0; x < this.size; x++) {
 					f_re[x] = 0.0;
@@ -225,6 +259,10 @@ class FFT {
 	}
 }
 
+/**
+ * 簡易キャッシュクラス
+ * FFTで用いるテーブルなどをキャッシュ
+ */
 class Chash {
 	
 	/**
@@ -233,9 +271,25 @@ class Chash {
 	 * @param {*} object - 作成するオブジェクト
 	 */
 	constructor(chash_size, object) {
+
+		/**
+		 * キャッシュするクラス
+		 */
 		this.object = object;
+
+		/**
+		 * キャッシュする最大数
+		 */
 		this.table_max = chash_size;
+
+		/**
+		 * 現在キャッシュしている数
+		 */
 		this.table_size = 0;
+
+		/**
+		 * キャッシュテーブル
+		 */
 		this.table = [];
 	}
 
@@ -266,8 +320,14 @@ class Chash {
 
 }
 
+/**
+ * FFT用のキャッシュ
+ */
 const fft_chash = new Chash(4, FFT);
 
+/**
+ * 離散コサイン変換のクラス
+ */
 class DCT {
 	
 	/**
@@ -275,9 +335,26 @@ class DCT {
 	 * @param {number} size - 信号の長さ
 	 */
 	constructor(size) {
+
+		/**
+		 * 信号長
+		 */
 		this.size = size;
+
+		/**
+		 * 信号長の2倍
+		 * DCT変換では、実際の信号にゼロ詰めした2倍の信号長を用意しそれに対してFFTを行う。
+		 */
 		this.dct_size = size * 2;
+
+		/**
+		 * DCT変換に使用する計算用テーブル
+		 */
 		this.dct_re = new Array(this.size);
+
+		/**
+		 * DCT変換に使用する計算用テーブル
+		 */
 		this.dct_im = new Array(this.size);
 		{
 			const x_0 = 1.0 / Math.sqrt(this.size);
@@ -340,13 +417,15 @@ class DCT {
 	
 }
 
+/**
+ * 離散コサイン変換用のキャッシュ
+ */
 const dct_chash = new Chash(4, DCT);
 
 /**
- * 信号処理用の関数集
- * @ignore
+ * Signalクラスの内部で使用する関数集
  */
-export default class Signal {
+class SignalTool {
 	
 	/**
 	 * 0が含まれるか
@@ -369,7 +448,7 @@ export default class Signal {
 	 * @returns {Object<string, Array<number>>}
 	 */
 	static fft(real, imag) {
-		const obj = fft_chash.get(real.length);	
+		const obj = fft_chash.get(real.length);
 		return obj.fft(real, imag);
 	}
 
@@ -380,7 +459,7 @@ export default class Signal {
 	 * @returns {Object<string, Array<number>>}
 	 */
 	static ifft(real, imag) {
-		const obj = fft_chash.get(real.length);	
+		const obj = fft_chash.get(real.length);
 		return obj.ifft(real, imag);
 	}
 
@@ -390,7 +469,7 @@ export default class Signal {
 	 * @returns {Array<number>}
 	 */
 	static dct(real) {
-		const obj = dct_chash.get(real.length);	
+		const obj = dct_chash.get(real.length);
 		return obj.dct(real);
 	}
 
@@ -400,7 +479,7 @@ export default class Signal {
 	 * @returns {Array<number>}
 	 */
 	static idct(real) {
-		const obj = dct_chash.get(real.length);	
+		const obj = dct_chash.get(real.length);
 		return obj.idct(real);
 	}
 
@@ -412,7 +491,7 @@ export default class Signal {
 	 */
 	static powerfft(real, imag) {
 		const size = real.length;
-		const X = Signal.fft(real, imag);
+		const X = SignalTool.fft(real, imag);
 		const power = new Array(size);
 		for(let i = 0; i < size; i++) {
 			power[i] = X.real[i] * X.real[i] + X.imag[i] * X.imag[i];
@@ -454,12 +533,12 @@ export default class Signal {
 					real[i] = i < size ? x1_real[i] : 0.0;
 					imag[i] = i < size ? x1_imag[i] : 0.0;
 				}
-				const X = Signal.fft(real, imag);
+				const X = SignalTool.fft(real, imag);
 				for(let i = 0; i < N2; i++) {
 					real[i] = X.real[i] * X.real[i] - X.imag[i] * X.imag[i];
 					imag[i] = X.real[i] * X.imag[i] + X.imag[i] * X.real[i];
 				}
-				const x = Signal.ifft(real, imag);
+				const x = SignalTool.ifft(real, imag);
 				x.real.splice(N2 - 1);
 				x.imag.splice(N2 - 1);
 				return x;
@@ -476,23 +555,23 @@ export default class Signal {
 					real2[i] = i < size ? x2_real[i] : 0.0;
 					imag2[i] = i < size ? x2_imag[i] : 0.0;
 				}
-				const F = Signal.fft(real1, imag1);
-				const G = Signal.fft(real2, imag2);
+				const F = SignalTool.fft(real1, imag1);
+				const G = SignalTool.fft(real2, imag2);
 				const real = new Array(N2);
 				const imag = new Array(N2);
 				for(let i = 0; i < N2; i++) {
 					real[i] = F.real[i] * G.real[i] - F.imag[i] * G.imag[i];
 					imag[i] = F.real[i] * G.imag[i] + F.imag[i] * G.real[i];
 				}
-				const fg = Signal.ifft(real, imag);
+				const fg = SignalTool.ifft(real, imag);
 				fg.real.splice(N2 - 1);
 				fg.imag.splice(N2 - 1);
 				return fg;
 			}
 		}
-		let is_real_number = !Signal.isContainsZero(x1_imag);
+		let is_real_number = !SignalTool.isContainsZero(x1_imag);
 		if(is_real_number) {
-			is_real_number = !Signal.isContainsZero(x2_imag);
+			is_real_number = !SignalTool.isContainsZero(x2_imag);
 		}
 		{
 			// まじめに計算する
@@ -565,8 +644,8 @@ export default class Signal {
 					}
 					// パワースペクトル密度は、自己相関のフーリエ変換のため、
 					// パワースペクトル密度の逆変換で求められる。
-					const power = Signal.powerfft(real, imag);
-					fg = Signal.ifft(power, imag);
+					const power = SignalTool.powerfft(real, imag);
+					fg = SignalTool.ifft(power, imag);
 					// シフト
 					real.pop();
 					imag.pop();
@@ -595,24 +674,24 @@ export default class Signal {
 						g_imag[i] = i < size ? - x2_imag[size - i - 1] : 0.0;
 					}
 					// 畳み込み掛け算
-					const F = Signal.fft(f_real, f_imag);
-					const G = Signal.fft(g_real, g_imag);
+					const F = SignalTool.fft(f_real, f_imag);
+					const G = SignalTool.fft(g_real, g_imag);
 					const real = new Array(N2);
 					const imag = new Array(N2);
 					for(let i = 0; i < N2; i++) {
 						real[i] = F.real[i] * G.real[i] - F.imag[i] * G.imag[i];
 						imag[i] = F.real[i] * G.imag[i] + F.imag[i] * G.real[i];
 					}
-					fg = Signal.ifft(real, imag);
+					fg = SignalTool.ifft(real, imag);
 					fg.real.splice(N2 - 1);
 					fg.imag.splice(N2 - 1);
 					return fg;
 				}
 			}
 		}
-		let is_real_number = !Signal.isContainsZero(x1_imag);
+		let is_real_number = !SignalTool.isContainsZero(x1_imag);
 		if(is_real_number) {
-			is_real_number = !Signal.isContainsZero(x2_imag);
+			is_real_number = !SignalTool.isContainsZero(x2_imag);
 		}
 		if(is_self) {
 			const size = x1_real.length;
@@ -652,7 +731,7 @@ export default class Signal {
 				g_real[i] =   x2_real[x2_real.length - i - 1];
 				g_imag[i] = - x2_imag[x2_real.length - i - 1];
 			}
-			return Signal.conv(x1_real, x1_imag, g_real, g_imag);
+			return SignalTool.conv(x1_real, x1_imag, g_real, g_imag);
 		}
 	}
 
@@ -761,7 +840,7 @@ export default class Signal {
 	 * @returns {Array<number>}
 	 */
 	static hann(size, isPeriodic) {
-		return Signal.window("hann", size, isPeriodic);
+		return SignalTool.window("hann", size, isPeriodic);
 	}
 	
 	/**
@@ -771,40 +850,39 @@ export default class Signal {
 	 * @returns {Array<number>}
 	 */
 	static hamming(size, isPeriodic) {
-		return Signal.window("hamming", size, isPeriodic);
+		return SignalTool.window("hamming", size, isPeriodic);
 	}
 	
 }
-
 
 /*
 const A = [1,2,3,4,5];
 const B = [0,0,3,0,0];
 const C = [5,6,7,8,9];
 
-console.log(Signal.conv(A,B,A,B));
-console.log(Signal.conv(A,B,C,B));
-console.log(Signal.xcorr(A,B,C,B));
+console.log(SignalTool.conv(A,B,A,B));
+console.log(SignalTool.conv(A,B,C,B));
+console.log(SignalTool.xcorr(A,B,C,B));
 */
 
 /*
 const X1 = [1, 2, 30, 100];
-console.log(Signal.dct(X1));
-console.log(Signal.idct(Signal.dct(X1)));
+console.log(SignalTool.dct(X1));
+console.log(SignalTool.idct(SignalTool.dct(X1)));
 
-console.log(Signal.mdct(X1));
-console.log(Signal.imdct(Signal.mdct(X1)));
+console.log(SignalTool.mdct(X1));
+console.log(SignalTool.imdct(SignalTool.mdct(X1)));
 */
 /*
 const X1 = [1, 2, 30, 100];
-console.log(Signal.dct(X1));
-console.log(Signal.idct(Signal.dct(X1)));
+console.log(SignalTool.dct(X1));
+console.log(SignalTool.idct(SignalTool.dct(X1)));
 
 {
 	const X1 = [1];
 	const Y1 = [j];
-	const A = Signal.fft(X1, Y1);
-	const B = Signal.ifft(A.real, A.imag);
+	const A = SignalTool.fft(X1, Y1);
+	const B = SignalTool.ifft(A.real, A.imag);
 
 	console.log(X1);
 	console.log(Y1);
@@ -819,8 +897,8 @@ console.log(Signal.idct(Signal.dct(X1)));
 {
 	const X1 = [1,-2,3,-4];
 	const Y1 = [-100,20,-300,40];
-	const A = Signal.fft(X1, Y1);
-	const B = Signal.ifft(A.real, A.imag);
+	const A = SignalTool.fft(X1, Y1);
+	const B = SignalTool.ifft(A.real, A.imag);
 
 	console.log(X1);
 	console.log(Y1);
@@ -864,3 +942,312 @@ console.log(Signal.idct(Signal.dct(X1)));
 	console.log(B.imag);
 }
 */
+
+
+/**
+ * Matrix用の信号処理用の計算クラス
+ */
+export default class Signal {
+	
+	/**
+	 * 離散フーリエ変換
+	 * @param {Matrix} mat
+	 * @param {boolean} [is_2_dimensions=false]
+	 * @returns {Matrix}
+	 */
+	static fft(mat, is_2_dimensions = false) {
+		const M = Matrix._toMatrix(mat);
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = SignalTool.fft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				y[i] = new Complex([result.real[i], result.imag[i]]);
+			}
+			return y;
+		};
+		return is_2_dimensions ? M.__column_oriented_2_dimensional_processing(main) : M.__column_oriented_1_dimensional_processing(main);
+	}
+
+	/**
+	 * 逆離散フーリエ変換
+	 * @param {Matrix} mat
+	 * @param {boolean} [is_2_dimensions=false]
+	 * @returns {Matrix}
+	 */
+	static ifft(mat, is_2_dimensions = false) {
+		const M = Matrix._toMatrix(mat);
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = SignalTool.ifft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				y[i] = new Complex([result.real[i], result.imag[i]]);
+			}
+			return y;
+		};
+		return is_2_dimensions ? M.__column_oriented_2_dimensional_processing(main) : M.__column_oriented_1_dimensional_processing(main);
+	}
+
+	/**
+	 * パワースペクトル密度
+	 * @param {Matrix} mat
+	 * @returns {Matrix}
+	 */
+	static powerfft(mat) {
+		const M = Matrix._toMatrix(mat);
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = SignalTool.powerfft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				y[i] = new Complex([result.real[i], result.imag[i]]);
+			}
+			return y;
+		};
+		return M.__column_oriented_1_dimensional_processing(main);
+	}
+
+	/**
+	 * 離散コサイン変換
+	 * @param {Matrix} mat
+	 * @param {boolean} [is_2_dimensions=false]
+	 * @returns {Matrix}
+	 */
+	static dct(mat, is_2_dimensions = false) {
+		const M = Matrix._toMatrix(mat);
+		if(M.isComplex()) {
+			throw "dct don't support complex numbers.";
+		}
+		const main = function(data) {
+			const real = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				real[i] = data[i].real;
+			}
+			const result = SignalTool.dct(real);
+			const y = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				y[i] = new Complex(result[i]);
+			}
+			return y;
+		};
+		return is_2_dimensions ? M.__column_oriented_2_dimensional_processing(main) : M.__column_oriented_1_dimensional_processing(main);
+	}
+
+	/**
+	 * 逆離散コサイン変換
+	 * @param {Matrix} mat
+	 * @param {boolean} [is_2_dimensions=false]
+	 * @returns {Matrix}
+	 */
+	static idct(mat, is_2_dimensions = false) {
+		const M = Matrix._toMatrix(mat);
+		if(M.isComplex()) {
+			throw "idct don't support complex numbers.";
+		}
+		const main = function(data) {
+			const real = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				real[i] = data[i].real;
+			}
+			const result = SignalTool.idct(real);
+			const y = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				y[i] = new Complex(result[i]);
+			}
+			return y;
+		};
+		return is_2_dimensions ? M.__column_oriented_2_dimensional_processing(main) : M.__column_oriented_1_dimensional_processing(main);
+	}
+
+	/**
+	 * 2次元の離散フーリエ変換
+	 * @param {Matrix} mat
+	 * @returns {Matrix}
+	 */
+	static fft2(mat) {
+		const M = Matrix._toMatrix(mat);
+		return M.fft(true);
+	}
+
+	/**
+	 * 2次元の逆離散フーリエ変換
+	 * @param {Matrix} mat
+	 * @returns {Matrix}
+	 */
+	static ifft2(mat) {
+		const M = Matrix._toMatrix(mat);
+		return M.ifft(true);
+	}
+
+	/**
+	 * 2次元のDCT変換
+	 * @param {Matrix} mat
+	 * @returns {Matrix}
+	 */
+	static dct2(mat) {
+		const M = Matrix._toMatrix(mat);
+		return M.dct2(true);
+	}
+
+	/**
+	 * 2次元の逆DCT変換
+	 * @param {Matrix} mat
+	 * @returns {Matrix}
+	 */
+	static idct2(mat) {
+		const M = Matrix._toMatrix(mat);
+		return M.idct(true);
+	}
+
+	/**
+	 * 畳み込み積分、多項式乗算
+	 * @param {Matrix} mat
+	 * @param {Matrix} number
+	 * @returns {Matrix}
+	 */
+	static conv(mat, number) {
+		const M1 = Matrix._toMatrix(mat);
+		const M2 = Matrix._toMatrix(number);
+		if(M1.isMatrix() || M2.isMatrix()) {
+			throw "conv don't support matrix numbers.";
+		}
+		const M1_real = new Array(M1.length);
+		const M1_imag = new Array(M1.length);
+		const M2_real = new Array(M2.length);
+		const M2_imag = new Array(M2.length);
+		if(M1.isRow()) {
+			for(let i = 0; i < M1.column_length; i++) {
+				M1_real[i] = M1.matrix_array[0][i].real;
+				M1_imag[i] = M1.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i < M1.row_length; i++) {
+				M1_real[i] = M1.matrix_array[i][0].real;
+				M1_imag[i] = M1.matrix_array[i][0].imag;
+			}
+		}
+		if(M2.isRow()) {
+			for(let i = 0; i < M2.column_length; i++) {
+				M2_real[i] = M2.matrix_array[0][i].real;
+				M2_imag[i] = M2.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i < M2.row_length; i++) {
+				M2_real[i] = M2.matrix_array[i][0].real;
+				M2_imag[i] = M2.matrix_array[i][0].imag;
+			}
+		}
+		const y = SignalTool.conv(M1_real, M1_imag, M2_real, M2_imag);
+		const m = new Array(y.real.length);
+		for(let i = 0; i < y.real.length; i++) {
+			m[i] = new Complex([y.real[i], y.imag[i]]);
+		}
+		const M = new Matrix([m]);
+		return M2.isRow() ? M : M.transpose();
+	}
+
+	/**
+	 * 自己相関関数、相互相関関数
+	 * @param {Matrix} mat
+	 * @param {Matrix} [number] - 省略した場合は自己相関関数
+	 * @returns {Matrix}
+	 */
+	static xcorr(mat, number) {
+		const M1 = Matrix._toMatrix(mat);
+		if(!number) {
+			return M1.xcorr(M1);
+		}
+		const M2 = Matrix._toMatrix(number);
+		if(M1.isMatrix() || M2.isMatrix()) {
+			throw "conv don't support matrix numbers.";
+		}
+		const M1_real = new Array(M1.length);
+		const M1_imag = new Array(M1.length);
+		const M2_real = new Array(M2.length);
+		const M2_imag = new Array(M2.length);
+		if(M1.isRow()) {
+			for(let i = 0; i < M1.column_length; i++) {
+				M1_real[i] = M1.matrix_array[0][i].real;
+				M1_imag[i] = M1.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i < M1.row_length; i++) {
+				M1_real[i] = M1.matrix_array[i][0].real;
+				M1_imag[i] = M1.matrix_array[i][0].imag;
+			}
+		}
+		if(M2.isRow()) {
+			for(let i = 0; i < M2.column_length; i++) {
+				M2_real[i] = M2.matrix_array[0][i].real;
+				M2_imag[i] = M2.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i < M2.row_length; i++) {
+				M2_real[i] = M2.matrix_array[i][0].real;
+				M2_imag[i] = M2.matrix_array[i][0].imag;
+			}
+		}
+		const y = SignalTool.xcorr(M1_real, M1_imag, M2_real, M2_imag);
+		const m = new Array(y.real.length);
+		for(let i = 0; i < y.real.length; i++) {
+			m[i] = new Complex([y.real[i], y.imag[i]]);
+		}
+		const M = new Matrix([m]);
+		return M1.isRow() ? M : M.transpose();
+	}
+
+	/**
+	 * 窓関数
+	 * @param {string} name - 窓関数の名前
+	 * @param {Matrix} size - 長さ
+	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
+	 * @returns {Matrix} 列ベクトル
+	 */
+	static window(name, size, isPeriodic) {
+		const size_ = Matrix._toInteger(size);
+		const y = SignalTool.window(name, size_, isPeriodic);
+		return (new Matrix(y)).transpose();
+	}
+
+	/**
+	 * ハニング窓
+	 * @param {Matrix} size - 長さ
+	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
+	 * @returns {Matrix} 列ベクトル
+	 */
+	static hann(size, isPeriodic) {
+		return SignalTool.window("hann", size, isPeriodic);
+	}
+	
+	/**
+	 * ハミング窓
+	 * @param {Matrix} size - 長さ
+	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
+	 * @returns {Matrix} 列ベクトル
+	 */
+	static hamming(size, isPeriodic) {
+		return SignalTool.window("hamming", size, isPeriodic);
+	}
+	
+	
+}

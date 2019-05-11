@@ -34,22 +34,25 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mathutil">MathUtil</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mathutil">MathUtil</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Signal.mjs~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Complex from &apos;<span><a href="file/src/Math/Complex.mjs.html#lineNumber59">konpeito.js/src/Math/Complex.mjs</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Complex from &apos;<span><a href="file/src/Math/Complex.mjs.html#lineNumber70">konpeito.js/src/Math/Complex.mjs</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/Math/Complex.mjs.html#lineNumber59">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/Math/Complex.mjs.html#lineNumber70">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -339,13 +342,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#static-method-create">create</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#static-method-create">create</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt;): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>&#x5F15;&#x6570;&#x304B;&#x3089;&#x8907;&#x7D20;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#xFF08;&#x4F5C;&#x6210;&#x304C;&#x4E0D;&#x8981;&#x306E;&#x5834;&#x5408;&#x306F;new&#x3057;&#x306A;&#x3044;&#xFF09;</p>
+        <div data-ice="description"><p>Complex &#x3092;&#x4F5C;&#x6210;</p>
 </div>
       </div>
     </td>
@@ -404,6 +407,128 @@
         
         
         <div data-ice="description"><p>&#x6B63;&#x898F;&#x5206;&#x5E03;&#x306B;&#x5F93;&#x3046;&#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x306A;&#x5024;&#x3092;&#x4F5C;&#x6210;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#static-method-valueOf">valueOf</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x6570;&#x5024;&#x304B;&#x3089; Complex &#x578B;&#x306B;&#x5909;&#x63DB;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+<table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Static Private Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#static-method-_toComplex">_toComplex</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x8907;&#x7D20;&#x6570;&#x3092;&#x4F5C;&#x6210;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#static-method-_toFloat">_toFloat</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span>number</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x5B9F;&#x6570;&#x3092;&#x4F5C;&#x6210;</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#static-method-_toInteger">_toInteger</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span>number</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>&#x6574;&#x6570;&#x3092;&#x4F5C;&#x6210;</p>
 </div>
       </div>
     </td>
@@ -475,7 +600,9 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x504F;&#x89D2;&#xFF08;&#x6975;&#x5EA7;&#x6A19;&#x306E;&#x89D2;&#x5EA6;&#xFF09;</p>
+        <div data-ice="description"><p>&#x504F;&#x89D2;
+&#x6975;&#x5EA7;&#x6A19;&#x306E;&#x89D2;&#x5EA6;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
       </div>
     </td>
@@ -504,7 +631,8 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x865A;&#x90E8;</p>
+        <div data-ice="description"><p>&#x865A;&#x90E8;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
       </div>
     </td>
@@ -533,7 +661,9 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x30CE;&#x30EB;&#x30E0;&#xFF08;&#x6975;&#x5EA7;&#x6A19;&#x306E;&#x30CE;&#x30EB;&#x30E0;&#xFF09;</p>
+        <div data-ice="description"><p>&#x30CE;&#x30EB;&#x30E0;
+&#x6975;&#x5EA7;&#x6A19;&#x306E;&#x30CE;&#x30EB;&#x30E0;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
       </div>
     </td>
@@ -562,7 +692,8 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x5B9F;&#x90E8;</p>
+        <div data-ice="description"><p>&#x5B9F;&#x90E8;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
       </div>
     </td>
@@ -662,7 +793,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.abs() = abs(A)</p>
+        <div data-ice="description"><p>abs(A)</p>
 </div>
       </div>
     </td>
@@ -691,7 +822,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.add(B) = A + B</p>
+        <div data-ice="description"><p>A + B</p>
 </div>
       </div>
     </td>
@@ -720,7 +851,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.atan() = atan(A)</p>
+        <div data-ice="description"><p>atan(A)</p>
 </div>
       </div>
     </td>
@@ -749,152 +880,7 @@
       <div>
         
         
-        <div data-ice="description"><p>Y.atan2(X) = atan2(Y, X) &#x8907;&#x7D20;&#x6570;&#x306E;atan2&#x306F;&#x8A08;&#x7B97;&#x4E0D;&#x80FD;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-beta">beta</a></span></span><span class="code" data-ice="signature">(y: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.beta(y) = beta(x, y) &#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-betacdf">betacdf</a></span></span><span class="code" data-ice="signature">(a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.betacdf(a, b) = betacdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-betainc">betainc</a></span></span><span class="code" data-ice="signature">(a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, tail: <span>string</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.betainc(a, b, tail) = betainc(x, a, b, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-betainv">betainv</a></span></span><span class="code" data-ice="signature">(a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>p.betainv(a, b) = betainv(p, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-betapdf">betapdf</a></span></span><span class="code" data-ice="signature">(a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.betapdf(a, b) = betapdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+        <div data-ice="description"><p>atan2(Y, X)</p>
 </div>
       </div>
     </td>
@@ -923,94 +909,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.ceil() = ceil(A)</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-chi2cdf">chi2cdf</a></span></span><span class="code" data-ice="signature">(k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.chi2cdf(k) = chi2cdf(x, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-chi2inv">chi2inv</a></span></span><span class="code" data-ice="signature">(k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>p.chi2inv(k) = chi2inv(p, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-chi2pdf">chi2pdf</a></span></span><span class="code" data-ice="signature">(k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.chi2pdf(k) = chi2pdf(x, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+        <div data-ice="description"><p>ceil(A)</p>
 </div>
       </div>
     </td>
@@ -1039,7 +938,7 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x30C7;&#x30A3;&#x30FC;&#x30D7;&#x30B3;&#x30D4;&#x30FC;&#xFF08;&#x203B;&#x5B9F;&#x969B;&#x306B;&#x306F;&#x30A4;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x306A;&#x306E;&#x3067;&#x30B3;&#x30D4;&#x30FC;&#x3059;&#x308B;&#xFF09;</p>
+        <div data-ice="description"><p>&#x30C7;&#x30A3;&#x30FC;&#x30D7;&#x30B3;&#x30D4;&#x30FC;</p>
 </div>
       </div>
     </td>
@@ -1068,8 +967,8 @@
       <div>
         
         
-        <div data-ice="description"><p>A.compareTo(B) &#x4ECA;&#x306E;&#x5024;A&#x3068;&#x3001;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x5024;B&#x3068;&#x3092;&#x6BD4;&#x8F03;&#x3059;&#x308B;
-&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;IF&#x6587;&#x3067;&#x5229;&#x7528;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;&#x975E;Complex&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3068;&#x306A;&#x308B;&#x3002;</p>
+        <div data-ice="description"><p>&#x5024;&#x540C;&#x58EB;&#x3092;&#x6BD4;&#x8F03;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
       </div>
     </td>
@@ -1098,7 +997,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.conj() = real(A) - imag(A)j (&#x5171;&#x5F79;&#x8907;&#x7D20;&#x6570;)</p>
+        <div data-ice="description"><p>real(A) - imag(A)j &#x5171;&#x5F79;&#x8907;&#x7D20;&#x6570;</p>
 </div>
       </div>
     </td>
@@ -1127,7 +1026,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.cos() = cos(A)</p>
+        <div data-ice="description"><p>cos(A)</p>
 </div>
       </div>
     </td>
@@ -1156,7 +1055,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.div(B) = A / B</p>
+        <div data-ice="description"><p>A / B</p>
 </div>
       </div>
     </td>
@@ -1185,7 +1084,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.dot(B) = A&#x30FB;B = A * conj(B)</p>
+        <div data-ice="description"><p>A&#x30FB;B, A * conj(B)</p>
 </div>
       </div>
     </td>
@@ -1214,65 +1113,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.equals(B)</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-erf">erf</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.erf() = erf(x) &#x8AA4;&#x5DEE;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-erfc">erfc</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.erfc() = erfc(x) &#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;</p>
+        <div data-ice="description"><p>A === B</p>
 </div>
       </div>
     </td>
@@ -1301,94 +1142,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.exp() = e^A</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-factorial">factorial</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>n.factorial() = factorial(n), n! &#x968E;&#x4E57;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-fcdf">fcdf</a></span></span><span class="code" data-ice="signature">(d1: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, d2: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.fcdf(d1, d2) = fcdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-finv">finv</a></span></span><span class="code" data-ice="signature">(d1: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, d2: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>p.finv(d1, d2) = finv(p, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
+        <div data-ice="description"><p>exp(A)</p>
 </div>
       </div>
     </td>
@@ -1417,7 +1171,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.fix() = fix(A) &#x5C0F;&#x6570;&#x70B9;&#x90E8;&#x3092;&#x6D88;&#x3059;</p>
+        <div data-ice="description"><p>fix(A) &#x5C0F;&#x6570;&#x90E8;&#x3092;&#x53D6;&#x308A;&#x9664;&#x304F;</p>
 </div>
       </div>
     </td>
@@ -1446,36 +1200,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.floor() = floor(A)</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-fpdf">fpdf</a></span></span><span class="code" data-ice="signature">(d1: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, d2: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.fpdf(d1, d2) = fpdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+        <div data-ice="description"><p>floor(A)</p>
 </div>
       </div>
     </td>
@@ -1504,181 +1229,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.fract() = fract(A) &#x5C0F;&#x6570;&#x70B9;&#x90E8;&#x3092;&#x6B8B;&#x3059;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-gamcdf">gamcdf</a></span></span><span class="code" data-ice="signature">(k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.gamcdf(k, s) = gamcdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-gaminv">gaminv</a></span></span><span class="code" data-ice="signature">(k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>p.gaminv(k, s) = gaminv(p, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-gamma">gamma</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>z.gamma() = gamma(z) &#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570; </p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-gammainc">gammainc</a></span></span><span class="code" data-ice="signature">(a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, tail: <span>string</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.gammainc(a, tail) = gammainc(x, a, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-gammaln">gammaln</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.gammaln() = gammaln(x) &#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570; </p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-gampdf">gampdf</a></span></span><span class="code" data-ice="signature">(k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.gampdf(k, s) = gampdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+        <div data-ice="description"><p>fract(A) &#x5C0F;&#x6570;&#x90E8;&#x306E;&#x62BD;&#x51FA;</p>
 </div>
       </div>
     </td>
@@ -1707,7 +1258,8 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x5B9F;&#x90E8;&#x3001;&#x865A;&#x90E8;&#x306E;&#x5C0F;&#x6570;&#x70B9;&#x306E;&#x6841;&#x6570;&#x306E;&#x6700;&#x5927;&#x5024;</p>
+        <div data-ice="description"><p>&#x5B9F;&#x90E8;&#x3001;&#x865A;&#x90E8;&#x3092;&#x8868;&#x3059;&#x969B;&#x306E;&#x5C0F;&#x6570;&#x70B9;&#x4EE5;&#x4E0B;&#x306E;&#x6841;&#x6570;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
       </div>
     </td>
@@ -1736,7 +1288,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.inv() = 1 / A</p>
+        <div data-ice="description"><p>1 / A</p>
 </div>
       </div>
     </td>
@@ -2113,7 +1665,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.log() = log A</p>
+        <div data-ice="description"><p>log(A)</p>
 </div>
       </div>
     </td>
@@ -2142,7 +1694,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.max(B) = max([A, B])</p>
+        <div data-ice="description"><p>max([A, B])</p>
 </div>
       </div>
     </td>
@@ -2171,7 +1723,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.min(B) = min([A, B])</p>
+        <div data-ice="description"><p>min([A, B])</p>
 </div>
       </div>
     </td>
@@ -2200,7 +1752,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.mod(B) = A mod B (&#x8907;&#x7D20;&#x6570;&#x3067;&#x306E;&#x8A08;&#x7B97;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;)</p>
+        <div data-ice="description"><p>A mod B</p>
 </div>
       </div>
     </td>
@@ -2229,36 +1781,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.mul(B) = A * B</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-nchoosek">nchoosek</a></span></span><span class="code" data-ice="signature">(k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>n.nchoosek(k) = nchoosek(n, k), nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;</p>
+        <div data-ice="description"><p>A * B</p>
 </div>
       </div>
     </td>
@@ -2287,94 +1810,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.negate() = - A</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-normcdf">normcdf</a></span></span><span class="code" data-ice="signature">(u: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.normcdf(u, s) = normcdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-norminv">norminv</a></span></span><span class="code" data-ice="signature">(u: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.norminv(u, s) = norminv(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-normpdf">normpdf</a></span></span><span class="code" data-ice="signature">(u: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>x.normpdf(u, s) = normpdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
+        <div data-ice="description"><p>-A</p>
 </div>
       </div>
     </td>
@@ -2403,7 +1839,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.pow(B) = A^B</p>
+        <div data-ice="description"><p>pow(A, B)</p>
 </div>
       </div>
     </td>
@@ -2432,7 +1868,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.round() = round(A)</p>
+        <div data-ice="description"><p>round(A)</p>
 </div>
       </div>
     </td>
@@ -2461,7 +1897,8 @@
       <div>
         
         
-        <div data-ice="description"><p>A.sign() &#x306F;&#x9577;&#x3055;&#x3092;1&#x306B;&#x3057;&#x307E;&#x3059; -100 &#x306A;&#x3089; -1 &#x306B;&#x3057;&#x307E;&#x3059;</p>
+        <div data-ice="description"><p>&#x7B26;&#x53F7;&#x5024;
+1, -1, 0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;&#x3002;&#x8907;&#x7D20;&#x6570;&#x306E;&#x5834;&#x5408;&#x306F;&#x30CE;&#x30EB;&#x30E0;&#x3092;1&#x306B;&#x3059;&#x308B;&#x3002;</p>
 </div>
       </div>
     </td>
@@ -2490,7 +1927,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.sin() = sin(A)</p>
+        <div data-ice="description"><p>sin(A)</p>
 </div>
       </div>
     </td>
@@ -2519,7 +1956,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.sinc() = sinc(A)</p>
+        <div data-ice="description"><p>sinc(A)</p>
 </div>
       </div>
     </td>
@@ -2548,7 +1985,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.sqrt() = sqrt(A)</p>
+        <div data-ice="description"><p>sqrt(A)</p>
 </div>
       </div>
     </td>
@@ -2577,7 +2014,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.square() = A^2</p>
+        <div data-ice="description"><p>pow(A, 2)</p>
 </div>
       </div>
     </td>
@@ -2606,7 +2043,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.sub(B) = A - B</p>
+        <div data-ice="description"><p>A - B</p>
 </div>
       </div>
     </td>
@@ -2635,123 +2072,7 @@
       <div>
         
         
-        <div data-ice="description"><p>A.tan() = tan(A)</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-tcdf">tcdf</a></span></span><span class="code" data-ice="signature">(v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>t.tcdf(v) = tcdf(t, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-tdist">tdist</a></span></span><span class="code" data-ice="signature">(v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, tails: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>t.tdist(v, tails) = tdist(t, v, tails) &#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-tinv">tinv</a></span></span><span class="code" data-ice="signature">(v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>p.tinv(v) = tinv(p, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
-</div>
-      </div>
-    </td>
-    <td>
-      
-      
-    </td>
-  </tr>
-<tr data-ice="target">
-    <td>
-      <span class="access" data-ice="access">public</span>
-      
-      
-      
-      <span class="override" data-ice="override"></span>
-    </td>
-    <td>
-      <div>
-        <p>
-          
-          
-          
-          <span class="code" data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html#instance-method-tinv2">tinv2</a></span></span><span class="code" data-ice="signature">(v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-        </p>
-      </div>
-      <div>
-        
-        
-        <div data-ice="description"><p>p.tinv2(v) = tinv2(p, v) &#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
+        <div data-ice="description"><p>tan(A)</p>
 </div>
       </div>
     </td>
@@ -2809,7 +2130,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1299">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber960">source</a></span></span>
     </span>
   </h3>
 
@@ -2865,7 +2186,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1283">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber944">source</a></span></span>
     </span>
   </h3>
 
@@ -2921,7 +2242,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1275">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber936">source</a></span></span>
     </span>
   </h3>
 
@@ -2977,7 +2298,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1243">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber904">source</a></span></span>
     </span>
   </h3>
 
@@ -3033,7 +2354,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1291">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber952">source</a></span></span>
     </span>
   </h3>
 
@@ -3089,7 +2410,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1259">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber920">source</a></span></span>
     </span>
   </h3>
 
@@ -3145,7 +2466,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1251">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber912">source</a></span></span>
     </span>
   </h3>
 
@@ -3201,7 +2522,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1267">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber928">source</a></span></span>
     </span>
   </h3>
 
@@ -3256,18 +2577,18 @@
     
     
     
-    <span class="code" data-ice="name">create</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
+    <span class="code" data-ice="name">create</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt;): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber150">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber128">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x5F15;&#x6570;&#x304B;&#x3089;&#x8907;&#x7D20;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#xFF08;&#x4F5C;&#x6210;&#x304C;&#x4E0D;&#x8981;&#x306E;&#x5834;&#x5408;&#x306F;new&#x3057;&#x306A;&#x3044;&#xFF09;</p>
+  <div data-ice="description"><p>Complex &#x3092;&#x4F5C;&#x6210;</p>
 </div>
 
   
@@ -3282,7 +2603,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">number</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt;</td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -3332,7 +2653,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber163">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber231">source</a></span></span>
     </span>
   </h3>
 
@@ -3388,7 +2709,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber171">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber239">source</a></span></span>
     </span>
   </h3>
 
@@ -3432,6 +2753,296 @@
   
   
 </div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-valueOf">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">valueOf</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber142">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x6570;&#x5024;&#x304B;&#x3089; Complex &#x578B;&#x306B;&#x5909;&#x63DB;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<h2 data-ice="title">Static Private Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-_toComplex">
+    <span class="access" data-ice="access">private</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">_toComplex</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber152">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x8907;&#x7D20;&#x6570;&#x3092;&#x4F5C;&#x6210;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-_toFloat">
+    <span class="access" data-ice="access">private</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">_toFloat</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span>number</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber167">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x5B9F;&#x6570;&#x3092;&#x4F5C;&#x6210;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>number</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-_toInteger">
+    <span class="access" data-ice="access">private</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">_toInteger</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span>number</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber186">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>&#x6574;&#x6570;&#x3092;&#x4F5C;&#x6210;</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>number</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
 </div>
 <div data-ice="constructorDetails"><h2 data-ice="title">Public Constructors</h2>
 
@@ -3447,7 +3058,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber65">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber76">source</a></span></span>
     </span>
   </h3>
 
@@ -3511,14 +3122,16 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber223">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber297">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x504F;&#x89D2;&#xFF08;&#x6975;&#x5EA7;&#x6A19;&#x306E;&#x89D2;&#x5EA6;&#xFF09;</p>
+  <div data-ice="description"><p>&#x504F;&#x89D2;
+&#x6975;&#x5EA7;&#x6A19;&#x306E;&#x89D2;&#x5EA6;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
 
   
@@ -3532,7 +3145,7 @@
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>number</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>&#x504F;&#x89D2;&#x306E;&#x6570;&#x5024;&#xFF08;&#x975E;Complex&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#xFF09;</p>
+          <td class="return-desc" data-ice="returnDescription"><p>&#x504F;&#x89D2;&#x306E;&#x6570;&#x5024;</p>
 </td>
         </tr>
       </tbody>
@@ -3568,14 +3181,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber199">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber269">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x865A;&#x90E8;</p>
+  <div data-ice="description"><p>&#x865A;&#x90E8;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
 
   
@@ -3589,7 +3203,7 @@
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>number</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>&#x865A;&#x90E8;&#x306E;&#x6570;&#x5024;&#xFF08;&#x975E;Complex&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#xFF09;</p>
+          <td class="return-desc" data-ice="returnDescription"><p>&#x865A;&#x90E8;&#x306E;&#x6570;&#x5024;</p>
 </td>
         </tr>
       </tbody>
@@ -3625,14 +3239,16 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber207">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber279">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x30CE;&#x30EB;&#x30E0;&#xFF08;&#x6975;&#x5EA7;&#x6A19;&#x306E;&#x30CE;&#x30EB;&#x30E0;&#xFF09;</p>
+  <div data-ice="description"><p>&#x30CE;&#x30EB;&#x30E0;
+&#x6975;&#x5EA7;&#x6A19;&#x306E;&#x30CE;&#x30EB;&#x30E0;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
 
   
@@ -3646,7 +3262,7 @@
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>number</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>&#x30CE;&#x30EB;&#x30E0;&#x306E;&#x6570;&#x5024;&#xFF08;&#x975E;Complex&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#xFF09;</p>
+          <td class="return-desc" data-ice="returnDescription"><p>&#x30CE;&#x30EB;&#x30E0;&#x306E;&#x6570;&#x5024;</p>
 </td>
         </tr>
       </tbody>
@@ -3682,14 +3298,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber191">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber260">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x5B9F;&#x90E8;</p>
+  <div data-ice="description"><p>&#x5B9F;&#x90E8;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
 
   
@@ -3703,7 +3320,7 @@
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>number</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>&#x5B9F;&#x90E8;&#x306E;&#x6570;&#x5024;&#xFF08;&#x975E;Complex&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#xFF09;</p>
+          <td class="return-desc" data-ice="returnDescription"><p>&#x5B9F;&#x90E8;&#x306E;&#x6570;&#x5024;</p>
 </td>
         </tr>
       </tbody>
@@ -3741,7 +3358,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber83">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber94">source</a></span></span>
     </span>
   </h3>
 
@@ -3785,7 +3402,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber76">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber87">source</a></span></span>
     </span>
   </h3>
 
@@ -3832,14 +3449,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber579">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber655">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.abs() = abs(A)</p>
+  <div data-ice="description"><p>abs(A)</p>
 </div>
 
   
@@ -3888,14 +3505,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber257">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber332">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.add(B) = A + B</p>
+  <div data-ice="description"><p>A + B</p>
 </div>
 
   
@@ -3960,14 +3577,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber731">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber807">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.atan() = atan(A)</p>
+  <div data-ice="description"><p>atan(A)</p>
 </div>
 
   
@@ -4016,14 +3633,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber744">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber820">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Y.atan2(X) = atan2(Y, X) &#x8907;&#x7D20;&#x6570;&#x306E;atan2&#x306F;&#x8A08;&#x7B97;&#x4E0D;&#x80FD;</p>
+  <div data-ice="description"><p>atan2(Y, X)</p>
 </div>
 
   
@@ -4040,400 +3657,8 @@
       <td data-ice="name" class="code" data-depth="0">number</td>
       <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>&#x8907;&#x7D20;&#x6570;&#x3092;&#x542B;&#x307E;&#x306A;&#x3044;&#x6570;&#x5024;&#x3002;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x8907;&#x7D20;&#x6570;&#x306E;&#x504F;&#x89D2;&#x3092;&#x8FD4;&#x3059;&#x3002;</p>
+      <td data-ice="description"><p>&#x5B9F;&#x6570;&#x3002;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x8907;&#x7D20;&#x6570;&#x306E;&#x504F;&#x89D2;&#x3092;&#x8FD4;&#x3059;&#x3002;</p>
 </td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-beta">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">beta</span><span class="code" data-ice="signature">(y: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber915">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.beta(y) = beta(x, y) &#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">y</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-betacdf">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">betacdf</span><span class="code" data-ice="signature">(a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber964">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.betacdf(a, b) = betacdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">a</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">b</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-betainc">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">betainc</span><span class="code" data-ice="signature">(a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, tail: <span>string</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber931">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.betainc(a, b, tail) = betainc(x, a, b, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">a</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">b</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">tail</td>
-      <td data-ice="type" class="code"><span>string</span></td>
-      <td data-ice="appendix"><ul><li>optional</li>
-<li>default: &quot;lower&quot;</li></ul></td>
-      <td data-ice="description"><p>lower/upper</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-betainv">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">betainv</span><span class="code" data-ice="signature">(a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber980">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>p.betainv(a, b) = betainv(p, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">a</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">b</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-betapdf">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">betapdf</span><span class="code" data-ice="signature">(a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, b: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber948">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.betapdf(a, b) = betapdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">a</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">b</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
     </tr>
 </tbody>
   </table>
@@ -4481,238 +3706,19 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber792">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber868">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.ceil() = ceil(A)</p>
+  <div data-ice="description"><p>ceil(A)</p>
 </div>
 
   
 
   <div data-ice="properties">
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-chi2cdf">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">chi2cdf</span><span class="code" data-ice="signature">(k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1164">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.chi2cdf(k) = chi2cdf(x, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">k</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-chi2inv">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">chi2inv</span><span class="code" data-ice="signature">(k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1178">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>p.chi2inv(k) = chi2inv(p, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">k</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-chi2pdf">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">chi2pdf</span><span class="code" data-ice="signature">(k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1150">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.chi2pdf(k) = chi2pdf(x, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">k</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
 </div>
 
   <div class="return-params" data-ice="returnParams">
@@ -4756,14 +3762,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber112">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber194">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x30C7;&#x30A3;&#x30FC;&#x30D7;&#x30B3;&#x30D4;&#x30FC;&#xFF08;&#x203B;&#x5B9F;&#x969B;&#x306B;&#x306F;&#x30A4;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x306A;&#x306E;&#x3067;&#x30B3;&#x30D4;&#x30FC;&#x3059;&#x308B;&#xFF09;</p>
+  <div data-ice="description"><p>&#x30C7;&#x30A3;&#x30FC;&#x30D7;&#x30B3;&#x30D4;&#x30FC;</p>
 </div>
 
   
@@ -4812,15 +3818,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber439">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber515">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.compareTo(B) &#x4ECA;&#x306E;&#x5024;A&#x3068;&#x3001;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x5024;B&#x3068;&#x3092;&#x6BD4;&#x8F03;&#x3059;&#x308B;
-&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;IF&#x6587;&#x3067;&#x5229;&#x7528;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x3001;&#x975E;Complex&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x3068;&#x306A;&#x308B;&#x3002;</p>
+  <div data-ice="description"><p>&#x5024;&#x540C;&#x58EB;&#x3092;&#x6BD4;&#x8F03;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
 
   
@@ -4858,7 +3864,7 @@
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>number</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>A &lt; B ? 1 : (A === B ? 0 : -1)&#xFF08;&#x203B;&#x975E;Complex&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#xFF09;</p>
+          <td class="return-desc" data-ice="returnDescription"><p>A &lt; B ? 1 : (A === B ? 0 : -1)</p>
 </td>
         </tr>
       </tbody>
@@ -4894,14 +3900,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber587">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber663">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.conj() = real(A) - imag(A)j (&#x5171;&#x5F79;&#x8907;&#x7D20;&#x6570;)</p>
+  <div data-ice="description"><p>real(A) - imag(A)j &#x5171;&#x5F79;&#x8907;&#x7D20;&#x6570;</p>
 </div>
 
   
@@ -4950,14 +3956,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber704">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber780">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.cos() = cos(A)</p>
+  <div data-ice="description"><p>cos(A)</p>
 </div>
 
   
@@ -5006,14 +4012,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber331">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber406">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.div(B) = A / B</p>
+  <div data-ice="description"><p>A / B</p>
 </div>
 
   
@@ -5078,14 +4084,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber306">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber381">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.dot(B) = A&#x30FB;B = A * conj(B)</p>
+  <div data-ice="description"><p>A&#x30FB;B, A * conj(B)</p>
 </div>
 
   
@@ -5150,14 +4156,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber181">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber249">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.equals(B)</p>
+  <div data-ice="description"><p>A === B</p>
 </div>
 
   
@@ -5220,118 +4226,6 @@
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-erf">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">erf</span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1019">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.erf() = erf(x) &#x8AA4;&#x5DEE;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-erfc">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">erfc</span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1031">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.erfc() = erfc(x) &#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-exp">
     <span class="access" data-ice="access">public</span>
     
@@ -5343,235 +4237,19 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber672">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber748">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.exp() = e^A</p>
+  <div data-ice="description"><p>exp(A)</p>
 </div>
 
   
 
   <div data-ice="properties">
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-factorial">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">factorial</span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber994">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>n.factorial() = factorial(n), n! &#x968E;&#x4E57;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-fcdf">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">fcdf</span><span class="code" data-ice="signature">(d1: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, d2: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1209">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.fcdf(d1, d2) = fcdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">d1</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">d2</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-finv">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">finv</span><span class="code" data-ice="signature">(d1: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, d2: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1225">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>p.finv(d1, d2) = finv(p, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">d1</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">d2</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
 </div>
 
   <div class="return-params" data-ice="returnParams">
@@ -5615,14 +4293,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber808">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber884">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.fix() = fix(A) &#x5C0F;&#x6570;&#x70B9;&#x90E8;&#x3092;&#x6D88;&#x3059;</p>
+  <div data-ice="description"><p>fix(A) &#x5C0F;&#x6570;&#x90E8;&#x3092;&#x53D6;&#x308A;&#x9664;&#x304F;</p>
 </div>
 
   
@@ -5671,99 +4349,19 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber784">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber860">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.floor() = floor(A)</p>
+  <div data-ice="description"><p>floor(A)</p>
 </div>
 
   
 
   <div data-ice="properties">
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-fpdf">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">fpdf</span><span class="code" data-ice="signature">(d1: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, d2: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1193">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.fpdf(d1, d2) = fpdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">d1</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">d2</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
 </div>
 
   <div class="return-params" data-ice="returnParams">
@@ -5807,451 +4405,19 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber816">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber892">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.fract() = fract(A) &#x5C0F;&#x6570;&#x70B9;&#x90E8;&#x3092;&#x6B8B;&#x3059;</p>
+  <div data-ice="description"><p>fract(A) &#x5C0F;&#x6570;&#x90E8;&#x306E;&#x62BD;&#x51FA;</p>
 </div>
 
   
 
   <div data-ice="properties">
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-gamcdf">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">gamcdf</span><span class="code" data-ice="signature">(k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber884">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.gamcdf(k, s) = gamcdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">k</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x5F62;&#x72B6;&#x6BCD;&#x6570;</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">s</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x5C3A;&#x5EA6;&#x6BCD;&#x6570;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-gaminv">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">gaminv</span><span class="code" data-ice="signature">(k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber900">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>p.gaminv(k, s) = gaminv(p, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">k</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x5F62;&#x72B6;&#x6BCD;&#x6570;</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">s</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x5C3A;&#x5EA6;&#x6BCD;&#x6570;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-gamma">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">gamma</span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber839">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>z.gamma() = gamma(z) &#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570; </p>
-</div>
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-gammainc">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">gammainc</span><span class="code" data-ice="signature">(a: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, tail: <span>string</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber852">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.gammainc(a, tail) = gammainc(x, a, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">a</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">tail</td>
-      <td data-ice="type" class="code"><span>string</span></td>
-      <td data-ice="appendix"><ul><li>optional</li>
-<li>default: &quot;lower&quot;</li></ul></td>
-      <td data-ice="description"><p>lower/upper</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-gammaln">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">gammaln</span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber828">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.gammaln() = gammaln(x) &#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570; </p>
-</div>
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-gampdf">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">gampdf</span><span class="code" data-ice="signature">(k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber868">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.gampdf(k, s) = gampdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">k</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x5F62;&#x72B6;&#x6BCD;&#x6570;</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">s</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x5C3A;&#x5EA6;&#x6BCD;&#x6570;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
 </div>
 
   <div class="return-params" data-ice="returnParams">
@@ -6295,14 +4461,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber239">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber314">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x5B9F;&#x90E8;&#x3001;&#x865A;&#x90E8;&#x306E;&#x5C0F;&#x6570;&#x70B9;&#x306E;&#x6841;&#x6570;&#x306E;&#x6700;&#x5927;&#x5024;</p>
+  <div data-ice="description"><p>&#x5B9F;&#x90E8;&#x3001;&#x865A;&#x90E8;&#x3092;&#x8868;&#x3059;&#x969B;&#x306E;&#x5C0F;&#x6570;&#x70B9;&#x4EE5;&#x4E0B;&#x306E;&#x6841;&#x6570;
+&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number &#x578B;</p>
 </div>
 
   
@@ -6316,7 +4483,7 @@
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>number</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>&#x5C0F;&#x6570;&#x70B9;&#x306E;&#x6841;&#xFF08;&#x975E;Complex&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#xFF09;</p>
+          <td class="return-desc" data-ice="returnDescription"><p>&#x5C0F;&#x6570;&#x70B9;&#x306E;&#x6841;&#x6570;</p>
 </td>
         </tr>
       </tbody>
@@ -6352,14 +4519,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber374">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber449">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.inv() = 1 / A</p>
+  <div data-ice="description"><p>1 / A</p>
 </div>
 
   
@@ -6408,7 +4575,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber503">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber579">source</a></span></span>
     </span>
   </h3>
 
@@ -6482,7 +4649,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber471">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber547">source</a></span></span>
     </span>
   </h3>
 
@@ -6556,7 +4723,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber567">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber643">source</a></span></span>
     </span>
   </h3>
 
@@ -6612,7 +4779,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber556">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber632">source</a></span></span>
     </span>
   </h3>
 
@@ -6668,7 +4835,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber461">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber537">source</a></span></span>
     </span>
   </h3>
 
@@ -6742,7 +4909,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber522">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber598">source</a></span></span>
     </span>
   </h3>
 
@@ -6798,7 +4965,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber540">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber616">source</a></span></span>
     </span>
   </h3>
 
@@ -6854,7 +5021,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber548">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber624">source</a></span></span>
     </span>
   </h3>
 
@@ -6910,7 +5077,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber493">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber569">source</a></span></span>
     </span>
   </h3>
 
@@ -6984,7 +5151,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber530">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber606">source</a></span></span>
     </span>
   </h3>
 
@@ -7040,7 +5207,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber513">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber589">source</a></span></span>
     </span>
   </h3>
 
@@ -7114,7 +5281,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber483">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber559">source</a></span></span>
     </span>
   </h3>
 
@@ -7188,14 +5355,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber660">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber736">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.log() = log A</p>
+  <div data-ice="description"><p>log(A)</p>
 </div>
 
   
@@ -7244,14 +5411,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber406">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber482">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.max(B) = max([A, B])</p>
+  <div data-ice="description"><p>max([A, B])</p>
 </div>
 
   
@@ -7324,14 +5491,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber422">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber498">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.min(B) = min([A, B])</p>
+  <div data-ice="description"><p>min([A, B])</p>
 </div>
 
   
@@ -7404,14 +5571,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber357">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber432">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.mod(B) = A mod B (&#x8907;&#x7D20;&#x6570;&#x3067;&#x306E;&#x8A08;&#x7B97;&#x306F;&#x3067;&#x304D;&#x307E;&#x305B;&#x3093;)</p>
+  <div data-ice="description"><p>A mod B</p>
 </div>
 
   
@@ -7477,14 +5644,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber281">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber356">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.mul(B) = A * B</p>
+  <div data-ice="description"><p>A * B</p>
 </div>
 
   
@@ -7538,78 +5705,6 @@
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-nchoosek">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">nchoosek</span><span class="code" data-ice="signature">(k: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1006">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>n.nchoosek(k) = nchoosek(n, k), nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">k</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-negate">
     <span class="access" data-ice="access">public</span>
     
@@ -7621,265 +5716,19 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber599">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber675">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.negate() = - A</p>
+  <div data-ice="description"><p>-A</p>
 </div>
 
   
 
   <div data-ice="properties">
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-normcdf">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">normcdf</span><span class="code" data-ice="signature">(u: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1061">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.normcdf(u, s) = normcdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">u</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"><ul><li>optional</li>
-<li>default: 0.0</li></ul></td>
-      <td data-ice="description"><p>&#x5E73;&#x5747;&#x5024;</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">s</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"><ul><li>optional</li>
-<li>default: 1.0</li></ul></td>
-      <td data-ice="description"><p>&#x5206;&#x6563;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-norminv">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">norminv</span><span class="code" data-ice="signature">(u: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1077">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.norminv(u, s) = norminv(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">u</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"><ul><li>optional</li>
-<li>default: 0.0</li></ul></td>
-      <td data-ice="description"><p>&#x5E73;&#x5747;&#x5024;</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">s</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"><ul><li>optional</li>
-<li>default: 1.0</li></ul></td>
-      <td data-ice="description"><p>&#x5206;&#x6563;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-normpdf">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">normpdf</span><span class="code" data-ice="signature">(u: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, s: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1045">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>x.normpdf(u, s) = normpdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">u</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"><ul><li>optional</li>
-<li>default: 0.0</li></ul></td>
-      <td data-ice="description"><p>&#x5E73;&#x5747;&#x5024;</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">s</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"><ul><li>optional</li>
-<li>default: 1.0</li></ul></td>
-      <td data-ice="description"><p>&#x5206;&#x6563;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
 </div>
 
   <div class="return-params" data-ice="returnParams">
@@ -7923,14 +5772,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber612">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber688">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.pow(B) = A^B</p>
+  <div data-ice="description"><p>pow(A, B)</p>
 </div>
 
   
@@ -7995,14 +5844,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber800">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber876">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.round() = round(A)</p>
+  <div data-ice="description"><p>round(A)</p>
 </div>
 
   
@@ -8051,14 +5900,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber388">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber464">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.sign() &#x306F;&#x9577;&#x3055;&#x3092;1&#x306B;&#x3057;&#x307E;&#x3059; -100 &#x306A;&#x3089; -1 &#x306B;&#x3057;&#x307E;&#x3059;</p>
+  <div data-ice="description"><p>&#x7B26;&#x53F7;&#x5024;
+1, -1, 0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;&#x3002;&#x8907;&#x7D20;&#x6570;&#x306E;&#x5834;&#x5408;&#x306F;&#x30CE;&#x30EB;&#x30E0;&#x3092;1&#x306B;&#x3059;&#x308B;&#x3002;</p>
 </div>
 
   
@@ -8107,14 +5957,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber689">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber765">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.sin() = sin(A)</p>
+  <div data-ice="description"><p>sin(A)</p>
 </div>
 
   
@@ -8163,14 +6013,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber766">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber842">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.sinc() = sinc(A)</p>
+  <div data-ice="description"><p>sinc(A)</p>
 </div>
 
   
@@ -8219,14 +6069,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber642">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber718">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.sqrt() = sqrt(A)</p>
+  <div data-ice="description"><p>sqrt(A)</p>
 </div>
 
   
@@ -8275,14 +6125,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber634">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber710">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.square() = A^2</p>
+  <div data-ice="description"><p>pow(A, 2)</p>
 </div>
 
   
@@ -8331,14 +6181,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber269">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber344">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.sub(B) = A - B</p>
+  <div data-ice="description"><p>A - B</p>
 </div>
 
   
@@ -8403,318 +6253,19 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber719">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber795">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>A.tan() = tan(A)</p>
+  <div data-ice="description"><p>tan(A)</p>
 </div>
 
   
 
   <div data-ice="properties">
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-tcdf">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">tcdf</span><span class="code" data-ice="signature">(v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1092">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>t.tcdf(v) = tcdf(t, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">v</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-tdist">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">tdist</span><span class="code" data-ice="signature">(v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, tails: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1121">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>t.tdist(v, tails) = tdist(t, v, tails) &#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">v</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
-</td>
-    </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">tails</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x5C3E;&#x90E8;(1...&#x7247;&#x5074;&#x3001;2...&#x4E21;&#x5074;)</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-tinv">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">tinv</span><span class="code" data-ice="signature">(v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1106">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>p.tinv(v) = tinv(p, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">v</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
-</div>
-
-  <div class="return-params" data-ice="returnParams">
-    <h4>Return:</h4>
-    <table>
-      <tbody>
-        <tr>
-          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          
-        </tr>
-      </tbody>
-    </table>
-    <div data-ice="returnProperties">
-</div>
-  </div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-tinv2">
-    <span class="access" data-ice="access">public</span>
-    
-    
-    
-    
-    
-    <span class="code" data-ice="name">tinv2</span><span class="code" data-ice="signature">(v: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber1136">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>p.tinv2(v) = tinv2(p, v) &#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;</p>
-</div>
-
-  
-
-  <div data-ice="properties"><div data-ice="properties">
-  <h4 data-ice="title">Params:</h4>
-  <table class="params">
-    <thead>
-    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
-    </thead>
-    <tbody>
-    
-    <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">v</td>
-      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-      <td data-ice="appendix"></td>
-      <td data-ice="description"><p>&#x81EA;&#x7531;&#x5EA6;</p>
-</td>
-    </tr>
-</tbody>
-  </table>
-</div>
 </div>
 
   <div class="return-params" data-ice="returnParams">
@@ -8758,7 +6309,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber120">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/Math/Complex.mjs.html#lineNumber202">source</a></span></span>
     </span>
   </h3>
 

@@ -34,9 +34,12 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mathutil">MathUtil</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mathutil">MathUtil</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Signal.mjs~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
 </ul>
 </div>
@@ -66,8 +69,19 @@ export default  class MathContext {
 	 * @param {RoundingModeEntity} [roundingMode=RoundingMode.HALF_UP] - &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;
 	 */
 	constructor(precision_or_name, roundingMode) {
+
+		/**
+		 * &#x7CBE;&#x5EA6;
+		 * @private
+		 */
 		this.precision = precision_or_name;
+
+		/**
+		 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;
+		 * @private
+		 */
 		this.roundingMode = roundingMode === undefined ? RoundingMode.HALF_UP : roundingMode;
+
 		if((typeof precision_or_name === &quot;string&quot;) || (precision_or_name instanceof String)) {
 			let buff = precision_or_name.match(/precision=\d+/);
 			if(buff !== null) {
@@ -163,6 +177,9 @@ export default  class MathContext {
 
 }
 
+/**
+ * &#x5185;&#x90E8;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5B9A;&#x6570;&#x5024;
+ */
 const DEFINE = {
 	UNLIMITED	: new MathContext(0,	RoundingMode.HALF_UP),
 	DECIMAL32	: new MathContext(7,	RoundingMode.HALF_EVEN),

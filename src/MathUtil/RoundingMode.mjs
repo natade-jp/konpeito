@@ -53,15 +53,15 @@ class RoundingMode_UP extends RoundingModeEntity {
 	 * @returns {number} いくつ足すと丸められるか
 	 */
 	static getAddNumber(x) {
-		x = x % 10;
-		if(x === 0) {
+		const y = x % 10;
+		if(y === 0) {
 			return 0;
 		}
-		else if(x > 0) {
-			return 10 - x;
+		else if(y > 0) {
+			return 10 - y;
 		}
 		else {
-			return (-(10 + x));
+			return (-(10 + y));
 		}
 	}
 
@@ -87,8 +87,7 @@ class RoundingMode_DOWN extends RoundingModeEntity {
 	 * @returns {number} いくつ足すと丸められるか
 	 */
 	static getAddNumber(x) {
-		x = x % 10;
-		return -x;
+		return -(x % 10);
 	}
 
 }
@@ -113,15 +112,15 @@ class RoundingMode_CEILING extends RoundingModeEntity {
 	 * @returns {number} いくつ足すと丸められるか
 	 */
 	static getAddNumber(x) {
-		x = x % 10;
-		if(x === 0) {
+		const y = x % 10;
+		if(y === 0) {
 			return 0;
 		}
-		else if(x > 0) {
-			return 10 - x;
+		else if(y > 0) {
+			return 10 - y;
 		}
 		else {
-			return -x;
+			return -y;
 		}
 	}
 
@@ -147,15 +146,15 @@ class RoundingMode_FLOOR extends RoundingModeEntity {
 	 * @returns {number} いくつ足すと丸められるか
 	 */
 	static getAddNumber(x) {
-		x = x % 10;
-		if(x === 0) {
+		const y = x % 10;
+		if(y === 0) {
 			return 0;
 		}
-		else if(x > 0) {
-			return -x;
+		else if(y > 0) {
+			return -y;
 		}
 		else {
-			return(-(10 + x));
+			return(-(10 + y));
 		}
 	}
 
@@ -181,13 +180,13 @@ class RoundingMode_HALF_UP extends RoundingModeEntity {
 	 * @returns {number} いくつ足すと丸められるか
 	 */
 	static getAddNumber(x) {
-		x = x % 10;
-		const sign = x >= 0 ? 1 : -1;
-		if(Math.abs(x) < 5) {
-			return (x * -1);
+		const y = x % 10;
+		const sign = y >= 0 ? 1 : -1;
+		if(Math.abs(y) < 5) {
+			return (y * -1);
 		}
 		else {
-			return (sign * (10 - Math.abs(x)));
+			return (sign * (10 - Math.abs(y)));
 		}
 	}
 
@@ -213,13 +212,13 @@ class RoundingMode_HALF_DOWN extends RoundingModeEntity {
 	 * @returns {number} いくつ足すと丸められるか
 	 */
 	static getAddNumber(x) {
-		x = x % 10;
-		const sign = x >= 0 ? 1 : -1;
-		if(Math.abs(x) < 6) {
-			return (x * -1);
+		const y = x % 10;
+		const sign = y >= 0 ? 1 : -1;
+		if(Math.abs(y) < 6) {
+			return (y * -1);
 		}
 		else {
-			return (sign * (10 - Math.abs(x)));
+			return (sign * (10 - Math.abs(y)));
 		}
 	}
 
@@ -245,15 +244,15 @@ class RoundingMode_HALF_EVEN extends RoundingModeEntity {
 	 * @returns {number} いくつ足すと丸められるか
 	 */
 	static getAddNumber(x) {
-		x = x % 100;
+		let y = x % 100;
 		let sign, even;
-		if(x < 0) {
+		if(y < 0) {
 			sign = -1;
-			even = Math.ceil(x / 10) & 1;
+			even = Math.ceil(y / 10) & 1;
 		}
 		else {
 			sign = 1;
-			even = Math.floor(x / 10) & 1;
+			even = Math.floor(y / 10) & 1;
 		}
 		let center;
 		if(even === 1) {
@@ -262,12 +261,12 @@ class RoundingMode_HALF_EVEN extends RoundingModeEntity {
 		else {
 			center = 6;
 		}
-		x = x % 10;
-		if(Math.abs(x) < center) {
-			return (x * -1);
+		y = y % 10;
+		if(Math.abs(y) < center) {
+			return (y * -1);
 		}
 		else {
-			return (sign * (10 - Math.abs(x)));
+			return (sign * (10 - Math.abs(y)));
 		}
 	}
 
@@ -293,8 +292,8 @@ class RoundingMode_UNNECESSARY extends RoundingModeEntity {
 	 * @returns {number} いくつ足すと丸められるか
 	 */
 	static getAddNumber(x) {
-		x = x % 10;
-		if(x === 0) {
+		const y = x % 10;
+		if(y === 0) {
 			return 0;
 		}
 		else {

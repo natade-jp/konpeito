@@ -8,423 +8,10 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import Random from "../MathUtil/Random.mjs";
+import LinearAlgebra from "../MathUtil/LinearAlgebra.mjs";
+import Statistics from "../MathUtil/Statistics.mjs";
 import Signal from "../MathUtil/Signal.mjs";
 import Complex from "./Complex.mjs";
-
-/**
- * 内部の行列の計算用
- */
-class MatrixTool {
-
-	/**
-	 * 対称行列の三重対角化する（実数計算専用）
-	 * @param {Matrix} M
-	 * @returns {Object<string, Matrix>}
-	 */
-	static tridiagonalize(M) {
-
-		const A = Matrix.create(M);
-		const a = A.getNumberMatrixArray();
-		const tolerance = 1.0e-10;
-		
-		/**
-		 * ベクトルx1とベクトルx2の内積をとる
-		 * @param {Array<number>} x1
-		 * @param {Array<number>} x2
-		 * @param {number} [index_offset=0] - オフセット(この値から行う)
-		 * @param {number} [index_max=x1.length] - 最大(この値は含めない)
-		 * @returns {number} 
-		 */
-		const innerproduct = function(x1, x2, index_offset, index_max) {
-			let y = 0;
-			const ioffset = index_offset ? index_offset : 0;
-			const imax = index_max ? index_max : x1.length;
-			for(let i = ioffset; i < imax; i++) {
-				y += x1[i] * x2[i];
-			}
-			return y;
-		};
-
-		/**
-		 * ハウスホルダー変換
-		 * @param {Array<number>} x - ハウスホルダー変換したいベクトル
-		 * @param {number} [index_offset=0] - オフセット(この値から行う)
-		 * @param {number} [index_max=x.length] - 最大(この値は含めない)
-		 * @returns {Object<string, Matrix>} 
-		 */
-		const house = function(x, index_offset, index_max) {
-			const ioffset = index_offset ? index_offset : 0;
-			const imax = index_max ? index_max : x.length;
-			// xの内積の平方根（ノルム）を計算
-			let y1 = Math.sqrt(innerproduct(x, x, ioffset, imax));
-			const v = [];
-			if(Math.abs(y1) >= tolerance) {
-				if(x[ioffset] < 0) {
-					y1 = - y1;
-				}
-				let t;
-				for(let i = ioffset, j = 0; i < imax; i++, j++) {
-					if(i === ioffset) {
-						v[j] = x[i] + y1;
-						t = 1.0 / Math.sqrt(v[j] * y1);
-						v[j] = v[j] * t;
-					}
-					else {
-						v[j] = x[i] * t;
-					}
-				}
-			}
-			return {
-				y1: - y1,	// 鏡像の1番目の要素(y2,y3,...は0)
-				v : v		// 直行する単位ベクトル vT*v = 2
-			};
-		};
-
-		const n = a.length;
-		const d = []; // 対角成分
-		const e = []; // 隣の成分
-
-		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
-		// 3重対角化の成分を取得する
-		{
-			for(let k = 0; k < n - 2; k++) {
-				const v = a[k];
-				d[k] = v[k];
-				{
-					const H = house(v, k + 1, n);
-					e[k] = H.y1;
-					for(let i = 0; i < H.v.length; i++) {
-						v[k + 1 + i] = H.v[i];
-					}
-				}
-				if(Math.abs(e[k]) < tolerance) {
-					continue;
-				}
-				for(let i = k + 1; i < n; i++) {
-					let s = 0;
-					for(let j = k + 1; j < i; j++) {
-						s += a[j][i] * v[j];
-					}
-					for(let j = i; j < n; j++) {
-						s += a[i][j] * v[j];
-					}
-					d[i] = s;
-				}
-				const t = innerproduct(v, d, k + 1, n) / 2.0;
-				for(let i = n - 1; i > k; i--) {
-					const p = v[i];
-					const q = d[i] - (t * p);
-					d[i] = q;
-					for(let j = i; j < n; j++) {
-						const r = p * d[j] + q * v[j];
-						a[i][j] = a[i][j] - r;
-					}
-				}
-			}
-			if(n >= 2) {
-				d[n - 2] = a[n - 2][n - 2];
-				e[n - 2] = a[n - 2][n - 1];
-			}
-			if(n >= 1) {
-				d[n - 1] = a[n - 1][n - 1];
-			}
-		}
-
-		//変換P行列を求める
-		for(let k = n - 1; k >= 0; k--) {
-			const v = a[k];
-			if(k < n - 2) {
-				for(let i = k + 1; i < n; i++) {
-					const w = a[i];
-					const t = innerproduct(v, w, k + 1, n);
-					for(let j = k + 1; j < n; j++) {
-						w[j] -= t * v[j];
-					}
-				}
-			}
-			for(let i = 0; i < n; i++) {
-				v[i] = 0.0;
-			}
-			v[k] = 1.0;
-		}
-
-		// d と e の配列を使って、三重対角行列を作成する
-		const H = Matrix.createMatrixDoEachCalculation(function(row, col) {
-			if(row === col) {
-				return new Complex(d[row]);
-			}
-			else if(Math.abs(row - col) === 1) {
-				return new Complex(e[((row + col) * 0.5) | 0]);
-			}
-			else {
-				return Complex.ZERO;
-			}
-		}, n, n);
-
-		return {
-			P : (new Matrix(a)).T(),
-			H : H
-		};
-	}
-
-	/**
-	 * 対称行列の固有値分解する（実数計算専用）
-	 * @param {Matrix} M - 対称行列
-	 * @returns {Object<string, Matrix>}
-	 */
-	static eig(M) {
-		
-		const A = Matrix.create(M);
-		
-		// QR法により固有値を求める
-		let is_error = false;
-		const tolerance = 1.0e-10;
-		const PH = A.tridiagonalize();
-		const a = PH.P.getNumberMatrixArray();
-		const h = PH.H.getNumberMatrixArray();
-		const n = A.row_length;
-
-		// 成分の抽出
-		const d = []; // 対角成分
-		const e = []; // 隣の成分
-		for(let i = 0; i < n; i++) {
-			d[i] = h[i][i];
-			e[i] = (i === 0) ? 0.0 : h[i][i - 1];
-		}
-
-		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
-		const MAX_ITER = 100;
-		for(let h = n - 1; h > 0; h--) {
-			let j = h;
-			for(j = h;j >= 1; j--) {
-				if(Math.abs(e[j]) <= (tolerance * (Math.abs(d[j - 1]) + Math.abs(d[j])))) {
-					break;
-				}
-			}
-			if(j == h) {
-				continue;
-			}
-			let iter = 0;
-			while(true) {
-				iter++;
-				if(iter > MAX_ITER) {
-					is_error = true;
-					break;
-				}
-				let w = (d[h - 1] - d[h]) / 2.0;
-				let t = e[h] * e[h];
-				let s = Math.sqrt(w * w + t);
-				if(w < 0) {
-					s = - s;
-				}
-				let x = d[j] - d[h] + (t / (w + s));
-				let y = e[j + 1];
-				for(let k = j; k < h; k++) {
-					let c, s;
-					if(Math.abs(x) >= Math.abs(y)) {
-						t = - y / x;
-						c = 1.0 / Math.sqrt(t * t + 1);
-						s = t * c;
-					}
-					else {
-						t = - x / y;
-						s = 1.0 / Math.sqrt(t * t + 1);
-						c = t * s;
-					}
-					w = d[k] - d[k + 1];
-					t = (w * s + 2.0 * c * e[k + 1]) * s;
-					d[k] -= t;
-					d[k + 1] += t;
-					if(k > j) {
-						e[k] = c * e[k] - s * y;
-					}
-					e[k + 1] += s * (c * w - 2.0 * s * e[k + 1]);
-					for(let i = 0; i < n; i++) {
-						x = a[i][k];
-						y = a[i][k + 1];
-						a[i][k    ] = c * x - s * y;
-						a[i][k + 1] = s * x + c * y;
-					}
-					if(k < h - 1) {
-						x = e[k + 1];
-						y = -s * e[k + 2];
-						e[k + 2] *= c;
-					}
-				}
-				if(Math.abs(e[h]) <= tolerance * (Math.abs(d[h - 1]) + Math.abs(d[h]))) {
-					break;
-				}
-			}
-			if(is_error) {
-				break;
-			}
-		}
-
-		// ソート
-		const vd_sort = function(V, d) {
-			const len = d.length;
-			const sortdata = [];
-			for(let i = 0; i < len; i++) {
-				sortdata[i] = {
-					sigma : d[i],
-					index : i
-				};
-			}
-			const compare = function(a, b){
-				if(a === b) {
-					return 0;
-				}
-				return (a < b ? -1 : 1);
-			};
-			sortdata.sort(compare);
-			const MOVE = Matrix.zeros(len);
-			const ND = Matrix.zeros(len);
-			for(let i = 0; i < len; i++) {
-				ND.matrix_array[i][i] = new Complex(sortdata[i].sigma);
-				MOVE.matrix_array[i][sortdata[i].index] = Complex.ONE;
-			}
-			return {
-				V : V.mul(MOVE),
-				D : ND
-			};
-		};
-		const VD = vd_sort(new Matrix(a), d);
-		return VD;
-	}
-
-	
-	/**
-	 * 行列をベクトルと見立て、正規直行化し、QとRの行列を作る
-	 * @param {Matrix} M_ - 正方行列
-	 * @returns {Object<string, Matrix>}
-	 */
-	static _gram_schmidt_orthonormalization(M_) {
-		// グラム・シュミットの正規直交化法を使用する
-		// 参考：Gilbert Strang (2007). Computational Science and Engineering.
-
-		const M = Matrix.create(M_);
-		const len = M.column_length;
-		const A = M.matrix_array;
-		const Q_Matrix = Matrix.zeros(len);
-		const R_Matrix = Matrix.zeros(len);
-		const Q = Q_Matrix.matrix_array;
-		const R = R_Matrix.matrix_array;
-		const non_orthogonalized = [];
-		const a = new Array(len);
-		
-		for(let col = 0; col < len; col++) {
-			// i列目を抽出
-			for(let row = 0; row < len; row++) {
-				a[row] = A[row][col];
-			}
-			// 直行ベクトルを作成
-			if(col > 0) {
-				// Rのi列目を内積で計算する
-				for(let j = 0; j < col; j++) {
-					for(let k = 0; k < len; k++) {
-						R[j][col] = R[j][col].add(A[k][col].dot(Q[k][j]));
-					}
-				}
-				for(let j = 0; j < col; j++) {
-					for(let k = 0; k < len; k++) {
-						a[k] = a[k].sub(R[j][col].mul(Q[k][j]));
-					}
-				}
-			}
-			{
-				// 正規化と距離を1にする
-				for(let j = 0; j < len; j++) {
-					R[col][col] = R[col][col].add(a[j].mul(a[j]));
-				}
-				R[col][col] = R[col][col].sqrt();
-				if(R[col][col].isZero(1e-10)) {
-					// 直行化が不可能だった列の番号をメモして、その列はゼロで埋める
-					non_orthogonalized.push(col);
-					for(let j = 0;j < len;j++) {
-						Q[j][col] = Complex.ZERO;
-					}
-				}
-				else {
-					// ここで R[i][i] === 0 の場合、直行させたベクトルaは0であり、
-					// ランク落ちしており、計算不可能である。
-					// 0割りした値を、j列目のQに記録していくがInfとなる。
-					for(let j = 0;j < len;j++) {
-						Q[j][col] = a[j].div(R[col][col]);
-					}
-				}
-			}
-		}
-		return {
-			Q : Q_Matrix,
-			R : R_Matrix,
-			non_orthogonalized : non_orthogonalized
-		};
-	}
-	
-	/**
-	 * 行列の全行ベクトルに対して、直行したベクトルを作成する
-	 * @param {Matrix} M_
-	 * @param {number} [epsilon=1.0e-10] - 誤差
-	 * @returns {Matrix} 直行したベクトルがなければNULLを返す
-	 */
-	static _createOrthogonalVector(M_, epsilon) {
-		const M = new Matrix(M_);
-		const column_length = M.column_length;
-		const m = M.matrix_array;
-		const tolerance = epsilon ? epsilon : 1.0e-10;
-		// 正則行列をなす場合に問題となる行番号を取得
-		const not_regular_rows = M._get_linear_dependence_vector(tolerance);
-		// 不要な行を削除する
-		{
-			// not_regular_rowsは昇順リストなので、後ろから消していく
-			for(let i = not_regular_rows.length - 1; i >= 0; i--) {
-				m.splice(not_regular_rows[i], 1);
-				M.row_length--;
-			}
-		}
-		// 追加できるベクトルの数
-		const add_vectors = column_length - m.length;
-		if(add_vectors <= 0) {
-			return null;
-		}
-		// ランダムベクトル（seed値は毎回同一とする）
-		const noise = new Random(0);
-		let orthogonal_matrix = null;
-		for(let i = 0; i < 100; i++) {
-			// 直行ベクトルを作るために、いったん行と列を交換する
-			// これは、グラム・シュミットの正規直交化法が列ごとに行う手法のため。
-			const M2 = M.T();
-			// ランダム行列を作成する
-			const R = Matrix.createMatrixDoEachCalculation(function() {
-				return new Complex(noise.nextGaussian());
-			}, M2.row_length, add_vectors);
-			// 列に追加する
-			M2._concat_left(R);
-			// 正規直行行列を作成する
-			orthogonal_matrix = MatrixTool._gram_schmidt_orthonormalization(M2);
-			// 正しく作成できていたら完了
-			if(orthogonal_matrix.non_orthogonalized.length === 0) {
-				break;
-			}
-		}
-		if(orthogonal_matrix.non_orthogonalized.length !== 0) {
-			// 普通は作成できないことはないが・・・
-			console.log("miss");
-			return null;
-		}
-		// 作成した列を切り出す
-		const y = new Array(add_vectors);
-		const q = orthogonal_matrix.Q.matrix_array;
-		for(let row = 0; row < add_vectors; row++) {
-			y[row] = new Array(column_length);
-			for(let col = 0; col < column_length; col++) {
-				y[row][col] = q[col][column_length - add_vectors + row];
-			}
-		}
-		return new Matrix(y);
-	}
-}
 
 /**
  * コンストラクタ用の関数群
@@ -817,7 +404,102 @@ export default class Matrix {
 	}
 
 	/**
-	 * 複製
+	 * Matrix を作成
+	 * @param {Object|number|string|Array} number 
+	 * @returns {Matrix}
+	 */
+	static create(number) {
+		if((arguments.length === 1) && (number instanceof Matrix)) {
+			return number;
+		}
+		else {
+			return new Matrix(number);
+		}
+	}
+	
+	/**
+	 * 指定した数値から Matrix 型に変換
+	 * @param {Matrix} number
+	 * @returns {Matrix}
+	 */
+	static valueOf(number) {
+		return Matrix.valueOf(number);
+	}
+
+	/**
+	 * 行列を作成
+	 * @param {Matrix} number 
+	 * @returns {Matrix}
+	 * @private
+	 */
+	static _toMatrix(number) {
+		if(number instanceof Matrix) {
+			return number;
+		}
+		else {
+			return new Matrix(number);
+		}
+	}
+
+	/**
+	 * 複素数を作成
+	 * @param {Matrix} number 
+	 * @returns {Complex}
+	 * @private
+	 */
+	static _toComplex(number) {
+		if(number instanceof Complex) {
+			return number;
+		}
+		const M = Matrix._toMatrix(number);
+		if(M.isScalar()) {
+			return M.scalar;
+		}
+		else {
+			throw "not scalar.";
+		}
+	}
+
+	/**
+	 * 実数を作成
+	 * @param {Matrix} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toFloat(number) {
+		if((typeof number === "number") || (number instanceof Number)) {
+			return number;
+		}
+		const x = Matrix._toComplex(number);
+		if(x.isReal()) {
+			return (new Complex(number)).real;
+		}
+		else {
+			throw "not support complex numbers.";
+		}
+	}
+
+	/**
+	 * 整数を作成
+	 * @param {Matrix} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		return Matrix._toFloat(number) | 0;
+	}
+
+	/**
+	 * キャッシュを削除
+	 */
+	_clearCash() {
+		if(this.string_cash) {
+			delete this.string_cash;
+		}
+	}
+
+	/**
+	 * ディープコピー
 	 * @returns {Matrix}
 	 */
 	clone() {
@@ -923,14 +605,14 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.equals(B) = A === B
+	 * A === B
 	 * @param {Matrix} number
 	 * @param {number} [epsilon] - 誤差
 	 * @returns {boolean} A === B
 	 */
 	equals(number, epsilon) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		if((M1.row_length !== M2.row_length) || (M1.column_length !== M2.column_length)) {
 			return false;
 		}
@@ -950,8 +632,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列を構成する複素数の実数のみを抽出し、JavaScriptで扱える配列を作成する
-	 * @returns {Array} JavaScriptで扱える実数の配列
+	 * 行列を構成する複素数の実部の配列
+	 * @returns {Array<Array<number>>}
 	 */
 	getNumberMatrixArray() {
 		const y = new Array(this.row_length);
@@ -965,8 +647,8 @@ export default class Matrix {
 	}
 	
 	/**
-	 * 行列を構成するComplex型で構成された配列を作成する
-	 * @returns {Array} 行列のComplex配列を返します
+	 * 行列を構成する複素数のComplex型の配列
+	 * @returns {Array<Array<Complex>>}
 	 */
 	getComplexMatrixArray() {
 		const y = new Array(this.row_length);
@@ -980,33 +662,11 @@ export default class Matrix {
 	}
 	
 	/**
-	 * 任意の引数データを使用して行列を作成（引数によっては行列オブジェクトを新規作成する）
-	 * @param {Matrix} number 
-	 * @returns {Matrix}
-	 */
-	static create(number) {
-		if((arguments.length === 1) && (number instanceof Matrix)) {
-			return number;
-		}
-		else {
-			return new Matrix(number);
-		}
-	}
-	
-	/**
-	 * キャッシュを削除する
-	 */
-	_clearCash() {
-		if(this.string_cash) {
-			delete this.string_cash;
-		}
-	}
-
-	/**
-	 * 行列内の全ての値に処理を加えます。ミュータブルです。
-	 * 内部処理用
+	 * 本オブジェクト内の全要素に同一処理を実行
+	 * ミュータブル
 	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(num, row, col)
 	 * @returns {Matrix} 処理実行後の行列
+	 * @private
 	 */
 	_each(eachfunc) {
 		let isclearcash = false;
@@ -1036,7 +696,16 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列内の各値に対して指定した初期化を行った行列オブジェクトを新規作成する
+	 * 本オブジェクト内の全要素に同一処理を実行
+	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(num, row, col)
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	cloneMatrixDoEachCalculation(eachfunc) {
+		return this.clone()._each(eachfunc);
+	}
+
+	/**
+	 * 行列内の各値に対して指定した初期化を行ったMatrixを作成
 	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(row, col)
 	 * @param {number} dimension - 次元数
 	 * @param {number} [column_length=dimension] - 列数
@@ -1046,8 +715,8 @@ export default class Matrix {
 		if((arguments.length === 0) || (arguments.length > 3)) {
 			throw "IllegalArgumentException";
 		}
-		const y_row_length = dimension;
-		const y_column_length = column_length ? column_length : dimension;
+		const y_row_length = Matrix._toInteger(dimension);
+		const y_column_length = column_length ? Matrix._toInteger(column_length) : y_row_length;
 		const y = new Array(y_row_length);
 		for(let row = 0; row < y_row_length; row++) {
 			y[row] = new Array(y_column_length);
@@ -1056,14 +725,8 @@ export default class Matrix {
 				if(ret === undefined) {
 					y[row][col] = Complex.ZERO;
 				}
-				else if(ret instanceof Complex) {
-					y[row][col] = ret;
-				}
-				else if(ret instanceof Matrix) {
-					y[row][col] = ret.scalar;
-				}
 				else {
-					y[row][col] = new Complex(ret);
+					y[row][col] = Matrix._toComplex(ret);
 				}
 			}
 		}
@@ -1071,16 +734,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 本行列内部の全ての値に対して指定した処理を加える
-	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(num, row, col)
-	 * @returns {Matrix} 処理実行後の行列
-	 */
-	cloneMatrixDoEachCalculation(eachfunc) {
-		return this.clone()._each(eachfunc);
-	}
-
-	/**
-	 * 列優先でベクトルに対して何か処理を行い、行列を作成します。
+	 * 行列の各列及び行（列優先）をベクトルとみなし同一処理を実行
 	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
@@ -1113,7 +767,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列に対して、行と列に同一の処理を行い、行列を作成します。
+	 * 行列の行と列をベクトルとみなし同一処理を実行
+	 * 先に行に対して同一処理を実行後の行列に対し、列ごとにさらに同一処理を実行する
 	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
@@ -1148,10 +803,11 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列（ベクトル）内の指定した箇所の値をComplex型で返す。
+	 * 行列内の指定した箇所の値
 	 * @param {Matrix} arg1 - 位置／ベクトルの場合は何番目のベクトルか
 	 * @param {Matrix} [arg2] - 列番号（行番号と列番号で指定する場合（任意））
 	 * @returns {Complex} 
+	 * @todo 1つしか指定できないので複数指定できるものを作成したい
 	 */
 	getComplex(arg1, arg2) {
 		let arg1_data = null;
@@ -1227,7 +883,7 @@ export default class Matrix {
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	
 	/**
-	 * 行列の最初の要素の整数値。スカラー値を取得するときなどを想定。
+	 * 行列の最初の要素の整数値
 	 * @returns {number}
 	 */
 	get intValue() {
@@ -1235,7 +891,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列の最初の要素の実数値。スカラー値を取得するときなどを想定。
+	 * 行列の最初の要素の実数値
 	 * @returns {number}
 	 */
 	get doubleValue() {
@@ -1243,7 +899,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列の最初の要素。スカラー値を取得するときなどを想定。
+	 * 行列の最初の要素
 	 * @returns {Complex}
 	 */
 	get scalar() {
@@ -1251,7 +907,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列の最も大きい行数、列数を返す
+	 * 行数及び列数の最大値
 	 * @returns {number}
 	 */
 	get length() {
@@ -1263,36 +919,7 @@ export default class Matrix {
 	 * @returns {number}
 	 */
 	get norm1() {
-		const y = this.matrix_array;
-		// 行ノルムを計算する
-		if(this.isRow()) {
-			let sum = 0.0;
-			for(let col = 0; col < this.column_length; col++) {
-				sum += y[0][col].norm;
-			}
-			return sum;
-		}
-		// 列ノルムを計算する
-		else if(this.isColumn()) {
-			let sum = 0.0;
-			for(let row = 0; row < this.row_length; row++) {
-				sum = y[row][0].norm;
-			}
-			return sum;
-		}
-		// 列の和の最大値
-		let max = 0;
-		// 列を固定して行の和を計算
-		for(let col = 0; col < this.column_length; col++) {
-			let sum = 0;
-			for(let row = 0; row < this.row_length; row++) {
-				sum += y[row][col].norm;
-			}
-			if(max < sum) {
-				max = sum;
-			}
-		}
-		return max;
+		return LinearAlgebra.norm(this, 1);
 	}
 	
 	/**
@@ -1300,41 +927,21 @@ export default class Matrix {
 	 * @returns {number}
 	 */
 	get norm2() {
-		const y = this.matrix_array;
-		// 行ノルムを計算する
-		if(this.isRow()) {
-			let sum = 0.0;
-			for(let col = 0; col < this.column_length; col++) {
-				sum += y[0][col].square().real;
-			}
-			return Math.sqrt(sum);
-		}
-		// 列ノルムを計算する
-		else if(this.isColumn()) {
-			let sum = 0.0;
-			for(let row = 0; row < this.row_length; row++) {
-				sum = y[row][0].square().real;
-			}
-			return Math.sqrt(sum);
-		}
-		return this.svd().S.diag().max().scalar.real;
+		return LinearAlgebra.norm(this, 2);
+	}
+
+	/**
+	 * 行列のpノルム
+	 * @param {number} [p=2]
+	 * @returns {number}
+	 */
+	norm(p) {
+		return LinearAlgebra.norm(this, p);
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	// 行列の作成関係
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
-	
-	/**
-	 * 単位行列を作成
-	 * @param {number} dimension - 次元数
-	 * @param {number} [column_length] - 列数
-	 * @returns {Matrix}
-	 */
-	static eye(dimension, column_length) {
-		return Matrix.createMatrixDoEachCalculation(function(row, col) {
-			return row === col ? Complex.ONE : Complex.ZERO;
-		}, dimension, column_length);
-	}
 	
 	/**
 	 * 指定した数値で初期化
@@ -1356,13 +963,7 @@ export default class Matrix {
 			}, dimension, column_length);
 		}
 		else {
-			let x = 0;
-			if((number instanceof Matrix) && (number.isScalar())) {
-				x = number.scalar;
-			}
-			else {
-				x = Complex.create(number);
-			}
+			const x = Matrix._toComplex(number);
 			return Matrix.createMatrixDoEachCalculation(function() {
 				return x;
 			}, dimension, column_length);
@@ -1370,7 +971,19 @@ export default class Matrix {
 	}
 
 	/**
-	 * 0で初期化
+	 * 単位行列を生成
+	 * @param {number} dimension - 次元数
+	 * @param {number} [column_length] - 列数
+	 * @returns {Matrix}
+	 */
+	static eye(dimension, column_length) {
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return row === col ? Complex.ONE : Complex.ZERO;
+		}, dimension, column_length);
+	}
+	
+	/**
+	 * 零行列を生成
 	 * @param {number} dimension - 次元数
 	 * @param {number} [column_length] - 列数
 	 * @returns {Matrix}
@@ -1383,7 +996,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 1で初期化
+	 * 1で構成した行列を生成
 	 * @param {number} dimension - 次元数
 	 * @param {number} [column_length] - 列数
 	 * @returns {Matrix}
@@ -1396,7 +1009,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * ランダム値で初期化
+	 * 乱数で構成した行列を生成
 	 * @param {number} dimension - 次元数
 	 * @param {number} [column_length] - 列数
 	 * @returns {Matrix}
@@ -1408,7 +1021,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 正規分布に従うランダム値で初期化
+	 * 正規分布に従う乱数で構成した行列を生成
 	 * @param {number} dimension - 次元数
 	 * @param {number} [column_length] - 列数
 	 * @returns {Matrix}
@@ -1420,7 +1033,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列なら対角成分を列ベクトル / ベクトルなら対角成分を持つ行列
+	 * 行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成
 	 * @returns {Matrix}
 	 */
 	diag() {
@@ -1689,8 +1302,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.size() = [row_length column_length] 行列のサイズを取得
-	 * @returns {Matrix} 行ベクトル [row_length column_length]
+	 * 行列の行数と列数
+	 * @returns {Matrix} [row_length column_length]
 	 */
 	size() {
 		// 行列のサイズを取得
@@ -1698,16 +1311,16 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.compareTo(B) 今の値Aと、指定した値Bとを比較する
-	 * スカラー同士の場合の戻り値は、IF文で利用できるように、number型である。
-	 * 行列同士の場合は行列の中で比較を行い、各項に比較結果が入る
+	 * 値同士を比較
+	 * スカラー同士の場合の戻り値は、number型。
+	 * 行列同士の場合は、各項の比較結果が入った、Matrix型。
 	 * @param {Matrix} number 
 	 * @param {number} [epsilon] - 誤差
 	 * @returns {number|Matrix} A < B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, epsilon) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		// ※スカラー同士の場合は、実数を返す
 		if(M1.isScalar() && M2.isScalar()) {
 			return M1.scalar.compareTo(M2.scalar, epsilon);
@@ -1722,7 +1335,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.max() 行列内の最大値ベクトル、ベクトル内の最大スカラー値を取得
+	 * max([A, B])
 	 * @param {number} [epsilon] - 誤差
 	 * @returns {Matrix}
 	 */
@@ -1740,7 +1353,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * A.min() 行列内の最小値ベクトル、ベクトル内の最小スカラー値を取得
+	 * min([A, B])
 	 * @param {number} [epsilon] - 誤差
 	 * @returns {Matrix}
 	 */
@@ -1762,13 +1375,13 @@ export default class Matrix {
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	
 	/**
-	 * A.add(B) = A + B
+	 * A + B
 	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	add(number) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		if((M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
 			throw "Matrix size does not match";
 		}
@@ -1782,13 +1395,13 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.sub(B) = A - B
+	 * A - B
 	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	sub(number) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		if((M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
 			throw "Matrix size does not match";
 		}
@@ -1802,13 +1415,13 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.mul(B) = A * B
+	 * A * B
 	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	mul(number) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		const x1 = M1.matrix_array;
 		const x2 = M2.matrix_array;
 		if(M1.isScalar() && M2.isScalar()) {
@@ -1854,83 +1467,13 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.inv() = 単位行列 / A
-	 * @returns {Matrix}
-	 */
-	inv() {
-		if(this.isScalar()) {
-			return new Matrix(Complex.ONE.div(this.scalar));
-		}
-		if(!this.isSquare()) {
-			throw "not square";
-		}
-		if(this.isDiagonal()) {
-			// 対角行列の場合は、対角成分のみ逆数をとる
-			const y = this.T();
-			const size = Math.min(y.row_length, y.column_length);
-			for(let i = 0; i < size; i++) {
-				y.matrix_array[i][i] = y.matrix_array[i][i].inv();
-			}
-			return y;
-		}
-		// (ここで正規直交行列の場合なら、転置させるなど入れてもいい？判定はできないけども)
-		const len = this.column_length;
-		// ガウス・ジョルダン法
-		// 初期値の設定
-		const M = new Matrix(this);
-		M._concat_left(Matrix.eye(len));
-		const long_matrix_array = M.matrix_array;
-		const long_length = M.column_length;
-
-		//前進消去
-		for(let k = 0; k < len; k++) {
-			//ピポットの選択
-			{
-				// k列目で最も大きな行を取得(k列目から調べる)
-				const row_num = M._max_row_number(k, k).index;
-				//交換を行う
-				M._exchange_row(k, row_num);
-			}
-			//ピポットの正規化
-			{
-				const normalize_value = long_matrix_array[k][k].inv();
-				for(let row = k, col = k; col < long_length; col++) {
-					long_matrix_array[row][col] = long_matrix_array[row][col].mul(normalize_value);
-				}
-			}
-			//消去
-			for(let row = 0;row < len; row++) {
-				if(row === k) {
-					continue;
-				}
-				const temp = long_matrix_array[row][k];
-				for(let col = k; col < long_length; col++)
-				{
-					long_matrix_array[row][col] = long_matrix_array[row][col].sub(long_matrix_array[k][col].mul(temp));
-				}
-			}
-		}
-
-		const y = new Array(len);
-		//右の列を抜き取る
-		for(let row = 0; row < len; row++) {
-			y[row] = new Array(len);
-			for(let col = 0; col < len; col++) {
-				y[row][col] = long_matrix_array[row][len + col];
-			}
-		}
-
-		return new Matrix(y);
-	}
-
-	/**
-	 * A.div(B) = A / B
+	 * A / B
 	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	div(number) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		const x1 = M1.matrix_array;
 		const x2 = M2.matrix_array;
 		if(M1.isScalar() && M2.isScalar()) {
@@ -1959,13 +1502,14 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.nmul(B) = A .* B 各項ごとの掛け算
+	 * A .* B
+	 * 各項ごとの掛け算
 	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	nmul(number) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		if((M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
 			throw "Matrix size does not match";
 		}
@@ -1979,13 +1523,14 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.ndiv(B) = A ./ B 各項ごとの割り算
+	 * A ./ B
+	 * 各項ごとの割り算
 	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	ndiv(number) {
 		const M1 = this;
-		const M2 = Matrix.create(number);
+		const M2 = Matrix._toMatrix(number);
 		if((M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
 			throw "Matrix size does not match";
 		}
@@ -1999,7 +1544,7 @@ export default class Matrix {
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
-	// Complexのメソッドにある機能を行列で使用できるようにしたもの
+	// Complexのメソッドにある機能
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 
 	/**
@@ -2023,7 +1568,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項の偏角（極座標の角度）
+	 * 各項の偏角
 	 * @returns {Matrix}
 	 */
 	angle() {
@@ -2043,9 +1588,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項の整数を判定(1 or 0)
+	 * 各項の整数を判定
 	 * @param {number} [epsilon] - 誤差
-	 * @returns {Matrix}
+	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testInteger(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2054,9 +1599,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項の複素整数を判定(1 or 0)
+	 * 各項の複素整数を判定
 	 * @param {number} [epsilon] - 誤差
-	 * @returns {Matrix}
+	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testComplexInteger(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2065,9 +1610,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項の 0 を判定(1 or 0)
+	 * 各項の 0 を判定
 	 * @param {number} [epsilon] - 誤差
-	 * @returns {Matrix}
+	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testZero(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2076,9 +1621,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項の 1 を判定(1 or 0)
+	 * 各項の 1 を判定
 	 * @param {number} [epsilon] - 誤差
-	 * @returns {Matrix}
+	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testOne(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2087,9 +1632,9 @@ export default class Matrix {
 	}
 	
 	/**
-	 * 各項の複素数を判定(1 or 0)
+	 * 各項の複素数を判定
 	 * @param {number} [epsilon] - 誤差
-	 * @returns {Matrix}
+	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testComplex(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2098,9 +1643,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項の実数を判定(1 or 0)
+	 * 各項の実数を判定
 	 * @param {number} [epsilon] - 誤差
-	 * @returns {Matrix}
+	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testReal(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2109,8 +1654,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項の非数を判定(1 or 0)
-	 * @returns {Matrix}
+	 * 各項の非数を判定
+	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testNaN() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2121,7 +1666,7 @@ export default class Matrix {
 
 	/**
 	 * real(x) > 0
-	 * @returns {boolean}
+	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testPositive() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2131,7 +1676,7 @@ export default class Matrix {
 
 	/**
 	 * real(x) < 0
-	 * @returns {boolean}
+	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testNegative() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2141,7 +1686,7 @@ export default class Matrix {
 
 	/**
 	 * real(x) >= 0
-	 * @returns {boolean}
+	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testNotNegative() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2151,7 +1696,7 @@ export default class Matrix {
 
 	/**
 	 * 各項の無限を判定
-	 * @returns {boolean}
+	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testInfinite() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2161,7 +1706,7 @@ export default class Matrix {
 	
 	/**
 	 * 各項の有限数を判定
-	 * @returns {boolean}
+	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testFinite() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2170,7 +1715,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項の絶対値をとる
+	 * abs(A)
 	 * @returns {Matrix}
 	 */
 	abs() {
@@ -2190,7 +1735,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項に -1 を掛け算する
+	 * -A
 	 * @returns {Matrix}
 	 */
 	negate() {
@@ -2200,7 +1745,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項に sqrt()
+	 * sqrt(A)
 	 * @returns {Matrix}
 	 */
 	sqrt() {
@@ -2210,22 +1755,19 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項に pow(x)
+	 * pow(A, B)
 	 * @param {Matrix} number - スカラー
 	 * @returns {Matrix}
 	 */
 	pow(number) {
-		const M = Matrix.create(number);
-		if(!M.isScalar()) {
-			throw "not set Scalar";
-		}
+		const X = Matrix._toComplex(number);
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.pow(M.scalar);
+			return num.pow(X);
 		});
 	}
 
 	/**
-	 * 各項に log()
+	 * log(A)
 	 * @returns {Matrix}
 	 */
 	log() {
@@ -2235,7 +1777,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項に exp()
+	 * exp(A)
 	 * @returns {Matrix}
 	 */
 	exp() {
@@ -2245,7 +1787,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項に sin()
+	 * sin(A)
 	 * @returns {Matrix}
 	 */
 	sin() {
@@ -2255,7 +1797,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項に cos()
+	 * cos(A)
 	 * @returns {Matrix}
 	 */
 	cos() {
@@ -2265,7 +1807,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項に tan()
+	 * tan(A)
 	 * @returns {Matrix}
 	 */
 	tan() {
@@ -2275,7 +1817,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * 各項に atan()
+	 * atan(A)
 	 * @returns {Matrix}
 	 */
 	atan() {
@@ -2285,22 +1827,19 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項に atan2()
+	 * atan2(Y, X)
 	 * @param {Matrix} number - スカラー
 	 * @returns {Matrix}
 	 */
 	atan2(number) {
-		const M = Matrix.create(number);
-		if(!M.isScalar) {
-			throw "not set Scalar";
-		}
+		const X = Matrix._toComplex(number);
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.atan2(M.scalar);
+			return num.atan2(X);
 		});
 	}
 
 	/**
-	 * 各項に floor()
+	 * floor(A)
 	 * @returns {Matrix}
 	 */
 	floor() {
@@ -2310,7 +1849,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項に ceil()
+	 * ceil(A)
 	 * @returns {Matrix}
 	 */
 	ceil() {
@@ -2320,7 +1859,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項に round()
+	 * round(A)
 	 * @returns {Matrix}
 	 */
 	round() {
@@ -2330,7 +1869,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項に fix()
+	 * fix(A)
 	 * @returns {Matrix}
 	 */
 	fix() {
@@ -2340,12 +1879,22 @@ export default class Matrix {
 	}
 
 	/**
-	 * 各項に fract()
+	 * fract(A)
 	 * @returns {Matrix}
 	 */
 	fract() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.fract();
+		});
+	}
+
+	/**
+	 * sinc(A)
+	 * @returns {Matrix}
+	 */
+	sinc() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.sinc();
 		});
 	}
 
@@ -2357,12 +1906,14 @@ export default class Matrix {
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 
 	/**
-	 * 行列を時計回りに回転させます。ミュータブルです。
-	 * 内部処理用
-	 * @param {number} count - 回転する回数
+	 * 行列を時計回りに回転
+	 * ミュータブル
+	 * @param {number} rot_90_count - 回転する回数
 	 * @returns {Matrix} 処理実行後の行列
+	 * @private
 	 */
-	_rot90(count) {
+	_rot90(rot_90_count) {
+		const count = Matrix._toInteger(rot_90_count);
 		let rot_type = 1;
 		if(arguments.length === 1) {
 			rot_type = ((count % 4) + 4) % 4;
@@ -2424,12 +1975,12 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列を拡張します。ミュータブルです。
-	 * 拡張した場合は、0を初期値にします。
-	 * 内部処理用
+	 * 行列を拡張、拡張した項は、0で初期化。
+	 * ミュータブル
 	 * @param {number} row_length - 新しい行の長さ
 	 * @param {number} column_length - 新しい列の長さ
 	 * @returns {Matrix} 処理実行後の行列
+	 * @private
 	 */
 	_resize(row_length, column_length) {
 		if((row_length === this.row_length) && (column_length === this.column_length)) {
@@ -2468,10 +2019,11 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行を消去します。ミュータブルです。
-	 * 内部処理用
+	 * 行列内の行を消去
+	 * ミュータブル
 	 * @param {number} row_index - 行番号
 	 * @returns {Matrix} 処理実行後の行列
+	 * @private
 	 */
 	_delete_row(row_index) {
 		if((this.row_length === 1) || (this.row_length <= row_index)) {
@@ -2484,10 +2036,11 @@ export default class Matrix {
 	}
 	
 	/**
-	 * 列を消去します。ミュータブルです。
-	 * 内部処理用
+	 * 行列内の列を消去
+	 * ミュータブル
 	 * @param {number} column_index - 列番号
 	 * @returns {Matrix} 処理実行後の行列
+	 * @private
 	 */
 	_delete_column(column_index) {
 		if((this.column_length === 1) || (this.column_length <= column_index)) {
@@ -2502,11 +2055,12 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行を交換します。ミュータブルです。
-	 * 内部処理用
+	 * 行列内の行を交換
+	 * ミュータブル
 	 * @param {number} row_index1 - 行番号1
 	 * @param {number} row_index2 - 行番号2
 	 * @returns {Matrix} 処理実行後の行列
+	 * @private
 	 */
 	_exchange_row(row_index1, row_index2) {
 		if((this.row_length === 1) || (this.row_length <= row_index1) || (this.row_length <= row_index2)) {
@@ -2523,11 +2077,12 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行を交換します。ミュータブルです。
-	 * 内部処理用
+	 * 行列内の列を交換
+	 * ミュータブル
 	 * @param {number} column_index1 - 行番号1
 	 * @param {number} column_index2 - 行番号2
 	 * @returns {Matrix} 処理実行後の行列
+	 * @private
 	 */
 	_exchange_column(column_index1, column_index2) {
 		if((this.column_length === 1) || (this.column_length <= column_index1) || (this.column_length <= column_index2)) {
@@ -2546,13 +2101,14 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列の右に行列をくっつけます。ミュータブルです。
-	 * 内部処理用
+	 * 行列の右に行列を結合
+	 * ミュータブル
 	 * @param {Matrix} left_matrix - 結合したい行列
 	 * @returns {Matrix} 処理実行後の行列
+	 * @private
 	 */
 	_concat_left(left_matrix) {
-		const M = Matrix.create(left_matrix);
+		const M = Matrix._toMatrix(left_matrix);
 		for(let row = 0; row < this.row_length; row++) {
 			for(let col = 0; col < M.column_length; col++) {
 				this.matrix_array[row].push(M.matrix_array[row][col]);
@@ -2564,13 +2120,14 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列の下に行列をくっつけます。ミュータブルです。
-	 * 内部処理用
+	 * 行列の下に行列を結合
+	 * ミュータブル
 	 * @param {Matrix} bottom_matrix - 結合したい行列
 	 * @returns {Matrix} 処理実行後の行列
+	 * @private
 	 */
 	_concat_bottom(bottom_matrix) {
-		const M = Matrix.create(bottom_matrix);
+		const M = Matrix._toMatrix(bottom_matrix);
 		for(let row = 0; row < M.row_length; row++) {
 			this.matrix_array.push(M.matrix_array[row]);
 		}
@@ -2579,196 +2136,9 @@ export default class Matrix {
 		return this;
 	}
 
-	/**
-	 * 列の中で最もノルムが最大の値がある行番号を返します。ミュータブルです。
-	 * 内部処理用
-	 * @param {number} column_index - 列番号
-	 * @param {number} row_index_offset - 行のオフセット(この値から行う)
-	 * @param {number} row_index_max - 行の最大(この値は含めない)
-	 * @returns {number} 行番号
-	 */
-	_max_row_number(column_index, row_index_offset, row_index_max) {
-		let row_index = 0;
-		let row_max = 0;
-		let row = row_index_offset ? row_index_offset : 0;
-		const row_imax = row_index_max ? row_index_max : this.row_length;
-		// n列目で最も大きな行を取得
-		for(; row < row_imax; row++) {
-			const norm = this.matrix_array[row][column_index].norm;
-			if(norm > row_max) {
-				row_max = norm;
-				row_index = row;
-			}
-		}
-		return {
-			index : row_index,
-			max : row_max
-		};
-	}
-
-	/**
-	 * 行列の各行をベクトルと見立て、線型従属している行を抽出する
-	 * 内部処理用
-	 * @param {number} [epsilon=1.0e-10] - 誤差
-	 * @returns {Array} 行番号の行列(昇順)
-	 */
-	_get_linear_dependence_vector(epsilon) {
-		const M = new Matrix(this);
-		const m = M.matrix_array;
-		const tolerance = epsilon ? epsilon : 1.0e-10;
-		// 確認する行番号（ここから終わった行は削除していく）
-		const row_index_array = new Array(this.row_length);
-		for(let i = 0; i < this.row_length; i++) {
-			row_index_array[i] = i;
-		}
-		// ガウスの消去法を使用して、行ベクトルを抽出していく
-		for(let col_target = 0; col_target < M.column_length; col_target++) {
-			let row_max_index = 0;
-			{
-				let row_max = 0;
-				let row_max_key = 0;
-				// n列目で絶対値が最も大きな行を取得
-				for(const row_key in row_index_array) {
-					const row = row_index_array[row_key];
-					const norm = m[row][col_target].norm;
-					if(norm > row_max) {
-						row_max = norm;
-						row_max_key = row_key;
-						row_max_index = row;
-					}
-				}
-				// 大きいのが0である＝その列は全て0である
-				if(row_max <= tolerance) {
-					continue;
-				}
-				// 大きな値があった行は、リストから除去する
-				row_index_array.splice(row_max_key, 1);
-				if(col_target === M.column_length - 1) {
-					break;
-				}
-			}
-			// 次の列から、大きな値があった行の成分を削除
-			for(const row_key in row_index_array) {
-				const row = row_index_array[row_key];
-				const inv = m[row][col_target].div(m[row_max_index][col_target]);
-				for(let col = col_target; col < M.column_length; col++) {
-					m[row][col] = m[row][col].sub(m[row_max_index][col].mul(inv));
-				}
-			}
-		}
-		return row_index_array;
-	}
-
-
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	// 行列の一般計算
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
-
-	/**
-	 * 行列のpノルム
-	 * @returns {number}
-	 */
-	norm(p) {
-		if(arguments.length === 0) {
-			return this.norm2;
-		}
-		if(p === 1) {
-			return this.norm1;
-		}
-		else if(p === 2) {
-			return this.norm2;
-		}
-		else if((p === Number.POSITIVE_INFINITY) || (p === Number.NEGATIVE_INFINITY)) {
-			const y = this.matrix_array;
-			let compare = p === Number.POSITIVE_INFINITY ? 0 : Number.POSITIVE_INFINITY;
-			// 行を固定して列の和を計算
-			for(let row = 0; row < this.row_length; row++) {
-				let sum = 0.0;
-				for(let col = 0; col < this.column_length; col++) {
-					sum += y[row][col].norm;
-				}
-				if(p === Number.POSITIVE_INFINITY) {
-					compare = Math.max(compare, sum);
-				}
-				else {
-					compare = Math.min(compare, sum);
-				}
-			}
-			return compare;
-		}
-		if(this.isVector()) {
-			// 一般化ベクトルpノルム
-			let sum = 0.0;
-			for(let i = 0; i < this.length; i++) {
-				sum = Math.pow(this.getComplex(i).norm, p);
-			}
-			return Math.pow(sum, 1.0 / p);
-		}
-		// 未実装
-		throw "norm";
-	}
-
-	/**
-	 * A.inner(B) = ドット積（内積）
-	 * @param {Matrix} number 
-	 * @param {number} [dimension=1] 計算するときに使用する次元（1 or 2）
-	 * @returns {Matrix}
-	 */
-	inner(number, dimension) {
-		const M1 = this;
-		const M2 = Matrix.create(number);
-		const x1 = M1.matrix_array;
-		const x2 = M2.matrix_array;
-		const dim = dimension ? dimension : 1;
-		if(M1.isScalar() && M2.isScalar()) {
-			return new Matrix(M1.scalar.dot(M2.scalar));
-		}
-		if(M1.isVector() && M2.isVector()) {
-			let sum = Complex.ZERO;
-			for(let i = 0; i < M1.length; i++) {
-				sum = sum.add(M1.getComplex(i).dot(M2.getComplex(i)));
-			}
-			return new Matrix(sum);
-		}
-		if((M1.row_length !== M2.row_length) || (M1.column_length !== M2.column_length)) {
-			throw "Matrix size does not match";
-		}
-		if(dim === 1) {
-			const y = new Array(1);
-			y[0] = new Array(M1.column_length);
-			for(let col = 0; col < M1.column_length; col++) {
-				let sum = Complex.ZERO;
-				for(let row = 0; row < M1.row_length; row++) {
-					sum = sum.add(x1[row][col].dot(x2[row][col]));
-				}
-				y[0][col] = sum;
-			}
-			return new Matrix(y);
-		}
-		else if(dim === 2) {
-			const y = new Array(M1.row_length);
-			for(let row = 0; row < M1.row_length; row++) {
-				let sum = Complex.ZERO;
-				for(let col = 0; col < M1.column_length; col++) {
-					sum = sum.add(x1[row][col].dot(x2[row][col]));
-				}
-				y[row] = [sum];
-			}
-			return new Matrix(y);
-		}
-		else {
-			throw "dim";
-		}
-	}
-	
-	/**
-	 * 行列のランク
-	 * @param {number} [epsilon] - 誤差
-	 * @returns {number}
-	 */
-	rank(epsilon) {
-		return Math.abs(this.row_length, this.column_length) - (this._get_linear_dependence_vector(epsilon)).length;
-	}
 
 	/**
 	 * 転置行列
@@ -2802,1104 +2172,536 @@ export default class Matrix {
 	}
 
 	/**
-	 * A.det() = [A] 行列式
+	 * 行列のランク
+	 * @param {number} [epsilon] - 誤差
+	 * @returns {number}
+	 */
+	rank(epsilon) {
+		return LinearAlgebra.rank(this, epsilon);
+	}
+
+	/**
+	 * ドット積（内積） A・B
+	 * @param {Matrix} number 
+	 * @param {number} [dimension=1] 計算するときに使用する次元（1 or 2）
+	 * @returns {Matrix}
+	 */
+	inner(number, dimension=1) {
+		return LinearAlgebra.inner(this, number, dimension);
+	}
+	
+	/**
+	 * 行列式 |A|
 	 * @returns {Matrix}
 	 */
 	det() {
-		if(!this.isSquare()) {
-			throw "not square";
-		}
-		const M = this.matrix_array;
-		const calcDet = function(x) {
-			if(x.length === 2) {
-				// 2次元の行列式になったら、たすき掛け計算する
-				return x[0][0].mul(x[1][1]).sub(x[0][1].mul(x[1][0]));
-			}
-			let y = Complex.ZERO;
-			for(let i = 0; i < x.length; i++) {
-				// N次元の行列式を、N-1次元の行列式に分解していく
-				const D = [];
-				const a = x[i][0];
-				for(let row = 0, D_low = 0; row < x.length; row++) {
-					if(i === row) {
-						continue;
-					}
-					D[D_low] = [];
-					for(let col = 1, D_col = 0; col < x.length; col++, D_col++) {
-						D[D_low][D_col] = x[row][col];
-					}
-					D_low++;
-				}
-				if((i % 2) === 0) {
-					y = y.add(a.mul(calcDet(D)));
-				}
-				else {
-					y = y.sub(a.mul(calcDet(D)));
-				}
-			}
-			return y;
-		};
-		return new Matrix(calcDet(M));
+		return LinearAlgebra.det(this);
 	}
 
 	/**
-	 * A.lup() = P'*L*U = A となる P,L,Uを解く
-	 * @returns {Object<string, Matrix>} {P, L, U}
+	 * P'*L*U=A となるLUP分解
+	 * @returns {{P: Matrix, L: Matrix, U: Matrix}}
 	 */
 	lup() {
-		const L = Matrix.zeros(this.row_length);
-		const U = new Matrix(this);
-		const P = Matrix.eye(this.row_length);
-		const l = L.matrix_array;
-		const u = U.matrix_array;
-		// ガウスの消去法で連立1次方程式の未知数を求める
-		//前進消去
-		for(let k = 0; k < this.column_length; k++) {
-			// ピポットの選択
-			let pivot;
-			{
-				// k列目で最も大きな行を取得(k列目から調べる)
-				const max_row_number = U._max_row_number(k, k);
-				pivot = max_row_number.index;
-				if(max_row_number.max === 0.0) {
-					continue;
-				}
-				//交換を行う
-				if(k !== pivot) {
-					L._exchange_row(k, pivot);
-					U._exchange_row(k, pivot);
-					P._exchange_row(k, pivot);
-				}
-			}
-			// 消去
-			for(let row = k + 1;row < this.row_length; row++) {
-				const temp = u[row][k].div(u[k][k]);
-				l[row][k] = temp;
-				//lの値だけ行交換が必要？
-				for(let col = k; col < this.column_length; col++) {
-					u[row][col] = u[row][col].sub(u[k][col].mul(temp));
-				}
-			}
-		}
-		L._resize(this.row_length, Math.min(this.row_length, this.column_length));
-		U._resize(Math.min(this.row_length, this.column_length), this.column_length);
-		// L の対角線に1を代入
-		L._each(function(num, row, col) {
-			return row === col ? Complex.ONE : num;
-		});
-		return {
-			L : L,
-			U : U,
-			P : P
-		};
+		return LinearAlgebra.lup(this);
 	}
 
 	/**
-	 * A.linsolve(B) = Ax = B となる xを解く
+	 * Ax=B となる x を解く
 	 * @param {Matrix} number 
 	 * @returns {Matrix}
 	 */
 	linsolve(number) {
-		if(!this.isSquare()) {
-			throw "Matrix size does not match";
-		}
-		// 連立一次方程式を解く
-		const len = this.column_length;
-		const arg = Matrix.create(number);
-		if((arg.row_length !== this.row_length) || (arg.column_length > 1)) {
-			throw "Matrix size does not match";
-		}
-		// 行列を準備する
-		const M = new Matrix(this);
-		M._concat_left(arg);
-		const long_matrix_array = M.matrix_array;
-		const long_length = M.column_length;
-		// ガウスの消去法で連立1次方程式の未知数を求める
-		//前進消去
-		for(let k = 0; k < (len - 1); k++) {
-			//ピポットの選択
-			{
-				// k列目で最も大きな行を取得(k列目から調べる)
-				const row_num = M._max_row_number(k, k).index;
-				//交換を行う
-				M._exchange_row(k, row_num);
-			}
-			//ピポットの正規化
-			{
-				const normalize_value = long_matrix_array[k][k].inv();
-				for(let row = k, col = k; col < long_length; col++) {
-					long_matrix_array[row][col] = long_matrix_array[row][col].mul(normalize_value);
-				}
-			}
-			//消去
-			for(let row = k + 1;row < len; row++) {
-				const temp = long_matrix_array[row][k];
-				for(let col = k; col < long_length; col++) {
-					long_matrix_array[row][col] = long_matrix_array[row][col].sub(long_matrix_array[k][col].mul(temp));
-				}
-			}
-		}
-		//後退代入
-		const y = new Array(len);
-		y[len - 1] = long_matrix_array[len - 1][len].div(long_matrix_array[len - 1][len - 1]);
-		for(let row = len - 2; row >= 0; row--) {
-			y[row] = long_matrix_array[row][long_length - 1];
-			for(let j = row + 1; j < len; j++) {
-				y[row] = y[row].sub(long_matrix_array[row][j] * y[j]);
-			}
-			y[row] = y[row].div(long_matrix_array[row][row]);
-		}
-		const y2 = new Array(this.row_length);
-		for(let row = 0; row < this.row_length; row++) {
-			y2[row] = [y[row]];
-		}
-
-		return new Matrix(y2);
+		return LinearAlgebra.linsolve(this, number);
 	}
 
 	/**
-	 * {Q, R} = A.qr() QR分解を行う
-	 * @returns {Object<string, Matrix>} {Q, R} Qは正規直行行列、Rは上三角行列
+	 * Q*R=A となるQR分解
+	 * Qは正規直行行列、Rは上三角行列
+	 * @returns {{Q: Matrix, R: Matrix}}
 	 */
 	qr() {
-		// 行列を準備する
-		const M = new Matrix(this);
-		// 作成後のQとRのサイズ
-		const Q_row_length = this.row_length;
-		const Q_column_length = this.row_length;
-		const R_row_length = this.row_length;
-		const R_column_length = this.column_length;
-		// 計算時の行と列のサイズ
-		const dummy_size = Math.max(this.row_length, this.column_length);
-		// 正方行列にする
-		M._resize(dummy_size, dummy_size);
-		// 正規直行化
-		const orthogonal_matrix = MatrixTool._gram_schmidt_orthonormalization(M);
-		// 計算したデータを取得
-		const Q_Matrix = orthogonal_matrix.Q;
-		const R_Matrix = orthogonal_matrix.R;
-		const non_orthogonalized = orthogonal_matrix.non_orthogonalized;
-		// Qのサイズを成型する
-		if(non_orthogonalized.length !== 0) {
-			// 直行化できていない列があるため直行化できてない列以外を抽出
-			const map = {};
-			for(let i = 0; i < non_orthogonalized.length; i++) {
-				map[non_orthogonalized[i]] = 1;
-			}
-			const orthogonalized = [];
-			for(let i = 0; i < dummy_size; i++) {
-				if(map[i]) {
-					continue;
-				}
-				const array = [];
-				for(let j = 0; j < dummy_size; j++) {
-					array[j] = Q_Matrix.matrix_array[j][i];
-				}
-				orthogonalized.push(array);
-			}
-			// 直行ベクトルを作成する
-			const orthogonal_vector = MatrixTool._createOrthogonalVector(new Matrix(orthogonalized));
-			// 直行化できていない列を差し替える
-			for(let i = 0; i < non_orthogonalized.length; i++) {
-				const q_col = non_orthogonalized[i];
-				for(let j = 0; j < dummy_size; j++) {
-					Q_Matrix.matrix_array[j][q_col] = orthogonal_vector.matrix_array[i][j];
-				}
-			}
-		}
-		Q_Matrix._resize(Q_row_length, Q_column_length);
-		// Rのサイズを成形する
-		R_Matrix._resize(R_row_length, R_column_length);
-		return {
-			Q : Q_Matrix,
-			R : R_Matrix
-		};
+		return LinearAlgebra.qr(this);
 	}
 
 	/**
-	 * {P, H} = A.tridiagonalize() 対称行列の三重対角化する P*H*P'=A
-	 * @returns {Object<string, Matrix>} {P, H} Hは三重対角行列、Pは正規直行行列。三重対角行列の固有値は元の行列と一致する。
+	 * P*H*P'=A となる対称行列の三重対角化
+	 * Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致
+	 * @returns {{P: Matrix, H: Matrix}}
 	 */
 	tridiagonalize() {
-		if(!this.isSquare()) {
-			throw "not square matrix";
-		}
-		if(!this.isSymmetric()) {
-			throw "not Symmetric";
-		}
-		if(this.isComplex()) {
-			throw "not Real Matrix";
-		}
-		return MatrixTool.tridiagonalize(this);
+		return LinearAlgebra.tridiagonalize(this);
 	}
 
 	/**
-	 * {V, D} = A.eig() 対称行列の固有値分解 V*D*V'=A
-	 * @returns {Object<string, Matrix>} {V, D} Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列
+	 * V*D*V'=A となる対称行列の固有値分解
+	 * Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列
+	 * @returns {{V: Matrix, D: Matrix}}
 	 */
 	eig() {
-		if(!this.isSquare()) {
-			throw "not square matrix";
-		}
-		if(!this.isSymmetric()) {
-			throw "not Symmetric";
-		}
-		if(this.isComplex()) {
-			throw "not Real Matrix";
-		}
-		return MatrixTool.eig(this);
+		return LinearAlgebra.eig(this);
 	}
 
 	/**
-	 * {U, S, V} = A.svd() 特異値分解 U*S*V' = A
-	 * @returns {Object<string, Matrix>} {U,S,V}
+	 * U*S*V'=A となる特異値分解
+	 * @returns {{U: Matrix, S: Matrix, V: Matrix}}
 	 */
 	svd() {
-		if(this.isComplex()) {
-			// 複素数が入っている場合は、eig関数が使用できないので非対応
-			throw "Unimplemented";
-		}
-		const rank = this.rank();
-		// SVD分解
-		// 参考：Gilbert Strang (2007). Computational Science and Engineering.
-		const VD = this.T().mul(this).eig();
-		const sigma = Matrix.zeros(this.row_length, this.column_length);
-		sigma._each(function(num, row, col) {
-			if((row === col) && (row < rank)) {
-				return VD.D.getComplex(row, row).sqrt();
-			}
-		});
-		const sing = Matrix.createMatrixDoEachCalculation(function(row, col) {
-			if(row === col) {
-				return sigma.matrix_array[row][row].inv();
-			}
-			else {
-				return Complex.ZERO;
-			}
-		}, rank);
-		const V_rank = (new Matrix(VD.V))._resize(VD.V.row_length, rank);
-		const u = this.mul(V_rank).mul(sing);
-		const QR = u.qr();
-		return {
-			U : QR.Q,
-			S : sigma,
-			V : VD.V
-		};
+		return LinearAlgebra.svd(this);
 	}
 
 	/**
-	 * A.pinv() 疑似逆行列
+	 * 逆行列
+	 * @returns {Matrix}
+	 */
+	inv() {
+		return LinearAlgebra.inv(this);
+	}
+
+	/**
+	 * 疑似逆行列
 	 * @returns {Matrix}
 	 */
 	pinv() {
-		const USV = this.svd();
-		const U = USV.U;
-		const S = USV.S;
-		const V = USV.V;
-		const sing = Matrix.createMatrixDoEachCalculation(function(row, col) {
-			if(row === col) {
-				const x = S.matrix_array[row][row];
-				if(x.isZero()) {
-					return Complex.ZERO;
-				}
-				else {
-					return x.inv();
-				}
-			}
-			else {
-				return Complex.ZERO;
-			}
-		}, this.column_length, this.row_length);
-		return V.mul(sing).mul(U.T());
+		return LinearAlgebra.pinv(this);
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	// statistics 統計計算用
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 
-	// TODO 平均や分散など統計でよく利用するものを作る
-
 	/**
-	 * x.gammaln() = gammaln(x) 対数ガンマ関数
+	 * 対数ガンマ関数
 	 * @returns {Matrix}
 	 */
 	gammaln() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.gammaln();
-		});
+		return Statistics.gammaln(this);
 	}
 
 	/**
-	 * z.gamma() = gamma(z) ガンマ関数
+	 * ガンマ関数
 	 * @returns {Matrix}
 	 */
 	gamma() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.gamma();
-		});
+		return Statistics.gamma(this);
 	}
 
 	/**
-	 * x.gammainc(a, tail) = gammainc(x, a, tail) 不完全ガンマ関数
+	 * 不完全ガンマ関数
 	 * @param {Matrix} a
 	 * @param {string} [tail="lower"] - lower/upper
 	 * @returns {Matrix}
 	 */
 	gammainc(a, tail) {
-		const a_ = Matrix.create(a).scalar;
-		const tail_ = arguments.length === 1 ? tail : "lower";
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.gammainc(a_, tail_);
-		});
+		return Statistics.gammainc(this, a, tail);
 	}
 
 	/**
-	 * x.gampdf(k, s) = gampdf(x, k, s) ガンマ分布の確率密度関数
+	 * ガンマ分布の確率密度関数
 	 * @param {Matrix} k - 形状母数
 	 * @param {Matrix} s - 尺度母数
 	 * @returns {Matrix}
 	 */
 	gampdf(k, s) {
-		const k_ = Matrix.create(k).scalar;
-		const s_ = Matrix.create(s).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.gampdf(k_, s_);
-		});
+		return Statistics.gampdf(this, k, s);
 	}
 
 	/**
-	 * x.gamcdf(k, s) = gamcdf(x, k, s) ガンマ分布の確率密度関数
+	 * ガンマ分布の確率密度関数
 	 * @param {Matrix} k - 形状母数
 	 * @param {Matrix} s - 尺度母数
 	 * @returns {Matrix}
 	 */
 	gamcdf(k, s) {
-		const k_ = Matrix.create(k).scalar;
-		const s_ = Matrix.create(s).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.gamcdf(k_, s_);
-		});
+		return Statistics.gampdf(this, k, s);
 	}
 
 	/**
-	 * p.gaminv(k, s) = gaminv(p, k, s) ガンマ分布の累積分布関数の逆関数
+	 * ガンマ分布の累積分布関数の逆関数
 	 * @param {Matrix} k - 形状母数
 	 * @param {Matrix} s - 尺度母数
 	 * @returns {Matrix}
 	 */
 	gaminv(k, s) {
-		const k_ = Matrix.create(k).scalar;
-		const s_ = Matrix.create(s).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.gaminv(k_, s_);
-		});
+		return Statistics.gaminv(this, k, s);
 	}
 
 	/**
-	 * x.beta(y) = beta(x, y) ベータ関数
+	 * ベータ関数
 	 * @param {Matrix} y
 	 * @returns {Matrix}
 	 */
 	beta(y) {
-		const y_ = Matrix.create(y).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.beta(y_);
-		});
+		return Statistics.beta(this, y);
 	}
 	
 	/**
-	 * x.betainc(a, b, tail) = betainc(x, a, b, tail) 不完全ベータ関数
+	 * 不完全ベータ関数
 	 * @param {Matrix} a
 	 * @param {Matrix} b
 	 * @param {string} [tail="lower"] - lower/upper
 	 * @returns {Matrix}
 	 */
 	betainc(a, b, tail) {
-		const a_ = Matrix.create(a).scalar;
-		const b_ = Matrix.create(b).scalar;
-		const tail_ = arguments.length === 2 ? tail : "lower";
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.betainc(a_, b_, tail_);
-		});
+		return Statistics.betainc(this, a, b, tail);
 	}
 
 	/**
-	 * x.betacdf(a, b) = betacdf(x, a, b) ベータ分布の確率密度関数
+	 * ベータ分布の確率密度関数
 	 * @param {Matrix} a
 	 * @param {Matrix} b
 	 * @returns {Matrix}
 	 */
 	betacdf(a, b) {
-		const a_ = Matrix.create(a).scalar;
-		const b_ = Matrix.create(b).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.betacdf(a_, b_);
-		});
+		return Statistics.betacdf(this, a, b);
 	}
 
 	/**
-	 * x.betapdf(a, b) = betapdf(x, a, b) ベータ分布の累積分布関数
+	 * ベータ分布の累積分布関数
 	 * @param {Matrix} a
 	 * @param {Matrix} b
 	 * @returns {Matrix}
 	 */
 	betapdf(a, b) {
-		const a_ = Matrix.create(a).scalar;
-		const b_ = Matrix.create(b).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.betapdf(a_, b_);
-		});
+		return Statistics.betapdf(this, a, b);
 	}
 
 	/**
-	 * p.betainv(a, b) = betainv(p, a, b) ベータ分布の累積分布関数の逆関数
+	 * ベータ分布の累積分布関数の逆関数
 	 * @param {Matrix} a
 	 * @param {Matrix} b
 	 * @returns {Matrix}
 	 */
 	betainv(a, b) {
-		const a_ = Matrix.create(a).scalar;
-		const b_ = Matrix.create(b).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.betainv(a_, b_);
-		});
+		return Statistics.betainv(this, a, b);
 	}
 
 	/**
-	 * x.factorial() = factorial(x), x! 階乗関数
+	 * x! 階乗関数
 	 * @returns {Matrix}
 	 */
 	factorial() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.factorial();
-		});
+		return Statistics.factorial(this);
 	}
 	
 	/**
-	 * n.nchoosek(k) = nchoosek(n, k), nCk 二項係数またはすべての組合わせ
+	 * nCk 二項係数またはすべての組合わせ
 	 * @param {Matrix} k
 	 * @returns {Matrix}
 	 */
 	nchoosek(k) {
-		const k_ = Matrix.create(k).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.nchoosek(k_);
-		});
+		return Statistics.nchoosek(this, k);
 	}
 	
 	/**
-	 * x.erf() = erf(x) 誤差関数
+	 * 誤差関数
 	 * @returns {Matrix}
 	 */
 	erf() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.erf();
-		});
+		return Statistics.erf(this);
 	}
 
 	/**
-	 * x.erfc() = erfc(x) 相補誤差関数
+	 * 相補誤差関数
 	 * @returns {Matrix}
 	 */
 	erfc() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.erfc();
-		});
+		return Statistics.erfc(this);
 	}
 	
 	/**
-	 * x.normpdf(u, s) = normpdf(x, u, s) 正規分布の確率密度関数
+	 * 正規分布の確率密度関数
 	 * @param {number} [u=0.0] - 平均値
 	 * @param {number} [s=1.0] - 分散
 	 * @returns {Matrix}
 	 */
-	normpdf(u, s) {
-		const u_ = arguments.length <= 0 ? Complex.create(u).scalar : Complex.ZERO;
-		const s_ = arguments.length <= 1 ? Complex.create(s).scalar : Complex.ONE;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.normpdf(u_, s_);
-		});
+	normpdf(u=0.0, s=1.0) {
+		return Statistics.normpdf(this, u, s);
 	}
 
 	/**
-	 * x.normcdf(u, s) = normcdf(x, u, s) 正規分布の累積分布関数
+	 * 正規分布の累積分布関数
 	 * @param {number} [u=0.0] - 平均値
 	 * @param {number} [s=1.0] - 分散
 	 * @returns {Matrix}
 	 */
-	normcdf(u, s) {
-		const u_ = arguments.length <= 0 ? Complex.create(u).scalar : Complex.ZERO;
-		const s_ = arguments.length <= 1 ? Complex.create(s).scalar : Complex.ONE;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.normcdf(u_, s_);
-		});
+	normcdf(u=0.0, s=1.0) {
+		return Statistics.normcdf(this, u, s);
 	}
 
 	/**
-	 * x.norminv(u, s) = norminv(x, u, s) 正規分布の累積分布関数の逆関数
+	 * 正規分布の累積分布関数の逆関数
 	 * @param {number} [u=0.0] - 平均値
 	 * @param {number} [s=1.0] - 分散
 	 * @returns {Matrix}
 	 */
-	norminv(u, s) {
-		const u_ = arguments.length <= 0 ? Complex.create(u).scalar : Complex.ZERO;
-		const s_ = arguments.length <= 1 ? Complex.create(s).scalar : Complex.ONE;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.norminv(u_, s_);
-		});
+	norminv(u=0.0, s=1.0) {
+		return Statistics.norminv(this, u, s);
 	}
 
 	/**
-	 * t.tpdf(v) = tpdf(t, v) t分布の確率密度関数
+	 * t分布の確率密度関数
 	 * @param {Matrix} v - 自由度
 	 * @returns {Matrix}
 	 */
 	tpdf(v) {
-		const v_ = Matrix.create(v).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.tpdf(v_);
-		});
+		return Statistics.tpdf(this, v);
 	}
 
 	/**
-	 * t.tcdf(v) = tcdf(t, v) t分布の累積分布関数
+	 * t分布の累積分布関数
 	 * @param {Matrix} v - 自由度
 	 * @returns {Matrix}
 	 */
 	tcdf(v) {
-		const v_ = Matrix.create(v).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.tcdf(v_);
-		});
+		return Statistics.tcdf(this, v);
 	}
 
 	/**
-	 * p.tinv(v) = tinv(p, v) t分布の累積分布関数の逆関数
+	 * t分布の累積分布関数の逆関数
 	 * @param {Matrix} v - 自由度
 	 * @returns {Matrix}
 	 */
 	tinv(v) {
-		const v_ = Matrix.create(v).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.tinv(v_);
-		});
+		return Statistics.tinv(this, v);
 	}
 
 	/**
-	 * t.tdist(v, tails) = tdist(t, v, tails) 尾部が指定可能なt分布の累積分布関数
+	 * 尾部が指定可能なt分布の累積分布関数
 	 * @param {Matrix} v - 自由度
 	 * @param {Matrix} tails - 尾部(1...片側、2...両側)
 	 * @returns {Matrix}
 	 */
 	tdist(v, tails) {
-		const v_ = Matrix.create(v).scalar;
-		const tails_ = Matrix.create(tails).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.tdist(v_, tails_);
-		});
+		return Statistics.tdist(this, v, tails);
 	}
 
 	/**
-	 * p.tinv2(v) = tinv2(p, v) 両側検定時のt分布の累積分布関数
+	 * 両側検定時のt分布の累積分布関数
 	 * @param {Matrix} v - 自由度
 	 * @returns {Matrix}
 	 */
 	tinv2(v) {
-		const v_ = Matrix.create(v).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.tinv2(v_);
-		});
+		return Statistics.tinv2(this, v);
 	}
 
 	/**
-	 * x.chi2pdf(k) = chi2pdf(x, k) カイ二乗分布の確率密度関数
+	 * カイ二乗分布の確率密度関数
 	 * @param {Matrix} k - 自由度
 	 * @returns {Matrix}
 	 */
 	chi2pdf(k) {
-		const k_ = Matrix.create(k).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.chi2pdf(k_);
-		});
+		return Statistics.chi2pdf(this, k);
 	}
 
 	/**
-	 * x.chi2cdf(k) = chi2cdf(x, k) カイ二乗分布の累積分布関数
+	 * カイ二乗分布の累積分布関数
 	 * @param {Matrix} k - 自由度
 	 * @returns {Matrix}
 	 */
 	chi2cdf(k) {
-		const k_ = Matrix.create(k).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.chi2cdf(k_);
-		});
+		return Statistics.chi2cdf(this, k);
 	}
 	
 	/**
-	 * p.chi2inv(k) = chi2inv(p, k) カイ二乗分布の累積分布関数の逆関数
+	 * カイ二乗分布の累積分布関数の逆関数
 	 * @param {Matrix} k - 自由度
 	 * @returns {Matrix}
 	 */
 	chi2inv(k) {
-		const k_ = Matrix.create(k).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.chi2inv(k_);
-		});
+		return Statistics.chi2inv(this, k);
 	}
 
 	/**
-	 * x.fpdf(d1, d2) = fpdf(x, d1, d2) F分布の確率密度関数
+	 * F分布の確率密度関数
 	 * @param {Matrix} d1 - 分子の自由度
 	 * @param {Matrix} d2 - 分母の自由度
 	 * @returns {Matrix}
 	 */
 	fpdf(d1, d2) {
-		const d1_ = Matrix.create(d1).scalar;
-		const d2_ = Matrix.create(d2).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.fpdf(d1_, d2_);
-		});
+		return Statistics.fpdf(this, d1, d2);
 	}
 
 	/**
-	 * x.fcdf(d1, d2) = fcdf(x, d1, d2) F分布の累積分布関数
+	 * F分布の累積分布関数
 	 * @param {Matrix} d1 - 分子の自由度
 	 * @param {Matrix} d2 - 分母の自由度
 	 * @returns {Matrix}
 	 */
 	fcdf(d1, d2) {
-		const d1_ = Matrix.create(d1).scalar;
-		const d2_ = Matrix.create(d2).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.fcdf(d1_, d2_);
-		});
+		return Statistics.fcdf(this, d1, d2);
 	}
 
 	/**
-	 * p.finv(d1, d2) = finv(p, d1, d2) F分布の累積分布関数の逆関数
+	 * F分布の累積分布関数の逆関数
 	 * @param {Matrix} d1 - 分子の自由度
 	 * @param {Matrix} d2 - 分母の自由度
 	 * @returns {Matrix}
 	 */
 	finv(d1, d2) {
-		const d1_ = Matrix.create(d1).scalar;
-		const d2_ = Matrix.create(d2).scalar;
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.finv(d1_, d2_);
-		});
+		return Statistics.finv(this, d1, d2);
 	}
 	
 	/**
-	 * A.sum() 合計
+	 * 合計
 	 * @returns {Matrix}
 	 */
 	sum() {
-		const main = function(data) {
-			// カハンの加算アルゴリズム
-			let sum = Complex.ZERO;
-			let delta = Complex.ZERO;
-			for(let i = 0; i < data.length; i++) {
-				const new_number = data[i].add(delta);
-				const new_sum = sum.add(new_number);
-				delta = new_sum.sub(sum).sub(new_number);
-				sum = new_sum;
-			}
-			return [sum];
-		};
-		return this.__column_oriented_1_dimensional_processing(main);
+		return Statistics.sum(this);
 	}
 
 	/**
-	 * A.mean() 相加平均
+	 * 相加平均
 	 * @returns {Matrix}
 	 */
 	mean() {
-		const main = function(data) {
-			// カハンの加算アルゴリズム
-			let sum = Complex.ZERO;
-			let delta = Complex.ZERO;
-			for(let i = 0; i < data.length; i++) {
-				const new_number = data[i].add(delta);
-				const new_sum = sum.add(new_number);
-				delta = new_sum.sub(sum).sub(new_number);
-				sum = new_sum;
-			}
-			return [sum.div(data.length)];
-		};
-		return this.__column_oriented_1_dimensional_processing(main);
+		return Statistics.mean(this);
 	}
 
 	/**
-	 * A.geomean() 相乗平均／幾何平均
+	 * 相乗平均／幾何平均
 	 * @returns {Matrix}
 	 */
 	geomean() {
-		const main = function(data) {
-			let x = Complex.ONE;
-			for(let i = 0; i < data.length; i++) {
-				x = x.mul(data[i]);
-			}
-			return [x.sqrt()];
-		};
-		return this.__column_oriented_1_dimensional_processing(main);
+		return Statistics.geomean(this);
 	}
 
 	/**
-	 * A.var() 分散
-	 * @param {Matrix} [cor=0] - 補正値 0(不偏分散), 1(標本分散)
+	 * 分散
+	 * @param {number} [cor=0] - 補正値 0(不偏分散), 1(標本分散)
 	 * @returns {Matrix}
 	 */
-	var(cor) {
-		const M = this.mean();
-		let col = 0;
-		const correction = arguments.length === 0 ? 0 : Matrix.create(cor).doubleValue;
-		const main = function(data) {
-			let mean;
-			if(M.isScalar()) {
-				mean = M.scalar;
-			}
-			else {
-				mean = M.getComplex(col++);
-			}
-			let x = Complex.ZERO;
-			for(let i = 0; i < data.length; i++) {
-				const a = data[i].sub(mean);
-				x = x.add(a.dot(a));
-			}
-			if(data.length === 1) {
-				return [x.div(data.length)];
-			}
-			else {
-				return [x.div(data.length - 1 + correction)];
-			}
-		};
-		return this.__column_oriented_1_dimensional_processing(main);
+	var(cor=0) {
+		return Statistics.var(this, cor);
 	}
 
 	/**
-	 * A.std() 標準偏差
+	 * 標準偏差
 	 * @param {Matrix} [cor=0] - 補正値 0(不偏), 1(標本)
 	 * @returns {Matrix}
 	 */
-	std(cor) {
-		const correction = arguments.length === 0 ? 0 : Matrix.create(cor).doubleValue;
-		const M = this.var(correction);
-		M._each(function(num) {
-			return num.sqrt();
-		});
-		return M;
+	std(cor=0) {
+		return Statistics.std(this, cor);
 	}
 
 	/**
-	 * A.cov() 共分散行列
+	 * 共分散行列
 	 * @param {Matrix} [cor=0] - 補正値 0(不偏分散), 1(標本分散)
 	 * @returns {Matrix}
 	 */
-	cov(cor) {
-		let correction = arguments.length === 0 ? 0 : Matrix.create(cor).doubleValue;
-		if(this.isVector()) {
-			return this.var(correction);
-		}
-		correction = this.row_length === 1 ? 1 : correction;
-		const x = this.matrix_array;
-		const mean = this.mean().matrix_array[0];
-		// 上三角行列、対角行列
-		const y = new Array(this.column_length);
-		for(let a = 0; a < this.column_length; a++) {
-			const a_mean = mean[a];
-			y[a] = new Array(this.column_length);
-			for(let b = a; b < this.column_length; b++) {
-				const b_mean = mean[b];
-				let sum = Complex.ZERO;
-				for(let row = 0; row < this.row_length; row++) {
-					sum = sum.add((x[row][a].sub(a_mean)).dot(x[row][b].sub(b_mean)));
-				}
-				y[a][b] = sum.div(this.row_length - 1 + correction);
-			}
-		}
-		// 下三角行列を作る
-		for(let row = 1; row < y[0].length; row++) {
-			for(let col = 0; col < row; col++) {
-				y[row][col] = y[col][row];
-			}
-		}
-		return new Matrix(y);
+	cov(cor=0) {
+		return Statistics.cov(this, cor);
 	}
 
 	/**
-	 * A.normalize() サンプルを平均値0、標準偏差1にノーマライズ
+	 * 標本の標準化
+	 * 平均値0、標準偏差1に変更する
 	 * @returns {Matrix}
 	 */
 	normalize() {
-		const mean_zero = this.sub(this.mean());
-		const std_one = mean_zero.ndiv(mean_zero.std());
-		return std_one;
+		return Statistics.normalize(this);
 	}
 
 	/**
-	 * A.corrcoef() 相関行列
+	 * 相関行列
 	 * @returns {Matrix}
 	 */
 	corrcoef() {
-		return this.normalize().cov();
+		return Statistics.corrcoef(this);
 	}
-
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	// signal 信号処理用
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 
 	/**
-	 * 各項に sinc()
+	 * 離散フーリエ変換
 	 * @returns {Matrix}
 	 */
-	sinc() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.sinc();
-		});
+	fft() {
+		return Signal.fft(this);
 	}
 
 	/**
-	 * A.fft() 離散フーリエ変換
+	 * 逆離散フーリエ変換
 	 * @returns {Matrix}
 	 */
-	fft(is_2_dimensions = false) {
-		const main = function(data) {
-			const real = new Array(data.length);
-			const imag = new Array(data.length);
-			for(let i = 0; i < data.length; i++) {
-				real[i] = data[i].real;
-				imag[i] = data[i].imag;
-			}
-			const result = Signal.fft(real, imag);
-			const y = new Array(data.length);
-			for(let i = 0; i < data.length; i++) {
-				y[i] = new Complex([result.real[i], result.imag[i]]);
-			}
-			return y;
-		};
-		return is_2_dimensions ? this.__column_oriented_2_dimensional_processing(main) : this.__column_oriented_1_dimensional_processing(main);
+	ifft() {
+		return Signal.ifft(this);
 	}
 
 	/**
-	 * A.ifft() 逆離散フーリエ変換
-	 * @returns {Matrix}
-	 */
-	ifft(is_2_dimensions = false) {
-		const main = function(data) {
-			const real = new Array(data.length);
-			const imag = new Array(data.length);
-			for(let i = 0; i < data.length; i++) {
-				real[i] = data[i].real;
-				imag[i] = data[i].imag;
-			}
-			const result = Signal.ifft(real, imag);
-			const y = new Array(data.length);
-			for(let i = 0; i < data.length; i++) {
-				y[i] = new Complex([result.real[i], result.imag[i]]);
-			}
-			return y;
-		};
-		return is_2_dimensions ? this.__column_oriented_2_dimensional_processing(main) : this.__column_oriented_1_dimensional_processing(main);
-	}
-
-	/**
-	 * A.powerfft() パワースペクトル密度
+	 * パワースペクトル密度
 	 * @returns {Matrix}
 	 */
 	powerfft() {
-		const main = function(data) {
-			const real = new Array(data.length);
-			const imag = new Array(data.length);
-			for(let i = 0; i < data.length; i++) {
-				real[i] = data[i].real;
-				imag[i] = data[i].imag;
-			}
-			const result = Signal.powerfft(real, imag);
-			const y = new Array(data.length);
-			for(let i = 0; i < data.length; i++) {
-				y[i] = new Complex([result.real[i], result.imag[i]]);
-			}
-			return y;
-		};
-		return this.__column_oriented_1_dimensional_processing(main);
+		return Signal.powerfft(this);
 	}
 
 	/**
-	 * A.dct() DCT-II (DCT)
+	 * 離散コサイン変換
 	 * @returns {Matrix}
 	 */
-	dct(is_2_dimensions = false) {
-		if(this.isComplex()) {
-			throw "dct don't support complex numbers.";
-		}
-		const main = function(data) {
-			const real = new Array(data.length);
-			for(let i = 0; i < data.length; i++) {
-				real[i] = data[i].real;
-			}
-			const result = Signal.dct(real);
-			const y = new Array(data.length);
-			for(let i = 0; i < data.length; i++) {
-				y[i] = new Complex(result[i]);
-			}
-			return y;
-		};
-		return is_2_dimensions ? this.__column_oriented_2_dimensional_processing(main) : this.__column_oriented_1_dimensional_processing(main);
+	dct() {
+		return Signal.dct(this);
 	}
 
 	/**
-	 * A.idct() DCT-III (IDCT)
+	 * 逆離散コサイン変換
 	 * @returns {Matrix}
 	 */
-	idct(is_2_dimensions = false) {
-		if(this.isComplex()) {
-			throw "idct don't support complex numbers.";
-		}
-		const main = function(data) {
-			const real = new Array(data.length);
-			for(let i = 0; i < data.length; i++) {
-				real[i] = data[i].real;
-			}
-			const result = Signal.idct(real);
-			const y = new Array(data.length);
-			for(let i = 0; i < data.length; i++) {
-				y[i] = new Complex(result[i]);
-			}
-			return y;
-		};
-		return is_2_dimensions ? this.__column_oriented_2_dimensional_processing(main) : this.__column_oriented_1_dimensional_processing(main);
+	idct() {
+		return Signal.idct(this);
 	}
 
 	/**
-	 * A.fft2() 2次元の離散フーリエ変換
+	 * 2次元の離散フーリエ変換
 	 * @returns {Matrix}
 	 */
 	fft2() {
-		return this.fft(true);
+		return Signal.fft2(this);
 	}
 
 	/**
-	 * A.ifft2() 2次元の逆離散フーリエ変換
+	 * 2次元の逆離散フーリエ変換
 	 * @returns {Matrix}
 	 */
 	ifft2() {
-		return this.ifft(true);
+		return Signal.ifft2(this);
 	}
 
 	/**
-	 * A.dct2() 2次元のDCT変換
+	 * 2次元の離散コサイン変換
 	 * @returns {Matrix}
 	 */
 	dct2() {
-		return this.dct2(true);
+		return Signal.dct2(this);
 	}
 
 	/**
-	 * A.idct2() 2次元の逆DCT変換
+	 * 2次元の逆離散コサイン変換
 	 * @returns {Matrix}
 	 */
 	idct2() {
-		return this.idct(true);
+		return Signal.idct2(this);
 	}
 
 	/**
-	 * A.conv(B) = conv(A, B) 畳み込み積分、多項式乗算
+	 * 畳み込み積分、多項式乗算
 	 * @param {Matrix} number
 	 * @returns {Matrix}
 	 */
 	conv(number) {
-		const M1 = this;
-		const M2 = Matrix.create(number);
-		if(M1.isMatrix() || M2.isMatrix()) {
-			throw "conv don't support matrix numbers.";
-		}
-		const M1_real = new Array(M1.length);
-		const M1_imag = new Array(M1.length);
-		const M2_real = new Array(M2.length);
-		const M2_imag = new Array(M2.length);
-		if(M1.isRow()) {
-			for(let i = 0; i < M1.column_length; i++) {
-				M1_real[i] = M1.matrix_array[0][i].real;
-				M1_imag[i] = M1.matrix_array[0][i].imag;
-			}
-		}
-		else {
-			for(let i = 0; i < M1.row_length; i++) {
-				M1_real[i] = M1.matrix_array[i][0].real;
-				M1_imag[i] = M1.matrix_array[i][0].imag;
-			}
-		}
-		if(M2.isRow()) {
-			for(let i = 0; i < M2.column_length; i++) {
-				M2_real[i] = M2.matrix_array[0][i].real;
-				M2_imag[i] = M2.matrix_array[0][i].imag;
-			}
-		}
-		else {
-			for(let i = 0; i < M2.row_length; i++) {
-				M2_real[i] = M2.matrix_array[i][0].real;
-				M2_imag[i] = M2.matrix_array[i][0].imag;
-			}
-		}
-		const y = Signal.conv(M1_real, M1_imag, M2_real, M2_imag);
-		const m = new Array(y.real.length);
-		for(let i = 0; i < y.real.length; i++) {
-			m[i] = new Complex([y.real[i], y.imag[i]]);
-		}
-		const M = new Matrix([m]);
-		return M2.isRow() ? M : M.transpose();
+		return Signal.conv(this, number);
 	}
 
 	/**
-	 * A.xcorr(B) = xcorr(A, B) 自己相関関数、相互相関関数
-	 * @param {Matrix} [number=this] - 省略した場合は自己相関関数
+	 * 自己相関関数、相互相関関数
+	 * @param {Matrix} [number] - 省略した場合は自己相関関数
 	 * @returns {Matrix}
 	 */
 	xcorr(number) {
-		if(!number) {
-			return this.xcorr(this);
-		}
-		const M1 = this;
-		const M2 = Matrix.create(number);
-		if(M1.isMatrix() || M2.isMatrix()) {
-			throw "conv don't support matrix numbers.";
-		}
-		const M1_real = new Array(M1.length);
-		const M1_imag = new Array(M1.length);
-		const M2_real = new Array(M2.length);
-		const M2_imag = new Array(M2.length);
-		if(M1.isRow()) {
-			for(let i = 0; i < M1.column_length; i++) {
-				M1_real[i] = M1.matrix_array[0][i].real;
-				M1_imag[i] = M1.matrix_array[0][i].imag;
-			}
-		}
-		else {
-			for(let i = 0; i < M1.row_length; i++) {
-				M1_real[i] = M1.matrix_array[i][0].real;
-				M1_imag[i] = M1.matrix_array[i][0].imag;
-			}
-		}
-		if(M2.isRow()) {
-			for(let i = 0; i < M2.column_length; i++) {
-				M2_real[i] = M2.matrix_array[0][i].real;
-				M2_imag[i] = M2.matrix_array[0][i].imag;
-			}
-		}
-		else {
-			for(let i = 0; i < M2.row_length; i++) {
-				M2_real[i] = M2.matrix_array[i][0].real;
-				M2_imag[i] = M2.matrix_array[i][0].imag;
-			}
-		}
-		const y = Signal.xcorr(M1_real, M1_imag, M2_real, M2_imag);
-		const m = new Array(y.real.length);
-		for(let i = 0; i < y.real.length; i++) {
-			m[i] = new Complex([y.real[i], y.imag[i]]);
-		}
-		const M = new Matrix([m]);
-		return M1.isRow() ? M : M.transpose();
+		return Signal.xcorr(this, number);
 	}
 
 	/**
@@ -3910,9 +2712,7 @@ export default class Matrix {
 	 * @returns {Matrix} 列ベクトル
 	 */
 	static window(name, size, isPeriodic) {
-		const size_ = Matrix.create(size).intValue;
-		const y = Signal.window(name, size_, isPeriodic);
-		return (new Matrix(y)).transpose();
+		return Signal.window(name, size, isPeriodic);
 	}
 
 	/**
@@ -3922,7 +2722,7 @@ export default class Matrix {
 	 * @returns {Matrix} 列ベクトル
 	 */
 	static hann(size, isPeriodic) {
-		return Matrix.window("hann", size, isPeriodic);
+		return Signal.hann(size, isPeriodic);
 	}
 	
 	/**
@@ -3932,8 +2732,7 @@ export default class Matrix {
 	 * @returns {Matrix} 列ベクトル
 	 */
 	static hamming(size, isPeriodic) {
-		return Matrix.window("hamming", size, isPeriodic);
+		return Signal.hamming(size, isPeriodic);
 	}
 	
-
 }

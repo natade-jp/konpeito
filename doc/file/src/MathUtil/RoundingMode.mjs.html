@@ -34,9 +34,12 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mathutil">MathUtil</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mathutil">MathUtil</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Signal.mjs~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
 </ul>
 </div>
@@ -98,15 +101,15 @@ class RoundingMode_UP extends RoundingModeEntity {
 	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
 	 */
 	static getAddNumber(x) {
-		x = x % 10;
-		if(x === 0) {
+		const y = x % 10;
+		if(y === 0) {
 			return 0;
 		}
-		else if(x &gt; 0) {
-			return 10 - x;
+		else if(y &gt; 0) {
+			return 10 - y;
 		}
 		else {
-			return (-(10 + x));
+			return (-(10 + y));
 		}
 	}
 
@@ -132,8 +135,7 @@ class RoundingMode_DOWN extends RoundingModeEntity {
 	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
 	 */
 	static getAddNumber(x) {
-		x = x % 10;
-		return -x;
+		return -(x % 10);
 	}
 
 }
@@ -158,15 +160,15 @@ class RoundingMode_CEILING extends RoundingModeEntity {
 	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
 	 */
 	static getAddNumber(x) {
-		x = x % 10;
-		if(x === 0) {
+		const y = x % 10;
+		if(y === 0) {
 			return 0;
 		}
-		else if(x &gt; 0) {
-			return 10 - x;
+		else if(y &gt; 0) {
+			return 10 - y;
 		}
 		else {
-			return -x;
+			return -y;
 		}
 	}
 
@@ -192,15 +194,15 @@ class RoundingMode_FLOOR extends RoundingModeEntity {
 	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
 	 */
 	static getAddNumber(x) {
-		x = x % 10;
-		if(x === 0) {
+		const y = x % 10;
+		if(y === 0) {
 			return 0;
 		}
-		else if(x &gt; 0) {
-			return -x;
+		else if(y &gt; 0) {
+			return -y;
 		}
 		else {
-			return(-(10 + x));
+			return(-(10 + y));
 		}
 	}
 
@@ -226,13 +228,13 @@ class RoundingMode_HALF_UP extends RoundingModeEntity {
 	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
 	 */
 	static getAddNumber(x) {
-		x = x % 10;
-		const sign = x &gt;= 0 ? 1 : -1;
-		if(Math.abs(x) &lt; 5) {
-			return (x * -1);
+		const y = x % 10;
+		const sign = y &gt;= 0 ? 1 : -1;
+		if(Math.abs(y) &lt; 5) {
+			return (y * -1);
 		}
 		else {
-			return (sign * (10 - Math.abs(x)));
+			return (sign * (10 - Math.abs(y)));
 		}
 	}
 
@@ -258,13 +260,13 @@ class RoundingMode_HALF_DOWN extends RoundingModeEntity {
 	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
 	 */
 	static getAddNumber(x) {
-		x = x % 10;
-		const sign = x &gt;= 0 ? 1 : -1;
-		if(Math.abs(x) &lt; 6) {
-			return (x * -1);
+		const y = x % 10;
+		const sign = y &gt;= 0 ? 1 : -1;
+		if(Math.abs(y) &lt; 6) {
+			return (y * -1);
 		}
 		else {
-			return (sign * (10 - Math.abs(x)));
+			return (sign * (10 - Math.abs(y)));
 		}
 	}
 
@@ -290,15 +292,15 @@ class RoundingMode_HALF_EVEN extends RoundingModeEntity {
 	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
 	 */
 	static getAddNumber(x) {
-		x = x % 100;
+		let y = x % 100;
 		let sign, even;
-		if(x &lt; 0) {
+		if(y &lt; 0) {
 			sign = -1;
-			even = Math.ceil(x / 10) &amp; 1;
+			even = Math.ceil(y / 10) &amp; 1;
 		}
 		else {
 			sign = 1;
-			even = Math.floor(x / 10) &amp; 1;
+			even = Math.floor(y / 10) &amp; 1;
 		}
 		let center;
 		if(even === 1) {
@@ -307,12 +309,12 @@ class RoundingMode_HALF_EVEN extends RoundingModeEntity {
 		else {
 			center = 6;
 		}
-		x = x % 10;
-		if(Math.abs(x) &lt; center) {
-			return (x * -1);
+		y = y % 10;
+		if(Math.abs(y) &lt; center) {
+			return (y * -1);
 		}
 		else {
-			return (sign * (10 - Math.abs(x)));
+			return (sign * (10 - Math.abs(y)));
 		}
 	}
 
@@ -338,8 +340,8 @@ class RoundingMode_UNNECESSARY extends RoundingModeEntity {
 	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
 	 */
 	static getAddNumber(x) {
-		x = x % 10;
-		if(x === 0) {
+		const y = x % 10;
+		if(y === 0) {
 			return 0;
 		}
 		else {

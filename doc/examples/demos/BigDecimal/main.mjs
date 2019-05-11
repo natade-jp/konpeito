@@ -18,9 +18,9 @@ const getDecimalData = function(x) {
 	return x.toString() + " ( " + x.unscaledValue() + " e" + -1 * x.scale() + " )";
 };
 
-const testDivideAndRemainder = function(x, y) {
-	x = new BigDecimal([x, MathContext.UNLIMITED]);
-	y = new BigDecimal([y, MathContext.UNLIMITED]);
+const testDivideAndRemainder = function(x_, y_) {
+	const x = new BigDecimal([x_, MathContext.UNLIMITED]);
+	const y = new BigDecimal([y_, MathContext.UNLIMITED]);
 	const z = x.divideAndRemainder(y);
 	Log.println( x + "\t/\t" + y + "\t\t= " + getDecimalData(z[0]) + "\t... " + getDecimalData(z[1]) );
 };
@@ -184,6 +184,9 @@ const main = function() {
 	
 	Log.println("乗算");
 	Log.println($("123.456").pow(30, MathContext.UNLIMITED));
+	
+	Log.println("乗算");
+	Log.println($(123.456).pow(30, MathContext.UNLIMITED));
 	
 	// 丸め用のクラスの試験用
 	// 入力値の 1 の位に対して、丸め後の数値へ、いくつ足せばいいかがかえる

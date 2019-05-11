@@ -1,7 +1,7 @@
 {
-  "coverage": "83.6%",
-  "expectCount": 671,
-  "actualCount": 561,
+  "coverage": "89.34%",
+  "expectCount": 751,
+  "actualCount": 671,
   "files": {
     "src/konpeito.mjs": {
       "expectCount": 11,
@@ -9,44 +9,34 @@
       "undocumentLines": []
     },
     "src/Math/BigDecimal.mjs": {
-      "expectCount": 64,
-      "actualCount": 60,
-      "undocumentLines": [
-        15,
-        17,
-        19,
-        1225
-      ]
+      "expectCount": 65,
+      "actualCount": 65,
+      "undocumentLines": []
     },
     "src/Math/BigInteger.mjs": {
-      "expectCount": 92,
-      "actualCount": 90,
-      "undocumentLines": [
-        18,
-        1677
-      ]
+      "expectCount": 93,
+      "actualCount": 93,
+      "undocumentLines": []
     },
     "src/Math/Complex.mjs": {
-      "expectCount": 96,
-      "actualCount": 94,
-      "undocumentLines": [
-        14,
-        1306
-      ]
+      "expectCount": 73,
+      "actualCount": 73,
+      "undocumentLines": []
     },
     "src/Math/Matrix.mjs": {
-      "expectCount": 175,
-      "actualCount": 175,
+      "expectCount": 173,
+      "actualCount": 173,
+      "undocumentLines": []
+    },
+    "src/MathUtil/LinearAlgebra.mjs": {
+      "expectCount": 20,
+      "actualCount": 20,
       "undocumentLines": []
     },
     "src/MathUtil/MathContext.mjs": {
       "expectCount": 13,
-      "actualCount": 10,
-      "undocumentLines": [
-        24,
-        25,
-        121
-      ]
+      "actualCount": 13,
+      "undocumentLines": []
     },
     "src/MathUtil/Random.mjs": {
       "expectCount": 20,
@@ -59,33 +49,13 @@
       "undocumentLines": []
     },
     "src/MathUtil/Signal.mjs": {
-      "expectCount": 44,
-      "actualCount": 25,
-      "undocumentLines": [
-        48,
-        49,
-        50,
-        51,
-        52,
-        53,
-        54,
-        228,
-        236,
-        237,
-        238,
-        239,
-        269,
-        271,
-        278,
-        279,
-        280,
-        281,
-        343
-      ]
+      "expectCount": 59,
+      "actualCount": 59,
+      "undocumentLines": []
     },
     "src/MathUtil/Statistics.mjs": {
-      "expectCount": 34,
-      "actualCount": 34,
+      "expectCount": 102,
+      "actualCount": 102,
       "undocumentLines": []
     },
     "src/Util/File.mjs": {

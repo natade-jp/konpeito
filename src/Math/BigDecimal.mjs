@@ -12,10 +12,21 @@ import BigInteger from "./BigInteger.mjs";
 import RoundingMode from "../MathUtil/RoundingMode.mjs";
 import MathContext from "../MathUtil/MathContext.mjs";
 
+/**
+ * 初期化するときにcontextを設定しなかった場合のデフォルト値
+ */
 let DEFAULT_CONTEXT = MathContext.DECIMAL128;
 
+/**
+ * BigDecimal 内で使用する関数群
+ */
 class DecimalTool {
 
+	/**
+	 * 文字列から BigDecimal で使用するデータに変換
+	 * @param ntext 
+	 * @returns {{scale : number, integer : BigInteger}}
+	 */
 	static ToBigDecimalFromString(ntext) {
 		let scale = 0;
 		let buff;
@@ -126,7 +137,7 @@ export default class BigDecimal {
 			else {
 				let scale = 0;
 				let x = number;
-				while(true) {
+				for(let i = 0; i < 10; i++) {
 					x = x * 10;
 					scale = scale + 1;
 					if(x === Math.floor(x)) {
@@ -135,6 +146,10 @@ export default class BigDecimal {
 				}
 				this._scale = scale;
 				this.integer = new BigInteger(x);
+				// 今後改善するならば
+				// 64ビットの実数型は15桁程度まで正しい
+				// 余裕をもって10桁程度までを抜き出すのが良いかと思われる。
+				// スケールは右の式から求めて Math.log(x) / Math.log(10)
 			}
 		}
 		else if(number instanceof Array) {
@@ -343,6 +358,15 @@ export default class BigDecimal {
 	 */
 	signum() {
 		return this.integer.signum();
+	}
+
+	/**
+	 * 符号値
+	 * 1, -1, 0の場合は0を返す
+	 * @returns {number}
+	 */
+	sign() {
+		return this.signum();
 	}
 
 	/**
@@ -603,8 +627,9 @@ export default class BigDecimal {
 
 	/**
 	 * 値同士を比較
+	 * 戻り値は、number 型
 	 * @param {BigDecimal} number 
-	 * @returns {number} A < B ? 1 : (A === B ? 0 : -1)（※非Complexオブジェクト）
+	 * @returns {number} A < B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number) {
 		const src = this;
@@ -1222,6 +1247,9 @@ export default class BigDecimal {
 
 }
 
+/**
+ * 内部で使用する定数値
+ */
 const DEFINE = {
 	ZERO : new BigDecimal(0),
 	ONE : new BigDecimal(1),

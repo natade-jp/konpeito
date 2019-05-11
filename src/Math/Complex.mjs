@@ -9,49 +9,60 @@
  */
 
 import Random from "../MathUtil/Random.mjs";
-import Statistics from "../MathUtil/Statistics.mjs";
 
+/**
+ * Complex 内で使用する乱数生成クラス
+ */
 const random_class = new Random();
 
 /**
- * 文字列から複素数を解析する
- * @param {string} text - 解析したい文字列
- * @param {Complex} that - 代入先 
- * @returns
+ * Complex 内で使用する関数群
  */
-const ToComplexFromString = function(text, that) {
-	const str = text.replace(/\s/g, "").toLowerCase();
-	// 複素数の宣言がない場合
-	if(!(/[ij]/.test(str))) {
-		that._re = parseFloat(str);
-		that._im = 0.0;
-		return;
-	}
-	// この時点で複素数である。
-	// 以下真面目に調査
-	let re = 0;
-	let im = 0;
-	let buff;
-	// 最後が$なら右側が実数、最後が[+-]なら左側が実数
-	buff = str.match(/[+-]?[0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?($|[+-])/);
-	if(buff) {
-		re = parseFloat(buff[0]);
-	}
-	// 複素数は数値が省略される場合がある
-	buff = str.match(/[+-]?([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?[ij]/);
-	if(buff) {
-		buff = buff[0].substring(0, buff[0].length - 1);
-		// i, +i, -j のように実数部がなく、数値もない場合
-		if((/^[-+]$/.test(buff)) || buff.length === 0) {
-			im = buff === "-" ? -1 : 1;
+class ComplexTool {
+
+	/**
+	 * 文字列から複素数を解析する
+	 * @param {string} text - 解析したい文字列
+	 * @returns {{real : number, imag : number}}
+	 */
+	static ToComplexFromString(text) {
+		const str = text.replace(/\s/g, "").toLowerCase();
+		// 複素数の宣言がない場合
+		if(!(/[ij]/.test(str))) {
+			return {
+				real : parseFloat(str),
+				imag : 0.0
+			};
 		}
-		else {
-			im = parseFloat(buff);
+		// この時点で複素数である。
+		// 以下真面目に調査
+		let re = 0;
+		let im = 0;
+		let buff;
+		// 最後が$なら右側が実数、最後が[+-]なら左側が実数
+		buff = str.match(/[+-]?[0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?($|[+-])/);
+		if(buff) {
+			re = parseFloat(buff[0]);
 		}
+		// 複素数は数値が省略される場合がある
+		buff = str.match(/[+-]?([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?[ij]/);
+		if(buff) {
+			buff = buff[0].substring(0, buff[0].length - 1);
+			// i, +i, -j のように実数部がなく、数値もない場合
+			if((/^[-+]$/.test(buff)) || buff.length === 0) {
+				im = buff === "-" ? -1 : 1;
+			}
+			else {
+				im = parseFloat(buff);
+			}
+		}
+		return {
+			real : re,
+			imag : im
+		};
 	}
-	that._re = re;
-	that._im = im;
-};
+
+}
 
 /**
  * 複素数クラス (immutable)
@@ -91,10 +102,14 @@ export default class Complex {
 				this._im = obj[1];
 			}
 			else if(typeof obj === "string" || obj instanceof String) {
-				ToComplexFromString(obj, this);
+				const x = ComplexTool.ToComplexFromString(obj);
+				this._re = x.real;
+				this._im = x.imag;
 			}
 			else if(obj instanceof Object && obj.toString) {
-				ToComplexFromString(obj.toString(), this);
+				const x = ComplexTool.ToComplexFromString(obj.toString());
+				this._re = x.real;
+				this._im = x.imag;
 			}
 			else {
 				throw "Complex Unsupported argument " + arguments;
@@ -106,7 +121,74 @@ export default class Complex {
 	}
 
 	/**
-	 * ディープコピー（※実際にはイミュータブルなのでコピーする）
+	 * Complex を作成
+	 * @param {Complex|number|string|Array<number>} number
+	 * @returns {Complex}
+	 */
+	static create(number) {
+		if(number instanceof Complex) {
+			return number;
+		}
+		else {
+			return new Complex(number);
+		}
+	}
+	
+	/**
+	 * 指定した数値から Complex 型に変換
+	 * @param {Complex} number
+	 * @returns {Complex}
+	 */
+	static valueOf(number) {
+		return Complex.valueOf(number);
+	}
+	
+	/**
+	 * 複素数を作成
+	 * @param {Complex} number 
+	 * @returns {Complex}
+	 * @private
+	 */
+	static _toComplex(number) {
+		if(number instanceof Complex) {
+			return number;
+		}
+		else {
+			return new Complex(number);
+		}
+	}
+
+	/**
+	 * 実数を作成
+	 * @param {Complex} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toFloat(number) {
+		if((typeof number === "number") || (number instanceof Number)) {
+			return number;
+		}
+		const x = (number instanceof Complex) ? number : new Complex(number);
+		if(x.isReal()) {
+			return (new Complex(number)).real;
+		}
+		else {
+			throw "not support complex numbers.";
+		}
+	}
+
+	/**
+	 * 整数を作成
+	 * @param {Complex} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		throw Complex._toFloat(number) | 0;
+	}
+
+	/**
+	 * ディープコピー
 	 * @returns {Complex} 
 	 */
 	clone() {
@@ -143,20 +225,6 @@ export default class Complex {
 	}
 	
 	/**
-	 * 引数から複素数を作成する（作成が不要の場合はnewしない）
-	 * @param {Complex} number
-	 * @returns {Complex}
-	 */
-	static create(number) {
-		if(number instanceof Complex) {
-			return number;
-		}
-		else {
-			return new Complex(number);
-		}
-	}
-	
-	/**
 	 * ランダムな値を作成
 	 * @returns {Complex}
 	 */
@@ -173,20 +241,21 @@ export default class Complex {
 	}
 
 	/**
-	 * A.equals(B)
+	 * A === B
 	 * @param {Complex} number
 	 * @param {number} [epsilon=Number.EPSILON] - 誤差
 	 * @returns {boolean} A === B
 	 */
 	equals(number, epsilon) {
-		const x = Complex.create(number);
-		const tolerance = epsilon ? epsilon : Number.EPSILON;
+		const x = Complex._toComplex(number);
+		const tolerance = epsilon ? Complex._toFloat(epsilon) : Number.EPSILON;
 		return (Math.abs(this._re - x._re) <  tolerance) && (Math.abs(this._im - x._im) < tolerance);
 	}
 
 	/**
 	 * 実部
-	 * @returns {number} 実部の数値（非Complexオブジェクト）
+	 * 戻り値は、number 型
+	 * @returns {number} 実部の数値
 	 */
 	get real() {
 		return this._re;
@@ -194,15 +263,18 @@ export default class Complex {
 	
 	/**
 	 * 虚部
-	 * @returns {number} 虚部の数値（非Complexオブジェクト）
+	 * 戻り値は、number 型
+	 * @returns {number} 虚部の数値
 	 */
 	get imag() {
 		return this._im;
 	}
 
 	/**
-	 * ノルム（極座標のノルム）
-	 * @returns {number} ノルムの数値（非Complexオブジェクト）
+	 * ノルム
+	 * 極座標のノルム
+	 * 戻り値は、number 型
+	 * @returns {number} ノルムの数値
 	 */
 	get norm() {
 		if(this._im === 0) {
@@ -217,8 +289,10 @@ export default class Complex {
 	}
 
 	/**
-	 * 偏角（極座標の角度）
-	 * @returns {number} 偏角の数値（非Complexオブジェクト）
+	 * 偏角
+	 * 極座標の角度
+	 * 戻り値は、number 型
+	 * @returns {number} 偏角の数値
 	 */
 	get angle() {
 		if(this._im === 0) {
@@ -233,8 +307,9 @@ export default class Complex {
 	}
 
 	/**
-	 * 実部、虚部の小数点の桁数の最大値
-	 * @returns {number} 小数点の桁（非Complexオブジェクト）
+	 * 実部、虚部を表す際の小数点以下の桁数
+	 * 戻り値は、number 型
+	 * @returns {number} 小数点の桁数
 	 */
 	getDecimalPosition() {
 		let point = 0;
@@ -250,7 +325,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.add(B) = A + B
+	 * A + B
 	 * @param {Complex} number
 	 * @returns {Complex}
 	 */
@@ -262,7 +337,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.sub(B) = A - B
+	 * A - B
 	 * @param {Complex} number
 	 * @returns {Complex}
 	 */
@@ -274,7 +349,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.mul(B) = A * B
+	 * A * B
 	 * @param {Complex} number
 	 * @returns {Complex}
 	 */
@@ -299,7 +374,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * A.dot(B) = A・B = A * conj(B)
+	 * A・B, A * conj(B)
 	 * @param {Complex} number
 	 * @returns {Complex}
 	 */
@@ -324,7 +399,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * A.div(B) = A / B
+	 * A / B
 	 * @param {Complex} number
 	 * @returns {Complex}
 	 */
@@ -350,7 +425,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.mod(B) = A mod B (複素数での計算はできません)
+	 * A mod B
 	 * @param {Complex} number - 複素数を含まない数値 
 	 * @returns {Complex}
 	 */
@@ -368,7 +443,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.inv() = 1 / A
+	 * 1 / A
 	 * @returns {Complex}
 	 */
 	inv() {
@@ -382,7 +457,8 @@ export default class Complex {
 	}
 
 	/**
-	 * A.sign() は長さを1にします -100 なら -1 にします
+	 * 符号値
+	 * 1, -1, 0の場合は0を返す。複素数の場合はノルムを1にする。
 	 * @returns {Complex}
 	 */
 	sign() {
@@ -398,13 +474,13 @@ export default class Complex {
 	}
 	
 	/**
-	 * A.max(B) = max([A, B])
+	 * max([A, B])
 	 * @param {Complex} number
 	 * @param {number} [epsilon=Number.EPSILON] - 誤差
 	 * @returns {Complex}
 	 */
 	max(number, epsilon) {
-		const x = Complex.create(number);
+		const x = Complex._toComplex(number);
 		if(this.compareTo(x, epsilon) <= 0) {
 			return this;
 		}
@@ -414,13 +490,13 @@ export default class Complex {
 	}
 
 	/**
-	 * A.min(B) = min([A, B])
+	 * min([A, B])
 	 * @param {Complex} number
 	 * @param {number} [epsilon=Number.EPSILON] - 誤差
 	 * @returns {Complex}
 	 */
 	min(number, epsilon) {
-		const x = Complex.create(number);
+		const x = Complex._toComplex(number);
 		if(this.compareTo(x, epsilon) >= 0) {
 			return this;
 		}
@@ -430,15 +506,15 @@ export default class Complex {
 	}
 
 	/**
-	 * A.compareTo(B) 今の値Aと、指定した値Bとを比較する
-	 * 戻り値は、IF文で利用できるように、非Complexオブジェクトとなる。
+	 * 値同士を比較
+	 * 戻り値は、number 型
 	 * @param {Complex} number
 	 * @param {number} [epsilon=Number.EPSILON] - 誤差
-	 * @returns {number} A < B ? 1 : (A === B ? 0 : -1)（※非Complexオブジェクト）
+	 * @returns {number} A < B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, epsilon) {
 		// ※実数を返す（非Complexオブジェクト）
-		const x = Complex.create(number);
+		const x = Complex._toComplex(number);
 		if(this.equals(x, epsilon)) {
 			return 0;
 		}
@@ -459,7 +535,7 @@ export default class Complex {
 	 * @returns {boolean}
 	 */
 	isInteger(epsilon) {
-		const tolerance = epsilon ? epsilon : Number.EPSILON;
+		const tolerance = epsilon ? Complex._toFloat(epsilon) : Number.EPSILON;
 		return this.isReal() && (Math.abs(this._re - (this._re | 0)) < tolerance);
 	}
 
@@ -469,7 +545,7 @@ export default class Complex {
 	 * @returns {boolean}
 	 */
 	isComplexInteger(epsilon) {
-		const tolerance = epsilon ? epsilon : Number.EPSILON;
+		const tolerance = epsilon ? Complex._toFloat(epsilon) : Number.EPSILON;
 		// 複素整数
 		return (Math.abs(this._re - (this._re | 0)) < tolerance) &&
 				(Math.abs(this._im - (this._im | 0)) < tolerance);
@@ -481,7 +557,7 @@ export default class Complex {
 	 * @returns {boolean}
 	 */
 	isZero(epsilon) {
-		const tolerance = epsilon ? epsilon : Number.EPSILON;
+		const tolerance = epsilon ? Complex._toFloat(epsilon) : Number.EPSILON;
 		return (Math.abs(this._re) < tolerance) && (Math.abs(this._im) < tolerance);
 	}
 
@@ -491,7 +567,7 @@ export default class Complex {
 	 * @returns {boolean}
 	 */
 	isOne(epsilon) {
-		const tolerance = epsilon ? epsilon : Number.EPSILON;
+		const tolerance = epsilon ? Complex._toFloat(epsilon) : Number.EPSILON;
 		return (Math.abs(this._re - 1.0) < tolerance) && (Math.abs(this._im) < tolerance);
 	}
 
@@ -501,7 +577,7 @@ export default class Complex {
 	 * @returns {boolean}
 	 */
 	isComplex(epsilon) {
-		const tolerance = epsilon ? epsilon : Number.EPSILON;
+		const tolerance = epsilon ? Complex._toFloat(epsilon) : Number.EPSILON;
 		return (Math.abs(this._im) >= tolerance);
 	}
 	
@@ -511,7 +587,7 @@ export default class Complex {
 	 * @returns {boolean}
 	 */
 	isReal(epsilon) {
-		const tolerance = epsilon ? epsilon : Number.EPSILON;
+		const tolerance = epsilon ? Complex._toFloat(epsilon) : Number.EPSILON;
 		return (Math.abs(this._im) < tolerance);
 	}
 
@@ -573,7 +649,7 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * A.abs() = abs(A)
+	 * abs(A)
 	 * @returns {Complex}
 	 */
 	abs() {
@@ -581,7 +657,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.conj() = real(A) - imag(A)j (共役複素数)
+	 * real(A) - imag(A)j 共役複素数
 	 * @returns {Complex}
 	 */
 	conj() {
@@ -593,7 +669,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.negate() = - A
+	 * -A
 	 * @returns {Complex}
 	 */
 	negate() {
@@ -605,7 +681,7 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * A.pow(B) = A^B
+	 * pow(A, B)
 	 * @param {Complex} number
 	 * @returns {Complex}
 	 */
@@ -628,7 +704,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.square() = A^2
+	 * pow(A, 2)
 	 * @returns {Complex}
 	 */
 	square() {
@@ -636,7 +712,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.sqrt() = sqrt(A)
+	 * sqrt(A)
 	 * @returns {Complex}
 	 */
 	sqrt() {
@@ -654,7 +730,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.log() = log A
+	 * log(A)
 	 * @returns {Complex}
 	 */
 	log() {
@@ -666,7 +742,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.exp() = e^A
+	 * exp(A)
 	 * @returns {Complex}
 	 */
 	exp() {
@@ -683,7 +759,7 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * A.sin() = sin(A)
+	 * sin(A)
 	 * @returns {Complex}
 	 */
 	sin() {
@@ -698,7 +774,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.cos() = cos(A)
+	 * cos(A)
 	 * @returns {Complex}
 	 */
 	cos() {
@@ -713,7 +789,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.tan() = tan(A)
+	 * tan(A)
 	 * @returns {Complex}
 	 */
 	tan() {
@@ -725,7 +801,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.atan() = atan(A)
+	 * atan(A)
 	 * @returns {Complex}
 	 */
 	atan() {
@@ -737,8 +813,8 @@ export default class Complex {
 	}
 
 	/**
-	 * Y.atan2(X) = atan2(Y, X) 複素数のatan2は計算不能
-	 * @param {Complex} [number] - 複素数を含まない数値。省略した場合は、複素数の偏角を返す。
+	 * atan2(Y, X)
+	 * @param {Complex} [number] - 実数。省略した場合は、本オブジェクトの複素数の偏角を返す。
 	 * @returns {Complex}
 	 */
 	atan2(number) {
@@ -747,7 +823,7 @@ export default class Complex {
 		}
 		// y.atan2(x) とする。
 		const y = this;
-		const x = Complex.create(number);
+		const x = Complex._toComplex(number);
 		if(y.isReal() && x.isReal()) {
 			return new Complex(Math.atan2(y._re, x._re));
 		}
@@ -760,13 +836,13 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * A.sinc() = sinc(A)
+	 * sinc(A)
 	 * @returns {Complex}
 	 */
 	sinc() {
 		if(this.isReal()) {
 			if(this._re === 0) {
-				return(new Complex(1.0));
+				return(Complex.ONE);
 			}
 			return new Complex(Math.sin(this._re) / this._re);
 		}
@@ -778,7 +854,7 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * A.floor() = floor(A)
+	 * floor(A)
 	 * @returns {Complex}
 	 */
 	floor() {
@@ -786,7 +862,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.ceil() = ceil(A)
+	 * ceil(A)
 	 * @returns {Complex}
 	 */
 	ceil() {
@@ -794,7 +870,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * A.round() = round(A)
+	 * round(A)
 	 * @returns {Complex}
 	 */
 	round() {
@@ -802,7 +878,7 @@ export default class Complex {
 	}
 
 	/**
-	 * A.fix() = fix(A) 小数点部を消す
+	 * fix(A) 小数部を取り除く
 	 * @returns {Complex}
 	 */
 	fix() {
@@ -810,426 +886,11 @@ export default class Complex {
 	}
 
 	/**
-	 * A.fract() = fract(A) 小数点部を残す
+	 * fract(A) 小数部の抽出
 	 * @returns {Complex}
 	 */
 	fract() {
 		return new Complex([this._re - (this._re | 0), this._im - (this._im | 0)]);
-	}
-
-	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
-	// statistics 統計計算用
-	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
-
-	/**
-	 * x.gammaln() = gammaln(x) 対数ガンマ関数 
-	 * @returns {Complex}
-	 */
-	gammaln() {
-		if(this.isComplex()) {
-			throw "gammaln don't support complex numbers.";
-		}
-		return new Complex(Statistics.gammaln(this._re));
-	}
-	
-	/**
-	 * z.gamma() = gamma(z) ガンマ関数 
-	 * @returns {Complex}
-	 */
-	gamma() {
-		if(this.isComplex()) {
-			throw "gamma don't support complex numbers.";
-		}
-		return new Complex(Statistics.gamma(this._re));
-	}
-	
-	/**
-	 * x.gammainc(a, tail) = gammainc(x, a, tail) 不完全ガンマ関数
-	 * @param {Complex} a
-	 * @param {string} [tail="lower"] - lower/upper
-	 * @returns {Complex}
-	 */
-	gammainc(a, tail) {
-		const x_ = this;
-		const a_ = Complex.create(a);
-		if(x_.isComplex() || a_.isComplex()) {
-			throw "gammainc don't support complex numbers.";
-		}
-		const tail_ = arguments.length === 2 ? tail : "lower";
-		return new Complex(Statistics.gammainc(x_._re, a_._re, tail_));
-	}
-
-	/**
-	 * x.gampdf(k, s) = gampdf(x, k, s) ガンマ分布の確率密度関数
-	 * @param {Complex} k - 形状母数
-	 * @param {Complex} s - 尺度母数
-	 * @returns {Complex}
-	 */
-	gampdf(k, s) {
-		const x_ = this;
-		const k_ = Complex.create(k);
-		const s_ = Complex.create(s);
-		if(x_.isComplex() || k_.isComplex() || s_.isComplex()) {
-			throw "gampdf don't support complex numbers.";
-		}
-		return new Complex(Statistics.gampdf(x_._re, k_._re, s_._re));
-	}
-
-	/**
-	 * x.gamcdf(k, s) = gamcdf(x, k, s) ガンマ分布の確率密度関数
-	 * @param {Complex} k - 形状母数
-	 * @param {Complex} s - 尺度母数
-	 * @returns {Complex}
-	 */
-	gamcdf(k, s) {
-		const x_ = this;
-		const k_ = Complex.create(k);
-		const s_ = Complex.create(s);
-		if(x_.isComplex() || k_.isComplex() || s_.isComplex()) {
-			throw "gamcdf don't support complex numbers.";
-		}
-		return new Complex(Statistics.gamcdf(x_._re, k_._re, s_._re));
-	}
-
-	/**
-	 * p.gaminv(k, s) = gaminv(p, k, s) ガンマ分布の累積分布関数の逆関数
-	 * @param {Complex} k - 形状母数
-	 * @param {Complex} s - 尺度母数
-	 * @returns {Complex}
-	 */
-	gaminv(k, s) {
-		const p_ = this;
-		const k_ = Complex.create(k);
-		const s_ = Complex.create(s);
-		if(p_.isComplex() || k_.isComplex() || s_.isComplex()) {
-			throw "gaminv don't support complex numbers.";
-		}
-		return new Complex(Statistics.gaminv(p_._re, k_._re, s_._re));
-	}
-
-	/**
-	 * x.beta(y) = beta(x, y) ベータ関数
-	 * @param {Complex} y
-	 * @returns {Complex}
-	 */
-	beta(y) {
-		const x_ = this;
-		const y_ = Complex.create(y);
-		if(x_.isComplex() || y_.isComplex()) {
-			throw "beta don't support complex numbers.";
-		}
-		return new Complex(Statistics.beta(x_._re, y_._re));
-	}
-
-	/**
-	 * x.betainc(a, b, tail) = betainc(x, a, b, tail) 不完全ベータ関数
-	 * @param {Complex} a
-	 * @param {Complex} b
-	 * @param {string} [tail="lower"] lower/upper
-	 * @returns {Complex}
-	 */
-	betainc(a, b, tail) {
-		const x_ = this;
-		const a_ = Complex.create(a);
-		const b_ = Complex.create(b);
-		if(x_.isComplex() || a_.isComplex() || b_.isComplex()) {
-			throw "betainc don't support complex numbers.";
-		}
-		const tail_ = arguments.length === 2 ? tail : "lower";
-		return new Complex(Statistics.betainc(x_._re, a_._re, b_._re, tail_));
-	}
-
-	/**
-	 * x.betapdf(a, b) = betapdf(x, a, b) ベータ分布の確率密度関数
-	 * @param {Complex} a
-	 * @param {Complex} b
-	 * @returns {Complex}
-	 */
-	betapdf(a, b) {
-		const x_ = this;
-		const a_ = Complex.create(a);
-		const b_ = Complex.create(b);
-		if(x_.isComplex() || a_.isComplex() || b_.isComplex()) {
-			throw "betapdf don't support complex numbers.";
-		}
-		return new Complex(Statistics.betapdf(x_._re, a_._re, b_._re));
-	}
-
-	/**
-	 * x.betacdf(a, b) = betacdf(x, a, b) ベータ分布の累積分布関数
-	 * @param {Complex} a
-	 * @param {Complex} b
-	 * @returns {Complex}
-	 */
-	betacdf(a, b) {
-		const x_ = this;
-		const a_ = Complex.create(a);
-		const b_ = Complex.create(b);
-		if(x_.isComplex() || a_.isComplex() || b_.isComplex()) {
-			throw "betacdf don't support complex numbers.";
-		}
-		return new Complex(Statistics.betacdf(x_._re, a_._re, b_._re));
-	}
-
-	/**
-	 * p.betainv(a, b) = betainv(p, a, b) ベータ分布の累積分布関数の逆関数
-	 * @param {Complex} a
-	 * @param {Complex} b
-	 * @returns {Complex}
-	 */
-	betainv(a, b) {
-		const p_ = this;
-		const a_ = Complex.create(a);
-		const b_ = Complex.create(b);
-		if(p_.isComplex() || a_.isComplex() || b_.isComplex()) {
-			throw "betainv don't support complex numbers.";
-		}
-		return new Complex(Statistics.betainv(p_._re, a_._re, b_._re));
-	}
-
-	/**
-	 * n.factorial() = factorial(n), n! 階乗関数
-	 * @returns {Complex}
-	 */
-	factorial() {
-		if(this.isComplex()) {
-			throw "factorial don't support complex numbers.";
-		}
-		return new Complex(Statistics.factorial(this._re));
-	}
-
-	/**
-	 * n.nchoosek(k) = nchoosek(n, k), nCk 二項係数またはすべての組合わせ
-	 * @param {Complex} k
-	 * @returns {Complex}
-	 */
-	nchoosek(k) {
-		const n_ = this;
-		const k_ = Complex.create(k);
-		if(n_.isComplex() || k_.isComplex()) {
-			throw "nchoosek don't support complex numbers.";
-		}
-		return new Complex(Statistics.nchoosek(n_._re, k_._re));
-	}
-	
-	/**
-	 * x.erf() = erf(x) 誤差関数
-	 * @returns {Complex}
-	 */
-	erf() {
-		const x = this;
-		if(x.isComplex()) {
-			throw "erf don't support complex numbers.";
-		}
-		return new Complex(Statistics.erf(x._re));
-	}
-
-	/**
-	 * x.erfc() = erfc(x) 相補誤差関数
-	 * @returns {Complex}
-	 */
-	erfc() {
-		const x = this;
-		if(x.isComplex()) {
-			throw "erfc don't support complex numbers.";
-		}
-		return new Complex(Statistics.erfc(x._re));
-	}
-
-	/**
-	 * x.normpdf(u, s) = normpdf(x, u, s) 正規分布の確率密度関数
-	 * @param {Complex} [u=0.0] - 平均値
-	 * @param {Complex} [s=1.0] - 分散
-	 * @returns {Complex}
-	 */
-	normpdf(u, s) {
-		const x_ = this;
-		const u_ = arguments.length <= 0 ? Complex.create(u) : Complex.ZERO;
-		const s_ = arguments.length <= 1 ? Complex.create(s) : Complex.ONE;
-		if(x_.isComplex() || u_.isComplex() || s_.isComplex()) {
-			throw "normpdf don't support complex numbers.";
-		}
-		return new Complex(Statistics.normpdf(x_._re, u_._re, s_._re));
-	}
-
-	/**
-	 * x.normcdf(u, s) = normcdf(x, u, s) 正規分布の累積分布関数
-	 * @param {Complex} [u=0.0] - 平均値
-	 * @param {Complex} [s=1.0] - 分散
-	 * @returns {Complex}
-	 */
-	normcdf(u, s) {
-		const x_ = this;
-		const u_ = arguments.length <= 0 ? Complex.create(u) : Complex.ZERO;
-		const s_ = arguments.length <= 1 ? Complex.create(s) : Complex.ONE;
-		if(x_.isComplex() || u_.isComplex() || s_.isComplex()) {
-			throw "normcdf don't support complex numbers.";
-		}
-		return new Complex(Statistics.normcdf(x_._re, u_._re, s_._re));
-	}
-
-	/**
-	 * x.norminv(u, s) = norminv(x, u, s) 正規分布の累積分布関数の逆関数
-	 * @param {Complex} [u=0.0] - 平均値
-	 * @param {Complex} [s=1.0] - 分散
-	 * @returns {Complex}
-	 */
-	norminv(u, s) {
-		const x_ = this;
-		const u_ = arguments.length <= 0 ? Complex.create(u) : Complex.ZERO;
-		const s_ = arguments.length <= 1 ? Complex.create(s) : Complex.ONE;
-		if(x_.isComplex() || u_.isComplex() || s_.isComplex()) {
-			throw "norminv don't support complex numbers.";
-		}
-		return new Complex(Statistics.norminv(x_._re, u_._re, s_._re));
-	}
-
-	/**
-	 * t.tcdf(v) = tcdf(t, v) t分布の累積分布関数
-	 * @param {Complex} v - 自由度
-	 * @returns {Complex}
-	 */
-	tcdf(v) {
-		const t_ = this;
-		const v_ = Complex.create(v);
-		if(t_.isComplex() || v_.isComplex()) {
-			throw "tcdf don't support complex numbers.";
-		}
-		return new Complex(Statistics.tcdf(t_._re, v_._re));
-	}
-
-	/**
-	 * p.tinv(v) = tinv(p, v) t分布の累積分布関数の逆関数
-	 * @param {Complex} v - 自由度
-	 * @returns {Complex}
-	 */
-	tinv(v) {
-		const p_ = this;
-		const v_ = Complex.create(v);
-		if(p_.isComplex() || v_.isComplex()) {
-			throw "tinv don't support complex numbers.";
-		}
-		return new Complex(Statistics.tinv(p_._re, v_._re));
-	}
-
-	/**
-	 * t.tdist(v, tails) = tdist(t, v, tails) 尾部が指定可能なt分布の累積分布関数
-	 * @param {Complex} v - 自由度
-	 * @param {Complex} tails - 尾部(1...片側、2...両側)
-	 * @returns {Complex}
-	 */
-	tdist(v, tails) {
-		const t_ = this;
-		const v_ = Complex.create(v);
-		const tails_ = Complex.create(tails);
-		if(t_.isComplex() || v_.isComplex() || tails_.isComplex() ) {
-			throw "tcdf don't support complex numbers.";
-		}
-		return new Complex(Statistics.tdist(t_._re, v_._re, tails_._re));
-	}
-
-	/**
-	 * p.tinv2(v) = tinv2(p, v) 両側検定時のt分布の累積分布関数
-	 * @param {Complex} v - 自由度
-	 * @returns {Complex}
-	 */
-	tinv2(v) {
-		const p_ = this;
-		const v_ = Complex.create(v);
-		if(p_.isComplex() || v_.isComplex()) {
-			throw "tinv don't support complex numbers.";
-		}
-		return new Complex(Statistics.tinv2(p_._re, v_._re));
-	}
-
-	/**
-	 * x.chi2pdf(k) = chi2pdf(x, k) カイ二乗分布の確率密度関数
-	 * @param {Complex} k - 自由度
-	 * @returns {Complex}
-	 */
-	chi2pdf(k) {
-		const x_ = this;
-		const k_ = Complex.create(k);
-		if(x_.isComplex() || k_.isComplex()) {
-			throw "chi2pdf don't support complex numbers.";
-		}
-		return new Complex(Statistics.chi2pdf(x_._re, k_._re));
-	}
-
-	/**
-	 * x.chi2cdf(k) = chi2cdf(x, k) カイ二乗分布の累積分布関数
-	 * @param {Complex} k - 自由度
-	 * @returns {Complex}
-	 */
-	chi2cdf(k) {
-		const x_ = this;
-		const k_ = Complex.create(k);
-		if(x_.isComplex() || k_.isComplex()) {
-			throw "chi2cdf don't support complex numbers.";
-		}
-		return new Complex(Statistics.chi2cdf(x_._re, k_._re));
-	}
-
-	/**
-	 * p.chi2inv(k) = chi2inv(p, k) カイ二乗分布の累積分布関数の逆関数
-	 * @param {Complex} k - 自由度
-	 * @returns {Complex}
-	 */
-	chi2inv(k) {
-		const p_ = this;
-		const k_ = Complex.create(k);
-		if(p_.isComplex() || k_.isComplex()) {
-			throw "chi2inv don't support complex numbers.";
-		}
-		return new Complex(Statistics.chi2inv(p_._re, k_._re));
-	}
-
-	/**
-	 * x.fpdf(d1, d2) = fpdf(x, d1, d2) F分布の確率密度関数
-	 * @param {Complex} d1 - 分子の自由度
-	 * @param {Complex} d2 - 分母の自由度
-	 * @returns {Complex}
-	 */
-	fpdf(d1, d2) {
-		const x_ = this;
-		const d1_ = Complex.create(d1);
-		const d2_ = Complex.create(d2);
-		if(x_.isComplex() || d1_.isComplex() || d2_.isComplex()) {
-			throw "fpdf don't support complex numbers.";
-		}
-		return new Complex(Statistics.fpdf(x_._re, d1_._re, d2_._re));
-	}
-
-	/**
-	 * x.fcdf(d1, d2) = fcdf(x, d1, d2) F分布の累積分布関数
-	 * @param {Complex} d1 - 分子の自由度
-	 * @param {Complex} d2 - 分母の自由度
-	 * @returns {Complex}
-	 */
-	fcdf(d1, d2) {
-		const x_ = this;
-		const d1_ = Complex.create(d1);
-		const d2_ = Complex.create(d2);
-		if(x_.isComplex() || d1_.isComplex() || d2_.isComplex()) {
-			throw "fcdf don't support complex numbers.";
-		}
-		return new Complex(Statistics.fcdf(x_._re, d1_._re, d2_._re));
-	}
-
-	/**
-	 * p.finv(d1, d2) = finv(p, d1, d2) F分布の累積分布関数の逆関数
-	 * @param {Complex} d1 - 分子の自由度
-	 * @param {Complex} d2 - 分母の自由度
-	 * @returns {Complex}
-	 */
-	finv(d1, d2) {
-		const p_ = this;
-		const d1_ = Complex.create(d1);
-		const d2_ = Complex.create(d2);
-		if(p_.isComplex() || d1_.isComplex() || d2_.isComplex()) {
-			throw "finv don't support complex numbers.";
-		}
-		return new Complex(Statistics.finv(p_._re, d1_._re, d2_._re));
 	}
 
 	// ----------------------
@@ -1302,7 +963,9 @@ export default class Complex {
 
 }
 
-
+/**
+ * 内部で使用する定数値
+ */
 const DEFINE = {
 	ZERO : new Complex(0),
 	ONE : new Complex(1),

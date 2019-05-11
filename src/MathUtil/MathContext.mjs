@@ -21,8 +21,19 @@ export default  class MathContext {
 	 * @param {RoundingModeEntity} [roundingMode=RoundingMode.HALF_UP] - 丸めモード
 	 */
 	constructor(precision_or_name, roundingMode) {
+
+		/**
+		 * 精度
+		 * @private
+		 */
 		this.precision = precision_or_name;
+
+		/**
+		 * 丸めモード
+		 * @private
+		 */
 		this.roundingMode = roundingMode === undefined ? RoundingMode.HALF_UP : roundingMode;
+
 		if((typeof precision_or_name === "string") || (precision_or_name instanceof String)) {
 			let buff = precision_or_name.match(/precision=\d+/);
 			if(buff !== null) {
@@ -118,6 +129,9 @@ export default  class MathContext {
 
 }
 
+/**
+ * 内部で使用する定数値
+ */
 const DEFINE = {
 	UNLIMITED	: new MathContext(0,	RoundingMode.HALF_UP),
 	DECIMAL32	: new MathContext(7,	RoundingMode.HALF_EVEN),

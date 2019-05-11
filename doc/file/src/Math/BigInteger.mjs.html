@@ -34,9 +34,12 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mathutil">MathUtil</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mathutil">MathUtil</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Signal.mjs~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
 </ul>
 </div>
@@ -56,10 +59,13 @@
 import Random from &quot;../MathUtil/Random.mjs&quot;;
 
 /**
- * &#x6307;&#x5B9A;&#x3055;&#x308C;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x30AF;&#x30E9;&#x30B9;
+ * &#x4E71;&#x6570;&#x7528;&#x30AF;&#x30E9;&#x30B9;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x4E71;&#x6570;&#x30AF;&#x30E9;&#x30B9;
  */
 const DEFAULT_RANDOM = new Random();
 
+/**
+ * BigInteger &#x5185;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x95A2;&#x6570;&#x7FA4;
+ */
 class IntegerTool {
 
 	/**
@@ -183,13 +189,13 @@ class IntegerTool {
 		let buff = x.match(/^[-+]+/);
 
 		let element     = [];
-		let sign        = 1;
+		let _sign        = 1;
 
 		if(buff !== null) {
 			buff = buff[0];
 			x = x.substring(buff.length, x.length);
 			if(buff.indexOf(&quot;-&quot;) !== -1) {
-				sign = -1;
+				_sign = -1;
 			}
 		}
 		if(radix) {
@@ -210,12 +216,12 @@ class IntegerTool {
 		// &quot;0&quot;&#x306E;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;&#x70BA;
 		if((element.length === 1)&amp;&amp;(element[0] === 0)) {
 			element = [];
-			sign = 0;
+			_sign = 0;
 		}
 
 		return {
 			element : element,
-			sign : sign
+			_sign : _sign
 		};
 	}
 }
@@ -223,7 +229,7 @@ class IntegerTool {
 // &#x5185;&#x90E8;&#x3067;&#x306F;1&#x5909;&#x6570;&#x5185;&#x306E;&#x4E2D;&#x306E;16&#x30D3;&#x30C3;&#x30C8;&#x3054;&#x3068;&#x306B;&#x7BA1;&#x7406;
 // 2&#x5909;&#x6570;&#x3067;16&#x30D3;&#x30C3;&#x30C8;*16&#x30D3;&#x30C3;&#x30C8;&#x3067;32&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x8868;&#x3059;
 // this.element	...	16&#x30D3;&#x30C3;&#x30C8;&#x3054;&#x3068;&#x306B;&#x7BA1;&#x7406;
-// this.sign	...	&#x8CA0;&#x306A;&#x3089;-1&#x3001;&#x6B63;&#x306A;&#x3089;1&#x3001;&#x30BC;&#x30ED;&#x306A;&#x3089;0
+// this._sign	...	&#x8CA0;&#x306A;&#x3089;-1&#x3001;&#x6B63;&#x306A;&#x3089;1&#x3001;&#x30BC;&#x30ED;&#x306A;&#x3089;0
 //
 // &#x672C;&#x30AF;&#x30E9;&#x30B9;&#x306F;&#x30A4;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
 // &#x5185;&#x90E8;&#x306E;&#x300C;_&#x300D;&#x304B;&#x3089;&#x59CB;&#x307E;&#x308B;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x5185;&#x90E8;&#x8A08;&#x7B97;&#x7528;&#x3067;&#x975E;&#x516C;&#x958B;&#x3067;&#x3059;&#x3002;&#x307E;&#x305F;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
@@ -254,24 +260,24 @@ export default class BigInteger {
 		 * @private
 		 * @type {Array&lt;number&gt;}
 		 */
-		this.sign        = 0;
+		this._sign        = 0;
 
 		if(arguments.length === 0) {
 			this.element     = [];
-			this.sign        = 0;
+			this._sign        = 0;
 		}
 		else if(arguments.length === 1) {
-			this.sign = 1;
+			this._sign = 1;
 			if(number instanceof BigInteger) {
 				for(let i = 0; i &lt; number.element.length; i++) {
 					this.element[i] = number.element[i];
 				}
-				this.sign = arguments[0].sign;
+				this._sign = arguments[0]._sign;
 			}
 			else if((typeof number === &quot;number&quot;) || (number instanceof Number)) {
 				let x = number;
 				if(x &lt; 0) {
-					this.sign = -1;
+					this._sign = -1;
 					x = -x;
 				}
 				this.element = IntegerTool.number_to_binary_number(x);
@@ -279,17 +285,17 @@ export default class BigInteger {
 			else if((typeof number === &quot;string&quot;) || (number instanceof String)) {
 				const x = IntegerTool.ToBigIntegerFromString(number);
 				this.element = x.element;
-				this.sign = x.sign;
+				this._sign = x._sign;
 			}
 			else if(number instanceof Array) {
 				const x = IntegerTool.ToBigIntegerFromString(number[0], number[1]);
 				this.element = x.element;
-				this.sign = x.sign;
+				this._sign = x._sign;
 			}
 			else if(number instanceof Object &amp;&amp; number.toString) {
 				const x = IntegerTool.ToBigIntegerFromString(number.toString());
 				this.element = x.element;
-				this.sign = x.sign;
+				this._sign = x._sign;
 			}
 			else {
 				throw &quot;BigInteger Unsupported argument &quot; + number;
@@ -383,7 +389,7 @@ export default class BigInteger {
 	static createRandomBigInteger(bitsize, random) {
 		const rand = (random &amp;&amp; (random instanceof Random)) ? random : DEFAULT_RANDOM;
 		const x = new BigInteger();
-		x.sign = 1;
+		x._sign = 1;
 		const bits = BigInteger._toInteger(bitsize);
 		const size = ((bits - 1) &gt;&gt; 4) + 1;
 		let r;
@@ -508,7 +514,7 @@ export default class BigInteger {
 	get intValue() {
 		let x = this.getShort(0) + (this.getShort(1) &lt;&lt; 16);
 		x &amp;= 0xFFFFFFFF;
-		if((x &gt; 0)&amp;&amp;(this.sign &lt; 0)) {
+		if((x &gt; 0)&amp;&amp;(this._sign &lt; 0)) {
 			x = -x;
 		}
 		return x;
@@ -525,7 +531,7 @@ export default class BigInteger {
 			x *= 65536;
 			x += this.getShort(i);
 		}
-		if(this.sign &lt; 0) {
+		if(this._sign &lt; 0) {
 			x = -x;
 		}
 		return x;
@@ -547,7 +553,7 @@ export default class BigInteger {
 	clone() {
 		const y = new BigInteger();
 		y.element = this.element.slice(0);
-		y.sign    = this.sign;
+		y._sign    = this._sign;
 		return y;
 	}
 
@@ -556,7 +562,7 @@ export default class BigInteger {
 	 * @returns {boolean}
 	 */
 	isNegative() {
-		return this.sign &lt; 0;
+		return this._sign &lt; 0;
 	}
 
 	/**
@@ -565,7 +571,7 @@ export default class BigInteger {
 	 */
 	isZero() {
 		this._memory_reduction();
-		return this.sign === 0;
+		return this._sign === 0;
 	}
 	
 	/**
@@ -573,7 +579,7 @@ export default class BigInteger {
 	 * @returns {boolean}
 	 */
 	isPositive() {
-		return this.sign &gt; 0;
+		return this._sign &gt; 0;
 	}
 
 	/**
@@ -618,7 +624,7 @@ export default class BigInteger {
 	 */
 	bitCount() {
 		let target;
-		if(this.sign &gt;= 0) {
+		if(this._sign &gt;= 0) {
 			target = this;
 		}
 		else {
@@ -645,12 +651,12 @@ export default class BigInteger {
 	 */
 	getTwosComplement(bit_length) {
 		const y = this.clone();
-		if(y.sign &gt;= 0) {
+		if(y._sign &gt;= 0) {
 			return y;
 		}
 		else {
 			// &#x6B63;&#x306B;&#x3059;&#x308B;
-			y.sign = 1;
+			y._sign = 1;
 			// &#x30D3;&#x30C3;&#x30C8;&#x306E;&#x6570;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x6570;&#x3048;&#x308B;
 			const len = (arguments.length !== 0) ? bit_length : y.bitLength();
 			const e = y.element;
@@ -693,13 +699,13 @@ export default class BigInteger {
 		}
 		if(this.bitLength() === 0) {
 			this.element = [];
-			this.sign = 0;
+			this._sign = 0;
 		}
 		if((s1 === 1)||(s2 === 1)) {
-			this.sign = 1;
+			this._sign = 1;
 		}
 		// &#x51FA;&#x529B;&#x304C;&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;
-		else if(this.sign === -1) {
+		else if(this._sign === -1) {
 			this.element = this.getTwosComplement(len).element;
 		}
 		return this;
@@ -736,9 +742,9 @@ export default class BigInteger {
 			const x2 = (i &gt;= e2.length) ? 0 : e2[i];
 			this.element[i] = x1 | x2;
 		}
-		this.sign = ((s1 === -1)||(s2 === -1)) ? -1 : Math.max(s1, s2);
+		this._sign = ((s1 === -1)||(s2 === -1)) ? -1 : Math.max(s1, s2);
 		// &#x51FA;&#x529B;&#x304C;&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;
-		if(this.sign === -1) {
+		if(this._sign === -1) {
 			this.element = this.getTwosComplement(len).element;
 		}
 		return this;
@@ -775,9 +781,9 @@ export default class BigInteger {
 			const x2 = (i &gt;= e2.length) ? 0 : e2[i];
 			this.element[i] = x1 ^ x2;
 		}
-		this.sign = ((s1 !== 0)&amp;&amp;(s1 !== s2)) ? -1 : 1;
+		this._sign = ((s1 !== 0)&amp;&amp;(s1 !== s2)) ? -1 : 1;
 		// &#x51FA;&#x529B;&#x304C;&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;
-		if(this.sign === -1) {
+		if(this._sign === -1) {
 			this.element = this.getTwosComplement(len).element;
 		}
 		return this;
@@ -858,7 +864,7 @@ export default class BigInteger {
 				return;
 			}
 		}
-		this.sign = 0;
+		this._sign = 0;
 		this.element = [];
 	}
 
@@ -917,7 +923,7 @@ export default class BigInteger {
 	 */
 	_abs() {
 		// -1 -&gt; 1, 0 -&gt; 0, 1 -&gt; 1
-		this.sign *= this.sign;
+		this._sign *= this._sign;
 		return this;
 	}
 
@@ -935,7 +941,7 @@ export default class BigInteger {
 	 * @private
 	 */
 	_negate() {
-		this.sign *= -1;
+		this._sign *= -1;
 		return this;
 	}
 
@@ -956,7 +962,16 @@ export default class BigInteger {
 		if(this.element.length === 0) {
 			return 0;
 		}
-		return this.sign;
+		return this._sign;
+	}
+
+	/**
+	 * &#x7B26;&#x53F7;&#x5024;
+	 * 1, -1, 0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;
+	 * @returns {number}
+	 */
+	sign() {
+		return this.signum();
 	}
 
 	/**
@@ -991,7 +1006,7 @@ export default class BigInteger {
 	compareTo(number) {
 		const val = BigInteger._toBigInteger(number);
 		if(this.signum() !== val.signum()) {
-			if(this.sign &gt; val.sign) {
+			if(this._sign &gt; val._sign) {
 				return 1;
 			}
 			else {
@@ -1001,7 +1016,7 @@ export default class BigInteger {
 		else if(this.signum() === 0) {
 			return 0;
 		}
-		return this.compareToAbs(val) * this.sign;
+		return this.compareToAbs(val) * this._sign;
 	}
 
 	/**
@@ -1166,7 +1181,7 @@ export default class BigInteger {
 		const o2 = val;
 		let x1 = o1.element;
 		let x2 = o2.element;
-		if(o1.sign === o2.sign) {
+		if(o1._sign === o2._sign) {
 			//&#x8DB3;&#x3057;&#x7B97;
 			this._memory_allocation(x2.length &lt;&lt; 4);
 			let carry = 0;
@@ -1189,11 +1204,11 @@ export default class BigInteger {
 			const compare = o1.compareToAbs(o2);
 			if(compare === 0) {
 				this.element = [];
-				this.sign = 1;
+				this._sign = 1;
 				return this;
 			}
 			else if(compare === -1) {
-				this.sign = o2.sign;
+				this._sign = o2._sign;
 				const swap = x1;
 				x1 = x2.slice(0);
 				x2 = swap;
@@ -1232,9 +1247,9 @@ export default class BigInteger {
 	 */
 	_subtract(number) {
 		const val = BigInteger._toBigInteger(number);
-		const sign = val.sign;
+		const _sign = val._sign;
 		const out  = this._add(val._negate());
-		val.sign = sign;
+		val._sign = _sign;
 		return out;
 	}
 
@@ -1265,7 +1280,7 @@ export default class BigInteger {
 	_multiply(number) {
 		const x = this.multiply(number);
 		this.element = x.element;
-		this.sign    = x.sign;
+		this._sign    = x._sign;
 		return this;
 	}
 
@@ -1327,7 +1342,7 @@ export default class BigInteger {
 				y[y.length] = carry;
 			}
 		}
-		out.sign = this.sign * val.sign;
+		out._sign = this._sign * val._sign;
 		return out;
 	}
 
@@ -1362,7 +1377,7 @@ export default class BigInteger {
 		}
 		else if(compare === 0) {
 			out[0] = new BigInteger(1);
-			out[0].sign = this.sign * val.sign;
+			out[0]._sign = this._sign * val._sign;
 			out[1] = new BigInteger(0);
 			return out;
 		}
@@ -1383,9 +1398,9 @@ export default class BigInteger {
 			y._shift(1);
 		}
 		out[0] = y;
-		out[0].sign = this.sign * val.sign;
+		out[0]._sign = this._sign * val._sign;
 		out[1] = x1;
-		out[1].sign = this.sign;
+		out[1]._sign = this._sign;
 		return out;
 	}
 
@@ -1719,6 +1734,9 @@ export default class BigInteger {
 
 }
 
+/**
+ * &#x5185;&#x90E8;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5B9A;&#x6570;&#x5024;
+ */
 const DEFINE = {
 	ONE : new BigInteger(1),
 	TWO : new BigInteger(2),
