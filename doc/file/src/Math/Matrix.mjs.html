@@ -2769,7 +2769,7 @@ export default class Matrix {
 	
 	/**
 	 * &#x5408;&#x8A08;
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	sum(type) {
@@ -2778,7 +2778,7 @@ export default class Matrix {
 
 	/**
 	 * &#x76F8;&#x52A0;&#x5E73;&#x5747;
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	mean(type) {
@@ -2787,7 +2787,7 @@ export default class Matrix {
 
 	/**
 	 * &#x76F8;&#x4E57;&#x5E73;&#x5747;&#xFF0F;&#x5E7E;&#x4F55;&#x5E73;&#x5747;
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	geomean(type) {
@@ -2796,7 +2796,7 @@ export default class Matrix {
 
 	/**
 	 * &#x4E2D;&#x592E;&#x5024;
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	median(type) {
@@ -2805,7 +2805,7 @@ export default class Matrix {
 
 	/**
 	 * &#x6700;&#x983B;&#x5024;
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	mode(type) {
@@ -2814,7 +2814,7 @@ export default class Matrix {
 
 	/**
 	 * &#x5206;&#x6563;
-	 * @param {{dimension : ?(string|number), correction : ?number}} [type]
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
 	var(type) {
@@ -2823,7 +2823,7 @@ export default class Matrix {
 
 	/**
 	 * &#x6A19;&#x6E96;&#x504F;&#x5DEE;
-	 * @param {{dimension : ?(string|number), correction : ?number}} [type]
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
 	std(type) {
@@ -2842,7 +2842,7 @@ export default class Matrix {
 	/**
 	 * &#x6A19;&#x672C;&#x306E;&#x6A19;&#x6E96;&#x5316;
 	 * &#x5E73;&#x5747;&#x5024;0&#x3001;&#x6A19;&#x6E96;&#x504F;&#x5DEE;1&#x306B;&#x5909;&#x66F4;&#x3059;&#x308B;
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	normalize(type) {
@@ -2859,7 +2859,7 @@ export default class Matrix {
 
 	/**
 	 * &#x30BD;&#x30FC;&#x30C8;
-	 * @param {{dimension : ?(string|number), order : ?string}} [type]
+	 * @param {{dimension : (?string|?number), order : ?string}} [type]
 	 * @returns {Matrix}
 	 */
 	sort(type) {

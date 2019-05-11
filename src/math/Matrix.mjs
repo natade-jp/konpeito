@@ -2721,7 +2721,7 @@ export default class Matrix {
 	
 	/**
 	 * 合計
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	sum(type) {
@@ -2730,7 +2730,7 @@ export default class Matrix {
 
 	/**
 	 * 相加平均
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	mean(type) {
@@ -2739,7 +2739,7 @@ export default class Matrix {
 
 	/**
 	 * 相乗平均／幾何平均
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	geomean(type) {
@@ -2748,7 +2748,7 @@ export default class Matrix {
 
 	/**
 	 * 中央値
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	median(type) {
@@ -2757,7 +2757,7 @@ export default class Matrix {
 
 	/**
 	 * 最頻値
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	mode(type) {
@@ -2766,7 +2766,7 @@ export default class Matrix {
 
 	/**
 	 * 分散
-	 * @param {{dimension : ?(string|number), correction : ?number}} [type]
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
 	var(type) {
@@ -2775,7 +2775,7 @@ export default class Matrix {
 
 	/**
 	 * 標準偏差
-	 * @param {{dimension : ?(string|number), correction : ?number}} [type]
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
 	std(type) {
@@ -2794,7 +2794,7 @@ export default class Matrix {
 	/**
 	 * 標本の標準化
 	 * 平均値0、標準偏差1に変更する
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	normalize(type) {
@@ -2811,7 +2811,7 @@ export default class Matrix {
 
 	/**
 	 * ソート
-	 * @param {{dimension : ?(string|number), order : ?string}} [type]
+	 * @param {{dimension : (?string|?number), order : ?string}} [type]
 	 * @returns {Matrix}
 	 */
 	sort(type) {

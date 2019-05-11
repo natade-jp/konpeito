@@ -1524,7 +1524,7 @@ export default class Statistics {
 	/**
 	 * &#x5408;&#x8A08;
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	static sum(mat, type) {
@@ -1547,7 +1547,7 @@ export default class Statistics {
 	/**
 	 * &#x76F8;&#x52A0;&#x5E73;&#x5747;
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	static mean(mat, type) {
@@ -1570,7 +1570,7 @@ export default class Statistics {
 	/**
 	 * &#x76F8;&#x4E57;&#x5E73;&#x5747;&#xFF0F;&#x5E7E;&#x4F55;&#x5E73;&#x5747;
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	static geomean(mat, type) {
@@ -1589,7 +1589,7 @@ export default class Statistics {
 	/**
 	 * &#x4E2D;&#x592E;&#x5024;
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	static median(mat, type) {
@@ -1616,7 +1616,7 @@ export default class Statistics {
 	/**
 	 * &#x6700;&#x983B;&#x5024;
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	static mode(mat, type) {
@@ -1656,7 +1656,7 @@ export default class Statistics {
 	/**
 	 * &#x5206;&#x6563;
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number), correction : ?number}} [type]
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
 	static var(mat, type) {
@@ -1691,7 +1691,7 @@ export default class Statistics {
 	/**
 	 * &#x6A19;&#x6E96;&#x504F;&#x5DEE;
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number), correction : ?number}} [type]
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
 	static std(mat, type) {
@@ -1747,7 +1747,7 @@ export default class Statistics {
 	 * &#x6A19;&#x672C;&#x306E;&#x6A19;&#x6E96;&#x5316;
 	 * &#x5E73;&#x5747;&#x5024;0&#x3001;&#x6A19;&#x6E96;&#x504F;&#x5DEE;1&#x306B;&#x5909;&#x66F4;&#x3059;&#x308B;
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	static normalize(mat, type) {
@@ -1768,7 +1768,7 @@ export default class Statistics {
 	/**
 	 * &#x30BD;&#x30FC;&#x30C8;
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number), order : ?string}} [type]
+	 * @param {{dimension : (?string|?number), order : ?string}} [type]
 	 * @returns {Matrix}
 	 */
 	static sort(mat, type) {

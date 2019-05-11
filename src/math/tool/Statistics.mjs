@@ -1476,7 +1476,7 @@ export default class Statistics {
 	/**
 	 * 合計
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	static sum(mat, type) {
@@ -1499,7 +1499,7 @@ export default class Statistics {
 	/**
 	 * 相加平均
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	static mean(mat, type) {
@@ -1522,7 +1522,7 @@ export default class Statistics {
 	/**
 	 * 相乗平均／幾何平均
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	static geomean(mat, type) {
@@ -1541,7 +1541,7 @@ export default class Statistics {
 	/**
 	 * 中央値
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	static median(mat, type) {
@@ -1568,7 +1568,7 @@ export default class Statistics {
 	/**
 	 * 最頻値
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	static mode(mat, type) {
@@ -1608,7 +1608,7 @@ export default class Statistics {
 	/**
 	 * 分散
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number), correction : ?number}} [type]
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
 	static var(mat, type) {
@@ -1643,7 +1643,7 @@ export default class Statistics {
 	/**
 	 * 標準偏差
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number), correction : ?number}} [type]
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
 	static std(mat, type) {
@@ -1699,7 +1699,7 @@ export default class Statistics {
 	 * 標本の標準化
 	 * 平均値0、標準偏差1に変更する
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number)}} [type]
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	static normalize(mat, type) {
@@ -1720,7 +1720,7 @@ export default class Statistics {
 	/**
 	 * ソート
 	 * @param {Matrix} mat
-	 * @param {{dimension : ?(string|number), order : ?string}} [type]
+	 * @param {{dimension : (?string|?number), order : ?string}} [type]
 	 * @returns {Matrix}
 	 */
 	static sort(mat, type) {
