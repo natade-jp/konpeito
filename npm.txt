@@ -1,3 +1,4 @@
+# install
 npm install -D rollup
 npm install -D rollup-plugin-buble
 npm install -D rollup-plugin-uglify
@@ -5,3 +6,16 @@ npm install -D rollup-plugin-uglify-es
 npm install -D eslint
 npm install -D esdoc
 npm install -D esdoc-standard-plugin
+
+# note
+
+## esdoc error skip
+SyntaxError: Invalid regular expression: /[~](string$/: Unterminated group
+    at new RegExp (<anonymous>)
+    at ClassDocBuilder._findByName (\konpeito\node_modules\esdoc-publish-html-plugin\out\src\Builder\DocBuilder.js:117:20)
+
+old
+    const regexp = new RegExp(`[~]${name.replace('*', '\\*')}$`); // if name is `*`, need to escape.
+
+new
+    const regexp = new RegExp(`[~]${name.replace(/[\(\)]/g, "").replace('*', '\\*')}$`); // if name is `*`, need to escape.

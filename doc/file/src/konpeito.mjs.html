@@ -30,17 +30,17 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.mjs~konpeito.html">konpeito</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">Math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/BigDecimal.mjs~BigDecimal.html">BigDecimal</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Complex.mjs~Complex.html">Complex</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/Math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#mathutil">MathUtil</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Random.mjs~Random.html">Random</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Signal.mjs~Signal.html">Signal</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/MathUtil/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/MathUtil/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigDecimal.mjs~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tool">math/tool</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Random.mjs~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Signal.mjs~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -56,17 +56,19 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import File from &quot;./Util/File.mjs&quot;;
-import Format from &quot;./Util/Format.mjs&quot;;
-import Log from &quot;./Util/Log.mjs&quot;;
+import File from &quot;./utility/File.mjs&quot;;
+import Format from &quot;./utility/Format.mjs&quot;;
+import Log from &quot;./utility/Log.mjs&quot;;
 
-import Random from &quot;./MathUtil/Random.mjs&quot;;
-import RoundingMode from &quot;./MathUtil/RoundingMode.mjs&quot;;
-import MathContext from &quot;./MathUtil/MathContext.mjs&quot;;
-import BigDecimal from &quot;./Math/BigDecimal.mjs&quot;;
-import BigInteger from &quot;./Math/BigInteger.mjs&quot;;
-import Complex from &quot;./Math/Complex.mjs&quot;;
-import Matrix from &quot;./Math/Matrix.mjs&quot;;
+import Random from &quot;./math/tool/Random.mjs&quot;;
+
+import RoundingMode from &quot;./math/context/RoundingMode.mjs&quot;;
+import MathContext from &quot;./math/context/MathContext.mjs&quot;;
+
+import BigDecimal from &quot;./math/BigDecimal.mjs&quot;;
+import BigInteger from &quot;./math/BigInteger.mjs&quot;;
+import Complex from &quot;./math/Complex.mjs&quot;;
+import Matrix from &quot;./math/Matrix.mjs&quot;;
 
 /**
  * &#x8A08;&#x7B97;&#x306B;&#x5229;&#x7528;&#x3067;&#x304D;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x63D0;&#x4F9B;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30B9;

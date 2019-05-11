@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/math/tool/Statistics.mjs | konpeito.js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito.js"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.mjs~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigDecimal.mjs~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tool">math/tool</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Random.mjs~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Signal.mjs~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/math/tool/Statistics.mjs</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+import Complex from &quot;../Complex.mjs&quot;;
+import Matrix from &quot;../Matrix.mjs&quot;;
+
+/**
+ * &#x5B9F;&#x6570;&#x5C02;&#x7528;&#x306E;&#x7D71;&#x8A08;&#x51E6;&#x7406;&#x7528;&#x306E;&#x95A2;&#x6570;&#x96C6;
+ */
+class StatisticsTool {
+
+	/**
+	 * gammaln(x) &#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570; 
+	 * @param {number} x
+	 * @returns {number}
+	 */
+	static gammaln(x) {
+		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;,&quot;C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;&quot;,p30,&#x6280;&#x8853;&#x8A55;&#x8AD6;&#x793E;,1991
+		const LOG_2PI = Math.log(2.0 * Math.PI);
+		//&#x30D9;&#x30EB;&#x30CC;&#x30FC;&#x30A4;&#x6570;
+		//http://fr.wikipedia.org/wiki/Nombre_de_Bernoulli
+		const K2 = ( 1.0 / 6.0)					/ (2 * 1);
+		const K4 = (-1.0 / 30.0)				/ (4 * 3);
+		const K6 = ( 1.0 / 42.0)				/ (6 * 5);
+		const K8 = (-1.0 / 30.0)				/ (8 * 7);
+		const K10 = ( 5.0 / 66.0)				/ (10 * 9);
+		const K12 = (-691.0 / 2730.0)			/ (12 * 11);
+		const K14 = ( 7.0 / 6.0)				/ (14 * 13);
+		const K16 = (-3617.0 / 510.0)			/ (16 * 15);
+		const K18 = (43867.0 / 798.0)			/ (18 * 17);
+		const K20 = (-174611.0 / 330.0)			/ (20 * 19);
+		const K22 = (854513.0 / 138.0)			/ (22 * 21);
+		const K24 = (-236364091.0 / 2730.0)		/ (24 * 23);
+		const K26 = (8553103.0 / 6.0)			/ (26 * 25);
+		const K28 = (-23749461029.0 / 870.0)	/ (28 * 27);
+		const K30 = (8615841276005.0 / 14322.0)	/ (30 * 29);
+		const K32 = (-7709321041217.0 / 510.0)	/ (32 * 31);
+		const LIST = [
+			K32, K30, K28, K26, K24, K22, K20, K18,
+			K16, K14, K12, K10, K8, K6, K4, K2
+		];
+		let v = 1;
+		let lx = x;
+		while(lx &lt; LIST.length) {
+			v *= lx;
+			lx++;
+		}
+		const w = 1 / (lx * lx);
+		let y = LIST[0];
+		for(let i = 1; i &lt; LIST.length; i++) {
+			y *= w;
+			y += LIST[i];
+		}
+		y /= lx;
+		y += 0.5 * LOG_2PI;
+		y += - Math.log(v) - lx + (lx - 0.5) * Math.log(lx);
+		return(y);
+	}
+
+	/**
+	 * q_gamma(x, a, gammaln_a) &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570; &#x4E0A;&#x5074;
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} gammaln_a
+	 * @returns {number}
+	 */
+	static q_gamma(x, a, gammaln_a) {
+		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;,&quot;C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;&quot;,p227,&#x6280;&#x8853;&#x8A55;&#x8AD6;&#x793E;,1991
+		let k;
+		let result, w, temp, previous;
+		// Laguerre&#x306E;&#x591A;&#x9805;&#x5F0F;
+		let la = 1.0, lb = 1.0 + x - a;
+		if(x &lt; 1.0 + a) {
+			return (1 - StatisticsTool.p_gamma(x, a, gammaln_a));
+		}
+		w = Math.exp(a * Math.log(x) - x - gammaln_a);
+		result = w / lb;
+		for(k = 2; k &lt; 1000; k++) {
+			temp = ((k - 1.0 - a) * (lb - la) + (k + x) * lb) / k;
+			la = lb;
+			lb = temp;
+			w *= (k - 1.0 - a) / k;
+			temp = w / (la * lb);
+			previous = result;
+			result += temp;
+			if(result == previous) {
+				return(result);
+			}
+		}
+		return Number.NaN;
+	}
+
+	/**
+	 * p_gamma(x, a, gammaln_a) &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570; &#x4E0B;&#x5074;
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} gammaln_a
+	 * @returns {number}
+	 */
+	static p_gamma(x, a, gammaln_a) {
+		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;,&quot;C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;&quot;,p227,&#x6280;&#x8853;&#x8A55;&#x8AD6;&#x793E;,1991
+		let k;
+		let result, term, previous;
+		if(x &gt;= 1.0 + a) {
+			return (1.0 - StatisticsTool.q_gamma(x, a, gammaln_a));
+		}
+		if(x === 0.0) {
+			return 0.0;
+		}
+		result = term = Math.exp(a * Math.log(x) - x - gammaln_a) / a;
+		for(k = 1; k &lt; 1000; k++) {
+			term *= x / (a + k);
+			previous = result;
+			result += term;
+			if(result == previous) {
+				return result;
+			}
+		}
+		return Number.NaN;
+	}
+
+	/**
+	 * gamma(z) &#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * @param {number} z
+	 * @returns {number}
+	 */
+	static gamma(z) {
+		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;,&quot;C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;&quot;,p30,&#x6280;&#x8853;&#x8A55;&#x8AD6;&#x793E;,1991
+		if(z &lt; 0) {
+			return (Math.PI / (Math.sin(Math.PI * z) * Math.exp(StatisticsTool.gammaln(1.0 - z))));
+		}
+		return Math.exp(StatisticsTool.gammaln(z));
+	}
+
+	/**
+	 * gammainc(x, a, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {string} [tail=&quot;lower&quot;] lower(&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;)/upper
+	 * @returns {number}
+	 */
+	static gammainc(x, a, tail) {
+		if(tail === &quot;lower&quot;) {
+			return StatisticsTool.p_gamma(x, a, StatisticsTool.gammaln(a));
+		}
+		else if(tail === &quot;upper&quot;) {
+			return StatisticsTool.q_gamma(x, a, StatisticsTool.gammaln(a));
+		}
+		else if(arguments.length === 2) {
+			// &#x5F15;&#x6570;&#x3092;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;
+			return StatisticsTool.gammainc(x, a, &quot;lower&quot;);
+		}
+		else {
+			throw &quot;gammainc unsupported argument [&quot; + tail + &quot;]&quot;;
+		}
+	}
+	
+	/**
+	 * gampdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {number} x
+	 * @param {number} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {number} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @returns {number}
+	 */
+	static gampdf(x, k, s) {
+		let y = 1.0 / (StatisticsTool.gamma(k) * Math.pow(s, k));
+		y *= Math.pow( x, k - 1);
+		y *= Math.exp( - x / s );
+		return y;
+	}
+
+	/**
+	 * gamcdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {number} x
+	 * @param {number} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {number} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @returns {number}
+	 */
+	static gamcdf(x, k, s) {
+		return StatisticsTool.gammainc(x / s, k);
+	}
+	
+	/**
+	 * gaminv(p, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {number} p
+	 * @param {number} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {number} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @returns {number}
+	 */
+	static gaminv(p, k, s) {
+		if((p &lt; 0.0) || (p &gt; 1.0)) {
+			return Number.NaN;
+		}
+		else if(p == 0.0) {
+			return 0.0;
+		}
+		else if(p == 1.0) {
+			return Number.POSITIVE_INFINITY;
+		}
+		const eps = 1.0e-12;
+		// &#x521D;&#x671F;&#x5024;&#x3092;&#x6C7A;&#x3081;&#x308B;
+		let y = k * s;
+		// &#x5358;&#x8ABF;&#x5897;&#x52A0;&#x95A2;&#x6570;&#x306A;&#x306E;&#x3067;&#x30CB;&#x30E5;&#x30FC;&#x30C8;&#x30F3;&#x30FB;&#x30E9;&#x30D5;&#x30BD;&#x30F3;&#x6CD5;&#x3067;&#x89E3;&#x304F;
+		// x_n+1 = x_n - f(x) / f&apos;(x)
+		// &#x3053;&#x3053;&#x3067; f(x) &#x306F;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x3001;f&apos;(x) &#x306F;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+		// a = &#x7D2F;&#x7A4D;&#x5206;&#x95A2;&#x6570; &#x2192; f(x)  = &#x7D2F;&#x7A4D;&#x5206;&#x95A2;&#x6570; - a &#x3068;&#x7F6E;&#x304F;&#x3002;
+		// a&#x306E;&#x5FAE;&#x5206;&#x306F;0&#x306A;&#x306E;&#x3067;&#x7121;&#x95A2;&#x4FC2;
+		let delta, y2;
+		for(let i = 0; i &lt; 100; i++) {
+			y2 = y - ((StatisticsTool.gamcdf(y, k, s) - p) / StatisticsTool.gampdf(y, k, s));
+			delta = y2 - y;
+			if(Math.abs(delta) &lt;= eps) {
+				break;
+			}
+			y = y2;
+		}
+		return y;
+	}
+
+	/**
+	 * beta(x, y) &#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * @param {number} x
+	 * @param {number} y
+	 * @returns {number}
+	 */
+	static beta(x, y) {
+		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;,&quot;C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;&quot;,p30,&#x6280;&#x8853;&#x8A55;&#x8AD6;&#x793E;,1991
+		return (Math.exp(StatisticsTool.gammaln(x) + StatisticsTool.gammaln(y) - StatisticsTool.gammaln(x + y)));
+	}
+	
+	/**
+	 * p_beta(x, a, b) &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570; &#x4E0B;&#x5074;
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static p_beta(x, a, b) {
+		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;,&quot;C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;&quot;,p231,&#x6280;&#x8853;&#x8A55;&#x8AD6;&#x793E;,1991
+		let k;
+		let result, term, previous;
+		if(a &lt;= 0.0) {
+			return Number.POSITIVE_INFINITY;
+		}
+		if(b &lt;= 0.0) {
+			if(x &lt; 1.0) {
+				return 0.0;
+			}
+			else if(x === 1.0) {
+				return 1.0;
+			}
+			else {
+				return Number.POSITIVE_INFINITY;
+			}
+		}
+		if(x &gt; (a + 1.0) / (a + b + 2.0)) {
+			return (1.0 - StatisticsTool.p_beta(1.0 - x, b, a));
+		}
+		if(x &lt;= 0.0) {
+			return 0.0;
+		}
+		term = a * Math.log(x);
+		term += b * Math.log(1.0 - x);
+		term += StatisticsTool.gammaln(a + b);
+		term -= StatisticsTool.gammaln(a) + StatisticsTool.gammaln(b);
+		term = Math.exp(term);
+		term /= a;
+		result = term;
+		for(k = 1; k &lt; 1000; k++) {
+			term *= a + b + k - 1.0;
+			term *= x;
+			term /= a + k;
+			previous = result;
+			result += term;
+			if(result === previous) {
+				return result;
+			}
+		}
+		return Number.NaN;
+	}
+
+	/**
+	 * q_beta(x, a, b) &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570; &#x4E0A;&#x5074;
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static q_beta(x, a, b) {
+		return (1.0 - StatisticsTool.p_beta(x, a, b));
+	}
+
+	/**
+	 * betainc(x, a, b, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @param {string} [tail=&quot;lower&quot;] {string} lower(&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;)/upper
+	 * @returns {number}
+	 */
+	static betainc(x, a, b, tail) {
+		if(tail === &quot;lower&quot;) {
+			return StatisticsTool.p_beta(x, a, b);
+		}
+		else if(tail === &quot;upper&quot;) {
+			return StatisticsTool.q_beta(x, a, b);
+		}
+		else if(arguments.length === 3) {
+			// &#x5F15;&#x6570;&#x3092;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;
+			return StatisticsTool.betainc(x, a, b, &quot;lower&quot;);
+		}
+		else {
+			throw &quot;betainc unsupported argument [&quot; + tail + &quot;]&quot;;
+		}
+	}
+	
+	/**
+	 * betapdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static betapdf(x, a, b) {
+		//	return(Math.exp((a - 1) * Math.log(x) + (b - 1) * Math.log(1 - x)) / StatisticsTool.beta(a,  b));
+		return (Math.pow(x, a - 1) * Math.pow(1 - x, b - 1) / StatisticsTool.beta(a,  b));
+	}
+
+	/**
+	 * betacdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static betacdf(x, a, b) {
+		return StatisticsTool.betainc(x, a, b);
+	}
+	
+	/**
+	 * betainv(p, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {number} p
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static betainv(p, a, b) {
+		if((p &lt; 0.0) || (p &gt; 1.0)) {
+			return Number.NaN;
+		}
+		else if((p == 1.0) &amp;&amp; (a &gt; 0.0) &amp;&amp; (b &gt; 0.0)) {
+			return 1.0;
+		}
+		const eps = 1.0e-14;
+		// &#x521D;&#x671F;&#x5024;&#x3092;&#x6C7A;&#x3081;&#x308B;
+		let y;
+		if(b == 0) {
+			y = 1.0 - eps;
+		}
+		else if(a == 0) {
+			y = eps;
+		}
+		else {
+			y = a / (a + b);
+		}
+		// &#x5358;&#x8ABF;&#x5897;&#x52A0;&#x95A2;&#x6570;&#x306A;&#x306E;&#x3067;&#x30CB;&#x30E5;&#x30FC;&#x30C8;&#x30F3;&#x30FB;&#x30E9;&#x30D5;&#x30BD;&#x30F3;&#x6CD5;&#x3067;&#x89E3;&#x304F;
+		// x_n+1 = x_n - f(x) / f&apos;(x)
+		// &#x3053;&#x3053;&#x3067; f(x) &#x306F;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x3001;f&apos;(x) &#x306F;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+		// a = &#x7D2F;&#x7A4D;&#x5206;&#x95A2;&#x6570; &#x2192; f(x)  = &#x7D2F;&#x7A4D;&#x5206;&#x95A2;&#x6570; - a &#x3068;&#x7F6E;&#x304F;&#x3002;
+		// a&#x306E;&#x5FAE;&#x5206;&#x306F;0&#x306A;&#x306E;&#x3067;&#x7121;&#x95A2;&#x4FC2;
+		let delta, y2;
+		for(let i = 0; i &lt; 100; i++) {
+			y2 = y - ((StatisticsTool.betacdf(y, a, b) - p) / StatisticsTool.betapdf(y, a, b));
+			delta = y2 - y;
+			if(Math.abs(delta) &lt;= eps) {
+				break;
+			}
+			y = y2;
+		}
+		return y;
+	}
+
+	/**
+	 * factorial(n) = n! &#x968E;&#x4E57;&#x95A2;&#x6570;
+	 * @param {number} n
+	 * @returns {number}
+	 */
+	static factorial(n) {
+		const y = StatisticsTool.gamma(n + 1.0);
+		if((n | 0) === n) {
+			return Math.round(y);
+		}
+		else {
+			return y;
+		}
+	}
+
+	/**
+	 * nchoosek(n, k) = nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;
+	 * @param {number} n
+	 * @param {number} k
+	 * @returns {number} nCk
+	 */
+	static nchoosek(n, k) {
+		return (Math.round(StatisticsTool.factorial(n) / (StatisticsTool.factorial(n - k) * StatisticsTool.factorial(k))));
+	}
+
+	/**
+	 * erf(x) &#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * @param {number} x
+	 * @returns {number}
+	 */
+	static erf(x) {
+		return (StatisticsTool.p_gamma(x * x, 0.5, Math.log(Math.PI) * 0.5) * (x &gt;= 0 ? 1.0 : -1.0));
+	}
+
+	/**
+	 * erfc(x) &#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * @param {number} x
+	 * @returns {number}
+	 */
+	static erfc(x) {
+		return 1.0 - StatisticsTool.erf(x);
+	}
+
+	/**
+	 * normpdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {number} x
+	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {number} [s=1.0] - &#x5206;&#x6563;
+	 * @returns {number}
+	 */
+	static normpdf(x, u, s) {
+		const u_ = typeof u === &quot;number&quot; ? u : 0.0;
+		const s_ = typeof s === &quot;number&quot; ? s : 1.0;
+		let y = 1.0 / Math.sqrt( 2.0 * Math.PI * s_ * s_ );
+		y *= Math.exp( - (x - u_) * (x - u_) / (2.0 * s_ * s_));
+		return y;
+	}
+
+	/**
+	 * normcdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {number} x
+	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {number} [s=1.0] - &#x5206;&#x6563;
+	 * @returns {number}
+	 */
+	static normcdf(x, u, s) {
+		const u_ = typeof u === &quot;number&quot; ? u : 0.0;
+		const s_ = typeof s === &quot;number&quot; ? s : 1.0;
+		return (1.0 + StatisticsTool.erf( (x - u_) / (s_ * Math.sqrt(2.0)) )) / 2.0;
+	}
+
+	/**
+	 * norminv(p, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {number} p - &#x78BA;&#x7387;
+	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {number} [s=1.0] - &#x5206;&#x6563;
+	 * @returns {number}
+	 */
+	static norminv(p, u, s) {
+		if((p &lt; 0.0) || (p &gt; 1.0)) {
+			return Number.NaN;
+		}
+		else if(p == 0.0) {
+			return Number.NEGATIVE_INFINITY;
+		}
+		else if(p == 1.0) {
+			return Number.POSITIVE_INFINITY;
+		}
+		const u_ = typeof u === &quot;number&quot; ? u : 0.0;
+		const s_ = typeof s === &quot;number&quot; ? s : 1.0;
+		const eps = 1.0e-12;
+		// &#x521D;&#x671F;&#x5024;&#x3092;&#x6C7A;&#x3081;&#x308B;
+		let y = u_;
+		// &#x5358;&#x8ABF;&#x5897;&#x52A0;&#x95A2;&#x6570;&#x306A;&#x306E;&#x3067;&#x30CB;&#x30E5;&#x30FC;&#x30C8;&#x30F3;&#x30FB;&#x30E9;&#x30D5;&#x30BD;&#x30F3;&#x6CD5;&#x3067;&#x89E3;&#x304F;
+		// x_n+1 = x_n - f(x) / f&apos;(x)
+		// &#x3053;&#x3053;&#x3067; f(x) &#x306F;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x3001;f&apos;(x) &#x306F;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+		// a = &#x7D2F;&#x7A4D;&#x5206;&#x95A2;&#x6570; &#x2192; f(x)  = &#x7D2F;&#x7A4D;&#x5206;&#x95A2;&#x6570; - a &#x3068;&#x7F6E;&#x304F;&#x3002;
+		// a&#x306E;&#x5FAE;&#x5206;&#x306F;0&#x306A;&#x306E;&#x3067;&#x7121;&#x95A2;&#x4FC2;
+		let delta, y2;
+		for(let i = 0; i &lt; 200; i++) {
+			y2 = y - ((StatisticsTool.normcdf(y, u_, s_) - p) / StatisticsTool.normpdf(y, u_, s_));
+			delta = y2 - y;
+			if(Math.abs(delta) &lt;= eps) {
+				break;
+			}
+			y = y2;
+		}
+		return y;
+	}
+
+	/**
+	 * tpdf(t, k) t&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {number} t - t&#x5024;
+	 * @param {number} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {number}
+	 */
+	static tpdf(t, v) {
+		let y = 1.0 / (Math.sqrt(v) * StatisticsTool.beta(0.5, v * 0.5));
+		y *= Math.pow( 1 + t * t / v, - (v + 1) * 0.5);
+		return y;
+	}
+
+	/**
+	 * tcdf(t) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {number} t - t&#x5024;
+	 * @param {number} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {number}
+	 */
+	static tcdf(t, v) {
+		const y = (t * t) / (v + t * t) ;
+		const p = StatisticsTool.betainc( y, 0.5, v * 0.5 ) * (t &lt; 0 ? -1 : 1);
+		return 0.5 * (1 + p);
+	}
+
+	/**
+	 * tinv(p, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {number} p - &#x78BA;&#x7387;
+	 * @param {number} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {number}
+	 */
+	static tinv(p, v) {
+		if((p &lt; 0) || (p &gt; 1)) {
+			return Number.NaN;
+		}
+		if(p == 0) {
+			return Number.NEGATIVE_INFINITY;
+		}
+		else if(p == 1) {
+			return Number.POSITIVE_INFINITY;
+		}
+		else if(p &lt; 0.5) {
+			const y = StatisticsTool.betainv(2.0 * p, 0.5 * v, 0.5);
+			return - Math.sqrt(v / y - v);
+		}
+		else {
+			const y = StatisticsTool.betainv(2.0 * (1.0 - p), 0.5 * v, 0.5);
+			return Math.sqrt(v / y - v);
+		}
+	}
+
+	/**
+	 * tdist(t, v, tails) &#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {number} t - t&#x5024;
+	 * @param {number} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {number} tails - &#x5C3E;&#x90E8;(1...&#x7247;&#x5074;&#x3001;2...&#x4E21;&#x5074;)
+	 * @returns {number}
+	 */
+	static tdist(t, v, tails) {
+		return (1.0 - StatisticsTool.tcdf(t, v)) * tails;
+	}
+
+	/**
+	 * einv2(p, v) &#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {number} p - &#x78BA;&#x7387;
+	 * @param {number} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {number}
+	 */
+	static tinv2(p, v) {
+		return - StatisticsTool.tinv( p * 0.5, v);
+	}
+
+	/**
+	 * chi2pdf(x, v) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {number} x 
+	 * @param {number} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {number}
+	 */
+	static chi2pdf(x, k) {
+		if(x &lt;= 0.0) {
+			return 0;
+		}
+		let y = Math.pow(x, k / 2.0 - 1.0) * Math.exp( - x / 2.0 );
+		y /= Math.pow(2, k / 2.0) * StatisticsTool.gamma( k / 2.0);
+		return y;
+	}
+
+	/**
+	 * chi2cdf(x, v) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {number} x 
+	 * @param {number} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {number}
+	 */
+	static chi2cdf(x, k) {
+		return StatisticsTool.gammainc(x / 2.0, k / 2.0);
+	}
+
+	/**
+	 * chi2inv(p, v) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x9006;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {number} p - &#x78BA;&#x7387;
+	 * @param {number} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {number}
+	 */
+	static chi2inv(p, k) {
+		return StatisticsTool.gaminv(p, k / 2.0, 2);
+	}
+
+	/**
+	 * fpdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {number} x
+	 * @param {number} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {number} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @returns {number}
+	 */
+	static fpdf(x, d1, d2) {
+		let y = 1.0;
+		y *= Math.pow( (d1 * x) / (d1 * x + d2) , d1 / 2.0);
+		y *= Math.pow( 1.0 - ((d1 * x) / (d1 * x + d2)), d2 / 2.0);
+		y /= x * StatisticsTool.beta(d1 / 2.0, d2 / 2.0);
+		return y;
+	}
+
+	/**
+	 * fcdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {number} x
+	 * @param {number} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {number} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @returns {number}
+	 */
+	static fcdf(x, d1, d2) {
+		return StatisticsTool.betacdf( d1 * x / (d1 * x + d2), d1 / 2.0, d2 / 2.0 );
+	}
+
+	/**
+	 * finv(p, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {number} p - &#x78BA;&#x7387;
+	 * @param {number} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {number} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @returns {number}
+	 */
+	static finv(p, d1, d2) {
+		return (1.0 / StatisticsTool.betainv( 1.0 - p, d2 / 2.0, d1 / 2.0 ) - 1.0) * d2 / d1;
+	}
+
+}
+
+/*
+//test
+
+// -0.12078223763524543
+console.log(StatisticsTool.gammaln(1.5));
+// 0.8862269254527578
+console.log(StatisticsTool.gamma(1.5));
+// 0.034141584125708564
+console.log(StatisticsTool.gammainc(0.7, 3));
+// 0.02265533286799037
+console.log(StatisticsTool.gampdf(10, 7, 3));
+// 0.054134113294645195
+console.log(StatisticsTool.gamcdf(10, 7, 3));
+// 24.333147920078357
+console.log(StatisticsTool.gaminv(0.7, 7, 3));
+
+// 1.570796326794883
+console.log(StatisticsTool.beta(0.5, 1.5));
+// 0.9824904585216
+console.log(StatisticsTool.betainc(0.6, 5, 10));
+// 0.3400783626239994
+console.log(StatisticsTool.betapdf(0.6, 5, 10));
+// 0.9824904585216
+console.log(StatisticsTool.betacdf(0.6, 5, 10));
+// 0.3573724870841673
+console.log(StatisticsTool.betainv(0.6, 5, 10));
+
+// 0.3286267594591274
+console.log(StatisticsTool.erf(0.3));
+
+//0.2896915527614828
+console.log(StatisticsTool.normpdf(0.8));
+// 0.7881446014166031
+console.log(StatisticsTool.normcdf(0.8));
+// 0.8416212335729142
+console.log(StatisticsTool.norminv(0.8));
+// 0.2713125051165461
+console.log(StatisticsTool.tpdf(0.8, 7));
+// 0.7749986502650896
+console.log(StatisticsTool.tcdf(0.8, 7));
+// 0.8960296443137515
+console.log(StatisticsTool.tinv(0.8, 7));
+// 0.05534766632274616
+console.log(StatisticsTool.chi2pdf(2, 7));
+// 0.04015963126989858
+console.log(StatisStatisticsTooltics.chi2cdf(2, 7));
+// 8.383430828608336
+console.log(StatisticsTool.chi2inv(0.7, 7));
+// 0.17142030504271438
+console.log(StatisticsTool.fpdf(0.7, 0.6, 0.8));
+// 0.5005807484277708
+console.log(StatisticsTool.fcdf(0.7, 0.6, 0.8));
+// 3.8856206694367055
+console.log(StatisticsTool.finv(0.7, 0.6, 0.8));
+*/
+
+/**
+ * &#x6587;&#x5B57;&#x5217;&#x304B;&#x5224;&#x5B9A;
+ * @param text 
+ */
+const isStr = function(text) {
+	return (text &amp;&amp; (typeof text === &quot;string&quot; || text instanceof String));
+};
+
+/**
+ * Complex&#x30AF;&#x30E9;&#x30B9;&#x304B;&#x3089;&#x5229;&#x7528;&#x3059;&#x308B;&#x7D71;&#x8A08;&#x51E6;&#x7406;&#x95A2;&#x6570;&#x96C6;
+ * @ignore
+ */
+class StatisticsComplex {
+
+	/**
+	 * gammaln(x) &#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @returns {Complex}
+	 */
+	static gammaln(x) {
+		return new Complex(StatisticsTool.gammaln(Complex._toFloat(x)));
+	}
+	
+	/**
+	 * gamma(z) &#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570; 
+	 * @param {Complex} z
+	 * @returns {Complex}
+	 */
+	static gamma(z) {
+		return new Complex(StatisticsTool.gamma(Complex._toFloat(z)));
+	}
+	
+	/**
+	 * gammainc(x, a, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @param {Complex} a
+	 * @param {string} [tail=&quot;lower&quot;] - lower/upper
+	 * @returns {Complex}
+	 */
+	static gammainc(x, a, tail) {
+		const x_ = Complex._toFloat(x);
+		const a_ = Complex._toFloat(a);
+		const tail_ = isStr(tail) ? tail : &quot;lower&quot;;
+		return new Complex(StatisticsTool.gammainc(x_, a_, tail_));
+	}
+
+	/**
+	 * gampdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @param {Complex} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {Complex} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @returns {Complex}
+	 */
+	static gampdf(x, k, s) {
+		const x_ = Complex._toFloat(x);
+		const k_ = Complex._toFloat(k);
+		const s_ = Complex._toFloat(s);
+		return new Complex(StatisticsTool.gampdf(x_, k_, s_));
+	}
+
+	/**
+	 * gamcdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @param {Complex} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {Complex} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @returns {Complex}
+	 */
+	static gamcdf(x, k, s) {
+		const x_ = Complex._toFloat(x);
+		const k_ = Complex._toFloat(k);
+		const s_ = Complex._toFloat(s);
+		return new Complex(StatisticsTool.gamcdf(x_, k_, s_));
+	}
+
+	/**
+	 * gaminv(p, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Complex} p
+	 * @param {Complex} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {Complex} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @returns {Complex}
+	 */
+	static gaminv(p, k, s) {
+		const p_ = Complex._toFloat(p);
+		const k_ = Complex._toFloat(k);
+		const s_ = Complex._toFloat(s);
+		return new Complex(StatisticsTool.gaminv(p_, k_, s_));
+	}
+
+	/**
+	 * beta(x, y) &#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @param {Complex} y
+	 * @returns {Complex}
+	 */
+	static beta(x, y) {
+		const x_ = Complex._toFloat(x);
+		const y_ = Complex._toFloat(y);
+		return new Complex(StatisticsTool.beta(x_, y_));
+	}
+
+	/**
+	 * betainc(x, a, b, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @param {Complex} a
+	 * @param {Complex} b
+	 * @param {string} [tail=&quot;lower&quot;] lower/upper
+	 * @returns {Complex}
+	 */
+	static betainc(x, a, b, tail) {
+		const x_ = Complex._toFloat(x);
+		const a_ = Complex._toFloat(a);
+		const b_ = Complex._toFloat(b);
+		const tail_ = isStr(tail) ? tail : &quot;lower&quot;;
+		return new Complex(StatisticsTool.betainc(x_, a_, b_, tail_));
+	}
+
+	/**
+	 * betapdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @param {Complex} a
+	 * @param {Complex} b
+	 * @returns {Complex}
+	 */
+	static betapdf(x, a, b) {
+		const x_ = Complex._toFloat(x);
+		const a_ = Complex._toFloat(a);
+		const b_ = Complex._toFloat(b);
+		return new Complex(StatisticsTool.betapdf(x_, a_, b_));
+	}
+
+	/**
+	 * betacdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @param {Complex} a
+	 * @param {Complex} b
+	 * @returns {Complex}
+	 */
+	static betacdf(x, a, b) {
+		const x_ = Complex._toFloat(x);
+		const a_ = Complex._toFloat(a);
+		const b_ = Complex._toFloat(b);
+		return new Complex(StatisticsTool.betacdf(x_, a_, b_));
+	}
+
+	/**
+	 * betainv(p, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Complex} p
+	 * @param {Complex} a
+	 * @param {Complex} b
+	 * @returns {Complex}
+	 */
+	static betainv(p, a, b) {
+		const p_ = Complex._toFloat(p);
+		const a_ = Complex._toFloat(a);
+		const b_ = Complex._toFloat(b);
+		return new Complex(StatisticsTool.betainv(p_, a_, b_));
+	}
+
+	/**
+	 * factorial(n), n! &#x968E;&#x4E57;&#x95A2;&#x6570;
+	 * @param {Complex} n
+	 * @returns {Complex}
+	 */
+	static factorial(n) {
+		return new Complex(StatisticsTool.factorial(Complex._toFloat(n)));
+	}
+
+	/**
+	 * nchoosek(n, k), nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;
+	 * @param {Complex} n
+	 * @param {Complex} k
+	 * @returns {Complex}
+	 */
+	static nchoosek(n, k) {
+		const n_ = Complex._toFloat(n);
+		const k_ = Complex._toFloat(k);
+		return new Complex(StatisticsTool.nchoosek(n_, k_));
+	}
+	
+	/**
+	 * erf(x) &#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @returns {Complex}
+	 */
+	static erf(x) {
+		const x_ = Complex._toFloat(x);
+		return new Complex(StatisticsTool.erf(x_));
+	}
+
+	/**
+	 * erfc(x) &#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @returns {Complex}
+	 */
+	static erfc(x) {
+		const x_ = Complex._toFloat(x);
+		return new Complex(StatisticsTool.erfc(x_));
+	}
+
+	/**
+	 * normpdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @param {Complex} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {Complex} [s=1.0] - &#x5206;&#x6563;
+	 * @returns {Complex}
+	 */
+	static normpdf(x, u=0.0, s=1.0) {
+		const x_ = Complex._toFloat(x);
+		const u_ = Complex._toFloat(u);
+		const s_ = Complex._toFloat(s);
+		return new Complex(StatisticsTool.normpdf(x_, u_, s_));
+	}
+
+	/**
+	 * normcdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @param {Complex} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {Complex} [s=1.0] - &#x5206;&#x6563;
+	 * @returns {Complex}
+	 */
+	static normcdf(x, u=0.0, s=1.0) {
+		const x_ = Complex._toFloat(x);
+		const u_ = Complex._toFloat(u);
+		const s_ = Complex._toFloat(s);
+		return new Complex(StatisticsTool.normcdf(x_, u_, s_));
+	}
+
+	/**
+	 * norminv(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @param {Complex} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {Complex} [s=1.0] - &#x5206;&#x6563;
+	 * @returns {Complex}
+	 */
+	static norminv(x, u=0.0, s=1.0) {
+		const x_ = Complex._toFloat(x);
+		const u_ = Complex._toFloat(u);
+		const s_ = Complex._toFloat(s);
+		return new Complex(StatisticsTool.norminv(x_, u_, s_));
+	}
+
+	/**
+	 * tcdf(t, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Complex} t
+	 * @param {Complex} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Complex}
+	 */
+	static tcdf(t, v) {
+		const t_ = Complex._toFloat(t);
+		const v_ = Complex._toFloat(v);
+		return new Complex(StatisticsTool.tcdf(t_, v_));
+	}
+
+	/**
+	 * tinv(p, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Complex} p
+	 * @param {Complex} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Complex}
+	 */
+	static tinv(p, v) {
+		const p_ = Complex._toFloat(p);
+		const v_ = Complex._toFloat(v);
+		return new Complex(StatisticsTool.tinv(p_, v_));
+	}
+
+	/**
+	 * tdist(t, v, tails) &#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Complex} t
+	 * @param {Complex} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex} tails - &#x5C3E;&#x90E8;(1...&#x7247;&#x5074;&#x3001;2...&#x4E21;&#x5074;)
+	 * @returns {Complex}
+	 */
+	static tdist(t, v, tails) {
+		const t_ = Complex._toFloat(t);
+		const v_ = Complex._toFloat(v);
+		const tails_ = Complex._toInteger(tails);
+		return new Complex(StatisticsTool.tdist(t_, v_, tails_));
+	}
+
+	/**
+	 * tinv2(p, v) &#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Complex} p
+	 * @param {Complex} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Complex}
+	 */
+	static tinv2(p, v) {
+		const p_ = Complex._toFloat(p);
+		const v_ = Complex._toFloat(v);
+		return new Complex(StatisticsTool.tinv2(p_, v_));
+	}
+
+	/**
+	 * chi2pdf(x, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @param {Complex} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Complex}
+	 */
+	static chi2pdf(x, k) {
+		const x_ = Complex._toFloat(x);
+		const k_ = Complex._toFloat(k);
+		return new Complex(StatisticsTool.chi2pdf(x_, k_));
+	}
+
+	/**
+	 * chi2cdf(x, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @param {Complex} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Complex}
+	 */
+	static chi2cdf(x, k) {
+		const x_ = Complex._toFloat(x);
+		const k_ = Complex._toFloat(k);
+		return new Complex(StatisticsTool.chi2cdf(x_, k_));
+	}
+
+	/**
+	 * chi2inv(p, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Complex} p
+	 * @param {Complex} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Complex}
+	 */
+	static chi2inv(p, k) {
+		const p_ = Complex._toFloat(p);
+		const k_ = Complex._toFloat(k);
+		return new Complex(StatisticsTool.chi2inv(p_, k_));
+	}
+
+	/**
+	 * fpdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @param {Complex} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Complex}
+	 */
+	static fpdf(x, d1, d2) {
+		const x_ = Complex._toFloat(x);
+		const d1_ = Complex._toFloat(d1);
+		const d2_ = Complex._toFloat(d2);
+		return new Complex(StatisticsTool.fpdf(x_, d1_, d2_));
+	}
+
+	/**
+	 * fcdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Complex} x
+	 * @param {Complex} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Complex}
+	 */
+	static fcdf(x, d1, d2) {
+		const x_ = Complex._toFloat(x);
+		const d1_ = Complex._toFloat(d1);
+		const d2_ = Complex._toFloat(d2);
+		return new Complex(StatisticsTool.fcdf(x_, d1_, d2_));
+	}
+
+	/**
+	 * finv(p, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Complex} p
+	 * @param {Complex} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Complex}
+	 */
+	static finv(p, d1, d2) {
+		const p_ = Complex._toFloat(p);
+		const d1_ = Complex._toFloat(d1);
+		const d2_ = Complex._toFloat(d2);
+		return new Complex(StatisticsTool.finv(p_, d1_, d2_));
+	}
+
+}
+
+/**
+ * Matrix&#x7528;&#x306E;&#x7D71;&#x8A08;&#x51E6;&#x7406;&#x7528;&#x306E;&#x8A08;&#x7B97;&#x30AF;&#x30E9;&#x30B9;
+ */
+export default class Statistics {
+
+	/**
+	 * &#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @returns {Matrix}
+	 */
+	static gammaln(mat) {
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.gammaln(num);
+		});
+	}
+
+	/**
+	 * &#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @returns {Matrix}
+	 */
+	static gamma(mat) {
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.gamma(num);
+		});
+	}
+
+	/**
+	 * &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} a
+	 * @param {string} [tail=&quot;lower&quot;] - lower/upper
+	 * @returns {Matrix}
+	 */
+	static gammainc(mat, a, tail) {
+		const a_ = Matrix._toFloat(a);
+		const tail_ = isStr(tail) ? tail : &quot;lower&quot;;
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.gammainc(num, a_, tail_);
+		});
+	}
+
+	/**
+	 * &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {Matrix} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @returns {Matrix}
+	 */
+	static gampdf(mat, k, s) {
+		const k_ = Matrix._toFloat(k);
+		const s_ = Matrix._toFloat(s);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.gampdf(num, k_, s_);
+		});
+	}
+
+	/**
+	 * &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {Matrix} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @returns {Matrix}
+	 */
+	static gamcdf(mat, k, s) {
+		const k_ = Matrix._toFloat(k);
+		const s_ = Matrix._toFloat(s);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.gamcdf(num, k_, s_);
+		});
+	}
+
+	/**
+	 * &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {Matrix} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @returns {Matrix}
+	 */
+	static gaminv(mat, k, s) {
+		const k_ = Matrix._toFloat(k);
+		const s_ = Matrix._toFloat(s);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.gaminv(num, k_, s_);
+		});
+	}
+
+	/**
+	 * &#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} y
+	 * @returns {Matrix}
+	 */
+	static beta(mat, y) {
+		const y_ = Matrix._toFloat(y);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.beta(num, y_);
+		});
+	}
+	
+	/**
+	 * &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} a
+	 * @param {Matrix} b
+	 * @param {string} [tail=&quot;lower&quot;] - lower/upper
+	 * @returns {Matrix}
+	 */
+	static betainc(mat, a, b, tail) {
+		const a_ = Matrix._toFloat(a);
+		const b_ = Matrix._toFloat(b);
+		const tail_ = isStr(tail) ? tail : &quot;lower&quot;;
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.betainc(num, a_, b_, tail_);
+		});
+	}
+
+	/**
+	 * &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} a
+	 * @param {Matrix} b
+	 * @returns {Matrix}
+	 */
+	static betacdf(mat, a, b) {
+		const a_ = Matrix._toFloat(a);
+		const b_ = Matrix._toFloat(b);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.betacdf(num, a_, b_);
+		});
+	}
+
+	/**
+	 * &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} a
+	 * @param {Matrix} b
+	 * @returns {Matrix}
+	 */
+	static betapdf(mat, a, b) {
+		const a_ = Matrix._toFloat(a);
+		const b_ = Matrix._toFloat(b);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.betapdf(num, a_, b_);
+		});
+	}
+
+	/**
+	 * &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} a
+	 * @param {Matrix} b
+	 * @returns {Matrix}
+	 */
+	static betainv(mat, a, b) {
+		const a_ = Matrix._toFloat(a);
+		const b_ = Matrix._toFloat(b);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.betainv(num, a_, b_);
+		});
+	}
+
+	/**
+	 * x! &#x968E;&#x4E57;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @returns {Matrix}
+	 */
+	static factorial(mat) {
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.factorial(num);
+		});
+	}
+	
+	/**
+	 * nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;
+	 * @param {Matrix} mat
+	 * @param {Matrix} k
+	 * @returns {Matrix}
+	 */
+	static nchoosek(mat, k) {
+		const k_ = Matrix._toFloat(k);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.nchoosek(num, k_);
+		});
+	}
+	
+	/**
+	 * &#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @returns {Matrix}
+	 */
+	static erf(mat) {
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.erf(num);
+		});
+	}
+
+	/**
+	 * &#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @returns {Matrix}
+	 */
+	static erfc(mat) {
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.erfc(num);
+		});
+	}
+	
+	/**
+	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {number} [s=1.0] - &#x5206;&#x6563;
+	 * @returns {Matrix}
+	 */
+	static normpdf(mat, u=0.0, s=1.0) {
+		const u_ = Complex._toFloat(u);
+		const s_ = Complex._toFloat(s);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.normpdf(num, u_, s_);
+		});
+	}
+
+	/**
+	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {number} [s=1.0] - &#x5206;&#x6563;
+	 * @returns {Matrix}
+	 */
+	static normcdf(mat, u=0.0, s=1.0) {
+		const u_ = Complex._toFloat(u);
+		const s_ = Complex._toFloat(s);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.normcdf(num, u_, s_);
+		});
+	}
+
+	/**
+	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {number} [s=1.0] - &#x5206;&#x6563;
+	 * @returns {Matrix}
+	 */
+	static norminv(mat, u=0.0, s=1.0) {
+		const u_ = Complex._toFloat(u);
+		const s_ = Complex._toFloat(s);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.norminv(num, u_, s_);
+		});
+	}
+
+	/**
+	 * t&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	static tpdf(mat, v) {
+		const v_ = Matrix._toFloat(v);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.tpdf(num, v_);
+		});
+	}
+
+	/**
+	 * t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	static tcdf(mat, v) {
+		const v_ = Matrix._toFloat(v);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.tcdf(num, v_);
+		});
+	}
+
+	/**
+	 * t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	static tinv(mat, v) {
+		const v_ = Matrix._toFloat(v);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.tinv(num, v_);
+		});
+	}
+
+	/**
+	 * &#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix} tails - &#x5C3E;&#x90E8;(1...&#x7247;&#x5074;&#x3001;2...&#x4E21;&#x5074;)
+	 * @returns {Matrix}
+	 */
+	static tdist(mat, v, tails) {
+		const v_ = Matrix._toFloat(v);
+		const tails_ = Matrix._toFloat(tails);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.tdist(num, v_, tails_);
+		});
+	}
+
+	/**
+	 * &#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	static tinv2(mat, v) {
+		const v_ = Matrix._toFloat(v);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.tinv2(num, v_);
+		});
+	}
+
+	/**
+	 * &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	static chi2pdf(mat, k) {
+		const k_ = Matrix._toFloat(k);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.chi2pdf(num, k_);
+		});
+	}
+
+	/**
+	 * &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	static chi2cdf(mat, k) {
+		const k_ = Matrix._toFloat(k);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.chi2cdf(num, k_);
+		});
+	}
+	
+	/**
+	 * &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	static chi2inv(mat, k) {
+		const k_ = Matrix._toFloat(k);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.chi2inv(num, k_);
+		});
+	}
+
+	/**
+	 * F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	static fpdf(mat, d1, d2) {
+		const d1_ = Matrix._toFloat(d1);
+		const d2_ = Matrix._toFloat(d2);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.fpdf(num, d1_, d2_);
+		});
+	}
+
+	/**
+	 * F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	static fcdf(mat, d1, d2) {
+		const d1_ = Matrix._toFloat(d1);
+		const d2_ = Matrix._toFloat(d2);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.fcdf(num, d1_, d2_);
+		});
+	}
+
+	/**
+	 * F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * @param {Matrix} mat
+	 * @param {Matrix} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @returns {Matrix}
+	 */
+	static finv(mat, d1, d2) {
+		const d1_ = Matrix._toFloat(d1);
+		const d2_ = Matrix._toFloat(d2);
+		return mat.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.finv(num, d1_, d2_);
+		});
+	}
+	
+	/**
+	 * &#x5408;&#x8A08;
+	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static sum(mat, type) {
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const main = function(data) {
+			// &#x30AB;&#x30CF;&#x30F3;&#x306E;&#x52A0;&#x7B97;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;
+			let sum = Complex.ZERO;
+			let delta = Complex.ZERO;
+			for(let i = 0; i &lt; data.length; i++) {
+				const new_number = data[i].add(delta);
+				const new_sum = sum.add(new_number);
+				delta = new_sum.sub(sum).sub(new_number);
+				sum = new_sum;
+			}
+			return [sum];
+		};
+		return mat.eachVector(main, dim);
+	}
+
+	/**
+	 * &#x76F8;&#x52A0;&#x5E73;&#x5747;
+	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static mean(mat, type) {
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const main = function(data) {
+			// &#x30AB;&#x30CF;&#x30F3;&#x306E;&#x52A0;&#x7B97;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;
+			let sum = Complex.ZERO;
+			let delta = Complex.ZERO;
+			for(let i = 0; i &lt; data.length; i++) {
+				const new_number = data[i].add(delta);
+				const new_sum = sum.add(new_number);
+				delta = new_sum.sub(sum).sub(new_number);
+				sum = new_sum;
+			}
+			return [sum.div(data.length)];
+		};
+		return mat.eachVector(main, dim);
+	}
+
+	/**
+	 * &#x76F8;&#x4E57;&#x5E73;&#x5747;&#xFF0F;&#x5E7E;&#x4F55;&#x5E73;&#x5747;
+	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static geomean(mat, type) {
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const main = function(data) {
+			let x = Complex.ONE;
+			for(let i = 0; i &lt; data.length; i++) {
+				x = x.mul(data[i]);
+			}
+			return [x.sqrt()];
+		};
+		return mat.eachVector(main, dim);
+	}
+
+	
+	/**
+	 * &#x4E2D;&#x592E;&#x5024;
+	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static median(mat, type) {
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const compare = function(a, b){
+			return a.compareTo(b);
+		};
+		const main = function(data) {
+			data.sort(compare);
+			let x;
+			if((data.length % 2) === 1) {
+				x = data[Math.floor(data.length / 2)];
+			}
+			else {
+				const x1 = data[Math.floor(data.length / 2) - 1];
+				const x2 = data[Math.floor(data.length / 2)];
+				x = x1.add(x2).div(Complex.TWO);
+			}
+			return [x];
+		};
+		return mat.eachVector(main, dim);
+	}
+
+	/**
+	 * &#x6700;&#x983B;&#x5024;
+	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static mode(mat, type) {
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const compare = function(a, b){
+			return a.compareTo(b);
+		};
+		const main = function(data) {
+			data.sort(compare);
+			const map = {};
+			for(let i = 0; i &lt; data.length; i++) {
+				const str = data[i].real + &quot; &quot; + data[i].imag;
+				if(!map[str]) {
+					map[str] = {
+						complex : data[i],
+						value : 1
+					};
+				}
+				else {
+					map[str].value++;
+				}
+			}
+			let max_complex = Complex.ZERO;
+			let max_number = Number.NEGATIVE_INFINITY;
+			for(const key in map) {
+				const tgt = map[key];
+				if(tgt.value &gt; max_number) {
+					max_number	= tgt.value;
+					max_complex	= tgt.complex;
+				}
+			}
+			return [max_complex];
+		};
+		return mat.eachVector(main, dim);
+	}
+
+	/**
+	 * &#x5206;&#x6563;
+	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	static var(mat, type) {
+		const M = Statistics.mean(mat);
+		// &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;&#x5206;&#x6563;), 1(&#x6A19;&#x672C;&#x5206;&#x6563;)
+		const cor = !(type &amp;&amp; type.correction) ? 0: Matrix._toFloat(type.correction);
+		const dim = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		let col = 0;
+		const main = function(data) {
+			let mean;
+			if(M.isScalar()) {
+				mean = M.scalar;
+			}
+			else {
+				mean = M.getComplex(col++);
+			}
+			let x = Complex.ZERO;
+			for(let i = 0; i &lt; data.length; i++) {
+				const a = data[i].sub(mean);
+				x = x.add(a.dot(a));
+			}
+			if(data.length === 1) {
+				return [x.div(data.length)];
+			}
+			else {
+				return [x.div(data.length - 1 + cor)];
+			}
+		};
+		return mat.eachVector(main, dim);
+	}
+
+	/**
+	 * &#x6A19;&#x6E96;&#x504F;&#x5DEE;
+	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	static std(mat, type) {
+		// &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;&#x5206;&#x6563;), 1(&#x6A19;&#x672C;&#x5206;&#x6563;)
+		const cor = !(type &amp;&amp; type.correction) ? 0: Matrix._toFloat(type.correction);
+		const dim = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const M = Statistics.var(mat, cor, dim);
+		M._each(function(num) {
+			return num.sqrt();
+		});
+		return M;
+	}
+
+	/**
+	 * &#x5171;&#x5206;&#x6563;&#x884C;&#x5217;
+	 * @param {Matrix} mat
+	 * @param {{correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	static cov(mat, type) {
+		// &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;&#x5206;&#x6563;), 1(&#x6A19;&#x672C;&#x5206;&#x6563;)
+		const cor = !(type &amp;&amp; type.correction) ? 0: Matrix._toFloat(type.correction);
+		if(mat.isVector()) {
+			return Statistics.var(mat, type);
+		}
+		const correction = mat.row_length === 1 ? 1 : cor;
+		const x = mat.matrix_array;
+		const mean = Statistics.mean(mat).matrix_array[0];
+		// &#x4E0A;&#x4E09;&#x89D2;&#x884C;&#x5217;&#x3001;&#x5BFE;&#x89D2;&#x884C;&#x5217;
+		const y = new Array(mat.column_length);
+		for(let a = 0; a &lt; mat.column_length; a++) {
+			const a_mean = mean[a];
+			y[a] = new Array(mat.column_length);
+			for(let b = a; b &lt; mat.column_length; b++) {
+				const b_mean = mean[b];
+				let sum = Complex.ZERO;
+				for(let row = 0; row &lt; mat.row_length; row++) {
+					sum = sum.add((x[row][a].sub(a_mean)).dot(x[row][b].sub(b_mean)));
+				}
+				y[a][b] = sum.div(mat.row_length - 1 + correction);
+			}
+		}
+		// &#x4E0B;&#x4E09;&#x89D2;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x308B;
+		for(let row = 1; row &lt; y[0].length; row++) {
+			for(let col = 0; col &lt; row; col++) {
+				y[row][col] = y[col][row];
+			}
+		}
+		return new Matrix(y);
+	}
+
+	/**
+	 * &#x6A19;&#x672C;&#x306E;&#x6A19;&#x6E96;&#x5316;
+	 * &#x5E73;&#x5747;&#x5024;0&#x3001;&#x6A19;&#x6E96;&#x504F;&#x5DEE;1&#x306B;&#x5909;&#x66F4;&#x3059;&#x308B;
+	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static normalize(mat, type) {
+		const mean_zero = mat.sub(Statistics.mean(mat, type));
+		const std_one = mean_zero.ndiv(Statistics.std(mean_zero, type));
+		return std_one;
+	}
+
+	/**
+	 * &#x76F8;&#x95A2;&#x884C;&#x5217;
+	 * @param {Matrix} mat
+	 * @returns {Matrix}
+	 */
+	static corrcoef(mat) {
+		return mat.normalize().cov();
+	}
+
+	/**
+	 * &#x30BD;&#x30FC;&#x30C8;
+	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number), order : ?string}} [type]
+	 * @returns {Matrix}
+	 */
+	static sort(mat, type) {
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const order = !(type &amp;&amp; type.order) ? &quot;ascend&quot; : type.order;
+		let compare;
+		if(order === &quot;ascend&quot;) {
+			compare = function(a, b){
+				return a.compareTo(b);
+			};
+		}
+		else {
+			compare = function(a, b){
+				return a.compareTo(b.negate());
+			};
+		}
+		const main = function(data) {
+			data.sort(compare);
+			return data;
+		};
+		return mat.eachVector(main, dim);
+	}
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

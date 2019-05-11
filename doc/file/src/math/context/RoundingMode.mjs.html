@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/math/context/RoundingMode.mjs | konpeito.js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito.js"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.mjs~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigDecimal.mjs~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tool">math/tool</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Random.mjs~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Signal.mjs~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/math/context/RoundingMode.mjs</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * BigDecimal&#x7528;&#x306E;&#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x57FA;&#x5E95;&#x30AF;&#x30E9;&#x30B9;
+ * @interface
+ */
+export class RoundingModeEntity {
+	
+	/**
+	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
+	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 */
+	static toString() {
+		return &quot;NONE&quot;;
+	}
+
+	/**
+	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
+	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
+	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 */
+	static getAddNumber(x) {
+		return 0;
+	}
+
+}
+
+/**
+ * &#x7D76;&#x5BFE;&#x5024;&#x306E;&#x5207;&#x308A;&#x4E0A;&#x3052;&#xFF08;1&#x6841;&#x76EE;&#x304C;0&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x6841;&#x4E0A;&#x3052;&#x3059;&#x308B;&#xFF09;
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_UP extends RoundingModeEntity {
+
+	/**
+	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
+	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 */
+	static toString() {
+		return &quot;UP&quot;;
+	}
+
+	/**
+	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
+	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
+	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		if(y === 0) {
+			return 0;
+		}
+		else if(y &gt; 0) {
+			return 10 - y;
+		}
+		else {
+			return (-(10 + y));
+		}
+	}
+
+}
+
+/**
+ * &#x7D76;&#x5BFE;&#x5024;&#x306E;&#x5207;&#x308A;&#x4E0B;&#x3052;&#xFF08;1&#x6841;&#x76EE;&#x304C;0&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x6841;&#x4E0B;&#x3052;&#x3059;&#x308B;&#xFF09;
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_DOWN extends RoundingModeEntity {
+
+	/**
+	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
+	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 */
+	static toString() {
+		return &quot;DOWN&quot;;
+	}
+
+	/**
+	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
+	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
+	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 */
+	static getAddNumber(x) {
+		return -(x % 10);
+	}
+
+}
+
+/**
+ * &#x6B63;&#x306E;&#x7121;&#x9650;&#x5927;&#x306B;&#x8FD1;&#x3065;&#x304F;
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_CEILING extends RoundingModeEntity {
+
+	/**
+	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
+	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 */
+	static toString() {
+		return &quot;CEILING&quot;;
+	}
+
+	/**
+	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
+	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
+	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		if(y === 0) {
+			return 0;
+		}
+		else if(y &gt; 0) {
+			return 10 - y;
+		}
+		else {
+			return -y;
+		}
+	}
+
+}
+
+/**
+ * &#x8CA0;&#x306E;&#x7121;&#x9650;&#x5927;&#x306B;&#x8FD1;&#x3065;&#x304F;
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_FLOOR extends RoundingModeEntity {
+
+	/**
+	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
+	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 */
+	static toString() {
+		return &quot;FLOOR&quot;;
+	}
+
+	/**
+	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
+	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
+	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		if(y === 0) {
+			return 0;
+		}
+		else if(y &gt; 0) {
+			return -y;
+		}
+		else {
+			return(-(10 + y));
+		}
+	}
+
+}
+
+/**
+ * &#x56DB;&#x6368;&#x4E94;&#x5165;
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_HALF_UP extends RoundingModeEntity {
+
+	/**
+	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
+	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 */
+	static toString() {
+		return &quot;HALF_UP&quot;;
+	}
+
+	/**
+	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
+	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
+	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		const sign = y &gt;= 0 ? 1 : -1;
+		if(Math.abs(y) &lt; 5) {
+			return (y * -1);
+		}
+		else {
+			return (sign * (10 - Math.abs(y)));
+		}
+	}
+
+}
+
+/**
+ * &#x4E94;&#x6368;&#x516D;&#x5165;
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_HALF_DOWN extends RoundingModeEntity {
+
+	/**
+	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
+	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 */
+	static toString() {
+		return &quot;HALF_DOWN&quot;;
+	}
+
+	/**
+	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
+	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
+	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		const sign = y &gt;= 0 ? 1 : -1;
+		if(Math.abs(y) &lt; 6) {
+			return (y * -1);
+		}
+		else {
+			return (sign * (10 - Math.abs(y)));
+		}
+	}
+
+}
+
+/**
+ * &#x7B49;&#x9593;&#x9694;&#x306A;&#x3089;&#x5076;&#x6570;&#x5074;&#x3078;&#x4E38;&#x3081;&#x308B;
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_HALF_EVEN extends RoundingModeEntity {
+
+	/**
+	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
+	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 */
+	static toString() {
+		return &quot;HALF_EVEN&quot;;
+	}
+
+	/**
+	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
+	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
+	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 */
+	static getAddNumber(x) {
+		let y = x % 100;
+		let sign, even;
+		if(y &lt; 0) {
+			sign = -1;
+			even = Math.ceil(y / 10) &amp; 1;
+		}
+		else {
+			sign = 1;
+			even = Math.floor(y / 10) &amp; 1;
+		}
+		let center;
+		if(even === 1) {
+			center = 5;
+		}
+		else {
+			center = 6;
+		}
+		y = y % 10;
+		if(Math.abs(y) &lt; center) {
+			return (y * -1);
+		}
+		else {
+			return (sign * (10 - Math.abs(y)));
+		}
+	}
+
+}
+
+/**
+ * &#x4E38;&#x3081;&#x306A;&#x3044;&#xFF08;&#x4E38;&#x3081;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x51FA;&#x308B;&#x5834;&#x5408;&#x306F;&#x30A8;&#x30E9;&#x30FC;&#xFF09;
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_UNNECESSARY extends RoundingModeEntity {
+
+	/**
+	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
+	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 */
+	static toString() {
+		return &quot;UNNECESSARY&quot;;
+	}
+
+	/**
+	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
+	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
+	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		if(y === 0) {
+			return 0;
+		}
+		else {
+			throw &quot;ArithmeticException&quot;;
+		}
+	}
+
+}
+
+/**
+ * BigDecimal&#x7528;&#x306E;&#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x30AF;&#x30E9;&#x30B9;
+ */
+export default class RoundingMode {
+
+	/**
+	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3067;&#x8868;&#x3055;&#x308C;&#x308B;&#x4E38;&#x3081;&#x30AF;&#x30E9;&#x30B9;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;
+	 * @param {string} name - &#x30E2;&#x30FC;&#x30C9;&#x306E;&#x82F1;&#x6570;&#x540D;
+	 * @returns {RoundingModeEntity}
+	 */
+	static valueOf(name) {
+		if(name === null) {
+			throw &quot;NullPointerException&quot;;
+		}
+		if(name instanceof RoundingModeEntity) {
+			return name;
+		}
+		const modetype = {
+			RoundingMode_UP,
+			RoundingMode_DOWN,
+			RoundingMode_FLOOR,
+			RoundingMode_CEILING,
+			RoundingMode_HALF_UP,
+			RoundingMode_HALF_DOWN,
+			RoundingMode_HALF_EVEN,
+			RoundingMode_UNNECESSARY
+		};
+		const upper_name = name.toUpperCase();
+		for(let i = 0; i &lt; modetype.length; i++) {
+			if(modetype[i].toString() === upper_name) {
+				return modetype[i];
+			}
+		}
+		throw &quot;IllegalArgumentException : &quot; + name;
+	}
+
+	// ----------------------
+	// &#x5B9A;&#x6570;
+	// ----------------------
+	
+	/**
+	 * &#x7D76;&#x5BFE;&#x5024;&#x306E;&#x5207;&#x308A;&#x4E0A;&#x3052;&#xFF08;1&#x6841;&#x76EE;&#x304C;0&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x6841;&#x4E0A;&#x3052;&#x3059;&#x308B;&#xFF09;
+	 * @returns {RoundingModeEntity}
+	 */
+	static get UP() {
+		return RoundingMode_UP;
+	}
+
+	/**
+	 * &#x7D76;&#x5BFE;&#x5024;&#x306E;&#x5207;&#x308A;&#x4E0B;&#x3052;&#xFF08;1&#x6841;&#x76EE;&#x304C;0&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x6841;&#x4E0B;&#x3052;&#x3059;&#x308B;&#xFF09;
+	 * @returns {RoundingModeEntity}
+	 */
+	static get DOWN() {
+		return RoundingMode_DOWN;
+	}
+
+	/**
+	 * &#x6B63;&#x306E;&#x7121;&#x9650;&#x5927;&#x306B;&#x8FD1;&#x3065;&#x304F;
+	 * @returns {RoundingModeEntity}
+	 */
+	static get CEILING() {
+		return RoundingMode_CEILING;
+	}
+
+	/**
+	 * &#x8CA0;&#x306E;&#x7121;&#x9650;&#x5927;&#x306B;&#x8FD1;&#x3065;&#x304F;
+	 * @returns {RoundingModeEntity}
+	 */
+	static get FLOOR() {
+		return RoundingMode_FLOOR;
+	}
+
+	/**
+	 * &#x56DB;&#x6368;&#x4E94;&#x5165;
+	 * @returns {RoundingModeEntity}
+	 */
+	static get HALF_UP() {
+		return RoundingMode_HALF_UP;
+	}
+
+	/**
+	 * &#x4E94;&#x6368;&#x516D;&#x5165;
+	 * @returns {RoundingModeEntity}
+	 */
+	static get HALF_DOWN() {
+		return RoundingMode_HALF_DOWN;
+	}
+
+	/**
+	 * &#x7B49;&#x9593;&#x9694;&#x306A;&#x3089;&#x5076;&#x6570;&#x5074;&#x3078;&#x4E38;&#x3081;&#x308B;
+	 * @returns {RoundingModeEntity}
+	 */
+	static get HALF_EVEN() {
+		return RoundingMode_HALF_EVEN;
+	}
+
+	/**
+	 * &#x4E38;&#x3081;&#x306A;&#x3044;&#xFF08;&#x4E38;&#x3081;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x51FA;&#x308B;&#x5834;&#x5408;&#x306F;&#x30A8;&#x30E9;&#x30FC;&#xFF09;
+	 * @returns {RoundingModeEntity}
+	 */
+	static get UNNECESSARY() {
+		return RoundingMode_UNNECESSARY;
+	}
+
+}
+
+
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

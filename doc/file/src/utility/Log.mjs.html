@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/utility/Log.mjs | konpeito.js</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito.js"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.mjs~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigDecimal.mjs~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tool">math/tool</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Random.mjs~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Signal.mjs~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/utility/Log.mjs</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/* global WSH, WScript */
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+import Format from &quot;./Format.mjs&quot;;
+const format = Format.format;
+
+const toStringFromObj = function(text_obj) {
+	let text;
+	if((typeof text_obj === &quot;string&quot;)||(text_obj instanceof String)) {
+		if(text_obj.length === 0) {
+			// Edge &#x3060;&#x3068; console.log(&quot;&quot;) &#x3067;&#x30A8;&#x30E9;&#x30FC;&#x8868;&#x793A;&#x306B;&#x306A;&#x308B;&#x305F;&#x3081;
+			text = &quot; &quot;;
+		}
+		else {
+			text = text_obj;
+		}
+	}
+	else if(typeof text_obj === &quot;undefined&quot;) {
+		text = typeof text_obj;
+	}
+	else if(text_obj === null) {
+		text = &quot;null&quot;;
+	}
+	else if(typeof text_obj.toString === &quot;function&quot;) {
+		text = text_obj.toString();
+	}
+	else if(text_obj instanceof Object) {
+		text = &quot;Object&quot;;
+	}
+	else {
+		text = &quot;null&quot;;
+	}
+	return text;
+};
+
+class CUIConsole {
+	
+	constructor() {
+		this.output = CUIConsole._getOutput();
+	}
+
+	static _getOutput() {
+		const getConsole = function() {
+			if(typeof WSH !== &quot;undefined&quot;) {
+				return(null);
+			}
+			else if(typeof console !== &quot;undefined&quot;) {
+				return(console);
+			}
+			else if(typeof window !== &quot;undefined&quot;) {
+				if(typeof window.console !== &quot;undefined&quot;) {
+					return(window.console);
+				}
+			}
+			return(null);
+		};
+		const isJScript = function() {
+			return(typeof WSH !== &quot;undefined&quot;);
+		};
+		const isConsole = function() {
+			return(getConsole() !== null);
+		};
+		let output = null;
+		// JScript &#x7528;
+		if(isJScript()) {
+			if(/cscript\.exe$/i.test(WSH.FullName)) {
+				output = function(text) {
+					if(/\n$/.test(text)) {
+						WSH.StdOut.Write(text);
+					}
+					else {
+						WSH.StdOut.Write(text + &quot;\n&quot;);
+					}
+				};
+			}
+			else {
+				output = WScript.Echo;
+			}
+		}
+		// HTML&#x3067;&#x8868;&#x793A;&#x3059;&#x308B;&#x5834;&#x5408;
+		else if(isConsole()) {
+			const console = getConsole();
+			output = console.log;
+		}
+		// &#x6700;&#x7D42;&#x7684;&#x306B;&#x306F; alert IE10&#x7528;
+		else if(typeof alert !== &quot;undefined&quot;) {
+			output = alert;
+		}
+		return output;
+	}
+
+	getOutput() {
+		return this.output;
+	}
+}
+
+class HtmlConsole {
+
+	constructor() {
+		this.root		= null;
+		this.element	= null;
+		this.isshow		= false;
+		this.loglength	= 250;
+		this.linelength	= 0;
+	}
+
+	_getElement() {
+		if(this.element !== null) {
+			return this.element;
+		}
+		const element = document.createElement(&quot;div&quot;);
+		element.style.backgroundColor = &quot;black&quot;;
+		element.style.color = &quot;white&quot;;
+		element.style.display = &quot;block&quot;;
+		element.style.margin = &quot;0px&quot;;
+		element.style.padding = &quot;5px&quot;;
+		element.style.fontFamily = &quot;Consolas, Courier New, Courier, Monaco, monospace&quot;;
+		element.style.whiteSpace = &quot;pre&quot;;
+		this.element = element;
+		return this.element;
+	}
+
+	_initHTML() {
+		if(this.root !== null) {
+			return;
+		}
+		let root;
+		root = document.getElementById(&quot;senko_console&quot;);
+		if(root) {
+			let child = root.lastChild;
+			while (child) {
+				root.removeChild(child);
+				child = root.lastChild;
+			}
+		}
+		else {
+			root = document.body;
+		}
+		root.style.backgroundColor = &quot;black&quot;;
+		root.style.margin = &quot;0px&quot;;
+		root.style.padding = &quot;0px&quot;;
+		root.style.overflowY = &quot;scroll&quot;;
+		root.appendChild(this._getElement());
+		this.root = root;
+	}
+
+	isShow() {
+		return this.isshow;
+	}
+
+	setShow(isshow) {
+		if(typeof isshow !== &quot;boolean&quot;) {
+			throw &quot;not boolean&quot;;
+		}
+		this._initHTML();
+		const element = this._getElement();
+		if(this.isshow !== isshow) {
+			this.isshow = isshow;
+			if(element) {
+				element.style.display = this.isshow ? &quot;block&quot; : &quot;none&quot;;
+			}
+		}
+	}
+
+	_autoScroll() {
+		if((this.element === null) || (this.root === null)) {
+			return;
+		}
+		const parentheight	= this.root.clientHeight;
+		const childheight		= this.element.clientHeight;
+		// &#x30B9;&#x30AF;&#x30ED;&#x30FC;&#x30EB;&#x3057;&#x306A;&#x3044;&#x3068;&#x898B;&#x3048;&#x306A;&#x3044;&#x9818;&#x57DF;&#x3068;&#x30DE;&#x30FC;&#x30B8;&#x30F3;
+		const hideheight		= childheight - parentheight;
+		const margin			= parentheight * 1.0;
+		// &#x30B9;&#x30AF;&#x30ED;&#x30FC;&#x30EB;&#x3057;&#x306A;&#x3044;&#x3068;&#x898B;&#x3048;&#x306A;&#x3044;&#x9818;&#x57DF;&#x304C;&#x898B;&#x3048;&#x3066;&#x3044;&#x308B;&#x72B6;&#x614B;&#x306A;&#x3089;&#x30AA;&#x30FC;&#x30C8;&#x30B9;&#x30AF;&#x30ED;&#x30FC;&#x30EB;
+		if(hideheight - margin &lt;= this.root.scrollTop) {
+			this.root.scrollTop = childheight;
+		}
+	}
+
+	_addNewLine() {
+		this._initHTML();
+		const element = this._getElement();
+		// &#x6B21;&#x306E;&#x884C;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+		const p = document.createElement(&quot;p&quot;);
+		p.innerText = &quot;&gt; &quot;;
+		p.style.margin = &quot;0.2em 0px 0.2em 0px&quot;;
+		p.style.padding = &quot;0px&quot;;
+		element.appendChild(p);
+		this.linelength++;
+		this._cleaningLog();
+	}
+
+	_appendText(text) {
+		this._initHTML();
+		const element = this._getElement();
+		const p = element.lastElementChild;
+		p.innerText = p.innerText + text;
+	}
+
+	_cleaningLog() {
+		if(this.element === null) {
+			return;
+		}
+		while(this.linelength &gt; this.loglength) {
+			this.element.removeChild(this.element.firstElementChild);
+			this.linelength--;
+		}
+	}
+
+	setLogLength(loglength) {
+		this.loglength = loglength;
+	}
+
+	println(text) {
+		this._initHTML();
+		const element = this._getElement();
+		if(element) {
+			// &#x6700;&#x7D42;&#x884C;&#x306B;&#x6587;&#x5B57;&#x3092;&#x8FFD;&#x52A0;&#x3059;&#x308B;
+			if(!element.lastElementChild) {
+				this._addNewLine();
+			}
+			this._appendText(text);
+			// &#x6B21;&#x306E;&#x884C;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+			this._addNewLine();
+		}
+		this._autoScroll();
+	}
+}
+
+const cui = (new CUIConsole()).getOutput();
+let gui_obj = null;
+let gui = null;
+if (console || (window &amp;&amp; window.console)) {
+	gui_obj = new HtmlConsole();
+	gui = function(text) {
+		gui_obj.println(text);
+	};
+}
+
+let show_gui = false;
+let printbuffer = &quot;&quot;;
+
+/**
+ * &#x8ABF;&#x6574;&#x4E2D;
+ * @ignore
+ */
+class Log {
+
+	static setGUI() {
+		if(gui) {
+			show_gui = true;
+		}
+	}
+	
+	static setCUI() {
+		show_gui = false;
+	}
+
+	static println(text_obj) {
+		const text = printbuffer + toStringFromObj(text_obj);
+		printbuffer = &quot;&quot;;
+		if(show_gui) {
+			gui(text);
+		}
+		else {
+			cui(text);
+		}
+	}
+	
+	static print(text_obj) {
+		printbuffer += toStringFromObj(text_obj);
+	}
+	
+	static printf() {
+		const x = [];
+		for(let i = 0 ; i &lt; arguments.length ; i++) {
+			x.push(arguments[i]);
+		}
+		Log.print(format.apply(this, x));
+	}
+
+}
+
+export default Log;</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

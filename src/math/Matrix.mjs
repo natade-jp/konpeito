@@ -2730,7 +2730,7 @@ export default class Matrix {
 
 	/**
 	 * 相加平均
-	 * @param {{dimension : (string|number)}} [type]
+	 * @param {{dimension : ?(string|number)}} [type]
 	 * @returns {Matrix}
 	 */
 	mean(type) {
@@ -2787,8 +2787,8 @@ export default class Matrix {
 	 * @param {{correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
-	cov(cor=0) {
-		return Statistics.cov(this, cor);
+	cov(type) {
+		return Statistics.cov(this, type);
 	}
 
 	/**
