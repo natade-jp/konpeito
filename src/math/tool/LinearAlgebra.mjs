@@ -9,8 +9,8 @@
  */
 
 import Random from "./Random.mjs";
-import Complex from "../Math/Complex.mjs";
-import Matrix from "../Math/Matrix.mjs";
+import Complex from "../Complex.mjs";
+import Matrix from "../Matrix.mjs";
 
 /**
  * 線形代数用の関数集
@@ -299,7 +299,7 @@ class LinearAlgebraTool {
 	 * @param {Matrix} mat - 正方行列
 	 * @returns {{Q: Matrix, R: Matrix, non_orthogonalized : Array<number>}}
 	 */
-	static _gram_schmidt_orthonormalization(mat) {
+	static doGramSchmidtOrthonormalization(mat) {
 		// グラム・シュミットの正規直交化法を使用する
 		// 参考：Gilbert Strang (2007). Computational Science and Engineering.
 
@@ -368,13 +368,13 @@ class LinearAlgebraTool {
 	 * @param {number} [epsilon=1.0e-10] - 誤差
 	 * @returns {Matrix|null} 直行したベクトルがなければNULLを返す
 	 */
-	static _createOrthogonalVector(mat, epsilon) {
+	static createOrthogonalVector(mat, epsilon) {
 		const M = new Matrix(mat);
 		const column_length = M.column_length;
 		const m = M.matrix_array;
 		const tolerance = epsilon ? epsilon : 1.0e-10;
 		// 正則行列をなす場合に問題となる行番号を取得
-		const not_regular_rows = LinearAlgebraTool._get_linear_dependence_vector(M, tolerance);
+		const not_regular_rows = LinearAlgebraTool.getLinearDependenceVector(M, tolerance);
 		// 不要な行を削除する
 		{
 			// not_regular_rowsは昇順リストなので、後ろから消していく
@@ -402,7 +402,7 @@ class LinearAlgebraTool {
 			// 列に追加する
 			M2._concat_left(R);
 			// 正規直行行列を作成する
-			orthogonal_matrix = LinearAlgebraTool._gram_schmidt_orthonormalization(M2);
+			orthogonal_matrix = LinearAlgebraTool.doGramSchmidtOrthonormalization(M2);
 			// 正しく作成できていたら完了
 			if(orthogonal_matrix.non_orthogonalized.length === 0) {
 				break;
@@ -434,7 +434,7 @@ class LinearAlgebraTool {
 	 * @returns {{index: number, max: number}} 行番号
 	 * @private
 	 */
-	static _max_row_number(mat, column_index, row_index_offset, row_index_max) {
+	static getMaxRowNumber(mat, column_index, row_index_offset, row_index_max) {
 		const M = Matrix._toMatrix(mat);
 		let row_index = 0;
 		let row_max = 0;
@@ -461,7 +461,7 @@ class LinearAlgebraTool {
 	 * @returns {Array} 行番号の行列(昇順)
 	 * @private
 	 */
-	static _get_linear_dependence_vector(mat, epsilon) {
+	static getLinearDependenceVector(mat, epsilon) {
 		const M = new Matrix(mat);
 		const m = M.matrix_array;
 		const tolerance = epsilon ? Matrix._toFloat(epsilon) : 1.0e-10;
@@ -673,7 +673,7 @@ export default class LinearAlgebra {
 	 */
 	static rank(mat, epsilon) {
 		const M = Matrix._toMatrix(mat);
-		return Math.abs(M.row_length, M.column_length) - (LinearAlgebraTool._get_linear_dependence_vector(M, epsilon)).length;
+		return Math.abs(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
 	}
 
 	/**
@@ -737,7 +737,7 @@ export default class LinearAlgebra {
 			let pivot;
 			{
 				// k列目で最も大きな行を取得(k列目から調べる)
-				const max_row_number = LinearAlgebraTool._max_row_number(U, k, k);
+				const max_row_number = LinearAlgebraTool.getMaxRowNumber(U, k, k);
 				pivot = max_row_number.index;
 				if(max_row_number.max === 0.0) {
 					continue;
@@ -801,7 +801,7 @@ export default class LinearAlgebra {
 			//ピポットの選択
 			{
 				// k列目で最も大きな行を取得(k列目から調べる)
-				const row_num = LinearAlgebraTool._max_row_number(M, k, k).index;
+				const row_num = LinearAlgebraTool.getMaxRowNumber(M, k, k).index;
 				//交換を行う
 				M._exchange_row(k, row_num);
 			}
@@ -857,7 +857,7 @@ export default class LinearAlgebra {
 		// 正方行列にする
 		M._resize(dummy_size, dummy_size);
 		// 正規直行化
-		const orthogonal_matrix = LinearAlgebraTool._gram_schmidt_orthonormalization(M);
+		const orthogonal_matrix = LinearAlgebraTool.doGramSchmidtOrthonormalization(M);
 		// 計算したデータを取得
 		const Q_Matrix = orthogonal_matrix.Q;
 		const R_Matrix = orthogonal_matrix.R;
@@ -881,7 +881,7 @@ export default class LinearAlgebra {
 				orthogonalized.push(array);
 			}
 			// 直行ベクトルを作成する
-			const orthogonal_vector = LinearAlgebraTool._createOrthogonalVector(orthogonalized);
+			const orthogonal_vector = LinearAlgebraTool.createOrthogonalVector(orthogonalized);
 			// 直行化できていない列を差し替える
 			for(let i = 0; i < non_orthogonalized.length; i++) {
 				const q_col = non_orthogonalized[i];
@@ -1014,7 +1014,7 @@ export default class LinearAlgebra {
 			//ピポットの選択
 			{
 				// k列目で最も大きな行を取得(k列目から調べる)
-				const row_num = LinearAlgebraTool._max_row_number(M, k, k).index;
+				const row_num = LinearAlgebraTool.getMaxRowNumber(M, k, k).index;
 				//交換を行う
 				M._exchange_row(k, row_num);
 			}

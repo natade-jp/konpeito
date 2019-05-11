@@ -9,8 +9,8 @@
  */
 
 import BigInteger from "./BigInteger.mjs";
-import RoundingMode from "../MathUtil/RoundingMode.mjs";
-import MathContext from "../MathUtil/MathContext.mjs";
+import RoundingMode from "./context/RoundingMode.mjs";
+import MathContext from "./context/MathContext.mjs";
 
 /**
  * 初期化するときにcontextを設定しなかった場合のデフォルト値

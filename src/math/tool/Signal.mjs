@@ -8,8 +8,8 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import Complex from "../Math/Complex.mjs";
-import Matrix from "../Math/Matrix.mjs";
+import Complex from "../Complex.mjs";
+import Matrix from "../Matrix.mjs";
 
 /**
  * 高速フーリエ変換用クラス
@@ -971,7 +971,7 @@ export default class Signal {
 			}
 			return y;
 		};
-		return is_2_dimensions ? M.__column_oriented_2_dimensional_processing(main) : M.__column_oriented_1_dimensional_processing(main);
+		return is_2_dimensions ? M.eachVector2(main) : M.eachVector1(main);
 	}
 
 	/**
@@ -996,7 +996,7 @@ export default class Signal {
 			}
 			return y;
 		};
-		return is_2_dimensions ? M.__column_oriented_2_dimensional_processing(main) : M.__column_oriented_1_dimensional_processing(main);
+		return is_2_dimensions ? M.eachVector2(main) : M.eachVector1(main);
 	}
 
 	/**
@@ -1020,7 +1020,7 @@ export default class Signal {
 			}
 			return y;
 		};
-		return M.__column_oriented_1_dimensional_processing(main);
+		return M.eachVector1(main);
 	}
 
 	/**
@@ -1046,7 +1046,7 @@ export default class Signal {
 			}
 			return y;
 		};
-		return is_2_dimensions ? M.__column_oriented_2_dimensional_processing(main) : M.__column_oriented_1_dimensional_processing(main);
+		return is_2_dimensions ? M.eachVector2(main) : M.eachVector1(main);
 	}
 
 	/**
@@ -1072,7 +1072,7 @@ export default class Signal {
 			}
 			return y;
 		};
-		return is_2_dimensions ? M.__column_oriented_2_dimensional_processing(main) : M.__column_oriented_1_dimensional_processing(main);
+		return is_2_dimensions ? M.eachVector2(main) : M.eachVector1(main);
 	}
 
 	/**

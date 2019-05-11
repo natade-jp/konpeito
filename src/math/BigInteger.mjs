@@ -8,7 +8,7 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import Random from "../MathUtil/Random.mjs";
+import Random from "./tool/Random.mjs";
 
 /**
  * 乱数用クラスを指定しなかった場合に使用するデフォルト乱数クラス

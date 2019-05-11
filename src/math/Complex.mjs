@@ -8,7 +8,7 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import Random from "../MathUtil/Random.mjs";
+import Random from "./tool/Random.mjs";
 
 /**
  * Complex 内で使用する乱数生成クラス

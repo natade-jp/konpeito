@@ -8,8 +8,8 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import Complex from "../Math/Complex.mjs";
-import Matrix from "../Math/Matrix.mjs";
+import Complex from "../Complex.mjs";
+import Matrix from "../Matrix.mjs";
 
 /**
  * 実数専用の統計処理用の関数集
@@ -1491,7 +1491,7 @@ export default class Statistics {
 			}
 			return [sum];
 		};
-		return mat.__column_oriented_1_dimensional_processing(main);
+		return mat.eachVector1(main);
 	}
 
 	/**
@@ -1512,7 +1512,7 @@ export default class Statistics {
 			}
 			return [sum.div(data.length)];
 		};
-		return mat.__column_oriented_1_dimensional_processing(main);
+		return mat.eachVector1(main);
 	}
 
 	/**
@@ -1528,7 +1528,7 @@ export default class Statistics {
 			}
 			return [x.sqrt()];
 		};
-		return mat.__column_oriented_1_dimensional_processing(main);
+		return mat.eachVector1(main);
 	}
 
 	/**
@@ -1561,7 +1561,7 @@ export default class Statistics {
 				return [x.div(data.length - 1 + correction)];
 			}
 		};
-		return mat.__column_oriented_1_dimensional_processing(main);
+		return mat.eachVector1(main);
 	}
 
 	/**

@@ -8,17 +8,19 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import File from "./Util/File.mjs";
-import Format from "./Util/Format.mjs";
-import Log from "./Util/Log.mjs";
+import File from "./utility/File.mjs";
+import Format from "./utility/Format.mjs";
+import Log from "./utility/Log.mjs";
 
-import Random from "./MathUtil/Random.mjs";
-import RoundingMode from "./MathUtil/RoundingMode.mjs";
-import MathContext from "./MathUtil/MathContext.mjs";
-import BigDecimal from "./Math/BigDecimal.mjs";
-import BigInteger from "./Math/BigInteger.mjs";
-import Complex from "./Math/Complex.mjs";
-import Matrix from "./Math/Matrix.mjs";
+import Random from "./math/tool/Random.mjs";
+
+import RoundingMode from "./math/context/RoundingMode.mjs";
+import MathContext from "./math/context/MathContext.mjs";
+
+import BigDecimal from "./math/BigDecimal.mjs";
+import BigInteger from "./math/BigInteger.mjs";
+import Complex from "./math/Complex.mjs";
+import Matrix from "./math/Matrix.mjs";
 
 /**
  * 計算に利用できるデータを提供するクラス

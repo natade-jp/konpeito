@@ -8,9 +8,9 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import LinearAlgebra from "../MathUtil/LinearAlgebra.mjs";
-import Statistics from "../MathUtil/Statistics.mjs";
-import Signal from "../MathUtil/Signal.mjs";
+import LinearAlgebra from "./tool/LinearAlgebra.mjs";
+import Statistics from "./tool/Statistics.mjs";
+import Signal from "./tool/Signal.mjs";
 import Complex from "./Complex.mjs";
 
 /**
@@ -738,7 +738,7 @@ export default class Matrix {
 	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
-	__column_oriented_1_dimensional_processing(array_function) {
+	eachVector1(array_function) {
 		if(this.isRow()) {
 			// 1行であれば、その1行に対して処理を行う
 			const row_array = new Array(this.row_length);
@@ -772,7 +772,7 @@ export default class Matrix {
 	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
-	__column_oriented_2_dimensional_processing(array_function) {
+	eachVector2(array_function) {
 		const y = new Matrix(0);
 		// 行ごとに処理を行う
 		y._resize(this.row_length, 1);
@@ -1349,7 +1349,7 @@ export default class Matrix {
 			}
 			return [x];
 		};
-		return this.__column_oriented_1_dimensional_processing(main);
+		return this.eachVector1(main);
 	}
 	
 	/**
@@ -1367,7 +1367,7 @@ export default class Matrix {
 			}
 			return [x];
 		};
-		return this.__column_oriented_1_dimensional_processing(main);
+		return this.eachVector1(main);
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
