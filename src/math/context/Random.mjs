@@ -95,10 +95,11 @@ export default class Random {
 		let u = 0;
 		const x = this.x;
 		// seedを使用して線形合同法でx[0-16]まで初期値を設定
+		let random_seed = seed;
 		for(let i = 0; i <= 16; i++) {
 			for(let j = 0; j < 32; j++) {
-				seed = RandomTool.multiplication32(seed, 0x5D588B65) + 1;
-				u = (u >>> 1) + ((seed < 0) ? 0x80000000 : 0);
+				random_seed = RandomTool.multiplication32(random_seed, 0x5D588B65) + 1;
+				u = (u >>> 1) + ((random_seed < 0) ? 0x80000000 : 0);
 			}
 			x[i] = u;
 		}
