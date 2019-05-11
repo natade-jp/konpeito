@@ -971,7 +971,7 @@ export default class Signal {
 			}
 			return y;
 		};
-		return is_2_dimensions ? M.eachVector2(main) : M.eachVector1(main);
+		return is_2_dimensions ? M.eachVectorBoth(main) : M.eachVectorAuto(main);
 	}
 
 	/**
@@ -996,7 +996,7 @@ export default class Signal {
 			}
 			return y;
 		};
-		return is_2_dimensions ? M.eachVector2(main) : M.eachVector1(main);
+		return is_2_dimensions ? M.eachVectorBoth(main) : M.eachVectorAuto(main);
 	}
 
 	/**
@@ -1020,7 +1020,7 @@ export default class Signal {
 			}
 			return y;
 		};
-		return M.eachVector1(main);
+		return M.eachVectorAuto(main);
 	}
 
 	/**
@@ -1046,7 +1046,7 @@ export default class Signal {
 			}
 			return y;
 		};
-		return is_2_dimensions ? M.eachVector2(main) : M.eachVector1(main);
+		return is_2_dimensions ? M.eachVectorBoth(main) : M.eachVectorAuto(main);
 	}
 
 	/**
@@ -1072,7 +1072,7 @@ export default class Signal {
 			}
 			return y;
 		};
-		return is_2_dimensions ? M.eachVector2(main) : M.eachVector1(main);
+		return is_2_dimensions ? M.eachVectorBoth(main) : M.eachVectorAuto(main);
 	}
 
 	/**

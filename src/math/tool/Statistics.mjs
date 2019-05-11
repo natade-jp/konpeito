@@ -1476,9 +1476,11 @@ export default class Statistics {
 	/**
 	 * 合計
 	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number)}} [type]
 	 * @returns {Matrix}
 	 */
-	static sum(mat) {
+	static sum(mat, type) {
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
 		const main = function(data) {
 			// カハンの加算アルゴリズム
 			let sum = Complex.ZERO;
@@ -1491,15 +1493,17 @@ export default class Statistics {
 			}
 			return [sum];
 		};
-		return mat.eachVector1(main);
+		return mat.eachVector(main, dim);
 	}
 
 	/**
 	 * 相加平均
 	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number)}} [type]
 	 * @returns {Matrix}
 	 */
-	static mean(mat) {
+	static mean(mat, type) {
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
 		const main = function(data) {
 			// カハンの加算アルゴリズム
 			let sum = Complex.ZERO;
@@ -1512,15 +1516,17 @@ export default class Statistics {
 			}
 			return [sum.div(data.length)];
 		};
-		return mat.eachVector1(main);
+		return mat.eachVector(main, dim);
 	}
 
 	/**
 	 * 相乗平均／幾何平均
 	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number)}} [type]
 	 * @returns {Matrix}
 	 */
-	static geomean(mat) {
+	static geomean(mat, type) {
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
 		const main = function(data) {
 			let x = Complex.ONE;
 			for(let i = 0; i < data.length; i++) {
@@ -1528,19 +1534,89 @@ export default class Statistics {
 			}
 			return [x.sqrt()];
 		};
-		return mat.eachVector1(main);
+		return mat.eachVector(main, dim);
+	}
+
+	
+	/**
+	 * 中央値
+	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static median(mat, type) {
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const compare = function(a, b){
+			return a.compareTo(b);
+		};
+		const main = function(data) {
+			data.sort(compare);
+			let x;
+			if((data.length % 2) === 1) {
+				x = data[Math.floor(data.length / 2)];
+			}
+			else {
+				const x1 = data[Math.floor(data.length / 2) - 1];
+				const x2 = data[Math.floor(data.length / 2)];
+				x = x1.add(x2).div(Complex.TWO);
+			}
+			return [x];
+		};
+		return mat.eachVector(main, dim);
+	}
+
+	/**
+	 * 最頻値
+	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static mode(mat, type) {
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const compare = function(a, b){
+			return a.compareTo(b);
+		};
+		const main = function(data) {
+			data.sort(compare);
+			const map = {};
+			for(let i = 0; i < data.length; i++) {
+				const str = data[i].real + " " + data[i].imag;
+				if(!map[str]) {
+					map[str] = {
+						complex : data[i],
+						value : 1
+					};
+				}
+				else {
+					map[str].value++;
+				}
+			}
+			let max_complex = Complex.ZERO;
+			let max_number = Number.NEGATIVE_INFINITY;
+			for(const key in map) {
+				const tgt = map[key];
+				if(tgt.value > max_number) {
+					max_number	= tgt.value;
+					max_complex	= tgt.complex;
+				}
+			}
+			return [max_complex];
+		};
+		return mat.eachVector(main, dim);
 	}
 
 	/**
 	 * 分散
 	 * @param {Matrix} mat
-	 * @param {number} [cor=0] - 補正値 0(不偏分散), 1(標本分散)
+	 * @param {{dimension : ?(string|number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
-	static var(mat, cor) {
-		const M = mat.mean();
+	static var(mat, type) {
+		const M = Statistics.mean(mat);
+		// 補正値 0(不偏分散), 1(標本分散)
+		const cor = !(type && type.correction) ? 0: Matrix._toFloat(type.correction);
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
 		let col = 0;
-		const correction = arguments.length === 0 ? 0 : Matrix._toFloat(cor);
 		const main = function(data) {
 			let mean;
 			if(M.isScalar()) {
@@ -1558,21 +1634,23 @@ export default class Statistics {
 				return [x.div(data.length)];
 			}
 			else {
-				return [x.div(data.length - 1 + correction)];
+				return [x.div(data.length - 1 + cor)];
 			}
 		};
-		return mat.eachVector1(main);
+		return mat.eachVector(main, dim);
 	}
 
 	/**
 	 * 標準偏差
 	 * @param {Matrix} mat
-	 * @param {number} [cor=0] - 補正値 0(不偏), 1(標本)
+	 * @param {{dimension : ?(string|number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
-	static std(mat, cor) {
-		const correction = arguments.length === 0 ? 0 : Matrix._toFloat(cor);
-		const M = mat.var(correction);
+	static std(mat, type) {
+		// 補正値 0(不偏分散), 1(標本分散)
+		const cor = !(type && type.correction) ? 0: Matrix._toFloat(type.correction);
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const M = Statistics.var(mat, cor, dim);
 		M._each(function(num) {
 			return num.sqrt();
 		});
@@ -1582,17 +1660,18 @@ export default class Statistics {
 	/**
 	 * 共分散行列
 	 * @param {Matrix} mat
-	 * @param {number} [cor=0] - 補正値 0(不偏分散), 1(標本分散)
+	 * @param {{correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
-	static cov(mat, cor) {
-		let correction = arguments.length === 0 ? 0 : Matrix._toFloat(cor);
+	static cov(mat, type) {
+		// 補正値 0(不偏分散), 1(標本分散)
+		const cor = !(type && type.correction) ? 0: Matrix._toFloat(type.correction);
 		if(mat.isVector()) {
-			return mat.var(correction);
+			return Statistics.var(mat, type);
 		}
-		correction = mat.row_length === 1 ? 1 : correction;
+		const correction = mat.row_length === 1 ? 1 : cor;
 		const x = mat.matrix_array;
-		const mean = mat.mean().matrix_array[0];
+		const mean = Statistics.mean(mat).matrix_array[0];
 		// 上三角行列、対角行列
 		const y = new Array(mat.column_length);
 		for(let a = 0; a < mat.column_length; a++) {
@@ -1620,11 +1699,12 @@ export default class Statistics {
 	 * 標本の標準化
 	 * 平均値0、標準偏差1に変更する
 	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number)}} [type]
 	 * @returns {Matrix}
 	 */
-	static normalize(mat) {
-		const mean_zero = mat.sub(mat.mean());
-		const std_one = mean_zero.ndiv(mean_zero.std());
+	static normalize(mat, type) {
+		const mean_zero = mat.sub(Statistics.mean(mat, type));
+		const std_one = mean_zero.ndiv(Statistics.std(mean_zero, type));
 		return std_one;
 	}
 
@@ -1637,5 +1717,31 @@ export default class Statistics {
 		return mat.normalize().cov();
 	}
 
+	/**
+	 * ソート
+	 * @param {Matrix} mat
+	 * @param {{dimension : ?(string|number), order : ?string}} [type]
+	 * @returns {Matrix}
+	 */
+	static sort(mat, type) {
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const order = !(type && type.order) ? "ascend" : type.order;
+		let compare;
+		if(order === "ascend") {
+			compare = function(a, b){
+				return a.compareTo(b);
+			};
+		}
+		else {
+			compare = function(a, b){
+				return a.compareTo(b.negate());
+			};
+		}
+		const main = function(data) {
+			data.sort(compare);
+			return data;
+		};
+		return mat.eachVector(main, dim);
+	}
 
 }

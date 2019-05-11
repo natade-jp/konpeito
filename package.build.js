@@ -36,9 +36,9 @@ const addHeader = function(filename) {
 	const build_date = new Date();
 	let header = [];
 	header.push("/*!");
-	header.push(" * konpeito");
+	header.push(" * konpeito.js");
 	header.push(" * https://github.com/natade-jp/konpeito");
-	header.push(" * Copyright 2013-" + build_date.getFullYear() + " natade");
+	header.push(" * Copyright 2013-" + build_date.getFullYear() + " natade < https://github.com/natade-jp >");
 	header.push(" *");
 	header.push(" * The MIT license.");
 	header.push(" * https://opensource.org/licenses/MIT");

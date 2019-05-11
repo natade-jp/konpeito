@@ -953,7 +953,7 @@ export default class BigInteger {
 	 * 値同士を比較
 	 * 戻り値は、number 型
 	 * @param {BigInteger} number 
-	 * @returns {number} A < B ? 1 : (A === B ? 0 : -1)
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number) {
 		const val = BigInteger._toBigInteger(number);

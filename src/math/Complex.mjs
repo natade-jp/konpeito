@@ -481,7 +481,7 @@ export default class Complex {
 	 */
 	max(number, epsilon) {
 		const x = Complex._toComplex(number);
-		if(this.compareTo(x, epsilon) <= 0) {
+		if(this.compareTo(x, epsilon) >= 0) {
 			return this;
 		}
 		else {
@@ -497,7 +497,7 @@ export default class Complex {
 	 */
 	min(number, epsilon) {
 		const x = Complex._toComplex(number);
-		if(this.compareTo(x, epsilon) >= 0) {
+		if(this.compareTo(x, epsilon) <= 0) {
 			return this;
 		}
 		else {
@@ -510,7 +510,7 @@ export default class Complex {
 	 * 戻り値は、number 型
 	 * @param {Complex} number
 	 * @param {number} [epsilon=Number.EPSILON] - 誤差
-	 * @returns {number} A < B ? 1 : (A === B ? 0 : -1)
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, epsilon) {
 		// ※実数を返す（非Complexオブジェクト）
@@ -522,7 +522,7 @@ export default class Complex {
 		// 符号付きでマンハッタン距離を算出して、距離の比較を行う
 		const a = this.real + this.imag;
 		const b = x.real + x.imag;
-		return a < b ? 1 : -1;
+		return a > b ? 1 : -1;
 	}
 
 	// ----------------------
@@ -721,7 +721,7 @@ export default class Complex {
 				return new Complex(Math.sqrt(this._re));
 			}
 			else {
-				return new Complex([0, Math.sqrt(this._re)]);
+				return new Complex([0, Math.sqrt(-this._re)]);
 			}
 		}
 		const r = Math.sqrt(this.norm);
@@ -961,6 +961,30 @@ export default class Complex {
 		return DEFINE.HALF;
 	}
 
+	/**
+	 * 正の無限大
+	 * @returns {Complex}
+	 */
+	static get POSITIVE_INFINITY() {
+		return DEFINE.POSITIVE_INFINITY;
+	}
+	
+	/**
+	 * 負の無限大
+	 * @returns {Complex}
+	 */
+	static get NEGATIVE_INFINITY() {
+		return DEFINE.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * 非数
+	 * @returns {Complex}
+	 */
+	static get NaN() {
+		return DEFINE.NaN;
+	}
+
 }
 
 /**
@@ -974,6 +998,9 @@ const DEFINE = {
 	MINUS_ONE : new Complex(-1),
 	I : new Complex([0, 1]),
 	PI : new Complex(Math.PI),
-	HALF : new Complex(0.5)
+	HALF : new Complex(0.5),
+	POSITIVE_INFINITY : new Complex(Number.POSITIVE_INFINITY),
+	NEGATIVE_INFINITY : new Complex(Number.NEGATIVE_INFINITY),
+	NaN : new Complex(Number.NaN)
 };
 

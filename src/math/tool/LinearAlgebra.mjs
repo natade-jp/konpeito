@@ -262,7 +262,7 @@ class LinearAlgebraTool {
 			}
 		}
 
-		// ソート
+		// 固有値が大きいものから並べるソート
 		const vd_sort = function(V, d) {
 			const len = d.length;
 			const sortdata = [];
@@ -674,6 +674,21 @@ export default class LinearAlgebra {
 	static rank(mat, epsilon) {
 		const M = Matrix._toMatrix(mat);
 		return Math.abs(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
+	}
+
+	/**
+	 * 行列のトレース、対角和
+	 * @param {Matrix} mat
+	 * @returns {Complex}
+	 */
+	static trace(mat) {
+		const M = Matrix._toMatrix(mat);
+		const len = Math.min(M.row_length, M.column_length);
+		let sum = Complex.ZERO;
+		for(let i = 0; i < len; i++) {
+			sum = sum.add(M.matrix_array[i][i]);
+		}
+		return sum;
 	}
 
 	/**

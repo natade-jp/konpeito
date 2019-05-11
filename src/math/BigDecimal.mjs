@@ -629,7 +629,7 @@ export default class BigDecimal {
 	 * 値同士を比較
 	 * 戻り値は、number 型
 	 * @param {BigDecimal} number 
-	 * @returns {number} A < B ? 1 : (A === B ? 0 : -1)
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number) {
 		const src = this;
@@ -991,7 +991,7 @@ export default class BigDecimal {
 	/**
 	 * A / B
 	 * @param {BigDecimal} number
-	 * @param {{?scale: number, ?context: MathContext, ?roundingMode: RoundingModeEntity}} [type] - 計算に使用する scale, context, roundingMode を設定する
+	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - 計算に使用する scale, context, roundingMode を設定する
 	 * @returns {BigDecimal}
 	 */
 	divide(number, type) {
@@ -1079,7 +1079,7 @@ export default class BigDecimal {
 	/**
 	 * A / B
 	 * @param {BigDecimal} number
-	 * @param {{?scale: number, ?context: MathContext, ?roundingMode: RoundingModeEntity}} [type] - 計算に使用する scale, context, roundingMode を設定する
+	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - 計算に使用する scale, context, roundingMode を設定する
 	 * @returns {BigDecimal}
 	 */
 	div(number, type) {

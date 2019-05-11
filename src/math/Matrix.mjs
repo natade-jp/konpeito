@@ -102,7 +102,7 @@ const ConstructorTool = {
 	 * @returns {Array<number>}
 	 */
 	InterpolationCalculation : function(from, delta, to) {
-		const FromIsGreaterThanTo = to.compareTo(from);
+		const FromIsGreaterThanTo = from.compareTo(to);
 		if(FromIsGreaterThanTo === 0) {
 			return from;
 		}
@@ -113,12 +113,15 @@ const ConstructorTool = {
 		if(delta.isNegative() && (FromIsGreaterThanTo === -1)) {
 			throw "IllegalArgumentException";
 		}
+		// FromIsGreaterThanTo
+		// +1 from の方が大きい。下に減算タイプ
+		// -1 to の方が大きい。上に加算タイプ
 		const rows_array = [];
 		let num = from;
 		rows_array[0] = num;
 		for(let i = 1; i < 0x10000; i++) {
 			num = num.add(delta);
-			if(num.compareTo(to) === FromIsGreaterThanTo) {
+			if(to.compareTo(num) === FromIsGreaterThanTo) {
 				break;
 			}
 			rows_array[i] = num;
@@ -734,11 +737,11 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列の各列及び行（列優先）をベクトルとみなし同一処理を実行
+	 * 行列の列をベクトルとみなし同一処理を実行、行ベクトルであれば行ベクトルに対し同一処理を実行
 	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
-	eachVector1(array_function) {
+	eachVectorAuto(array_function) {
 		if(this.isRow()) {
 			// 1行であれば、その1行に対して処理を行う
 			const row_array = new Array(this.row_length);
@@ -772,14 +775,14 @@ export default class Matrix {
 	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
-	eachVector2(array_function) {
+	eachVectorBoth(array_function) {
 		const y = new Matrix(0);
 		// 行ごとに処理を行う
 		y._resize(this.row_length, 1);
 		for(let row = 0; row < this.row_length; row++) {
 			const row_array = new Array(this.row_length);
 			for(let col = 0; col < this.column_length; col++) {
-				row_array[col] = this.matrix_array[0][col];
+				row_array[col] = this.matrix_array[row][col];
 			}
 			const row_output = array_function(row_array);
 			y._resize(y.row_length, Math.max(y.column_length, row_output.length));
@@ -800,6 +803,83 @@ export default class Matrix {
 			}
 		}
 		return y;
+	}
+
+	/**
+	 * 行列の行をベクトルとみなし同一処理を実行
+	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	eachVectorRow(array_function) {
+		const y = new Matrix(0);
+		// 行ごとに処理を行う
+		y._resize(this.row_length, 1);
+		for(let row = 0; row < this.row_length; row++) {
+			const row_array = new Array(this.row_length);
+			for(let col = 0; col < this.column_length; col++) {
+				row_array[col] = this.matrix_array[row][col];
+			}
+			const row_output = array_function(row_array);
+			y._resize(y.row_length, Math.max(y.column_length, row_output.length));
+			for(let col = 0; col < row_output.length; col++) {
+				y.matrix_array[row][col] = row_output[col];
+			}
+		}
+		return y;
+	}
+
+	/**
+	 * 行列の列をベクトルとみなし同一処理を実行
+	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	eachVectorColumn(array_function) {
+		const y = new Matrix(0);
+		// 列ごとに処理を行う
+		y._resize(1, this.column_length);
+		for(let col = 0; col < this.column_length; col++) {
+			const col_array = new Array(this.row_length);
+			for(let row = 0; row < this.row_length; row++) {
+				col_array[row] = this.matrix_array[row][col];
+			}
+			const col_output = array_function(col_array);
+			y._resize(Math.max(y.row_length, col_output.length), y.column_length);
+			for(let row = 0; row < col_output.length; row++) {
+				y.matrix_array[row][col] = col_output[row];
+			}
+		}
+		return y;
+	}
+
+	/**
+	 * 引数に設定された行／列をベクトルとみなし同一処理を実行
+	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @param {string|number} [dimtype="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	eachVector(array_function, dimtype) {
+		let target = dimtype !== undefined ? dimtype : "auto";
+		if(	(typeof target === "string") || (target instanceof String)) {
+			target = target.toLocaleLowerCase();
+		}
+		else if((typeof target !== "number") && !(target instanceof Number)) {
+			target = Matrix._toInteger(target);
+		}
+		if((target === "auto") || (target === 0)) {
+			return this.eachVectorAuto(array_function);
+		}
+		else if((target === "row") || (target === 1)) {
+			return this.eachVectorRow(array_function);
+		}
+		else if((target === "column") || (target === 2)) {
+			return this.eachVectorColumn(array_function);
+		}
+		else if((target === "both") || (target === 3)) {
+			return this.eachVectorBoth(array_function);
+		}
+		else {
+			throw "eachVector argument " + dimtype;
+		}
 	}
 
 	/**
@@ -1316,7 +1396,7 @@ export default class Matrix {
 	 * 行列同士の場合は、各項の比較結果が入った、Matrix型。
 	 * @param {Matrix} number 
 	 * @param {number} [epsilon] - 誤差
-	 * @returns {number|Matrix} A < B ? 1 : (A === B ? 0 : -1)
+	 * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, epsilon) {
 		const M1 = this;
@@ -1343,13 +1423,13 @@ export default class Matrix {
 		const main = function(data) {
 			let x = data[0];
 			for(let i = 1; i < data.length; i++) {
-				if(x.compareTo(data[i], epsilon) > 0) {
+				if(x.compareTo(data[i], epsilon) < 0) {
 					x = data[i];
 				}
 			}
 			return [x];
 		};
-		return this.eachVector1(main);
+		return this.eachVectorAuto(main);
 	}
 	
 	/**
@@ -1361,13 +1441,13 @@ export default class Matrix {
 		const main = function(data) {
 			let x = data[0];
 			for(let i = 1; i < data.length; i++) {
-				if(x.compareTo(data[i], epsilon) < 0) {
+				if(x.compareTo(data[i], epsilon) > 0) {
 					x = data[i];
 				}
 			}
 			return [x];
 		};
-		return this.eachVector1(main);
+		return this.eachVectorAuto(main);
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
@@ -2270,6 +2350,14 @@ export default class Matrix {
 	}
 
 	/**
+	 * 行列のトレース、対角和
+	 * @returns {number}
+	 */
+	trace() {
+		return LinearAlgebra.trace(this);
+	}
+
+	/**
 	 * ドット積（内積） A・B
 	 * @param {Matrix} number 
 	 * @param {number} [dimension=1] 計算するときに使用する次元（1 or 2）
@@ -2633,49 +2721,70 @@ export default class Matrix {
 	
 	/**
 	 * 合計
+	 * @param {{dimension : ?(string|number)}} [type]
 	 * @returns {Matrix}
 	 */
-	sum() {
-		return Statistics.sum(this);
+	sum(type) {
+		return Statistics.sum(this, type);
 	}
 
 	/**
 	 * 相加平均
+	 * @param {{dimension : (string|number)}} [type]
 	 * @returns {Matrix}
 	 */
-	mean() {
-		return Statistics.mean(this);
+	mean(type) {
+		return Statistics.mean(this, type);
 	}
 
 	/**
 	 * 相乗平均／幾何平均
+	 * @param {{dimension : ?(string|number)}} [type]
 	 * @returns {Matrix}
 	 */
-	geomean() {
-		return Statistics.geomean(this);
+	geomean(type) {
+		return Statistics.geomean(this, type);
+	}
+
+	/**
+	 * 中央値
+	 * @param {{dimension : ?(string|number)}} [type]
+	 * @returns {Matrix}
+	 */
+	median(type) {
+		return Statistics.median(this, type);
+	}
+
+	/**
+	 * 最頻値
+	 * @param {{dimension : ?(string|number)}} [type]
+	 * @returns {Matrix}
+	 */
+	mode(type) {
+		return Statistics.mode(this, type);
 	}
 
 	/**
 	 * 分散
-	 * @param {number} [cor=0] - 補正値 0(不偏分散), 1(標本分散)
+	 * @param {{dimension : ?(string|number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
-	var(cor=0) {
-		return Statistics.var(this, cor);
+	var(type) {
+		return Statistics.var(this, type);
 	}
 
 	/**
 	 * 標準偏差
-	 * @param {Matrix} [cor=0] - 補正値 0(不偏), 1(標本)
+	 * @param {{dimension : ?(string|number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
-	std(cor=0) {
-		return Statistics.std(this, cor);
+	std(type) {
+		return Statistics.std(this, type);
 	}
 
 	/**
 	 * 共分散行列
-	 * @param {Matrix} [cor=0] - 補正値 0(不偏分散), 1(標本分散)
+	 * @param {{correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
 	cov(cor=0) {
@@ -2685,10 +2794,11 @@ export default class Matrix {
 	/**
 	 * 標本の標準化
 	 * 平均値0、標準偏差1に変更する
+	 * @param {{dimension : ?(string|number)}} [type]
 	 * @returns {Matrix}
 	 */
-	normalize() {
-		return Statistics.normalize(this);
+	normalize(type) {
+		return Statistics.normalize(this, type);
 	}
 
 	/**
@@ -2697,6 +2807,15 @@ export default class Matrix {
 	 */
 	corrcoef() {
 		return Statistics.corrcoef(this);
+	}
+
+	/**
+	 * ソート
+	 * @param {{dimension : ?(string|number), order : ?string}} [type]
+	 * @returns {Matrix}
+	 */
+	sort(type) {
+		return Statistics.sort(this, type);
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
