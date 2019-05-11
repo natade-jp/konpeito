@@ -400,7 +400,7 @@ class LinearAlgebraTool {
 				return new Complex(noise.nextGaussian());
 			}, M2.row_length, add_vectors);
 			// 列に追加する
-			M2._concat_left(R);
+			M2._concatLeft(R);
 			// 正規直行行列を作成する
 			orthogonal_matrix = LinearAlgebraTool.doGramSchmidtOrthonormalization(M2);
 			// 正しく作成できていたら完了
@@ -744,9 +744,9 @@ export default class LinearAlgebra {
 				}
 				//交換を行う
 				if(k !== pivot) {
-					L._exchange_row(k, pivot);
-					U._exchange_row(k, pivot);
-					P._exchange_row(k, pivot);
+					L._exchangeRow(k, pivot);
+					U._exchangeRow(k, pivot);
+					P._exchangeRow(k, pivot);
 				}
 			}
 			// 消去
@@ -791,7 +791,7 @@ export default class LinearAlgebra {
 		}
 		// 行列を準備する
 		const M = new Matrix(A);
-		M._concat_left(arg);
+		M._concatLeft(arg);
 		const long_matrix_array = M.matrix_array;
 		const long_length = M.column_length;
 		const len = A.column_length;
@@ -803,7 +803,7 @@ export default class LinearAlgebra {
 				// k列目で最も大きな行を取得(k列目から調べる)
 				const row_num = LinearAlgebraTool.getMaxRowNumber(M, k, k).index;
 				//交換を行う
-				M._exchange_row(k, row_num);
+				M._exchangeRow(k, row_num);
 			}
 			//ピポットの正規化
 			{
@@ -1005,7 +1005,7 @@ export default class LinearAlgebra {
 		// ガウス・ジョルダン法
 		// 初期値の設定
 		const M = new Matrix(X);
-		M._concat_left(Matrix.eye(len));
+		M._concatLeft(Matrix.eye(len));
 		const long_matrix_array = M.matrix_array;
 		const long_length = M.column_length;
 
@@ -1016,7 +1016,7 @@ export default class LinearAlgebra {
 				// k列目で最も大きな行を取得(k列目から調べる)
 				const row_num = LinearAlgebraTool.getMaxRowNumber(M, k, k).index;
 				//交換を行う
-				M._exchange_row(k, row_num);
+				M._exchangeRow(k, row_num);
 			}
 			//ピポットの正規化
 			{

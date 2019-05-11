@@ -1975,14 +1975,25 @@ export default class Matrix {
 	}
 
 	/**
+	 * 行列を時計回りに回転
+	 * @param {number} rot_90_count - 回転する回数
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	rot90(rot_90_count) {
+		return this.clone()._rot90(rot_90_count);
+	}
+
+	/**
 	 * 行列を拡張、拡張した項は、0で初期化。
 	 * ミュータブル
-	 * @param {number} row_length - 新しい行の長さ
-	 * @param {number} column_length - 新しい列の長さ
+	 * @param {number} new_row_length - 新しい行の長さ
+	 * @param {number} new_column_length - 新しい列の長さ
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
-	_resize(row_length, column_length) {
+	_resize(new_row_length, new_column_length) {
+		const row_length	= Matrix._toInteger(new_row_length);
+		const column_length	= Matrix._toInteger(new_column_length);
 		if((row_length === this.row_length) && (column_length === this.column_length)) {
 			return this;
 		}
@@ -2019,15 +2030,26 @@ export default class Matrix {
 	}
 
 	/**
+	 * 行列を拡張、拡張した項は、0で初期化
+	 * @param {number} row_length - 新しい行の長さ
+	 * @param {number} column_length - 新しい列の長さ
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	resize(row_length, column_length) {
+		return this.clone().resize(row_length, column_length);
+	}
+
+	/**
 	 * 行列内の行を消去
 	 * ミュータブル
-	 * @param {number} row_index - 行番号
+	 * @param {number} delete_row_index - 行番号
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
-	_delete_row(row_index) {
+	_deleteRow(delete_row_index) {
+		const row_index	= Matrix._toInteger(delete_row_index);
 		if((this.row_length === 1) || (this.row_length <= row_index)) {
-			throw "_delete_row";
+			throw "_deleteRow";
 		}
 		this.matrix_array.splice(row_index, 1);
 		this.row_length--;
@@ -2038,13 +2060,14 @@ export default class Matrix {
 	/**
 	 * 行列内の列を消去
 	 * ミュータブル
-	 * @param {number} column_index - 列番号
+	 * @param {number} delete_column_index - 列番号
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
-	_delete_column(column_index) {
+	_deleteColumn(delete_column_index) {
+		const column_index	= Matrix._toInteger(delete_column_index);
 		if((this.column_length === 1) || (this.column_length <= column_index)) {
-			throw "_delete_column";
+			throw "_deleteColumn";
 		}
 		for(let row = 0; row < this.row_length; row++) {
 			this.matrix_array[row].splice(column_index, 1);
@@ -2055,16 +2078,36 @@ export default class Matrix {
 	}
 
 	/**
+	 * 行列内の行を消去
+	 * @param {number} delete_row_index - 行番号
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	deleteRow(delete_row_index) {
+		return this.clone()._deleteRow(delete_row_index);
+	}
+
+	/**
+	 * 行列内の列を消去
+	 * @param {number} delete_column_index - 列番号
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	deleteColumn(delete_column_index) {
+		return this.clone()._deleteColumn(delete_column_index);
+	}
+
+	/**
 	 * 行列内の行を交換
 	 * ミュータブル
-	 * @param {number} row_index1 - 行番号1
-	 * @param {number} row_index2 - 行番号2
+	 * @param {number} exchange_row_index1 - 行番号1
+	 * @param {number} exchange_row_index2 - 行番号2
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
-	_exchange_row(row_index1, row_index2) {
+	_exchangeRow(exchange_row_index1, exchange_row_index2) {
+		const row_index1	= Matrix._toInteger(exchange_row_index1);
+		const row_index2	= Matrix._toInteger(exchange_row_index2);
 		if((this.row_length === 1) || (this.row_length <= row_index1) || (this.row_length <= row_index2)) {
-			throw "_exchange_row";
+			throw "_exchangeRow";
 		}
 		if(row_index1 === row_index2) {
 			return this;
@@ -2079,14 +2122,16 @@ export default class Matrix {
 	/**
 	 * 行列内の列を交換
 	 * ミュータブル
-	 * @param {number} column_index1 - 行番号1
-	 * @param {number} column_index2 - 行番号2
+	 * @param {number} exchange_column_index1 - 行番号1
+	 * @param {number} exchange_column_index2 - 行番号2
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
-	_exchange_column(column_index1, column_index2) {
+	_exchangeColumn(exchange_column_index1, exchange_column_index2) {
+		const column_index1	= Matrix._toInteger(exchange_column_index1);
+		const column_index2	= Matrix._toInteger(exchange_column_index2);
 		if((this.column_length === 1) || (this.column_length <= column_index1) || (this.column_length <= column_index2)) {
-			throw "_exchange_column";
+			throw "_exchangeColumn";
 		}
 		if(column_index1 === column_index2) {
 			return this;
@@ -2101,14 +2146,37 @@ export default class Matrix {
 	}
 
 	/**
+	 * 行列内の行を交換
+	 * @param {number} exchange_row_index1 - 行番号1
+	 * @param {number} exchange_row_index2 - 行番号2
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	exchangeRow(exchange_row_index1, exchange_row_index2) {
+		return this.clone()._exchangeRow(exchange_row_index1, exchange_row_index2);
+	}
+
+	/**
+	 * 行列内の列を交換
+	 * @param {number} exchange_column_index1 - 行番号1
+	 * @param {number} exchange_column_index2 - 行番号2
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	exchangeColumn(exchange_column_index1, exchange_column_index2) {
+		return this.clone()._exchangeColumn(exchange_column_index1, exchange_column_index2);
+	}
+
+	/**
 	 * 行列の右に行列を結合
 	 * ミュータブル
 	 * @param {Matrix} left_matrix - 結合したい行列
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
-	_concat_left(left_matrix) {
+	_concatLeft(left_matrix) {
 		const M = Matrix._toMatrix(left_matrix);
+		if(this.row_length != M.row_length) {
+			throw "_concatLeft";
+		}
 		for(let row = 0; row < this.row_length; row++) {
 			for(let col = 0; col < M.column_length; col++) {
 				this.matrix_array[row].push(M.matrix_array[row][col]);
@@ -2126,14 +2194,35 @@ export default class Matrix {
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
-	_concat_bottom(bottom_matrix) {
+	_concatBottom(bottom_matrix) {
 		const M = Matrix._toMatrix(bottom_matrix);
+		if(this.column_length != M.column_length) {
+			throw "_concatBottom";
+		}
 		for(let row = 0; row < M.row_length; row++) {
 			this.matrix_array.push(M.matrix_array[row]);
 		}
 		this.row_length += M.row_length;
 		this._clearCash();
 		return this;
+	}
+
+	/**
+	 * 行列の右に行列を結合
+	 * @param {Matrix} left_matrix - 結合したい行列
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	concatLeft(left_matrix) {
+		return this.clone()._concatLeft(left_matrix);
+	}
+
+	/**
+	 * 行列の下に行列を結合
+	 * @param {Matrix} bottom_matrix - 結合したい行列
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	concatBottom(bottom_matrix) {
+		return this.clone()._concatBottom(bottom_matrix);
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
