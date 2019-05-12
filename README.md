@@ -25,6 +25,27 @@ Has the following features.
 - Matrix and Complex can't use huge real numbers like BigInteger or BigDecimal, but they are powerful.
 - Matrix initialization can be described as Scilab, Octave, MATLAB.
 
+## Insatall
+
+This library can be installed using [npm](https://www.npmjs.com/package/konpeito) .
+```
+npm install konpeito
+```
+
+```
+const konpeito = require("konpeito")
+const Matrix = konpeito.Matrix;
+const $ = Matrix.create;
+
+console.log($("[1 2;3 4;5 6]").toString());
+```
+
+Please use mjs file when using ES6 modules.
+And use js file when using UMD.
+
+- `./build/konpeito.module.mjs`
+- `./build/konpeito.umd.js`
+
 ## Sample
 
 ### start with Node.js
@@ -47,7 +68,7 @@ node --experimental-modules main.mjs
 arbitrary-precision integer class.
 
 ```
-import konpeito from "konpeito.mjs";
+import konpeito from "konpeito.module.mjs";
 const BigInteger = konpeito.BigInteger;
 const $ = BigInteger.create;
 
@@ -63,7 +84,7 @@ console.log($("7").pow("50").toString());
 floating-point math class.
 
 ```
-import konpeito from "konpeito.mjs";
+import konpeito from "konpeito.module.mjs";
 const BigDecimal = konpeito.BigDecimal;
 const MathContext = konpeito.MathContext;
 const $ = BigDecimal.create;
@@ -80,7 +101,7 @@ complex class.
 - use the JavaScript standard number.
 
 ```
-import konpeito from "konpeito.mjs";
+import konpeito from "konpeito.module.mjs";
 const Complex = konpeito.Complex;
 const $ = Complex.create;
 
@@ -96,7 +117,7 @@ complex matrix class.
 - Some methods do not support complex arithmetic.
 
 ```
-import konpeito from "konpeito.mjs";
+import konpeito from "konpeito.module.mjs";
 const Matrix = konpeito.Matrix;
 const $ = Matrix.create;
 
