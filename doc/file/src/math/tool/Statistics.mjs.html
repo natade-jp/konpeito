@@ -1759,10 +1759,11 @@ export default class Statistics {
 	/**
 	 * &#x76F8;&#x95A2;&#x884C;&#x5217;
 	 * @param {Matrix} mat
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
-	static corrcoef(mat) {
-		return mat.normalize().cov();
+	static corrcoef(mat, type) {
+		return Statistics.cov(Statistics.normalize(mat, type), type);
 	}
 
 	/**

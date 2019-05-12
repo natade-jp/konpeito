@@ -62,9 +62,58 @@ import Signal from &quot;./tool/Signal.mjs&quot;;
 import Complex from &quot;./Complex.mjs&quot;;
 
 /**
- * &#x30B3;&#x30F3;&#x30B9;&#x30C8;&#x30E9;&#x30AF;&#x30BF;&#x7528;&#x306E;&#x95A2;&#x6570;&#x7FA4;
+ * Matrix &#x5185;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x95A2;&#x6570;&#x7FA4;
  */
-const ConstructorTool = {
+class MatrixTool {
+
+	/**
+	 * &#x884C;&#x5217;&#x306E;&#x4F4D;&#x7F6E;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;&#x3001;&#x5B9F;&#x969B;&#x306E;&#x5024;&#x3092;&#x4F5C;&#x6210;
+	 * @param data {*} - &#x8ABF;&#x67FB;&#x3059;&#x308B;&#x5024;
+	 * @param max {number} - &quot;:&quot;&#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x521D;&#x671F;&#x5316;&#x3059;&#x308B;&#x914D;&#x5217;&#x306E;&#x9577;&#x3055;
+	 * @param geta {number} - &quot;:&quot;&#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x521D;&#x671F;&#x5316;&#x3059;&#x308B;&#x5024;&#x306E;&#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;
+	 * @returns {Array&lt;number&gt;}
+	 */
+	static toPositionArrayFromObject(data, max, geta) {
+		let y;
+		if((typeof data === &quot;string&quot;) || (data instanceof String)) {
+			y = MatrixTool.toArrayFromString(data);
+			if(y === &quot;:&quot;) {
+				y = new Array(max);
+				for(let i = 0; i &lt; max; i++) {
+					y[i] =  i + geta;
+				}
+			}
+			else {
+				for(let i = 0; i &lt; y.length; i++) {
+					y[i] = y[i].real | 0;
+				}
+			}
+			return y;
+		}
+		let t_data = data;
+		if(!(t_data instanceof Matrix) &amp;&amp; !(t_data instanceof Complex) &amp;&amp; !((typeof t_data === &quot;number&quot;) || (t_data instanceof Number))) {
+			t_data = Matrix._toMatrix(t_data);
+		}
+		if(t_data instanceof Matrix) {
+			if(!t_data.isVector()) {
+				throw &quot;getMatrix argument &quot; + t_data;
+			}
+			const len = t_data.length;
+			y = new Array(t_data.length);
+			if(t_data.isRow()) {
+				for(let i = 0; i &lt; len; i++) {
+					y[i] = t_data.matrix_array[0][i].real | 0;
+				}
+			}
+			else if(t_data.isColumn()) {
+				for(let i = 0; i &lt; len; i++) {
+					y[i] = t_data.matrix_array[i][0].real | 0;
+				}
+			}
+			return y;
+		}
+		return [ Matrix._toInteger(t_data) ];
+	}
 
 	/**
 	 * &#x5BFE;&#x8C61;&#x3067;&#x306F;&#x306A;&#x3044;regexp&#x306E;&#x60C5;&#x5831;&#x4EE5;&#x5916;&#x3082;&#x62BD;&#x51FA;match
@@ -72,7 +121,7 @@ const ConstructorTool = {
 	 * @param {RegExp} regexp - &#x691C;&#x7D22;&#x3057;&#x305F;&#x3044;&#x6B63;&#x898F;&#x8868;&#x73FE;
 	 * @returns {Array&lt;Object&lt;boolean, string&gt;&gt;}
 	 */
-	match2 : function(text, regexp) {
+	static match2(text, regexp) {
 		// &#x5BFE;&#x8C61;&#x3067;&#x306F;&#x306A;&#x3044;regexp&#x306E;&#x60C5;&#x5831;&#x4EE5;&#x5916;&#x3082;&#x62BD;&#x51FA;match
 		// &#x3064;&#x307E;&#x308A; &quot;1a2b&quot; &#x3067; \d &#x3092;&#x62BD;&#x51FA;&#x3059;&#x308B;&#x3068;&#x3001;&#x6B21;&#x306E;&#x3088;&#x3046;&#x306B;&#x62BD;&#x51FA;&#x3055;&#x308C;&#x308B;
 		// [false &quot;1&quot;]
@@ -99,28 +148,28 @@ const ConstructorTool = {
 			search_target = search_target.substr(match.index + match[0].length);
 		}
 		return output;
-	},
+	}
 	
 	/**
 	 * &#x30D6;&#x30E9;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x56F2;&#x307E;&#x308C;&#x3066;&#x3044;&#x305F;&#x3089;&#x3001;&#x524D;&#x5F8C;&#x306E;&#x30D6;&#x30E9;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x9664;&#x53BB;
 	 * @param {string} text - &#x30D6;&#x30E9;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x9664;&#x53BB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;
 	 * @returns {string|null} &#x9664;&#x53BB;&#x3057;&#x305F;&#x6587;&#x5B57;&#x5217;&#xFF08;&#x30D6;&#x30E9;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x3001;null&#xFF09;
 	 */
-	trimBracket : function(text) {
+	static trimBracket(text) {
 		// &#x524D;&#x5F8C;&#x306B;[]&#x304C;&#x3042;&#x308B;&#x304B;&#x78BA;&#x8A8D;
 		if( !(/^\[/).test(text) || !(/\]$/).test(text)) {
 			return null;
 		}
 		// &#x524D;&#x5F8C;&#x306E;[]&#x3092;&#x9664;&#x53BB;
 		return text.substring(1, text.length - 1);
-	},
+	}
 
 	/**
 	 * JSON&#x3067;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;Matrix&#x578B;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
 	 * @param {string} text - &#x8ABF;&#x67FB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;&#x5217;
 	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Matrix&#x578B;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x306E;&#x914D;&#x5217;
 	 */
-	toMatrixFromStringForArrayJSON : function(text) {
+	static toMatrixFromStringForArrayJSON(text) {
 		const matrix_array = [];
 		// &#x3055;&#x3089;&#x306B;&#x30D6;&#x30E9;&#x30F3;&#x30B1;&#x30C3;&#x30C8;&#x5185;&#x3092;&#x62BD;&#x51FA;
 		let rows = text.match(/\[[^\]]+\]/g);
@@ -140,16 +189,16 @@ const ConstructorTool = {
 			matrix_array[row_count] = rows_array;
 		}
 		return matrix_array;
-	},
+	}
 
 	/**
 	 * &#x521D;&#x671F;&#x5024;&#x3068;&#x5DEE;&#x5206;&#x5024;&#x3068;&#x6700;&#x7D42;&#x5024;&#x304B;&#x3089;&#x3001;&#x305D;&#x306E;&#x5024;&#x304C;&#x5165;&#x3063;&#x305F;&#x914D;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-	 * @param {number} from - &#x6700;&#x521D;&#x306E;&#x5024;
-	 * @param {number} delta - &#x5DEE;&#x5206;
-	 * @param {number} to - &#x7E70;&#x308A;&#x8FD4;&#x3059;&#x5148;&#x306E;&#x5024;&#xFF08;&#x3053;&#x306E;&#x5024;&#x306F;&#x542B;&#x3081;&#x306A;&#x3044;&#xFF09;
-	 * @returns {Array&lt;number&gt;}
+	 * @param {Complex} from - &#x6700;&#x521D;&#x306E;&#x5024;
+	 * @param {Complex} delta - &#x5DEE;&#x5206;
+	 * @param {Complex} to - &#x7E70;&#x308A;&#x8FD4;&#x3059;&#x5148;&#x306E;&#x5024;&#xFF08;&#x3053;&#x306E;&#x5024;&#x306F;&#x542B;&#x3081;&#x306A;&#x3044;&#xFF09;
+	 * @returns {Array&lt;Complex&gt;}
 	 */
-	InterpolationCalculation : function(from, delta, to) {
+	static InterpolationCalculation(from, delta, to) {
 		const FromIsGreaterThanTo = from.compareTo(to);
 		if(FromIsGreaterThanTo === 0) {
 			return from;
@@ -175,14 +224,14 @@ const ConstructorTool = {
 			rows_array[i] = num;
 		}
 		return rows_array;
-	},
+	}
 
 	/**
 	 * &#x6587;&#x5B57;&#x5217;&#x304B;&#x3089;Matrix&#x578B;&#x306E;&#x884C;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x884C;&#x90E8;&#x5206;&#x306B;&#x5909;&#x63DB;
 	 * @param {string} row_text - &#x884C;&#x5217;&#x306E;1&#x884C;&#x3092;&#x8868;&#x3059;&#x6587;&#x5B57;&#x5217;
 	 * @returns {Array&lt;Complex&gt;}
 	 */
-	toArrayFromString : function(row_text) {
+	static toArrayFromString(row_text) {
 		// &#x300C;:&#x300D;&#x306E;&#x307F;&#x8A18;&#x8F09;&#x3055;&#x308C;&#x3066;&#x3044;&#x306A;&#x3044;&#x304B;&#x306E;&#x78BA;&#x8A8D;
 		if(row_text.trim() === &quot;:&quot;) {
 			return &quot;:&quot;;
@@ -194,7 +243,7 @@ const ConstructorTool = {
 		// reg2&#x512A;&#x5148;&#x3067;&#x691C;&#x7D22;
 		const reg3 = new RegExp(&quot;(&quot; + reg2.source + &quot;)|(&quot; + reg1.source + &quot;)&quot;, &quot;i&quot;);
 		// &#x554F;&#x984C;&#x3068;&#x3057;&#x3066; 1 - -j&#x304C;&#x901A;&#x308B;
-		const xs = ConstructorTool.match2(row_text, reg3);
+		const xs = MatrixTool.match2(row_text, reg3);
 		const rows_array = [];
 
 		for(let i = 0; i &lt; xs.length; i++) {
@@ -218,7 +267,7 @@ const ConstructorTool = {
 					to = new Complex(xs[i + 2][1]);
 					i += 2;
 				}
-				const ip_array = ConstructorTool.InterpolationCalculation(from, delta, to);
+				const ip_array = MatrixTool.InterpolationCalculation(from, delta, to);
 				for(let j = 0; j &lt; ip_array.length; j++) {
 					rows_array.push(ip_array[j]);
 				}
@@ -229,66 +278,66 @@ const ConstructorTool = {
 		}
 
 		return rows_array;
-	},
+	}
 
 	/**
 	 * JSON&#x4EE5;&#x5916;&#x306E;&#x6587;&#x5B57;&#x5217;&#x3067;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;Matrix&#x578B;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
 	 * @param {string} text - &#x8ABF;&#x67FB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;&#x5217;
 	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Matrix&#x578B;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x306E;&#x914D;&#x5217;
 	 */
-	toMatrixFromStringForArrayETC : function(text) {
+	static toMatrixFromStringForArrayETC(text) {
 		// &#x884C;&#x3054;&#x3068;&#x3092;&#x62BD;&#x51FA;&#x3057;&#x3066;
 		const rows = text.split(&quot;;&quot;);
 		const matrix_array = new Array(rows.length);
 		for(let row_count = 0; row_count &lt; rows.length; row_count++) {
 			// &#x5404;&#x884C;&#x306E;&#x6587;&#x5B57;&#x3092;&#x89E3;&#x6790;
-			matrix_array[row_count] = ConstructorTool.toArrayFromString(rows[row_count]);
+			matrix_array[row_count] = MatrixTool.toArrayFromString(rows[row_count]);
 		}
 		return matrix_array;
-	},
+	}
 
 	/**
 	 * &#x884C;&#x5217;&#x7528;&#x306E;&#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;&#x69CB;&#x6210;&#x3055;&#x308C;&#x308B;Matrix&#x578B;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
 	 * @param {string} text - &#x8ABF;&#x67FB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;&#x5217;
 	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Matrix&#x578B;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x306E;&#x914D;&#x5217;
 	 */
-	toMatrixFromStringForArray : function(text) {
+	static toMatrixFromStringForArray(text) {
 		// JSON&#x5F62;&#x5F0F;
 		if(/[[\],]/.test(text)) {
-			return ConstructorTool.toMatrixFromStringForArrayJSON(text);
+			return MatrixTool.toMatrixFromStringForArrayJSON(text);
 		}
 		// &#x305D;&#x308C;&#x4EE5;&#x5916;(MATLAB, Octave, Scilab)
 		else {
-			return ConstructorTool.toMatrixFromStringForArrayETC(text);
+			return MatrixTool.toMatrixFromStringForArrayETC(text);
 		}
-	},
+	}
 
 	/**
 	 * &#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;Matrix&#x578B;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
 	 * @param {string} text - &#x8ABF;&#x67FB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;&#x5217;
 	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Matrix&#x578B;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x306E;&#x914D;&#x5217;
 	 */
-	toMatrixFromString : function(text) {
+	static toMatrixFromString(text) {
 		// &#x524D;&#x5F8C;&#x306E;&#x30B9;&#x30DA;&#x30FC;&#x30B9;&#x3092;&#x9664;&#x53BB;
 		const trimtext = text.replace(/^\s*|\s*$/g, &quot;&quot;);
 		// &#x30D6;&#x30E9;&#x30F3;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x5916;&#x3059;
-		const withoutBracket = ConstructorTool.trimBracket(trimtext);
+		const withoutBracket = MatrixTool.trimBracket(trimtext);
 		if(withoutBracket) {
 			// &#x914D;&#x5217;&#x7528;&#x306E;&#x521D;&#x671F;&#x5316;
-			return ConstructorTool.toMatrixFromStringForArray(withoutBracket);
+			return MatrixTool.toMatrixFromStringForArray(withoutBracket);
 		}
 		else {
 			// &#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x7528;&#x306E;&#x521D;&#x671F;&#x5316;
 			return [[new Complex(text)]];
 		}
-	},
+	}
 
 	/**
 	 * Matrix&#x578B;&#x5185;&#x90E8;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x884C;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x3068;&#x3057;&#x3066;&#x6B63;&#x3057;&#x3044;&#x304B;&#x3092;&#x8ABF;&#x3079;&#x308B;
 	 * @param {Array&lt;Array&lt;Complex&gt;&gt;} m_array
 	 * @returns {boolean} 
 	 */
-	isCorrectMatrixArray : function(m_array) {
+	static isCorrectMatrixArray(m_array) {
 		if(m_array.length === 0) {
 			return false;
 		}
@@ -303,7 +352,7 @@ const ConstructorTool = {
 		}
 		return true;
 	}
-};
+}
 
 /**
  * &#x8907;&#x7D20;&#x884C;&#x5217;&#x30AF;&#x30E9;&#x30B9; (immutable)
@@ -397,12 +446,12 @@ export default class Matrix {
 			// &#x6587;&#x5B57;&#x5217;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x6587;&#x5B57;&#x5217;&#x89E3;&#x6790;&#x3092;&#x884C;&#x3046;
 			else if(typeof y === &quot;string&quot; || y instanceof String) {
 				is_check_string = true;
-				matrix_array = ConstructorTool.toMatrixFromString(y);
+				matrix_array = MatrixTool.toMatrixFromString(y);
 			}
 			// &#x6587;&#x5B57;&#x5217;&#x5909;&#x63DB;&#x3067;&#x304D;&#x308B;&#x5834;&#x5408;&#x306F;&#x8FD4;&#x9084;&#x5F8C;&#x306B;&#x3001;&#x6587;&#x5B57;&#x5217;&#x89E3;&#x6790;&#x3092;&#x884C;&#x3046;
 			else if(y instanceof Object &amp;&amp; y.toString) {
 				is_check_string = true;
-				matrix_array = ConstructorTool.toMatrixFromString(y.toString());
+				matrix_array = MatrixTool.toMatrixFromString(y.toString());
 			}
 			// &#x5358;&#x7D14;&#x306A;&#x30D3;&#x30EB;&#x30C8;&#x30A4;&#x30F3;&#x306E;&#x6570;&#x5024;&#x306A;&#x3069;
 			else {
@@ -421,7 +470,7 @@ export default class Matrix {
 				}
 			}
 		}
-		if(!ConstructorTool.isCorrectMatrixArray(matrix_array)) {
+		if(!MatrixTool.isCorrectMatrixArray(matrix_array)) {
 			throw &quot;new Matrix IllegalArgumentException&quot;;
 		}
 		
@@ -931,78 +980,76 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x7B87;&#x6240;&#x306E;&#x5024;
-	 * @param {Matrix} arg1 - &#x4F4D;&#x7F6E;&#xFF0F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x5834;&#x5408;&#x306F;&#x4F55;&#x756A;&#x76EE;&#x306E;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x304B;
-	 * @param {Matrix} [arg2] - &#x5217;&#x756A;&#x53F7;&#xFF08;&#x884C;&#x756A;&#x53F7;&#x3068;&#x5217;&#x756A;&#x53F7;&#x3067;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x5834;&#x5408;&#xFF08;&#x4EFB;&#x610F;&#xFF09;&#xFF09;
-	 * @returns {Complex} 
-	 * @todo 1&#x3064;&#x3057;&#x304B;&#x6307;&#x5B9A;&#x3067;&#x304D;&#x306A;&#x3044;&#x306E;&#x3067;&#x8907;&#x6570;&#x6307;&#x5B9A;&#x3067;&#x304D;&#x308B;&#x3082;&#x306E;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x305F;&#x3044;
+	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x7B87;&#x6240;&#x306E;&#x884C;&#x5217;
+	 * @param {Matrix} row - &#x62BD;&#x51FA;&#x3059;&#x308B;&#x884C;&#x756A;&#x53F7;&#x304C;&#x5165;&#x3063;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;,&quot;:&quot;&#x3067;&#x5168;&#x3066;&#x306E;&#x884C;&#x62BD;&#x51FA;
+	 * @param {Matrix} col - &#x62BD;&#x51FA;&#x3059;&#x308B;&#x5217;&#x756A;&#x53F7;&#x304C;&#x5165;&#x3063;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;,&quot;:&quot;&#x3067;&#x5168;&#x3066;&#x306E;&#x5217;&#x62BD;&#x51FA;
+	 * @param {boolean} [isUpOffset=false] - &#x4F4D;&#x7F6E;&#x306E;&#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;&#x3092;1&#x306B;&#x3059;&#x308B;&#x304B;
+	 * @returns {Matrix} 
 	 */
-	getComplex(arg1, arg2) {
-		let arg1_data = null;
-		let arg2_data = null;
-		{
-			if(typeof arg1 === &quot;string&quot; || arg1 instanceof String) {
-				arg1_data = new Matrix(arg1);
+	getMatrix(row, col, isUpOffset=false) {
+		const geta = isUpOffset ? 1 : 0 ;
+		const row_array = MatrixTool.toPositionArrayFromObject(row, this.row_length, geta);
+		const col_array = MatrixTool.toPositionArrayFromObject(col, this.column_length, geta);
+		const x = this.matrix_array;
+		const y = new Array(row_array.length);
+		for(let row = 0; row &lt; row_array.length; row++) {
+			const y_row = new Array(col_array.length);
+			for(let col = 0; col &lt; col_array.length; col++) {
+				y_row[col] = x[row_array[row] - geta][col_array[col] - geta];
 			}
-			else {
-				arg1_data = arg1;
+			y[row] = y_row;
+		}
+		return new Matrix(y);
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x7B87;&#x6240;&#x306E;&#x5024;&#x3092;&#x5909;&#x66F4;&#x3059;&#x308B;
+	 * @param {Matrix} row - &#x5909;&#x66F4;&#x3059;&#x308B;&#x884C;&#x756A;&#x53F7;&#x304C;&#x5165;&#x3063;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;,&quot;:&quot;&#x3067;&#x5168;&#x3066;&#x306E;&#x884C;&#x62BD;&#x51FA;
+	 * @param {Matrix} col - &#x5909;&#x66F4;&#x3059;&#x308B;&#x5217;&#x756A;&#x53F7;&#x304C;&#x5165;&#x3063;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;,&quot;:&quot;&#x3067;&#x5168;&#x3066;&#x306E;&#x5217;&#x62BD;&#x51FA;
+	 * @param {Matrix} replace - &#x5909;&#x66F4;&#x5185;&#x5BB9;&#x306E;&#x884C;&#x5217;
+	 * @param {boolean} [isUpOffset=false] - &#x4F4D;&#x7F6E;&#x306E;&#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;&#x3092;1&#x306B;&#x3059;&#x308B;&#x304B;
+	 * @returns {Matrix} 
+	 */
+	setMatrix(row, col, replace, isUpOffset=false) {
+		const geta = isUpOffset ? 1 : 0 ;
+		const row_array = MatrixTool.toPositionArrayFromObject(row, this.row_length, geta);
+		const col_array = MatrixTool.toPositionArrayFromObject(col, this.column_length, geta);
+		const Y = new Matrix(this);
+		const y = Y.matrix_array;
+		const X = Matrix._toMatrix(replace);
+		const x = X.matrix_array;
+		for(let row = 0; row &lt; row_array.length; row++) {
+			for(let col = 0; col &lt; col_array.length; col++) {
+				y[row_array[row] - geta][col_array[col] - geta] = x[row % X.row_length][col % X.column_length];
 			}
 		}
-		if(arguments.length === 2) {
-			if(typeof arg2 === &quot;string&quot; || arg2 instanceof String) {
-				arg2_data = new Matrix(arg2);
-			}
-			else {
-				arg2_data = arg2;
-			}
-		}
-		const get_scalar = function(x) {
-			let y;
-			let is_scalar = false;
-			if(typeof arg1 === &quot;number&quot; || arg1 instanceof Number) {
-				y = Math.round(x);
-				is_scalar = true;
-			}
-			else if(arg1 instanceof Complex)  {
-				y = Math.round(x.real);
-				is_scalar = true;
-			}
-			else if((arg1 instanceof Matrix) &amp;&amp; arg1.isScalar()) {
-				y = Math.round(x.doubleValue);
-				is_scalar = true;
-			}
-			return {
-				number : y,
-				is_scalar : is_scalar
-			};
-		};
-		let is_scalar = true;
-		let arg1_scalar = null;
-		let arg2_scalar = null;
+		return new Matrix(y);
+	}
+
+	/**
+	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x7B87;&#x6240;&#x306E;&#x5024;
+	 * @param {Matrix} row_or_pos - &#x884C;&#x5217;&#x306A;&#x3089;&#x884C;&#x756A;&#x53F7;, &#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x5834;&#x5408;&#x306F;&#x5024;&#x306E;&#x4F4D;&#x7F6E;&#x756A;&#x53F7;
+	 * @param {Matrix} [col] - &#x5217;&#x756A;&#x53F7;&#xFF08;&#x884C;&#x5217;&#x306E;&#x5834;&#x5408;&#x306F;&#x6307;&#x5B9A;&#x3059;&#x308B;&#xFF09;
+	 * @returns {Complex} 
+	 */
+	getComplex(row_or_pos, col) {
+		let row_or_pos_scalar = null;
+		let col_scalar = null;
 		if(arguments.length === 1) {
-			arg1_scalar = get_scalar(arg1_data);
-			is_scalar &amp;= arg1_scalar.is_scalar;
+			row_or_pos_scalar = Matrix._toInteger(row_or_pos);
 		}
 		else if(arguments.length === 2) {
-			arg1_scalar = get_scalar(arg1_data);
-			is_scalar &amp;= arg1_scalar.is_scalar;
-			arg2_scalar = get_scalar(arg2_data);
-			is_scalar &amp;= arg2_scalar.is_scalar;
+			row_or_pos_scalar = Matrix._toInteger(row_or_pos);
+			col_scalar = Matrix._toInteger(col);
 		}
-		// 1&#x3064;&#x306E;&#x307F;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x5834;&#x5408;
-		if(is_scalar) {
-			if(this.isRow()) {
-				return this.matrix_array[0][arg1_scalar.number];
-			}
-			else if(this.isColumn()) {
-				return this.matrix_array[arg1_scalar.number][0];
-			}
-			else {
-				return this.matrix_array[arg1_scalar.number][arg2_scalar.number];
-			}
+		if(this.isRow()) {
+			return this.matrix_array[0][row_or_pos_scalar];
+		}
+		else if(this.isColumn()) {
+			return this.matrix_array[row_or_pos_scalar][0];
 		}
 		else {
-			throw &quot;getComplex not scalar : &quot; + this;
+			return this.matrix_array[row_or_pos_scalar][col_scalar];
 		}
 	}
 
@@ -2851,10 +2898,11 @@ export default class Matrix {
 
 	/**
 	 * &#x76F8;&#x95A2;&#x884C;&#x5217;
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
-	corrcoef() {
-		return Statistics.corrcoef(this);
+	corrcoef(type) {
+		return Statistics.corrcoef(this, type);
 	}
 
 	/**

@@ -1896,6 +1896,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/matrix.mjs~matrix#getmatrix",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-getMatrix",
+    "src/math/Matrix.mjs~Matrix#getMatrix",
+    "method"
+  ],
+  [
     "src/math/matrix.mjs~matrix#getnumbermatrixarray",
     "class/src/math/Matrix.mjs~Matrix.html#instance-method-getNumberMatrixArray",
     "src/math/Matrix.mjs~Matrix#getNumberMatrixArray",
@@ -2248,6 +2254,12 @@ window.esdocSearchIndex = [
     "class/src/math/Matrix.mjs~Matrix.html#instance-get-scalar",
     "src/math/Matrix.mjs~Matrix#scalar",
     "member"
+  ],
+  [
+    "src/math/matrix.mjs~matrix#setmatrix",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-setMatrix",
+    "src/math/Matrix.mjs~Matrix#setMatrix",
+    "method"
   ],
   [
     "src/math/matrix.mjs~matrix#sign",
@@ -3220,12 +3232,6 @@ window.esdocSearchIndex = [
     "class/src/math/tool/Statistics.mjs~Statistics.html#static-method-var",
     "src/math/tool/Statistics.mjs~Statistics.var",
     "method"
-  ],
-  [
-    "src/utility/file.mjs",
-    "file/src/utility/File.mjs.html",
-    "src/utility/File.mjs",
-    "file"
   ],
   [
     "src/utility/format.mjs",

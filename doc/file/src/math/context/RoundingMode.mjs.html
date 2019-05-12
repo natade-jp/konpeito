@@ -56,6 +56,8 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+//@ts-check
+
 /**
  * BigDecimal&#x7528;&#x306E;&#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x57FA;&#x5E95;&#x30AF;&#x30E9;&#x30B9;
  * @interface
@@ -358,7 +360,7 @@ export default class RoundingMode {
 
 	/**
 	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3067;&#x8868;&#x3055;&#x308C;&#x308B;&#x4E38;&#x3081;&#x30AF;&#x30E9;&#x30B9;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;
-	 * @param {string} name - &#x30E2;&#x30FC;&#x30C9;&#x306E;&#x82F1;&#x6570;&#x540D;
+	 * @param {string|RoundingModeEntity} name - &#x30E2;&#x30FC;&#x30C9;&#x306E;&#x82F1;&#x6570;&#x540D;
 	 * @returns {RoundingModeEntity}
 	 */
 	static valueOf(name) {

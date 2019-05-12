@@ -1,11 +1,11 @@
 {
-  "coverage": "89.65%",
-  "expectCount": 773,
-  "actualCount": 693,
+  "coverage": "100%",
+  "expectCount": 707,
+  "actualCount": 707,
   "files": {
     "src/konpeito.mjs": {
-      "expectCount": 11,
-      "actualCount": 11,
+      "expectCount": 10,
+      "actualCount": 10,
       "undocumentLines": []
     },
     "src/math/BigDecimal.mjs": {
@@ -34,8 +34,8 @@
       "undocumentLines": []
     },
     "src/math/Matrix.mjs": {
-      "expectCount": 188,
-      "actualCount": 188,
+      "expectCount": 200,
+      "actualCount": 200,
       "undocumentLines": []
     },
     "src/math/tool/LinearAlgebra.mjs": {
@@ -58,102 +58,15 @@
       "actualCount": 105,
       "undocumentLines": []
     },
-    "src/utility/File.mjs": {
-      "expectCount": 48,
-      "actualCount": 2,
-      "undocumentLines": [
-        145,
-        146,
-        147,
-        153,
-        163,
-        167,
-        171,
-        175,
-        179,
-        183,
-        198,
-        203,
-        207,
-        217,
-        226,
-        236,
-        245,
-        251,
-        257,
-        263,
-        269,
-        275,
-        281,
-        292,
-        298,
-        304,
-        346,
-        352,
-        358,
-        364,
-        370,
-        376,
-        417,
-        423,
-        432,
-        438,
-        447,
-        453,
-        459,
-        465,
-        476,
-        488,
-        499,
-        510,
-        531,
-        535
-      ]
-    },
     "src/utility/Format.mjs": {
       "expectCount": 2,
       "actualCount": 2,
       "undocumentLines": []
     },
     "src/utility/Log.mjs": {
-      "expectCount": 35,
-      "actualCount": 1,
-      "undocumentLines": [
-        14,
-        16,
-        45,
-        47,
-        48,
-        51,
-        101,
-        106,
-        108,
-        109,
-        110,
-        111,
-        112,
-        113,
-        116,
-        132,
-        156,
-        160,
-        174,
-        189,
-        202,
-        209,
-        219,
-        223,
-        239,
-        240,
-        241,
-        249,
-        250,
-        258,
-        264,
-        268,
-        279,
-        283
-      ]
+      "expectCount": 6,
+      "actualCount": 6,
+      "undocumentLines": []
     }
   }
 }

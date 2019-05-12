@@ -47,23 +47,35 @@
 
 <div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="konpeito-js">konpeito.js</h1><h2 id="what">What</h2><ul>
 <li>The &quot;konpeito.js&quot; is a library for math calculations.</li>
-<li>This code is a module coded in ES6.</li>
+<li>This code is a module coded by ES6.</li>
+<li>This library is available for ES6 modules or UMD.</li>
+<li>When calculating, use method chain.</li>
 </ul>
-<h2 id="usage">Usage</h2><p>This library has 4 functions.</p>
+<h3 id="usage">Usage</h3><p>This library has 4 functions.</p>
 <ul>
 <li>BigInteger</li>
 <li>BigDecimal</li>
 <li>Complex</li>
 <li>Matrix</li>
 </ul>
+<p>Has the following features.</p>
+<ul>
+<li>BigDecimal is constructed by BigInteger.</li>
+<li>Matrix is constructed by array of Complex.</li>
+<li>Matrix and Complex can&apos;t use huge real numbers like BigInteger or BigDecimal, but they are powerful.</li>
+<li>Matrix initialization can be described as Scilab, Octave, MATLAB.</li>
+</ul>
 <p>Please check the console and main.mjs.</p>
 <ul>
-<li><a href="./examples/demos/BigDecimal/">BigDecimal</a></li>
-<li><a href="./examples/demos/BigInteger/">BigInteger</a></li>
-<li><a href="./examples/demos/Matrix/">Matrix</a></li>
-<li><a href="./examples/demos/Random/">Random</a></li>
+<li><a href="../doc_src/examples/demos/BigDecimal/">BigDecimal</a></li>
+<li><a href="../doc_src/examples/demos/BigInteger/">BigInteger</a></li>
+<li><a href="../doc_src/examples/demos/Matrix/">Matrix</a></li>
+<li><a href="../doc_src/examples/demos/Random/">Random</a></li>
 </ul>
-<h2 id="biginteger">BigInteger</h2><p>arbitrary-precision integer class.</p>
+<h3 id="repository">Repository</h3><ul>
+<li>konpeito.js(<a href="https://github.com/natade-jp/konpeito">https://github.com/natade-jp/konpeito</a>)</li>
+</ul>
+<h2 id="sample">Sample</h2><h3 id="biginteger">BigInteger</h3><p>arbitrary-precision integer class.</p>
 <pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
 const BigInteger = konpeito.BigInteger;
 const $ = BigInteger.create;
@@ -72,7 +84,7 @@ console.log($(&quot;-1234567890&quot;).mul(&quot;987654321098765432109876543210&
 console.log($(&quot;7&quot;).pow(&quot;50&quot;).toString());</code>
 </code></pre><pre><code><code class="source-code prettyprint">&gt; -1219326311248285321124828532111263526900
 &gt; 1798465042647412146620280340569649349251249</code>
-</code></pre><h2 id="bigdecimal">BigDecimal</h2><p>floating-point math class.</p>
+</code></pre><h3 id="bigdecimal">BigDecimal</h3><p>floating-point math class.</p>
 <pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
 const BigDecimal = konpeito.BigDecimal;
 const MathContext = konpeito.MathContext;
@@ -81,7 +93,7 @@ const $ = BigDecimal.create;
 BigDecimal.setDefaultContext(MathContext.UNLIMITED);
 console.log($(&quot;-123456.7890&quot;).mul(&quot;987654321098765.432109876543210&quot;).toString());</code>
 </code></pre><pre><code><code class="source-code prettyprint">&gt; -121932631124828532112.4828532111263526900</code>
-</code></pre><h2 id="complex">Complex</h2><p>complex class.</p>
+</code></pre><h3 id="complex">Complex</h3><p>complex class.</p>
 <ul>
 <li>use the JavaScript standard number.</li>
 </ul>
@@ -91,7 +103,7 @@ const $ = Complex.create;
 
 console.log($(&quot;3 + 4i&quot;).pow(&quot;2 + 8j&quot;).toString());</code>
 </code></pre><pre><code><code class="source-code prettyprint">&gt; -0.0083837 + 0.0124424i</code>
-</code></pre><h2 id="matrix">Matrix</h2><p>complex matrix class.</p>
+</code></pre><h3 id="matrix">Matrix</h3><p>complex matrix class.</p>
 <ul>
 <li>use the JavaScript standard number.</li>
 <li>Some methods do not support complex arithmetic.</li>
