@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl">
-  <title data-ice="title">Home | konpeito.js</title>
+  <title data-ice="title">Home | konpeito</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
   <script src="script/manual.js"></script>
-<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito.js"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
 <body class="layout-container" data-ice="rootContainer">
 
 <header>
@@ -71,11 +71,16 @@
 <li><a href="../doc_src/examples/demos/BigInteger/">BigInteger</a></li>
 <li><a href="../doc_src/examples/demos/Matrix/">Matrix</a></li>
 <li><a href="../doc_src/examples/demos/Random/">Random</a></li>
+<li><a href="../doc_src/examples/demos/UMD/">UMD</a></li>
 </ul>
 <h3 id="repository">Repository</h3><ul>
 <li>konpeito.js(<a href="https://github.com/natade-jp/konpeito">https://github.com/natade-jp/konpeito</a>)</li>
 </ul>
-<h2 id="sample">Sample</h2><h3 id="biginteger">BigInteger</h3><p>arbitrary-precision integer class.</p>
+<h2 id="sample">Sample</h2><h3 id="start-with-node-js">start with Node.js</h3><pre><code><code class="source-code prettyprint">node --experimental-modules main.mjs</code>
+</code></pre><h3 id="start-with-browser">start with browser</h3><pre><code><code class="source-code prettyprint">&lt;script type=&quot;module&quot; src=&quot;./main.mjs&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;</code>
+</code></pre><h3 id="start-with-browser-and-umd">start with browser and UMD</h3><pre><code><code class="source-code prettyprint">&lt;script src=&quot;./konpeito.umd.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;./main.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;</code>
+</code></pre><h3 id="biginteger">BigInteger</h3><p>arbitrary-precision integer class.</p>
 <pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.mjs&quot;;
 const BigInteger = konpeito.BigInteger;
 const $ = BigInteger.create;

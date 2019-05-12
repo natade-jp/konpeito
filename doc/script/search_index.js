@@ -1,74 +1,74 @@
 window.esdocSearchIndex = [
   [
-    "konpeito.js/src/math/bigdecimal.mjs~bigdecimal",
+    "konpeito/src/math/bigdecimal.mjs~bigdecimal",
     "class/src/math/BigDecimal.mjs~BigDecimal.html",
-    "<span>BigDecimal</span> <span class=\"search-result-import-path\">konpeito.js/src/math/BigDecimal.mjs</span>",
+    "<span>BigDecimal</span> <span class=\"search-result-import-path\">konpeito/src/math/BigDecimal.mjs</span>",
     "class"
   ],
   [
-    "konpeito.js/src/math/biginteger.mjs~biginteger",
+    "konpeito/src/math/biginteger.mjs~biginteger",
     "class/src/math/BigInteger.mjs~BigInteger.html",
-    "<span>BigInteger</span> <span class=\"search-result-import-path\">konpeito.js/src/math/BigInteger.mjs</span>",
+    "<span>BigInteger</span> <span class=\"search-result-import-path\">konpeito/src/math/BigInteger.mjs</span>",
     "class"
   ],
   [
-    "konpeito.js/src/math/complex.mjs~complex",
+    "konpeito/src/math/complex.mjs~complex",
     "class/src/math/Complex.mjs~Complex.html",
-    "<span>Complex</span> <span class=\"search-result-import-path\">konpeito.js/src/math/Complex.mjs</span>",
+    "<span>Complex</span> <span class=\"search-result-import-path\">konpeito/src/math/Complex.mjs</span>",
     "class"
   ],
   [
-    "konpeito.js/src/math/tool/linearalgebra.mjs~linearalgebra",
+    "konpeito/src/math/tool/linearalgebra.mjs~linearalgebra",
     "class/src/math/tool/LinearAlgebra.mjs~LinearAlgebra.html",
-    "<span>LinearAlgebra</span> <span class=\"search-result-import-path\">konpeito.js/src/math/tool/LinearAlgebra.mjs</span>",
+    "<span>LinearAlgebra</span> <span class=\"search-result-import-path\">konpeito/src/math/tool/LinearAlgebra.mjs</span>",
     "class"
   ],
   [
-    "konpeito.js/src/math/context/mathcontext.mjs~mathcontext",
+    "konpeito/src/math/context/mathcontext.mjs~mathcontext",
     "class/src/math/context/MathContext.mjs~MathContext.html",
-    "<span>MathContext</span> <span class=\"search-result-import-path\">konpeito.js/src/math/context/MathContext.mjs</span>",
+    "<span>MathContext</span> <span class=\"search-result-import-path\">konpeito/src/math/context/MathContext.mjs</span>",
     "class"
   ],
   [
-    "konpeito.js/src/math/matrix.mjs~matrix",
+    "konpeito/src/math/matrix.mjs~matrix",
     "class/src/math/Matrix.mjs~Matrix.html",
-    "<span>Matrix</span> <span class=\"search-result-import-path\">konpeito.js/src/math/Matrix.mjs</span>",
+    "<span>Matrix</span> <span class=\"search-result-import-path\">konpeito/src/math/Matrix.mjs</span>",
     "class"
   ],
   [
-    "konpeito.js/src/math/tool/random.mjs~random",
+    "konpeito/src/math/tool/random.mjs~random",
     "class/src/math/tool/Random.mjs~Random.html",
-    "<span>Random</span> <span class=\"search-result-import-path\">konpeito.js/src/math/tool/Random.mjs</span>",
+    "<span>Random</span> <span class=\"search-result-import-path\">konpeito/src/math/tool/Random.mjs</span>",
     "class"
   ],
   [
-    "konpeito.js/src/math/context/roundingmode.mjs~roundingmode",
+    "konpeito/src/math/context/roundingmode.mjs~roundingmode",
     "class/src/math/context/RoundingMode.mjs~RoundingMode.html",
-    "<span>RoundingMode</span> <span class=\"search-result-import-path\">konpeito.js/src/math/context/RoundingMode.mjs</span>",
+    "<span>RoundingMode</span> <span class=\"search-result-import-path\">konpeito/src/math/context/RoundingMode.mjs</span>",
     "class"
   ],
   [
-    "konpeito.js/src/math/context/roundingmode.mjs~roundingmodeentity",
+    "konpeito/src/math/context/roundingmode.mjs~roundingmodeentity",
     "class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html",
-    "<span>RoundingModeEntity</span> <span class=\"search-result-import-path\">konpeito.js/src/math/context/RoundingMode.mjs</span>",
+    "<span>RoundingModeEntity</span> <span class=\"search-result-import-path\">konpeito/src/math/context/RoundingMode.mjs</span>",
     "class"
   ],
   [
-    "konpeito.js/src/math/tool/signal.mjs~signal",
+    "konpeito/src/math/tool/signal.mjs~signal",
     "class/src/math/tool/Signal.mjs~Signal.html",
-    "<span>Signal</span> <span class=\"search-result-import-path\">konpeito.js/src/math/tool/Signal.mjs</span>",
+    "<span>Signal</span> <span class=\"search-result-import-path\">konpeito/src/math/tool/Signal.mjs</span>",
     "class"
   ],
   [
-    "konpeito.js/src/math/tool/statistics.mjs~statistics",
+    "konpeito/src/math/tool/statistics.mjs~statistics",
     "class/src/math/tool/Statistics.mjs~Statistics.html",
-    "<span>Statistics</span> <span class=\"search-result-import-path\">konpeito.js/src/math/tool/Statistics.mjs</span>",
+    "<span>Statistics</span> <span class=\"search-result-import-path\">konpeito/src/math/tool/Statistics.mjs</span>",
     "class"
   ],
   [
-    "konpeito.js/src/konpeito.mjs~konpeito",
+    "konpeito/src/konpeito.mjs~konpeito",
     "class/src/konpeito.mjs~konpeito.html",
-    "<span>konpeito</span> <span class=\"search-result-import-path\">konpeito.js/src/konpeito.mjs</span>",
+    "<span>konpeito</span> <span class=\"search-result-import-path\">konpeito/src/konpeito.mjs</span>",
     "class"
   ],
   [
