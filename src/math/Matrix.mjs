@@ -955,6 +955,30 @@ export default class Matrix {
 	}
 
 	/**
+	 * 行列内の指定した箇所の値を変更する
+	 * @param {Matrix} row - 変更する行番号が入ったベクトル,":"で全ての行抽出
+	 * @param {Matrix} col - 変更する列番号が入ったベクトル,":"で全ての列抽出
+	 * @param {Matrix} replace - 変更内容の行列
+	 * @param {boolean} [isUpOffset=false] - 位置のオフセットを1にするか
+	 * @returns {Matrix} 
+	 */
+	setMatrix(row, col, replace, isUpOffset=false) {
+		const geta = isUpOffset ? 1 : 0 ;
+		const row_array = MatrixTool.toPositionArrayFromObject(row, this.row_length, geta);
+		const col_array = MatrixTool.toPositionArrayFromObject(col, this.column_length, geta);
+		const Y = new Matrix(this);
+		const y = Y.matrix_array;
+		const X = Matrix._toMatrix(replace);
+		const x = X.matrix_array;
+		for(let row = 0; row < row_array.length; row++) {
+			for(let col = 0; col < col_array.length; col++) {
+				y[row_array[row] - geta][col_array[col] - geta] = x[row % X.row_length][col % X.column_length];
+			}
+		}
+		return new Matrix(y);
+	}
+
+	/**
 	 * 行列内の指定した箇所の値
 	 * @param {Matrix} row_or_pos - 行列なら行番号, ベクトルの場合は値の位置番号
 	 * @param {Matrix} [col] - 列番号（行列の場合は指定する）
