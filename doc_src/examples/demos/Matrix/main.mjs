@@ -96,6 +96,32 @@ const main = function() {
 	// 7  8  9
 	Log.println($("[1 2 3; 4 5 6; 7 8 9]"));
 
+	{
+		Log.println("getMatrix");
+		const X = $("[1 2 3 4;5 6 7 8;9 10 11 12;13 14 15 16]");
+
+		//	1   2   3   4
+		//	5   6   7   8
+		//	9  10  11  12
+		// 13  14  15  16
+		Log.println(X);
+
+		//  5  6  7  8
+		Log.println(X.getMatrix(1, ":"));
+
+		// 13  14  15  16
+		//	9  10  11  12
+		//	5   6   7   8
+		//	1   2   3   4
+		Log.println(X.getMatrix("3:-1:0", ":", 0));
+
+		// 13  14  15  16
+		//	9  10  11  12
+		//	5   6   7   8
+		//	1   2   3   4
+		Log.println(X.getMatrix("4:-1:1", ":", 1));
+	}
+
 	// 18 +  7i  21 +  8i
 	// 40 +  0i  47 +  0i
 	Log.println("mul");
