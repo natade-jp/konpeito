@@ -1711,10 +1711,11 @@ export default class Statistics {
 	/**
 	 * 相関行列
 	 * @param {Matrix} mat
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
-	static corrcoef(mat) {
-		return mat.normalize().cov();
+	static corrcoef(mat, type) {
+		return Statistics.cov(Statistics.normalize(mat, type), type);
 	}
 
 	/**

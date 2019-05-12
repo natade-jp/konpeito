@@ -2850,10 +2850,11 @@ export default class Matrix {
 
 	/**
 	 * 相関行列
+	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
-	corrcoef() {
-		return Statistics.corrcoef(this);
+	corrcoef(type) {
+		return Statistics.corrcoef(this, type);
 	}
 
 	/**
