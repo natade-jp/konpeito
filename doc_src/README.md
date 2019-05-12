@@ -24,11 +24,28 @@ Please check the console and main.mjs.
 - [BigInteger](../doc_src/examples/demos/BigInteger/)
 - [Matrix](../doc_src/examples/demos/Matrix/)
 - [Random](../doc_src/examples/demos/Random/)
+- [UMD](../doc_src/examples/demos/UMD/)
 
 ### Repository
 - konpeito.js(https://github.com/natade-jp/konpeito)
 
 ## Sample
+
+### start with Node.js
+```
+node --experimental-modules main.mjs
+```
+
+### start with browser
+```
+<script type="module" src="./main.mjs" charset="utf-8"></script>
+```
+
+### start with browser and UMD
+```
+<script src="./konpeito.umd.js" charset="utf-8"></script>
+<script src="./main.js" charset="utf-8"></script>
+```
 
 ### BigInteger
 arbitrary-precision integer class.

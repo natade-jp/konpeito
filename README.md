@@ -24,6 +24,22 @@ Has the following features.
 
 ## Sample
 
+### start with Node.js
+```
+node --experimental-modules main.mjs
+```
+
+### start with browser
+```
+<script type="module" src="./main.mjs" charset="utf-8"></script>
+```
+
+### start with browser and UMD
+```
+<script src="./konpeito.umd.js" charset="utf-8"></script>
+<script src="./main.js" charset="utf-8"></script>
+```
+
 ### BigInteger
 arbitrary-precision integer class.
 
