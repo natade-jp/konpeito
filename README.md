@@ -1,10 +1,16 @@
 # konpeito.js
 
+![ESDoc coverage badge](https://doc.esdoc.org/github.com/natade-jp/konpeito/badge.svg)
+![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+
 ## What
 - The "konpeito.js" is a library for math calculations.
 - This code is a module coded in ES6.
 - This library is available for ES6 modules or UMD.
 - When calculating, use method chain.
+
+### Document
+- [document](https://doc.esdoc.org/github.com/natade-jp/konpeito/)
 
 ### Usage
 This library has 4 functions.
@@ -18,9 +24,6 @@ Has the following features.
 - Matrix is constructed by array of Complex.
 - Matrix and Complex can't use huge real numbers like BigInteger or BigDecimal, but they are powerful.
 - Matrix initialization can be described as Scilab, Octave, MATLAB.
-
-### Document
-- [document](https://doc.esdoc.org/github.com/natade-jp/konpeito/)
 
 ## Sample
 
