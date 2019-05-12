@@ -20,7 +20,7 @@ Has the following features.
 - Matrix initialization can be described as Scilab, Octave, MATLAB.
 
 ### Document
-- [document](https://natade-jp.github.io/konpeito/doc/)
+- [document](https://doc.esdoc.org/github.com/natade-jp/konpeito/)
 
 ## Sample
 

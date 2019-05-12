@@ -21,8 +21,7 @@
 	"directories": {
 		"src": "./src",
 		"build": "./build",
-		"example": "./doc_src/examples/demos",
-		"doc": "./doc"
+		"example": "./doc_src/examples/demos"
 	},
 	"scripts": {
 		"dev": "node ./package.dev.js",
