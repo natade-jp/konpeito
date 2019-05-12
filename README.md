@@ -10,7 +10,7 @@
 - When calculating, use method chain.
 
 ### Document
-- [document](https://doc.esdoc.org/github.com/natade-jp/konpeito/)
+- [API reference](https://doc.esdoc.org/github.com/natade-jp/konpeito/)
 
 ### Usage
 This library has 4 functions.
