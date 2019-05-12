@@ -2,22 +2,35 @@
 
 ## What
 - The "konpeito.js" is a library for math calculations.
-- This code is a module coded in ES6.
+- This code is a module coded by ES6.
+- This library is available for ES6 modules or UMD.
+- When calculating, use method chain.
 
-## Usage
+### Usage
 This library has 4 functions.
 - BigInteger
 - BigDecimal
 - Complex
 - Matrix
 
-Please check the console and main.mjs.
-- [BigDecimal](./examples/demos/BigDecimal/)
-- [BigInteger](./examples/demos/BigInteger/)
-- [Matrix](./examples/demos/Matrix/)
-- [Random](./examples/demos/Random/)
+Has the following features.
+- BigDecimal is constructed by BigInteger.
+- Matrix is constructed by array of Complex.
+- Matrix and Complex can't use huge real numbers like BigInteger or BigDecimal, but they are powerful.
+- Matrix initialization can be described as Scilab, Octave, MATLAB.
 
-## BigInteger
+Please check the console and main.mjs.
+- [BigDecimal](../doc_src/examples/demos/BigDecimal/)
+- [BigInteger](../doc_src/examples/demos/BigInteger/)
+- [Matrix](../doc_src/examples/demos/Matrix/)
+- [Random](../doc_src/examples/demos/Random/)
+
+### Repository
+- konpeito.js(https://github.com/natade-jp/konpeito)
+
+## Sample
+
+### BigInteger
 arbitrary-precision integer class.
 
 ```
@@ -33,7 +46,7 @@ console.log($("7").pow("50").toString());
 > 1798465042647412146620280340569649349251249
 ```
 
-## BigDecimal
+### BigDecimal
 floating-point math class.
 
 ```
@@ -49,7 +62,7 @@ console.log($("-123456.7890").mul("987654321098765.432109876543210").toString())
 > -121932631124828532112.4828532111263526900
 ```
 
-## Complex
+### Complex
 complex class.
 - use the JavaScript standard number.
 
@@ -64,7 +77,7 @@ console.log($("3 + 4i").pow("2 + 8j").toString());
 > -0.0083837 + 0.0124424i
 ```
 
-## Matrix
+### Matrix
 complex matrix class.
 - use the JavaScript standard number.
 - Some methods do not support complex arithmetic.

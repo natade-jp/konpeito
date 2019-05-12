@@ -113,13 +113,13 @@ const main = function() {
 		//	9  10  11  12
 		//	5   6   7   8
 		//	1   2   3   4
-		Log.println(X.getMatrix("3:-1:0", ":", 0));
+		Log.println(X.getMatrix("3:-1:0", ":"));
 
 		// 13  14  15  16
 		//	9  10  11  12
 		//	5   6   7   8
 		//	1   2   3   4
-		Log.println(X.getMatrix("4:-1:1", ":", 1));
+		Log.println(X.getMatrix("4:-1:1", ":", true));
 	}
 
 	// 18 +  7i  21 +  8i

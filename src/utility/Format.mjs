@@ -26,7 +26,8 @@ export default class Format {
 	static format(text, parmeter) {
 		let parm_number = 1;
 		const parm = arguments;
-		const toUnsign  = function(x) {
+		const toUnsign  = function(num) {
+			let x = num;
 			if(x >= 0) {
 				return(x);
 			}
@@ -39,7 +40,8 @@ export default class Format {
 				return(high + low + 1);
 			}
 		};
-		const func = function(str) {
+		const func = function(text) {
+			let str = text;
 			// 1文字目の%を除去
 			str = str.substring(1, str.length);
 			let buff;

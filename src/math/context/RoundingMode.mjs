@@ -8,6 +8,8 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+//@ts-check
+
 /**
  * BigDecimal用の丸めモードの基底クラス
  * @interface
@@ -310,7 +312,7 @@ export default class RoundingMode {
 
 	/**
 	 * 指定した文字列で表される丸めクラスを取得する
-	 * @param {string} name - モードの英数名
+	 * @param {string|RoundingModeEntity} name - モードの英数名
 	 * @returns {RoundingModeEntity}
 	 */
 	static valueOf(name) {

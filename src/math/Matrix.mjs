@@ -14,9 +14,58 @@ import Signal from "./tool/Signal.mjs";
 import Complex from "./Complex.mjs";
 
 /**
- * コンストラクタ用の関数群
+ * Matrix 内で使用する関数群
  */
-const ConstructorTool = {
+class MatrixTool {
+
+	/**
+	 * 行列の位置を指定するデータから、実際の値を作成
+	 * @param data {*} - 調査する値
+	 * @param max {number} - ":"が指定された時に初期化する配列の長さ
+	 * @param geta {number} - ":"が指定された時に初期化する値のオフセット
+	 * @returns {Array<number>}
+	 */
+	static toPositionArrayFromObject(data, max, geta) {
+		let y;
+		if((typeof data === "string") || (data instanceof String)) {
+			y = MatrixTool.toArrayFromString(data);
+			if(y === ":") {
+				y = new Array(max);
+				for(let i = 0; i < max; i++) {
+					y[i] =  i + geta;
+				}
+			}
+			else {
+				for(let i = 0; i < y.length; i++) {
+					y[i] = y[i].real | 0;
+				}
+			}
+			return y;
+		}
+		let t_data = data;
+		if(!(t_data instanceof Matrix) && !(t_data instanceof Complex) && !((typeof t_data === "number") || (t_data instanceof Number))) {
+			t_data = Matrix._toMatrix(t_data);
+		}
+		if(t_data instanceof Matrix) {
+			if(!t_data.isVector()) {
+				throw "getMatrix argument " + t_data;
+			}
+			const len = t_data.length;
+			y = new Array(t_data.length);
+			if(t_data.isRow()) {
+				for(let i = 0; i < len; i++) {
+					y[i] = t_data.matrix_array[0][i].real | 0;
+				}
+			}
+			else if(t_data.isColumn()) {
+				for(let i = 0; i < len; i++) {
+					y[i] = t_data.matrix_array[i][0].real | 0;
+				}
+			}
+			return y;
+		}
+		return [ Matrix._toInteger(t_data) ];
+	}
 
 	/**
 	 * 対象ではないregexpの情報以外も抽出match
@@ -24,7 +73,7 @@ const ConstructorTool = {
 	 * @param {RegExp} regexp - 検索したい正規表現
 	 * @returns {Array<Object<boolean, string>>}
 	 */
-	match2 : function(text, regexp) {
+	static match2(text, regexp) {
 		// 対象ではないregexpの情報以外も抽出match
 		// つまり "1a2b" で \d を抽出すると、次のように抽出される
 		// [false "1"]
@@ -51,28 +100,28 @@ const ConstructorTool = {
 			search_target = search_target.substr(match.index + match[0].length);
 		}
 		return output;
-	},
+	}
 	
 	/**
 	 * ブラケットに囲まれていたら、前後のブラケットを除去
 	 * @param {string} text - ブラケットを除去したい文字
 	 * @returns {string|null} 除去した文字列（ブラケットがない場合は、null）
 	 */
-	trimBracket : function(text) {
+	static trimBracket(text) {
 		// 前後に[]があるか確認
 		if( !(/^\[/).test(text) || !(/\]$/).test(text)) {
 			return null;
 		}
 		// 前後の[]を除去
 		return text.substring(1, text.length - 1);
-	},
+	}
 
 	/**
 	 * JSONで定義された文字列データからMatrix型のデータを作成する
 	 * @param {string} text - 調査したい文字列
 	 * @returns {Array<Array<Complex>>} Matrix型で使用される内部の配列
 	 */
-	toMatrixFromStringForArrayJSON : function(text) {
+	static toMatrixFromStringForArrayJSON(text) {
 		const matrix_array = [];
 		// さらにブランケット内を抽出
 		let rows = text.match(/\[[^\]]+\]/g);
@@ -92,16 +141,16 @@ const ConstructorTool = {
 			matrix_array[row_count] = rows_array;
 		}
 		return matrix_array;
-	},
+	}
 
 	/**
 	 * 初期値と差分値と最終値から、その値が入った配列を作成する
-	 * @param {number} from - 最初の値
-	 * @param {number} delta - 差分
-	 * @param {number} to - 繰り返す先の値（この値は含めない）
-	 * @returns {Array<number>}
+	 * @param {Complex} from - 最初の値
+	 * @param {Complex} delta - 差分
+	 * @param {Complex} to - 繰り返す先の値（この値は含めない）
+	 * @returns {Array<Complex>}
 	 */
-	InterpolationCalculation : function(from, delta, to) {
+	static InterpolationCalculation(from, delta, to) {
 		const FromIsGreaterThanTo = from.compareTo(to);
 		if(FromIsGreaterThanTo === 0) {
 			return from;
@@ -127,14 +176,14 @@ const ConstructorTool = {
 			rows_array[i] = num;
 		}
 		return rows_array;
-	},
+	}
 
 	/**
 	 * 文字列からMatrix型の行列データの行部分に変換
 	 * @param {string} row_text - 行列の1行を表す文字列
 	 * @returns {Array<Complex>}
 	 */
-	toArrayFromString : function(row_text) {
+	static toArrayFromString(row_text) {
 		// 「:」のみ記載されていないかの確認
 		if(row_text.trim() === ":") {
 			return ":";
@@ -146,7 +195,7 @@ const ConstructorTool = {
 		// reg2優先で検索
 		const reg3 = new RegExp("(" + reg2.source + ")|(" + reg1.source + ")", "i");
 		// 問題として 1 - -jが通る
-		const xs = ConstructorTool.match2(row_text, reg3);
+		const xs = MatrixTool.match2(row_text, reg3);
 		const rows_array = [];
 
 		for(let i = 0; i < xs.length; i++) {
@@ -170,7 +219,7 @@ const ConstructorTool = {
 					to = new Complex(xs[i + 2][1]);
 					i += 2;
 				}
-				const ip_array = ConstructorTool.InterpolationCalculation(from, delta, to);
+				const ip_array = MatrixTool.InterpolationCalculation(from, delta, to);
 				for(let j = 0; j < ip_array.length; j++) {
 					rows_array.push(ip_array[j]);
 				}
@@ -181,66 +230,66 @@ const ConstructorTool = {
 		}
 
 		return rows_array;
-	},
+	}
 
 	/**
 	 * JSON以外の文字列で定義された文字列データからMatrix型のデータを作成する
 	 * @param {string} text - 調査したい文字列
 	 * @returns {Array<Array<Complex>>} Matrix型で使用される内部の配列
 	 */
-	toMatrixFromStringForArrayETC : function(text) {
+	static toMatrixFromStringForArrayETC(text) {
 		// 行ごとを抽出して
 		const rows = text.split(";");
 		const matrix_array = new Array(rows.length);
 		for(let row_count = 0; row_count < rows.length; row_count++) {
 			// 各行の文字を解析
-			matrix_array[row_count] = ConstructorTool.toArrayFromString(rows[row_count]);
+			matrix_array[row_count] = MatrixTool.toArrayFromString(rows[row_count]);
 		}
 		return matrix_array;
-	},
+	}
 
 	/**
 	 * 行列用の文字列データから構成されるMatrix型のデータを作成する
 	 * @param {string} text - 調査したい文字列
 	 * @returns {Array<Array<Complex>>} Matrix型で使用される内部の配列
 	 */
-	toMatrixFromStringForArray : function(text) {
+	static toMatrixFromStringForArray(text) {
 		// JSON形式
 		if(/[[\],]/.test(text)) {
-			return ConstructorTool.toMatrixFromStringForArrayJSON(text);
+			return MatrixTool.toMatrixFromStringForArrayJSON(text);
 		}
 		// それ以外(MATLAB, Octave, Scilab)
 		else {
-			return ConstructorTool.toMatrixFromStringForArrayETC(text);
+			return MatrixTool.toMatrixFromStringForArrayETC(text);
 		}
-	},
+	}
 
 	/**
 	 * 文字列データからMatrix型のデータを作成する
 	 * @param {string} text - 調査したい文字列
 	 * @returns {Array<Array<Complex>>} Matrix型で使用される内部の配列
 	 */
-	toMatrixFromString : function(text) {
+	static toMatrixFromString(text) {
 		// 前後のスペースを除去
 		const trimtext = text.replace(/^\s*|\s*$/g, "");
 		// ブランケットを外す
-		const withoutBracket = ConstructorTool.trimBracket(trimtext);
+		const withoutBracket = MatrixTool.trimBracket(trimtext);
 		if(withoutBracket) {
 			// 配列用の初期化
-			return ConstructorTool.toMatrixFromStringForArray(withoutBracket);
+			return MatrixTool.toMatrixFromStringForArray(withoutBracket);
 		}
 		else {
 			// スカラー用の初期化
 			return [[new Complex(text)]];
 		}
-	},
+	}
 
 	/**
 	 * Matrix型内部データが行列データとして正しいかを調べる
 	 * @param {Array<Array<Complex>>} m_array
 	 * @returns {boolean} 
 	 */
-	isCorrectMatrixArray : function(m_array) {
+	static isCorrectMatrixArray(m_array) {
 		if(m_array.length === 0) {
 			return false;
 		}
@@ -255,7 +304,7 @@ const ConstructorTool = {
 		}
 		return true;
 	}
-};
+}
 
 /**
  * 複素行列クラス (immutable)
@@ -349,12 +398,12 @@ export default class Matrix {
 			// 文字列の場合は、文字列解析を行う
 			else if(typeof y === "string" || y instanceof String) {
 				is_check_string = true;
-				matrix_array = ConstructorTool.toMatrixFromString(y);
+				matrix_array = MatrixTool.toMatrixFromString(y);
 			}
 			// 文字列変換できる場合は返還後に、文字列解析を行う
 			else if(y instanceof Object && y.toString) {
 				is_check_string = true;
-				matrix_array = ConstructorTool.toMatrixFromString(y.toString());
+				matrix_array = MatrixTool.toMatrixFromString(y.toString());
 			}
 			// 単純なビルトインの数値など
 			else {
@@ -373,7 +422,7 @@ export default class Matrix {
 				}
 			}
 		}
-		if(!ConstructorTool.isCorrectMatrixArray(matrix_array)) {
+		if(!MatrixTool.isCorrectMatrixArray(matrix_array)) {
 			throw "new Matrix IllegalArgumentException";
 		}
 		
@@ -883,78 +932,52 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列内の指定した箇所の値
-	 * @param {Matrix} arg1 - 位置／ベクトルの場合は何番目のベクトルか
-	 * @param {Matrix} [arg2] - 列番号（行番号と列番号で指定する場合（任意））
-	 * @returns {Complex} 
-	 * @todo 1つしか指定できないので複数指定できるものを作成したい
+	 * 行列内の指定した箇所の行列
+	 * @param {Matrix} row - 抽出する行番号が入ったベクトル,":"で全ての行抽出
+	 * @param {Matrix} col - 抽出する列番号が入ったベクトル,":"で全ての列抽出
+	 * @param {boolean} [isUpOffset=false] - 位置のオフセットを1にするか
+	 * @returns {Matrix} 
 	 */
-	getComplex(arg1, arg2) {
-		let arg1_data = null;
-		let arg2_data = null;
-		{
-			if(typeof arg1 === "string" || arg1 instanceof String) {
-				arg1_data = new Matrix(arg1);
+	getMatrix(row, col, isUpOffset=false) {
+		const geta = isUpOffset ? 1 : 0 ;
+		const row_array = MatrixTool.toPositionArrayFromObject(row, this.row_length, geta);
+		const col_array = MatrixTool.toPositionArrayFromObject(col, this.column_length, geta);
+		const x = this.matrix_array;
+		const y = new Array(row_array.length);
+		for(let row = 0; row < row_array.length; row++) {
+			const y_row = new Array(col_array.length);
+			for(let col = 0; col < col_array.length; col++) {
+				y_row[col] = x[row_array[row] - geta][col_array[col] - geta];
 			}
-			else {
-				arg1_data = arg1;
-			}
+			y[row] = y_row;
 		}
-		if(arguments.length === 2) {
-			if(typeof arg2 === "string" || arg2 instanceof String) {
-				arg2_data = new Matrix(arg2);
-			}
-			else {
-				arg2_data = arg2;
-			}
-		}
-		const get_scalar = function(x) {
-			let y;
-			let is_scalar = false;
-			if(typeof arg1 === "number" || arg1 instanceof Number) {
-				y = Math.round(x);
-				is_scalar = true;
-			}
-			else if(arg1 instanceof Complex)  {
-				y = Math.round(x.real);
-				is_scalar = true;
-			}
-			else if((arg1 instanceof Matrix) && arg1.isScalar()) {
-				y = Math.round(x.doubleValue);
-				is_scalar = true;
-			}
-			return {
-				number : y,
-				is_scalar : is_scalar
-			};
-		};
-		let is_scalar = true;
-		let arg1_scalar = null;
-		let arg2_scalar = null;
+		return new Matrix(y);
+	}
+
+	/**
+	 * 行列内の指定した箇所の値
+	 * @param {Matrix} row_or_pos - 行列なら行番号, ベクトルの場合は値の位置番号
+	 * @param {Matrix} [col] - 列番号（行列の場合は指定する）
+	 * @returns {Complex} 
+	 */
+	getComplex(row_or_pos, col) {
+		let row_or_pos_scalar = null;
+		let col_scalar = null;
 		if(arguments.length === 1) {
-			arg1_scalar = get_scalar(arg1_data);
-			is_scalar &= arg1_scalar.is_scalar;
+			row_or_pos_scalar = Matrix._toInteger(row_or_pos);
 		}
 		else if(arguments.length === 2) {
-			arg1_scalar = get_scalar(arg1_data);
-			is_scalar &= arg1_scalar.is_scalar;
-			arg2_scalar = get_scalar(arg2_data);
-			is_scalar &= arg2_scalar.is_scalar;
+			row_or_pos_scalar = Matrix._toInteger(row_or_pos);
+			col_scalar = Matrix._toInteger(col);
 		}
-		// 1つのみ指定した場合
-		if(is_scalar) {
-			if(this.isRow()) {
-				return this.matrix_array[0][arg1_scalar.number];
-			}
-			else if(this.isColumn()) {
-				return this.matrix_array[arg1_scalar.number][0];
-			}
-			else {
-				return this.matrix_array[arg1_scalar.number][arg2_scalar.number];
-			}
+		if(this.isRow()) {
+			return this.matrix_array[0][row_or_pos_scalar];
+		}
+		else if(this.isColumn()) {
+			return this.matrix_array[row_or_pos_scalar][0];
 		}
 		else {
-			throw "getComplex not scalar : " + this;
+			return this.matrix_array[row_or_pos_scalar][col_scalar];
 		}
 	}
 

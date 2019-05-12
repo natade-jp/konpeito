@@ -8,8 +8,6 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import File from "./utility/File.mjs";
-import Format from "./utility/Format.mjs";
 import Log from "./utility/Log.mjs";
 
 import Random from "./math/tool/Random.mjs";
@@ -39,15 +37,6 @@ export default class konpeito {
 	 */
 	static get File() {
 		return File;
-	}
-
-	/**
-	 * フォーマットクラス
-	 * @returns {function(text: string, parmeter: ?(string|number)}
-	 * @ignore
-	 */
-	static get format() {
-		return Format.format;
 	}
 
 	/**
