@@ -707,36 +707,53 @@ export default class LinearAlgebra {
 		if(!M.isSquare()) {
 			throw "not square";
 		}
-		const calcDet = function(x) {
-			if(x.length === 2) {
-				// 2次元の行列式になったら、たすき掛け計算する
-				return x[0][0].mul(x[1][1]).sub(x[0][1].mul(x[1][0]));
-			}
-			let y = Complex.ZERO;
-			for(let i = 0; i < x.length; i++) {
-				// N次元の行列式を、N-1次元の行列式に分解していく
-				const D = [];
-				const a = x[i][0];
-				for(let row = 0, D_low = 0; row < x.length; row++) {
-					if(i === row) {
-						continue;
+		const len = M.length;
+		if(len < 5) {
+			const calcDet = function(x) {
+				if(x.length === 2) {
+					// 2次元の行列式になったら、たすき掛け計算する
+					return x[0][0].mul(x[1][1]).sub(x[0][1].mul(x[1][0]));
+				}
+				let y = Complex.ZERO;
+				for(let i = 0; i < x.length; i++) {
+					// N次元の行列式を、N-1次元の行列式に分解していく
+					const D = [];
+					const a = x[i][0];
+					for(let row = 0, D_low = 0; row < x.length; row++) {
+						if(i === row) {
+							continue;
+						}
+						D[D_low] = [];
+						for(let col = 1, D_col = 0; col < x.length; col++, D_col++) {
+							D[D_low][D_col] = x[row][col];
+						}
+						D_low++;
 					}
-					D[D_low] = [];
-					for(let col = 1, D_col = 0; col < x.length; col++, D_col++) {
-						D[D_low][D_col] = x[row][col];
+					if((i % 2) === 0) {
+						y = y.add(a.mul(calcDet(D)));
 					}
-					D_low++;
+					else {
+						y = y.sub(a.mul(calcDet(D)));
+					}
 				}
-				if((i % 2) === 0) {
-					y = y.add(a.mul(calcDet(D)));
-				}
-				else {
-					y = y.sub(a.mul(calcDet(D)));
-				}
+				return y;
+			};
+			return new Matrix(calcDet(M.matrix_array));
+		}
+		else {
+			// サイズが大きい場合は、lu分解を利用する
+			const lup = LinearAlgebra.lup(M);
+			const exchange_count = (len - lup.P.diag().sum().scalar) / 2;
+			const x = lup.U.diag().matrix_array;
+			let y = x[0][0];
+			for(let i = 1; i < len; i++) {
+				y = y.mul(x[i][0]);
 			}
-			return y;
-		};
-		return new Matrix(calcDet(M.matrix_array));
+			if((exchange_count % 2) === 1) {
+				y = y.negate();
+			}
+			return new Matrix(y);
+		}
 	}
 
 	/**
@@ -790,6 +807,20 @@ export default class LinearAlgebra {
 			L : L,
 			U : U,
 			P : P
+		};
+	}
+
+	/**
+	 * LU分解
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {{L: Matrix, U: Matrix}} L*U=A
+	 */
+	static lu(mat) {
+		const lup = LinearAlgebra.lup(mat);
+		const L = lup.P.T().mul(lup.L);
+		return {
+			L : L,
+			U : lup.U
 		};
 	}
 

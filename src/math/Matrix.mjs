@@ -2440,6 +2440,14 @@ export default class Matrix {
 	}
 
 	/**
+	 * LU分解
+	 * @returns {{L: Matrix, U: Matrix}} L*U=A
+	 */
+	lu() {
+		return LinearAlgebra.lu(this);
+	}
+
+	/**
 	 * 一次方程式を解く
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
 	 * @returns {Matrix} Ax=B となる x
@@ -2998,3 +3006,4 @@ export default class Matrix {
 	}
 	
 }
+
