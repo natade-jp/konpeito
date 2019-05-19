@@ -10,7 +10,7 @@
 // @ts-check
 
 // @ts-ignore
-import Random from "./tool/Random.mjs";
+import Random from "./tools/Random.mjs";
 
 /**
  * 乱数用クラスを指定しなかった場合に使用するデフォルト乱数クラス

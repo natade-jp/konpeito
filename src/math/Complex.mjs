@@ -10,7 +10,7 @@
 // @ts-check
 
 // @ts-ignore
-import Random from "./tool/Random.mjs";
+import Random from "./tools/Random.mjs";
 
 // @ts-ignore
 import Matrix from "./Matrix.mjs";

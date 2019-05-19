@@ -10,13 +10,13 @@
 // @ts-check
 
 // @ts-ignore
-import LinearAlgebra from "./tool/LinearAlgebra.mjs";
+import LinearAlgebra from "./tools/LinearAlgebra.mjs";
 
 // @ts-ignore
-import Statistics from "./tool/Statistics.mjs";
+import Statistics from "./tools/Statistics.mjs";
 
 // @ts-ignore
-import Signal from "./tool/Signal.mjs";
+import Signal from "./tools/Signal.mjs";
 
 // @ts-ignore
 import Complex from "./Complex.mjs";

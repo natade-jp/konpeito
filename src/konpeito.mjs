@@ -13,7 +13,7 @@
 import Log from "./utility/Log.mjs";
 
 // @ts-ignore
-import Random from "./math/tool/Random.mjs";
+import Random from "./math/tools/Random.mjs";
 
 // @ts-ignore
 import RoundingMode from "./math/context/RoundingMode.mjs";
