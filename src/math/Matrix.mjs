@@ -7,10 +7,18 @@
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
  */
+// @ts-check
 
+// @ts-ignore
 import LinearAlgebra from "./tool/LinearAlgebra.mjs";
+
+// @ts-ignore
 import Statistics from "./tool/Statistics.mjs";
+
+// @ts-ignore
 import Signal from "./tool/Signal.mjs";
+
+// @ts-ignore
 import Complex from "./Complex.mjs";
 
 /**
@@ -20,25 +28,30 @@ class MatrixTool {
 
 	/**
 	 * 行列の位置を指定するデータから、実際の値を作成
-	 * @param data {*} - 調査する値
+	 * @param data {string|number|Matrix|Complex} - 調査する値
 	 * @param max {number} - ":"が指定された時に初期化する配列の長さ
 	 * @param geta {number} - ":"が指定された時に初期化する値のオフセット
 	 * @returns {Array<number>}
 	 */
 	static toPositionArrayFromObject(data, max, geta) {
 		let y;
-		if((typeof data === "string") || (data instanceof String)) {
-			y = MatrixTool.toArrayFromString(data);
-			if(y === ":") {
+		if(typeof data === "string") {
+			const array_or_string = MatrixTool.toArrayFromString(data);
+			if(array_or_string === ":") {
+				// : が指定された場合
 				y = new Array(max);
 				for(let i = 0; i < max; i++) {
 					y[i] =  i + geta;
 				}
 			}
-			else {
+			else if(array_or_string instanceof Array) {
+				y = array_or_string;
 				for(let i = 0; i < y.length; i++) {
 					y[i] = y[i].real | 0;
 				}
+			}
+			else {
+				throw "toArrayFromString[" + data + "][" + array_or_string + "]";
 			}
 			return y;
 		}
@@ -84,9 +97,8 @@ class MatrixTool {
 		// 1 ... 一致した文字列、あるいは一致していない文字列
 		const output = [];
 		let search_target = text;
-		let match = true;
 		for(let x = 0; x < 1000; x++) {
-			match = search_target.match(regexp);
+			const match = search_target.match(regexp);
 			if(match === null) {
 				if(search_target.length) {
 					output.push([ false, search_target ]);
@@ -181,7 +193,7 @@ class MatrixTool {
 	/**
 	 * 文字列からMatrix型の行列データの行部分に変換
 	 * @param {string} row_text - 行列の1行を表す文字列
-	 * @returns {Array<Complex>}
+	 * @returns {Array<Complex>|string}
 	 */
 	static toArrayFromString(row_text) {
 		// 「:」のみ記載されていないかの確認
@@ -320,7 +332,7 @@ export default class Matrix {
 	 * ・[[1,2],[3,4]]	行列
 	 * ・["1+j", "2+j"]	複素数を含んだ行列
 	 * ・"[1 1:0.5:3]"		MATLAB/Octave/Scilab互換
-	 * @param {Object|number|string|Array} number - 行列データ( "1 + j", [1 , 1] など)
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 行列データ( "1 + j", [1 , 1] など)
 	 */
 	constructor(number) {
 		let matrix_array = null;
@@ -396,12 +408,12 @@ export default class Matrix {
 				}
 			}
 			// 文字列の場合は、文字列解析を行う
-			else if(typeof y === "string" || y instanceof String) {
+			else if(typeof y === "string") {
 				is_check_string = true;
 				matrix_array = MatrixTool.toMatrixFromString(y);
 			}
 			// 文字列変換できる場合は返還後に、文字列解析を行う
-			else if(y instanceof Object && y.toString) {
+			else if(y instanceof Object) {
 				is_check_string = true;
 				matrix_array = MatrixTool.toMatrixFromString(y.toString());
 			}
@@ -429,7 +441,7 @@ export default class Matrix {
 		/**
 		 * 行列を構成する配列
 		 * @private
-		 * @type {Array<Array<number>>}
+		 * @type {Array<Array<Complex>>}
 		 */
 		this.matrix_array = matrix_array;
 
@@ -457,7 +469,7 @@ export default class Matrix {
 
 	/**
 	 * Matrix を作成
-	 * @param {Object|number|string|Array} number 
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
 	 * @returns {Matrix}
 	 */
 	static create(number) {
@@ -471,7 +483,7 @@ export default class Matrix {
 	
 	/**
 	 * 指定した数値から Matrix 型に変換
-	 * @param {Matrix} number
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
 	 * @returns {Matrix}
 	 */
 	static valueOf(number) {
@@ -480,7 +492,7 @@ export default class Matrix {
 
 	/**
 	 * 行列を作成
-	 * @param {Matrix} number 
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @returns {Matrix}
 	 * @private
 	 */
@@ -495,7 +507,7 @@ export default class Matrix {
 
 	/**
 	 * 複素数を作成
-	 * @param {Matrix} number 
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @returns {Complex}
 	 * @private
 	 */
@@ -508,18 +520,18 @@ export default class Matrix {
 			return M.scalar;
 		}
 		else {
-			throw "not scalar.";
+			throw "not scalar. [" + number + "]";
 		}
 	}
 
 	/**
 	 * 実数を作成
-	 * @param {Matrix} number 
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @returns {number}
 	 * @private
 	 */
-	static _toFloat(number) {
-		if((typeof number === "number") || (number instanceof Number)) {
+	static _toDouble(number) {
+		if(typeof number === "number") {
 			return number;
 		}
 		const x = Matrix._toComplex(number);
@@ -533,12 +545,12 @@ export default class Matrix {
 
 	/**
 	 * 整数を作成
-	 * @param {Matrix} number 
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @returns {number}
 	 * @private
 	 */
 	static _toInteger(number) {
-		return Matrix._toFloat(number) | 0;
+		return Matrix._toDouble(number) | 0;
 	}
 
 	/**
@@ -657,9 +669,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * A === B
-	 * @param {Matrix} number
-	 * @param {number} [epsilon] - 誤差
+	 * 等式
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {boolean} A === B
 	 */
 	equals(number, epsilon) {
@@ -716,7 +728,7 @@ export default class Matrix {
 	/**
 	 * 本オブジェクト内の全要素に同一処理を実行
 	 * ミュータブル
-	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(num, row, col)
+	 * @param {function(Complex, number, number): ?Object } eachfunc - Function(num, row, col)
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
@@ -749,7 +761,7 @@ export default class Matrix {
 
 	/**
 	 * 本オブジェクト内の全要素に同一処理を実行
-	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(num, row, col)
+	 * @param {function(Complex, number, number): ?Object } eachfunc - Function(num, row, col)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	cloneMatrixDoEachCalculation(eachfunc) {
@@ -758,9 +770,9 @@ export default class Matrix {
 
 	/**
 	 * 行列内の各値に対して指定した初期化を行ったMatrixを作成
-	 * @param {function(num: Complex, row: number, col: number): ?Complex} eachfunc - Function(row, col)
-	 * @param {number} dimension - 次元数
-	 * @param {number} [column_length=dimension] - 列数
+	 * @param {function(number, number): ?Object } eachfunc - Function(row, col)
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length=dimension] - 列数
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	static createMatrixDoEachCalculation(eachfunc, dimension, column_length) {
@@ -787,7 +799,7 @@ export default class Matrix {
 
 	/**
 	 * 行列の列をベクトルとみなし同一処理を実行、行ベクトルであれば行ベクトルに対し同一処理を実行
-	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	eachVectorAuto(array_function) {
@@ -821,7 +833,7 @@ export default class Matrix {
 	/**
 	 * 行列の行と列をベクトルとみなし同一処理を実行
 	 * 先に行に対して同一処理を実行後の行列に対し、列ごとにさらに同一処理を実行する
-	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	eachVectorBoth(array_function) {
@@ -856,7 +868,7 @@ export default class Matrix {
 
 	/**
 	 * 行列の行をベクトルとみなし同一処理を実行
-	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	eachVectorRow(array_function) {
@@ -879,7 +891,7 @@ export default class Matrix {
 
 	/**
 	 * 行列の列をベクトルとみなし同一処理を実行
-	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	eachVectorColumn(array_function) {
@@ -902,16 +914,16 @@ export default class Matrix {
 
 	/**
 	 * 引数に設定された行／列をベクトルとみなし同一処理を実行
-	 * @param {function(array: Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @param {string|number} [dimtype="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	eachVector(array_function, dimtype) {
 		let target = dimtype !== undefined ? dimtype : "auto";
-		if(	(typeof target === "string") || (target instanceof String)) {
+		if(typeof target === "string") {
 			target = target.toLocaleLowerCase();
 		}
-		else if((typeof target !== "number") && !(target instanceof Number)) {
+		else if(typeof target !== "number") {
 			target = Matrix._toInteger(target);
 		}
 		if((target === "auto") || (target === 0)) {
@@ -933,8 +945,8 @@ export default class Matrix {
 
 	/**
 	 * 行列内の指定した箇所の行列
-	 * @param {Matrix} row - 抽出する行番号が入ったベクトル,":"で全ての行抽出
-	 * @param {Matrix} col - 抽出する列番号が入ったベクトル,":"で全ての列抽出
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row - 抽出する行番号が入ったベクトル,":"で全ての行抽出
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} col - 抽出する列番号が入ったベクトル,":"で全ての列抽出
 	 * @param {boolean} [isUpOffset=false] - 位置のオフセットを1にするか
 	 * @returns {Matrix} 
 	 */
@@ -956,9 +968,9 @@ export default class Matrix {
 
 	/**
 	 * 行列内の指定した箇所の値を変更する
-	 * @param {Matrix} row - 変更する行番号が入ったベクトル,":"で全ての行抽出
-	 * @param {Matrix} col - 変更する列番号が入ったベクトル,":"で全ての列抽出
-	 * @param {Matrix} replace - 変更内容の行列
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row - 変更する行番号が入ったベクトル,":"で全ての行抽出
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} col - 変更する列番号が入ったベクトル,":"で全ての列抽出
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} replace - 変更内容の行列
 	 * @param {boolean} [isUpOffset=false] - 位置のオフセットを1にするか
 	 * @returns {Matrix} 
 	 */
@@ -980,8 +992,8 @@ export default class Matrix {
 
 	/**
 	 * 行列内の指定した箇所の値
-	 * @param {Matrix} row_or_pos - 行列なら行番号, ベクトルの場合は値の位置番号
-	 * @param {Matrix} [col] - 列番号（行列の場合は指定する）
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_or_pos - 行列なら行番号, ベクトルの場合は値の位置番号
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [col] - 列番号（行列の場合は指定する）
 	 * @returns {Complex} 
 	 */
 	getComplex(row_or_pos, col) {
@@ -1059,7 +1071,7 @@ export default class Matrix {
 
 	/**
 	 * 行列のpノルム
-	 * @param {number} [p=2]
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
 	 * @returns {number}
 	 */
 	norm(p) {
@@ -1072,9 +1084,9 @@ export default class Matrix {
 	
 	/**
 	 * 指定した数値で初期化
-	 * @param {Matrix} number - 初期値
-	 * @param {number} dimension - 次元数
-	 * @param {number} [column_length] - 列数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 初期値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
 	 * @returns {Matrix}
 	 */
 	static memset(number, dimension, column_length) {
@@ -1099,8 +1111,8 @@ export default class Matrix {
 
 	/**
 	 * 単位行列を生成
-	 * @param {number} dimension - 次元数
-	 * @param {number} [column_length] - 列数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
 	 * @returns {Matrix}
 	 */
 	static eye(dimension, column_length) {
@@ -1111,8 +1123,8 @@ export default class Matrix {
 	
 	/**
 	 * 零行列を生成
-	 * @param {number} dimension - 次元数
-	 * @param {number} [column_length] - 列数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
 	 * @returns {Matrix}
 	 */
 	static zeros(dimension, column_length) {
@@ -1124,8 +1136,8 @@ export default class Matrix {
 
 	/**
 	 * 1で構成した行列を生成
-	 * @param {number} dimension - 次元数
-	 * @param {number} [column_length] - 列数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
 	 * @returns {Matrix}
 	 */
 	static ones(dimension, column_length) {
@@ -1137,8 +1149,8 @@ export default class Matrix {
 
 	/**
 	 * 乱数で構成した行列を生成
-	 * @param {number} dimension - 次元数
-	 * @param {number} [column_length] - 列数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
 	 * @returns {Matrix}
 	 */
 	static rand(dimension, column_length) {
@@ -1149,8 +1161,8 @@ export default class Matrix {
 
 	/**
 	 * 正規分布に従う乱数で構成した行列を生成
-	 * @param {number} dimension - 次元数
-	 * @param {number} [column_length] - 列数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
 	 * @returns {Matrix}
 	 */
 	static randn(dimension, column_length) {
@@ -1161,7 +1173,7 @@ export default class Matrix {
 
 	/**
 	 * 行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成
-	 * @returns {Matrix}
+	 * @returns {Matrix} 行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成
 	 */
 	diag() {
 		if(this.isVector()) {
@@ -1244,7 +1256,7 @@ export default class Matrix {
 
 	/**
 	 * 実行列の判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {boolean}
 	 */
 	isReal(epsilon) {
@@ -1259,7 +1271,7 @@ export default class Matrix {
 
 	/**
 	 * 複素行列の判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {boolean}
 	 */
 	isComplex(epsilon) {
@@ -1274,7 +1286,7 @@ export default class Matrix {
 
 	/**
 	 * 零行列を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {boolean}
 	 */
 	isZeros(epsilon) {
@@ -1290,7 +1302,7 @@ export default class Matrix {
 
 	/**
 	 * 単位行列を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {boolean}
 	 */
 	isIdentity(epsilon) {
@@ -1308,7 +1320,7 @@ export default class Matrix {
 
 	/**
 	 * 対角行列を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {boolean}
 	 */
 	isDiagonal(epsilon) {
@@ -1324,7 +1336,7 @@ export default class Matrix {
 	
 	/**
 	 * 三重対角行列を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {boolean}
 	 */
 	isTridiagonal(epsilon) {
@@ -1343,7 +1355,7 @@ export default class Matrix {
 
 	/**
 	 * 正則行列を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {boolean}
 	 */
 	isRegular(epsilon) {
@@ -1354,12 +1366,12 @@ export default class Matrix {
 		// det(M) != 0 でもよいが、時間がかかる可能性があるので
 		// 誤差は自動で計算など本当はもうすこし良い方法を考える必要がある
 		const tolerance = epsilon ? epsilon : 1.0e-10;
-		return (this.rank(1.0e-10).equals(this.row_length, tolerance));
+		return (this.rank(tolerance) === this.row_length);
 	}
 
 	/**
 	 * 直行行列を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {boolean}
 	 */
 	isOrthogonal(epsilon) {
@@ -1372,7 +1384,7 @@ export default class Matrix {
 
 	/**
 	 * ユニタリ行列を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {boolean}
 	 */
 	isUnitary(epsilon) {
@@ -1385,7 +1397,7 @@ export default class Matrix {
 
 	/**
 	 * 対称行列を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {boolean}
 	 */
 	isSymmetric(epsilon) {
@@ -1405,7 +1417,7 @@ export default class Matrix {
 
 	/**
 	 * エルミート行列を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {boolean}
 	 */
 	isHermitian(epsilon) {
@@ -1441,8 +1453,8 @@ export default class Matrix {
 	 * 値同士を比較
 	 * スカラー同士の場合の戻り値は、number型。
 	 * 行列同士の場合は、各項の比較結果が入った、Matrix型。
-	 * @param {Matrix} number 
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, epsilon) {
@@ -1462,9 +1474,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * max([A, B])
-	 * @param {number} [epsilon] - 誤差
-	 * @returns {Matrix}
+	 * 最大値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {Matrix} max([A, B])
 	 */
 	max(epsilon) {
 		const main = function(data) {
@@ -1480,9 +1492,9 @@ export default class Matrix {
 	}
 	
 	/**
-	 * min([A, B])
-	 * @param {number} [epsilon] - 誤差
-	 * @returns {Matrix}
+	 * 最小値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {Matrix} min([A, B])
 	 */
 	min(epsilon) {
 		const main = function(data) {
@@ -1502,9 +1514,9 @@ export default class Matrix {
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	
 	/**
-	 * A + B
-	 * @param {Matrix} number 
-	 * @returns {Matrix}
+	 * 加算
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A + B
 	 */
 	add(number) {
 		const M1 = this;
@@ -1522,9 +1534,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * A - B
-	 * @param {Matrix} number 
-	 * @returns {Matrix}
+	 * 減算
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A - B
 	 */
 	sub(number) {
 		const M1 = this;
@@ -1542,9 +1554,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * A * B
-	 * @param {Matrix} number 
-	 * @returns {Matrix}
+	 * 乗算
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A * B
 	 */
 	mul(number) {
 		const M1 = this;
@@ -1552,7 +1564,7 @@ export default class Matrix {
 		const x1 = M1.matrix_array;
 		const x2 = M2.matrix_array;
 		if(M1.isScalar() && M2.isScalar()) {
-			return new Matrix(x1.scalar.mul(x2.scalar));
+			return new Matrix(M1.scalar.mul(M2.scalar));
 		}
 		if(M1.isScalar()) {
 			const y = new Array(M2.row_length);
@@ -1594,17 +1606,16 @@ export default class Matrix {
 	}
 
 	/**
-	 * A / B
-	 * @param {Matrix} number 
-	 * @returns {Matrix}
+	 * 割り算
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A / B
 	 */
 	div(number) {
 		const M1 = this;
 		const M2 = Matrix._toMatrix(number);
 		const x1 = M1.matrix_array;
-		const x2 = M2.matrix_array;
 		if(M1.isScalar() && M2.isScalar()) {
-			return new Matrix(x1.scalar.div(x2.scalar));
+			return new Matrix(M1.scalar.div(M2.scalar));
 		}
 		if(M2.isScalar()) {
 			const y = new Array(M1.row_length);
@@ -1629,10 +1640,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * A .* B
-	 * 各項ごとの掛け算
-	 * @param {Matrix} number 
-	 * @returns {Matrix}
+	 * 行列の各項ごとの掛け算
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A .* B
 	 */
 	nmul(number) {
 		const M1 = this;
@@ -1650,10 +1660,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * A ./ B
-	 * 各項ごとの割り算
-	 * @param {Matrix} number 
-	 * @returns {Matrix}
+	 * 行列の各項ごとの割り算
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A ./ B
 	 */
 	ndiv(number) {
 		const M1 = this;
@@ -1676,7 +1685,7 @@ export default class Matrix {
 
 	/**
 	 * 各項の実部
-	 * @returns {Matrix}
+	 * @returns {Matrix} real(A)
 	 */
 	real() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1686,7 +1695,7 @@ export default class Matrix {
 	
 	/**
 	 * 各項の虚部
-	 * @returns {Matrix}
+	 * @returns {Matrix} imag(A)
 	 */
 	imag() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1696,17 +1705,17 @@ export default class Matrix {
 
 	/**
 	 * 各項の偏角
-	 * @returns {Matrix}
+	 * @returns {Matrix} arg(A)
 	 */
-	angle() {
+	arg() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return new Complex(num.angle);
+			return new Complex(num.arg);
 		});
 	}
 
 	/**
 	 * 各項の符号値
-	 * @returns {Matrix}
+	 * @returns {Matrix} [-1,1] 複素数の場合はノルムを1にした値。
 	 */
 	sign() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1716,7 +1725,7 @@ export default class Matrix {
 
 	/**
 	 * 各項の整数を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testInteger(epsilon) {
@@ -1727,7 +1736,7 @@ export default class Matrix {
 
 	/**
 	 * 各項の複素整数を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testComplexInteger(epsilon) {
@@ -1738,7 +1747,7 @@ export default class Matrix {
 
 	/**
 	 * 各項の 0 を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testZero(epsilon) {
@@ -1749,7 +1758,7 @@ export default class Matrix {
 
 	/**
 	 * 各項の 1 を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testOne(epsilon) {
@@ -1760,7 +1769,7 @@ export default class Matrix {
 	
 	/**
 	 * 各項の複素数を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testComplex(epsilon) {
@@ -1771,7 +1780,7 @@ export default class Matrix {
 
 	/**
 	 * 各項の実数を判定
-	 * @param {number} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {Matrix} 1 or 0 で構成された行列
 	 */
 	testReal(epsilon) {
@@ -1842,8 +1851,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * abs(A)
-	 * @returns {Matrix}
+	 * 絶対値
+	 * @returns {Matrix} abs(A)
 	 */
 	abs() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1853,7 +1862,7 @@ export default class Matrix {
 
 	/**
 	 * 複素共役行列
-	 * @returns {Matrix}
+	 * @returns {Matrix} real(A) - imag(A)j
 	 */
 	conj() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1862,8 +1871,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * -A
-	 * @returns {Matrix}
+	 * 負数
+	 * @returns {Matrix} -A
 	 */
 	negate() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1872,8 +1881,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * sqrt(A)
-	 * @returns {Matrix}
+	 * 平方根
+	 * @returns {Matrix} sqrt(A)
 	 */
 	sqrt() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1882,9 +1891,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * pow(A, B)
-	 * @param {Matrix} number - スカラー
-	 * @returns {Matrix}
+	 * 累乗
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - スカラー
+	 * @returns {Matrix} pow(A, B)
 	 */
 	pow(number) {
 		const X = Matrix._toComplex(number);
@@ -1894,8 +1903,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * log(A)
-	 * @returns {Matrix}
+	 * 対数
+	 * @returns {Matrix} log(A)
 	 */
 	log() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1904,8 +1913,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * exp(A)
-	 * @returns {Matrix}
+	 * 指数
+	 * @returns {Matrix} exp(A)
 	 */
 	exp() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1914,8 +1923,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * sin(A)
-	 * @returns {Matrix}
+	 * sin
+	 * @returns {Matrix} sin(A)
 	 */
 	sin() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1924,8 +1933,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * cos(A)
-	 * @returns {Matrix}
+	 * cos
+	 * @returns {Matrix} cos(A)
 	 */
 	cos() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1934,8 +1943,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * tan(A)
-	 * @returns {Matrix}
+	 * tan
+	 * @returns {Matrix} tan(A)
 	 */
 	tan() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1944,8 +1953,8 @@ export default class Matrix {
 	}
 	
 	/**
-	 * atan(A)
-	 * @returns {Matrix}
+	 * atan
+	 * @returns {Matrix} atan(A)
 	 */
 	atan() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1954,9 +1963,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * atan2(Y, X)
-	 * @param {Matrix} number - スカラー
-	 * @returns {Matrix}
+	 * atan2
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - スカラー
+	 * @returns {Matrix} atan2(Y, X)
 	 */
 	atan2(number) {
 		const X = Matrix._toComplex(number);
@@ -1966,8 +1975,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * floor(A)
-	 * @returns {Matrix}
+	 * floor
+	 * @returns {Matrix} floor(A)
 	 */
 	floor() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1976,8 +1985,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * ceil(A)
-	 * @returns {Matrix}
+	 * ceil
+	 * @returns {Matrix} ceil(A)
 	 */
 	ceil() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1986,8 +1995,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * round(A)
-	 * @returns {Matrix}
+	 * 四捨五入
+	 * @returns {Matrix} round(A)
 	 */
 	round() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1996,8 +2005,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * fix(A)
-	 * @returns {Matrix}
+	 * 整数化
+	 * @returns {Matrix} fix(A)
 	 */
 	fix() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2006,8 +2015,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * fract(A)
-	 * @returns {Matrix}
+	 * 小数部の抽出
+	 * @returns {Matrix} fract(A)
 	 */
 	fract() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2016,8 +2025,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * sinc(A)
-	 * @returns {Matrix}
+	 * sinc
+	 * @returns {Matrix} sinc(A)
 	 */
 	sinc() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2035,7 +2044,7 @@ export default class Matrix {
 	/**
 	 * 行列を時計回りに回転
 	 * ミュータブル
-	 * @param {number} rot_90_count - 回転する回数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} rot_90_count - 回転する回数
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
@@ -2103,7 +2112,7 @@ export default class Matrix {
 
 	/**
 	 * 行列を時計回りに回転
-	 * @param {number} rot_90_count - 回転する回数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} rot_90_count - 回転する回数
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	rot90(rot_90_count) {
@@ -2113,8 +2122,8 @@ export default class Matrix {
 	/**
 	 * 行列を拡張、拡張した項は、0で初期化。
 	 * ミュータブル
-	 * @param {number} new_row_length - 新しい行の長さ
-	 * @param {number} new_column_length - 新しい列の長さ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} new_row_length - 新しい行の長さ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} new_column_length - 新しい列の長さ
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
@@ -2158,8 +2167,8 @@ export default class Matrix {
 
 	/**
 	 * 行列を拡張、拡張した項は、0で初期化
-	 * @param {number} row_length - 新しい行の長さ
-	 * @param {number} column_length - 新しい列の長さ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - 新しい行の長さ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - 新しい列の長さ
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	resize(row_length, column_length) {
@@ -2169,7 +2178,7 @@ export default class Matrix {
 	/**
 	 * 行列内の行を消去
 	 * ミュータブル
-	 * @param {number} delete_row_index - 行番号
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_row_index - 行番号
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
@@ -2187,7 +2196,7 @@ export default class Matrix {
 	/**
 	 * 行列内の列を消去
 	 * ミュータブル
-	 * @param {number} delete_column_index - 列番号
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_column_index - 列番号
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
@@ -2206,7 +2215,7 @@ export default class Matrix {
 
 	/**
 	 * 行列内の行を消去
-	 * @param {number} delete_row_index - 行番号
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_row_index - 行番号
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	deleteRow(delete_row_index) {
@@ -2215,7 +2224,7 @@ export default class Matrix {
 
 	/**
 	 * 行列内の列を消去
-	 * @param {number} delete_column_index - 列番号
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_column_index - 列番号
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	deleteColumn(delete_column_index) {
@@ -2225,8 +2234,8 @@ export default class Matrix {
 	/**
 	 * 行列内の行を交換
 	 * ミュータブル
-	 * @param {number} exchange_row_index1 - 行番号1
-	 * @param {number} exchange_row_index2 - 行番号2
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index1 - 行番号1
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index2 - 行番号2
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
@@ -2249,8 +2258,8 @@ export default class Matrix {
 	/**
 	 * 行列内の列を交換
 	 * ミュータブル
-	 * @param {number} exchange_column_index1 - 行番号1
-	 * @param {number} exchange_column_index2 - 行番号2
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index1 - 行番号1
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index2 - 行番号2
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
@@ -2274,8 +2283,8 @@ export default class Matrix {
 
 	/**
 	 * 行列内の行を交換
-	 * @param {number} exchange_row_index1 - 行番号1
-	 * @param {number} exchange_row_index2 - 行番号2
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index1 - 行番号1
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index2 - 行番号2
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	exchangeRow(exchange_row_index1, exchange_row_index2) {
@@ -2284,8 +2293,8 @@ export default class Matrix {
 
 	/**
 	 * 行列内の列を交換
-	 * @param {number} exchange_column_index1 - 行番号1
-	 * @param {number} exchange_column_index2 - 行番号2
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index1 - 行番号1
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index2 - 行番号2
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	exchangeColumn(exchange_column_index1, exchange_column_index2) {
@@ -2295,7 +2304,7 @@ export default class Matrix {
 	/**
 	 * 行列の右に行列を結合
 	 * ミュータブル
-	 * @param {Matrix} left_matrix - 結合したい行列
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} left_matrix - 結合したい行列
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
@@ -2317,7 +2326,7 @@ export default class Matrix {
 	/**
 	 * 行列の下に行列を結合
 	 * ミュータブル
-	 * @param {Matrix} bottom_matrix - 結合したい行列
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} bottom_matrix - 結合したい行列
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
@@ -2336,7 +2345,7 @@ export default class Matrix {
 
 	/**
 	 * 行列の右に行列を結合
-	 * @param {Matrix} left_matrix - 結合したい行列
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} left_matrix - 結合したい行列
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	concatLeft(left_matrix) {
@@ -2345,7 +2354,7 @@ export default class Matrix {
 
 	/**
 	 * 行列の下に行列を結合
-	 * @param {Matrix} bottom_matrix - 結合したい行列
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} bottom_matrix - 結合したい行列
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	concatBottom(bottom_matrix) {
@@ -2358,7 +2367,7 @@ export default class Matrix {
 
 	/**
 	 * 転置行列
-	 * @returns {Matrix}
+	 * @returns {Matrix} A^T
 	 */
 	transpose() {
 		const y = new Array(this.column_length);
@@ -2373,7 +2382,7 @@ export default class Matrix {
 
 	/**
 	 * エルミート転置行列
-	 * @returns {Matrix}
+	 * @returns {Matrix} A^T
 	 */
 	ctranspose() {
 		return this.transpose().conj();
@@ -2381,7 +2390,7 @@ export default class Matrix {
 
 	/**
 	 * エルミート転置行列
-	 * @returns {Matrix}
+	 * @returns {Matrix} A^T
 	 */
 	T() {
 		return this.ctranspose();
@@ -2389,86 +2398,83 @@ export default class Matrix {
 
 	/**
 	 * 行列のランク
-	 * @param {number} [epsilon] - 誤差
-	 * @returns {number}
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {number} rank(A)
 	 */
 	rank(epsilon) {
 		return LinearAlgebra.rank(this, epsilon);
 	}
 
 	/**
-	 * 行列のトレース、対角和
-	 * @returns {number}
+	 * 行列のトレース
+	 * @returns {Complex} trace(A)
 	 */
 	trace() {
 		return LinearAlgebra.trace(this);
 	}
 
 	/**
-	 * ドット積（内積） A・B
-	 * @param {Matrix} number 
-	 * @param {number} [dimension=1] 計算するときに使用する次元（1 or 2）
-	 * @returns {Matrix}
+	 * ドット積
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] 計算するときに使用する次元（1 or 2）
+	 * @returns {Matrix} A・B
 	 */
 	inner(number, dimension=1) {
 		return LinearAlgebra.inner(this, number, dimension);
 	}
 	
 	/**
-	 * 行列式 |A|
-	 * @returns {Matrix}
+	 * 行列式
+	 * @returns {Matrix} |A|
 	 */
 	det() {
 		return LinearAlgebra.det(this);
 	}
 
 	/**
-	 * P'*L*U=A となるLUP分解
-	 * @returns {{P: Matrix, L: Matrix, U: Matrix}}
+	 * LUP分解
+	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
 	 */
 	lup() {
 		return LinearAlgebra.lup(this);
 	}
 
 	/**
-	 * Ax=B となる x を解く
-	 * @param {Matrix} number 
-	 * @returns {Matrix}
+	 * 一次方程式を解く
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
+	 * @returns {Matrix} Ax=B となる x
 	 */
 	linsolve(number) {
 		return LinearAlgebra.linsolve(this, number);
 	}
 
 	/**
-	 * Q*R=A となるQR分解
-	 * Qは正規直行行列、Rは上三角行列
-	 * @returns {{Q: Matrix, R: Matrix}}
+	 * QR分解
+	 * @returns {{Q: Matrix, R: Matrix}} Q*R=A, Qは正規直行行列、Rは上三角行列
 	 */
 	qr() {
 		return LinearAlgebra.qr(this);
 	}
 
 	/**
-	 * P*H*P'=A となる対称行列の三重対角化
-	 * Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致
-	 * @returns {{P: Matrix, H: Matrix}}
+	 * 対称行列の三重対角化
+	 * @returns {{P: Matrix, H: Matrix}} P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致
 	 */
 	tridiagonalize() {
 		return LinearAlgebra.tridiagonalize(this);
 	}
 
 	/**
-	 * V*D*V'=A となる対称行列の固有値分解
-	 * Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列
-	 * @returns {{V: Matrix, D: Matrix}}
+	 * 対称行列の固有値分解
+	 * @returns {{V: Matrix, D: Matrix}} V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列
 	 */
 	eig() {
 		return LinearAlgebra.eig(this);
 	}
 
 	/**
-	 * U*S*V'=A となる特異値分解
-	 * @returns {{U: Matrix, S: Matrix, V: Matrix}}
+	 * 特異値分解
+	 * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
 	 */
 	svd() {
 		return LinearAlgebra.svd(this);
@@ -2476,7 +2482,7 @@ export default class Matrix {
 
 	/**
 	 * 逆行列
-	 * @returns {Matrix}
+	 * @returns {Matrix} A^-1
 	 */
 	inv() {
 		return LinearAlgebra.inv(this);
@@ -2484,7 +2490,7 @@ export default class Matrix {
 
 	/**
 	 * 疑似逆行列
-	 * @returns {Matrix}
+	 * @returns {Matrix} A^+
 	 */
 	pinv() {
 		return LinearAlgebra.pinv(this);
@@ -2512,7 +2518,7 @@ export default class Matrix {
 
 	/**
 	 * 不完全ガンマ関数
-	 * @param {Matrix} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
 	 * @param {string} [tail="lower"] - lower/upper
 	 * @returns {Matrix}
 	 */
@@ -2522,8 +2528,8 @@ export default class Matrix {
 
 	/**
 	 * ガンマ分布の確率密度関数
-	 * @param {Matrix} k - 形状母数
-	 * @param {Matrix} s - 尺度母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
 	 * @returns {Matrix}
 	 */
 	gampdf(k, s) {
@@ -2532,8 +2538,8 @@ export default class Matrix {
 
 	/**
 	 * ガンマ分布の確率密度関数
-	 * @param {Matrix} k - 形状母数
-	 * @param {Matrix} s - 尺度母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
 	 * @returns {Matrix}
 	 */
 	gamcdf(k, s) {
@@ -2542,8 +2548,8 @@ export default class Matrix {
 
 	/**
 	 * ガンマ分布の累積分布関数の逆関数
-	 * @param {Matrix} k - 形状母数
-	 * @param {Matrix} s - 尺度母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
 	 * @returns {Matrix}
 	 */
 	gaminv(k, s) {
@@ -2552,7 +2558,7 @@ export default class Matrix {
 
 	/**
 	 * ベータ関数
-	 * @param {Matrix} y
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} y
 	 * @returns {Matrix}
 	 */
 	beta(y) {
@@ -2561,8 +2567,8 @@ export default class Matrix {
 	
 	/**
 	 * 不完全ベータ関数
-	 * @param {Matrix} a
-	 * @param {Matrix} b
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
 	 * @param {string} [tail="lower"] - lower/upper
 	 * @returns {Matrix}
 	 */
@@ -2572,8 +2578,8 @@ export default class Matrix {
 
 	/**
 	 * ベータ分布の確率密度関数
-	 * @param {Matrix} a
-	 * @param {Matrix} b
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
 	 * @returns {Matrix}
 	 */
 	betacdf(a, b) {
@@ -2582,8 +2588,8 @@ export default class Matrix {
 
 	/**
 	 * ベータ分布の累積分布関数
-	 * @param {Matrix} a
-	 * @param {Matrix} b
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
 	 * @returns {Matrix}
 	 */
 	betapdf(a, b) {
@@ -2592,8 +2598,8 @@ export default class Matrix {
 
 	/**
 	 * ベータ分布の累積分布関数の逆関数
-	 * @param {Matrix} a
-	 * @param {Matrix} b
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
 	 * @returns {Matrix}
 	 */
 	betainv(a, b) {
@@ -2610,7 +2616,7 @@ export default class Matrix {
 	
 	/**
 	 * nCk 二項係数またはすべての組合わせ
-	 * @param {Matrix} k
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k
 	 * @returns {Matrix}
 	 */
 	nchoosek(k) {
@@ -2635,8 +2641,8 @@ export default class Matrix {
 	
 	/**
 	 * 正規分布の確率密度関数
-	 * @param {number} [u=0.0] - 平均値
-	 * @param {number} [s=1.0] - 分散
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
 	 * @returns {Matrix}
 	 */
 	normpdf(u=0.0, s=1.0) {
@@ -2645,8 +2651,8 @@ export default class Matrix {
 
 	/**
 	 * 正規分布の累積分布関数
-	 * @param {number} [u=0.0] - 平均値
-	 * @param {number} [s=1.0] - 分散
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
 	 * @returns {Matrix}
 	 */
 	normcdf(u=0.0, s=1.0) {
@@ -2655,8 +2661,8 @@ export default class Matrix {
 
 	/**
 	 * 正規分布の累積分布関数の逆関数
-	 * @param {number} [u=0.0] - 平均値
-	 * @param {number} [s=1.0] - 分散
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
 	 * @returns {Matrix}
 	 */
 	norminv(u=0.0, s=1.0) {
@@ -2665,7 +2671,7 @@ export default class Matrix {
 
 	/**
 	 * t分布の確率密度関数
-	 * @param {Matrix} v - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
 	 * @returns {Matrix}
 	 */
 	tpdf(v) {
@@ -2674,7 +2680,7 @@ export default class Matrix {
 
 	/**
 	 * t分布の累積分布関数
-	 * @param {Matrix} v - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
 	 * @returns {Matrix}
 	 */
 	tcdf(v) {
@@ -2683,7 +2689,7 @@ export default class Matrix {
 
 	/**
 	 * t分布の累積分布関数の逆関数
-	 * @param {Matrix} v - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
 	 * @returns {Matrix}
 	 */
 	tinv(v) {
@@ -2692,8 +2698,8 @@ export default class Matrix {
 
 	/**
 	 * 尾部が指定可能なt分布の累積分布関数
-	 * @param {Matrix} v - 自由度
-	 * @param {Matrix} tails - 尾部(1...片側、2...両側)
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - 尾部(1...片側、2...両側)
 	 * @returns {Matrix}
 	 */
 	tdist(v, tails) {
@@ -2702,7 +2708,7 @@ export default class Matrix {
 
 	/**
 	 * 両側検定時のt分布の累積分布関数
-	 * @param {Matrix} v - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
 	 * @returns {Matrix}
 	 */
 	tinv2(v) {
@@ -2711,7 +2717,7 @@ export default class Matrix {
 
 	/**
 	 * カイ二乗分布の確率密度関数
-	 * @param {Matrix} k - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
 	 * @returns {Matrix}
 	 */
 	chi2pdf(k) {
@@ -2720,7 +2726,7 @@ export default class Matrix {
 
 	/**
 	 * カイ二乗分布の累積分布関数
-	 * @param {Matrix} k - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
 	 * @returns {Matrix}
 	 */
 	chi2cdf(k) {
@@ -2729,7 +2735,7 @@ export default class Matrix {
 	
 	/**
 	 * カイ二乗分布の累積分布関数の逆関数
-	 * @param {Matrix} k - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
 	 * @returns {Matrix}
 	 */
 	chi2inv(k) {
@@ -2738,8 +2744,8 @@ export default class Matrix {
 
 	/**
 	 * F分布の確率密度関数
-	 * @param {Matrix} d1 - 分子の自由度
-	 * @param {Matrix} d2 - 分母の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
 	 * @returns {Matrix}
 	 */
 	fpdf(d1, d2) {
@@ -2748,8 +2754,8 @@ export default class Matrix {
 
 	/**
 	 * F分布の累積分布関数
-	 * @param {Matrix} d1 - 分子の自由度
-	 * @param {Matrix} d2 - 分母の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
 	 * @returns {Matrix}
 	 */
 	fcdf(d1, d2) {
@@ -2758,8 +2764,8 @@ export default class Matrix {
 
 	/**
 	 * F分布の累積分布関数の逆関数
-	 * @param {Matrix} d1 - 分子の自由度
-	 * @param {Matrix} d2 - 分母の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
 	 * @returns {Matrix}
 	 */
 	finv(d1, d2) {
@@ -2944,7 +2950,7 @@ export default class Matrix {
 
 	/**
 	 * 畳み込み積分、多項式乗算
-	 * @param {Matrix} number
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
 	 * @returns {Matrix}
 	 */
 	conv(number) {
@@ -2953,7 +2959,7 @@ export default class Matrix {
 
 	/**
 	 * 自己相関関数、相互相関関数
-	 * @param {Matrix} [number] - 省略した場合は自己相関関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [number] - 省略した場合は自己相関関数
 	 * @returns {Matrix}
 	 */
 	xcorr(number) {
@@ -2963,7 +2969,7 @@ export default class Matrix {
 	/**
 	 * 窓関数
 	 * @param {string} name - 窓関数の名前
-	 * @param {Matrix} size - 長さ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
 	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
 	 * @returns {Matrix} 列ベクトル
 	 */
@@ -2973,7 +2979,7 @@ export default class Matrix {
 
 	/**
 	 * ハニング窓
-	 * @param {Matrix} size - 長さ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
 	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
 	 * @returns {Matrix} 列ベクトル
 	 */
@@ -2983,7 +2989,7 @@ export default class Matrix {
 	
 	/**
 	 * ハミング窓
-	 * @param {Matrix} size - 長さ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
 	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
 	 * @returns {Matrix} 列ベクトル
 	 */

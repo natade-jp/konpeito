@@ -7,8 +7,13 @@
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
  */
+// @ts-check
 
+// @ts-ignore
 import Random from "./tool/Random.mjs";
+
+// @ts-ignore
+import Matrix from "./Matrix.mjs";
 
 /**
  * Complex 内で使用する乱数生成クラス
@@ -71,13 +76,13 @@ export default class Complex {
 
 	/**
 	 * 複素数を作成
-	 * @param {Complex|number|string|Array<number>} number - 複素数データ( "1 + j", [1 , 1] など)
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - 複素数( "1 + j", [1 , 1] など)
 	 */
 	constructor(number) {
 		// 行列で使うためイミュータブルは必ず守ること。
 		if(arguments.length === 1) {
 			const obj = number;
-			if((obj instanceof Complex) || ((obj instanceof Object) && (obj._re && obj._im))) {
+			if(obj instanceof Complex) {
 				
 				/**
 				 * 実部
@@ -93,20 +98,29 @@ export default class Complex {
 				 */
 				this._im = obj._im;
 			}
-			else if(typeof obj === "number" || obj instanceof Number) {
+			else if(typeof obj === "number") {
 				this._re = obj;
 				this._im = 0.0;
 			}
-			else if(obj instanceof Array && obj.length === 2) {
-				this._re = obj[0];
-				this._im = obj[1];
+			else if(obj instanceof Array) {
+				if(obj.length === 2) {
+					this._re = obj[0];
+					this._im = obj[1];
+				}
+				else {
+					throw "Complex Unsupported argument " + arguments;
+				}
 			}
-			else if(typeof obj === "string" || obj instanceof String) {
+			else if(typeof obj === "string") {
 				const x = ComplexTool.ToComplexFromString(obj);
 				this._re = x.real;
 				this._im = x.imag;
 			}
-			else if(obj instanceof Object && obj.toString) {
+			else if((obj instanceof Object) && (typeof obj._re === "number") && (typeof obj._im === "number")) {
+				this._re = obj._re;
+				this._im = obj._im;
+			}
+			else if(obj instanceof Object) {
 				const x = ComplexTool.ToComplexFromString(obj.toString());
 				this._re = x.real;
 				this._im = x.imag;
@@ -122,7 +136,7 @@ export default class Complex {
 
 	/**
 	 * Complex を作成
-	 * @param {Complex|number|string|Array<number>} number
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
 	 * @returns {Complex}
 	 */
 	static create(number) {
@@ -136,7 +150,7 @@ export default class Complex {
 	
 	/**
 	 * 指定した数値から Complex 型に変換
-	 * @param {Complex} number
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
 	 * @returns {Complex}
 	 */
 	static valueOf(number) {
@@ -145,13 +159,16 @@ export default class Complex {
 	
 	/**
 	 * 複素数を作成
-	 * @param {Complex} number 
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
 	 * @returns {Complex}
 	 * @private
 	 */
 	static _toComplex(number) {
 		if(number instanceof Complex) {
 			return number;
+		}
+		else if(number instanceof Matrix) {
+			return Matrix._toComplex(number);
 		}
 		else {
 			return new Complex(number);
@@ -160,31 +177,47 @@ export default class Complex {
 
 	/**
 	 * 実数を作成
-	 * @param {Complex} number 
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
 	 * @returns {number}
 	 * @private
 	 */
-	static _toFloat(number) {
-		if((typeof number === "number") || (number instanceof Number)) {
+	static _toDouble(number) {
+		if(typeof number === "number") {
 			return number;
 		}
-		const x = (number instanceof Complex) ? number : new Complex(number);
-		if(x.isReal()) {
-			return (new Complex(number)).real;
+		const complex_number = Complex._toComplex(number);
+		if(complex_number.isReal()) {
+			return complex_number.real;
 		}
 		else {
-			throw "not support complex numbers.";
+			throw "not support complex numbers.[" + number + "]";
 		}
 	}
 
 	/**
 	 * 整数を作成
-	 * @param {Complex} number 
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
 	 * @returns {number}
 	 * @private
 	 */
 	static _toInteger(number) {
-		throw Complex._toFloat(number) | 0;
+		throw Complex._toDouble(number) | 0;
+	}
+
+	/**
+	 * 32ビット整数に変換
+	 * @returns {number}
+	 */
+	get intValue() {
+		return this.real | 0;
+	}
+
+	/**
+	 * 64ビット実数に変換
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		return this.real;
 	}
 
 	/**
@@ -241,21 +274,20 @@ export default class Complex {
 	}
 
 	/**
-	 * A === B
-	 * @param {Complex} number
-	 * @param {number} [epsilon=Number.EPSILON] - 誤差
+	 * 等式
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
 	 * @returns {boolean} A === B
 	 */
 	equals(number, epsilon) {
 		const x = Complex._toComplex(number);
-		const tolerance = epsilon ? Complex._toFloat(epsilon) : Number.EPSILON;
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
 		return (Math.abs(this._re - x._re) <  tolerance) && (Math.abs(this._im - x._im) < tolerance);
 	}
 
 	/**
 	 * 実部
-	 * 戻り値は、number 型
-	 * @returns {number} 実部の数値
+	 * @returns {number} real(A)
 	 */
 	get real() {
 		return this._re;
@@ -263,8 +295,7 @@ export default class Complex {
 	
 	/**
 	 * 虚部
-	 * 戻り値は、number 型
-	 * @returns {number} 虚部の数値
+	 * @returns {number} imag(A)
 	 */
 	get imag() {
 		return this._im;
@@ -272,9 +303,7 @@ export default class Complex {
 
 	/**
 	 * ノルム
-	 * 極座標のノルム
-	 * 戻り値は、number 型
-	 * @returns {number} ノルムの数値
+	 * @returns {number} |A|
 	 */
 	get norm() {
 		if(this._im === 0) {
@@ -290,11 +319,9 @@ export default class Complex {
 
 	/**
 	 * 偏角
-	 * 極座標の角度
-	 * 戻り値は、number 型
-	 * @returns {number} 偏角の数値
+	 * @returns {number} arg(A)
 	 */
-	get angle() {
+	get arg() {
 		if(this._im === 0) {
 			return 0;
 		}
@@ -308,11 +335,14 @@ export default class Complex {
 
 	/**
 	 * 実部、虚部を表す際の小数点以下の桁数
-	 * 戻り値は、number 型
 	 * @returns {number} 小数点の桁数
 	 */
 	getDecimalPosition() {
 		let point = 0;
+
+		/**
+		 * @type Complex
+		 */
 		let x = this;
 		for(let i = 0; i < 20; i++) {
 			if(x.isComplexInteger()) {
@@ -325,9 +355,9 @@ export default class Complex {
 	}
 
 	/**
-	 * A + B
-	 * @param {Complex} number
-	 * @returns {Complex}
+	 * 加算
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
+	 * @returns {Complex} A + B
 	 */
 	add(number) {
 		const x = new Complex(number);
@@ -337,9 +367,9 @@ export default class Complex {
 	}
 
 	/**
-	 * A - B
-	 * @param {Complex} number
-	 * @returns {Complex}
+	 * 減算
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} A - B
 	 */
 	sub(number) {
 		const x = new Complex(number);
@@ -349,9 +379,9 @@ export default class Complex {
 	}
 
 	/**
-	 * A * B
-	 * @param {Complex} number
-	 * @returns {Complex}
+	 * 乗算
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} A * B
 	 */
 	mul(number) {
 		const x = new Complex(number);
@@ -374,9 +404,9 @@ export default class Complex {
 	}
 	
 	/**
-	 * A・B, A * conj(B)
-	 * @param {Complex} number
-	 * @returns {Complex}
+	 * ドット積
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} A * conj(B)
 	 */
 	dot(number) {
 		const x = new Complex(number);
@@ -399,9 +429,9 @@ export default class Complex {
 	}
 	
 	/**
-	 * A / B
-	 * @param {Complex} number
-	 * @returns {Complex}
+	 * 割り算
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} A / B
 	 */
 	div(number) {
 		const x = new Complex(number);
@@ -425,9 +455,9 @@ export default class Complex {
 	}
 
 	/**
-	 * A mod B
-	 * @param {Complex} number - 複素数を含まない数値 
-	 * @returns {Complex}
+	 * 割り算の正の余り
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - 複素数を含まない数値 
+	 * @returns {Complex} A mod B
 	 */
 	mod(number) {
 		const x = new Complex(number);
@@ -443,8 +473,8 @@ export default class Complex {
 	}
 
 	/**
-	 * 1 / A
-	 * @returns {Complex}
+	 * 逆数
+	 * @returns {Complex} 1 / A
 	 */
 	inv() {
 		if(this._im === 0) {
@@ -458,8 +488,7 @@ export default class Complex {
 
 	/**
 	 * 符号値
-	 * 1, -1, 0の場合は0を返す。複素数の場合はノルムを1にする。
-	 * @returns {Complex}
+	 * @returns {Complex} [-1,1] 複素数の場合はノルムを1にした値。
 	 */
 	sign() {
 		if(this._im === 0) {
@@ -474,10 +503,10 @@ export default class Complex {
 	}
 	
 	/**
-	 * max([A, B])
-	 * @param {Complex} number
-	 * @param {number} [epsilon=Number.EPSILON] - 誤差
-	 * @returns {Complex}
+	 * 最大値
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {Complex} max([A, B])
 	 */
 	max(number, epsilon) {
 		const x = Complex._toComplex(number);
@@ -490,10 +519,10 @@ export default class Complex {
 	}
 
 	/**
-	 * min([A, B])
-	 * @param {Complex} number
-	 * @param {number} [epsilon=Number.EPSILON] - 誤差
-	 * @returns {Complex}
+	 * 最小値
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {Complex} min([A, B])
 	 */
 	min(number, epsilon) {
 		const x = Complex._toComplex(number);
@@ -507,9 +536,8 @@ export default class Complex {
 
 	/**
 	 * 値同士を比較
-	 * 戻り値は、number 型
-	 * @param {Complex} number
-	 * @param {number} [epsilon=Number.EPSILON] - 誤差
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, epsilon) {
@@ -531,21 +559,21 @@ export default class Complex {
 	
 	/**
 	 * 整数を判定
-	 * @param {number} [epsilon=Number.EPSILON] - 誤差
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
 	 * @returns {boolean}
 	 */
 	isInteger(epsilon) {
-		const tolerance = epsilon ? Complex._toFloat(epsilon) : Number.EPSILON;
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
 		return this.isReal() && (Math.abs(this._re - (this._re | 0)) < tolerance);
 	}
 
 	/**
 	 * 複素整数を判定
-	 * @param {number} [epsilon=Number.EPSILON] - 誤差
-	 * @returns {boolean}
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {boolean} real(A) === 0 && imag(A) !== 0
 	 */
 	isComplexInteger(epsilon) {
-		const tolerance = epsilon ? Complex._toFloat(epsilon) : Number.EPSILON;
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
 		// 複素整数
 		return (Math.abs(this._re - (this._re | 0)) < tolerance) &&
 				(Math.abs(this._im - (this._im | 0)) < tolerance);
@@ -553,55 +581,55 @@ export default class Complex {
 
 	/**
 	 * 0 を判定
-	 * @param {number} [epsilon=Number.EPSILON] - 誤差
-	 * @returns {boolean}
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {boolean} A === 0
 	 */
 	isZero(epsilon) {
-		const tolerance = epsilon ? Complex._toFloat(epsilon) : Number.EPSILON;
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
 		return (Math.abs(this._re) < tolerance) && (Math.abs(this._im) < tolerance);
 	}
 
 	/**
 	 * 1 を判定
-	 * @param {number} [epsilon=Number.EPSILON] - 誤差
-	 * @returns {boolean}
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {boolean} A === 1
 	 */
 	isOne(epsilon) {
-		const tolerance = epsilon ? Complex._toFloat(epsilon) : Number.EPSILON;
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
 		return (Math.abs(this._re - 1.0) < tolerance) && (Math.abs(this._im) < tolerance);
 	}
 
 	/**
 	 * 複素数を判定
-	 * @param {number} [epsilon=Number.EPSILON] - 誤差
-	 * @returns {boolean}
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {boolean} imag(A) !== 0
 	 */
 	isComplex(epsilon) {
-		const tolerance = epsilon ? Complex._toFloat(epsilon) : Number.EPSILON;
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
 		return (Math.abs(this._im) >= tolerance);
 	}
 	
 	/**
 	 * 実数を判定
-	 * @param {number} [epsilon=Number.EPSILON] - 誤差
-	 * @returns {boolean}
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {boolean} imag(A) === 0
 	 */
 	isReal(epsilon) {
-		const tolerance = epsilon ? Complex._toFloat(epsilon) : Number.EPSILON;
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
 		return (Math.abs(this._im) < tolerance);
 	}
 
 	/**
 	 * 非数を判定
-	 * @returns {boolean}
+	 * @returns {boolean} isNaN(A)
 	 */
 	isNaN() {
-		return Math.isNaN(this._re) || Math.isNaN(this._im);
+		return isNaN(this._re) || isNaN(this._im);
 	}
 
 	/**
-	 * real(x) > 0
-	 * @returns {boolean}
+	 * 実部の正数を判定
+	 * @returns {boolean} real(x) > 0
 	 */
 	isPositive() {
 		// Number.EPSILONは使用しない。どちらにぶれるか不明な点及び
@@ -610,16 +638,16 @@ export default class Complex {
 	}
 
 	/**
-	 * real(x) < 0
-	 * @returns {boolean}
+	 * 実部の負数を判定
+	 * @returns {boolean} real(x) < 0
 	 */
 	isNegative() {
 		return 0.0 > this._re;
 	}
 
 	/**
-	 * real(x) >= 0
-	 * @returns {boolean}
+	 * 実部の非負値を判定
+	 * @returns {boolean} real(x) >= 0
 	 */
 	isNotNegative() {
 		return 0.0 <= this._re;
@@ -627,7 +655,7 @@ export default class Complex {
 
 	/**
 	 * 無限を判定
-	 * @returns {boolean}
+	 * @returns {boolean} isInfinite(A)
 	 */
 	isInfinite() {
 		return	(this._re === Number.POSITIVE_INFINITY) ||
@@ -638,7 +666,7 @@ export default class Complex {
 	
 	/**
 	 * 有限数を判定
-	 * @returns {boolean}
+	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
 	 */
 	isFinite() {
 		return !this.isNaN() && !this.isInfinite();
@@ -649,16 +677,16 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * abs(A)
-	 * @returns {Complex}
+	 * 絶対値
+	 * @returns {Complex} abs(A)
 	 */
 	abs() {
 		return new Complex(this.norm);
 	}
 
 	/**
-	 * real(A) - imag(A)j 共役複素数
-	 * @returns {Complex}
+	 * 共役複素数
+	 * @returns {Complex} real(A) - imag(A)j
 	 */
 	conj() {
 		if(this._im === 0) {
@@ -669,8 +697,8 @@ export default class Complex {
 	}
 
 	/**
-	 * -A
-	 * @returns {Complex}
+	 * 負数
+	 * @returns {Complex} -A
 	 */
 	negate() {
 		return new Complex([-this._re, -this._im]);
@@ -681,9 +709,9 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * pow(A, B)
-	 * @param {Complex} number
-	 * @returns {Complex}
+	 * 累乗
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} pow(A, B)
 	 */
 	pow(number) {
 		const x = new Complex(number);
@@ -693,7 +721,7 @@ export default class Complex {
 		}
 		else if(x.isReal()) {
 			const r = Math.pow(this.norm, x._re);
-			const s = this.angle * x._re;
+			const s = this.arg * x._re;
 			x._re = r * Math.cos(s);
 			x._im = r * Math.sin(s);
 			return x;
@@ -704,16 +732,16 @@ export default class Complex {
 	}
 
 	/**
-	 * pow(A, 2)
-	 * @returns {Complex}
+	 * 2乗
+	 * @returns {Complex} pow(A, 2)
 	 */
 	square() {
 		return new Complex(this._re * this._re + this._im * this._im);
 	}
 
 	/**
-	 * sqrt(A)
-	 * @returns {Complex}
+	 * 平方根
+	 * @returns {Complex} sqrt(A)
 	 */
 	sqrt() {
 		if(this.isReal()) {
@@ -725,25 +753,25 @@ export default class Complex {
 			}
 		}
 		const r = Math.sqrt(this.norm);
-		const s = this.angle * 0.5;
+		const s = this.arg * 0.5;
 		return new Complex([r * Math.cos(s), r * Math.sin(s)]);
 	}
 
 	/**
-	 * log(A)
-	 * @returns {Complex}
+	 * 対数
+	 * @returns {Complex} log(A)
 	 */
 	log() {
 		if(this.isReal() && this.isNotNegative()) {
 			return new Complex(Math.log(this._re));
 		}
 		// 負の値が入っているか、もともと複素数が入っている場合は、複素対数関数
-		return new Complex([Math.log(this.norm), this.angle]);
+		return new Complex([Math.log(this.norm), this.arg]);
 	}
 
 	/**
-	 * exp(A)
-	 * @returns {Complex}
+	 * 指数
+	 * @returns {Complex} exp(A)
 	 */
 	exp() {
 		if(this.isReal()) {
@@ -759,8 +787,8 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * sin(A)
-	 * @returns {Complex}
+	 * sin
+	 * @returns {Complex} sin(A)
 	 */
 	sin() {
 		if(this.isReal()) {
@@ -774,8 +802,8 @@ export default class Complex {
 	}
 
 	/**
-	 * cos(A)
-	 * @returns {Complex}
+	 * cos
+	 * @returns {Complex} cos(A)
 	 */
 	cos() {
 		if(this.isReal()) {
@@ -789,8 +817,8 @@ export default class Complex {
 	}
 
 	/**
-	 * tan(A)
-	 * @returns {Complex}
+	 * tan
+	 * @returns {Complex} tan(A)
 	 */
 	tan() {
 		if(this.isReal()) {
@@ -801,8 +829,8 @@ export default class Complex {
 	}
 
 	/**
-	 * atan(A)
-	 * @returns {Complex}
+	 * atan
+	 * @returns {Complex} atan(A)
 	 */
 	atan() {
 		if(this.isReal()) {
@@ -813,13 +841,13 @@ export default class Complex {
 	}
 
 	/**
-	 * atan2(Y, X)
-	 * @param {Complex} [number] - 実数。省略した場合は、本オブジェクトの複素数の偏角を返す。
-	 * @returns {Complex}
+	 * atan2
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [number] - 実数で指定。省略時は、本オブジェクトの偏角を返す。
+	 * @returns {Complex} atan2(Y, X)
 	 */
 	atan2(number) {
 		if(arguments.length === 0) {
-			return new Complex(this.angle);
+			return new Complex(this.arg);
 		}
 		// y.atan2(x) とする。
 		const y = this;
@@ -836,8 +864,8 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * sinc(A)
-	 * @returns {Complex}
+	 * sinc
+	 * @returns {Complex} sinc(A)
 	 */
 	sinc() {
 		if(this.isReal()) {
@@ -854,40 +882,40 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * floor(A)
-	 * @returns {Complex}
+	 * floor
+	 * @returns {Complex} floor(A)
 	 */
 	floor() {
 		return new Complex([Math.floor(this._re), Math.floor(this._im)]);
 	}
 
 	/**
-	 * ceil(A)
-	 * @returns {Complex}
+	 * ceil
+	 * @returns {Complex} ceil(A)
 	 */
 	ceil() {
 		return new Complex([Math.ceil(this._re), Math.ceil(this._im)]);
 	}
 	
 	/**
-	 * round(A)
-	 * @returns {Complex}
+	 * 四捨五入
+	 * @returns {Complex} round(A)
 	 */
 	round() {
 		return new Complex([Math.round(this._re), Math.round(this._im)]);
 	}
 
 	/**
-	 * fix(A) 小数部を取り除く
-	 * @returns {Complex}
+	 * 整数化
+	 * @returns {Complex} fix(A)
 	 */
 	fix() {
 		return new Complex([this._re | 0, this._im | 0]);
 	}
 
 	/**
-	 * fract(A) 小数部の抽出
-	 * @returns {Complex}
+	 * 小数部の抽出
+	 * @returns {Complex} fract(A) 
 	 */
 	fract() {
 		return new Complex([this._re - (this._re | 0), this._im - (this._im | 0)]);
@@ -899,7 +927,7 @@ export default class Complex {
 	
 	/**
 	 * 1
-	 * @returns {Complex}
+	 * @returns {Complex} 1
 	 */
 	static get ONE() {
 		return DEFINE.ONE;
@@ -907,7 +935,7 @@ export default class Complex {
 	
 	/**
 	 * 2
-	 * @returns {Complex}
+	 * @returns {Complex} 2
 	 */
 	static get TWO() {
 		return DEFINE.TWO;
@@ -915,7 +943,7 @@ export default class Complex {
 	
 	/**
 	 * 10
-	 * @returns {Complex}
+	 * @returns {Complex} 10
 	 */
 	static get TEN() {
 		return DEFINE.TEN;
@@ -923,7 +951,7 @@ export default class Complex {
 	
 	/**
 	 * 0
-	 * @returns {Complex}
+	 * @returns {Complex} 0
 	 */
 	static get ZERO() {
 		return DEFINE.ZERO;
@@ -931,7 +959,7 @@ export default class Complex {
 
 	/**
 	 * -1
-	 * @returns {Complex}
+	 * @returns {Complex} -1
 	 */
 	static get MINUS_ONE() {
 		return DEFINE.MINUS_ONE;
@@ -939,7 +967,7 @@ export default class Complex {
 
 	/**
 	 * i, j
-	 * @returns {Complex}
+	 * @returns {Complex} i
 	 */
 	static get I() {
 		return DEFINE.I;
@@ -947,15 +975,71 @@ export default class Complex {
 
 	/**
 	 * PI
-	 * @returns {Complex}
+	 * @returns {Complex} 3.14...
 	 */
 	static get PI() {
 		return DEFINE.PI;
 	}
 
 	/**
+	 * E
+	 * @returns {Complex} 2.71...
+	 */
+	static get E() {
+		return DEFINE.E;
+	}
+
+	/**
+	 * LN2
+	 * @returns {Complex} ln(2)
+	 */
+	static get LN2() {
+		return DEFINE.LN2;
+	}
+
+	/**
+	 * LN10
+	 * @returns {Complex} ln(10)
+	 */
+	static get LN10() {
+		return DEFINE.LN10;
+	}
+
+	/**
+	 * LOG2E
+	 * @returns {Complex} log_2(e)
+	 */
+	static get LOG2E() {
+		return DEFINE.LOG2E;
+	}
+	
+	/**
+	 * LOG10E
+	 * @returns {Complex} log_10(e)
+	 */
+	static get LOG10E() {
+		return DEFINE.LOG10E;
+	}
+	
+	/**
+	 * SQRT2
+	 * @returns {Complex} sqrt(2)
+	 */
+	static get SQRT2() {
+		return DEFINE.SQRT2;
+	}
+	
+	/**
+	 * SQRT1_2
+	 * @returns {Complex} sqrt(0.5)
+	 */
+	static get SQRT1_2() {
+		return DEFINE.SQRT1_2;
+	}
+	
+	/**
 	 * 0.5
-	 * @returns {Complex}
+	 * @returns {Complex} 0.5
 	 */
 	static get HALF() {
 		return DEFINE.HALF;
@@ -963,7 +1047,7 @@ export default class Complex {
 
 	/**
 	 * 正の無限大
-	 * @returns {Complex}
+	 * @returns {Complex} Inf
 	 */
 	static get POSITIVE_INFINITY() {
 		return DEFINE.POSITIVE_INFINITY;
@@ -971,7 +1055,7 @@ export default class Complex {
 	
 	/**
 	 * 負の無限大
-	 * @returns {Complex}
+	 * @returns {Complex} -Inf
 	 */
 	static get NEGATIVE_INFINITY() {
 		return DEFINE.NEGATIVE_INFINITY;
@@ -979,7 +1063,7 @@ export default class Complex {
 
 	/**
 	 * 非数
-	 * @returns {Complex}
+	 * @returns {Complex} NaN
 	 */
 	static get NaN() {
 		return DEFINE.NaN;
@@ -998,6 +1082,13 @@ const DEFINE = {
 	MINUS_ONE : new Complex(-1),
 	I : new Complex([0, 1]),
 	PI : new Complex(Math.PI),
+	E : new Complex(Math.E),
+	LN2 : new Complex(Math.LN2),
+	LN10 : new Complex(Math.LN10),
+	LOG2E : new Complex(Math.LOG2E),
+	LOG10E : new Complex(Math.LOG10E),
+	SQRT2 : new Complex(Math.SQRT2),
+	SQRT1_2 : new Complex(Math.SQRT1_2),
 	HALF : new Complex(0.5),
 	POSITIVE_INFINITY : new Complex(Number.POSITIVE_INFINITY),
 	NEGATIVE_INFINITY : new Complex(Number.NEGATIVE_INFINITY),

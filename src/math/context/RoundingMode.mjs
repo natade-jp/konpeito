@@ -7,8 +7,7 @@
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
  */
-
-//@ts-check
+// @ts-check
 
 /**
  * BigDecimal用の丸めモードの基底クラス
@@ -312,17 +311,24 @@ export default class RoundingMode {
 
 	/**
 	 * 指定した文字列で表される丸めクラスを取得する
-	 * @param {string|RoundingModeEntity} name - モードの英数名
+	 * @param {string|RoundingModeEntity|Object} name - モードの英数名
 	 * @returns {RoundingModeEntity}
 	 */
 	static valueOf(name) {
-		if(name === null) {
-			throw "NullPointerException";
-		}
+		let check_string;
 		if(name instanceof RoundingModeEntity) {
 			return name;
 		}
-		const modetype = {
+		else if(typeof name === "string") {
+			check_string = name;
+		}
+		else if(name instanceof Object) {
+			check_string = name.toString();
+		}
+		else {
+			throw "Unsupported argument " + name;
+		}
+		const modetype = [
 			RoundingMode_UP,
 			RoundingMode_DOWN,
 			RoundingMode_FLOOR,
@@ -331,14 +337,14 @@ export default class RoundingMode {
 			RoundingMode_HALF_DOWN,
 			RoundingMode_HALF_EVEN,
 			RoundingMode_UNNECESSARY
-		};
-		const upper_name = name.toUpperCase();
+		];
+		const upper_name = check_string.toUpperCase();
 		for(let i = 0; i < modetype.length; i++) {
 			if(modetype[i].toString() === upper_name) {
 				return modetype[i];
 			}
 		}
-		throw "IllegalArgumentException : " + name;
+		throw "IllegalArgumentException : " + check_string;
 	}
 
 	// ----------------------

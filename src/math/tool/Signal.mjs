@@ -7,8 +7,12 @@
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
  */
+// @ts-check
 
+// @ts-ignore
 import Complex from "../Complex.mjs";
+
+// @ts-ignore
 import Matrix from "../Matrix.mjs";
 
 /**
@@ -951,7 +955,7 @@ export default class Signal {
 	
 	/**
 	 * 離散フーリエ変換
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @param {boolean} [is_2_dimensions=false]
 	 * @returns {Matrix}
 	 */
@@ -976,7 +980,7 @@ export default class Signal {
 
 	/**
 	 * 逆離散フーリエ変換
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @param {boolean} [is_2_dimensions=false]
 	 * @returns {Matrix}
 	 */
@@ -1001,7 +1005,7 @@ export default class Signal {
 
 	/**
 	 * パワースペクトル密度
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {Matrix}
 	 */
 	static powerfft(mat) {
@@ -1016,7 +1020,7 @@ export default class Signal {
 			const result = SignalTool.powerfft(real, imag);
 			const y = new Array(data.length);
 			for(let i = 0; i < data.length; i++) {
-				y[i] = new Complex([result.real[i], result.imag[i]]);
+				y[i] = new Complex(result[i]);
 			}
 			return y;
 		};
@@ -1025,7 +1029,7 @@ export default class Signal {
 
 	/**
 	 * 離散コサイン変換
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @param {boolean} [is_2_dimensions=false]
 	 * @returns {Matrix}
 	 */
@@ -1051,7 +1055,7 @@ export default class Signal {
 
 	/**
 	 * 逆離散コサイン変換
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @param {boolean} [is_2_dimensions=false]
 	 * @returns {Matrix}
 	 */
@@ -1077,7 +1081,7 @@ export default class Signal {
 
 	/**
 	 * 2次元の離散フーリエ変換
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {Matrix}
 	 */
 	static fft2(mat) {
@@ -1087,7 +1091,7 @@ export default class Signal {
 
 	/**
 	 * 2次元の逆離散フーリエ変換
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {Matrix}
 	 */
 	static ifft2(mat) {
@@ -1097,7 +1101,7 @@ export default class Signal {
 
 	/**
 	 * 2次元のDCT変換
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {Matrix}
 	 */
 	static dct2(mat) {
@@ -1107,7 +1111,7 @@ export default class Signal {
 
 	/**
 	 * 2次元の逆DCT変換
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {Matrix}
 	 */
 	static idct2(mat) {
@@ -1117,8 +1121,8 @@ export default class Signal {
 
 	/**
 	 * 畳み込み積分、多項式乗算
-	 * @param {Matrix} mat
-	 * @param {Matrix} number
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
 	 * @returns {Matrix}
 	 */
 	static conv(mat, number) {
@@ -1166,8 +1170,8 @@ export default class Signal {
 
 	/**
 	 * 自己相関関数、相互相関関数
-	 * @param {Matrix} mat
-	 * @param {Matrix} [number] - 省略した場合は自己相関関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [number] - 省略した場合は自己相関関数
 	 * @returns {Matrix}
 	 */
 	static xcorr(mat, number) {
@@ -1219,7 +1223,7 @@ export default class Signal {
 	/**
 	 * 窓関数
 	 * @param {string} name - 窓関数の名前
-	 * @param {Matrix} size - 長さ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
 	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
 	 * @returns {Matrix} 列ベクトル
 	 */
@@ -1231,7 +1235,7 @@ export default class Signal {
 
 	/**
 	 * ハニング窓
-	 * @param {Matrix} size - 長さ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
 	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
 	 * @returns {Matrix} 列ベクトル
 	 */
@@ -1241,7 +1245,7 @@ export default class Signal {
 	
 	/**
 	 * ハミング窓
-	 * @param {Matrix} size - 長さ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
 	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
 	 * @returns {Matrix} 列ベクトル
 	 */

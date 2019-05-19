@@ -1,16 +1,20 @@
 {
 	"name": "konpeito",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "The collection of javascirpt library such as numerical calculation.",
 	"main": "./build/konpeito.umd.js",
 	"module": "./build/konpeito.module.mjs",
 	"keywords": [
-		"konpeito",
+		"math",
+		"mathematics",
 		"biginteger",
 		"bigdecimal",
+		"bignumber",
 		"complex",
 		"matrix",
-		"fft"
+		"algebra",
+		"fft",
+		"matlab"
 	],
 	"license": "MIT",
 	"author": "natade-jp <natade3@gmail.com> (https://www.natade.net/)",

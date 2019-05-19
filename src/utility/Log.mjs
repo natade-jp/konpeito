@@ -7,7 +7,9 @@
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
  */
+// @ts-check
 
+// @ts-ignore
 import Format from "./Format.mjs";
 
 /**

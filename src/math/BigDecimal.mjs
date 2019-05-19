@@ -7,9 +7,15 @@
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
  */
+// @ts-check
 
+// @ts-ignore
 import BigInteger from "./BigInteger.mjs";
-import RoundingMode from "./context/RoundingMode.mjs";
+
+// @ts-ignore
+import RoundingMode, {RoundingModeEntity} from "./context/RoundingMode.mjs";
+
+// @ts-ignore
 import MathContext from "./context/MathContext.mjs";
 
 /**
@@ -24,7 +30,7 @@ class DecimalTool {
 
 	/**
 	 * 文字列から BigDecimal で使用するデータに変換
-	 * @param ntext 
+	 * @param {string} ntext 
 	 * @returns {{scale : number, integer : BigInteger}}
 	 */
 	static ToBigDecimalFromString(ntext) {
@@ -70,6 +76,41 @@ class DecimalTool {
 		};
 	}
 
+	/**
+	 * 数値から BigDecimal で使用するデータに変換
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} value 
+	 * @returns {{scale : number, integer : BigInteger}}
+	 */
+	static ToBigDecimalFromNumber(value) {
+		// 整数か
+		if(value === Math.floor(value)) {
+			return {
+				scale : 0,
+				integer : new BigInteger(value)
+			};
+		}
+		// 実数か
+		else {
+			let scale = 0;
+			let x = value;
+			for(let i = 0; i < 10; i++) {
+				x = x * 10;
+				scale = scale + 1;
+				if(x === Math.floor(x)) {
+					break;
+				}
+			}
+			return {
+				scale : scale,
+				integer : new BigInteger(x)
+			};
+			// 今後改善するならば
+			// 64ビットの実数型は15桁程度まで正しい
+			// 余裕をもって10桁程度までを抜き出すのが良いかと思われる。
+			// スケールは右の式から求めて Math.log(x) / Math.log(10)
+		}
+	}
+
 }
 
 /**
@@ -81,7 +122,7 @@ export default class BigDecimal {
 	 * 任意精度浮動小数点を作成
 	 * 配列で設定する場合は、 BigInteger, [スケール値=0], [環境=default], [精度設定=default]
 	 * オブジェクトで設定する場合は、 integer, [scale=0], [default_context=default], [context=default]
-	 * @param {BigDecimal|BigInteger|number|string} number - 任意精度実数データ
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - 任意精度実数データ
 	 */
 	constructor(number) {
 
@@ -128,29 +169,10 @@ export default class BigDecimal {
 		else if(number instanceof BigInteger) {
 			this.integer	= number.clone();
 		}
-		else if(typeof number === "number" || number instanceof Number) {
-			// 整数か
-			if(number === Math.floor(number)) {
-				this.integer = new BigInteger(number);
-			}
-			// 実数か
-			else {
-				let scale = 0;
-				let x = number;
-				for(let i = 0; i < 10; i++) {
-					x = x * 10;
-					scale = scale + 1;
-					if(x === Math.floor(x)) {
-						break;
-					}
-				}
-				this._scale = scale;
-				this.integer = new BigInteger(x);
-				// 今後改善するならば
-				// 64ビットの実数型は15桁程度まで正しい
-				// 余裕をもって10桁程度までを抜き出すのが良いかと思われる。
-				// スケールは右の式から求めて Math.log(x) / Math.log(10)
-			}
+		else if(typeof number === "number") {
+			const data = DecimalTool.ToBigDecimalFromNumber(number);
+			this.integer	= data.integer;
+			this._scale		= data.scale;
 		}
 		else if(number instanceof Array) {
 			if(number.length >= 1) {
@@ -185,7 +207,7 @@ export default class BigDecimal {
 				}
 			}
 		}
-		else if(typeof number === "string" || number instanceof String) {
+		else if(typeof number === "string") {
 			const data = DecimalTool.ToBigDecimalFromString(number);
 			this.integer	= data.integer;
 			this._scale		= data.scale;
@@ -202,7 +224,7 @@ export default class BigDecimal {
 				context = number.context;
 			}
 		}
-		else if((number instanceof Object) && (number.toString !== undefined)) {
+		else if(number instanceof Object) {
 			const data = DecimalTool.ToBigDecimalFromString(number.toString());
 			this.integer	= data.integer;
 			this._scale		= data.scale;
@@ -226,7 +248,7 @@ export default class BigDecimal {
 
 	/**
 	 * BigDecimal を作成
-	 * @param {BigDecimal|BigInteger|number|string} number - 任意精度実数データ
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - 任意精度実数データ
 	 * @returns {BigDecimal}
 	 */
 	static create(number) {
@@ -240,8 +262,8 @@ export default class BigDecimal {
 
 	/**
 	 * 指定した数値から BigDecimal 型に変換
-	 * @param {BigDecimal} x 
-	 * @param {number} [scale] 
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} x 
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [scale] 
 	 * @returns {BigDecimal}
 	 */
 	static valueOf(x, scale) {
@@ -254,8 +276,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * BigDecimal を作成する
-	 * @param {BigDecimal} number 
+	 * BigDecimal を作成
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {BigDecimal}
 	 * @private
 	 */
@@ -270,7 +292,7 @@ export default class BigDecimal {
 
 	/**
 	 * BigInteger を作成
-	 * @param {BigDecimal} number 
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {BigInteger}
 	 * @private
 	 */
@@ -288,12 +310,12 @@ export default class BigDecimal {
 
 	/**
 	 * 実数を作成
-	 * @param {BigDecimal} number 
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {number}
 	 * @private
 	 */
 	static _toFloat(number) {
-		if((typeof number === "number") || (number instanceof Number)) {
+		if(typeof number === "number") {
 			return number;
 		}
 		else if(number instanceof BigDecimal) {
@@ -306,12 +328,12 @@ export default class BigDecimal {
 
 	/**
 	 * 整数を作成
-	 * @param {BigDecimal} number 
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {number}
 	 * @private
 	 */
 	static _toInteger(number) {
-		if((typeof number === "number") || (number instanceof Number)) {
+		if(typeof number === "number") {
 			return number | 0;
 		}
 		else if(number instanceof BigInteger) {
@@ -325,7 +347,7 @@ export default class BigDecimal {
 	/**
 	 * 符号を除いた文字列を作成
 	 * キャッシュがなければ作成し、キャッシュがあればそれを返す
-	 * @returns {string}
+	 * @returns {string} 
 	 */
 	_getUnsignedIntegerString() {
 		// キャッシュする
@@ -342,7 +364,7 @@ export default class BigDecimal {
 	clone() {
 		return new BigDecimal(this);
 	}
-
+	
 	/**
 	 * 倍率
 	 * @returns {number} 
@@ -387,7 +409,7 @@ export default class BigDecimal {
 
 	/**
 	 * 科学的表記法による文字列化
-	 * @param {number} e_len - 指数部の桁数
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - 指数部の桁数
 	 * @returns {string} 
 	 */
 	toScientificNotation(e_len) {
@@ -498,17 +520,18 @@ export default class BigDecimal {
 
 	/**
 	 * スケールの再設定
-	 * @param {number} new_scale - 新しいスケール
-	 * @param {RoundingModeEntity} [roundingMode=RoundingMode.UNNECESSARY] - 精度を変換する際の丸め方
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - 新しいスケール
+	 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - 精度を変換する際の丸め方
 	 * @param {MathContext} [mc] - 切り替え先の設定（これのみ変更する場合は、roundを使用すること）
 	 * @returns {BigDecimal} 
 	 */
-	setScale(new_scale, roundingMode=RoundingMode.UNNECESSARY, mc) {
+	setScale(new_scale, rounding_mode, mc) {
 		const newScale = BigDecimal._toInteger(new_scale);
 		if(this.scale() === newScale) {
 			// scaleが同一なので処理の必要なし
 			return(this.clone());
 		}
+		const roundingMode = (rounding_mode !== undefined) ? RoundingMode.valueOf(rounding_mode) : RoundingMode.UNNECESSARY;
 		const context = (mc !== undefined) ? mc : this.default_context;
 		// 文字列を扱ううえで、符号があるとやりにくいので外しておく
 		let text		= this._getUnsignedIntegerString();
@@ -594,9 +617,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * abs(A)
+	 * 絶対値
 	 * @param {MathContext} [mc] - 計算に使用する設定
-	 * @returns {BigDecimal} 
+	 * @returns {BigDecimal} abs(A)
 	 */
 	abs(mc) {
 		const output = this.clone();
@@ -605,9 +628,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * +A
+	 * 正数
 	 * @param {MathContext} [mc] - 計算に使用する設定
-	 * @returns {BigDecimal} 
+	 * @returns {BigDecimal} +A
 	 */
 	plus(mc) {
 		const output = this.clone();
@@ -615,9 +638,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * -A
+	 * 負数
 	 * @param {MathContext} [mc] - 計算に使用する設定
-	 * @returns {BigDecimal} 
+	 * @returns {BigDecimal} -A
 	 */
 	negate(mc) {
 		const output = this.clone();
@@ -627,8 +650,7 @@ export default class BigDecimal {
 
 	/**
 	 * 値同士を比較
-	 * 戻り値は、number 型
-	 * @param {BigDecimal} number 
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number) {
@@ -663,9 +685,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A === B
+	 * 等式
 	 * 精度やスケール含めて等しいかをテストする
-	 * @param {BigDecimal} number 
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {boolean} A === B
 	 */
 	equals(number) {
@@ -682,24 +704,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * min([A, B])
-	 * @param {BigDecimal} number 
-	 * @returns {BigDecimal} 
-	 */
-	min(number) {
-		const val = BigDecimal._toBigDecimal(number);
-		if(this.compareTo(val) <= 0) {
-			return this.clone();
-		}
-		else {
-			return val.clone();
-		}
-	}
-
-	/**
-	 * max([A, B])
-	 * @param {BigDecimal} number
-	 * @returns {BigDecimal} 
+	 * 最大値
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @returns {BigDecimal} max([A, B])
 	 */
 	max(number) {
 		const val = BigDecimal._toBigDecimal(number);
@@ -712,9 +719,24 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A * 10^floor(n)
-	 * @param {number} n 
-	 * @returns {BigDecimal} 
+	 * 最小値
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @returns {BigDecimal} min([A, B])
+	 */
+	min(number) {
+		const val = BigDecimal._toBigDecimal(number);
+		if(this.compareTo(val) <= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * 精度は変更させずスケールのみを変更させ10の倍数を乗算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @returns {BigDecimal} A * 10^floor(n)
 	 */
 	scaleByPowerOfTen(n) {
 		const x = BigDecimal._toBigInteger(n);
@@ -725,7 +747,7 @@ export default class BigDecimal {
 
 	/**
 	 * 小数点の位置を左へ移動
-	 * @param {number} n 
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
 	 * @returns {BigDecimal} 
 	 */
 	movePointLeft(n) {
@@ -737,7 +759,7 @@ export default class BigDecimal {
 
 	/**
 	 * 小数点の位置を右へ移動
-	 * @param {number} n 
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
 	 * @returns {BigDecimal} 
 	 */
 	movePointRight(n) {
@@ -767,10 +789,10 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A + B
-	 * @param {BigDecimal} number 
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
-	 * @returns {BigDecimal} 
+	 * 加算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、加算先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} A + B
 	 */
 	add(number, context) {
 		const augend = BigDecimal._toBigDecimal(number);
@@ -797,10 +819,10 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A - B
-	 * @param {BigDecimal} number 
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
-	 * @returns {BigDecimal} 
+	 * 減算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、減算先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} A - B
 	 */
 	subtract(number, context) {
 		const subtrahend = BigDecimal._toBigDecimal(number);
@@ -822,20 +844,20 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A - B
-	 * @param {BigDecimal} number 
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
-	 * @returns {BigDecimal} 
+	 * 減算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、減算先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} A - B
 	 */
 	sub(number, context) {
 		return this.subtract(number, context);
 	}
 
 	/**
-	 * A * B
-	 * @param {BigDecimal} number
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
-	 * @returns {BigDecimal} 
+	 * 乗算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} A * B
 	 */
 	multiply(number, context) {
 		const multiplicand = BigDecimal._toBigDecimal(number);
@@ -849,20 +871,20 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A * B
-	 * @param {BigDecimal} number
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
-	 * @returns {BigDecimal} 
+	 * 乗算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} A * B
 	 */
 	mul(number, context) {
 		return this.multiply(number, context);
 	}
 
 	/**
-	 * (int)(A / B)
-	 * @param {BigDecimal} number
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
-	 * @returns {BigDecimal} 
+	 * 小数点まで求めない割り算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} (int)(A / B)
 	 */
 	divideToIntegralValue(number, context) {
 		const divisor = BigDecimal._toBigDecimal(number);
@@ -936,9 +958,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 *  (int)(A / B) と割り算の余り
-	 * @param {BigDecimal} number
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
+	 * 割り算と余り
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
 	 * @returns {Array<BigDecimal>} [C = (int)(A / B), A - C * B]
 	 */
 	divideAndRemainder(number, context) {
@@ -966,20 +988,20 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A rem B
-	 * @param {BigDecimal} number
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
-	 * @returns {BigDecimal}
+	 * 割り算の余り
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} A % B
 	 */
 	rem(number, context) {
 		return this.divideAndRemainder(number, context)[1];
 	}
 
 	/**
-	 * A mod B
-	 * @param {BigDecimal} number
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
-	 * @returns {BigDecimal}
+	 * 割り算の正の余り
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} A mod B
 	 */
 	mod(number, context) {
 		const x = this.rem(number, context);
@@ -989,8 +1011,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A / B
-	 * @param {BigDecimal} number
+	 * 割り算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
 	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - 計算に使用する scale, context, roundingMode を設定する
 	 * @returns {BigDecimal}
 	 */
@@ -1033,14 +1055,14 @@ export default class BigDecimal {
 		if(tgt.compareTo(BigDecimal.ZERO) === 0) {
 			throw "ArithmeticException";
 		}
-		let i;
-		let newsrc = src;
+		let newsrc;
 		const result_map = [];
 		let result, result_divide, result_remaind, all_result;
 		all_result = BigDecimal.ZERO;
 		const precision = mc.getPrecision();
 		const check_max = precision !== 0 ? (precision + 8) : 0x3FFFF;
-		for(i = 0; i < check_max; i++) {
+		newsrc = src;
+		for(let i = 0; i < check_max; i++) {
 			result = newsrc.divideAndRemainder(tgt, MathContext.UNLIMITED);
 			result_divide	= result[0];
 			result_remaind	= result[1];
@@ -1077,10 +1099,10 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * A / B
-	 * @param {BigDecimal} number
+	 * 割り算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
 	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - 計算に使用する scale, context, roundingMode を設定する
-	 * @returns {BigDecimal}
+	 * @returns {BigDecimal} A / B
 	 */
 	div(number, type) {
 		return this.divide(number, type);
@@ -1138,7 +1160,7 @@ export default class BigDecimal {
 		if(MathContext.DECIMAL32.getPrecision() < p) {
 			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
 		}
-		return parseFloat(p.toEngineeringString());
+		return parseFloat(this.toEngineeringString());
 	}
 
 	/**
@@ -1150,19 +1172,19 @@ export default class BigDecimal {
 		if(MathContext.DECIMAL64.getPrecision() < p) {
 			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
 		}
-		return parseFloat(p.toEngineeringString());
+		return parseFloat(this.toEngineeringString());
 	}
 
 	/**
-	 * pow(A, B)
+	 * 累乗
 	 * 巨大な乗算をする場合は例外を発生させる
-	 * @param {number} number 
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、本オブジェクトの設定デフォルト値を使用する
-	 * @returns {BigDecimal}
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、累乗先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} pow(A, B)
 	 */
 	pow(number, context) {
 		let n = BigDecimal._toInteger(number);
-		const mc = context ? context : n.default_context;
+		const mc = context ? context : this.default_context;
 		if(Math.abs(n) > 999999999) {
 			throw "ArithmeticException";
 		}
@@ -1207,7 +1229,7 @@ export default class BigDecimal {
 	
 	/**
 	 * 0
-	 * @returns {BigDecimal}
+	 * @returns {BigDecimal} 0
 	 */
 	static get ZERO() {
 		const x = new BigDecimal(DEFINE.ZERO);
@@ -1217,7 +1239,7 @@ export default class BigDecimal {
 
 	/**
 	 * 1
-	 * @returns {BigDecimal}
+	 * @returns {BigDecimal} 1
 	 */
 	static get ONE() {
 		const x = new BigDecimal(DEFINE.ONE);
@@ -1227,7 +1249,7 @@ export default class BigDecimal {
 	
 	/**
 	 * 2
-	 * @returns {BigDecimal}
+	 * @returns {BigDecimal} 2
 	 */
 	static get TWO() {
 		const x = new BigDecimal(DEFINE.TWO);
@@ -1237,7 +1259,7 @@ export default class BigDecimal {
 	
 	/**
 	 * 10
-	 * @returns {BigDecimal}
+	 * @returns {BigDecimal} 10
 	 */
 	static get TEN() {
 		const x = new BigDecimal(DEFINE.TEN);

@@ -1,1 +1,1 @@
-﻿import konpeito from "../../../build/konpeito.module.mjs";export default konpeito;
+import konpeito from "../../../src/konpeito.mjs";export default konpeito;

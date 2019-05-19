@@ -1,18 +1,17 @@
-# konpeito.js
+# konpeito
 
 ![ESDoc coverage badge](https://doc.esdoc.org/github.com/natade-jp/konpeito/badge.svg)
 ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
+"konpeito" is a library to "compute". :)
+
 ## What
-- The "konpeito.js" is a library for math calculations.
-- This code is a module coded in ES6.
-- This library is available for ES6 modules or UMD.
+- The library for math calculations.
 - When calculating, use method chain.
+- Coding in ES6, and published ES6 modules and UMD.
+- [API reference is complete](https://doc.esdoc.org/github.com/natade-jp/konpeito/).
 
-### Document
-- [API reference](https://doc.esdoc.org/github.com/natade-jp/konpeito/)
-
-### Usage
+## Features
 This library has 4 functions.
 - BigInteger
 - BigDecimal
@@ -25,44 +24,53 @@ Has the following features.
 - Matrix and Complex can't use huge real numbers like BigInteger or BigDecimal, but they are powerful.
 - Matrix initialization can be described as Scilab, Octave, MATLAB.
 
-## Insatall
+Please check the console and main.mjs.
+- [BigDecimal](https://natade-jp.github.io/konpeito/doc_src/examples/demos/BigDecimal/)
+- [BigInteger](https://natade-jp.github.io/konpeito/doc_src/examples/demos/BigInteger/)
+- [Matrix](https://natade-jp.github.io/konpeito/doc_src/examples/demos/Matrix/)
+- [Random](https://natade-jp.github.io/konpeito/doc_src/examples/demos/Random/)
+- [UMD](https://natade-jp.github.io/konpeito/doc_src/examples/demos/UMD/)
 
-This library can be installed using [npm](https://www.npmjs.com/package/konpeito) .
+## Install for node.js
+
+1. This library can be installed using [npm](https://www.npmjs.com/package/konpeito).
 ```
 npm install konpeito
 ```
 
+2. Then you can include it in your code:
 ```
-const konpeito = require("konpeito")
-const Matrix = konpeito.Matrix;
-const $ = Matrix.create;
-
-console.log($("[1 2;3 4;5 6]").toString());
+var konpeito = require("konpeito");
 ```
 
-Please use mjs file when using ES6 modules.
-And use js file when using UMD.
-
-- `./build/konpeito.module.mjs`
-- `./build/konpeito.umd.js`
-
-## Sample
-
-### start with Node.js
+If you want to use in the ES6 module, please execute with the following command.
 ```
 node --experimental-modules main.mjs
 ```
 
-### start with browser
+## Install for browser
+
+1. Download the [zip](https://github.com/natade-jp/konpeito/archive/master.zip) by [GitHub](https://github.com/natade-jp/konpeito).
+
+2. Please use mjs file when using ES6 modules. And use js file when using UMD.
+- `./build/konpeito.module.mjs`
+- `./build/konpeito.umd.js`
+
+### with ES6 module.
 ```
 <script type="module" src="./main.mjs" charset="utf-8"></script>
 ```
 
-### start with browser and UMD
+### with UMD
 ```
 <script src="./konpeito.umd.js" charset="utf-8"></script>
 <script src="./main.js" charset="utf-8"></script>
 ```
+
+## Repository
+- https://github.com/natade-jp/konpeito.git
+
+## Sample
 
 ### BigInteger
 arbitrary-precision integer class.

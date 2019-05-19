@@ -7,9 +7,15 @@
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
  */
+// @ts-check
 
+// @ts-ignore
 import Random from "./Random.mjs";
+
+// @ts-ignore
 import Complex from "../Complex.mjs";
+
+// @ts-ignore
 import Matrix from "../Matrix.mjs";
 
 /**
@@ -429,8 +435,8 @@ class LinearAlgebraTool {
 	 * 列の中で最もノルムが最大の値がある行番号
 	 * @param {Matrix} mat
 	 * @param {number} column_index - 列番号
-	 * @param {number} row_index_offset - 行のオフセット(この値から行う)
-	 * @param {number} row_index_max - 行の最大(この値は含めない)
+	 * @param {number} [row_index_offset=0] - 行のオフセット(この値から行う)
+	 * @param {number} [row_index_max] - 行の最大(この値は含めない)
 	 * @returns {{index: number, max: number}} 行番号
 	 * @private
 	 */
@@ -464,7 +470,7 @@ class LinearAlgebraTool {
 	static getLinearDependenceVector(mat, epsilon) {
 		const M = new Matrix(mat);
 		const m = M.matrix_array;
-		const tolerance = epsilon ? Matrix._toFloat(epsilon) : 1.0e-10;
+		const tolerance = epsilon ? Matrix._toDouble(epsilon) : 1.0e-10;
 		// 確認する行番号（ここから終わった行は削除していく）
 		const row_index_array = new Array(mat.row_length);
 		for(let i = 0; i < mat.row_length; i++) {
@@ -482,7 +488,7 @@ class LinearAlgebraTool {
 					const norm = m[row][col_target].norm;
 					if(norm > row_max) {
 						row_max = norm;
-						row_max_key = row_key;
+						row_max_key = parseInt(row_key, 10);
 						row_max_index = row;
 					}
 				}
@@ -516,11 +522,11 @@ class LinearAlgebraTool {
 export default class LinearAlgebra {
 
 	/**
-	 * A・B ドット積（内積）
-	 * @param {Matrix} A
-	 * @param {Matrix} B
-	 * @param {number} [dimension=1] 計算するときに使用する次元（1 or 2）
-	 * @returns {Matrix}
+	 * ドット積
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} A
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} B
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] 計算するときに使用する次元（1 or 2）
+	 * @returns {Matrix} A・B 
 	 */
 	static inner(A, B, dimension) {
 		const M1 = Matrix._toMatrix(A);
@@ -571,8 +577,8 @@ export default class LinearAlgebra {
 
 	/**
 	 * 行列のpノルム
-	 * @param {Matrix} mat
-	 * @param {number} [p=2]
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
 	 * @returns {number}
 	 */
 	static norm(mat, p) {
@@ -667,18 +673,18 @@ export default class LinearAlgebra {
 	
 	/**
 	 * 行列のランク
-	 * @param {Matrix} mat
-	 * @param {number} [epsilon] - 誤差
-	 * @returns {number}
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {number} rank(A)
 	 */
 	static rank(mat, epsilon) {
 		const M = Matrix._toMatrix(mat);
-		return Math.abs(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
+		return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
 	}
 
 	/**
 	 * 行列のトレース、対角和
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {Complex}
 	 */
 	static trace(mat) {
@@ -692,9 +698,9 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * 行列式 |A|
-	 * @param {Matrix} mat
-	 * @returns {Matrix}
+	 * 行列式
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @returns {Matrix} |A|
 	 */
 	static det(mat) {
 		const M = Matrix._toMatrix(mat);
@@ -734,9 +740,9 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * P'*L*U=A となるLUP分解
-	 * @param {Matrix} mat - A
-	 * @returns {{P: Matrix, L: Matrix, U: Matrix}}
+	 * LUP分解
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
 	 */
 	static lup(mat) {
 		const A = new Matrix(mat);
@@ -788,10 +794,10 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * Ax=B となる x を解く
-	 * @param {Matrix} mat - A
-	 * @param {Matrix} number - B
-	 * @returns {Matrix}
+	 * 一次方程式を解く
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
+	 * @returns {Matrix} Ax=B となる x
 	 */
 	static linsolve(mat, number) {
 		const A = Matrix._toMatrix(mat);
@@ -854,10 +860,9 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * Q*R=A となるQR分解
-	 * Qは正規直行行列、Rは上三角行列
-	 * @param {Matrix} mat - A
-	 * @returns {{Q: Matrix, R: Matrix}}
+	 * QR分解
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {{Q: Matrix, R: Matrix}}  Q*R=A, Qは正規直行行列、Rは上三角行列
 	 */
 	static qr(mat) {
 		// 行列を準備する
@@ -915,10 +920,9 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * P*H*P'=A となる対称行列の三重対角化
-	 * Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致
-	 * @param {Matrix} mat - A
-	 * @returns {{P: Matrix, H: Matrix}}
+	 * 対称行列の三重対角化
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {{P: Matrix, H: Matrix}} P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致
 	 */
 	static tridiagonalize(mat) {
 		const M = new Matrix(mat);
@@ -935,10 +939,9 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * V*D*V'=A となる対称行列の固有値分解
-	 * Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列
-	 * @param {Matrix} mat - A
-	 * @returns {{V: Matrix, D: Matrix}}
+	 * 対称行列の固有値分解
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {{V: Matrix, D: Matrix}} V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列
 	 */
 	static eig(mat) {
 		const M = new Matrix(mat);
@@ -955,9 +958,9 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * U*S*V'=A となる特異値分解
-	 * @param {Matrix} mat - A
-	 * @returns {{U: Matrix, S: Matrix, V: Matrix}}
+	 * 特異値分解
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
 	 */
 	static svd(mat) {
 		const M = new Matrix(mat);
@@ -995,8 +998,8 @@ export default class LinearAlgebra {
 
 	/**
 	 * 逆行列
-	 * @param {Matrix} mat - A
-	 * @returns {Matrix}
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {Matrix} A^-1
 	 */
 	static inv(mat) {
 		const X = new Matrix(mat);
@@ -1067,8 +1070,8 @@ export default class LinearAlgebra {
 
 	/**
 	 * 疑似逆行列
-	 * @param {Matrix} mat - A
-	 * @returns {Matrix}
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {Matrix} A^+
 	 */
 	static pinv(mat) {
 		const M = new Matrix(mat);

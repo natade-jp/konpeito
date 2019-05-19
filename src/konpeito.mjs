@@ -7,17 +7,30 @@
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
  */
+// @ts-check
 
+// @ts-ignore
 import Log from "./utility/Log.mjs";
 
+// @ts-ignore
 import Random from "./math/tool/Random.mjs";
 
+// @ts-ignore
 import RoundingMode from "./math/context/RoundingMode.mjs";
+
+// @ts-ignore
 import MathContext from "./math/context/MathContext.mjs";
 
+// @ts-ignore
 import BigDecimal from "./math/BigDecimal.mjs";
+
+// @ts-ignore
 import BigInteger from "./math/BigInteger.mjs";
+
+// @ts-ignore
 import Complex from "./math/Complex.mjs";
+
+// @ts-ignore
 import Matrix from "./math/Matrix.mjs";
 
 /**
@@ -29,15 +42,6 @@ import Matrix from "./math/Matrix.mjs";
  * 信号処理や統計処理等を備えた汎用的な計算クラスは、 Matrix 。
  */
 export default class konpeito {
-
-	/**
-	 * ファイル操作用クラス
-	 * @returns {File}
-	 * @ignore
-	 */
-	static get File() {
-		return File;
-	}
 
 	/**
 	 * フォーマットクラス

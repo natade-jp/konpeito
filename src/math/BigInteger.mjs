@@ -7,7 +7,9 @@
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
  */
+// @ts-check
 
+// @ts-ignore
 import Random from "./tool/Random.mjs";
 
 /**
@@ -24,7 +26,7 @@ class IntegerTool {
 	 * 数値が入った文字列から16進数ごとの配列へ変換する
 	 * @param {string} text - 数値が入ったテキストデータ（負の値などを含めない）
 	 * @param {number} radix - テキストデータの進数
-	 * @returns {Array<number>} 16進数ごとに代入された配列 
+	 * @returns {Array<number>}  _16進数ごとに代入された配列 
 	 */
 	static string_to_binary_number(text, radix) {
 		// 下の変換をすることで、2進数での変換時に内部のforの繰り返す回数が減る
@@ -74,7 +76,7 @@ class IntegerTool {
 	/**
 	 * 数値から16進数ごとの配列へ変換する
 	 * @param {number} x - 変換したい数値 
-	 * @returns {Array<number>} 16進数ごとに代入された配列 
+	 * @returns {Array<number>} _16進数ごとに代入された配列 
 	 */
 	static number_to_binary_number(x) {
 		if(x > 0xFFFFFFFF) {
@@ -97,7 +99,7 @@ class IntegerTool {
 	 * 16進数の配列データから数列が入った文字列を作成
 	 * @param {Array<number>} binary - 16進数ごとに代入された配列 
 	 * @param {number} radix - 変換後の進数
-	 * @returns {string} 文字列化したデータ 
+	 * @returns {Array<number>} 指定した進数で桁ごとに代入された数値配列 
 	 */
 	static binary_number_to_string(binary, radix) {
 		const add = function(x1, x2, y) {
@@ -138,15 +140,15 @@ class IntegerTool {
 	 */
 	static ToBigIntegerFromString(text, radix) {
 		let x = text.replace(/\s/g, "").toLowerCase();
-		let buff = x.match(/^[-+]+/);
+		const sign_text = x.match(/^[-+]+/);
 
 		let element     = [];
 		let _sign        = 1;
 
-		if(buff !== null) {
-			buff = buff[0];
-			x = x.substring(buff.length, x.length);
-			if(buff.indexOf("-") !== -1) {
+		if(sign_text !== null) {
+			const hit_text = sign_text[0];
+			x = x.substring(hit_text.length, x.length);
+			if(hit_text.indexOf("-") !== -1) {
 				_sign = -1;
 			}
 		}
@@ -195,38 +197,34 @@ export default class BigInteger {
 	 * 多倍長整数を作成
 	 * 文字列で指定する場合は指数表記には非対応。
 	 * 指定した進数で指定する場合は["ff", 16] という配列で指定する。
-	 * @param {BigInteger|number|string|Array<string|number>} number - 整数値
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [number] - 整数値
 	 */
 	constructor(number) {
 		
-		/**
-		 * 1要素、16ビット整数の配列
-		 * @private
-		 * @type {Array<number>}
-		 */
-		this.element     = [];
-
-		/**
-		 * 正負（プラスなら+1、マイナスなら-1、0なら0）
-		 * ※計算によってはここの値の再設定をしていない箇所があるので、ここを見る時は注意
-		 * @private
-		 * @type {Array<number>}
-		 */
-		this._sign        = 0;
-
 		if(arguments.length === 0) {
+
+			/**
+			 * 1要素、16ビット整数の配列
+			 * @private
+			 * @type {Array<number>}
+			 */
 			this.element     = [];
+
+			/**
+			 * 正負（プラスなら+1、マイナスなら-1、0なら0）
+			 * ※計算によってはここの値の再設定をしていない箇所があるので、ここを見る時は注意
+			 * @private
+			 * @type {number}
+			 */
 			this._sign        = 0;
 		}
 		else if(arguments.length === 1) {
 			this._sign = 1;
 			if(number instanceof BigInteger) {
-				for(let i = 0; i < number.element.length; i++) {
-					this.element[i] = number.element[i];
-				}
-				this._sign = arguments[0]._sign;
+				this.element = number.element.slice(0);
+				this._sign = number._sign;
 			}
-			else if((typeof number === "number") || (number instanceof Number)) {
+			else if(typeof number === "number") {
 				let x = number;
 				if(x < 0) {
 					this._sign = -1;
@@ -234,17 +232,22 @@ export default class BigInteger {
 				}
 				this.element = IntegerTool.number_to_binary_number(x);
 			}
-			else if((typeof number === "string") || (number instanceof String)) {
+			else if(typeof number === "string") {
 				const x = IntegerTool.ToBigIntegerFromString(number);
 				this.element = x.element;
 				this._sign = x._sign;
 			}
 			else if(number instanceof Array) {
-				const x = IntegerTool.ToBigIntegerFromString(number[0], number[1]);
-				this.element = x.element;
-				this._sign = x._sign;
+				if((number.length >= 1) && (typeof number[0] === "string")) {
+					const x = IntegerTool.ToBigIntegerFromString(number[0], number[1]);
+					this.element = x.element;
+					this._sign = x._sign;
+				}
+				else {
+					throw "BigInteger Unsupported argument " + arguments;
+				}
 			}
-			else if(number instanceof Object && number.toString) {
+			else if(number instanceof Object) {
 				const x = IntegerTool.ToBigIntegerFromString(number.toString());
 				this.element = x.element;
 				this._sign = x._sign;
@@ -260,7 +263,7 @@ export default class BigInteger {
 
 	/**
 	 * BigIntegerを作成する
-	 * @param {BigInteger} number 
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger}
 	 */
 	static create(number) {
@@ -274,7 +277,7 @@ export default class BigInteger {
 
 	/**
 	 * BigInteger を作成
-	 * @param {BigInteger} number 
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger}
 	 */
 	static valueOf(number) {
@@ -283,7 +286,7 @@ export default class BigInteger {
 
 	/**
 	 * BigInteger を作成
-	 * @param {BigInteger} number 
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger}
 	 * @private
 	 */
@@ -298,12 +301,12 @@ export default class BigInteger {
 
 	/**
 	 * 実数を作成
-	 * @param {BigInteger} number 
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {number}
 	 * @private
 	 */
 	static _toFloat(number) {
-		if((typeof number === "number") || (number instanceof Number)) {
+		if(typeof number === "number") {
 			return number;
 		}
 		else if(number instanceof BigInteger) {
@@ -316,12 +319,12 @@ export default class BigInteger {
 
 	/**
 	 * 整数を作成
-	 * @param {BigInteger} number 
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {number}
 	 * @private
 	 */
 	static _toInteger(number) {
-		if((typeof number === "number") || (number instanceof Number)) {
+		if(typeof number === "number") {
 			return number | 0;
 		}
 		else if(number instanceof BigInteger) {
@@ -334,7 +337,7 @@ export default class BigInteger {
 
 	/**
 	 * 指定したビット数以内の乱数
-	 * @param {number} bitsize - 作成する乱数のビット数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bitsize - 作成する乱数のビット数
 	 * @param {Random} [random] - 作成に使用するRandom
 	 * @returns {BigInteger}
 	 */
@@ -344,10 +347,10 @@ export default class BigInteger {
 		x._sign = 1;
 		const bits = BigInteger._toInteger(bitsize);
 		const size = ((bits - 1) >> 4) + 1;
-		let r;
 		if(bits === 0) {
 			return BigInteger.ZERO;
 		}
+		let r;
 		for(let i = 0, j = 0; i < size; i++) {
 			if(j === 0) {
 				r = rand.nextInt(); // 32ビットずつ作成する
@@ -371,34 +374,38 @@ export default class BigInteger {
 
 	/**
 	 * 指定したビット数以内の素数
-	 * @param {number} bits - 作成する素数の乱数のビット数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bits - 作成する素数の乱数のビット数
 	 * @param {Random} [random] - 作成に使用するRandom
-	 * @param {number} [certainty=100] - ミラーラビン素数判定法に使用する繰り返し回数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - ミラーラビン素数判定法に使用する繰り返し回数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - 乱数生成回数
 	 * @returns {BigInteger}
 	 */
-	static probablePrime(bits, random, certainty = 100) {
-		while(true) {
+	static probablePrime(bits, random, certainty, create_count ) {
+		const certainty_ = certainty ? BigInteger._toInteger(certainty) : 100;
+		const create_count_ = create_count ? BigInteger._toInteger(create_count) : 500;
+		for(let i = 0; i < create_count_; i++) {
 			const x = BigInteger.createRandomBigInteger(bits, random);
-			if(x.isProbablePrime(certainty)) {
+			if(x.isProbablePrime(certainty_)) {
 				return x;
 			}
 		}
+		throw "probablePrime " + create_count;
 	}
 
 	/**
-	 * A === B
-	 * @param {BigInteger} number
-	 * @returns {boolean}
+	 * 等式
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {boolean} A === B
 	 */
 	equals(number) {
 		const x = BigInteger._toBigInteger(number);
-		if(this.signum() !==  x.signum()) {
+		if(this.signum() !== x.signum()) {
 			return false;
 		}
-		if(this.element.length !==  x.element.length) {
+		if(this.element.length !== x.element.length) {
 			return false;
 		}
-		for(let i = 0;i < x.element.length; i++) {
+		for(let i = 0; i < x.element.length; i++) {
 			if(this.element[i] !==  x.element[i]) {
 				return false;
 			}
@@ -408,10 +415,12 @@ export default class BigInteger {
 
 	/**
 	 * 文字列化
-	 * @param {number} [radix=10] - 文字列変換後の進数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [radix=10] - 文字列変換後の進数
 	 * @returns {string}
 	 */
-	toString(radix = 10) {
+	toString(radix) {
+		const radix_ = radix ? BigInteger._toInteger(radix) : 10;
+
 		// int型で扱える数値で toString が可能なので、
 		// せっかくだからより大きな進数で計算していけば、あとでtoStringする回数が減るテクニック
 		// 2進数であれば、2^n乗で計算しても問題がない 4進数や8進数で計算して、2進数に戻せば巡回少数なし
@@ -419,15 +428,14 @@ export default class BigInteger {
 		const max_num = 0x3FFFFFFF;
 		//                        max_num > radix^x
 		// floor(log max_num / log radix) = x
-		const keta = Math.floor( Math.log(max_num) / Math.log(radix) );
-		const calcradix = Math.round(Math.pow(radix, keta));
+		const keta = Math.floor( Math.log(max_num) / Math.log(radix_) );
+		const calcradix = Math.round(Math.pow(radix_, keta));
 		// zeros = "00000000...."
-		let zeros = [];
-		let i;
-		for(i = 0; i < keta; i++) {
-			zeros[i] = "0";
+		const zeros_array = [];
+		for(let i = 0; i < keta; i++) {
+			zeros_array[i] = "0";
 		}
-		zeros = zeros.join("");
+		const zeros_string = zeros_array.join("");
 		// v0.03ここまで
 		const x = IntegerTool.binary_number_to_string(this.element, calcradix);
 		const y = [];
@@ -435,10 +443,10 @@ export default class BigInteger {
 		if(this.signum() < 0) {
 			y[y.length] = "-";
 		}
-		for(i = x.length - 1;i >= 0; i--) {
-			z = x[i].toString(radix);
+		for(let i = x.length - 1; i >= 0; i--) {
+			z = x[i].toString(radix_);
 			if(i < (x.length - 1)) {
-				y[y.length] = zeros.substring(0, keta - z.length);
+				y[y.length] = zeros_string.substring(0, keta - z.length);
 			}
 			y[y.length] = z;
 		}
@@ -447,7 +455,7 @@ export default class BigInteger {
 
 	/**
 	 * 16進数ごとの配列で構成される内部値の指定した位置の値
-	 * @param {number} point - 位置
+	 * @param {BigInteger|number|string|Array<string|number>|Object} point - 内部配列の位置
 	 * @returns {number}
 	 */
 	getShort(point) {
@@ -503,23 +511,20 @@ export default class BigInteger {
 	 * @returns {BigInteger}
 	 */
 	clone() {
-		const y = new BigInteger();
-		y.element = this.element.slice(0);
-		y._sign    = this._sign;
-		return y;
+		return new BigInteger(this);
 	}
 
 	/**
-	 * x < 0
-	 * @returns {boolean}
+	 * 実部の負数を判定
+	 * @returns {boolean} real(x) < 0
 	 */
 	isNegative() {
 		return this._sign < 0;
 	}
 
 	/**
-	 * x === 0
-	 * @returns {boolean}
+	 * 0 を判定
+	 * @returns {boolean} A === 0
 	 */
 	isZero() {
 		this._memory_reduction();
@@ -527,8 +532,8 @@ export default class BigInteger {
 	}
 	
 	/**
-	 * x > 0
-	 * @returns {boolean}
+	 * 正数を判定
+	 * @returns {boolean} real(x) > 0
 	 */
 	isPositive() {
 		return this._sign > 0;
@@ -598,7 +603,8 @@ export default class BigInteger {
 
 	/**
 	 * 加算に適用できる数値（負の場合は、2の補数表現）
-	 * @param [bit_length] - ビット長（省略時は自動計算）
+	 * @param {number} [bit_length] - ビット長（省略時は自動計算）
+	 * @returns {BigInteger}
 	 * @private
 	 */
 	getTwosComplement(bit_length) {
@@ -610,7 +616,7 @@ export default class BigInteger {
 			// 正にする
 			y._sign = 1;
 			// ビットの数が存在しない場合は数える
-			const len = (arguments.length !== 0) ? bit_length : y.bitLength();
+			const len = (bit_length !== undefined) ? bit_length : y.bitLength();
 			const e = y.element;
 			// ビット反転後
 			for(let i = 0; i < e.length; i++) {
@@ -628,25 +634,25 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A &= B
-	 * @param {BigInteger} number 
-	 * @returns {BigInteger}
+	 * 論理積（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A &= B
 	 * @private
 	 */
 	_and(number) {
 		const val = BigInteger._toBigInteger(number);
-		let e1 = this;
-		let e2 = val;
+		const e1 = this;
+		const e2 = val;
 		const s1  = e1.signum(), s2 = e2.signum();
 		const len = Math.max(e1.bitLength(), e2.bitLength());
 		// 引数が負の場合は、2の補数
-		e1 = e1.getTwosComplement(len).element;
-		e2 = e2.getTwosComplement(len).element;
-		const size = Math.max(e1.length, e2.length);
+		const e1_array = e1.getTwosComplement(len).element;
+		const e2_array = e2.getTwosComplement(len).element;
+		const size = Math.max(e1_array.length, e2_array.length);
 		this.element = [];
 		for(let i = 0;i < size;i++) {
-			const x1 = (i >= e1.length) ? 0 : e1[i];
-			const x2 = (i >= e2.length) ? 0 : e2[i];
+			const x1 = (i >= e1_array.length) ? 0 : e1_array[i];
+			const x2 = (i >= e2_array.length) ? 0 : e2_array[i];
 			this.element[i] = x1 & x2;
 		}
 		if(this.bitLength() === 0) {
@@ -664,34 +670,34 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A & B
-	 * @param {BigInteger} number 
-	 * @returns {BigInteger}
+	 * 論理積
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A & B
 	 */
 	and(number) {
 		return this.clone()._and(number);
 	}
 
 	/**
-	 * A |= B
-	 * @param {BigInteger} number 
-	 * @returns {BigInteger}
+	 * 論理和（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A |= B
 	 * @private
 	 */
 	_or(number) {
 		const val = BigInteger._toBigInteger(number);
-		let e1 = this;
-		let e2 = val;
+		const e1 = this;
+		const e2 = val;
 		const s1  = e1.signum(), s2 = e2.signum();
 		const len = Math.max(e1.bitLength(), e2.bitLength());
 		// 引数が負の場合は、2の補数
-		e1 = e1.getTwosComplement(len).element;
-		e2 = e2.getTwosComplement(len).element;
-		const size = Math.max(e1.length, e2.length);
+		const e1_array = e1.getTwosComplement(len).element;
+		const e2_array = e2.getTwosComplement(len).element;
+		const size = Math.max(e1_array.length, e2_array.length);
 		this.element = [];
 		for(let i = 0;i < size;i++) {
-			const x1 = (i >= e1.length) ? 0 : e1[i];
-			const x2 = (i >= e2.length) ? 0 : e2[i];
+			const x1 = (i >= e1_array.length) ? 0 : e1_array[i];
+			const x2 = (i >= e2_array.length) ? 0 : e2_array[i];
 			this.element[i] = x1 | x2;
 		}
 		this._sign = ((s1 === -1)||(s2 === -1)) ? -1 : Math.max(s1, s2);
@@ -703,34 +709,34 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A | B
-	 * @param {BigInteger} number 
-	 * @returns {BigInteger}
+	 * 論理和
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A | B
 	 */
 	or(number) {
 		return this.clone()._or(number);
 	}
 
 	/**
-	 * A ^= B
-	 * @param {BigInteger} number 
-	 * @returns {BigInteger}
+	 * 排他的論理和（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A ^= B
 	 * @private
 	 */
 	_xor(number) {
 		const val = BigInteger._toBigInteger(number);
-		let e1 = this;
-		let e2 = val;
+		const e1 = this;
+		const e2 = val;
 		const s1  = e1.signum(), s2 = e2.signum();
 		const len = Math.max(e1.bitLength(), e2.bitLength());
 		// 引数が負の場合は、2の補数
-		e1 = e1.getTwosComplement(len).element;
-		e2 = e2.getTwosComplement(len).element;
-		const size = Math.max(e1.length, e2.length);
+		const e1_array = e1.getTwosComplement(len).element;
+		const e2_array = e2.getTwosComplement(len).element;
+		const size = Math.max(e1_array.length, e2_array.length);
 		this.element = [];
 		for(let i = 0;i < size;i++) {
-			const x1 = (i >= e1.length) ? 0 : e1[i];
-			const x2 = (i >= e2.length) ? 0 : e2[i];
+			const x1 = (i >= e1_array.length) ? 0 : e1[i];
+			const x2 = (i >= e2_array.length) ? 0 : e2[i];
 			this.element[i] = x1 ^ x2;
 		}
 		this._sign = ((s1 !== 0)&&(s1 !== s2)) ? -1 : 1;
@@ -742,36 +748,36 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A ^ B
-	 * @param {BigInteger} number 
-	 * @returns {BigInteger}
+	 * 排他的論理和
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A ^ B
 	 */
 	xor(number) {
 		return(this.clone()._xor(number));
 	}
 
 	/**
-	 * A = !A
+	 * ビット反転
 	 * @returns {BigInteger}
-	 * @private
+	 * @private A = !A
 	 */
 	_not() {
 		return(this._add(new BigInteger(1))._negate());
 	}
 
 	/**
-	 * !A
-	 * @returns {BigInteger}
+	 * ビット反転（ミュータブル）
+	 * @returns {BigInteger} !A
 	 */
 	not() {
 		return(this.clone()._not());
 	}
 
 	/**
-	 * A &= (!B)
-	 * @param {BigInteger} number 
+	 * 否定論理積（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger}
-	 * @private
+	 * @private A &= (!B)
 	 */
 	_andNot(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -779,16 +785,74 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A & (!B)
-	 * @param {BigInteger} number 
-	 * @returns {BigInteger}
+	 * 否定論理積
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A & (!B)
 	 */
 	andNot(number) {
 		return(this.clone()._andNot(number));
 	}
 
 	/**
-	 * 指定したビット長まで配列を拡張
+	 * 否定論理積（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger}
+	 * @private A &= (!B)
+	 */
+	_nand(number) {
+		return(this._andNot(number));
+	}
+
+	/**
+	 * 否定論理積
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A & (!B)
+	 */
+	nand(number) {
+		return(this.andNot(number));
+	}
+
+	/**
+	 * 否定論理和（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger}
+	 * @private A = !(A | B)
+	 */
+	_orNot(number) {
+		const val = BigInteger._toBigInteger(number);
+		return(this._or(val)._not());
+	}
+
+	/**
+	 * 否定論理和
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} !(A | B)
+	 */
+	orNot(number) {
+		return(this.clone()._orNot(number));
+	}
+
+	/**
+	 * 否定論理和（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger}
+	 * @private A = !(A | B)
+	 */
+	_nor(number) {
+		return(this._orNot(number));
+	}
+
+	/**
+	 * 否定論理和
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} !(A | B)
+	 */
+	nor(number) {
+		return(this.orNot(number));
+	}
+
+	/**
+	 * 指定したビット長まで配列を拡張（ミュータブル）
 	 * @param {number} bit_length - ビット数
 	 * @private
 	 */
@@ -804,7 +868,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 内部データの正規化
+	 * 内部データの正規化（ミュータブル）
 	 * @private
 	 */
 	_memory_reduction() {
@@ -822,13 +886,14 @@ export default class BigInteger {
 
 	/**
 	 * ユークリッド互除法
-	 * x = this, y = number としたとき gcd(x,y)を返す
-	 * @param {BigInteger} number 
-	 * @returns {BigInteger}
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} gcd(x, y)
 	 */
 	gcd(number) {
 		const val = BigInteger._toBigInteger(number);
-		// 非再帰
+		/**
+		 * @type {any}
+		 */
 		let x = this, y = val, z;
 		while(y.signum() !== 0) {
 			z = x.remainder(y);
@@ -840,15 +905,17 @@ export default class BigInteger {
 
 	/**
 	 * 拡張ユークリッド互除法
-	 * x = this, y = number としたとき、 a*x + b*y = c = gcd(x, y) の[a, b, c]を返す
-	 * @param {BigInteger} number 
-	 * @returns {Array<BigInteger>} BigInteger が入った配列
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {Array<BigInteger>} a*x + b*y = c = gcd(x, y) となる [a, b, c]
 	 */
 	extgcd(number) {
 		const val = BigInteger._toBigInteger(number);
 		// 非再帰
 		const ONE  = new BigInteger(1);
 		const ZERO = new BigInteger(0);
+		/**
+		 * @type {any}
+		 */
 		let r0 = this, r1 = val, r2, q1;
 		let a0 = ONE,  a1 = ZERO, a2;
 		let b0 = ZERO, b1 = ONE,  b2;
@@ -869,9 +936,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A = abs(A)
+	 * 絶対値（ミュータブル）
 	 * @returns {BigInteger}
-	 * @private
+	 * @private A = abs(A)
 	 */
 	_abs() {
 		// -1 -> 1, 0 -> 0, 1 -> 1
@@ -880,16 +947,16 @@ export default class BigInteger {
 	}
 
 	/**
-	 * abs(A)
-	 * @returns {BigInteger}
+	 * 絶対値
+	 * @returns {BigInteger} abs(A)
 	 */
 	abs() {
 		return this.clone()._abs();
 	}
 
 	/**
-	 * A = -A
-	 * @returns {BigInteger}
+	 * 負数（ミュータブル）
+	 * @returns {BigInteger} A = -A
 	 * @private
 	 */
 	_negate() {
@@ -898,8 +965,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * -A
-	 * @returns {BigInteger}
+	 * 負数
+	 * @returns {BigInteger} -A
 	 */
 	negate() {
 		return this.clone()._negate();
@@ -907,8 +974,7 @@ export default class BigInteger {
 
 	/**
 	 * 符号値
-	 * 1, -1, 0の場合は0を返す
-	 * @returns {number}
+	 * @returns {number} 1, -1, 0の場合は0を返す
 	 */
 	signum() {
 		if(this.element.length === 0) {
@@ -919,17 +985,15 @@ export default class BigInteger {
 
 	/**
 	 * 符号値
-	 * 1, -1, 0の場合は0を返す
-	 * @returns {number}
+	 * @returns {number} 1, -1, 0の場合は0を返す
 	 */
 	sign() {
 		return this.signum();
 	}
 
 	/**
-	 * 絶対値をとった値同士で比較
-	 * 戻り値は、number 型
-	 * @param {BigInteger} number 
+	 * 符号を除いた値同士を比較
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
 	 */
 	compareToAbs(number) {
@@ -951,8 +1015,7 @@ export default class BigInteger {
 
 	/**
 	 * 値同士を比較
-	 * 戻り値は、number 型
-	 * @param {BigInteger} number 
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number) {
@@ -972,9 +1035,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * max([A, B])
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 最大値
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} max([A, B])
 	 */
 	max(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -987,9 +1050,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * min([A, B])
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 最小値
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} min([A, B])
 	 */
 	min(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -1002,9 +1065,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A <<= n
-	 * @param {number} shift_length
-	 * @returns {BigInteger}
+	 * ビットシフト（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} shift_length - 上位へのビットシフト数
+	 * @returns {BigInteger} A <<= n
 	 * @private
 	 */
 	_shift(shift_length) {
@@ -1095,36 +1158,36 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A << n
-	 * @param {number} n
-	 * @returns {BigInteger}
+	 * ビットシフト
+	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @returns {BigInteger} A << n
 	 */
 	shift(n) {
 		return this.clone()._shift(n);
 	}
 
 	/**
-	 * A << n
-	 * @param {number} n
-	 * @returns {BigInteger}
+	 * 左へビットシフト
+	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @returns {BigInteger} A << n
 	 */
 	shiftLeft(n) {
 		return this.shift(n);
 	}
 
 	/**
-	 * A >> n
-	 * @param {number} n
-	 * @returns {BigInteger}
+	 * 右へビットシフト
+	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @returns {BigInteger} A >> n
 	 */
 	shiftRight(n) {
 		return this.shift(-n);
 	}
 
 	/**
-	 * A += B
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 加算（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A += B
 	 * @private
 	 */
 	_add(number) {
@@ -1183,18 +1246,18 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A + B
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 加算
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A + B
 	 */
 	add(number) {
 		return this.clone()._add(number);
 	}
 
 	/**
-	 * A -= B
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 減算（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A -= B
 	 * @private
 	 */
 	_subtract(number) {
@@ -1206,27 +1269,27 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A - B
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 減算
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A - B
 	 */
 	subtract(number) {
 		return this.clone()._subtract(number);
 	}
 
 	/**
-	 * A - B
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 減算
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A - B
 	 */
 	sub(number) {
 		return this.subtract(number);
 	}
 
 	/**
-	 * A *= B
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 乗算（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A *= B
 	 * @private
 	 */
 	_multiply(number) {
@@ -1237,9 +1300,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A * B
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 乗算
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A * B
 	 */
 	multiply(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -1299,17 +1362,17 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A * B
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 乗算
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A * B
 	 */
 	mul(number) {
 		return this.multiply(number);
 	}
 
 	/**
-	 * A /= B
-	 * @param {BigInteger} number
+	 * 割り算と余り（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {Array<BigInteger>} [C = floor(A / B), A - C * B]
 	 * @private
 	 */
@@ -1317,9 +1380,7 @@ export default class BigInteger {
 		const val = BigInteger._toBigInteger(number);
 		const out = [];
 		if(val.signum() === 0) {
-			out[0] = 1 / 0;
-			out[1] = 0 / 0;
-			return out;
+			throw "BigInteger divideAndRemainder [" + val.toString() +"]";
 		}
 		const compare = this.compareToAbs(val);
 		if(compare < 0) {
@@ -1357,8 +1418,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A / B
-	 * @param {BigInteger} number
+	 * 割り算と余り
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {Array<BigInteger>} [C = floor(A / B), A - C * B]
 	 */
 	divideAndRemainder(number) {
@@ -1366,8 +1427,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A /= B
-	 * @param {BigInteger} number
+	 * 割り算（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} floor(A / B)
 	 * @private
 	 */
@@ -1376,8 +1437,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A / B
-	 * @param {BigInteger} number
+	 * 割り算
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} floor(A / B)
 	 */
 	divide(number) {
@@ -1385,8 +1446,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A / B
-	 * @param {BigInteger} number
+	 * 割り算
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} floor(A / B)
 	 */
 	div(number) {
@@ -1394,9 +1455,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A %= B
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 割り算の余り（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A %= B
 	 * @private
 	 */
 	_remainder(number) {
@@ -1404,27 +1465,27 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A % B
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 割り算の余り
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A % B
 	 */
 	remainder(number) {
 		return this.clone()._remainder(number);
 	}
 
 	/**
-	 * A % B
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 割り算の余り
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A % B
 	 */
 	rem(number) {
 		return this.remainder(number);
 	}
 
 	/**
-	 * A = A mod B
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 割り算の正の余り（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A = A mod B
 	 * @private
 	 */
 	_mod(number) {
@@ -1445,17 +1506,17 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A mod B
-	 * @param {BigInteger} number
-	 * @returns {BigInteger}
+	 * 割り算の正の余り
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A mod B
 	 */
 	mod(number) {
 		return this.clone()._mod(number);
 	}
 
 	/**
-	 * 特定のビットを立てる
-	 * @param {number} bit
+	 * 特定のビットを立てる（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
 	 * @returns {BigInteger}
 	 * @private
 	 */
@@ -1468,7 +1529,7 @@ export default class BigInteger {
 
 	/**
 	 * 特定のビットを立てる
-	 * @param {number} bit
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
 	 * @returns {BigInteger}
 	 */
 	setBit(bit) {
@@ -1477,8 +1538,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 特定のビットを反転させる
-	 * @param {number} bit
+	 * 特定のビットを反転させる（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
 	 * @returns {BigInteger}
 	 * @private
 	 */
@@ -1491,7 +1552,7 @@ export default class BigInteger {
 
 	/**
 	 * 特定のビットを反転させる
-	 * @param {number} bit
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
 	 * @returns {BigInteger}
 	 */
 	flipBit(bit) {
@@ -1501,7 +1562,7 @@ export default class BigInteger {
 
 	/**
 	 * 特定のビットを下げる
-	 * @param {number} bit 
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bit 
 	 * @returns {BigInteger}
 	 */
 	clearBit(bit) {
@@ -1514,7 +1575,7 @@ export default class BigInteger {
 
 	/**
 	 * 指定のビットの判定
-	 * @param {number} bit
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
 	 * @returns {boolean}
 	 */
 	testBit(bit) {
@@ -1523,9 +1584,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * pow(A, B)
-	 * @param {BigInteger} exponent
-	 * @returns {BigInteger}
+	 * 累乗
+	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
+	 * @returns {BigInteger} pow(A, B)
 	 */
 	pow(exponent) {
 		const e = new BigInteger(exponent);
@@ -1542,10 +1603,10 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A^B mod m
-	 * @param {BigInteger} exponent
-	 * @param {BigInteger} m 
-	 * @returns {BigInteger}
+	 * 冪剰余
+	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
+	 * @param {BigInteger|number|string|Array<string|number>|Object} m 
+	 * @returns {BigInteger} A^B mod m
 	 */
 	modPow(exponent, m) {
 		const m_ = BigInteger._toBigInteger(m);
@@ -1563,9 +1624,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * A^(-1) mod m
-	 * @param {BigInteger} m
-	 * @returns {BigInteger}
+	 * モジュラ逆数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} m
+	 * @returns {BigInteger} A^(-1) mod m
 	 */
 	modInverse(m) {
 		const m_ = BigInteger._toBigInteger(m);
@@ -1580,7 +1641,7 @@ export default class BigInteger {
 
 	/**
 	 * ミラーラビン素数判定法による複素判定
-	 * @param {number} [certainty=100] - 素数判定法の繰り返し回数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - 素数判定法の繰り返し回数
 	 * @returns {boolean}
 	 */
 	isProbablePrime(certainty) {
@@ -1590,12 +1651,12 @@ export default class BigInteger {
 			return true;
 		}
 		//even number -> false
-		else if( ((e[0] & 1) === 0) || (certainty <= 0) ) {
+		else if((e[0] & 1) === 0) {
 			return false;
 		}
 		// ミラーラビン素数判定法
 		// かなり処理が重たいです。まあお遊び程度に使用という感じで。
-		const loop	= certainty ? (BigInteger._toInteger(certainty) >> 1) : 50;
+		const loop	= certainty !== undefined ? (BigInteger._toInteger(certainty) >> 1) : 100 / 2;
 		const ZERO	= new BigInteger(0);
 		const ONE	= new BigInteger(1);
 		const n		= this;
@@ -1603,6 +1664,11 @@ export default class BigInteger {
 		const n_1	= n.subtract(ONE);
 		const s 	= n_1.getLowestSetBit();
 		const d 	= n_1.shift(-s);
+
+		if(loop <= 0) {
+			return false;
+		}
+
 		let a;
 		let isComposite;
 		for(let i = 0; i < loop; i++ ) {
@@ -1635,15 +1701,32 @@ export default class BigInteger {
 
 	/**
 	 * 次の素数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - 素数判定法の繰り返し回数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - 次の素数を見つけるまでの回数
 	 * @returns {BigInteger}
 	 */
-	nextProbablePrime() {
+	nextProbablePrime(certainty, search_max) {
+		const loop	= certainty !== undefined ? (BigInteger._toInteger(certainty) >> 1) : 100 / 2;
+		const search_max_ = search_max !== undefined ? BigInteger._toInteger(search_max) : 100000;
 		const x = this.clone();
-		while(true) {
+		for(let i = 0; i < search_max_; i++) {
 			x._add(BigInteger.ONE);
-			if(x.isProbablePrime(100)) {
-				break;
+			if(x.isProbablePrime(loop)) {
+				return x;
 			}
+		}
+		throw "nextProbablePrime [" + search_max_ +"]";
+	}
+
+	/**
+	 * 階乗関数
+	 * @returns {BigInteger} n!
+	 */
+	factorial() {
+		const loop_max = BigInteger._toInteger(this);
+		let x = BigInteger.ONE;
+		for(let i = 2; i <= loop_max; i++) {
+			x = x.multiply(i);
 		}
 		return x;
 	}
@@ -1654,7 +1737,7 @@ export default class BigInteger {
 	
 	/**
 	 * 0
-	 * @returns {BigInteger}
+	 * @returns {BigInteger} 0
 	 */
 	static get ZERO() {
 		return DEFINE.ZERO;
@@ -1662,7 +1745,7 @@ export default class BigInteger {
 
 	/**
 	 * 1
-	 * @returns {BigInteger}
+	 * @returns {BigInteger} 1
 	 */
 	static get ONE() {
 		return DEFINE.ONE;
@@ -1670,7 +1753,7 @@ export default class BigInteger {
 	
 	/**
 	 * 2
-	 * @returns {BigInteger}
+	 * @returns {BigInteger} 2
 	 */
 	static get TWO() {
 		return DEFINE.TWO;
@@ -1678,7 +1761,7 @@ export default class BigInteger {
 	
 	/**
 	 * 10
-	 * @returns {BigInteger}
+	 * @returns {BigInteger} 10
 	 */
 	static get TEN() {
 		return DEFINE.TEN;

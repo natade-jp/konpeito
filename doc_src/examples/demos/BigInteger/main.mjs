@@ -255,10 +255,8 @@ const main = function() {
 	let x, y;
 
 	Log.println("2^5000 = ");
-	x = $(2);
-	
 	time = currentTimeMillis();
-	x = x.pow(5000);
+	x = $(2).pow(5000);
 	Log.println("計算時間\t" + (currentTimeMillis() - time) + "ms");
 	
 	time = currentTimeMillis();
@@ -270,12 +268,9 @@ const main = function() {
 	Log.println("内部変数変換\t" + (currentTimeMillis() - time) + "ms");
 	
 	Log.println("500! = ");
-	x = $(1);
-	
 	time = currentTimeMillis();
-	for(let i = 1;i <= 500;i++) {
-		x = x.multiply(i);
-	}
+	x = $(500).factorial();
+
 	Log.println("計算時間\t" + (currentTimeMillis() - time) + "ms");
 	time = currentTimeMillis();
 	y = x.toString();

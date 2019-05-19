@@ -7,8 +7,10 @@
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
  */
+// @ts-check
 
-import RoundingMode from "./RoundingMode.mjs";
+// @ts-ignore
+import RoundingMode, {RoundingModeEntity} from "./RoundingMode.mjs";
 
 /**
  * BigDecimal用の環境設定
@@ -34,13 +36,14 @@ export default  class MathContext {
 		 */
 		this.roundingMode = roundingMode === undefined ? RoundingMode.HALF_UP : roundingMode;
 
-		if((typeof precision_or_name === "string") || (precision_or_name instanceof String)) {
-			let buff = precision_or_name.match(/precision=\d+/);
+		if(typeof this.precision === "string") {
+			let buff;
+			buff = this.precision.match(/precision=\d+/);
 			if(buff !== null) {
 				buff = buff[0].substring("precision=".length, buff[0].length);
 				this.precision = parseInt(buff, 10);
 			}
-			buff = precision_or_name.match(/roundingMode=\w+/);
+			buff = this.precision.match(/roundingMode=\w+/);
 			if(buff !== null) {
 				buff = buff[0].substring("roundingMode=".length, buff[0].length);
 				this.roundingMode = RoundingMode.valueOf(buff);
@@ -117,7 +120,6 @@ export default  class MathContext {
 	static get DECIMAL64() {
 		return DEFINE.DECIMAL64;
 	}
-
 
 	/**
 	 * 128ビットの実数型 ( long double ) と同等
