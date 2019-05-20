@@ -576,17 +576,14 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * 行列のpノルム
+	 * pノルム
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
 	 * @returns {number}
 	 */
 	static norm(mat, p) {
-		if(p === undefined) {
-			return LinearAlgebra.norm(mat, 2);
-		}
 		const M = Matrix._toMatrix(mat);
-		const p_number = Matrix._toInteger(p);
+		const p_number = (p === undefined) ? 2 : Matrix._toInteger(p);
 		if(p_number === 1) {
 			// 行列の1ノルム
 			const y = M.matrix_array;
@@ -672,7 +669,23 @@ export default class LinearAlgebra {
 	}
 	
 	/**
-	 * 行列のランク
+	 * 条件数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+	 * @returns {number}
+	 */
+	static cond(mat, p) {
+		const M = Matrix._toMatrix(mat);
+		const p_number = (p === undefined) ? 2 : Matrix._toInteger(p);
+		if(p_number === 2) {
+			const s = M.svd().S.diag();
+			return s.max().scalar.real / s.min().scalar.real;
+		}
+		return M.norm(p) * M.pinv().norm(p);
+	}
+
+	/**
+	 * ランク
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {number} rank(A)
@@ -683,7 +696,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * 行列のトレース、対角和
+	 * トレース
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {Complex}
 	 */
@@ -744,6 +757,7 @@ export default class LinearAlgebra {
 			// サイズが大きい場合は、lu分解を利用する
 			const lup = LinearAlgebra.lup(M);
 			const exchange_count = (len - lup.P.diag().sum().scalar) / 2;
+			// 上行列の対角線上の値を掛け算する
 			const x = lup.U.diag().matrix_array;
 			let y = x[0][0];
 			for(let i = 1; i < len; i++) {
@@ -1126,5 +1140,7 @@ export default class LinearAlgebra {
 		}, M.column_length, M.row_length);
 		return V.mul(sing).mul(U.T());
 	}
+
+
 
 }

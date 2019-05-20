@@ -1054,7 +1054,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列の1ノルム
+	 * 1ノルム
 	 * @returns {number}
 	 */
 	get norm1() {
@@ -1062,7 +1062,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * 行列の2ノルム
+	 * 2ノルム
 	 * @returns {number}
 	 */
 	get norm2() {
@@ -1070,12 +1070,46 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列のpノルム
+	 * pノルム
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
 	 * @returns {number}
 	 */
 	norm(p) {
 		return LinearAlgebra.norm(this, p);
+	}
+
+	/**
+	 * 条件数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+	 * @returns {number}
+	 */
+	cond(p) {
+		return LinearAlgebra.cond(this, p);
+	}
+
+	/**
+	 * ランク
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {number} rank(A)
+	 */
+	rank(epsilon) {
+		return LinearAlgebra.rank(this, epsilon);
+	}
+
+	/**
+	 * トレース
+	 * @returns {Complex} trace(A)
+	 */
+	trace() {
+		return LinearAlgebra.trace(this);
+	}
+
+	/**
+	 * 行列式
+	 * @returns {Matrix} |A|
+	 */
+	det() {
+		return LinearAlgebra.det(this);
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
@@ -1628,14 +1662,20 @@ export default class Matrix {
 			return new Matrix(y);
 		}
 		if(M2.row_length === M2.column_length) {
-			// ランク落ちしているか確認していないため注意
-			// 本来ランク落ちしている場合は、ここでpinvを使用した方法に切り替えるなどする必要がある。
-			return this.mul(M2.inv());
+			const epsilon = 1.0e-10;
+			const det = M2.det().scalar.norm;
+			if(det > epsilon) {
+				// ランク落ちしていないので通常の逆行列を使用する
+				return this.mul(M2.inv());
+			}
+			else {
+				// ランク落ちしているので疑似逆行列を使用する
+				return this.mul(M2.pinv());
+			}
 		}
 		if(M1.column_length !== M2.column_length) {
 			throw "Matrix size does not match";
 		}
-		
 		throw "warning";
 	}
 
@@ -2418,23 +2458,6 @@ export default class Matrix {
 	}
 
 	/**
-	 * 行列のランク
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
-	 * @returns {number} rank(A)
-	 */
-	rank(epsilon) {
-		return LinearAlgebra.rank(this, epsilon);
-	}
-
-	/**
-	 * 行列のトレース
-	 * @returns {Complex} trace(A)
-	 */
-	trace() {
-		return LinearAlgebra.trace(this);
-	}
-
-	/**
 	 * ドット積
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] 計算するときに使用する次元（1 or 2）
@@ -2444,14 +2467,6 @@ export default class Matrix {
 		return LinearAlgebra.inner(this, number, dimension);
 	}
 	
-	/**
-	 * 行列式
-	 * @returns {Matrix} |A|
-	 */
-	det() {
-		return LinearAlgebra.det(this);
-	}
-
 	/**
 	 * LUP分解
 	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
@@ -2847,6 +2862,15 @@ export default class Matrix {
 	}
 
 	/**
+	 * 中心積率
+	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
+	 * @returns {Matrix}
+	 */
+	moment(type) {
+		return Statistics.moment(this, type);
+	}
+
+	/**
 	 * 分散
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
@@ -2862,6 +2886,24 @@ export default class Matrix {
 	 */
 	std(type) {
 		return Statistics.std(this, type);
+	}
+
+	/**
+	 * 標準偏差
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	mad(type) {
+		return Statistics.mad(this, type);
+	}
+
+	/**
+	 * 歪度
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	skewness(type) {
+		return Statistics.skewness(this, type);
 	}
 
 	/**
