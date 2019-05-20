@@ -1622,16 +1622,17 @@ export default class Statistics {
 	}
 
 	/**
-	 * 分散
+	 * 中心積率
 	 * @param {Matrix} mat
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
-	 * @returns {Matrix}
+	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
+	 * @returns {Matrix} n次のモーメント、2で分散の定義と同等。
 	 */
-	static var(mat, type) {
+	static moment(mat, type) {
 		const M = Statistics.mean(mat);
-		// 補正値 0(不偏分散), 1(標本分散)
-		const cor = !(type && type.correction) ? 0: Matrix._toDouble(type.correction);
+		// 補正値 0(不偏分散), 1(標本分散)。規定値は、標本分散とする
+		const cor = !(type && type.correction) ? 1: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const order = Matrix._toComplex(type.nth_order);
 		let col = 0;
 		const main = function(data) {
 			let mean;
@@ -1643,8 +1644,13 @@ export default class Statistics {
 			}
 			let x = Complex.ZERO;
 			for(let i = 0; i < data.length; i++) {
+				// 計算方法について
+				// ・複素数は、ノルムをとらずに複素数用のpowを使用したほうがいいのか
+				// ・分散と同様にnormで計算したほうがいいのか
+				// 複素数でのモーメントの定義がないため不明であるが、
+				// 分散を拡張した考えであれば、normをとった累乗のほうが良いと思われる。
 				const a = data[i].sub(mean);
-				x = x.add(a.dot(a));
+				x = x.add(a.pow(order));
 			}
 			if(data.length === 1) {
 				return [x.div(data.length)];
@@ -1657,13 +1663,49 @@ export default class Statistics {
 	}
 
 	/**
+	 * 分散
+	 * @param {Matrix} mat
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	static var(mat, type) {
+		const M = Statistics.mean(mat);
+		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
+		const cor = !(type && type.correction) ? 0: Matrix._toDouble(type.correction);
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		let col = 0;
+		const main = function(data) {
+			let mean;
+			if(M.isScalar()) {
+				mean = M.scalar;
+			}
+			else {
+				mean = M.getComplex(col++);
+			}
+			// 分散は、ノルムの2乗で計算するため必ず実数になる。
+			let x = 0;
+			for(let i = 0; i < data.length; i++) {
+				const a = data[i].sub(mean).norm;
+				x += a * a;
+			}
+			if(data.length === 1) {
+				return [Complex.create(x / data.length)];
+			}
+			else {
+				return [Complex.create(x / (data.length - 1 + cor))];
+			}
+		};
+		return mat.eachVector(main, dim);
+	}
+
+	/**
 	 * 標準偏差
 	 * @param {Matrix} mat
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
 	static std(mat, type) {
-		// 補正値 0(不偏分散), 1(標本分散)
+		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
 		const cor = !(type && type.correction) ? 0: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
 		const M = Statistics.var(mat, { correction : cor, dimension : dim });
@@ -1674,13 +1716,38 @@ export default class Statistics {
 	}
 
 	/**
+	 * 平均偏差
+	 * @param {Matrix} mat
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	static mad(mat, type) {
+		return mat.sub(mat.mean(type)).abs().mean(type);
+	}
+
+	/**
+	 * 歪度
+	 * @param {Matrix} mat
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	static skewness(mat, type) {
+		// 補正値 0(不偏), 1(標本)。規定値は、標本とする
+		const cor = !(type && type.correction) ? 1: Matrix._toDouble(type.correction);
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const order = Statistics.moment(mat, { correction : cor, dimension : dim, nth_order : 3  });
+		const std = Statistics.std(mat, { correction : cor, dimension : dim });
+		return order.ndiv(std.npow(3));
+	}
+
+	/**
 	 * 共分散行列
 	 * @param {Matrix} mat
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
 	static cov(mat, type) {
-		// 補正値 0(不偏分散), 1(標本分散)
+		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
 		const cor = !(type && type.correction) ? 0: Matrix._toDouble(type.correction);
 		if(mat.isVector()) {
 			return Statistics.var(mat, type);
@@ -1760,5 +1827,6 @@ export default class Statistics {
 		};
 		return mat.eachVector(main, dim);
 	}
+
 
 }

@@ -1679,6 +1679,26 @@ export default class Matrix {
 		}, y_row_length, y_column_length);
 	}
 
+	/**
+	 * 行列の各項ごとの累乗
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A .^ B
+	 */
+	npow(number) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
+		if((M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
+			throw "Matrix size does not match";
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].pow(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	// Complexのメソッドにある機能
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
@@ -1894,6 +1914,7 @@ export default class Matrix {
 	 * 累乗
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - スカラー
 	 * @returns {Matrix} pow(A, B)
+	 * @todo 実際は行列そのものの累乗に切り替える予定。各要素の累乗は、npowを使用すること。
 	 */
 	pow(number) {
 		const X = Matrix._toComplex(number);

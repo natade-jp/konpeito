@@ -1,5 +1,11 @@
 # History
 
+## v0.1.X
+- Statistics 歪度を追加
+- Statistics 中心積率を追加
+- Statistics 平均偏差を追加
+
+
 ## v0.1.1
 - 全体 ドキュメントの整備
 - 全体 リファクタリング
