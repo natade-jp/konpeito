@@ -2,7 +2,8 @@
 
 ## v0.1.X
 - Matrix 行列の割り算で割る値がランク落ちしている場合でも割れるように修正
-- LinearAlgebra 条件数を追加
+- Matrix 行列の累乗（整数のみ対応）を追加
+- LinearAlgebra 条件数及びその逆数を追加
 - Statistics 歪度を追加
 - Statistics 中心積率を追加
 - Statistics 平均偏差を追加

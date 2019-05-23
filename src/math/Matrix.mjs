@@ -1688,6 +1688,32 @@ export default class Matrix {
 	}
 
 	/**
+	 * 整数での累乗
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 整数
+	 * @returns {Matrix} pow(A, B)
+	 */
+	pow(number) {
+		if(!this.isSquare()) {
+			throw "not square " + this;
+		}
+		let n = Matrix._toInteger(number);
+		if(n < 0) {
+			throw "error negative number " + n;
+		}
+		let x, y;
+		x = this.clone();
+		y = Matrix.eye(this.length);
+		while(n !== 0) {
+			if((n & 1) !== 0) {
+				y = y.mul(x);
+			}
+			x = x.mul(x);
+			n >>>= 1;
+		}
+		return y;
+	}
+
+	/**
 	 * 行列の各項ごとの掛け算
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @returns {Matrix} A .* B
@@ -1695,7 +1721,7 @@ export default class Matrix {
 	nmul(number) {
 		const M1 = this;
 		const M2 = Matrix._toMatrix(number);
-		if((M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
+		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
 			throw "Matrix size does not match";
 		}
 		const x1 = M1.matrix_array;
@@ -1715,7 +1741,7 @@ export default class Matrix {
 	ndiv(number) {
 		const M1 = this;
 		const M2 = Matrix._toMatrix(number);
-		if((M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
+		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
 			throw "Matrix size does not match";
 		}
 		const x1 = M1.matrix_array;
@@ -1747,7 +1773,7 @@ export default class Matrix {
 	npow(number) {
 		const M1 = this;
 		const M2 = Matrix._toMatrix(number);
-		if((M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
+		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
 			throw "Matrix size does not match";
 		}
 		const x1 = M1.matrix_array;
@@ -1967,19 +1993,6 @@ export default class Matrix {
 	sqrt() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.sqrt();
-		});
-	}
-
-	/**
-	 * 累乗
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - スカラー
-	 * @returns {Matrix} pow(A, B)
-	 * @todo 実際は行列そのものの累乗に切り替える予定。各要素の累乗は、npowを使用すること。
-	 */
-	pow(number) {
-		const X = Matrix._toComplex(number);
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.pow(X);
 		});
 	}
 
