@@ -6,6 +6,8 @@
 - Statistics 歪度を追加
 - Statistics 中心積率を追加
 - Statistics 平均偏差を追加
+- Statistics prodを追加
+- Statistics geomeanの計算方法の誤りを修正
 
 ## v0.1.1
 - 全体 ドキュメントの整備

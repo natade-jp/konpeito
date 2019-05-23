@@ -1088,6 +1088,14 @@ export default class Matrix {
 	}
 
 	/**
+	 * 1ノルムの条件数の逆数
+	 * @returns {number}
+	 */
+	rcond() {
+		return LinearAlgebra.rcond(this);
+	}
+
+	/**
 	 * ランク
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
 	 * @returns {number} rank(A)
@@ -1717,6 +1725,18 @@ export default class Matrix {
 		return Matrix.createMatrixDoEachCalculation(function(row, col) {
 			return x1[row % M1.row_length][col % M1.column_length].div(x2[row % M2.row_length][col % M2.column_length]);
 		}, y_row_length, y_column_length);
+	}
+
+	/**
+	 * 行列の各項ごとの逆数
+	 * @returns {Matrix} 1 ./ A
+	 */
+	ninv() {
+		const M1 = this;
+		const x1 = M1.matrix_array;
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row][col].inv();
+		}, M1.row_length, M1.column_length);
 	}
 
 	/**
@@ -2832,6 +2852,15 @@ export default class Matrix {
 	 */
 	mean(type) {
 		return Statistics.mean(this, type);
+	}
+
+	/**
+	 * 配列の積
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	prod(type) {
+		return Statistics.prod(this, type);
 	}
 
 	/**

@@ -685,6 +685,15 @@ export default class LinearAlgebra {
 	}
 
 	/**
+	 * 1ノルムの条件数の逆数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @returns {number}
+	 */
+	static rcond(mat) {
+		return 1.0 / LinearAlgebra.cond(Matrix._toMatrix(mat), 1);
+	}
+
+	/**
 	 * ランク
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
@@ -758,11 +767,7 @@ export default class LinearAlgebra {
 			const lup = LinearAlgebra.lup(M);
 			const exchange_count = (len - lup.P.diag().sum().scalar) / 2;
 			// 上行列の対角線上の値を掛け算する
-			const x = lup.U.diag().matrix_array;
-			let y = x[0][0];
-			for(let i = 1; i < len; i++) {
-				y = y.mul(x[i][0]);
-			}
+			let y = lup.U.diag().prod();
 			if((exchange_count % 2) === 1) {
 				y = y.negate();
 			}

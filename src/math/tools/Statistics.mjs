@@ -1536,6 +1536,24 @@ export default class Statistics {
 	}
 
 	/**
+	 * 配列の積
+	 * @param {Matrix} mat
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static prod(mat, type) {
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const main = function(data) {
+			let x = Complex.ONE;
+			for(let i = 0; i < data.length; i++) {
+				x = x.mul(data[i]);
+			}
+			return [x];
+		};
+		return mat.eachVector(main, dim);
+	}
+
+	/**
 	 * 相乗平均／幾何平均
 	 * @param {Matrix} mat
 	 * @param {{dimension : (?string|?number)}} [type]
@@ -1548,11 +1566,10 @@ export default class Statistics {
 			for(let i = 0; i < data.length; i++) {
 				x = x.mul(data[i]);
 			}
-			return [x.sqrt()];
+			return [x.pow(Complex.create(data.length).inv())];
 		};
 		return mat.eachVector(main, dim);
 	}
-
 	
 	/**
 	 * 中央値
