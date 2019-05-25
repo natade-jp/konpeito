@@ -1,4 +1,4 @@
-# install
+# npm install
 ```
 npm install -g npm
 npm install --save-dev rollup
@@ -14,7 +14,7 @@ npm install --save-dev babel-jest
 npm install --save-dev babel-plugin-transform-es2015-modules-commonjs
 ```
 
-# check
+# npm list
 ```
 npm list --depth=0
 konpeito

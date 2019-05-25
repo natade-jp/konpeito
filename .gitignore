@@ -1,4 +1,7 @@
-doc
-node_modules
-npm-debug.log
-.npmrc
+/node_modules/
+/npm-debug.log
+/.npmrc
+/doc/
+.DS_Store
+Thumbs.db
+*.bak
