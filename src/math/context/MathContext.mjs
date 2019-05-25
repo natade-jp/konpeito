@@ -26,24 +26,29 @@ export default  class MathContext {
 
 		/**
 		 * 精度
+		 * @type {number}
 		 * @private
 		 */
-		this.precision = precision_or_name;
-
+		this.precision = 0;
+		
 		/**
 		 * 丸めモード
+		 * @type {RoundingModeEntity}
 		 * @private
 		 */
 		this.roundingMode = roundingMode === undefined ? RoundingMode.HALF_UP : roundingMode;
 
-		if(typeof this.precision === "string") {
+		if(typeof precision_or_name === "number") {
+			this.precision = precision_or_name;
+		}
+		if(typeof precision_or_name === "string") {
 			let buff;
-			buff = this.precision.match(/precision=\d+/);
+			buff = precision_or_name.match(/precision=\d+/);
 			if(buff !== null) {
 				buff = buff[0].substring("precision=".length, buff[0].length);
 				this.precision = parseInt(buff, 10);
 			}
-			buff = this.precision.match(/roundingMode=\w+/);
+			buff = precision_or_name.match(/roundingMode=\w+/);
 			if(buff !== null) {
 				buff = buff[0].substring("roundingMode=".length, buff[0].length);
 				this.roundingMode = RoundingMode.valueOf(buff);

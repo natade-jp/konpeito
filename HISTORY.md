@@ -1,6 +1,7 @@
 # History
 
 ## v0.1.X
+- Jest 導入
 - Matrix 行列の割り算で割る値がランク落ちしている場合でも割れるように修正
 - Matrix 行列の累乗（整数のみ対応）を追加
 - LinearAlgebra 条件数及びその逆数を追加
