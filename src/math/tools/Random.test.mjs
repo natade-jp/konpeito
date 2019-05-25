@@ -2,11 +2,11 @@
 
 import Random from "./Random.mjs";
 
-test("Random 1", () => {
+test("nextInt", () => {
 	expect((new Random(0)).nextInt()).toBe(658119067);
 });
 
-test("Random 2", () => {
+test("Random 1", () => {
 	const r = new Random(0);
 	const myfunc = function() {
 		let isCheck1 = false;
@@ -28,7 +28,7 @@ test("Random 2", () => {
 	expect(myfunc()).toBe(true);
 });
 
-test("Random 3", () => {
+test("Random 2", () => {
 	const r = new Random(0);
 	const myfunc = function() {
 		let isCheck1 = false;
@@ -50,7 +50,7 @@ test("Random 3", () => {
 	expect(myfunc()).toBe(true);
 });
 
-test("Random 4", () => {
+test("Random 3", () => {
 	const r = new Random(0);
 	const myfunc = function() {
 		const loop = 1 << 18;
@@ -64,7 +64,7 @@ test("Random 4", () => {
 	expect(myfunc()).toBe(true);
 });
 
-test("Random 5", () => {
+test("Random 4", () => {
 	const r = new Random(0);
 	const myfunc = function() {
 		let min = 1;
@@ -80,7 +80,7 @@ test("Random 5", () => {
 	expect(myfunc()).toBe(true);
 });
 
-test("Random 6", () => {
+test("Gaussian", () => {
 	const r = new Random(0);
 	const myfunc = function() {
 		const loop = 1 << 10;

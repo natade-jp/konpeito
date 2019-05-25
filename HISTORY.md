@@ -10,6 +10,8 @@
 - Statistics 平均偏差を追加
 - Statistics prodを追加
 - Statistics geomeanの計算方法の誤りを修正
+- BigInteger デフォルトの乱数を設定できる機能を追加
+- BigInteger 素数判定のアルゴリズムを変更
 
 ## v0.1.1
 - 全体 ドキュメントの整備

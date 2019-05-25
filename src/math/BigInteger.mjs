@@ -15,7 +15,7 @@ import Random from "./tools/Random.mjs";
 /**
  * 乱数用クラスを指定しなかった場合に使用するデフォルト乱数クラス
  */
-const DEFAULT_RANDOM = new Random();
+let DEFAULT_RANDOM = new Random();
 
 /**
  * BigInteger 内で使用する関数群
@@ -1641,6 +1641,7 @@ export default class BigInteger {
 
 	/**
 	 * ミラーラビン素数判定法による複素判定
+	 * （非常に重たいので注意）
 	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - 素数判定法の繰り返し回数
 	 * @returns {boolean}
 	 */
@@ -1656,7 +1657,7 @@ export default class BigInteger {
 		}
 		// ミラーラビン素数判定法
 		// かなり処理が重たいです。まあお遊び程度に使用という感じで。
-		const loop	= certainty !== undefined ? (BigInteger._toInteger(certainty) >> 1) : 100 / 2;
+		const loop	= certainty !== undefined ? BigInteger._toInteger(certainty) : 100;
 		const ZERO	= new BigInteger(0);
 		const ONE	= new BigInteger(1);
 		const n		= this;
@@ -1669,30 +1670,26 @@ export default class BigInteger {
 			return false;
 		}
 
-		let a;
-		let isComposite;
 		for(let i = 0; i < loop; i++ ) {
 			//[ 1, n - 1] の範囲から a を選択
+			let a;
 			do {
 				a = BigInteger.createRandomBigInteger(LEN);
 			} while(( a.compareTo(ZERO) === 0 )||( a.compareTo(n) !== -1 ));
-			// a^d != 1 mod n
-			a = a.modPow(d, n);
-			if( a.compareTo(ONE) === 0 ) {
-				continue;
-			}
-			// x ^ 4 % 2 = ((x ^ 2 % 2) ^ 2 % 2) のように分解
-			isComposite = true;
-			for(let j = 0; j <= s; j++) {
-				if(a.compareTo(n_1) === 0) {
-					isComposite = false;
+
+			let t = d;
+			// a^t != 1 mod n
+			let y = a.modPow(t, n);
+			
+			while(true) {
+				if((t.equals(n_1)) || (y.equals(ONE)) || (y.equals(n_1))) {
 					break;
 				}
-				if(j < s) {
-					a = a.multiply(a)._mod(n);
-				}
+				y = y.mul(y)._mod(n);
+				t = t.shiftLeft(1);
 			}
-			if(isComposite) {
+
+			if((!y.equals(n_1)) && ((t.element[0] & 1) === 0)) {
 				return false;
 			}
 		}
@@ -1730,6 +1727,25 @@ export default class BigInteger {
 		}
 		return x;
 	}
+
+	/**
+	 * 乱数を指定しなかった場合のデフォルト乱数を設定する
+	 * @param {Random} random
+	 */
+	static setDefaultRandom(random) {
+		DEFAULT_RANDOM = random;
+	}
+
+	/**
+	 * 乱数を指定しなかった場合のデフォルト乱数を取得する
+	 * @returns {Random}
+	 */
+	static getDefaultRandom() {
+		return DEFAULT_RANDOM;
+	}
+
+
+
 
 	// ----------------------
 	// 定数
