@@ -1,7 +1,8 @@
 # History
 
-## v0.1.X
+## v0.1.2
 - Jest 導入
+- Matrix 系以外についてテストを追加
 - Matrix 行列の割り算で割る値がランク落ちしている場合でも割れるように修正
 - Matrix 行列の累乗（整数のみ対応）を追加
 - LinearAlgebra 条件数及びその逆数を追加
@@ -12,6 +13,12 @@
 - Statistics geomeanの計算方法の誤りを修正
 - BigInteger デフォルトの乱数を設定できる機能を追加
 - BigInteger 素数判定のアルゴリズムを変更
+- Complex compareTo 見直し
+- Complex log(-1)の計算結果が誤っていたのを修正
+- Complex arg(-1)の計算結果が誤っていたのを修正
+- Complex isComplex, isComplexInteger 関数の説明が分かりにくい部分を修正
+- Complex squareの複素数を入力したときの値が誤っていたのを修正
+- Complex sinc関数を非正規化 sinc 関数から、正規化 sinc 関数に変更
 
 ## v0.1.1
 - 全体 ドキュメントの整備

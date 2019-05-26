@@ -323,7 +323,7 @@ export default class Complex {
 	 */
 	get arg() {
 		if(this._im === 0) {
-			return 0;
+			return this._re >= 0 ? 0 : Math.PI;
 		}
 		else if(this._re === 0) {
 			return Math.PI * (this._im >= 0.0 ? 0.5 : -0.5);
@@ -541,15 +541,14 @@ export default class Complex {
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, epsilon) {
-		// ※実数を返す（非Complexオブジェクト）
-		const x = Complex._toComplex(number);
-		if(this.equals(x, epsilon)) {
+		const x1 = this;
+		const x2 = Complex._toComplex(number);
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		const a = x1.real + x1.imag;
+		const b = x2.real + x2.imag;
+		if((Math.abs(a - b) < tolerance)) {
 			return 0;
 		}
-		// 実部と虚部の比較は、どちらを優先すべきか分からない
-		// 符号付きでマンハッタン距離を算出して、距離の比較を行う
-		const a = this.real + this.imag;
-		const b = x.real + x.imag;
 		return a > b ? 1 : -1;
 	}
 
@@ -568,9 +567,9 @@ export default class Complex {
 	}
 
 	/**
-	 * 複素整数を判定
+	 * 複素整数（整数も含む）を判定
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
-	 * @returns {boolean} real(A) === 0 && imag(A) !== 0
+	 * @returns {boolean} real(A) === 整数 && imag(A) === 整数
 	 */
 	isComplexInteger(epsilon) {
 		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
@@ -600,7 +599,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 複素数を判定
+	 * 複素数（虚部が0以外）を判定
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
 	 * @returns {boolean} imag(A) !== 0
 	 */
@@ -736,7 +735,10 @@ export default class Complex {
 	 * @returns {Complex} pow(A, 2)
 	 */
 	square() {
-		return new Complex(this._re * this._re + this._im * this._im);
+		if(this._im === 0.0) {
+			return new Complex(this._re * this._re);
+		}
+		return this.mul(this);
 	}
 
 	/**
@@ -864,7 +866,7 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * sinc
+	 * 正規化 sinc
 	 * @returns {Complex} sinc(A)
 	 */
 	sinc() {
@@ -872,9 +874,11 @@ export default class Complex {
 			if(this._re === 0) {
 				return(Complex.ONE);
 			}
-			return new Complex(Math.sin(this._re) / this._re);
+			const x = Math.PI * this._re;
+			return new Complex(Math.sin(x) / x);
 		}
-		return new Complex( this.sin().div(this) );
+		const x = this.mul(Complex.PI);
+		return new Complex( x.sin().div(x) );
 	}
 
 	// ----------------------

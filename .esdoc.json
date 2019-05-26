@@ -1,7 +1,8 @@
+
 {
-	"source": "./src",
-	"destination": "./doc",
-	"includes" : ["\\.mjs$"],
+	"source": "./src/",
+	"destination": "./doc/",
+	"includes" : ["\\\\[^.]+\\.mjs$"],
 	"index" : "./README.md",
 	"plugins": [
 		{
