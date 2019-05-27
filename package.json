@@ -40,13 +40,16 @@
 			"mjs"
 		],
 		"testMatch": [
-			"**/__tests__/**/*.?(m)js?(x)",
-			"**/?(*.)(spec|test).?(m)js?(x)"
+			"**/?(*.)LinearAlgebra.test.mjs"
 		],
 		"transform": {
 			"^.+\\.(js|mjs)$": "babel-jest"
 		}
 	},
+	"testMatch_backup": [
+		"**/__tests__/**/*.?(m)js?(x)",
+		"**/?(*.)(spec|test).?(m)js?(x)"
+	],
 	"devDependencies": {
 		"acorn": "^6.0.0",
 		"babel-jest": "^24.8.0",

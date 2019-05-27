@@ -681,7 +681,7 @@ export default class Matrix {
 			return false;
 		}
 		if((M1.row_length === 1) || (M1.column_length ===1)) {
-			return M1.scalar.equals(M2.scalar);
+			return M1.scalar.equals(M2.scalar, epsilon);
 		}
 		const x1 = M1.matrix_array;
 		const x2 = M2.matrix_array;
@@ -1317,13 +1317,7 @@ export default class Matrix {
 	 * @returns {boolean}
 	 */
 	isComplex(epsilon) {
-		let is_complex = true;
-		this._each(function(num){
-			if(is_complex && (num.isReal(epsilon))) {
-				is_complex = false;
-			}
-		});
-		return is_complex;
+		return !this.isReal(epsilon);
 	}
 
 	/**
@@ -1348,16 +1342,23 @@ export default class Matrix {
 	 * @returns {boolean}
 	 */
 	isIdentity(epsilon) {
-		if(!this.isDiagonal()) {
-			return false;
-		}
+		let is_identity = true;
 		const tolerance = epsilon ? epsilon : 1.0e-10;
-		for(let row = 0; row < this.row_length; row++) {
-			if(!this.matrix_array[row][row].isOne(tolerance)) {
-				return false;
+		this._each(function(num, row, col){
+			if(is_identity) {
+				if(row === col) {
+					if(!num.isZero(tolerance)) {
+						is_identity = false;
+					}
+				}
+				else {
+					if(!num.isOne(tolerance)) {
+						is_identity = false;
+					}
+				}
 			}
-		}
-		return true;
+		});
+		return is_identity;
 	}
 
 	/**
@@ -1382,9 +1383,6 @@ export default class Matrix {
 	 * @returns {boolean}
 	 */
 	isTridiagonal(epsilon) {
-		if(!this.isSquare()) {
-			return false;
-		}
 		let is_tridiagonal = true;
 		const tolerance = epsilon ? epsilon : 1.0e-10;
 		this._each(function(num, row, col){
@@ -1475,6 +1473,70 @@ export default class Matrix {
 					}
 				}
 				else if(!this.matrix_array[row][col].equals(this.matrix_array[col][row].conj(), tolerance)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * 上三角行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isTriangleUpper(epsilon) {
+		let is_upper = true;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		this._each(function(num, row, col){
+			if(is_upper && (row > col) && (!num.isZero(tolerance))) {
+				is_upper = false;
+			}
+		});
+		return is_upper;
+	}
+
+	/**
+	 * 下三角行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isTriangleLower(epsilon) {
+		let is_lower = true;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		this._each(function(num, row, col){
+			if(is_lower && (row < col) && (!num.isZero(tolerance))) {
+				is_lower = false;
+			}
+		});
+		return is_lower;
+	}
+
+	/**
+	 * 置換行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isPermutation(epsilon) {
+		if(!this.isSquare()) {
+			return false;
+		}
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		const is_row = new Array(this.row_length);
+		const is_col = new Array(this.column_length);
+		for(let row = 0; row < this.row_length; row++) {
+			for(let col = 0; col < this.column_length; col++) {
+				const target = this.matrix_array[row][col];
+				if(target.isOne(tolerance)) {
+					if(!is_row[row] && !is_col[col]) {
+						is_row[row] = 1;
+						is_col[col] = 1;
+					}
+					else {
+						return false;
+					}
+				}
+				else if(!target.isZero(tolerance)) {
 					return false;
 				}
 			}

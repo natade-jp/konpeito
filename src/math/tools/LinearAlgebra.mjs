@@ -599,7 +599,7 @@ export default class LinearAlgebra {
 			else if(M.isColumn()) {
 				let sum = 0.0;
 				for(let row = 0; row < M.row_length; row++) {
-					sum = y[row][0].norm;
+					sum += y[row][0].norm;
 				}
 				return sum;
 			}
@@ -701,7 +701,13 @@ export default class LinearAlgebra {
 	 */
 	static rank(mat, epsilon) {
 		const M = Matrix._toMatrix(mat);
-		return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
+		// 横が長い行列の場合
+		if(M.row_length <= M.column_length) {
+			return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
+		}
+		else {
+			return M.row_length - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
+		}
 	}
 
 	/**
