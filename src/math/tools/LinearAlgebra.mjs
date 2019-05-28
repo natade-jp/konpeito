@@ -935,12 +935,17 @@ export default class LinearAlgebra {
 		// 正規直行化
 		const orthogonal_matrix = LinearAlgebraTool.doGramSchmidtOrthonormalization(M);
 		// 計算したデータを取得
-		const Q_Matrix = orthogonal_matrix.Q;
+		let Q_Matrix = orthogonal_matrix.Q;
 		const R_Matrix = orthogonal_matrix.R;
 		const non_orthogonalized = orthogonal_matrix.non_orthogonalized;
+
 		// Qのサイズを成型する
-		if(non_orthogonalized.length !== 0) {
-			// 直行化できていない列があるため直行化できてない列以外を抽出
+		if(non_orthogonalized.length === M.row_length) {
+			// 零行列の場合の特別処理
+			Q_Matrix = Matrix.eye(M.row_length);
+		}
+		else if(non_orthogonalized.length !== 0) {
+			// 一部、直行化できていない列があるため直行化できてない列以外を抽出
 			const map = {};
 			for(let i = 0; i < non_orthogonalized.length; i++) {
 				map[non_orthogonalized[i]] = 1;

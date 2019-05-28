@@ -6,9 +6,12 @@
 - Matrix isIdentity 正方行列以外でも正しく動作するように修正
 - Matrix isTridiagonal 正方行列の制限を撤去
 - Matrix 置換行列、上三角行列、下三角行列の判定を追加
+- Matrix 1行の文字列で出力する toOneLineString を追加
+- Matrix コンストラクタをリファクタリング
+- Matrix 単位行列を判定方法の誤りを修正
 - LinearAlgebra norm1 列ベクトルの1ノルムの計算が誤っていたのを修正
 - LinearAlgebra rank 正方行列以外の行列で誤る場合があったのを修正
-
+- LinearAlgebra qr 零行列を入れるとエラーが発生するのを修正
 
 ## v0.1.2
 - Jest 導入

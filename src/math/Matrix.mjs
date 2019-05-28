@@ -130,10 +130,10 @@ class MatrixTool {
 
 	/**
 	 * JSONで定義された文字列データからMatrix型のデータを作成する
-	 * @param {string} text - 調査したい文字列
+	 * @param {string} text - 調査したい文字列([xx,xx,xx],[xx,xx,xx])
 	 * @returns {Array<Array<Complex>>} Matrix型で使用される内部の配列
 	 */
-	static toMatrixFromStringForArrayJSON(text) {
+	static toMatrixArrayFromStringForArrayJSON(text) {
 		const matrix_array = [];
 		// さらにブランケット内を抽出
 		let rows = text.match(/\[[^\]]+\]/g);
@@ -191,25 +191,13 @@ class MatrixTool {
 	}
 
 	/**
-	 * 文字列からMatrix型の行列データの行部分に変換
-	 * @param {string} row_text - 行列の1行を表す文字列
-	 * @returns {Array<Complex>|string}
+	 * match2で文字列を切り分けたデータから数値の配列を作成する
+	 * @param {Array<Object<boolean, string>>} match2_string - 文字列を切り分けたデータ
+	 * @returns {Array<Complex>}
 	 */
-	static toArrayFromString(row_text) {
-		// 「:」のみ記載されていないかの確認
-		if(row_text.trim() === ":") {
-			return ":";
-		}
-		// 左が実数（強制）で右が複素数（任意）タイプ
-		const reg1 = /[+-]? *[0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?( *[+-] *[- ]?([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?[ij])?/;
-		// 左が複素数（強制）で右が実数（任意）タイプ
-		const reg2 = /[+-]? *([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?[ij]( *[+] *[- ]?([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?)?/;
-		// reg2優先で検索
-		const reg3 = new RegExp("(" + reg2.source + ")|(" + reg1.source + ")", "i");
-		// 問題として 1 - -jが通る
-		const xs = MatrixTool.match2(row_text, reg3);
+	static toArrayFromMatch2String(match2_string) {
+		const xs = match2_string;
 		const rows_array = [];
-
 		for(let i = 0; i < xs.length; i++) {
 			const xx = xs[i];
 			if(!xx[0]) {
@@ -245,11 +233,32 @@ class MatrixTool {
 	}
 
 	/**
-	 * JSON以外の文字列で定義された文字列データからMatrix型のデータを作成する
+	 * 文字列からMatrix型の行列データの行部分に変換
+	 * 数字のような部分を抽出することで、行列を推定する
+	 * @param {string} row_text - 行列の1行を表す文字列
+	 * @returns {Array<Complex>|string}
+	 */
+	static toArrayFromString(row_text) {
+		// 「:」のみ記載されていないかの確認
+		if(row_text.trim() === ":") {
+			return ":";
+		}
+		// 左が実数（強制）で右が複素数（任意）タイプ
+		const reg1 = /[+-]? *[0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?( *[+-] *[- ]?([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?[ij])?/;
+		// 左が複素数（強制）で右が実数（任意）タイプ
+		const reg2 = /[+-]? *([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?[ij]( *[+] *[- ]?([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?)?/;
+		// reg2優先で検索
+		const reg3 = new RegExp("(" + reg2.source + ")|(" + reg1.source + ")", "i");
+		// 問題として 1 - -jが通る
+		return MatrixTool.toArrayFromMatch2String(MatrixTool.match2(row_text, reg3));
+	}
+
+	/**
+	 * スペース区切りなどで文字列で定義された文字列データからMatrix型のデータを作成する
 	 * @param {string} text - 調査したい文字列
 	 * @returns {Array<Array<Complex>>} Matrix型で使用される内部の配列
 	 */
-	static toMatrixFromStringForArrayETC(text) {
+	static toMatrixArrayFromStringForArraySPACE(text) {
 		// 行ごとを抽出して
 		const rows = text.split(";");
 		const matrix_array = new Array(rows.length);
@@ -265,14 +274,14 @@ class MatrixTool {
 	 * @param {string} text - 調査したい文字列
 	 * @returns {Array<Array<Complex>>} Matrix型で使用される内部の配列
 	 */
-	static toMatrixFromStringForArray(text) {
-		// JSON形式
-		if(/[[\],]/.test(text)) {
-			return MatrixTool.toMatrixFromStringForArrayJSON(text);
+	static toMatrixArrayFromStringInBracket(text) {
+		// ブラケットの中にブラケットがある＝JSON形式
+		if(/[[\]]/.test(text)) {
+			return MatrixTool.toMatrixArrayFromStringForArrayJSON(text);
 		}
 		// それ以外(MATLAB, Octave, Scilab)
 		else {
-			return MatrixTool.toMatrixFromStringForArrayETC(text);
+			return MatrixTool.toMatrixArrayFromStringForArraySPACE(text);
 		}
 	}
 
@@ -281,14 +290,14 @@ class MatrixTool {
 	 * @param {string} text - 調査したい文字列
 	 * @returns {Array<Array<Complex>>} Matrix型で使用される内部の配列
 	 */
-	static toMatrixFromString(text) {
+	static toMatrixArrayFromString(text) {
 		// 前後のスペースを除去
 		const trimtext = text.replace(/^\s*|\s*$/g, "");
 		// ブランケットを外す
 		const withoutBracket = MatrixTool.trimBracket(trimtext);
 		if(withoutBracket) {
 			// 配列用の初期化
-			return MatrixTool.toMatrixFromStringForArray(withoutBracket);
+			return MatrixTool.toMatrixArrayFromStringInBracket(withoutBracket);
 		}
 		else {
 			// スカラー用の初期化
@@ -410,12 +419,12 @@ export default class Matrix {
 			// 文字列の場合は、文字列解析を行う
 			else if(typeof y === "string") {
 				is_check_string = true;
-				matrix_array = MatrixTool.toMatrixFromString(y);
+				matrix_array = MatrixTool.toMatrixArrayFromString(y);
 			}
 			// 文字列変換できる場合は返還後に、文字列解析を行う
 			else if(y instanceof Object) {
 				is_check_string = true;
-				matrix_array = MatrixTool.toMatrixFromString(y.toString());
+				matrix_array = MatrixTool.toMatrixArrayFromString(y.toString());
 			}
 			// 単純なビルトインの数値など
 			else {
@@ -666,6 +675,32 @@ export default class Matrix {
 		this.string_cash = output.join("");
 
 		return this.string_cash;
+	}
+
+	/**
+	 * 文字列化（1行で表す）
+	 * @returns {string} 
+	 */
+	toOneLineString() {
+		if(this.isScalar()) {
+			return this.scalar.toString();
+		}
+		let output = "[ ";
+		for(let row = 0; row < this.row_length; row++) {
+			for(let col = 0; col < this.column_length; col++) {
+				output += this.matrix_array[row][col].toString();
+				if(col < this.column_length - 1) {
+					output += ", ";
+				}
+				else {
+					if(row < this.row_length - 1) {
+						output += "; ";
+					}
+				}
+			}
+		}
+		output += " ]";
+		return output;
 	}
 
 	/**
@@ -1347,12 +1382,12 @@ export default class Matrix {
 		this._each(function(num, row, col){
 			if(is_identity) {
 				if(row === col) {
-					if(!num.isZero(tolerance)) {
+					if(!num.isOne(tolerance)) {
 						is_identity = false;
 					}
 				}
 				else {
-					if(!num.isOne(tolerance)) {
+					if(!num.isZero(tolerance)) {
 						is_identity = false;
 					}
 				}

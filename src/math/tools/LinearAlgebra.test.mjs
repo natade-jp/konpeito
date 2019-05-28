@@ -4,29 +4,12 @@ import LinearAlgebra from "./LinearAlgebra.mjs";
 import Matrix from "../Matrix.mjs";
 const $ = Matrix.create;
 
-const MatrixToString  = function(x) {
-	const X = $(x).toString();
-	const list = X.split("\n");
-	let output = "[";
-	for(let i = 0; i < list.length; i++) {
-		const line = list[i].replace(/(^\s+)|(\s+$)/g, "");
-		output += line.replace(/\s+/g, " ").replace(/(\.)?0+ /g, " ").replace(/(\.)?0+$/g, "");
-		if(line.length === 0) {
-			break;
-		}
-		if(i < list.length - 2) {
-			output += ";";
-		}
-	}
-	output += "]";
-	return output;
-};
-
 const testOperator1  = function(operator, number, x1, y, epsilon) {
 	const tolerance = epsilon ? epsilon : 0.1;
 	const cx1 = $(x1);
 	const cy = LinearAlgebra[operator](cx1);
-	const testname = operator + " " + number + " " + operator + "(" + x1 + ") = " + cy;
+	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
+	const testname = operator + " " + number + " " + operator + "(" + x1 + ") = " + cy_str;
 	const out = $(y).equals(cy, tolerance);
 	test(testname, () => { expect(out).toBe(true); });
 };
@@ -36,7 +19,8 @@ const testOperator2  = function(operator, number, x1, x2, y, epsilon) {
 	const cx1 = $(x1);
 	const cx2 = $(x2);
 	const cy = LinearAlgebra[operator](cx1, cx2);
-	const testname = operator + " " + number + " " + operator + "(" + x1 + "," + x2 + ") = " + cy;
+	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
+	const testname = operator + " " + number + " " + operator + "(" + x1 + "," + x2 + ") = " + cy_str;
 	const out = $(y).equals(cy, tolerance);
 	test(testname, () => { expect(out).toBe(true); });
 };
@@ -77,10 +61,10 @@ const testOperator2  = function(operator, number, x1, x2, y, epsilon) {
 		const X = $(x);
 		const LUP = X.lup();
 		const Y = LUP.P.T().mul(LUP.L).mul(LUP.U);
-		const L_str = MatrixToString(LUP.L);
-		const U_str = MatrixToString(LUP.U);
-		const P_str = MatrixToString(LUP.P);
-		const Y_str = MatrixToString(Y);
+		const L_str = LUP.L.toOneLineString();
+		const U_str = LUP.U.toOneLineString();
+		const P_str = LUP.P.toOneLineString();
+		const Y_str = Y.toOneLineString();
 		const name = "lup " + number + " lup(" + x + ")->";
 		test(name + "L=" + L_str, () => { expect(LUP.L.isTriangleLower(epsilon)).toBe(true); });
 		test(name + "U=" + U_str, () => { expect(LUP.U.isTriangleUpper(epsilon)).toBe(true); });
@@ -92,8 +76,36 @@ const testOperator2  = function(operator, number, x1, x2, y, epsilon) {
 	testLUP(3, "[1 4 2;3 5 1;0 0 0;1 0 9]");
 	testLUP(4, "[1 2 3;4 5 6;7 8 9]");
 	testLUP(5, "[1 2;3 4;5 6]");
+	testLUP(6, "[1 1;1 1;1 1]");
+	testLUP(7, "[0 0 0;0 0 0]");
 }
 
+{
+	testOperator2("linsolve", 1, "[2 1 3 4;3 2 5 2; 3 4 1 -1; -1 -3 1 3]", "[2; 12; 4; -1]", "[1; -1; 3; -2]");
+}
+
+{
+	const testQR = function(number, x, epsilon) {
+		const tolerance = epsilon ? epsilon : 0.1;
+		const X = $(x);
+		const QR = X.qr();
+		const Y = QR.Q.mul(QR.R);
+		const Q_str = QR.Q.toOneLineString();
+		const R_str = QR.R.toOneLineString();
+		const Y_str = Y.toOneLineString();
+		const name = "qr " + number + " qr(" + x + ")->";
+		test(name + "Q=" + Q_str, () => { expect(QR.Q.isOrthogonal(epsilon)).toBe(true); });
+		test(name + "R=" + R_str, () => { expect(QR.R.isTriangleUpper(epsilon)).toBe(true); });
+		test(name + "Q*R=" + Y_str, () => { expect(X.equals(Y, tolerance)).toBe(true); });
+	};
+	testQR(1, "[1 2 3;4 5 6;7 8 9]");
+	testQR(2, "[0 0 0;1 2 3;4 5 6]");
+	testQR(3, "[1 2 3;4 5 6;0 0 0]");
+	testQR(4, "[1 2; 3 4; 5 6]");
+	testQR(5, "[1 2 3;4 5 6]");
+	testQR(6, "[1 1;1 1;1 1]");
+	testQR(7, "[0 0 0;0 0 0]");
+}
 
 
 
