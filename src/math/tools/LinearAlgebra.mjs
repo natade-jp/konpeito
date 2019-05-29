@@ -34,6 +34,9 @@ class LinearAlgebraTool {
 		const A = Matrix._toMatrix(mat);
 		const a = A.getNumberMatrixArray();
 		const tolerance = 1.0e-10;
+
+		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
+		// 3重対角化の成分を取得する
 		
 		/**
 		 * ベクトルx1とベクトルx2の内積をとる
@@ -91,9 +94,6 @@ class LinearAlgebraTool {
 		const n = a.length;
 		const d = []; // 対角成分
 		const e = []; // 隣の成分
-
-		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
-		// 3重対角化の成分を取得する
 		{
 			for(let k = 0; k < n - 2; k++) {
 				const v = a[k];
@@ -282,7 +282,7 @@ class LinearAlgebraTool {
 				if(a === b) {
 					return 0;
 				}
-				return (a < b ? -1 : 1);
+				return (a < b ? 1 : -1);
 			};
 			sortdata.sort(compare);
 			const MOVE = Matrix.zeros(len);
@@ -341,7 +341,7 @@ class LinearAlgebraTool {
 			{
 				// 正規化と距離を1にする
 				for(let j = 0; j < len; j++) {
-					R[col][col] = R[col][col].add(a[j].mul(a[j]));
+					R[col][col] = R[col][col].add(a[j].square());
 				}
 				R[col][col] = R[col][col].sqrt();
 				if(R[col][col].isZero(1e-10)) {
@@ -850,10 +850,11 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * 一次方程式を解く
+	 * 連立一次方程式を解く
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
 	 * @returns {Matrix} Ax=B となる x
+	 * @todo 安定化のためQR分解を用いた手法に切り替える。あるいはlup分解を使用した関数に作り替える。
 	 */
 	static linsolve(mat, number) {
 		const A = Matrix._toMatrix(mat);
@@ -1003,6 +1004,7 @@ export default class LinearAlgebra {
 	 * 対称行列の固有値分解
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @returns {{V: Matrix, D: Matrix}} V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列
+	 * @todo 対称行列しか対応できていないので、対称行列ではないものはQR分解を用いた手法に切り替える予定。
 	 */
 	static eig(mat) {
 		const M = new Matrix(mat);
@@ -1039,15 +1041,22 @@ export default class LinearAlgebra {
 				return VD.D.getComplex(row, row).sqrt();
 			}
 		});
+		const s_size = Math.min(M.row_length, M.column_length);
 		const sing = Matrix.createMatrixDoEachCalculation(function(row, col) {
 			if(row === col) {
-				return sigma.matrix_array[row][row].inv();
+				const x = sigma.matrix_array[row][row];
+				if(x.isZero()) {
+					return Complex.ZERO;
+				}
+				else {
+					return x.inv();
+				}
 			}
 			else {
 				return Complex.ZERO;
 			}
-		}, rank);
-		const V_rank = (new Matrix(VD.V))._resize(VD.V.row_length, rank);
+		}, s_size);
+		const V_rank = (new Matrix(VD.V))._resize(VD.V.row_length, s_size);
 		const u = M.mul(V_rank).mul(sing);
 		const QR = LinearAlgebra.qr(u);
 		return {

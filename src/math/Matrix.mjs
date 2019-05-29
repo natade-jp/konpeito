@@ -444,6 +444,7 @@ export default class Matrix {
 			}
 		}
 		if(!MatrixTool.isCorrectMatrixArray(matrix_array)) {
+			console.log(matrix_array);
 			throw "new Matrix IllegalArgumentException";
 		}
 		

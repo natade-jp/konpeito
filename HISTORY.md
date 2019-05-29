@@ -12,6 +12,8 @@
 - LinearAlgebra norm1 列ベクトルの1ノルムの計算が誤っていたのを修正
 - LinearAlgebra rank 正方行列以外の行列で誤る場合があったのを修正
 - LinearAlgebra qr 零行列を入れるとエラーが発生するのを修正
+- LinearAlgebra eig 固有値の順番を降順の予定が昇順になっていたのを修正
+- LinearAlgebra svd 零行列を入れるとエラーが発生するのを修正
 
 ## v0.1.2
 - Jest 導入

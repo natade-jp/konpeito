@@ -107,6 +107,72 @@ const testOperator2  = function(operator, number, x1, x2, y, epsilon) {
 	testQR(7, "[0 0 0;0 0 0]");
 }
 
+{
+	const testTRI = function(number, x, epsilon) {
+		const tolerance = epsilon ? epsilon : 0.1;
+		const X = $(x);
+		const PH = X.tridiagonalize();
+		const Y = PH.P.mul(PH.H).mul(PH.P.T());
+		const P_str = PH.P.toOneLineString();
+		const H_str = PH.H.toOneLineString();
+		const Y_str = Y.toOneLineString();
+		const name = "tridiagonalize " + number + " tridiagonalize(" + x + ")->";
+		test(name + "P=" + P_str, () => { expect(PH.P.isOrthogonal(epsilon)).toBe(true); });
+		test(name + "H=" + H_str, () => { expect(PH.H.isTridiagonal(epsilon)).toBe(true); });
+		test(name + "P*H*P'=" + Y_str, () => { expect(X.equals(Y, tolerance)).toBe(true); });
+	};
+	testTRI(1, "[1 2;2 1]");
+	testTRI(2, "[1.0 0.5 0.3;0.5 1.0 0.6;0.3 0.6 1.0]");
+	testTRI(3, "[1 1 1 1;1 2 2 2;1 2 3 3;1 2 3 4]");
+	testTRI(4, "[0 0 0;0 0 0;0 0 0]");
+}
+
+{
+	const testEIG = function(number, x, epsilon) {
+		const tolerance = epsilon ? epsilon : 0.1;
+		const X = $(x);
+		const VD = X.eig();
+		const Y = VD.V.mul(VD.D).mul(VD.V.T());
+		const V_str = VD.V.toOneLineString();
+		const D_str = VD.D.toOneLineString();
+		const Y_str = Y.toOneLineString();
+		const name = "eig " + number + " eig(" + x + ")->";
+		test(name + "V=" + V_str, () => { expect(VD.V.isOrthogonal(epsilon)).toBe(true); });
+		test(name + "D=" + D_str, () => { expect(VD.D.isDiagonal(epsilon)).toBe(true); });
+		test(name + "V*D*V'=" + Y_str, () => { expect(X.equals(Y, tolerance)).toBe(true); });
+	};
+	testEIG(1, "[1 2;2 1]");
+	testEIG(2, "[1.0 0.5 0.3;0.5 1.0 0.6;0.3 0.6 1.0]");
+	testEIG(3, "[1 1 1 1;1 2 2 2;1 2 3 3;1 2 3 4]");
+	testEIG(4, "[0 0 0;0 0 0;0 0 0]");
+}
+
+{
+	const testSVD = function(number, x, epsilon) {
+		const tolerance = epsilon ? epsilon : 0.1;
+		const X = $(x);
+		const USV = X.svd();
+		const Y = USV.U.mul(USV.S).mul(USV.V.T());
+		const U_str = USV.U.toOneLineString();
+		const S_str = USV.S.toOneLineString();
+		const V_str = USV.V.toOneLineString();
+		const Y_str = Y.toOneLineString();
+		const name = "svd " + number + " svd(" + x + ")->";
+		test(name + "U=" + U_str, () => { expect(USV.U.isOrthogonal(epsilon)).toBe(true); });
+		test(name + "S=" + S_str, () => { expect(USV.S.isDiagonal(epsilon)).toBe(true); });
+		test(name + "V=" + V_str, () => { expect(USV.V.isOrthogonal(epsilon)).toBe(true); });
+		test(name + "U*S*V'=" + Y_str, () => { expect(X.equals(Y, tolerance)).toBe(true); });
+	};
+	testSVD(1, "[2 1 3 4;3 2 5 2; 3 4 1 -1; -1 -3 1 3]");
+	testSVD(2, "[1 2 3;4 5 6;7 8 9]");
+	testSVD(3, "[1 2 3;4 5 6]");
+	testSVD(4, "[1 2;3 4;5 6]");
+	testSVD(5, "[0 0 0;0 0 0]");
+}
+
+
+
+
 
 
 
