@@ -28,11 +28,11 @@
 		"example": "./doc_src/examples/demos"
 	},
 	"scripts": {
-		"dev": "node ./package.dev.js",
-		"build": "node ./package.build.js",
-		"doc": "node ./package.doc.js",
+		"dev": "node ./scripts/package.dev.js",
+		"build": "node ./scripts/package.build.js",
+		"doc": "node ./scripts/package.doc.js",
 		"test": "jest",
-		"test_target": "node ./package.test.js"
+		"test_target": "node ./scripts/package.test.js"
 	},
 	"jest": {
 		"verbose": true,
