@@ -1,4 +1,5 @@
-﻿const fs = require("fs");
+﻿// @ts-nocheck
+const fs = require("fs");
 
 const exec = function(command) {
 	const execSync = require("child_process").execSync;

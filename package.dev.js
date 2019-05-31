@@ -1,4 +1,5 @@
-﻿const copy = function(from, to) {
+﻿// @ts-nocheck
+const copy = function(from, to) {
 	const fs = require("fs");
 	const bin = fs.readFileSync(from);
 	fs.writeFileSync(to, bin);

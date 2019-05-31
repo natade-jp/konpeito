@@ -31,25 +31,24 @@
 		"dev": "node ./package.dev.js",
 		"build": "node ./package.build.js",
 		"doc": "node ./package.doc.js",
-		"test": "jest"
+		"test": "jest",
+		"test_target": "node ./package.test.js"
 	},
 	"jest": {
 		"verbose": true,
+		"rootDir": "./src",
 		"moduleFileExtensions": [
 			"js",
 			"mjs"
 		],
 		"testMatch": [
-			"**/?(*.)LinearAlgebra.test.mjs"
+			"**/__tests__/**/*.?(m)js?(x)",
+			"**/?(*.)(spec|test).?(m)js?(x)"
 		],
 		"transform": {
 			"^.+\\.(js|mjs)$": "babel-jest"
 		}
 	},
-	"testMatch_backup": [
-		"**/__tests__/**/*.?(m)js?(x)",
-		"**/?(*.)(spec|test).?(m)js?(x)"
-	],
 	"devDependencies": {
 		"acorn": "^6.0.0",
 		"babel-jest": "^24.8.0",

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import buble from "rollup-plugin-buble";
 import uglifyJS from "rollup-plugin-uglify";
 import uglifyES from "rollup-plugin-uglify-es";
