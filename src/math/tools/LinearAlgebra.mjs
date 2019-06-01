@@ -583,7 +583,7 @@ export default class LinearAlgebra {
 	 */
 	static norm(mat, p) {
 		const M = Matrix._toMatrix(mat);
-		const p_number = (p === undefined) ? 2 : Matrix._toInteger(p);
+		const p_number = (p === undefined) ? 2 : Matrix._toDouble(p);
 		if(p_number === 1) {
 			// 行列の1ノルム
 			const y = M.matrix_array;
@@ -632,37 +632,48 @@ export default class LinearAlgebra {
 			else if(M.isColumn()) {
 				let sum = 0.0;
 				for(let row = 0; row < M.row_length; row++) {
-					sum = y[row][0].square().real;
+					sum += y[row][0].square().real;
 				}
 				return Math.sqrt(sum);
 			}
 			return M.svd().S.diag().max().scalar.real;
 		}
-		else if((p === Number.POSITIVE_INFINITY) || (p === Number.NEGATIVE_INFINITY)) {
+		else if((p_number === Number.POSITIVE_INFINITY) || (p_number === Number.NEGATIVE_INFINITY)) {
 			const y = M.matrix_array;
-			let compare = p === Number.POSITIVE_INFINITY ? 0 : Number.POSITIVE_INFINITY;
-			// 行を固定して列の和を計算
+			let compare_number = p_number === Number.POSITIVE_INFINITY ? 0 : Number.POSITIVE_INFINITY;
+			const compare_func = p_number === Number.POSITIVE_INFINITY ? Math.max : Math.min;
+			// 行ノルムを計算する
+			if(M.isRow()) {
+				for(let col = 0; col < M.column_length; col++) {
+					compare_number = compare_func(compare_number, y[0][col].norm);
+				}
+				return compare_number;
+			}
+			// 列ノルムを計算する
+			if(M.isColumn()) {
+				for(let row = 0; row < M.row_length; row++) {
+					compare_number = compare_func(compare_number, y[row][0].norm);
+				}
+				return compare_number;
+			}
+			// 行列の場合は、列の和の最大値
+			compare_number = 0;
 			for(let row = 0; row < M.row_length; row++) {
 				let sum = 0.0;
 				for(let col = 0; col < M.column_length; col++) {
 					sum += y[row][col].norm;
 				}
-				if(p === Number.POSITIVE_INFINITY) {
-					compare = Math.max(compare, sum);
-				}
-				else {
-					compare = Math.min(compare, sum);
-				}
+				compare_number = Math.max(compare_number, sum);
 			}
-			return compare;
+			return compare_number;
 		}
 		else if(M.isVector()) {
 			// 一般化ベクトルpノルム
 			let sum = 0.0;
 			for(let i = 0; i < M.length; i++) {
-				sum = Math.pow(M.getComplex(i).norm, p);
+				sum += Math.pow(M.getComplex(i).norm, p_number);
 			}
-			return Math.pow(sum, 1.0 / p);
+			return Math.pow(sum, 1.0 / p_number);
 		}
 		// 未実装
 		throw "norm";

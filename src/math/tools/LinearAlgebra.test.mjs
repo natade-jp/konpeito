@@ -30,12 +30,6 @@ const testOperator2  = function(operator, number, x1, x2, y, epsilon) {
 	testOperator2("inner", 2, "[1 2 3]", "[4 5 6]", "32");
 }
 {
-	testOperator2("norm", 1, "3 + j", "1", "3.1623");
-	testOperator2("norm", 2, "[1 -2 7 3]", "1", "13");
-	testOperator2("norm", 3, "[1; -2; 7; 3]", "1", "13");
-	testOperator2("norm", 4, "[-1 -2 1; 3 1.5 2; -3 4 0.5]", "1", "7.5");
-}
-{
 	testOperator1("rank", 1, "3", "1");
 	testOperator1("rank", 2, "[1 1; 1 0]", "2");
 	testOperator1("rank", 3, "[1 1; 2 2]", "1");
@@ -195,11 +189,41 @@ const testOperator2  = function(operator, number, x1, x2, y, epsilon) {
 	};
 	testPINV(1, "[1 2;3 4;5 6]");
 	testPINV(2, "[1 2 3;4 5 6;7 8 9]");
+	testPINV(3, "[1 2 3 4;5 6 7 8]");
 }
 
+{
+	testOperator1("det", 1, "[6 2;1 4]", "22");
+	testOperator1("det", 2, "[1 2 3;0 -1 5;-2 3 4]", "-45");
+	testOperator1("det", 3, "[3 2 1 0;1 2 3 4;2 1 0 1;2 0 2 1]", "-32");
+}
 
-
-
-
-
-
+{
+	testOperator2("norm", 1, "3 + j", "1", "3.1623");
+	testOperator2("norm", 2, "[1 -2 7 3]", "1", "13");
+	testOperator2("norm", 3, "[1; -2; 7; 3]", "1", "13");
+	testOperator2("norm", 4, "[-1 -2 1; 3 1.5 2; -3 4 0.5]", "1", "7.5");
+}
+{
+	testOperator2("norm", 1, "3", "2", "3");
+	testOperator2("norm", 2, "[1 -2 7 3]", "2", "7.9373");
+	testOperator2("norm", 3, "[1; -2; 7; 3]", "2", "7.9373");
+	testOperator2("norm", 4, "[-1 -2 1; 3 1.5 2; -3 4 0.5]", "2", "5.1347");
+}
+{
+	testOperator2("norm", 1, "3", Number.POSITIVE_INFINITY, "3");
+	testOperator2("norm", 2, "[1 -2 7 3]", Number.POSITIVE_INFINITY, "7");
+	testOperator2("norm", 3, "[1; -2; 7; 3]", Number.POSITIVE_INFINITY, "7");
+	testOperator2("norm", 4, "[-1 -2 1; 3 1.5 2; -3 4 0.5]", Number.POSITIVE_INFINITY, "7.5000");
+}
+{
+	testOperator2("norm", 1, "3", Number.NEGATIVE_INFINITY, "3");
+	testOperator2("norm", 2, "[1 -2 7 3]", Number.NEGATIVE_INFINITY, "1");
+	testOperator2("norm", 3, "[1; -2; 7; 3]", Number.NEGATIVE_INFINITY, "1");
+	testOperator2("norm", 4, "[-1 -2 1; 3 1.5 2; -3 4 0.5]", Number.NEGATIVE_INFINITY, "7.5000");
+}
+{
+	testOperator2("norm", 1, "3", "2.5", "3");
+	testOperator2("norm", 2, "[1 -2 7 3]", "2.5", "7.4578");
+//	testOperator2("norm", 3, "[1; -2; 7; 3]", "2.5", "7.4578");
+}

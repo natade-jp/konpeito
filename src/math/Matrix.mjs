@@ -546,7 +546,7 @@ export default class Matrix {
 		}
 		const x = Matrix._toComplex(number);
 		if(x.isReal()) {
-			return (new Complex(number)).real;
+			return x.real;
 		}
 		else {
 			throw "not support complex numbers.";
@@ -624,6 +624,17 @@ export default class Matrix {
 				return number.toFixed(draw_decimal_position);
 			}
 			const str = number.toExponential(exp_point);
+			if(/inf/i.test(str)) {
+				if(number === Number.POSITIVE_INFINITY) {
+					return "Inf";
+				}
+				else {
+					return "-Inf";
+				}
+			}
+			else if(/nan/i.test(str)) {
+				return "NaN";
+			}
 			const split = str.split("e");
 			let exp_text = split[1];
 			if(exp_text.length === 2) {

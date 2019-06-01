@@ -239,6 +239,17 @@ export default class Complex {
 				numstr = numstr.replace(/\.?0+$/, "");  // 1.00 , 1.10
 				numstr = numstr.replace(/\.?0+e/, "e"); // 1.0e , 1.10e
 			}
+			else if(/inf/i.test(numstr)) {
+				if(x === Number.POSITIVE_INFINITY) {
+					return "Inf";
+				}
+				else {
+					return "-Inf";
+				}
+			}
+			else if(/nan/i.test(numstr)) {
+				return "NaN";
+			}
 			return numstr;
 		};
 		if(!this.isReal()) {
