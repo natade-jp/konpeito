@@ -88,7 +88,7 @@ const testOperator2  = function(operator, number, x1, x2, y, epsilon) {
 		const R_str = QR.R.toOneLineString();
 		const Y_str = Y.toOneLineString();
 		const name = "qr " + number + " qr(" + x + ")->";
-		test(name + "Q=" + Q_str, () => { expect(QR.Q.isOrthogonal(epsilon)).toBe(true); });
+		test(name + "Q=" + Q_str, () => { expect(QR.Q.isUnitary(epsilon)).toBe(true); });
 		test(name + "R=" + R_str, () => { expect(QR.R.isTriangleUpper(epsilon)).toBe(true); });
 		test(name + "Q*R=" + Y_str, () => { expect(X.equals(Y, tolerance)).toBe(true); });
 	};
@@ -111,7 +111,7 @@ const testOperator2  = function(operator, number, x1, x2, y, epsilon) {
 		const H_str = PH.H.toOneLineString();
 		const Y_str = Y.toOneLineString();
 		const name = "tridiagonalize " + number + " tridiagonalize(" + x + ")->";
-		test(name + "P=" + P_str, () => { expect(PH.P.isOrthogonal(epsilon)).toBe(true); });
+		test(name + "P=" + P_str, () => { expect(PH.P.isUnitary(epsilon)).toBe(true); });
 		test(name + "H=" + H_str, () => { expect(PH.H.isTridiagonal(epsilon)).toBe(true); });
 		test(name + "P*H*P'=" + Y_str, () => { expect(X.equals(Y, tolerance)).toBe(true); });
 	};
@@ -131,7 +131,7 @@ const testOperator2  = function(operator, number, x1, x2, y, epsilon) {
 		const D_str = VD.D.toOneLineString();
 		const Y_str = Y.toOneLineString();
 		const name = "eig " + number + " eig(" + x + ")->";
-		test(name + "V=" + V_str, () => { expect(VD.V.isOrthogonal(epsilon)).toBe(true); });
+		test(name + "V=" + V_str, () => { expect(VD.V.isUnitary(epsilon)).toBe(true); });
 		test(name + "D=" + D_str, () => { expect(VD.D.isDiagonal(epsilon)).toBe(true); });
 		test(name + "V*D*V'=" + Y_str, () => { expect(X.equals(Y, tolerance)).toBe(true); });
 	};
@@ -152,9 +152,9 @@ const testOperator2  = function(operator, number, x1, x2, y, epsilon) {
 		const V_str = USV.V.toOneLineString();
 		const Y_str = Y.toOneLineString();
 		const name = "svd " + number + " svd(" + x + ")->";
-		test(name + "U=" + U_str, () => { expect(USV.U.isOrthogonal(epsilon)).toBe(true); });
+		test(name + "U=" + U_str, () => { expect(USV.U.isUnitary(epsilon)).toBe(true); });
 		test(name + "S=" + S_str, () => { expect(USV.S.isDiagonal(epsilon)).toBe(true); });
-		test(name + "V=" + V_str, () => { expect(USV.V.isOrthogonal(epsilon)).toBe(true); });
+		test(name + "V=" + V_str, () => { expect(USV.V.isUnitary(epsilon)).toBe(true); });
 		test(name + "U*S*V'=" + Y_str, () => { expect(X.equals(Y, tolerance)).toBe(true); });
 	};
 	testSVD(1, "[2 1 3 4;3 2 5 2; 3 4 1 -1; -1 -3 1 3]");
@@ -225,5 +225,14 @@ const testOperator2  = function(operator, number, x1, x2, y, epsilon) {
 {
 	testOperator2("norm", 1, "3", "2.5", "3");
 	testOperator2("norm", 2, "[1 -2 7 3]", "2.5", "7.4578");
-//	testOperator2("norm", 3, "[1; -2; 7; 3]", "2.5", "7.4578");
+	testOperator2("norm", 3, "[1; -2; 7; 3]", "2.5", "7.4578");
+}
+{
+	testOperator2("cond", 1, "3", 2, "1");
+	testOperator2("cond", 2, "[1 -2 7 3]", 2, "1");
+	testOperator2("cond", 3, "[1; -2; 7; 3]", 2, "1");
+	testOperator2("cond", 4, "[-1 -2 1; 3 1.5 2; -3 4 0.5]", 2, "2.7830");
+}
+{
+	testOperator1("rcond", 1, "[-1 -2 1; 3 1.5 2; -3 4 0.5]", "0.16533");
 }

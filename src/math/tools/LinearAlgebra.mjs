@@ -689,6 +689,18 @@ export default class LinearAlgebra {
 		const M = Matrix._toMatrix(mat);
 		const p_number = (p === undefined) ? 2 : Matrix._toInteger(p);
 		if(p_number === 2) {
+			// 零行列は Inf
+			if(mat.isZeros()) {
+				return Number.POSITIVE_INFINITY;
+			}
+			// ベクトルは1
+			if(mat.isVector()) {
+				return 1;
+			}
+			// ユニタリは1
+			if(mat.isUnitary()) {
+				return 1;
+			}
 			const s = M.svd().S.diag();
 			return s.max().scalar.real / s.min().scalar.real;
 		}

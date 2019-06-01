@@ -1,7 +1,6 @@
 # History
 
-
-## v0.1.X
+## v0.1.3
 - バッチ用スクリプトのフォルダ構成を整理
 - Matrix 無限大、非数が入っていると正しく表示できない問題を修正
 - Matrix equals スカラー値同士の比較時に誤差を指定できない問題を修正
@@ -17,6 +16,7 @@
 - LinearAlgebra qr 零行列を入れるとエラーが発生するのを修正
 - LinearAlgebra eig 固有値の順番が異常になっていたのを修正
 - LinearAlgebra svd 零行列を入れるとエラーが発生するのを修正
+- LinearAlgebra cond 零行列、及びベクトルを入れると正しくない値がかえるのを修正
 
 ## v0.1.2
 - Jest 導入
