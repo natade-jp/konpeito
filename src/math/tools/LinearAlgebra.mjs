@@ -279,10 +279,10 @@ class LinearAlgebraTool {
 				};
 			}
 			const compare = function(a, b){
-				if(a === b) {
+				if(a.sigma === b.sigma) {
 					return 0;
 				}
-				return (a < b ? 1 : -1);
+				return (a.sigma < b.sigma ? 1 : -1);
 			};
 			sortdata.sort(compare);
 			const MOVE = Matrix.zeros(len);
@@ -1056,7 +1056,7 @@ export default class LinearAlgebra {
 				return Complex.ZERO;
 			}
 		}, s_size);
-		const V_rank = (new Matrix(VD.V))._resize(VD.V.row_length, s_size);
+		const V_rank = VD.V.resize(VD.V.row_length, s_size);
 		const u = M.mul(V_rank).mul(sing);
 		const QR = LinearAlgebra.qr(u);
 		return {

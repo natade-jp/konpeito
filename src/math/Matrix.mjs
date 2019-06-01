@@ -2364,7 +2364,7 @@ export default class Matrix {
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	resize(row_length, column_length) {
-		return this.clone().resize(row_length, column_length);
+		return this.clone()._resize(row_length, column_length);
 	}
 
 	/**

@@ -168,6 +168,33 @@ const testOperator2  = function(operator, number, x1, x2, y, epsilon) {
 	testSVD(3, "[1 2 3;4 5 6]");
 	testSVD(4, "[1 2;3 4;5 6]");
 	testSVD(5, "[0 0 0;0 0 0]");
+	testSVD(6, "[0 0;0 0;0 0]");
+}
+
+{
+	const testINV = function(number, x, epsilon) {
+		const tolerance = epsilon ? epsilon : 0.1;
+		const X = $(x);
+		const invX = X.inv();
+		const Y = invX.mul(X);
+		const Y_str = Y.toOneLineString();
+		const name = "inv " + number + " inv(" + x + ")->";
+		test(name + "X*(X^-1)=" + Y_str, () => { expect(Y.isIdentity(tolerance)).toBe(true); });
+	};
+	testINV(1, "[1 1 -1; -2 0 1; 0 2 1]");
+}
+
+{
+	const testPINV = function(number, x, epsilon) {
+		const tolerance = epsilon ? epsilon : 0.1;
+		const X = $(x);
+		const Y = X.pinv().pinv();
+		const Y_str = Y.toOneLineString();
+		const name = "pinv " + number + " pinv(" + x + ")->";
+		test(name + "pinv(pinv(X)) = " + Y_str, () => { expect(X.equals(Y, tolerance)).toBe(true); });
+	};
+	testPINV(1, "[1 2;3 4;5 6]");
+	testPINV(2, "[1 2 3;4 5 6;7 8 9]");
 }
 
 

@@ -2,6 +2,7 @@
 
 
 ## v0.1.X
+- バッチ用スクリプトのフォルダ構成を整理
 - Matrix equals スカラー値同士の比較時に誤差を指定できない問題を修正
 - Matrix isIdentity 正方行列以外でも正しく動作するように修正
 - Matrix isTridiagonal 正方行列の制限を撤去
@@ -9,10 +10,11 @@
 - Matrix 1行の文字列で出力する toOneLineString を追加
 - Matrix コンストラクタをリファクタリング
 - Matrix 単位行列を判定方法の誤りを修正
+- Matrix resize を実行すると必ずエラーが発生していた問題を修正
 - LinearAlgebra norm1 列ベクトルの1ノルムの計算が誤っていたのを修正
 - LinearAlgebra rank 正方行列以外の行列で誤る場合があったのを修正
 - LinearAlgebra qr 零行列を入れるとエラーが発生するのを修正
-- LinearAlgebra eig 固有値の順番を降順の予定が昇順になっていたのを修正
+- LinearAlgebra eig 固有値の順番が異常になっていたのを修正
 - LinearAlgebra svd 零行列を入れるとエラーが発生するのを修正
 
 ## v0.1.2
