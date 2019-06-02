@@ -1,5 +1,9 @@
 # History
 
+## v0.1.X
+- Travis CIでの自動テスト実行を設定
+- README.md にバッチ追加
+
 ## v0.1.4
 - Matrix create 文字列の非数、無限大の入力に対応
 - Matrix equals ベクトル（スカラ・行列除く）同士の比較方法が誤っていたのを修正

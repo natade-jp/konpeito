@@ -1,6 +1,6 @@
 # konpeito
-
-![ESDoc coverage badge](https://doc.esdoc.org/github.com/natade-jp/konpeito/badge.svg)
+[![Build Status](https://travis-ci.org/natade-jp/konpeito.svg?branch=master)](https://travis-ci.org/natade-jp/konpeito)
+[![ESDoc coverage badge](https://doc.esdoc.org/github.com/natade-jp/konpeito/badge.svg)](https://doc.esdoc.org/github.com/natade-jp/konpeito/)
 ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
 "konpeito" is a library to "compute". :)
