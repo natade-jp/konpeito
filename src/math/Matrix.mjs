@@ -243,14 +243,15 @@ class MatrixTool {
 		if(row_text.trim() === ":") {
 			return ":";
 		}
+		const str = row_text.toLowerCase().replace(/infinity|inf/g, "1e100000");
 		// 左が実数（強制）で右が複素数（任意）タイプ
-		const reg1 = /[+-]? *[0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?( *[+-] *[- ]?([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?[ij])?/;
+		const reg1 = /[+-]? *(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))( *[+-] *[- ]?(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))?[ij])?/;
 		// 左が複素数（強制）で右が実数（任意）タイプ
-		const reg2 = /[+-]? *([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?[ij]( *[+] *[- ]?([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?)?/;
+		const reg2 = /[+-]? *(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))?[ij]( *[+] *[- ]?(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan)))?/;
 		// reg2優先で検索
 		const reg3 = new RegExp("(" + reg2.source + ")|(" + reg1.source + ")", "i");
 		// 問題として 1 - -jが通る
-		return MatrixTool.toArrayFromMatch2String(MatrixTool.match2(row_text, reg3));
+		return MatrixTool.toArrayFromMatch2String(MatrixTool.match2(str, reg3));
 	}
 
 	/**
@@ -601,11 +602,15 @@ export default class Matrix {
 				if(!num.isReal()) {
 					isDrawImag = true;
 				}
-				if(Math.abs(num.real) >= exp_turn_num) {
-					isDrawExp = true;
+				if(Number.isFinite(num.real)) {
+					if(Math.abs(num.real) >= exp_turn_num) {
+						isDrawExp = true;
+					}
 				}
-				if(Math.abs(num.imag) >= exp_turn_num) {
-					isDrawExp = true;
+				if(Number.isFinite(num.imag)) {
+					if(Math.abs(num.imag) >= exp_turn_num) {
+						isDrawExp = true;
+					}
 				}
 				draw_decimal_position = Math.max(draw_decimal_position, num.getDecimalPosition());
 			}
@@ -620,10 +625,7 @@ export default class Matrix {
 		const draw_buff = [];
 		// 数値データを文字列にする関数（eの桁がある場合は中身は3桁にする）
 		const toStrFromFloat = function(number) {
-			if(!isDrawExp) {
-				return number.toFixed(draw_decimal_position);
-			}
-			const str = number.toExponential(exp_point);
+			const str = !isDrawExp ? number.toFixed(draw_decimal_position) : number.toExponential(exp_point);
 			if(/inf/i.test(str)) {
 				if(number === Number.POSITIVE_INFINITY) {
 					return "Inf";
@@ -634,6 +636,9 @@ export default class Matrix {
 			}
 			else if(/nan/i.test(str)) {
 				return "NaN";
+			}
+			else if(!isDrawExp) {
+				return str;
 			}
 			const split = str.split("e");
 			let exp_text = split[1];
@@ -727,7 +732,7 @@ export default class Matrix {
 		if((M1.row_length !== M2.row_length) || (M1.column_length !== M2.column_length)) {
 			return false;
 		}
-		if((M1.row_length === 1) || (M1.column_length ===1)) {
+		if((M1.row_length === 1) && (M1.column_length ===1)) {
 			return M1.scalar.equals(M2.scalar, epsilon);
 		}
 		const x1 = M1.matrix_array;

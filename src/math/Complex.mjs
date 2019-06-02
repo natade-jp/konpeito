@@ -31,7 +31,8 @@ class ComplexTool {
 	 * @returns {{real : number, imag : number}}
 	 */
 	static ToComplexFromString(text) {
-		const str = text.replace(/\s/g, "").toLowerCase();
+		let str = text.replace(/\s/g, "").toLowerCase();
+		str = str.replace(/infinity|inf/g, "1e100000");
 		// 複素数の宣言がない場合
 		if(!(/[ij]/.test(str))) {
 			return {
@@ -45,12 +46,12 @@ class ComplexTool {
 		let im = 0;
 		let buff;
 		// 最後が$なら右側が実数、最後が[+-]なら左側が実数
-		buff = str.match(/[+-]?[0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?($|[+-])/);
+		buff = str.match(/[+-]?(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))($|[+-])/);
 		if(buff) {
 			re = parseFloat(buff[0]);
 		}
 		// 複素数は数値が省略される場合がある
-		buff = str.match(/[+-]?([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)?[ij]/);
+		buff = str.match(/[+-]?(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))?[ij]/);
 		if(buff) {
 			buff = buff[0].substring(0, buff[0].length - 1);
 			// i, +i, -j のように実数部がなく、数値もない場合
@@ -256,7 +257,7 @@ export default class Complex {
 			if(this._re === 0) {
 				return formatG(this._im) + "i";
 			}
-			else if(this._im >= 0) {
+			else if((this._im >= 0) || (Number.isNaN(this._im))) {
 				return formatG(this._re) + " + " + formatG(this._im) + "i";
 			}
 			else {
@@ -349,20 +350,23 @@ export default class Complex {
 	 * @returns {number} 小数点の桁数
 	 */
 	getDecimalPosition() {
-		let point = 0;
-
-		/**
-		 * @type Complex
-		 */
-		let x = this;
-		for(let i = 0; i < 20; i++) {
-			if(x.isComplexInteger()) {
-				break;
+		const ep = Number.EPSILON;
+		const getDecimal = function(x) {
+			if(!Number.isFinite(x)) {
+				return 0;
 			}
-			x = x.mul(Complex.TEN);
-			point++;
-		}
-		return point;
+			let a = x;
+			let point = 0;
+			for(let i = 0; i < 20; i++) {
+				if(Math.abs(a - (a | 0)) <= ep) {
+					break;
+				}
+				a *= 10;
+				point++;
+			}
+			return point;
+		};
+		return Math.max( getDecimal(this.real), getDecimal(this.imag) );
 	}
 
 	/**

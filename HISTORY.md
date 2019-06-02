@@ -1,5 +1,11 @@
 # History
 
+## v0.1.X
+- Matrix create 文字列の非数、無限大の入力に対応
+- Matrix equals ベクトル（スカラ・行列除く）同士の比較方法が誤っていたのを修正
+- Complex create 文字列の非数、無限大の入力に対応
+- Complex getDecimalPosition 非数、無限大に対応
+
 ## v0.1.3
 - バッチ用スクリプトのフォルダ構成を整理
 - Matrix 無限大、非数が入っていると正しく表示できない問題を修正

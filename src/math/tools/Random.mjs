@@ -198,17 +198,25 @@ export default class Random {
 	}
 
 	/**
-	 * 32ビットの乱数
+	 * 16ビットの乱数
 	 * @returns {number}
 	 */
-	nextInt() {
-		if(arguments.length === 1) {
+	nextShort() {
+		return (this.next(16));
+	}
+
+	/**
+	 * 32ビットの乱数
+	 * @param {number} [x] - 指定した値未満の数値を作る
+	 * @returns {number}
+	 */
+	nextInt(x) {
+		if((x !== undefined) && (typeof x === "number")) {
 			let r, y;
-			const a = arguments[0];
 			do {
 				r = RandomTool.unsigned32(this.genrand_int32());
-				y = r % a;
-			} while((r - y + a) > 0x100000000 );
+				y = r % x;
+			} while((r - y + x) > 0x100000000 );
 			return y;
 		}
 		return (this.next(32) & 0xFFFFFFFF);
