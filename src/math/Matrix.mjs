@@ -1187,16 +1187,17 @@ export default class Matrix {
 		if((arguments.length === 0) || (arguments.length > 3)) {
 			throw "IllegalArgumentException";
 		}
-		if((number instanceof Matrix) && (!number.isScalar())) {
-			const x = number.matrix_array;
-			const x_row_length = number.row_length;
-			const x_column_length = number.column_length;
+		const M = Matrix._toMatrix(number);
+		if(!M.isScalar()) {
+			const x = M.matrix_array;
+			const x_row_length = M.row_length;
+			const x_column_length = M.column_length;
 			return Matrix.createMatrixDoEachCalculation(function(row, col) {
 				return x[row % x_row_length][col % x_column_length];
 			}, dimension, column_length);
 		}
 		else {
-			const x = Matrix._toComplex(number);
+			const x = M.scalar;
 			return Matrix.createMatrixDoEachCalculation(function() {
 				return x;
 			}, dimension, column_length);
@@ -1591,6 +1592,11 @@ export default class Matrix {
 				else if(!target.isZero(tolerance)) {
 					return false;
 				}
+			}
+		}
+		for(let i = 0;i < this.row_length; i++) {
+			if(is_row[i] === undefined || is_col[i] === undefined) {
+				return false;
 			}
 		}
 		return true;

@@ -690,15 +690,15 @@ export default class LinearAlgebra {
 		const p_number = (p === undefined) ? 2 : Matrix._toInteger(p);
 		if(p_number === 2) {
 			// 零行列は Inf
-			if(mat.isZeros()) {
+			if(M.isZeros()) {
 				return Number.POSITIVE_INFINITY;
 			}
 			// ベクトルは1
-			if(mat.isVector()) {
+			if(M.isVector()) {
 				return 1;
 			}
 			// ユニタリは1
-			if(mat.isUnitary()) {
+			if(M.isUnitary()) {
 				return 1;
 			}
 			const s = M.svd().S.diag();

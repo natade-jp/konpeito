@@ -3,6 +3,7 @@
 ## v0.1.X
 - Matrix create 文字列の非数、無限大の入力に対応
 - Matrix equals ベクトル（スカラ・行列除く）同士の比較方法が誤っていたのを修正
+- Matrix isPermutation [0 0 1;1 0 0;0 0 0]を置換行列と誤判定する問題を修正
 - Complex create 文字列の非数、無限大の入力に対応
 - Complex getDecimalPosition 非数、無限大に対応
 

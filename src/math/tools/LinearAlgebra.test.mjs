@@ -6,8 +6,7 @@ const $ = Matrix.create;
 
 const testOperator1  = function(operator, number, x1, y, epsilon) {
 	const tolerance = epsilon ? epsilon : 0.1;
-	const cx1 = $(x1);
-	const cy = LinearAlgebra[operator](cx1);
+	const cy = LinearAlgebra[operator](x1);
 	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
 	const testname = operator + " " + number + " " + operator + "(" + x1 + ") = " + cy_str;
 	const out = $(y).equals(cy, tolerance);
@@ -16,9 +15,7 @@ const testOperator1  = function(operator, number, x1, y, epsilon) {
 
 const testOperator2  = function(operator, number, x1, x2, y, epsilon) {
 	const tolerance = epsilon ? epsilon : 0.1;
-	const cx1 = $(x1);
-	const cx2 = $(x2);
-	const cy = LinearAlgebra[operator](cx1, cx2);
+	const cy = LinearAlgebra[operator](x1, x2);
 	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
 	const testname = operator + " " + number + " " + operator + "(" + x1 + "," + x2 + ") = " + cy_str;
 	const out = $(y).equals(cy, tolerance);

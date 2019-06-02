@@ -34,40 +34,41 @@ const $ = Complex.create;
 	test("equals 3", () => { expect($("3+j").equals("3+2j", 2)).toBe(true); });
 }
 
-const testGet  = function(operator, number, x1, y) {
-	const cx1 = $(x1);
-	const cy = cx1[operator];
-	const testname = operator + " " + number + " " + operator + "(" + x1 + ") = " + cy;
-	const out = $(y).equals(cy, 0.001);
+const testGet  = function(operator, number, x, y) {
+	const X = $(x);
+	const Y = X[operator];
+	const testname = operator + " " + number + " (" + x + ")." + operator + "= " + Y;
+	const out = $(Y).equals(y, 0.001);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator1  = function(operator, number, x1, y) {
-	const cx1 = $(x1);
-	const cy = cx1[operator]();
-	const testname = operator + " " + number + " " + operator + "(" + x1 + ") = " + cy;
-	const out = $(y).equals(cy, 0.001);
-	test(testname, () => { expect(out).toBe(true); });
-};
-
-const testOperator2  = function(operator, number, x1, x2, y, epsilon) {
+const testOperator1  = function(operator, number, x, y, epsilon) {
 	const tolerance = epsilon ? epsilon : 0.1;
-	const cx1 = $(x1);
-	const cx2 = $(x2);
-	const cy = cx1[operator](cx2);
-	const testname = operator + " " + number + " " + operator + "(" + x1 + "," + x2 + ") = " + cy;
-	const out = $(y).equals(cy, tolerance);
+	const X = $(x);
+	const Y = X[operator]();
+	const Y_str = Y;
+	const testname = operator + " " + number + " (" + x + ")." + operator + "() = " + Y_str;
+	const out = $(Y).equals(y, tolerance);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator1Bool  = function(operator, number, x1, y) {
-	const cx1 = $(x1);
-	const cy = cx1[operator]();
-	const testname = operator + " " + number + " " + operator + "(" + x1 + ") = " + cy;
-	const out = y === cy;
+const testOperator2  = function(operator, number, x, p, y, epsilon) {
+	const tolerance = epsilon ? epsilon : 0.1;
+	const X = $(x);
+	const Y = X[operator](p);
+	const Y_str = Y;
+	const testname = operator + " " + number + " (" + x + ")." + operator + "(" + p + ") = " + Y_str;
+	const out = $(Y).equals(y, tolerance);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+const testOperator1Bool  = function(operator, number, x, y) {
+	const X = $(x);
+	const Y = X[operator]();
+	const testname = operator + " " + number + " (" + x + ")." + operator + "() = " + Y;
+	const out = y === Y;
+	test(testname, () => { expect(out).toBe(true); });
+};
 
 {
 	testGet("real", 1, "-3-1j", -3);
