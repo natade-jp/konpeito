@@ -322,6 +322,37 @@ const testInitialize3  = function(operator, number, p1, p2, p3, y) {
 	testOperator1Bool("isPermutation", 6, "[0 0 1;1 0 0;0 0 0]", false);
 }
 
+{
+	testOperator2("add", 1, "1", "2", "3");
+	testOperator2("add", 2, "[1 2]", "1", "[2 3]");
+	testOperator2("add", 3, "[1 2]", "[3 4]", "[4 6]");
+	testOperator2("add", 4, "[1;2]", "3", "[4;5]");
+	testOperator2("add", 5, "[1;2]", "[3;4]", "[4;6]");
+	testOperator2("add", 6, "[1 2;3 4]", "[1 2]", "[2 4;4 6]");
+	testOperator2("add", 7, "[1 2;3 4]", "[1;2]", "[2 3;5 6]");
+	testOperator2("add", 8, "[1 2;3 4]", "[1 2;4 8]", "[2 4;7 12]");
+}
+{
+	testOperator2("sub", 1, "1", "2", "-1");
+	testOperator2("sub", 2, "[1 2]", "1", "[0 1]");
+	testOperator2("sub", 3, "[1 2]", "[3 4]", "[-2 -2]");
+	testOperator2("sub", 4, "[1;2]", "3", "[-2;-1]");
+	testOperator2("sub", 5, "[1;2]", "[3;4]", "[-2;-2]");
+	testOperator2("sub", 6, "[1 2;3 4]", "[1 2]", "[0 0;2 2]");
+	testOperator2("sub", 7, "[1 2;3 4]", "[1;2]", "[0 1;1 2]");
+	testOperator2("sub", 8, "[1 2;3 4]", "[1 2;4 8]", "[0 0;-1 -4]");
+}
+{
+	testOperator2("mul", 1, "1", "2", "2");
+	testOperator2("mul", 2, "[1 2]", "3", "[3 6]");
+	testOperator2("mul", 3, "[1 2]", "[3;4]", "[11]");
+	testOperator2("mul", 4, "[1;2]", "3", "[3;6]");
+	testOperator2("mul", 5, "[1;2]", "[3 4]", "[3 4;6 8]");
+	testOperator2("nmul", 6, "[1 2;3 4]", "[1 2]", "[1 4;3 8]");
+	testOperator2("nmul", 7, "[1 2;3 4]", "[1;2]", "[1 2;6 8]");
+	testOperator2("mul", 6, "[1 2;3 4]", "[1 2;4 8]", "[9 18;19 38]");
+}
+
 
 
 

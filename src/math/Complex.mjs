@@ -294,6 +294,11 @@ export default class Complex {
 	equals(number, epsilon) {
 		const x = Complex._toComplex(number);
 		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		// 無限大、非数の値も含めて一度確認
+		if((this._re === x._re) && (this._im === x._im)) {
+			return true;
+		}
+		// 誤差を含んだ値の比較
 		return (Math.abs(this._re - x._re) <  tolerance) && (Math.abs(this._im - x._im) < tolerance);
 	}
 

@@ -742,10 +742,10 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static gammainc(x, a, tail) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const a_ = Complex._toDouble(a);
 		const tail_ = isStr(tail) ? tail : "lower";
-		return new Complex(StatisticsTool.gammainc(x_, a_, tail_));
+		return new Complex(StatisticsTool.gammainc(X, a_, tail_));
 	}
 
 	/**
@@ -756,10 +756,10 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static gampdf(x, k, s) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const k_ = Complex._toDouble(k);
 		const s_ = Complex._toDouble(s);
-		return new Complex(StatisticsTool.gampdf(x_, k_, s_));
+		return new Complex(StatisticsTool.gampdf(X, k_, s_));
 	}
 
 	/**
@@ -770,10 +770,10 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static gamcdf(x, k, s) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const k_ = Complex._toDouble(k);
 		const s_ = Complex._toDouble(s);
-		return new Complex(StatisticsTool.gamcdf(x_, k_, s_));
+		return new Complex(StatisticsTool.gamcdf(X, k_, s_));
 	}
 
 	/**
@@ -797,9 +797,9 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static beta(x, y) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const y_ = Complex._toDouble(y);
-		return new Complex(StatisticsTool.beta(x_, y_));
+		return new Complex(StatisticsTool.beta(X, y_));
 	}
 
 	/**
@@ -811,11 +811,11 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static betainc(x, a, b, tail) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const a_ = Complex._toDouble(a);
 		const b_ = Complex._toDouble(b);
 		const tail_ = isStr(tail) ? tail : "lower";
-		return new Complex(StatisticsTool.betainc(x_, a_, b_, tail_));
+		return new Complex(StatisticsTool.betainc(X, a_, b_, tail_));
 	}
 
 	/**
@@ -826,10 +826,10 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static betapdf(x, a, b) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const a_ = Complex._toDouble(a);
 		const b_ = Complex._toDouble(b);
-		return new Complex(StatisticsTool.betapdf(x_, a_, b_));
+		return new Complex(StatisticsTool.betapdf(X, a_, b_));
 	}
 
 	/**
@@ -840,10 +840,10 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static betacdf(x, a, b) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const a_ = Complex._toDouble(a);
 		const b_ = Complex._toDouble(b);
-		return new Complex(StatisticsTool.betacdf(x_, a_, b_));
+		return new Complex(StatisticsTool.betacdf(X, a_, b_));
 	}
 
 	/**
@@ -887,8 +887,8 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static erf(x) {
-		const x_ = Complex._toDouble(x);
-		return new Complex(StatisticsTool.erf(x_));
+		const X = Complex._toDouble(x);
+		return new Complex(StatisticsTool.erf(X));
 	}
 
 	/**
@@ -897,8 +897,8 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static erfc(x) {
-		const x_ = Complex._toDouble(x);
-		return new Complex(StatisticsTool.erfc(x_));
+		const X = Complex._toDouble(x);
+		return new Complex(StatisticsTool.erfc(X));
 	}
 
 	/**
@@ -909,10 +909,10 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static normpdf(x, u=0.0, s=1.0) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const u_ = Complex._toDouble(u);
 		const s_ = Complex._toDouble(s);
-		return new Complex(StatisticsTool.normpdf(x_, u_, s_));
+		return new Complex(StatisticsTool.normpdf(X, u_, s_));
 	}
 
 	/**
@@ -923,10 +923,10 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static normcdf(x, u=0.0, s=1.0) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const u_ = Complex._toDouble(u);
 		const s_ = Complex._toDouble(s);
-		return new Complex(StatisticsTool.normcdf(x_, u_, s_));
+		return new Complex(StatisticsTool.normcdf(X, u_, s_));
 	}
 
 	/**
@@ -937,10 +937,10 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static norminv(x, u=0.0, s=1.0) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const u_ = Complex._toDouble(u);
 		const s_ = Complex._toDouble(s);
-		return new Complex(StatisticsTool.norminv(x_, u_, s_));
+		return new Complex(StatisticsTool.norminv(X, u_, s_));
 	}
 	
 	/**
@@ -950,9 +950,9 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static tpdf(x, v) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const v_ = Complex._toDouble(v);
-		return new Complex(StatisticsTool.tpdf(x_, v_));
+		return new Complex(StatisticsTool.tpdf(X, v_));
 	}
 
 	/**
@@ -1012,9 +1012,9 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static chi2pdf(x, k) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const k_ = Complex._toDouble(k);
-		return new Complex(StatisticsTool.chi2pdf(x_, k_));
+		return new Complex(StatisticsTool.chi2pdf(X, k_));
 	}
 
 	/**
@@ -1024,9 +1024,9 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static chi2cdf(x, k) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const k_ = Complex._toDouble(k);
-		return new Complex(StatisticsTool.chi2cdf(x_, k_));
+		return new Complex(StatisticsTool.chi2cdf(X, k_));
 	}
 
 	/**
@@ -1049,10 +1049,10 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static fpdf(x, d1, d2) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const d1_ = Complex._toDouble(d1);
 		const d2_ = Complex._toDouble(d2);
-		return new Complex(StatisticsTool.fpdf(x_, d1_, d2_));
+		return new Complex(StatisticsTool.fpdf(X, d1_, d2_));
 	}
 
 	/**
@@ -1063,10 +1063,10 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static fcdf(x, d1, d2) {
-		const x_ = Complex._toDouble(x);
+		const X = Complex._toDouble(x);
 		const d1_ = Complex._toDouble(d1);
 		const d2_ = Complex._toDouble(d2);
-		return new Complex(StatisticsTool.fcdf(x_, d1_, d2_));
+		return new Complex(StatisticsTool.fcdf(X, d1_, d2_));
 	}
 
 	/**
@@ -1092,410 +1092,440 @@ export default class Statistics {
 
 	/**
 	 * 対数ガンマ関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @returns {Matrix}
 	 */
-	static gammaln(mat) {
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+	static gammaln(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.gammaln(num);
 		});
 	}
 
 	/**
 	 * ガンマ関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @returns {Matrix}
 	 */
-	static gamma(mat) {
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+	static gamma(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.gamma(num);
 		});
 	}
 
 	/**
 	 * 不完全ガンマ関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
 	 * @param {string} [tail="lower"] - lower/upper
 	 * @returns {Matrix}
 	 */
-	static gammainc(mat, a, tail) {
+	static gammainc(x, a, tail) {
+		const X = Matrix._toMatrix(x);
 		const a_ = Matrix._toDouble(a);
 		const tail_ = isStr(tail) ? tail : "lower";
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.gammainc(num, a_, tail_);
 		});
 	}
 
 	/**
 	 * ガンマ分布の確率密度関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
 	 * @returns {Matrix}
 	 */
-	static gampdf(mat, k, s) {
+	static gampdf(x, k, s) {
+		const X = Matrix._toMatrix(x);
 		const k_ = Matrix._toDouble(k);
 		const s_ = Matrix._toDouble(s);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.gampdf(num, k_, s_);
 		});
 	}
 
 	/**
 	 * ガンマ分布の確率密度関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
 	 * @returns {Matrix}
 	 */
-	static gamcdf(mat, k, s) {
+	static gamcdf(x, k, s) {
+		const X = Matrix._toMatrix(x);
 		const k_ = Matrix._toDouble(k);
 		const s_ = Matrix._toDouble(s);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.gamcdf(num, k_, s_);
 		});
 	}
 
 	/**
 	 * ガンマ分布の累積分布関数の逆関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
 	 * @returns {Matrix}
 	 */
-	static gaminv(mat, k, s) {
+	static gaminv(x, k, s) {
+		const X = Matrix._toMatrix(x);
 		const k_ = Matrix._toDouble(k);
 		const s_ = Matrix._toDouble(s);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.gaminv(num, k_, s_);
 		});
 	}
 
 	/**
 	 * ベータ関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} y
 	 * @returns {Matrix}
 	 */
-	static beta(mat, y) {
+	static beta(x, y) {
+		const X = Matrix._toMatrix(x);
 		const y_ = Matrix._toDouble(y);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.beta(num, y_);
 		});
 	}
 	
 	/**
 	 * 不完全ベータ関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
 	 * @param {string} [tail="lower"] - lower/upper
 	 * @returns {Matrix}
 	 */
-	static betainc(mat, a, b, tail) {
+	static betainc(x, a, b, tail) {
+		const X = Matrix._toMatrix(x);
 		const a_ = Matrix._toDouble(a);
 		const b_ = Matrix._toDouble(b);
 		const tail_ = isStr(tail) ? tail : "lower";
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.betainc(num, a_, b_, tail_);
 		});
 	}
 
 	/**
 	 * ベータ分布の確率密度関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
 	 * @returns {Matrix}
 	 */
-	static betacdf(mat, a, b) {
+	static betacdf(x, a, b) {
+		const X = Matrix._toMatrix(x);
 		const a_ = Matrix._toDouble(a);
 		const b_ = Matrix._toDouble(b);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.betacdf(num, a_, b_);
 		});
 	}
 
 	/**
 	 * ベータ分布の累積分布関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
 	 * @returns {Matrix}
 	 */
-	static betapdf(mat, a, b) {
+	static betapdf(x, a, b) {
+		const X = Matrix._toMatrix(x);
 		const a_ = Matrix._toDouble(a);
 		const b_ = Matrix._toDouble(b);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.betapdf(num, a_, b_);
 		});
 	}
 
 	/**
 	 * ベータ分布の累積分布関数の逆関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
 	 * @returns {Matrix}
 	 */
-	static betainv(mat, a, b) {
+	static betainv(x, a, b) {
+		const X = Matrix._toMatrix(x);
 		const a_ = Matrix._toDouble(a);
 		const b_ = Matrix._toDouble(b);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.betainv(num, a_, b_);
 		});
 	}
 
 	/**
 	 * x! 階乗関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @returns {Matrix}
 	 */
-	static factorial(mat) {
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+	static factorial(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.factorial(num);
 		});
 	}
 	
 	/**
 	 * nCk 二項係数またはすべての組合わせ
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k
 	 * @returns {Matrix}
 	 */
-	static nchoosek(mat, k) {
+	static nchoosek(x, k) {
+		const X = Matrix._toMatrix(x);
 		const k_ = Matrix._toDouble(k);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.nchoosek(num, k_);
 		});
 	}
 	
 	/**
 	 * 誤差関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @returns {Matrix}
 	 */
-	static erf(mat) {
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+	static erf(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.erf(num);
 		});
 	}
 
 	/**
 	 * 相補誤差関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @returns {Matrix}
 	 */
-	static erfc(mat) {
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+	static erfc(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.erfc(num);
 		});
 	}
 	
 	/**
 	 * 正規分布の確率密度関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
 	 * @returns {Matrix}
 	 */
-	static normpdf(mat, u=0.0, s=1.0) {
+	static normpdf(x, u=0.0, s=1.0) {
+		const X = Matrix._toMatrix(x);
 		const u_ = Complex._toDouble(u);
 		const s_ = Complex._toDouble(s);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.normpdf(num, u_, s_);
 		});
 	}
 
 	/**
 	 * 正規分布の累積分布関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
 	 * @returns {Matrix}
 	 */
-	static normcdf(mat, u=0.0, s=1.0) {
+	static normcdf(x, u=0.0, s=1.0) {
+		const X = Matrix._toMatrix(x);
 		const u_ = Complex._toDouble(u);
 		const s_ = Complex._toDouble(s);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.normcdf(num, u_, s_);
 		});
 	}
 
 	/**
 	 * 正規分布の累積分布関数の逆関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
 	 * @returns {Matrix}
 	 */
-	static norminv(mat, u=0.0, s=1.0) {
+	static norminv(x, u=0.0, s=1.0) {
+		const X = Matrix._toMatrix(x);
 		const u_ = Complex._toDouble(u);
 		const s_ = Complex._toDouble(s);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.norminv(num, u_, s_);
 		});
 	}
 
 	/**
 	 * t分布の確率密度関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
 	 * @returns {Matrix}
 	 */
-	static tpdf(mat, v) {
+	static tpdf(x, v) {
+		const X = Matrix._toMatrix(x);
 		const v_ = Matrix._toDouble(v);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.tpdf(num, v_);
 		});
 	}
 
 	/**
 	 * t分布の累積分布関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
 	 * @returns {Matrix}
 	 */
-	static tcdf(mat, v) {
+	static tcdf(x, v) {
+		const X = Matrix._toMatrix(x);
 		const v_ = Matrix._toDouble(v);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.tcdf(num, v_);
 		});
 	}
 
 	/**
 	 * t分布の累積分布関数の逆関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
 	 * @returns {Matrix}
 	 */
-	static tinv(mat, v) {
+	static tinv(x, v) {
+		const X = Matrix._toMatrix(x);
 		const v_ = Matrix._toDouble(v);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.tinv(num, v_);
 		});
 	}
 
 	/**
 	 * 尾部が指定可能なt分布の累積分布関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - 尾部(1...片側、2...両側)
 	 * @returns {Matrix}
 	 */
-	static tdist(mat, v, tails) {
+	static tdist(x, v, tails) {
+		const X = Matrix._toMatrix(x);
 		const v_ = Matrix._toDouble(v);
 		const tails_ = Matrix._toDouble(tails);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.tdist(num, v_, tails_);
 		});
 	}
 
 	/**
 	 * 両側検定時のt分布の累積分布関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
 	 * @returns {Matrix}
 	 */
-	static tinv2(mat, v) {
+	static tinv2(x, v) {
+		const X = Matrix._toMatrix(x);
 		const v_ = Matrix._toDouble(v);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.tinv2(num, v_);
 		});
 	}
 
 	/**
 	 * カイ二乗分布の確率密度関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
 	 * @returns {Matrix}
 	 */
-	static chi2pdf(mat, k) {
+	static chi2pdf(x, k) {
+		const X = Matrix._toMatrix(x);
 		const k_ = Matrix._toDouble(k);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.chi2pdf(num, k_);
 		});
 	}
 
 	/**
 	 * カイ二乗分布の累積分布関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
 	 * @returns {Matrix}
 	 */
-	static chi2cdf(mat, k) {
+	static chi2cdf(x, k) {
+		const X = Matrix._toMatrix(x);
 		const k_ = Matrix._toDouble(k);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.chi2cdf(num, k_);
 		});
 	}
 	
 	/**
 	 * カイ二乗分布の累積分布関数の逆関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
 	 * @returns {Matrix}
 	 */
-	static chi2inv(mat, k) {
+	static chi2inv(x, k) {
+		const X = Matrix._toMatrix(x);
 		const k_ = Matrix._toDouble(k);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.chi2inv(num, k_);
 		});
 	}
 
 	/**
 	 * F分布の確率密度関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
 	 * @returns {Matrix}
 	 */
-	static fpdf(mat, d1, d2) {
+	static fpdf(x, d1, d2) {
+		const X = Matrix._toMatrix(x);
 		const d1_ = Matrix._toDouble(d1);
 		const d2_ = Matrix._toDouble(d2);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.fpdf(num, d1_, d2_);
 		});
 	}
 
 	/**
 	 * F分布の累積分布関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
 	 * @returns {Matrix}
 	 */
-	static fcdf(mat, d1, d2) {
+	static fcdf(x, d1, d2) {
+		const X = Matrix._toMatrix(x);
 		const d1_ = Matrix._toDouble(d1);
 		const d2_ = Matrix._toDouble(d2);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.fcdf(num, d1_, d2_);
 		});
 	}
 
 	/**
 	 * F分布の累積分布関数の逆関数
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
 	 * @returns {Matrix}
 	 */
-	static finv(mat, d1, d2) {
+	static finv(x, d1, d2) {
+		const X = Matrix._toMatrix(x);
 		const d1_ = Matrix._toDouble(d1);
 		const d2_ = Matrix._toDouble(d2);
-		return mat.cloneMatrixDoEachCalculation(function(num) {
+		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.finv(num, d1_, d2_);
 		});
 	}
 	
 	/**
 	 * 合計
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
-	static sum(mat, type) {
+	static sum(x, type) {
+		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
 		const main = function(data) {
 			// カハンの加算アルゴリズム
@@ -1509,16 +1539,17 @@ export default class Statistics {
 			}
 			return [sum];
 		};
-		return mat.eachVector(main, dim);
+		return X.eachVector(main, dim);
 	}
 
 	/**
 	 * 相加平均
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
-	static mean(mat, type) {
+	static mean(x, type) {
+		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
 		const main = function(data) {
 			// カハンの加算アルゴリズム
@@ -1532,16 +1563,17 @@ export default class Statistics {
 			}
 			return [sum.div(data.length)];
 		};
-		return mat.eachVector(main, dim);
+		return X.eachVector(main, dim);
 	}
 
 	/**
 	 * 配列の積
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
-	static prod(mat, type) {
+	static prod(x, type) {
+		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
 		const main = function(data) {
 			let x = Complex.ONE;
@@ -1550,16 +1582,17 @@ export default class Statistics {
 			}
 			return [x];
 		};
-		return mat.eachVector(main, dim);
+		return X.eachVector(main, dim);
 	}
 
 	/**
 	 * 相乗平均／幾何平均
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
-	static geomean(mat, type) {
+	static geomean(x, type) {
+		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
 		const main = function(data) {
 			let x = Complex.ONE;
@@ -1568,43 +1601,45 @@ export default class Statistics {
 			}
 			return [x.pow(Complex.create(data.length).inv())];
 		};
-		return mat.eachVector(main, dim);
+		return X.eachVector(main, dim);
 	}
 	
 	/**
 	 * 中央値
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
-	static median(mat, type) {
+	static median(x, type) {
+		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
 		const compare = function(a, b){
 			return a.compareTo(b);
 		};
 		const main = function(data) {
 			data.sort(compare);
-			let x;
+			let y;
 			if((data.length % 2) === 1) {
-				x = data[Math.floor(data.length / 2)];
+				y = data[Math.floor(data.length / 2)];
 			}
 			else {
 				const x1 = data[Math.floor(data.length / 2) - 1];
 				const x2 = data[Math.floor(data.length / 2)];
-				x = x1.add(x2).div(Complex.TWO);
+				y = x1.add(x2).div(Complex.TWO);
 			}
-			return [x];
+			return [y];
 		};
-		return mat.eachVector(main, dim);
+		return X.eachVector(main, dim);
 	}
 
 	/**
 	 * 最頻値
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
-	static mode(mat, type) {
+	static mode(x, type) {
+		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
 		const compare = function(a, b){
 			return a.compareTo(b);
@@ -1635,17 +1670,18 @@ export default class Statistics {
 			}
 			return [max_complex];
 		};
-		return mat.eachVector(main, dim);
+		return X.eachVector(main, dim);
 	}
 
 	/**
 	 * 中心積率
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
 	 * @returns {Matrix} n次のモーメント、2で分散の定義と同等。
 	 */
-	static moment(mat, type) {
-		const M = Statistics.mean(mat);
+	static moment(x, type) {
+		const X = Matrix._toMatrix(x);
+		const M = Statistics.mean(X);
 		// 補正値 0(不偏分散), 1(標本分散)。規定値は、標本分散とする
 		const cor = !(type && type.correction) ? 1: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
@@ -1676,17 +1712,18 @@ export default class Statistics {
 				return [x.div(data.length - 1 + cor)];
 			}
 		};
-		return mat.eachVector(main, dim);
+		return X.eachVector(main, dim);
 	}
 
 	/**
 	 * 分散
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
-	static var(mat, type) {
-		const M = Statistics.mean(mat);
+	static var(x, type) {
+		const X = Matrix._toMatrix(x);
+		const M = Statistics.mean(X);
 		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
 		const cor = !(type && type.correction) ? 0: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
@@ -1712,20 +1749,21 @@ export default class Statistics {
 				return [Complex.create(x / (data.length - 1 + cor))];
 			}
 		};
-		return mat.eachVector(main, dim);
+		return X.eachVector(main, dim);
 	}
 
 	/**
 	 * 標準偏差
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
-	static std(mat, type) {
+	static std(x, type) {
+		const X = Matrix._toMatrix(x);
 		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
 		const cor = !(type && type.correction) ? 0: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
-		const M = Statistics.var(mat, { correction : cor, dimension : dim });
+		const M = Statistics.var(X, { correction : cor, dimension : dim });
 		M._each(function(num) {
 			return num.sqrt();
 		});
@@ -1734,56 +1772,59 @@ export default class Statistics {
 
 	/**
 	 * 平均偏差
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
-	static mad(mat, type) {
-		return mat.sub(mat.mean(type)).abs().mean(type);
+	static mad(x, type) {
+		const X = Matrix._toMatrix(x);
+		return X.sub(X.mean(type)).abs().mean(type);
 	}
 
 	/**
 	 * 歪度
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
-	static skewness(mat, type) {
+	static skewness(x, type) {
+		const X = Matrix._toMatrix(x);
 		// 補正値 0(不偏), 1(標本)。規定値は、標本とする
 		const cor = !(type && type.correction) ? 1: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
-		const order = Statistics.moment(mat, { correction : cor, dimension : dim, nth_order : 3  });
-		const std = Statistics.std(mat, { correction : cor, dimension : dim });
+		const order = Statistics.moment(X, { correction : cor, dimension : dim, nth_order : 3  });
+		const std = Statistics.std(X, { correction : cor, dimension : dim });
 		return order.ndiv(std.npow(3));
 	}
 
 	/**
 	 * 共分散行列
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
-	static cov(mat, type) {
+	static cov(x, type) {
+		const X = Matrix._toMatrix(x);
 		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
 		const cor = !(type && type.correction) ? 0: Matrix._toDouble(type.correction);
-		if(mat.isVector()) {
-			return Statistics.var(mat, type);
+		if(X.isVector()) {
+			return Statistics.var(X, type);
 		}
-		const correction = mat.row_length === 1 ? 1 : cor;
-		const x = mat.matrix_array;
-		const mean = Statistics.mean(mat).matrix_array[0];
+		const correction = X.row_length === 1 ? 1 : cor;
+		const arr = X.matrix_array;
+		const mean = Statistics.mean(X).matrix_array[0];
 		// 上三角行列、対角行列
-		const y = new Array(mat.column_length);
-		for(let a = 0; a < mat.column_length; a++) {
+		const y = new Array(X.column_length);
+		for(let a = 0; a < X.column_length; a++) {
 			const a_mean = mean[a];
-			y[a] = new Array(mat.column_length);
-			for(let b = a; b < mat.column_length; b++) {
+			y[a] = new Array(X.column_length);
+			for(let b = a; b < X.column_length; b++) {
 				const b_mean = mean[b];
 				let sum = Complex.ZERO;
-				for(let row = 0; row < mat.row_length; row++) {
-					sum = sum.add((x[row][a].sub(a_mean)).dot(x[row][b].sub(b_mean)));
+				for(let row = 0; row < X.row_length; row++) {
+					sum = sum.add((arr[row][a].sub(a_mean)).dot(arr[row][b].sub(b_mean)));
 				}
-				y[a][b] = sum.div(mat.row_length - 1 + correction);
+				y[a][b] = sum.div(X.row_length - 1 + correction);
 			}
 		}
 		// 下三角行列を作る
@@ -1798,33 +1839,36 @@ export default class Statistics {
 	/**
 	 * 標本の標準化
 	 * 平均値0、標準偏差1に変更する
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
-	static normalize(mat, type) {
-		const mean_zero = mat.sub(Statistics.mean(mat, type));
+	static normalize(x, type) {
+		const X = Matrix._toMatrix(x);
+		const mean_zero = X.sub(Statistics.mean(X, type));
 		const std_one = mean_zero.ndiv(Statistics.std(mean_zero, type));
 		return std_one;
 	}
 
 	/**
 	 * 相関行列
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
-	static corrcoef(mat, type) {
-		return Statistics.cov(Statistics.normalize(mat, type), type);
+	static corrcoef(x, type) {
+		const X = Matrix._toMatrix(x);
+		return Statistics.cov(Statistics.normalize(X, type), type);
 	}
 
 	/**
 	 * ソート
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), order : ?string}} [type]
 	 * @returns {Matrix}
 	 */
-	static sort(mat, type) {
+	static sort(x, type) {
+		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
 		const order = !(type && type.order) ? "ascend" : type.order;
 		let compare;
@@ -1842,7 +1886,7 @@ export default class Statistics {
 			data.sort(compare);
 			return data;
 		};
-		return mat.eachVector(main, dim);
+		return X.eachVector(main, dim);
 	}
 
 
