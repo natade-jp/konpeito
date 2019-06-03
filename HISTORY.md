@@ -3,6 +3,9 @@
 ## v0.1.X
 - Travis CIでの自動テスト実行を設定
 - README.md にバッチ追加
+- Matrix eachVectorRow 関数が正しく機能していなかった問題を修正
+- Matrix eachVectorBoth 入力と出力の行列のサイズが等しくない場合にエラーが発生する問題を修正
+- Matrix にあった max と min を Statistics へ移動。引数で方向を設定できるように変更
 
 ## v0.1.4
 - Matrix create 文字列の非数、無限大の入力に対応

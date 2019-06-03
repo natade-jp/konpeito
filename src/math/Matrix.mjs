@@ -889,33 +889,35 @@ export default class Matrix {
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	eachVectorBoth(array_function) {
-		const y = new Matrix(0);
+		const y1 = new Matrix(0);
 		// 行ごとに処理を行う
-		y._resize(this.row_length, 1);
+		y1._resize(this.row_length, 1);
 		for(let row = 0; row < this.row_length; row++) {
-			const row_array = new Array(this.row_length);
+			const row_array = new Array(this.column_length);
 			for(let col = 0; col < this.column_length; col++) {
 				row_array[col] = this.matrix_array[row][col];
 			}
 			const row_output = array_function(row_array);
-			y._resize(y.row_length, Math.max(y.column_length, row_output.length));
+			y1._resize(y1.row_length, Math.max(y1.column_length, row_output.length));
 			for(let col = 0; col < row_output.length; col++) {
-				y.matrix_array[row][col] = row_output[col];
+				y1.matrix_array[row][col] = row_output[col];
 			}
 		}
+		const y2 = new Matrix(0);
 		// 列ごとに処理を行う
-		for(let col = 0; col < y.column_length; col++) {
-			const col_array = new Array(y.row_length);
-			for(let row = 0; row < y.row_length; row++) {
-				col_array[row] = y.matrix_array[row][col];
+		y2._resize(1, y1.column_length);
+		for(let col = 0; col < y1.column_length; col++) {
+			const col_array = new Array(y1.row_length);
+			for(let row = 0; row < y1.row_length; row++) {
+				col_array[row] = y1.matrix_array[row][col];
 			}
 			const col_output = array_function(col_array);
-			y._resize(Math.max(y.row_length, col_output.length), y.column_length);
+			y2._resize(Math.max(y2.row_length, col_output.length), y2.column_length);
 			for(let row = 0; row < col_output.length; row++) {
-				y.matrix_array[row][col] = col_output[row];
+				y2.matrix_array[row][col] = col_output[row];
 			}
 		}
-		return y;
+		return y2;
 	}
 
 	/**
@@ -928,7 +930,7 @@ export default class Matrix {
 		// 行ごとに処理を行う
 		y._resize(this.row_length, 1);
 		for(let row = 0; row < this.row_length; row++) {
-			const row_array = new Array(this.row_length);
+			const row_array = new Array(this.column_length);
 			for(let col = 0; col < this.column_length; col++) {
 				row_array[col] = this.matrix_array[row][col];
 			}
@@ -1633,42 +1635,6 @@ export default class Matrix {
 		return Matrix.createMatrixDoEachCalculation(function(row, col) {
 			return x1[row % M1.row_length][col % M1.column_length].compareTo(x2[row % M2.row_length][col % M2.column_length]);
 		}, y_row_length, y_column_length);
-	}
-
-	/**
-	 * 最大値
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
-	 * @returns {Matrix} max([A, B])
-	 */
-	max(epsilon) {
-		const main = function(data) {
-			let x = data[0];
-			for(let i = 1; i < data.length; i++) {
-				if(x.compareTo(data[i], epsilon) < 0) {
-					x = data[i];
-				}
-			}
-			return [x];
-		};
-		return this.eachVectorAuto(main);
-	}
-	
-	/**
-	 * 最小値
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
-	 * @returns {Matrix} min([A, B])
-	 */
-	min(epsilon) {
-		const main = function(data) {
-			let x = data[0];
-			for(let i = 1; i < data.length; i++) {
-				if(x.compareTo(data[i], epsilon) > 0) {
-					x = data[i];
-				}
-			}
-			return [x];
-		};
-		return this.eachVectorAuto(main);
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
@@ -2967,6 +2933,24 @@ export default class Matrix {
 	 */
 	finv(d1, d2) {
 		return Statistics.finv(this, d1, d2);
+	}
+	
+	/**
+	 * 最大値
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} max([A, B])
+	 */
+	max(type) {
+		return Statistics.max(this, type);
+	}
+	
+	/**
+	 * 最小値
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} min([A, B])
+	 */
+	min(type) {
+		return Statistics.min(this, type);
 	}
 	
 	/**

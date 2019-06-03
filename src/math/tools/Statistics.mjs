@@ -1519,6 +1519,48 @@ export default class Statistics {
 	}
 	
 	/**
+	 * 最大値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} max([A, B])
+	 */
+	static max(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const main = function(data) {
+			let x = data[0];
+			for(let i = 1; i < data.length; i++) {
+				if(x.compareTo(data[i]) < 0) {
+					x = data[i];
+				}
+			}
+			return [x];
+		};
+		return X.eachVector(main, dim);
+	}
+	
+	/**
+	 * 最小値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} min([A, B])
+	 */
+	static min(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const main = function(data) {
+			let x = data[0];
+			for(let i = 1; i < data.length; i++) {
+				if(x.compareTo(data[i]) > 0) {
+					x = data[i];
+				}
+			}
+			return [x];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
 	 * 合計
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
