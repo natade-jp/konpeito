@@ -202,7 +202,7 @@ export default class Complex {
 	 * @private
 	 */
 	static _toInteger(number) {
-		throw Complex._toDouble(number) | 0;
+		return Complex._toDouble(number) | 0;
 	}
 
 	/**

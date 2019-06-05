@@ -224,6 +224,9 @@ class StatisticsTool {
 				break;
 			}
 			y = y2;
+			if(y < 0.0) {
+				y = eps;
+			}
 		}
 		return y;
 	}
@@ -326,6 +329,15 @@ class StatisticsTool {
 	}
 	
 	/**
+	 * isInteger(x) xが整数かどうか
+	 * @param {number} x
+	 * @returns {boolean}
+	 */
+	static isInteger(x) {
+		return (x - (x | 0) !== 0.0);
+	}
+	
+	/**
 	 * betapdf(x, a, b) ベータ分布の確率密度関数
 	 * @param {number} x
 	 * @param {number} a
@@ -333,7 +345,15 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static betapdf(x, a, b) {
-		//	return(Math.exp((a - 1) * Math.log(x) + (b - 1) * Math.log(1 - x)) / StatisticsTool.beta(a,  b));
+		// powの計算結果が複素数になる場合は計算を行わない
+		if	(
+			((x < 0) && (StatisticsTool.isInteger(b - 1))) ||
+			((1 - x < 0) && (StatisticsTool.isInteger(b - 1)))
+		) {
+			return 0.0;
+		}
+		// 以下の式でも求められるが betapdf(0, 1, 1)で、Log(0)の計算が発生しNaNを返してしまう。実際は1を返すべき。
+		//return(Math.exp((a - 1) * Math.log(x) + (b - 1) * Math.log(1 - x)) / StatisticsTool.beta(a,  b));
 		return (Math.pow(x, a - 1) * Math.pow(1 - x, b - 1) / StatisticsTool.beta(a,  b));
 	}
 
@@ -358,6 +378,9 @@ class StatisticsTool {
 	static betainv(p, a, b) {
 		if((p < 0.0) || (p > 1.0)) {
 			return Number.NaN;
+		}
+		else if((p == 0.0) && (a > 0.0) && (b > 0.0)) {
+			return 0.0;
 		}
 		else if((p == 1.0) && (a > 0.0) && (b > 0.0)) {
 			return 1.0;
@@ -387,6 +410,12 @@ class StatisticsTool {
 				break;
 			}
 			y = y2;
+			if(y > 1.0) {
+				y = 1.0 - eps;
+			}
+			else if(y < 0.0) {
+				y = eps;
+			}
 		}
 		return y;
 	}
@@ -563,7 +592,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * einv2(p, v) 両側検定時のt分布の累積分布関数
+	 * tinv2(p, v) 両側検定時のt分布の累積分布関数
 	 * @param {number} p - 確率
 	 * @param {number} v - 自由度
 	 * @returns {number}
@@ -579,8 +608,11 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static chi2pdf(x, k) {
-		if(x <= 0.0) {
+		if(x < 0.0) {
 			return 0;
+		}
+		else if(x === 0.0) {
+			return 0.5;
 		}
 		let y = Math.pow(x, k / 2.0 - 1.0) * Math.exp( - x / 2.0 );
 		y /= Math.pow(2, k / 2.0) * StatisticsTool.gamma( k / 2.0);
@@ -615,6 +647,12 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static fpdf(x, d1, d2) {
+		if((d1 < 0) || (d2 < 0)) {
+			return Number.NaN;
+		}
+		else if(x <= 0) {
+			return 0.0;
+		}
 		let y = 1.0;
 		y *= Math.pow( (d1 * x) / (d1 * x + d2) , d1 / 2.0);
 		y *= Math.pow( 1.0 - ((d1 * x) / (d1 * x + d2)), d2 / 2.0);
@@ -645,6 +683,8 @@ class StatisticsTool {
 	}
 
 }
+
+Math.StatisticsTool = StatisticsTool;
 
 /*
 //test

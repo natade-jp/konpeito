@@ -6,6 +6,13 @@
 - Matrix eachVectorRow 関数が正しく機能していなかった問題を修正
 - Matrix eachVectorBoth 入力と出力の行列のサイズが等しくない場合にエラーが発生する問題を修正
 - Matrix にあった max と min を Statistics へ移動。引数で方向を設定できるように変更
+- Complex _toInteger 戻り値を return ではなく throw にしていた不具合を修正
+- Statistics gaminv 引数によって正しく計算できない場合がある問題を修正
+- Statistics betainv 自由度によって正しく計算できない場合がある問題を修正
+- Statistics betainv p=0のときに、0を返さずNaNを返していた問題を修正
+- Statistics betapdf NaNをかえす場合は0を返すように修正
+- Statistics chi2pdf x=0のときに、0.5を返さず0.0を返していた問題を修正
+- Statistics fpdf x=0のときに、0を返さずNaNを返していた問題を修正
 
 ## v0.1.4
 - Matrix create 文字列の非数、無限大の入力に対応
