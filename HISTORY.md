@@ -1,6 +1,6 @@
 # History
 
-## v0.1.X
+## v0.1.5
 - Travis CIでの自動テスト実行を設定
 - README.md にバッチ追加
 - Matrix eachVectorRow 関数が正しく機能していなかった問題を修正
