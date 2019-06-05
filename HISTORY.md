@@ -1,5 +1,8 @@
 # History
 
+## v0.1.X
+- Statistics テストコード用の実装が混じっていたのを削除(Math.StatisticsTool = StatisticsTool)
+
 ## v0.1.5
 - Travis CIでの自動テスト実行を設定
 - README.md にバッチ追加

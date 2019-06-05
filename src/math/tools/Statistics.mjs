@@ -684,8 +684,6 @@ class StatisticsTool {
 
 }
 
-Math.StatisticsTool = StatisticsTool;
-
 /*
 //test
 
