@@ -1,6 +1,6 @@
 # History
 
-## v0.1.X
+## v0.1.6
 - Statistics テストコード用の実装が混じっていたのを削除(Math.StatisticsTool = StatisticsTool)
 - Statistics mad 中央絶対偏差を計算できるように修正
 - Statistics skewness 補正のパラメータが無効だったのを修正

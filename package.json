@@ -1,6 +1,6 @@
 {
 	"name": "konpeito",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"description": "The collection of javascirpt library such as numerical calculation.",
 	"main": "./build/konpeito.umd.js",
 	"module": "./build/konpeito.module.mjs",
