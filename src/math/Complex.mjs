@@ -733,20 +733,26 @@ export default class Complex {
 	 * @returns {Complex} pow(A, B)
 	 */
 	pow(number) {
-		const x = new Complex(number);
-		if((this.isReal()) && (x.isReal()) && (this.isNotNegative())) {
-			x._re = Math.pow(this._re, x._re);
-			return x;
-		}
-		else if(x.isReal()) {
-			const r = Math.pow(this.norm, x._re);
-			const s = this.arg * x._re;
-			x._re = r * Math.cos(s);
-			x._im = r * Math.sin(s);
-			return x;
+		const A = this;
+		const B = new Complex(number);
+		// -2 ^ 0.5 ... 複素数
+		// -2 ^ 1   ... 実数
+		//  2 ^ 0.5 ... 実数
+		if(B.isReal()) {
+			if(A.isReal() && (A.isNotNegative() || B.isInteger())) {
+				B._re = Math.pow(A._re, B._re);
+				return B;
+			}
+			else {
+				const r = Math.pow(A.norm, B._re);
+				const s = A.arg * B._re;
+				B._re = r * Math.cos(s);
+				B._im = r * Math.sin(s);
+				return B;
+			}
 		}
 		else {
-			return x.mul(this.log()).exp();
+			return B.mul(A.log()).exp();
 		}
 	}
 

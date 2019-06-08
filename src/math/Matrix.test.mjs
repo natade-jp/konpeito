@@ -549,23 +549,5 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 	testOperator2("concatBottom", "[1 2;3 4]", "[5 6;7 8]", "[1 2;3 4;5 6;7 8]");
 }
 
-{
-	test_count = 0;
-	testOperator1("max", "4", "4");
-	testOperator1("max", "[1 2 3]", "[3]");
-	testOperator1("max", "[1;2;3]", "[3]");
-	testOperator1("max", "[1 0 0;0 2 0;0 0 3]", "[1 2 3]");
-}
-
-{
-	test_count = 0;
-	testOperator1("min", "4", "4");
-	testOperator1("min", "[1 2 3]", "[1]");
-	testOperator1("min", "[1;2;3]", "[1]");
-	testOperator1("min", "[1 0 0;0 2 0;0 0 3]", "[0 0 0]");
-}
-
-
-
 
 

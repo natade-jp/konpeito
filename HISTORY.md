@@ -2,6 +2,10 @@
 
 ## v0.1.X
 - Statistics テストコード用の実装が混じっていたのを削除(Math.StatisticsTool = StatisticsTool)
+- Statistics mad 中央絶対偏差を計算できるように修正
+- Statistics skewness 補正のパラメータが無効だったのを修正
+- Statistics sort 降順ソートが上手く動作していなかったのを修正
+- Complex pow 結果が実数にも関わらず複素数として計算する場合があるのを修正
 
 ## v0.1.5
 - Travis CIでの自動テスト実行を設定

@@ -684,62 +684,6 @@ class StatisticsTool {
 
 }
 
-/*
-//test
-
-// -0.12078223763524543
-console.log(StatisticsTool.gammaln(1.5));
-// 0.8862269254527578
-console.log(StatisticsTool.gamma(1.5));
-// 0.034141584125708564
-console.log(StatisticsTool.gammainc(0.7, 3));
-// 0.02265533286799037
-console.log(StatisticsTool.gampdf(10, 7, 3));
-// 0.054134113294645195
-console.log(StatisticsTool.gamcdf(10, 7, 3));
-// 24.333147920078357
-console.log(StatisticsTool.gaminv(0.7, 7, 3));
-
-// 1.570796326794883
-console.log(StatisticsTool.beta(0.5, 1.5));
-// 0.9824904585216
-console.log(StatisticsTool.betainc(0.6, 5, 10));
-// 0.3400783626239994
-console.log(StatisticsTool.betapdf(0.6, 5, 10));
-// 0.9824904585216
-console.log(StatisticsTool.betacdf(0.6, 5, 10));
-// 0.3573724870841673
-console.log(StatisticsTool.betainv(0.6, 5, 10));
-
-// 0.3286267594591274
-console.log(StatisticsTool.erf(0.3));
-
-//0.2896915527614828
-console.log(StatisticsTool.normpdf(0.8));
-// 0.7881446014166031
-console.log(StatisticsTool.normcdf(0.8));
-// 0.8416212335729142
-console.log(StatisticsTool.norminv(0.8));
-// 0.2713125051165461
-console.log(StatisticsTool.tpdf(0.8, 7));
-// 0.7749986502650896
-console.log(StatisticsTool.tcdf(0.8, 7));
-// 0.8960296443137515
-console.log(StatisticsTool.tinv(0.8, 7));
-// 0.05534766632274616
-console.log(StatisticsTool.chi2pdf(2, 7));
-// 0.04015963126989858
-console.log(StatisStatisticsTooltics.chi2cdf(2, 7));
-// 8.383430828608336
-console.log(StatisticsTool.chi2inv(0.7, 7));
-// 0.17142030504271438
-console.log(StatisticsTool.fpdf(0.7, 0.6, 0.8));
-// 0.5005807484277708
-console.log(StatisticsTool.fcdf(0.7, 0.6, 0.8));
-// 3.8856206694367055
-console.log(StatisticsTool.finv(0.7, 0.6, 0.8));
-*/
-
 /**
  * 文字列か判定
  * @param text 
@@ -1763,7 +1707,7 @@ export default class Statistics {
 		const X = Matrix._toMatrix(x);
 		const M = Statistics.mean(X);
 		// 補正値 0(不偏分散), 1(標本分散)。規定値は、標本分散とする
-		const cor = !(type && type.correction) ? 1: Matrix._toDouble(type.correction);
+		const cor = !(type && typeof type.correction === "number") ? 1: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
 		const order = Matrix._toComplex(type.nth_order);
 		let col = 0;
@@ -1805,29 +1749,22 @@ export default class Statistics {
 		const X = Matrix._toMatrix(x);
 		const M = Statistics.mean(X);
 		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
-		const cor = !(type && type.correction) ? 0: Matrix._toDouble(type.correction);
+		const cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
 		let col = 0;
 		const main = function(data) {
-			let mean;
-			if(M.isScalar()) {
-				mean = M.scalar;
+			if(data.length === 1) {
+				// 要素が1であれば、分散は0固定
+				return [Complex.ZERO];
 			}
-			else {
-				mean = M.getComplex(col++);
-			}
+			const mean = M.getComplex(col++);
 			// 分散は、ノルムの2乗で計算するため必ず実数になる。
 			let x = 0;
 			for(let i = 0; i < data.length; i++) {
 				const a = data[i].sub(mean).norm;
 				x += a * a;
 			}
-			if(data.length === 1) {
-				return [Complex.create(x / data.length)];
-			}
-			else {
-				return [Complex.create(x / (data.length - 1 + cor))];
-			}
+			return [Complex.create(x / (data.length - 1 + cor))];
 		};
 		return X.eachVector(main, dim);
 	}
@@ -1841,7 +1778,7 @@ export default class Statistics {
 	static std(x, type) {
 		const X = Matrix._toMatrix(x);
 		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
-		const cor = !(type && type.correction) ? 0: Matrix._toDouble(type.correction);
+		const cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
 		const M = Statistics.var(X, { correction : cor, dimension : dim });
 		M._each(function(num) {
@@ -1851,14 +1788,24 @@ export default class Statistics {
 	}
 
 	/**
-	 * 平均偏差
+	 * 絶対偏差
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	static mad(x, type) {
 		const X = Matrix._toMatrix(x);
-		return X.sub(X.mean(type)).abs().mean(type);
+		const alg = !(type && type.algorithm) ? "mean" : type.algorithm;
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		if((alg === "mean") || (alg === 0)) {
+			return Statistics.mean(X.sub(Statistics.mean(X, {dimension : dim} )).abs(), {dimension : dim});
+		}
+		else if((alg === "median") || (alg === 1)) {
+			return Statistics.median(X.sub(Statistics.median(X, {dimension : dim} )).abs(), {dimension : dim});
+		}
+		else {
+			throw "mad unsupported argument " + alg;
+		}
 	}
 
 	/**
@@ -1870,11 +1817,16 @@ export default class Statistics {
 	static skewness(x, type) {
 		const X = Matrix._toMatrix(x);
 		// 補正値 0(不偏), 1(標本)。規定値は、標本とする
-		const cor = !(type && type.correction) ? 1: Matrix._toDouble(type.correction);
+		const cor = !(type && typeof type.correction === "number") ? 1: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
 		const order = Statistics.moment(X, { correction : cor, dimension : dim, nth_order : 3  });
 		const std = Statistics.std(X, { correction : cor, dimension : dim });
-		return order.ndiv(std.npow(3));
+		if(cor === 1) {
+			return order.ndiv(std.npow(3));
+		}
+		else {
+			return order.ndiv(std.npow(3)).nmul(2);
+		}
 	}
 
 	/**
@@ -1886,7 +1838,7 @@ export default class Statistics {
 	static cov(x, type) {
 		const X = Matrix._toMatrix(x);
 		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
-		const cor = !(type && type.correction) ? 0: Matrix._toDouble(type.correction);
+		const cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
 		if(X.isVector()) {
 			return Statistics.var(X, type);
 		}
@@ -1959,7 +1911,7 @@ export default class Statistics {
 		}
 		else {
 			compare = function(a, b){
-				return a.compareTo(b.negate());
+				return b.compareTo(a);
 			};
 		}
 		const main = function(data) {
