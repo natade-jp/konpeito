@@ -12,6 +12,6 @@ const saveTextFile = function(filename, text) {
 
 // サンプルファイルは直接関連付ける
 saveTextFile(
-	"./doc_src/examples/libs/konpeito.mjs",
+	"./html/examples/libs/konpeito.mjs",
 	"import konpeito from \"../../../src/konpeito.mjs\";export default konpeito;"
 );

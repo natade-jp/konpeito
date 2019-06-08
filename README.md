@@ -25,11 +25,11 @@ Has the following features.
 - Matrix initialization can be described as Scilab, Octave, MATLAB.
 
 Please check the console and main.mjs.
-- [BigDecimal](https://natade-jp.github.io/konpeito/doc_src/examples/demos/BigDecimal/)
-- [BigInteger](https://natade-jp.github.io/konpeito/doc_src/examples/demos/BigInteger/)
-- [Matrix](https://natade-jp.github.io/konpeito/doc_src/examples/demos/Matrix/)
-- [Random](https://natade-jp.github.io/konpeito/doc_src/examples/demos/Random/)
-- [UMD](https://natade-jp.github.io/konpeito/doc_src/examples/demos/UMD/)
+- [BigDecimal](https://natade-jp.github.io/konpeito/html/examples/demos/BigDecimal/)
+- [BigInteger](https://natade-jp.github.io/konpeito/html/examples/demos/BigInteger/)
+- [Matrix](https://natade-jp.github.io/konpeito/html/examples/demos/Matrix/)
+- [Random](https://natade-jp.github.io/konpeito/html/examples/demos/Random/)
+- [UMD](https://natade-jp.github.io/konpeito/html/examples/demos/UMD/)
 
 ## Install for node.js
 
