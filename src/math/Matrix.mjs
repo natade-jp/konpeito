@@ -3095,58 +3095,63 @@ export default class Matrix {
 
 	/**
 	 * 離散フーリエ変換
-	 * @returns {Matrix}
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} fft(x)
 	 */
-	fft() {
-		return Signal.fft(this);
+	fft(type) {
+		return Signal.fft(this, type);
 	}
 
 	/**
 	 * 逆離散フーリエ変換
-	 * @returns {Matrix}
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} ifft(x)
 	 */
-	ifft() {
-		return Signal.ifft(this);
+	ifft(type) {
+		return Signal.ifft(this, type);
 	}
 
 	/**
 	 * パワースペクトル密度
-	 * @returns {Matrix}
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} abs(fft(x)).^2
 	 */
-	powerfft() {
-		return Signal.powerfft(this);
+	powerfft(type) {
+		return Signal.powerfft(this, type);
 	}
 
 	/**
 	 * 離散コサイン変換
-	 * @returns {Matrix}
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} dct(x)
 	 */
-	dct() {
-		return Signal.dct(this);
+	dct(type) {
+		return Signal.dct(this, type);
 	}
 
 	/**
 	 * 逆離散コサイン変換
-	 * @returns {Matrix}
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} idct(x)
 	 */
-	idct() {
-		return Signal.idct(this);
+	idct(type) {
+		return Signal.idct(this, type);
 	}
 
 	/**
 	 * 2次元の離散フーリエ変換
 	 * @returns {Matrix}
 	 */
-	fft2() {
-		return Signal.fft2(this);
+	fft2(type) {
+		return Signal.fft2(this, type);
 	}
 
 	/**
 	 * 2次元の逆離散フーリエ変換
 	 * @returns {Matrix}
 	 */
-	ifft2() {
-		return Signal.ifft2(this);
+	ifft2(type) {
+		return Signal.ifft2(this, type);
 	}
 
 	/**

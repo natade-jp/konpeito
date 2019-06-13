@@ -464,6 +464,54 @@ class StatisticsTool {
 	}
 
 	/**
+		 erfinv(p) 誤差逆関数
+		 @param_ {number} p
+		 @returns_ {number}
+		
+		static erfinv(p) {
+			if((p < 0.0) || (p > 1.0)) {
+				return Number.NaN;
+			}
+			else if(p == 0.0) {
+				return Number.NEGATIVE_INFINITY;
+			}
+			else if(p == 1.0) {
+				return Number.POSITIVE_INFINITY;
+			}
+			let y = 0;
+			const c = [];
+			for(let k = 0; k < 100; k++) {
+				let ck = 0;
+				if(0 === k) {
+					ck = 1;
+				}
+				else {
+					for(let m = 0; m < k; m++) {
+						ck += c[m] * c[k - 1 - m] / ((m + 1) * (2 * m + 1));
+					}
+				}
+				c.push(ck);
+				console.log(y + "\t" + ck / (2 * k + 1) + "\t" + Math.pow(Math.sqrt(Math.PI) * 0.5 * p, 2 * k + 1))
+				y += ck / (2 * k + 1) * Math.pow(Math.sqrt(Math.PI) * 0.5 * p, 2 * k + 1);
+			}
+			return y;
+			// 0.5 * Math.sqrt(Math.PI) = 0.8862269254527579
+			// Math.PI / 12 = 0.2617993877991494
+			// 7 * Math.pow(Math.PI, 2) / 480 = 0.14393173084921979
+			// 127 * Math.pow(Math.PI, 3) / 40320 = 0.09766361950392055
+			// 4369 * Math.pow(Math.PI, 4) / 5806080 = 0.07329907936638086
+			// 34807 * Math.pow(Math.PI, 5) / 182476800 = 0.05837250087858452
+			return (p
+				+ 0.2617993877991494 * Math.pow(p, 3)
+				+ 0.14393173084921979 * Math.pow(p, 5)
+				+ 0.09766361950392055 * Math.pow(p, 7)
+				+ 0.07329907936638086 * Math.pow(p, 9)
+				+ 0.05837250087858452 * Math.pow(p, 11)
+			) * 0.8862269254527579;
+		}
+	*/
+
+	/**
 	 * normpdf(x, u, s) 正規分布の確率密度関数
 	 * @param {number} x
 	 * @param {number} [u=0.0] - 平均値

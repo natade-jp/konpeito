@@ -735,7 +735,29 @@ class SignalTool {
 				g_real[i] =   x2_real[x2_real.length - i - 1];
 				g_imag[i] = - x2_imag[x2_real.length - i - 1];
 			}
-			return SignalTool.conv(x1_real, x1_imag, g_real, g_imag);
+			const y = SignalTool.conv(x1_real, x1_imag, g_real, g_imag);
+			if(x1_real.length === x2_real.length) {
+				return y;
+			}
+			const delta = Math.abs(x1_real.length - x2_real.length);
+			const zeros = new Array(delta);
+			for(let i = 0; i < delta; i++) {
+				zeros[i] = 0;
+			}
+			if(x1_real.length > x2_real.length) {
+				// データの最初に「0」を加える
+				return {
+					real : zeros.concat(y.real),
+					imag : zeros.concat(y.imag)
+				};
+			}
+			else {
+				// データの最後に「0」を加える
+				return {
+					real : y.real.concat(zeros),
+					imag : y.imag.concat(zeros)
+				};
+			}
 		}
 	}
 
@@ -869,84 +891,6 @@ console.log(SignalTool.conv(A,B,C,B));
 console.log(SignalTool.xcorr(A,B,C,B));
 */
 
-/*
-const X1 = [1, 2, 30, 100];
-console.log(SignalTool.dct(X1));
-console.log(SignalTool.idct(SignalTool.dct(X1)));
-
-console.log(SignalTool.mdct(X1));
-console.log(SignalTool.imdct(SignalTool.mdct(X1)));
-*/
-/*
-const X1 = [1, 2, 30, 100];
-console.log(SignalTool.dct(X1));
-console.log(SignalTool.idct(SignalTool.dct(X1)));
-
-{
-	const X1 = [1];
-	const Y1 = [j];
-	const A = SignalTool.fft(X1, Y1);
-	const B = SignalTool.ifft(A.real, A.imag);
-
-	console.log(X1);
-	console.log(Y1);
-	console.log(A.real);
-	console.log(A.imag);
-	console.log(B.real);
-	console.log(B.imag);
-}
-*/
-
-/*
-{
-	const X1 = [1,-2,3,-4];
-	const Y1 = [-100,20,-300,40];
-	const A = SignalTool.fft(X1, Y1);
-	const B = SignalTool.ifft(A.real, A.imag);
-
-	console.log(X1);
-	console.log(Y1);
-	console.log(A.real);
-	console.log(A.imag);
-	console.log(B.real);
-	console.log(B.imag);
-}
-*/
-
-/*
-{
-	const fft = new FFT(8);
-	const X1 = [1,-2,3,-4,32,16,64,-40];
-	const Y1 = [-100,20,-300,40,1,2,1,2];
-	const A = fft.fft(X1, Y1);
-	const B = fft.ifft(A.real, A.imag);
-
-	console.log(X1);
-	console.log(Y1);
-	console.log(A.real);
-	console.log(A.imag);
-	console.log(B.real);
-	console.log(B.imag);
-}
-*/
-
-/*
-{
-	const fft = new FFT(5);
-	const X1 = [1,-2,-3,-32,40];
-	const Y1 = [-100,20,-300,-40,40];
-	const A = fft.fft(X1, Y1);
-	const B = fft.ifft(A.real, A.imag);
-
-	console.log(X1);
-	console.log(Y1);
-	console.log(A.real);
-	console.log(A.imag);
-	console.log(B.real);
-	console.log(B.imag);
-}
-*/
-
 
 /**
  * Matrix用の信号処理用の計算クラス
@@ -955,12 +899,13 @@ export default class Signal {
 	
 	/**
 	 * 離散フーリエ変換
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {boolean} [is_2_dimensions=false]
-	 * @returns {Matrix}
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} fft(x)
 	 */
-	static fft(mat, is_2_dimensions = false) {
-		const M = Matrix._toMatrix(mat);
+	static fft(x, type) {
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const M = Matrix._toMatrix(x);
 		const main = function(data) {
 			const real = new Array(data.length);
 			const imag = new Array(data.length);
@@ -975,17 +920,18 @@ export default class Signal {
 			}
 			return y;
 		};
-		return is_2_dimensions ? M.eachVectorBoth(main) : M.eachVectorAuto(main);
+		return M.eachVector(main, dim);
 	}
 
 	/**
 	 * 逆離散フーリエ変換
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {boolean} [is_2_dimensions=false]
-	 * @returns {Matrix}
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} ifft(X)
 	 */
-	static ifft(mat, is_2_dimensions = false) {
-		const M = Matrix._toMatrix(mat);
+	static ifft(X, type) {
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const M = Matrix._toMatrix(X);
 		const main = function(data) {
 			const real = new Array(data.length);
 			const imag = new Array(data.length);
@@ -1000,16 +946,18 @@ export default class Signal {
 			}
 			return y;
 		};
-		return is_2_dimensions ? M.eachVectorBoth(main) : M.eachVectorAuto(main);
+		return M.eachVector(main, dim);
 	}
 
 	/**
 	 * パワースペクトル密度
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @returns {Matrix}
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} abs(fft(x)).^2
 	 */
-	static powerfft(mat) {
-		const M = Matrix._toMatrix(mat);
+	static powerfft(x, type) {
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const M = Matrix._toMatrix(x);
 		const main = function(data) {
 			const real = new Array(data.length);
 			const imag = new Array(data.length);
@@ -1024,17 +972,18 @@ export default class Signal {
 			}
 			return y;
 		};
-		return M.eachVectorAuto(main);
+		return M.eachVector(main, dim);
 	}
 
 	/**
 	 * 離散コサイン変換
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {boolean} [is_2_dimensions=false]
-	 * @returns {Matrix}
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} dct(x)
 	 */
-	static dct(mat, is_2_dimensions = false) {
-		const M = Matrix._toMatrix(mat);
+	static dct(x, type) {
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const M = Matrix._toMatrix(x);
 		if(M.isComplex()) {
 			throw "dct don't support complex numbers.";
 		}
@@ -1050,17 +999,18 @@ export default class Signal {
 			}
 			return y;
 		};
-		return is_2_dimensions ? M.eachVectorBoth(main) : M.eachVectorAuto(main);
+		return M.eachVector(main, dim);
 	}
 
 	/**
 	 * 逆離散コサイン変換
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {boolean} [is_2_dimensions=false]
-	 * @returns {Matrix}
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} idct(x)
 	 */
-	static idct(mat, is_2_dimensions = false) {
-		const M = Matrix._toMatrix(mat);
+	static idct(X, type) {
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const M = Matrix._toMatrix(X);
 		if(M.isComplex()) {
 			throw "idct don't support complex numbers.";
 		}
@@ -1076,58 +1026,54 @@ export default class Signal {
 			}
 			return y;
 		};
-		return is_2_dimensions ? M.eachVectorBoth(main) : M.eachVectorAuto(main);
+		return M.eachVector(main, dim);
 	}
 
 	/**
 	 * 2次元の離散フーリエ変換
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @returns {Matrix}
 	 */
-	static fft2(mat) {
-		const M = Matrix._toMatrix(mat);
-		return M.fft(true);
+	static fft2(x) {
+		return Signal.fft(x, {dimension : "both"});
 	}
 
 	/**
 	 * 2次元の逆離散フーリエ変換
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
 	 * @returns {Matrix}
 	 */
-	static ifft2(mat) {
-		const M = Matrix._toMatrix(mat);
-		return M.ifft(true);
+	static ifft2(X) {
+		return Signal.ifft(X, {dimension : "both"});
 	}
 
 	/**
 	 * 2次元のDCT変換
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @returns {Matrix}
 	 */
-	static dct2(mat) {
-		const M = Matrix._toMatrix(mat);
-		return M.dct2(true);
+	static dct2(x) {
+		return Signal.dct(x, {dimension : "both"});
 	}
 
 	/**
 	 * 2次元の逆DCT変換
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
 	 * @returns {Matrix}
 	 */
-	static idct2(mat) {
-		const M = Matrix._toMatrix(mat);
-		return M.idct(true);
+	static idct2(X) {
+		return Signal.idct(X, {dimension : "both"});
 	}
 
 	/**
 	 * 畳み込み積分、多項式乗算
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x2
 	 * @returns {Matrix}
 	 */
-	static conv(mat, number) {
-		const M1 = Matrix._toMatrix(mat);
-		const M2 = Matrix._toMatrix(number);
+	static conv(x1, x2) {
+		const M1 = Matrix._toMatrix(x1);
+		const M2 = Matrix._toMatrix(x2);
 		if(M1.isMatrix() || M2.isMatrix()) {
 			throw "conv don't support matrix numbers.";
 		}
@@ -1170,16 +1116,16 @@ export default class Signal {
 
 	/**
 	 * 自己相関関数、相互相関関数
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [number] - 省略した場合は自己相関関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [x2] - 省略した場合は自己相関関数
 	 * @returns {Matrix}
 	 */
-	static xcorr(mat, number) {
-		const M1 = Matrix._toMatrix(mat);
-		if(!number) {
+	static xcorr(x1, x2) {
+		const M1 = Matrix._toMatrix(x1);
+		if(!x2) {
 			return M1.xcorr(M1);
 		}
-		const M2 = Matrix._toMatrix(number);
+		const M2 = Matrix._toMatrix(x2);
 		if(M1.isMatrix() || M2.isMatrix()) {
 			throw "conv don't support matrix numbers.";
 		}

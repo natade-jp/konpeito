@@ -37,10 +37,6 @@ const testOperator3  = function(operator, x1, x2, x3, y, epsilon) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-test("Statistics test", () => {
-	expect(true).toBe(true);
-});
-
 {
 	test_count = 0;
 	testOperator1("gammaln", 0, Infinity);
