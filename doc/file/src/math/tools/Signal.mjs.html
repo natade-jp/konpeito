@@ -813,27 +813,26 @@ class SignalTool {
 	 * &#x7A93;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
 	 * @param {string} name - &#x7A93;&#x95A2;&#x6570;&#x306E;&#x540D;&#x524D;
 	 * @param {number} size - &#x9577;&#x3055;
-	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
 	 * @returns {Array&lt;number&gt;}
 	 */
-	static window(name, size, isPeriodic) {
-
+	static window(name, size, periodic) {
+		const periodic_ = periodic !== undefined ? periodic : &quot;symmetric&quot;;
 		const name_ = name.toLocaleLowerCase();
 		const size_ = size;
 		const window = new Array(size_);
 		
-		const sinc = function(x) {
-			return x === 0.0 ? 1.0 : Math.sin(x) / x;
-		};
-
-		const normalzie = function(y) {
-			if(isPeriodic) {
-				return (y / size_ * (Math.PI * 2.0));
-			}
-			else {
+		let normalzie;
+		if((periodic_ === &quot;symmetric&quot;) || (periodic_ === 0)) {
+			normalzie = function(y) {
 				return (y / (size_ - 1) * (Math.PI * 2.0));
-			}
-		};
+			};
+		}
+		else if((periodic_ === &quot;periodic&quot;) || (periodic_ !== 0)) {
+			normalzie = function(y) {
+				return (y / size_ * (Math.PI * 2.0));
+			};
+		}
 
 		const setBlackmanWindow = function( alpha0, alpha1, alpha2, alpha3, alpha4) {
 			for(let i = 0; i &lt; size_; i++) {
@@ -881,13 +880,6 @@ class SignalTool {
 				setBlackmanWindow(1.0, 1.93, 1.29, 0.388, 0.032);
 				break;
 
-			// lanczos Lanczos window
-			case &quot;lanczos&quot;:
-				for(let i = 0; i &lt; size_; i++) {
-					window[i]  = sinc(normalzie(i) - 1.0);
-				}
-				break;
-
 			// Half cycle sine window(MDCT&#x7A93;)
 			case &quot;sin&quot;:
 				for(let i = 0; i &lt; size_; i++) {
@@ -910,21 +902,21 @@ class SignalTool {
 	/**
 	 * &#x30CF;&#x30CB;&#x30F3;&#x30B0;&#x7A93;
 	 * @param {number} size - &#x9577;&#x3055;
-	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
 	 * @returns {Array&lt;number&gt;}
 	 */
-	static hann(size, isPeriodic) {
-		return SignalTool.window(&quot;hann&quot;, size, isPeriodic);
+	static hann(size, periodic) {
+		return SignalTool.window(&quot;hann&quot;, size, periodic);
 	}
 	
 	/**
 	 * &#x30CF;&#x30DF;&#x30F3;&#x30B0;&#x7A93;&#x3092;&#x4F5C;&#x6210;
 	 * @param {number} size - &#x9577;&#x3055;
-	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
 	 * @returns {Array&lt;number&gt;}
 	 */
-	static hamming(size, isPeriodic) {
-		return SignalTool.window(&quot;hamming&quot;, size, isPeriodic);
+	static hamming(size, periodic) {
+		return SignalTool.window(&quot;hamming&quot;, size, periodic);
 	}
 	
 }
@@ -1207,33 +1199,33 @@ export default class Signal {
 	 * &#x7A93;&#x95A2;&#x6570;
 	 * @param {string} name - &#x7A93;&#x95A2;&#x6570;&#x306E;&#x540D;&#x524D;
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - &#x9577;&#x3055;
-	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
 	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
 	 */
-	static window(name, size, isPeriodic) {
+	static window(name, size, periodic) {
 		const size_ = Matrix._toInteger(size);
-		const y = SignalTool.window(name, size_, isPeriodic);
+		const y = SignalTool.window(name, size_, periodic);
 		return (new Matrix(y)).transpose();
 	}
 
 	/**
 	 * &#x30CF;&#x30CB;&#x30F3;&#x30B0;&#x7A93;
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - &#x9577;&#x3055;
-	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
 	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
 	 */
-	static hann(size, isPeriodic) {
-		return SignalTool.window(&quot;hann&quot;, size, isPeriodic);
+	static hann(size, periodic) {
+		return Signal.window(&quot;hann&quot;, size, periodic);
 	}
 	
 	/**
 	 * &#x30CF;&#x30DF;&#x30F3;&#x30B0;&#x7A93;
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - &#x9577;&#x3055;
-	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
 	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
 	 */
-	static hamming(size, isPeriodic) {
-		return SignalTool.window(&quot;hamming&quot;, size, isPeriodic);
+	static hamming(size, periodic) {
+		return Signal.window(&quot;hamming&quot;, size, periodic);
 	}
 	
 	

@@ -1,17 +1,7 @@
-﻿// @ts-nocheck
-const copy = function(from, to) {
-	const fs = require("fs");
-	const bin = fs.readFileSync(from);
-	fs.writeFileSync(to, bin);
-};
-
-const saveTextFile = function(filename, text) {
-	const fs = require("fs");
-	fs.writeFileSync(filename, text, "utf-8");
-};
+﻿const File = require("./File.js");
 
 // サンプルファイルは直接関連付ける
-saveTextFile(
+File.saveTextFile(
 	"./html/examples/libs/konpeito.mjs",
 	"import konpeito from \"../../../src/konpeito.mjs\";export default konpeito;"
 );

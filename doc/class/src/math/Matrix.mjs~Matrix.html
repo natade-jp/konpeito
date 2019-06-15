@@ -191,7 +191,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html#static-method-hamming">hamming</a></span></span><span class="code" data-ice="signature">(size: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, isPeriodic: <span>boolean</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html#static-method-hamming">hamming</a></span></span><span class="code" data-ice="signature">(size: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, periodic: <span>string</span> | <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -220,7 +220,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html#static-method-hann">hann</a></span></span><span class="code" data-ice="signature">(size: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, isPeriodic: <span>boolean</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html#static-method-hann">hann</a></span></span><span class="code" data-ice="signature">(size: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, periodic: <span>string</span> | <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -394,7 +394,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html#static-method-window">window</a></span></span><span class="code" data-ice="signature">(name: <span>string</span>, size: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, isPeriodic: <span>boolean</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html#static-method-window">window</a></span></span><span class="code" data-ice="signature">(name: <span>string</span>, size: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, periodic: <span>string</span> | <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -6236,7 +6236,7 @@
     
     
     
-    <span class="code" data-ice="name">hamming</span><span class="code" data-ice="signature">(size: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, isPeriodic: <span>boolean</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">hamming</span><span class="code" data-ice="signature">(size: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, periodic: <span>string</span> | <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -6268,10 +6268,11 @@
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">isPeriodic</td>
-      <td data-ice="type" class="code"><span>boolean</span></td>
-      <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric</p>
+      <td data-ice="name" class="code" data-depth="0">periodic</td>
+      <td data-ice="type" class="code"><span>string</span> | <span>number</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: &quot;symmetric&quot;</li></ul></td>
+      <td data-ice="description"><p>0/&quot;symmetric&quot;, 1/&quot;periodic&quot;</p>
 </td>
     </tr>
 </tbody>
@@ -6317,7 +6318,7 @@
     
     
     
-    <span class="code" data-ice="name">hann</span><span class="code" data-ice="signature">(size: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, isPeriodic: <span>boolean</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">hann</span><span class="code" data-ice="signature">(size: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, periodic: <span>string</span> | <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -6349,10 +6350,11 @@
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">isPeriodic</td>
-      <td data-ice="type" class="code"><span>boolean</span></td>
-      <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric</p>
+      <td data-ice="name" class="code" data-depth="0">periodic</td>
+      <td data-ice="type" class="code"><span>string</span> | <span>number</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: &quot;symmetric&quot;</li></ul></td>
+      <td data-ice="description"><p>0/&quot;symmetric&quot;, 1/&quot;periodic&quot;</p>
 </td>
     </tr>
 </tbody>
@@ -6797,7 +6799,7 @@
     
     
     
-    <span class="code" data-ice="name">window</span><span class="code" data-ice="signature">(name: <span>string</span>, size: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, isPeriodic: <span>boolean</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">window</span><span class="code" data-ice="signature">(name: <span>string</span>, size: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, periodic: <span>string</span> | <span>number</span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -6836,10 +6838,11 @@
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">isPeriodic</td>
-      <td data-ice="type" class="code"><span>boolean</span></td>
-      <td data-ice="appendix"><ul><li>optional</li></ul></td>
-      <td data-ice="description"><p>true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric</p>
+      <td data-ice="name" class="code" data-depth="0">periodic</td>
+      <td data-ice="type" class="code"><span>string</span> | <span>number</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default: &quot;symmetric&quot;</li></ul></td>
+      <td data-ice="description"><p>0/&quot;symmetric&quot;, 1/&quot;periodic&quot;</p>
 </td>
     </tr>
 </tbody>
