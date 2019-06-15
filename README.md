@@ -1,6 +1,6 @@
 # konpeito
 [![Build Status](https://travis-ci.org/natade-jp/konpeito.svg?branch=master)](https://travis-ci.org/natade-jp/konpeito)
-[![ESDoc coverage badge](https://doc.esdoc.org/github.com/natade-jp/konpeito/badge.svg)](https://doc.esdoc.org/github.com/natade-jp/konpeito/)
+[![ESDoc coverage badge](https://natade-jp.github.io/konpeito/doc/badge.svg)](https://natade-jp.github.io/konpeito/doc/)
 ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
 "konpeito" is a library to "compute". :)
@@ -9,7 +9,7 @@
 - The library for math calculations.
 - When calculating, use method chain.
 - Coding in ES6, and published ES6 modules and UMD.
-- [API reference is complete](https://doc.esdoc.org/github.com/natade-jp/konpeito/).
+- [API reference is complete](https://natade-jp.github.io/konpeito/doc/).
 
 ## Features
 This library has 4 functions.

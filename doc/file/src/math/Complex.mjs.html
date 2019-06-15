@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/math/Complex.mjs | konpeito</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.mjs~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigDecimal.mjs~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/math/Complex.mjs</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+// @ts-check
+
+// @ts-ignore
+import Random from &quot;./tools/Random.mjs&quot;;
+
+// @ts-ignore
+import Matrix from &quot;./Matrix.mjs&quot;;
+
+/**
+ * Complex &#x5185;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x4E71;&#x6570;&#x751F;&#x6210;&#x30AF;&#x30E9;&#x30B9;
+ */
+const random_class = new Random();
+
+/**
+ * Complex &#x5185;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x95A2;&#x6570;&#x7FA4;
+ */
+class ComplexTool {
+
+	/**
+	 * &#x6587;&#x5B57;&#x5217;&#x304B;&#x3089;&#x8907;&#x7D20;&#x6570;&#x3092;&#x89E3;&#x6790;&#x3059;&#x308B;
+	 * @param {string} text - &#x89E3;&#x6790;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;&#x5217;
+	 * @returns {{real : number, imag : number}}
+	 */
+	static ToComplexFromString(text) {
+		let str = text.replace(/\s/g, &quot;&quot;).toLowerCase();
+		str = str.replace(/infinity|inf/g, &quot;1e100000&quot;);
+		// &#x8907;&#x7D20;&#x6570;&#x306E;&#x5BA3;&#x8A00;&#x304C;&#x306A;&#x3044;&#x5834;&#x5408;
+		if(!(/[ij]/.test(str))) {
+			return {
+				real : parseFloat(str),
+				imag : 0.0
+			};
+		}
+		// &#x3053;&#x306E;&#x6642;&#x70B9;&#x3067;&#x8907;&#x7D20;&#x6570;&#x3067;&#x3042;&#x308B;&#x3002;
+		// &#x4EE5;&#x4E0B;&#x771F;&#x9762;&#x76EE;&#x306B;&#x8ABF;&#x67FB;
+		let re = 0;
+		let im = 0;
+		let buff;
+		// &#x6700;&#x5F8C;&#x304C;$&#x306A;&#x3089;&#x53F3;&#x5074;&#x304C;&#x5B9F;&#x6570;&#x3001;&#x6700;&#x5F8C;&#x304C;[+-]&#x306A;&#x3089;&#x5DE6;&#x5074;&#x304C;&#x5B9F;&#x6570;
+		buff = str.match(/[+-]?(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))($|[+-])/);
+		if(buff) {
+			re = parseFloat(buff[0]);
+		}
+		// &#x8907;&#x7D20;&#x6570;&#x306F;&#x6570;&#x5024;&#x304C;&#x7701;&#x7565;&#x3055;&#x308C;&#x308B;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;
+		buff = str.match(/[+-]?(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))?[ij]/);
+		if(buff) {
+			buff = buff[0].substring(0, buff[0].length - 1);
+			// i, +i, -j &#x306E;&#x3088;&#x3046;&#x306B;&#x5B9F;&#x6570;&#x90E8;&#x304C;&#x306A;&#x304F;&#x3001;&#x6570;&#x5024;&#x3082;&#x306A;&#x3044;&#x5834;&#x5408;
+			if((/^[-+]$/.test(buff)) || buff.length === 0) {
+				im = buff === &quot;-&quot; ? -1 : 1;
+			}
+			else {
+				im = parseFloat(buff);
+			}
+		}
+		return {
+			real : re,
+			imag : im
+		};
+	}
+
+}
+
+/**
+ * &#x8907;&#x7D20;&#x6570;&#x30AF;&#x30E9;&#x30B9; (immutable)
+ */
+export default class Complex {
+
+	/**
+	 * &#x8907;&#x7D20;&#x6570;&#x3092;&#x4F5C;&#x6210;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number - &#x8907;&#x7D20;&#x6570;( &quot;1 + j&quot;, [1 , 1] &#x306A;&#x3069;)
+	 */
+	constructor(number) {
+		// &#x884C;&#x5217;&#x3067;&#x4F7F;&#x3046;&#x305F;&#x3081;&#x30A4;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x306F;&#x5FC5;&#x305A;&#x5B88;&#x308B;&#x3053;&#x3068;&#x3002;
+		if(arguments.length === 1) {
+			const obj = number;
+			if(obj instanceof Complex) {
+				
+				/**
+				 * &#x5B9F;&#x90E8;
+				 * @private
+				 * @type {number}
+				 */
+				this._re = obj._re;
+				
+				/**
+				 * &#x865A;&#x90E8;
+				 * @private
+				 * @type {number}
+				 */
+				this._im = obj._im;
+			}
+			else if(typeof obj === &quot;number&quot;) {
+				this._re = obj;
+				this._im = 0.0;
+			}
+			else if(obj instanceof Array) {
+				if(obj.length === 2) {
+					this._re = obj[0];
+					this._im = obj[1];
+				}
+				else {
+					throw &quot;Complex Unsupported argument &quot; + arguments;
+				}
+			}
+			else if(typeof obj === &quot;string&quot;) {
+				const x = ComplexTool.ToComplexFromString(obj);
+				this._re = x.real;
+				this._im = x.imag;
+			}
+			else if((obj instanceof Object) &amp;&amp; (typeof obj._re === &quot;number&quot;) &amp;&amp; (typeof obj._im === &quot;number&quot;)) {
+				this._re = obj._re;
+				this._im = obj._im;
+			}
+			else if(obj instanceof Object) {
+				const x = ComplexTool.ToComplexFromString(obj.toString());
+				this._re = x.real;
+				this._im = x.imag;
+			}
+			else {
+				throw &quot;Complex Unsupported argument &quot; + arguments;
+			}
+		}
+		else {
+			throw &quot;Complex Many arguments : &quot; + arguments.length;
+		}
+	}
+
+	/**
+	 * Complex &#x3092;&#x4F5C;&#x6210;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @returns {Complex}
+	 */
+	static create(number) {
+		if(number instanceof Complex) {
+			return number;
+		}
+		else {
+			return new Complex(number);
+		}
+	}
+	
+	/**
+	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6570;&#x5024;&#x304B;&#x3089; Complex &#x578B;&#x306B;&#x5909;&#x63DB;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @returns {Complex}
+	 */
+	static valueOf(number) {
+		return Complex.valueOf(number);
+	}
+	
+	/**
+	 * &#x8907;&#x7D20;&#x6570;&#x3092;&#x4F5C;&#x6210;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number 
+	 * @returns {Complex}
+	 * @private
+	 */
+	static _toComplex(number) {
+		if(number instanceof Complex) {
+			return number;
+		}
+		else if(number instanceof Matrix) {
+			return Matrix._toComplex(number);
+		}
+		else {
+			return new Complex(number);
+		}
+	}
+
+	/**
+	 * &#x5B9F;&#x6570;&#x3092;&#x4F5C;&#x6210;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toDouble(number) {
+		if(typeof number === &quot;number&quot;) {
+			return number;
+		}
+		const complex_number = Complex._toComplex(number);
+		if(complex_number.isReal()) {
+			return complex_number.real;
+		}
+		else {
+			throw &quot;not support complex numbers.[&quot; + number + &quot;]&quot;;
+		}
+	}
+
+	/**
+	 * &#x6574;&#x6570;&#x3092;&#x4F5C;&#x6210;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		return Complex._toDouble(number) | 0;
+	}
+
+	/**
+	 * 32&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x306B;&#x5909;&#x63DB;
+	 * @returns {number}
+	 */
+	get intValue() {
+		return this.real | 0;
+	}
+
+	/**
+	 * 64&#x30D3;&#x30C3;&#x30C8;&#x5B9F;&#x6570;&#x306B;&#x5909;&#x63DB;
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		return this.real;
+	}
+
+	/**
+	 * &#x30C7;&#x30A3;&#x30FC;&#x30D7;&#x30B3;&#x30D4;&#x30FC;
+	 * @returns {Complex} 
+	 */
+	clone() {
+		return this;
+	}
+
+	/**
+	 * &#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;
+	 * @returns {string} 
+	 */
+	toString() {
+		const formatG = function(x) {
+			let numstr = x.toPrecision(6);
+			if(numstr.indexOf(&quot;.&quot;) !== -1) {
+				numstr = numstr.replace(/\.?0+$/, &quot;&quot;);  // 1.00 , 1.10
+				numstr = numstr.replace(/\.?0+e/, &quot;e&quot;); // 1.0e , 1.10e
+			}
+			else if(/inf/i.test(numstr)) {
+				if(x === Number.POSITIVE_INFINITY) {
+					return &quot;Inf&quot;;
+				}
+				else {
+					return &quot;-Inf&quot;;
+				}
+			}
+			else if(/nan/i.test(numstr)) {
+				return &quot;NaN&quot;;
+			}
+			return numstr;
+		};
+		if(!this.isReal()) {
+			if(this._re === 0) {
+				return formatG(this._im) + &quot;i&quot;;
+			}
+			else if((this._im &gt;= 0) || (Number.isNaN(this._im))) {
+				return formatG(this._re) + &quot; + &quot; + formatG(this._im) + &quot;i&quot;;
+			}
+			else {
+				return formatG(this._re) + &quot; - &quot; + formatG(-this._im) + &quot;i&quot;;
+			}
+		}
+		else {
+			return formatG(this._re);
+		}
+	}
+	
+	/**
+	 * &#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x306A;&#x5024;&#x3092;&#x4F5C;&#x6210;
+	 * @returns {Complex}
+	 */
+	static rand() {
+		return new Complex(random_class.nextDouble());
+	}
+
+	/**
+	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306B;&#x5F93;&#x3046;&#x30E9;&#x30F3;&#x30C0;&#x30E0;&#x306A;&#x5024;&#x3092;&#x4F5C;&#x6210;
+	 * @returns {Complex}
+	 */
+	static randn() {
+		return new Complex(random_class.nextGaussian());
+	}
+
+	/**
+	 * &#x7B49;&#x5F0F;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - &#x8AA4;&#x5DEE;&#x3092;&#x5B9F;&#x6570;&#x3067;&#x6307;&#x5B9A;
+	 * @returns {boolean} A === B
+	 */
+	equals(number, epsilon) {
+		const x = Complex._toComplex(number);
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		// &#x7121;&#x9650;&#x5927;&#x3001;&#x975E;&#x6570;&#x306E;&#x5024;&#x3082;&#x542B;&#x3081;&#x3066;&#x4E00;&#x5EA6;&#x78BA;&#x8A8D;
+		if((this._re === x._re) &amp;&amp; (this._im === x._im)) {
+			return true;
+		}
+		// &#x8AA4;&#x5DEE;&#x3092;&#x542B;&#x3093;&#x3060;&#x5024;&#x306E;&#x6BD4;&#x8F03;
+		return (Math.abs(this._re - x._re) &lt;  tolerance) &amp;&amp; (Math.abs(this._im - x._im) &lt; tolerance);
+	}
+
+	/**
+	 * &#x5B9F;&#x90E8;
+	 * @returns {number} real(A)
+	 */
+	get real() {
+		return this._re;
+	}
+	
+	/**
+	 * &#x865A;&#x90E8;
+	 * @returns {number} imag(A)
+	 */
+	get imag() {
+		return this._im;
+	}
+
+	/**
+	 * &#x30CE;&#x30EB;&#x30E0;
+	 * @returns {number} |A|
+	 */
+	get norm() {
+		if(this._im === 0) {
+			return Math.abs(this._re);
+		}
+		else if(this._re === 0) {
+			return Math.abs(this._im);
+		}
+		else {
+			return Math.sqrt(this._re * this._re + this._im * this._im);
+		}
+	}
+
+	/**
+	 * &#x504F;&#x89D2;
+	 * @returns {number} arg(A)
+	 */
+	get arg() {
+		if(this._im === 0) {
+			return this._re &gt;= 0 ? 0 : Math.PI;
+		}
+		else if(this._re === 0) {
+			return Math.PI * (this._im &gt;= 0.0 ? 0.5 : -0.5);
+		}
+		else {
+			return Math.atan2(this._im, this._re);
+		}
+	}
+
+	/**
+	 * &#x5B9F;&#x90E8;&#x3001;&#x865A;&#x90E8;&#x3092;&#x8868;&#x3059;&#x969B;&#x306E;&#x5C0F;&#x6570;&#x70B9;&#x4EE5;&#x4E0B;&#x306E;&#x6841;&#x6570;
+	 * @returns {number} &#x5C0F;&#x6570;&#x70B9;&#x306E;&#x6841;&#x6570;
+	 */
+	getDecimalPosition() {
+		const ep = Number.EPSILON;
+		const getDecimal = function(x) {
+			if(!Number.isFinite(x)) {
+				return 0;
+			}
+			let a = x;
+			let point = 0;
+			for(let i = 0; i &lt; 20; i++) {
+				if(Math.abs(a - (a | 0)) &lt;= ep) {
+					break;
+				}
+				a *= 10;
+				point++;
+			}
+			return point;
+		};
+		return Math.max( getDecimal(this.real), getDecimal(this.imag) );
+	}
+
+	/**
+	 * &#x52A0;&#x7B97;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number 
+	 * @returns {Complex} A + B
+	 */
+	add(number) {
+		const x = new Complex(number);
+		x._re = this._re + x._re;
+		x._im = this._im + x._im;
+		return x;
+	}
+
+	/**
+	 * &#x6E1B;&#x7B97;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} A - B
+	 */
+	sub(number) {
+		const x = new Complex(number);
+		x._re = this._re - x._re;
+		x._im = this._im - x._im;
+		return x;
+	}
+
+	/**
+	 * &#x4E57;&#x7B97;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} A * B
+	 */
+	mul(number) {
+		const x = new Complex(number);
+		if((this._im === 0) &amp;&amp; (x._im === 0)) {
+			x._re = this._re * x._re;
+			return x;
+		}
+		else if((this._re === 0) &amp;&amp; (x._re === 0)) {
+			x._re = - this._im * x._im;
+			x._im = 0;
+			return x;
+		}
+		else {
+			const re = this._re * x._re - this._im * x._im;
+			const im = this._im * x._re + this._re * x._im;
+			x._re = re;
+			x._im = im;
+			return x;
+		}
+	}
+	
+	/**
+	 * &#x30C9;&#x30C3;&#x30C8;&#x7A4D;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} A * conj(B)
+	 */
+	dot(number) {
+		const x = new Complex(number);
+		if((this._im === 0) &amp;&amp; (x._im === 0)) {
+			x._re = this._re * x._re;
+			return x;
+		}
+		else if((this._re === 0) &amp;&amp; (x._re === 0)) {
+			x._re = this._im * x._im;
+			x._im = 0;
+			return x;
+		}
+		else {
+			const re = this._re * x._re + this._im * x._im;
+			const im = - this._im * x._re + this._re * x._im;
+			x._re = re;
+			x._im = im;
+			return x;
+		}
+	}
+	
+	/**
+	 * &#x5272;&#x308A;&#x7B97;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} A / B
+	 */
+	div(number) {
+		const x = new Complex(number);
+		if((this._im === 0) &amp;&amp; (x._im === 0)) {
+			x._re = this._re / x._re;
+			return x;
+		}
+		else if((this._re === 0) &amp;&amp; (x._re === 0)) {
+			x._re = this._im / x._im;
+			x._im = 0;
+			return x;
+		}
+		else {
+			const re = this._re * x._re + this._im * x._im;
+			const im = this._im * x._re - this._re * x._im;
+			const denominator = 1.0 / (x._re * x._re + x._im * x._im);
+			x._re = re * denominator;
+			x._im = im * denominator;
+			return x;
+		}
+	}
+
+	/**
+	 * &#x5272;&#x308A;&#x7B97;&#x306E;&#x6B63;&#x306E;&#x4F59;&#x308A;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number - &#x8907;&#x7D20;&#x6570;&#x3092;&#x542B;&#x307E;&#x306A;&#x3044;&#x6570;&#x5024; 
+	 * @returns {Complex} A mod B
+	 */
+	mod(number) {
+		const x = new Complex(number);
+		if((this._im !== 0) || (x._im !== 0)) {
+			throw &quot;calculation method is undefined.&quot;;
+		}
+		let _re = this._re - x._re * (0 | (this._re / x._re));
+		if(_re &lt; 0) {
+			_re += x._re;
+		}
+		x._re = _re;
+		return x;
+	}
+
+	/**
+	 * &#x9006;&#x6570;
+	 * @returns {Complex} 1 / A
+	 */
+	inv() {
+		if(this._im === 0) {
+			return new Complex(1.0 / this._re);
+		}
+		else if(this._re === 0) {
+			return new Complex([0, - 1.0 / this._im]);
+		}
+		return Complex.ONE.div(this);
+	}
+
+	/**
+	 * &#x7B26;&#x53F7;&#x5024;
+	 * @returns {Complex} [-1,1] &#x8907;&#x7D20;&#x6570;&#x306E;&#x5834;&#x5408;&#x306F;&#x30CE;&#x30EB;&#x30E0;&#x3092;1&#x306B;&#x3057;&#x305F;&#x5024;&#x3002;
+	 */
+	sign() {
+		if(this._im === 0) {
+			if(this._re === 0) {
+				return new Complex(0);
+			}
+			else {
+				return new Complex(this._re &gt; 0 ? 1 : -1);
+			}
+		}
+		return this.div(this.norm);
+	}
+	
+	/**
+	 * &#x6700;&#x5927;&#x5024;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - &#x8AA4;&#x5DEE;&#x3092;&#x5B9F;&#x6570;&#x3067;&#x6307;&#x5B9A;
+	 * @returns {Complex} max([A, B])
+	 */
+	max(number, epsilon) {
+		const x = Complex._toComplex(number);
+		if(this.compareTo(x, epsilon) &gt;= 0) {
+			return this;
+		}
+		else {
+			return x;
+		}
+	}
+
+	/**
+	 * &#x6700;&#x5C0F;&#x5024;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - &#x8AA4;&#x5DEE;&#x3092;&#x5B9F;&#x6570;&#x3067;&#x6307;&#x5B9A;
+	 * @returns {Complex} min([A, B])
+	 */
+	min(number, epsilon) {
+		const x = Complex._toComplex(number);
+		if(this.compareTo(x, epsilon) &lt;= 0) {
+			return this;
+		}
+		else {
+			return x;
+		}
+	}
+
+	/**
+	 * &#x5024;&#x540C;&#x58EB;&#x3092;&#x6BD4;&#x8F03;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - &#x8AA4;&#x5DEE;&#x3092;&#x5B9F;&#x6570;&#x3067;&#x6307;&#x5B9A;
+	 * @returns {number} A &gt; B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number, epsilon) {
+		const x1 = this;
+		const x2 = Complex._toComplex(number);
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		const a = x1.real + x1.imag;
+		const b = x2.real + x2.imag;
+		if((Math.abs(a - b) &lt; tolerance)) {
+			return 0;
+		}
+		return a &gt; b ? 1 : -1;
+	}
+
+	// ----------------------
+	// &#x30C6;&#x30B9;&#x30C8;&#x7CFB;
+	// ----------------------
+	
+	/**
+	 * &#x6574;&#x6570;&#x3092;&#x5224;&#x5B9A;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - &#x8AA4;&#x5DEE;&#x3092;&#x5B9F;&#x6570;&#x3067;&#x6307;&#x5B9A;
+	 * @returns {boolean}
+	 */
+	isInteger(epsilon) {
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		return this.isReal() &amp;&amp; (Math.abs(this._re - (this._re | 0)) &lt; tolerance);
+	}
+
+	/**
+	 * &#x8907;&#x7D20;&#x6574;&#x6570;&#xFF08;&#x6574;&#x6570;&#x3082;&#x542B;&#x3080;&#xFF09;&#x3092;&#x5224;&#x5B9A;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - &#x8AA4;&#x5DEE;&#x3092;&#x5B9F;&#x6570;&#x3067;&#x6307;&#x5B9A;
+	 * @returns {boolean} real(A) === &#x6574;&#x6570; &amp;&amp; imag(A) === &#x6574;&#x6570;
+	 */
+	isComplexInteger(epsilon) {
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		// &#x8907;&#x7D20;&#x6574;&#x6570;
+		return (Math.abs(this._re - (this._re | 0)) &lt; tolerance) &amp;&amp;
+				(Math.abs(this._im - (this._im | 0)) &lt; tolerance);
+	}
+
+	/**
+	 * 0 &#x3092;&#x5224;&#x5B9A;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - &#x8AA4;&#x5DEE;&#x3092;&#x5B9F;&#x6570;&#x3067;&#x6307;&#x5B9A;
+	 * @returns {boolean} A === 0
+	 */
+	isZero(epsilon) {
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		return (Math.abs(this._re) &lt; tolerance) &amp;&amp; (Math.abs(this._im) &lt; tolerance);
+	}
+
+	/**
+	 * 1 &#x3092;&#x5224;&#x5B9A;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - &#x8AA4;&#x5DEE;&#x3092;&#x5B9F;&#x6570;&#x3067;&#x6307;&#x5B9A;
+	 * @returns {boolean} A === 1
+	 */
+	isOne(epsilon) {
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		return (Math.abs(this._re - 1.0) &lt; tolerance) &amp;&amp; (Math.abs(this._im) &lt; tolerance);
+	}
+
+	/**
+	 * &#x8907;&#x7D20;&#x6570;&#xFF08;&#x865A;&#x90E8;&#x304C;0&#x4EE5;&#x5916;&#xFF09;&#x3092;&#x5224;&#x5B9A;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - &#x8AA4;&#x5DEE;&#x3092;&#x5B9F;&#x6570;&#x3067;&#x6307;&#x5B9A;
+	 * @returns {boolean} imag(A) !== 0
+	 */
+	isComplex(epsilon) {
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		return (Math.abs(this._im) &gt;= tolerance);
+	}
+	
+	/**
+	 * &#x5B9F;&#x6570;&#x3092;&#x5224;&#x5B9A;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - &#x8AA4;&#x5DEE;&#x3092;&#x5B9F;&#x6570;&#x3067;&#x6307;&#x5B9A;
+	 * @returns {boolean} imag(A) === 0
+	 */
+	isReal(epsilon) {
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		return (Math.abs(this._im) &lt; tolerance);
+	}
+
+	/**
+	 * &#x975E;&#x6570;&#x3092;&#x5224;&#x5B9A;
+	 * @returns {boolean} isNaN(A)
+	 */
+	isNaN() {
+		return isNaN(this._re) || isNaN(this._im);
+	}
+
+	/**
+	 * &#x5B9F;&#x90E8;&#x306E;&#x6B63;&#x6570;&#x3092;&#x5224;&#x5B9A;
+	 * @returns {boolean} real(x) &gt; 0
+	 */
+	isPositive() {
+		// Number.EPSILON&#x306F;&#x4F7F;&#x7528;&#x3057;&#x306A;&#x3044;&#x3002;&#x3069;&#x3061;&#x3089;&#x306B;&#x3076;&#x308C;&#x308B;&#x304B;&#x4E0D;&#x660E;&#x306A;&#x70B9;&#x53CA;&#x3073;
+		// &#x308F;&#x305A;&#x304B;&#x306A;&#x8CA0;&#x306E;&#x6570;&#x3060;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x3001;sqrt&#x3067;&#x30A8;&#x30E9;&#x30FC;&#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x305F;&#x3081;
+		return 0.0 &lt; this._re;
+	}
+
+	/**
+	 * &#x5B9F;&#x90E8;&#x306E;&#x8CA0;&#x6570;&#x3092;&#x5224;&#x5B9A;
+	 * @returns {boolean} real(x) &lt; 0
+	 */
+	isNegative() {
+		return 0.0 &gt; this._re;
+	}
+
+	/**
+	 * &#x5B9F;&#x90E8;&#x306E;&#x975E;&#x8CA0;&#x5024;&#x3092;&#x5224;&#x5B9A;
+	 * @returns {boolean} real(x) &gt;= 0
+	 */
+	isNotNegative() {
+		return 0.0 &lt;= this._re;
+	}
+
+	/**
+	 * &#x7121;&#x9650;&#x3092;&#x5224;&#x5B9A;
+	 * @returns {boolean} isInfinite(A)
+	 */
+	isInfinite() {
+		return	(this._re === Number.POSITIVE_INFINITY) ||
+				(this._im === Number.POSITIVE_INFINITY) ||
+				(this._re === Number.NEGATIVE_INFINITY) ||
+				(this._im === Number.NEGATIVE_INFINITY);
+	}
+	
+	/**
+	 * &#x6709;&#x9650;&#x6570;&#x3092;&#x5224;&#x5B9A;
+	 * @returns {boolean} !isNaN(A) &amp;&amp; !isInfinite(A)
+	 */
+	isFinite() {
+		return !this.isNaN() &amp;&amp; !this.isInfinite();
+	}
+
+	// ----------------------
+	// &#x8907;&#x7D20;&#x6570;
+	// ----------------------
+	
+	/**
+	 * &#x7D76;&#x5BFE;&#x5024;
+	 * @returns {Complex} abs(A)
+	 */
+	abs() {
+		return new Complex(this.norm);
+	}
+
+	/**
+	 * &#x5171;&#x5F79;&#x8907;&#x7D20;&#x6570;
+	 * @returns {Complex} real(A) - imag(A)j
+	 */
+	conj() {
+		if(this._im === 0) {
+			return this;
+		}
+		// &#x5171;&#x5F79;&#x8907;&#x7D20;&#x6570;
+		return new Complex([this._re, -this._im]);
+	}
+
+	/**
+	 * &#x8CA0;&#x6570;
+	 * @returns {Complex} -A
+	 */
+	negate() {
+		return new Complex([-this._re, -this._im]);
+	}
+
+	// ----------------------
+	// &#x6307;&#x6570;
+	// ----------------------
+	
+	/**
+	 * &#x7D2F;&#x4E57;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} pow(A, B)
+	 */
+	pow(number) {
+		const A = this;
+		const B = new Complex(number);
+		// -2 ^ 0.5 ... &#x8907;&#x7D20;&#x6570;
+		// -2 ^ 1   ... &#x5B9F;&#x6570;
+		//  2 ^ 0.5 ... &#x5B9F;&#x6570;
+		if(B.isReal()) {
+			if(A.isReal() &amp;&amp; (A.isNotNegative() || B.isInteger())) {
+				B._re = Math.pow(A._re, B._re);
+				return B;
+			}
+			else {
+				const r = Math.pow(A.norm, B._re);
+				const s = A.arg * B._re;
+				B._re = r * Math.cos(s);
+				B._im = r * Math.sin(s);
+				return B;
+			}
+		}
+		else {
+			return B.mul(A.log()).exp();
+		}
+	}
+
+	/**
+	 * 2&#x4E57;
+	 * @returns {Complex} pow(A, 2)
+	 */
+	square() {
+		if(this._im === 0.0) {
+			return new Complex(this._re * this._re);
+		}
+		return this.mul(this);
+	}
+
+	/**
+	 * &#x5E73;&#x65B9;&#x6839;
+	 * @returns {Complex} sqrt(A)
+	 */
+	sqrt() {
+		if(this.isReal()) {
+			if(this.isNotNegative()) {
+				return new Complex(Math.sqrt(this._re));
+			}
+			else {
+				return new Complex([0, Math.sqrt(-this._re)]);
+			}
+		}
+		const r = Math.sqrt(this.norm);
+		const s = this.arg * 0.5;
+		return new Complex([r * Math.cos(s), r * Math.sin(s)]);
+	}
+
+	/**
+	 * &#x5BFE;&#x6570;
+	 * @returns {Complex} log(A)
+	 */
+	log() {
+		if(this.isReal() &amp;&amp; this.isNotNegative()) {
+			return new Complex(Math.log(this._re));
+		}
+		// &#x8CA0;&#x306E;&#x5024;&#x304C;&#x5165;&#x3063;&#x3066;&#x3044;&#x308B;&#x304B;&#x3001;&#x3082;&#x3068;&#x3082;&#x3068;&#x8907;&#x7D20;&#x6570;&#x304C;&#x5165;&#x3063;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x306F;&#x3001;&#x8907;&#x7D20;&#x5BFE;&#x6570;&#x95A2;&#x6570;
+		return new Complex([Math.log(this.norm), this.arg]);
+	}
+
+	/**
+	 * &#x6307;&#x6570;
+	 * @returns {Complex} exp(A)
+	 */
+	exp() {
+		if(this.isReal()) {
+			return new Complex(Math.exp(this._re));
+		}
+		// &#x8907;&#x7D20;&#x6307;&#x6570;&#x95A2;&#x6570;
+		const r = Math.exp(this._re);
+		return new Complex([r * Math.cos(this._im), r * Math.sin(this._im)]);
+	}
+
+	// ----------------------
+	// &#x4E09;&#x89D2;&#x95A2;&#x6570;
+	// ----------------------
+	
+	/**
+	 * sin
+	 * @returns {Complex} sin(A)
+	 */
+	sin() {
+		if(this.isReal()) {
+			return new Complex(Math.sin(this._re));
+		}
+		// &#x30AA;&#x30A4;&#x30E9;&#x30FC;&#x306E;&#x516C;&#x5F0F;&#x3088;&#x308A;
+		// sin x = (e^ix - e^-ex) / 2i
+		const a = this.mul(Complex.I).exp();
+		const b = this.mul(Complex.I.negate()).exp();
+		return a.sub(b).div([0, 2]);
+	}
+
+	/**
+	 * cos
+	 * @returns {Complex} cos(A)
+	 */
+	cos() {
+		if(this.isReal()) {
+			return new Complex(Math.cos(this._re));
+		}
+		// &#x30AA;&#x30A4;&#x30E9;&#x30FC;&#x306E;&#x516C;&#x5F0F;&#x3088;&#x308A;
+		// cos x = (e^ix + e^-ex) / 2
+		const a = this.mul(Complex.I).exp();
+		const b = this.mul(Complex.I.negate()).exp();
+		return a.add(b).div(2);
+	}
+
+	/**
+	 * tan
+	 * @returns {Complex} tan(A)
+	 */
+	tan() {
+		if(this.isReal()) {
+			return new Complex(Math.tan(this._re));
+		}
+		// &#x4E09;&#x89D2;&#x95A2;&#x6570;&#x306E;&#x76F8;&#x4E92;&#x95A2;&#x4FC2; tan x = sin x / cos x
+		return this.sin().div(this.cos());
+	}
+
+	/**
+	 * atan
+	 * @returns {Complex} atan(A)
+	 */
+	atan() {
+		if(this.isReal()) {
+			return new Complex(Math.atan(this._re));
+		}
+		// &#x9006;&#x6B63;&#x63A5; tan-1 x = i/2 log( i+x / i-x )
+		return Complex.I.div(Complex.TWO).mul(Complex.I.add(this).div(Complex.I.sub(this)).log());
+	}
+
+	/**
+	 * atan2
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [number] - &#x5B9F;&#x6570;&#x3067;&#x6307;&#x5B9A;&#x3002;&#x7701;&#x7565;&#x6642;&#x306F;&#x3001;&#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x504F;&#x89D2;&#x3092;&#x8FD4;&#x3059;&#x3002;
+	 * @returns {Complex} atan2(Y, X)
+	 */
+	atan2(number) {
+		if(arguments.length === 0) {
+			return new Complex(this.arg);
+		}
+		// y.atan2(x) &#x3068;&#x3059;&#x308B;&#x3002;
+		const y = this;
+		const x = Complex._toComplex(number);
+		if(y.isReal() &amp;&amp; x.isReal()) {
+			return new Complex(Math.atan2(y._re, x._re));
+		}
+		// &#x8907;&#x7D20;&#x6570;&#x306E;atan2&#x306F;&#x672A;&#x5B9A;&#x7FA9;&#x3067;&#x3042;&#x308B;&#xFF08;&#x5B9F;&#x88C5;&#x4E0D;&#x53EF;&#x80FD;&#xFF09;
+		throw &quot;calculation method is undefined.&quot;;
+	}
+	
+	// ----------------------
+	// &#x4FE1;&#x53F7;&#x51E6;&#x7406;&#x7CFB;
+	// ----------------------
+	
+	/**
+	 * &#x6B63;&#x898F;&#x5316; sinc
+	 * @returns {Complex} sinc(A)
+	 */
+	sinc() {
+		if(this.isReal()) {
+			if(this._re === 0) {
+				return(Complex.ONE);
+			}
+			const x = Math.PI * this._re;
+			return new Complex(Math.sin(x) / x);
+		}
+		const x = this.mul(Complex.PI);
+		return new Complex( x.sin().div(x) );
+	}
+
+	// ----------------------
+	// &#x4E38;&#x3081;
+	// ----------------------
+	
+	/**
+	 * floor
+	 * @returns {Complex} floor(A)
+	 */
+	floor() {
+		return new Complex([Math.floor(this._re), Math.floor(this._im)]);
+	}
+
+	/**
+	 * ceil
+	 * @returns {Complex} ceil(A)
+	 */
+	ceil() {
+		return new Complex([Math.ceil(this._re), Math.ceil(this._im)]);
+	}
+	
+	/**
+	 * &#x56DB;&#x6368;&#x4E94;&#x5165;
+	 * @returns {Complex} round(A)
+	 */
+	round() {
+		return new Complex([Math.round(this._re), Math.round(this._im)]);
+	}
+
+	/**
+	 * &#x6574;&#x6570;&#x5316;
+	 * @returns {Complex} fix(A)
+	 */
+	fix() {
+		return new Complex([this._re | 0, this._im | 0]);
+	}
+
+	/**
+	 * &#x5C0F;&#x6570;&#x90E8;&#x306E;&#x62BD;&#x51FA;
+	 * @returns {Complex} fract(A) 
+	 */
+	fract() {
+		return new Complex([this._re - (this._re | 0), this._im - (this._im | 0)]);
+	}
+
+	// ----------------------
+	// &#x5B9A;&#x6570;
+	// ----------------------
+	
+	/**
+	 * 1
+	 * @returns {Complex} 1
+	 */
+	static get ONE() {
+		return DEFINE.ONE;
+	}
+	
+	/**
+	 * 2
+	 * @returns {Complex} 2
+	 */
+	static get TWO() {
+		return DEFINE.TWO;
+	}
+	
+	/**
+	 * 10
+	 * @returns {Complex} 10
+	 */
+	static get TEN() {
+		return DEFINE.TEN;
+	}
+	
+	/**
+	 * 0
+	 * @returns {Complex} 0
+	 */
+	static get ZERO() {
+		return DEFINE.ZERO;
+	}
+
+	/**
+	 * -1
+	 * @returns {Complex} -1
+	 */
+	static get MINUS_ONE() {
+		return DEFINE.MINUS_ONE;
+	}
+
+	/**
+	 * i, j
+	 * @returns {Complex} i
+	 */
+	static get I() {
+		return DEFINE.I;
+	}
+
+	/**
+	 * PI
+	 * @returns {Complex} 3.14...
+	 */
+	static get PI() {
+		return DEFINE.PI;
+	}
+
+	/**
+	 * E
+	 * @returns {Complex} 2.71...
+	 */
+	static get E() {
+		return DEFINE.E;
+	}
+
+	/**
+	 * LN2
+	 * @returns {Complex} ln(2)
+	 */
+	static get LN2() {
+		return DEFINE.LN2;
+	}
+
+	/**
+	 * LN10
+	 * @returns {Complex} ln(10)
+	 */
+	static get LN10() {
+		return DEFINE.LN10;
+	}
+
+	/**
+	 * LOG2E
+	 * @returns {Complex} log_2(e)
+	 */
+	static get LOG2E() {
+		return DEFINE.LOG2E;
+	}
+	
+	/**
+	 * LOG10E
+	 * @returns {Complex} log_10(e)
+	 */
+	static get LOG10E() {
+		return DEFINE.LOG10E;
+	}
+	
+	/**
+	 * SQRT2
+	 * @returns {Complex} sqrt(2)
+	 */
+	static get SQRT2() {
+		return DEFINE.SQRT2;
+	}
+	
+	/**
+	 * SQRT1_2
+	 * @returns {Complex} sqrt(0.5)
+	 */
+	static get SQRT1_2() {
+		return DEFINE.SQRT1_2;
+	}
+	
+	/**
+	 * 0.5
+	 * @returns {Complex} 0.5
+	 */
+	static get HALF() {
+		return DEFINE.HALF;
+	}
+
+	/**
+	 * &#x6B63;&#x306E;&#x7121;&#x9650;&#x5927;
+	 * @returns {Complex} Inf
+	 */
+	static get POSITIVE_INFINITY() {
+		return DEFINE.POSITIVE_INFINITY;
+	}
+	
+	/**
+	 * &#x8CA0;&#x306E;&#x7121;&#x9650;&#x5927;
+	 * @returns {Complex} -Inf
+	 */
+	static get NEGATIVE_INFINITY() {
+		return DEFINE.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * &#x975E;&#x6570;
+	 * @returns {Complex} NaN
+	 */
+	static get NaN() {
+		return DEFINE.NaN;
+	}
+
+}
+
+/**
+ * &#x5185;&#x90E8;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5B9A;&#x6570;&#x5024;
+ */
+const DEFINE = {
+	ZERO : new Complex(0),
+	ONE : new Complex(1),
+	TWO : new Complex(2),
+	TEN : new Complex(10),
+	MINUS_ONE : new Complex(-1),
+	I : new Complex([0, 1]),
+	PI : new Complex(Math.PI),
+	E : new Complex(Math.E),
+	LN2 : new Complex(Math.LN2),
+	LN10 : new Complex(Math.LN10),
+	LOG2E : new Complex(Math.LOG2E),
+	LOG10E : new Complex(Math.LOG10E),
+	SQRT2 : new Complex(Math.SQRT2),
+	SQRT1_2 : new Complex(Math.SQRT1_2),
+	HALF : new Complex(0.5),
+	POSITIVE_INFINITY : new Complex(Number.POSITIVE_INFINITY),
+	NEGATIVE_INFINITY : new Complex(Number.NEGATIVE_INFINITY),
+	NaN : new Complex(Number.NaN)
+};
+
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

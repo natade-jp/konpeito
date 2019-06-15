@@ -1,8 +1,9 @@
 # History
 
-## v0.1.X
+## v0.1.7
 - Signal fft, ifft, dct, idct, powerfft 実行する次元の方向を選択できるように修正
 - Signal xcorr 計算するベクトル同士の長さが異なる場合に、0挿入するように修正
+- ドキュメントを "ESDoc Hosting Service"から"GitHub Pages"に移動
 
 ## v0.1.6
 - Statistics テストコード用の実装が混じっていたのを削除(Math.StatisticsTool = StatisticsTool)

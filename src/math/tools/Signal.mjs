@@ -881,17 +881,6 @@ class SignalTool {
 	
 }
 
-/*
-const A = [1,2,3,4,5];
-const B = [0,0,3,0,0];
-const C = [5,6,7,8,9];
-
-console.log(SignalTool.conv(A,B,A,B));
-console.log(SignalTool.conv(A,B,C,B));
-console.log(SignalTool.xcorr(A,B,C,B));
-*/
-
-
 /**
  * Matrix用の信号処理用の計算クラス
  */

@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/math/tool/Signal.mjs | konpeito</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.mjs~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigDecimal.mjs~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tool">math/tool</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Random.mjs~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Signal.mjs~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tool/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/math/tool/Signal.mjs</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+// @ts-check
+
+// @ts-ignore
+import Complex from &quot;../Complex.mjs&quot;;
+
+// @ts-ignore
+import Matrix from &quot;../Matrix.mjs&quot;;
+
+/**
+ * &#x9AD8;&#x901F;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;&#x7528;&#x30AF;&#x30E9;&#x30B9;
+ */
+class FFT {
+
+	/**
+	 * &#x30D3;&#x30C3;&#x30C8;&#x53CD;&#x8EE2;
+	 * @param {number} x - &#x30D3;&#x30C3;&#x30C8;&#x53CD;&#x8EE2;&#x3055;&#x305B;&#x308B;&#x5024;&#xFF08;32&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#xFF09;
+	 * @returns {number} &#x30D3;&#x30C3;&#x30C8;&#x53CD;&#x8EE2;&#x3057;&#x305F;&#x5024;
+	 */
+	static bit_reverse_32(x) {
+		let y = x &amp; 0xffffffff;
+		// 1,2,4,8,16&#x30D3;&#x30C3;&#x30C8;&#x5358;&#x4F4D;&#x3067;&#x4EA4;&#x63DB;
+		y = ((y &amp; 0x55555555) &lt;&lt; 1) | ((y &gt;&gt; 1) &amp; 0x55555555);
+		y = ((y &amp; 0x33333333) &lt;&lt; 2) | ((y &gt;&gt; 2) &amp; 0x33333333);
+		y = ((y &amp; 0x0f0f0f0f) &lt;&lt; 4) | ((y &gt;&gt; 4) &amp; 0x0f0f0f0f);
+		y = ((y &amp; 0x00ff00ff) &lt;&lt; 8) | ((y &gt;&gt; 8) &amp; 0x00ff00ff);
+		y = ((y &amp; 0x0000ffff) &lt;&lt; 16) | ((y &gt;&gt; 16) &amp; 0x0000ffff);
+		return y;
+	}
+	
+	/**
+	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x5206;&#x306E;&#x6570;&#x5024;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x30D3;&#x30C3;&#x30C8;&#x53CD;&#x8EE2;&#x3057;&#x305F;&#x914D;&#x5217;&#x3092;&#x8FD4;&#x3059;
+	 * @param {number} bit - &#x30D3;&#x30C3;&#x30C8;&#x6570;
+	 * @returns {Array&lt;number&gt;} &#x30D3;&#x30C3;&#x30C8;&#x53CD;&#x8EE2;&#x3057;&#x305F;&#x5024;&#x306E;&#x914D;&#x5217;
+	 */
+	static create_bit_reverse_table(bit) {
+		const size = 1 &lt;&lt; bit;
+		const bitrv = [];
+		for(let i = 0; i &lt; size; i++) {
+			bitrv[i] = FFT.bit_reverse_32(i) &gt;&gt;&gt; (32 - bit);
+		}
+		return bitrv;
+	}
+
+	/**
+	 * FFT&#x30AF;&#x30E9;&#x30B9;&#x306E;&#x521D;&#x671F;&#x5316;
+	 * @param {number} size - &#x4FE1;&#x53F7;&#x306E;&#x9577;&#x3055;
+	 */
+	constructor(size) {
+		
+		/**
+		 * &#x4FE1;&#x53F7;&#x306E;&#x9577;&#x3055;
+		 */
+		this.size = size;
+
+		/**
+		 * &#x4FE1;&#x53F7;&#x306E;&#x9577;&#x3055;&#x306E;&#x9006;&#x6570;
+		 */
+		this.inv_size = 1.0 / this.size;
+
+		/**
+		 * &#x4FE1;&#x53F7;&#x306E;&#x9577;&#x3055;&#x3092;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#x3067;&#x8868;&#x3057;&#x305F;&#x5834;&#x5408;&#x306E;&#x5024;
+		 */
+		this.bit_size = Math.round(Math.log(this.size)/Math.log(2));
+
+		/**
+		 * FFT&#x306E;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x304C;&#x4F7F;&#x7528;&#x3067;&#x304D;&#x308B;&#x304B;
+		 */
+		this.is_fast = (1 &lt;&lt; this.bit_size) === this.size;
+
+		/**
+		 * &#x30D0;&#x30BF;&#x30D5;&#x30E9;&#x30A4;&#x6F14;&#x7B97;&#x7528;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x30EA;&#x30D0;&#x30FC;&#x30B9;&#x30C6;&#x30FC;&#x30D6;&#x30EB;
+		 */
+		this.bitrv = null;
+
+		/**
+		 * &#x8907;&#x7D20;&#x6570;&#x540C;&#x58EB;&#x306E;&#x639B;&#x3051;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5B9F;&#x90E8;&#x30C6;&#x30FC;&#x30D6;&#x30EB;
+		 */
+		this.fft_re = new Array(this.size);
+		
+		/**
+		 * &#x8907;&#x7D20;&#x6570;&#x540C;&#x58EB;&#x306E;&#x639B;&#x3051;&#x7B97;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x865A;&#x90E8;&#x30C6;&#x30FC;&#x30D6;&#x30EB;
+		 */
+		this.fft_im = new Array(this.size);
+		{
+			const delta = - 2.0 * Math.PI / this.size;
+			let err = 0.0;
+			for(let n = 0, x = 0; n &lt; this.size; n++) {
+				this.fft_re[n] = Math.cos(x);
+				this.fft_im[n] = Math.sin(x);
+				// &#x30AB;&#x30CF;&#x30F3;&#x306E;&#x52A0;&#x7B97;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;
+				const y = delta + err;
+				const t = x + y;
+				err = t - x - y;
+				x = t;
+			}
+		}
+		if(this.is_fast) {
+			this.bitrv = FFT.create_bit_reverse_table(this.bit_size);
+		}
+	}
+
+	/**
+	 * &#x4E2D;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6D88;&#x53BB;&#x3059;&#x308B;
+	 */
+	delete() {
+		delete this.size;
+		delete this.inv_size;
+		delete this.bit_size;
+		delete this.is_fast;
+		delete this.bitrv;
+		delete this.fft_re;
+		delete this.fft_im;
+	}
+	
+	/**
+	 * &#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * @param {Array&lt;number&gt;} real - &#x5B9F;&#x6570;&#x90E8;
+	 * @param {Array&lt;number&gt;} imag - &#x865A;&#x6570;&#x90E8;
+	 * @returns {Object&lt;string, Array&lt;number&gt;&gt;}
+	 */
+	fft(real, imag) {
+		const f_re = new Array(this.size);
+		const f_im = new Array(this.size);
+		if(this.is_fast) {
+			for(let i = 0; i &lt; this.size; i++) {
+				f_re[i] = real[this.bitrv[i]];
+				f_im[i] = imag[this.bitrv[i]];
+			}
+			{
+				// Fast Fourier Transform &#x6642;&#x9593;&#x9593;&#x5F15;&#x304D;(&#x524D;&#x51E6;&#x7406;&#x306B;&#x30D3;&#x30C3;&#x30C8;&#x30EA;&#x30D0;&#x30FC;&#x30B9;)
+				// &#x6BB5;&#x3005;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x304C;&#x5927;&#x304D;&#x304F;&#x306A;&#x3063;&#x3066;&#x3044;&#x304F;&#x30BF;&#x30A4;&#x30D7;&#x3002;
+				let center = 1;
+				let blocklength = this.size / 2;
+				let pointlength = 2;
+				for(let delta = 1 &lt;&lt; (this.bit_size - 1); delta &gt; 0; delta &gt;&gt;= 1) {
+					for(let blocks = 0; blocks &lt; blocklength; blocks++) {
+						let i = blocks * pointlength;
+						for(let point = 0, n = 0; point &lt; center; point++, i++, n += delta) {
+							const re = f_re[i + center] * this.fft_re[n] - f_im[i + center] * this.fft_im[n];
+							const im = f_im[i + center] * this.fft_re[n] + f_re[i + center] * this.fft_im[n];
+							f_re[i + center] = f_re[i] - re;
+							f_im[i + center] = f_im[i] - im;
+							f_re[i] += re;
+							f_im[i] += im;
+						}
+					}
+					blocklength /= 2;
+					pointlength *= 2;
+					center *= 2;
+				}
+			}
+		}
+		else {
+			if(!SignalTool.isContainsZero(imag)) {
+				// &#x5B9F;&#x6570;&#x90E8;&#x5206;&#x306E;&#x307F;&#x306E;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+				for(let t = 0; t &lt; this.size; t++) {
+					f_re[t] = 0.0;
+					f_im[t] = 0.0;
+					for(let x = 0, n = 0; x &lt; this.size; x++, n = (x * t) % this.size) {
+						f_re[t] += real[x] * this.fft_re[n];
+						f_im[t] += real[x] * this.fft_im[n];
+					}
+				}
+			}
+			else {
+				// &#x5B9F;&#x6570;&#x90E8;&#x5206;&#x3068;&#x8907;&#x7D20;&#x6570;&#x90E8;&#x5206;&#x306E;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+				for(let t = 0; t &lt; this.size; t++) {
+					f_re[t] = 0.0;
+					f_im[t] = 0.0;
+					for(let x = 0, n = 0; x &lt; this.size; x++, n = (x * t) % this.size) {
+						f_re[t] += real[x] * this.fft_re[n] - imag[x] * this.fft_im[n];
+						f_im[t] += real[x] * this.fft_im[n] + imag[x] * this.fft_re[n];
+					}
+				}
+			}
+		}
+		return {
+			real : f_re,
+			imag : f_im
+		};
+	}
+
+	/**
+	 * &#x9006;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * @param {Array} real - &#x5B9F;&#x6570;&#x90E8;
+	 * @param {Array} imag - &#x865A;&#x6570;&#x90E8;
+	 * @returns {Object&lt;string, Array&lt;number&gt;&gt;}
+	 */
+	ifft(real, imag) {
+		const f_re = new Array(this.size);
+		const f_im = new Array(this.size);
+		if(this.is_fast) {
+			for(let i = 0; i &lt; this.size; i++) {
+				f_re[i] = real[this.bitrv[i]];
+				f_im[i] = imag[this.bitrv[i]];
+			}
+			{
+				// Inverse Fast Fourier Transform &#x6642;&#x9593;&#x9593;&#x5F15;&#x304D;(&#x524D;&#x51E6;&#x7406;&#x306B;&#x30D3;&#x30C3;&#x30C8;&#x30EA;&#x30D0;&#x30FC;&#x30B9;)
+				// &#x6BB5;&#x3005;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x304C;&#x5927;&#x304D;&#x304F;&#x306A;&#x3063;&#x3066;&#x3044;&#x304F;&#x30BF;&#x30A4;&#x30D7;&#x3002;
+				let center = 1;
+				let blocklength = this.size / 2;
+				let pointlength = 2;
+				let re, im;
+				for(let delta = 1 &lt;&lt; (this.bit_size - 1); delta &gt; 0; delta &gt;&gt;= 1) {
+					for(let blocks = 0; blocks &lt; blocklength; blocks++) {
+						let i = blocks * pointlength;
+						for(let point = 0, n = 0; point &lt; center; point++, i++, n += delta) {
+							re = f_re[i + center] * this.fft_re[n] + f_im[i + center] * this.fft_im[n];
+							im = f_im[i + center] * this.fft_re[n] - f_re[i + center] * this.fft_im[n];
+							f_re[i + center] = f_re[i] - re;
+							f_im[i + center] = f_im[i] - im;
+							f_re[i] += re;
+							f_im[i] += im;
+						}
+					}
+					blocklength /= 2;
+					pointlength *= 2;
+					center *= 2;
+				}
+			}
+		}
+		else {
+			if(!SignalTool.isContainsZero(imag)) {
+				// &#x5B9F;&#x6570;&#x90E8;&#x5206;&#x306E;&#x307F;&#x306E;&#x9006;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+				for(let x = 0; x &lt; this.size; x++) {
+					f_re[x] = 0.0;
+					f_im[x] = 0.0;
+					for(let t = 0, n = 0; t &lt; this.size; t++, n = (x * t) % this.size) {
+						f_re[x] +=   real[t] * this.fft_re[n];
+						f_im[x] += - real[t] * this.fft_im[n];
+					}
+				}
+			}
+			else {
+				// &#x5B9F;&#x6570;&#x90E8;&#x5206;&#x3068;&#x8907;&#x7D20;&#x6570;&#x90E8;&#x5206;&#x306E;&#x9006;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+				for(let x = 0; x &lt; this.size; x++) {
+					f_re[x] = 0.0;
+					f_im[x] = 0.0;
+					for(let t = 0, n = 0; t &lt; this.size; t++, n = (x * t) % this.size) {
+						f_re[x] +=   real[t] * this.fft_re[n] + imag[t] * this.fft_im[n];
+						f_im[x] += - real[t] * this.fft_im[n] + imag[t] * this.fft_re[n];
+					}
+				}
+			}
+		}
+		for(let i = 0; i &lt; this.size; i++) {
+			f_re[i] *= this.inv_size;
+			f_im[i] *= this.inv_size;
+		}
+		return {
+			real : f_re,
+			imag : f_im
+		};
+	}
+}
+
+/**
+ * &#x7C21;&#x6613;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x30AF;&#x30E9;&#x30B9;
+ * FFT&#x3067;&#x7528;&#x3044;&#x308B;&#x30C6;&#x30FC;&#x30D6;&#x30EB;&#x306A;&#x3069;&#x3092;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;
+ */
+class Chash {
+	
+	/**
+	 * &#x7C21;&#x6613;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;
+	 * @param {number} chash_size - &#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x306E;&#x6700;&#x5927;&#x30B5;&#x30A4;&#x30BA;
+	 * @param {*} object - &#x4F5C;&#x6210;&#x3059;&#x308B;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;
+	 */
+	constructor(chash_size, object) {
+
+		/**
+		 * &#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3059;&#x308B;&#x30AF;&#x30E9;&#x30B9;
+		 */
+		this.object = object;
+
+		/**
+		 * &#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3059;&#x308B;&#x6700;&#x5927;&#x6570;
+		 */
+		this.table_max = chash_size;
+
+		/**
+		 * &#x73FE;&#x5728;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3057;&#x3066;&#x3044;&#x308B;&#x6570;
+		 */
+		this.table_size = 0;
+
+		/**
+		 * &#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x30C6;&#x30FC;&#x30D6;&#x30EB;
+		 */
+		this.table = [];
+	}
+
+	/**
+	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x9577;&#x3055;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;&#x3002;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x306B;&#x5B58;&#x5728;&#x3059;&#x308C;&#x3070;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x304B;&#x3089;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x3002;
+	 * @param {number} size - &#x4F5C;&#x6210;&#x3059;&#x308B;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x306E;&#x30B5;&#x30A4;&#x30BA;
+	 * @returns {*}
+	 */
+	get(size) {
+		for(let index = 0; index &lt; this.table_size; index++) {
+			if(this.table[index].size === size) {
+				// &#x5148;&#x982D;&#x306B;&#x3082;&#x3063;&#x3066;&#x304F;&#x308B;
+				const object = this.table.splice(index, 1);
+				this.table.unshift(object);
+				return object;
+			}
+		}
+		const new_object = new this.object(size);
+		if(this.table_size === this.table_max) {
+			// &#x5F8C;&#x308D;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6D88;&#x53BB;
+			const delete_object = this.table.pop();
+			delete_object.delete();
+		}
+		// &#x524D;&#x65B9;&#x306B;&#x8FFD;&#x52A0;
+		this.table.unshift(new_object);
+		return new_object;
+	}
+
+}
+
+/**
+ * FFT&#x7528;&#x306E;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;
+ */
+const fft_chash = new Chash(4, FFT);
+
+/**
+ * &#x96E2;&#x6563;&#x30B3;&#x30B5;&#x30A4;&#x30F3;&#x5909;&#x63DB;&#x306E;&#x30AF;&#x30E9;&#x30B9;
+ */
+class DCT {
+	
+	/**
+	 * DCT&#x30AF;&#x30E9;&#x30B9;&#x306E;&#x521D;&#x671F;&#x5316;
+	 * @param {number} size - &#x4FE1;&#x53F7;&#x306E;&#x9577;&#x3055;
+	 */
+	constructor(size) {
+
+		/**
+		 * &#x4FE1;&#x53F7;&#x9577;
+		 */
+		this.size = size;
+
+		/**
+		 * &#x4FE1;&#x53F7;&#x9577;&#x306E;2&#x500D;
+		 * DCT&#x5909;&#x63DB;&#x3067;&#x306F;&#x3001;&#x5B9F;&#x969B;&#x306E;&#x4FE1;&#x53F7;&#x306B;&#x30BC;&#x30ED;&#x8A70;&#x3081;&#x3057;&#x305F;2&#x500D;&#x306E;&#x4FE1;&#x53F7;&#x9577;&#x3092;&#x7528;&#x610F;&#x3057;&#x305D;&#x308C;&#x306B;&#x5BFE;&#x3057;&#x3066;FFT&#x3092;&#x884C;&#x3046;&#x3002;
+		 */
+		this.dct_size = size * 2;
+
+		/**
+		 * DCT&#x5909;&#x63DB;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A08;&#x7B97;&#x7528;&#x30C6;&#x30FC;&#x30D6;&#x30EB;
+		 */
+		this.dct_re = new Array(this.size);
+
+		/**
+		 * DCT&#x5909;&#x63DB;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x8A08;&#x7B97;&#x7528;&#x30C6;&#x30FC;&#x30D6;&#x30EB;
+		 */
+		this.dct_im = new Array(this.size);
+		{
+			const x_0 = 1.0 / Math.sqrt(this.size);
+			const x_n = x_0 * Math.sqrt(2);
+			for(let i = 0; i &lt; this.size; i++) {
+				const x = - Math.PI * i / this.dct_size;
+				this.dct_re[i] = Math.cos(x) * (i === 0 ? x_0 : x_n);
+				this.dct_im[i] = Math.sin(x) * (i === 0 ? x_0 : x_n);
+			}
+		}
+	}
+	
+	/**
+	 * &#x4E2D;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6D88;&#x53BB;&#x3059;&#x308B;
+	 */
+	delete() {
+		delete this.size;
+		delete this.dct_size;
+		delete this.dct_re;
+		delete this.dct_im;
+	}
+
+	/**
+	 * DCT-II
+	 * @param {Array&lt;number&gt;} real - &#x5B9F;&#x6570;&#x90E8;
+	 * @returns {Array&lt;number&gt;}
+	 */
+	dct(real) {
+		const re = new Array(this.dct_size);
+		const im = new Array(this.dct_size);
+		for(let i = 0; i &lt; this.dct_size; i++) {
+			re[i] = i &lt; this.size ? real[i] : 0.0;
+			im[i] = 0.0;
+		}
+		const fft = fft_chash.get(this.dct_size).fft(re, im);
+		for(let i = 0; i &lt; this.size; i++) {
+			re[i] = fft.real[i] * this.dct_re[i] - fft.imag[i] * this.dct_im[i];
+		}
+		re.splice(this.size);
+		return re;
+	}
+
+	/**
+	 * DCT-III (IDCT)
+	 * @param {Array&lt;number&gt;} real - &#x5B9F;&#x6570;&#x90E8;
+	 * @returns {Array&lt;number&gt;}
+	 */
+	idct(real) {
+		const re = new Array(this.dct_size);
+		const im = new Array(this.dct_size);
+		const denormlize = this.size * 2.0;
+		for(let i = 0; i &lt; this.dct_size; i++) {
+			re[i] = i &lt; this.size ? (denormlize * real[i] *    this.dct_re[i])  : 0.0;
+			im[i] = i &lt; this.size ? (denormlize * real[i] * (- this.dct_im[i])) : 0.0;
+		}
+		const ifft = fft_chash.get(this.dct_size).ifft(re, im);
+		ifft.real.splice(this.size);
+		return ifft.real;
+	}
+	
+}
+
+/**
+ * &#x96E2;&#x6563;&#x30B3;&#x30B5;&#x30A4;&#x30F3;&#x5909;&#x63DB;&#x7528;&#x306E;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;
+ */
+const dct_chash = new Chash(4, DCT);
+
+/**
+ * Signal&#x30AF;&#x30E9;&#x30B9;&#x306E;&#x5185;&#x90E8;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x95A2;&#x6570;&#x96C6;
+ */
+class SignalTool {
+	
+	/**
+	 * 0&#x304C;&#x542B;&#x307E;&#x308C;&#x308B;&#x304B;
+	 * @param {Array&lt;number&gt;} x - &#x8ABF;&#x3079;&#x305F;&#x3044;&#x914D;&#x5217;
+	 * @returns {boolean}
+	 */
+	static isContainsZero(x) {
+		for(let i = 0; i &lt; x.length; i++) {
+			if(x[i] !== 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * &#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * @param {Array&lt;number&gt;} real - &#x5B9F;&#x6570;&#x90E8;
+	 * @param {Array&lt;number&gt;} imag - &#x865A;&#x6570;&#x90E8;
+	 * @returns {Object&lt;string, Array&lt;number&gt;&gt;}
+	 */
+	static fft(real, imag) {
+		const obj = fft_chash.get(real.length);
+		return obj.fft(real, imag);
+	}
+
+	/**
+	 * &#x9006;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * @param {Array&lt;number&gt;} real - &#x5B9F;&#x6570;&#x90E8;
+	 * @param {Array&lt;number&gt;} imag - &#x865A;&#x6570;&#x90E8;
+	 * @returns {Object&lt;string, Array&lt;number&gt;&gt;}
+	 */
+	static ifft(real, imag) {
+		const obj = fft_chash.get(real.length);
+		return obj.ifft(real, imag);
+	}
+
+	/**
+	 * DCT-II (DCT)
+	 * @param {Array&lt;number&gt;} real - &#x5B9F;&#x6570;&#x90E8;
+	 * @returns {Array&lt;number&gt;}
+	 */
+	static dct(real) {
+		const obj = dct_chash.get(real.length);
+		return obj.dct(real);
+	}
+
+	/**
+	 * DCT-III (IDCT)
+	 * @param {Array&lt;number&gt;} real - &#x5B9F;&#x6570;&#x90E8;
+	 * @returns {Array&lt;number&gt;}
+	 */
+	static idct(real) {
+		const obj = dct_chash.get(real.length);
+		return obj.idct(real);
+	}
+
+	/**
+	 * &#x30D1;&#x30EF;&#x30FC;&#x30B9;&#x30DA;&#x30AF;&#x30C8;&#x30EB;&#x5BC6;&#x5EA6;
+	 * @param {Array&lt;number&gt;} real - &#x5B9F;&#x6570;&#x90E8;
+	 * @param {Array&lt;number&gt;} imag - &#x865A;&#x6570;&#x90E8;
+	 * @returns {Array&lt;number&gt;}
+	 */
+	static powerfft(real, imag) {
+		const size = real.length;
+		const X = SignalTool.fft(real, imag);
+		const power = new Array(size);
+		for(let i = 0; i &lt; size; i++) {
+			power[i] = X.real[i] * X.real[i] + X.imag[i] * X.imag[i];
+		}
+		return power;
+	}
+
+	/**
+	 * &#x7573;&#x307F;&#x8FBC;&#x307F;&#x7A4D;&#x5206;&#x3001;&#x591A;&#x9805;&#x5F0F;&#x4E57;&#x7B97;
+	 * @param {Array} x1_real - &#x5B9F;&#x6570;&#x90E8;
+	 * @param {Array} x1_imag - &#x865A;&#x6570;&#x90E8;
+	 * @param {Array} x2_real - &#x5B9F;&#x6570;&#x90E8;
+	 * @param {Array} x2_imag - &#x865A;&#x6570;&#x90E8;
+	 * @returns {Object&lt;string, Array&lt;number&gt;&gt;}
+	 */
+	static conv(x1_real, x1_imag, x2_real, x2_imag) {
+		let is_self = false;
+		if(x1_real.length === x2_real.length) {
+			is_self = true;
+			for(let i = 0; i &lt; x1_real.length;i++) {
+				if((x1_real[i] !== x2_real[i]) || (x1_imag[i] !== x2_imag[i])) {
+					is_self = false;
+					break;
+				}
+			}
+		}
+		const size = x1_real.length;
+		const N2 = size * 2;
+		const bit_size = Math.round(Math.log(size)/Math.log(2));
+		const is_fast = (1 &lt;&lt; bit_size) === size;
+		if(is_fast) {
+			// FFT&#x3092;&#x7528;&#x3044;&#x305F;&#x624B;&#x6CD5;&#x3078;&#x5207;&#x308A;&#x66FF;&#x3048;
+			// &#x5468;&#x6CE2;&#x6570;&#x7A7A;&#x9593;&#x4E0A;&#x3067;&#x306F;&#x639B;&#x3051;&#x7B97;&#x306B;&#x306A;&#x308B;
+			if(is_self) {
+				const size = x1_real.length;
+				const real = new Array(N2);
+				const imag = new Array(N2);
+				for(let i = 0; i &lt; N2; i++) {
+					real[i] = i &lt; size ? x1_real[i] : 0.0;
+					imag[i] = i &lt; size ? x1_imag[i] : 0.0;
+				}
+				const X = SignalTool.fft(real, imag);
+				for(let i = 0; i &lt; N2; i++) {
+					real[i] = X.real[i] * X.real[i] - X.imag[i] * X.imag[i];
+					imag[i] = X.real[i] * X.imag[i] + X.imag[i] * X.real[i];
+				}
+				const x = SignalTool.ifft(real, imag);
+				x.real.splice(N2 - 1);
+				x.imag.splice(N2 - 1);
+				return x;
+			}
+			else if(x1_real.length === x2_real.length) {
+				const size = x1_real.length;
+				const real1 = new Array(N2);
+				const imag1 = new Array(N2);
+				const real2 = new Array(N2);
+				const imag2 = new Array(N2);
+				for(let i = 0; i &lt; N2; i++) {
+					real1[i] = i &lt; size ? x1_real[i] : 0.0;
+					imag1[i] = i &lt; size ? x1_imag[i] : 0.0;
+					real2[i] = i &lt; size ? x2_real[i] : 0.0;
+					imag2[i] = i &lt; size ? x2_imag[i] : 0.0;
+				}
+				const F = SignalTool.fft(real1, imag1);
+				const G = SignalTool.fft(real2, imag2);
+				const real = new Array(N2);
+				const imag = new Array(N2);
+				for(let i = 0; i &lt; N2; i++) {
+					real[i] = F.real[i] * G.real[i] - F.imag[i] * G.imag[i];
+					imag[i] = F.real[i] * G.imag[i] + F.imag[i] * G.real[i];
+				}
+				const fg = SignalTool.ifft(real, imag);
+				fg.real.splice(N2 - 1);
+				fg.imag.splice(N2 - 1);
+				return fg;
+			}
+		}
+		let is_real_number = !SignalTool.isContainsZero(x1_imag);
+		if(is_real_number) {
+			is_real_number = !SignalTool.isContainsZero(x2_imag);
+		}
+		{
+			// &#x307E;&#x3058;&#x3081;&#x306B;&#x8A08;&#x7B97;&#x3059;&#x308B;
+			const real = new Array(x1_real.length + x2_real.length - 1);
+			const imag = new Array(x1_real.length + x2_real.length - 1);
+			for(let i = 0; i &lt; real.length; i++) {
+				real[i] = 0;
+				imag[i] = 0;
+			}
+			if(is_real_number) {
+				// &#x5B9F;&#x6570;&#x90E8;&#x5206;&#x306E;&#x307F;&#x306E;&#x7573;&#x307F;&#x8FBC;&#x307F;&#x7A4D;&#x5206;
+				// &#x30B9;&#x30E9;&#x30A4;&#x30C9;&#x3055;&#x305B;&#x3066;&#x3044;&#x304F;
+				// AAAA
+				//  BBBB
+				//   CCCC
+				for(let y = 0; y &lt; x2_real.length; y++) {
+					for(let x = 0; x &lt; x1_real.length; x++) {
+						real[y + x] += x1_real[x] * x2_real[y];
+					}
+				}
+			}
+			else {
+				// &#x5B9F;&#x6570;&#x90E8;&#x5206;&#x3068;&#x8907;&#x7D20;&#x6570;&#x90E8;&#x5206;&#x306E;&#x7573;&#x307F;&#x8FBC;&#x307F;&#x7A4D;&#x5206;
+				for(let y = 0; y &lt; x2_real.length; y++) {
+					for(let x = 0; x &lt; x1_real.length; x++) {
+						real[y + x] += x1_real[x] * x2_real[y] - x1_imag[x] * x2_imag[y];
+						imag[y + x] += x1_real[x] * x2_imag[y] + x1_imag[x] * x2_real[y];
+					}
+				}
+			}
+			return {
+				real : real,
+				imag : imag
+			};
+		}
+	}
+
+	/**
+	 * &#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x95A2;&#x6570;&#x3001;&#x76F8;&#x4E92;&#x76F8;&#x95A2;&#x95A2;&#x6570;
+	 * @param {Array} x1_real - &#x5B9F;&#x6570;&#x90E8;
+	 * @param {Array} x1_imag - &#x865A;&#x6570;&#x90E8;
+	 * @param {Array} x2_real - &#x5B9F;&#x6570;&#x90E8;
+	 * @param {Array} x2_imag - &#x865A;&#x6570;&#x90E8;
+	 * @returns {Object&lt;string, Array&lt;number&gt;&gt;}
+	 */
+	static xcorr(x1_real, x1_imag, x2_real, x2_imag) {
+		let is_self = false;
+		if(x1_real.length === x2_real.length) {
+			is_self = true;
+			for(let i = 0; i &lt; x1_real.length;i++) {
+				if((x1_real[i] !== x2_real[i]) || (x1_imag[i] !== x2_imag[i])) {
+					is_self = false;
+					break;
+				}
+			}
+		}
+		if(x1_real.length === x2_real.length) {
+			const size = x1_real.length;
+			const N2 = size * 2;
+			const bit_size = Math.round(Math.log(size)/Math.log(2));
+			const is_fast = (1 &lt;&lt; bit_size) === size;
+			if(is_fast) {
+				let fg = null;
+				if(is_self) {
+					const real = new Array(N2);
+					const imag = new Array(N2);
+					for(let i = 0; i &lt; N2; i++) {
+						real[i] = i &lt; size ? x1_real[i] : 0.0;
+						imag[i] = i &lt; size ? x1_imag[i] : 0.0;
+					}
+					// &#x30D1;&#x30EF;&#x30FC;&#x30B9;&#x30DA;&#x30AF;&#x30C8;&#x30EB;&#x5BC6;&#x5EA6;&#x306F;&#x3001;&#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x306E;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;&#x306E;&#x305F;&#x3081;&#x3001;
+					// &#x30D1;&#x30EF;&#x30FC;&#x30B9;&#x30DA;&#x30AF;&#x30C8;&#x30EB;&#x5BC6;&#x5EA6;&#x306E;&#x9006;&#x5909;&#x63DB;&#x3067;&#x6C42;&#x3081;&#x3089;&#x308C;&#x308B;&#x3002;
+					const power = SignalTool.powerfft(real, imag);
+					fg = SignalTool.ifft(power, imag);
+					// &#x30B7;&#x30D5;&#x30C8;
+					real.pop();
+					imag.pop();
+					for(let i = 0, j = size + 1 ; i &lt; real.length; i++, j++) {
+						if(N2 &lt;= j) {
+							j = 0;
+						}
+						real[i] = fg.real[j];
+						imag[i] = fg.imag[j];
+					}
+					return {
+						real : real,
+						imag : imag
+					};
+				}
+				else {
+					const f_real = new Array(N2);
+					const f_imag = new Array(N2);
+					const g_real = new Array(N2);
+					const g_imag = new Array(N2);
+					// g&#x306E;&#x9806;&#x5E8F;&#x3092;&#x53CD;&#x8EE2;&#x304B;&#x3064;&#x5171;&#x5F79;&#x8907;&#x7D20;&#x6570;&#x306B;&#x3059;&#x308B;
+					for(let i = 0; i &lt; N2; i++) {
+						f_real[i] = i &lt; size ?   x1_real[i] : 0.0;
+						f_imag[i] = i &lt; size ?   x1_imag[i] : 0.0;
+						g_real[i] = i &lt; size ?   x2_real[size - i - 1] : 0.0;
+						g_imag[i] = i &lt; size ? - x2_imag[size - i - 1] : 0.0;
+					}
+					// &#x7573;&#x307F;&#x8FBC;&#x307F;&#x639B;&#x3051;&#x7B97;
+					const F = SignalTool.fft(f_real, f_imag);
+					const G = SignalTool.fft(g_real, g_imag);
+					const real = new Array(N2);
+					const imag = new Array(N2);
+					for(let i = 0; i &lt; N2; i++) {
+						real[i] = F.real[i] * G.real[i] - F.imag[i] * G.imag[i];
+						imag[i] = F.real[i] * G.imag[i] + F.imag[i] * G.real[i];
+					}
+					fg = SignalTool.ifft(real, imag);
+					fg.real.splice(N2 - 1);
+					fg.imag.splice(N2 - 1);
+					return fg;
+				}
+			}
+		}
+		let is_real_number = !SignalTool.isContainsZero(x1_imag);
+		if(is_real_number) {
+			is_real_number = !SignalTool.isContainsZero(x2_imag);
+		}
+		if(is_self) {
+			const size = x1_real.length;
+			const N2 = size * 2;
+			// &#x5B9F;&#x6570;&#x306E;&#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x95A2;&#x6570;
+			if(is_real_number) {
+				const fg = new Array(size);
+				for(let m = 0; m &lt; size; m++) {
+					fg[m] = 0;
+					const tmax = size - m;
+					for(let t = 0; t &lt; tmax; t++) {
+						fg[m] += x1_real[t] * x2_real[t + m];
+					}
+				}
+				// &#x534A;&#x5206;&#x306E;&#x5024;&#x306F;&#x540C;&#x4E00;&#x306A;&#x306E;&#x3067;&#x6298;&#x308A;&#x8FD4;&#x3057;&#x3066;&#x8A08;&#x7B97;&#x3092;&#x7701;&#x304F;
+				const real = new Array(N2 - 1);
+				const imag = new Array(N2 - 1);
+				for(let i = 0, j = size - 1 ; i &lt; size; i++, j--) {
+					real[i] = fg[j];
+					real[size + i - 1] = fg[i];
+				}
+				for(let i = 0; i &lt; imag.length; i++) {
+					imag[i] = 0.0;
+				}
+				return {
+					real : real,
+					imag : imag
+				};
+			}
+		}
+		// 2&#x3064;&#x306E;&#x4FE1;&#x53F7;&#x306E;&#x9577;&#x3055;&#x304C;&#x9055;&#x3046;&#x3001;&#x53C8;&#x306F;2&#x306E;&#x7D2F;&#x4E57;&#x306E;&#x9577;&#x3055;&#x3067;&#x306F;&#x306A;&#x3044;&#x5225;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x5834;&#x5408;&#x306F;&#x901A;&#x5E38;&#x8A08;&#x7B97;
+		{
+			const g_real = new Array(x2_real.length);
+			const g_imag = new Array(x2_real.length);
+			// g&#x306E;&#x9806;&#x5E8F;&#x3092;&#x53CD;&#x8EE2;&#x304B;&#x3064;&#x5171;&#x5F79;&#x8907;&#x7D20;&#x6570;&#x306B;&#x3059;&#x308B;
+			for(let i = 0; i &lt; x2_real.length; i++) {
+				g_real[i] =   x2_real[x2_real.length - i - 1];
+				g_imag[i] = - x2_imag[x2_real.length - i - 1];
+			}
+			return SignalTool.conv(x1_real, x1_imag, g_real, g_imag);
+		}
+	}
+
+	/**
+	 * &#x7A93;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * @param {string} name - &#x7A93;&#x95A2;&#x6570;&#x306E;&#x540D;&#x524D;
+	 * @param {number} size - &#x9577;&#x3055;
+	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @returns {Array&lt;number&gt;}
+	 */
+	static window(name, size, isPeriodic) {
+
+		const name_ = name.toLocaleLowerCase();
+		const size_ = size;
+		const window = new Array(size_);
+		
+		const sinc = function(x) {
+			return x === 0.0 ? 1.0 : Math.sin(x) / x;
+		};
+
+		const normalzie = function(y) {
+			if(isPeriodic) {
+				return (y / size_ * (Math.PI * 2.0));
+			}
+			else {
+				return (y / (size_ - 1) * (Math.PI * 2.0));
+			}
+		};
+
+		const setBlackmanWindow = function( alpha0, alpha1, alpha2, alpha3, alpha4) {
+			for(let i = 0; i &lt; size_; i++) {
+				window[i]  = alpha0;
+				window[i] -= alpha1 * Math.cos(1.0 * normalzie(i));
+				window[i] += alpha2 * Math.cos(2.0 * normalzie(i));
+				window[i] -= alpha3 * Math.cos(3.0 * normalzie(i));
+				window[i] += alpha4 * Math.cos(4.0 * normalzie(i));
+			}
+		};
+
+		switch(name_) {
+			// rect &#x77E9;&#x5F62;&#x7A93;(rectangular window)
+			case &quot;rectangle&quot;:
+				setBlackmanWindow(1.0, 0.0, 0.0, 0.0, 0.0);
+				break;
+
+			// hann &#x30CF;&#x30F3;&#x7A93;&#x30FB;&#x30CF;&#x30CB;&#x30F3;&#x30B0;&#x7A93;(hann/hanning window)
+			case &quot;hann&quot;:
+				setBlackmanWindow(0.5, 0.5, 0.0, 0.0, 0.0);
+				break;
+
+			// hamming &#x30CF;&#x30DF;&#x30F3;&#x30B0;&#x7A93;(hamming window)
+			case &quot;hamming&quot;:
+				setBlackmanWindow(0.54, 0.46, 0.0, 0.0, 0.0);
+				break;
+
+			// blackman &#x30D6;&#x30E9;&#x30C3;&#x30AF;&#x30DE;&#x30F3;&#x7A93;(Blackman window)
+			case &quot;blackman&quot;:
+				setBlackmanWindow(0.42, 0.50, 0.08, 0.0, 0.0);
+				break;
+
+			// blackmanharris Blackman-Harris window
+			case &quot;blackmanharris&quot;:
+				setBlackmanWindow(0.35875, 0.48829, 0.14128, 0.01168, 0);
+				break;
+
+			// blackmannuttall Blackman-Nuttall window
+			case &quot;blackmannuttall&quot;:
+				setBlackmanWindow(0.3635819, 0.4891775, 0.1365995, 0.0106411, 0.0);
+				break;
+
+			// flattop Flat top window
+			case &quot;flattop&quot;:
+				setBlackmanWindow(1.0, 1.93, 1.29, 0.388, 0.032);
+				break;
+
+			// lanczos Lanczos window
+			case &quot;lanczos&quot;:
+				for(let i = 0; i &lt; size_; i++) {
+					window[i]  = sinc(normalzie(i) - 1.0);
+				}
+				break;
+
+			// Half cycle sine window(MDCT&#x7A93;)
+			case &quot;sin&quot;:
+				for(let i = 0; i &lt; size_; i++) {
+					window[i]  = Math.sin(normalzie(i) * 0.5);
+				}
+				break;
+
+			// Vorbis window(MDCT&#x7A93;)
+			case &quot;vorbis&quot;:
+				for(let i = 0; i &lt; size_; i++) {
+					const x = Math.sin(normalzie(i) * 0.5);
+					window[i]  = Math.sin(Math.PI * 0.5 * x * x);
+				}
+				break;
+		}
+
+		return window;
+	}
+
+	/**
+	 * &#x30CF;&#x30CB;&#x30F3;&#x30B0;&#x7A93;
+	 * @param {number} size - &#x9577;&#x3055;
+	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @returns {Array&lt;number&gt;}
+	 */
+	static hann(size, isPeriodic) {
+		return SignalTool.window(&quot;hann&quot;, size, isPeriodic);
+	}
+	
+	/**
+	 * &#x30CF;&#x30DF;&#x30F3;&#x30B0;&#x7A93;&#x3092;&#x4F5C;&#x6210;
+	 * @param {number} size - &#x9577;&#x3055;
+	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @returns {Array&lt;number&gt;}
+	 */
+	static hamming(size, isPeriodic) {
+		return SignalTool.window(&quot;hamming&quot;, size, isPeriodic);
+	}
+	
+}
+
+/*
+const A = [1,2,3,4,5];
+const B = [0,0,3,0,0];
+const C = [5,6,7,8,9];
+
+console.log(SignalTool.conv(A,B,A,B));
+console.log(SignalTool.conv(A,B,C,B));
+console.log(SignalTool.xcorr(A,B,C,B));
+*/
+
+/*
+const X1 = [1, 2, 30, 100];
+console.log(SignalTool.dct(X1));
+console.log(SignalTool.idct(SignalTool.dct(X1)));
+
+console.log(SignalTool.mdct(X1));
+console.log(SignalTool.imdct(SignalTool.mdct(X1)));
+*/
+/*
+const X1 = [1, 2, 30, 100];
+console.log(SignalTool.dct(X1));
+console.log(SignalTool.idct(SignalTool.dct(X1)));
+
+{
+	const X1 = [1];
+	const Y1 = [j];
+	const A = SignalTool.fft(X1, Y1);
+	const B = SignalTool.ifft(A.real, A.imag);
+
+	console.log(X1);
+	console.log(Y1);
+	console.log(A.real);
+	console.log(A.imag);
+	console.log(B.real);
+	console.log(B.imag);
+}
+*/
+
+/*
+{
+	const X1 = [1,-2,3,-4];
+	const Y1 = [-100,20,-300,40];
+	const A = SignalTool.fft(X1, Y1);
+	const B = SignalTool.ifft(A.real, A.imag);
+
+	console.log(X1);
+	console.log(Y1);
+	console.log(A.real);
+	console.log(A.imag);
+	console.log(B.real);
+	console.log(B.imag);
+}
+*/
+
+/*
+{
+	const fft = new FFT(8);
+	const X1 = [1,-2,3,-4,32,16,64,-40];
+	const Y1 = [-100,20,-300,40,1,2,1,2];
+	const A = fft.fft(X1, Y1);
+	const B = fft.ifft(A.real, A.imag);
+
+	console.log(X1);
+	console.log(Y1);
+	console.log(A.real);
+	console.log(A.imag);
+	console.log(B.real);
+	console.log(B.imag);
+}
+*/
+
+/*
+{
+	const fft = new FFT(5);
+	const X1 = [1,-2,-3,-32,40];
+	const Y1 = [-100,20,-300,-40,40];
+	const A = fft.fft(X1, Y1);
+	const B = fft.ifft(A.real, A.imag);
+
+	console.log(X1);
+	console.log(Y1);
+	console.log(A.real);
+	console.log(A.imag);
+	console.log(B.real);
+	console.log(B.imag);
+}
+*/
+
+
+/**
+ * Matrix&#x7528;&#x306E;&#x4FE1;&#x53F7;&#x51E6;&#x7406;&#x7528;&#x306E;&#x8A08;&#x7B97;&#x30AF;&#x30E9;&#x30B9;
+ */
+export default class Signal {
+	
+	/**
+	 * &#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @param {boolean} [is_2_dimensions=false]
+	 * @returns {Matrix}
+	 */
+	static fft(mat, is_2_dimensions = false) {
+		const M = Matrix._toMatrix(mat);
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = SignalTool.fft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex([result.real[i], result.imag[i]]);
+			}
+			return y;
+		};
+		return is_2_dimensions ? M.eachVectorBoth(main) : M.eachVectorAuto(main);
+	}
+
+	/**
+	 * &#x9006;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @param {boolean} [is_2_dimensions=false]
+	 * @returns {Matrix}
+	 */
+	static ifft(mat, is_2_dimensions = false) {
+		const M = Matrix._toMatrix(mat);
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = SignalTool.ifft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex([result.real[i], result.imag[i]]);
+			}
+			return y;
+		};
+		return is_2_dimensions ? M.eachVectorBoth(main) : M.eachVectorAuto(main);
+	}
+
+	/**
+	 * &#x30D1;&#x30EF;&#x30FC;&#x30B9;&#x30DA;&#x30AF;&#x30C8;&#x30EB;&#x5BC6;&#x5EA6;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @returns {Matrix}
+	 */
+	static powerfft(mat) {
+		const M = Matrix._toMatrix(mat);
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = SignalTool.powerfft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex(result[i]);
+			}
+			return y;
+		};
+		return M.eachVectorAuto(main);
+	}
+
+	/**
+	 * &#x96E2;&#x6563;&#x30B3;&#x30B5;&#x30A4;&#x30F3;&#x5909;&#x63DB;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @param {boolean} [is_2_dimensions=false]
+	 * @returns {Matrix}
+	 */
+	static dct(mat, is_2_dimensions = false) {
+		const M = Matrix._toMatrix(mat);
+		if(M.isComplex()) {
+			throw &quot;dct don&apos;t support complex numbers.&quot;;
+		}
+		const main = function(data) {
+			const real = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+			}
+			const result = SignalTool.dct(real);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex(result[i]);
+			}
+			return y;
+		};
+		return is_2_dimensions ? M.eachVectorBoth(main) : M.eachVectorAuto(main);
+	}
+
+	/**
+	 * &#x9006;&#x96E2;&#x6563;&#x30B3;&#x30B5;&#x30A4;&#x30F3;&#x5909;&#x63DB;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @param {boolean} [is_2_dimensions=false]
+	 * @returns {Matrix}
+	 */
+	static idct(mat, is_2_dimensions = false) {
+		const M = Matrix._toMatrix(mat);
+		if(M.isComplex()) {
+			throw &quot;idct don&apos;t support complex numbers.&quot;;
+		}
+		const main = function(data) {
+			const real = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+			}
+			const result = SignalTool.idct(real);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex(result[i]);
+			}
+			return y;
+		};
+		return is_2_dimensions ? M.eachVectorBoth(main) : M.eachVectorAuto(main);
+	}
+
+	/**
+	 * 2&#x6B21;&#x5143;&#x306E;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @returns {Matrix}
+	 */
+	static fft2(mat) {
+		const M = Matrix._toMatrix(mat);
+		return M.fft(true);
+	}
+
+	/**
+	 * 2&#x6B21;&#x5143;&#x306E;&#x9006;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @returns {Matrix}
+	 */
+	static ifft2(mat) {
+		const M = Matrix._toMatrix(mat);
+		return M.ifft(true);
+	}
+
+	/**
+	 * 2&#x6B21;&#x5143;&#x306E;DCT&#x5909;&#x63DB;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @returns {Matrix}
+	 */
+	static dct2(mat) {
+		const M = Matrix._toMatrix(mat);
+		return M.dct2(true);
+	}
+
+	/**
+	 * 2&#x6B21;&#x5143;&#x306E;&#x9006;DCT&#x5909;&#x63DB;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @returns {Matrix}
+	 */
+	static idct2(mat) {
+		const M = Matrix._toMatrix(mat);
+		return M.idct(true);
+	}
+
+	/**
+	 * &#x7573;&#x307F;&#x8FBC;&#x307F;&#x7A4D;&#x5206;&#x3001;&#x591A;&#x9805;&#x5F0F;&#x4E57;&#x7B97;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number
+	 * @returns {Matrix}
+	 */
+	static conv(mat, number) {
+		const M1 = Matrix._toMatrix(mat);
+		const M2 = Matrix._toMatrix(number);
+		if(M1.isMatrix() || M2.isMatrix()) {
+			throw &quot;conv don&apos;t support matrix numbers.&quot;;
+		}
+		const M1_real = new Array(M1.length);
+		const M1_imag = new Array(M1.length);
+		const M2_real = new Array(M2.length);
+		const M2_imag = new Array(M2.length);
+		if(M1.isRow()) {
+			for(let i = 0; i &lt; M1.column_length; i++) {
+				M1_real[i] = M1.matrix_array[0][i].real;
+				M1_imag[i] = M1.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i &lt; M1.row_length; i++) {
+				M1_real[i] = M1.matrix_array[i][0].real;
+				M1_imag[i] = M1.matrix_array[i][0].imag;
+			}
+		}
+		if(M2.isRow()) {
+			for(let i = 0; i &lt; M2.column_length; i++) {
+				M2_real[i] = M2.matrix_array[0][i].real;
+				M2_imag[i] = M2.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i &lt; M2.row_length; i++) {
+				M2_real[i] = M2.matrix_array[i][0].real;
+				M2_imag[i] = M2.matrix_array[i][0].imag;
+			}
+		}
+		const y = SignalTool.conv(M1_real, M1_imag, M2_real, M2_imag);
+		const m = new Array(y.real.length);
+		for(let i = 0; i &lt; y.real.length; i++) {
+			m[i] = new Complex([y.real[i], y.imag[i]]);
+		}
+		const M = new Matrix([m]);
+		return M2.isRow() ? M : M.transpose();
+	}
+
+	/**
+	 * &#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x95A2;&#x6570;&#x3001;&#x76F8;&#x4E92;&#x76F8;&#x95A2;&#x95A2;&#x6570;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [number] - &#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x95A2;&#x6570;
+	 * @returns {Matrix}
+	 */
+	static xcorr(mat, number) {
+		const M1 = Matrix._toMatrix(mat);
+		if(!number) {
+			return M1.xcorr(M1);
+		}
+		const M2 = Matrix._toMatrix(number);
+		if(M1.isMatrix() || M2.isMatrix()) {
+			throw &quot;conv don&apos;t support matrix numbers.&quot;;
+		}
+		const M1_real = new Array(M1.length);
+		const M1_imag = new Array(M1.length);
+		const M2_real = new Array(M2.length);
+		const M2_imag = new Array(M2.length);
+		if(M1.isRow()) {
+			for(let i = 0; i &lt; M1.column_length; i++) {
+				M1_real[i] = M1.matrix_array[0][i].real;
+				M1_imag[i] = M1.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i &lt; M1.row_length; i++) {
+				M1_real[i] = M1.matrix_array[i][0].real;
+				M1_imag[i] = M1.matrix_array[i][0].imag;
+			}
+		}
+		if(M2.isRow()) {
+			for(let i = 0; i &lt; M2.column_length; i++) {
+				M2_real[i] = M2.matrix_array[0][i].real;
+				M2_imag[i] = M2.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i &lt; M2.row_length; i++) {
+				M2_real[i] = M2.matrix_array[i][0].real;
+				M2_imag[i] = M2.matrix_array[i][0].imag;
+			}
+		}
+		const y = SignalTool.xcorr(M1_real, M1_imag, M2_real, M2_imag);
+		const m = new Array(y.real.length);
+		for(let i = 0; i &lt; y.real.length; i++) {
+			m[i] = new Complex([y.real[i], y.imag[i]]);
+		}
+		const M = new Matrix([m]);
+		return M1.isRow() ? M : M.transpose();
+	}
+
+	/**
+	 * &#x7A93;&#x95A2;&#x6570;
+	 * @param {string} name - &#x7A93;&#x95A2;&#x6570;&#x306E;&#x540D;&#x524D;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - &#x9577;&#x3055;
+	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
+	 */
+	static window(name, size, isPeriodic) {
+		const size_ = Matrix._toInteger(size);
+		const y = SignalTool.window(name, size_, isPeriodic);
+		return (new Matrix(y)).transpose();
+	}
+
+	/**
+	 * &#x30CF;&#x30CB;&#x30F3;&#x30B0;&#x7A93;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - &#x9577;&#x3055;
+	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
+	 */
+	static hann(size, isPeriodic) {
+		return SignalTool.window(&quot;hann&quot;, size, isPeriodic);
+	}
+	
+	/**
+	 * &#x30CF;&#x30DF;&#x30F3;&#x30B0;&#x7A93;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - &#x9577;&#x3055;
+	 * @param {boolean} [isPeriodic] - true &#x306A;&#x3089; periodic, false &#x306A;&#x3089; symmetric
+	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
+	 */
+	static hamming(size, isPeriodic) {
+		return SignalTool.window(&quot;hamming&quot;, size, isPeriodic);
+	}
+	
+	
+}</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

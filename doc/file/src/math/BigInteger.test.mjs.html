@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/math/BigInteger.test.mjs | konpeito</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.mjs~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigDecimal.mjs~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/math/BigInteger.test.mjs</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/* global test, expect */
+
+import Random from &quot;./tools/Random.mjs&quot;;
+import BigInteger from &quot;./BigInteger.mjs&quot;;
+const $ = BigInteger.create;
+
+{
+	test(&quot;add 1&quot;, () =&gt; {
+		expect(
+			$(&quot;12345678&quot;).add($(&quot;12345678&quot;)).equals($(&quot;24691356&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;add 2&quot;, () =&gt; {
+		expect(
+			$(&quot;12345678&quot;).add($(&quot;-1234&quot;)).equals($(&quot;12344444&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;add 3&quot;, () =&gt; {
+		expect(
+			$(&quot;-1234&quot;).add($(&quot;12345678&quot;)).equals($(&quot;12344444&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;add 4&quot;, () =&gt; {
+		expect(
+			$(&quot;-1234&quot;).add($(&quot;-1234&quot;)).equals($(&quot;-2468&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;sub 1&quot;, () =&gt; {
+		expect(
+			$(&quot;12345678&quot;).sub($(&quot;12345678&quot;)).equals($(&quot;0&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;sub 2&quot;, () =&gt; {
+		expect(
+			$(&quot;12345678&quot;).sub($(&quot;-1234&quot;)).equals($(&quot;12346912&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;sub 3&quot;, () =&gt; {
+		expect(
+			$(&quot;-1234&quot;).sub($(&quot;12345678&quot;)).equals($(&quot;-12346912&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;sub 4&quot;, () =&gt; {
+		expect(
+			$(&quot;-1234&quot;).sub($(&quot;-1234&quot;)).equals($(&quot;0&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;mul&quot;, () =&gt; {
+		expect(
+			$(&quot;12345678&quot;).mul($(&quot;-1234&quot;)).equals($(&quot;-15234566652&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;div 1&quot;, () =&gt; {
+		expect(
+			$(&quot;12345678&quot;).div($(&quot;-1234&quot;)).equals($(&quot;-10004&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;div 2&quot;, () =&gt; {
+		expect(
+			$(&quot;-1234567890123456789012345678901234567890&quot;).div($(&quot;123456789012345678901&quot;)).equals($(&quot;-10000000000000000000&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;divideAndRemainder&quot;, () =&gt; {
+		expect(
+			$(&quot;-1234567890123456789012345678901234567890&quot;).divideAndRemainder($(&quot;123456789012345678901&quot;))[1].equals($(&quot;-2345678901234567890&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;rem&quot;, () =&gt; {
+		expect(
+			$(&quot;-1234567890123456789012345678901234567890&quot;).rem($(&quot;123456789012345678901&quot;)).equals($(&quot;-2345678901234567890&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;mod&quot;, () =&gt; {
+		expect(
+			$(&quot;-1234567890123456789012345678901234567890&quot;).mod($(&quot;123456789012345678901&quot;)).equals($(&quot;121111110111111111011&quot;))
+		).toBe(true);
+	});
+}
+
+{
+	test(&quot;new 1&quot;, () =&gt; {
+		expect(
+			$([&quot;1234ffffff0000000000&quot;, 16]).equals($(&quot;85980274126460708454400&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;new 2&quot;, () =&gt; {
+		expect(
+			$(&quot;0x1234ffffff0000000000&quot;).equals($(&quot;85980274126460708454400&quot;))
+		).toBe(true);
+	});
+
+	test(&quot;new 3&quot;, () =&gt; {
+		expect(
+			$(&quot;0b101001000100001000000&quot;).equals($(&quot;1345600&quot;))
+		).toBe(true);
+	});
+	
+	test(&quot;new 4&quot;, () =&gt; {
+		expect(
+			$(1234567890).longValue === 1234567890
+		).toBe(true);
+	});
+
+	test(&quot;new 5&quot;, () =&gt; {
+		expect(
+			$(-1234567890).longValue === -1234567890
+		).toBe(true);
+	});
+}
+
+test(&quot;toString 1&quot;, () =&gt; {
+	expect(
+		$(&quot;0x1234&quot;).toString() === &quot;4660&quot;
+	).toBe(true);
+});
+
+test(&quot;toString 2&quot;, () =&gt; {
+	expect(
+		$(&quot;0x1234ffffff0000000000&quot;).toString(16) === &quot;1234ffffff0000000000&quot;
+	).toBe(true);
+});
+
+test(&quot;toString 3&quot;, () =&gt; {
+	expect(
+		$(&quot;0x1234ffffff0000000000&quot;).toString(2) === &quot;10010001101001111111111111111111111110000000000000000000000000000000000000000&quot;
+	).toBe(true);
+});
+
+{
+	const s1 = $([&quot;1234ffffff0000000000&quot;, 16]);
+	const s2 = s1.negate();
+
+	test(&quot;bitCount 1&quot;, () =&gt; {
+		expect(s1.bitCount()).toBe(29);
+	});
+
+	test(&quot;bitCount 2&quot;, () =&gt; {
+		expect(s2.bitCount()).toBe(68);
+	});
+
+	test(&quot;bitLength 1&quot;, () =&gt; {
+		expect(s1.bitLength()).toBe(77);
+	});
+
+	test(&quot;bitLength 2&quot;, () =&gt; {
+		expect(s2.bitLength()).toBe(77);
+	});
+
+	test(&quot;getLowestSetBit 1&quot;, () =&gt; {
+		expect(s1.getLowestSetBit()).toBe(40);
+	});
+
+	test(&quot;getLowestSetBit 2&quot;, () =&gt; {
+		expect(s2.getLowestSetBit()).toBe(40);
+	});
+
+	test(&quot;shiftLeft, shiftRight&quot;, () =&gt; {
+		const testFunction = function() {
+			let x = BigInteger.ONE;
+			for(let i = 0;i &lt; 18; i++) {
+				x = x.shiftLeft(1);
+				const x_string_2 = x.toString(2);
+				const x_len = x.bitLength();
+				const x_lsb = x.getLowestSetBit();
+				if(x_string_2 !== &quot;100000000000000000000000&quot;.substr(0, 2 + i)) {
+					return false;
+				}
+				if(x_len !== 2 + i) {
+					return false;
+				}
+				if(x_lsb !== (x_len - 1)) {
+					return false;
+				}
+			}
+			for(let i = 0;i &lt; 18; i++) {
+				x = x.shiftRight(1);
+				const x_string_2 = x.toString(2);
+				const x_len = x.bitLength();
+				const x_lsb = x.getLowestSetBit();
+				if(x_string_2 !== &quot;100000000000000000000000&quot;.substr(0, 18 - i)) {
+					return false;
+				}
+				if(x_len !== 18 - i) {
+					return false;
+				}
+				if(x_lsb !== (x_len - 1)) {
+					return false;
+				}
+			}
+			return true;
+		};
+		expect(testFunction()).toBe(true);
+	});
+
+	test(&quot;testBit&quot;, () =&gt; {
+		const testFunction = function() {
+			const binary_text = &quot;101001000100001000000&quot;;
+			const s1 = $([binary_text, 2]);
+			const s2 = s1.bitLength();
+			let output = &quot;&quot;;
+			for(let i = s2 - 1; i &gt;= 0; i--) {
+				output += s1.testBit(i) ? &quot;1&quot; : &quot;0&quot;;
+			}
+			return output === binary_text;
+		};
+		expect(testFunction()).toBe(true);
+	});
+
+	test(&quot;setBit&quot;, () =&gt; {
+		const testFunction = function() {
+			const binary_text = &quot;101001000100001000000&quot;;
+			const s1 = $([binary_text, 2]);
+			const s2 = s1.bitLength();
+			let s3 = BigInteger.ZERO;
+			for(let i = 0; i &lt; s2; i++) {
+				if(s1.testBit(i)) {
+					s3 = s3.setBit(i);
+				}
+			}
+			return s3.toString(2) === binary_text;
+		};
+		expect(testFunction()).toBe(true);
+	});
+
+	test(&quot;clearBit&quot;, () =&gt; {
+		const testFunction = function() {
+			const binary_text = &quot;101001000100001000000&quot;;
+			const s1 = $([binary_text, 2]);
+			const s2 = s1.bitLength();
+			let j = 0;
+			for(let i = 0; i &lt; s2; i++) {
+				if(s1.testBit(i)) {
+					j++;
+					const clear = s1.clearBit(i).toString(2);
+					if((j === 1) &amp;&amp; (clear !== &quot;101001000100000000000&quot;)) {
+						return false;
+					}
+					else if((j === 2) &amp;&amp; (clear !== &quot;101001000000001000000&quot;)) {
+						return false;
+					}
+					else if((j === 3) &amp;&amp; (clear !== &quot;101000000100001000000&quot;)) {
+						return false;
+					}
+					else if((j === 4) &amp;&amp; (clear !== &quot;100001000100001000000&quot;)) {
+						return false;
+					}
+					else if((j === 5) &amp;&amp; (clear !== &quot;1001000100001000000&quot;)) {
+						return false;
+					}
+				}
+			}
+			return true;
+		};
+		expect(testFunction()).toBe(true);
+	});
+
+	test(&quot;flipBit&quot;, () =&gt; {
+		const flip = function(text) {
+			let s1 = $(text);
+			const s2 = s1.bitLength();
+			for(let i = 0; i &lt; s2; i++) {
+				s1 = s1.flipBit(i);
+			}
+			return s1;
+		};
+		expect(
+			flip(&quot;0b101001000100001000000&quot;).equals($(&quot;0b10110111011110111111&quot;))
+		).toBe(true);
+	});
+}
+
+{
+	const s1 = $([&quot;1234ffffff0000000000&quot;, 16]);
+	const s2 = s1.negate();
+	const s3 = $([&quot;8765ffffff0000000000&quot;, 16]);
+	const s4 = s3.negate();
+
+	test(&quot;and 1&quot;, () =&gt; {
+		expect(
+			s1.and(s2).toString(16) === &quot;10000000000&quot;
+		).toBe(true);
+	});
+
+	test(&quot;and 2&quot;, () =&gt; {
+		expect(
+			s1.and(s3).toString(16) === &quot;224ffffff0000000000&quot;
+		).toBe(true);
+	});
+
+	test(&quot;and 3&quot;, () =&gt; {
+		expect(
+			s2.and(s4).toString(16) === &quot;-9775ffffff0000000000&quot;
+		).toBe(true);
+	});
+
+	test(&quot;or 1&quot;, () =&gt; {
+		expect(
+			s1.or(s2).toString(16) === &quot;-10000000000&quot;
+		).toBe(true);
+	});
+
+	test(&quot;or 2&quot;, () =&gt; {
+		expect(
+			s1.or(s3).toString(16) === &quot;9775ffffff0000000000&quot;
+		).toBe(true);
+	});
+
+	test(&quot;or 3&quot;, () =&gt; {
+		expect(
+			s2.or(s4).toString(16) === &quot;-224ffffff0000000000&quot;
+		).toBe(true);
+	});
+
+	test(&quot;xor 1&quot;, () =&gt; {
+		expect(
+			s1.xor(s2).toString(16) === &quot;-20000000000000000000&quot;
+		).toBe(true);
+	});
+
+	test(&quot;xor 2&quot;, () =&gt; {
+		expect(
+			s1.xor(s3).toString(16) === &quot;0&quot;
+		).toBe(true);
+	});
+
+	test(&quot;xor 3&quot;, () =&gt; {
+		expect(
+			s2.xor(s4).toString(16) === &quot;0&quot;
+		).toBe(true);
+	});
+
+	test(&quot;not 1&quot;, () =&gt; {
+		expect(
+			s1.not().toString(16) === &quot;-1234ffffff0000000001&quot;
+		).toBe(true);
+	});
+
+	test(&quot;not 2&quot;, () =&gt; {
+		expect(
+			s2.not().toString(16) === &quot;1234fffffeffffffffff&quot;
+		).toBe(true);
+	});
+
+	test(&quot;andNot 1&quot;, () =&gt; {
+		expect(
+			s1.andNot(s2).toString(16) === &quot;1234fffffe0000000000&quot;
+		).toBe(true);
+	});
+
+	test(&quot;andNot 2&quot;, () =&gt; {
+		expect(
+			s1.andNot(s3).toString(16) === &quot;10100000000000000000&quot;
+		).toBe(true);
+	});
+
+	test(&quot;andNot 3&quot;, () =&gt; {
+		expect(
+			s2.andNot(s4).toString(16) === &quot;85410000000000000000&quot;
+		).toBe(true);
+	});
+}
+
+{
+	test(&quot;intValue&quot;, () =&gt; {
+		expect(
+			$(&quot;0x3334342423423&quot;).intValue.toString(16) === &quot;42423423&quot;
+		).toBe(true);
+	});
+
+	test(&quot;longValue&quot;, () =&gt; {
+		expect(
+			$(&quot;0x3334342423423&quot;).longValue.toString(16) === &quot;3334342423423&quot;
+		).toBe(true);
+	});
+
+	test(&quot;doubleValue&quot;, () =&gt; {
+		expect(
+			$(&quot;0x1122334455&quot;).doubleValue === 0x1122334455
+		).toBe(true);
+	});
+}
+
+{
+	BigInteger.setDefaultRandom(new Random(0));
+
+	test(&quot;createRandomBigInteger&quot;, () =&gt; {
+		expect(
+			!BigInteger.createRandomBigInteger(50).equals(BigInteger.createRandomBigInteger(50))
+		).toBe(true);
+	});
+	
+	test(&quot;nextProbablePrime 1&quot;, () =&gt; {
+		expect(
+			$(100000).nextProbablePrime().longValue === 100003
+		).toBe(true);
+	});
+
+	test(&quot;nextProbablePrime 2&quot;, () =&gt; {
+		expect(
+			$(100003).nextProbablePrime().longValue === 100019
+		).toBe(true);
+	});
+	
+	test(&quot;nextProbablePrime 3&quot;, () =&gt; {
+		expect(
+			$(100019).nextProbablePrime().longValue === 100043
+		).toBe(true);
+	});
+
+	test(&quot;isProbablePrime 1&quot;, () =&gt; {
+		expect(
+			$(&quot;2147483647&quot;).isProbablePrime()
+		).toBe(true);
+	});
+
+	test(&quot;isProbablePrime 2&quot;, () =&gt; {
+		expect(
+			$(&quot;826446446281&quot;).isProbablePrime()
+		).toBe(false);
+	});
+	
+	test(&quot;probablePrime&quot;, () =&gt; {
+		expect(
+			BigInteger.probablePrime(20).isProbablePrime()
+		).toBe(true);
+	});	
+}
+
+{
+	test(&quot;compareTo 1&quot;, () =&gt; {
+		expect(
+			$(12345678).compareTo(1234567)
+		).toBe(1);
+	});
+
+	test(&quot;compareTo 2&quot;, () =&gt; {
+		expect(
+			$(12345678).compareTo(12345678)
+		).toBe(0);
+	});
+
+	test(&quot;compareTo 3&quot;, () =&gt; {
+		expect(
+			$(12345678).compareTo(123456789)
+		).toBe(-1);
+	});
+}
+
+test(&quot;gcd&quot;, () =&gt; {
+	expect(
+		$(12).gcd(18).equals(6)
+	).toBe(true);
+});
+
+test(&quot;pow&quot;, () =&gt; {
+	expect(
+		$(2).pow(100).equals(&quot;0x10000000000000000000000000&quot;)
+	).toBe(true);
+});
+
+test(&quot;modPow 1&quot;, () =&gt; {
+	expect(
+		$(-324).modPow($(123), $(55)).equals(51)
+	).toBe(true);
+});
+
+test(&quot;modPow 2&quot;, () =&gt; {
+	expect(
+		$(&quot;14123999253219&quot;).modPow($(&quot;70276475859277&quot;), $(&quot;86706662670157&quot;)).equals(&quot;285102795107&quot;)
+	).toBe(true);
+});
+
+test(&quot;modInverse 1&quot;, () =&gt; {
+	expect(
+		$(15).modInverse(4).equals(3)
+	).toBe(true);
+});
+
+test(&quot;modInverse 2&quot;, () =&gt; {
+	expect(
+		$(19).modInverse(41).equals(13)
+	).toBe(true);
+});
+
+test(&quot;factorial&quot;, () =&gt; {
+	expect(
+		$(50).factorial().toString(16) === &quot;49eebc961ed279b02b1ef4f28d19a84f5973a1d2c7800000000000&quot;
+	).toBe(true);
+});
+
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

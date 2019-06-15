@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/math/BigDecimal.test.mjs | konpeito</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.mjs~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigDecimal.mjs~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/math/BigDecimal.test.mjs</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/* global test, expect */
+
+import RoundingMode from &quot;./context/RoundingMode.mjs&quot;;
+import MathContext from &quot;./context/MathContext.mjs&quot;;
+import BigDecimal from &quot;./BigDecimal.mjs&quot;;
+const $ = BigDecimal.create;
+
+{
+	//	number,			toString,	toPlainString,		toEngineeringString, unscaledValue, scale
+	const testString = [
+		[ &quot;0&quot;,			&quot;0&quot;,		&quot;0&quot;,				&quot;0&quot;,		&quot;0&quot;,	&quot;e0&quot;],
+		[ &quot;0.00&quot;,		&quot;0.00&quot;,		&quot;0.00&quot;,				&quot;0.00&quot;,		&quot;0&quot;,	&quot;e-2&quot;],
+		[ &quot;123&quot;,		&quot;123&quot;,		&quot;123&quot;,				&quot;123&quot;,		&quot;123&quot;,	&quot;e0&quot;],
+		[ &quot;-123&quot;,		&quot;-123&quot;,		&quot;-123&quot;,				&quot;-123&quot;,		&quot;-123&quot;,	&quot;e0&quot;],
+		[ &quot;1.23E3&quot;,		&quot;1.23E+3&quot;,	&quot;1230&quot;,				&quot;1.23E+3&quot;,	&quot;123&quot;,	&quot;e1&quot;],
+		[ &quot;1.23E+3&quot;,	&quot;1.23E+3&quot;,	&quot;1230&quot;,				&quot;1.23E+3&quot;,	&quot;123&quot;,	&quot;e1&quot;],
+		[ &quot;12.3E+7&quot;,	&quot;1.23E+8&quot;,	&quot;123000000&quot;,		&quot;123E+6&quot;,	&quot;123&quot;,	&quot;e6&quot;],
+		[ &quot;12.0&quot;,		&quot;12.0&quot;,		&quot;12.0&quot;,				&quot;12.0&quot;,		&quot;120&quot;,	&quot;e-1&quot;],
+		[ &quot;12.3&quot;,		&quot;12.3&quot;,		&quot;12.3&quot;,				&quot;12.3&quot;,		&quot;123&quot;,	&quot;e-1&quot;],
+		[ &quot;0.00123&quot;,	&quot;0.00123&quot;,	&quot;0.00123&quot;,			&quot;0.00123&quot;,	&quot;123&quot;,	&quot;e-5&quot;],
+		[ &quot;1234.5E-4&quot;,	&quot;0.12345&quot;,	&quot;0.12345&quot;,			&quot;0.12345&quot;,	&quot;12345&quot;,&quot;e-5&quot;],
+		[ &quot;0E+7&quot;,		&quot;0E+7&quot;,		&quot;00000000&quot;,			&quot;00E+6&quot;,	&quot;0&quot;,	&quot;e7&quot;],
+		[ &quot;-0&quot;,			&quot;0&quot;,		&quot;0&quot;,				&quot;0&quot;,		&quot;0&quot;,	&quot;e0&quot;],
+		[ &quot;123e0&quot;,		&quot;123&quot;,		&quot;123&quot;,				&quot;123&quot;,		&quot;123&quot;,	&quot;e0&quot;],
+		[ &quot;-123e0&quot;,		&quot;-123&quot;,		&quot;-123&quot;,				&quot;-123&quot;,		&quot;-123&quot;,	&quot;e0&quot;],
+		[ &quot;123e+1&quot;,		&quot;1.23E+3&quot;,	&quot;1230&quot;,				&quot;1.23E+3&quot;,	&quot;123&quot;,	&quot;e1&quot;],
+		[ &quot;123e+3&quot;,		&quot;1.23E+5&quot;,	&quot;123000&quot;,			&quot;123E+3&quot;,	&quot;123&quot;,	&quot;e3&quot;],
+		[ &quot;123e-1&quot;,		&quot;12.3&quot;,		&quot;12.3&quot;,				&quot;12.3&quot;,		&quot;123&quot;,	&quot;e-1&quot;],
+		[ &quot;123e-5&quot;,		&quot;0.00123&quot;,	&quot;0.00123&quot;,			&quot;0.00123&quot;,	&quot;123&quot;,	&quot;e-5&quot;],
+		[ &quot;123e-10&quot;,	&quot;1.23E-8&quot;,	&quot;0.0000000123&quot;,		&quot;12.3E-9&quot;,	&quot;123&quot;,	&quot;e-10&quot;],
+		[ &quot;-123e-12&quot;,	&quot;-1.23E-10&quot;,&quot;-0.000000000123&quot;,	&quot;-123E-12&quot;,	&quot;-123&quot;,	&quot;e-12&quot;]
+	];
+
+	for(let i = 0; i &lt; testString.length; i++) {
+		const data = testString[i];
+		const decimal = $(data[0]);
+		const test_name = &quot;string &quot; + (i + 1) + &quot; \&quot;&quot; + data[0] + &quot;\&quot; =&gt; \t&quot;;
+		test(test_name + &quot;toString\t&quot;				+ data[1],	() =&gt; {expect(decimal.toString()).toBe(data[1]);});
+		test(test_name + &quot;toPlainString\t&quot;			+ data[2],	() =&gt; {expect(decimal.toPlainString()).toBe(data[2]);});
+		test(test_name + &quot;toEngineeringString\t&quot;	+ data[3],	() =&gt; {expect(decimal.toEngineeringString()).toBe(data[3]);});
+		test(test_name + &quot;unscaledValue\t&quot;			+ data[4],	() =&gt; {expect(decimal.unscaledValue().toString()).toBe(data[4]);});
+		test(test_name + &quot;scale\t&quot;					+ data[5],	() =&gt; {expect((&quot;e&quot; + -1 * decimal.scale())).toBe(data[5]);});
+	}
+}
+
+{
+	const x = $(&quot;0.0000001234&quot;).ulp().toPlainString();
+	const y =   &quot;0.0000000001&quot;;
+	test(&quot;ulp&quot;, () =&gt; { expect(x).toBe(y); });
+}
+
+{
+	const x = $(&quot;0.0013540&quot;);
+	const y = x.setScale(5, RoundingMode.HALF_EVEN);
+	test(&quot;RoundingMode 1&quot;, () =&gt; { expect(x.scale()).toBe(7); });
+	test(&quot;RoundingMode 2&quot;, () =&gt; { expect(y.scale()).toBe(5); });
+}
+
+{
+	const x = $(&quot;0.5925&quot;);
+	test(&quot;setScale 1&quot;, () =&gt; { expect(x.setScale(0, RoundingMode.HALF_UP).toString()).toBe(&quot;0&quot;); });
+	test(&quot;setScale 2&quot;, () =&gt; { expect(x.setScale(1, RoundingMode.HALF_UP).toString()).toBe(&quot;0.6&quot;); });
+	test(&quot;setScale 3&quot;, () =&gt; { expect(x.setScale(2, RoundingMode.HALF_UP).toString()).toBe(&quot;0.59&quot;); });
+	test(&quot;setScale 4&quot;, () =&gt; { expect(x.setScale(3, RoundingMode.HALF_UP).toString()).toBe(&quot;0.593&quot;); });
+}
+
+{
+	const x = $(&quot;999&quot;);
+	const mc = new BigDecimal.MathContext(2, RoundingMode.UP);
+	const y = x.round(mc);
+	test(&quot;round 1&quot;, () =&gt; { expect(x.toString()).toBe(&quot;999&quot;); });
+	test(&quot;round 2&quot;, () =&gt; { expect(x.precision()).toBe(3); });
+	test(&quot;round 3&quot;, () =&gt; { expect(y.toString()).toBe(&quot;1.0E+3&quot;); });
+	test(&quot;round 4&quot;, () =&gt; { expect(y.precision()).toBe(2); });
+}
+
+{
+	const x = $([&quot;3333.3333&quot;, MathContext.UNLIMITED]);
+	const y = $([&quot;-123.45&quot;, MathContext.UNLIMITED]);
+	const add = x.add(y).toString();
+	const sub = x.sub(y).toString();
+	const mul = x.mul(y).toString();
+	test(&quot;add &quot; + x + &quot; + &quot; + y + &quot; = &quot; + add, () =&gt; { expect(add).toBe(&quot;3209.8833&quot;); });
+	test(&quot;sub &quot; + x + &quot; + &quot; + y + &quot; = &quot; + sub, () =&gt; { expect(sub).toBe(&quot;3456.7833&quot;); });
+	test(&quot;mul &quot; + x + &quot; + &quot; + y + &quot; = &quot; + mul, () =&gt; { expect(mul).toBe(&quot;-411499.995885&quot;); });
+}
+
+{
+	const x = $(&quot;100&quot;);
+	const y = $(&quot;-234434&quot;);
+	const max = x.max(y).toString();
+	const min = x.min(y).toString();
+	test(&quot;max &quot; + x + &quot; , &quot; + y + &quot; = &quot; + max, () =&gt; { expect(max).toBe(&quot;100&quot;); });
+	test(&quot;min &quot; + x + &quot; , &quot; + y + &quot; = &quot; + min, () =&gt; { expect(min).toBe(&quot;-234434&quot;); });
+}
+
+{
+	const x = $(&quot;110&quot;);
+	const y = $(&quot;1.1e2&quot;);
+	const compareTo = x.compareTo(y);
+	test(&quot;compareTo &quot; + x + &quot; , &quot; + y + &quot; = &quot; + compareTo, () =&gt; { expect(compareTo).toBe(0); });
+}
+
+{
+	// x, y, divide, remainder
+	const testDiv = [
+		[&quot;1000e0&quot;,	&quot;1e2&quot;,	&quot;1000e-2&quot;,	&quot;0e0&quot;],
+		[&quot;1000e0&quot;,	&quot;10e1&quot;,	&quot;100e-1&quot;,	&quot;0e0&quot;],
+		[&quot;1000e0&quot;,	&quot;100e0&quot;,	&quot;10e0&quot;,	&quot;0e0&quot;],
+		[&quot;1000e0&quot;,	&quot;1000e-1&quot;,	&quot;1e1&quot;,	&quot;0e0&quot;],
+		[&quot;1000e0&quot;,	&quot;10000e-2&quot;,	&quot;1e1&quot;,	&quot;0e-1&quot;],
+		[&quot;1000e0&quot;,	&quot;100000e-3&quot;,	&quot;1e1&quot;,	&quot;0e-2&quot;],
+		[&quot;10e2&quot;,	&quot;100e0&quot;,	&quot;1e1&quot;,	&quot;0e1&quot;],
+		[&quot;100e1&quot;,	&quot;100e0&quot;,	&quot;1e1&quot;,	&quot;0e1&quot;],
+		[&quot;1000e0&quot;,	&quot;100e0&quot;,	&quot;10e0&quot;,	&quot;0e0&quot;],
+		[&quot;10000e-1&quot;,	&quot;100e0&quot;,	&quot;100e-1&quot;,	&quot;0e-1&quot;],
+		[&quot;100000e-2&quot;,	&quot;100e0&quot;,	&quot;1000e-2&quot;,	&quot;0e-2&quot;]
+	];
+
+	for(let i = 0; i &lt; testDiv.length; i++) {
+		const data = testDiv[i];
+		const x1 = $([data[0], MathContext.UNLIMITED]);
+		const x2 = $([data[1], MathContext.UNLIMITED]);
+		const y  = x1.divideAndRemainder(x2);
+		const y1 = &quot;&quot; + y[0].unscaledValue() + &quot;e&quot; + -1 * y[0].scale();
+		const y2 = &quot;&quot; + y[1].unscaledValue() + &quot;e&quot; + -1 * y[1].scale();
+		const test_name = &quot;divideAndRemainder &quot; + (i + 1) + &quot; [&quot; + data[0] + &quot;/&quot; + data[1] + &quot;]\t&quot;;
+		test(test_name + &quot;div\t&quot;	+ y1,	() =&gt; {expect(y1).toBe(data[2]);});
+		test(test_name + &quot;rem\t&quot;	+ y2,	() =&gt; {expect(y2).toBe(data[3]);});
+	}
+}
+
+{
+	const x = $(&quot;10&quot;);
+	const y_r = x.movePointRight(1);
+	const y_l = x.movePointLeft(1);
+	const y_rs = &quot;&quot; + y_r.unscaledValue() + &quot;e&quot; + -1 * y_r.scale();
+	const y_ls = &quot;&quot; + y_l.unscaledValue() + &quot;e&quot; + -1 * y_l.scale();
+	test(&quot;movePointRight &quot; + x + &quot; , 1 = &quot; + y_rs, () =&gt; { expect(y_rs).toBe(&quot;100e0&quot;); });
+	test(&quot;movePointLeft &quot; + x + &quot; , 1 = &quot; + y_ls, () =&gt; { expect(y_ls).toBe(&quot;10e-1&quot;); });
+}
+
+{
+	const x1 = $(&quot;4.36&quot;);
+	const x2 = $(&quot;3.4&quot;);
+	const y = x1.divide(x2, MathContext.DECIMAL128).toString();
+	test(&quot;divide 1 &quot; + x1 + &quot; / &quot; + x2 + &quot; = &quot; + y, () =&gt; { expect(y).toBe(&quot;1.280000000000000000000000000000000&quot;); });
+}
+
+{
+	const x1 = $([&quot;1&quot;, MathContext.UNLIMITED]);
+	const x2 = $([&quot;7&quot;, MathContext.UNLIMITED]);
+	let y1 = &quot;&quot;;
+	try {
+		x1.divide(x2);
+	}
+	catch(e) {
+		y1 = e;
+	}
+	const y2 = x1.divide(x2, { context : MathContext.DECIMAL128 }).toString();
+	test(&quot;divide 2 &quot; + x1 + &quot; / &quot; + x2 + &quot; = &quot; + y1, () =&gt; { expect(y1).toBe(&quot;ArithmeticException 0.142857[1]&quot;); });
+	test(&quot;divide 3 &quot; + x1 + &quot; / &quot; + x2 + &quot; = &quot; + y2, () =&gt; { expect(y2).toBe(&quot;0.1428571428571428571428571428571428&quot;); });
+}
+
+{
+	const x = $(&quot;-1123.00000&quot;);
+	const y = x.stripTrailingZeros();
+	const stripTrailingZeros_s = &quot;&quot; + y.unscaledValue() + &quot;e&quot; + -1 * y.scale();
+	const intValueExact = x.intValueExact;
+	test(&quot;stripTrailingZeros &quot; + x + &quot; = &quot; + stripTrailingZeros_s, () =&gt; { expect(stripTrailingZeros_s).toBe(&quot;-1123e0&quot;); });
+	test(&quot;intValueExact &quot; + x + &quot; = &quot; + intValueExact, () =&gt; { expect(intValueExact).toBe(-1123); });
+}
+
+{
+	const x1 = $(&quot;123.456&quot;);
+	const x2 = $(30);
+	const y = x1.pow(x2, MathContext.UNLIMITED).toString();
+	test(&quot;pow &quot; + x1 + &quot; ** &quot; + x2, () =&gt; { expect(y).toBe(&quot;556373003462553278521277665419333757914477429707861621164878013.831986527054745197804565133259323738549131155563320488179330998057446584571938059401035776&quot;); });
+}
+
+
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
