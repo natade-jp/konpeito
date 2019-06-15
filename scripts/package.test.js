@@ -1,6 +1,4 @@
-﻿// @ts-nocheck
-
-const File = require("./File.js");
+﻿const File = require("./File.js");
 
 const jest_config_js = {
 	"verbose": true,
@@ -9,6 +7,7 @@ const jest_config_js = {
 		"js",
 		"mjs"
 	],
+	// @ts-ignore
 	"testMatch": [
 	],
 	"transform": {

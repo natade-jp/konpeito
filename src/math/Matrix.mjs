@@ -780,7 +780,7 @@ export default class Matrix {
 	/**
 	 * 本オブジェクト内の全要素に同一処理を実行
 	 * ミュータブル
-	 * @param {function(num:Complex, row:number, col:number): ?Object } eachfunc - Function(num, row, col)
+	 * @param {function(Complex, number, number): ?Object } eachfunc - Function(num, row, col)
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
@@ -813,7 +813,7 @@ export default class Matrix {
 
 	/**
 	 * 本オブジェクト内の全要素に同一処理を実行
-	 * @param {function(num:Complex, row:number, col:number): ?Object } eachfunc - Function(num, row, col)
+	 * @param {function(Complex, number, number): ?Object } eachfunc - Function(num, row, col)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	cloneMatrixDoEachCalculation(eachfunc) {
@@ -822,7 +822,7 @@ export default class Matrix {
 
 	/**
 	 * 行列内の各値に対して指定した初期化を行ったMatrixを作成
-	 * @param {function(num:Complex, row:number, col:number): ?Object } eachfunc - Function(num, row, col)
+	 * @param {function(number, number): ?Object } eachfunc - Function(row, col)
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length=dimension] - 列数
 	 * @returns {Matrix} 処理実行後の行列
@@ -851,7 +851,7 @@ export default class Matrix {
 
 	/**
 	 * 行列の列をベクトルとみなし同一処理を実行、行ベクトルであれば行ベクトルに対し同一処理を実行
-	 * @param {function(array:Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	eachVectorAuto(array_function) {
@@ -885,7 +885,7 @@ export default class Matrix {
 	/**
 	 * 行列の行と列をベクトルとみなし同一処理を実行
 	 * 先に行に対して同一処理を実行後の行列に対し、列ごとにさらに同一処理を実行する
-	 * @param {function(array:Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	eachVectorBoth(array_function) {
@@ -922,7 +922,7 @@ export default class Matrix {
 
 	/**
 	 * 行列の行をベクトルとみなし同一処理を実行
-	 * @param {function(array:Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	eachVectorRow(array_function) {
@@ -945,7 +945,7 @@ export default class Matrix {
 
 	/**
 	 * 行列の列をベクトルとみなし同一処理を実行
-	 * @param {function(array:Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} 処理実行後の行列
 	 */
 	eachVectorColumn(array_function) {
@@ -968,7 +968,7 @@ export default class Matrix {
 
 	/**
 	 * 引数に設定された行／列をベクトルとみなし同一処理を実行
-	 * @param {function(array:Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @param {string|number} [dimtype="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
 	 * @returns {Matrix} 処理実行後の行列
 	 */

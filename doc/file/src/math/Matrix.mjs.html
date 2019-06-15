@@ -828,7 +828,7 @@ export default class Matrix {
 	/**
 	 * &#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x5185;&#x306E;&#x5168;&#x8981;&#x7D20;&#x306B;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
 	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
-	 * @param {function(num:Complex, row:number, col:number): ?Object } eachfunc - Function(num, row, col)
+	 * @param {function(Complex, number, number): ?Object } eachfunc - Function(num, row, col)
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
 	 * @private
 	 */
@@ -861,7 +861,7 @@ export default class Matrix {
 
 	/**
 	 * &#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x5185;&#x306E;&#x5168;&#x8981;&#x7D20;&#x306B;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
-	 * @param {function(num:Complex, row:number, col:number): ?Object } eachfunc - Function(num, row, col)
+	 * @param {function(Complex, number, number): ?Object } eachfunc - Function(num, row, col)
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
 	 */
 	cloneMatrixDoEachCalculation(eachfunc) {
@@ -870,7 +870,7 @@ export default class Matrix {
 
 	/**
 	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x5404;&#x5024;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x521D;&#x671F;&#x5316;&#x3092;&#x884C;&#x3063;&#x305F;Matrix&#x3092;&#x4F5C;&#x6210;
-	 * @param {function(num:Complex, row:number, col:number): ?Object } eachfunc - Function(num, row, col)
+	 * @param {function(number, number): ?Object } eachfunc - Function(row, col)
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - &#x6B21;&#x5143;&#x6570;
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length=dimension] - &#x5217;&#x6570;
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
@@ -899,7 +899,7 @@ export default class Matrix {
 
 	/**
 	 * &#x884C;&#x5217;&#x306E;&#x5217;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x307F;&#x306A;&#x3057;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;&#x3001;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3067;&#x3042;&#x308C;&#x3070;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306B;&#x5BFE;&#x3057;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
-	 * @param {function(array:Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
+	 * @param {function(Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
 	 */
 	eachVectorAuto(array_function) {
@@ -933,7 +933,7 @@ export default class Matrix {
 	/**
 	 * &#x884C;&#x5217;&#x306E;&#x884C;&#x3068;&#x5217;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x307F;&#x306A;&#x3057;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
 	 * &#x5148;&#x306B;&#x884C;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;&#x306B;&#x5BFE;&#x3057;&#x3001;&#x5217;&#x3054;&#x3068;&#x306B;&#x3055;&#x3089;&#x306B;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;&#x3059;&#x308B;
-	 * @param {function(array:Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
+	 * @param {function(Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
 	 */
 	eachVectorBoth(array_function) {
@@ -970,7 +970,7 @@ export default class Matrix {
 
 	/**
 	 * &#x884C;&#x5217;&#x306E;&#x884C;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x307F;&#x306A;&#x3057;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
-	 * @param {function(array:Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
+	 * @param {function(Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
 	 */
 	eachVectorRow(array_function) {
@@ -993,7 +993,7 @@ export default class Matrix {
 
 	/**
 	 * &#x884C;&#x5217;&#x306E;&#x5217;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x307F;&#x306A;&#x3057;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
-	 * @param {function(array:Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
+	 * @param {function(Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
 	 */
 	eachVectorColumn(array_function) {
@@ -1016,7 +1016,7 @@ export default class Matrix {
 
 	/**
 	 * &#x5F15;&#x6570;&#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x884C;&#xFF0F;&#x5217;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x307F;&#x306A;&#x3057;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
-	 * @param {function(array:Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
+	 * @param {function(Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
 	 * @param {string|number} [dimtype=&quot;auto&quot;] - 0/&quot;auto&quot;, 1/&quot;row&quot;, 2/&quot;column&quot;, 3/&quot;both&quot;
 	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
 	 */

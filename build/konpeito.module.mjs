@@ -1,4 +1,4 @@
-﻿/*!
+/*!
  * konpeito.js
  * https://github.com/natade-jp/konpeito
  * Copyright 2013-2019 natade < https://github.com/natade-jp >
