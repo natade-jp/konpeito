@@ -3192,31 +3192,31 @@ export default class Matrix {
 	 * 窓関数
 	 * @param {string} name - 窓関数の名前
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
-	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
 	 * @returns {Matrix} 列ベクトル
 	 */
-	static window(name, size, isPeriodic) {
-		return Signal.window(name, size, isPeriodic);
+	static window(name, size, periodic) {
+		return Signal.window(name, size, periodic);
 	}
 
 	/**
 	 * ハニング窓
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
-	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
 	 * @returns {Matrix} 列ベクトル
 	 */
-	static hann(size, isPeriodic) {
-		return Signal.hann(size, isPeriodic);
+	static hann(size, periodic) {
+		return Signal.hann(size, periodic);
 	}
 	
 	/**
 	 * ハミング窓
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
-	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
 	 * @returns {Matrix} 列ベクトル
 	 */
-	static hamming(size, isPeriodic) {
-		return Signal.hamming(size, isPeriodic);
+	static hamming(size, periodic) {
+		return Signal.hamming(size, periodic);
 	}
 	
 }

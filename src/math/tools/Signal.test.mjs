@@ -111,6 +111,7 @@ const testOperator3  = function(operator, x1, x2, x3, y, epsilon) {
 	testOperator2("conv", "[1 2 3+3j 4 5]", "[1 2 3+3j 4 5]", "[1, 4, 10 + 6i, 20 + 12i, 26 + 18i, 44 + 24i, 46 + 30i, 40, 25]");
 	testOperator2("conv", "[1 2 3+3j 4 5]", "[5 6 7+3j 8 9]", "[5, 16, 34 + 18i, 60 + 24i, 86 + 30i, 100 + 36i, 94 + 42i, 76, 45]");
 }
+
 {
 	test_count = 0;
 	testOperator2("xcorr", "[1 2 3 4]", "[1 2 3 4]", "[4 11 20 30 20 11 4]");
@@ -121,4 +122,33 @@ const testOperator3  = function(operator, x1, x2, x3, y, epsilon) {
 	testOperator2("xcorr", "[1 2 3+3j 4 5]", "[1 2 3+3j 4 5]", "[5, 14, 26 + 12i, 40 + 6i, 64, 40 - 6i, 26 - 12i, 14, 5]");
 	testOperator2("xcorr", "[1 2 3+3j 4 5]", "[5 6 7+3j 8 9]", "[9, 26, 50 + 24i, 80 + 18i, 124 + 12i, 96 + 6i, 74, 50, 25]");
 }
-                                                                                                                                                                        
+
+{
+	test_count = 0;
+	testOperator3("window", "hann", "4", "symmetric", "[0; 0.75; 0.75; 0]");
+	testOperator3("window", "hann", "4", "periodic", "[0; 0.5; 1.0; 0.5]");
+	testOperator3("window", "hann", "5", "symmetric", "[0; 0.5; 1.0; 0.5; 0.0]");
+	testOperator3("window", "hann", "5", "periodic", "[0; 0.3455; 0.9045; 0.9045; 0.3455]");
+	testOperator2("window", "rectangle", "5", "[1; 1; 1; 1; 1]");
+	testOperator2("window", "hann", "5", "[0; 0.5; 1.0; 0.5; 0.0]");
+	testOperator2("window", "hamming", "5", "[0.08; 0.54; 1.00; 0.54; 0.08]");
+	testOperator2("window", "blackman", "5", "[0; 0.34; 1.00; 0.34; 0]");
+	testOperator2("window", "blackmanharris", "5", "[0; 0.21747; 1.00; 0.21747; 0]");
+	testOperator2("window", "blackmannuttall", "5", "[0.00036; 0.22698; 1.00; 0.22698; 0.00036]");
+	testOperator2("window", "flattop", "5", "[0.004; -0.258; 4.64; -0.258; 0.004]");
+	testOperator2("window", "sin", "10", "[ 0; 0.34202; 0.642788; 0.866025; 0.984808; 0.984808; 0.866025; 0.642788; 0.34202; 0 ]");
+	testOperator2("window", "vorbis", "10", "[ 0; 0.182716; 0.604402; 0.92388; 0.998878; 0.998878; 0.92388; 0.604402; 0.182716; 0 ]");
+}
+
+{
+	test_count = 0;
+	testOperator1("hann", "5", "[0; 0.5; 1.0; 0.5; 0.0]");
+}
+
+{
+	test_count = 0;
+	testOperator1("hamming", "5", "[0.08; 0.54; 1.00; 0.54; 0.08]");
+}
+
+
+

@@ -765,27 +765,26 @@ class SignalTool {
 	 * 窓を作成する
 	 * @param {string} name - 窓関数の名前
 	 * @param {number} size - 長さ
-	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
 	 * @returns {Array<number>}
 	 */
-	static window(name, size, isPeriodic) {
-
+	static window(name, size, periodic) {
+		const periodic_ = periodic !== undefined ? periodic : "symmetric";
 		const name_ = name.toLocaleLowerCase();
 		const size_ = size;
 		const window = new Array(size_);
 		
-		const sinc = function(x) {
-			return x === 0.0 ? 1.0 : Math.sin(x) / x;
-		};
-
-		const normalzie = function(y) {
-			if(isPeriodic) {
-				return (y / size_ * (Math.PI * 2.0));
-			}
-			else {
+		let normalzie;
+		if((periodic_ === "symmetric") || (periodic_ === 0)) {
+			normalzie = function(y) {
 				return (y / (size_ - 1) * (Math.PI * 2.0));
-			}
-		};
+			};
+		}
+		else if((periodic_ === "periodic") || (periodic_ !== 0)) {
+			normalzie = function(y) {
+				return (y / size_ * (Math.PI * 2.0));
+			};
+		}
 
 		const setBlackmanWindow = function( alpha0, alpha1, alpha2, alpha3, alpha4) {
 			for(let i = 0; i < size_; i++) {
@@ -833,13 +832,6 @@ class SignalTool {
 				setBlackmanWindow(1.0, 1.93, 1.29, 0.388, 0.032);
 				break;
 
-			// lanczos Lanczos window
-			case "lanczos":
-				for(let i = 0; i < size_; i++) {
-					window[i]  = sinc(normalzie(i) - 1.0);
-				}
-				break;
-
 			// Half cycle sine window(MDCT窓)
 			case "sin":
 				for(let i = 0; i < size_; i++) {
@@ -862,21 +854,21 @@ class SignalTool {
 	/**
 	 * ハニング窓
 	 * @param {number} size - 長さ
-	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
 	 * @returns {Array<number>}
 	 */
-	static hann(size, isPeriodic) {
-		return SignalTool.window("hann", size, isPeriodic);
+	static hann(size, periodic) {
+		return SignalTool.window("hann", size, periodic);
 	}
 	
 	/**
 	 * ハミング窓を作成
 	 * @param {number} size - 長さ
-	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
 	 * @returns {Array<number>}
 	 */
-	static hamming(size, isPeriodic) {
-		return SignalTool.window("hamming", size, isPeriodic);
+	static hamming(size, periodic) {
+		return SignalTool.window("hamming", size, periodic);
 	}
 	
 }
@@ -1159,33 +1151,33 @@ export default class Signal {
 	 * 窓関数
 	 * @param {string} name - 窓関数の名前
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
-	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
 	 * @returns {Matrix} 列ベクトル
 	 */
-	static window(name, size, isPeriodic) {
+	static window(name, size, periodic) {
 		const size_ = Matrix._toInteger(size);
-		const y = SignalTool.window(name, size_, isPeriodic);
+		const y = SignalTool.window(name, size_, periodic);
 		return (new Matrix(y)).transpose();
 	}
 
 	/**
 	 * ハニング窓
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
-	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
 	 * @returns {Matrix} 列ベクトル
 	 */
-	static hann(size, isPeriodic) {
-		return SignalTool.window("hann", size, isPeriodic);
+	static hann(size, periodic) {
+		return Signal.window("hann", size, periodic);
 	}
 	
 	/**
 	 * ハミング窓
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
-	 * @param {boolean} [isPeriodic] - true なら periodic, false なら symmetric
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
 	 * @returns {Matrix} 列ベクトル
 	 */
-	static hamming(size, isPeriodic) {
-		return SignalTool.window("hamming", size, isPeriodic);
+	static hamming(size, periodic) {
+		return Signal.window("hamming", size, periodic);
 	}
 	
 	

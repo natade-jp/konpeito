@@ -1,5 +1,9 @@
 # History
 
+## v0.1.X
+- テスト整備完了
+- hann, hamming の戻り値が行列ではなく配列になっていたのを修正
+
 ## v0.1.7
 - Signal fft, ifft, dct, idct, powerfft 実行する次元の方向を選択できるように修正
 - Signal xcorr 計算するベクトル同士の長さが異なる場合に、0挿入するように修正
