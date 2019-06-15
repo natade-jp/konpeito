@@ -63,7 +63,7 @@ import RoundingMode, {RoundingModeEntity} from &quot;./RoundingMode.mjs&quot;;
 /**
  * BigDecimal&#x7528;&#x306E;&#x74B0;&#x5883;&#x8A2D;&#x5B9A;
  */
-export default  class MathContext {
+export default class MathContext {
 
 	/**
 	 * &#x4EFB;&#x610F;&#x7CBE;&#x5EA6;&#x306E;&#x74B0;&#x5883;&#x8A2D;&#x5B9A;&#x30C7;&#x30FC;&#x30BF;
@@ -186,11 +186,32 @@ export default  class MathContext {
 
 /**
  * &#x5185;&#x90E8;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5B9A;&#x6570;&#x5024;
+ * @ignore
  */
 const DEFINE = {
+
+	/**
+	 * &#x5236;&#x9650;&#x306A;&#x3057;
+	 * @type {MathContext}
+	 */
 	UNLIMITED	: new MathContext(0,	RoundingMode.HALF_UP),
+
+	/**
+	 * 32&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x5B9F;&#x6570;&#x578B;
+	 * @type {MathContext}
+	 */
 	DECIMAL32	: new MathContext(7,	RoundingMode.HALF_EVEN),
+
+	/**
+	 * 64&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x5B9F;&#x6570;&#x578B;
+	 * @type {MathContext}
+	 */
 	DECIMAL64	: new MathContext(16,	RoundingMode.HALF_EVEN),
+
+	/**
+	 * 128&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x5B9F;&#x6570;&#x578B;
+	 * @type {MathContext}
+	 */
 	DECIMAL128	: new MathContext(34,	RoundingMode.HALF_EVEN)
 };
 </code></pre>

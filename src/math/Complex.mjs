@@ -17,11 +17,14 @@ import Matrix from "./Matrix.mjs";
 
 /**
  * Complex 内で使用する乱数生成クラス
+ * @type {Random}
+ * @ignore
  */
 const random_class = new Random();
 
 /**
  * Complex 内で使用する関数群
+ * @ignore
  */
 class ComplexTool {
 
@@ -1077,7 +1080,7 @@ export default class Complex {
 
 	/**
 	 * 正の無限大
-	 * @returns {Complex} Inf
+	 * @returns {Complex} Infinity
 	 */
 	static get POSITIVE_INFINITY() {
 		return DEFINE.POSITIVE_INFINITY;
@@ -1085,7 +1088,7 @@ export default class Complex {
 	
 	/**
 	 * 負の無限大
-	 * @returns {Complex} -Inf
+	 * @returns {Complex} -Infinity
 	 */
 	static get NEGATIVE_INFINITY() {
 		return DEFINE.NEGATIVE_INFINITY;
@@ -1103,25 +1106,98 @@ export default class Complex {
 
 /**
  * 内部で使用する定数値
+ * @ignore
  */
 const DEFINE = {
+
+	/**
+	 * 0
+	 */
 	ZERO : new Complex(0),
+
+	/**
+	 * 1
+	 */
 	ONE : new Complex(1),
+
+	/**
+	 * 2
+	 */
 	TWO : new Complex(2),
+
+	/**
+	 * 10
+	 */
 	TEN : new Complex(10),
+
+	/**
+	 * -1
+	 */
 	MINUS_ONE : new Complex(-1),
+
+	/**
+	 * i
+	 */
 	I : new Complex([0, 1]),
+
+	/**
+	 * PI
+	 */
 	PI : new Complex(Math.PI),
+
+	/**
+	 * E
+	 */
 	E : new Complex(Math.E),
+
+	/**
+	 * ln2
+	 */
 	LN2 : new Complex(Math.LN2),
+
+	/**
+	 * ln10
+	 */
 	LN10 : new Complex(Math.LN10),
+
+	/**
+	 * log_2(e)
+	 */
 	LOG2E : new Complex(Math.LOG2E),
+
+	/**
+	 * log_10(e)
+	 */
 	LOG10E : new Complex(Math.LOG10E),
+
+	/**
+	 * sqrt(2)
+	 */
 	SQRT2 : new Complex(Math.SQRT2),
+
+	/**
+	 * sqrt(0.5)
+	 */
 	SQRT1_2 : new Complex(Math.SQRT1_2),
+
+	/**
+	 * 0.5
+	 */
 	HALF : new Complex(0.5),
+
+	/**
+	 * Infinity
+	 */
 	POSITIVE_INFINITY : new Complex(Number.POSITIVE_INFINITY),
+
+	/**
+	 * -Infinity
+	 */
 	NEGATIVE_INFINITY : new Complex(Number.NEGATIVE_INFINITY),
+
+	/**
+	 * NaN
+	 */
 	NaN : new Complex(Number.NaN)
 };
 

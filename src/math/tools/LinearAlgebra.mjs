@@ -20,6 +20,7 @@ import Matrix from "../Matrix.mjs";
 
 /**
  * 線形代数用の関数集
+ * @ignore
  */
 class LinearAlgebraTool {
 

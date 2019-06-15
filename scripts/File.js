@@ -1,6 +1,9 @@
 const fs = require("fs");
 const child_process = require("child_process");
 
+/**
+ * ファイルクラス
+ */
 class File {
 
 	/**
@@ -53,6 +56,7 @@ class File {
 	/**
 	 * ファイルが存在するか調べる
 	 * @param {string} path 
+	 * @return {boolean}
 	 */
 	static isExist(path) {
 		try {
@@ -67,6 +71,30 @@ class File {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * ディレクトリかどうか判定する
+	 * @param {string} path 
+	 * @return {boolean}
+	 */
+	static isFile(path) {
+		if(!File.isExist(path)) {
+			return false;
+		}
+		return fs.statSync(path).isFile();
+	}
+
+	/**
+	 * ディレクトリかどうか判定する
+	 * @param {string} path 
+	 * @return {boolean}
+	 */
+	static isDirectory(path) {
+		if(!File.isExist(path)) {
+			return false;
+		}
+		return fs.statSync(path).isDirectory();
 	}
 
 	/**
@@ -83,7 +111,7 @@ class File {
 	 * ファイルを削除する
 	 * @param {string} path 
 	 */
-	static deleteTextFile(path) {
+	static deleteFile(path) {
 		if(!File.isExist(path)) {
 			return;
 		}
@@ -102,13 +130,58 @@ class File {
 	}
 
 	/**
+	 * ディレクトリ配下のファイルのリストを作成
+	 * @param {string} path 
+	 * @return {Array<string>}
+	 */
+	static createList(path) {
+		const load_list = fs.readdirSync(path);
+		const list = [];
+		for(let i = 0; i < load_list.length; i++) {
+			list[i] = path + "/" + load_list[i];
+		}
+		for(let i = 0; i < list.length; i++) {
+			if(File.isDirectory(list[i])) {
+				const new_list = fs.readdirSync(list[i]);
+				for(let j = 0; j < new_list.length; j++) {
+					/**
+					 * @type {string}
+					 */
+					const add_file = list[i] + "/" + new_list[j];
+					list.push(add_file);
+				}
+			}
+		}
+		return list;
+	}
+
+	/**
 	 * フォルダを削除する
 	 * @param {string} path 
 	 */
 	static deleteDirectory(path) {
-		if(!File.isExist(path)) {
+		if(!File.isDirectory(path)) {
 			return;
 		}
+		{
+			// まずはファイルのみを全消去
+			const list = File.createList(path);
+			for(let i = 0; i < list.length; i++) {
+				if(File.isFile(list[i])) {
+					File.deleteFile(list[i]);
+				}
+			}
+		}
+		// フォルダの中身が0のフォルダを繰り返し削除
+		for(let i = 0; i < 10; i++) {
+			const list = File.createList(path);
+			for(let j = 0; j < list.length; j++) {
+				if(File.createList(list[j]).length === 0) {
+					fs.rmdirSync(list[j]);
+				}
+			}
+		}
+		// 最後に目的のフォルダを削除
 		fs.rmdirSync(path);
 	}
 }

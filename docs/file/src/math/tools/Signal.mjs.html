@@ -65,6 +65,7 @@ import Matrix from &quot;../Matrix.mjs&quot;;
 
 /**
  * &#x9AD8;&#x901F;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;&#x7528;&#x30AF;&#x30E9;&#x30B9;
+ * @ignore
  */
 class FFT {
 
@@ -314,6 +315,7 @@ class FFT {
 /**
  * &#x7C21;&#x6613;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x30AF;&#x30E9;&#x30B9;
  * FFT&#x3067;&#x7528;&#x3044;&#x308B;&#x30C6;&#x30FC;&#x30D6;&#x30EB;&#x306A;&#x3069;&#x3092;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;
+ * @ignore
  */
 class Chash {
 	
@@ -374,11 +376,14 @@ class Chash {
 
 /**
  * FFT&#x7528;&#x306E;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;
+ * @type {Chash}
+ * @ignore
  */
 const fft_chash = new Chash(4, FFT);
 
 /**
  * &#x96E2;&#x6563;&#x30B3;&#x30B5;&#x30A4;&#x30F3;&#x5909;&#x63DB;&#x306E;&#x30AF;&#x30E9;&#x30B9;
+ * @ignore
  */
 class DCT {
 	
@@ -471,11 +476,13 @@ class DCT {
 
 /**
  * &#x96E2;&#x6563;&#x30B3;&#x30B5;&#x30A4;&#x30F3;&#x5909;&#x63DB;&#x7528;&#x306E;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;
+ * @ignore
  */
 const dct_chash = new Chash(4, DCT);
 
 /**
  * Signal&#x30AF;&#x30E9;&#x30B9;&#x306E;&#x5185;&#x90E8;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x95A2;&#x6570;&#x96C6;
+ * @ignore
  */
 class SignalTool {
 	

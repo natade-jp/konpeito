@@ -20,11 +20,14 @@ import MathContext from "./context/MathContext.mjs";
 
 /**
  * 初期化するときにcontextを設定しなかった場合のデフォルト値
+ * @type {MathContext}
+ * @ignore
  */
 let DEFAULT_CONTEXT = MathContext.DECIMAL128;
 
 /**
  * BigDecimal 内で使用する関数群
+ * @ignore
  */
 class DecimalTool {
 
@@ -1271,11 +1274,28 @@ export default class BigDecimal {
 
 /**
  * 内部で使用する定数値
+ * @ignore
  */
 const DEFINE = {
+
+	/**
+	 * 0
+	 */
 	ZERO : new BigDecimal(0),
+
+	/**
+	 * 1
+	 */
 	ONE : new BigDecimal(1),
+
+	/**
+	 * 2
+	 */
 	TWO : new BigDecimal(2),
+
+	/**
+	 * 10
+	 */
 	TEN : new BigDecimal(10)
 };
 

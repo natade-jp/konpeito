@@ -9,6 +9,10 @@
  */
 // @ts-check
 
+/**
+ * 乱数クラス内で使用するツール集
+ * @ignore
+ */
 class RandomTool {
 
 	/**
@@ -276,5 +280,10 @@ export default class Random {
 	}
 }
 
+/**
+ * シードを設定しない場合の乱数作成用整数
+ * @type {number}
+ * @ignore
+ */
 Random.seedUniquifier = 0x87654321;
 

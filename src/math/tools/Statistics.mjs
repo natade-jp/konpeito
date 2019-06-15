@@ -17,6 +17,7 @@ import Matrix from "../Matrix.mjs";
 
 /**
  * 実数専用の統計処理用の関数集
+ * @ignore
  */
 class StatisticsTool {
 
@@ -735,6 +736,7 @@ class StatisticsTool {
 /**
  * 文字列か判定
  * @param text 
+ * @ignore
  */
 const isStr = function(text) {
 	return (text && (typeof text === "string" || text instanceof String));

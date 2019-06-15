@@ -14,6 +14,7 @@ import Format from "./Format.mjs";
 
 /**
  * ログのバッファ
+ * @ignore
  */
 let printbuffer = "";
 

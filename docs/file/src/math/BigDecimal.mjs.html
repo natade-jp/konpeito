@@ -68,11 +68,14 @@ import MathContext from &quot;./context/MathContext.mjs&quot;;
 
 /**
  * &#x521D;&#x671F;&#x5316;&#x3059;&#x308B;&#x3068;&#x304D;&#x306B;context&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306E;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x5024;
+ * @type {MathContext}
+ * @ignore
  */
 let DEFAULT_CONTEXT = MathContext.DECIMAL128;
 
 /**
  * BigDecimal &#x5185;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x95A2;&#x6570;&#x7FA4;
+ * @ignore
  */
 class DecimalTool {
 
@@ -1319,11 +1322,28 @@ export default class BigDecimal {
 
 /**
  * &#x5185;&#x90E8;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5B9A;&#x6570;&#x5024;
+ * @ignore
  */
 const DEFINE = {
+
+	/**
+	 * 0
+	 */
 	ZERO : new BigDecimal(0),
+
+	/**
+	 * 1
+	 */
 	ONE : new BigDecimal(1),
+
+	/**
+	 * 2
+	 */
 	TWO : new BigDecimal(2),
+
+	/**
+	 * 10
+	 */
 	TEN : new BigDecimal(10)
 };
 

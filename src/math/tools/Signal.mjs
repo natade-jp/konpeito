@@ -17,6 +17,7 @@ import Matrix from "../Matrix.mjs";
 
 /**
  * 高速フーリエ変換用クラス
+ * @ignore
  */
 class FFT {
 
@@ -266,6 +267,7 @@ class FFT {
 /**
  * 簡易キャッシュクラス
  * FFTで用いるテーブルなどをキャッシュ
+ * @ignore
  */
 class Chash {
 	
@@ -326,11 +328,14 @@ class Chash {
 
 /**
  * FFT用のキャッシュ
+ * @type {Chash}
+ * @ignore
  */
 const fft_chash = new Chash(4, FFT);
 
 /**
  * 離散コサイン変換のクラス
+ * @ignore
  */
 class DCT {
 	
@@ -423,11 +428,13 @@ class DCT {
 
 /**
  * 離散コサイン変換用のキャッシュ
+ * @ignore
  */
 const dct_chash = new Chash(4, DCT);
 
 /**
  * Signalクラスの内部で使用する関数集
+ * @ignore
  */
 class SignalTool {
 	

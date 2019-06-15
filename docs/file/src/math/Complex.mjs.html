@@ -65,11 +65,14 @@ import Matrix from &quot;./Matrix.mjs&quot;;
 
 /**
  * Complex &#x5185;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x4E71;&#x6570;&#x751F;&#x6210;&#x30AF;&#x30E9;&#x30B9;
+ * @type {Random}
+ * @ignore
  */
 const random_class = new Random();
 
 /**
  * Complex &#x5185;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x95A2;&#x6570;&#x7FA4;
+ * @ignore
  */
 class ComplexTool {
 
@@ -1125,7 +1128,7 @@ export default class Complex {
 
 	/**
 	 * &#x6B63;&#x306E;&#x7121;&#x9650;&#x5927;
-	 * @returns {Complex} Inf
+	 * @returns {Complex} Infinity
 	 */
 	static get POSITIVE_INFINITY() {
 		return DEFINE.POSITIVE_INFINITY;
@@ -1133,7 +1136,7 @@ export default class Complex {
 	
 	/**
 	 * &#x8CA0;&#x306E;&#x7121;&#x9650;&#x5927;
-	 * @returns {Complex} -Inf
+	 * @returns {Complex} -Infinity
 	 */
 	static get NEGATIVE_INFINITY() {
 		return DEFINE.NEGATIVE_INFINITY;
@@ -1151,25 +1154,98 @@ export default class Complex {
 
 /**
  * &#x5185;&#x90E8;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5B9A;&#x6570;&#x5024;
+ * @ignore
  */
 const DEFINE = {
+
+	/**
+	 * 0
+	 */
 	ZERO : new Complex(0),
+
+	/**
+	 * 1
+	 */
 	ONE : new Complex(1),
+
+	/**
+	 * 2
+	 */
 	TWO : new Complex(2),
+
+	/**
+	 * 10
+	 */
 	TEN : new Complex(10),
+
+	/**
+	 * -1
+	 */
 	MINUS_ONE : new Complex(-1),
+
+	/**
+	 * i
+	 */
 	I : new Complex([0, 1]),
+
+	/**
+	 * PI
+	 */
 	PI : new Complex(Math.PI),
+
+	/**
+	 * E
+	 */
 	E : new Complex(Math.E),
+
+	/**
+	 * ln2
+	 */
 	LN2 : new Complex(Math.LN2),
+
+	/**
+	 * ln10
+	 */
 	LN10 : new Complex(Math.LN10),
+
+	/**
+	 * log_2(e)
+	 */
 	LOG2E : new Complex(Math.LOG2E),
+
+	/**
+	 * log_10(e)
+	 */
 	LOG10E : new Complex(Math.LOG10E),
+
+	/**
+	 * sqrt(2)
+	 */
 	SQRT2 : new Complex(Math.SQRT2),
+
+	/**
+	 * sqrt(0.5)
+	 */
 	SQRT1_2 : new Complex(Math.SQRT1_2),
+
+	/**
+	 * 0.5
+	 */
 	HALF : new Complex(0.5),
+
+	/**
+	 * Infinity
+	 */
 	POSITIVE_INFINITY : new Complex(Number.POSITIVE_INFINITY),
+
+	/**
+	 * -Infinity
+	 */
 	NEGATIVE_INFINITY : new Complex(Number.NEGATIVE_INFINITY),
+
+	/**
+	 * NaN
+	 */
 	NaN : new Complex(Number.NaN)
 };
 

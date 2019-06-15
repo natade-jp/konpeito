@@ -23,6 +23,7 @@ import Complex from "./Complex.mjs";
 
 /**
  * Matrix 内で使用する関数群
+ * @ignore
  */
 class MatrixTool {
 

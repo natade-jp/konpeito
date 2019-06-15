@@ -14,11 +14,14 @@ import Random from "./tools/Random.mjs";
 
 /**
  * 乱数用クラスを指定しなかった場合に使用するデフォルト乱数クラス
+ * @type {Random}
+ * @ignore
  */
 let DEFAULT_RANDOM = new Random();
 
 /**
  * BigInteger 内で使用する関数群
+ * @ignore
  */
 class IntegerTool {
 
@@ -758,8 +761,8 @@ export default class BigInteger {
 
 	/**
 	 * ビット反転
-	 * @returns {BigInteger}
-	 * @private A = !A
+	 * @returns {BigInteger} A = !A
+	 * @private
 	 */
 	_not() {
 		return(this._add(new BigInteger(1))._negate());
@@ -776,8 +779,8 @@ export default class BigInteger {
 	/**
 	 * 否定論理積（ミュータブル）
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-	 * @returns {BigInteger}
-	 * @private A &= (!B)
+	 * @returns {BigInteger} A &= (!B)
+	 * @private
 	 */
 	_andNot(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -796,8 +799,8 @@ export default class BigInteger {
 	/**
 	 * 否定論理積（ミュータブル）
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-	 * @returns {BigInteger}
-	 * @private A &= (!B)
+	 * @returns {BigInteger} A &= (!B)
+	 * @private
 	 */
 	_nand(number) {
 		return(this._andNot(number));
@@ -815,8 +818,8 @@ export default class BigInteger {
 	/**
 	 * 否定論理和（ミュータブル）
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-	 * @returns {BigInteger}
-	 * @private A = !(A | B)
+	 * @returns {BigInteger} A = !(A | B)
+	 * @private
 	 */
 	_orNot(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -835,8 +838,8 @@ export default class BigInteger {
 	/**
 	 * 否定論理和（ミュータブル）
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-	 * @returns {BigInteger}
-	 * @private A = !(A | B)
+	 * @returns {BigInteger} A = !(A | B)
+	 * @private
 	 */
 	_nor(number) {
 		return(this._orNot(number));
@@ -937,8 +940,8 @@ export default class BigInteger {
 
 	/**
 	 * 絶対値（ミュータブル）
-	 * @returns {BigInteger}
-	 * @private A = abs(A)
+	 * @returns {BigInteger} A = abs(A)
+	 * @private
 	 */
 	_abs() {
 		// -1 -> 1, 0 -> 0, 1 -> 1
@@ -1787,10 +1790,27 @@ export default class BigInteger {
 
 /**
  * 内部で使用する定数値
+ * @ignore
  */
 const DEFINE = {
+
+	/**
+	 * 1
+	 */
 	ONE : new BigInteger(1),
+
+	/**
+	 * 2
+	 */
 	TWO : new BigInteger(2),
+
+	/**
+	 * 10
+	 */
 	TEN : new BigInteger(10),
+
+	/**
+	 * 0
+	 */
 	ZERO : new BigInteger(0)
 };

@@ -15,7 +15,7 @@ import RoundingMode, {RoundingModeEntity} from "./RoundingMode.mjs";
 /**
  * BigDecimal用の環境設定
  */
-export default  class MathContext {
+export default class MathContext {
 
 	/**
 	 * 任意精度の環境設定データ
@@ -138,10 +138,31 @@ export default  class MathContext {
 
 /**
  * 内部で使用する定数値
+ * @ignore
  */
 const DEFINE = {
+
+	/**
+	 * 制限なし
+	 * @type {MathContext}
+	 */
 	UNLIMITED	: new MathContext(0,	RoundingMode.HALF_UP),
+
+	/**
+	 * 32ビットの実数型
+	 * @type {MathContext}
+	 */
 	DECIMAL32	: new MathContext(7,	RoundingMode.HALF_EVEN),
+
+	/**
+	 * 64ビットの実数型
+	 * @type {MathContext}
+	 */
 	DECIMAL64	: new MathContext(16,	RoundingMode.HALF_EVEN),
+
+	/**
+	 * 128ビットの実数型
+	 * @type {MathContext}
+	 */
 	DECIMAL128	: new MathContext(34,	RoundingMode.HALF_EVEN)
 };

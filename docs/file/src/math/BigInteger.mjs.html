@@ -62,11 +62,14 @@ import Random from &quot;./tools/Random.mjs&quot;;
 
 /**
  * &#x4E71;&#x6570;&#x7528;&#x30AF;&#x30E9;&#x30B9;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x306A;&#x304B;&#x3063;&#x305F;&#x5834;&#x5408;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;&#x4E71;&#x6570;&#x30AF;&#x30E9;&#x30B9;
+ * @type {Random}
+ * @ignore
  */
 let DEFAULT_RANDOM = new Random();
 
 /**
  * BigInteger &#x5185;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x95A2;&#x6570;&#x7FA4;
+ * @ignore
  */
 class IntegerTool {
 
@@ -806,8 +809,8 @@ export default class BigInteger {
 
 	/**
 	 * &#x30D3;&#x30C3;&#x30C8;&#x53CD;&#x8EE2;
-	 * @returns {BigInteger}
-	 * @private A = !A
+	 * @returns {BigInteger} A = !A
+	 * @private
 	 */
 	_not() {
 		return(this._add(new BigInteger(1))._negate());
@@ -824,8 +827,8 @@ export default class BigInteger {
 	/**
 	 * &#x5426;&#x5B9A;&#x8AD6;&#x7406;&#x7A4D;&#xFF08;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#xFF09;
 	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number 
-	 * @returns {BigInteger}
-	 * @private A &amp;= (!B)
+	 * @returns {BigInteger} A &amp;= (!B)
+	 * @private
 	 */
 	_andNot(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -844,8 +847,8 @@ export default class BigInteger {
 	/**
 	 * &#x5426;&#x5B9A;&#x8AD6;&#x7406;&#x7A4D;&#xFF08;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#xFF09;
 	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number 
-	 * @returns {BigInteger}
-	 * @private A &amp;= (!B)
+	 * @returns {BigInteger} A &amp;= (!B)
+	 * @private
 	 */
 	_nand(number) {
 		return(this._andNot(number));
@@ -863,8 +866,8 @@ export default class BigInteger {
 	/**
 	 * &#x5426;&#x5B9A;&#x8AD6;&#x7406;&#x548C;&#xFF08;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#xFF09;
 	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number 
-	 * @returns {BigInteger}
-	 * @private A = !(A | B)
+	 * @returns {BigInteger} A = !(A | B)
+	 * @private
 	 */
 	_orNot(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -883,8 +886,8 @@ export default class BigInteger {
 	/**
 	 * &#x5426;&#x5B9A;&#x8AD6;&#x7406;&#x548C;&#xFF08;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#xFF09;
 	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number 
-	 * @returns {BigInteger}
-	 * @private A = !(A | B)
+	 * @returns {BigInteger} A = !(A | B)
+	 * @private
 	 */
 	_nor(number) {
 		return(this._orNot(number));
@@ -985,8 +988,8 @@ export default class BigInteger {
 
 	/**
 	 * &#x7D76;&#x5BFE;&#x5024;&#xFF08;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#xFF09;
-	 * @returns {BigInteger}
-	 * @private A = abs(A)
+	 * @returns {BigInteger} A = abs(A)
+	 * @private
 	 */
 	_abs() {
 		// -1 -&gt; 1, 0 -&gt; 0, 1 -&gt; 1
@@ -1835,11 +1838,28 @@ export default class BigInteger {
 
 /**
  * &#x5185;&#x90E8;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x5B9A;&#x6570;&#x5024;
+ * @ignore
  */
 const DEFINE = {
+
+	/**
+	 * 1
+	 */
 	ONE : new BigInteger(1),
+
+	/**
+	 * 2
+	 */
 	TWO : new BigInteger(2),
+
+	/**
+	 * 10
+	 */
 	TEN : new BigInteger(10),
+
+	/**
+	 * 0
+	 */
 	ZERO : new BigInteger(0)
 };
 </code></pre>
