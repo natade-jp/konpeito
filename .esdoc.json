@@ -1,7 +1,7 @@
 
 {
 	"source": "./src/",
-	"destination": "./doc/",
+	"destination": "./docs/",
 	"includes" : ["\\.mjs$"],
 	"excludes": ["\\.test\\.mjs$"],
 	"index" : "./README.md",

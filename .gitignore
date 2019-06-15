@@ -1,8 +1,8 @@
 /node_modules/
 /npm-debug.log
 /.npmrc
-#/doc/
-/doc/ast/
+#/docs/
+/docs/ast/
 .DS_Store
 Thumbs.db
 *.bak
