@@ -9,37 +9,37 @@
 declare class konpeito {
     /**
      * 多倍長整数クラス
-     * @returns {BigInteger}
+     * @returns {typeof BigInteger}
      */
     static BigInteger: any;
     /**
      * 任意精度浮動小数点クラス
-     * @returns {BigDecimal}
+     * @returns {typeof BigDecimal}
      */
     static BigDecimal: any;
     /**
      * BigDecimal用の丸め設定クラス
-     * @returns {RoundingMode}
+     * @returns {typeof RoundingMode}
      */
     static RoundingMode: any;
     /**
      * BigDecimal用の環境設定クラス
-     * @returns {MathContext}
+     * @returns {typeof MathContext}
      */
     static MathContext: any;
     /**
      * 複素数クラス
-     * @returns {Complex}
+     * @returns {typeof Complex}
      */
     static Complex: any;
     /**
      * 複素行列クラス
-     * @returns {Matrix}
+     * @returns {typeof Matrix}
      */
     static Matrix: any;
     /**
      * 乱数クラス
-     * @returns {Random}
+     * @returns {typeof Random}
      */
     static Random: any;
 }
@@ -1393,47 +1393,47 @@ declare class RoundingMode {
     /**
      * 指定した文字列で表される丸めクラスを取得する
      * @param {string|RoundingModeEntity|Object} name - モードの英数名
-     * @returns {RoundingModeEntity}
+     * @returns {typeof RoundingModeEntity}
      */
-    static valueOf(name: string | RoundingModeEntity | any): RoundingModeEntity;
+    static valueOf(name: string | RoundingModeEntity | any): any;
     /**
      * 絶対値の切り上げ（1桁目が0より大きければ桁上げする）
-     * @returns {RoundingModeEntity}
+     * @returns {typeof RoundingModeEntity}
      */
     static UP: any;
     /**
      * 絶対値の切り下げ（1桁目が0より大きければ桁下げする）
-     * @returns {RoundingModeEntity}
+     * @returns {typeof RoundingModeEntity}
      */
     static DOWN: any;
     /**
      * 正の無限大に近づく
-     * @returns {RoundingModeEntity}
+     * @returns {typeof RoundingModeEntity}
      */
     static CEILING: any;
     /**
      * 負の無限大に近づく
-     * @returns {RoundingModeEntity}
+     * @returns {typeof RoundingModeEntity}
      */
     static FLOOR: any;
     /**
      * 四捨五入
-     * @returns {RoundingModeEntity}
+     * @returns {typeof RoundingModeEntity}
      */
     static HALF_UP: any;
     /**
      * 五捨六入
-     * @returns {RoundingModeEntity}
+     * @returns {typeof RoundingModeEntity}
      */
     static HALF_DOWN: any;
     /**
      * 等間隔なら偶数側へ丸める
-     * @returns {RoundingModeEntity}
+     * @returns {typeof RoundingModeEntity}
      */
     static HALF_EVEN: any;
     /**
      * 丸めない（丸める必要が出る場合はエラー）
-     * @returns {RoundingModeEntity}
+     * @returns {typeof RoundingModeEntity}
      */
     static UNNECESSARY: any;
 }

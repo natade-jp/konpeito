@@ -1,7 +1,15 @@
-﻿const Log = konpeito.Log;
+﻿/* global konpeito */
+
+// @ts-ignore
+const Log = konpeito.Log;
+
+// @ts-ignore
 const Matrix = konpeito.Matrix;
 const $ = Matrix.create;
 
+/**
+ * @param {string} text 
+ */
 const testLUP = function(text) {
 	Log.println("lup");
 	const A = $(text);
@@ -13,6 +21,9 @@ const testLUP = function(text) {
 	Log.println(LUP.P.T().mul(LUP.L).mul(LUP.U));
 };
 
+/**
+ * @param {string} text 
+ */
 const testQR = function(text) {
 	Log.println("qr");
 	const A = $(text);
@@ -23,6 +34,9 @@ const testQR = function(text) {
 	Log.println(QR.Q.mul(QR.R));
 };
 
+/**
+ * @param {string} text 
+ */
 const testTRI = function(text) {
 	Log.println("tridiagonalize");
 	const A = $(text);
@@ -33,6 +47,9 @@ const testTRI = function(text) {
 	Log.println(VD.P.mul(VD.H).mul(VD.P.T()));
 };
 
+/**
+ * @param {string} text 
+ */
 const testEIG = function(text) {
 	Log.println("eig");
 	const A = $(text);
@@ -43,6 +60,9 @@ const testEIG = function(text) {
 	Log.println(VD.V.mul(VD.D).mul(VD.V.T()));
 };
 
+/**
+ * @param {string} text 
+ */
 const testSVD = function(text) {
 	Log.println("svd");
 	const A = $(text);
