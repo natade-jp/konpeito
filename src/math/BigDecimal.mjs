@@ -740,7 +740,7 @@ export default class BigDecimal {
 	 * 数値を範囲に収める
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
-	 * @returns {BigInteger} min(max(x, min), max)
+	 * @returns {BigDecimal} min(max(x, min), max)
 	 */
 	clip(min, max) {
 		const min_ = BigDecimal._toBigDecimal(min);
