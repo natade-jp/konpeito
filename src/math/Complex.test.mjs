@@ -67,6 +67,17 @@ const testOperator2  = function(operator, x, p, y, epsilon) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+const testOperator3  = function(operator, x, p1, p2, y, epsilon) {
+	test_count++;
+	const tolerance = epsilon ? epsilon : 0.1;
+	const X = $(x);
+	const Y = X[operator](p1, p2);
+	const Y_str = Y;
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + Y_str;
+	const out = $(Y).equals(y, tolerance);
+	test(testname, () => { expect(out).toBe(true); });
+};
+
 const testOperator1Bool  = function(operator, x, y) {
 	test_count++;
 	const X = $(x);
@@ -357,4 +368,17 @@ const testOperator1Bool  = function(operator, x, y) {
 	testOperator1("sinc", "0.4j", "1.2848");
 	testOperator1("sinc", "-0.8+1.2j", "-1.6589 + 4.4892i");
 	testOperator1("sinc", "1.8-0.8j", "-0.21369 - 0.97227i");
+}
+
+{
+	test_count = 0;
+	testOperator3("clip", "1.0", "1.5", "2.5", "1.5");
+	testOperator3("clip", "2.0", "1.5", "2.5", "2.0");
+	testOperator3("clip", "3.0", "1.5", "2.5", "2.5");
+	testOperator3("clip", "-1.0", "-2.5", "-1.5", "-1.5");
+	testOperator3("clip", "-2.0", "-2.5", "-1.5", "-2.0");
+	testOperator3("clip", "-3.0", "-2.5", "-1.5", "-2.5");
+	testOperator3("clip", "1.0j", "1.5j", "2.5j", "1.5j");
+	testOperator3("clip", "2.0j", "1.5j", "2.5j", "2.0j");
+	testOperator3("clip", "3.0j", "1.5j", "2.5j", "2.5j");
 }

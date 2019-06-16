@@ -4,6 +4,19 @@ import Random from "./tools/Random.mjs";
 import BigInteger from "./BigInteger.mjs";
 const $ = BigInteger.create;
 
+let test_count = 0;
+
+const testOperator3  = function(operator, x, p1, p2, y) {
+	test_count++;
+	const X = $(x);
+	const Y = X[operator](p1, p2);
+	const Y_str = ""+ Y;
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + Y_str;
+	const out = $(Y).equals(y);
+	test(testname, () => { expect(out).toBe(true); });
+};
+
+
 {
 	test("add 1", () => {
 		expect(
@@ -501,4 +514,14 @@ test("factorial", () => {
 		$(50).factorial().toString(16) === "49eebc961ed279b02b1ef4f28d19a84f5973a1d2c7800000000000"
 	).toBe(true);
 });
+
+{
+	test_count = 0;
+	testOperator3("clip", "10", "15", "25", "15");
+	testOperator3("clip", "20", "15", "25", "20");
+	testOperator3("clip", "30", "15", "25", "25");
+	testOperator3("clip", "-10", "-25", "-15", "-15");
+	testOperator3("clip", "-20", "-25", "-15", "-20");
+	testOperator3("clip", "-30", "-25", "-15", "-25");
+}
 

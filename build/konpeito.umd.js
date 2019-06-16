@@ -2377,6 +2377,31 @@
 	};
 
 	/**
+		 * 数値を範囲に収める
+		 * @param {BigInteger|number|string|Array<string|number>|Object} min 
+		 * @param {BigInteger|number|string|Array<string|number>|Object} max
+		 * @returns {BigInteger} min(max(x, min), max)
+		 */
+	BigInteger.prototype.clip = function clip (min, max) {
+		var min_ = BigInteger._toBigInteger(min);
+		var max_ = BigInteger._toBigInteger(max);
+		var arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	};
+
+	/**
 		 * ビットシフト（ミュータブル）
 		 * @param {BigInteger|number|string|Array<string|number>|Object} shift_length - 上位へのビットシフト数
 		 * @returns {BigInteger} A <<= n
@@ -3842,6 +3867,31 @@
 	};
 
 	/**
+		 * 数値を範囲に収める
+		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
+		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
+		 * @returns {BigInteger} min(max(x, min), max)
+		 */
+	BigDecimal.prototype.clip = function clip (min, max) {
+		var min_ = BigDecimal._toBigDecimal(min);
+		var max_ = BigDecimal._toBigDecimal(max);
+		var arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	};
+
+	/**
 		 * 精度は変更させずスケールのみを変更させ10の倍数を乗算
 		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
 		 * @returns {BigDecimal} A * 10^floor(n)
@@ -4801,7 +4851,7 @@
 				return new Complex(noise.nextGaussian());
 			}, M2.row_length, add_vectors);
 			// 列に追加する
-			M2._concatLeft(R);
+			M2._concatRight(R);
 			// 正規直行行列を作成する
 			orthogonal_matrix = LinearAlgebraTool.doGramSchmidtOrthonormalization(M2);
 			// 正しく作成できていたら完了
@@ -5278,7 +5328,7 @@
 		}
 		// 行列を準備する
 		var M = new Matrix(A);
-		M._concatLeft(arg);
+		M._concatRight(arg);
 		var long_matrix_array = M.matrix_array;
 		var long_length = M.column_length;
 		var len = A.column_length;
@@ -5502,7 +5552,7 @@
 		// ガウス・ジョルダン法
 		// 初期値の設定
 		var M = new Matrix(X);
-		M._concatLeft(Matrix.eye(len));
+		M._concatRight(Matrix.eye(len));
 		var long_matrix_array = M.matrix_array;
 		var long_length = M.column_length;
 
@@ -8661,6 +8711,33 @@
 	Signal.hamming = function hamming (size, periodic) {
 		return Signal.window("hamming", size, periodic);
 	};
+		
+	/**
+		 * FFTシフト
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x 
+		 * @param {{dimension : (?string|?number)}} [type]
+		 * @returns {Matrix}
+		 */
+	Signal.fftshift = function fftshift (x, type) {
+		var X = Matrix._toMatrix(x);
+		if(X.isVector()) {
+			var shift_size = Math.floor(X.length / 2);
+			return X.circshift(shift_size, type);
+		}
+		var shift_size_col = Math.floor(X.column_length / 2);
+		var shift_size_row = Math.floor(X.row_length / 2);
+		if(type !== undefined) {
+			var target = type.dimension;
+			if((target === "row") || (target === 1)) {
+				return X.circshift(shift_size_col, type);
+			}
+			else if((target === "column") || (target === 2)) {
+				return X.circshift(shift_size_row, type);
+			}
+		}
+		var Y = X.circshift(shift_size_col, {dimension : "row"});
+		return Y.circshift(shift_size_row, {dimension : "column"});
+	};
 
 	/**
 	 * The script is part of konpeito.
@@ -8806,11 +8883,13 @@
 		 * 初期値と差分値と最終値から、その値が入った配列を作成する
 		 * @param {Complex} from - 最初の値
 		 * @param {Complex} delta - 差分
-		 * @param {Complex} to - 繰り返す先の値（この値は含めない）
+		 * @param {Complex} to - 繰り返す先の値
+		 * @param {boolean} [is_include_last_number=true] - 最後の値を含めるか否か
 		 * @returns {Array<Complex>}
 		 */
-	MatrixTool.InterpolationCalculation = function InterpolationCalculation (from, delta, to) {
+	MatrixTool.InterpolationCalculation = function InterpolationCalculation (from, delta, to, is_include_last_number) {
 		var FromIsGreaterThanTo = from.compareTo(to);
+		var is_include_last_number_ = is_include_last_number !== undefined ? is_include_last_number : true;
 		if(FromIsGreaterThanTo === 0) {
 			return [from];
 		}
@@ -8829,8 +8908,15 @@
 		rows_array[0] = num;
 		for(var i = 1; i < 0x10000; i++) {
 			num = num.add(delta);
-			if(to.compareTo(num) === FromIsGreaterThanTo) {
-				break;
+			if(is_include_last_number_) {
+				if(to.compareTo(num) === FromIsGreaterThanTo) {
+					break;
+				}
+			}
+			else {
+				if((to.compareTo(num) * FromIsGreaterThanTo) >= 0) {
+					break;
+				}
 			}
 			rows_array[i] = num;
 		}
@@ -8866,7 +8952,7 @@
 					to = new Complex(xs[i + 2][1]);
 					i += 2;
 				}
-				var ip_array = MatrixTool.InterpolationCalculation(from, delta, to);
+				var ip_array = MatrixTool.InterpolationCalculation(from, delta, to, true);
 				for(var j = 0; j < ip_array.length; j++) {
 					rows_array.push(ip_array[j]);
 				}
@@ -11127,10 +11213,10 @@
 		 * @returns {Matrix} 処理実行後の行列
 		 * @private
 		 */
-	Matrix.prototype._concatLeft = function _concatLeft (left_matrix) {
+	Matrix.prototype._concatRight = function _concatRight (left_matrix) {
 		var M = Matrix._toMatrix(left_matrix);
 		if(this.row_length != M.row_length) {
-			throw "_concatLeft";
+			throw "_concatRight";
 		}
 		for(var row = 0; row < this.row_length; row++) {
 			for(var col = 0; col < M.column_length; col++) {
@@ -11167,8 +11253,8 @@
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} left_matrix - 結合したい行列
 		 * @returns {Matrix} 処理実行後の行列
 		 */
-	Matrix.prototype.concatLeft = function concatLeft (left_matrix) {
-		return this.clone()._concatLeft(left_matrix);
+	Matrix.prototype.concatRight = function concatRight (left_matrix) {
+		return this.clone()._concatRight(left_matrix);
 	};
 
 	/**
@@ -11178,6 +11264,226 @@
 		 */
 	Matrix.prototype.concatBottom = function concatBottom (bottom_matrix) {
 		return this.clone()._concatBottom(bottom_matrix);
+	};
+
+	/**
+		 * 行列の各項を指定した範囲に収める
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} min 
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} max 
+		 * @returns {Matrix} min(max(x, min), max)
+		 */
+	Matrix.prototype.clip = function clip (min, max) {
+		var MIN = Matrix._toMatrix(min);
+		var MAX = Matrix._toMatrix(max);
+		var x_min = MIN.matrix_array;
+		var x_max = MAX.matrix_array;
+		return this.cloneMatrixDoEachCalculation(
+			function(num, row, col) {
+				var d_min = x_min[row % MIN.row_length][col % MIN.column_length];
+				var d_max = x_max[row % MAX.row_length][col % MAX.column_length];
+				return num.clip(d_min, d_max);
+			}
+		);
+	};
+
+	/**
+		 * 指定した初期値、ステップ値、終了条件で行ベクトルを作成
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} start_or_stop 
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [stop]
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [step=1] 
+		 * @returns {Matrix}
+		 */
+	Matrix.arange = function arange (start_or_stop, stop, step) {
+		var from  = stop !== undefined ? Matrix._toComplex(start_or_stop) : Complex.ZERO;
+		var to    = stop !== undefined ? Matrix._toComplex(stop) : Matrix._toComplex(start_or_stop);
+		var delta = step !== undefined ? Matrix._toComplex(step) : Complex.ONE;
+		return new Matrix(MatrixTool.InterpolationCalculation(from, delta, to, false));
+	};
+
+	/**
+		 * 循環シフト
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size 
+		 * @param {{dimension : (?string|?number)}} [type]
+		 * @returns {Matrix} 処理実行後の行列
+		 */
+	Matrix.prototype.circshift = function circshift (shift_size, type) {
+		var shift = Matrix._toInteger(shift_size);
+		var dim = !(type && type.dimension) ? "auto" : type.dimension;
+		var main = function(data) {
+			var y = new Array(data.length);
+			var from = ((- shift % data.length) + data.length) % data.length;
+			for(var i = 0; i < data.length; i++) {
+				y[i] = data[from++];
+				if(from === data.length) {
+					from = 0;
+				}
+			}
+			return y;
+		};
+		return this.eachVector(main, dim);
+	};
+
+	/**
+		 * 循環シフト
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size 
+		 * @param {{dimension : (?string|?number)}} [type]
+		 * @returns {Matrix} 処理実行後の行列
+		 */
+	Matrix.prototype.roll = function roll (shift_size, type) {
+		return this.circshift(shift_size, type);
+	};
+
+	/**
+		 * 行列の形状を変更
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - 新しい行の長さ
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - 新しい列の長さ
+		 * @returns {Matrix} 処理実行後の行列
+		 */
+	Matrix.prototype.reshape = function reshape (row_length, column_length) {
+		var new_row_length = Matrix._toInteger(row_length);
+		var new_column_length = Matrix._toInteger(column_length);
+		var this_size = this.row_length * this.column_length;
+		var new_size = new_row_length * new_column_length;
+		if(this_size !== new_size) {
+			throw "reshape error. (this_size !== new_size)->(" + this_size + " !== " + new_size + ")";
+		}
+		var m = this.matrix_array;
+		var m_col = 0;
+		var m_row = 0;
+		var y = new Array(new_row_length);
+		for(var row = 0; row < new_row_length; row++) {
+			y[row] = new Array(new_column_length);
+			for(var col = 0; col < new_column_length; col++) {
+				y[row][col] = m[m_row][m_col];
+				m_col++;
+				if(m_col === this.column_length) {
+					m_col = 0;
+					m_row++;
+				}
+			}
+		}
+		return new Matrix(y);
+	};
+
+	/**
+		 * 行列を左右反転
+		 * @returns {Matrix} 処理実行後の行列
+		 */
+	Matrix.prototype.fliplr = function fliplr () {
+		return this.flip({dimension : "row"});
+	};
+
+	/**
+		 * 行列を上下反転
+		 * @returns {Matrix} 処理実行後の行列
+		 */
+	Matrix.prototype.flipud = function flipud () {
+		return this.flip({dimension : "column"});
+	};
+
+	/**
+		 * 行列を反転
+		 * @param {{dimension : (?string|?number)}} [type]
+		 * @returns {Matrix} 処理実行後の行列
+		 */
+	Matrix.prototype.flip = function flip (type) {
+		var dim = !(type && type.dimension) ? "auto" : type.dimension;
+		var main = function(data) {
+			var y = new Array(data.length);
+			for(var i = 0, j = data.length - 1; i < data.length; i++, j--) {
+				y[i] = data[j];
+			}
+			return y;
+		};
+		return this.eachVector(main, dim);
+	};
+
+	/**
+		 * インデックスソート
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - インデックス（列 or 行）ベクトル
+		 * @returns {Matrix} 処理実行後の行列
+		 */
+	Matrix.prototype.indexsort = function indexsort (v) {
+		var V = Matrix._toMatrix(v);
+		if(V.isMatrix()) {
+			throw "argsort error. argsort is not vector. (" + V.toOneLineString + ")";
+		}
+		var is_transpose = false;
+		var target_array = null;
+		var index_array = null;
+		if(V.isRow()) {
+			if(this.column_length !== V.column_length) {
+				throw "argsort error. (this_size !== new_size)->(" + this.column_length + " !== " + V.column_length + ")";
+			}
+			// 列をインデックスソートする
+			is_transpose = true;
+			target_array = this.transpose().matrix_array;
+			index_array = V.matrix_array[0];
+		}
+		if(V.isColumn()) {
+			if(this.row_length !== V.row_length) {
+				throw "argsort error. (this_size !== new_size)->(" + this.row_length + " !== " + V.row_length + ")";
+			}
+			// 行をインデックスソートする
+			target_array = this.matrix_array;
+			index_array = V.transpose().matrix_array[0];
+		}
+		// データを付け替える
+		var sort_data = new Array(index_array.length);
+		for(var i = 0; i < index_array.length; i++) {
+			sort_data[i] = {
+				index : index_array[i],
+				data : target_array[i]
+			};
+		}
+		// 比較関数を作成
+		var compare = function(a, b) {
+			return a.index.compareTo(b.index);
+		};
+		{
+			var temp = [];
+			// ソート関数（安定マージソート）
+			var sort = function(elements, first, last, cmp_function) { 
+				if(first < last) {
+					var middle = Math.floor((first + last) / 2);
+					sort(elements, first, middle, cmp_function);
+					sort(elements, middle + 1, last, cmp_function);
+					var p = 0, i, j, k;
+					for(i = first; i <= middle; i++) {
+						temp[p++] = elements[i];
+					}
+					i = middle + 1;
+					j = 0;
+					k = first;
+					while((i <= last) && (j < p)) {
+						if(cmp_function(elements[i], temp[j]) >= 0) {
+							elements[k++] = temp[j++];
+						}
+						else {
+							elements[k++] = elements[i++];
+						}
+					}
+					while(j < p) {
+						elements[k++] = temp[j++];
+					}
+				}
+				return true;
+			};
+			sort(sort_data, 0, sort_data.length - 1, compare);
+		}
+		// 行列を組み立てなおす
+		var y = new Array(index_array.length);
+		for(var i$1 = 0; i$1 < index_array.length; i$1++) {
+			y[i$1] = sort_data[i$1].data;
+		}
+		// 行列を作成する
+		var Y = new Matrix(y);
+		if(!is_transpose) {
+			return Y;
+		}
+		else {
+			return Y.transpose();
+		}
 	};
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
@@ -11868,6 +12174,15 @@
 	Matrix.hamming = function hamming (size, periodic) {
 		return Signal.hamming(size, periodic);
 	};
+		
+	/**
+		 * FFTシフト
+		 * @param {{dimension : (?string|?number)}} [type]
+		 * @returns {Matrix}
+		 */
+	Matrix.prototype.fftshift = function fftshift (type) {
+		return Signal.fftshift(this, type);
+	};
 
 	Object.defineProperties( Matrix.prototype, prototypeAccessors$2 );
 
@@ -12382,38 +12697,6 @@
 	};
 		
 	/**
-		 * 最大値
-		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
-		 * @returns {Complex} max([A, B])
-		 */
-	Complex.prototype.max = function max (number, epsilon) {
-		var x = Complex._toComplex(number);
-		if(this.compareTo(x, epsilon) >= 0) {
-			return this;
-		}
-		else {
-			return x;
-		}
-	};
-
-	/**
-		 * 最小値
-		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
-		 * @returns {Complex} min([A, B])
-		 */
-	Complex.prototype.min = function min (number, epsilon) {
-		var x = Complex._toComplex(number);
-		if(this.compareTo(x, epsilon) <= 0) {
-			return this;
-		}
-		else {
-			return x;
-		}
-	};
-
-	/**
 		 * 値同士を比較
 		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
 		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
@@ -12429,6 +12712,61 @@
 			return 0;
 		}
 		return a > b ? 1 : -1;
+	};
+		
+	/**
+		 * 最大値
+		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+		 * @returns {Complex} max([A, B])
+		 */
+	Complex.prototype.max = function max (number) {
+		var x = Complex._toComplex(number);
+		if(this.compareTo(x) >= 0) {
+			return this;
+		}
+		else {
+			return x;
+		}
+	};
+
+	/**
+		 * 最小値
+		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+		 * @returns {Complex} min([A, B])
+		 */
+	Complex.prototype.min = function min (number) {
+		var x = Complex._toComplex(number);
+		if(this.compareTo(x) <= 0) {
+			return this;
+		}
+		else {
+			return x;
+		}
+	};
+
+	/**
+		 * 数値を範囲に収める
+		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} min 
+		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} max
+		 * @returns {Complex} min(max(x, min), max)
+		 */
+	Complex.prototype.clip = function clip (min, max) {
+		var min_ = Complex._toComplex(min);
+		var max_ = Complex._toComplex(max);
+		var arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
 	};
 
 	// ----------------------

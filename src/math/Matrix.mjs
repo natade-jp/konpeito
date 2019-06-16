@@ -162,11 +162,13 @@ class MatrixTool {
 	 * 初期値と差分値と最終値から、その値が入った配列を作成する
 	 * @param {Complex} from - 最初の値
 	 * @param {Complex} delta - 差分
-	 * @param {Complex} to - 繰り返す先の値（この値は含めない）
+	 * @param {Complex} to - 繰り返す先の値
+	 * @param {boolean} [is_include_last_number=true] - 最後の値を含めるか否か
 	 * @returns {Array<Complex>}
 	 */
-	static InterpolationCalculation(from, delta, to) {
+	static InterpolationCalculation(from, delta, to, is_include_last_number) {
 		const FromIsGreaterThanTo = from.compareTo(to);
+		const is_include_last_number_ = is_include_last_number !== undefined ? is_include_last_number : true;
 		if(FromIsGreaterThanTo === 0) {
 			return [from];
 		}
@@ -185,8 +187,15 @@ class MatrixTool {
 		rows_array[0] = num;
 		for(let i = 1; i < 0x10000; i++) {
 			num = num.add(delta);
-			if(to.compareTo(num) === FromIsGreaterThanTo) {
-				break;
+			if(is_include_last_number_) {
+				if(to.compareTo(num) === FromIsGreaterThanTo) {
+					break;
+				}
+			}
+			else {
+				if((to.compareTo(num) * FromIsGreaterThanTo) >= 0) {
+					break;
+				}
 			}
 			rows_array[i] = num;
 		}
@@ -222,7 +231,7 @@ class MatrixTool {
 					to = new Complex(xs[i + 2][1]);
 					i += 2;
 				}
-				const ip_array = MatrixTool.InterpolationCalculation(from, delta, to);
+				const ip_array = MatrixTool.InterpolationCalculation(from, delta, to, true);
 				for(let j = 0; j < ip_array.length; j++) {
 					rows_array.push(ip_array[j]);
 				}
@@ -2491,10 +2500,10 @@ export default class Matrix {
 	 * @returns {Matrix} 処理実行後の行列
 	 * @private
 	 */
-	_concatLeft(left_matrix) {
+	_concatRight(left_matrix) {
 		const M = Matrix._toMatrix(left_matrix);
 		if(this.row_length != M.row_length) {
-			throw "_concatLeft";
+			throw "_concatRight";
 		}
 		for(let row = 0; row < this.row_length; row++) {
 			for(let col = 0; col < M.column_length; col++) {
@@ -2531,8 +2540,8 @@ export default class Matrix {
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} left_matrix - 結合したい行列
 	 * @returns {Matrix} 処理実行後の行列
 	 */
-	concatLeft(left_matrix) {
-		return this.clone()._concatLeft(left_matrix);
+	concatRight(left_matrix) {
+		return this.clone()._concatRight(left_matrix);
 	}
 
 	/**
@@ -2542,6 +2551,226 @@ export default class Matrix {
 	 */
 	concatBottom(bottom_matrix) {
 		return this.clone()._concatBottom(bottom_matrix);
+	}
+
+	/**
+	 * 行列の各項を指定した範囲に収める
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} min 
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} max 
+	 * @returns {Matrix} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const MIN = Matrix._toMatrix(min);
+		const MAX = Matrix._toMatrix(max);
+		const x_min = MIN.matrix_array;
+		const x_max = MAX.matrix_array;
+		return this.cloneMatrixDoEachCalculation(
+			function(num, row, col) {
+				const d_min = x_min[row % MIN.row_length][col % MIN.column_length];
+				const d_max = x_max[row % MAX.row_length][col % MAX.column_length];
+				return num.clip(d_min, d_max);
+			}
+		);
+	}
+
+	/**
+	 * 指定した初期値、ステップ値、終了条件で行ベクトルを作成
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} start_or_stop 
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [stop]
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [step=1] 
+	 * @returns {Matrix}
+	 */
+	static arange(start_or_stop, stop, step) {
+		const from  = stop !== undefined ? Matrix._toComplex(start_or_stop) : Complex.ZERO;
+		const to    = stop !== undefined ? Matrix._toComplex(stop) : Matrix._toComplex(start_or_stop);
+		const delta = step !== undefined ? Matrix._toComplex(step) : Complex.ONE;
+		return new Matrix(MatrixTool.InterpolationCalculation(from, delta, to, false));
+	}
+
+	/**
+	 * 循環シフト
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size 
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	circshift(shift_size, type) {
+		const shift = Matrix._toInteger(shift_size);
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const main = function(data) {
+			const y = new Array(data.length);
+			let from = ((- shift % data.length) + data.length) % data.length;
+			for(let i = 0; i < data.length; i++) {
+				y[i] = data[from++];
+				if(from === data.length) {
+					from = 0;
+				}
+			}
+			return y;
+		};
+		return this.eachVector(main, dim);
+	}
+
+	/**
+	 * 循環シフト
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size 
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	roll(shift_size, type) {
+		return this.circshift(shift_size, type);
+	}
+
+	/**
+	 * 行列の形状を変更
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - 新しい行の長さ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - 新しい列の長さ
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	reshape(row_length, column_length) {
+		const new_row_length = Matrix._toInteger(row_length);
+		const new_column_length = Matrix._toInteger(column_length);
+		const this_size = this.row_length * this.column_length;
+		const new_size = new_row_length * new_column_length;
+		if(this_size !== new_size) {
+			throw "reshape error. (this_size !== new_size)->(" + this_size + " !== " + new_size + ")";
+		}
+		const m = this.matrix_array;
+		let m_col = 0;
+		let m_row = 0;
+		const y = new Array(new_row_length);
+		for(let row = 0; row < new_row_length; row++) {
+			y[row] = new Array(new_column_length);
+			for(let col = 0; col < new_column_length; col++) {
+				y[row][col] = m[m_row][m_col];
+				m_col++;
+				if(m_col === this.column_length) {
+					m_col = 0;
+					m_row++;
+				}
+			}
+		}
+		return new Matrix(y);
+	}
+
+	/**
+	 * 行列を左右反転
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	fliplr() {
+		return this.flip({dimension : "row"});
+	}
+
+	/**
+	 * 行列を上下反転
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	flipud() {
+		return this.flip({dimension : "column"});
+	}
+
+	/**
+	 * 行列を反転
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	flip(type) {
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const main = function(data) {
+			const y = new Array(data.length);
+			for(let i = 0, j = data.length - 1; i < data.length; i++, j--) {
+				y[i] = data[j];
+			}
+			return y;
+		};
+		return this.eachVector(main, dim);
+	}
+
+	/**
+	 * インデックスソート
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - インデックス（列 or 行）ベクトル
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	indexsort(v) {
+		const V = Matrix._toMatrix(v);
+		if(V.isMatrix()) {
+			throw "argsort error. argsort is not vector. (" + V.toOneLineString + ")";
+		}
+		let is_transpose = false;
+		let target_array = null;
+		let index_array = null;
+		if(V.isRow()) {
+			if(this.column_length !== V.column_length) {
+				throw "argsort error. (this_size !== new_size)->(" + this.column_length + " !== " + V.column_length + ")";
+			}
+			// 列をインデックスソートする
+			is_transpose = true;
+			target_array = this.transpose().matrix_array;
+			index_array = V.matrix_array[0];
+		}
+		if(V.isColumn()) {
+			if(this.row_length !== V.row_length) {
+				throw "argsort error. (this_size !== new_size)->(" + this.row_length + " !== " + V.row_length + ")";
+			}
+			// 行をインデックスソートする
+			target_array = this.matrix_array;
+			index_array = V.transpose().matrix_array[0];
+		}
+		// データを付け替える
+		const sort_data = new Array(index_array.length);
+		for(let i = 0; i < index_array.length; i++) {
+			sort_data[i] = {
+				index : index_array[i],
+				data : target_array[i]
+			};
+		}
+		// 比較関数を作成
+		const compare = function(a, b) {
+			return a.index.compareTo(b.index);
+		};
+		{
+			const temp = [];
+			// ソート関数（安定マージソート）
+			const sort = function(elements, first, last, cmp_function) { 
+				if(first < last) {
+					const middle = Math.floor((first + last) / 2);
+					sort(elements, first, middle, cmp_function);
+					sort(elements, middle + 1, last, cmp_function);
+					let p = 0, i, j, k;
+					for(i = first; i <= middle; i++) {
+						temp[p++] = elements[i];
+					}
+					i = middle + 1;
+					j = 0;
+					k = first;
+					while((i <= last) && (j < p)) {
+						if(cmp_function(elements[i], temp[j]) >= 0) {
+							elements[k++] = temp[j++];
+						}
+						else {
+							elements[k++] = elements[i++];
+						}
+					}
+					while(j < p) {
+						elements[k++] = temp[j++];
+					}
+				}
+				return true;
+			};
+			sort(sort_data, 0, sort_data.length - 1, compare);
+		}
+		// 行列を組み立てなおす
+		const y = new Array(index_array.length);
+		for(let i = 0; i < index_array.length; i++) {
+			y[i] = sort_data[i].data;
+		}
+		// 行列を作成する
+		const Y = new Matrix(y);
+		if(!is_transpose) {
+			return Y;
+		}
+		else {
+			return Y.transpose();
+		}
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
@@ -3222,5 +3451,14 @@ export default class Matrix {
 		return Signal.hamming(size, periodic);
 	}
 	
+	/**
+	 * FFTシフト
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	fftshift(type) {
+		return Signal.fftshift(this, type);
+	}
+
 }
 

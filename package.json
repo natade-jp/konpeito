@@ -1,6 +1,6 @@
 {
 	"name": "konpeito",
-	"version": "0.1.9",
+	"version": "0.1.10",
 	"description": "The collection of javascirpt library such as numerical calculation.",
 	"main": "./build/konpeito.umd.min.js",
 	"module": "./build/konpeito.module.min.mjs",
@@ -14,7 +14,8 @@
 		"matrix",
 		"algebra",
 		"statistics",
-		"fft"
+		"fft",
+		"svd"
 	],
 	"license": "MIT",
 	"author": "natade-jp <natade3@gmail.com> (https://www.natade.net/)",
@@ -25,7 +26,7 @@
 	"directories": {
 		"src": "./src",
 		"build": "./build",
-		"example": "./doc_src/examples/demos"
+		"example": "./html/examples/demos"
 	},
 	"scripts": {
 		"dev": "node ./scripts/package.dev.js",

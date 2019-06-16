@@ -737,6 +737,31 @@ export default class BigDecimal {
 	}
 
 	/**
+	 * 数値を範囲に収める
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
+	 * @returns {BigInteger} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = BigDecimal._toBigDecimal(min);
+		const max_ = BigDecimal._toBigDecimal(max);
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	}
+
+	/**
 	 * 精度は変更させずスケールのみを変更させ10の倍数を乗算
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
 	 * @returns {BigDecimal} A * 10^floor(n)

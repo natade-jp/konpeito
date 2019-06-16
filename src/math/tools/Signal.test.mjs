@@ -150,5 +150,12 @@ const testOperator3  = function(operator, x1, x2, x3, y, epsilon) {
 	testOperator1("hamming", "5", "[0.08; 0.54; 1.00; 0.54; 0.08]");
 }
 
+{
+	test_count = 0;
+	testOperator1("fftshift", "[1 2 3 4 5 6]", "[4 5 6 1 2 3]");
+	testOperator1("fftshift", "[1 2 3 4 5 6 7]", "[5 6 7 1 2 3 4]");
+}
+
+
 
 

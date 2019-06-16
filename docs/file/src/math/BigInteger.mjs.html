@@ -1116,6 +1116,31 @@ export default class BigInteger {
 	}
 
 	/**
+	 * &#x6570;&#x5024;&#x3092;&#x7BC4;&#x56F2;&#x306B;&#x53CE;&#x3081;&#x308B;
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} min 
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} max
+	 * @returns {BigInteger} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = BigInteger._toBigInteger(min);
+		const max_ = BigInteger._toBigInteger(max);
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw &quot;clip(min, max) error. (min &gt; max)-&gt;(&quot; + min_ + &quot; &gt; &quot; + max_ + &quot;)&quot;;
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	}
+
+	/**
 	 * &#x30D3;&#x30C3;&#x30C8;&#x30B7;&#x30D5;&#x30C8;&#xFF08;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#xFF09;
 	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} shift_length - &#x4E0A;&#x4F4D;&#x3078;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x30B7;&#x30D5;&#x30C8;&#x6570;
 	 * @returns {BigInteger} A &lt;&lt;= n

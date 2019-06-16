@@ -535,10 +535,10 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 
 {
 	test_count = 0;
-	testOperator2("concatLeft", "[1]", "[2]", "[1 2]");
-	testOperator2("concatLeft", "[1 2]", "[3 4]", "[1 2 3 4]");
-	testOperator2("concatLeft", "[1 2;3 4]", "[10;11]", "[1 2 10;3 4 11]");
-	testOperator2("concatLeft", "[1 2;3 4]", "[5 6;7 8]", "[1 2 5 6;3 4 7 8]");
+	testOperator2("concatRight", "[1]", "[2]", "[1 2]");
+	testOperator2("concatRight", "[1 2]", "[3 4]", "[1 2 3 4]");
+	testOperator2("concatRight", "[1 2;3 4]", "[10;11]", "[1 2 10;3 4 11]");
+	testOperator2("concatRight", "[1 2;3 4]", "[5 6;7 8]", "[1 2 5 6;3 4 7 8]");
 }
 
 {
@@ -549,5 +549,60 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 	testOperator2("concatBottom", "[1 2;3 4]", "[5 6;7 8]", "[1 2;3 4;5 6;7 8]");
 }
 
+{
+	test_count = 0;
+	testOperator3("clip", "1.0", "1.5", "2.5", "1.5");
+	testOperator3("clip", "2.0", "1.5", "2.5", "2.0");
+	testOperator3("clip", "3.0", "1.5", "2.5", "2.5");
+	testOperator3("clip", "[1.0 2.0 3.0]", "1.5", "2.5", "[1.5 2.0 2.5]");
+	testOperator3("clip", "[1.0 2.0 3.0;2.0 3.0 4.0]", "[1.5;2.5]", "[2.5;3.5]", "[1.5 2.0 2.5;2.5 3.0 3.5]");
+}
 
+{
+	test_count = 0;
+	testInitialize1("arange", "4", "[0 1 2 3]");
+	testInitialize2("arange", "1", "8", "[1 2 3 4 5 6 7]");
+	testInitialize3("arange", "4", "10", "2", "[4 6 8]");
+	testInitialize3("arange", "10", "4", "-2", "[10 8 6]");
+}
 
+{
+	test_count = 0;
+	testOperator2("circshift", "[1 2 3 4 5 6 7 8 9 10]", "3", "[8 9 10 1 2 3 4 5 6 7]");
+	testOperator2("circshift", "[1 2 3 4 5 6 7 8 9 10]", "-3", "[4 5 6 7 8 9 10 1 2 3]");
+}
+
+{
+	test_count = 0;
+	testOperator3("reshape", "[1 2 3;4 5 6;7 8 9]", "1", "9", "[1 2 3 4 5 6 7 8 9]");
+	testOperator3("reshape", "[1 2 3;4 5 6;7 8 9]", "9", "1", "[1;2;3;4;5;6;7;8;9]");
+	testOperator3("reshape", "[1 2 3;4 5 6]", "3", "2", "[1 2;3 4;5 6]");
+	testOperator3("reshape", "[1 2;3 4;5 6]", "2", "3", "[1 2 3;4 5 6]");
+}
+
+{
+	test_count = 0;
+	testOperator1("fliplr", "1", "1");
+	testOperator1("fliplr", "[1 2;3 4]", "[2 1;4 3]");
+}
+
+{
+	test_count = 0;
+	testOperator1("flipud", "1", "1");
+	testOperator1("flipud", "[1 2;3 4]", "[3 4;1 2]");
+}
+
+{
+	test_count = 0;
+	testOperator1("flip", "1", "1");
+	testOperator1("flip", "[1 2 3 4]", "[4 3 2 1]");
+	testOperator1("flip", "[1;2;3;4]", "[4;3;2;1]");
+}
+
+{
+	test_count = 0;
+	testOperator2("indexsort", "[1 2 3;4 5 6;7 8 9]", "[10 20 30]", "[1 2 3;4 5 6;7 8 9]");
+	testOperator2("indexsort", "[1 2 3;4 5 6;7 8 9]", "[30 20 10]", "[3 2 1;6 5 4;9 8 7]");
+	testOperator2("indexsort", "[1 2 3;4 5 6;7 8 9]", "[10;20;30]", "[1 2 3;4 5 6;7 8 9]");
+	testOperator2("indexsort", "[1 2 3;4 5 6;7 8 9]", "[30;20;10]", "[7 8 9;4 5 6;1 2 3]");
+}

@@ -574,38 +574,6 @@ export default class Complex {
 	}
 	
 	/**
-	 * &#x6700;&#x5927;&#x5024;
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - &#x8AA4;&#x5DEE;&#x3092;&#x5B9F;&#x6570;&#x3067;&#x6307;&#x5B9A;
-	 * @returns {Complex} max([A, B])
-	 */
-	max(number, epsilon) {
-		const x = Complex._toComplex(number);
-		if(this.compareTo(x, epsilon) &gt;= 0) {
-			return this;
-		}
-		else {
-			return x;
-		}
-	}
-
-	/**
-	 * &#x6700;&#x5C0F;&#x5024;
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - &#x8AA4;&#x5DEE;&#x3092;&#x5B9F;&#x6570;&#x3067;&#x6307;&#x5B9A;
-	 * @returns {Complex} min([A, B])
-	 */
-	min(number, epsilon) {
-		const x = Complex._toComplex(number);
-		if(this.compareTo(x, epsilon) &lt;= 0) {
-			return this;
-		}
-		else {
-			return x;
-		}
-	}
-
-	/**
 	 * &#x5024;&#x540C;&#x58EB;&#x3092;&#x6BD4;&#x8F03;
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - &#x8AA4;&#x5DEE;&#x3092;&#x5B9F;&#x6570;&#x3067;&#x6307;&#x5B9A;
@@ -621,6 +589,61 @@ export default class Complex {
 			return 0;
 		}
 		return a &gt; b ? 1 : -1;
+	}
+	
+	/**
+	 * &#x6700;&#x5927;&#x5024;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} max([A, B])
+	 */
+	max(number) {
+		const x = Complex._toComplex(number);
+		if(this.compareTo(x) &gt;= 0) {
+			return this;
+		}
+		else {
+			return x;
+		}
+	}
+
+	/**
+	 * &#x6700;&#x5C0F;&#x5024;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} min([A, B])
+	 */
+	min(number) {
+		const x = Complex._toComplex(number);
+		if(this.compareTo(x) &lt;= 0) {
+			return this;
+		}
+		else {
+			return x;
+		}
+	}
+
+	/**
+	 * &#x6570;&#x5024;&#x3092;&#x7BC4;&#x56F2;&#x306B;&#x53CE;&#x3081;&#x308B;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} min 
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} max
+	 * @returns {Complex} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = Complex._toComplex(min);
+		const max_ = Complex._toComplex(max);
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw &quot;clip(min, max) error. (min &gt; max)-&gt;(&quot; + min_ + &quot; &gt; &quot; + max_ + &quot;)&quot;;
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
 	}
 
 	// ----------------------

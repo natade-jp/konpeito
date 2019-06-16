@@ -1,5 +1,9 @@
 # History
 
+## v0.1.10
+- arange, crip, circshift, roll, fftshift, reshape, indexsort 追加
+- concatRight のメソッド名が concatLeft になっていたのを修正
+
 ## v0.1.9
 - 型定義ファイルを自動作成するように設定
 - buildデータに圧縮前のデータも含めるように設定

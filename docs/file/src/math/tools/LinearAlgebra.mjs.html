@@ -455,7 +455,7 @@ class LinearAlgebraTool {
 				return new Complex(noise.nextGaussian());
 			}, M2.row_length, add_vectors);
 			// &#x5217;&#x306B;&#x8FFD;&#x52A0;&#x3059;&#x308B;
-			M2._concatLeft(R);
+			M2._concatRight(R);
 			// &#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
 			orthogonal_matrix = LinearAlgebraTool.doGramSchmidtOrthonormalization(M2);
 			// &#x6B63;&#x3057;&#x304F;&#x4F5C;&#x6210;&#x3067;&#x304D;&#x3066;&#x3044;&#x305F;&#x3089;&#x5B8C;&#x4E86;
@@ -941,7 +941,7 @@ export default class LinearAlgebra {
 		}
 		// &#x884C;&#x5217;&#x3092;&#x6E96;&#x5099;&#x3059;&#x308B;
 		const M = new Matrix(A);
-		M._concatLeft(arg);
+		M._concatRight(arg);
 		const long_matrix_array = M.matrix_array;
 		const long_length = M.column_length;
 		const len = A.column_length;
@@ -1165,7 +1165,7 @@ export default class LinearAlgebra {
 		// &#x30AC;&#x30A6;&#x30B9;&#x30FB;&#x30B8;&#x30E7;&#x30EB;&#x30C0;&#x30F3;&#x6CD5;
 		// &#x521D;&#x671F;&#x5024;&#x306E;&#x8A2D;&#x5B9A;
 		const M = new Matrix(X);
-		M._concatLeft(Matrix.eye(len));
+		M._concatRight(Matrix.eye(len));
 		const long_matrix_array = M.matrix_array;
 		const long_length = M.column_length;
 

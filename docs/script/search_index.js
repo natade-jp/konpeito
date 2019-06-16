@@ -150,6 +150,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/bigdecimal.mjs~bigdecimal#clip",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-clip",
+    "src/math/BigDecimal.mjs~BigDecimal#clip",
+    "method"
+  ],
+  [
     "src/math/bigdecimal.mjs~bigdecimal#clone",
     "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-clone",
     "src/math/BigDecimal.mjs~BigDecimal#clone",
@@ -672,6 +678,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/biginteger.mjs~biginteger#clip",
+    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-clip",
+    "src/math/BigInteger.mjs~BigInteger#clip",
+    "method"
+  ],
+  [
     "src/math/biginteger.mjs~biginteger#clone",
     "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-clone",
     "src/math/BigInteger.mjs~BigInteger#clone",
@@ -1107,6 +1119,12 @@ window.esdocSearchIndex = [
     "src/math/complex.mjs~complex#ceil",
     "class/src/math/Complex.mjs~Complex.html#instance-method-ceil",
     "src/math/Complex.mjs~Complex#ceil",
+    "method"
+  ],
+  [
+    "src/math/complex.mjs~complex#clip",
+    "class/src/math/Complex.mjs~Complex.html#instance-method-clip",
+    "src/math/Complex.mjs~Complex#clip",
     "method"
   ],
   [
@@ -1566,9 +1584,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#_concatleft",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-_concatLeft",
-    "src/math/Matrix.mjs~Matrix#_concatLeft",
+    "src/math/matrix.mjs~matrix#_concatright",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-_concatRight",
+    "src/math/Matrix.mjs~Matrix#_concatRight",
     "method"
   ],
   [
@@ -1698,6 +1716,18 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/matrix.mjs~matrix#circshift",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-circshift",
+    "src/math/Matrix.mjs~Matrix#circshift",
+    "method"
+  ],
+  [
+    "src/math/matrix.mjs~matrix#clip",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-clip",
+    "src/math/Matrix.mjs~Matrix#clip",
+    "method"
+  ],
+  [
     "src/math/matrix.mjs~matrix#clone",
     "class/src/math/Matrix.mjs~Matrix.html#instance-method-clone",
     "src/math/Matrix.mjs~Matrix#clone",
@@ -1728,9 +1758,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#concatleft",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-concatLeft",
-    "src/math/Matrix.mjs~Matrix#concatLeft",
+    "src/math/matrix.mjs~matrix#concatright",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-concatRight",
+    "src/math/Matrix.mjs~Matrix#concatRight",
     "method"
   ],
   [
@@ -1926,6 +1956,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/matrix.mjs~matrix#fftshift",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-fftshift",
+    "src/math/Matrix.mjs~Matrix#fftshift",
+    "method"
+  ],
+  [
     "src/math/matrix.mjs~matrix#finv",
     "class/src/math/Matrix.mjs~Matrix.html#instance-method-finv",
     "src/math/Matrix.mjs~Matrix#finv",
@@ -1935,6 +1971,24 @@ window.esdocSearchIndex = [
     "src/math/matrix.mjs~matrix#fix",
     "class/src/math/Matrix.mjs~Matrix.html#instance-method-fix",
     "src/math/Matrix.mjs~Matrix#fix",
+    "method"
+  ],
+  [
+    "src/math/matrix.mjs~matrix#flip",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-flip",
+    "src/math/Matrix.mjs~Matrix#flip",
+    "method"
+  ],
+  [
+    "src/math/matrix.mjs~matrix#fliplr",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-fliplr",
+    "src/math/Matrix.mjs~Matrix#fliplr",
+    "method"
+  ],
+  [
+    "src/math/matrix.mjs~matrix#flipud",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-flipud",
+    "src/math/Matrix.mjs~Matrix#flipud",
     "method"
   ],
   [
@@ -2049,6 +2103,12 @@ window.esdocSearchIndex = [
     "src/math/matrix.mjs~matrix#imag",
     "class/src/math/Matrix.mjs~Matrix.html#instance-method-imag",
     "src/math/Matrix.mjs~Matrix#imag",
+    "method"
+  ],
+  [
+    "src/math/matrix.mjs~matrix#indexsort",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-indexsort",
+    "src/math/Matrix.mjs~Matrix#indexsort",
     "method"
   ],
   [
@@ -2400,9 +2460,21 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/matrix.mjs~matrix#reshape",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-reshape",
+    "src/math/Matrix.mjs~Matrix#reshape",
+    "method"
+  ],
+  [
     "src/math/matrix.mjs~matrix#resize",
     "class/src/math/Matrix.mjs~Matrix.html#instance-method-resize",
     "src/math/Matrix.mjs~Matrix#resize",
+    "method"
+  ],
+  [
+    "src/math/matrix.mjs~matrix#roll",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-roll",
+    "src/math/Matrix.mjs~Matrix#roll",
     "method"
   ],
   [
@@ -2679,6 +2751,12 @@ window.esdocSearchIndex = [
     "src/math/matrix.mjs~matrix._tomatrix",
     "class/src/math/Matrix.mjs~Matrix.html#static-method-_toMatrix",
     "src/math/Matrix.mjs~Matrix._toMatrix",
+    "method"
+  ],
+  [
+    "src/math/matrix.mjs~matrix.arange",
+    "class/src/math/Matrix.mjs~Matrix.html#static-method-arange",
+    "src/math/Matrix.mjs~Matrix.arange",
     "method"
   ],
   [
@@ -3141,6 +3219,12 @@ window.esdocSearchIndex = [
     "src/math/tools/signal.mjs~signal.fft2",
     "class/src/math/tools/Signal.mjs~Signal.html#static-method-fft2",
     "src/math/tools/Signal.mjs~Signal.fft2",
+    "method"
+  ],
+  [
+    "src/math/tools/signal.mjs~signal.fftshift",
+    "class/src/math/tools/Signal.mjs~Signal.html#static-method-fftshift",
+    "src/math/tools/Signal.mjs~Signal.fftshift",
     "method"
   ],
   [

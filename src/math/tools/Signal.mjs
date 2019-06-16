@@ -1187,6 +1187,32 @@ export default class Signal {
 		return Signal.window("hamming", size, periodic);
 	}
 	
+	/**
+	 * FFTシフト
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x 
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static fftshift(x, type) {
+		const X = Matrix._toMatrix(x);
+		if(X.isVector()) {
+			const shift_size = Math.floor(X.length / 2);
+			return X.circshift(shift_size, type);
+		}
+		const shift_size_col = Math.floor(X.column_length / 2);
+		const shift_size_row = Math.floor(X.row_length / 2);
+		if(type !== undefined) {
+			const target = type.dimension;
+			if((target === "row") || (target === 1)) {
+				return X.circshift(shift_size_col, type);
+			}
+			else if((target === "column") || (target === 2)) {
+				return X.circshift(shift_size_row, type);
+			}
+		}
+		const Y = X.circshift(shift_size_col, {dimension : "row"});
+		return Y.circshift(shift_size_row, {dimension : "column"});
+	}
 	
 }
 

@@ -407,7 +407,7 @@ class LinearAlgebraTool {
 				return new Complex(noise.nextGaussian());
 			}, M2.row_length, add_vectors);
 			// 列に追加する
-			M2._concatLeft(R);
+			M2._concatRight(R);
 			// 正規直行行列を作成する
 			orthogonal_matrix = LinearAlgebraTool.doGramSchmidtOrthonormalization(M2);
 			// 正しく作成できていたら完了
@@ -893,7 +893,7 @@ export default class LinearAlgebra {
 		}
 		// 行列を準備する
 		const M = new Matrix(A);
-		M._concatLeft(arg);
+		M._concatRight(arg);
 		const long_matrix_array = M.matrix_array;
 		const long_length = M.column_length;
 		const len = A.column_length;
@@ -1117,7 +1117,7 @@ export default class LinearAlgebra {
 		// ガウス・ジョルダン法
 		// 初期値の設定
 		const M = new Matrix(X);
-		M._concatLeft(Matrix.eye(len));
+		M._concatRight(Matrix.eye(len));
 		const long_matrix_array = M.matrix_array;
 		const long_length = M.column_length;
 

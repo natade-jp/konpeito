@@ -526,38 +526,6 @@ export default class Complex {
 	}
 	
 	/**
-	 * 最大値
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
-	 * @returns {Complex} max([A, B])
-	 */
-	max(number, epsilon) {
-		const x = Complex._toComplex(number);
-		if(this.compareTo(x, epsilon) >= 0) {
-			return this;
-		}
-		else {
-			return x;
-		}
-	}
-
-	/**
-	 * 最小値
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
-	 * @returns {Complex} min([A, B])
-	 */
-	min(number, epsilon) {
-		const x = Complex._toComplex(number);
-		if(this.compareTo(x, epsilon) <= 0) {
-			return this;
-		}
-		else {
-			return x;
-		}
-	}
-
-	/**
 	 * 値同士を比較
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
@@ -573,6 +541,61 @@ export default class Complex {
 			return 0;
 		}
 		return a > b ? 1 : -1;
+	}
+	
+	/**
+	 * 最大値
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} max([A, B])
+	 */
+	max(number) {
+		const x = Complex._toComplex(number);
+		if(this.compareTo(x) >= 0) {
+			return this;
+		}
+		else {
+			return x;
+		}
+	}
+
+	/**
+	 * 最小値
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} min([A, B])
+	 */
+	min(number) {
+		const x = Complex._toComplex(number);
+		if(this.compareTo(x) <= 0) {
+			return this;
+		}
+		else {
+			return x;
+		}
+	}
+
+	/**
+	 * 数値を範囲に収める
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} min 
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} max
+	 * @returns {Complex} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = Complex._toComplex(min);
+		const max_ = Complex._toComplex(max);
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
 	}
 
 	// ----------------------

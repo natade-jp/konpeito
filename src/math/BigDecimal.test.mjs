@@ -5,6 +5,18 @@ import MathContext from "./context/MathContext.mjs";
 import BigDecimal from "./BigDecimal.mjs";
 const $ = BigDecimal.create;
 
+let test_count = 0;
+
+const testOperator3  = function(operator, x, p1, p2, y) {
+	test_count++;
+	const X = $(x);
+	const Y = X[operator](p1, p2);
+	const Y_str = ""+ Y;
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + Y_str;
+	const out = $(Y).equals(y);
+	test(testname, () => { expect(out).toBe(true); });
+};
+
 {
 	//	number,			toString,	toPlainString,		toEngineeringString, unscaledValue, scale
 	const testString = [
@@ -178,4 +190,12 @@ const $ = BigDecimal.create;
 	test("pow " + x1 + " ** " + x2, () => { expect(y).toBe("556373003462553278521277665419333757914477429707861621164878013.831986527054745197804565133259323738549131155563320488179330998057446584571938059401035776"); });
 }
 
-
+{
+	test_count = 0;
+	testOperator3("clip", "1.0", "1.5", "2.5", "1.5");
+	testOperator3("clip", "2.0", "1.5", "2.5", "2.0");
+	testOperator3("clip", "3.0", "1.5", "2.5", "2.5");
+	testOperator3("clip", "-1.0", "-2.5", "-1.5", "-1.5");
+	testOperator3("clip", "-2.0", "-2.5", "-1.5", "-2.0");
+	testOperator3("clip", "-3.0", "-2.5", "-1.5", "-2.5");
+}

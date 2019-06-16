@@ -785,6 +785,31 @@ export default class BigDecimal {
 	}
 
 	/**
+	 * &#x6570;&#x5024;&#x3092;&#x7BC4;&#x56F2;&#x306B;&#x53CE;&#x3081;&#x308B;
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
+	 * @returns {BigInteger} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = BigDecimal._toBigDecimal(min);
+		const max_ = BigDecimal._toBigDecimal(max);
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw &quot;clip(min, max) error. (min &gt; max)-&gt;(&quot; + min_ + &quot; &gt; &quot; + max_ + &quot;)&quot;;
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	}
+
+	/**
 	 * &#x7CBE;&#x5EA6;&#x306F;&#x5909;&#x66F4;&#x3055;&#x305B;&#x305A;&#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x306E;&#x307F;&#x3092;&#x5909;&#x66F4;&#x3055;&#x305B;10&#x306E;&#x500D;&#x6570;&#x3092;&#x4E57;&#x7B97;
 	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
 	 * @returns {BigDecimal} A * 10^floor(n)

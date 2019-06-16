@@ -1068,6 +1068,31 @@ export default class BigInteger {
 	}
 
 	/**
+	 * 数値を範囲に収める
+	 * @param {BigInteger|number|string|Array<string|number>|Object} min 
+	 * @param {BigInteger|number|string|Array<string|number>|Object} max
+	 * @returns {BigInteger} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = BigInteger._toBigInteger(min);
+		const max_ = BigInteger._toBigInteger(max);
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	}
+
+	/**
 	 * ビットシフト（ミュータブル）
 	 * @param {BigInteger|number|string|Array<string|number>|Object} shift_length - 上位へのビットシフト数
 	 * @returns {BigInteger} A <<= n

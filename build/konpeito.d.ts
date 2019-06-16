@@ -189,6 +189,13 @@ declare class BigDecimal {
      */
     min(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
     /**
+     * 数値を範囲に収める
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
+     * @returns {BigInteger} min(max(x, min), max)
+     */
+    clip(min: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, max: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigInteger;
+    /**
      * 精度は変更させずスケールのみを変更させ10の倍数を乗算
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n
      * @returns {BigDecimal} A * 10^floor(n)
@@ -571,6 +578,13 @@ declare class BigInteger {
      */
     min(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
+     * 数値を範囲に収める
+     * @param {BigInteger|number|string|Array<string|number>|Object} min
+     * @param {BigInteger|number|string|Array<string|number>|Object} max
+     * @returns {BigInteger} min(max(x, min), max)
+     */
+    clip(min: BigInteger | number | string | (string | number)[] | any, max: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
      * ビットシフト
      * @param {BigInteger|number|string|Array<string|number>|Object} n
      * @returns {BigInteger} A << n
@@ -875,26 +889,31 @@ declare class Complex {
      */
     sign(): Complex;
     /**
-     * 最大値
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
-     * @returns {Complex} max([A, B])
-     */
-    max(number: Complex | number | string | number[] | any | any, epsilon?: Complex | number | string | number[] | any | any): Complex;
-    /**
-     * 最小値
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
-     * @returns {Complex} min([A, B])
-     */
-    min(number: Complex | number | string | number[] | any | any, epsilon?: Complex | number | string | number[] | any | any): Complex;
-    /**
      * 値同士を比較
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
      * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
      */
     compareTo(number: Complex | number | string | number[] | any | any, epsilon?: Complex | number | string | number[] | any | any): number;
+    /**
+     * 最大値
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @returns {Complex} max([A, B])
+     */
+    max(number: Complex | number | string | number[] | any | any): Complex;
+    /**
+     * 最小値
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @returns {Complex} min([A, B])
+     */
+    min(number: Complex | number | string | number[] | any | any): Complex;
+    /**
+     * 数値を範囲に収める
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} min
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} max
+     * @returns {Complex} min(max(x, min), max)
+     */
+    clip(min: Complex | number | string | number[] | any | any, max: Complex | number | string | number[] | any | any): Complex;
     /**
      * 整数を判定
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
@@ -2077,13 +2096,71 @@ declare class Matrix {
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} left_matrix - 結合したい行列
      * @returns {Matrix} 処理実行後の行列
      */
-    concatLeft(left_matrix: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    concatRight(left_matrix: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * 行列の下に行列を結合
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} bottom_matrix - 結合したい行列
      * @returns {Matrix} 処理実行後の行列
      */
     concatBottom(bottom_matrix: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    /**
+     * 行列の各項を指定した範囲に収める
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} min
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} max
+     * @returns {Matrix} min(max(x, min), max)
+     */
+    clip(min: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, max: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    /**
+     * 指定した初期値、ステップ値、終了条件で行ベクトルを作成
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} start_or_stop
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [stop]
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [step=1]
+     * @returns {Matrix}
+     */
+    static arange(start_or_stop: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, stop?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, step?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    /**
+     * 循環シフト
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size
+     * @param {{dimension : (?string|?number)}} [type]
+     * @returns {Matrix} 処理実行後の行列
+     */
+    circshift(shift_size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
+    /**
+     * 循環シフト
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size
+     * @param {{dimension : (?string|?number)}} [type]
+     * @returns {Matrix} 処理実行後の行列
+     */
+    roll(shift_size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
+    /**
+     * 行列の形状を変更
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - 新しい行の長さ
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - 新しい列の長さ
+     * @returns {Matrix} 処理実行後の行列
+     */
+    reshape(row_length: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    /**
+     * 行列を左右反転
+     * @returns {Matrix} 処理実行後の行列
+     */
+    fliplr(): Matrix;
+    /**
+     * 行列を上下反転
+     * @returns {Matrix} 処理実行後の行列
+     */
+    flipud(): Matrix;
+    /**
+     * 行列を反転
+     * @param {{dimension : (?string|?number)}} [type]
+     * @returns {Matrix} 処理実行後の行列
+     */
+    flip(type?: any): Matrix;
+    /**
+     * インデックスソート
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - インデックス（列 or 行）ベクトル
+     * @returns {Matrix} 処理実行後の行列
+     */
+    indexsort(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * 転置行列
      * @returns {Matrix} A^T
@@ -2524,6 +2601,12 @@ declare class Matrix {
      * @returns {Matrix} 列ベクトル
      */
     static hamming(size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
+    /**
+     * FFTシフト
+     * @param {{dimension : (?string|?number)}} [type]
+     * @returns {Matrix}
+     */
+    fftshift(type?: any): Matrix;
 }
 
 /**
@@ -2805,6 +2888,13 @@ declare class Signal {
      * @returns {Matrix} 列ベクトル
      */
     static hamming(size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
+    /**
+     * FFTシフト
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {{dimension : (?string|?number)}} [type]
+     * @returns {Matrix}
+     */
+    static fftshift(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
 }
 
 /**
