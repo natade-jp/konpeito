@@ -360,14 +360,11 @@ export default class RoundingMode {
 	/**
 	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3067;&#x8868;&#x3055;&#x308C;&#x308B;&#x4E38;&#x3081;&#x30AF;&#x30E9;&#x30B9;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;
 	 * @param {string|RoundingModeEntity|Object} name - &#x30E2;&#x30FC;&#x30C9;&#x306E;&#x82F1;&#x6570;&#x540D;
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static valueOf(name) {
 		let check_string;
-		if(name instanceof RoundingModeEntity) {
-			return name;
-		}
-		else if(typeof name === &quot;string&quot;) {
+		if(typeof name === &quot;string&quot;) {
 			check_string = name;
 		}
 		else if(name instanceof Object) {
@@ -401,7 +398,7 @@ export default class RoundingMode {
 	
 	/**
 	 * &#x7D76;&#x5BFE;&#x5024;&#x306E;&#x5207;&#x308A;&#x4E0A;&#x3052;&#xFF08;1&#x6841;&#x76EE;&#x304C;0&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x6841;&#x4E0A;&#x3052;&#x3059;&#x308B;&#xFF09;
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get UP() {
 		return RoundingMode_UP;
@@ -409,7 +406,7 @@ export default class RoundingMode {
 
 	/**
 	 * &#x7D76;&#x5BFE;&#x5024;&#x306E;&#x5207;&#x308A;&#x4E0B;&#x3052;&#xFF08;1&#x6841;&#x76EE;&#x304C;0&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x6841;&#x4E0B;&#x3052;&#x3059;&#x308B;&#xFF09;
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get DOWN() {
 		return RoundingMode_DOWN;
@@ -417,7 +414,7 @@ export default class RoundingMode {
 
 	/**
 	 * &#x6B63;&#x306E;&#x7121;&#x9650;&#x5927;&#x306B;&#x8FD1;&#x3065;&#x304F;
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get CEILING() {
 		return RoundingMode_CEILING;
@@ -425,7 +422,7 @@ export default class RoundingMode {
 
 	/**
 	 * &#x8CA0;&#x306E;&#x7121;&#x9650;&#x5927;&#x306B;&#x8FD1;&#x3065;&#x304F;
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get FLOOR() {
 		return RoundingMode_FLOOR;
@@ -433,7 +430,7 @@ export default class RoundingMode {
 
 	/**
 	 * &#x56DB;&#x6368;&#x4E94;&#x5165;
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_UP() {
 		return RoundingMode_HALF_UP;
@@ -441,7 +438,7 @@ export default class RoundingMode {
 
 	/**
 	 * &#x4E94;&#x6368;&#x516D;&#x5165;
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_DOWN() {
 		return RoundingMode_HALF_DOWN;
@@ -449,7 +446,7 @@ export default class RoundingMode {
 
 	/**
 	 * &#x7B49;&#x9593;&#x9694;&#x306A;&#x3089;&#x5076;&#x6570;&#x5074;&#x3078;&#x4E38;&#x3081;&#x308B;
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_EVEN() {
 		return RoundingMode_HALF_EVEN;
@@ -457,7 +454,7 @@ export default class RoundingMode {
 
 	/**
 	 * &#x4E38;&#x3081;&#x306A;&#x3044;&#xFF08;&#x4E38;&#x3081;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x51FA;&#x308B;&#x5834;&#x5408;&#x306F;&#x30A8;&#x30E9;&#x30FC;&#xFF09;
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get UNNECESSARY() {
 		return RoundingMode_UNNECESSARY;

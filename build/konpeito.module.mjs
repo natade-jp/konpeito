@@ -6,4 +6,13271 @@
  * The MIT license.
  * https://opensource.org/licenses/MIT
  */
-class Format{static format(t,n){let e=1;const i=arguments,r=function(t){let n=t;if(n>=0)return n;{let t=~(n=-n)>>16&65535;const e=65535&~n;return(t*=65536)+e+1}},o=function(t){let n,o=t;const a=(n=(o=o.substring(1,o.length)).match(/.$/))[0];if("%"===a)return"%";null!==(n=o.match(/^[0-9]+\$/))&&(n=n[0],o=o.substring(n.length,o.length),n=n.substring(0,n.length-1),e=parseInt(n,10));let s=i[e];e+=1;let c=!1,l=!1,u=!1,h="";null!==(n=o.match(/^[-+ #0]+/))&&(n=n[0],o=o.substring(n.length,o.length),-1!==n.indexOf("#")&&(c=!0),-1!==n.indexOf("-")&&(l=!0),-1!==n.indexOf(" ")&&(h=" "),-1!==n.indexOf("+")&&(h="+"),-1!==n.indexOf("0")&&(u=!0));let g=0;null!==(n=o.match(/^([0-9]+|\*)/))&&(n=n[0],o=o.substring(n.length,o.length),-1!==n.indexOf("*")?(g=s,s=i[e],e+=1):g=parseInt(n,10));let f=!1,m=0;null!==(n=o.match(/^(\.((-?[0-9]+)|\*)|\.)/))&&(n=n[0],o=o.substring(n.length,o.length),f=!0,-1!==n.indexOf("*")?(m=s,s=i[e],e+=1):1===n.length?m=0:(n=n.substring(1,n.length),m=parseInt(n,10))),null!==(n=o.match(/^hh|h|ll|l|L|z|j|t/))&&(o=o.substring(n.length,o.length));let _="",x=!1;switch(a.toLowerCase()){case"d":case"i":case"u":case"b":case"o":case"x":x=!0;case"e":case"f":case"g":{let t,n="",e=0;switch(x?(isNaN(s)&&(s=parseInt(s,10)),"d"===a||"i"===a?(s<0&&(h="-",s=-s),s=Math.floor(s)):s=s>=0?Math.floor(s):Math.ceil(s)):(isNaN(s)&&(s=parseFloat(s)),s<0&&(h="-",s=-s),f||(m=6)),a.toLowerCase()){case"d":case"i":_+=s.toString(10);break;case"u":_+=r(s).toString(10);break;case"b":_+=r(s).toString(2),c&&(n="0b");break;case"o":_+=r(s).toString(8),c&&(n="0");break;case"x":case"X":_+=r(s).toString(16),c&&(n="0x");break;case"e":_+=s.toExponential(m);break;case"f":_+=s.toFixed(m);break;case"g":0===m&&(m=1),_+=s.toPrecision(m),c||-1===_.indexOf(".")||(_=(_=_.replace(/\.?0+$/,"")).replace(/\.?0+e/,"e"))}if(x){if(f){t=m-_.length;for(let n=0;n<t;n++)_="0"+_}}else c&&-1===_.indexOf(".")&&(-1!==_.indexOf("e")?_=_.replace("e",".e"):_+=".");if(-1!==_.indexOf("e")){const t=function(t){const n=t.length;return 3===t.length?t.substring(0,n-1)+"00"+t.substring(n-1,n):t.substring(0,n-2)+"0"+t.substring(n-2,n)};_=_.replace(/e[+-][0-9]{1,2}$/,t)}if(e=_.length+n.length+h.length,t=g-e,l)for(let n=0;n<t;n++)_+=" ";if(u)for(let n=0;n<t;n++)_="0"+_;if(_=n+_,_=h+_,!u&&!l)for(let n=0;n<t;n++)_=" "+_;a.toUpperCase()===a&&(_=_.toUpperCase());break}case"c":isNaN(s)||(s=String.fromCharCode(s));case"s":{isNaN(s)||(s=s.toString(10)),_=s,f&&_.length>m&&(_=_.substring(0,m));const t=_.length,n=g-t;if(l)for(let t=0;t<n;t++)_+=" ";else{const t=u?"0":" ";for(let e=0;e<n;e++)_=t+_}break}case"%":_="%";break;case"p":case"n":_="(変換できません)"}return _};return i[0].replace(/%[^diubBoxXeEfFgGaAcspn%]*[diubBoxXeEfFgGaAcspn%]/g,o)}}let printbuffer="";class Log{static _toStringFromObj(t){return"string"==typeof t||t instanceof String?0===t.length?" ":t:void 0===t?typeof t:null===t?"null":"function"==typeof t.toString?t.toString():t instanceof Object?"Object":"null"}static println(t){const n=printbuffer+Log._toStringFromObj(t);printbuffer="",console.log(n)}static print(t){printbuffer+=Log._toStringFromObj(t)}static printf(t,n){const e=[];for(let t=0;t<arguments.length;t++)e.push(arguments[t]);Log.print(Format.format.apply(this,e))}}class RandomTool{static unsigned32(t){return t<0?2147483648+(2147483647&t):t}static multiplication32(t,n){let e=(65535&t)*(65535&n),i=RandomTool.unsigned32(e);return e=(65535&t)*(n>>>16),i=RandomTool.unsigned32(i+((65535&e)<<16)),e=(t>>>16)*(65535&n),4294967295&(i=RandomTool.unsigned32(i+((65535&e)<<16)))}}class Random{constructor(t){this.x=[];for(let t=0;t<521;t++)this.x[t]=0;if(arguments.length>=1)this.setSeed(t);else{const t=(new Date).getTime()+Random.seedUniquifier&4294967295;Random.seedUniquifier=Random.seedUniquifier+1&4294967295,this.setSeed(t)}}_rnd521(){const t=this.x;for(let n=0;n<32;n++)t[n]^=t[n+489];for(let n=32;n<521;n++)t[n]^=t[n-32]}setSeed(t){let n=0;const e=this.x;let i=t;for(let t=0;t<=16;t++){for(let t=0;t<32;t++)n=(n>>>1)+((i=RandomTool.multiplication32(i,1566083941)+1)<0?2147483648:0);e[t]=n}for(let t=16;t<521;t++)n=16===t?t:t-17,e[t]=e[n]<<23&4294967295^e[t-16]>>>9^e[t-1];for(let t=0;t<4;t++)this._rnd521();this.xi=0,this.haveNextNextGaussian=!1,this.nextNextGaussian=0}genrand_int32(){521===this.xi&&(this._rnd521(),this.xi=0);const t=RandomTool.unsigned32(this.x[this.xi]);return this.xi=this.xi+1,t}next(t){return 0===t?0:32===t?this.genrand_int32():t<32?this.genrand_int32()>>>32-t:63===t?2147483648*this.next(32)+this.next(32):64===t?4294967296*this.next(32)+this.next(32):t<64?this.genrand_int32()*(1<<t-32)+(this.genrand_int32()>>>64-t):void 0}nextBytes(t){const n=new Array(t);for(let t=0;t<n.length;t++)n[t]=this.next(8);return n}nextShort(){return this.next(16)}nextInt(t){if(void 0!==t&&"number"==typeof t){let n,e;do{e=(n=RandomTool.unsigned32(this.genrand_int32()))%t}while(n-e+t>4294967296);return e}return 4294967295&this.next(32)}nextLong(){return this.next(64)}nextBoolean(){return 0!==this.next(1)}nextFloat(){return this.next(24)/16777216}nextDouble(){return(134217728*this.next(26)+this.next(27))/9007199254740992}nextGaussian(){if(this.haveNextNextGaussian)return this.haveNextNextGaussian=!1,this.nextNextGaussian;const t=Math.sqrt(-2*Math.log(this.nextDouble())),n=2*Math.PI*this.nextDouble(),e=t*Math.sin(n);return this.nextNextGaussian=t*Math.cos(n),this.haveNextNextGaussian=!0,e}}Random.seedUniquifier=2271560481;class RoundingModeEntity{static toString(){return"NONE"}static getAddNumber(t){return 0}}class RoundingMode_UP extends RoundingModeEntity{static toString(){return"UP"}static getAddNumber(t){const n=t%10;return 0===n?0:n>0?10-n:-(10+n)}}class RoundingMode_DOWN extends RoundingModeEntity{static toString(){return"DOWN"}static getAddNumber(t){return-t%10}}class RoundingMode_CEILING extends RoundingModeEntity{static toString(){return"CEILING"}static getAddNumber(t){const n=t%10;return 0===n?0:n>0?10-n:-n}}class RoundingMode_FLOOR extends RoundingModeEntity{static toString(){return"FLOOR"}static getAddNumber(t){const n=t%10;return 0===n?0:n>0?-n:-(10+n)}}class RoundingMode_HALF_UP extends RoundingModeEntity{static toString(){return"HALF_UP"}static getAddNumber(t){const n=t%10,e=n>=0?1:-1;return Math.abs(n)<5?-1*n:e*(10-Math.abs(n))}}class RoundingMode_HALF_DOWN extends RoundingModeEntity{static toString(){return"HALF_DOWN"}static getAddNumber(t){const n=t%10,e=n>=0?1:-1;return Math.abs(n)<6?-1*n:e*(10-Math.abs(n))}}class RoundingMode_HALF_EVEN extends RoundingModeEntity{static toString(){return"HALF_EVEN"}static getAddNumber(t){let n,e,i=t%100;i<0?(n=-1,e=1&Math.ceil(i/10)):(n=1,e=1&Math.floor(i/10));let r;return r=1===e?5:6,i%=10,Math.abs(i)<r?-1*i:n*(10-Math.abs(i))}}class RoundingMode_UNNECESSARY extends RoundingModeEntity{static toString(){return"UNNECESSARY"}static getAddNumber(t){if(0===t%10)return 0;throw"ArithmeticException"}}class RoundingMode{static valueOf(t){let n;if(t instanceof RoundingModeEntity)return t;if("string"==typeof t)n=t;else{if(!(t instanceof Object))throw"Unsupported argument "+t;n=t.toString()}const e=[RoundingMode_UP,RoundingMode_DOWN,RoundingMode_FLOOR,RoundingMode_CEILING,RoundingMode_HALF_UP,RoundingMode_HALF_DOWN,RoundingMode_HALF_EVEN,RoundingMode_UNNECESSARY],i=n.toUpperCase();for(let t=0;t<e.length;t++)if(e[t].toString()===i)return e[t];throw"IllegalArgumentException : "+n}static get UP(){return RoundingMode_UP}static get DOWN(){return RoundingMode_DOWN}static get CEILING(){return RoundingMode_CEILING}static get FLOOR(){return RoundingMode_FLOOR}static get HALF_UP(){return RoundingMode_HALF_UP}static get HALF_DOWN(){return RoundingMode_HALF_DOWN}static get HALF_EVEN(){return RoundingMode_HALF_EVEN}static get UNNECESSARY(){return RoundingMode_UNNECESSARY}}class MathContext{constructor(t,n){if(this.precision=0,this.roundingMode=void 0===n?RoundingMode.HALF_UP:n,"number"==typeof t&&(this.precision=t),"string"==typeof t){let n;null!==(n=t.match(/precision=\d+/))&&(n=n[0].substring("precision=".length,n[0].length),this.precision=parseInt(n,10)),null!==(n=t.match(/roundingMode=\w+/))&&(n=n[0].substring("roundingMode=".length,n[0].length),this.roundingMode=RoundingMode.valueOf(n))}if(this.precision<0)throw"IllegalArgumentException"}getPrecision(){return this.precision}getRoundingMode(){return this.roundingMode}equals(t){return t instanceof MathContext&&t.toString()===this.toString()}toString(){return"precision="+this.precision+" roundingMode="+this.roundingMode.toString()}static get UNLIMITED(){return DEFINE.UNLIMITED}static get DECIMAL32(){return DEFINE.DECIMAL32}static get DECIMAL64(){return DEFINE.DECIMAL64}static get DECIMAL128(){return DEFINE.DECIMAL128}}const DEFINE={UNLIMITED:new MathContext(0,RoundingMode.HALF_UP),DECIMAL32:new MathContext(7,RoundingMode.HALF_EVEN),DECIMAL64:new MathContext(16,RoundingMode.HALF_EVEN),DECIMAL128:new MathContext(34,RoundingMode.HALF_EVEN)};let DEFAULT_RANDOM=new Random;class IntegerTool{static string_to_binary_number(t,n){const e=Math.floor(Math.log(1073741823)/Math.log(n));let i=[];const r=[],o=Math.ceil(t.length/e);let a=t.length;for(let r=0;r<o;r++)a-=e,i[r]=a>=0?parseInt(t.substring(a,a+e),n):parseInt(t.substring(0,a+e),n);const s=Math.round(Math.pow(n,e));for(;0!==i.length;){let t=0;for(let n=i.length-1;n>=0;n--){const e=i[n]+t*s;i[n]=e>>>1,t=1&e}r[r.length]=t,0===i[i.length-1]&&i.pop()}i=[];for(let t=0;t<r.length;t++)i[t>>>4]|=r[t]<<(15&t);return i}static number_to_binary_number(t){if(t>4294967295)return IntegerTool.string_to_binary_number(t.toFixed(),10);let n=t;const e=[];for(;0!==n;)e[e.length]=1&n,n>>>=1;const i=[];for(let t=0;t<e.length;t++)i[t>>>4]|=e[t]<<(15&t);return i}static binary_number_to_string(t,n){const e=function(t,e,i){const r=t.length;let o=0;for(let a=0;a<r;a++)i[a]=t[a]+(e.length>=a+1?e[a]:0)+o,i[a]>=n?(o=1,i[a]-=n):o=0;1===o&&(i[r]=1)},i=[0],r=[1];for(let n=0;n<t.length;n++)for(let o=0;o<16;o++)t[n]>>>o&1&&e(r,i,i),e(r,r,r);return i}static ToBigIntegerFromString(t,n){let e=t.replace(/\s/g,"").toLowerCase();const i=e.match(/^[-+]+/);let r=[],o=1;if(null!==i){const t=i[0];e=e.substring(t.length,e.length),-1!==t.indexOf("-")&&(o=-1)}return 1===(r=n?IntegerTool.string_to_binary_number(e,n):/^0x/.test(e)?IntegerTool.string_to_binary_number(e.substring(2,e.length),16):/^0b/.test(e)?IntegerTool.string_to_binary_number(e.substring(2,e.length),2):/^0/.test(e)?IntegerTool.string_to_binary_number(e.substring(1,e.length),8):IntegerTool.string_to_binary_number(e,10)).length&&0===r[0]&&(r=[],o=0),{element:r,_sign:o}}}class BigInteger{constructor(t){if(0===arguments.length)this.element=[],this._sign=0;else{if(1!==arguments.length)throw"BigInteger Unsupported argument "+t;if(this._sign=1,t instanceof BigInteger)this.element=t.element.slice(0),this._sign=t._sign;else if("number"==typeof t){let n=t;n<0&&(this._sign=-1,n=-n),this.element=IntegerTool.number_to_binary_number(n)}else if("string"==typeof t){const n=IntegerTool.ToBigIntegerFromString(t);this.element=n.element,this._sign=n._sign}else if(t instanceof Array){if(!(t.length>=1&&"string"==typeof t[0]))throw"BigInteger Unsupported argument "+arguments;{const n=IntegerTool.ToBigIntegerFromString(t[0],t[1]);this.element=n.element,this._sign=n._sign}}else{if(!(t instanceof Object))throw"BigInteger Unsupported argument "+t;{const n=IntegerTool.ToBigIntegerFromString(t.toString());this.element=n.element,this._sign=n._sign}}}}static create(t){return t instanceof BigInteger?t:new BigInteger(t)}static valueOf(t){return BigInteger.create(t)}static _toBigInteger(t){return t instanceof BigInteger?t:new BigInteger(t)}static _toFloat(t){return"number"==typeof t?t:t instanceof BigInteger?t.doubleValue:new BigInteger(t).doubleValue}static _toInteger(t){return"number"==typeof t?0|t:t instanceof BigInteger?t.intValue:new BigInteger(t).intValue}static createRandomBigInteger(t,n){const e=n&&n instanceof Random?n:DEFAULT_RANDOM,i=new BigInteger;i._sign=1;const r=BigInteger._toInteger(t),o=1+(r-1>>4);if(0===r)return BigInteger.ZERO;let a;for(let t=0,n=0;t<o;t++)0===n?(a=e.nextInt(),i.element[t]=65535&a,n=1):(i.element[t]=a>>>16&65535,n=0);return r%16!=0&&(i.element[i.element.length-1]&=(1<<r%16)-1),i._memory_reduction(),i}static probablePrime(t,n,e,i){const r=e?BigInteger._toInteger(e):100,o=i?BigInteger._toInteger(i):500;for(let e=0;e<o;e++){const e=BigInteger.createRandomBigInteger(t,n);if(e.isProbablePrime(r))return e}throw"probablePrime "+i}equals(t){const n=BigInteger._toBigInteger(t);if(this.signum()!==n.signum())return!1;if(this.element.length!==n.element.length)return!1;for(let t=0;t<n.element.length;t++)if(this.element[t]!==n.element[t])return!1;return!0}toString(t){const n=t?BigInteger._toInteger(t):10,e=Math.floor(Math.log(1073741823)/Math.log(n)),i=Math.round(Math.pow(n,e)),r=[];for(let t=0;t<e;t++)r[t]="0";const o=r.join(""),a=IntegerTool.binary_number_to_string(this.element,i),s=[];let c="";this.signum()<0&&(s[s.length]="-");for(let t=a.length-1;t>=0;t--)c=a[t].toString(n),t<a.length-1&&(s[s.length]=o.substring(0,e-c.length)),s[s.length]=c;return s.join("")}getShort(t){const n=BigInteger._toInteger(t);return n<0||this.element.length<=n?0:this.element[n]}get intValue(){let t=this.getShort(0)+(this.getShort(1)<<16);return(t&=4294967295)>0&&this._sign<0&&(t=-t),t}get longValue(){let t=0;for(let n=3;n>=0;n--)t*=65536,t+=this.getShort(n);return this._sign<0&&(t=-t),t}get doubleValue(){return parseFloat(this.toString())}clone(){return new BigInteger(this)}isNegative(){return this._sign<0}isZero(){return this._memory_reduction(),0===this._sign}isPositive(){return this._sign>0}getLowestSetBit(){for(let t=0;t<this.element.length;t++)if(0!==this.element[t]){const n=this.element[t];for(let e=0;e<16;e++)if(0!=(n>>>e&1))return 16*t+e}return-1}bitLength(){for(let t=this.element.length-1;t>=0;t--)if(0!==this.element[t]){const n=this.element[t];for(let e=15;e>=0;e--)if(0!=(n>>>e&1))return 16*t+e+1}return 0}bitCount(){let t;const n=(t=this._sign>=0?this:this.add(new BigInteger(1))).bitLength();let e=0,i=0;for(let r=0;e<n;r++){const o=t.element[r];for(let t=0;t<16&&e<n;t++,e++)0!=(o>>>t&1)&&(i+=1)}return i}getTwosComplement(t){const n=this.clone();if(n._sign>=0)return n;{n._sign=1;const e=void 0!==t?t:n.bitLength(),i=n.element;for(let t=0;t<i.length;t++)i[t]^=65535;return e%16!=0&&(i[i.length-1]&=(1<<e%16)-1),n._add(new BigInteger(1)),n}}_and(t){const n=this,e=BigInteger._toBigInteger(t),i=n.signum(),r=e.signum(),o=Math.max(n.bitLength(),e.bitLength()),a=n.getTwosComplement(o).element,s=e.getTwosComplement(o).element,c=Math.max(a.length,s.length);this.element=[];for(let t=0;t<c;t++){const n=t>=a.length?0:a[t],e=t>=s.length?0:s[t];this.element[t]=n&e}return 0===this.bitLength()&&(this.element=[],this._sign=0),1===i||1===r?this._sign=1:-1===this._sign&&(this.element=this.getTwosComplement(o).element),this}and(t){return this.clone()._and(t)}_or(t){const n=this,e=BigInteger._toBigInteger(t),i=n.signum(),r=e.signum(),o=Math.max(n.bitLength(),e.bitLength()),a=n.getTwosComplement(o).element,s=e.getTwosComplement(o).element,c=Math.max(a.length,s.length);this.element=[];for(let t=0;t<c;t++){const n=t>=a.length?0:a[t],e=t>=s.length?0:s[t];this.element[t]=n|e}return this._sign=-1===i||-1===r?-1:Math.max(i,r),-1===this._sign&&(this.element=this.getTwosComplement(o).element),this}or(t){return this.clone()._or(t)}_xor(t){const n=this,e=BigInteger._toBigInteger(t),i=n.signum(),r=e.signum(),o=Math.max(n.bitLength(),e.bitLength()),a=n.getTwosComplement(o).element,s=e.getTwosComplement(o).element,c=Math.max(a.length,s.length);this.element=[];for(let t=0;t<c;t++){const i=t>=a.length?0:n[t],r=t>=s.length?0:e[t];this.element[t]=i^r}return this._sign=0!==i&&i!==r?-1:1,-1===this._sign&&(this.element=this.getTwosComplement(o).element),this}xor(t){return this.clone()._xor(t)}_not(){return this._add(new BigInteger(1))._negate()}not(){return this.clone()._not()}_andNot(t){const n=BigInteger._toBigInteger(t);return this._and(n.not())}andNot(t){return this.clone()._andNot(t)}_nand(t){return this._andNot(t)}nand(t){return this.andNot(t)}_orNot(t){const n=BigInteger._toBigInteger(t);return this._or(n)._not()}orNot(t){return this.clone()._orNot(t)}_nor(t){return this._orNot(t)}nor(t){return this.orNot(t)}_memory_allocation(t){const n=BigInteger._toInteger(t),e=this.element.length<<4;if(e<n){const t=1+((n-e-1&4294967280)>>>4);for(let n=0;n<t;n++)this.element[this.element.length]=0}}_memory_reduction(){for(let t=this.element.length-1;t>=0;t--)if(0!==this.element[t])return void(t<this.element.length-1&&this.element.splice(t+1,this.element.length-t-1));this._sign=0,this.element=[]}gcd(t){let n,e=this,i=BigInteger._toBigInteger(t);for(;0!==i.signum();)n=e.remainder(i),e=i,i=n;return e}extgcd(t){const n=BigInteger._toBigInteger(t),e=new BigInteger(1),i=new BigInteger(0);let r,o,a,s,c=this,l=n,u=e,h=i,g=i,f=e;for(;0!==l.signum();){const t=c.divideAndRemainder(l);o=t[0],r=t[1],a=u.subtract(o.multiply(h)),s=g.subtract(o.multiply(f)),u=h,h=a,g=f,f=s,c=l,l=r}return[u,g,c]}_abs(){return this._sign*=this._sign,this}abs(){return this.clone()._abs()}_negate(){return this._sign*=-1,this}negate(){return this.clone()._negate()}signum(){return 0===this.element.length?0:this._sign}sign(){return this.signum()}compareToAbs(t){const n=BigInteger._toBigInteger(t);if(this.element.length<n.element.length)return-1;if(this.element.length>n.element.length)return 1;for(let t=this.element.length-1;t>=0;t--)if(this.element[t]!==n.element[t]){const e=this.element[t]-n.element[t];return 0===e?0:e>0?1:-1}return 0}compareTo(t){const n=BigInteger._toBigInteger(t);return this.signum()!==n.signum()?this._sign>n._sign?1:-1:0===this.signum()?0:this.compareToAbs(n)*this._sign}max(t){const n=BigInteger._toBigInteger(t);return this.compareTo(n)>=0?this.clone():n.clone()}min(t){const n=BigInteger._toBigInteger(t);return this.compareTo(n)>=0?n.clone():this.clone()}_shift(t){let n=BigInteger._toInteger(t);if(0===n)return this;const e=this.element;if(1===n){let t=e.length-1;for(0!=(32768&e[t])&&(e[e.length]=1);t>=0;t--)e[t]<<=1,e[t]&=65535,t>0&&0!=(32768&e[t-1])&&(e[t]+=1)}else if(-1===n){for(let t=0;t<e.length;t++)e[t]>>>=1,t<e.length-1&&0!=(1&e[t+1])&&(e[t]|=32768);0===e[e.length-1]&&e.pop()}else{if(n>=16){const t=n>>>4;for(let n=e.length-1;n>=0;n--)e[n+t]=e[n];for(let n=t-1;n>=0;n--)e[n]=0;n&=15}else if(n<=-16){const t=-n>>>4;e.splice(0,t),n+=t<<4}if(0!==n)if(0<n){let t=0;for(let i=0;i<e.length;i++)e[i]=(e[i]<<n)+t,e[i]>65535?(t=e[i]>>>16,e[i]&=65535):t=0;0!==t&&(e[e.length]=t)}else{n=-n;for(let t=0;t<e.length;t++)t!==e.length-1?(e[t]+=e[t+1]<<16,e[t]>>>=n,e[t]&=65535):e[t]>>>=n;0===e[e.length-1]&&e.pop()}}return this}shift(t){return this.clone()._shift(t)}shiftLeft(t){return this.shift(t)}shiftRight(t){return this.shift(-t)}_add(t){const n=this,e=BigInteger._toBigInteger(t);let i=n.element,r=e.element;if(n._sign===e._sign){this._memory_allocation(r.length<<4);let t=0;for(let n=0;n<i.length;n++)i[n]+=(r.length>=n+1?r[n]:0)+t,i[n]>65535?(t=1,i[n]&=65535):t=0;0!==t&&(i[i.length]=t)}else{const t=n.compareToAbs(e);if(0===t)return this.element=[],this._sign=1,this;if(-1===t){this._sign=e._sign;const t=i;i=r.slice(0),r=t}let o=0;for(let t=0;t<i.length;t++)i[t]-=(r.length>=t+1?r[t]:0)+o,i[t]<0?(i[t]+=65536,o=1):o=0;this.element=i,this._memory_reduction()}return this}add(t){return this.clone()._add(t)}_subtract(t){const n=BigInteger._toBigInteger(t),e=n._sign,i=this._add(n._negate());return n._sign=e,i}subtract(t){return this.clone()._subtract(t)}sub(t){return this.subtract(t)}_multiply(t){const n=this.multiply(t);return this.element=n.element,this._sign=n._sign,this}multiply(t){const n=BigInteger._toBigInteger(t),e=new BigInteger,i=new BigInteger,r=n,o=this.element,a=r.element,s=e.element;for(let t=0;t<o.length;t++){i.element=[];const n=i.element;let r=0;for(let e=0;e<a.length;e++)n[e]=o[t]*a[e]+r,n[e]>65535?(r=n[e]>>>16,n[e]&=65535):r=0;0!==r&&(n[n.length]=r);for(let e=n.length-1;e>=0;e--)n[e+t]=n[e];for(let e=t-1;e>=0;e--)n[e]=0;r=0,e._memory_allocation(n.length<<4);for(let e=t;e<s.length;e++)s[e]+=(n.length>=e+1?n[e]:0)+r,s[e]>65535?(r=1,s[e]&=65535):r=0;0!==r&&(s[s.length]=r)}return e._sign=this._sign*n._sign,e}mul(t){return this.multiply(t)}_divideAndRemainder(t){const n=BigInteger._toBigInteger(t),e=[];if(0===n.signum())throw"BigInteger divideAndRemainder ["+n.toString()+"]";const i=this.compareToAbs(n);if(i<0)return e[0]=new BigInteger(0),e[1]=this.clone(),e;if(0===i)return e[0]=new BigInteger(1),e[0]._sign=this._sign*n._sign,e[1]=new BigInteger(0),e;const r=new BigInteger(1),o=this.bitLength()-n.bitLength(),a=this.clone()._abs(),s=n.shift(o)._abs(),c=new BigInteger;for(let t=0;t<=o&&(a.compareToAbs(s)>=0&&(a._subtract(s),c._add(r)),t!==o);t++)s._shift(-1),c._shift(1);return e[0]=c,e[0]._sign=this._sign*n._sign,e[1]=a,e[1]._sign=this._sign,e}divideAndRemainder(t){return this.clone()._divideAndRemainder(t)}_divide(t){return this._divideAndRemainder(t)[0]}divide(t){return this.clone()._divide(t)}div(t){return this.divide(t)}_remainder(t){return this._divideAndRemainder(t)[1]}remainder(t){return this.clone()._remainder(t)}rem(t){return this.remainder(t)}_mod(t){const n=BigInteger._toBigInteger(t);if(n.signum()<0)return null;const e=this._divideAndRemainder(n);return e[1]instanceof BigInteger?e[1].signum()>=0?e[1]:e[1]._add(n):null}mod(t){return this.clone()._mod(t)}_setBit(t){const n=BigInteger._toInteger(t);return this._memory_allocation(n+1),this.element[n>>>4]|=1<<(15&n),this}setBit(t){const n=BigInteger._toInteger(t);return this.clone()._setBit(n)}_flipBit(t){const n=BigInteger._toInteger(t);return this._memory_allocation(n+1),this.element[n>>>4]^=1<<(15&n),this}flipBit(t){const n=BigInteger._toInteger(t);return this.clone()._flipBit(n)}clearBit(t){const n=BigInteger._toInteger(t),e=this.clone();return e.element[n>>>4]&=~(1<<(15&n)),e._memory_reduction(),e}testBit(t){const n=BigInteger._toInteger(t);return 0!=(this.element[n>>>4]>>>(15&n)&1)}pow(t){const n=new BigInteger(t);let e=new BigInteger(this),i=new BigInteger(1);for(;0!==n.element.length;)0!=(1&n.element[0])&&(i=i.multiply(e)),e=e.multiply(e),n._shift(-1);return i}modPow(t,n){const e=BigInteger._toBigInteger(n);let i=new BigInteger(this),r=new BigInteger(1);const o=new BigInteger(t);for(;0!==o.element.length;)0!=(1&o.element[0])&&(r=r.multiply(i).mod(e)),i=i.multiply(i).mod(e),o._shift(-1);return r}modInverse(t){const n=BigInteger._toBigInteger(t),e=this.extgcd(t),i=new BigInteger(1);return 0!==e[2].compareTo(i)?null:e[0]._add(n)._mod(n)}isProbablePrime(t){const n=this.element;if(0===n.length||1===n.length&&n[0]<=2)return!0;if(0==(1&n[0]))return!1;const e=void 0!==t?BigInteger._toInteger(t):100,i=new BigInteger(0),r=new BigInteger(1),o=this,a=o.bitLength(),s=o.subtract(r),c=s.getLowestSetBit(),l=s.shift(-c);if(e<=0)return!1;for(let t=0;t<e;t++){let t;do{t=BigInteger.createRandomBigInteger(a)}while(0===t.compareTo(i)||-1!==t.compareTo(o));let n=l,e=t.modPow(n,o);for(;;){if(n.equals(s)||e.equals(r)||e.equals(s))break;e=e.mul(e)._mod(o),n=n.shiftLeft(1)}if(!e.equals(s)&&0==(1&n.element[0]))return!1}return!0}nextProbablePrime(t,n){const e=void 0!==t?BigInteger._toInteger(t)>>1:50,i=void 0!==n?BigInteger._toInteger(n):1e5,r=this.clone();for(let t=0;t<i;t++)if(r._add(BigInteger.ONE),r.isProbablePrime(e))return r;throw"nextProbablePrime ["+i+"]"}factorial(){const t=BigInteger._toInteger(this);let n=BigInteger.ONE;for(let e=2;e<=t;e++)n=n.multiply(e);return n}static setDefaultRandom(t){DEFAULT_RANDOM=t}static getDefaultRandom(){return DEFAULT_RANDOM}static get ZERO(){return DEFINE$1.ZERO}static get ONE(){return DEFINE$1.ONE}static get TWO(){return DEFINE$1.TWO}static get TEN(){return DEFINE$1.TEN}}const DEFINE$1={ONE:new BigInteger(1),TWO:new BigInteger(2),TEN:new BigInteger(10),ZERO:new BigInteger(0)};let DEFAULT_CONTEXT=MathContext.DECIMAL128;class DecimalTool{static ToBigDecimalFromString(t){let n,e=0,i=t.replace(/\s/g,"").toLowerCase(),r="";return null!==(n=i.match(/^[+-]+/))&&(n=n[0],i=i.substr(n.length),-1!==n.indexOf("-")&&(r+="-")),null!==(n=i.match(/^[0-9]+/))&&(n=n[0],i=i.substr(n.length),r+=n),null!==(n=i.match(/^\.[0-9]+/))&&(n=n[0],i=i.substr(n.length),e+=(n=n.substr(1)).length,r+=n),null!==(n=i.match(/^e[+-]?[0-9]+/))&&(n=n[0].substr(1),e-=parseInt(n,10)),{scale:e,integer:new BigInteger([r,10])}}static ToBigDecimalFromNumber(t){if(t===Math.floor(t))return{scale:0,integer:new BigInteger(t)};{let n=0,e=t;for(let t=0;t<10&&(e*=10,n+=1,e!==Math.floor(e));t++);return{scale:n,integer:new BigInteger(e)}}}}class BigDecimal{constructor(t){this._scale=0,this.default_context=DEFAULT_CONTEXT;let n=null;if(arguments.length>1)throw"BigDecimal Unsupported argument["+arguments.length+"]";if(t instanceof BigDecimal)this.integer=t.integer.clone(),this._scale=t._scale,this.int_string=t.int_string,this.default_context=t.default_context;else if(t instanceof BigInteger)this.integer=t.clone();else if("number"==typeof t){const n=DecimalTool.ToBigDecimalFromNumber(t);this.integer=n.integer,this._scale=n.scale}else if(t instanceof Array){if(t.length>=1)if("string"==typeof t[0]||t[0]instanceof String){const n=DecimalTool.ToBigDecimalFromString(t[0]);this.integer=n.integer,this._scale=n.scale}else this.integer=new BigInteger(t[0]);t.length>=2&&("number"==typeof t[1]||t[1]instanceof Number?(this._scale=t[1],t.length>=3&&(this.default_context=t[2]),t.length>=4&&(n=t[3])):(t.length>=2&&(this.default_context=t[1]),t.length>=3&&(n=t[2])))}else if("string"==typeof t){const n=DecimalTool.ToBigDecimalFromString(t);this.integer=n.integer,this._scale=n.scale}else if(t instanceof Object&&void 0!==t.scale&&void 0!==t.default_context)this.integer=new BigInteger(t.integer),t.scale&&(this._scale=t.scale),t.default_context&&(this.default_context=t.default_context),t.context&&(n=t.context);else{if(!(t instanceof Object))throw"BigDecimal Unsupported argument "+arguments;{const n=DecimalTool.ToBigDecimalFromString(t.toString());this.integer=n.integer,this._scale=n.scale}}if(n){const t=this.round(n);this.integer=t.integer,this._scale=t._scale,delete this.int_string}if(!(this.integer instanceof BigInteger&&this.default_context instanceof MathContext))throw"BigDecimal Unsupported argument "+arguments}static create(t){return t instanceof BigDecimal?t:new BigDecimal(t)}static valueOf(t,n){return new BigDecimal(1===arguments.length?t:[t,n])}static _toBigDecimal(t){return t instanceof BigDecimal?t:new BigDecimal(t)}static _toBigInteger(t){return t instanceof BigInteger?t:t instanceof BigDecimal?t.toBigInteger():new BigInteger(t)}static _toFloat(t){return"number"==typeof t?t:t instanceof BigDecimal?t.doubleValue:new BigDecimal(t).doubleValue}static _toInteger(t){return"number"==typeof t?0|t:t instanceof BigInteger?t.intValue:new BigInteger(t).intValue}_getUnsignedIntegerString(){return void 0===this.int_string&&(this.int_string=this.integer.toString(10).replace(/^-/,"")),this.int_string}clone(){return new BigDecimal(this)}scale(){return this._scale}signum(){return this.integer.signum()}sign(){return this.signum()}precision(){return this._getUnsignedIntegerString().length}unscaledValue(){return new BigInteger(this.integer)}toScientificNotation(t){const n=BigDecimal._toInteger(t),e=this._getUnsignedIntegerString();let i=this.scale();const r=[];let o,a;if(-1===this.signum()&&(r[r.length]="-"),(i=-n-i)>=0)for(r[r.length]=e,o=0;o<i;o++)r[r.length]="0";else if(0<(a=this.precision()+i))r[r.length]=e.substring(0,a),r[r.length]=".",r[r.length]=e.substring(a,e.length);else{for(a=-a,r[r.length]="0.",o=0;o<a;o++)r[r.length]="0";r[r.length]=e}return r[r.length]="E",n>=0&&(r[r.length]="+"),r[r.length]=n,r.join("")}toString(){const t=-this.scale()+(this.precision()-1);return this.scale()>=0&&t>=-6?this.toPlainString():this.toScientificNotation(t)}toEngineeringString(){const t=-this.scale()+(this.precision()-1);return this.scale()>=0&&t>=-6?this.toPlainString():this.toScientificNotation(3*Math.floor(t/3))}toPlainString(){return 0===this.scale()?this.signum()<0?"-"+this._getUnsignedIntegerString():this._getUnsignedIntegerString():this.toScientificNotation(0).match(/^[^E]*/)[0]}ulp(){return new BigDecimal([BigInteger.ONE,this.scale(),this.default_context])}setScale(t,n,e){const i=BigDecimal._toInteger(t);if(this.scale()===i)return this.clone();const r=void 0!==n?RoundingMode.valueOf(n):RoundingMode.UNNECESSARY,o=void 0!==e?e:this.default_context;let a=this._getUnsignedIntegerString();const s=this.signum(),c=s>=0?"":"-",l=i-this.scale();if(0<=l){let t;for(t=0;t<l;t++)a+="0";return new BigDecimal([new BigInteger(c+a),i,o])}const u=a.length+l,h=u+1;if(u<=0){const t=(s+r.getAddNumber(s))/10;return new BigDecimal([new BigInteger(t),i,o])}{const t=a.match(/0+$/),n=null!==t?t[0].length:0;if(n+l>=0||r===RoundingMode.DOWN)return new BigDecimal([new BigInteger(c+a.substring(0,u)),i,o])}{const t=(a=a.substring(0,h)).length>1?2:1,n=parseInt(a.substring(a.length-t,a.length))*s,e=new BigInteger(c+a),l=new BigInteger(r.getAddNumber(n));return a=e.add(l).toString(),new BigDecimal([new BigInteger(a.substring(0,a.length-1)),i,o])}}round(t){if(!(t instanceof MathContext))throw"not MathContext";const n=t.getPrecision(),e=n-this.precision();if(0===e||0===n)return this.clone();const i=this.setScale(this.scale()+e,t.getRoundingMode(),t);if(e>0)return i;if(i.precision()===t.getPrecision())return i;const r=i.integer.signum()>=0?"":"-",o=i._getUnsignedIntegerString(),a=r+o.substring(0,o.length-1);return new BigDecimal([new BigInteger(a),i.scale()-1,t])}abs(t){const n=this.clone();return n.integer=n.integer.abs(),void 0===t?n:n.round(t)}plus(t){const n=this.clone();return void 0===t?n:n.round(t)}negate(t){const n=this.clone();return n.integer=n.integer.negate(),void 0===t?n:n.round(t)}compareTo(t){const n=this,e=BigDecimal._toBigDecimal(t);{const t=n.signum(),i=e.signum();if(0===t&&t===i)return 0;if(0===t)return-i;if(0===i)return t}if(n._scale===e._scale)return n.integer.compareTo(e.integer);if(n._scale>e._scale){const t=e.setScale(n._scale);return n.integer.compareTo(t.integer)}{const t=n.setScale(e._scale);return t.integer.compareTo(e.integer)}}equals(t){if(t instanceof BigDecimal)return this._scale===t._scale&&this.integer.equals(t.integer);if("string"==typeof t||t instanceof String){const n=BigDecimal._toBigDecimal(t);return this._scale===n._scale&&this.integer.equals(n.integer)}return 0===this.compareTo(t)}max(t){const n=BigDecimal._toBigDecimal(t);return this.compareTo(n)>=0?this.clone():n.clone()}min(t){const n=BigDecimal._toBigDecimal(t);return this.compareTo(n)<=0?this.clone():n.clone()}scaleByPowerOfTen(t){const n=BigDecimal._toBigInteger(t),e=this.clone();return e._scale=this.scale()-n,e}movePointLeft(t){const n=BigDecimal._toBigInteger(t);let e=this.scaleByPowerOfTen(-n);return e=e.setScale(Math.max(this.scale()+n,0))}movePointRight(t){const n=BigDecimal._toBigInteger(t);let e=this.scaleByPowerOfTen(n);return e=e.setScale(Math.max(this.scale()-n,0))}stripTrailingZeros(){const t=this.signum()>=0?"":"-",n=this.integer.toString(10).replace(/^-/,""),e=n.match(/0+$/);let i=null!==e?e[0].length:0;i===n.length&&(i=n.length-1);const r=this.scale()-i;return new BigDecimal([new BigInteger(t+n.substring(0,n.length-i)),r,this.default_context])}add(t,n){const e=BigDecimal._toBigDecimal(t),i=n||e.default_context,r=this,o=e,a=Math.max(r._scale,o._scale);if(r._scale===o._scale)return new BigDecimal([r.integer.add(o.integer),a,i,i]);if(r._scale>o._scale){const t=o.setScale(r._scale);return new BigDecimal([r.integer.add(t.integer),a,i,i])}{const t=r.setScale(o._scale);return new BigDecimal([t.integer.add(o.integer),a,i,i])}}subtract(t,n){const e=BigDecimal._toBigDecimal(t),i=n||e.default_context,r=this,o=e,a=Math.max(r._scale,o._scale);if(r._scale===o._scale)return new BigDecimal([r.integer.subtract(o.integer),a,i,i]);if(r._scale>o._scale){const t=o.setScale(r._scale);return new BigDecimal([r.integer.subtract(t.integer),a,i,i])}{const t=r.setScale(o._scale);return new BigDecimal([t.integer.subtract(o.integer),a,i,i])}}sub(t,n){return this.subtract(t,n)}multiply(t,n){const e=BigDecimal._toBigDecimal(t),i=n||e.default_context,r=this,o=e,a=r.integer.multiply(o.integer),s=r._scale+o._scale;return new BigDecimal([a,s,i])}mul(t,n){return this.multiply(t,n)}divideToIntegralValue(t,n){const e=BigDecimal._toBigDecimal(t),i=n||e.default_context,r=function(t){let n,e="1";for(n=0;n<t;n++)e+="0";return new BigInteger(e)};if(0===e.compareTo(BigDecimal.ZERO))throw"ArithmeticException";const o=this,a=e;let s=o.integer,c=a.integer;const l=o._scale-a._scale;o._scale>a._scale?c=c.multiply(r(l)):o._scale<a._scale&&(s=s.multiply(r(-l)));const u=s.divide(c),h=u.signum();if(0!==h){const t=u.toString(10).replace(/^-/,"");if(0!==i.getPrecision()&&t.length>i.getPrecision())throw"ArithmeticException";if(t.length<=-l){const n=t.match(/0+$/),e=null!==n?n[0].length:0,r=h>=0?"":"-";return new BigDecimal([new BigInteger(r+t.substring(0,t.length-e)),-e,i])}}let g=new BigDecimal(u);return g=g.setScale(l,RoundingMode.UP),g=g.round(i),g.default_context=i,g}divideAndRemainder(t,n){const e=BigDecimal._toBigDecimal(t),i=n||e.default_context,r=this.divideToIntegralValue(e,i);return[r,this.subtract(r.multiply(e,i),i)]}rem(t,n){return this.divideAndRemainder(t,n)[1]}mod(t,n){const e=this.rem(t,n);if(e.compareTo(BigDecimal.ZERO)<0)return e.add(t,n)}divide(t,n){const e=this,i=BigDecimal._toBigDecimal(t);let r=null,o=null,a=0,s=!1;if(n&&n.scale?(s=!1,a=n.scale):(s=!0,a=n&&(n.roundingMode||n.context)?e.scale():e.scale()-i.scale()),n&&n.context?(r=n.context.getRoundingMode(),a=n.context.getPrecision(),o=n.context):o=this.default_context,r=n&&n.roundingMode?n.roundingMode:o.getRoundingMode(),0===i.compareTo(BigDecimal.ZERO))throw"ArithmeticException";let c;const l=[];let u,h,g,f;f=BigDecimal.ZERO;const m=o.getPrecision(),_=0!==m?m+8:262143;c=e;for(let t=0;t<_&&(u=c.divideAndRemainder(i,MathContext.UNLIMITED),h=u[0],g=u[1],f=f.add(h.scaleByPowerOfTen(-t),MathContext.UNLIMITED),0!==g.compareTo(BigDecimal.ZERO));t++){if(0===m){if(l[g._getUnsignedIntegerString()])throw"ArithmeticException "+f+"["+g._getUnsignedIntegerString()+"]";l[g._getUnsignedIntegerString()]=!0}c=g.scaleByPowerOfTen(1)}if(s)try{f=f.setScale(a,r)}catch(t){}else f=f.setScale(a,r);return f=f.round(o)}div(t,n){return this.divide(t,n)}toBigInteger(){const t=this.toPlainString().replace(/\.\d*$/,"");return new BigInteger(t)}toBigIntegerExact(){const t=this.setScale(0,RoundingMode.UNNECESSARY);return new BigInteger(t.toPlainString())}get intValue(){let t=this.toBigInteger();return 4294967295&(t=t.intValue)}get intValueExact(){let t=this.toBigIntegerExact();if((t=t.intValue)<-2147483648||2147483647<t)throw"ArithmeticException";return t}get floatValue(){const t=this.precision();return MathContext.DECIMAL32.getPrecision()<t?this.signum()>=0?Number.POSITIVE_INFINITY:Number.NEGATIVE_INFINITY:parseFloat(this.toEngineeringString())}get doubleValue(){const t=this.precision();return MathContext.DECIMAL64.getPrecision()<t?this.signum()>=0?Number.POSITIVE_INFINITY:Number.NEGATIVE_INFINITY:parseFloat(this.toEngineeringString())}pow(t,n){let e=BigDecimal._toInteger(t);const i=n||this.default_context;if(Math.abs(e)>999999999)throw"ArithmeticException";if(0===i.getPrecision()&&e<0)throw"ArithmeticException";if(i.getPrecision()>0&&e>i.getPrecision())throw"ArithmeticException";let r,o;for(r=this.clone(),o=BigDecimal.ONE;0!==e;)0!=(1&e)&&(o=o.multiply(r,MathContext.UNLIMITED)),r=r.multiply(r,MathContext.UNLIMITED),e>>>=1;return o.round(i)}static setDefaultContext(t){DEFAULT_CONTEXT=t||MathContext.DECIMAL128}static getDefaultContext(){return DEFAULT_CONTEXT}static get ZERO(){const t=new BigDecimal(DEFINE$2.ZERO);return t.default_context=DEFAULT_CONTEXT,t}static get ONE(){const t=new BigDecimal(DEFINE$2.ONE);return t.default_context=DEFAULT_CONTEXT,t}static get TWO(){const t=new BigDecimal(DEFINE$2.TWO);return t.default_context=DEFAULT_CONTEXT,t}static get TEN(){const t=new BigDecimal(DEFINE$2.TEN);return t.default_context=DEFAULT_CONTEXT,t}}const DEFINE$2={ZERO:new BigDecimal(0),ONE:new BigDecimal(1),TWO:new BigDecimal(2),TEN:new BigDecimal(10)};BigDecimal.RoundingMode=RoundingMode,BigDecimal.MathContext=MathContext;class LinearAlgebraTool{static tridiagonalize(t){const n=Matrix._toMatrix(t).getNumberMatrixArray(),e=function(t,n,e,i){let r=0;const o=e||0,a=i||t.length;for(let e=o;e<a;e++)r+=t[e]*n[e];return r},i=n.length,r=[],o=[];for(let t=0;t<i-2;t++){const a=n[t];r[t]=a[t];{const n=function(t,n,i){const r=n||0,o=i||t.length;let a=Math.sqrt(e(t,t,r,o));const s=[];if(Math.abs(a)>=1e-10){t[r]<0&&(a=-a);let n;for(let e=r,i=0;e<o;e++,i++)e===r?(s[i]=t[e]+a,n=1/Math.sqrt(s[i]*a),s[i]=s[i]*n):s[i]=t[e]*n}return{y1:-a,v:s}}(a,t+1,i);o[t]=n.y1;for(let e=0;e<n.v.length;e++)a[t+1+e]=n.v[e]}if(!(Math.abs(o[t])<1e-10)){for(let e=t+1;e<i;e++){let o=0;for(let i=t+1;i<e;i++)o+=n[i][e]*a[i];for(let t=e;t<i;t++)o+=n[e][t]*a[t];r[e]=o}const o=e(a,r,t+1,i)/2;for(let e=i-1;e>t;e--){const t=a[e],s=r[e]-o*t;r[e]=s;for(let o=e;o<i;o++){const i=t*r[o]+s*a[o];n[e][o]=n[e][o]-i}}}}i>=2&&(r[i-2]=n[i-2][i-2],o[i-2]=n[i-2][i-1]),i>=1&&(r[i-1]=n[i-1][i-1]);for(let t=i-1;t>=0;t--){const r=n[t];if(t<i-2)for(let o=t+1;o<i;o++){const a=n[o],s=e(r,a,t+1,i);for(let n=t+1;n<i;n++)a[n]-=s*r[n]}for(let t=0;t<i;t++)r[t]=0;r[t]=1}const a=Matrix.createMatrixDoEachCalculation(function(t,n){return t===n?new Complex(r[t]):1===Math.abs(t-n)?new Complex(o[.5*(t+n)|0]):Complex.ZERO},i,i);return{P:new Matrix(n).T(),H:a}}static eig(t){const n=Matrix._toMatrix(t);let e=!1;const i=LinearAlgebraTool.tridiagonalize(n),r=i.P.getNumberMatrixArray(),o=i.H.getNumberMatrixArray(),a=n.row_length,s=[],c=[];for(let t=0;t<a;t++)s[t]=o[t][t],c[t]=0===t?0:o[t][t-1];for(let t=a-1;t>0;t--){let n=t;for(n=t;n>=1&&!(Math.abs(c[n])<=1e-10*(Math.abs(s[n-1])+Math.abs(s[n])));n--);if(n!=t){let i=0;for(;;){if(++i>100){e=!0;break}let o=(s[t-1]-s[t])/2,l=c[t]*c[t],u=Math.sqrt(o*o+l);o<0&&(u=-u);let h=s[n]-s[t]+l/(o+u),g=c[n+1];for(let e=n;e<t;e++){let i,u;Math.abs(h)>=Math.abs(g)?u=(l=-g/h)*(i=1/Math.sqrt(l*l+1)):i=(l=-h/g)*(u=1/Math.sqrt(l*l+1)),l=((o=s[e]-s[e+1])*u+2*i*c[e+1])*u,s[e]-=l,s[e+1]+=l,e>n&&(c[e]=i*c[e]-u*g),c[e+1]+=u*(i*o-2*u*c[e+1]);for(let t=0;t<a;t++)h=r[t][e],g=r[t][e+1],r[t][e]=i*h-u*g,r[t][e+1]=u*h+i*g;e<t-1&&(h=c[e+1],g=-u*c[e+2],c[e+2]*=i)}if(Math.abs(c[t])<=1e-10*(Math.abs(s[t-1])+Math.abs(s[t])))break}if(e)break}}return function(t,n){const e=n.length,i=[];for(let t=0;t<e;t++)i[t]={sigma:n[t],index:t};const r=function(t,n){return t.sigma===n.sigma?0:t.sigma<n.sigma?1:-1};i.sort(r);const o=Matrix.zeros(e),a=Matrix.zeros(e);for(let t=0;t<e;t++)a.matrix_array[t][t]=new Complex(i[t].sigma),o.matrix_array[t][i[t].index]=Complex.ONE;return{V:t.mul(o),D:a}}(new Matrix(r),s)}static doGramSchmidtOrthonormalization(t){const n=Matrix._toMatrix(t),e=n.column_length,i=n.matrix_array,r=Matrix.zeros(e),o=Matrix.zeros(e),a=r.matrix_array,s=o.matrix_array,c=[],l=new Array(e);for(let t=0;t<e;t++){for(let n=0;n<e;n++)l[n]=i[n][t];if(t>0){for(let n=0;n<t;n++)for(let r=0;r<e;r++)s[n][t]=s[n][t].add(i[r][t].dot(a[r][n]));for(let n=0;n<t;n++)for(let i=0;i<e;i++)l[i]=l[i].sub(s[n][t].mul(a[i][n]))}for(let n=0;n<e;n++)s[t][t]=s[t][t].add(l[n].square());if(s[t][t]=s[t][t].sqrt(),s[t][t].isZero(1e-10)){c.push(t);for(let n=0;n<e;n++)a[n][t]=Complex.ZERO}else for(let n=0;n<e;n++)a[n][t]=l[n].div(s[t][t])}return{Q:r,R:o,non_orthogonalized:c}}static createOrthogonalVector(t,n){const e=new Matrix(t),i=e.column_length,r=e.matrix_array,o=n||1e-10,a=LinearAlgebraTool.getLinearDependenceVector(e,o);for(let t=a.length-1;t>=0;t--)r.splice(a[t],1),e.row_length--;const s=i-r.length;if(s<=0)return null;const c=new Random(0);let l=null;for(let t=0;t<100;t++){const t=e.T(),n=Matrix.createMatrixDoEachCalculation(function(){return new Complex(c.nextGaussian())},t.row_length,s);if(t._concatLeft(n),0===(l=LinearAlgebraTool.doGramSchmidtOrthonormalization(t)).non_orthogonalized.length)break}if(0!==l.non_orthogonalized.length)return console.log("miss"),null;const u=new Array(s),h=l.Q.matrix_array;for(let t=0;t<s;t++){u[t]=new Array(i);for(let n=0;n<i;n++)u[t][n]=h[n][i-s+t]}return new Matrix(u)}static getMaxRowNumber(t,n,e,i){const r=Matrix._toMatrix(t);let o=0,a=0,s=e||0;const c=i||r.row_length;for(;s<c;s++){const t=r.matrix_array[s][n].norm;t>a&&(a=t,o=s)}return{index:o,max:a}}static getLinearDependenceVector(t,n){const e=new Matrix(t),i=e.matrix_array,r=n?Matrix._toDouble(n):1e-10,o=new Array(t.row_length);for(let n=0;n<t.row_length;n++)o[n]=n;for(let t=0;t<e.column_length;t++){let n=0;{let a=0,s=0;for(const e in o){const r=o[e],c=i[r][t].norm;c>a&&(a=c,s=parseInt(e,10),n=r)}if(a<=r)continue;if(o.splice(s,1),t===e.column_length-1)break}for(const r in o){const a=o[r],s=i[a][t].div(i[n][t]);for(let r=t;r<e.column_length;r++)i[a][r]=i[a][r].sub(i[n][r].mul(s))}}return o}}class LinearAlgebra{static inner(t,n,e){const i=Matrix._toMatrix(t),r=Matrix._toMatrix(n),o=i.matrix_array,a=r.matrix_array,s=e?Matrix._toInteger(e):1;if(i.isScalar()&&r.isScalar())return new Matrix(i.scalar.dot(r.scalar));if(i.isVector()&&r.isVector()){let t=Complex.ZERO;for(let n=0;n<i.length;n++)t=t.add(i.getComplex(n).dot(r.getComplex(n)));return new Matrix(t)}if(i.row_length!==r.row_length||i.column_length!==r.column_length)throw"Matrix size does not match";if(1===s){const t=new Array(1);t[0]=new Array(i.column_length);for(let n=0;n<i.column_length;n++){let e=Complex.ZERO;for(let t=0;t<i.row_length;t++)e=e.add(o[t][n].dot(a[t][n]));t[0][n]=e}return new Matrix(t)}if(2===s){const t=new Array(i.row_length);for(let n=0;n<i.row_length;n++){let e=Complex.ZERO;for(let t=0;t<i.column_length;t++)e=e.add(o[n][t].dot(a[n][t]));t[n]=[e]}return new Matrix(t)}throw"dim"}static norm(t,n){const e=Matrix._toMatrix(t),i=void 0===n?2:Matrix._toDouble(n);if(1===i){const t=e.matrix_array;if(e.isRow()){let n=0;for(let i=0;i<e.column_length;i++)n+=t[0][i].norm;return n}if(e.isColumn()){let n=0;for(let i=0;i<e.row_length;i++)n+=t[i][0].norm;return n}let n=0;for(let i=0;i<e.column_length;i++){let r=0;for(let n=0;n<e.row_length;n++)r+=t[n][i].norm;n<r&&(n=r)}return n}if(2===i){const t=e.matrix_array;if(e.isRow()){let n=0;for(let i=0;i<e.column_length;i++)n+=t[0][i].square().real;return Math.sqrt(n)}if(e.isColumn()){let n=0;for(let i=0;i<e.row_length;i++)n+=t[i][0].square().real;return Math.sqrt(n)}return e.svd().S.diag().max().scalar.real}if(i===Number.POSITIVE_INFINITY||i===Number.NEGATIVE_INFINITY){const t=e.matrix_array;let n=i===Number.POSITIVE_INFINITY?0:Number.POSITIVE_INFINITY;const r=i===Number.POSITIVE_INFINITY?Math.max:Math.min;if(e.isRow()){for(let i=0;i<e.column_length;i++)n=r(n,t[0][i].norm);return n}if(e.isColumn()){for(let i=0;i<e.row_length;i++)n=r(n,t[i][0].norm);return n}n=0;for(let i=0;i<e.row_length;i++){let r=0;for(let n=0;n<e.column_length;n++)r+=t[i][n].norm;n=Math.max(n,r)}return n}if(e.isVector()){let t=0;for(let n=0;n<e.length;n++)t+=Math.pow(e.getComplex(n).norm,i);return Math.pow(t,1/i)}throw"norm"}static cond(t,n){const e=Matrix._toMatrix(t);if(2===(void 0===n?2:Matrix._toInteger(n))){if(e.isZeros())return Number.POSITIVE_INFINITY;if(e.isVector())return 1;if(e.isUnitary())return 1;const t=e.svd().S.diag();return t.max().scalar.real/t.min().scalar.real}return e.norm(n)*e.pinv().norm(n)}static rcond(t){return 1/LinearAlgebra.cond(Matrix._toMatrix(t),1)}static rank(t,n){const e=Matrix._toMatrix(t);return e.row_length<=e.column_length?Math.min(e.row_length,e.column_length)-LinearAlgebraTool.getLinearDependenceVector(e,n).length:e.row_length-LinearAlgebraTool.getLinearDependenceVector(e,n).length}static trace(t){const n=Matrix._toMatrix(t),e=Math.min(n.row_length,n.column_length);let i=Complex.ZERO;for(let t=0;t<e;t++)i=i.add(n.matrix_array[t][t]);return i}static det(t){const n=Matrix._toMatrix(t);if(!n.isSquare())throw"not square";const e=n.length;if(e<5){const t=function(n){if(2===n.length)return n[0][0].mul(n[1][1]).sub(n[0][1].mul(n[1][0]));let e=Complex.ZERO;for(let i=0;i<n.length;i++){const r=[],o=n[i][0];for(let t=0,e=0;t<n.length;t++)if(i!==t){r[e]=[];for(let i=1,o=0;i<n.length;i++,o++)r[e][o]=n[t][i];e++}e=i%2==0?e.add(o.mul(t(r))):e.sub(o.mul(t(r)))}return e};return new Matrix(t(n.matrix_array))}{const t=LinearAlgebra.lup(n),i=(e-t.P.diag().sum().scalar)/2;let r=t.U.diag().prod();return i%2==1&&(r=r.negate()),new Matrix(r)}}static lup(t){const n=new Matrix(t),e=Matrix.zeros(n.row_length),i=n,r=Matrix.eye(n.row_length),o=e.matrix_array,a=i.matrix_array;for(let t=0;t<n.column_length;t++){let s;{const n=LinearAlgebraTool.getMaxRowNumber(i,t,t);if(s=n.index,0===n.max)continue;t!==s&&(e._exchangeRow(t,s),i._exchangeRow(t,s),r._exchangeRow(t,s))}for(let e=t+1;e<n.row_length;e++){const i=a[e][t].div(a[t][t]);o[e][t]=i;for(let r=t;r<n.column_length;r++)a[e][r]=a[e][r].sub(a[t][r].mul(i))}}return e._resize(n.row_length,Math.min(n.row_length,n.column_length)),i._resize(Math.min(n.row_length,n.column_length),n.column_length),e._each(function(t,n,e){return n===e?Complex.ONE:t}),{L:e,U:i,P:r}}static lu(t){const n=LinearAlgebra.lup(t);return{L:n.P.T().mul(n.L),U:n.U}}static linsolve(t,n){const e=Matrix._toMatrix(t),i=Matrix._toMatrix(n);if(!e.isSquare())throw"Matrix size does not match";const r=i;if(i.row_length!==e.row_length||i.column_length>1)throw"Matrix size does not match";const o=new Matrix(e);o._concatLeft(r);const a=o.matrix_array,s=o.column_length,c=e.column_length;for(let t=0;t<c-1;t++){{const n=LinearAlgebraTool.getMaxRowNumber(o,t,t).index;o._exchangeRow(t,n)}{const n=a[t][t].inv();for(let e=t,i=t;i<s;i++)a[e][i]=a[e][i].mul(n)}for(let n=t+1;n<c;n++){const e=a[n][t];for(let i=t;i<s;i++)a[n][i]=a[n][i].sub(a[t][i].mul(e))}}const l=new Array(c);l[c-1]=a[c-1][c].div(a[c-1][c-1]);for(let t=c-2;t>=0;t--){l[t]=a[t][s-1];for(let n=t+1;n<c;n++)l[t]=l[t].sub(a[t][n]*l[n]);l[t]=l[t].div(a[t][t])}const u=new Array(e.row_length);for(let t=0;t<e.row_length;t++)u[t]=[l[t]];return new Matrix(u)}static qr(t){const n=new Matrix(t),e=n.row_length,i=n.row_length,r=n.row_length,o=n.column_length,a=Math.max(n.row_length,n.column_length);n._resize(a,a);const s=LinearAlgebraTool.doGramSchmidtOrthonormalization(n);let c=s.Q;const l=s.R,u=s.non_orthogonalized;if(u.length===n.row_length)c=Matrix.eye(n.row_length);else if(0!==u.length){const t={};for(let n=0;n<u.length;n++)t[u[n]]=1;const n=[];for(let e=0;e<a;e++)if(!t[e]){const t=[];for(let n=0;n<a;n++)t[n]=c.matrix_array[n][e];n.push(t)}const e=LinearAlgebraTool.createOrthogonalVector(n);for(let t=0;t<u.length;t++){const n=u[t];for(let i=0;i<a;i++)c.matrix_array[i][n]=e.matrix_array[t][i]}}return c._resize(e,i),l._resize(r,o),{Q:c,R:l}}static tridiagonalize(t){const n=new Matrix(t);if(!n.isSquare())throw"not square matrix";if(!n.isSymmetric())throw"not Symmetric";if(n.isComplex())throw"not Real Matrix";return LinearAlgebraTool.tridiagonalize(n)}static eig(t){const n=new Matrix(t);if(!n.isSquare())throw"not square matrix";if(!n.isSymmetric())throw"not Symmetric";if(n.isComplex())throw"not Real Matrix";return LinearAlgebraTool.eig(n)}static svd(t){const n=new Matrix(t);if(n.isComplex())throw"Unimplemented";const e=LinearAlgebra.rank(n),i=LinearAlgebra.eig(n.T().mul(n)),r=Matrix.zeros(n.row_length,n.column_length);r._each(function(t,n,r){if(n===r&&n<e)return i.D.getComplex(n,n).sqrt()});const o=Math.min(n.row_length,n.column_length),a=Matrix.createMatrixDoEachCalculation(function(t,n){if(t===n){const n=r.matrix_array[t][t];return n.isZero()?Complex.ZERO:n.inv()}return Complex.ZERO},o),s=i.V.resize(i.V.row_length,o),c=n.mul(s).mul(a);return{U:LinearAlgebra.qr(c).Q,S:r,V:i.V}}static inv(t){const n=new Matrix(t);if(n.isScalar())return new Matrix(Complex.ONE.div(n.scalar));if(!n.isSquare())throw"not square";if(n.isDiagonal()){const t=n.T(),e=Math.min(t.row_length,t.column_length);for(let n=0;n<e;n++)t.matrix_array[n][n]=t.matrix_array[n][n].inv();return t}const e=n.column_length,i=new Matrix(n);i._concatLeft(Matrix.eye(e));const r=i.matrix_array,o=i.column_length;for(let t=0;t<e;t++){{const n=LinearAlgebraTool.getMaxRowNumber(i,t,t).index;i._exchangeRow(t,n)}{const n=r[t][t].inv();for(let e=t,i=t;i<o;i++)r[e][i]=r[e][i].mul(n)}for(let n=0;n<e;n++)if(n!==t){const e=r[n][t];for(let i=t;i<o;i++)r[n][i]=r[n][i].sub(r[t][i].mul(e))}}const a=new Array(e);for(let t=0;t<e;t++){a[t]=new Array(e);for(let n=0;n<e;n++)a[t][n]=r[t][e+n]}return new Matrix(a)}static pinv(t){const n=new Matrix(t),e=LinearAlgebra.svd(n),i=e.U,r=e.S,o=e.V,a=Matrix.createMatrixDoEachCalculation(function(t,n){if(t===n){const n=r.matrix_array[t][t];return n.isZero()?Complex.ZERO:n.inv()}return Complex.ZERO},n.column_length,n.row_length);return o.mul(a).mul(i.T())}}class StatisticsTool{static gammaln(t){const n=Math.log(2*Math.PI),e=[-15238221.539407417,691472.268851313,-36108.77125372499,8553103/6/650,-156.84828462600203,854513/138/462,-174611/330/380,43867/798/306,-3617/510/240,7/6/182,-691/2730/132,5/66/90,-1/30/56,1/42/30,-1/30/12,1/6/2];let i=1,r=t;for(;r<e.length;)i*=r,r++;const o=1/(r*r);let a=e[0];for(let t=1;t<e.length;t++)a*=o,a+=e[t];return a/=r,a+=.5*n,a+=-Math.log(i)-r+(r-.5)*Math.log(r)}static q_gamma(t,n,e){let i,r,o,a,s,c=1,l=1+t-n;if(t<1+n)return 1-StatisticsTool.p_gamma(t,n,e);for(r=(o=Math.exp(n*Math.log(t)-t-e))/l,i=2;i<1e3;i++)if(a=((i-1-n)*(l-c)+(i+t)*l)/i,c=l,l=a,o*=(i-1-n)/i,a=o/(c*l),s=r,(r+=a)==s)return r;return Number.NaN}static p_gamma(t,n,e){let i,r,o,a;if(t>=1+n)return 1-StatisticsTool.q_gamma(t,n,e);if(0===t)return 0;for(r=o=Math.exp(n*Math.log(t)-t-e)/n,i=1;i<1e3;i++)if(o*=t/(n+i),a=r,(r+=o)==a)return r;return Number.NaN}static gamma(t){return t<0?Math.PI/(Math.sin(Math.PI*t)*Math.exp(StatisticsTool.gammaln(1-t))):Math.exp(StatisticsTool.gammaln(t))}static gammainc(t,n,e){if("lower"===e)return StatisticsTool.p_gamma(t,n,StatisticsTool.gammaln(n));if("upper"===e)return StatisticsTool.q_gamma(t,n,StatisticsTool.gammaln(n));if(2===arguments.length)return StatisticsTool.gammainc(t,n,"lower");throw"gammainc unsupported argument ["+e+"]"}static gampdf(t,n,e){let i=1/(StatisticsTool.gamma(n)*Math.pow(e,n));return i*=Math.pow(t,n-1),i*=Math.exp(-t/e)}static gamcdf(t,n,e){return StatisticsTool.gammainc(t/e,n)}static gaminv(t,n,e){if(t<0||t>1)return Number.NaN;if(0==t)return 0;if(1==t)return Number.POSITIVE_INFINITY;let i,r,o=n*e;for(let a=0;a<100&&(r=o-(StatisticsTool.gamcdf(o,n,e)-t)/StatisticsTool.gampdf(o,n,e),i=r-o,!(Math.abs(i)<=1e-12));a++)(o=r)<0&&(o=1e-12);return o}static beta(t,n){return Math.exp(StatisticsTool.gammaln(t)+StatisticsTool.gammaln(n)-StatisticsTool.gammaln(t+n))}static p_beta(t,n,e){let i,r,o,a;if(n<=0)return Number.POSITIVE_INFINITY;if(e<=0)return t<1?0:1===t?1:Number.POSITIVE_INFINITY;if(t>(n+1)/(n+e+2))return 1-StatisticsTool.p_beta(1-t,e,n);if(t<=0)return 0;for(o=n*Math.log(t),o+=e*Math.log(1-t),o+=StatisticsTool.gammaln(n+e),o-=StatisticsTool.gammaln(n)+StatisticsTool.gammaln(e),o=Math.exp(o),r=o/=n,i=1;i<1e3;i++)if(o*=n+e+i-1,o*=t,o/=n+i,a=r,(r+=o)===a)return r;return Number.NaN}static q_beta(t,n,e){return 1-StatisticsTool.p_beta(t,n,e)}static betainc(t,n,e,i){if("lower"===i)return StatisticsTool.p_beta(t,n,e);if("upper"===i)return StatisticsTool.q_beta(t,n,e);if(3===arguments.length)return StatisticsTool.betainc(t,n,e,"lower");throw"betainc unsupported argument ["+i+"]"}static isInteger(t){return t-(0|t)!=0}static betapdf(t,n,e){return t<0&&StatisticsTool.isInteger(e-1)||1-t<0&&StatisticsTool.isInteger(e-1)?0:Math.pow(t,n-1)*Math.pow(1-t,e-1)/StatisticsTool.beta(n,e)}static betacdf(t,n,e){return StatisticsTool.betainc(t,n,e)}static betainv(t,n,e){if(t<0||t>1)return Number.NaN;if(0==t&&n>0&&e>0)return 0;if(1==t&&n>0&&e>0)return 1;let i;i=0==e?1-1e-14:0==n?1e-14:n/(n+e);let r,o;for(let a=0;a<100&&(o=i-(StatisticsTool.betacdf(i,n,e)-t)/StatisticsTool.betapdf(i,n,e),r=o-i,!(Math.abs(r)<=1e-14));a++)(i=o)>1?i=1-1e-14:i<0&&(i=1e-14);return i}static factorial(t){const n=StatisticsTool.gamma(t+1);return(0|t)===t?Math.round(n):n}static nchoosek(t,n){return Math.round(StatisticsTool.factorial(t)/(StatisticsTool.factorial(t-n)*StatisticsTool.factorial(n)))}static erf(t){return StatisticsTool.p_gamma(t*t,.5,.5*Math.log(Math.PI))*(t>=0?1:-1)}static erfc(t){return 1-StatisticsTool.erf(t)}static normpdf(t,n,e){const i="number"==typeof n?n:0,r="number"==typeof e?e:1;let o=1/Math.sqrt(2*Math.PI*r*r);return o*=Math.exp(-(t-i)*(t-i)/(2*r*r))}static normcdf(t,n,e){const i="number"==typeof n?n:0,r="number"==typeof e?e:1;return(1+StatisticsTool.erf((t-i)/(r*Math.sqrt(2))))/2}static norminv(t,n,e){if(t<0||t>1)return Number.NaN;if(0==t)return Number.NEGATIVE_INFINITY;if(1==t)return Number.POSITIVE_INFINITY;const i="number"==typeof n?n:0,r="number"==typeof e?e:1;let o,a,s=i;for(let n=0;n<200&&(a=s-(StatisticsTool.normcdf(s,i,r)-t)/StatisticsTool.normpdf(s,i,r),o=a-s,!(Math.abs(o)<=1e-12));n++)s=a;return s}static tpdf(t,n){let e=1/(Math.sqrt(n)*StatisticsTool.beta(.5,.5*n));return e*=Math.pow(1+t*t/n,.5*-(n+1))}static tcdf(t,n){const e=t*t/(n+t*t);return.5*(1+StatisticsTool.betainc(e,.5,.5*n)*(t<0?-1:1))}static tinv(t,n){if(t<0||t>1)return Number.NaN;if(0==t)return Number.NEGATIVE_INFINITY;if(1==t)return Number.POSITIVE_INFINITY;if(t<.5){const e=StatisticsTool.betainv(2*t,.5*n,.5);return-Math.sqrt(n/e-n)}{const e=StatisticsTool.betainv(2*(1-t),.5*n,.5);return Math.sqrt(n/e-n)}}static tdist(t,n,e){return(1-StatisticsTool.tcdf(t,n))*e}static tinv2(t,n){return-StatisticsTool.tinv(.5*t,n)}static chi2pdf(t,n){if(t<0)return 0;if(0===t)return.5;let e=Math.pow(t,n/2-1)*Math.exp(-t/2);return e/=Math.pow(2,n/2)*StatisticsTool.gamma(n/2)}static chi2cdf(t,n){return StatisticsTool.gammainc(t/2,n/2)}static chi2inv(t,n){return StatisticsTool.gaminv(t,n/2,2)}static fpdf(t,n,e){if(n<0||e<0)return Number.NaN;if(t<=0)return 0;let i=1;return i*=Math.pow(n*t/(n*t+e),n/2),i*=Math.pow(1-n*t/(n*t+e),e/2),i/=t*StatisticsTool.beta(n/2,e/2)}static fcdf(t,n,e){return StatisticsTool.betacdf(n*t/(n*t+e),n/2,e/2)}static finv(t,n,e){return(1/StatisticsTool.betainv(1-t,e/2,n/2)-1)*e/n}}const isStr=function(t){return t&&("string"==typeof t||t instanceof String)};class StatisticsComplex{static gammaln(t){return new Complex(StatisticsTool.gammaln(Complex._toDouble(t)))}static gamma(t){return new Complex(StatisticsTool.gamma(Complex._toDouble(t)))}static gammainc(t,n,e){const i=Complex._toDouble(t),r=Complex._toDouble(n),o=isStr(e)?e:"lower";return new Complex(StatisticsTool.gammainc(i,r,o))}static gampdf(t,n,e){const i=Complex._toDouble(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return new Complex(StatisticsTool.gampdf(i,r,o))}static gamcdf(t,n,e){const i=Complex._toDouble(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return new Complex(StatisticsTool.gamcdf(i,r,o))}static gaminv(t,n,e){const i=Complex._toDouble(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return new Complex(StatisticsTool.gaminv(i,r,o))}static beta(t,n){const e=Complex._toDouble(t),i=Complex._toDouble(n);return new Complex(StatisticsTool.beta(e,i))}static betainc(t,n,e,i){const r=Complex._toDouble(t),o=Complex._toDouble(n),a=Complex._toDouble(e),s=isStr(i)?i:"lower";return new Complex(StatisticsTool.betainc(r,o,a,s))}static betapdf(t,n,e){const i=Complex._toDouble(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return new Complex(StatisticsTool.betapdf(i,r,o))}static betacdf(t,n,e){const i=Complex._toDouble(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return new Complex(StatisticsTool.betacdf(i,r,o))}static betainv(t,n,e){const i=Complex._toDouble(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return new Complex(StatisticsTool.betainv(i,r,o))}static factorial(t){return new Complex(StatisticsTool.factorial(Complex._toDouble(t)))}static nchoosek(t,n){const e=Complex._toDouble(t),i=Complex._toDouble(n);return new Complex(StatisticsTool.nchoosek(e,i))}static erf(t){const n=Complex._toDouble(t);return new Complex(StatisticsTool.erf(n))}static erfc(t){const n=Complex._toDouble(t);return new Complex(StatisticsTool.erfc(n))}static normpdf(t,n=0,e=1){const i=Complex._toDouble(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return new Complex(StatisticsTool.normpdf(i,r,o))}static normcdf(t,n=0,e=1){const i=Complex._toDouble(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return new Complex(StatisticsTool.normcdf(i,r,o))}static norminv(t,n=0,e=1){const i=Complex._toDouble(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return new Complex(StatisticsTool.norminv(i,r,o))}static tpdf(t,n){const e=Complex._toDouble(t),i=Complex._toDouble(n);return new Complex(StatisticsTool.tpdf(e,i))}static tcdf(t,n){const e=Complex._toDouble(t),i=Complex._toDouble(n);return new Complex(StatisticsTool.tcdf(e,i))}static tinv(t,n){const e=Complex._toDouble(t),i=Complex._toDouble(n);return new Complex(StatisticsTool.tinv(e,i))}static tdist(t,n,e){const i=Complex._toDouble(t),r=Complex._toDouble(n),o=Complex._toInteger(e);return new Complex(StatisticsTool.tdist(i,r,o))}static tinv2(t,n){const e=Complex._toDouble(t),i=Complex._toDouble(n);return new Complex(StatisticsTool.tinv2(e,i))}static chi2pdf(t,n){const e=Complex._toDouble(t),i=Complex._toDouble(n);return new Complex(StatisticsTool.chi2pdf(e,i))}static chi2cdf(t,n){const e=Complex._toDouble(t),i=Complex._toDouble(n);return new Complex(StatisticsTool.chi2cdf(e,i))}static chi2inv(t,n){const e=Complex._toDouble(t),i=Complex._toDouble(n);return new Complex(StatisticsTool.chi2inv(e,i))}static fpdf(t,n,e){const i=Complex._toDouble(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return new Complex(StatisticsTool.fpdf(i,r,o))}static fcdf(t,n,e){const i=Complex._toDouble(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return new Complex(StatisticsTool.fcdf(i,r,o))}static finv(t,n,e){const i=Complex._toDouble(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return new Complex(StatisticsTool.finv(i,r,o))}}class Statistics{static gammaln(t){return Matrix._toMatrix(t).cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.gammaln(t)})}static gamma(t){return Matrix._toMatrix(t).cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.gamma(t)})}static gammainc(t,n,e){const i=Matrix._toMatrix(t),r=Matrix._toDouble(n),o=isStr(e)?e:"lower";return i.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.gammainc(t,r,o)})}static gampdf(t,n,e){const i=Matrix._toMatrix(t),r=Matrix._toDouble(n),o=Matrix._toDouble(e);return i.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.gampdf(t,r,o)})}static gamcdf(t,n,e){const i=Matrix._toMatrix(t),r=Matrix._toDouble(n),o=Matrix._toDouble(e);return i.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.gamcdf(t,r,o)})}static gaminv(t,n,e){const i=Matrix._toMatrix(t),r=Matrix._toDouble(n),o=Matrix._toDouble(e);return i.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.gaminv(t,r,o)})}static beta(t,n){const e=Matrix._toMatrix(t),i=Matrix._toDouble(n);return e.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.beta(t,i)})}static betainc(t,n,e,i){const r=Matrix._toMatrix(t),o=Matrix._toDouble(n),a=Matrix._toDouble(e),s=isStr(i)?i:"lower";return r.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.betainc(t,o,a,s)})}static betacdf(t,n,e){const i=Matrix._toMatrix(t),r=Matrix._toDouble(n),o=Matrix._toDouble(e);return i.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.betacdf(t,r,o)})}static betapdf(t,n,e){const i=Matrix._toMatrix(t),r=Matrix._toDouble(n),o=Matrix._toDouble(e);return i.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.betapdf(t,r,o)})}static betainv(t,n,e){const i=Matrix._toMatrix(t),r=Matrix._toDouble(n),o=Matrix._toDouble(e);return i.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.betainv(t,r,o)})}static factorial(t){return Matrix._toMatrix(t).cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.factorial(t)})}static nchoosek(t,n){const e=Matrix._toMatrix(t),i=Matrix._toDouble(n);return e.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.nchoosek(t,i)})}static erf(t){return Matrix._toMatrix(t).cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.erf(t)})}static erfc(t){return Matrix._toMatrix(t).cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.erfc(t)})}static normpdf(t,n=0,e=1){const i=Matrix._toMatrix(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return i.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.normpdf(t,r,o)})}static normcdf(t,n=0,e=1){const i=Matrix._toMatrix(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return i.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.normcdf(t,r,o)})}static norminv(t,n=0,e=1){const i=Matrix._toMatrix(t),r=Complex._toDouble(n),o=Complex._toDouble(e);return i.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.norminv(t,r,o)})}static tpdf(t,n){const e=Matrix._toMatrix(t),i=Matrix._toDouble(n);return e.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.tpdf(t,i)})}static tcdf(t,n){const e=Matrix._toMatrix(t),i=Matrix._toDouble(n);return e.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.tcdf(t,i)})}static tinv(t,n){const e=Matrix._toMatrix(t),i=Matrix._toDouble(n);return e.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.tinv(t,i)})}static tdist(t,n,e){const i=Matrix._toMatrix(t),r=Matrix._toDouble(n),o=Matrix._toDouble(e);return i.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.tdist(t,r,o)})}static tinv2(t,n){const e=Matrix._toMatrix(t),i=Matrix._toDouble(n);return e.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.tinv2(t,i)})}static chi2pdf(t,n){const e=Matrix._toMatrix(t),i=Matrix._toDouble(n);return e.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.chi2pdf(t,i)})}static chi2cdf(t,n){const e=Matrix._toMatrix(t),i=Matrix._toDouble(n);return e.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.chi2cdf(t,i)})}static chi2inv(t,n){const e=Matrix._toMatrix(t),i=Matrix._toDouble(n);return e.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.chi2inv(t,i)})}static fpdf(t,n,e){const i=Matrix._toMatrix(t),r=Matrix._toDouble(n),o=Matrix._toDouble(e);return i.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.fpdf(t,r,o)})}static fcdf(t,n,e){const i=Matrix._toMatrix(t),r=Matrix._toDouble(n),o=Matrix._toDouble(e);return i.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.fcdf(t,r,o)})}static finv(t,n,e){const i=Matrix._toMatrix(t),r=Matrix._toDouble(n),o=Matrix._toDouble(e);return i.cloneMatrixDoEachCalculation(function(t){return StatisticsComplex.finv(t,r,o)})}static max(t,n){const e=Matrix._toMatrix(t),i=n&&n.dimension?n.dimension:"auto",r=function(t){let n=t[0];for(let e=1;e<t.length;e++)n.compareTo(t[e])<0&&(n=t[e]);return[n]};return e.eachVector(r,i)}static min(t,n){const e=Matrix._toMatrix(t),i=n&&n.dimension?n.dimension:"auto",r=function(t){let n=t[0];for(let e=1;e<t.length;e++)n.compareTo(t[e])>0&&(n=t[e]);return[n]};return e.eachVector(r,i)}static sum(t,n){const e=Matrix._toMatrix(t),i=n&&n.dimension?n.dimension:"auto",r=function(t){let n=Complex.ZERO,e=Complex.ZERO;for(let i=0;i<t.length;i++){const r=t[i].add(e),o=n.add(r);e=o.sub(n).sub(r),n=o}return[n]};return e.eachVector(r,i)}static mean(t,n){const e=Matrix._toMatrix(t),i=n&&n.dimension?n.dimension:"auto",r=function(t){let n=Complex.ZERO,e=Complex.ZERO;for(let i=0;i<t.length;i++){const r=t[i].add(e),o=n.add(r);e=o.sub(n).sub(r),n=o}return[n.div(t.length)]};return e.eachVector(r,i)}static prod(t,n){const e=Matrix._toMatrix(t),i=n&&n.dimension?n.dimension:"auto",r=function(t){let n=Complex.ONE;for(let e=0;e<t.length;e++)n=n.mul(t[e]);return[n]};return e.eachVector(r,i)}static geomean(t,n){const e=Matrix._toMatrix(t),i=n&&n.dimension?n.dimension:"auto",r=function(t){let n=Complex.ONE;for(let e=0;e<t.length;e++)n=n.mul(t[e]);return[n.pow(Complex.create(t.length).inv())]};return e.eachVector(r,i)}static median(t,n){const e=Matrix._toMatrix(t),i=n&&n.dimension?n.dimension:"auto",r=function(t,n){return t.compareTo(n)},o=function(t){t.sort(r);let n;if(t.length%2==1)n=t[Math.floor(t.length/2)];else{const e=t[Math.floor(t.length/2)-1],i=t[Math.floor(t.length/2)];n=e.add(i).div(Complex.TWO)}return[n]};return e.eachVector(o,i)}static mode(t,n){const e=Matrix._toMatrix(t),i=n&&n.dimension?n.dimension:"auto",r=function(t,n){return t.compareTo(n)},o=function(t){t.sort(r);const n={};for(let e=0;e<t.length;e++){const i=t[e].real+" "+t[e].imag;n[i]?n[i].value++:n[i]={complex:t[e],value:1}}let e=Complex.ZERO,i=Number.NEGATIVE_INFINITY;for(const t in n){const r=n[t];r.value>i&&(i=r.value,e=r.complex)}return[e]};return e.eachVector(o,i)}static moment(t,n){const e=Matrix._toMatrix(t),i=Statistics.mean(e),r=n&&"number"==typeof n.correction?Matrix._toDouble(n.correction):1,o=n&&n.dimension?n.dimension:"auto",a=Matrix._toComplex(n.nth_order);let s=0;const c=function(t){let n;n=i.isScalar()?i.scalar:i.getComplex(s++);let e=Complex.ZERO;for(let i=0;i<t.length;i++){const r=t[i].sub(n);e=e.add(r.pow(a))}return 1===t.length?[e.div(t.length)]:[e.div(t.length-1+r)]};return e.eachVector(c,o)}static var(t,n){const e=Matrix._toMatrix(t),i=Statistics.mean(e),r=n&&"number"==typeof n.correction?Matrix._toDouble(n.correction):0,o=n&&n.dimension?n.dimension:"auto";let a=0;const s=function(t){if(1===t.length)return[Complex.ZERO];const n=i.getComplex(a++);let e=0;for(let i=0;i<t.length;i++){const r=t[i].sub(n).norm;e+=r*r}return[Complex.create(e/(t.length-1+r))]};return e.eachVector(s,o)}static std(t,n){const e=Matrix._toMatrix(t),i=n&&"number"==typeof n.correction?Matrix._toDouble(n.correction):0,r=n&&n.dimension?n.dimension:"auto",o=Statistics.var(e,{correction:i,dimension:r});return o._each(function(t){return t.sqrt()}),o}static mad(t,n){const e=Matrix._toMatrix(t),i=n&&n.algorithm?n.algorithm:"mean",r=n&&n.dimension?n.dimension:"auto";if("mean"===i||0===i)return Statistics.mean(e.sub(Statistics.mean(e,{dimension:r})).abs(),{dimension:r});if("median"===i||1===i)return Statistics.median(e.sub(Statistics.median(e,{dimension:r})).abs(),{dimension:r});throw"mad unsupported argument "+i}static skewness(t,n){const e=Matrix._toMatrix(t),i=n&&"number"==typeof n.correction?Matrix._toDouble(n.correction):1,r=n&&n.dimension?n.dimension:"auto",o=Statistics.moment(e,{correction:i,dimension:r,nth_order:3}),a=Statistics.std(e,{correction:i,dimension:r});return 1===i?o.ndiv(a.npow(3)):o.ndiv(a.npow(3)).nmul(2)}static cov(t,n){const e=Matrix._toMatrix(t),i=n&&"number"==typeof n.correction?Matrix._toDouble(n.correction):0;if(e.isVector())return Statistics.var(e,n);const r=1===e.row_length?1:i,o=e.matrix_array,a=Statistics.mean(e).matrix_array[0],s=new Array(e.column_length);for(let t=0;t<e.column_length;t++){const n=a[t];s[t]=new Array(e.column_length);for(let i=t;i<e.column_length;i++){const c=a[i];let l=Complex.ZERO;for(let r=0;r<e.row_length;r++)l=l.add(o[r][t].sub(n).dot(o[r][i].sub(c)));s[t][i]=l.div(e.row_length-1+r)}}for(let t=1;t<s[0].length;t++)for(let n=0;n<t;n++)s[t][n]=s[n][t];return new Matrix(s)}static normalize(t,n){const e=Matrix._toMatrix(t),i=e.sub(Statistics.mean(e,n));return i.ndiv(Statistics.std(i,n))}static corrcoef(t,n){const e=Matrix._toMatrix(t);return Statistics.cov(Statistics.normalize(e,n),n)}static sort(t,n){const e=Matrix._toMatrix(t),i=n&&n.dimension?n.dimension:"auto",r=n&&n.order?n.order:"ascend";let o;o="ascend"===r?function(t,n){return t.compareTo(n)}:function(t,n){return n.compareTo(t)};const a=function(t){return t.sort(o),t};return e.eachVector(a,i)}}class FFT{static bit_reverse_32(t){let n=4294967295&t;return n=(1431655765&n)<<1|n>>1&1431655765,n=(858993459&n)<<2|n>>2&858993459,n=(252645135&n)<<4|n>>4&252645135,n=(16711935&n)<<8|n>>8&16711935,n=(65535&n)<<16|n>>16&65535}static create_bit_reverse_table(t){const n=1<<t,e=[];for(let i=0;i<n;i++)e[i]=FFT.bit_reverse_32(i)>>>32-t;return e}constructor(t){this.size=t,this.inv_size=1/this.size,this.bit_size=Math.round(Math.log(this.size)/Math.log(2)),this.is_fast=1<<this.bit_size===this.size,this.bitrv=null,this.fft_re=new Array(this.size),this.fft_im=new Array(this.size);{const t=-2*Math.PI/this.size;let n=0;for(let e=0,i=0;e<this.size;e++){this.fft_re[e]=Math.cos(i),this.fft_im[e]=Math.sin(i);const r=t+n,o=i+r;n=o-i-r,i=o}}this.is_fast&&(this.bitrv=FFT.create_bit_reverse_table(this.bit_size))}delete(){delete this.size,delete this.inv_size,delete this.bit_size,delete this.is_fast,delete this.bitrv,delete this.fft_re,delete this.fft_im}fft(t,n){const e=new Array(this.size),i=new Array(this.size);if(this.is_fast){for(let r=0;r<this.size;r++)e[r]=t[this.bitrv[r]],i[r]=n[this.bitrv[r]];{let t=1,n=this.size/2,r=2;for(let o=1<<this.bit_size-1;o>0;o>>=1){for(let a=0;a<n;a++){let n=a*r;for(let r=0,a=0;r<t;r++,n++,a+=o){const r=e[n+t]*this.fft_re[a]-i[n+t]*this.fft_im[a],o=i[n+t]*this.fft_re[a]+e[n+t]*this.fft_im[a];e[n+t]=e[n]-r,i[n+t]=i[n]-o,e[n]+=r,i[n]+=o}}n/=2,r*=2,t*=2}}}else if(SignalTool.isContainsZero(n))for(let r=0;r<this.size;r++){e[r]=0,i[r]=0;for(let o=0,a=0;o<this.size;o++,a=o*r%this.size)e[r]+=t[o]*this.fft_re[a]-n[o]*this.fft_im[a],i[r]+=t[o]*this.fft_im[a]+n[o]*this.fft_re[a]}else for(let n=0;n<this.size;n++){e[n]=0,i[n]=0;for(let r=0,o=0;r<this.size;r++,o=r*n%this.size)e[n]+=t[r]*this.fft_re[o],i[n]+=t[r]*this.fft_im[o]}return{real:e,imag:i}}ifft(t,n){const e=new Array(this.size),i=new Array(this.size);if(this.is_fast){for(let r=0;r<this.size;r++)e[r]=t[this.bitrv[r]],i[r]=n[this.bitrv[r]];{let t,n,r=1,o=this.size/2,a=2;for(let s=1<<this.bit_size-1;s>0;s>>=1){for(let c=0;c<o;c++){let o=c*a;for(let a=0,c=0;a<r;a++,o++,c+=s)t=e[o+r]*this.fft_re[c]+i[o+r]*this.fft_im[c],n=i[o+r]*this.fft_re[c]-e[o+r]*this.fft_im[c],e[o+r]=e[o]-t,i[o+r]=i[o]-n,e[o]+=t,i[o]+=n}o/=2,a*=2,r*=2}}}else if(SignalTool.isContainsZero(n))for(let r=0;r<this.size;r++){e[r]=0,i[r]=0;for(let o=0,a=0;o<this.size;o++,a=r*o%this.size)e[r]+=t[o]*this.fft_re[a]+n[o]*this.fft_im[a],i[r]+=-t[o]*this.fft_im[a]+n[o]*this.fft_re[a]}else for(let n=0;n<this.size;n++){e[n]=0,i[n]=0;for(let r=0,o=0;r<this.size;r++,o=n*r%this.size)e[n]+=t[r]*this.fft_re[o],i[n]+=-t[r]*this.fft_im[o]}for(let t=0;t<this.size;t++)e[t]*=this.inv_size,i[t]*=this.inv_size;return{real:e,imag:i}}}class Chash{constructor(t,n){this.object=n,this.table_max=t,this.table_size=0,this.table=[]}get(t){for(let n=0;n<this.table_size;n++)if(this.table[n].size===t){const t=this.table.splice(n,1);return this.table.unshift(t),t}const n=new this.object(t);if(this.table_size===this.table_max){const t=this.table.pop();t.delete()}return this.table.unshift(n),n}}const fft_chash=new Chash(4,FFT);class DCT{constructor(t){this.size=t,this.dct_size=2*t,this.dct_re=new Array(this.size),this.dct_im=new Array(this.size);{const t=1/Math.sqrt(this.size),n=t*Math.sqrt(2);for(let e=0;e<this.size;e++){const i=-Math.PI*e/this.dct_size;this.dct_re[e]=Math.cos(i)*(0===e?t:n),this.dct_im[e]=Math.sin(i)*(0===e?t:n)}}}delete(){delete this.size,delete this.dct_size,delete this.dct_re,delete this.dct_im}dct(t){const n=new Array(this.dct_size),e=new Array(this.dct_size);for(let i=0;i<this.dct_size;i++)n[i]=i<this.size?t[i]:0,e[i]=0;const i=fft_chash.get(this.dct_size).fft(n,e);for(let t=0;t<this.size;t++)n[t]=i.real[t]*this.dct_re[t]-i.imag[t]*this.dct_im[t];return n.splice(this.size),n}idct(t){const n=new Array(this.dct_size),e=new Array(this.dct_size),i=2*this.size;for(let r=0;r<this.dct_size;r++)n[r]=r<this.size?i*t[r]*this.dct_re[r]:0,e[r]=r<this.size?i*t[r]*-this.dct_im[r]:0;const r=fft_chash.get(this.dct_size).ifft(n,e);return r.real.splice(this.size),r.real}}const dct_chash=new Chash(4,DCT);class SignalTool{static isContainsZero(t){for(let n=0;n<t.length;n++)if(0!==t[n])return!0;return!1}static fft(t,n){return fft_chash.get(t.length).fft(t,n)}static ifft(t,n){return fft_chash.get(t.length).ifft(t,n)}static dct(t){return dct_chash.get(t.length).dct(t)}static idct(t){return dct_chash.get(t.length).idct(t)}static powerfft(t,n){const e=t.length,i=SignalTool.fft(t,n),r=new Array(e);for(let t=0;t<e;t++)r[t]=i.real[t]*i.real[t]+i.imag[t]*i.imag[t];return r}static conv(t,n,e,i){let r=!1;if(t.length===e.length){r=!0;for(let o=0;o<t.length;o++)if(t[o]!==e[o]||n[o]!==i[o]){r=!1;break}}const o=t.length,a=2*o;if(1<<Math.round(Math.log(o)/Math.log(2))===o){if(r){const e=t.length,i=new Array(a),r=new Array(a);for(let o=0;o<a;o++)i[o]=o<e?t[o]:0,r[o]=o<e?n[o]:0;const o=SignalTool.fft(i,r);for(let t=0;t<a;t++)i[t]=o.real[t]*o.real[t]-o.imag[t]*o.imag[t],r[t]=o.real[t]*o.imag[t]+o.imag[t]*o.real[t];const s=SignalTool.ifft(i,r);return s.real.splice(a-1),s.imag.splice(a-1),s}if(t.length===e.length){const r=t.length,o=new Array(a),s=new Array(a),c=new Array(a),l=new Array(a);for(let u=0;u<a;u++)o[u]=u<r?t[u]:0,s[u]=u<r?n[u]:0,c[u]=u<r?e[u]:0,l[u]=u<r?i[u]:0;const u=SignalTool.fft(o,s),h=SignalTool.fft(c,l),g=new Array(a),f=new Array(a);for(let t=0;t<a;t++)g[t]=u.real[t]*h.real[t]-u.imag[t]*h.imag[t],f[t]=u.real[t]*h.imag[t]+u.imag[t]*h.real[t];const m=SignalTool.ifft(g,f);return m.real.splice(a-1),m.imag.splice(a-1),m}}let s=!SignalTool.isContainsZero(n);s&&(s=!SignalTool.isContainsZero(i));{const r=new Array(t.length+e.length-1),o=new Array(t.length+e.length-1);for(let t=0;t<r.length;t++)r[t]=0,o[t]=0;if(s)for(let n=0;n<e.length;n++)for(let i=0;i<t.length;i++)r[n+i]+=t[i]*e[n];else for(let a=0;a<e.length;a++)for(let s=0;s<t.length;s++)r[a+s]+=t[s]*e[a]-n[s]*i[a],o[a+s]+=t[s]*i[a]+n[s]*e[a];return{real:r,imag:o}}}static xcorr(t,n,e,i){let r=!1;if(t.length===e.length){r=!0;for(let o=0;o<t.length;o++)if(t[o]!==e[o]||n[o]!==i[o]){r=!1;break}}if(t.length===e.length){const o=t.length,a=2*o,s=Math.round(Math.log(o)/Math.log(2)),c=1<<s===o;if(c){let s=null;if(r){const e=new Array(a),i=new Array(a);for(let r=0;r<a;r++)e[r]=r<o?t[r]:0,i[r]=r<o?n[r]:0;const r=SignalTool.powerfft(e,i);s=SignalTool.ifft(r,i),e.pop(),i.pop();for(let t=0,n=o+1;t<e.length;t++,n++)a<=n&&(n=0),e[t]=s.real[n],i[t]=s.imag[n];return{real:e,imag:i}}{const r=new Array(a),c=new Array(a),l=new Array(a),u=new Array(a);for(let s=0;s<a;s++)r[s]=s<o?t[s]:0,c[s]=s<o?n[s]:0,l[s]=s<o?e[o-s-1]:0,u[s]=s<o?-i[o-s-1]:0;const h=SignalTool.fft(r,c),g=SignalTool.fft(l,u),f=new Array(a),m=new Array(a);for(let t=0;t<a;t++)f[t]=h.real[t]*g.real[t]-h.imag[t]*g.imag[t],m[t]=h.real[t]*g.imag[t]+h.imag[t]*g.real[t];return(s=SignalTool.ifft(f,m)).real.splice(a-1),s.imag.splice(a-1),s}}}let o=!SignalTool.isContainsZero(n);if(o&&(o=!SignalTool.isContainsZero(i)),r){const n=t.length,i=2*n;if(o){const r=new Array(n);for(let i=0;i<n;i++){r[i]=0;const o=n-i;for(let n=0;n<o;n++)r[i]+=t[n]*e[n+i]}const o=new Array(i-1),a=new Array(i-1);for(let t=0,e=n-1;t<n;t++,e--)o[t]=r[e],o[n+t-1]=r[t];for(let t=0;t<a.length;t++)a[t]=0;return{real:o,imag:a}}}{const r=new Array(e.length),o=new Array(e.length);for(let t=0;t<e.length;t++)r[t]=e[e.length-t-1],o[t]=-i[e.length-t-1];const a=SignalTool.conv(t,n,r,o);if(t.length===e.length)return a;const s=Math.abs(t.length-e.length),c=new Array(s);for(let t=0;t<s;t++)c[t]=0;return t.length>e.length?{real:c.concat(a.real),imag:c.concat(a.imag)}:{real:a.real.concat(c),imag:a.imag.concat(c)}}}static window(t,n,e){const i=void 0!==e?e:"symmetric",r=t.toLocaleLowerCase(),o=n,a=new Array(o);let s;"symmetric"===i||0===i?s=function(t){return t/(o-1)*(2*Math.PI)}:"periodic"!==i&&0===i||(s=function(t){return t/o*(2*Math.PI)});const c=function(t,n,e,i,r){for(let c=0;c<o;c++)a[c]=t,a[c]-=n*Math.cos(1*s(c)),a[c]+=e*Math.cos(2*s(c)),a[c]-=i*Math.cos(3*s(c)),a[c]+=r*Math.cos(4*s(c))};switch(r){case"rectangle":c(1,0,0,0,0);break;case"hann":c(.5,.5,0,0,0);break;case"hamming":c(.54,.46,0,0,0);break;case"blackman":c(.42,.5,.08,0,0);break;case"blackmanharris":c(.35875,.48829,.14128,.01168,0);break;case"blackmannuttall":c(.3635819,.4891775,.1365995,.0106411,0);break;case"flattop":c(1,1.93,1.29,.388,.032);break;case"sin":for(let t=0;t<o;t++)a[t]=Math.sin(.5*s(t));break;case"vorbis":for(let t=0;t<o;t++){const n=Math.sin(.5*s(t));a[t]=Math.sin(.5*Math.PI*n*n)}}return a}static hann(t,n){return SignalTool.window("hann",t,n)}static hamming(t,n){return SignalTool.window("hamming",t,n)}}class Signal{static fft(t,n){const e=n&&n.dimension?n.dimension:"auto",i=function(t){const n=new Array(t.length),e=new Array(t.length);for(let i=0;i<t.length;i++)n[i]=t[i].real,e[i]=t[i].imag;const i=SignalTool.fft(n,e),r=new Array(t.length);for(let n=0;n<t.length;n++)r[n]=new Complex([i.real[n],i.imag[n]]);return r};return Matrix._toMatrix(t).eachVector(i,e)}static ifft(t,n){const e=n&&n.dimension?n.dimension:"auto",i=function(t){const n=new Array(t.length),e=new Array(t.length);for(let i=0;i<t.length;i++)n[i]=t[i].real,e[i]=t[i].imag;const i=SignalTool.ifft(n,e),r=new Array(t.length);for(let n=0;n<t.length;n++)r[n]=new Complex([i.real[n],i.imag[n]]);return r};return Matrix._toMatrix(t).eachVector(i,e)}static powerfft(t,n){const e=n&&n.dimension?n.dimension:"auto",i=function(t){const n=new Array(t.length),e=new Array(t.length);for(let i=0;i<t.length;i++)n[i]=t[i].real,e[i]=t[i].imag;const i=SignalTool.powerfft(n,e),r=new Array(t.length);for(let n=0;n<t.length;n++)r[n]=new Complex(i[n]);return r};return Matrix._toMatrix(t).eachVector(i,e)}static dct(t,n){const e=n&&n.dimension?n.dimension:"auto",i=Matrix._toMatrix(t);if(i.isComplex())throw"dct don't support complex numbers.";const r=function(t){const n=new Array(t.length);for(let e=0;e<t.length;e++)n[e]=t[e].real;const e=SignalTool.dct(n),i=new Array(t.length);for(let n=0;n<t.length;n++)i[n]=new Complex(e[n]);return i};return i.eachVector(r,e)}static idct(t,n){const e=n&&n.dimension?n.dimension:"auto",i=Matrix._toMatrix(t);if(i.isComplex())throw"idct don't support complex numbers.";const r=function(t){const n=new Array(t.length);for(let e=0;e<t.length;e++)n[e]=t[e].real;const e=SignalTool.idct(n),i=new Array(t.length);for(let n=0;n<t.length;n++)i[n]=new Complex(e[n]);return i};return i.eachVector(r,e)}static fft2(t){return Signal.fft(t,{dimension:"both"})}static ifft2(t){return Signal.ifft(t,{dimension:"both"})}static dct2(t){return Signal.dct(t,{dimension:"both"})}static idct2(t){return Signal.idct(t,{dimension:"both"})}static conv(t,n){const e=Matrix._toMatrix(t),i=Matrix._toMatrix(n);if(e.isMatrix()||i.isMatrix())throw"conv don't support matrix numbers.";const r=new Array(e.length),o=new Array(e.length),a=new Array(i.length),s=new Array(i.length);if(e.isRow())for(let t=0;t<e.column_length;t++)r[t]=e.matrix_array[0][t].real,o[t]=e.matrix_array[0][t].imag;else for(let t=0;t<e.row_length;t++)r[t]=e.matrix_array[t][0].real,o[t]=e.matrix_array[t][0].imag;if(i.isRow())for(let t=0;t<i.column_length;t++)a[t]=i.matrix_array[0][t].real,s[t]=i.matrix_array[0][t].imag;else for(let t=0;t<i.row_length;t++)a[t]=i.matrix_array[t][0].real,s[t]=i.matrix_array[t][0].imag;const c=SignalTool.conv(r,o,a,s),l=new Array(c.real.length);for(let t=0;t<c.real.length;t++)l[t]=new Complex([c.real[t],c.imag[t]]);const u=new Matrix([l]);return i.isRow()?u:u.transpose()}static xcorr(t,n){const e=Matrix._toMatrix(t);if(!n)return e.xcorr(e);const i=Matrix._toMatrix(n);if(e.isMatrix()||i.isMatrix())throw"conv don't support matrix numbers.";const r=new Array(e.length),o=new Array(e.length),a=new Array(i.length),s=new Array(i.length);if(e.isRow())for(let t=0;t<e.column_length;t++)r[t]=e.matrix_array[0][t].real,o[t]=e.matrix_array[0][t].imag;else for(let t=0;t<e.row_length;t++)r[t]=e.matrix_array[t][0].real,o[t]=e.matrix_array[t][0].imag;if(i.isRow())for(let t=0;t<i.column_length;t++)a[t]=i.matrix_array[0][t].real,s[t]=i.matrix_array[0][t].imag;else for(let t=0;t<i.row_length;t++)a[t]=i.matrix_array[t][0].real,s[t]=i.matrix_array[t][0].imag;const c=SignalTool.xcorr(r,o,a,s),l=new Array(c.real.length);for(let t=0;t<c.real.length;t++)l[t]=new Complex([c.real[t],c.imag[t]]);const u=new Matrix([l]);return e.isRow()?u:u.transpose()}static window(t,n,e){const i=Matrix._toInteger(n),r=SignalTool.window(t,i,e);return new Matrix(r).transpose()}static hann(t,n){return Signal.window("hann",t,n)}static hamming(t,n){return Signal.window("hamming",t,n)}}class MatrixTool{static toPositionArrayFromObject(t,n,e){let i;if("string"==typeof t){const r=MatrixTool.toArrayFromString(t);if(":"===r){i=new Array(n);for(let t=0;t<n;t++)i[t]=t+e}else{if(!(r instanceof Array))throw"toArrayFromString["+t+"]["+r+"]";i=r;for(let t=0;t<i.length;t++)i[t]=0|i[t].real}return i}let r=t;if(r instanceof Matrix||r instanceof Complex||"number"==typeof r||r instanceof Number||(r=Matrix._toMatrix(r)),r instanceof Matrix){if(!r.isVector())throw"getMatrix argument "+r;const t=r.length;if(i=new Array(r.length),r.isRow())for(let n=0;n<t;n++)i[n]=0|r.matrix_array[0][n].real;else if(r.isColumn())for(let n=0;n<t;n++)i[n]=0|r.matrix_array[n][0].real;return i}return[Matrix._toInteger(r)]}static match2(t,n){const e=[];let i=t;for(let t=0;t<1e3;t++){const t=i.match(n);if(null===t){i.length&&e.push([!1,i]);break}t.index>0&&e.push([!1,i.substr(0,t.index)]),e.push([!0,t[0]]),i=i.substr(t.index+t[0].length)}return e}static trimBracket(t){return/^\[/.test(t)&&/\]$/.test(t)?t.substring(1,t.length-1):null}static toMatrixArrayFromStringForArrayJSON(t){const n=[];let e=t.match(/\[[^\]]+\]/g);null===e&&(e=[t]);for(let t=0;t<e.length;t++){const i=e[t],r=i.substring(1,i.length-1).split(","),o=[];for(let t=0;t<r.length;t++){const n=r[t];o[t]=new Complex(n)}n[t]=o}return n}static InterpolationCalculation(t,n,e){const i=t.compareTo(e);if(0===i)return t;if(n.isZero())throw"IllegalArgumentException";if(n.isNegative()&&-1===i)throw"IllegalArgumentException";const r=[];let o=t;r[0]=o;for(let t=1;t<65536&&(o=o.add(n),e.compareTo(o)!==i);t++)r[t]=o;return r}static toArrayFromMatch2String(t){const n=t,e=[];for(let t=0;t<n.length;t++){const i=n[t];if(i[0])if(t<n.length-2&&!n[t+1][0]&&/:/.test(n[t+1][1])){let r,o,a;t<n.length-4&&!n[t+3][0]&&/:/.test(n[t+3][1])?(r=new Complex(i[1]),o=new Complex(n[t+2][1]),a=new Complex(n[t+4][1]),t+=4):(r=new Complex(i[1]),o=Complex.ONE,a=new Complex(n[t+2][1]),t+=2);const s=MatrixTool.InterpolationCalculation(r,o,a);for(let t=0;t<s.length;t++)e.push(s[t])}else e.push(new Complex(i[1]))}return e}static toArrayFromString(t){if(":"===t.trim())return":";const n=t.toLowerCase().replace(/infinity|inf/g,"1e100000"),e=new RegExp("("+/[+-]? *(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))?[ij]( *[+] *[- ]?(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan)))?/.source+")|("+/[+-]? *(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))( *[+-] *[- ]?(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))?[ij])?/.source+")","i");return MatrixTool.toArrayFromMatch2String(MatrixTool.match2(n,e))}static toMatrixArrayFromStringForArraySPACE(t){const n=t.split(";"),e=new Array(n.length);for(let t=0;t<n.length;t++)e[t]=MatrixTool.toArrayFromString(n[t]);return e}static toMatrixArrayFromStringInBracket(t){return/[[\]]/.test(t)?MatrixTool.toMatrixArrayFromStringForArrayJSON(t):MatrixTool.toMatrixArrayFromStringForArraySPACE(t)}static toMatrixArrayFromString(t){const n=t.replace(/^\s*|\s*$/g,""),e=MatrixTool.trimBracket(n);return e?MatrixTool.toMatrixArrayFromStringInBracket(e):[[new Complex(t)]]}static isCorrectMatrixArray(t){if(0===t.length)return!1;const n=t[0].length;if(0===n)return!1;for(let e=1;e<t.length;e++)if(t[e].length!==n)return!1;return!0}}class Matrix{constructor(t){let n=null,e=!1;if(1!==arguments.length)throw"Matrix : Many arguments ["+arguments.length+"]";{const i=t;if(i instanceof Matrix){n=new Array(i.row_length);for(let t=0;t<i.row_length;t++){n[t]=new Array(i.column_length);for(let e=0;e<i.column_length;e++)n[t][e]=i.matrix_array[t][e]}}else if(i instanceof Complex)n=[[i]];else if(i instanceof Array){n=[];for(let t=0;t<i.length;t++){const e=i[t];if(e instanceof Array){const i=new Array(e.length);for(let t=0;t<e.length;t++){const n=e[t];if(n instanceof Complex)i[t]=n;else if(n instanceof Matrix){if(!n.isScalar())throw"Matrix in matrix";i[t]=n.scalar}else i[t]=new Complex(n)}n[t]=i}else if(0===t&&(n[0]=new Array(i.length)),e instanceof Complex)n[0][t]=e;else if(e instanceof Matrix){if(!e.isScalar())throw"Matrix in matrix";n[0][t]=e.scalar}else n[0][t]=new Complex(e)}}else"string"==typeof i?(e=!0,n=MatrixTool.toMatrixArrayFromString(i)):i instanceof Object?(e=!0,n=MatrixTool.toMatrixArrayFromString(i.toString())):n=[[new Complex(i)]]}if(e)for(let t=0;t<n.length;t++)":"===n[t]&&n.splice(t--,1);if(!MatrixTool.isCorrectMatrixArray(n))throw console.log(n),"new Matrix IllegalArgumentException";this.matrix_array=n,this.row_length=this.matrix_array.length,this.column_length=this.matrix_array[0].length,this.string_cash=null}static create(t){return 1===arguments.length&&t instanceof Matrix?t:new Matrix(t)}static valueOf(t){return Matrix.valueOf(t)}static _toMatrix(t){return t instanceof Matrix?t:new Matrix(t)}static _toComplex(t){if(t instanceof Complex)return t;const n=Matrix._toMatrix(t);if(n.isScalar())return n.scalar;throw"not scalar. ["+t+"]"}static _toDouble(t){if("number"==typeof t)return t;const n=Matrix._toComplex(t);if(n.isReal())return n.real;throw"not support complex numbers."}static _toInteger(t){return 0|Matrix._toDouble(t)}_clearCash(){this.string_cash&&delete this.string_cash}clone(){return new Matrix(this.matrix_array)}toString(){if(this.string_cash)return this.string_cash;const t=Math.pow(10,9);let n=!1,e=!1,i=0;this._each(function(r){r.isReal()||(n=!0),Number.isFinite(r.real)&&Math.abs(r.real)>=t&&(e=!0),Number.isFinite(r.imag)&&Math.abs(r.imag)>=t&&(e=!0),i=Math.max(i,r.getDecimalPosition())}),i>0&&(i=4);let r=0;const o=[],a=function(t){const n=e?t.toExponential(4):t.toFixed(i);if(/inf/i.test(n))return t===Number.POSITIVE_INFINITY?"Inf":"-Inf";if(/nan/i.test(n))return"NaN";if(!e)return n;const r=n.split("e");let o=r[1];return 2===o.length?o=o.substr(0,1)+"00"+o.substr(1):3===o.length&&(o=o.substr(0,1)+"0"+o.substr(1)),r[0]+"e"+o};this._each(function(t){const e={};let i=t.real;if(e.re_sign=i<0?"-":" ",i=Math.abs(i),e.re_str=a(i),r=Math.max(r,e.re_str.length+1),n){let n=t.imag;e.im_sign=n<0?"-":"+",n=Math.abs(n),e.im_str=a(n),r=Math.max(r,e.im_str.length+1)}o.push(e)});const s=function(t,n){return"                                        ".substr(0,n-t.length)+t},c=[],l=this;return this._each(function(t,e,i){const a=o.shift();let u=s(a.re_sign+a.re_str,r);n&&(u+=" "+a.im_sign+s(a.im_str,r)+"i"),c.push(u),c.push(i<l.column_length-1?" ":"\n")}),this.string_cash=c.join(""),this.string_cash}toOneLineString(){if(this.isScalar())return this.scalar.toString();let t="[ ";for(let n=0;n<this.row_length;n++)for(let e=0;e<this.column_length;e++)t+=this.matrix_array[n][e].toString(),e<this.column_length-1?t+=", ":n<this.row_length-1&&(t+="; ");return t+=" ]"}equals(t,n){const e=this,i=Matrix._toMatrix(t);if(e.row_length!==i.row_length||e.column_length!==i.column_length)return!1;if(1===e.row_length&&1===e.column_length)return e.scalar.equals(i.scalar,n);const r=e.matrix_array,o=i.matrix_array;for(let t=0;t<this.row_length;t++)for(let e=0;e<this.column_length;e++)if(!r[t][e].equals(o[t][e],n))return!1;return!0}getNumberMatrixArray(){const t=new Array(this.row_length);for(let n=0;n<this.row_length;n++){t[n]=new Array(this.column_length);for(let e=0;e<this.column_length;e++)t[n][e]=this.matrix_array[n][e].real}return t}getComplexMatrixArray(){const t=new Array(this.row_length);for(let n=0;n<this.row_length;n++){t[n]=new Array(this.column_length);for(let e=0;e<this.column_length;e++)t[n][e]=this.matrix_array[n][e]}return t}_each(t){let n=!1;for(let e=0;e<this.row_length;e++)for(let i=0;i<this.column_length;i++){const r=t(this.matrix_array[e][i],e,i);void 0!==r&&(this.matrix_array[e][i]=r instanceof Complex?r:r instanceof Matrix?r.scalar:new Complex(r),n=!0)}return n&&this._clearCash(),this}cloneMatrixDoEachCalculation(t){return this.clone()._each(t)}static createMatrixDoEachCalculation(t,n,e){if(0===arguments.length||arguments.length>3)throw"IllegalArgumentException";const i=Matrix._toInteger(n),r=e?Matrix._toInteger(e):i,o=new Array(i);for(let n=0;n<i;n++){o[n]=new Array(r);for(let e=0;e<r;e++){const i=t(n,e);o[n][e]=void 0===i?Complex.ZERO:Matrix._toComplex(i)}}return new Matrix(o)}eachVectorAuto(t){if(this.isRow()){const n=new Array(this.row_length);for(let t=0;t<this.column_length;t++)n[t]=this.matrix_array[0][t];return new Matrix(t(n))}{const n=new Matrix(0);n._resize(1,this.column_length);for(let e=0;e<this.column_length;e++){const i=new Array(this.row_length);for(let t=0;t<this.row_length;t++)i[t]=this.matrix_array[t][e];const r=t(i);n._resize(Math.max(n.row_length,r.length),n.column_length);for(let t=0;t<r.length;t++)n.matrix_array[t][e]=r[t]}return n}}eachVectorBoth(t){const n=new Matrix(0);n._resize(this.row_length,1);for(let e=0;e<this.row_length;e++){const i=new Array(this.column_length);for(let t=0;t<this.column_length;t++)i[t]=this.matrix_array[e][t];const r=t(i);n._resize(n.row_length,Math.max(n.column_length,r.length));for(let t=0;t<r.length;t++)n.matrix_array[e][t]=r[t]}const e=new Matrix(0);e._resize(1,n.column_length);for(let i=0;i<n.column_length;i++){const r=new Array(n.row_length);for(let t=0;t<n.row_length;t++)r[t]=n.matrix_array[t][i];const o=t(r);e._resize(Math.max(e.row_length,o.length),e.column_length);for(let t=0;t<o.length;t++)e.matrix_array[t][i]=o[t]}return e}eachVectorRow(t){const n=new Matrix(0);n._resize(this.row_length,1);for(let e=0;e<this.row_length;e++){const i=new Array(this.column_length);for(let t=0;t<this.column_length;t++)i[t]=this.matrix_array[e][t];const r=t(i);n._resize(n.row_length,Math.max(n.column_length,r.length));for(let t=0;t<r.length;t++)n.matrix_array[e][t]=r[t]}return n}eachVectorColumn(t){const n=new Matrix(0);n._resize(1,this.column_length);for(let e=0;e<this.column_length;e++){const i=new Array(this.row_length);for(let t=0;t<this.row_length;t++)i[t]=this.matrix_array[t][e];const r=t(i);n._resize(Math.max(n.row_length,r.length),n.column_length);for(let t=0;t<r.length;t++)n.matrix_array[t][e]=r[t]}return n}eachVector(t,n){let e=void 0!==n?n:"auto";if("string"==typeof e?e=e.toLocaleLowerCase():"number"!=typeof e&&(e=Matrix._toInteger(e)),"auto"===e||0===e)return this.eachVectorAuto(t);if("row"===e||1===e)return this.eachVectorRow(t);if("column"===e||2===e)return this.eachVectorColumn(t);if("both"===e||3===e)return this.eachVectorBoth(t);throw"eachVector argument "+n}getMatrix(t,n,e=!1){const i=e?1:0,r=MatrixTool.toPositionArrayFromObject(t,this.row_length,i),o=MatrixTool.toPositionArrayFromObject(n,this.column_length,i),a=this.matrix_array,s=new Array(r.length);for(let t=0;t<r.length;t++){const n=new Array(o.length);for(let e=0;e<o.length;e++)n[e]=a[r[t]-i][o[e]-i];s[t]=n}return new Matrix(s)}setMatrix(t,n,e,i=!1){const r=i?1:0,o=MatrixTool.toPositionArrayFromObject(t,this.row_length,r),a=MatrixTool.toPositionArrayFromObject(n,this.column_length,r),s=new Matrix(this).matrix_array,c=Matrix._toMatrix(e),l=c.matrix_array;for(let t=0;t<o.length;t++)for(let n=0;n<a.length;n++)s[o[t]-r][a[n]-r]=l[t%c.row_length][n%c.column_length];return new Matrix(s)}getComplex(t,n){let e=null,i=null;return 1===arguments.length?e=Matrix._toInteger(t):2===arguments.length&&(e=Matrix._toInteger(t),i=Matrix._toInteger(n)),this.isRow()?this.matrix_array[0][e]:this.isColumn()?this.matrix_array[e][0]:this.matrix_array[e][i]}get intValue(){return 0|this.matrix_array[0][0].real}get doubleValue(){return this.matrix_array[0][0].real}get scalar(){return this.matrix_array[0][0]}get length(){return this.row_length>this.column_length?this.row_length:this.column_length}get norm1(){return LinearAlgebra.norm(this,1)}get norm2(){return LinearAlgebra.norm(this,2)}norm(t){return LinearAlgebra.norm(this,t)}cond(t){return LinearAlgebra.cond(this,t)}rcond(){return LinearAlgebra.rcond(this)}rank(t){return LinearAlgebra.rank(this,t)}trace(){return LinearAlgebra.trace(this)}det(){return LinearAlgebra.det(this)}static memset(t,n,e){if(0===arguments.length||arguments.length>3)throw"IllegalArgumentException";const i=Matrix._toMatrix(t);if(i.isScalar()){const t=i.scalar;return Matrix.createMatrixDoEachCalculation(function(){return t},n,e)}{const t=i.matrix_array,r=i.row_length,o=i.column_length;return Matrix.createMatrixDoEachCalculation(function(n,e){return t[n%r][e%o]},n,e)}}static eye(t,n){return Matrix.createMatrixDoEachCalculation(function(t,n){return t===n?Complex.ONE:Complex.ZERO},t,n)}static zeros(t,n){if(0===arguments.length||arguments.length>2)throw"IllegalArgumentException";return Matrix.memset(Complex.ZERO,t,n)}static ones(t,n){if(0===arguments.length||arguments.length>2)throw"IllegalArgumentException";return Matrix.memset(Complex.ONE,t,n)}static rand(t,n){return Matrix.createMatrixDoEachCalculation(function(){return Complex.rand()},t,n)}static randn(t,n){return Matrix.createMatrixDoEachCalculation(function(){return Complex.randn()},t,n)}diag(){if(this.isVector()){const t=this;return Matrix.createMatrixDoEachCalculation(function(n,e){return n===e?t.getComplex(n):Complex.ZERO},this.length)}{const t=Math.min(this.row_length,this.column_length),n=new Array(t);for(let e=0;e<t;e++)n[e]=new Array(1),n[e][0]=this.matrix_array[e][e];return new Matrix(n)}}isScalar(){return 1===this.row_length&&1==this.column_length}isRow(){return 1===this.row_length}isColumn(){return 1===this.column_length}isVector(){return 1===this.row_length||1===this.column_length}isMatrix(){return 1!==this.row_length&&1!==this.column_length}isSquare(){return this.row_length===this.column_length}isReal(t){let n=!0;return this._each(function(e){n&&e.isComplex(t)&&(n=!1)}),n}isComplex(t){return!this.isReal(t)}isZeros(t){let n=!0;const e=t||1e-10;return this._each(function(t){n&&!t.isZero(e)&&(n=!1)}),n}isIdentity(t){let n=!0;const e=t||1e-10;return this._each(function(t,i,r){n&&(i===r?t.isOne(e)||(n=!1):t.isZero(e)||(n=!1))}),n}isDiagonal(t){let n=!0;const e=t||1e-10;return this._each(function(t,i,r){n&&i!==r&&!t.isZero(e)&&(n=!1)}),n}isTridiagonal(t){let n=!0;const e=t||1e-10;return this._each(function(t,i,r){n&&Math.abs(i-r)>1&&!t.isZero(e)&&(n=!1)}),n}isRegular(t){if(!this.isSquare())return!1;const n=t||1e-10;return this.rank(n)===this.row_length}isOrthogonal(t){if(!this.isSquare())return!1;const n=t||1e-10;return this.mul(this.transpose()).isIdentity(n)}isUnitary(t){if(!this.isSquare())return!1;const n=t||1e-10;return this.mul(this.ctranspose()).isIdentity(n)}isSymmetric(t){if(!this.isSquare())return!1;const n=t||1e-10;for(let t=0;t<this.row_length;t++)for(let e=t+1;e<this.column_length;e++)if(!this.matrix_array[t][e].equals(this.matrix_array[e][t],n))return!1;return!0}isHermitian(t){if(!this.isSquare())return!1;const n=t||1e-10;for(let t=0;t<this.row_length;t++)for(let e=t;e<this.column_length;e++)if(t===e){if(!this.matrix_array[t][e].isReal(n))return!1}else if(!this.matrix_array[t][e].equals(this.matrix_array[e][t].conj(),n))return!1;return!0}isTriangleUpper(t){let n=!0;const e=t||1e-10;return this._each(function(t,i,r){n&&i>r&&!t.isZero(e)&&(n=!1)}),n}isTriangleLower(t){let n=!0;const e=t||1e-10;return this._each(function(t,i,r){n&&i<r&&!t.isZero(e)&&(n=!1)}),n}isPermutation(t){if(!this.isSquare())return!1;const n=t||1e-10,e=new Array(this.row_length),i=new Array(this.column_length);for(let t=0;t<this.row_length;t++)for(let r=0;r<this.column_length;r++){const o=this.matrix_array[t][r];if(o.isOne(n)){if(e[t]||i[r])return!1;e[t]=1,i[r]=1}else if(!o.isZero(n))return!1}for(let t=0;t<this.row_length;t++)if(void 0===e[t]||void 0===i[t])return!1;return!0}size(){return new Matrix([[this.row_length,this.column_length]])}compareTo(t,n){const e=this,i=Matrix._toMatrix(t);if(e.isScalar()&&i.isScalar())return e.scalar.compareTo(i.scalar,n);const r=e.matrix_array,o=i.matrix_array,a=Math.max(e.row_length,i.row_length),s=Math.max(e.column_length,i.column_length);return Matrix.createMatrixDoEachCalculation(function(t,n){return r[t%e.row_length][n%e.column_length].compareTo(o[t%i.row_length][n%i.column_length])},a,s)}add(t){const n=this,e=Matrix._toMatrix(t);if(n.row_length!==e.row_length&&n.column_length!==e.column_length)throw"Matrix size does not match";const i=n.matrix_array,r=e.matrix_array,o=Math.max(n.row_length,e.row_length),a=Math.max(n.column_length,e.column_length);return Matrix.createMatrixDoEachCalculation(function(t,o){return i[t%n.row_length][o%n.column_length].add(r[t%e.row_length][o%e.column_length])},o,a)}sub(t){const n=this,e=Matrix._toMatrix(t);if(n.row_length!==e.row_length&&n.column_length!==e.column_length)throw"Matrix size does not match";const i=n.matrix_array,r=e.matrix_array,o=Math.max(n.row_length,e.row_length),a=Math.max(n.column_length,e.column_length);return Matrix.createMatrixDoEachCalculation(function(t,o){return i[t%n.row_length][o%n.column_length].sub(r[t%e.row_length][o%e.column_length])},o,a)}mul(t){const n=this,e=Matrix._toMatrix(t),i=n.matrix_array,r=e.matrix_array;if(n.isScalar()&&e.isScalar())return new Matrix(n.scalar.mul(e.scalar));if(n.isScalar()){const t=new Array(e.row_length);for(let i=0;i<e.row_length;i++){t[i]=new Array(e.column_length);for(let o=0;o<e.column_length;o++)t[i][o]=n.scalar.mul(r[i][o])}return new Matrix(t)}if(e.isScalar()){const t=new Array(n.row_length);for(let r=0;r<n.row_length;r++){t[r]=new Array(n.column_length);for(let o=0;o<n.column_length;o++)t[r][o]=i[r][o].mul(e.scalar)}return new Matrix(t)}if(n.column_length!==e.row_length)throw"Matrix size does not match";{const t=new Array(n.row_length);for(let o=0;o<n.row_length;o++){t[o]=new Array(e.column_length);for(let a=0;a<e.column_length;a++){let e=Complex.ZERO;for(let t=0;t<n.column_length;t++)e=e.add(i[o][t].mul(r[t][a]));t[o][a]=e}}return new Matrix(t)}}div(t){const n=this,e=Matrix._toMatrix(t),i=n.matrix_array;if(n.isScalar()&&e.isScalar())return new Matrix(n.scalar.div(e.scalar));if(e.isScalar()){const t=new Array(n.row_length);for(let r=0;r<n.row_length;r++){t[r]=new Array(n.column_length);for(let o=0;o<n.column_length;o++)t[r][o]=i[r][o].div(e.scalar)}return new Matrix(t)}if(e.row_length===e.column_length){const t=e.det().scalar.norm;return t>1e-10?this.mul(e.inv()):this.mul(e.pinv())}if(n.column_length!==e.column_length)throw"Matrix size does not match";throw"warning"}pow(t){if(!this.isSquare())throw"not square "+this;let n=Matrix._toInteger(t);if(n<0)throw"error negative number "+n;let e,i;for(e=this.clone(),i=Matrix.eye(this.length);0!==n;)0!=(1&n)&&(i=i.mul(e)),e=e.mul(e),n>>>=1;return i}nmul(t){const n=this,e=Matrix._toMatrix(t);if(!n.isScalar()&&!e.isScalar()&&n.row_length!==e.row_length&&n.column_length!==e.column_length)throw"Matrix size does not match";const i=n.matrix_array,r=e.matrix_array,o=Math.max(n.row_length,e.row_length),a=Math.max(n.column_length,e.column_length);return Matrix.createMatrixDoEachCalculation(function(t,o){return i[t%n.row_length][o%n.column_length].mul(r[t%e.row_length][o%e.column_length])},o,a)}ndiv(t){const n=this,e=Matrix._toMatrix(t);if(!n.isScalar()&&!e.isScalar()&&n.row_length!==e.row_length&&n.column_length!==e.column_length)throw"Matrix size does not match";const i=n.matrix_array,r=e.matrix_array,o=Math.max(n.row_length,e.row_length),a=Math.max(n.column_length,e.column_length);return Matrix.createMatrixDoEachCalculation(function(t,o){return i[t%n.row_length][o%n.column_length].div(r[t%e.row_length][o%e.column_length])},o,a)}ninv(){const t=this,n=t.matrix_array;return Matrix.createMatrixDoEachCalculation(function(t,e){return n[t][e].inv()},t.row_length,t.column_length)}npow(t){const n=this,e=Matrix._toMatrix(t);if(!n.isScalar()&&!e.isScalar()&&n.row_length!==e.row_length&&n.column_length!==e.column_length)throw"Matrix size does not match";const i=n.matrix_array,r=e.matrix_array,o=Math.max(n.row_length,e.row_length),a=Math.max(n.column_length,e.column_length);return Matrix.createMatrixDoEachCalculation(function(t,o){return i[t%n.row_length][o%n.column_length].pow(r[t%e.row_length][o%e.column_length])},o,a)}real(){return this.cloneMatrixDoEachCalculation(function(t){return new Complex(t.real)})}imag(){return this.cloneMatrixDoEachCalculation(function(t){return new Complex(t.imag)})}arg(){return this.cloneMatrixDoEachCalculation(function(t){return new Complex(t.arg)})}sign(){return this.cloneMatrixDoEachCalculation(function(t){return new Complex(t.sign())})}testInteger(t){return this.cloneMatrixDoEachCalculation(function(n){return n.isInteger(t)?Complex.ONE:Complex.ZERO})}testComplexInteger(t){return this.cloneMatrixDoEachCalculation(function(n){return n.isComplexInteger(t)?Complex.ONE:Complex.ZERO})}testZero(t){return this.cloneMatrixDoEachCalculation(function(n){return n.isZero(t)?Complex.ONE:Complex.ZERO})}testOne(t){return this.cloneMatrixDoEachCalculation(function(n){return n.isOne(t)?Complex.ONE:Complex.ZERO})}testComplex(t){return this.cloneMatrixDoEachCalculation(function(n){return n.isComplex(t)?Complex.ONE:Complex.ZERO})}testReal(t){return this.cloneMatrixDoEachCalculation(function(n){return n.isReal(t)?Complex.ONE:Complex.ZERO})}testNaN(){return this.cloneMatrixDoEachCalculation(function(t){return t.isNaN()?Complex.ONE:Complex.ZERO})}testPositive(){return this.cloneMatrixDoEachCalculation(function(t){return t.isPositive()?Complex.ONE:Complex.ZERO})}testNegative(){return this.cloneMatrixDoEachCalculation(function(t){return t.isNegative()?Complex.ONE:Complex.ZERO})}testNotNegative(){return this.cloneMatrixDoEachCalculation(function(t){return t.isNotNegative()?Complex.ONE:Complex.ZERO})}testInfinite(){return this.cloneMatrixDoEachCalculation(function(t){return t.isInfinite()?Complex.ONE:Complex.ZERO})}testFinite(){return this.cloneMatrixDoEachCalculation(function(t){return t.isFinite()?Complex.ONE:Complex.ZERO})}abs(){return this.cloneMatrixDoEachCalculation(function(t){return t.abs()})}conj(){return this.cloneMatrixDoEachCalculation(function(t){return t.conj()})}negate(){return this.cloneMatrixDoEachCalculation(function(t){return t.negate()})}sqrt(){return this.cloneMatrixDoEachCalculation(function(t){return t.sqrt()})}log(){return this.cloneMatrixDoEachCalculation(function(t){return t.log()})}exp(){return this.cloneMatrixDoEachCalculation(function(t){return t.exp()})}sin(){return this.cloneMatrixDoEachCalculation(function(t){return t.sin()})}cos(){return this.cloneMatrixDoEachCalculation(function(t){return t.cos()})}tan(){return this.cloneMatrixDoEachCalculation(function(t){return t.tan()})}atan(){return this.cloneMatrixDoEachCalculation(function(t){return t.atan()})}atan2(t){const n=Matrix._toComplex(t);return this.cloneMatrixDoEachCalculation(function(t){return t.atan2(n)})}floor(){return this.cloneMatrixDoEachCalculation(function(t){return t.floor()})}ceil(){return this.cloneMatrixDoEachCalculation(function(t){return t.ceil()})}round(){return this.cloneMatrixDoEachCalculation(function(t){return t.round()})}fix(){return this.cloneMatrixDoEachCalculation(function(t){return t.fix()})}fract(){return this.cloneMatrixDoEachCalculation(function(t){return t.fract()})}sinc(){return this.cloneMatrixDoEachCalculation(function(t){return t.sinc()})}_rot90(t){const n=Matrix._toInteger(t);let e=1;if(1===arguments.length&&(e=(n%4+4)%4),0===e)return this;const i=new Array(this.row_length);for(let t=0;t<this.row_length;t++){i[t]=new Array(this.column_length);for(let n=0;n<this.column_length;n++)i[t][n]=this.matrix_array[t][n]}const r=this.matrix_array;if(1===e){r.splice(this.column_length);for(let t=0;t<this.column_length;t++){t<this.row_length?r[t].splice(this.row_length):r[t]=new Array(this.row_length);for(let n=0;n<this.row_length;n++)r[t][n]=i[this.row_length-n-1][t]}}else if(2===e)for(let t=0;t<this.row_length;t++)for(let n=0;n<this.column_length;n++)r[t][n]=i[this.row_length-t-1][this.column_length-n-1];else if(3===e){r.splice(this.column_length);for(let t=0;t<this.column_length;t++){t<this.row_length?r[t].splice(this.row_length):r[t]=new Array(this.row_length);for(let n=0;n<this.row_length;n++)r[t][n]=i[n][this.column_length-t-1]}}return this.row_length=r.length,this.column_length=r[0].length,this._clearCash(),this}rot90(t){return this.clone()._rot90(t)}_resize(t,n){const e=Matrix._toInteger(t),i=Matrix._toInteger(n);if(e===this.row_length&&i===this.column_length)return this;if(e<=0||i<=0)throw"_resize";const r=Math.max(this.row_length,e),o=Math.max(this.column_length,i),a=this.matrix_array;for(let t=0;t<r;t++){t>=this.row_length&&(a[t]=new Array(o));for(let n=0;n<o;n++)(t>=this.row_length||n>=this.column_length)&&(a[t][n]=Complex.ZERO)}if(this.row_length>e&&a.splice(e),this.column_length>i)for(let t=0;t<a.length;t++)a[t].splice(i);return this.row_length=e,this.column_length=i,this._clearCash(),this}resize(t,n){return this.clone()._resize(t,n)}_deleteRow(t){const n=Matrix._toInteger(t);if(1===this.row_length||this.row_length<=n)throw"_deleteRow";return this.matrix_array.splice(n,1),this.row_length--,this._clearCash(),this}_deleteColumn(t){const n=Matrix._toInteger(t);if(1===this.column_length||this.column_length<=n)throw"_deleteColumn";for(let t=0;t<this.row_length;t++)this.matrix_array[t].splice(n,1);return this.column_length--,this._clearCash(),this}deleteRow(t){return this.clone()._deleteRow(t)}deleteColumn(t){return this.clone()._deleteColumn(t)}_exchangeRow(t,n){const e=Matrix._toInteger(t),i=Matrix._toInteger(n);if(1===this.row_length||this.row_length<=e||this.row_length<=i)throw"_exchangeRow";if(e===i)return this;const r=this.matrix_array[e];return this.matrix_array[e]=this.matrix_array[i],this.matrix_array[i]=r,this._clearCash(),this}_exchangeColumn(t,n){const e=Matrix._toInteger(t),i=Matrix._toInteger(n);if(1===this.column_length||this.column_length<=e||this.column_length<=i)throw"_exchangeColumn";if(e===i)return this;for(let t=0;t<this.row_length;t++){const n=this.matrix_array[t][e];this.matrix_array[t][e]=this.matrix_array[t][i],this.matrix_array[t][i]=n}return this._clearCash(),this}exchangeRow(t,n){return this.clone()._exchangeRow(t,n)}exchangeColumn(t,n){return this.clone()._exchangeColumn(t,n)}_concatLeft(t){const n=Matrix._toMatrix(t);if(this.row_length!=n.row_length)throw"_concatLeft";for(let t=0;t<this.row_length;t++)for(let e=0;e<n.column_length;e++)this.matrix_array[t].push(n.matrix_array[t][e]);return this.column_length+=n.column_length,this._clearCash(),this}_concatBottom(t){const n=Matrix._toMatrix(t);if(this.column_length!=n.column_length)throw"_concatBottom";for(let t=0;t<n.row_length;t++)this.matrix_array.push(n.matrix_array[t]);return this.row_length+=n.row_length,this._clearCash(),this}concatLeft(t){return this.clone()._concatLeft(t)}concatBottom(t){return this.clone()._concatBottom(t)}transpose(){const t=new Array(this.column_length);for(let n=0;n<this.column_length;n++){t[n]=new Array(this.row_length);for(let e=0;e<this.row_length;e++)t[n][e]=this.matrix_array[e][n]}return new Matrix(t)}ctranspose(){return this.transpose().conj()}T(){return this.ctranspose()}inner(t,n=1){return LinearAlgebra.inner(this,t,n)}lup(){return LinearAlgebra.lup(this)}lu(){return LinearAlgebra.lu(this)}linsolve(t){return LinearAlgebra.linsolve(this,t)}qr(){return LinearAlgebra.qr(this)}tridiagonalize(){return LinearAlgebra.tridiagonalize(this)}eig(){return LinearAlgebra.eig(this)}svd(){return LinearAlgebra.svd(this)}inv(){return LinearAlgebra.inv(this)}pinv(){return LinearAlgebra.pinv(this)}gammaln(){return Statistics.gammaln(this)}gamma(){return Statistics.gamma(this)}gammainc(t,n){return Statistics.gammainc(this,t,n)}gampdf(t,n){return Statistics.gampdf(this,t,n)}gamcdf(t,n){return Statistics.gampdf(this,t,n)}gaminv(t,n){return Statistics.gaminv(this,t,n)}beta(t){return Statistics.beta(this,t)}betainc(t,n,e){return Statistics.betainc(this,t,n,e)}betacdf(t,n){return Statistics.betacdf(this,t,n)}betapdf(t,n){return Statistics.betapdf(this,t,n)}betainv(t,n){return Statistics.betainv(this,t,n)}factorial(){return Statistics.factorial(this)}nchoosek(t){return Statistics.nchoosek(this,t)}erf(){return Statistics.erf(this)}erfc(){return Statistics.erfc(this)}normpdf(t=0,n=1){return Statistics.normpdf(this,t,n)}normcdf(t=0,n=1){return Statistics.normcdf(this,t,n)}norminv(t=0,n=1){return Statistics.norminv(this,t,n)}tpdf(t){return Statistics.tpdf(this,t)}tcdf(t){return Statistics.tcdf(this,t)}tinv(t){return Statistics.tinv(this,t)}tdist(t,n){return Statistics.tdist(this,t,n)}tinv2(t){return Statistics.tinv2(this,t)}chi2pdf(t){return Statistics.chi2pdf(this,t)}chi2cdf(t){return Statistics.chi2cdf(this,t)}chi2inv(t){return Statistics.chi2inv(this,t)}fpdf(t,n){return Statistics.fpdf(this,t,n)}fcdf(t,n){return Statistics.fcdf(this,t,n)}finv(t,n){return Statistics.finv(this,t,n)}max(t){return Statistics.max(this,t)}min(t){return Statistics.min(this,t)}sum(t){return Statistics.sum(this,t)}mean(t){return Statistics.mean(this,t)}prod(t){return Statistics.prod(this,t)}geomean(t){return Statistics.geomean(this,t)}median(t){return Statistics.median(this,t)}mode(t){return Statistics.mode(this,t)}moment(t){return Statistics.moment(this,t)}var(t){return Statistics.var(this,t)}std(t){return Statistics.std(this,t)}mad(t){return Statistics.mad(this,t)}skewness(t){return Statistics.skewness(this,t)}cov(t){return Statistics.cov(this,t)}normalize(t){return Statistics.normalize(this,t)}corrcoef(t){return Statistics.corrcoef(this,t)}sort(t){return Statistics.sort(this,t)}fft(t){return Signal.fft(this,t)}ifft(t){return Signal.ifft(this,t)}powerfft(t){return Signal.powerfft(this,t)}dct(t){return Signal.dct(this,t)}idct(t){return Signal.idct(this,t)}fft2(t){return Signal.fft2(this,t)}ifft2(t){return Signal.ifft2(this,t)}dct2(){return Signal.dct2(this)}idct2(){return Signal.idct2(this)}conv(t){return Signal.conv(this,t)}xcorr(t){return Signal.xcorr(this,t)}static window(t,n,e){return Signal.window(t,n,e)}static hann(t,n){return Signal.hann(t,n)}static hamming(t,n){return Signal.hamming(t,n)}}const random_class=new Random;class ComplexTool{static ToComplexFromString(t){let n=t.replace(/\s/g,"").toLowerCase();if(n=n.replace(/infinity|inf/g,"1e100000"),!/[ij]/.test(n))return{real:parseFloat(n),imag:0};let e,i=0,r=0;return(e=n.match(/[+-]?(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))($|[+-])/))&&(i=parseFloat(e[0])),(e=n.match(/[+-]?(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))?[ij]/))&&(e=e[0].substring(0,e[0].length-1),r=/^[-+]$/.test(e)||0===e.length?"-"===e?-1:1:parseFloat(e)),{real:i,imag:r}}}class Complex{constructor(t){if(1!==arguments.length)throw"Complex Many arguments : "+arguments.length;{const n=t;if(n instanceof Complex)this._re=n._re,this._im=n._im;else if("number"==typeof n)this._re=n,this._im=0;else if(n instanceof Array){if(2!==n.length)throw"Complex Unsupported argument "+arguments;this._re=n[0],this._im=n[1]}else if("string"==typeof n){const t=ComplexTool.ToComplexFromString(n);this._re=t.real,this._im=t.imag}else if(n instanceof Object&&"number"==typeof n._re&&"number"==typeof n._im)this._re=n._re,this._im=n._im;else{if(!(n instanceof Object))throw"Complex Unsupported argument "+arguments;{const t=ComplexTool.ToComplexFromString(n.toString());this._re=t.real,this._im=t.imag}}}}static create(t){return t instanceof Complex?t:new Complex(t)}static valueOf(t){return Complex.valueOf(t)}static _toComplex(t){return t instanceof Complex?t:t instanceof Matrix?Matrix._toComplex(t):new Complex(t)}static _toDouble(t){if("number"==typeof t)return t;const n=Complex._toComplex(t);if(n.isReal())return n.real;throw"not support complex numbers.["+t+"]"}static _toInteger(t){return 0|Complex._toDouble(t)}get intValue(){return 0|this.real}get doubleValue(){return this.real}clone(){return this}toString(){const t=function(t){let n=t.toPrecision(6);if(-1!==n.indexOf("."))n=(n=n.replace(/\.?0+$/,"")).replace(/\.?0+e/,"e");else{if(/inf/i.test(n))return t===Number.POSITIVE_INFINITY?"Inf":"-Inf";if(/nan/i.test(n))return"NaN"}return n};return this.isReal()?t(this._re):0===this._re?t(this._im)+"i":this._im>=0||Number.isNaN(this._im)?t(this._re)+" + "+t(this._im)+"i":t(this._re)+" - "+t(-this._im)+"i"}static rand(){return new Complex(random_class.nextDouble())}static randn(){return new Complex(random_class.nextGaussian())}equals(t,n){const e=Complex._toComplex(t),i=n?Complex._toDouble(n):Number.EPSILON;return this._re===e._re&&this._im===e._im||Math.abs(this._re-e._re)<i&&Math.abs(this._im-e._im)<i}get real(){return this._re}get imag(){return this._im}get norm(){return 0===this._im?Math.abs(this._re):0===this._re?Math.abs(this._im):Math.sqrt(this._re*this._re+this._im*this._im)}get arg(){return 0===this._im?this._re>=0?0:Math.PI:0===this._re?Math.PI*(this._im>=0?.5:-.5):Math.atan2(this._im,this._re)}getDecimalPosition(){const t=Number.EPSILON,n=function(n){if(!Number.isFinite(n))return 0;let e=n,i=0;for(let n=0;n<20&&!(Math.abs(e-(0|e))<=t);n++)e*=10,i++;return i};return Math.max(n(this.real),n(this.imag))}add(t){const n=new Complex(t);return n._re=this._re+n._re,n._im=this._im+n._im,n}sub(t){const n=new Complex(t);return n._re=this._re-n._re,n._im=this._im-n._im,n}mul(t){const n=new Complex(t);if(0===this._im&&0===n._im)return n._re=this._re*n._re,n;if(0===this._re&&0===n._re)return n._re=-this._im*n._im,n._im=0,n;{const t=this._re*n._re-this._im*n._im,e=this._im*n._re+this._re*n._im;return n._re=t,n._im=e,n}}dot(t){const n=new Complex(t);if(0===this._im&&0===n._im)return n._re=this._re*n._re,n;if(0===this._re&&0===n._re)return n._re=this._im*n._im,n._im=0,n;{const t=this._re*n._re+this._im*n._im,e=-this._im*n._re+this._re*n._im;return n._re=t,n._im=e,n}}div(t){const n=new Complex(t);if(0===this._im&&0===n._im)return n._re=this._re/n._re,n;if(0===this._re&&0===n._re)return n._re=this._im/n._im,n._im=0,n;{const t=this._re*n._re+this._im*n._im,e=this._im*n._re-this._re*n._im,i=1/(n._re*n._re+n._im*n._im);return n._re=t*i,n._im=e*i,n}}mod(t){const n=new Complex(t);if(0!==this._im||0!==n._im)throw"calculation method is undefined.";let e=this._re-n._re*(0|this._re/n._re);return e<0&&(e+=n._re),n._re=e,n}inv(){return 0===this._im?new Complex(1/this._re):0===this._re?new Complex([0,-1/this._im]):Complex.ONE.div(this)}sign(){return 0===this._im?new Complex(0===this._re?0:this._re>0?1:-1):this.div(this.norm)}max(t,n){const e=Complex._toComplex(t);return this.compareTo(e,n)>=0?this:e}min(t,n){const e=Complex._toComplex(t);return this.compareTo(e,n)<=0?this:e}compareTo(t,n){const e=this,i=Complex._toComplex(t),r=n?Complex._toDouble(n):Number.EPSILON,o=e.real+e.imag,a=i.real+i.imag;return Math.abs(o-a)<r?0:o>a?1:-1}isInteger(t){const n=t?Complex._toDouble(t):Number.EPSILON;return this.isReal()&&Math.abs(this._re-(0|this._re))<n}isComplexInteger(t){const n=t?Complex._toDouble(t):Number.EPSILON;return Math.abs(this._re-(0|this._re))<n&&Math.abs(this._im-(0|this._im))<n}isZero(t){const n=t?Complex._toDouble(t):Number.EPSILON;return Math.abs(this._re)<n&&Math.abs(this._im)<n}isOne(t){const n=t?Complex._toDouble(t):Number.EPSILON;return Math.abs(this._re-1)<n&&Math.abs(this._im)<n}isComplex(t){const n=t?Complex._toDouble(t):Number.EPSILON;return Math.abs(this._im)>=n}isReal(t){const n=t?Complex._toDouble(t):Number.EPSILON;return Math.abs(this._im)<n}isNaN(){return isNaN(this._re)||isNaN(this._im)}isPositive(){return 0<this._re}isNegative(){return 0>this._re}isNotNegative(){return 0<=this._re}isInfinite(){return this._re===Number.POSITIVE_INFINITY||this._im===Number.POSITIVE_INFINITY||this._re===Number.NEGATIVE_INFINITY||this._im===Number.NEGATIVE_INFINITY}isFinite(){return!this.isNaN()&&!this.isInfinite()}abs(){return new Complex(this.norm)}conj(){return 0===this._im?this:new Complex([this._re,-this._im])}negate(){return new Complex([-this._re,-this._im])}pow(t){const n=this,e=new Complex(t);if(e.isReal()){if(n.isReal()&&(n.isNotNegative()||e.isInteger()))return e._re=Math.pow(n._re,e._re),e;{const t=Math.pow(n.norm,e._re),i=n.arg*e._re;return e._re=t*Math.cos(i),e._im=t*Math.sin(i),e}}return e.mul(n.log()).exp()}square(){return 0===this._im?new Complex(this._re*this._re):this.mul(this)}sqrt(){if(this.isReal())return new Complex(this.isNotNegative()?Math.sqrt(this._re):[0,Math.sqrt(-this._re)]);const t=Math.sqrt(this.norm),n=.5*this.arg;return new Complex([t*Math.cos(n),t*Math.sin(n)])}log(){return new Complex(this.isReal()&&this.isNotNegative()?Math.log(this._re):[Math.log(this.norm),this.arg])}exp(){if(this.isReal())return new Complex(Math.exp(this._re));const t=Math.exp(this._re);return new Complex([t*Math.cos(this._im),t*Math.sin(this._im)])}sin(){if(this.isReal())return new Complex(Math.sin(this._re));const t=this.mul(Complex.I).exp(),n=this.mul(Complex.I.negate()).exp();return t.sub(n).div([0,2])}cos(){if(this.isReal())return new Complex(Math.cos(this._re));const t=this.mul(Complex.I).exp(),n=this.mul(Complex.I.negate()).exp();return t.add(n).div(2)}tan(){return this.isReal()?new Complex(Math.tan(this._re)):this.sin().div(this.cos())}atan(){return this.isReal()?new Complex(Math.atan(this._re)):Complex.I.div(Complex.TWO).mul(Complex.I.add(this).div(Complex.I.sub(this)).log())}atan2(t){if(0===arguments.length)return new Complex(this.arg);const n=this,e=Complex._toComplex(t);if(n.isReal()&&e.isReal())return new Complex(Math.atan2(n._re,e._re));throw"calculation method is undefined."}sinc(){if(this.isReal()){if(0===this._re)return Complex.ONE;const t=Math.PI*this._re;return new Complex(Math.sin(t)/t)}const t=this.mul(Complex.PI);return new Complex(t.sin().div(t))}floor(){return new Complex([Math.floor(this._re),Math.floor(this._im)])}ceil(){return new Complex([Math.ceil(this._re),Math.ceil(this._im)])}round(){return new Complex([Math.round(this._re),Math.round(this._im)])}fix(){return new Complex([0|this._re,0|this._im])}fract(){return new Complex([this._re-(0|this._re),this._im-(0|this._im)])}static get ONE(){return DEFINE$3.ONE}static get TWO(){return DEFINE$3.TWO}static get TEN(){return DEFINE$3.TEN}static get ZERO(){return DEFINE$3.ZERO}static get MINUS_ONE(){return DEFINE$3.MINUS_ONE}static get I(){return DEFINE$3.I}static get PI(){return DEFINE$3.PI}static get E(){return DEFINE$3.E}static get LN2(){return DEFINE$3.LN2}static get LN10(){return DEFINE$3.LN10}static get LOG2E(){return DEFINE$3.LOG2E}static get LOG10E(){return DEFINE$3.LOG10E}static get SQRT2(){return DEFINE$3.SQRT2}static get SQRT1_2(){return DEFINE$3.SQRT1_2}static get HALF(){return DEFINE$3.HALF}static get POSITIVE_INFINITY(){return DEFINE$3.POSITIVE_INFINITY}static get NEGATIVE_INFINITY(){return DEFINE$3.NEGATIVE_INFINITY}static get NaN(){return DEFINE$3.NaN}}const DEFINE$3={ZERO:new Complex(0),ONE:new Complex(1),TWO:new Complex(2),TEN:new Complex(10),MINUS_ONE:new Complex(-1),I:new Complex([0,1]),PI:new Complex(Math.PI),E:new Complex(Math.E),LN2:new Complex(Math.LN2),LN10:new Complex(Math.LN10),LOG2E:new Complex(Math.LOG2E),LOG10E:new Complex(Math.LOG10E),SQRT2:new Complex(Math.SQRT2),SQRT1_2:new Complex(Math.SQRT1_2),HALF:new Complex(.5),POSITIVE_INFINITY:new Complex(Number.POSITIVE_INFINITY),NEGATIVE_INFINITY:new Complex(Number.NEGATIVE_INFINITY),NaN:new Complex(Number.NaN)};class konpeito{static get Log(){return Log}static get BigInteger(){return BigInteger}static get BigDecimal(){return BigDecimal}static get RoundingMode(){return RoundingMode}static get MathContext(){return MathContext}static get Complex(){return Complex}static get Matrix(){return Matrix}static get Random(){return Random}}export default konpeito;
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+// @ts-check
+
+/**
+  * 
+  * @ignore
+  */
+class Format {
+
+	/**
+	 * C言語のprintfを再現
+	 * ロケール、日付時刻等はサポートしていません。
+	 * sprintfの変換指定子のpとnはサポートしていません。
+	 * @param {string} text 
+	 * @param {string} parmeter パラメータは可変引数
+	 * @returns {string}
+	 * @ignore
+	 */
+	static format(text, parmeter) {
+		let parm_number = 1;
+		const parm = arguments;
+		const toUnsign  = function(num) {
+			let x = num;
+			if(x >= 0) {
+				return(x);
+			}
+			else {
+				x = -x;
+				//16ビットごとに分けてビット反転
+				let high = ((~x) >> 16) & 0xFFFF;
+				high *= 0x00010000;
+				const low  =  (~x) & 0xFFFF;
+				return(high + low + 1);
+			}
+		};
+		const func = function(text) {
+			let str = text;
+			// 1文字目の%を除去
+			str = str.substring(1, str.length);
+			let buff;
+			// [6] 変換指定子(最後の1文字を取得)
+			buff = str.match(/.$/);
+			const type = buff[0];
+			if(type === "%") {
+				return("%");
+			}
+			// ここからパラメータの解析開始
+			// [1] 引数順
+			buff = str.match(/^[0-9]+\$/);
+			if(buff !== null) {
+				buff = buff[0];
+				// 残りの文字列を取得
+				str = str.substring(buff.length, str.length);
+				// 数字だけ切り出す
+				buff = buff.substring(0, buff.length - 1);
+				// 整数へ
+				parm_number = parseInt(buff , 10);
+			}
+			// 引数を取得
+			let parameter = parm[parm_number];
+			parm_number = parm_number + 1;
+			// [2] フラグ
+			buff = str.match(/^[-+ #0]+/);
+			let isFlagSharp = false;
+			let isFlagTextAlignLeft = false;
+			let isFlagFillZero = false;
+			let sSignCharacter = "";
+			if(buff !== null) {
+				buff = buff[0];
+				// 残りの文字列を取得
+				str = str.substring(buff.length, str.length);
+				if(buff.indexOf("#") !== -1) {
+					isFlagSharp = true;
+				}
+				if(buff.indexOf("-") !== -1) {
+					isFlagTextAlignLeft = true;
+				}
+				if(buff.indexOf(" ") !== -1) {
+					sSignCharacter = " ";
+				}
+				if(buff.indexOf("+") !== -1) {
+					sSignCharacter = "+";
+				}
+				if(buff.indexOf("0") !== -1) {
+					isFlagFillZero = true;
+				}
+			}
+			// [3] 最小フィールド幅
+			let width = 0;
+			buff = str.match(/^([0-9]+|\*)/);
+			if(buff !== null) {
+				buff = buff[0];
+				// 残りの文字列を取得
+				str = str.substring(buff.length, str.length);
+				if(buff.indexOf("*") !== -1) { // 引数で最小フィールド幅を指定
+					width = parameter;
+					parameter = parm[parm_number];
+					parm_number = parm_number + 1;
+				}
+				else { // 数字で指定
+					width = parseInt(buff , 10);
+				}
+			}
+			// [4] 精度の指定
+			let isPrecision = false;
+			let precision = 0;
+			buff = str.match(/^(\.((-?[0-9]+)|\*)|\.)/); //.-3, .* , .
+			if(buff !== null) {
+				buff = buff[0];
+				// 残りの文字列を取得
+				str = str.substring(buff.length, str.length);
+				isPrecision = true;
+				if(buff.indexOf("*") !== -1) { // 引数で精度を指定
+					precision = parameter;
+					parameter = parm[parm_number];
+					parm_number = parm_number + 1;
+				}
+				else if(buff.length === 1) { // 小数点だけの指定
+					precision = 0;
+				}
+				else { // 数字で指定
+					buff = buff.substring(1, buff.length);
+					precision = parseInt(buff , 10);
+				}
+			}
+			// 長さ修飾子(非サポート)
+			buff = str.match(/^hh|h|ll|l|L|z|j|t/);
+			if(buff !== null) {
+				str = str.substring(buff.length, str.length);
+			}
+			// 文字列を作成する
+			let output = "";
+			let isInteger = false;
+			switch(type.toLowerCase()) {
+				// 数字関連
+				case "d":
+				case "i":
+				case "u":
+				case "b":
+				case "o":
+				case "x":
+					isInteger = true;
+					// falls through
+				case "e":
+				case "f":
+				case "g":
+				{
+					let sharpdata = "";
+					let textlength = 0; // 現在の文字を構成するために必要な長さ
+					let spacesize;  // 追加する横幅
+					// 整数
+					if(isInteger) {
+						// 数字に変換
+						if(isNaN(parameter)) {
+							parameter = parseInt(parameter, 10);
+						}
+						// 正負判定
+						if((type === "d") || (type === "i")) {
+							if(parameter < 0) {
+								sSignCharacter = "-";
+								parameter  = -parameter;
+							}
+							parameter  = Math.floor(parameter);
+						}
+						else {
+							if(parameter >= 0) {
+								parameter  = Math.floor(parameter);
+							}
+							else {
+								parameter  = Math.ceil(parameter);
+							}
+						}
+					}
+					// 実数
+					else {
+						// 数字に変換
+						if(isNaN(parameter)) {
+							parameter = parseFloat(parameter);
+						}
+						// 正負判定
+						if(parameter < 0) {
+							sSignCharacter = "-";
+							parameter  = -parameter;
+						}
+						if(!isPrecision) {
+							precision = 6;
+						}
+					}
+					// 文字列を作成していく
+					switch(type.toLowerCase()) {
+						case "d":
+						case "i":
+							output += parameter.toString(10);
+							break;
+						case "u":
+							output += toUnsign(parameter).toString(10);
+							break;
+						case "b":
+							output += toUnsign(parameter).toString(2);
+							if(isFlagSharp) {
+								sharpdata = "0b";
+							}
+							break;
+						case "o":
+							output  += toUnsign(parameter).toString(8);
+							if(isFlagSharp) {
+								sharpdata = "0";
+							}
+							break;
+						case "x":
+						case "X":
+							output  += toUnsign(parameter).toString(16);
+							if(isFlagSharp) {
+								sharpdata = "0x";
+							}
+							break;
+						case "e":
+							output += parameter.toExponential(precision);
+							break;
+						case "f":
+							output += parameter.toFixed(precision);
+							break;
+						case "g":
+							if(precision === 0) { // 0は1とする
+								precision = 1;
+							}
+							output += parameter.toPrecision(precision);
+							// 小数点以下の語尾の0の削除
+							if((!isFlagSharp) && (output.indexOf(".") !== -1)) {
+								output = output.replace(/\.?0+$/, "");  // 1.00 , 1.10
+								output = output.replace(/\.?0+e/, "e"); // 1.0e , 1.10e
+							}
+							break;
+						default:
+							// 上でチェックしているため、ありえない
+							break;
+					}
+					// 整数での後処理
+					if(isInteger) {
+						if(isPrecision) { // 精度の付け足し
+							spacesize  = precision - output.length;
+							for(let i = 0; i < spacesize; i++) {
+								output = "0" + output;
+							}
+						}
+					}
+					// 実数での後処理
+					else {
+						if(isFlagSharp) { 
+							// sharp指定の時は小数点を必ず残す
+							if(output.indexOf(".") === -1) {
+								if(output.indexOf("e") !== -1) {
+									output = output.replace("e", ".e");
+								}
+								else {
+									output += ".";
+								}
+							}
+						}
+					}
+					// 指数表記は、3桁表示(double型のため)
+					if(output.indexOf("e") !== -1) {
+						const buff = function(str) {
+							const l   = str.length;
+							if(str.length === 3) { // e+1 -> e+001
+								return(str.substring(0, l - 1) + "00" + str.substring(l - 1, l));
+							}
+							else { // e+10 -> e+010
+								return(str.substring(0, l - 2) + "0" + str.substring(l - 2, l));
+							}
+						};
+						output = output.replace(/e[+-][0-9]{1,2}$/, buff);
+					}
+					textlength = output.length + sharpdata.length + sSignCharacter.length;
+					spacesize  = width - textlength;
+					// 左よせ
+					if(isFlagTextAlignLeft) {
+						for(let i = 0; i < spacesize; i++) {
+							output = output + " ";
+						}
+					}
+					// 0を埋める場合
+					if(isFlagFillZero) {
+						for(let i = 0; i < spacesize; i++) {
+							output = "0" + output;
+						}
+					}
+					// マイナスや、「0x」などを接続
+					output = sharpdata + output;
+					output = sSignCharacter + output;
+					// 0 で埋めない場合
+					if((!isFlagFillZero) && (!isFlagTextAlignLeft)) {
+						for(let i = 0; i < spacesize; i++) {
+							output = " " + output;
+						}
+					}
+					// 大文字化
+					if(type.toUpperCase() === type) {
+						output = output.toUpperCase();
+					}
+					break;
+				}
+				// 文字列の場合
+				case "c":
+					if(!isNaN(parameter)) {
+						parameter = String.fromCharCode(parameter);
+					}
+					// falls through
+				case "s":
+				{
+					if(!isNaN(parameter)) {
+						parameter = parameter.toString(10);
+					}
+					output = parameter;
+					if(isPrecision) { // 最大表示文字数
+						if(output.length > precision) {
+							output = output.substring(0, precision);
+						}
+					}
+					const s_textlength = output.length; // 現在の文字を構成するために必要な長さ
+					const s_spacesize  = width - s_textlength;  // 追加する横幅
+					// 左よせ / 右よせ
+					if(isFlagTextAlignLeft) {
+						for(let i = 0; i < s_spacesize; i++) {
+							output = output + " ";
+						}
+					}
+					else {
+						// 拡張
+						const s = isFlagFillZero ? "0" : " ";
+						for(let i = 0; i < s_spacesize; i++) {
+							output = s + output;
+						}
+					}
+					break;
+				}
+				// パーセント
+				case "%":
+					output = "%";
+					break;
+				// 未サポート
+				case "p":
+				case "n":
+					output = "(変換できません)";
+					break;
+				default:
+					// 正規表現でチェックしているため、ありえない
+					break;
+			}
+			return (output);	
+		};
+		return (parm[0].replace(/%[^diubBoxXeEfFgGaAcspn%]*[diubBoxXeEfFgGaAcspn%]/g, func));
+	}
+
+}
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * ログのバッファ
+ * @ignore
+ */
+let printbuffer = "";
+
+/**
+ * ログを記録するクラス
+ * @ignore
+ */
+class Log {
+
+	/**
+	 * 文字列へ変換する
+	 * @param text_obj {*}
+	 * @returns {string}
+	 */
+	static _toStringFromObj(text_obj) {
+		let text;
+		if((typeof text_obj === "string")||(text_obj instanceof String)) {
+			if(text_obj.length === 0) {
+				// Edge だと console.log("") でエラー表示になるため
+				text = " ";
+			}
+			else {
+				text = text_obj;
+			}
+		}
+		else if(typeof text_obj === "undefined") {
+			text = typeof text_obj;
+		}
+		else if(text_obj === null) {
+			text = "null";
+		}
+		else if(typeof text_obj.toString === "function") {
+			text = text_obj.toString();
+		}
+		else if(text_obj instanceof Object) {
+			text = "Object";
+		}
+		else {
+			text = "null";
+		}
+		return text;
+	}
+	
+	/**
+	 * データを文字列化して記録
+	 * @param {*} text_obj 
+	 */
+	static println(text_obj) {
+		const text = printbuffer + Log._toStringFromObj(text_obj);
+		printbuffer = "";
+		console.log(text);
+	}
+	
+	/**
+	 * データを文字列化して記録（折り返し禁止）
+	 * @param {*} text_obj 
+	 */
+	static print(text_obj) {
+		printbuffer += Log._toStringFromObj(text_obj);
+	}
+	
+	/**
+	 * ログを記録する
+	 * C言語のprintfのようなフォーマットが指定可能
+	 * @param {string} text 
+	 * @param {string} parmeter パラメータは可変引数
+	 */
+	static printf(text, parmeter) {
+		const x = [];
+		for(let i = 0 ; i < arguments.length ; i++) {
+			x.push(arguments[i]);
+		}
+		Log.print(Format.format.apply(this, x));
+	}
+
+}
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+// @ts-check
+
+/**
+ * 乱数クラス内で使用するツール集
+ * @ignore
+ */
+class RandomTool {
+
+	/**
+	 * 32ビットの負ではない整数を作成する
+	 * @param {number} x 
+	 * @returns {number}
+	 */
+	static unsigned32(x) {
+		return ((x < 0) ? ((x & 0x7FFFFFFF) + 0x80000000) : x);
+	}
+
+	/**
+	 * 2つの32ビット整数を掛け算して、32ビットの整数を出力する
+	 * @param {number} x1 
+	 * @param {number} x2 
+	 * @returns {number}
+	 */
+	static multiplication32(x1, x2) {
+		let b = (x1 & 0xFFFF) * (x2 & 0xFFFF);
+		let y = RandomTool.unsigned32(b);
+		b = (x1 & 0xFFFF) * (x2 >>> 16);
+		y = RandomTool.unsigned32(y + ((b & 0xFFFF) << 16));
+		b = (x1 >>> 16) * (x2 & 0xFFFF);
+		y = RandomTool.unsigned32(y + ((b & 0xFFFF) << 16));
+		return (y & 0xFFFFFFFF);
+	}
+
+
+}
+
+/**
+ * 乱数クラス
+ */
+class Random {
+	
+	/**
+	 * 乱数を初期化する
+	 * @param {number} [seed] - 乱数のシード値、指定しない場合は時刻から作成する
+	 */
+	constructor(seed) {
+		// 「M系列乱数」で乱数を作成します。
+		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
+		// 比較的長い 2^521 - 1通りを出力します。
+		// 乱数はCでの動作と同じ値が出ることを確認。(seed = 1として1000番目の値が等しいことを確認)
+
+		/**
+		 * 乱数配列
+		 * @private
+		 * @type {Array<number>}
+		 */
+		this.x = [];
+		for(let i = 0;i < 521;i++) {
+			this.x[i] = 0;
+		}
+		if(arguments.length >= 1) {
+			this.setSeed(seed);
+		}
+		else {
+			// 線形合同法で適当に乱数を作成する
+			const seed = ((new Date()).getTime() + Random.seedUniquifier) & 0xFFFFFFFF;
+			Random.seedUniquifier = (Random.seedUniquifier + 1) & 0xFFFFFFFF;
+			this.setSeed(seed);
+		}
+	}
+
+	/**
+	 * 内部データをシャッフル
+	 */
+	_rnd521() {
+		const x = this.x;
+		for(let i = 0; i < 32; i++) {
+			x[i] ^= x[i + 489];
+		}
+		for(let i = 32; i < 521; i++) {
+			x[i] ^= x[i - 32];
+		}
+	}
+
+	/**
+	 * 乱数を初期化する
+	 * @param {number} seed
+	 */
+	setSeed(seed) {
+		// 伏見「乱数」東京大学出版会,1989 の方法により初期値を設定
+		let u = 0;
+		const x = this.x;
+		// seedを使用して線形合同法でx[0-16]まで初期値を設定
+		let random_seed = seed;
+		for(let i = 0; i <= 16; i++) {
+			for(let j = 0; j < 32; j++) {
+				random_seed = RandomTool.multiplication32(random_seed, 0x5D588B65) + 1;
+				u = (u >>> 1) + ((random_seed < 0) ? 0x80000000 : 0);
+			}
+			x[i] = u;
+		}
+		// 残りのビットはx[i] = x[i-32] ^ x[i-521]で生成
+		for(let i = 16; i < 521; i++) {
+			u = (i === 16) ? i : (i - 17);
+			x[i] = ((x[u] << 23) & 0xFFFFFFFF) ^ (x[i - 16] >>> 9) ^ x[i - 1];
+		}
+		// ビットをシャッフル
+		for(let i = 0; i < 4; i++) {
+			this._rnd521();
+		}
+		
+		/**
+		 * 乱数配列の何番目を使用しているか
+		 * @private
+		 * @type {number}
+		 */
+		this.xi = 0;
+		
+		/**
+		 * ガウシアン分布に基づく乱数を保持しているか
+		 * @private
+		 * @type {boolean}
+		 */
+		this.haveNextNextGaussian = false;
+		
+		/**
+		 * 保持したガウシアン分布に基づく乱数
+		 * @private
+		 * @type {number}
+		 */
+		this.nextNextGaussian = 0;
+	}
+
+	/**
+	 * 32ビットの乱数
+	 * @returns {number} - 32ビットの乱数
+	 */
+	genrand_int32() {
+		// 全て使用したら、再び混ぜる
+		if(this.xi === 521) {
+			this._rnd521();
+			this.xi = 0;
+		}
+		const y = RandomTool.unsigned32(this.x[this.xi]);
+		this.xi = this.xi + 1;
+		return y;
+	}
+
+	/**
+	 * 指定したビット数の乱数
+	 * @param {number} bits - 必要なビット数（64まで可能）
+	 * @returns {number}
+	 */
+	next(bits) {
+		if(bits === 0) {
+			return 0;
+		}
+		else if(bits === 32) {
+			return this.genrand_int32();
+		}
+		else if(bits < 32) {
+			// 線形合同法ではないため
+
+			// 上位のビットを使用しなくてもいいがJavaっぽく。
+			return (this.genrand_int32() >>> (32 - bits));
+		}
+		// double型のため、52ビットまでは、整数として出力可能
+		else if(bits === 63) {
+			// 正の値を出力するように調節
+			return (this.next(32) * 0x80000000 + this.next(32));
+		}
+		else if(bits === 64) {
+			return (this.next(32) * 0x100000000 + this.next(32));
+		}
+		else if(bits < 64) {
+			return (this.genrand_int32() * (1 << (bits - 32)) + (this.genrand_int32()  >>> (64 - bits)));
+		}
+	}
+
+	/**
+	 * 指定したサイズの8ビットの乱数
+	 * @param {number} size - 必要な長さ
+	 * @returns {Array<number>}
+	 */
+	nextBytes(size) {
+		const y = new Array(size);
+		// 配列yに乱数を入れる
+		// 8ビットのために、32ビット乱数を1回回すのはもったいない
+		for(let i = 0;i < y.length; i++) {
+			y[i] = this.next(8);
+		}
+		return y;
+	}
+
+	/**
+	 * 16ビットの乱数
+	 * @returns {number}
+	 */
+	nextShort() {
+		return (this.next(16));
+	}
+
+	/**
+	 * 32ビットの乱数
+	 * @param {number} [x] - 指定した値未満の数値を作る
+	 * @returns {number}
+	 */
+	nextInt(x) {
+		if((x !== undefined) && (typeof x === "number")) {
+			let r, y;
+			do {
+				r = RandomTool.unsigned32(this.genrand_int32());
+				y = r % x;
+			} while((r - y + x) > 0x100000000 );
+			return y;
+		}
+		return (this.next(32) & 0xFFFFFFFF);
+	}
+
+	/**
+	 * 64ビットの乱数
+	 * @returns {number}
+	 */
+	nextLong() {
+		return this.next(64);
+	}
+
+	/**
+	 * 正負の乱数
+	 * @returns {boolean}
+	 */
+	nextBoolean() {
+		// 1ビットのために、32ビット乱数を1回回すのはもったいない
+		return (this.next(1) !== 0);
+	}
+
+	/**
+	 * 0 <= x < 1 のFloat(23ビット)乱数
+	 * @returns {number}
+	 */
+	nextFloat() {
+		return (this.next(24) / 0x1000000);
+	}
+
+	/**
+	 * 0 <= x < 1 のDouble(52ビット)乱数
+	 * @returns {number}
+	 */
+	nextDouble() {
+		const a1 = this.next(26) * 0x8000000 + this.next(27);
+		const a2 = 0x8000000 * 0x4000000;
+		return (a1 / a2);
+	}
+
+	/**
+	 * 平均値0、標準偏差1のガウシアン分布に基づく乱数
+	 * @returns {number}
+	 */
+	nextGaussian() {
+		if(this.haveNextNextGaussian) {
+			this.haveNextNextGaussian = false;
+			return this.nextNextGaussian;
+		}
+		// Box-Muller法
+		const a = Math.sqrt( -2 * Math.log( this.nextDouble() ) );
+		const b = 2 * Math.PI * this.nextDouble();
+		const y = a * Math.sin(b);
+		this.nextNextGaussian = a * Math.cos(b);
+		this.haveNextNextGaussian = true;
+		return y;
+	}
+}
+
+/**
+ * シードを設定しない場合の乱数作成用整数
+ * @type {number}
+ * @ignore
+ */
+Random.seedUniquifier = 0x87654321;
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+// @ts-check
+
+/**
+ * BigDecimal用の丸めモードの基底クラス
+ * @interface
+ */
+class RoundingModeEntity {
+	
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
+	static toString() {
+		return "NONE";
+	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
+	static getAddNumber(x) {
+		return 0;
+	}
+
+}
+
+/**
+ * 絶対値の切り上げ（1桁目が0より大きければ桁上げする）
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_UP extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
+	static toString() {
+		return "UP";
+	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		if(y === 0) {
+			return 0;
+		}
+		else if(y > 0) {
+			return 10 - y;
+		}
+		else {
+			return (-(10 + y));
+		}
+	}
+
+}
+
+/**
+ * 絶対値の切り下げ（1桁目が0より大きければ桁下げする）
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_DOWN extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
+	static toString() {
+		return "DOWN";
+	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
+	static getAddNumber(x) {
+		return -(x % 10);
+	}
+
+}
+
+/**
+ * 正の無限大に近づく
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_CEILING extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
+	static toString() {
+		return "CEILING";
+	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		if(y === 0) {
+			return 0;
+		}
+		else if(y > 0) {
+			return 10 - y;
+		}
+		else {
+			return -y;
+		}
+	}
+
+}
+
+/**
+ * 負の無限大に近づく
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_FLOOR extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
+	static toString() {
+		return "FLOOR";
+	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		if(y === 0) {
+			return 0;
+		}
+		else if(y > 0) {
+			return -y;
+		}
+		else {
+			return(-(10 + y));
+		}
+	}
+
+}
+
+/**
+ * 四捨五入
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_HALF_UP extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
+	static toString() {
+		return "HALF_UP";
+	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		const sign = y >= 0 ? 1 : -1;
+		if(Math.abs(y) < 5) {
+			return (y * -1);
+		}
+		else {
+			return (sign * (10 - Math.abs(y)));
+		}
+	}
+
+}
+
+/**
+ * 五捨六入
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_HALF_DOWN extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
+	static toString() {
+		return "HALF_DOWN";
+	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		const sign = y >= 0 ? 1 : -1;
+		if(Math.abs(y) < 6) {
+			return (y * -1);
+		}
+		else {
+			return (sign * (10 - Math.abs(y)));
+		}
+	}
+
+}
+
+/**
+ * 等間隔なら偶数側へ丸める
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_HALF_EVEN extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
+	static toString() {
+		return "HALF_EVEN";
+	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
+	static getAddNumber(x) {
+		let y = x % 100;
+		let sign, even;
+		if(y < 0) {
+			sign = -1;
+			even = Math.ceil(y / 10) & 1;
+		}
+		else {
+			sign = 1;
+			even = Math.floor(y / 10) & 1;
+		}
+		let center;
+		if(even === 1) {
+			center = 5;
+		}
+		else {
+			center = 6;
+		}
+		y = y % 10;
+		if(Math.abs(y) < center) {
+			return (y * -1);
+		}
+		else {
+			return (sign * (10 - Math.abs(y)));
+		}
+	}
+
+}
+
+/**
+ * 丸めない（丸める必要が出る場合はエラー）
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_UNNECESSARY extends RoundingModeEntity {
+
+	/**
+	 * 丸めモードの名前を英語の大文字で取得する
+	 * @returns {string} 丸めモード名
+	 */
+	static toString() {
+		return "UNNECESSARY";
+	}
+
+	/**
+	 * 丸めに必要な加算値
+	 * @param {number} x - 1ケタ目の値
+	 * @returns {number} いくつ足すと丸められるか
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		if(y === 0) {
+			return 0;
+		}
+		else {
+			throw "ArithmeticException";
+		}
+	}
+
+}
+
+/**
+ * BigDecimal用の丸めモードクラス
+ */
+class RoundingMode {
+
+	/**
+	 * 指定した文字列で表される丸めクラスを取得する
+	 * @param {string|RoundingModeEntity|Object} name - モードの英数名
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static valueOf(name) {
+		let check_string;
+		if(typeof name === "string") {
+			check_string = name;
+		}
+		else if(name instanceof Object) {
+			check_string = name.toString();
+		}
+		else {
+			throw "Unsupported argument " + name;
+		}
+		const modetype = [
+			RoundingMode_UP,
+			RoundingMode_DOWN,
+			RoundingMode_FLOOR,
+			RoundingMode_CEILING,
+			RoundingMode_HALF_UP,
+			RoundingMode_HALF_DOWN,
+			RoundingMode_HALF_EVEN,
+			RoundingMode_UNNECESSARY
+		];
+		const upper_name = check_string.toUpperCase();
+		for(let i = 0; i < modetype.length; i++) {
+			if(modetype[i].toString() === upper_name) {
+				return modetype[i];
+			}
+		}
+		throw "IllegalArgumentException : " + check_string;
+	}
+
+	// ----------------------
+	// 定数
+	// ----------------------
+	
+	/**
+	 * 絶対値の切り上げ（1桁目が0より大きければ桁上げする）
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get UP() {
+		return RoundingMode_UP;
+	}
+
+	/**
+	 * 絶対値の切り下げ（1桁目が0より大きければ桁下げする）
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get DOWN() {
+		return RoundingMode_DOWN;
+	}
+
+	/**
+	 * 正の無限大に近づく
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get CEILING() {
+		return RoundingMode_CEILING;
+	}
+
+	/**
+	 * 負の無限大に近づく
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get FLOOR() {
+		return RoundingMode_FLOOR;
+	}
+
+	/**
+	 * 四捨五入
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get HALF_UP() {
+		return RoundingMode_HALF_UP;
+	}
+
+	/**
+	 * 五捨六入
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get HALF_DOWN() {
+		return RoundingMode_HALF_DOWN;
+	}
+
+	/**
+	 * 等間隔なら偶数側へ丸める
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get HALF_EVEN() {
+		return RoundingMode_HALF_EVEN;
+	}
+
+	/**
+	 * 丸めない（丸める必要が出る場合はエラー）
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get UNNECESSARY() {
+		return RoundingMode_UNNECESSARY;
+	}
+
+}
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * BigDecimal用の環境設定
+ */
+class MathContext {
+
+	/**
+	 * 任意精度の環境設定データ
+	 * @param {string|number} precision_or_name - 精度を数値で指定するか、設定自体を文字列で指定する
+	 * @param {RoundingModeEntity} [roundingMode=RoundingMode.HALF_UP] - 丸めモード
+	 */
+	constructor(precision_or_name, roundingMode) {
+
+		/**
+		 * 精度
+		 * @type {number}
+		 * @private
+		 */
+		this.precision = 0;
+		
+		/**
+		 * 丸めモード
+		 * @type {RoundingModeEntity}
+		 * @private
+		 */
+		this.roundingMode = roundingMode === undefined ? RoundingMode.HALF_UP : roundingMode;
+
+		if(typeof precision_or_name === "number") {
+			this.precision = precision_or_name;
+		}
+		if(typeof precision_or_name === "string") {
+			let buff;
+			buff = precision_or_name.match(/precision=\d+/);
+			if(buff !== null) {
+				buff = buff[0].substring("precision=".length, buff[0].length);
+				this.precision = parseInt(buff, 10);
+			}
+			buff = precision_or_name.match(/roundingMode=\w+/);
+			if(buff !== null) {
+				buff = buff[0].substring("roundingMode=".length, buff[0].length);
+				this.roundingMode = RoundingMode.valueOf(buff);
+			}	
+		}
+		if(this.precision < 0) {
+			throw "IllegalArgumentException";
+		}
+	}
+
+	/**
+	 * 精度
+	 * @returns {number}
+	 */
+	getPrecision() {
+		return this.precision;
+	}
+
+	/**
+	 * 丸め方
+	 * @returns {RoundingModeEntity}
+	 */
+	getRoundingMode() {
+		return this.roundingMode;
+	}
+
+	/**
+	 * 環境が等しいか
+	 * @param {MathContext} x - 比較対象
+	 * @returns {boolean}
+	 */
+	equals(x) {
+		if(x instanceof MathContext) {
+			if(x.toString() === this.toString()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 文字列化
+	 * @returns {string}
+	 */
+	toString() {
+		return ("precision=" + this.precision + " roundingMode=" + this.roundingMode.toString());
+	}
+
+	// ----------------------
+	// 定数
+	// ----------------------
+	
+	/**
+	 * 制限を設けない（ただし、割り算で循環小数の場合にエラーが出ます。）
+	 * @returns {MathContext}
+	 */
+	static get UNLIMITED() {
+		return DEFINE.UNLIMITED;
+	}
+
+	/**
+	 * 32ビットの実数型 ( float ) と同等
+	 * @returns {MathContext}
+	 */
+	static get DECIMAL32() {
+		return DEFINE.DECIMAL32;
+	}
+
+
+	/**
+	 * 64ビットの実数型 ( double ) と同等
+	 * @returns {MathContext}
+	 */
+	static get DECIMAL64() {
+		return DEFINE.DECIMAL64;
+	}
+
+	/**
+	 * 128ビットの実数型 ( long double ) と同等
+	 * @returns {MathContext}
+	 */
+	static get DECIMAL128() {
+		return DEFINE.DECIMAL128;
+	}
+
+}
+
+/**
+ * 内部で使用する定数値
+ * @ignore
+ */
+const DEFINE = {
+
+	/**
+	 * 制限なし
+	 * @type {MathContext}
+	 */
+	UNLIMITED	: new MathContext(0,	RoundingMode.HALF_UP),
+
+	/**
+	 * 32ビットの実数型
+	 * @type {MathContext}
+	 */
+	DECIMAL32	: new MathContext(7,	RoundingMode.HALF_EVEN),
+
+	/**
+	 * 64ビットの実数型
+	 * @type {MathContext}
+	 */
+	DECIMAL64	: new MathContext(16,	RoundingMode.HALF_EVEN),
+
+	/**
+	 * 128ビットの実数型
+	 * @type {MathContext}
+	 */
+	DECIMAL128	: new MathContext(34,	RoundingMode.HALF_EVEN)
+};
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * 乱数用クラスを指定しなかった場合に使用するデフォルト乱数クラス
+ * @type {Random}
+ * @ignore
+ */
+let DEFAULT_RANDOM = new Random();
+
+/**
+ * BigInteger 内で使用する関数群
+ * @ignore
+ */
+class IntegerTool {
+
+	/**
+	 * 数値が入った文字列から16進数ごとの配列へ変換する
+	 * @param {string} text - 数値が入ったテキストデータ（負の値などを含めない）
+	 * @param {number} radix - テキストデータの進数
+	 * @returns {Array<number>}  _16進数ごとに代入された配列 
+	 */
+	static string_to_binary_number(text, radix) {
+		// 下の変換をすることで、2進数での変換時に内部のforの繰り返す回数が減る
+		// v0.03 出来る限りまとめてn進数変換する
+		const max_num = 0x3FFFFFFF;
+		const keta = Math.floor( Math.log(max_num) / Math.log(radix) );
+		let x = [];
+		const y = [];
+		const len = Math.ceil(text.length / keta);
+		let offset = text.length;
+		for(let i = 0; i < len; i++ ) {
+			offset -= keta;
+			if(offset >= 0) {
+				x[i] = parseInt(text.substring(offset, offset + keta), radix);
+			}
+			else {
+				x[i] = parseInt(text.substring(0, offset + keta), radix);
+			}
+		}
+		const calcradix = Math.round(Math.pow(radix, keta));
+		// v0.03ここまで
+		// 2で割っていくアルゴリズムで2進数に変換する
+		while(x.length !==  0) {
+			// 2で割っていく
+			// 隣の桁でたcarryはradix進数をかけて桁上げしてる
+			let carry = 0;
+			for(let i = x.length - 1; i >= 0; i--) {
+				const a = x[i] + carry * calcradix;
+				x[i]  = a >>> 1;
+				carry = a & 1;
+			}
+			// 1余るかどうかをテストする
+			y[y.length] = carry;
+			// xが0になっている部分は削除していく
+			if(x[x.length - 1] === 0) {
+				x.pop();
+			}
+		}
+		// メモリ節約のため1つの変数（16ビット）に収めるだけ収めていく
+		x = [];
+		for(let i = 0; i < y.length; i++) {
+			x[i >>> 4] |= y[i] << (i & 0xF);
+		}
+		return x;
+	}
+
+	/**
+	 * 数値から16進数ごとの配列へ変換する
+	 * @param {number} x - 変換したい数値 
+	 * @returns {Array<number>} _16進数ごとに代入された配列 
+	 */
+	static number_to_binary_number(x) {
+		if(x > 0xFFFFFFFF) {
+			return IntegerTool.string_to_binary_number(x.toFixed(), 10);
+		}
+		let num = x;
+		const y = [];
+		while(num !==  0) {
+			y[y.length] = num & 1;
+			num >>>= 1;
+		}
+		const z = [];
+		for(let i = 0; i < y.length; i++) {
+			z[i >>> 4] |= y[i] << (i & 0xF);
+		}
+		return z;
+	}
+
+	/**
+	 * 16進数の配列データから数列が入った文字列を作成
+	 * @param {Array<number>} binary - 16進数ごとに代入された配列 
+	 * @param {number} radix - 変換後の進数
+	 * @returns {Array<number>} 指定した進数で桁ごとに代入された数値配列 
+	 */
+	static binary_number_to_string(binary, radix) {
+		const add = function(x1, x2, y) {
+			const size = x1.length;
+			let carry = 0;
+			for(let i = 0; i < size; i++) {
+				y[i] = x1[i] + ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
+				if(y[i] >= radix) {
+					carry = 1;
+					y[i] -= radix;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry === 1) {
+				y[size] = 1;
+			}
+		};
+		const y = [0];
+		const t = [1];
+		for(let i = 0;i < binary.length;i++) {
+			for(let j = 0; j < 16; j++) {
+				if((binary[i] >>> j) & 1) {
+					add(t, y, y);
+				}
+				add(t, t, t);
+			}
+		}
+		return y;
+	}
+
+	/**
+	 * 数値が入った文字列から多倍長数値を表すためのデータを作成する
+	 * @param {string} text - 数値が入ったテキストデータ
+	 * @param {number} [radix=10] - テキストデータの進数
+	 * @returns {Object} 多倍長数値を表すためのデータ 
+	 */
+	static ToBigIntegerFromString(text, radix) {
+		let x = text.replace(/\s/g, "").toLowerCase();
+		const sign_text = x.match(/^[-+]+/);
+
+		let element     = [];
+		let _sign        = 1;
+
+		if(sign_text !== null) {
+			const hit_text = sign_text[0];
+			x = x.substring(hit_text.length, x.length);
+			if(hit_text.indexOf("-") !== -1) {
+				_sign = -1;
+			}
+		}
+		if(radix) {
+			element = IntegerTool.string_to_binary_number(x, radix);
+		}
+		else if(/^0x/.test(x)) {
+			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 16);
+		}
+		else if(/^0b/.test(x)) {
+			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 2);
+		}
+		else if(/^0/.test(x)) {
+			element = IntegerTool.string_to_binary_number(x.substring(1, x.length), 8);
+		}
+		else {
+			element = IntegerTool.string_to_binary_number(x, 10);
+		}
+		// "0"の場合がある為
+		if((element.length === 1)&&(element[0] === 0)) {
+			element = [];
+			_sign = 0;
+		}
+
+		return {
+			element : element,
+			_sign : _sign
+		};
+	}
+}
+
+// 内部では1変数内の中の16ビットごとに管理
+// 2変数で16ビット*16ビットで32ビットを表す
+// this.element	...	16ビットごとに管理
+// this._sign	...	負なら-1、正なら1、ゼロなら0
+//
+// 本クラスはイミュータブルです。
+// 内部の「_」から始まるメソッドは内部計算用で非公開です。またミュータブルです。
+
+/**
+ * 多倍長整数演算クラス (immutable)
+ */
+class BigInteger {
+
+	/**
+	 * 多倍長整数を作成
+	 * 文字列で指定する場合は指数表記には非対応。
+	 * 指定した進数で指定する場合は["ff", 16] という配列で指定する。
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [number] - 整数値
+	 */
+	constructor(number) {
+		
+		if(arguments.length === 0) {
+
+			/**
+			 * 1要素、16ビット整数の配列
+			 * @private
+			 * @type {Array<number>}
+			 */
+			this.element     = [];
+
+			/**
+			 * 正負（プラスなら+1、マイナスなら-1、0なら0）
+			 * ※計算によってはここの値の再設定をしていない箇所があるので、ここを見る時は注意
+			 * @private
+			 * @type {number}
+			 */
+			this._sign        = 0;
+		}
+		else if(arguments.length === 1) {
+			this._sign = 1;
+			if(number instanceof BigInteger) {
+				this.element = number.element.slice(0);
+				this._sign = number._sign;
+			}
+			else if(typeof number === "number") {
+				let x = number;
+				if(x < 0) {
+					this._sign = -1;
+					x = -x;
+				}
+				this.element = IntegerTool.number_to_binary_number(x);
+			}
+			else if(typeof number === "string") {
+				const x = IntegerTool.ToBigIntegerFromString(number);
+				this.element = x.element;
+				this._sign = x._sign;
+			}
+			else if(number instanceof Array) {
+				if((number.length >= 1) && (typeof number[0] === "string")) {
+					const x = IntegerTool.ToBigIntegerFromString(number[0], number[1]);
+					this.element = x.element;
+					this._sign = x._sign;
+				}
+				else {
+					throw "BigInteger Unsupported argument " + arguments;
+				}
+			}
+			else if(number instanceof Object) {
+				const x = IntegerTool.ToBigIntegerFromString(number.toString());
+				this.element = x.element;
+				this._sign = x._sign;
+			}
+			else {
+				throw "BigInteger Unsupported argument " + number;
+			}
+		}
+		else {
+			throw "BigInteger Unsupported argument " + number;
+		}
+	}
+
+	/**
+	 * BigIntegerを作成する
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger}
+	 */
+	static create(number) {
+		if(number instanceof BigInteger) {
+			return number;
+		}
+		else {
+			return new BigInteger(number);
+		}
+	}
+
+	/**
+	 * BigInteger を作成
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger}
+	 */
+	static valueOf(number) {
+		return BigInteger.create(number);
+	}
+
+	/**
+	 * BigInteger を作成
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger}
+	 * @private
+	 */
+	static _toBigInteger(number) {
+		if(number instanceof BigInteger) {
+			return number;
+		}
+		else {
+			return new BigInteger(number);
+		}
+	}
+
+	/**
+	 * 実数を作成
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toFloat(number) {
+		if(typeof number === "number") {
+			return number;
+		}
+		else if(number instanceof BigInteger) {
+			return number.doubleValue;
+		}
+		else {
+			return (new BigInteger(number)).doubleValue;
+		}
+	}
+
+	/**
+	 * 整数を作成
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		if(typeof number === "number") {
+			return number | 0;
+		}
+		else if(number instanceof BigInteger) {
+			return number.intValue;
+		}
+		else {
+			return (new BigInteger(number)).intValue;
+		}
+	}
+
+	/**
+	 * 指定したビット数以内の乱数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bitsize - 作成する乱数のビット数
+	 * @param {Random} [random] - 作成に使用するRandom
+	 * @returns {BigInteger}
+	 */
+	static createRandomBigInteger(bitsize, random) {
+		const rand = (random && (random instanceof Random)) ? random : DEFAULT_RANDOM;
+		const x = new BigInteger();
+		x._sign = 1;
+		const bits = BigInteger._toInteger(bitsize);
+		const size = ((bits - 1) >> 4) + 1;
+		if(bits === 0) {
+			return BigInteger.ZERO;
+		}
+		let r;
+		for(let i = 0, j = 0; i < size; i++) {
+			if(j === 0) {
+				r = rand.nextInt(); // 32ビットずつ作成する
+				x.element[i] = r & 0xFFFF;
+				j = 1;
+			}
+			else {
+				x.element[i] = (r >>> 16) & 0xFFFF;
+				j = 0;
+			}
+		}
+		// 1～15ビット余る場合は、16ビットずつ作成しているので削る
+		if((bits % 16) !== 0) {
+			x.element[x.element.length - 1] &= (1 << (bits % 16)) - 1;
+		}
+		// 最後のビットに 0 をたくさん作成していると、
+		// 0のみのデータになる可能性があるためメモリを修正
+		x._memory_reduction();
+		return x;
+	}
+
+	/**
+	 * 指定したビット数以内の素数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bits - 作成する素数の乱数のビット数
+	 * @param {Random} [random] - 作成に使用するRandom
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - ミラーラビン素数判定法に使用する繰り返し回数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - 乱数生成回数
+	 * @returns {BigInteger}
+	 */
+	static probablePrime(bits, random, certainty, create_count ) {
+		const certainty_ = certainty ? BigInteger._toInteger(certainty) : 100;
+		const create_count_ = create_count ? BigInteger._toInteger(create_count) : 500;
+		for(let i = 0; i < create_count_; i++) {
+			const x = BigInteger.createRandomBigInteger(bits, random);
+			if(x.isProbablePrime(certainty_)) {
+				return x;
+			}
+		}
+		throw "probablePrime " + create_count;
+	}
+
+	/**
+	 * 等式
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {boolean} A === B
+	 */
+	equals(number) {
+		const x = BigInteger._toBigInteger(number);
+		if(this.signum() !== x.signum()) {
+			return false;
+		}
+		if(this.element.length !== x.element.length) {
+			return false;
+		}
+		for(let i = 0; i < x.element.length; i++) {
+			if(this.element[i] !==  x.element[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 文字列化
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [radix=10] - 文字列変換後の進数
+	 * @returns {string}
+	 */
+	toString(radix) {
+		const radix_ = radix ? BigInteger._toInteger(radix) : 10;
+
+		// int型で扱える数値で toString が可能なので、
+		// せっかくだからより大きな進数で計算していけば、あとでtoStringする回数が減るテクニック
+		// 2進数であれば、2^n乗で計算しても問題がない 4進数や8進数で計算して、2進数に戻せば巡回少数なし
+		// v0.03 出来る限りまとめてn進数変換する
+		const max_num = 0x3FFFFFFF;
+		//                        max_num > radix^x
+		// floor(log max_num / log radix) = x
+		const keta = Math.floor( Math.log(max_num) / Math.log(radix_) );
+		const calcradix = Math.round(Math.pow(radix_, keta));
+		// zeros = "00000000...."
+		const zeros_array = [];
+		for(let i = 0; i < keta; i++) {
+			zeros_array[i] = "0";
+		}
+		const zeros_string = zeros_array.join("");
+		// v0.03ここまで
+		const x = IntegerTool.binary_number_to_string(this.element, calcradix);
+		const y = [];
+		let z = "";
+		if(this.signum() < 0) {
+			y[y.length] = "-";
+		}
+		for(let i = x.length - 1; i >= 0; i--) {
+			z = x[i].toString(radix_);
+			if(i < (x.length - 1)) {
+				y[y.length] = zeros_string.substring(0, keta - z.length);
+			}
+			y[y.length] = z;
+		}
+		return y.join("");
+	}
+
+	/**
+	 * 16進数ごとの配列で構成される内部値の指定した位置の値
+	 * @param {BigInteger|number|string|Array<string|number>|Object} point - 内部配列の位置
+	 * @returns {number}
+	 */
+	getShort(point) {
+		const n = BigInteger._toInteger(point);
+		if((n < 0) || (this.element.length <= n)) {
+			return 0;
+		}
+		return this.element[n];
+	}
+
+	/**
+	 * 32ビット整数値
+	 * 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある
+	 * @returns {number}
+	 */
+	get intValue() {
+		let x = this.getShort(0) + (this.getShort(1) << 16);
+		x &= 0xFFFFFFFF;
+		if((x > 0)&&(this._sign < 0)) {
+			x = -x;
+		}
+		return x;
+	}
+
+	/**
+	 * 64ビット整数値
+	 * 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある
+	 * @returns {number}
+	 */
+	get longValue() {
+		let x = 0;
+		for(let i = 3; i >= 0; i--) {
+			x *= 65536;
+			x += this.getShort(i);
+		}
+		if(this._sign < 0) {
+			x = -x;
+		}
+		return x;
+	}
+
+	/**
+	 * 64ビット実数値
+	 * 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		return parseFloat(this.toString());
+	}
+
+	/**
+	 * ディープコピー
+	 * @returns {BigInteger}
+	 */
+	clone() {
+		return new BigInteger(this);
+	}
+
+	/**
+	 * 実部の負数を判定
+	 * @returns {boolean} real(x) < 0
+	 */
+	isNegative() {
+		return this._sign < 0;
+	}
+
+	/**
+	 * 0 を判定
+	 * @returns {boolean} A === 0
+	 */
+	isZero() {
+		this._memory_reduction();
+		return this._sign === 0;
+	}
+	
+	/**
+	 * 正数を判定
+	 * @returns {boolean} real(x) > 0
+	 */
+	isPositive() {
+		return this._sign > 0;
+	}
+
+	/**
+	 * 2進数で表した場合に最も右側に現れる1の桁数
+	 * @returns {number} 存在しない場合は -1
+	 */
+	getLowestSetBit() {
+		for(let i = 0; i < this.element.length; i++) {
+			if(this.element[i] !==  0) {
+				const x = this.element[i];
+				for(let j = 0; j < 16; j++) {
+					if(((x >>> j) & 1) !==  0) {
+						return i * 16 + j;
+					}
+				}
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * 2進数で表した場合の長さ
+	 * @returns {number}
+	 */
+	bitLength() {
+		for(let i = this.element.length - 1; i >= 0; i--) {
+			if(this.element[i] !==  0) {
+				const x = this.element[i];
+				for(let j = 15; j >= 0; j--) {
+					if(((x >>> j) & 1) !==  0) {
+						return i * 16 + j + 1;
+					}
+				}
+			}
+		}
+		return 0;
+	}
+
+	/**
+	 * 2の補数表現で表した場合に立つビットの数
+	 * @returns {number}
+	 */
+	bitCount() {
+		let target;
+		if(this._sign >= 0) {
+			target = this;
+		}
+		else {
+			target = this.add(new BigInteger(1));
+		}
+		const len = target.bitLength();
+		let bit = 0;
+		let count = 0;
+		for(let i = 0;bit < len;i++) {
+			const x = target.element[i];
+			for(let j = 0;((j < 16) && (bit < len));j++, bit++) {
+				if(((x >>> j) & 1) !==  0) {
+					count = count + 1;
+				}
+			}
+		}
+		return count;
+	}
+
+	/**
+	 * 加算に適用できる数値（負の場合は、2の補数表現）
+	 * @param {number} [bit_length] - ビット長（省略時は自動計算）
+	 * @returns {BigInteger}
+	 * @private
+	 */
+	getTwosComplement(bit_length) {
+		const y = this.clone();
+		if(y._sign >= 0) {
+			return y;
+		}
+		else {
+			// 正にする
+			y._sign = 1;
+			// ビットの数が存在しない場合は数える
+			const len = (bit_length !== undefined) ? bit_length : y.bitLength();
+			const e = y.element;
+			// ビット反転後
+			for(let i = 0; i < e.length; i++) {
+				e[i] ^= 0xFFFF;
+			}
+			// 1～15ビット余る場合は、16ビットずつ作成しているので削る
+			// nビットのマスク（なお負の値を表す最上位ビットは削除する）
+			if((len % 16) !== 0) {
+				e[e.length - 1] &= (1 << (len % 16)) - 1;
+			}
+			// 1を加算
+			y._add(new BigInteger(1));
+			return y;
+		}
+	}
+
+	/**
+	 * 論理積（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A &= B
+	 * @private
+	 */
+	_and(number) {
+		const val = BigInteger._toBigInteger(number);
+		const e1 = this;
+		const e2 = val;
+		const s1  = e1.signum(), s2 = e2.signum();
+		const len = Math.max(e1.bitLength(), e2.bitLength());
+		// 引数が負の場合は、2の補数
+		const e1_array = e1.getTwosComplement(len).element;
+		const e2_array = e2.getTwosComplement(len).element;
+		const size = Math.max(e1_array.length, e2_array.length);
+		this.element = [];
+		for(let i = 0;i < size;i++) {
+			const x1 = (i >= e1_array.length) ? 0 : e1_array[i];
+			const x2 = (i >= e2_array.length) ? 0 : e2_array[i];
+			this.element[i] = x1 & x2;
+		}
+		if(this.bitLength() === 0) {
+			this.element = [];
+			this._sign = 0;
+		}
+		if((s1 === 1)||(s2 === 1)) {
+			this._sign = 1;
+		}
+		// 出力が負の場合は、2の補数
+		else if(this._sign === -1) {
+			this.element = this.getTwosComplement(len).element;
+		}
+		return this;
+	}
+
+	/**
+	 * 論理積
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A & B
+	 */
+	and(number) {
+		return this.clone()._and(number);
+	}
+
+	/**
+	 * 論理和（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A |= B
+	 * @private
+	 */
+	_or(number) {
+		const val = BigInteger._toBigInteger(number);
+		const e1 = this;
+		const e2 = val;
+		const s1  = e1.signum(), s2 = e2.signum();
+		const len = Math.max(e1.bitLength(), e2.bitLength());
+		// 引数が負の場合は、2の補数
+		const e1_array = e1.getTwosComplement(len).element;
+		const e2_array = e2.getTwosComplement(len).element;
+		const size = Math.max(e1_array.length, e2_array.length);
+		this.element = [];
+		for(let i = 0;i < size;i++) {
+			const x1 = (i >= e1_array.length) ? 0 : e1_array[i];
+			const x2 = (i >= e2_array.length) ? 0 : e2_array[i];
+			this.element[i] = x1 | x2;
+		}
+		this._sign = ((s1 === -1)||(s2 === -1)) ? -1 : Math.max(s1, s2);
+		// 出力が負の場合は、2の補数
+		if(this._sign === -1) {
+			this.element = this.getTwosComplement(len).element;
+		}
+		return this;
+	}
+
+	/**
+	 * 論理和
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A | B
+	 */
+	or(number) {
+		return this.clone()._or(number);
+	}
+
+	/**
+	 * 排他的論理和（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A ^= B
+	 * @private
+	 */
+	_xor(number) {
+		const val = BigInteger._toBigInteger(number);
+		const e1 = this;
+		const e2 = val;
+		const s1  = e1.signum(), s2 = e2.signum();
+		const len = Math.max(e1.bitLength(), e2.bitLength());
+		// 引数が負の場合は、2の補数
+		const e1_array = e1.getTwosComplement(len).element;
+		const e2_array = e2.getTwosComplement(len).element;
+		const size = Math.max(e1_array.length, e2_array.length);
+		this.element = [];
+		for(let i = 0;i < size;i++) {
+			const x1 = (i >= e1_array.length) ? 0 : e1[i];
+			const x2 = (i >= e2_array.length) ? 0 : e2[i];
+			this.element[i] = x1 ^ x2;
+		}
+		this._sign = ((s1 !== 0)&&(s1 !== s2)) ? -1 : 1;
+		// 出力が負の場合は、2の補数
+		if(this._sign === -1) {
+			this.element = this.getTwosComplement(len).element;
+		}
+		return this;
+	}
+
+	/**
+	 * 排他的論理和
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A ^ B
+	 */
+	xor(number) {
+		return(this.clone()._xor(number));
+	}
+
+	/**
+	 * ビット反転
+	 * @returns {BigInteger} A = !A
+	 * @private
+	 */
+	_not() {
+		return(this._add(new BigInteger(1))._negate());
+	}
+
+	/**
+	 * ビット反転（ミュータブル）
+	 * @returns {BigInteger} !A
+	 */
+	not() {
+		return(this.clone()._not());
+	}
+
+	/**
+	 * 否定論理積（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A &= (!B)
+	 * @private
+	 */
+	_andNot(number) {
+		const val = BigInteger._toBigInteger(number);
+		return(this._and(val.not()));
+	}
+
+	/**
+	 * 否定論理積
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A & (!B)
+	 */
+	andNot(number) {
+		return(this.clone()._andNot(number));
+	}
+
+	/**
+	 * 否定論理積（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A &= (!B)
+	 * @private
+	 */
+	_nand(number) {
+		return(this._andNot(number));
+	}
+
+	/**
+	 * 否定論理積
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A & (!B)
+	 */
+	nand(number) {
+		return(this.andNot(number));
+	}
+
+	/**
+	 * 否定論理和（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A = !(A | B)
+	 * @private
+	 */
+	_orNot(number) {
+		const val = BigInteger._toBigInteger(number);
+		return(this._or(val)._not());
+	}
+
+	/**
+	 * 否定論理和
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} !(A | B)
+	 */
+	orNot(number) {
+		return(this.clone()._orNot(number));
+	}
+
+	/**
+	 * 否定論理和（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} A = !(A | B)
+	 * @private
+	 */
+	_nor(number) {
+		return(this._orNot(number));
+	}
+
+	/**
+	 * 否定論理和
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} !(A | B)
+	 */
+	nor(number) {
+		return(this.orNot(number));
+	}
+
+	/**
+	 * 指定したビット長まで配列を拡張（ミュータブル）
+	 * @param {number} bit_length - ビット数
+	 * @private
+	 */
+	_memory_allocation(bit_length) {
+		const n = BigInteger._toInteger(bit_length);
+		const elementsize = this.element.length << 4;
+		if(elementsize < n) {
+			const addsize = (((n - elementsize - 1) & 0xFFFFFFF0) >>> 4) + 1;
+			for(let i = 0;i < addsize;i++) {
+				this.element[this.element.length] = 0;
+			}
+		}
+	}
+
+	/**
+	 * 内部データの正規化（ミュータブル）
+	 * @private
+	 */
+	_memory_reduction() {
+		for(let i = this.element.length - 1;i >= 0;i--) {
+			if(this.element[i] !==  0) {
+				if(i < this.element.length - 1) {
+					this.element.splice(i + 1, this.element.length - i - 1);
+				}
+				return;
+			}
+		}
+		this._sign = 0;
+		this.element = [];
+	}
+
+	/**
+	 * ユークリッド互除法
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} gcd(x, y)
+	 */
+	gcd(number) {
+		const val = BigInteger._toBigInteger(number);
+		/**
+		 * @type {any}
+		 */
+		let x = this, y = val, z;
+		while(y.signum() !== 0) {
+			z = x.remainder(y);
+			x = y;
+			y = z;
+		}
+		return x;
+	}
+
+	/**
+	 * 拡張ユークリッド互除法
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {Array<BigInteger>} a*x + b*y = c = gcd(x, y) となる [a, b, c]
+	 */
+	extgcd(number) {
+		const val = BigInteger._toBigInteger(number);
+		// 非再帰
+		const ONE  = new BigInteger(1);
+		const ZERO = new BigInteger(0);
+		/**
+		 * @type {any}
+		 */
+		let r0 = this, r1 = val, r2, q1;
+		let a0 = ONE,  a1 = ZERO, a2;
+		let b0 = ZERO, b1 = ONE,  b2;
+		while(r1.signum() !== 0) {
+			const y = r0.divideAndRemainder(r1);
+			q1 = y[0];
+			r2 = y[1];
+			a2 = a0.subtract(q1.multiply(a1));
+			b2 = b0.subtract(q1.multiply(b1));
+			a0 = a1;
+			a1 = a2;
+			b0 = b1;
+			b1 = b2;
+			r0 = r1;
+			r1 = r2;
+		}
+		return [a0, b0, r0];
+	}
+
+	/**
+	 * 絶対値（ミュータブル）
+	 * @returns {BigInteger} A = abs(A)
+	 * @private
+	 */
+	_abs() {
+		// -1 -> 1, 0 -> 0, 1 -> 1
+		this._sign *= this._sign;
+		return this;
+	}
+
+	/**
+	 * 絶対値
+	 * @returns {BigInteger} abs(A)
+	 */
+	abs() {
+		return this.clone()._abs();
+	}
+
+	/**
+	 * 負数（ミュータブル）
+	 * @returns {BigInteger} A = -A
+	 * @private
+	 */
+	_negate() {
+		this._sign *= -1;
+		return this;
+	}
+
+	/**
+	 * 負数
+	 * @returns {BigInteger} -A
+	 */
+	negate() {
+		return this.clone()._negate();
+	}
+
+	/**
+	 * 符号値
+	 * @returns {number} 1, -1, 0の場合は0を返す
+	 */
+	signum() {
+		if(this.element.length === 0) {
+			return 0;
+		}
+		return this._sign;
+	}
+
+	/**
+	 * 符号値
+	 * @returns {number} 1, -1, 0の場合は0を返す
+	 */
+	sign() {
+		return this.signum();
+	}
+
+	/**
+	 * 符号を除いた値同士を比較
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
+	 */
+	compareToAbs(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(this.element.length < val.element.length) {
+			return -1;
+		}
+		else if(this.element.length > val.element.length) {
+			return 1;
+		}
+		for(let i = this.element.length - 1;i >= 0;i--) {
+			if(this.element[i] !== val.element[i]) {
+				const x = this.element[i] - val.element[i];
+				return ( (x === 0) ? 0 : ((x > 0) ? 1 : -1) );
+			}
+		}
+		return 0;
+	}
+
+	/**
+	 * 値同士を比較
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(this.signum() !== val.signum()) {
+			if(this._sign > val._sign) {
+				return 1;
+			}
+			else {
+				return -1;
+			}
+		}
+		else if(this.signum() === 0) {
+			return 0;
+		}
+		return this.compareToAbs(val) * this._sign;
+	}
+
+	/**
+	 * 最大値
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} max([A, B])
+	 */
+	max(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(this.compareTo(val) >= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * 最小値
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} min([A, B])
+	 */
+	min(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(this.compareTo(val) >= 0) {
+			return val.clone();
+		}
+		else {
+			return this.clone();
+		}
+	}
+
+	/**
+	 * ビットシフト（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} shift_length - 上位へのビットシフト数
+	 * @returns {BigInteger} A <<= n
+	 * @private
+	 */
+	_shift(shift_length) {
+		let n = BigInteger._toInteger(shift_length);
+		if(n === 0) {
+			return this;
+		}
+		const x = this.element;
+		// 1ビットなら専用コードで高速計算
+		if(n === 1) {
+			let i = x.length - 1;
+			if((x[i] & 0x8000) !==  0) {
+				x[x.length] = 1;
+			}
+			for(;i >= 0;i--) {
+				x[i] <<= 1;
+				x[i]  &= 0xFFFF;
+				if((i > 0) && ((x[i - 1] & 0x8000) !==  0)) {
+					x[i] += 1;
+				}
+			}
+		}
+		else if(n === -1) {
+			for(let i = 0;i < x.length;i++) {
+				x[i] >>>= 1;
+				if((i < x.length - 1) && ((x[i + 1] & 1) !==  0)) {
+					x[i] |= 0x8000;
+				}
+			}
+			if(x[x.length - 1] === 0) {
+				x.pop();
+			}
+		}
+		else {
+			// 16ビット単位なら配列を追加削除する高速計算
+			if(n >= 16) {
+				const m = n >>> 4;
+				for(let i = x.length - 1; i >= 0; i--) {
+					x[i + m] = x[i];
+				}
+				for(let i = m - 1; i >= 0; i--) {
+					x[i] = 0;
+				}
+				n &= 0xF;
+			}
+			else if(n <= -16){
+				const m = (-n) >>> 4;
+				x.splice(0, m);
+				n += m << 4;
+			}
+			if(n !== 0) {
+				// 15ビット以内ならビット演算でまとめて操作
+				if(0 < n) {
+					let carry = 0;
+					for(let i = 0; i < x.length; i++) {
+						x[i] = (x[i] << n) + carry;
+						if(x[i] > 0xFFFF) {
+							carry = x[i] >>> 16;
+							x[i] &= 0xFFFF;
+						}
+						else {
+							carry = 0;
+						}
+					}
+					if(carry !== 0) {
+						x[x.length] = carry;
+					}
+				}
+				else {
+					n = -n;
+					for(let i = 0; i < x.length; i++) {
+						if(i !== x.length - 1) {
+							x[i] += x[i + 1] << 16;
+							x[i] >>>= n;
+							x[i] &= 0xFFFF;
+						}
+						else {
+							x[i] >>>= n;
+						}
+					}
+					if(x[x.length - 1] === 0) {
+						x.pop();
+					}
+				}
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * ビットシフト
+	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @returns {BigInteger} A << n
+	 */
+	shift(n) {
+		return this.clone()._shift(n);
+	}
+
+	/**
+	 * 左へビットシフト
+	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @returns {BigInteger} A << n
+	 */
+	shiftLeft(n) {
+		return this.shift(n);
+	}
+
+	/**
+	 * 右へビットシフト
+	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @returns {BigInteger} A >> n
+	 */
+	shiftRight(n) {
+		return this.shift(-n);
+	}
+
+	/**
+	 * 加算（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A += B
+	 * @private
+	 */
+	_add(number) {
+		const val = BigInteger._toBigInteger(number);
+		const o1 = this;
+		const o2 = val;
+		let x1 = o1.element;
+		let x2 = o2.element;
+		if(o1._sign === o2._sign) {
+			//足し算
+			this._memory_allocation(x2.length << 4);
+			let carry = 0;
+			for(let i = 0; i < x1.length; i++) {
+				x1[i] += ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
+				if(x1[i] > 0xFFFF) {
+					carry = 1;
+					x1[i] &= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				x1[x1.length] = carry;
+			}
+		}
+		else {
+			// 引き算
+			const compare = o1.compareToAbs(o2);
+			if(compare === 0) {
+				this.element = [];
+				this._sign = 1;
+				return this;
+			}
+			else if(compare === -1) {
+				this._sign = o2._sign;
+				const swap = x1;
+				x1 = x2.slice(0);
+				x2 = swap;
+			}
+			let carry = 0;
+			for(let i = 0; i < x1.length; i++) {
+				x1[i] -= ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
+				if(x1[i] < 0) {
+					x1[i] += 0x10000;
+					carry  = 1;
+				}
+				else {
+					carry  = 0;
+				}
+			}
+			this.element = x1;
+			this._memory_reduction();
+		}
+		return this;
+	}
+
+	/**
+	 * 加算
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A + B
+	 */
+	add(number) {
+		return this.clone()._add(number);
+	}
+
+	/**
+	 * 減算（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A -= B
+	 * @private
+	 */
+	_subtract(number) {
+		const val = BigInteger._toBigInteger(number);
+		const _sign = val._sign;
+		const out  = this._add(val._negate());
+		val._sign = _sign;
+		return out;
+	}
+
+	/**
+	 * 減算
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A - B
+	 */
+	subtract(number) {
+		return this.clone()._subtract(number);
+	}
+
+	/**
+	 * 減算
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A - B
+	 */
+	sub(number) {
+		return this.subtract(number);
+	}
+
+	/**
+	 * 乗算（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A *= B
+	 * @private
+	 */
+	_multiply(number) {
+		const x = this.multiply(number);
+		this.element = x.element;
+		this._sign    = x._sign;
+		return this;
+	}
+
+	/**
+	 * 乗算
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A * B
+	 */
+	multiply(number) {
+		const val = BigInteger._toBigInteger(number);
+		const out  = new BigInteger();
+		const buff = new BigInteger();
+		const o1 = this;
+		const o2 = val;
+		const x1 = o1.element;
+		const x2 = o2.element;
+		const y  = out.element;
+		for(let i = 0; i < x1.length; i++) {
+			buff.element = [];
+			// x3 = x1[i] * x2
+			const x3 = buff.element;
+			let carry = 0;
+			for(let j = 0; j < x2.length; j++) {
+				x3[j] = x1[i] * x2[j] + carry;
+				if(x3[j] > 0xFFFF) {
+					carry = x3[j] >>> 16;
+					x3[j] &= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				x3[x3.length] = carry;
+			}
+			// x3 = x3 << (i * 16)
+			//buff._shift(i << 4);
+			for(let j = x3.length - 1; j >= 0; j--) {
+				x3[j + i] = x3[j];
+			}
+			for(let j = i - 1; j >= 0; j--) {
+				x3[j] = 0;
+			}
+			// y = y + x3 (out._add(buff))
+			//out._add(buff);
+			carry = 0;
+			out._memory_allocation(x3.length << 4);
+			for(let j = i; j < y.length; j++) {
+				y[j] += ((x3.length >= (j + 1)) ? x3[j] : 0) + carry;
+				if(y[j] > 0xFFFF) {
+					carry = 1;
+					y[j] &= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				y[y.length] = carry;
+			}
+		}
+		out._sign = this._sign * val._sign;
+		return out;
+	}
+
+	/**
+	 * 乗算
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A * B
+	 */
+	mul(number) {
+		return this.multiply(number);
+	}
+
+	/**
+	 * 割り算と余り（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {Array<BigInteger>} [C = floor(A / B), A - C * B]
+	 * @private
+	 */
+	_divideAndRemainder(number) {
+		const val = BigInteger._toBigInteger(number);
+		const out = [];
+		if(val.signum() === 0) {
+			throw "BigInteger divideAndRemainder [" + val.toString() +"]";
+		}
+		const compare = this.compareToAbs(val);
+		if(compare < 0) {
+			out[0] = new BigInteger(0);
+			out[1] = this.clone();
+			return out;
+		}
+		else if(compare === 0) {
+			out[0] = new BigInteger(1);
+			out[0]._sign = this._sign * val._sign;
+			out[1] = new BigInteger(0);
+			return out;
+		}
+		const ONE = new BigInteger(1);
+		const size = this.bitLength() - val.bitLength();
+		const x1 = this.clone()._abs();
+		const x2 = val.shift(size)._abs();
+		const y  = new BigInteger();
+		for(let i = 0; i <= size; i++) {
+			if(x1.compareToAbs(x2) >= 0) {
+				x1._subtract(x2);
+				y._add(ONE);
+			}
+			if(i === size) {
+				break;
+			}
+			x2._shift(-1);
+			y._shift(1);
+		}
+		out[0] = y;
+		out[0]._sign = this._sign * val._sign;
+		out[1] = x1;
+		out[1]._sign = this._sign;
+		return out;
+	}
+
+	/**
+	 * 割り算と余り
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {Array<BigInteger>} [C = floor(A / B), A - C * B]
+	 */
+	divideAndRemainder(number) {
+		return this.clone()._divideAndRemainder(number);
+	}
+
+	/**
+	 * 割り算（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} floor(A / B)
+	 * @private
+	 */
+	_divide(number) {
+		return this._divideAndRemainder(number)[0];
+	}
+
+	/**
+	 * 割り算
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} floor(A / B)
+	 */
+	divide(number) {
+		return this.clone()._divide(number);
+	}
+
+	/**
+	 * 割り算
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} floor(A / B)
+	 */
+	div(number) {
+		return this.divide(number);
+	}
+
+	/**
+	 * 割り算の余り（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A %= B
+	 * @private
+	 */
+	_remainder(number) {
+		return this._divideAndRemainder(number)[1];
+	}
+
+	/**
+	 * 割り算の余り
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A % B
+	 */
+	remainder(number) {
+		return this.clone()._remainder(number);
+	}
+
+	/**
+	 * 割り算の余り
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A % B
+	 */
+	rem(number) {
+		return this.remainder(number);
+	}
+
+	/**
+	 * 割り算の正の余り（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A = A mod B
+	 * @private
+	 */
+	_mod(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(val.signum() < 0) {
+			return null;
+		}
+		const y = this._divideAndRemainder(val);
+		if(y[1] instanceof BigInteger) {
+			if(y[1].signum() >= 0) {
+				return y[1];
+			}
+			else {
+				return y[1]._add(val);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 割り算の正の余り
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A mod B
+	 */
+	mod(number) {
+		return this.clone()._mod(number);
+	}
+
+	/**
+	 * 特定のビットを立てる（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @returns {BigInteger}
+	 * @private
+	 */
+	_setBit(bit) {
+		const n = BigInteger._toInteger(bit);
+		this._memory_allocation(n + 1);
+		this.element[n >>> 4] |= 1 << (n & 0xF);
+		return this;
+	}
+
+	/**
+	 * 特定のビットを立てる
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @returns {BigInteger}
+	 */
+	setBit(bit) {
+		const n = BigInteger._toInteger(bit);
+		return this.clone()._setBit(n);
+	}
+
+	/**
+	 * 特定のビットを反転させる（ミュータブル）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @returns {BigInteger}
+	 * @private
+	 */
+	_flipBit(bit) {
+		const n = BigInteger._toInteger(bit);
+		this._memory_allocation(n + 1);
+		this.element[n >>> 4] ^= 1 << (n & 0xF);
+		return this;
+	}
+
+	/**
+	 * 特定のビットを反転させる
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @returns {BigInteger}
+	 */
+	flipBit(bit) {
+		const n = BigInteger._toInteger(bit);
+		return this.clone()._flipBit(n);
+	}
+
+	/**
+	 * 特定のビットを下げる
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bit 
+	 * @returns {BigInteger}
+	 */
+	clearBit(bit) {
+		const n = BigInteger._toInteger(bit);
+		const y = this.clone();
+		y.element[n >>> 4] &= ~(1 << (n & 0xF));
+		y._memory_reduction();
+		return y;
+	}
+
+	/**
+	 * 指定のビットの判定
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @returns {boolean}
+	 */
+	testBit(bit) {
+		const n = BigInteger._toInteger(bit);
+		return ((this.element[n >>> 4] >>> (n & 0xF)) & 1) !== 0;
+	}
+
+	/**
+	 * 累乗
+	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
+	 * @returns {BigInteger} pow(A, B)
+	 */
+	pow(exponent) {
+		const e = new BigInteger(exponent);
+		let x = new BigInteger(this);
+		let y = new BigInteger(1);
+		while(e.element.length !== 0) {
+			if((e.element[0] & 1) !== 0) {
+				y = y.multiply(x);
+			}
+			x = x.multiply(x);
+			e._shift(-1);
+		}
+		return y;
+	}
+
+	/**
+	 * 冪剰余
+	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
+	 * @param {BigInteger|number|string|Array<string|number>|Object} m 
+	 * @returns {BigInteger} A^B mod m
+	 */
+	modPow(exponent, m) {
+		const m_ = BigInteger._toBigInteger(m);
+		let x = new BigInteger(this);
+		let y = new BigInteger(1);
+		const e = new BigInteger(exponent);
+		while(e.element.length !== 0) {
+			if((e.element[0] & 1) !== 0) {
+				y = y.multiply(x).mod(m_);
+			}
+			x = x.multiply(x).mod(m_);
+			e._shift(-1);
+		}
+		return y;
+	}
+
+	/**
+	 * モジュラ逆数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} m
+	 * @returns {BigInteger} A^(-1) mod m
+	 */
+	modInverse(m) {
+		const m_ = BigInteger._toBigInteger(m);
+		const y = this.extgcd(m);
+		const ONE  = new BigInteger(1);
+		if(y[2].compareTo(ONE) !== 0) {
+			return null;
+		}
+		// 正にするため remainder ではなく mod を使用する
+		return y[0]._add(m_)._mod(m_);
+	}
+
+	/**
+	 * ミラーラビン素数判定法による複素判定
+	 * （非常に重たいので注意）
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - 素数判定法の繰り返し回数
+	 * @returns {boolean}
+	 */
+	isProbablePrime(certainty) {
+		const e = this.element;
+		//0, 1, 2 -> true
+		if( (e.length === 0) || ((e.length === 1)&&(e[0] <= 2)) ) {
+			return true;
+		}
+		//even number -> false
+		else if((e[0] & 1) === 0) {
+			return false;
+		}
+		// ミラーラビン素数判定法
+		// かなり処理が重たいです。まあお遊び程度に使用という感じで。
+		const loop	= certainty !== undefined ? BigInteger._toInteger(certainty) : 100;
+		const ZERO	= new BigInteger(0);
+		const ONE	= new BigInteger(1);
+		const n		= this;
+		const LEN	= n.bitLength();
+		const n_1	= n.subtract(ONE);
+		const s 	= n_1.getLowestSetBit();
+		const d 	= n_1.shift(-s);
+
+		if(loop <= 0) {
+			return false;
+		}
+
+		for(let i = 0; i < loop; i++ ) {
+			//[ 1, n - 1] の範囲から a を選択
+			let a;
+			do {
+				a = BigInteger.createRandomBigInteger(LEN);
+			} while(( a.compareTo(ZERO) === 0 )||( a.compareTo(n) !== -1 ));
+
+			let t = d;
+			// a^t != 1 mod n
+			let y = a.modPow(t, n);
+			
+			while(true) {
+				if((t.equals(n_1)) || (y.equals(ONE)) || (y.equals(n_1))) {
+					break;
+				}
+				y = y.mul(y)._mod(n);
+				t = t.shiftLeft(1);
+			}
+
+			if((!y.equals(n_1)) && ((t.element[0] & 1) === 0)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 次の素数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - 素数判定法の繰り返し回数
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - 次の素数を見つけるまでの回数
+	 * @returns {BigInteger}
+	 */
+	nextProbablePrime(certainty, search_max) {
+		const loop	= certainty !== undefined ? (BigInteger._toInteger(certainty) >> 1) : 100 / 2;
+		const search_max_ = search_max !== undefined ? BigInteger._toInteger(search_max) : 100000;
+		const x = this.clone();
+		for(let i = 0; i < search_max_; i++) {
+			x._add(BigInteger.ONE);
+			if(x.isProbablePrime(loop)) {
+				return x;
+			}
+		}
+		throw "nextProbablePrime [" + search_max_ +"]";
+	}
+
+	/**
+	 * 階乗関数
+	 * @returns {BigInteger} n!
+	 */
+	factorial() {
+		const loop_max = BigInteger._toInteger(this);
+		let x = BigInteger.ONE;
+		for(let i = 2; i <= loop_max; i++) {
+			x = x.multiply(i);
+		}
+		return x;
+	}
+
+	/**
+	 * 乱数を指定しなかった場合のデフォルト乱数を設定する
+	 * @param {Random} random
+	 */
+	static setDefaultRandom(random) {
+		DEFAULT_RANDOM = random;
+	}
+
+	/**
+	 * 乱数を指定しなかった場合のデフォルト乱数を取得する
+	 * @returns {Random}
+	 */
+	static getDefaultRandom() {
+		return DEFAULT_RANDOM;
+	}
+
+
+
+
+	// ----------------------
+	// 定数
+	// ----------------------
+	
+	/**
+	 * 0
+	 * @returns {BigInteger} 0
+	 */
+	static get ZERO() {
+		return DEFINE$1.ZERO;
+	}
+
+	/**
+	 * 1
+	 * @returns {BigInteger} 1
+	 */
+	static get ONE() {
+		return DEFINE$1.ONE;
+	}
+	
+	/**
+	 * 2
+	 * @returns {BigInteger} 2
+	 */
+	static get TWO() {
+		return DEFINE$1.TWO;
+	}
+	
+	/**
+	 * 10
+	 * @returns {BigInteger} 10
+	 */
+	static get TEN() {
+		return DEFINE$1.TEN;
+	}
+
+}
+
+/**
+ * 内部で使用する定数値
+ * @ignore
+ */
+const DEFINE$1 = {
+
+	/**
+	 * 1
+	 */
+	ONE : new BigInteger(1),
+
+	/**
+	 * 2
+	 */
+	TWO : new BigInteger(2),
+
+	/**
+	 * 10
+	 */
+	TEN : new BigInteger(10),
+
+	/**
+	 * 0
+	 */
+	ZERO : new BigInteger(0)
+};
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * 初期化するときにcontextを設定しなかった場合のデフォルト値
+ * @type {MathContext}
+ * @ignore
+ */
+let DEFAULT_CONTEXT = MathContext.DECIMAL128;
+
+/**
+ * BigDecimal 内で使用する関数群
+ * @ignore
+ */
+class DecimalTool {
+
+	/**
+	 * 文字列から BigDecimal で使用するデータに変換
+	 * @param {string} ntext 
+	 * @returns {{scale : number, integer : BigInteger}}
+	 */
+	static ToBigDecimalFromString(ntext) {
+		let scale = 0;
+		let buff;
+		// 正規化
+		let text = ntext.replace(/\s/g, "").toLowerCase();
+		// +-の符号があるか
+		let number_text = "";
+		buff = text.match(/^[+-]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			if(buff.indexOf("-") !== -1) {
+				number_text += "-";
+			}
+		}
+		// 整数部があるか
+		buff = text.match(/^[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			number_text += buff;
+		}
+		// 小数部があるか
+		buff = text.match(/^\.[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			buff = buff.substr(1);
+			scale = scale + buff.length;
+			number_text += buff;
+		}
+		// 指数表記があるか
+		buff = text.match(/^e[+-]?[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0].substr(1);
+			scale   = scale - parseInt(buff, 10);
+		}
+		return {
+			scale : scale,
+			integer : new BigInteger([number_text, 10])
+		};
+	}
+
+	/**
+	 * 数値から BigDecimal で使用するデータに変換
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} value 
+	 * @returns {{scale : number, integer : BigInteger}}
+	 */
+	static ToBigDecimalFromNumber(value) {
+		// 整数か
+		if(value === Math.floor(value)) {
+			return {
+				scale : 0,
+				integer : new BigInteger(value)
+			};
+		}
+		// 実数か
+		else {
+			let scale = 0;
+			let x = value;
+			for(let i = 0; i < 10; i++) {
+				x = x * 10;
+				scale = scale + 1;
+				if(x === Math.floor(x)) {
+					break;
+				}
+			}
+			return {
+				scale : scale,
+				integer : new BigInteger(x)
+			};
+			// 今後改善するならば
+			// 64ビットの実数型は15桁程度まで正しい
+			// 余裕をもって10桁程度までを抜き出すのが良いかと思われる。
+			// スケールは右の式から求めて Math.log(x) / Math.log(10)
+		}
+	}
+
+}
+
+/**
+ * 任意精度浮動小数点演算クラス (immutable)
+ */
+class BigDecimal {
+	
+	/**
+	 * 任意精度浮動小数点を作成
+	 * 配列で設定する場合は、 BigInteger, [スケール値=0], [環境=default], [精度設定=default]
+	 * オブジェクトで設定する場合は、 integer, [scale=0], [default_context=default], [context=default]
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - 任意精度実数データ
+	 */
+	constructor(number) {
+
+		/**
+		 * スケール
+		 * @private
+		 * @type {number}
+		 */
+		this._scale	= 0;
+		
+		/**
+		 * 初期化時に使用したcontext
+		 * @private
+		 * @type {MathContext}
+		 */
+		this.default_context = DEFAULT_CONTEXT;
+
+		let context = null;
+
+		if(arguments.length > 1) {
+			throw "BigDecimal Unsupported argument[" + arguments.length + "]";
+		}
+		if(number instanceof BigDecimal) {
+
+			/**
+			 * 整数部分
+			 * @private
+			 * @type {BigInteger}
+			 */
+			this.integer			= number.integer.clone();
+
+			this._scale				= number._scale;
+			
+			/**
+			 * 文字列化した整数部分（キャッシュ用）
+			 * @private
+			 * @type {string}
+			 */
+			this.int_string			= number.int_string;
+
+			this.default_context	= number.default_context;
+
+		}
+		else if(number instanceof BigInteger) {
+			this.integer	= number.clone();
+		}
+		else if(typeof number === "number") {
+			const data = DecimalTool.ToBigDecimalFromNumber(number);
+			this.integer	= data.integer;
+			this._scale		= data.scale;
+		}
+		else if(number instanceof Array) {
+			if(number.length >= 1) {
+				if(!(typeof number[0] === "string" || number[0] instanceof String)) {
+					this.integer = new BigInteger(number[0]);
+				}
+				else {
+					// 1番目が文字列の場合は、文字列用の設定初期化を行う
+					const data = DecimalTool.ToBigDecimalFromString(number[0]);
+					this.integer	= data.integer;
+					this._scale		= data.scale;
+				}
+			}
+			if(number.length >= 2) {
+				// スケール値を省略しているかどうかを、数値かどうかで判定している。
+				if(typeof number[1] === "number" || number[1] instanceof Number) {
+					this._scale	= number[1];
+					if(number.length >= 3) {
+						this.default_context = number[2];
+					}
+					if(number.length >= 4) {
+						context = number[3];
+					}
+				}
+				else {
+					if(number.length >= 2) {
+						this.default_context = number[1];
+					}
+					if(number.length >= 3) {
+						context = number[2];
+					}
+				}
+			}
+		}
+		else if(typeof number === "string") {
+			const data = DecimalTool.ToBigDecimalFromString(number);
+			this.integer	= data.integer;
+			this._scale		= data.scale;
+		}
+		else if((number instanceof Object) && (number.scale !== undefined && number.default_context !== undefined)) {
+			this.integer	= new BigInteger(number.integer);
+			if(number.scale) {
+				this._scale = number.scale;
+			}
+			if(number.default_context) {
+				this.default_context = number.default_context;
+			}
+			if(number.context) {
+				context = number.context;
+			}
+		}
+		else if(number instanceof Object) {
+			const data = DecimalTool.ToBigDecimalFromString(number.toString());
+			this.integer	= data.integer;
+			this._scale		= data.scale;
+		}
+		else {
+			throw "BigDecimal Unsupported argument " + arguments;
+		}
+		// データを正規化
+		if(context) {
+			const newbigdecimal = this.round(context);
+			this.integer	= newbigdecimal.integer;
+			this._scale		= newbigdecimal._scale;
+			delete this.int_string;
+		}
+		
+		// データが正しいかチェックする
+		if((!(this.integer instanceof BigInteger)) || (!(this.default_context instanceof MathContext))) {
+			throw "BigDecimal Unsupported argument " + arguments;
+		}
+	}
+
+	/**
+	 * BigDecimal を作成
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - 任意精度実数データ
+	 * @returns {BigDecimal}
+	 */
+	static create(number) {
+		if(number instanceof BigDecimal) {
+			return number;
+		}
+		else {
+			return new BigDecimal(number);
+		}
+	}
+
+	/**
+	 * 指定した数値から BigDecimal 型に変換
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} x 
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [scale] 
+	 * @returns {BigDecimal}
+	 */
+	static valueOf(x, scale) {
+		if(arguments.length === 1) {
+			return new BigDecimal(x);
+		}
+		else {
+			return new BigDecimal([x, scale]);
+		}
+	}
+
+	/**
+	 * BigDecimal を作成
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @returns {BigDecimal}
+	 * @private
+	 */
+	static _toBigDecimal(number) {
+		if(number instanceof BigDecimal) {
+			return number;
+		}
+		else {
+			return new BigDecimal(number);
+		}
+	}
+
+	/**
+	 * BigInteger を作成
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @returns {BigInteger}
+	 * @private
+	 */
+	static _toBigInteger(number) {
+		if(number instanceof BigInteger) {
+			return number;
+		}
+		else if(number instanceof BigDecimal) {
+			return number.toBigInteger();
+		}
+		else {
+			return new BigInteger(number);
+		}
+	}
+
+	/**
+	 * 実数を作成
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toFloat(number) {
+		if(typeof number === "number") {
+			return number;
+		}
+		else if(number instanceof BigDecimal) {
+			return number.doubleValue;
+		}
+		else {
+			return (new BigDecimal(number)).doubleValue;
+		}
+	}
+
+	/**
+	 * 整数を作成
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		if(typeof number === "number") {
+			return number | 0;
+		}
+		else if(number instanceof BigInteger) {
+			return number.intValue;
+		}
+		else {
+			return (new BigInteger(number)).intValue;
+		}
+	}
+
+	/**
+	 * 符号を除いた文字列を作成
+	 * キャッシュがなければ作成し、キャッシュがあればそれを返す
+	 * @returns {string} 
+	 */
+	_getUnsignedIntegerString() {
+		// キャッシュする
+		if(typeof this.int_string === "undefined") {
+			this.int_string = this.integer.toString(10).replace(/^-/, "");
+		}
+		return this.int_string;
+	}
+
+	/**
+	 * ディープコピー
+	 * @returns {BigDecimal} 
+	 */
+	clone() {
+		return new BigDecimal(this);
+	}
+	
+	/**
+	 * 倍率
+	 * @returns {number} 
+	 */
+	scale() {
+		return this._scale;
+	}
+
+	/**
+	 * 符号値
+	 * 1, -1, 0の場合は0を返す
+	 * @returns {number}
+	 */
+	signum() {
+		return this.integer.signum();
+	}
+
+	/**
+	 * 符号値
+	 * 1, -1, 0の場合は0を返す
+	 * @returns {number}
+	 */
+	sign() {
+		return this.signum();
+	}
+
+	/**
+	 * 精度
+	 * @returns {number} 
+	 */
+	precision() {
+		return this._getUnsignedIntegerString().length;
+	}
+
+	/**
+	 * 指数表記部分を取り除いた整数
+	 * @returns {BigInteger} 
+	 */
+	unscaledValue() {
+		return new BigInteger(this.integer);
+	}
+
+	/**
+	 * 科学的表記法による文字列化
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - 指数部の桁数
+	 * @returns {string} 
+	 */
+	toScientificNotation(e_len) {
+		const e		= BigDecimal._toInteger(e_len);
+		const text	= this._getUnsignedIntegerString();
+		let s		= this.scale();
+		const x		= [];
+		let i, k;
+		// -
+		if(this.signum() === -1) {
+			x[x.length] = "-";
+		}
+		// 表示上の桁数
+		s = - e - s;
+		// 小数点が付かない
+		if(s >= 0) {
+			x[x.length] = text;
+			for(i = 0; i < s; i++) {
+				x[x.length] = "0";
+			}
+		}
+		// 小数点が付く
+		else {
+			k = this.precision() + s;
+			if(0 < k) {
+				x[x.length] = text.substring(0, k);
+				x[x.length] = ".";
+				x[x.length] = text.substring(k, text.length);
+			}
+			else {
+				k = - k;
+				x[x.length] = "0.";
+				for(i = 0; i < k; i++) {
+					x[x.length] = "0";
+				}
+				x[x.length] = text;
+			}
+		}
+		x[x.length] = "E";
+		if(e >= 0) {
+			x[x.length] = "+";
+		}
+		x[x.length] = e;
+		return x.join("");
+	}
+
+	/**
+	 * 文字列化
+	 * 指数が不要の場合は指数表記なし
+	 * @returns {string} 
+	 */
+	toString() {
+		// 「調整された指数」
+		const x = - this.scale() + (this.precision() - 1);
+		// スケールが 0 以上で、「調整された指数」が -6 以上
+		if((this.scale() >= 0) && (x >= -6)) {
+			return this.toPlainString();
+		}
+		else {
+			return this.toScientificNotation(x);
+		}
+	}
+
+	/**
+	 * 技術表記法による文字列化
+	 * 指数が不要の場合は指数表記なし
+	 * @returns {string} 
+	 */
+	toEngineeringString() {
+		// 「調整された指数」
+		const x = - this.scale() + (this.precision() - 1);
+		// スケールが 0 以上で、「調整された指数」が -6 以上
+		if((this.scale() >= 0) && (x >= -6)) {
+			return this.toPlainString();
+		}
+		else {
+			// 0 でない値の整数部が 1 〜 999 の範囲に収まるように調整
+			return this.toScientificNotation(Math.floor(x / 3) * 3);
+		}
+	}
+
+	/**
+	 * 指数表記なしの文字列化
+	 * @returns {string} 
+	 */
+	toPlainString() {
+		// スケールの変換なし
+		if(this.scale() === 0) {
+			if(this.signum() < 0) {
+				return "-" + this._getUnsignedIntegerString();
+			}
+			else {
+				return this._getUnsignedIntegerString();
+			}
+		}
+		// 指数0で文字列を作成後、Eの後ろの部分をとっぱらう
+		const text = this.toScientificNotation(0);
+		return text.match(/^[^E]*/)[0];
+	}
+
+	/**
+	 * 設定された精度で表すことができる最も小さな値
+	 * @returns {BigDecimal} 
+	 */
+	ulp() {
+		return new BigDecimal([BigInteger.ONE, this.scale(), this.default_context]);
+	}
+
+	/**
+	 * スケールの再設定
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - 新しいスケール
+	 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - 精度を変換する際の丸め方
+	 * @param {MathContext} [mc] - 切り替え先の設定（これのみ変更する場合は、roundを使用すること）
+	 * @returns {BigDecimal} 
+	 */
+	setScale(new_scale, rounding_mode, mc) {
+		const newScale = BigDecimal._toInteger(new_scale);
+		if(this.scale() === newScale) {
+			// scaleが同一なので処理の必要なし
+			return(this.clone());
+		}
+		const roundingMode = (rounding_mode !== undefined) ? RoundingMode.valueOf(rounding_mode) : RoundingMode.UNNECESSARY;
+		const context = (mc !== undefined) ? mc : this.default_context;
+		// 文字列を扱ううえで、符号があるとやりにくいので外しておく
+		let text		= this._getUnsignedIntegerString();
+		const sign		= this.signum();
+		const sign_text	= sign >= 0 ? "" : "-";
+		// scale の誤差
+		// 0 以上なら 0 を加えればいい。0未満なら0を削るか、四捨五入など丸めを行う
+		const delta		= newScale - this.scale();	// この桁分増やすといい
+		if(0 <= delta) {
+			// 0を加える
+			let i;
+			for(i = 0; i < delta; i++) {
+				text = text + "0";
+			}
+			return new BigDecimal([new BigInteger(sign_text + text), newScale, context]);
+		}
+		const keta = text.length + delta;		// 最終的な桁数
+		const keta_marume = keta + 1;
+		if(keta <= 0) {
+			// 指定した scale では設定できない場合
+			// 例えば "0.1".setScale(-2), "10".setScale(-3) としても表すことは不可能であるため、
+			// sign（-1, 0, +1）のどれかの数値を使用して丸める
+			const outdata = (sign + roundingMode.getAddNumber(sign)) / 10;
+			// 上記の式は、CEILINGなら必ず1、正でCEILINGなら1、負でFLOORなら1、それ以外は0となり、
+			// さらに元々の数値が 0 なら 0、切り捨て不能なら例外が返る計算式である。
+			// これは Java の動作をまねています。
+			return new BigDecimal([new BigInteger(outdata), newScale, context]);
+		}
+		{
+			// 0を削るだけで解決する場合
+			// 単純な切捨て(0を削るのみ)
+			const zeros			= text.match(/0+$/);
+			const zero_length		= (zeros !== null) ? zeros[0].length : 0;
+			if(( (zero_length + delta) >= 0 ) || (roundingMode === RoundingMode.DOWN)) {
+				return new BigDecimal([new BigInteger(sign_text + text.substring(0, keta)), newScale, context]);
+			}
+		}
+		{
+			// 丸め計算で解決する場合
+			// 12345 -> '123'45
+			text = text.substring(0, keta_marume);
+			// 丸め計算に必要な切り取る桁数(後ろの1～2桁を取得)
+			const cutsize = text.length > 1 ? 2 : 1;
+			// '123'45 -> 1'23'4
+			const number = parseInt(text.substring(text.length - cutsize, text.length)) * sign;
+			// 「元の数」と「丸めに必要な数」を足す
+			const x1 = new BigInteger(sign_text + text);
+			const x2 = new BigInteger(roundingMode.getAddNumber(number));
+			text = x1.add(x2).toString();
+			// 丸め後の桁数に戻して
+			return new BigDecimal([new BigInteger(text.substring(0, text.length - 1)), newScale, context]);
+		}
+	}
+
+	/**
+	 * 環境設定を切り替える
+	 * @param {MathContext} mc - 切り替え先の設定
+	 * @returns {BigDecimal} 
+	 */
+	round(mc) {
+		if(!(mc instanceof MathContext)) {
+			throw "not MathContext";
+		}
+		const newPrecision	= mc.getPrecision();
+		const delta			= newPrecision - this.precision();
+		if((delta === 0)||(newPrecision === 0)) {
+			return this.clone();
+		}
+		const newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode(), mc);
+		/* 精度を上げる必要があるため、0を加えた場合 */
+		if(delta > 0) {
+			return newBigDecimal;
+		}
+		/* 精度を下げる必要があるため、丸めた場合は、桁の数が正しいか調べる */
+		if(newBigDecimal.precision() === mc.getPrecision()) {
+			return newBigDecimal;
+		}
+		/* 切り上げなどで桁数が１つ増えた場合 */
+		const sign_text	= newBigDecimal.integer.signum() >= 0 ? "" : "-";
+		const abs_text	= newBigDecimal._getUnsignedIntegerString();
+		const inte_text	= sign_text + abs_text.substring(0, abs_text.length - 1);
+		return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1, mc]);
+	}
+
+	/**
+	 * 絶対値
+	 * @param {MathContext} [mc] - 計算に使用する設定
+	 * @returns {BigDecimal} abs(A)
+	 */
+	abs(mc) {
+		const output = this.clone();
+		output.integer = output.integer.abs();
+		return (mc === undefined) ? output : output.round(mc);
+	}
+
+	/**
+	 * 正数
+	 * @param {MathContext} [mc] - 計算に使用する設定
+	 * @returns {BigDecimal} +A
+	 */
+	plus(mc) {
+		const output = this.clone();
+		return (mc === undefined) ? output : output.round(mc);
+	}
+
+	/**
+	 * 負数
+	 * @param {MathContext} [mc] - 計算に使用する設定
+	 * @returns {BigDecimal} -A
+	 */
+	negate(mc) {
+		const output = this.clone();
+		output.integer = output.integer.negate();
+		return (mc === undefined) ? output : output.round(mc);
+	}
+
+	/**
+	 * 値同士を比較
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number) {
+		const src = this;
+		const tgt = BigDecimal._toBigDecimal(number);
+		// 簡易計算
+		{
+			const src_sign	= src.signum();
+			const tgt_sign	= tgt.signum();
+			if((src_sign === 0) && (src_sign === tgt_sign)) {
+				return 0;
+			}
+			else if(src_sign === 0) {
+				return - tgt_sign;
+			}
+			else if(tgt_sign === 0) {
+				return src_sign;
+			}
+		}
+		// 実際に計算する
+		if(src._scale === tgt._scale) {
+			return src.integer.compareTo(tgt.integer);
+		}
+		else if(src._scale > tgt._scale) {
+			const newdst = tgt.setScale(src._scale);
+			return src.integer.compareTo(newdst.integer);
+		}
+		else {
+			const newsrc = src.setScale(tgt._scale);
+			return newsrc.integer.compareTo(tgt.integer);
+		}
+	}
+
+	/**
+	 * 等式
+	 * 精度やスケール含めて等しいかをテストする
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @returns {boolean} A === B
+	 */
+	equals(number) {
+		if(number instanceof BigDecimal) {
+			return ((this._scale === number._scale) && (this.integer.equals(number.integer)));
+		}
+		else if((typeof number === "string") || (number instanceof String)) {
+			const val = BigDecimal._toBigDecimal(number);
+			return ((this._scale === val._scale) && (this.integer.equals(val.integer)));
+		}
+		else {
+			return this.compareTo(number) === 0;
+		}
+	}
+
+	/**
+	 * 最大値
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @returns {BigDecimal} max([A, B])
+	 */
+	max(number) {
+		const val = BigDecimal._toBigDecimal(number);
+		if(this.compareTo(val) >= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * 最小値
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @returns {BigDecimal} min([A, B])
+	 */
+	min(number) {
+		const val = BigDecimal._toBigDecimal(number);
+		if(this.compareTo(val) <= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * 精度は変更させずスケールのみを変更させ10の倍数を乗算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @returns {BigDecimal} A * 10^floor(n)
+	 */
+	scaleByPowerOfTen(n) {
+		const x = BigDecimal._toInteger(n);
+		const output = this.clone();
+		output._scale = this.scale() - x;
+		return output;
+	}
+
+	/**
+	 * 小数点の位置を左へ移動
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @returns {BigDecimal} 
+	 */
+	movePointLeft(n) {
+		const x = BigDecimal._toInteger(n);
+		let output = this.scaleByPowerOfTen( -x );
+		output = output.setScale(Math.max(this.scale() + x, 0));
+		return output;
+	}
+
+	/**
+	 * 小数点の位置を右へ移動
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @returns {BigDecimal} 
+	 */
+	movePointRight(n) {
+		const x = BigDecimal._toInteger(n);
+		let output = this.scaleByPowerOfTen( x );
+		output = output.setScale(Math.max(this.scale() - x, 0));
+		return output;
+	}
+
+	/**
+	 * 数字の右側にある0を取り除き、スケールを正規化
+	 * @returns {BigDecimal} 
+	 */
+	stripTrailingZeros() {
+		// 0をできる限り取り除く
+		const sign		= this.signum();
+		const sign_text	= sign >= 0 ? "" : "-";
+		const text		= this.integer.toString(10).replace(/^-/, "");
+		const zeros		= text.match(/0+$/);
+		let zero_length	= (zeros !== null) ? zeros[0].length : 0;
+		if(zero_length === text.length) {
+			// 全て 0 なら 1 ケタ残す
+			zero_length = text.length - 1;
+		}
+		const newScale	= this.scale() - zero_length;
+		return new BigDecimal([new BigInteger(sign_text + text.substring(0, text.length - zero_length)), newScale, this.default_context]);
+	}
+
+	/**
+	 * 加算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、加算先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} A + B
+	 */
+	add(number, context) {
+		const augend = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : augend.default_context;
+		const src			= this;
+		const tgt			= augend;
+		const newscale	= Math.max(src._scale, tgt._scale);
+		if(src._scale === tgt._scale) {
+			// 1 e1 + 1 e1 = 1
+			return new BigDecimal([src.integer.add(tgt.integer), newscale, mc, mc]);
+		}
+		else if(src._scale > tgt._scale) {
+			// 1 e-2 + 1 e-1
+			const newdst = tgt.setScale(src._scale);
+			// 0.01 + 0.10 = 0.11 = 11 e-2
+			return new BigDecimal([src.integer.add(newdst.integer), newscale, mc, mc]);
+		}
+		else {
+			// 1 e-1 + 1 e-2
+			const newsrc = src.setScale(tgt._scale);
+			// 0.1 + 0.01 = 0.11 = 11 e-2
+			return new BigDecimal([newsrc.integer.add(tgt.integer), newscale, mc, mc]);
+		}
+	}
+
+	/**
+	 * 減算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、減算先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} A - B
+	 */
+	subtract(number, context) {
+		const subtrahend = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : subtrahend.default_context;
+		const src			= this;
+		const tgt			= subtrahend;
+		const newscale	= Math.max(src._scale, tgt._scale);
+		if(src._scale === tgt._scale) {
+			return new BigDecimal([src.integer.subtract(tgt.integer), newscale, mc, mc]);
+		}
+		else if(src._scale > tgt._scale) {
+			const newdst = tgt.setScale(src._scale);
+			return new BigDecimal([src.integer.subtract(newdst.integer), newscale, mc, mc]);
+		}
+		else {
+			const newsrc = src.setScale(tgt._scale);
+			return new BigDecimal([newsrc.integer.subtract(tgt.integer), newscale, mc, mc]);
+		}
+	}
+
+	/**
+	 * 減算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、減算先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} A - B
+	 */
+	sub(number, context) {
+		return this.subtract(number, context);
+	}
+
+	/**
+	 * 乗算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} A * B
+	 */
+	multiply(number, context) {
+		const multiplicand = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : multiplicand.default_context;
+		const src			= this;
+		const tgt			= multiplicand;
+		const newinteger	= src.integer.multiply(tgt.integer);
+		// 0.1 * 0.01 = 0.001
+		const newscale	= src._scale + tgt._scale;
+		return new BigDecimal([newinteger, newscale, mc]);
+	}
+
+	/**
+	 * 乗算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} A * B
+	 */
+	mul(number, context) {
+		return this.multiply(number, context);
+	}
+
+	/**
+	 * 小数点まで求めない割り算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} (int)(A / B)
+	 */
+	divideToIntegralValue(number, context) {
+		const divisor = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : divisor.default_context;
+		const getDigit  = function( num ) {
+			let i;
+			let text = "1";
+			for(i = 0; i < num; i++) {
+				text = text + "0";
+			}
+			return new BigInteger(text);
+		};
+		if(divisor.compareTo(BigDecimal.ZERO) === 0) {
+			throw "ArithmeticException";
+		}
+
+		// 1000e0		/	1e2				=	1000e-2
+		// 1000e0		/	10e1			=	100e-1
+		// 1000e0		/	100e0			=	10e0
+		// 1000e0		/	1000e-1			=	1e1
+		// 1000e0		/	10000e-2		=	1e1
+		// 1000e0		/	100000e-3		=	1e1
+
+		// 10e2			/	100e0			=	1e1
+		// 100e1		/	100e0			=	1e1
+		// 1000e0		/	100e0			=	10e0
+		// 10000e-1		/	100e0			=	100e-1	
+		// 100000e-2	/	100e0			=	1000e-2
+
+		const src		= this;
+		const tgt		= divisor;
+		let src_integer	= src.integer;
+		let tgt_integer	= tgt.integer;
+		const newScale	= src._scale - tgt._scale;
+
+		// 100e-2 / 3e-1 = 1 / 0.3 -> 100 / 30
+		if(src._scale > tgt._scale) {
+			// src._scale に合わせる
+			tgt_integer = tgt_integer.multiply(getDigit(  newScale ));
+		}
+		// 1e-1 / 3e-2 = 0.1 / 0.03 -> 10 / 3
+		else if(src._scale < tgt._scale) {
+			// tgt._scale に合わせる
+			src_integer = src_integer.multiply(getDigit( -newScale ));
+		}
+
+		// とりあえず計算結果だけ作ってしまう
+		const new_integer	= src_integer.divide(tgt_integer);
+		const sign			= new_integer.signum();
+		if(sign !== 0) {
+			const text	= new_integer.toString(10).replace(/^-/, "");
+			// 指定した桁では表すことができない
+			if((mc.getPrecision() !== 0) && (text.length > mc.getPrecision())) {
+				throw "ArithmeticException";
+			}
+			// 結果の優先スケール に合わせる (this.scale() - divisor.scale())
+			if(text.length <= (-newScale)) {
+				// 合わせることができないので、0をできる限り削る = stripTrailingZerosメソッド
+				const zeros			= text.match(/0+$/);
+				const zero_length	= (zeros !== null) ? zeros[0].length : 0;
+				const sign_text		= sign >= 0 ? "" : "-";
+				return new BigDecimal([new BigInteger(sign_text + text.substring(0, text.length - zero_length)), -zero_length, mc]);
+			}
+		}
+
+		let output = new BigDecimal(new_integer);
+		output = output.setScale(newScale, RoundingMode.UP);
+		output = output.round(mc);
+		output.default_context = mc;
+		return output;
+	}
+
+	/**
+	 * 割り算と余り
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+	 * @returns {Array<BigDecimal>} [C = (int)(A / B), A - C * B]
+	 */
+	divideAndRemainder(number, context) {
+		const divisor = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : divisor.default_context;
+
+		// 1000e0		/	1e2				=	1000e-2	... 0e0
+		// 1000e0		/	10e1			=	100e-1	... 0e0
+		// 1000e0		/	100e0			=	10e0	... 0e0
+		// 1000e0		/	1000e-1			=	1e1		... 0e0
+		// 1000e0		/	10000e-2		=	1e1		... 0e-1
+		// 1000e0		/	100000e-3		=	1e1		... 0e-2
+
+		// 10e2			/	100e0			=	1e1		... 0e1
+		// 100e1		/	100e0			=	1e1		... 0e1
+		// 1000e0		/	100e0			=	10e0	... 0e0
+		// 10000e-1		/	100e0			=	100e-1	... 0e-1
+		// 100000e-2	/	100e0			=	1000e-2	... 0e-2
+
+		const result_divide	= this.divideToIntegralValue(divisor, mc);
+		const result_remaind	= this.subtract(result_divide.multiply(divisor, mc), mc);
+
+		const output = [result_divide, result_remaind];
+		return output;
+	}
+
+	/**
+	 * 割り算の余り
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} A % B
+	 */
+	rem(number, context) {
+		return this.divideAndRemainder(number, context)[1];
+	}
+
+	/**
+	 * 割り算の正の余り
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} A mod B
+	 */
+	mod(number, context) {
+		const x = this.rem(number, context);
+		if(x.compareTo(BigDecimal.ZERO) < 0) {
+			return x.add(number, context);
+		}
+	}
+
+	/**
+	 * 割り算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - 計算に使用する scale, context, roundingMode を設定する
+	 * @returns {BigDecimal}
+	 */
+	divide(number, type) {
+		const divisor = BigDecimal._toBigDecimal(number);
+		const src			= this;
+		const tgt			= divisor;
+		let roundingMode	= null;
+		let mc				= null;
+		let newScale		= 0;
+		let isPriorityScale	= false;
+		if(type && type.scale) {
+			isPriorityScale	= false;
+			newScale = type.scale;
+		}
+		else {
+			isPriorityScale	= true;
+			if(type && (type.roundingMode || type.context)) {
+				newScale = src.scale();
+			}
+			else {
+				newScale = src.scale() - tgt.scale();
+			}
+		}
+		if(type && type.context) {
+			roundingMode = type.context.getRoundingMode();
+			newScale = type.context.getPrecision();
+			mc = type.context;
+		}
+		else {
+			mc = this.default_context;
+		}
+		if(type && type.roundingMode) {
+			roundingMode = type.roundingMode;
+		}
+		else {
+			roundingMode = mc.getRoundingMode();
+		}
+		
+		if(tgt.compareTo(BigDecimal.ZERO) === 0) {
+			throw "ArithmeticException";
+		}
+		let newsrc;
+		const result_map = [];
+		let result, result_divide, result_remaind, all_result;
+		all_result = BigDecimal.ZERO;
+		const precision = mc.getPrecision();
+		const check_max = precision !== 0 ? (precision + 8) : 0x3FFFF;
+		newsrc = src;
+		for(let i = 0; i < check_max; i++) {
+			result = newsrc.divideAndRemainder(tgt, MathContext.UNLIMITED);
+			result_divide	= result[0];
+			result_remaind	= result[1];
+			all_result = all_result.add(result_divide.scaleByPowerOfTen(-i), MathContext.UNLIMITED);
+			if(result_remaind.compareTo(BigDecimal.ZERO) !== 0) {
+				if(precision === 0) {	// 精度無限大の場合は、循環小数のチェックが必要
+					if(result_map[result_remaind._getUnsignedIntegerString()]) {
+						throw "ArithmeticException " + all_result + "[" + result_remaind._getUnsignedIntegerString() + "]";
+					}
+					else {
+						result_map[result_remaind._getUnsignedIntegerString()] = true;
+					}
+				}
+				newsrc = result_remaind.scaleByPowerOfTen(1);
+			}
+			else {
+				break;
+			}
+		}
+		if(isPriorityScale) {
+			// 優先スケールの場合は、スケールの変更に失敗する可能性あり
+			try {
+				all_result = all_result.setScale(newScale, roundingMode);
+			}
+			catch(e) {
+				// falls through
+			}
+		}
+		else {
+			all_result = all_result.setScale(newScale, roundingMode);
+		}
+		all_result = all_result.round(mc);
+		return all_result;
+	}
+
+	/**
+	 * 割り算
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - 計算に使用する scale, context, roundingMode を設定する
+	 * @returns {BigDecimal} A / B
+	 */
+	div(number, type) {
+		return this.divide(number, type);
+	}
+
+	/**
+	 * BigInteger に変換
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		const x = this.toPlainString().replace(/\.\d*$/, "");
+		return new BigInteger(x);
+	}
+
+	/**
+	 * BigInteger に変換
+	 * 変換に失敗した場合は例外
+	 * @returns {BigInteger}
+	 */
+	toBigIntegerExact() {
+		const x = this.setScale(0, RoundingMode.UNNECESSARY);
+		return new BigInteger(x.toPlainString());
+	}
+
+	/**
+	 * 32ビット整数に変換
+	 * @returns {number}
+	 */
+	get intValue() {
+		const bigintdata = this.toBigInteger();
+		const x = bigintdata.intValue;
+		return x & 0xFFFFFFFF;
+	}
+
+	/**
+	 * 32ビット整数に変換
+	 * 変換に失敗した場合は例外
+	 * @returns {number}
+	 */
+	get intValueExact() {
+		const bigintdata = this.toBigIntegerExact();
+		const x = bigintdata.intValue;
+		if((x < -2147483648) || (2147483647 < x)) {
+			throw "ArithmeticException";
+		}
+		return x;
+	}
+
+	/**
+	 * 32ビット実数に変換
+	 * @returns {number}
+	 */
+	get floatValue() {
+		const p = this.precision();
+		if(MathContext.DECIMAL32.getPrecision() < p) {
+			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
+		}
+		return parseFloat(this.toEngineeringString());
+	}
+
+	/**
+	 * 64ビット実数に変換
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		const p = this.precision();
+		if(MathContext.DECIMAL64.getPrecision() < p) {
+			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
+		}
+		return parseFloat(this.toEngineeringString());
+	}
+
+	/**
+	 * 累乗
+	 * 巨大な乗算をする場合は例外を発生させる
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、累乗先の設定デフォルト値を使用する
+	 * @returns {BigDecimal} pow(A, B)
+	 */
+	pow(number, context) {
+		let n = BigDecimal._toInteger(number);
+		const mc = context ? context : this.default_context;
+		if(Math.abs(n) > 999999999) {
+			throw "ArithmeticException";
+		}
+		if((mc.getPrecision() === 0) && (n < 0)) {
+			throw "ArithmeticException";
+		}
+		if((mc.getPrecision() > 0) && (n > mc.getPrecision())) {
+			throw "ArithmeticException";
+		}
+		let x, y;
+		x = this.clone();
+		y = BigDecimal.ONE;
+		while(n !== 0) {
+			if((n & 1) !== 0) {
+				y = y.multiply(x, MathContext.UNLIMITED);
+			}
+			x = x.multiply(x, MathContext.UNLIMITED);
+			n >>>= 1;
+		}
+		return y.round(mc);
+	}
+	
+	/**
+	 * オブジェクトを新規作成時に環境設定を変更しなかった場合に設定されるデフォルト設定
+	 * @param {MathContext} [context=MathContext.DECIMAL128]
+	 */
+	static setDefaultContext(context) {
+		DEFAULT_CONTEXT = context ? context : MathContext.DECIMAL128;
+	}
+
+	/**
+	 * オブジェクトを新規作成時に環境設定を変更しなかった場合に設定されるデフォルト設定を取得
+	 * @returns {MathContext}
+	 */
+	static getDefaultContext() {
+		return DEFAULT_CONTEXT;
+	}
+
+	// ----------------------
+	// 定数
+	// ----------------------
+	
+	/**
+	 * 0
+	 * @returns {BigDecimal} 0
+	 */
+	static get ZERO() {
+		const x = new BigDecimal(DEFINE$2.ZERO);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+
+	/**
+	 * 1
+	 * @returns {BigDecimal} 1
+	 */
+	static get ONE() {
+		const x = new BigDecimal(DEFINE$2.ONE);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+	
+	/**
+	 * 2
+	 * @returns {BigDecimal} 2
+	 */
+	static get TWO() {
+		const x = new BigDecimal(DEFINE$2.TWO);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+	
+	/**
+	 * 10
+	 * @returns {BigDecimal} 10
+	 */
+	static get TEN() {
+		const x = new BigDecimal(DEFINE$2.TEN);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+
+}
+
+/**
+ * 内部で使用する定数値
+ * @ignore
+ */
+const DEFINE$2 = {
+
+	/**
+	 * 0
+	 */
+	ZERO : new BigDecimal(0),
+
+	/**
+	 * 1
+	 */
+	ONE : new BigDecimal(1),
+
+	/**
+	 * 2
+	 */
+	TWO : new BigDecimal(2),
+
+	/**
+	 * 10
+	 */
+	TEN : new BigDecimal(10)
+};
+
+BigDecimal.RoundingMode = RoundingMode;
+BigDecimal.MathContext = MathContext;
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * 線形代数用の関数集
+ * @ignore
+ */
+class LinearAlgebraTool {
+
+	/**
+	 * 対称行列の三重対角化
+	 * 実数での計算のみ対応
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @returns {{P: Matrix, H: Matrix}}
+	 */
+	static tridiagonalize(mat) {
+
+		const A = Matrix._toMatrix(mat);
+		const a = A.getNumberMatrixArray();
+		const tolerance = 1.0e-10;
+
+		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
+		// 3重対角化の成分を取得する
+		
+		/**
+		 * ベクトルx1とベクトルx2の内積をとる
+		 * @param {Array<number>} x1
+		 * @param {Array<number>} x2
+		 * @param {number} [index_offset=0] - オフセット(この値から行う)
+		 * @param {number} [index_max=x1.length] - 最大(この値は含めない)
+		 * @returns {number} 
+		 */
+		const innerproduct = function(x1, x2, index_offset, index_max) {
+			let y = 0;
+			const ioffset = index_offset ? index_offset : 0;
+			const imax = index_max ? index_max : x1.length;
+			for(let i = ioffset; i < imax; i++) {
+				y += x1[i] * x2[i];
+			}
+			return y;
+		};
+
+		/**
+		 * ハウスホルダー変換
+		 * @param {Array<number>} x - ハウスホルダー変換したいベクトル
+		 * @param {number} [index_offset=0] - オフセット(この値から行う)
+		 * @param {number} [index_max=x.length] - 最大(この値は含めない)
+		 * @returns {{y1: number, v: Array<number>}} 
+		 */
+		const house = function(x, index_offset, index_max) {
+			const ioffset = index_offset ? index_offset : 0;
+			const imax = index_max ? index_max : x.length;
+			// xの内積の平方根（ノルム）を計算
+			let y1 = Math.sqrt(innerproduct(x, x, ioffset, imax));
+			const v = [];
+			if(Math.abs(y1) >= tolerance) {
+				if(x[ioffset] < 0) {
+					y1 = - y1;
+				}
+				let t;
+				for(let i = ioffset, j = 0; i < imax; i++, j++) {
+					if(i === ioffset) {
+						v[j] = x[i] + y1;
+						t = 1.0 / Math.sqrt(v[j] * y1);
+						v[j] = v[j] * t;
+					}
+					else {
+						v[j] = x[i] * t;
+					}
+				}
+			}
+			return {
+				y1: - y1,	// 鏡像の1番目の要素(y2,y3,...は0)
+				v : v		// 直行する単位ベクトル vT*v = 2
+			};
+		};
+
+		const n = a.length;
+		const d = []; // 対角成分
+		const e = []; // 隣の成分
+		{
+			for(let k = 0; k < n - 2; k++) {
+				const v = a[k];
+				d[k] = v[k];
+				{
+					const H = house(v, k + 1, n);
+					e[k] = H.y1;
+					for(let i = 0; i < H.v.length; i++) {
+						v[k + 1 + i] = H.v[i];
+					}
+				}
+				if(Math.abs(e[k]) < tolerance) {
+					continue;
+				}
+				for(let i = k + 1; i < n; i++) {
+					let s = 0;
+					for(let j = k + 1; j < i; j++) {
+						s += a[j][i] * v[j];
+					}
+					for(let j = i; j < n; j++) {
+						s += a[i][j] * v[j];
+					}
+					d[i] = s;
+				}
+				const t = innerproduct(v, d, k + 1, n) / 2.0;
+				for(let i = n - 1; i > k; i--) {
+					const p = v[i];
+					const q = d[i] - (t * p);
+					d[i] = q;
+					for(let j = i; j < n; j++) {
+						const r = p * d[j] + q * v[j];
+						a[i][j] = a[i][j] - r;
+					}
+				}
+			}
+			if(n >= 2) {
+				d[n - 2] = a[n - 2][n - 2];
+				e[n - 2] = a[n - 2][n - 1];
+			}
+			if(n >= 1) {
+				d[n - 1] = a[n - 1][n - 1];
+			}
+		}
+
+		//変換P行列を求める
+		for(let k = n - 1; k >= 0; k--) {
+			const v = a[k];
+			if(k < n - 2) {
+				for(let i = k + 1; i < n; i++) {
+					const w = a[i];
+					const t = innerproduct(v, w, k + 1, n);
+					for(let j = k + 1; j < n; j++) {
+						w[j] -= t * v[j];
+					}
+				}
+			}
+			for(let i = 0; i < n; i++) {
+				v[i] = 0.0;
+			}
+			v[k] = 1.0;
+		}
+
+		// d と e の配列を使って、三重対角行列を作成する
+		const H = Matrix.createMatrixDoEachCalculation(function(row, col) {
+			if(row === col) {
+				return new Complex(d[row]);
+			}
+			else if(Math.abs(row - col) === 1) {
+				return new Complex(e[((row + col) * 0.5) | 0]);
+			}
+			else {
+				return Complex.ZERO;
+			}
+		}, n, n);
+
+		return {
+			P : (new Matrix(a)).T(),
+			H : H
+		};
+	}
+
+	/**
+	 * 対称行列の固有値分解
+	 * 実数での計算のみ対応
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - 対称行列
+	 * @returns {{V: Matrix, D: Matrix}}
+	 */
+	static eig(mat) {
+		const A = Matrix._toMatrix(mat);
+		
+		// QR法により固有値を求める
+		let is_error = false;
+		const tolerance = 1.0e-10;
+		const PH = LinearAlgebraTool.tridiagonalize(A);
+		const a = PH.P.getNumberMatrixArray();
+		const h = PH.H.getNumberMatrixArray();
+		const n = A.row_length;
+
+		// 成分の抽出
+		const d = []; // 対角成分
+		const e = []; // 隣の成分
+		for(let i = 0; i < n; i++) {
+			d[i] = h[i][i];
+			e[i] = (i === 0) ? 0.0 : h[i][i - 1];
+		}
+
+		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
+		const MAX_ITER = 100;
+		for(let h = n - 1; h > 0; h--) {
+			let j = h;
+			for(j = h;j >= 1; j--) {
+				if(Math.abs(e[j]) <= (tolerance * (Math.abs(d[j - 1]) + Math.abs(d[j])))) {
+					break;
+				}
+			}
+			if(j == h) {
+				continue;
+			}
+			let iter = 0;
+			while(true) {
+				iter++;
+				if(iter > MAX_ITER) {
+					is_error = true;
+					break;
+				}
+				let w = (d[h - 1] - d[h]) / 2.0;
+				let t = e[h] * e[h];
+				let s = Math.sqrt(w * w + t);
+				if(w < 0) {
+					s = - s;
+				}
+				let x = d[j] - d[h] + (t / (w + s));
+				let y = e[j + 1];
+				for(let k = j; k < h; k++) {
+					let c, s;
+					if(Math.abs(x) >= Math.abs(y)) {
+						t = - y / x;
+						c = 1.0 / Math.sqrt(t * t + 1);
+						s = t * c;
+					}
+					else {
+						t = - x / y;
+						s = 1.0 / Math.sqrt(t * t + 1);
+						c = t * s;
+					}
+					w = d[k] - d[k + 1];
+					t = (w * s + 2.0 * c * e[k + 1]) * s;
+					d[k] -= t;
+					d[k + 1] += t;
+					if(k > j) {
+						e[k] = c * e[k] - s * y;
+					}
+					e[k + 1] += s * (c * w - 2.0 * s * e[k + 1]);
+					for(let i = 0; i < n; i++) {
+						x = a[i][k];
+						y = a[i][k + 1];
+						a[i][k    ] = c * x - s * y;
+						a[i][k + 1] = s * x + c * y;
+					}
+					if(k < h - 1) {
+						x = e[k + 1];
+						y = -s * e[k + 2];
+						e[k + 2] *= c;
+					}
+				}
+				if(Math.abs(e[h]) <= tolerance * (Math.abs(d[h - 1]) + Math.abs(d[h]))) {
+					break;
+				}
+			}
+			if(is_error) {
+				break;
+			}
+		}
+
+		// 固有値が大きいものから並べるソート
+		const vd_sort = function(V, d) {
+			const len = d.length;
+			const sortdata = [];
+			for(let i = 0; i < len; i++) {
+				sortdata[i] = {
+					sigma : d[i],
+					index : i
+				};
+			}
+			const compare = function(a, b){
+				if(a.sigma === b.sigma) {
+					return 0;
+				}
+				return (a.sigma < b.sigma ? 1 : -1);
+			};
+			sortdata.sort(compare);
+			const MOVE = Matrix.zeros(len);
+			const ND = Matrix.zeros(len);
+			for(let i = 0; i < len; i++) {
+				ND.matrix_array[i][i] = new Complex(sortdata[i].sigma);
+				MOVE.matrix_array[i][sortdata[i].index] = Complex.ONE;
+			}
+			return {
+				V : V.mul(MOVE),
+				D : ND
+			};
+		};
+		const VD = vd_sort(new Matrix(a), d);
+		return VD;
+	}
+
+	/**
+	 * 行列をベクトルと見立て、正規直行化し、QとRの行列を作る
+	 * @param {Matrix} mat - 正方行列
+	 * @returns {{Q: Matrix, R: Matrix, non_orthogonalized : Array<number>}}
+	 */
+	static doGramSchmidtOrthonormalization(mat) {
+		// グラム・シュミットの正規直交化法を使用する
+		// 参考：Gilbert Strang (2007). Computational Science and Engineering.
+
+		const M = Matrix._toMatrix(mat);
+		const len = M.column_length;
+		const A = M.matrix_array;
+		const Q_Matrix = Matrix.zeros(len);
+		const R_Matrix = Matrix.zeros(len);
+		const Q = Q_Matrix.matrix_array;
+		const R = R_Matrix.matrix_array;
+		const non_orthogonalized = [];
+		const a = new Array(len);
+		
+		for(let col = 0; col < len; col++) {
+			// i列目を抽出
+			for(let row = 0; row < len; row++) {
+				a[row] = A[row][col];
+			}
+			// 直行ベクトルを作成
+			if(col > 0) {
+				// Rのi列目を内積で計算する
+				for(let j = 0; j < col; j++) {
+					for(let k = 0; k < len; k++) {
+						R[j][col] = R[j][col].add(A[k][col].dot(Q[k][j]));
+					}
+				}
+				for(let j = 0; j < col; j++) {
+					for(let k = 0; k < len; k++) {
+						a[k] = a[k].sub(R[j][col].mul(Q[k][j]));
+					}
+				}
+			}
+			{
+				// 正規化と距離を1にする
+				for(let j = 0; j < len; j++) {
+					R[col][col] = R[col][col].add(a[j].square());
+				}
+				R[col][col] = R[col][col].sqrt();
+				if(R[col][col].isZero(1e-10)) {
+					// 直行化が不可能だった列の番号をメモして、その列はゼロで埋める
+					non_orthogonalized.push(col);
+					for(let j = 0;j < len;j++) {
+						Q[j][col] = Complex.ZERO;
+					}
+				}
+				else {
+					// ここで R[i][i] === 0 の場合、直行させたベクトルaは0であり、
+					// ランク落ちしており、計算不可能である。
+					// 0割りした値を、j列目のQに記録していくがInfとなる。
+					for(let j = 0;j < len;j++) {
+						Q[j][col] = a[j].div(R[col][col]);
+					}
+				}
+			}
+		}
+		return {
+			Q : Q_Matrix,
+			R : R_Matrix,
+			non_orthogonalized : non_orthogonalized
+		};
+	}
+	
+	/**
+	 * 行列の全行ベクトルに対して、直行したベクトルを作成する
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {number} [epsilon=1.0e-10] - 誤差
+	 * @returns {Matrix|null} 直行したベクトルがなければNULLを返す
+	 */
+	static createOrthogonalVector(mat, epsilon) {
+		const M = new Matrix(mat);
+		const column_length = M.column_length;
+		const m = M.matrix_array;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		// 正則行列をなす場合に問題となる行番号を取得
+		const not_regular_rows = LinearAlgebraTool.getLinearDependenceVector(M, tolerance);
+		// 不要な行を削除する
+		{
+			// not_regular_rowsは昇順リストなので、後ろから消していく
+			for(let i = not_regular_rows.length - 1; i >= 0; i--) {
+				m.splice(not_regular_rows[i], 1);
+				M.row_length--;
+			}
+		}
+		// 追加できるベクトルの数
+		const add_vectors = column_length - m.length;
+		if(add_vectors <= 0) {
+			return null;
+		}
+		// ランダムベクトル（seed値は毎回同一とする）
+		const noise = new Random(0);
+		let orthogonal_matrix = null;
+		for(let i = 0; i < 100; i++) {
+			// 直行ベクトルを作るために、いったん行と列を交換する
+			// これは、グラム・シュミットの正規直交化法が列ごとに行う手法のため。
+			const M2 = M.T();
+			// ランダム行列を作成する
+			const R = Matrix.createMatrixDoEachCalculation(function() {
+				return new Complex(noise.nextGaussian());
+			}, M2.row_length, add_vectors);
+			// 列に追加する
+			M2._concatLeft(R);
+			// 正規直行行列を作成する
+			orthogonal_matrix = LinearAlgebraTool.doGramSchmidtOrthonormalization(M2);
+			// 正しく作成できていたら完了
+			if(orthogonal_matrix.non_orthogonalized.length === 0) {
+				break;
+			}
+		}
+		if(orthogonal_matrix.non_orthogonalized.length !== 0) {
+			// 普通は作成できないことはないが・・・
+			console.log("miss");
+			return null;
+		}
+		// 作成した列を切り出す
+		const y = new Array(add_vectors);
+		const q = orthogonal_matrix.Q.matrix_array;
+		for(let row = 0; row < add_vectors; row++) {
+			y[row] = new Array(column_length);
+			for(let col = 0; col < column_length; col++) {
+				y[row][col] = q[col][column_length - add_vectors + row];
+			}
+		}
+		return new Matrix(y);
+	}
+
+	/**
+	 * 列の中で最もノルムが最大の値がある行番号
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {number} column_index - 列番号
+	 * @param {number} [row_index_offset=0] - 行のオフセット(この値から行う)
+	 * @param {number} [row_index_max] - 行の最大(この値は含めない)
+	 * @returns {{index: number, max: number}} 行番号
+	 * @private
+	 */
+	static getMaxRowNumber(mat, column_index, row_index_offset, row_index_max) {
+		const M = Matrix._toMatrix(mat);
+		let row_index = 0;
+		let row_max = 0;
+		let row = row_index_offset ? row_index_offset : 0;
+		const row_imax = row_index_max ? row_index_max : M.row_length;
+		// n列目で最も大きな行を取得
+		for(; row < row_imax; row++) {
+			const norm = M.matrix_array[row][column_index].norm;
+			if(norm > row_max) {
+				row_max = norm;
+				row_index = row;
+			}
+		}
+		return {
+			index : row_index,
+			max : row_max
+		};
+	}
+
+	/**
+	 * 行列の各行をベクトルと見立て、線型従属している行を抽出
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {number} [epsilon=1.0e-10] - 誤差
+	 * @returns {Array} 行番号の行列(昇順)
+	 * @private
+	 */
+	static getLinearDependenceVector(mat, epsilon) {
+		const M = new Matrix(mat);
+		const m = M.matrix_array;
+		const tolerance = epsilon ? Matrix._toDouble(epsilon) : 1.0e-10;
+		// 確認する行番号（ここから終わった行は削除していく）
+		const row_index_array = new Array(mat.row_length);
+		for(let i = 0; i < mat.row_length; i++) {
+			row_index_array[i] = i;
+		}
+		// ガウスの消去法を使用して、行ベクトルを抽出していく
+		for(let col_target = 0; col_target < M.column_length; col_target++) {
+			let row_max_index = 0;
+			{
+				let row_max = 0;
+				let row_max_key = 0;
+				// n列目で絶対値が最も大きな行を取得
+				for(const row_key in row_index_array) {
+					const row = row_index_array[row_key];
+					const norm = m[row][col_target].norm;
+					if(norm > row_max) {
+						row_max = norm;
+						row_max_key = parseInt(row_key, 10);
+						row_max_index = row;
+					}
+				}
+				// 大きいのが0である＝その列は全て0である
+				if(row_max <= tolerance) {
+					continue;
+				}
+				// 大きな値があった行は、リストから除去する
+				row_index_array.splice(row_max_key, 1);
+				if(col_target === M.column_length - 1) {
+					break;
+				}
+			}
+			// 次の列から、大きな値があった行の成分を削除
+			for(const row_key in row_index_array) {
+				const row = row_index_array[row_key];
+				const inv = m[row][col_target].div(m[row_max_index][col_target]);
+				for(let col = col_target; col < M.column_length; col++) {
+					m[row][col] = m[row][col].sub(m[row_max_index][col].mul(inv));
+				}
+			}
+		}
+		return row_index_array;
+	}
+
+}
+
+/**
+ * Matrix用の線形代数用の計算クラス
+ */
+class LinearAlgebra {
+
+	/**
+	 * ドット積
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} A
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} B
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] 計算するときに使用する次元（1 or 2）
+	 * @returns {Matrix} A・B 
+	 */
+	static inner(A, B, dimension) {
+		const M1 = Matrix._toMatrix(A);
+		const M2 = Matrix._toMatrix(B);
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const dim = dimension ? Matrix._toInteger(dimension) : 1;
+		if(M1.isScalar() && M2.isScalar()) {
+			return new Matrix(M1.scalar.dot(M2.scalar));
+		}
+		if(M1.isVector() && M2.isVector()) {
+			let sum = Complex.ZERO;
+			for(let i = 0; i < M1.length; i++) {
+				sum = sum.add(M1.getComplex(i).dot(M2.getComplex(i)));
+			}
+			return new Matrix(sum);
+		}
+		if((M1.row_length !== M2.row_length) || (M1.column_length !== M2.column_length)) {
+			throw "Matrix size does not match";
+		}
+		if(dim === 1) {
+			const y = new Array(1);
+			y[0] = new Array(M1.column_length);
+			for(let col = 0; col < M1.column_length; col++) {
+				let sum = Complex.ZERO;
+				for(let row = 0; row < M1.row_length; row++) {
+					sum = sum.add(x1[row][col].dot(x2[row][col]));
+				}
+				y[0][col] = sum;
+			}
+			return new Matrix(y);
+		}
+		else if(dim === 2) {
+			const y = new Array(M1.row_length);
+			for(let row = 0; row < M1.row_length; row++) {
+				let sum = Complex.ZERO;
+				for(let col = 0; col < M1.column_length; col++) {
+					sum = sum.add(x1[row][col].dot(x2[row][col]));
+				}
+				y[row] = [sum];
+			}
+			return new Matrix(y);
+		}
+		else {
+			throw "dim";
+		}
+	}
+
+	/**
+	 * pノルム
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+	 * @returns {number}
+	 */
+	static norm(mat, p) {
+		const M = Matrix._toMatrix(mat);
+		const p_number = (p === undefined) ? 2 : Matrix._toDouble(p);
+		if(p_number === 1) {
+			// 行列の1ノルム
+			const y = M.matrix_array;
+			// 行ノルムを計算する
+			if(M.isRow()) {
+				let sum = 0.0;
+				for(let col = 0; col < M.column_length; col++) {
+					sum += y[0][col].norm;
+				}
+				return sum;
+			}
+			// 列ノルムを計算する
+			else if(M.isColumn()) {
+				let sum = 0.0;
+				for(let row = 0; row < M.row_length; row++) {
+					sum += y[row][0].norm;
+				}
+				return sum;
+			}
+			// 列の和の最大値
+			let max = 0;
+			// 列を固定して行の和を計算
+			for(let col = 0; col < M.column_length; col++) {
+				let sum = 0;
+				for(let row = 0; row < M.row_length; row++) {
+					sum += y[row][col].norm;
+				}
+				if(max < sum) {
+					max = sum;
+				}
+			}
+			return max;
+		}
+		else if(p_number === 2) {
+			// 行列の2ノルム
+			const y = M.matrix_array;
+			// 行ノルムを計算する
+			if(M.isRow()) {
+				let sum = 0.0;
+				for(let col = 0; col < M.column_length; col++) {
+					sum += y[0][col].square().real;
+				}
+				return Math.sqrt(sum);
+			}
+			// 列ノルムを計算する
+			else if(M.isColumn()) {
+				let sum = 0.0;
+				for(let row = 0; row < M.row_length; row++) {
+					sum += y[row][0].square().real;
+				}
+				return Math.sqrt(sum);
+			}
+			return M.svd().S.diag().max().scalar.real;
+		}
+		else if((p_number === Number.POSITIVE_INFINITY) || (p_number === Number.NEGATIVE_INFINITY)) {
+			const y = M.matrix_array;
+			let compare_number = p_number === Number.POSITIVE_INFINITY ? 0 : Number.POSITIVE_INFINITY;
+			const compare_func = p_number === Number.POSITIVE_INFINITY ? Math.max : Math.min;
+			// 行ノルムを計算する
+			if(M.isRow()) {
+				for(let col = 0; col < M.column_length; col++) {
+					compare_number = compare_func(compare_number, y[0][col].norm);
+				}
+				return compare_number;
+			}
+			// 列ノルムを計算する
+			if(M.isColumn()) {
+				for(let row = 0; row < M.row_length; row++) {
+					compare_number = compare_func(compare_number, y[row][0].norm);
+				}
+				return compare_number;
+			}
+			// 行列の場合は、列の和の最大値
+			compare_number = 0;
+			for(let row = 0; row < M.row_length; row++) {
+				let sum = 0.0;
+				for(let col = 0; col < M.column_length; col++) {
+					sum += y[row][col].norm;
+				}
+				compare_number = Math.max(compare_number, sum);
+			}
+			return compare_number;
+		}
+		else if(M.isVector()) {
+			// 一般化ベクトルpノルム
+			let sum = 0.0;
+			for(let i = 0; i < M.length; i++) {
+				sum += Math.pow(M.getComplex(i).norm, p_number);
+			}
+			return Math.pow(sum, 1.0 / p_number);
+		}
+		// 未実装
+		throw "norm";
+	}
+	
+	/**
+	 * 条件数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+	 * @returns {number}
+	 */
+	static cond(mat, p) {
+		const M = Matrix._toMatrix(mat);
+		const p_number = (p === undefined) ? 2 : Matrix._toInteger(p);
+		if(p_number === 2) {
+			// 零行列は Inf
+			if(M.isZeros()) {
+				return Number.POSITIVE_INFINITY;
+			}
+			// ベクトルは1
+			if(M.isVector()) {
+				return 1;
+			}
+			// ユニタリは1
+			if(M.isUnitary()) {
+				return 1;
+			}
+			const s = M.svd().S.diag();
+			return s.max().scalar.real / s.min().scalar.real;
+		}
+		return M.norm(p) * M.pinv().norm(p);
+	}
+
+	/**
+	 * 1ノルムの条件数の逆数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @returns {number}
+	 */
+	static rcond(mat) {
+		return 1.0 / LinearAlgebra.cond(Matrix._toMatrix(mat), 1);
+	}
+
+	/**
+	 * ランク
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {number} rank(A)
+	 */
+	static rank(mat, epsilon) {
+		const M = Matrix._toMatrix(mat);
+		// 横が長い行列の場合
+		if(M.row_length <= M.column_length) {
+			return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
+		}
+		else {
+			return M.row_length - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
+		}
+	}
+
+	/**
+	 * トレース
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @returns {Complex}
+	 */
+	static trace(mat) {
+		const M = Matrix._toMatrix(mat);
+		const len = Math.min(M.row_length, M.column_length);
+		let sum = Complex.ZERO;
+		for(let i = 0; i < len; i++) {
+			sum = sum.add(M.matrix_array[i][i]);
+		}
+		return sum;
+	}
+
+	/**
+	 * 行列式
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @returns {Matrix} |A|
+	 */
+	static det(mat) {
+		const M = Matrix._toMatrix(mat);
+		if(!M.isSquare()) {
+			throw "not square";
+		}
+		const len = M.length;
+		if(len < 5) {
+			const calcDet = function(x) {
+				if(x.length === 2) {
+					// 2次元の行列式になったら、たすき掛け計算する
+					return x[0][0].mul(x[1][1]).sub(x[0][1].mul(x[1][0]));
+				}
+				let y = Complex.ZERO;
+				for(let i = 0; i < x.length; i++) {
+					// N次元の行列式を、N-1次元の行列式に分解していく
+					const D = [];
+					const a = x[i][0];
+					for(let row = 0, D_low = 0; row < x.length; row++) {
+						if(i === row) {
+							continue;
+						}
+						D[D_low] = [];
+						for(let col = 1, D_col = 0; col < x.length; col++, D_col++) {
+							D[D_low][D_col] = x[row][col];
+						}
+						D_low++;
+					}
+					if((i % 2) === 0) {
+						y = y.add(a.mul(calcDet(D)));
+					}
+					else {
+						y = y.sub(a.mul(calcDet(D)));
+					}
+				}
+				return y;
+			};
+			return new Matrix(calcDet(M.matrix_array));
+		}
+		else {
+			// サイズが大きい場合は、lu分解を利用する
+			const lup = LinearAlgebra.lup(M);
+			const exchange_count = (len - lup.P.diag().sum().scalar.real) / 2;
+			// 上行列の対角線上の値を掛け算する
+			let y = lup.U.diag().prod();
+			if((exchange_count % 2) === 1) {
+				y = y.negate();
+			}
+			return new Matrix(y);
+		}
+	}
+
+	/**
+	 * LUP分解
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
+	 */
+	static lup(mat) {
+		const A = new Matrix(mat);
+		const L = Matrix.zeros(A.row_length);
+		const U = A;
+		const P = Matrix.eye(A.row_length);
+		const l = L.matrix_array;
+		const u = U.matrix_array;
+		// ガウスの消去法で連立1次方程式の未知数を求める
+		//前進消去
+		for(let k = 0; k < A.column_length; k++) {
+			// ピポットの選択
+			let pivot;
+			{
+				// k列目で最も大きな行を取得(k列目から調べる)
+				const max_row_number = LinearAlgebraTool.getMaxRowNumber(U, k, k);
+				pivot = max_row_number.index;
+				if(max_row_number.max === 0.0) {
+					continue;
+				}
+				//交換を行う
+				if(k !== pivot) {
+					L._exchangeRow(k, pivot);
+					U._exchangeRow(k, pivot);
+					P._exchangeRow(k, pivot);
+				}
+			}
+			// 消去
+			for(let row = k + 1;row < A.row_length; row++) {
+				const temp = u[row][k].div(u[k][k]);
+				l[row][k] = temp;
+				//lの値だけ行交換が必要？
+				for(let col = k; col < A.column_length; col++) {
+					u[row][col] = u[row][col].sub(u[k][col].mul(temp));
+				}
+			}
+		}
+		L._resize(A.row_length, Math.min(A.row_length, A.column_length));
+		U._resize(Math.min(A.row_length, A.column_length), A.column_length);
+		// L の対角線に1を代入
+		L._each(function(num, row, col) {
+			return row === col ? Complex.ONE : num;
+		});
+		return {
+			L : L,
+			U : U,
+			P : P
+		};
+	}
+
+	/**
+	 * LU分解
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {{L: Matrix, U: Matrix}} L*U=A
+	 */
+	static lu(mat) {
+		const lup = LinearAlgebra.lup(mat);
+		const L = lup.P.T().mul(lup.L);
+		return {
+			L : L,
+			U : lup.U
+		};
+	}
+
+	/**
+	 * 連立一次方程式を解く
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
+	 * @returns {Matrix} Ax=B となる x
+	 * @todo 安定化のためQR分解を用いた手法に切り替える。あるいはlup分解を使用した関数に作り替える。
+	 */
+	static linsolve(mat, number) {
+		const A = Matrix._toMatrix(mat);
+		const B = Matrix._toMatrix(number);
+		if(!A.isSquare()) {
+			throw "Matrix size does not match";
+		}
+		// 連立一次方程式を解く
+		const arg = B;
+		if((B.row_length !== A.row_length) || (B.column_length > 1)) {
+			throw "Matrix size does not match";
+		}
+		// 行列を準備する
+		const M = new Matrix(A);
+		M._concatLeft(arg);
+		const long_matrix_array = M.matrix_array;
+		const long_length = M.column_length;
+		const len = A.column_length;
+		// ガウスの消去法で連立1次方程式の未知数を求める
+		//前進消去
+		for(let k = 0; k < (len - 1); k++) {
+			//ピポットの選択
+			{
+				// k列目で最も大きな行を取得(k列目から調べる)
+				const row_num = LinearAlgebraTool.getMaxRowNumber(M, k, k).index;
+				//交換を行う
+				M._exchangeRow(k, row_num);
+			}
+			//ピポットの正規化
+			{
+				const normalize_value = long_matrix_array[k][k].inv();
+				for(let row = k, col = k; col < long_length; col++) {
+					long_matrix_array[row][col] = long_matrix_array[row][col].mul(normalize_value);
+				}
+			}
+			//消去
+			for(let row = k + 1;row < len; row++) {
+				const temp = long_matrix_array[row][k];
+				for(let col = k; col < long_length; col++) {
+					long_matrix_array[row][col] = long_matrix_array[row][col].sub(long_matrix_array[k][col].mul(temp));
+				}
+			}
+		}
+		//後退代入
+		const y = new Array(len);
+		y[len - 1] = long_matrix_array[len - 1][len].div(long_matrix_array[len - 1][len - 1]);
+		for(let row = len - 2; row >= 0; row--) {
+			y[row] = long_matrix_array[row][long_length - 1];
+			for(let j = row + 1; j < len; j++) {
+				y[row] = y[row].sub(long_matrix_array[row][j].mul(y[j]));
+			}
+			y[row] = y[row].div(long_matrix_array[row][row]);
+		}
+		const y2 = new Array(A.row_length);
+		for(let row = 0; row < A.row_length; row++) {
+			y2[row] = [y[row]];
+		}
+
+		return new Matrix(y2);
+	}
+
+	/**
+	 * QR分解
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {{Q: Matrix, R: Matrix}}  Q*R=A, Qは正規直行行列、Rは上三角行列
+	 */
+	static qr(mat) {
+		// 行列を準備する
+		const M = new Matrix(mat);
+		// 作成後のQとRのサイズ
+		const Q_row_length = M.row_length;
+		const Q_column_length = M.row_length;
+		const R_row_length = M.row_length;
+		const R_column_length = M.column_length;
+		// 計算時の行と列のサイズ
+		const dummy_size = Math.max(M.row_length, M.column_length);
+		// 正方行列にする
+		M._resize(dummy_size, dummy_size);
+		// 正規直行化
+		const orthogonal_matrix = LinearAlgebraTool.doGramSchmidtOrthonormalization(M);
+		// 計算したデータを取得
+		let Q_Matrix = orthogonal_matrix.Q;
+		const R_Matrix = orthogonal_matrix.R;
+		const non_orthogonalized = orthogonal_matrix.non_orthogonalized;
+
+		// Qのサイズを成型する
+		if(non_orthogonalized.length === M.row_length) {
+			// 零行列の場合の特別処理
+			Q_Matrix = Matrix.eye(M.row_length);
+		}
+		else if(non_orthogonalized.length !== 0) {
+			// 一部、直行化できていない列があるため直行化できてない列以外を抽出
+			const map = {};
+			for(let i = 0; i < non_orthogonalized.length; i++) {
+				map[non_orthogonalized[i]] = 1;
+			}
+			const orthogonalized = [];
+			for(let i = 0; i < dummy_size; i++) {
+				if(map[i]) {
+					continue;
+				}
+				const array = [];
+				for(let j = 0; j < dummy_size; j++) {
+					array[j] = Q_Matrix.matrix_array[j][i];
+				}
+				orthogonalized.push(array);
+			}
+			// 直行ベクトルを作成する
+			const orthogonal_vector = LinearAlgebraTool.createOrthogonalVector(orthogonalized);
+			// 直行化できていない列を差し替える
+			for(let i = 0; i < non_orthogonalized.length; i++) {
+				const q_col = non_orthogonalized[i];
+				for(let j = 0; j < dummy_size; j++) {
+					Q_Matrix.matrix_array[j][q_col] = orthogonal_vector.matrix_array[i][j];
+				}
+			}
+		}
+		Q_Matrix._resize(Q_row_length, Q_column_length);
+		// Rのサイズを成形する
+		R_Matrix._resize(R_row_length, R_column_length);
+		return {
+			Q : Q_Matrix,
+			R : R_Matrix
+		};
+	}
+
+	/**
+	 * 対称行列の三重対角化
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {{P: Matrix, H: Matrix}} P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致
+	 */
+	static tridiagonalize(mat) {
+		const M = new Matrix(mat);
+		if(!M.isSquare()) {
+			throw "not square matrix";
+		}
+		if(!M.isSymmetric()) {
+			throw "not Symmetric";
+		}
+		if(M.isComplex()) {
+			throw "not Real Matrix";
+		}
+		return LinearAlgebraTool.tridiagonalize(M);
+	}
+
+	/**
+	 * 対称行列の固有値分解
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {{V: Matrix, D: Matrix}} V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列
+	 * @todo 対称行列しか対応できていないので、対称行列ではないものはQR分解を用いた手法に切り替える予定。
+	 */
+	static eig(mat) {
+		const M = new Matrix(mat);
+		if(!M.isSquare()) {
+			throw "not square matrix";
+		}
+		if(!M.isSymmetric()) {
+			throw "not Symmetric";
+		}
+		if(M.isComplex()) {
+			throw "not Real Matrix";
+		}
+		return LinearAlgebraTool.eig(M);
+	}
+
+	/**
+	 * 特異値分解
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
+	 */
+	static svd(mat) {
+		const M = new Matrix(mat);
+		if(M.isComplex()) {
+			// 複素数が入っている場合は、eig関数が使用できないので非対応
+			throw "Unimplemented";
+		}
+		const rank = LinearAlgebra.rank(M);
+		// SVD分解
+		// 参考：Gilbert Strang (2007). Computational Science and Engineering.
+		const VD = LinearAlgebra.eig(M.T().mul(M));
+		const sigma = Matrix.zeros(M.row_length, M.column_length);
+		sigma._each(function(num, row, col) {
+			if((row === col) && (row < rank)) {
+				return VD.D.getComplex(row, row).sqrt();
+			}
+		});
+		const s_size = Math.min(M.row_length, M.column_length);
+		const sing = Matrix.createMatrixDoEachCalculation(function(row, col) {
+			if(row === col) {
+				const x = sigma.matrix_array[row][row];
+				if(x.isZero()) {
+					return Complex.ZERO;
+				}
+				else {
+					return x.inv();
+				}
+			}
+			else {
+				return Complex.ZERO;
+			}
+		}, s_size);
+		const V_rank = VD.V.resize(VD.V.row_length, s_size);
+		const u = M.mul(V_rank).mul(sing);
+		const QR = LinearAlgebra.qr(u);
+		return {
+			U : QR.Q,
+			S : sigma,
+			V : VD.V
+		};
+	}
+
+	/**
+	 * 逆行列
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {Matrix} A^-1
+	 */
+	static inv(mat) {
+		const X = new Matrix(mat);
+		if(X.isScalar()) {
+			return new Matrix(Complex.ONE.div(X.scalar));
+		}
+		if(!X.isSquare()) {
+			throw "not square";
+		}
+		if(X.isDiagonal()) {
+			// 対角行列の場合は、対角成分のみ逆数をとる
+			const y = X.T();
+			const size = Math.min(y.row_length, y.column_length);
+			for(let i = 0; i < size; i++) {
+				y.matrix_array[i][i] = y.matrix_array[i][i].inv();
+			}
+			return y;
+		}
+		// (ここで正規直交行列の場合なら、転置させるなど入れてもいい？判定はできないけども)
+		const len = X.column_length;
+		// ガウス・ジョルダン法
+		// 初期値の設定
+		const M = new Matrix(X);
+		M._concatLeft(Matrix.eye(len));
+		const long_matrix_array = M.matrix_array;
+		const long_length = M.column_length;
+
+		//前進消去
+		for(let k = 0; k < len; k++) {
+			//ピポットの選択
+			{
+				// k列目で最も大きな行を取得(k列目から調べる)
+				const row_num = LinearAlgebraTool.getMaxRowNumber(M, k, k).index;
+				//交換を行う
+				M._exchangeRow(k, row_num);
+			}
+			//ピポットの正規化
+			{
+				const normalize_value = long_matrix_array[k][k].inv();
+				for(let row = k, col = k; col < long_length; col++) {
+					long_matrix_array[row][col] = long_matrix_array[row][col].mul(normalize_value);
+				}
+			}
+			//消去
+			for(let row = 0;row < len; row++) {
+				if(row === k) {
+					continue;
+				}
+				const temp = long_matrix_array[row][k];
+				for(let col = k; col < long_length; col++)
+				{
+					long_matrix_array[row][col] = long_matrix_array[row][col].sub(long_matrix_array[k][col].mul(temp));
+				}
+			}
+		}
+
+		const y = new Array(len);
+		//右の列を抜き取る
+		for(let row = 0; row < len; row++) {
+			y[row] = new Array(len);
+			for(let col = 0; col < len; col++) {
+				y[row][col] = long_matrix_array[row][len + col];
+			}
+		}
+
+		return new Matrix(y);
+	}
+
+	/**
+	 * 疑似逆行列
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @returns {Matrix} A^+
+	 */
+	static pinv(mat) {
+		const M = new Matrix(mat);
+		const USV = LinearAlgebra.svd(M);
+		const U = USV.U;
+		const S = USV.S;
+		const V = USV.V;
+		const sing = Matrix.createMatrixDoEachCalculation(function(row, col) {
+			if(row === col) {
+				const x = S.matrix_array[row][row];
+				if(x.isZero()) {
+					return Complex.ZERO;
+				}
+				else {
+					return x.inv();
+				}
+			}
+			else {
+				return Complex.ZERO;
+			}
+		}, M.column_length, M.row_length);
+		return V.mul(sing).mul(U.T());
+	}
+
+
+
+}
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * 実数専用の統計処理用の関数集
+ * @ignore
+ */
+class StatisticsTool {
+
+	/**
+	 * gammaln(x) 対数ガンマ関数 
+	 * @param {number} x
+	 * @returns {number}
+	 */
+	static gammaln(x) {
+		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
+		const LOG_2PI = Math.log(2.0 * Math.PI);
+		//ベルヌーイ数
+		//http://fr.wikipedia.org/wiki/Nombre_de_Bernoulli
+		const K2 = ( 1.0 / 6.0)					/ (2 * 1);
+		const K4 = (-1.0 / 30.0)				/ (4 * 3);
+		const K6 = ( 1.0 / 42.0)				/ (6 * 5);
+		const K8 = (-1.0 / 30.0)				/ (8 * 7);
+		const K10 = ( 5.0 / 66.0)				/ (10 * 9);
+		const K12 = (-691.0 / 2730.0)			/ (12 * 11);
+		const K14 = ( 7.0 / 6.0)				/ (14 * 13);
+		const K16 = (-3617.0 / 510.0)			/ (16 * 15);
+		const K18 = (43867.0 / 798.0)			/ (18 * 17);
+		const K20 = (-174611.0 / 330.0)			/ (20 * 19);
+		const K22 = (854513.0 / 138.0)			/ (22 * 21);
+		const K24 = (-236364091.0 / 2730.0)		/ (24 * 23);
+		const K26 = (8553103.0 / 6.0)			/ (26 * 25);
+		const K28 = (-23749461029.0 / 870.0)	/ (28 * 27);
+		const K30 = (8615841276005.0 / 14322.0)	/ (30 * 29);
+		const K32 = (-7709321041217.0 / 510.0)	/ (32 * 31);
+		const LIST = [
+			K32, K30, K28, K26, K24, K22, K20, K18,
+			K16, K14, K12, K10, K8, K6, K4, K2
+		];
+		let v = 1;
+		let lx = x;
+		while(lx < LIST.length) {
+			v *= lx;
+			lx++;
+		}
+		const w = 1 / (lx * lx);
+		let y = LIST[0];
+		for(let i = 1; i < LIST.length; i++) {
+			y *= w;
+			y += LIST[i];
+		}
+		y /= lx;
+		y += 0.5 * LOG_2PI;
+		y += - Math.log(v) - lx + (lx - 0.5) * Math.log(lx);
+		return(y);
+	}
+
+	/**
+	 * q_gamma(x, a, gammaln_a) 不完全ガンマ関数 上側
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} gammaln_a
+	 * @returns {number}
+	 */
+	static q_gamma(x, a, gammaln_a) {
+		// 参考：奥村,"C言語による最新アルゴリズム事典",p227,技術評論社,1991
+		let k;
+		let result, w, temp, previous;
+		// Laguerreの多項式
+		let la = 1.0, lb = 1.0 + x - a;
+		if(x < 1.0 + a) {
+			return (1 - StatisticsTool.p_gamma(x, a, gammaln_a));
+		}
+		w = Math.exp(a * Math.log(x) - x - gammaln_a);
+		result = w / lb;
+		for(k = 2; k < 1000; k++) {
+			temp = ((k - 1.0 - a) * (lb - la) + (k + x) * lb) / k;
+			la = lb;
+			lb = temp;
+			w *= (k - 1.0 - a) / k;
+			temp = w / (la * lb);
+			previous = result;
+			result += temp;
+			if(result == previous) {
+				return(result);
+			}
+		}
+		return Number.NaN;
+	}
+
+	/**
+	 * p_gamma(x, a, gammaln_a) 不完全ガンマ関数 下側
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} gammaln_a
+	 * @returns {number}
+	 */
+	static p_gamma(x, a, gammaln_a) {
+		// 参考：奥村,"C言語による最新アルゴリズム事典",p227,技術評論社,1991
+		let k;
+		let result, term, previous;
+		if(x >= 1.0 + a) {
+			return (1.0 - StatisticsTool.q_gamma(x, a, gammaln_a));
+		}
+		if(x === 0.0) {
+			return 0.0;
+		}
+		result = term = Math.exp(a * Math.log(x) - x - gammaln_a) / a;
+		for(k = 1; k < 1000; k++) {
+			term *= x / (a + k);
+			previous = result;
+			result += term;
+			if(result == previous) {
+				return result;
+			}
+		}
+		return Number.NaN;
+	}
+
+	/**
+	 * gamma(z) ガンマ関数
+	 * @param {number} z
+	 * @returns {number}
+	 */
+	static gamma(z) {
+		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
+		if(z < 0) {
+			return (Math.PI / (Math.sin(Math.PI * z) * Math.exp(StatisticsTool.gammaln(1.0 - z))));
+		}
+		return Math.exp(StatisticsTool.gammaln(z));
+	}
+
+	/**
+	 * gammainc(x, a, tail) 不完全ガンマ関数
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {string} [tail="lower"] lower(デフォルト)/upper
+	 * @returns {number}
+	 */
+	static gammainc(x, a, tail) {
+		if(tail === "lower") {
+			return StatisticsTool.p_gamma(x, a, StatisticsTool.gammaln(a));
+		}
+		else if(tail === "upper") {
+			return StatisticsTool.q_gamma(x, a, StatisticsTool.gammaln(a));
+		}
+		else if(arguments.length === 2) {
+			// 引数を省略した場合
+			return StatisticsTool.gammainc(x, a, "lower");
+		}
+		else {
+			throw "gammainc unsupported argument [" + tail + "]";
+		}
+	}
+	
+	/**
+	 * gampdf(x, k, s) ガンマ分布の確率密度関数
+	 * @param {number} x
+	 * @param {number} k - 形状母数
+	 * @param {number} s - 尺度母数
+	 * @returns {number}
+	 */
+	static gampdf(x, k, s) {
+		let y = 1.0 / (StatisticsTool.gamma(k) * Math.pow(s, k));
+		y *= Math.pow( x, k - 1);
+		y *= Math.exp( - x / s );
+		return y;
+	}
+
+	/**
+	 * gamcdf(x, k, s) ガンマ分布の累積分布関数
+	 * @param {number} x
+	 * @param {number} k - 形状母数
+	 * @param {number} s - 尺度母数
+	 * @returns {number}
+	 */
+	static gamcdf(x, k, s) {
+		return StatisticsTool.gammainc(x / s, k);
+	}
+	
+	/**
+	 * gaminv(p, k, s) ガンマ分布の累積分布関数の逆関数
+	 * @param {number} p
+	 * @param {number} k - 形状母数
+	 * @param {number} s - 尺度母数
+	 * @returns {number}
+	 */
+	static gaminv(p, k, s) {
+		if((p < 0.0) || (p > 1.0)) {
+			return Number.NaN;
+		}
+		else if(p == 0.0) {
+			return 0.0;
+		}
+		else if(p == 1.0) {
+			return Number.POSITIVE_INFINITY;
+		}
+		const eps = 1.0e-12;
+		// 初期値を決める
+		let y = k * s;
+		// 単調増加関数なのでニュートン・ラフソン法で解く
+		// x_n+1 = x_n - f(x) / f'(x)
+		// ここで f(x) は累積分布関数、f'(x) は確率密度関数
+		// a = 累積分関数 → f(x)  = 累積分関数 - a と置く。
+		// aの微分は0なので無関係
+		let delta, y2;
+		for(let i = 0; i < 100; i++) {
+			y2 = y - ((StatisticsTool.gamcdf(y, k, s) - p) / StatisticsTool.gampdf(y, k, s));
+			delta = y2 - y;
+			if(Math.abs(delta) <= eps) {
+				break;
+			}
+			y = y2;
+			if(y < 0.0) {
+				y = eps;
+			}
+		}
+		return y;
+	}
+
+	/**
+	 * beta(x, y) ベータ関数
+	 * @param {number} x
+	 * @param {number} y
+	 * @returns {number}
+	 */
+	static beta(x, y) {
+		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
+		return (Math.exp(StatisticsTool.gammaln(x) + StatisticsTool.gammaln(y) - StatisticsTool.gammaln(x + y)));
+	}
+	
+	/**
+	 * p_beta(x, a, b) 不完全ベータ関数 下側
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static p_beta(x, a, b) {
+		// 参考：奥村,"C言語による最新アルゴリズム事典",p231,技術評論社,1991
+		let k;
+		let result, term, previous;
+		if(a <= 0.0) {
+			return Number.POSITIVE_INFINITY;
+		}
+		if(b <= 0.0) {
+			if(x < 1.0) {
+				return 0.0;
+			}
+			else if(x === 1.0) {
+				return 1.0;
+			}
+			else {
+				return Number.POSITIVE_INFINITY;
+			}
+		}
+		if(x > (a + 1.0) / (a + b + 2.0)) {
+			return (1.0 - StatisticsTool.p_beta(1.0 - x, b, a));
+		}
+		if(x <= 0.0) {
+			return 0.0;
+		}
+		term = a * Math.log(x);
+		term += b * Math.log(1.0 - x);
+		term += StatisticsTool.gammaln(a + b);
+		term -= StatisticsTool.gammaln(a) + StatisticsTool.gammaln(b);
+		term = Math.exp(term);
+		term /= a;
+		result = term;
+		for(k = 1; k < 1000; k++) {
+			term *= a + b + k - 1.0;
+			term *= x;
+			term /= a + k;
+			previous = result;
+			result += term;
+			if(result === previous) {
+				return result;
+			}
+		}
+		return Number.NaN;
+	}
+
+	/**
+	 * q_beta(x, a, b) 不完全ベータ関数 上側
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static q_beta(x, a, b) {
+		return (1.0 - StatisticsTool.p_beta(x, a, b));
+	}
+
+	/**
+	 * betainc(x, a, b, tail) 不完全ベータ関数
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @param {string} [tail="lower"] {string} lower(デフォルト)/upper
+	 * @returns {number}
+	 */
+	static betainc(x, a, b, tail) {
+		if(tail === "lower") {
+			return StatisticsTool.p_beta(x, a, b);
+		}
+		else if(tail === "upper") {
+			return StatisticsTool.q_beta(x, a, b);
+		}
+		else if(arguments.length === 3) {
+			// 引数を省略した場合
+			return StatisticsTool.betainc(x, a, b, "lower");
+		}
+		else {
+			throw "betainc unsupported argument [" + tail + "]";
+		}
+	}
+	
+	/**
+	 * isInteger(x) xが整数かどうか
+	 * @param {number} x
+	 * @returns {boolean}
+	 */
+	static isInteger(x) {
+		return (x - (x | 0) !== 0.0);
+	}
+	
+	/**
+	 * betapdf(x, a, b) ベータ分布の確率密度関数
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static betapdf(x, a, b) {
+		// powの計算結果が複素数になる場合は計算を行わない
+		if	(
+			((x < 0) && (StatisticsTool.isInteger(b - 1))) ||
+			((1 - x < 0) && (StatisticsTool.isInteger(b - 1)))
+		) {
+			return 0.0;
+		}
+		// 以下の式でも求められるが betapdf(0, 1, 1)で、Log(0)の計算が発生しNaNを返してしまう。実際は1を返すべき。
+		//return(Math.exp((a - 1) * Math.log(x) + (b - 1) * Math.log(1 - x)) / StatisticsTool.beta(a,  b));
+		return (Math.pow(x, a - 1) * Math.pow(1 - x, b - 1) / StatisticsTool.beta(a,  b));
+	}
+
+	/**
+	 * betacdf(x, a, b) ベータ分布の累積分布関数
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static betacdf(x, a, b) {
+		return StatisticsTool.betainc(x, a, b);
+	}
+	
+	/**
+	 * betainv(p, a, b) ベータ分布の累積分布関数の逆関数
+	 * @param {number} p
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static betainv(p, a, b) {
+		if((p < 0.0) || (p > 1.0)) {
+			return Number.NaN;
+		}
+		else if((p == 0.0) && (a > 0.0) && (b > 0.0)) {
+			return 0.0;
+		}
+		else if((p == 1.0) && (a > 0.0) && (b > 0.0)) {
+			return 1.0;
+		}
+		const eps = 1.0e-14;
+		// 初期値を決める
+		let y;
+		if(b == 0) {
+			y = 1.0 - eps;
+		}
+		else if(a == 0) {
+			y = eps;
+		}
+		else {
+			y = a / (a + b);
+		}
+		// 単調増加関数なのでニュートン・ラフソン法で解く
+		// x_n+1 = x_n - f(x) / f'(x)
+		// ここで f(x) は累積分布関数、f'(x) は確率密度関数
+		// a = 累積分関数 → f(x)  = 累積分関数 - a と置く。
+		// aの微分は0なので無関係
+		let delta, y2;
+		for(let i = 0; i < 100; i++) {
+			y2 = y - ((StatisticsTool.betacdf(y, a, b) - p) / StatisticsTool.betapdf(y, a, b));
+			delta = y2 - y;
+			if(Math.abs(delta) <= eps) {
+				break;
+			}
+			y = y2;
+			if(y > 1.0) {
+				y = 1.0 - eps;
+			}
+			else if(y < 0.0) {
+				y = eps;
+			}
+		}
+		return y;
+	}
+
+	/**
+	 * factorial(n) = n! 階乗関数
+	 * @param {number} n
+	 * @returns {number}
+	 */
+	static factorial(n) {
+		const y = StatisticsTool.gamma(n + 1.0);
+		if((n | 0) === n) {
+			return Math.round(y);
+		}
+		else {
+			return y;
+		}
+	}
+
+	/**
+	 * nchoosek(n, k) = nCk 二項係数またはすべての組合わせ
+	 * @param {number} n
+	 * @param {number} k
+	 * @returns {number} nCk
+	 */
+	static nchoosek(n, k) {
+		return (Math.round(StatisticsTool.factorial(n) / (StatisticsTool.factorial(n - k) * StatisticsTool.factorial(k))));
+	}
+
+	/**
+	 * erf(x) 誤差関数
+	 * @param {number} x
+	 * @returns {number}
+	 */
+	static erf(x) {
+		return (StatisticsTool.p_gamma(x * x, 0.5, Math.log(Math.PI) * 0.5) * (x >= 0 ? 1.0 : -1.0));
+	}
+
+	/**
+	 * erfc(x) 相補誤差関数
+	 * @param {number} x
+	 * @returns {number}
+	 */
+	static erfc(x) {
+		return 1.0 - StatisticsTool.erf(x);
+	}
+
+	/**
+		 erfinv(p) 誤差逆関数
+		 @param_ {number} p
+		 @returns_ {number}
+		
+		static erfinv(p) {
+			if((p < 0.0) || (p > 1.0)) {
+				return Number.NaN;
+			}
+			else if(p == 0.0) {
+				return Number.NEGATIVE_INFINITY;
+			}
+			else if(p == 1.0) {
+				return Number.POSITIVE_INFINITY;
+			}
+			let y = 0;
+			const c = [];
+			for(let k = 0; k < 100; k++) {
+				let ck = 0;
+				if(0 === k) {
+					ck = 1;
+				}
+				else {
+					for(let m = 0; m < k; m++) {
+						ck += c[m] * c[k - 1 - m] / ((m + 1) * (2 * m + 1));
+					}
+				}
+				c.push(ck);
+				console.log(y + "\t" + ck / (2 * k + 1) + "\t" + Math.pow(Math.sqrt(Math.PI) * 0.5 * p, 2 * k + 1))
+				y += ck / (2 * k + 1) * Math.pow(Math.sqrt(Math.PI) * 0.5 * p, 2 * k + 1);
+			}
+			return y;
+			// 0.5 * Math.sqrt(Math.PI) = 0.8862269254527579
+			// Math.PI / 12 = 0.2617993877991494
+			// 7 * Math.pow(Math.PI, 2) / 480 = 0.14393173084921979
+			// 127 * Math.pow(Math.PI, 3) / 40320 = 0.09766361950392055
+			// 4369 * Math.pow(Math.PI, 4) / 5806080 = 0.07329907936638086
+			// 34807 * Math.pow(Math.PI, 5) / 182476800 = 0.05837250087858452
+			return (p
+				+ 0.2617993877991494 * Math.pow(p, 3)
+				+ 0.14393173084921979 * Math.pow(p, 5)
+				+ 0.09766361950392055 * Math.pow(p, 7)
+				+ 0.07329907936638086 * Math.pow(p, 9)
+				+ 0.05837250087858452 * Math.pow(p, 11)
+			) * 0.8862269254527579;
+		}
+	*/
+
+	/**
+	 * normpdf(x, u, s) 正規分布の確率密度関数
+	 * @param {number} x
+	 * @param {number} [u=0.0] - 平均値
+	 * @param {number} [s=1.0] - 分散
+	 * @returns {number}
+	 */
+	static normpdf(x, u, s) {
+		const u_ = typeof u === "number" ? u : 0.0;
+		const s_ = typeof s === "number" ? s : 1.0;
+		let y = 1.0 / Math.sqrt( 2.0 * Math.PI * s_ * s_ );
+		y *= Math.exp( - (x - u_) * (x - u_) / (2.0 * s_ * s_));
+		return y;
+	}
+
+	/**
+	 * normcdf(x, u, s) 正規分布の累積分布関数
+	 * @param {number} x
+	 * @param {number} [u=0.0] - 平均値
+	 * @param {number} [s=1.0] - 分散
+	 * @returns {number}
+	 */
+	static normcdf(x, u, s) {
+		const u_ = typeof u === "number" ? u : 0.0;
+		const s_ = typeof s === "number" ? s : 1.0;
+		return (1.0 + StatisticsTool.erf( (x - u_) / (s_ * Math.sqrt(2.0)) )) / 2.0;
+	}
+
+	/**
+	 * norminv(p, u, s) 正規分布の累積分布関数の逆関数
+	 * @param {number} p - 確率
+	 * @param {number} [u=0.0] - 平均値
+	 * @param {number} [s=1.0] - 分散
+	 * @returns {number}
+	 */
+	static norminv(p, u, s) {
+		if((p < 0.0) || (p > 1.0)) {
+			return Number.NaN;
+		}
+		else if(p == 0.0) {
+			return Number.NEGATIVE_INFINITY;
+		}
+		else if(p == 1.0) {
+			return Number.POSITIVE_INFINITY;
+		}
+		const u_ = typeof u === "number" ? u : 0.0;
+		const s_ = typeof s === "number" ? s : 1.0;
+		const eps = 1.0e-12;
+		// 初期値を決める
+		let y = u_;
+		// 単調増加関数なのでニュートン・ラフソン法で解く
+		// x_n+1 = x_n - f(x) / f'(x)
+		// ここで f(x) は累積分布関数、f'(x) は確率密度関数
+		// a = 累積分関数 → f(x)  = 累積分関数 - a と置く。
+		// aの微分は0なので無関係
+		let delta, y2;
+		for(let i = 0; i < 200; i++) {
+			y2 = y - ((StatisticsTool.normcdf(y, u_, s_) - p) / StatisticsTool.normpdf(y, u_, s_));
+			delta = y2 - y;
+			if(Math.abs(delta) <= eps) {
+				break;
+			}
+			y = y2;
+		}
+		return y;
+	}
+
+	/**
+	 * tpdf(t, k) t分布の確率密度関数
+	 * @param {number} t - t値
+	 * @param {number} v - 自由度
+	 * @returns {number}
+	 */
+	static tpdf(t, v) {
+		let y = 1.0 / (Math.sqrt(v) * StatisticsTool.beta(0.5, v * 0.5));
+		y *= Math.pow( 1 + t * t / v, - (v + 1) * 0.5);
+		return y;
+	}
+
+	/**
+	 * tcdf(t) t分布の累積分布関数
+	 * @param {number} t - t値
+	 * @param {number} v - 自由度
+	 * @returns {number}
+	 */
+	static tcdf(t, v) {
+		const y = (t * t) / (v + t * t) ;
+		const p = StatisticsTool.betainc( y, 0.5, v * 0.5 ) * (t < 0 ? -1 : 1);
+		return 0.5 * (1 + p);
+	}
+
+	/**
+	 * tinv(p, v) t分布の累積分布関数の逆関数
+	 * @param {number} p - 確率
+	 * @param {number} v - 自由度
+	 * @returns {number}
+	 */
+	static tinv(p, v) {
+		if((p < 0) || (p > 1)) {
+			return Number.NaN;
+		}
+		if(p == 0) {
+			return Number.NEGATIVE_INFINITY;
+		}
+		else if(p == 1) {
+			return Number.POSITIVE_INFINITY;
+		}
+		else if(p < 0.5) {
+			const y = StatisticsTool.betainv(2.0 * p, 0.5 * v, 0.5);
+			return - Math.sqrt(v / y - v);
+		}
+		else {
+			const y = StatisticsTool.betainv(2.0 * (1.0 - p), 0.5 * v, 0.5);
+			return Math.sqrt(v / y - v);
+		}
+	}
+
+	/**
+	 * tdist(t, v, tails) 尾部が指定可能なt分布の累積分布関数
+	 * @param {number} t - t値
+	 * @param {number} v - 自由度
+	 * @param {number} tails - 尾部(1...片側、2...両側)
+	 * @returns {number}
+	 */
+	static tdist(t, v, tails) {
+		return (1.0 - StatisticsTool.tcdf(t, v)) * tails;
+	}
+
+	/**
+	 * tinv2(p, v) 両側検定時のt分布の累積分布関数
+	 * @param {number} p - 確率
+	 * @param {number} v - 自由度
+	 * @returns {number}
+	 */
+	static tinv2(p, v) {
+		return - StatisticsTool.tinv( p * 0.5, v);
+	}
+
+	/**
+	 * chi2pdf(x, v) カイ二乗分布の確率密度関数
+	 * @param {number} x 
+	 * @param {number} k - 自由度
+	 * @returns {number}
+	 */
+	static chi2pdf(x, k) {
+		if(x < 0.0) {
+			return 0;
+		}
+		else if(x === 0.0) {
+			return 0.5;
+		}
+		let y = Math.pow(x, k / 2.0 - 1.0) * Math.exp( - x / 2.0 );
+		y /= Math.pow(2, k / 2.0) * StatisticsTool.gamma( k / 2.0);
+		return y;
+	}
+
+	/**
+	 * chi2cdf(x, v) カイ二乗分布の累積分布関数
+	 * @param {number} x 
+	 * @param {number} k - 自由度
+	 * @returns {number}
+	 */
+	static chi2cdf(x, k) {
+		return StatisticsTool.gammainc(x / 2.0, k / 2.0);
+	}
+
+	/**
+	 * chi2inv(p, v) カイ二乗分布の逆累積分布関数
+	 * @param {number} p - 確率
+	 * @param {number} k - 自由度
+	 * @returns {number}
+	 */
+	static chi2inv(p, k) {
+		return StatisticsTool.gaminv(p, k / 2.0, 2);
+	}
+
+	/**
+	 * fpdf(x, d1, d2) F分布の確率密度関数
+	 * @param {number} x
+	 * @param {number} d1 - 分子の自由度
+	 * @param {number} d2 - 分母の自由度
+	 * @returns {number}
+	 */
+	static fpdf(x, d1, d2) {
+		if((d1 < 0) || (d2 < 0)) {
+			return Number.NaN;
+		}
+		else if(x <= 0) {
+			return 0.0;
+		}
+		let y = 1.0;
+		y *= Math.pow( (d1 * x) / (d1 * x + d2) , d1 / 2.0);
+		y *= Math.pow( 1.0 - ((d1 * x) / (d1 * x + d2)), d2 / 2.0);
+		y /= x * StatisticsTool.beta(d1 / 2.0, d2 / 2.0);
+		return y;
+	}
+
+	/**
+	 * fcdf(x, d1, d2) F分布の累積分布関数
+	 * @param {number} x
+	 * @param {number} d1 - 分子の自由度
+	 * @param {number} d2 - 分母の自由度
+	 * @returns {number}
+	 */
+	static fcdf(x, d1, d2) {
+		return StatisticsTool.betacdf( d1 * x / (d1 * x + d2), d1 / 2.0, d2 / 2.0 );
+	}
+
+	/**
+	 * finv(p, d1, d2) F分布の累積分布関数の逆関数
+	 * @param {number} p - 確率
+	 * @param {number} d1 - 分子の自由度
+	 * @param {number} d2 - 分母の自由度
+	 * @returns {number}
+	 */
+	static finv(p, d1, d2) {
+		return (1.0 / StatisticsTool.betainv( 1.0 - p, d2 / 2.0, d1 / 2.0 ) - 1.0) * d2 / d1;
+	}
+
+}
+
+/**
+ * 文字列か判定
+ * @param text 
+ * @ignore
+ */
+const isStr = function(text) {
+	return (text && (typeof text === "string" || text instanceof String));
+};
+
+/**
+ * Complexクラスから利用する統計処理関数集
+ * @ignore
+ */
+class StatisticsComplex {
+
+	/**
+	 * gammaln(x) 対数ガンマ関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @returns {Complex}
+	 */
+	static gammaln(x) {
+		return new Complex(StatisticsTool.gammaln(Complex._toDouble(x)));
+	}
+	
+	/**
+	 * gamma(z) ガンマ関数 
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} z
+	 * @returns {Complex}
+	 */
+	static gamma(z) {
+		return new Complex(StatisticsTool.gamma(Complex._toDouble(z)));
+	}
+	
+	/**
+	 * gammainc(x, a, tail) 不完全ガンマ関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {string} [tail="lower"] - lower/upper
+	 * @returns {Complex}
+	 */
+	static gammainc(x, a, tail) {
+		const X = Complex._toDouble(x);
+		const a_ = Complex._toDouble(a);
+		const tail_ = isStr(tail) ? tail : "lower";
+		return new Complex(StatisticsTool.gammainc(X, a_, tail_));
+	}
+
+	/**
+	 * gampdf(x, k, s) ガンマ分布の確率密度関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 形状母数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - 尺度母数
+	 * @returns {Complex}
+	 */
+	static gampdf(x, k, s) {
+		const X = Complex._toDouble(x);
+		const k_ = Complex._toDouble(k);
+		const s_ = Complex._toDouble(s);
+		return new Complex(StatisticsTool.gampdf(X, k_, s_));
+	}
+
+	/**
+	 * gamcdf(x, k, s) ガンマ分布の確率密度関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 形状母数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - 尺度母数
+	 * @returns {Complex}
+	 */
+	static gamcdf(x, k, s) {
+		const X = Complex._toDouble(x);
+		const k_ = Complex._toDouble(k);
+		const s_ = Complex._toDouble(s);
+		return new Complex(StatisticsTool.gamcdf(X, k_, s_));
+	}
+
+	/**
+	 * gaminv(p, k, s) ガンマ分布の累積分布関数の逆関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 形状母数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - 尺度母数
+	 * @returns {Complex}
+	 */
+	static gaminv(p, k, s) {
+		const p_ = Complex._toDouble(p);
+		const k_ = Complex._toDouble(k);
+		const s_ = Complex._toDouble(s);
+		return new Complex(StatisticsTool.gaminv(p_, k_, s_));
+	}
+
+	/**
+	 * beta(x, y) ベータ関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} y
+	 * @returns {Complex}
+	 */
+	static beta(x, y) {
+		const X = Complex._toDouble(x);
+		const y_ = Complex._toDouble(y);
+		return new Complex(StatisticsTool.beta(X, y_));
+	}
+
+	/**
+	 * betainc(x, a, b, tail) 不完全ベータ関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
+	 * @param {string} [tail="lower"] lower/upper
+	 * @returns {Complex}
+	 */
+	static betainc(x, a, b, tail) {
+		const X = Complex._toDouble(x);
+		const a_ = Complex._toDouble(a);
+		const b_ = Complex._toDouble(b);
+		const tail_ = isStr(tail) ? tail : "lower";
+		return new Complex(StatisticsTool.betainc(X, a_, b_, tail_));
+	}
+
+	/**
+	 * betapdf(x, a, b) ベータ分布の確率密度関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
+	 * @returns {Complex}
+	 */
+	static betapdf(x, a, b) {
+		const X = Complex._toDouble(x);
+		const a_ = Complex._toDouble(a);
+		const b_ = Complex._toDouble(b);
+		return new Complex(StatisticsTool.betapdf(X, a_, b_));
+	}
+
+	/**
+	 * betacdf(x, a, b) ベータ分布の累積分布関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
+	 * @returns {Complex}
+	 */
+	static betacdf(x, a, b) {
+		const X = Complex._toDouble(x);
+		const a_ = Complex._toDouble(a);
+		const b_ = Complex._toDouble(b);
+		return new Complex(StatisticsTool.betacdf(X, a_, b_));
+	}
+
+	/**
+	 * betainv(p, a, b) ベータ分布の累積分布関数の逆関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
+	 * @returns {Complex}
+	 */
+	static betainv(p, a, b) {
+		const p_ = Complex._toDouble(p);
+		const a_ = Complex._toDouble(a);
+		const b_ = Complex._toDouble(b);
+		return new Complex(StatisticsTool.betainv(p_, a_, b_));
+	}
+
+	/**
+	 * factorial(n), n! 階乗関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} n
+	 * @returns {Complex}
+	 */
+	static factorial(n) {
+		return new Complex(StatisticsTool.factorial(Complex._toDouble(n)));
+	}
+
+	/**
+	 * nchoosek(n, k), nCk 二項係数またはすべての組合わせ
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} n
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k
+	 * @returns {Complex}
+	 */
+	static nchoosek(n, k) {
+		const n_ = Complex._toDouble(n);
+		const k_ = Complex._toDouble(k);
+		return new Complex(StatisticsTool.nchoosek(n_, k_));
+	}
+	
+	/**
+	 * erf(x) 誤差関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @returns {Complex}
+	 */
+	static erf(x) {
+		const X = Complex._toDouble(x);
+		return new Complex(StatisticsTool.erf(X));
+	}
+
+	/**
+	 * erfc(x) 相補誤差関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @returns {Complex}
+	 */
+	static erfc(x) {
+		const X = Complex._toDouble(x);
+		return new Complex(StatisticsTool.erfc(X));
+	}
+
+	/**
+	 * normpdf(x, u, s) 正規分布の確率密度関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - 平均値
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - 分散
+	 * @returns {Complex}
+	 */
+	static normpdf(x, u, s) {
+		const X = Complex._toDouble(x);
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
+		return new Complex(StatisticsTool.normpdf(X, u_, s_));
+	}
+
+	/**
+	 * normcdf(x, u, s) 正規分布の累積分布関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - 平均値
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - 分散
+	 * @returns {Complex}
+	 */
+	static normcdf(x, u, s) {
+		const X = Complex._toDouble(x);
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
+		return new Complex(StatisticsTool.normcdf(X, u_, s_));
+	}
+
+	/**
+	 * norminv(x, u, s) 正規分布の累積分布関数の逆関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - 平均値
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - 分散
+	 * @returns {Complex}
+	 */
+	static norminv(x, u, s) {
+		const X = Complex._toDouble(x);
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
+		return new Complex(StatisticsTool.norminv(X, u_, s_));
+	}
+	
+	/**
+	 * tpdf(x, v) t分布の確率密度関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
+	 * @returns {Complex}
+	 */
+	static tpdf(x, v) {
+		const X = Complex._toDouble(x);
+		const v_ = Complex._toDouble(v);
+		return new Complex(StatisticsTool.tpdf(X, v_));
+	}
+
+	/**
+	 * tcdf(t, v) t分布の累積分布関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} t
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
+	 * @returns {Complex}
+	 */
+	static tcdf(t, v) {
+		const t_ = Complex._toDouble(t);
+		const v_ = Complex._toDouble(v);
+		return new Complex(StatisticsTool.tcdf(t_, v_));
+	}
+
+	/**
+	 * tinv(p, v) t分布の累積分布関数の逆関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
+	 * @returns {Complex}
+	 */
+	static tinv(p, v) {
+		const p_ = Complex._toDouble(p);
+		const v_ = Complex._toDouble(v);
+		return new Complex(StatisticsTool.tinv(p_, v_));
+	}
+
+	/**
+	 * tdist(t, v, tails) 尾部が指定可能なt分布の累積分布関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} t
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} tails - 尾部(1...片側、2...両側)
+	 * @returns {Complex}
+	 */
+	static tdist(t, v, tails) {
+		const t_ = Complex._toDouble(t);
+		const v_ = Complex._toDouble(v);
+		const tails_ = Complex._toInteger(tails);
+		return new Complex(StatisticsTool.tdist(t_, v_, tails_));
+	}
+
+	/**
+	 * tinv2(p, v) 両側検定時のt分布の累積分布関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
+	 * @returns {Complex}
+	 */
+	static tinv2(p, v) {
+		const p_ = Complex._toDouble(p);
+		const v_ = Complex._toDouble(v);
+		return new Complex(StatisticsTool.tinv2(p_, v_));
+	}
+
+	/**
+	 * chi2pdf(x, k) カイ二乗分布の確率密度関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 自由度
+	 * @returns {Complex}
+	 */
+	static chi2pdf(x, k) {
+		const X = Complex._toDouble(x);
+		const k_ = Complex._toDouble(k);
+		return new Complex(StatisticsTool.chi2pdf(X, k_));
+	}
+
+	/**
+	 * chi2cdf(x, k) カイ二乗分布の累積分布関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 自由度
+	 * @returns {Complex}
+	 */
+	static chi2cdf(x, k) {
+		const X = Complex._toDouble(x);
+		const k_ = Complex._toDouble(k);
+		return new Complex(StatisticsTool.chi2cdf(X, k_));
+	}
+
+	/**
+	 * chi2inv(p, k) カイ二乗分布の累積分布関数の逆関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 自由度
+	 * @returns {Complex}
+	 */
+	static chi2inv(p, k) {
+		const p_ = Complex._toDouble(p);
+		const k_ = Complex._toDouble(k);
+		return new Complex(StatisticsTool.chi2inv(p_, k_));
+	}
+
+	/**
+	 * fpdf(x, d1, d2) F分布の確率密度関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - 分子の自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - 分母の自由度
+	 * @returns {Complex}
+	 */
+	static fpdf(x, d1, d2) {
+		const X = Complex._toDouble(x);
+		const d1_ = Complex._toDouble(d1);
+		const d2_ = Complex._toDouble(d2);
+		return new Complex(StatisticsTool.fpdf(X, d1_, d2_));
+	}
+
+	/**
+	 * fcdf(x, d1, d2) F分布の累積分布関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - 分子の自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - 分母の自由度
+	 * @returns {Complex}
+	 */
+	static fcdf(x, d1, d2) {
+		const X = Complex._toDouble(x);
+		const d1_ = Complex._toDouble(d1);
+		const d2_ = Complex._toDouble(d2);
+		return new Complex(StatisticsTool.fcdf(X, d1_, d2_));
+	}
+
+	/**
+	 * finv(p, d1, d2) F分布の累積分布関数の逆関数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - 分子の自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - 分母の自由度
+	 * @returns {Complex}
+	 */
+	static finv(p, d1, d2) {
+		const p_ = Complex._toDouble(p);
+		const d1_ = Complex._toDouble(d1);
+		const d2_ = Complex._toDouble(d2);
+		return new Complex(StatisticsTool.finv(p_, d1_, d2_));
+	}
+
+}
+
+/**
+ * Matrix用の統計処理用の計算クラス
+ */
+class Statistics {
+
+	/**
+	 * 対数ガンマ関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @returns {Matrix}
+	 */
+	static gammaln(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.gammaln(num);
+		});
+	}
+
+	/**
+	 * ガンマ関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @returns {Matrix}
+	 */
+	static gamma(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.gamma(num);
+		});
+	}
+
+	/**
+	 * 不完全ガンマ関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {string} [tail="lower"] - lower/upper
+	 * @returns {Matrix}
+	 */
+	static gammainc(x, a, tail) {
+		const X = Matrix._toMatrix(x);
+		const a_ = Matrix._toDouble(a);
+		const tail_ = isStr(tail) ? tail : "lower";
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.gammainc(num, a_, tail_);
+		});
+	}
+
+	/**
+	 * ガンマ分布の確率密度関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+	 * @returns {Matrix}
+	 */
+	static gampdf(x, k, s) {
+		const X = Matrix._toMatrix(x);
+		const k_ = Matrix._toDouble(k);
+		const s_ = Matrix._toDouble(s);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.gampdf(num, k_, s_);
+		});
+	}
+
+	/**
+	 * ガンマ分布の確率密度関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+	 * @returns {Matrix}
+	 */
+	static gamcdf(x, k, s) {
+		const X = Matrix._toMatrix(x);
+		const k_ = Matrix._toDouble(k);
+		const s_ = Matrix._toDouble(s);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.gamcdf(num, k_, s_);
+		});
+	}
+
+	/**
+	 * ガンマ分布の累積分布関数の逆関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+	 * @returns {Matrix}
+	 */
+	static gaminv(x, k, s) {
+		const X = Matrix._toMatrix(x);
+		const k_ = Matrix._toDouble(k);
+		const s_ = Matrix._toDouble(s);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.gaminv(num, k_, s_);
+		});
+	}
+
+	/**
+	 * ベータ関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} y
+	 * @returns {Matrix}
+	 */
+	static beta(x, y) {
+		const X = Matrix._toMatrix(x);
+		const y_ = Matrix._toDouble(y);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.beta(num, y_);
+		});
+	}
+	
+	/**
+	 * 不完全ベータ関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {string} [tail="lower"] - lower/upper
+	 * @returns {Matrix}
+	 */
+	static betainc(x, a, b, tail) {
+		const X = Matrix._toMatrix(x);
+		const a_ = Matrix._toDouble(a);
+		const b_ = Matrix._toDouble(b);
+		const tail_ = isStr(tail) ? tail : "lower";
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.betainc(num, a_, b_, tail_);
+		});
+	}
+
+	/**
+	 * ベータ分布の確率密度関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @returns {Matrix}
+	 */
+	static betacdf(x, a, b) {
+		const X = Matrix._toMatrix(x);
+		const a_ = Matrix._toDouble(a);
+		const b_ = Matrix._toDouble(b);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.betacdf(num, a_, b_);
+		});
+	}
+
+	/**
+	 * ベータ分布の累積分布関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @returns {Matrix}
+	 */
+	static betapdf(x, a, b) {
+		const X = Matrix._toMatrix(x);
+		const a_ = Matrix._toDouble(a);
+		const b_ = Matrix._toDouble(b);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.betapdf(num, a_, b_);
+		});
+	}
+
+	/**
+	 * ベータ分布の累積分布関数の逆関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @returns {Matrix}
+	 */
+	static betainv(x, a, b) {
+		const X = Matrix._toMatrix(x);
+		const a_ = Matrix._toDouble(a);
+		const b_ = Matrix._toDouble(b);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.betainv(num, a_, b_);
+		});
+	}
+
+	/**
+	 * x! 階乗関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @returns {Matrix}
+	 */
+	static factorial(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.factorial(num);
+		});
+	}
+	
+	/**
+	 * nCk 二項係数またはすべての組合わせ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k
+	 * @returns {Matrix}
+	 */
+	static nchoosek(x, k) {
+		const X = Matrix._toMatrix(x);
+		const k_ = Matrix._toDouble(k);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.nchoosek(num, k_);
+		});
+	}
+	
+	/**
+	 * 誤差関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @returns {Matrix}
+	 */
+	static erf(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.erf(num);
+		});
+	}
+
+	/**
+	 * 相補誤差関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @returns {Matrix}
+	 */
+	static erfc(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.erfc(num);
+		});
+	}
+	
+	/**
+	 * 正規分布の確率密度関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+	 * @returns {Matrix}
+	 */
+	static normpdf(x, u, s) {
+		const X = Matrix._toMatrix(x);
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.normpdf(num, u_, s_);
+		});
+	}
+
+	/**
+	 * 正規分布の累積分布関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+	 * @returns {Matrix}
+	 */
+	static normcdf(x, u, s) {
+		const X = Matrix._toMatrix(x);
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.normcdf(num, u_, s_);
+		});
+	}
+
+	/**
+	 * 正規分布の累積分布関数の逆関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+	 * @returns {Matrix}
+	 */
+	static norminv(x, u, s) {
+		const X = Matrix._toMatrix(x);
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.norminv(num, u_, s_);
+		});
+	}
+
+	/**
+	 * t分布の確率密度関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @returns {Matrix}
+	 */
+	static tpdf(x, v) {
+		const X = Matrix._toMatrix(x);
+		const v_ = Matrix._toDouble(v);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.tpdf(num, v_);
+		});
+	}
+
+	/**
+	 * t分布の累積分布関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @returns {Matrix}
+	 */
+	static tcdf(x, v) {
+		const X = Matrix._toMatrix(x);
+		const v_ = Matrix._toDouble(v);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.tcdf(num, v_);
+		});
+	}
+
+	/**
+	 * t分布の累積分布関数の逆関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @returns {Matrix}
+	 */
+	static tinv(x, v) {
+		const X = Matrix._toMatrix(x);
+		const v_ = Matrix._toDouble(v);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.tinv(num, v_);
+		});
+	}
+
+	/**
+	 * 尾部が指定可能なt分布の累積分布関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - 尾部(1...片側、2...両側)
+	 * @returns {Matrix}
+	 */
+	static tdist(x, v, tails) {
+		const X = Matrix._toMatrix(x);
+		const v_ = Matrix._toDouble(v);
+		const tails_ = Matrix._toDouble(tails);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.tdist(num, v_, tails_);
+		});
+	}
+
+	/**
+	 * 両側検定時のt分布の累積分布関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @returns {Matrix}
+	 */
+	static tinv2(x, v) {
+		const X = Matrix._toMatrix(x);
+		const v_ = Matrix._toDouble(v);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.tinv2(num, v_);
+		});
+	}
+
+	/**
+	 * カイ二乗分布の確率密度関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+	 * @returns {Matrix}
+	 */
+	static chi2pdf(x, k) {
+		const X = Matrix._toMatrix(x);
+		const k_ = Matrix._toDouble(k);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.chi2pdf(num, k_);
+		});
+	}
+
+	/**
+	 * カイ二乗分布の累積分布関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+	 * @returns {Matrix}
+	 */
+	static chi2cdf(x, k) {
+		const X = Matrix._toMatrix(x);
+		const k_ = Matrix._toDouble(k);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.chi2cdf(num, k_);
+		});
+	}
+	
+	/**
+	 * カイ二乗分布の累積分布関数の逆関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+	 * @returns {Matrix}
+	 */
+	static chi2inv(x, k) {
+		const X = Matrix._toMatrix(x);
+		const k_ = Matrix._toDouble(k);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.chi2inv(num, k_);
+		});
+	}
+
+	/**
+	 * F分布の確率密度関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+	 * @returns {Matrix}
+	 */
+	static fpdf(x, d1, d2) {
+		const X = Matrix._toMatrix(x);
+		const d1_ = Matrix._toDouble(d1);
+		const d2_ = Matrix._toDouble(d2);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.fpdf(num, d1_, d2_);
+		});
+	}
+
+	/**
+	 * F分布の累積分布関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+	 * @returns {Matrix}
+	 */
+	static fcdf(x, d1, d2) {
+		const X = Matrix._toMatrix(x);
+		const d1_ = Matrix._toDouble(d1);
+		const d2_ = Matrix._toDouble(d2);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.fcdf(num, d1_, d2_);
+		});
+	}
+
+	/**
+	 * F分布の累積分布関数の逆関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+	 * @returns {Matrix}
+	 */
+	static finv(x, d1, d2) {
+		const X = Matrix._toMatrix(x);
+		const d1_ = Matrix._toDouble(d1);
+		const d2_ = Matrix._toDouble(d2);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return StatisticsComplex.finv(num, d1_, d2_);
+		});
+	}
+	
+	/**
+	 * 最大値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} max([A, B])
+	 */
+	static max(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const main = function(data) {
+			let x = data[0];
+			for(let i = 1; i < data.length; i++) {
+				if(x.compareTo(data[i]) < 0) {
+					x = data[i];
+				}
+			}
+			return [x];
+		};
+		return X.eachVector(main, dim);
+	}
+	
+	/**
+	 * 最小値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} min([A, B])
+	 */
+	static min(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const main = function(data) {
+			let x = data[0];
+			for(let i = 1; i < data.length; i++) {
+				if(x.compareTo(data[i]) > 0) {
+					x = data[i];
+				}
+			}
+			return [x];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * 合計
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static sum(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const main = function(data) {
+			// カハンの加算アルゴリズム
+			let sum = Complex.ZERO;
+			let delta = Complex.ZERO;
+			for(let i = 0; i < data.length; i++) {
+				const new_number = data[i].add(delta);
+				const new_sum = sum.add(new_number);
+				delta = new_sum.sub(sum).sub(new_number);
+				sum = new_sum;
+			}
+			return [sum];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * 相加平均
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static mean(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const main = function(data) {
+			// カハンの加算アルゴリズム
+			let sum = Complex.ZERO;
+			let delta = Complex.ZERO;
+			for(let i = 0; i < data.length; i++) {
+				const new_number = data[i].add(delta);
+				const new_sum = sum.add(new_number);
+				delta = new_sum.sub(sum).sub(new_number);
+				sum = new_sum;
+			}
+			return [sum.div(data.length)];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * 配列の積
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static prod(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const main = function(data) {
+			let x = Complex.ONE;
+			for(let i = 0; i < data.length; i++) {
+				x = x.mul(data[i]);
+			}
+			return [x];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * 相乗平均／幾何平均
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static geomean(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const main = function(data) {
+			let x = Complex.ONE;
+			for(let i = 0; i < data.length; i++) {
+				x = x.mul(data[i]);
+			}
+			return [x.pow(Complex.create(data.length).inv())];
+		};
+		return X.eachVector(main, dim);
+	}
+	
+	/**
+	 * 中央値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static median(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const compare = function(a, b){
+			return a.compareTo(b);
+		};
+		const main = function(data) {
+			data.sort(compare);
+			let y;
+			if((data.length % 2) === 1) {
+				y = data[Math.floor(data.length / 2)];
+			}
+			else {
+				const x1 = data[Math.floor(data.length / 2) - 1];
+				const x2 = data[Math.floor(data.length / 2)];
+				y = x1.add(x2).div(Complex.TWO);
+			}
+			return [y];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * 最頻値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static mode(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const compare = function(a, b){
+			return a.compareTo(b);
+		};
+		const main = function(data) {
+			data.sort(compare);
+			const map = {};
+			for(let i = 0; i < data.length; i++) {
+				const str = data[i].real + " " + data[i].imag;
+				if(!map[str]) {
+					map[str] = {
+						complex : data[i],
+						value : 1
+					};
+				}
+				else {
+					map[str].value++;
+				}
+			}
+			let max_complex = Complex.ZERO;
+			let max_number = Number.NEGATIVE_INFINITY;
+			for(const key in map) {
+				const tgt = map[key];
+				if(tgt.value > max_number) {
+					max_number	= tgt.value;
+					max_complex	= tgt.complex;
+				}
+			}
+			return [max_complex];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * 中心積率
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
+	 * @returns {Matrix} n次のモーメント、2で分散の定義と同等。
+	 */
+	static moment(x, type) {
+		const X = Matrix._toMatrix(x);
+		const M = Statistics.mean(X);
+		// 補正値 0(不偏分散), 1(標本分散)。規定値は、標本分散とする
+		const cor = !(type && typeof type.correction === "number") ? 1: Matrix._toDouble(type.correction);
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const order = Matrix._toComplex(type.nth_order);
+		let col = 0;
+		const main = function(data) {
+			let mean;
+			if(M.isScalar()) {
+				mean = M.scalar;
+			}
+			else {
+				mean = M.getComplex(col++);
+			}
+			let x = Complex.ZERO;
+			for(let i = 0; i < data.length; i++) {
+				// 計算方法について
+				// ・複素数は、ノルムをとらずに複素数用のpowを使用したほうがいいのか
+				// ・分散と同様にnormで計算したほうがいいのか
+				// 複素数でのモーメントの定義がないため不明であるが、
+				// 分散を拡張した考えであれば、normをとった累乗のほうが良いと思われる。
+				const a = data[i].sub(mean);
+				x = x.add(a.pow(order));
+			}
+			if(data.length === 1) {
+				return [x.div(data.length)];
+			}
+			else {
+				return [x.div(data.length - 1 + cor)];
+			}
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * 分散
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	static var(x, type) {
+		const X = Matrix._toMatrix(x);
+		const M = Statistics.mean(X);
+		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
+		const cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		let col = 0;
+		const main = function(data) {
+			if(data.length === 1) {
+				// 要素が1であれば、分散は0固定
+				return [Complex.ZERO];
+			}
+			const mean = M.getComplex(col++);
+			// 分散は、ノルムの2乗で計算するため必ず実数になる。
+			let x = 0;
+			for(let i = 0; i < data.length; i++) {
+				const a = data[i].sub(mean).norm;
+				x += a * a;
+			}
+			return [Complex.create(x / (data.length - 1 + cor))];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * 標準偏差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	static std(x, type) {
+		const X = Matrix._toMatrix(x);
+		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
+		const cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const M = Statistics.var(X, { correction : cor, dimension : dim });
+		M._each(function(num) {
+			return num.sqrt();
+		});
+		return M;
+	}
+
+	/**
+	 * 絶対偏差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	static mad(x, type) {
+		const X = Matrix._toMatrix(x);
+		const alg = !(type && type.algorithm) ? "mean" : type.algorithm;
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		if((alg === "mean") || (alg === 0)) {
+			return Statistics.mean(X.sub(Statistics.mean(X, {dimension : dim} )).abs(), {dimension : dim});
+		}
+		else if((alg === "median") || (alg === 1)) {
+			return Statistics.median(X.sub(Statistics.median(X, {dimension : dim} )).abs(), {dimension : dim});
+		}
+		else {
+			throw "mad unsupported argument " + alg;
+		}
+	}
+
+	/**
+	 * 歪度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	static skewness(x, type) {
+		const X = Matrix._toMatrix(x);
+		// 補正値 0(不偏), 1(標本)。規定値は、標本とする
+		const cor = !(type && typeof type.correction === "number") ? 1: Matrix._toDouble(type.correction);
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const order = Statistics.moment(X, { correction : cor, dimension : dim, nth_order : 3  });
+		const std = Statistics.std(X, { correction : cor, dimension : dim });
+		if(cor === 1) {
+			return order.ndiv(std.npow(3));
+		}
+		else {
+			return order.ndiv(std.npow(3)).nmul(2);
+		}
+	}
+
+	/**
+	 * 共分散行列
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	static cov(x, type) {
+		const X = Matrix._toMatrix(x);
+		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
+		const cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
+		if(X.isVector()) {
+			return Statistics.var(X, type);
+		}
+		const correction = X.row_length === 1 ? 1 : cor;
+		const arr = X.matrix_array;
+		const mean = Statistics.mean(X).matrix_array[0];
+		// 上三角行列、対角行列
+		const y = new Array(X.column_length);
+		for(let a = 0; a < X.column_length; a++) {
+			const a_mean = mean[a];
+			y[a] = new Array(X.column_length);
+			for(let b = a; b < X.column_length; b++) {
+				const b_mean = mean[b];
+				let sum = Complex.ZERO;
+				for(let row = 0; row < X.row_length; row++) {
+					sum = sum.add((arr[row][a].sub(a_mean)).dot(arr[row][b].sub(b_mean)));
+				}
+				y[a][b] = sum.div(X.row_length - 1 + correction);
+			}
+		}
+		// 下三角行列を作る
+		for(let row = 1; row < y[0].length; row++) {
+			for(let col = 0; col < row; col++) {
+				y[row][col] = y[col][row];
+			}
+		}
+		return new Matrix(y);
+	}
+
+	/**
+	 * 標本の標準化
+	 * 平均値0、標準偏差1に変更する
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	static normalize(x, type) {
+		const X = Matrix._toMatrix(x);
+		const mean_zero = X.sub(Statistics.mean(X, type));
+		const std_one = mean_zero.ndiv(Statistics.std(mean_zero, type));
+		return std_one;
+	}
+
+	/**
+	 * 相関行列
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	static corrcoef(x, type) {
+		const X = Matrix._toMatrix(x);
+		return Statistics.cov(Statistics.normalize(X, type), type);
+	}
+
+	/**
+	 * ソート
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number), order : ?string}} [type]
+	 * @returns {Matrix}
+	 */
+	static sort(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		const order = !(type && type.order) ? "ascend" : type.order;
+		let compare;
+		if(order === "ascend") {
+			compare = function(a, b){
+				return a.compareTo(b);
+			};
+		}
+		else {
+			compare = function(a, b){
+				return b.compareTo(a);
+			};
+		}
+		const main = function(data) {
+			data.sort(compare);
+			return data;
+		};
+		return X.eachVector(main, dim);
+	}
+
+
+}
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * 高速フーリエ変換用クラス
+ * @ignore
+ */
+class FFT {
+
+	/**
+	 * ビット反転
+	 * @param {number} x - ビット反転させる値（32ビット整数）
+	 * @returns {number} ビット反転した値
+	 */
+	static bit_reverse_32(x) {
+		let y = x & 0xffffffff;
+		// 1,2,4,8,16ビット単位で交換
+		y = ((y & 0x55555555) << 1) | ((y >> 1) & 0x55555555);
+		y = ((y & 0x33333333) << 2) | ((y >> 2) & 0x33333333);
+		y = ((y & 0x0f0f0f0f) << 4) | ((y >> 4) & 0x0f0f0f0f);
+		y = ((y & 0x00ff00ff) << 8) | ((y >> 8) & 0x00ff00ff);
+		y = ((y & 0x0000ffff) << 16) | ((y >> 16) & 0x0000ffff);
+		return y;
+	}
+	
+	/**
+	 * 指定したビット分の数値データをビット反転した配列を返す
+	 * @param {number} bit - ビット数
+	 * @returns {Array<number>} ビット反転した値の配列
+	 */
+	static create_bit_reverse_table(bit) {
+		const size = 1 << bit;
+		const bitrv = [];
+		for(let i = 0; i < size; i++) {
+			bitrv[i] = FFT.bit_reverse_32(i) >>> (32 - bit);
+		}
+		return bitrv;
+	}
+
+	/**
+	 * FFTクラスの初期化
+	 * @param {number} size - 信号の長さ
+	 */
+	constructor(size) {
+		
+		/**
+		 * 信号の長さ
+		 */
+		this.size = size;
+
+		/**
+		 * 信号の長さの逆数
+		 */
+		this.inv_size = 1.0 / this.size;
+
+		/**
+		 * 信号の長さをビット数で表した場合の値
+		 */
+		this.bit_size = Math.round(Math.log(this.size)/Math.log(2));
+
+		/**
+		 * FFTのアルゴリズムが使用できるか
+		 */
+		this.is_fast = (1 << this.bit_size) === this.size;
+
+		/**
+		 * バタフライ演算用のビットリバーステーブル
+		 */
+		this.bitrv = null;
+
+		/**
+		 * 複素数同士の掛け算に使用する実部テーブル
+		 */
+		this.fft_re = new Array(this.size);
+		
+		/**
+		 * 複素数同士の掛け算に使用する虚部テーブル
+		 */
+		this.fft_im = new Array(this.size);
+		{
+			const delta = - 2.0 * Math.PI / this.size;
+			let err = 0.0;
+			for(let n = 0, x = 0; n < this.size; n++) {
+				this.fft_re[n] = Math.cos(x);
+				this.fft_im[n] = Math.sin(x);
+				// カハンの加算アルゴリズム
+				const y = delta + err;
+				const t = x + y;
+				err = t - x - y;
+				x = t;
+			}
+		}
+		if(this.is_fast) {
+			this.bitrv = FFT.create_bit_reverse_table(this.bit_size);
+		}
+	}
+
+	/**
+	 * 中のデータを消去する
+	 */
+	delete() {
+		delete this.size;
+		delete this.inv_size;
+		delete this.bit_size;
+		delete this.is_fast;
+		delete this.bitrv;
+		delete this.fft_re;
+		delete this.fft_im;
+	}
+	
+	/**
+	 * 離散フーリエ変換
+	 * @param {Array<number>} real - 実数部
+	 * @param {Array<number>} imag - 虚数部
+	 * @returns {Object<string, Array<number>>}
+	 */
+	fft(real, imag) {
+		const f_re = new Array(this.size);
+		const f_im = new Array(this.size);
+		if(this.is_fast) {
+			for(let i = 0; i < this.size; i++) {
+				f_re[i] = real[this.bitrv[i]];
+				f_im[i] = imag[this.bitrv[i]];
+			}
+			{
+				// Fast Fourier Transform 時間間引き(前処理にビットリバース)
+				// 段々ブロックが大きくなっていくタイプ。
+				let center = 1;
+				let blocklength = this.size / 2;
+				let pointlength = 2;
+				for(let delta = 1 << (this.bit_size - 1); delta > 0; delta >>= 1) {
+					for(let blocks = 0; blocks < blocklength; blocks++) {
+						let i = blocks * pointlength;
+						for(let point = 0, n = 0; point < center; point++, i++, n += delta) {
+							const re = f_re[i + center] * this.fft_re[n] - f_im[i + center] * this.fft_im[n];
+							const im = f_im[i + center] * this.fft_re[n] + f_re[i + center] * this.fft_im[n];
+							f_re[i + center] = f_re[i] - re;
+							f_im[i + center] = f_im[i] - im;
+							f_re[i] += re;
+							f_im[i] += im;
+						}
+					}
+					blocklength /= 2;
+					pointlength *= 2;
+					center *= 2;
+				}
+			}
+		}
+		else {
+			if(!SignalTool.isContainsZero(imag)) {
+				// 実数部分のみのフーリエ変換
+				for(let t = 0; t < this.size; t++) {
+					f_re[t] = 0.0;
+					f_im[t] = 0.0;
+					for(let x = 0, n = 0; x < this.size; x++, n = (x * t) % this.size) {
+						f_re[t] += real[x] * this.fft_re[n];
+						f_im[t] += real[x] * this.fft_im[n];
+					}
+				}
+			}
+			else {
+				// 実数部分と複素数部分のフーリエ変換
+				for(let t = 0; t < this.size; t++) {
+					f_re[t] = 0.0;
+					f_im[t] = 0.0;
+					for(let x = 0, n = 0; x < this.size; x++, n = (x * t) % this.size) {
+						f_re[t] += real[x] * this.fft_re[n] - imag[x] * this.fft_im[n];
+						f_im[t] += real[x] * this.fft_im[n] + imag[x] * this.fft_re[n];
+					}
+				}
+			}
+		}
+		return {
+			real : f_re,
+			imag : f_im
+		};
+	}
+
+	/**
+	 * 逆離散フーリエ変換
+	 * @param {Array} real - 実数部
+	 * @param {Array} imag - 虚数部
+	 * @returns {Object<string, Array<number>>}
+	 */
+	ifft(real, imag) {
+		const f_re = new Array(this.size);
+		const f_im = new Array(this.size);
+		if(this.is_fast) {
+			for(let i = 0; i < this.size; i++) {
+				f_re[i] = real[this.bitrv[i]];
+				f_im[i] = imag[this.bitrv[i]];
+			}
+			{
+				// Inverse Fast Fourier Transform 時間間引き(前処理にビットリバース)
+				// 段々ブロックが大きくなっていくタイプ。
+				let center = 1;
+				let blocklength = this.size / 2;
+				let pointlength = 2;
+				let re, im;
+				for(let delta = 1 << (this.bit_size - 1); delta > 0; delta >>= 1) {
+					for(let blocks = 0; blocks < blocklength; blocks++) {
+						let i = blocks * pointlength;
+						for(let point = 0, n = 0; point < center; point++, i++, n += delta) {
+							re = f_re[i + center] * this.fft_re[n] + f_im[i + center] * this.fft_im[n];
+							im = f_im[i + center] * this.fft_re[n] - f_re[i + center] * this.fft_im[n];
+							f_re[i + center] = f_re[i] - re;
+							f_im[i + center] = f_im[i] - im;
+							f_re[i] += re;
+							f_im[i] += im;
+						}
+					}
+					blocklength /= 2;
+					pointlength *= 2;
+					center *= 2;
+				}
+			}
+		}
+		else {
+			if(!SignalTool.isContainsZero(imag)) {
+				// 実数部分のみの逆フーリエ変換
+				for(let x = 0; x < this.size; x++) {
+					f_re[x] = 0.0;
+					f_im[x] = 0.0;
+					for(let t = 0, n = 0; t < this.size; t++, n = (x * t) % this.size) {
+						f_re[x] +=   real[t] * this.fft_re[n];
+						f_im[x] += - real[t] * this.fft_im[n];
+					}
+				}
+			}
+			else {
+				// 実数部分と複素数部分の逆フーリエ変換
+				for(let x = 0; x < this.size; x++) {
+					f_re[x] = 0.0;
+					f_im[x] = 0.0;
+					for(let t = 0, n = 0; t < this.size; t++, n = (x * t) % this.size) {
+						f_re[x] +=   real[t] * this.fft_re[n] + imag[t] * this.fft_im[n];
+						f_im[x] += - real[t] * this.fft_im[n] + imag[t] * this.fft_re[n];
+					}
+				}
+			}
+		}
+		for(let i = 0; i < this.size; i++) {
+			f_re[i] *= this.inv_size;
+			f_im[i] *= this.inv_size;
+		}
+		return {
+			real : f_re,
+			imag : f_im
+		};
+	}
+}
+
+/**
+ * 簡易キャッシュクラス
+ * FFTで用いるテーブルなどをキャッシュ
+ * @ignore
+ */
+class Chash {
+	
+	/**
+	 * 簡易キャッシュ
+	 * @param {number} chash_size - キャッシュの最大サイズ
+	 * @param {*} object - 作成するオブジェクト
+	 */
+	constructor(chash_size, object) {
+
+		/**
+		 * キャッシュするクラス
+		 */
+		this.object = object;
+
+		/**
+		 * キャッシュする最大数
+		 */
+		this.table_max = chash_size;
+
+		/**
+		 * 現在キャッシュしている数
+		 */
+		this.table_size = 0;
+
+		/**
+		 * キャッシュテーブル
+		 */
+		this.table = [];
+	}
+
+	/**
+	 * 指定した長さのデータを作成する。キャッシュに存在すればキャッシュから使用する。
+	 * @param {number} size - 作成するオブジェクトのサイズ
+	 * @returns {*}
+	 */
+	get(size) {
+		for(let index = 0; index < this.table_size; index++) {
+			if(this.table[index].size === size) {
+				// 先頭にもってくる
+				const object = this.table.splice(index, 1);
+				this.table.unshift(object);
+				return object;
+			}
+		}
+		const new_object = new this.object(size);
+		if(this.table_size === this.table_max) {
+			// 後ろのデータを消去
+			const delete_object = this.table.pop();
+			delete_object.delete();
+		}
+		// 前方に追加
+		this.table.unshift(new_object);
+		return new_object;
+	}
+
+}
+
+/**
+ * FFT用のキャッシュ
+ * @type {Chash}
+ * @ignore
+ */
+const fft_chash = new Chash(4, FFT);
+
+/**
+ * 離散コサイン変換のクラス
+ * @ignore
+ */
+class DCT {
+	
+	/**
+	 * DCTクラスの初期化
+	 * @param {number} size - 信号の長さ
+	 */
+	constructor(size) {
+
+		/**
+		 * 信号長
+		 */
+		this.size = size;
+
+		/**
+		 * 信号長の2倍
+		 * DCT変換では、実際の信号にゼロ詰めした2倍の信号長を用意しそれに対してFFTを行う。
+		 */
+		this.dct_size = size * 2;
+
+		/**
+		 * DCT変換に使用する計算用テーブル
+		 */
+		this.dct_re = new Array(this.size);
+
+		/**
+		 * DCT変換に使用する計算用テーブル
+		 */
+		this.dct_im = new Array(this.size);
+		{
+			const x_0 = 1.0 / Math.sqrt(this.size);
+			const x_n = x_0 * Math.sqrt(2);
+			for(let i = 0; i < this.size; i++) {
+				const x = - Math.PI * i / this.dct_size;
+				this.dct_re[i] = Math.cos(x) * (i === 0 ? x_0 : x_n);
+				this.dct_im[i] = Math.sin(x) * (i === 0 ? x_0 : x_n);
+			}
+		}
+	}
+	
+	/**
+	 * 中のデータを消去する
+	 */
+	delete() {
+		delete this.size;
+		delete this.dct_size;
+		delete this.dct_re;
+		delete this.dct_im;
+	}
+
+	/**
+	 * DCT-II
+	 * @param {Array<number>} real - 実数部
+	 * @returns {Array<number>}
+	 */
+	dct(real) {
+		const re = new Array(this.dct_size);
+		const im = new Array(this.dct_size);
+		for(let i = 0; i < this.dct_size; i++) {
+			re[i] = i < this.size ? real[i] : 0.0;
+			im[i] = 0.0;
+		}
+		const fft = fft_chash.get(this.dct_size).fft(re, im);
+		for(let i = 0; i < this.size; i++) {
+			re[i] = fft.real[i] * this.dct_re[i] - fft.imag[i] * this.dct_im[i];
+		}
+		re.splice(this.size);
+		return re;
+	}
+
+	/**
+	 * DCT-III (IDCT)
+	 * @param {Array<number>} real - 実数部
+	 * @returns {Array<number>}
+	 */
+	idct(real) {
+		const re = new Array(this.dct_size);
+		const im = new Array(this.dct_size);
+		const denormlize = this.size * 2.0;
+		for(let i = 0; i < this.dct_size; i++) {
+			re[i] = i < this.size ? (denormlize * real[i] *    this.dct_re[i])  : 0.0;
+			im[i] = i < this.size ? (denormlize * real[i] * (- this.dct_im[i])) : 0.0;
+		}
+		const ifft = fft_chash.get(this.dct_size).ifft(re, im);
+		ifft.real.splice(this.size);
+		return ifft.real;
+	}
+	
+}
+
+/**
+ * 離散コサイン変換用のキャッシュ
+ * @ignore
+ */
+const dct_chash = new Chash(4, DCT);
+
+/**
+ * Signalクラスの内部で使用する関数集
+ * @ignore
+ */
+class SignalTool {
+	
+	/**
+	 * 0が含まれるか
+	 * @param {Array<number>} x - 調べたい配列
+	 * @returns {boolean}
+	 */
+	static isContainsZero(x) {
+		for(let i = 0; i < x.length; i++) {
+			if(x[i] !== 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 離散フーリエ変換
+	 * @param {Array<number>} real - 実数部
+	 * @param {Array<number>} imag - 虚数部
+	 * @returns {Object<string, Array<number>>}
+	 */
+	static fft(real, imag) {
+		const obj = fft_chash.get(real.length);
+		return obj.fft(real, imag);
+	}
+
+	/**
+	 * 逆離散フーリエ変換
+	 * @param {Array<number>} real - 実数部
+	 * @param {Array<number>} imag - 虚数部
+	 * @returns {Object<string, Array<number>>}
+	 */
+	static ifft(real, imag) {
+		const obj = fft_chash.get(real.length);
+		return obj.ifft(real, imag);
+	}
+
+	/**
+	 * DCT-II (DCT)
+	 * @param {Array<number>} real - 実数部
+	 * @returns {Array<number>}
+	 */
+	static dct(real) {
+		const obj = dct_chash.get(real.length);
+		return obj.dct(real);
+	}
+
+	/**
+	 * DCT-III (IDCT)
+	 * @param {Array<number>} real - 実数部
+	 * @returns {Array<number>}
+	 */
+	static idct(real) {
+		const obj = dct_chash.get(real.length);
+		return obj.idct(real);
+	}
+
+	/**
+	 * パワースペクトル密度
+	 * @param {Array<number>} real - 実数部
+	 * @param {Array<number>} imag - 虚数部
+	 * @returns {Array<number>}
+	 */
+	static powerfft(real, imag) {
+		const size = real.length;
+		const X = SignalTool.fft(real, imag);
+		const power = new Array(size);
+		for(let i = 0; i < size; i++) {
+			power[i] = X.real[i] * X.real[i] + X.imag[i] * X.imag[i];
+		}
+		return power;
+	}
+
+	/**
+	 * 畳み込み積分、多項式乗算
+	 * @param {Array} x1_real - 実数部
+	 * @param {Array} x1_imag - 虚数部
+	 * @param {Array} x2_real - 実数部
+	 * @param {Array} x2_imag - 虚数部
+	 * @returns {Object<string, Array<number>>}
+	 */
+	static conv(x1_real, x1_imag, x2_real, x2_imag) {
+		let is_self = false;
+		if(x1_real.length === x2_real.length) {
+			is_self = true;
+			for(let i = 0; i < x1_real.length;i++) {
+				if((x1_real[i] !== x2_real[i]) || (x1_imag[i] !== x2_imag[i])) {
+					is_self = false;
+					break;
+				}
+			}
+		}
+		const size = x1_real.length;
+		const N2 = size * 2;
+		const bit_size = Math.round(Math.log(size)/Math.log(2));
+		const is_fast = (1 << bit_size) === size;
+		if(is_fast) {
+			// FFTを用いた手法へ切り替え
+			// 周波数空間上では掛け算になる
+			if(is_self) {
+				const size = x1_real.length;
+				const real = new Array(N2);
+				const imag = new Array(N2);
+				for(let i = 0; i < N2; i++) {
+					real[i] = i < size ? x1_real[i] : 0.0;
+					imag[i] = i < size ? x1_imag[i] : 0.0;
+				}
+				const X = SignalTool.fft(real, imag);
+				for(let i = 0; i < N2; i++) {
+					real[i] = X.real[i] * X.real[i] - X.imag[i] * X.imag[i];
+					imag[i] = X.real[i] * X.imag[i] + X.imag[i] * X.real[i];
+				}
+				const x = SignalTool.ifft(real, imag);
+				x.real.splice(N2 - 1);
+				x.imag.splice(N2 - 1);
+				return x;
+			}
+			else if(x1_real.length === x2_real.length) {
+				const size = x1_real.length;
+				const real1 = new Array(N2);
+				const imag1 = new Array(N2);
+				const real2 = new Array(N2);
+				const imag2 = new Array(N2);
+				for(let i = 0; i < N2; i++) {
+					real1[i] = i < size ? x1_real[i] : 0.0;
+					imag1[i] = i < size ? x1_imag[i] : 0.0;
+					real2[i] = i < size ? x2_real[i] : 0.0;
+					imag2[i] = i < size ? x2_imag[i] : 0.0;
+				}
+				const F = SignalTool.fft(real1, imag1);
+				const G = SignalTool.fft(real2, imag2);
+				const real = new Array(N2);
+				const imag = new Array(N2);
+				for(let i = 0; i < N2; i++) {
+					real[i] = F.real[i] * G.real[i] - F.imag[i] * G.imag[i];
+					imag[i] = F.real[i] * G.imag[i] + F.imag[i] * G.real[i];
+				}
+				const fg = SignalTool.ifft(real, imag);
+				fg.real.splice(N2 - 1);
+				fg.imag.splice(N2 - 1);
+				return fg;
+			}
+		}
+		let is_real_number = !SignalTool.isContainsZero(x1_imag);
+		if(is_real_number) {
+			is_real_number = !SignalTool.isContainsZero(x2_imag);
+		}
+		{
+			// まじめに計算する
+			const real = new Array(x1_real.length + x2_real.length - 1);
+			const imag = new Array(x1_real.length + x2_real.length - 1);
+			for(let i = 0; i < real.length; i++) {
+				real[i] = 0;
+				imag[i] = 0;
+			}
+			if(is_real_number) {
+				// 実数部分のみの畳み込み積分
+				// スライドさせていく
+				// AAAA
+				//  BBBB
+				//   CCCC
+				for(let y = 0; y < x2_real.length; y++) {
+					for(let x = 0; x < x1_real.length; x++) {
+						real[y + x] += x1_real[x] * x2_real[y];
+					}
+				}
+			}
+			else {
+				// 実数部分と複素数部分の畳み込み積分
+				for(let y = 0; y < x2_real.length; y++) {
+					for(let x = 0; x < x1_real.length; x++) {
+						real[y + x] += x1_real[x] * x2_real[y] - x1_imag[x] * x2_imag[y];
+						imag[y + x] += x1_real[x] * x2_imag[y] + x1_imag[x] * x2_real[y];
+					}
+				}
+			}
+			return {
+				real : real,
+				imag : imag
+			};
+		}
+	}
+
+	/**
+	 * 自己相関関数、相互相関関数
+	 * @param {Array} x1_real - 実数部
+	 * @param {Array} x1_imag - 虚数部
+	 * @param {Array} x2_real - 実数部
+	 * @param {Array} x2_imag - 虚数部
+	 * @returns {Object<string, Array<number>>}
+	 */
+	static xcorr(x1_real, x1_imag, x2_real, x2_imag) {
+		let is_self = false;
+		if(x1_real.length === x2_real.length) {
+			is_self = true;
+			for(let i = 0; i < x1_real.length;i++) {
+				if((x1_real[i] !== x2_real[i]) || (x1_imag[i] !== x2_imag[i])) {
+					is_self = false;
+					break;
+				}
+			}
+		}
+		if(x1_real.length === x2_real.length) {
+			const size = x1_real.length;
+			const N2 = size * 2;
+			const bit_size = Math.round(Math.log(size)/Math.log(2));
+			const is_fast = (1 << bit_size) === size;
+			if(is_fast) {
+				let fg = null;
+				if(is_self) {
+					const real = new Array(N2);
+					const imag = new Array(N2);
+					for(let i = 0; i < N2; i++) {
+						real[i] = i < size ? x1_real[i] : 0.0;
+						imag[i] = i < size ? x1_imag[i] : 0.0;
+					}
+					// パワースペクトル密度は、自己相関のフーリエ変換のため、
+					// パワースペクトル密度の逆変換で求められる。
+					const power = SignalTool.powerfft(real, imag);
+					fg = SignalTool.ifft(power, imag);
+					// シフト
+					real.pop();
+					imag.pop();
+					for(let i = 0, j = size + 1 ; i < real.length; i++, j++) {
+						if(N2 <= j) {
+							j = 0;
+						}
+						real[i] = fg.real[j];
+						imag[i] = fg.imag[j];
+					}
+					return {
+						real : real,
+						imag : imag
+					};
+				}
+				else {
+					const f_real = new Array(N2);
+					const f_imag = new Array(N2);
+					const g_real = new Array(N2);
+					const g_imag = new Array(N2);
+					// gの順序を反転かつ共役複素数にする
+					for(let i = 0; i < N2; i++) {
+						f_real[i] = i < size ?   x1_real[i] : 0.0;
+						f_imag[i] = i < size ?   x1_imag[i] : 0.0;
+						g_real[i] = i < size ?   x2_real[size - i - 1] : 0.0;
+						g_imag[i] = i < size ? - x2_imag[size - i - 1] : 0.0;
+					}
+					// 畳み込み掛け算
+					const F = SignalTool.fft(f_real, f_imag);
+					const G = SignalTool.fft(g_real, g_imag);
+					const real = new Array(N2);
+					const imag = new Array(N2);
+					for(let i = 0; i < N2; i++) {
+						real[i] = F.real[i] * G.real[i] - F.imag[i] * G.imag[i];
+						imag[i] = F.real[i] * G.imag[i] + F.imag[i] * G.real[i];
+					}
+					fg = SignalTool.ifft(real, imag);
+					fg.real.splice(N2 - 1);
+					fg.imag.splice(N2 - 1);
+					return fg;
+				}
+			}
+		}
+		let is_real_number = !SignalTool.isContainsZero(x1_imag);
+		if(is_real_number) {
+			is_real_number = !SignalTool.isContainsZero(x2_imag);
+		}
+		if(is_self) {
+			const size = x1_real.length;
+			const N2 = size * 2;
+			// 実数の自己相関関数
+			if(is_real_number) {
+				const fg = new Array(size);
+				for(let m = 0; m < size; m++) {
+					fg[m] = 0;
+					const tmax = size - m;
+					for(let t = 0; t < tmax; t++) {
+						fg[m] += x1_real[t] * x2_real[t + m];
+					}
+				}
+				// 半分の値は同一なので折り返して計算を省く
+				const real = new Array(N2 - 1);
+				const imag = new Array(N2 - 1);
+				for(let i = 0, j = size - 1 ; i < size; i++, j--) {
+					real[i] = fg[j];
+					real[size + i - 1] = fg[i];
+				}
+				for(let i = 0; i < imag.length; i++) {
+					imag[i] = 0.0;
+				}
+				return {
+					real : real,
+					imag : imag
+				};
+			}
+		}
+		// 2つの信号の長さが違う、又は2の累乗の長さではない別のデータの場合は通常計算
+		{
+			const g_real = new Array(x2_real.length);
+			const g_imag = new Array(x2_real.length);
+			// gの順序を反転かつ共役複素数にする
+			for(let i = 0; i < x2_real.length; i++) {
+				g_real[i] =   x2_real[x2_real.length - i - 1];
+				g_imag[i] = - x2_imag[x2_real.length - i - 1];
+			}
+			const y = SignalTool.conv(x1_real, x1_imag, g_real, g_imag);
+			if(x1_real.length === x2_real.length) {
+				return y;
+			}
+			const delta = Math.abs(x1_real.length - x2_real.length);
+			const zeros = new Array(delta);
+			for(let i = 0; i < delta; i++) {
+				zeros[i] = 0;
+			}
+			if(x1_real.length > x2_real.length) {
+				// データの最初に「0」を加える
+				return {
+					real : zeros.concat(y.real),
+					imag : zeros.concat(y.imag)
+				};
+			}
+			else {
+				// データの最後に「0」を加える
+				return {
+					real : y.real.concat(zeros),
+					imag : y.imag.concat(zeros)
+				};
+			}
+		}
+	}
+
+	/**
+	 * 窓を作成する
+	 * @param {string} name - 窓関数の名前
+	 * @param {number} size - 長さ
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @returns {Array<number>}
+	 */
+	static window(name, size, periodic) {
+		const periodic_ = periodic !== undefined ? periodic : "symmetric";
+		const name_ = name.toLocaleLowerCase();
+		const size_ = size;
+		const window = new Array(size_);
+		
+		let normalzie;
+		if((periodic_ === "symmetric") || (periodic_ === 0)) {
+			normalzie = function(y) {
+				return (y / (size_ - 1) * (Math.PI * 2.0));
+			};
+		}
+		else if((periodic_ === "periodic") || (periodic_ !== 0)) {
+			normalzie = function(y) {
+				return (y / size_ * (Math.PI * 2.0));
+			};
+		}
+
+		const setBlackmanWindow = function( alpha0, alpha1, alpha2, alpha3, alpha4) {
+			for(let i = 0; i < size_; i++) {
+				window[i]  = alpha0;
+				window[i] -= alpha1 * Math.cos(1.0 * normalzie(i));
+				window[i] += alpha2 * Math.cos(2.0 * normalzie(i));
+				window[i] -= alpha3 * Math.cos(3.0 * normalzie(i));
+				window[i] += alpha4 * Math.cos(4.0 * normalzie(i));
+			}
+		};
+
+		switch(name_) {
+			// rect 矩形窓(rectangular window)
+			case "rectangle":
+				setBlackmanWindow(1.0, 0.0, 0.0, 0.0, 0.0);
+				break;
+
+			// hann ハン窓・ハニング窓(hann/hanning window)
+			case "hann":
+				setBlackmanWindow(0.5, 0.5, 0.0, 0.0, 0.0);
+				break;
+
+			// hamming ハミング窓(hamming window)
+			case "hamming":
+				setBlackmanWindow(0.54, 0.46, 0.0, 0.0, 0.0);
+				break;
+
+			// blackman ブラックマン窓(Blackman window)
+			case "blackman":
+				setBlackmanWindow(0.42, 0.50, 0.08, 0.0, 0.0);
+				break;
+
+			// blackmanharris Blackman-Harris window
+			case "blackmanharris":
+				setBlackmanWindow(0.35875, 0.48829, 0.14128, 0.01168, 0);
+				break;
+
+			// blackmannuttall Blackman-Nuttall window
+			case "blackmannuttall":
+				setBlackmanWindow(0.3635819, 0.4891775, 0.1365995, 0.0106411, 0.0);
+				break;
+
+			// flattop Flat top window
+			case "flattop":
+				setBlackmanWindow(1.0, 1.93, 1.29, 0.388, 0.032);
+				break;
+
+			// Half cycle sine window(MDCT窓)
+			case "sin":
+				for(let i = 0; i < size_; i++) {
+					window[i]  = Math.sin(normalzie(i) * 0.5);
+				}
+				break;
+
+			// Vorbis window(MDCT窓)
+			case "vorbis":
+				for(let i = 0; i < size_; i++) {
+					const x = Math.sin(normalzie(i) * 0.5);
+					window[i]  = Math.sin(Math.PI * 0.5 * x * x);
+				}
+				break;
+		}
+
+		return window;
+	}
+
+	/**
+	 * ハニング窓
+	 * @param {number} size - 長さ
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @returns {Array<number>}
+	 */
+	static hann(size, periodic) {
+		return SignalTool.window("hann", size, periodic);
+	}
+	
+	/**
+	 * ハミング窓を作成
+	 * @param {number} size - 長さ
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @returns {Array<number>}
+	 */
+	static hamming(size, periodic) {
+		return SignalTool.window("hamming", size, periodic);
+	}
+	
+}
+
+/**
+ * Matrix用の信号処理用の計算クラス
+ */
+class Signal {
+	
+	/**
+	 * 離散フーリエ変換
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} fft(x)
+	 */
+	static fft(x, type) {
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const M = Matrix._toMatrix(x);
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = SignalTool.fft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				y[i] = new Complex([result.real[i], result.imag[i]]);
+			}
+			return y;
+		};
+		return M.eachVector(main, dim);
+	}
+
+	/**
+	 * 逆離散フーリエ変換
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} ifft(X)
+	 */
+	static ifft(X, type) {
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const M = Matrix._toMatrix(X);
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = SignalTool.ifft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				y[i] = new Complex([result.real[i], result.imag[i]]);
+			}
+			return y;
+		};
+		return M.eachVector(main, dim);
+	}
+
+	/**
+	 * パワースペクトル密度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} abs(fft(x)).^2
+	 */
+	static powerfft(x, type) {
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const M = Matrix._toMatrix(x);
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = SignalTool.powerfft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				y[i] = new Complex(result[i]);
+			}
+			return y;
+		};
+		return M.eachVector(main, dim);
+	}
+
+	/**
+	 * 離散コサイン変換
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} dct(x)
+	 */
+	static dct(x, type) {
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const M = Matrix._toMatrix(x);
+		if(M.isComplex()) {
+			throw "dct don't support complex numbers.";
+		}
+		const main = function(data) {
+			const real = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				real[i] = data[i].real;
+			}
+			const result = SignalTool.dct(real);
+			const y = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				y[i] = new Complex(result[i]);
+			}
+			return y;
+		};
+		return M.eachVector(main, dim);
+	}
+
+	/**
+	 * 逆離散コサイン変換
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} idct(x)
+	 */
+	static idct(X, type) {
+		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		const M = Matrix._toMatrix(X);
+		if(M.isComplex()) {
+			throw "idct don't support complex numbers.";
+		}
+		const main = function(data) {
+			const real = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				real[i] = data[i].real;
+			}
+			const result = SignalTool.idct(real);
+			const y = new Array(data.length);
+			for(let i = 0; i < data.length; i++) {
+				y[i] = new Complex(result[i]);
+			}
+			return y;
+		};
+		return M.eachVector(main, dim);
+	}
+
+	/**
+	 * 2次元の離散フーリエ変換
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @returns {Matrix}
+	 */
+	static fft2(x) {
+		return Signal.fft(x, {dimension : "both"});
+	}
+
+	/**
+	 * 2次元の逆離散フーリエ変換
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
+	 * @returns {Matrix}
+	 */
+	static ifft2(X) {
+		return Signal.ifft(X, {dimension : "both"});
+	}
+
+	/**
+	 * 2次元のDCT変換
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @returns {Matrix}
+	 */
+	static dct2(x) {
+		return Signal.dct(x, {dimension : "both"});
+	}
+
+	/**
+	 * 2次元の逆DCT変換
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
+	 * @returns {Matrix}
+	 */
+	static idct2(X) {
+		return Signal.idct(X, {dimension : "both"});
+	}
+
+	/**
+	 * 畳み込み積分、多項式乗算
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x2
+	 * @returns {Matrix}
+	 */
+	static conv(x1, x2) {
+		const M1 = Matrix._toMatrix(x1);
+		const M2 = Matrix._toMatrix(x2);
+		if(M1.isMatrix() || M2.isMatrix()) {
+			throw "conv don't support matrix numbers.";
+		}
+		const M1_real = new Array(M1.length);
+		const M1_imag = new Array(M1.length);
+		const M2_real = new Array(M2.length);
+		const M2_imag = new Array(M2.length);
+		if(M1.isRow()) {
+			for(let i = 0; i < M1.column_length; i++) {
+				M1_real[i] = M1.matrix_array[0][i].real;
+				M1_imag[i] = M1.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i < M1.row_length; i++) {
+				M1_real[i] = M1.matrix_array[i][0].real;
+				M1_imag[i] = M1.matrix_array[i][0].imag;
+			}
+		}
+		if(M2.isRow()) {
+			for(let i = 0; i < M2.column_length; i++) {
+				M2_real[i] = M2.matrix_array[0][i].real;
+				M2_imag[i] = M2.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i < M2.row_length; i++) {
+				M2_real[i] = M2.matrix_array[i][0].real;
+				M2_imag[i] = M2.matrix_array[i][0].imag;
+			}
+		}
+		const y = SignalTool.conv(M1_real, M1_imag, M2_real, M2_imag);
+		const m = new Array(y.real.length);
+		for(let i = 0; i < y.real.length; i++) {
+			m[i] = new Complex([y.real[i], y.imag[i]]);
+		}
+		const M = new Matrix([m]);
+		return M2.isRow() ? M : M.transpose();
+	}
+
+	/**
+	 * 自己相関関数、相互相関関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [x2] - 省略した場合は自己相関関数
+	 * @returns {Matrix}
+	 */
+	static xcorr(x1, x2) {
+		const M1 = Matrix._toMatrix(x1);
+		if(!x2) {
+			return M1.xcorr(M1);
+		}
+		const M2 = Matrix._toMatrix(x2);
+		if(M1.isMatrix() || M2.isMatrix()) {
+			throw "conv don't support matrix numbers.";
+		}
+		const M1_real = new Array(M1.length);
+		const M1_imag = new Array(M1.length);
+		const M2_real = new Array(M2.length);
+		const M2_imag = new Array(M2.length);
+		if(M1.isRow()) {
+			for(let i = 0; i < M1.column_length; i++) {
+				M1_real[i] = M1.matrix_array[0][i].real;
+				M1_imag[i] = M1.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i < M1.row_length; i++) {
+				M1_real[i] = M1.matrix_array[i][0].real;
+				M1_imag[i] = M1.matrix_array[i][0].imag;
+			}
+		}
+		if(M2.isRow()) {
+			for(let i = 0; i < M2.column_length; i++) {
+				M2_real[i] = M2.matrix_array[0][i].real;
+				M2_imag[i] = M2.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i < M2.row_length; i++) {
+				M2_real[i] = M2.matrix_array[i][0].real;
+				M2_imag[i] = M2.matrix_array[i][0].imag;
+			}
+		}
+		const y = SignalTool.xcorr(M1_real, M1_imag, M2_real, M2_imag);
+		const m = new Array(y.real.length);
+		for(let i = 0; i < y.real.length; i++) {
+			m[i] = new Complex([y.real[i], y.imag[i]]);
+		}
+		const M = new Matrix([m]);
+		return M1.isRow() ? M : M.transpose();
+	}
+
+	/**
+	 * 窓関数
+	 * @param {string} name - 窓関数の名前
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @returns {Matrix} 列ベクトル
+	 */
+	static window(name, size, periodic) {
+		const size_ = Matrix._toInteger(size);
+		const y = SignalTool.window(name, size_, periodic);
+		return (new Matrix(y)).transpose();
+	}
+
+	/**
+	 * ハニング窓
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @returns {Matrix} 列ベクトル
+	 */
+	static hann(size, periodic) {
+		return Signal.window("hann", size, periodic);
+	}
+	
+	/**
+	 * ハミング窓
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @returns {Matrix} 列ベクトル
+	 */
+	static hamming(size, periodic) {
+		return Signal.window("hamming", size, periodic);
+	}
+	
+	
+}
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Matrix 内で使用する関数群
+ * @ignore
+ */
+class MatrixTool {
+
+	/**
+	 * 行列の位置を指定するデータから、実際の値を作成
+	 * @param data {string|number|Matrix|Complex} - 調査する値
+	 * @param max {number} - ":"が指定された時に初期化する配列の長さ
+	 * @param geta {number} - ":"が指定された時に初期化する値のオフセット
+	 * @returns {Array<number>}
+	 */
+	static toPositionArrayFromObject(data, max, geta) {
+		if(typeof data === "string") {
+			const array_or_string = MatrixTool.toArrayFromString(data);
+			if(array_or_string === ":") {
+				// : が指定された場合
+				const y = new Array(max);
+				for(let i = 0; i < max; i++) {
+					y[i] =  i + geta;
+				}
+				return y;
+			}
+			else if(array_or_string instanceof Array) {
+				// 複素数の配列から中身を取り出す
+				const y = array_or_string;
+				const num_y = new Array(y.length);
+				for(let i = 0; i < y.length; i++) {
+					num_y[i] = y[i].real | 0;
+				}
+				return num_y;
+			}
+			else {
+				throw "toArrayFromString[" + data + "][" + array_or_string + "]";
+			}
+		}
+		let t_data = data;
+		if(!(t_data instanceof Matrix) && !(t_data instanceof Complex) && !((typeof t_data === "number"))) {
+			t_data = Matrix._toMatrix(t_data);
+		}
+		if(t_data instanceof Matrix) {
+			if(!t_data.isVector()) {
+				throw "getMatrix argument " + t_data;
+			}
+			const len = t_data.length;
+			const y = new Array(t_data.length);
+			if(t_data.isRow()) {
+				for(let i = 0; i < len; i++) {
+					y[i] = t_data.matrix_array[0][i].real | 0;
+				}
+			}
+			else if(t_data.isColumn()) {
+				for(let i = 0; i < len; i++) {
+					y[i] = t_data.matrix_array[i][0].real | 0;
+				}
+			}
+			return y;
+		}
+		return [ Matrix._toInteger(t_data) ];
+	}
+
+	/**
+	 * 対象ではないregexpの情報以外も抽出match
+	 * @param {string} text - 検索対象
+	 * @param {RegExp} regexp - 検索したい正規表現
+	 * @returns {Array<Object<boolean, string>>}
+	 */
+	static match2(text, regexp) {
+		// 対象ではないregexpの情報以外も抽出match
+		// つまり "1a2b" で \d を抽出すると、次のように抽出される
+		// [false "1"]
+		// [true "a"]
+		// [false "2"]
+		// [true "b"]
+		// 0 ... 一致したかどうか
+		// 1 ... 一致した文字列、あるいは一致していない文字列
+		const output = [];
+		let search_target = text;
+		for(let x = 0; x < 1000; x++) {
+			const match = search_target.match(regexp);
+			if(match === null) {
+				if(search_target.length) {
+					output.push([ false, search_target ]);
+				}
+				break;
+			}
+			if(match.index > 0) {
+				output.push([ false, search_target.substr(0, match.index) ]);
+			}
+			output.push([ true, match[0] ]);
+			search_target = search_target.substr(match.index + match[0].length);
+		}
+		return output;
+	}
+	
+	/**
+	 * ブラケットに囲まれていたら、前後のブラケットを除去
+	 * @param {string} text - ブラケットを除去したい文字
+	 * @returns {string|null} 除去した文字列（ブラケットがない場合は、null）
+	 */
+	static trimBracket(text) {
+		// 前後に[]があるか確認
+		if( !(/^\[/).test(text) || !(/\]$/).test(text)) {
+			return null;
+		}
+		// 前後の[]を除去
+		return text.substring(1, text.length - 1);
+	}
+
+	/**
+	 * JSONで定義された文字列データからMatrix型のデータを作成する
+	 * @param {string} text - 調査したい文字列([xx,xx,xx],[xx,xx,xx])
+	 * @returns {Array<Array<Complex>>} Matrix型で使用される内部の配列
+	 */
+	static toMatrixArrayFromStringForArrayJSON(text) {
+		const matrix_array = [];
+		// さらにブランケット内を抽出
+		let rows = text.match(/\[[^\]]+\]/g);
+		if(rows === null) {
+			// ブランケットがない場合は、1行行列である
+			rows = [text];
+		}
+		// 各ブランケット内を列ごとに調査
+		for(let row_count = 0; row_count < rows.length; row_count++) {
+			const row = rows[row_count];
+			const column_array = row.substring(1, row.length - 1).split(",");
+			const rows_array = [];
+			for(let col_count = 0; col_count < column_array.length; col_count++) {
+				const column = column_array[col_count];
+				rows_array[col_count] = new Complex(column);
+			}
+			matrix_array[row_count] = rows_array;
+		}
+		return matrix_array;
+	}
+
+	/**
+	 * 初期値と差分値と最終値から、その値が入った配列を作成する
+	 * @param {Complex} from - 最初の値
+	 * @param {Complex} delta - 差分
+	 * @param {Complex} to - 繰り返す先の値（この値は含めない）
+	 * @returns {Array<Complex>}
+	 */
+	static InterpolationCalculation(from, delta, to) {
+		const FromIsGreaterThanTo = from.compareTo(to);
+		if(FromIsGreaterThanTo === 0) {
+			return [from];
+		}
+		if(delta.isZero()) {
+			throw "IllegalArgumentException";
+		}
+		// delta が負のため、どれだけたしても to にならない。
+		if(delta.isNegative() && (FromIsGreaterThanTo === -1)) {
+			throw "IllegalArgumentException";
+		}
+		// FromIsGreaterThanTo
+		// +1 from の方が大きい。下に減算タイプ
+		// -1 to の方が大きい。上に加算タイプ
+		const rows_array = [];
+		let num = from;
+		rows_array[0] = num;
+		for(let i = 1; i < 0x10000; i++) {
+			num = num.add(delta);
+			if(to.compareTo(num) === FromIsGreaterThanTo) {
+				break;
+			}
+			rows_array[i] = num;
+		}
+		return rows_array;
+	}
+
+	/**
+	 * match2で文字列を切り分けたデータから数値の配列を作成する
+	 * @param {Array<Object<boolean, string>>} match2_string - 文字列を切り分けたデータ
+	 * @returns {Array<Complex>}
+	 */
+	static toArrayFromMatch2String(match2_string) {
+		const xs = match2_string;
+		const rows_array = [];
+		for(let i = 0; i < xs.length; i++) {
+			const xx = xs[i];
+			if(!xx[0]) {
+				// 一致していないデータであれば次へ
+				continue;
+			}
+			// 「:記法」 1:3 なら 1,2,3。 1:2:9 なら 1:3:5:7:9
+			if((i < xs.length - 2) && !xs[i + 1][0] && /:/.test(xs[i + 1][1])) {
+				let from, delta, to;
+				if((i < xs.length - 4) && !xs[i + 3][0] && /:/.test(xs[i + 3][1])) {
+					from = new Complex(xx[1]);
+					delta = new Complex(xs[i + 2][1]);
+					to = new Complex(xs[i + 4][1]);
+					i += 4;
+				}
+				else {
+					from = new Complex(xx[1]);
+					delta = Complex.ONE;
+					to = new Complex(xs[i + 2][1]);
+					i += 2;
+				}
+				const ip_array = MatrixTool.InterpolationCalculation(from, delta, to);
+				for(let j = 0; j < ip_array.length; j++) {
+					rows_array.push(ip_array[j]);
+				}
+			}
+			else {
+				rows_array.push(new Complex(xx[1]));
+			}
+		}
+
+		return rows_array;
+	}
+
+	/**
+	 * 文字列からMatrix型の行列データの行部分に変換
+	 * 数字のような部分を抽出することで、行列を推定する
+	 * @param {string} row_text - 行列の1行を表す文字列
+	 * @returns {Array<Complex>|string}
+	 */
+	static toArrayFromString(row_text) {
+		// 「:」のみ記載されていないかの確認
+		if(row_text.trim() === ":") {
+			return ":";
+		}
+		const str = row_text.toLowerCase().replace(/infinity|inf/g, "1e100000");
+		// 左が実数（強制）で右が複素数（任意）タイプ
+		const reg1 = /[+-]? *(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))( *[+-] *[- ]?(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))?[ij])?/;
+		// 左が複素数（強制）で右が実数（任意）タイプ
+		const reg2 = /[+-]? *(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))?[ij]( *[+] *[- ]?(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan)))?/;
+		// reg2優先で検索
+		const reg3 = new RegExp("(" + reg2.source + ")|(" + reg1.source + ")", "i");
+		// 問題として 1 - -jが通る
+		return MatrixTool.toArrayFromMatch2String(MatrixTool.match2(str, reg3));
+	}
+
+	/**
+	 * スペース区切りなどで文字列で定義された文字列データからMatrix型のデータを作成する
+	 * @param {string} text - 調査したい文字列
+	 * @returns {Array<Array<Complex>>} Matrix型で使用される内部の配列
+	 */
+	static toMatrixArrayFromStringForArraySPACE(text) {
+		// 行ごとを抽出して
+		const rows = text.split(";");
+		const matrix_array = new Array(rows.length);
+		for(let row_count = 0; row_count < rows.length; row_count++) {
+			// 各行の文字を解析
+			matrix_array[row_count] = MatrixTool.toArrayFromString(rows[row_count]);
+		}
+		return matrix_array;
+	}
+
+	/**
+	 * 行列用の文字列データから構成されるMatrix型のデータを作成する
+	 * @param {string} text - 調査したい文字列
+	 * @returns {Array<Array<Complex>>} Matrix型で使用される内部の配列
+	 */
+	static toMatrixArrayFromStringInBracket(text) {
+		// ブラケットの中にブラケットがある＝JSON形式
+		if(/[[\]]/.test(text)) {
+			return MatrixTool.toMatrixArrayFromStringForArrayJSON(text);
+		}
+		// それ以外(MATLAB, Octave, Scilab)
+		else {
+			return MatrixTool.toMatrixArrayFromStringForArraySPACE(text);
+		}
+	}
+
+	/**
+	 * 文字列データからMatrix型のデータを作成する
+	 * @param {string} text - 調査したい文字列
+	 * @returns {Array<Array<Complex>>} Matrix型で使用される内部の配列
+	 */
+	static toMatrixArrayFromString(text) {
+		// 前後のスペースを除去
+		const trimtext = text.replace(/^\s*|\s*$/g, "");
+		// ブランケットを外す
+		const withoutBracket = MatrixTool.trimBracket(trimtext);
+		if(withoutBracket) {
+			// 配列用の初期化
+			return MatrixTool.toMatrixArrayFromStringInBracket(withoutBracket);
+		}
+		else {
+			// スカラー用の初期化
+			return [[new Complex(text)]];
+		}
+	}
+
+	/**
+	 * Matrix型内部データが行列データとして正しいかを調べる
+	 * @param {Array<Array<Complex>>} m_array
+	 * @returns {boolean} 
+	 */
+	static isCorrectMatrixArray(m_array) {
+		if(m_array.length === 0) {
+			return false;
+		}
+		const num = m_array[0].length;
+		if(num === 0) {
+			return false;
+		}
+		for(let i = 1; i < m_array.length; i++) {
+			if(m_array[i].length !== num) {
+				return false;
+			}
+		}
+		return true;
+	}
+}
+
+/**
+ * 複素行列クラス (immutable)
+ */
+class Matrix {
+	
+	/**
+	 * 複素行列を作成
+	 * 引数は次のタイプをとれます
+	 * ・4 				整数や実数
+	 * ・"1 + j"		文字列で複素数をわたす
+	 * ・[1,2]			1次元配列
+	 * ・[[1,2],[3,4]]	行列
+	 * ・["1+j", "2+j"]	複素数を含んだ行列
+	 * ・"[1 1:0.5:3]"		MATLAB/Octave/Scilab互換
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 行列データ( "1 + j", [1 , 1] など)
+	 */
+	constructor(number) {
+		let matrix_array = null;
+		let is_check_string = false;
+		if(arguments.length === 1) {
+			const y = number;
+			// 行列型なら中身をディープコピーする
+			if(y instanceof Matrix) {
+				matrix_array = new Array(y.row_length);
+				for(let i = 0; i < y.row_length; i++) {
+					matrix_array[i] = new Array(y.column_length);
+					for(let j = 0; j < y.column_length; j++) {
+						matrix_array[i][j] = y.matrix_array[i][j];
+					}
+				}
+			}
+			// 複素数型なら1要素の行列
+			else if(y instanceof Complex) {
+				matrix_array = [[y]];
+			}
+			// 行列の場合は中身を解析していく
+			else if(y instanceof Array) {
+				matrix_array = [];
+				for(let row_count = 0; row_count < y.length; row_count++) {
+					// 毎行ごと調査
+					const row = y[row_count];
+					// 各行の要素が配列の場合は、配列内配列のため再度for文で調べていく
+					if(row instanceof Array) {
+						const rows_array = new Array(row.length);
+						// 1行を調査する
+						for(let col_count = 0; col_count < row.length; col_count++) {
+							const column = row[col_count];
+							// 1要素が複素数ならそのまま代入
+							if(column instanceof Complex) {
+								rows_array[col_count] = column;
+							}
+							// 1要素が行列なら、中身を抽出して代入
+							else if(column instanceof Matrix) {
+								if(!column.isScalar()) {
+									throw "Matrix in matrix";
+								}
+								rows_array[col_count] = column.scalar;
+							}
+							// それ以外の場合は、複素数クラスのコンストラクタに判断させる
+							else {
+								rows_array[col_count] = new Complex(column);
+							}
+						}
+						matrix_array[row_count] = rows_array;
+					}
+					// 1つの値のみ宣言の場合は、中の配列を行ベクトルとして定義する
+					else {
+						// 行ベクトルの初期化
+						if(row_count === 0) {
+							matrix_array[0] = new Array(y.length);
+						}
+						// 1要素が複素数ならそのまま代入
+						if(row instanceof Complex) {
+							matrix_array[0][row_count] = row;
+						}
+						// 1要素が行列なら、中身を抽出して代入
+						else if(row instanceof Matrix) {
+							if(!row.isScalar()) {
+								throw "Matrix in matrix";
+							}
+							matrix_array[0][row_count] = row.scalar;
+						}
+						// それ以外の場合は、複素数クラスのコンストラクタに判断させる
+						else {
+							matrix_array[0][row_count] = new Complex(row);
+						}
+					}
+				}
+			}
+			// 文字列の場合は、文字列解析を行う
+			else if(typeof y === "string") {
+				is_check_string = true;
+				matrix_array = MatrixTool.toMatrixArrayFromString(y);
+			}
+			// 文字列変換できる場合は返還後に、文字列解析を行う
+			else if(y instanceof Object) {
+				is_check_string = true;
+				matrix_array = MatrixTool.toMatrixArrayFromString(y.toString());
+			}
+			// 単純なビルトインの数値など
+			else {
+				matrix_array = [[new Complex(y)]];
+			}
+		}
+		else {
+			throw "Matrix : Many arguments [" + arguments.length + "]";
+		}
+		if(is_check_string) {
+			// 文字列データの解析の場合、":" データが紛れていないかを確認する。
+			// 紛れていたらその行は削除する。
+			for(let row = 0; row < matrix_array.length; row++) {
+				if(matrix_array[row] === ":") {
+					matrix_array.splice(row--, 1);
+				}
+			}
+		}
+		if(!MatrixTool.isCorrectMatrixArray(matrix_array)) {
+			console.log(matrix_array);
+			throw "new Matrix IllegalArgumentException";
+		}
+		
+		/**
+		 * 行列を構成する配列
+		 * @private
+		 * @type {Array<Array<Complex>>}
+		 */
+		this.matrix_array = matrix_array;
+
+		/**
+		 * 行数
+		 * @private
+		 * @type {number}
+		 */
+		this.row_length = this.matrix_array.length;
+		
+		/**
+		 * 列数
+		 * @private
+		 * @type {number}
+		 */
+		this.column_length = this.matrix_array[0].length;
+
+		/**
+		 * 文字列化に使用するキャッシュ
+		 * @private
+		 * @type {string}
+		 */
+		this.string_cash = null;
+	}
+
+	/**
+	 * Matrix を作成
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+	 * @returns {Matrix}
+	 */
+	static create(number) {
+		if((arguments.length === 1) && (number instanceof Matrix)) {
+			return number;
+		}
+		else {
+			return new Matrix(number);
+		}
+	}
+	
+	/**
+	 * 指定した数値から Matrix 型に変換
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+	 * @returns {Matrix}
+	 */
+	static valueOf(number) {
+		return Matrix.valueOf(number);
+	}
+
+	/**
+	 * 行列を作成
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix}
+	 * @private
+	 */
+	static _toMatrix(number) {
+		if(number instanceof Matrix) {
+			return number;
+		}
+		else {
+			return new Matrix(number);
+		}
+	}
+
+	/**
+	 * 複素数を作成
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Complex}
+	 * @private
+	 */
+	static _toComplex(number) {
+		if(number instanceof Complex) {
+			return number;
+		}
+		const M = Matrix._toMatrix(number);
+		if(M.isScalar()) {
+			return M.scalar;
+		}
+		else {
+			throw "not scalar. [" + number + "]";
+		}
+	}
+
+	/**
+	 * 実数を作成
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toDouble(number) {
+		if(typeof number === "number") {
+			return number;
+		}
+		const x = Matrix._toComplex(number);
+		if(x.isReal()) {
+			return x.real;
+		}
+		else {
+			throw "not support complex numbers.";
+		}
+	}
+
+	/**
+	 * 整数を作成
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		return Matrix._toDouble(number) | 0;
+	}
+
+	/**
+	 * キャッシュを削除
+	 */
+	_clearCash() {
+		if(this.string_cash) {
+			delete this.string_cash;
+		}
+	}
+
+	/**
+	 * ディープコピー
+	 * @returns {Matrix}
+	 */
+	clone() {
+		return new Matrix(this.matrix_array);
+	}
+
+	/**
+	 * 文字列化
+	 * @returns {string} 
+	 */
+	toString() {
+		if(this.string_cash) {
+			return this.string_cash;
+		}
+		const exp_turn_point = 9;
+		const exp_turn_num = Math.pow(10, exp_turn_point);
+		const exp_point = 4;
+		let isDrawImag = false;
+		let isDrawExp = false;
+		let draw_decimal_position = 0;
+
+		// 行列を確認して表示するための表示方法の確認する
+		this._each(
+			function(num) {
+				if(!num.isReal()) {
+					isDrawImag = true;
+				}
+				if(Number.isFinite(num.real)) {
+					if(Math.abs(num.real) >= exp_turn_num) {
+						isDrawExp = true;
+					}
+				}
+				if(Number.isFinite(num.imag)) {
+					if(Math.abs(num.imag) >= exp_turn_num) {
+						isDrawExp = true;
+					}
+				}
+				draw_decimal_position = Math.max(draw_decimal_position, num.getDecimalPosition());
+			}
+		);
+
+		if(draw_decimal_position > 0) {
+			draw_decimal_position = exp_point;
+		}
+
+		// 文字列データを作成とともに、最大の長さを記録する
+		let str_max = 0;
+		const draw_buff = [];
+		// 数値データを文字列にする関数（eの桁がある場合は中身は3桁にする）
+		const toStrFromFloat = function(number) {
+			const str = !isDrawExp ? number.toFixed(draw_decimal_position) : number.toExponential(exp_point);
+			if(/inf/i.test(str)) {
+				if(number === Number.POSITIVE_INFINITY) {
+					return "Inf";
+				}
+				else {
+					return "-Inf";
+				}
+			}
+			else if(/nan/i.test(str)) {
+				return "NaN";
+			}
+			else if(!isDrawExp) {
+				return str;
+			}
+			const split = str.split("e");
+			let exp_text = split[1];
+			if(exp_text.length === 2) {
+				exp_text = exp_text.substr(0, 1) + "00" + exp_text.substr(1);
+			}
+			else if(exp_text.length === 3) {
+				exp_text = exp_text.substr(0, 1) + "0" + exp_text.substr(1);
+			}
+			return split[0] + "e" + exp_text;
+		};
+		this._each(
+			function(num) {
+				const data = {};
+				let real = num.real;
+				data.re_sign = real < 0 ? "-" : " ";
+				real = Math.abs(real);
+				data.re_str = toStrFromFloat(real);
+				str_max = Math.max(str_max, data.re_str.length + 1);
+				if(isDrawImag) {
+					let imag = num.imag;
+					data.im_sign = imag < 0 ? "-" : "+";
+					imag = Math.abs(imag);
+					data.im_str = toStrFromFloat(imag);
+					str_max = Math.max(str_max, data.im_str.length + 1);
+				}
+				draw_buff.push(data);
+			}
+		);
+
+		// 右寄せ用関数
+		const right = function(text, length) {
+			const space = "                                        ";
+			return space.substr(0, length - text.length) + text;
+		};
+		// 出力用文字列を作成する
+		const output = [];
+		const that = this;
+		this._each(
+			function(num, row, col) {
+				const data = draw_buff.shift();
+				let text = right(data.re_sign + data.re_str, str_max);
+				if(isDrawImag) {
+					text += " " + data.im_sign + right(data.im_str, str_max) + "i";
+				}
+				output.push(text);
+				output.push((col < that.column_length - 1) ? " " : "\n");
+			}
+		);
+
+		this.string_cash = output.join("");
+
+		return this.string_cash;
+	}
+
+	/**
+	 * 文字列化（1行で表す）
+	 * @returns {string} 
+	 */
+	toOneLineString() {
+		if(this.isScalar()) {
+			return this.scalar.toString();
+		}
+		let output = "[ ";
+		for(let row = 0; row < this.row_length; row++) {
+			for(let col = 0; col < this.column_length; col++) {
+				output += this.matrix_array[row][col].toString();
+				if(col < this.column_length - 1) {
+					output += ", ";
+				}
+				else {
+					if(row < this.row_length - 1) {
+						output += "; ";
+					}
+				}
+			}
+		}
+		output += " ]";
+		return output;
+	}
+
+	/**
+	 * 等式
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean} A === B
+	 */
+	equals(number, epsilon) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
+		if((M1.row_length !== M2.row_length) || (M1.column_length !== M2.column_length)) {
+			return false;
+		}
+		if((M1.row_length === 1) && (M1.column_length ===1)) {
+			return M1.scalar.equals(M2.scalar, epsilon);
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		for(let row = 0; row < this.row_length; row++) {
+			for(let col = 0; col < this.column_length; col++) {
+				if(!x1[row][col].equals(x2[row][col], epsilon)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 行列を構成する複素数の実部の配列
+	 * @returns {Array<Array<number>>}
+	 */
+	getNumberMatrixArray() {
+		const y = new Array(this.row_length);
+		for(let i = 0; i < this.row_length; i++) {
+			y[i] = new Array(this.column_length);
+			for(let j = 0; j < this.column_length; j++) {
+				y[i][j] = this.matrix_array[i][j].real;
+			}
+		}
+		return y;
+	}
+	
+	/**
+	 * 行列を構成する複素数のComplex型の配列
+	 * @returns {Array<Array<Complex>>}
+	 */
+	getComplexMatrixArray() {
+		const y = new Array(this.row_length);
+		for(let i = 0; i < this.row_length; i++) {
+			y[i] = new Array(this.column_length);
+			for(let j = 0; j < this.column_length; j++) {
+				y[i][j] = this.matrix_array[i][j];
+			}
+		}
+		return y;
+	}
+	
+	/**
+	 * 本オブジェクト内の全要素に同一処理を実行
+	 * ミュータブル
+	 * @param {function(Complex, number, number): ?Object } eachfunc - Function(num, row, col)
+	 * @returns {Matrix} 処理実行後の行列
+	 * @private
+	 */
+	_each(eachfunc) {
+		let isclearcash = false;
+		// 行優先ですべての値に対して指定した関数を実行する。内容を書き換える可能性もある
+		for(let row = 0; row < this.row_length; row++) {
+			for(let col = 0; col < this.column_length; col++) {
+				const ret = eachfunc(this.matrix_array[row][col], row, col);
+				if(ret === undefined) {
+					continue;
+				}
+				else if(ret instanceof Complex) {
+					this.matrix_array[row][col] = ret;
+				}
+				else if(ret instanceof Matrix) {
+					this.matrix_array[row][col] = ret.scalar;
+				}
+				else {
+					this.matrix_array[row][col] = new Complex(ret);
+				}
+				isclearcash = true;
+			}
+		}
+		if(isclearcash) {
+			this._clearCash();
+		}
+		return this;
+	}
+
+	/**
+	 * 本オブジェクト内の全要素に同一処理を実行
+	 * @param {function(Complex, number, number): ?Object } eachfunc - Function(num, row, col)
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	cloneMatrixDoEachCalculation(eachfunc) {
+		return this.clone()._each(eachfunc);
+	}
+
+	/**
+	 * 行列内の各値に対して指定した初期化を行ったMatrixを作成
+	 * @param {function(number, number): ?Object } eachfunc - Function(row, col)
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length=dimension] - 列数
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	static createMatrixDoEachCalculation(eachfunc, dimension, column_length) {
+		if((arguments.length === 0) || (arguments.length > 3)) {
+			throw "IllegalArgumentException";
+		}
+		const y_row_length = Matrix._toInteger(dimension);
+		const y_column_length = column_length ? Matrix._toInteger(column_length) : y_row_length;
+		const y = new Array(y_row_length);
+		for(let row = 0; row < y_row_length; row++) {
+			y[row] = new Array(y_column_length);
+			for(let col = 0; col < y_column_length; col++) {
+				const ret = eachfunc(row, col);
+				if(ret === undefined) {
+					y[row][col] = Complex.ZERO;
+				}
+				else {
+					y[row][col] = Matrix._toComplex(ret);
+				}
+			}
+		}
+		return new Matrix(y);
+	}
+
+	/**
+	 * 行列の列をベクトルとみなし同一処理を実行、行ベクトルであれば行ベクトルに対し同一処理を実行
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	eachVectorAuto(array_function) {
+		if(this.isRow()) {
+			// 1行であれば、その1行に対して処理を行う
+			const row_array = new Array(this.row_length);
+			for(let col = 0; col < this.column_length; col++) {
+				row_array[col] = this.matrix_array[0][col];
+			}
+			return new Matrix(array_function(row_array));
+		}
+		else {
+			const y = new Matrix(0);
+			y._resize(1, this.column_length);
+			// 1列、行列であれば、列ごとに処理を行う
+			for(let col = 0; col < this.column_length; col++) {
+				const col_array = new Array(this.row_length);
+				for(let row = 0; row < this.row_length; row++) {
+					col_array[row] = this.matrix_array[row][col];
+				}
+				const col_output = array_function(col_array);
+				y._resize(Math.max(y.row_length, col_output.length), y.column_length);
+				for(let row = 0; row < col_output.length; row++) {
+					y.matrix_array[row][col] = col_output[row];
+				}
+			}
+			return y;
+		}
+	}
+
+	/**
+	 * 行列の行と列をベクトルとみなし同一処理を実行
+	 * 先に行に対して同一処理を実行後の行列に対し、列ごとにさらに同一処理を実行する
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	eachVectorBoth(array_function) {
+		const y1 = new Matrix(0);
+		// 行ごとに処理を行う
+		y1._resize(this.row_length, 1);
+		for(let row = 0; row < this.row_length; row++) {
+			const row_array = new Array(this.column_length);
+			for(let col = 0; col < this.column_length; col++) {
+				row_array[col] = this.matrix_array[row][col];
+			}
+			const row_output = array_function(row_array);
+			y1._resize(y1.row_length, Math.max(y1.column_length, row_output.length));
+			for(let col = 0; col < row_output.length; col++) {
+				y1.matrix_array[row][col] = row_output[col];
+			}
+		}
+		const y2 = new Matrix(0);
+		// 列ごとに処理を行う
+		y2._resize(1, y1.column_length);
+		for(let col = 0; col < y1.column_length; col++) {
+			const col_array = new Array(y1.row_length);
+			for(let row = 0; row < y1.row_length; row++) {
+				col_array[row] = y1.matrix_array[row][col];
+			}
+			const col_output = array_function(col_array);
+			y2._resize(Math.max(y2.row_length, col_output.length), y2.column_length);
+			for(let row = 0; row < col_output.length; row++) {
+				y2.matrix_array[row][col] = col_output[row];
+			}
+		}
+		return y2;
+	}
+
+	/**
+	 * 行列の行をベクトルとみなし同一処理を実行
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	eachVectorRow(array_function) {
+		const y = new Matrix(0);
+		// 行ごとに処理を行う
+		y._resize(this.row_length, 1);
+		for(let row = 0; row < this.row_length; row++) {
+			const row_array = new Array(this.column_length);
+			for(let col = 0; col < this.column_length; col++) {
+				row_array[col] = this.matrix_array[row][col];
+			}
+			const row_output = array_function(row_array);
+			y._resize(y.row_length, Math.max(y.column_length, row_output.length));
+			for(let col = 0; col < row_output.length; col++) {
+				y.matrix_array[row][col] = row_output[col];
+			}
+		}
+		return y;
+	}
+
+	/**
+	 * 行列の列をベクトルとみなし同一処理を実行
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	eachVectorColumn(array_function) {
+		const y = new Matrix(0);
+		// 列ごとに処理を行う
+		y._resize(1, this.column_length);
+		for(let col = 0; col < this.column_length; col++) {
+			const col_array = new Array(this.row_length);
+			for(let row = 0; row < this.row_length; row++) {
+				col_array[row] = this.matrix_array[row][col];
+			}
+			const col_output = array_function(col_array);
+			y._resize(Math.max(y.row_length, col_output.length), y.column_length);
+			for(let row = 0; row < col_output.length; row++) {
+				y.matrix_array[row][col] = col_output[row];
+			}
+		}
+		return y;
+	}
+
+	/**
+	 * 引数に設定された行／列をベクトルとみなし同一処理を実行
+	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
+	 * @param {string|number} [dimtype="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	eachVector(array_function, dimtype) {
+		let target = dimtype !== undefined ? dimtype : "auto";
+		if(typeof target === "string") {
+			target = target.toLocaleLowerCase();
+		}
+		else if(typeof target !== "number") {
+			target = Matrix._toInteger(target);
+		}
+		if((target === "auto") || (target === 0)) {
+			return this.eachVectorAuto(array_function);
+		}
+		else if((target === "row") || (target === 1)) {
+			return this.eachVectorRow(array_function);
+		}
+		else if((target === "column") || (target === 2)) {
+			return this.eachVectorColumn(array_function);
+		}
+		else if((target === "both") || (target === 3)) {
+			return this.eachVectorBoth(array_function);
+		}
+		else {
+			throw "eachVector argument " + dimtype;
+		}
+	}
+
+	/**
+	 * 行列内の指定した箇所の行列
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row - 抽出する行番号が入ったベクトル,":"で全ての行抽出
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} col - 抽出する列番号が入ったベクトル,":"で全ての列抽出
+	 * @param {boolean} [isUpOffset=false] - 位置のオフセットを1にするか
+	 * @returns {Matrix} 
+	 */
+	getMatrix(row, col, isUpOffset=false) {
+		const geta = isUpOffset ? 1 : 0 ;
+		const row_array = MatrixTool.toPositionArrayFromObject(row, this.row_length, geta);
+		const col_array = MatrixTool.toPositionArrayFromObject(col, this.column_length, geta);
+		const x = this.matrix_array;
+		const y = new Array(row_array.length);
+		for(let row = 0; row < row_array.length; row++) {
+			const y_row = new Array(col_array.length);
+			for(let col = 0; col < col_array.length; col++) {
+				y_row[col] = x[row_array[row] - geta][col_array[col] - geta];
+			}
+			y[row] = y_row;
+		}
+		return new Matrix(y);
+	}
+
+	/**
+	 * 行列内の指定した箇所の値を変更する
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row - 変更する行番号が入ったベクトル,":"で全ての行抽出
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} col - 変更する列番号が入ったベクトル,":"で全ての列抽出
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} replace - 変更内容の行列
+	 * @param {boolean} [isUpOffset=false] - 位置のオフセットを1にするか
+	 * @returns {Matrix} 
+	 */
+	setMatrix(row, col, replace, isUpOffset=false) {
+		const geta = isUpOffset ? 1 : 0 ;
+		const row_array = MatrixTool.toPositionArrayFromObject(row, this.row_length, geta);
+		const col_array = MatrixTool.toPositionArrayFromObject(col, this.column_length, geta);
+		const Y = new Matrix(this);
+		const y = Y.matrix_array;
+		const X = Matrix._toMatrix(replace);
+		const x = X.matrix_array;
+		for(let row = 0; row < row_array.length; row++) {
+			for(let col = 0; col < col_array.length; col++) {
+				y[row_array[row] - geta][col_array[col] - geta] = x[row % X.row_length][col % X.column_length];
+			}
+		}
+		return new Matrix(y);
+	}
+
+	/**
+	 * 行列内の指定した箇所の値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_or_pos - 行列なら行番号, ベクトルの場合は値の位置番号
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [col] - 列番号（行列の場合は指定する）
+	 * @returns {Complex} 
+	 */
+	getComplex(row_or_pos, col) {
+		let row_or_pos_scalar = null;
+		let col_scalar = null;
+		if(arguments.length === 1) {
+			row_or_pos_scalar = Matrix._toInteger(row_or_pos);
+		}
+		else if(arguments.length === 2) {
+			row_or_pos_scalar = Matrix._toInteger(row_or_pos);
+			col_scalar = Matrix._toInteger(col);
+		}
+		if(this.isRow()) {
+			return this.matrix_array[0][row_or_pos_scalar];
+		}
+		else if(this.isColumn()) {
+			return this.matrix_array[row_or_pos_scalar][0];
+		}
+		else {
+			return this.matrix_array[row_or_pos_scalar][col_scalar];
+		}
+	}
+
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// 行列の基本操作、基本情報の取得
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	
+	/**
+	 * 行列の最初の要素の整数値
+	 * @returns {number}
+	 */
+	get intValue() {
+		return (this.matrix_array[0][0].real) | 0;
+	}
+
+	/**
+	 * 行列の最初の要素の実数値
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		return this.matrix_array[0][0].real;
+	}
+
+	/**
+	 * 行列の最初の要素
+	 * @returns {Complex}
+	 */
+	get scalar() {
+		return this.matrix_array[0][0];
+	}
+
+	/**
+	 * 行数及び列数の最大値
+	 * @returns {number}
+	 */
+	get length() {
+		return this.row_length > this.column_length ? this.row_length : this.column_length;
+	}
+
+	/**
+	 * 1ノルム
+	 * @returns {number}
+	 */
+	get norm1() {
+		return LinearAlgebra.norm(this, 1);
+	}
+	
+	/**
+	 * 2ノルム
+	 * @returns {number}
+	 */
+	get norm2() {
+		return LinearAlgebra.norm(this, 2);
+	}
+
+	/**
+	 * pノルム
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+	 * @returns {number}
+	 */
+	norm(p) {
+		return LinearAlgebra.norm(this, p);
+	}
+
+	/**
+	 * 条件数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+	 * @returns {number}
+	 */
+	cond(p) {
+		return LinearAlgebra.cond(this, p);
+	}
+
+	/**
+	 * 1ノルムの条件数の逆数
+	 * @returns {number}
+	 */
+	rcond() {
+		return LinearAlgebra.rcond(this);
+	}
+
+	/**
+	 * ランク
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {number} rank(A)
+	 */
+	rank(epsilon) {
+		return LinearAlgebra.rank(this, epsilon);
+	}
+
+	/**
+	 * トレース
+	 * @returns {Complex} trace(A)
+	 */
+	trace() {
+		return LinearAlgebra.trace(this);
+	}
+
+	/**
+	 * 行列式
+	 * @returns {Matrix} |A|
+	 */
+	det() {
+		return LinearAlgebra.det(this);
+	}
+
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// 行列の作成関係
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	
+	/**
+	 * 指定した数値で初期化
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 初期値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
+	 * @returns {Matrix}
+	 */
+	static memset(number, dimension, column_length) {
+		if((arguments.length === 0) || (arguments.length > 3)) {
+			throw "IllegalArgumentException";
+		}
+		const M = Matrix._toMatrix(number);
+		if(!M.isScalar()) {
+			const x = M.matrix_array;
+			const x_row_length = M.row_length;
+			const x_column_length = M.column_length;
+			return Matrix.createMatrixDoEachCalculation(function(row, col) {
+				return x[row % x_row_length][col % x_column_length];
+			}, dimension, column_length);
+		}
+		else {
+			const x = M.scalar;
+			return Matrix.createMatrixDoEachCalculation(function() {
+				return x;
+			}, dimension, column_length);
+		}
+	}
+
+	/**
+	 * 単位行列を生成
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
+	 * @returns {Matrix}
+	 */
+	static eye(dimension, column_length) {
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return row === col ? Complex.ONE : Complex.ZERO;
+		}, dimension, column_length);
+	}
+	
+	/**
+	 * 零行列を生成
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
+	 * @returns {Matrix}
+	 */
+	static zeros(dimension, column_length) {
+		if((arguments.length === 0) || (arguments.length > 2)) {
+			throw "IllegalArgumentException";
+		}
+		return Matrix.memset(Complex.ZERO, dimension, column_length);
+	}
+
+	/**
+	 * 1で構成した行列を生成
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
+	 * @returns {Matrix}
+	 */
+	static ones(dimension, column_length) {
+		if((arguments.length === 0) || (arguments.length > 2)) {
+			throw "IllegalArgumentException";
+		}
+		return Matrix.memset(Complex.ONE, dimension, column_length);
+	}
+
+	/**
+	 * 乱数で構成した行列を生成
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
+	 * @returns {Matrix}
+	 */
+	static rand(dimension, column_length) {
+		return Matrix.createMatrixDoEachCalculation(function() {
+			return Complex.rand();
+		}, dimension, column_length);
+	}
+
+	/**
+	 * 正規分布に従う乱数で構成した行列を生成
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
+	 * @returns {Matrix}
+	 */
+	static randn(dimension, column_length) {
+		return Matrix.createMatrixDoEachCalculation(function() {
+			return Complex.randn();
+		}, dimension, column_length);
+	}
+
+	/**
+	 * 行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成
+	 * @returns {Matrix} 行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成
+	 */
+	diag() {
+		if(this.isVector()) {
+			// 行列を作成
+			const M = this;
+			return Matrix.createMatrixDoEachCalculation(function(row, col) {
+				if(row === col) {
+					return M.getComplex(row);
+				}
+				else {
+					return Complex.ZERO;
+				}
+			}, this.length);
+		}
+		else {
+			// 列ベクトルを作成
+			const len = Math.min(this.row_length, this.column_length);
+			const y = new Array(len);
+			for(let i = 0; i < len; i++) {
+				y[i] = new Array(1);
+				y[i][0] = this.matrix_array[i][i];
+			}
+			return new Matrix(y);
+		}
+	}
+
+	// TODO 行列の結合がほしい
+
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// 比較や判定
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+
+	/**
+	 * スカラー値の判定
+	 * @returns {boolean}
+	 */
+	isScalar() {
+		return this.row_length === 1 && this.column_length == 1;
+	}
+	
+	/**
+	 * 行ベクトル／横ベクトルの判定
+	 * @returns {boolean}
+	 */
+	isRow() {
+		return this.row_length === 1;
+	}
+	
+	/**
+	 * 列ベクトル／縦ベクトルの判定
+	 * @returns {boolean}
+	 */
+	isColumn() {
+		return this.column_length === 1;
+	}
+
+	/**
+	 * ベクトルの判定
+	 * @returns {boolean}
+	 */
+	isVector() {
+		return this.row_length === 1 || this.column_length === 1;
+	}
+
+	/**
+	 * 行列の判定
+	 * @returns {boolean}
+	 */
+	isMatrix() {
+		return this.row_length !== 1 && this.column_length !== 1;
+	}
+
+	/**
+	 * 正方行列の判定
+	 * @returns {boolean}
+	 */
+	isSquare() {
+		return this.row_length === this.column_length;
+	}
+
+	/**
+	 * 実行列の判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isReal(epsilon) {
+		let is_real = true;
+		this._each(function(num){
+			if(is_real && (num.isComplex(epsilon))) {
+				is_real = false;
+			}
+		});
+		return is_real;
+	}
+
+	/**
+	 * 複素行列の判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isComplex(epsilon) {
+		return !this.isReal(epsilon);
+	}
+
+	/**
+	 * 零行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isZeros(epsilon) {
+		let is_zeros = true;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		this._each(function(num){
+			if(is_zeros && (!num.isZero(tolerance))) {
+				is_zeros = false;
+			}
+		});
+		return is_zeros;
+	}
+
+	/**
+	 * 単位行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isIdentity(epsilon) {
+		let is_identity = true;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		this._each(function(num, row, col){
+			if(is_identity) {
+				if(row === col) {
+					if(!num.isOne(tolerance)) {
+						is_identity = false;
+					}
+				}
+				else {
+					if(!num.isZero(tolerance)) {
+						is_identity = false;
+					}
+				}
+			}
+		});
+		return is_identity;
+	}
+
+	/**
+	 * 対角行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isDiagonal(epsilon) {
+		let is_diagonal = true;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		this._each(function(num, row, col){
+			if(is_diagonal && (row !== col) && (!num.isZero(tolerance))) {
+				is_diagonal = false;
+			}
+		});
+		return is_diagonal;
+	}
+	
+	/**
+	 * 三重対角行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isTridiagonal(epsilon) {
+		let is_tridiagonal = true;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		this._each(function(num, row, col){
+			if(is_tridiagonal && (Math.abs(row - col) > 1) && (!num.isZero(tolerance))) {
+				is_tridiagonal = false;
+			}
+		});
+		return is_tridiagonal;
+	}
+
+	/**
+	 * 正則行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isRegular(epsilon) {
+		if(!this.isSquare()) {
+			return false;
+		}
+		// ランクが行列の次元と等しいかどうかで判定
+		// det(M) != 0 でもよいが、時間がかかる可能性があるので
+		// 誤差は自動で計算など本当はもうすこし良い方法を考える必要がある
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		return (this.rank(tolerance) === this.row_length);
+	}
+
+	/**
+	 * 直行行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isOrthogonal(epsilon) {
+		if(!this.isSquare()) {
+			return false;
+		}
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		return (this.mul(this.transpose()).isIdentity(tolerance));
+	}
+
+	/**
+	 * ユニタリ行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isUnitary(epsilon) {
+		if(!this.isSquare()) {
+			return false;
+		}
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		return (this.mul(this.ctranspose()).isIdentity(tolerance));
+	}
+
+	/**
+	 * 対称行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isSymmetric(epsilon) {
+		if(!this.isSquare()) {
+			return false;
+		}
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		for(let row = 0; row < this.row_length; row++) {
+			for(let col = row + 1; col < this.column_length; col++) {
+				if(!this.matrix_array[row][col].equals(this.matrix_array[col][row], tolerance)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * エルミート行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isHermitian(epsilon) {
+		if(!this.isSquare()) {
+			return false;
+		}
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		for(let row = 0; row < this.row_length; row++) {
+			for(let col = row; col < this.column_length; col++) {
+				if(row === col) {
+					if(!this.matrix_array[row][col].isReal(tolerance)) {
+						return false;
+					}
+				}
+				else if(!this.matrix_array[row][col].equals(this.matrix_array[col][row].conj(), tolerance)) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * 上三角行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isTriangleUpper(epsilon) {
+		let is_upper = true;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		this._each(function(num, row, col){
+			if(is_upper && (row > col) && (!num.isZero(tolerance))) {
+				is_upper = false;
+			}
+		});
+		return is_upper;
+	}
+
+	/**
+	 * 下三角行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isTriangleLower(epsilon) {
+		let is_lower = true;
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		this._each(function(num, row, col){
+			if(is_lower && (row < col) && (!num.isZero(tolerance))) {
+				is_lower = false;
+			}
+		});
+		return is_lower;
+	}
+
+	/**
+	 * 置換行列を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {boolean}
+	 */
+	isPermutation(epsilon) {
+		if(!this.isSquare()) {
+			return false;
+		}
+		const tolerance = epsilon ? epsilon : 1.0e-10;
+		const is_row = new Array(this.row_length);
+		const is_col = new Array(this.column_length);
+		for(let row = 0; row < this.row_length; row++) {
+			for(let col = 0; col < this.column_length; col++) {
+				const target = this.matrix_array[row][col];
+				if(target.isOne(tolerance)) {
+					if(!is_row[row] && !is_col[col]) {
+						is_row[row] = 1;
+						is_col[col] = 1;
+					}
+					else {
+						return false;
+					}
+				}
+				else if(!target.isZero(tolerance)) {
+					return false;
+				}
+			}
+		}
+		for(let i = 0;i < this.row_length; i++) {
+			if(is_row[i] === undefined || is_col[i] === undefined) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 行列の行数と列数
+	 * @returns {Matrix} [row_length column_length]
+	 */
+	size() {
+		// 行列のサイズを取得
+		return new Matrix([[this.row_length, this.column_length]]);
+	}
+
+	/**
+	 * 値同士を比較
+	 * スカラー同士の場合の戻り値は、number型。
+	 * 行列同士の場合は、各項の比較結果が入った、Matrix型。
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number, epsilon) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
+		// ※スカラー同士の場合は、実数を返す
+		if(M1.isScalar() && M2.isScalar()) {
+			return M1.scalar.compareTo(M2.scalar, epsilon);
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].compareTo(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// 四則演算
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	
+	/**
+	 * 加算
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A + B
+	 */
+	add(number) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
+		if((M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
+			throw "Matrix size does not match";
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].add(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+
+	/**
+	 * 減算
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A - B
+	 */
+	sub(number) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
+		if((M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
+			throw "Matrix size does not match";
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].sub(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+
+	/**
+	 * 乗算
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A * B
+	 */
+	mul(number) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		if(M1.isScalar() && M2.isScalar()) {
+			return new Matrix(M1.scalar.mul(M2.scalar));
+		}
+		if(M1.isScalar()) {
+			const y = new Array(M2.row_length);
+			for(let row = 0; row < M2.row_length; row++) {
+				y[row] = new Array(M2.column_length);
+				for(let col = 0; col < M2.column_length; col++) {
+					y[row][col] = M1.scalar.mul(x2[row][col]);
+				}
+			}
+			return new Matrix(y);
+		}
+		else if(M2.isScalar()) {
+			const y = new Array(M1.row_length);
+			for(let row = 0; row < M1.row_length; row++) {
+				y[row] = new Array(M1.column_length);
+				for(let col = 0; col < M1.column_length; col++) {
+					y[row][col] = x1[row][col].mul(M2.scalar);
+				}
+			}
+			return new Matrix(y);
+		}
+		if(M1.column_length !== M2.row_length) {
+			throw "Matrix size does not match";
+		}
+		{
+			const y = new Array(M1.row_length);
+			for(let row = 0; row < M1.row_length; row++) {
+				y[row] = new Array(M2.column_length);
+				for(let col = 0; col < M2.column_length; col++) {
+					let sum = Complex.ZERO;
+					for(let i = 0; i < M1.column_length; i++) {
+						sum = sum.add(x1[row][i].mul(x2[i][col]));
+					}
+					y[row][col] = sum;
+				}
+			}
+			return new Matrix(y);
+		}
+	}
+
+	/**
+	 * 割り算
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A / B
+	 */
+	div(number) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
+		const x1 = M1.matrix_array;
+		if(M1.isScalar() && M2.isScalar()) {
+			return new Matrix(M1.scalar.div(M2.scalar));
+		}
+		if(M2.isScalar()) {
+			const y = new Array(M1.row_length);
+			for(let row = 0; row < M1.row_length; row++) {
+				y[row] = new Array(M1.column_length);
+				for(let col = 0; col < M1.column_length; col++) {
+					y[row][col] = x1[row][col].div(M2.scalar);
+				}
+			}
+			return new Matrix(y);
+		}
+		if(M2.row_length === M2.column_length) {
+			const epsilon = 1.0e-10;
+			const det = M2.det().scalar.norm;
+			if(det > epsilon) {
+				// ランク落ちしていないので通常の逆行列を使用する
+				return this.mul(M2.inv());
+			}
+			else {
+				// ランク落ちしているので疑似逆行列を使用する
+				return this.mul(M2.pinv());
+			}
+		}
+		if(M1.column_length !== M2.column_length) {
+			throw "Matrix size does not match";
+		}
+		throw "warning";
+	}
+
+	/**
+	 * 整数での累乗
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 整数
+	 * @returns {Matrix} pow(A, B)
+	 */
+	pow(number) {
+		if(!this.isSquare()) {
+			throw "not square " + this;
+		}
+		let n = Matrix._toInteger(number);
+		if(n < 0) {
+			throw "error negative number " + n;
+		}
+		let x, y;
+		x = this.clone();
+		y = Matrix.eye(this.length);
+		while(n !== 0) {
+			if((n & 1) !== 0) {
+				y = y.mul(x);
+			}
+			x = x.mul(x);
+			n >>>= 1;
+		}
+		return y;
+	}
+
+	/**
+	 * 行列の各項ごとの掛け算
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A .* B
+	 */
+	nmul(number) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
+		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
+			throw "Matrix size does not match";
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].mul(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+
+	/**
+	 * 行列の各項ごとの割り算
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A ./ B
+	 */
+	ndiv(number) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
+		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
+			throw "Matrix size does not match";
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].div(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+
+	/**
+	 * 行列の各項ごとの逆数
+	 * @returns {Matrix} 1 ./ A
+	 */
+	ninv() {
+		const M1 = this;
+		const x1 = M1.matrix_array;
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row][col].inv();
+		}, M1.row_length, M1.column_length);
+	}
+
+	/**
+	 * 行列の各項ごとの累乗
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A .^ B
+	 */
+	npow(number) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
+		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
+			throw "Matrix size does not match";
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].pow(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// Complexのメソッドにある機能
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+
+	/**
+	 * 各項の実部
+	 * @returns {Matrix} real(A)
+	 */
+	real() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return new Complex(num.real);
+		});
+	}
+	
+	/**
+	 * 各項の虚部
+	 * @returns {Matrix} imag(A)
+	 */
+	imag() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return new Complex(num.imag);
+		});
+	}
+
+	/**
+	 * 各項の偏角
+	 * @returns {Matrix} arg(A)
+	 */
+	arg() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return new Complex(num.arg);
+		});
+	}
+
+	/**
+	 * 各項の符号値
+	 * @returns {Matrix} [-1,1] 複素数の場合はノルムを1にした値。
+	 */
+	sign() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return new Complex(num.sign());
+		});
+	}
+
+	/**
+	 * 各項の整数を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {Matrix} 1 or 0 で構成された行列
+	 */
+	testInteger(epsilon) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isInteger(epsilon) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * 各項の複素整数を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {Matrix} 1 or 0 で構成された行列
+	 */
+	testComplexInteger(epsilon) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isComplexInteger(epsilon) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * 各項の 0 を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {Matrix} 1 or 0 で構成された行列
+	 */
+	testZero(epsilon) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isZero(epsilon) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * 各項の 1 を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {Matrix} 1 or 0 で構成された行列
+	 */
+	testOne(epsilon) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isOne(epsilon) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+	
+	/**
+	 * 各項の複素数を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {Matrix} 1 or 0 で構成された行列
+	 */
+	testComplex(epsilon) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isComplex(epsilon) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * 各項の実数を判定
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @returns {Matrix} 1 or 0 で構成された行列
+	 */
+	testReal(epsilon) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isReal(epsilon) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * 各項の非数を判定
+	 * @returns {Matrix} 1 or 0 で構成された行列
+	 */
+	testNaN() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isNaN() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+
+	/**
+	 * real(x) > 0
+	 * @returns {Matrix} 1 or 0 で構成された行列
+	 */
+	testPositive() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isPositive() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * real(x) < 0
+	 * @returns {Matrix} 1 or 0 で構成された行列
+	 */
+	testNegative() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isNegative() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * real(x) >= 0
+	 * @returns {Matrix} 1 or 0 で構成された行列
+	 */
+	testNotNegative() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isNotNegative() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * 各項の無限を判定
+	 * @returns {Matrix} 1 or 0 で構成された行列
+	 */
+	testInfinite() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isInfinite() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+	
+	/**
+	 * 各項の有限数を判定
+	 * @returns {Matrix} 1 or 0 で構成された行列
+	 */
+	testFinite() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isFinite() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * 絶対値
+	 * @returns {Matrix} abs(A)
+	 */
+	abs() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.abs();
+		});
+	}
+
+	/**
+	 * 複素共役行列
+	 * @returns {Matrix} real(A) - imag(A)j
+	 */
+	conj() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.conj();
+		});
+	}
+
+	/**
+	 * 負数
+	 * @returns {Matrix} -A
+	 */
+	negate() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.negate();
+		});
+	}
+
+	/**
+	 * 平方根
+	 * @returns {Matrix} sqrt(A)
+	 */
+	sqrt() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.sqrt();
+		});
+	}
+
+	/**
+	 * 対数
+	 * @returns {Matrix} log(A)
+	 */
+	log() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.log();
+		});
+	}
+
+	/**
+	 * 指数
+	 * @returns {Matrix} exp(A)
+	 */
+	exp() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.exp();
+		});
+	}
+
+	/**
+	 * sin
+	 * @returns {Matrix} sin(A)
+	 */
+	sin() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.sin();
+		});
+	}
+
+	/**
+	 * cos
+	 * @returns {Matrix} cos(A)
+	 */
+	cos() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.cos();
+		});
+	}
+
+	/**
+	 * tan
+	 * @returns {Matrix} tan(A)
+	 */
+	tan() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.tan();
+		});
+	}
+	
+	/**
+	 * atan
+	 * @returns {Matrix} atan(A)
+	 */
+	atan() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.atan();
+		});
+	}
+
+	/**
+	 * atan2
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - スカラー
+	 * @returns {Matrix} atan2(Y, X)
+	 */
+	atan2(number) {
+		const X = Matrix._toComplex(number);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.atan2(X);
+		});
+	}
+
+	/**
+	 * floor
+	 * @returns {Matrix} floor(A)
+	 */
+	floor() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.floor();
+		});
+	}
+
+	/**
+	 * ceil
+	 * @returns {Matrix} ceil(A)
+	 */
+	ceil() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.ceil();
+		});
+	}
+
+	/**
+	 * 四捨五入
+	 * @returns {Matrix} round(A)
+	 */
+	round() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.round();
+		});
+	}
+
+	/**
+	 * 整数化
+	 * @returns {Matrix} fix(A)
+	 */
+	fix() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.fix();
+		});
+	}
+
+	/**
+	 * 小数部の抽出
+	 * @returns {Matrix} fract(A)
+	 */
+	fract() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.fract();
+		});
+	}
+
+	/**
+	 * sinc
+	 * @returns {Matrix} sinc(A)
+	 */
+	sinc() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.sinc();
+		});
+	}
+
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// 行列の計算でよく使用する処理。
+	// メソッド内部の処理を記述する際に使用している。
+	// 他から使用する場合は注意が必要である。
+	// 前提条件があるメソッド、ミュータブルとなっている。
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+
+	/**
+	 * 行列を時計回りに回転
+	 * ミュータブル
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} rot_90_count - 回転する回数
+	 * @returns {Matrix} 処理実行後の行列
+	 * @private
+	 */
+	_rot90(rot_90_count) {
+		const count = Matrix._toInteger(rot_90_count);
+		let rot_type = 1;
+		if(arguments.length === 1) {
+			rot_type = ((count % 4) + 4) % 4;
+		}
+		if(rot_type === 0) {
+			return this;
+		}
+		// バックアップ
+		const x = new Array(this.row_length);
+		for(let i = 0; i < this.row_length; i++) {
+			x[i] = new Array(this.column_length);
+			for(let j = 0; j < this.column_length; j++) {
+				x[i][j] = this.matrix_array[i][j];
+			}
+		}
+		const y = this.matrix_array;
+		if(rot_type === 1) {
+			// 90度回転
+			y.splice(this.column_length);
+			for(let col = 0; col < this.column_length; col++) {
+				if(col < this.row_length) {
+					y[col].splice(this.row_length);
+				}
+				else {
+					y[col] = new Array(this.row_length);
+				}
+				for(let row = 0; row < this.row_length; row++) {
+					y[col][row] = x[this.row_length - row - 1][col];
+				}
+			}
+		}
+		else if(rot_type === 2) {
+			// 180度回転
+			for(let row = 0; row < this.row_length; row++) {
+				for(let col = 0; col < this.column_length; col++) {
+					y[row][col] = x[this.row_length - row - 1][this.column_length - col - 1];
+				}
+			}
+		}
+		else if(rot_type === 3) {
+			// 270度回転
+			y.splice(this.column_length);
+			for(let col = 0; col < this.column_length; col++) {
+				if(col < this.row_length) {
+					y[col].splice(this.row_length);
+				}
+				else {
+					y[col] = new Array(this.row_length);
+				}
+				for(let row = 0; row < this.row_length; row++) {
+					y[col][row] = x[row][this.column_length - col - 1];
+				}
+			}
+		}
+		this.row_length = y.length;
+		this.column_length = y[0].length;
+		this._clearCash();
+		return this;
+	}
+
+	/**
+	 * 行列を時計回りに回転
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} rot_90_count - 回転する回数
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	rot90(rot_90_count) {
+		return this.clone()._rot90(rot_90_count);
+	}
+
+	/**
+	 * 行列を拡張、拡張した項は、0で初期化。
+	 * ミュータブル
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} new_row_length - 新しい行の長さ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} new_column_length - 新しい列の長さ
+	 * @returns {Matrix} 処理実行後の行列
+	 * @private
+	 */
+	_resize(new_row_length, new_column_length) {
+		const row_length	= Matrix._toInteger(new_row_length);
+		const column_length	= Matrix._toInteger(new_column_length);
+		if((row_length === this.row_length) && (column_length === this.column_length)) {
+			return this;
+		}
+		if((row_length <= 0) || (column_length <= 0)) {
+			throw "_resize";
+		}
+		const row_max = Math.max(this.row_length, row_length);
+		const col_max = Math.max(this.column_length, column_length);
+		const y = this.matrix_array;
+		// 大きくなった行と列に対してゼロで埋める
+		for(let row = 0; row < row_max; row++) {
+			if(row >= this.row_length) {
+				y[row] = new Array(col_max);
+			}
+			for(let col = 0; col < col_max; col++) {
+				if((row >= this.row_length) || (col >= this.column_length)) {
+					y[row][col] = Complex.ZERO;
+				}
+			}
+		}
+		// 小さくなった行と列を削除する
+		if(this.row_length > row_length) {
+			y.splice(row_length);
+		}
+		if(this.column_length > column_length) {
+			for(let row = 0; row < y.length; row++) {
+				y[row].splice(column_length);
+			}
+		}
+		this.row_length = row_length;
+		this.column_length = column_length;
+		this._clearCash();
+		return this;
+	}
+
+	/**
+	 * 行列を拡張、拡張した項は、0で初期化
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - 新しい行の長さ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - 新しい列の長さ
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	resize(row_length, column_length) {
+		return this.clone()._resize(row_length, column_length);
+	}
+
+	/**
+	 * 行列内の行を消去
+	 * ミュータブル
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_row_index - 行番号
+	 * @returns {Matrix} 処理実行後の行列
+	 * @private
+	 */
+	_deleteRow(delete_row_index) {
+		const row_index	= Matrix._toInteger(delete_row_index);
+		if((this.row_length === 1) || (this.row_length <= row_index)) {
+			throw "_deleteRow";
+		}
+		this.matrix_array.splice(row_index, 1);
+		this.row_length--;
+		this._clearCash();
+		return this;
+	}
+	
+	/**
+	 * 行列内の列を消去
+	 * ミュータブル
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_column_index - 列番号
+	 * @returns {Matrix} 処理実行後の行列
+	 * @private
+	 */
+	_deleteColumn(delete_column_index) {
+		const column_index	= Matrix._toInteger(delete_column_index);
+		if((this.column_length === 1) || (this.column_length <= column_index)) {
+			throw "_deleteColumn";
+		}
+		for(let row = 0; row < this.row_length; row++) {
+			this.matrix_array[row].splice(column_index, 1);
+		}
+		this.column_length--;
+		this._clearCash();
+		return this;
+	}
+
+	/**
+	 * 行列内の行を消去
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_row_index - 行番号
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	deleteRow(delete_row_index) {
+		return this.clone()._deleteRow(delete_row_index);
+	}
+
+	/**
+	 * 行列内の列を消去
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_column_index - 列番号
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	deleteColumn(delete_column_index) {
+		return this.clone()._deleteColumn(delete_column_index);
+	}
+
+	/**
+	 * 行列内の行を交換
+	 * ミュータブル
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index1 - 行番号1
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index2 - 行番号2
+	 * @returns {Matrix} 処理実行後の行列
+	 * @private
+	 */
+	_exchangeRow(exchange_row_index1, exchange_row_index2) {
+		const row_index1	= Matrix._toInteger(exchange_row_index1);
+		const row_index2	= Matrix._toInteger(exchange_row_index2);
+		if((this.row_length === 1) || (this.row_length <= row_index1) || (this.row_length <= row_index2)) {
+			throw "_exchangeRow";
+		}
+		if(row_index1 === row_index2) {
+			return this;
+		}
+		const swap = this.matrix_array[row_index1];
+		this.matrix_array[row_index1] = this.matrix_array[row_index2];
+		this.matrix_array[row_index2] = swap;
+		this._clearCash();
+		return this;
+	}
+
+	/**
+	 * 行列内の列を交換
+	 * ミュータブル
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index1 - 行番号1
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index2 - 行番号2
+	 * @returns {Matrix} 処理実行後の行列
+	 * @private
+	 */
+	_exchangeColumn(exchange_column_index1, exchange_column_index2) {
+		const column_index1	= Matrix._toInteger(exchange_column_index1);
+		const column_index2	= Matrix._toInteger(exchange_column_index2);
+		if((this.column_length === 1) || (this.column_length <= column_index1) || (this.column_length <= column_index2)) {
+			throw "_exchangeColumn";
+		}
+		if(column_index1 === column_index2) {
+			return this;
+		}
+		for(let row = 0; row < this.row_length; row++) {
+			const swap = this.matrix_array[row][column_index1];
+			this.matrix_array[row][column_index1] = this.matrix_array[row][column_index2];
+			this.matrix_array[row][column_index2] = swap;
+		}
+		this._clearCash();
+		return this;
+	}
+
+	/**
+	 * 行列内の行を交換
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index1 - 行番号1
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index2 - 行番号2
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	exchangeRow(exchange_row_index1, exchange_row_index2) {
+		return this.clone()._exchangeRow(exchange_row_index1, exchange_row_index2);
+	}
+
+	/**
+	 * 行列内の列を交換
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index1 - 行番号1
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index2 - 行番号2
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	exchangeColumn(exchange_column_index1, exchange_column_index2) {
+		return this.clone()._exchangeColumn(exchange_column_index1, exchange_column_index2);
+	}
+
+	/**
+	 * 行列の右に行列を結合
+	 * ミュータブル
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} left_matrix - 結合したい行列
+	 * @returns {Matrix} 処理実行後の行列
+	 * @private
+	 */
+	_concatLeft(left_matrix) {
+		const M = Matrix._toMatrix(left_matrix);
+		if(this.row_length != M.row_length) {
+			throw "_concatLeft";
+		}
+		for(let row = 0; row < this.row_length; row++) {
+			for(let col = 0; col < M.column_length; col++) {
+				this.matrix_array[row].push(M.matrix_array[row][col]);
+			}
+		}
+		this.column_length += M.column_length;
+		this._clearCash();
+		return this;
+	}
+
+	/**
+	 * 行列の下に行列を結合
+	 * ミュータブル
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} bottom_matrix - 結合したい行列
+	 * @returns {Matrix} 処理実行後の行列
+	 * @private
+	 */
+	_concatBottom(bottom_matrix) {
+		const M = Matrix._toMatrix(bottom_matrix);
+		if(this.column_length != M.column_length) {
+			throw "_concatBottom";
+		}
+		for(let row = 0; row < M.row_length; row++) {
+			this.matrix_array.push(M.matrix_array[row]);
+		}
+		this.row_length += M.row_length;
+		this._clearCash();
+		return this;
+	}
+
+	/**
+	 * 行列の右に行列を結合
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} left_matrix - 結合したい行列
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	concatLeft(left_matrix) {
+		return this.clone()._concatLeft(left_matrix);
+	}
+
+	/**
+	 * 行列の下に行列を結合
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} bottom_matrix - 結合したい行列
+	 * @returns {Matrix} 処理実行後の行列
+	 */
+	concatBottom(bottom_matrix) {
+		return this.clone()._concatBottom(bottom_matrix);
+	}
+
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// 行列の一般計算
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+
+	/**
+	 * 転置行列
+	 * @returns {Matrix} A^T
+	 */
+	transpose() {
+		const y = new Array(this.column_length);
+		for(let col = 0; col < this.column_length; col++) {
+			y[col] = new Array(this.row_length);
+			for(let row = 0; row < this.row_length; row++) {
+				y[col][row] = this.matrix_array[row][col];
+			}
+		}
+		return new Matrix(y);
+	}
+
+	/**
+	 * エルミート転置行列
+	 * @returns {Matrix} A^T
+	 */
+	ctranspose() {
+		return this.transpose().conj();
+	}
+
+	/**
+	 * エルミート転置行列
+	 * @returns {Matrix} A^T
+	 */
+	T() {
+		return this.ctranspose();
+	}
+
+	/**
+	 * ドット積
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] 計算するときに使用する次元（1 or 2）
+	 * @returns {Matrix} A・B
+	 */
+	inner(number, dimension=1) {
+		return LinearAlgebra.inner(this, number, dimension);
+	}
+	
+	/**
+	 * LUP分解
+	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
+	 */
+	lup() {
+		return LinearAlgebra.lup(this);
+	}
+
+	/**
+	 * LU分解
+	 * @returns {{L: Matrix, U: Matrix}} L*U=A
+	 */
+	lu() {
+		return LinearAlgebra.lu(this);
+	}
+
+	/**
+	 * 一次方程式を解く
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
+	 * @returns {Matrix} Ax=B となる x
+	 */
+	linsolve(number) {
+		return LinearAlgebra.linsolve(this, number);
+	}
+
+	/**
+	 * QR分解
+	 * @returns {{Q: Matrix, R: Matrix}} Q*R=A, Qは正規直行行列、Rは上三角行列
+	 */
+	qr() {
+		return LinearAlgebra.qr(this);
+	}
+
+	/**
+	 * 対称行列の三重対角化
+	 * @returns {{P: Matrix, H: Matrix}} P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致
+	 */
+	tridiagonalize() {
+		return LinearAlgebra.tridiagonalize(this);
+	}
+
+	/**
+	 * 対称行列の固有値分解
+	 * @returns {{V: Matrix, D: Matrix}} V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列
+	 */
+	eig() {
+		return LinearAlgebra.eig(this);
+	}
+
+	/**
+	 * 特異値分解
+	 * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
+	 */
+	svd() {
+		return LinearAlgebra.svd(this);
+	}
+
+	/**
+	 * 逆行列
+	 * @returns {Matrix} A^-1
+	 */
+	inv() {
+		return LinearAlgebra.inv(this);
+	}
+
+	/**
+	 * 疑似逆行列
+	 * @returns {Matrix} A^+
+	 */
+	pinv() {
+		return LinearAlgebra.pinv(this);
+	}
+
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// statistics 統計計算用
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+
+	/**
+	 * 対数ガンマ関数
+	 * @returns {Matrix}
+	 */
+	gammaln() {
+		return Statistics.gammaln(this);
+	}
+
+	/**
+	 * ガンマ関数
+	 * @returns {Matrix}
+	 */
+	gamma() {
+		return Statistics.gamma(this);
+	}
+
+	/**
+	 * 不完全ガンマ関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {string} [tail="lower"] - lower/upper
+	 * @returns {Matrix}
+	 */
+	gammainc(a, tail) {
+		return Statistics.gammainc(this, a, tail);
+	}
+
+	/**
+	 * ガンマ分布の確率密度関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+	 * @returns {Matrix}
+	 */
+	gampdf(k, s) {
+		return Statistics.gampdf(this, k, s);
+	}
+
+	/**
+	 * ガンマ分布の確率密度関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+	 * @returns {Matrix}
+	 */
+	gamcdf(k, s) {
+		return Statistics.gampdf(this, k, s);
+	}
+
+	/**
+	 * ガンマ分布の累積分布関数の逆関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+	 * @returns {Matrix}
+	 */
+	gaminv(k, s) {
+		return Statistics.gaminv(this, k, s);
+	}
+
+	/**
+	 * ベータ関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} y
+	 * @returns {Matrix}
+	 */
+	beta(y) {
+		return Statistics.beta(this, y);
+	}
+	
+	/**
+	 * 不完全ベータ関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {string} [tail="lower"] - lower/upper
+	 * @returns {Matrix}
+	 */
+	betainc(a, b, tail) {
+		return Statistics.betainc(this, a, b, tail);
+	}
+
+	/**
+	 * ベータ分布の確率密度関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @returns {Matrix}
+	 */
+	betacdf(a, b) {
+		return Statistics.betacdf(this, a, b);
+	}
+
+	/**
+	 * ベータ分布の累積分布関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @returns {Matrix}
+	 */
+	betapdf(a, b) {
+		return Statistics.betapdf(this, a, b);
+	}
+
+	/**
+	 * ベータ分布の累積分布関数の逆関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @returns {Matrix}
+	 */
+	betainv(a, b) {
+		return Statistics.betainv(this, a, b);
+	}
+
+	/**
+	 * x! 階乗関数
+	 * @returns {Matrix}
+	 */
+	factorial() {
+		return Statistics.factorial(this);
+	}
+	
+	/**
+	 * nCk 二項係数またはすべての組合わせ
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k
+	 * @returns {Matrix}
+	 */
+	nchoosek(k) {
+		return Statistics.nchoosek(this, k);
+	}
+	
+	/**
+	 * 誤差関数
+	 * @returns {Matrix}
+	 */
+	erf() {
+		return Statistics.erf(this);
+	}
+
+	/**
+	 * 相補誤差関数
+	 * @returns {Matrix}
+	 */
+	erfc() {
+		return Statistics.erfc(this);
+	}
+	
+	/**
+	 * 正規分布の確率密度関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+	 * @returns {Matrix}
+	 */
+	normpdf(u=0.0, s=1.0) {
+		return Statistics.normpdf(this, u, s);
+	}
+
+	/**
+	 * 正規分布の累積分布関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+	 * @returns {Matrix}
+	 */
+	normcdf(u=0.0, s=1.0) {
+		return Statistics.normcdf(this, u, s);
+	}
+
+	/**
+	 * 正規分布の累積分布関数の逆関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+	 * @returns {Matrix}
+	 */
+	norminv(u=0.0, s=1.0) {
+		return Statistics.norminv(this, u, s);
+	}
+
+	/**
+	 * t分布の確率密度関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @returns {Matrix}
+	 */
+	tpdf(v) {
+		return Statistics.tpdf(this, v);
+	}
+
+	/**
+	 * t分布の累積分布関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @returns {Matrix}
+	 */
+	tcdf(v) {
+		return Statistics.tcdf(this, v);
+	}
+
+	/**
+	 * t分布の累積分布関数の逆関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @returns {Matrix}
+	 */
+	tinv(v) {
+		return Statistics.tinv(this, v);
+	}
+
+	/**
+	 * 尾部が指定可能なt分布の累積分布関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - 尾部(1...片側、2...両側)
+	 * @returns {Matrix}
+	 */
+	tdist(v, tails) {
+		return Statistics.tdist(this, v, tails);
+	}
+
+	/**
+	 * 両側検定時のt分布の累積分布関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @returns {Matrix}
+	 */
+	tinv2(v) {
+		return Statistics.tinv2(this, v);
+	}
+
+	/**
+	 * カイ二乗分布の確率密度関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+	 * @returns {Matrix}
+	 */
+	chi2pdf(k) {
+		return Statistics.chi2pdf(this, k);
+	}
+
+	/**
+	 * カイ二乗分布の累積分布関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+	 * @returns {Matrix}
+	 */
+	chi2cdf(k) {
+		return Statistics.chi2cdf(this, k);
+	}
+	
+	/**
+	 * カイ二乗分布の累積分布関数の逆関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+	 * @returns {Matrix}
+	 */
+	chi2inv(k) {
+		return Statistics.chi2inv(this, k);
+	}
+
+	/**
+	 * F分布の確率密度関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+	 * @returns {Matrix}
+	 */
+	fpdf(d1, d2) {
+		return Statistics.fpdf(this, d1, d2);
+	}
+
+	/**
+	 * F分布の累積分布関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+	 * @returns {Matrix}
+	 */
+	fcdf(d1, d2) {
+		return Statistics.fcdf(this, d1, d2);
+	}
+
+	/**
+	 * F分布の累積分布関数の逆関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+	 * @returns {Matrix}
+	 */
+	finv(d1, d2) {
+		return Statistics.finv(this, d1, d2);
+	}
+	
+	/**
+	 * 最大値
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} max([A, B])
+	 */
+	max(type) {
+		return Statistics.max(this, type);
+	}
+	
+	/**
+	 * 最小値
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} min([A, B])
+	 */
+	min(type) {
+		return Statistics.min(this, type);
+	}
+	
+	/**
+	 * 合計
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	sum(type) {
+		return Statistics.sum(this, type);
+	}
+
+	/**
+	 * 相加平均
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	mean(type) {
+		return Statistics.mean(this, type);
+	}
+
+	/**
+	 * 配列の積
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	prod(type) {
+		return Statistics.prod(this, type);
+	}
+
+	/**
+	 * 相乗平均／幾何平均
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	geomean(type) {
+		return Statistics.geomean(this, type);
+	}
+
+	/**
+	 * 中央値
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	median(type) {
+		return Statistics.median(this, type);
+	}
+
+	/**
+	 * 最頻値
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	mode(type) {
+		return Statistics.mode(this, type);
+	}
+
+	/**
+	 * 中心積率
+	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
+	 * @returns {Matrix}
+	 */
+	moment(type) {
+		return Statistics.moment(this, type);
+	}
+
+	/**
+	 * 分散
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	var(type) {
+		return Statistics.var(this, type);
+	}
+
+	/**
+	 * 標準偏差
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	std(type) {
+		return Statistics.std(this, type);
+	}
+
+	/**
+	 * 標準偏差
+	 * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
+	 * @returns {Matrix}
+	 */
+	mad(type) {
+		return Statistics.mad(this, type);
+	}
+
+	/**
+	 * 歪度
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	skewness(type) {
+		return Statistics.skewness(this, type);
+	}
+
+	/**
+	 * 共分散行列
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	cov(type) {
+		return Statistics.cov(this, type);
+	}
+
+	/**
+	 * 標本の標準化
+	 * 平均値0、標準偏差1に変更する
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	normalize(type) {
+		return Statistics.normalize(this, type);
+	}
+
+	/**
+	 * 相関行列
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @returns {Matrix}
+	 */
+	corrcoef(type) {
+		return Statistics.corrcoef(this, type);
+	}
+
+	/**
+	 * ソート
+	 * @param {{dimension : (?string|?number), order : ?string}} [type]
+	 * @returns {Matrix}
+	 */
+	sort(type) {
+		return Statistics.sort(this, type);
+	}
+
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// signal 信号処理用
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+
+	/**
+	 * 離散フーリエ変換
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} fft(x)
+	 */
+	fft(type) {
+		return Signal.fft(this, type);
+	}
+
+	/**
+	 * 逆離散フーリエ変換
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} ifft(x)
+	 */
+	ifft(type) {
+		return Signal.ifft(this, type);
+	}
+
+	/**
+	 * パワースペクトル密度
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} abs(fft(x)).^2
+	 */
+	powerfft(type) {
+		return Signal.powerfft(this, type);
+	}
+
+	/**
+	 * 離散コサイン変換
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} dct(x)
+	 */
+	dct(type) {
+		return Signal.dct(this, type);
+	}
+
+	/**
+	 * 逆離散コサイン変換
+	 * @param {{dimension : (?string|?number)}} [type]
+	 * @returns {Matrix} idct(x)
+	 */
+	idct(type) {
+		return Signal.idct(this, type);
+	}
+
+	/**
+	 * 2次元の離散フーリエ変換
+	 * @returns {Matrix}
+	 */
+	fft2() {
+		return Signal.fft2(this);
+	}
+
+	/**
+	 * 2次元の逆離散フーリエ変換
+	 * @returns {Matrix}
+	 */
+	ifft2() {
+		return Signal.ifft2(this);
+	}
+
+	/**
+	 * 2次元の離散コサイン変換
+	 * @returns {Matrix}
+	 */
+	dct2() {
+		return Signal.dct2(this);
+	}
+
+	/**
+	 * 2次元の逆離散コサイン変換
+	 * @returns {Matrix}
+	 */
+	idct2() {
+		return Signal.idct2(this);
+	}
+
+	/**
+	 * 畳み込み積分、多項式乗算
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+	 * @returns {Matrix}
+	 */
+	conv(number) {
+		return Signal.conv(this, number);
+	}
+
+	/**
+	 * 自己相関関数、相互相関関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [number] - 省略した場合は自己相関関数
+	 * @returns {Matrix}
+	 */
+	xcorr(number) {
+		return Signal.xcorr(this, number);
+	}
+
+	/**
+	 * 窓関数
+	 * @param {string} name - 窓関数の名前
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @returns {Matrix} 列ベクトル
+	 */
+	static window(name, size, periodic) {
+		return Signal.window(name, size, periodic);
+	}
+
+	/**
+	 * ハニング窓
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @returns {Matrix} 列ベクトル
+	 */
+	static hann(size, periodic) {
+		return Signal.hann(size, periodic);
+	}
+	
+	/**
+	 * ハミング窓
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @returns {Matrix} 列ベクトル
+	 */
+	static hamming(size, periodic) {
+		return Signal.hamming(size, periodic);
+	}
+	
+}
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Complex 内で使用する乱数生成クラス
+ * @type {Random}
+ * @ignore
+ */
+const random_class = new Random();
+
+/**
+ * Complex 内で使用する関数群
+ * @ignore
+ */
+class ComplexTool {
+
+	/**
+	 * 文字列から複素数を解析する
+	 * @param {string} text - 解析したい文字列
+	 * @returns {{real : number, imag : number}}
+	 */
+	static ToComplexFromString(text) {
+		let str = text.replace(/\s/g, "").toLowerCase();
+		str = str.replace(/infinity|inf/g, "1e100000");
+		// 複素数の宣言がない場合
+		if(!(/[ij]/.test(str))) {
+			return {
+				real : parseFloat(str),
+				imag : 0.0
+			};
+		}
+		// この時点で複素数である。
+		// 以下真面目に調査
+		let re = 0;
+		let im = 0;
+		let buff;
+		// 最後が$なら右側が実数、最後が[+-]なら左側が実数
+		buff = str.match(/[+-]?(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))($|[+-])/);
+		if(buff) {
+			re = parseFloat(buff[0]);
+		}
+		// 複素数は数値が省略される場合がある
+		buff = str.match(/[+-]?(([0-9]+(\.[0-9]+)?(e[+-]?[0-9]+)?)|(nan))?[ij]/);
+		if(buff) {
+			buff = buff[0].substring(0, buff[0].length - 1);
+			// i, +i, -j のように実数部がなく、数値もない場合
+			if((/^[-+]$/.test(buff)) || buff.length === 0) {
+				im = buff === "-" ? -1 : 1;
+			}
+			else {
+				im = parseFloat(buff);
+			}
+		}
+		return {
+			real : re,
+			imag : im
+		};
+	}
+
+}
+
+/**
+ * 複素数クラス (immutable)
+ */
+class Complex {
+
+	/**
+	 * 複素数を作成
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - 複素数( "1 + j", [1 , 1] など)
+	 */
+	constructor(number) {
+		// 行列で使うためイミュータブルは必ず守ること。
+		if(arguments.length === 1) {
+			const obj = number;
+			if(obj instanceof Complex) {
+				
+				/**
+				 * 実部
+				 * @private
+				 * @type {number}
+				 */
+				this._re = obj._re;
+				
+				/**
+				 * 虚部
+				 * @private
+				 * @type {number}
+				 */
+				this._im = obj._im;
+			}
+			else if(typeof obj === "number") {
+				this._re = obj;
+				this._im = 0.0;
+			}
+			else if(obj instanceof Array) {
+				if(obj.length === 2) {
+					this._re = obj[0];
+					this._im = obj[1];
+				}
+				else {
+					throw "Complex Unsupported argument " + arguments;
+				}
+			}
+			else if(typeof obj === "string") {
+				const x = ComplexTool.ToComplexFromString(obj);
+				this._re = x.real;
+				this._im = x.imag;
+			}
+			else if((obj instanceof Object) && (typeof obj._re === "number") && (typeof obj._im === "number")) {
+				this._re = obj._re;
+				this._im = obj._im;
+			}
+			else if(obj instanceof Object) {
+				const x = ComplexTool.ToComplexFromString(obj.toString());
+				this._re = x.real;
+				this._im = x.imag;
+			}
+			else {
+				throw "Complex Unsupported argument " + arguments;
+			}
+		}
+		else {
+			throw "Complex Many arguments : " + arguments.length;
+		}
+	}
+
+	/**
+	 * Complex を作成
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @returns {Complex}
+	 */
+	static create(number) {
+		if(number instanceof Complex) {
+			return number;
+		}
+		else {
+			return new Complex(number);
+		}
+	}
+	
+	/**
+	 * 指定した数値から Complex 型に変換
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @returns {Complex}
+	 */
+	static valueOf(number) {
+		return Complex.valueOf(number);
+	}
+	
+	/**
+	 * 複素数を作成
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
+	 * @returns {Complex}
+	 * @private
+	 */
+	static _toComplex(number) {
+		if(number instanceof Complex) {
+			return number;
+		}
+		else if(number instanceof Matrix) {
+			return Matrix._toComplex(number);
+		}
+		else {
+			return new Complex(number);
+		}
+	}
+
+	/**
+	 * 実数を作成
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toDouble(number) {
+		if(typeof number === "number") {
+			return number;
+		}
+		const complex_number = Complex._toComplex(number);
+		if(complex_number.isReal()) {
+			return complex_number.real;
+		}
+		else {
+			throw "not support complex numbers.[" + number + "]";
+		}
+	}
+
+	/**
+	 * 整数を作成
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		return Complex._toDouble(number) | 0;
+	}
+
+	/**
+	 * 32ビット整数に変換
+	 * @returns {number}
+	 */
+	get intValue() {
+		return this.real | 0;
+	}
+
+	/**
+	 * 64ビット実数に変換
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		return this.real;
+	}
+
+	/**
+	 * ディープコピー
+	 * @returns {Complex} 
+	 */
+	clone() {
+		return this;
+	}
+
+	/**
+	 * 文字列データ
+	 * @returns {string} 
+	 */
+	toString() {
+		const formatG = function(x) {
+			let numstr = x.toPrecision(6);
+			if(numstr.indexOf(".") !== -1) {
+				numstr = numstr.replace(/\.?0+$/, "");  // 1.00 , 1.10
+				numstr = numstr.replace(/\.?0+e/, "e"); // 1.0e , 1.10e
+			}
+			else if(/inf/i.test(numstr)) {
+				if(x === Number.POSITIVE_INFINITY) {
+					return "Inf";
+				}
+				else {
+					return "-Inf";
+				}
+			}
+			else if(/nan/i.test(numstr)) {
+				return "NaN";
+			}
+			return numstr;
+		};
+		if(!this.isReal()) {
+			if(this._re === 0) {
+				return formatG(this._im) + "i";
+			}
+			else if((this._im >= 0) || (Number.isNaN(this._im))) {
+				return formatG(this._re) + " + " + formatG(this._im) + "i";
+			}
+			else {
+				return formatG(this._re) + " - " + formatG(-this._im) + "i";
+			}
+		}
+		else {
+			return formatG(this._re);
+		}
+	}
+	
+	/**
+	 * ランダムな値を作成
+	 * @returns {Complex}
+	 */
+	static rand() {
+		return new Complex(random_class.nextDouble());
+	}
+
+	/**
+	 * 正規分布に従うランダムな値を作成
+	 * @returns {Complex}
+	 */
+	static randn() {
+		return new Complex(random_class.nextGaussian());
+	}
+
+	/**
+	 * 等式
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {boolean} A === B
+	 */
+	equals(number, epsilon) {
+		const x = Complex._toComplex(number);
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		// 無限大、非数の値も含めて一度確認
+		if((this._re === x._re) && (this._im === x._im)) {
+			return true;
+		}
+		// 誤差を含んだ値の比較
+		return (Math.abs(this._re - x._re) <  tolerance) && (Math.abs(this._im - x._im) < tolerance);
+	}
+
+	/**
+	 * 実部
+	 * @returns {number} real(A)
+	 */
+	get real() {
+		return this._re;
+	}
+	
+	/**
+	 * 虚部
+	 * @returns {number} imag(A)
+	 */
+	get imag() {
+		return this._im;
+	}
+
+	/**
+	 * ノルム
+	 * @returns {number} |A|
+	 */
+	get norm() {
+		if(this._im === 0) {
+			return Math.abs(this._re);
+		}
+		else if(this._re === 0) {
+			return Math.abs(this._im);
+		}
+		else {
+			return Math.sqrt(this._re * this._re + this._im * this._im);
+		}
+	}
+
+	/**
+	 * 偏角
+	 * @returns {number} arg(A)
+	 */
+	get arg() {
+		if(this._im === 0) {
+			return this._re >= 0 ? 0 : Math.PI;
+		}
+		else if(this._re === 0) {
+			return Math.PI * (this._im >= 0.0 ? 0.5 : -0.5);
+		}
+		else {
+			return Math.atan2(this._im, this._re);
+		}
+	}
+
+	/**
+	 * 実部、虚部を表す際の小数点以下の桁数
+	 * @returns {number} 小数点の桁数
+	 */
+	getDecimalPosition() {
+		const ep = Number.EPSILON;
+		const getDecimal = function(x) {
+			if(!Number.isFinite(x)) {
+				return 0;
+			}
+			let a = x;
+			let point = 0;
+			for(let i = 0; i < 20; i++) {
+				if(Math.abs(a - (a | 0)) <= ep) {
+					break;
+				}
+				a *= 10;
+				point++;
+			}
+			return point;
+		};
+		return Math.max( getDecimal(this.real), getDecimal(this.imag) );
+	}
+
+	/**
+	 * 加算
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
+	 * @returns {Complex} A + B
+	 */
+	add(number) {
+		const x = new Complex(number);
+		x._re = this._re + x._re;
+		x._im = this._im + x._im;
+		return x;
+	}
+
+	/**
+	 * 減算
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} A - B
+	 */
+	sub(number) {
+		const x = new Complex(number);
+		x._re = this._re - x._re;
+		x._im = this._im - x._im;
+		return x;
+	}
+
+	/**
+	 * 乗算
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} A * B
+	 */
+	mul(number) {
+		const x = new Complex(number);
+		if((this._im === 0) && (x._im === 0)) {
+			x._re = this._re * x._re;
+			return x;
+		}
+		else if((this._re === 0) && (x._re === 0)) {
+			x._re = - this._im * x._im;
+			x._im = 0;
+			return x;
+		}
+		else {
+			const re = this._re * x._re - this._im * x._im;
+			const im = this._im * x._re + this._re * x._im;
+			x._re = re;
+			x._im = im;
+			return x;
+		}
+	}
+	
+	/**
+	 * ドット積
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} A * conj(B)
+	 */
+	dot(number) {
+		const x = new Complex(number);
+		if((this._im === 0) && (x._im === 0)) {
+			x._re = this._re * x._re;
+			return x;
+		}
+		else if((this._re === 0) && (x._re === 0)) {
+			x._re = this._im * x._im;
+			x._im = 0;
+			return x;
+		}
+		else {
+			const re = this._re * x._re + this._im * x._im;
+			const im = - this._im * x._re + this._re * x._im;
+			x._re = re;
+			x._im = im;
+			return x;
+		}
+	}
+	
+	/**
+	 * 割り算
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} A / B
+	 */
+	div(number) {
+		const x = new Complex(number);
+		if((this._im === 0) && (x._im === 0)) {
+			x._re = this._re / x._re;
+			return x;
+		}
+		else if((this._re === 0) && (x._re === 0)) {
+			x._re = this._im / x._im;
+			x._im = 0;
+			return x;
+		}
+		else {
+			const re = this._re * x._re + this._im * x._im;
+			const im = this._im * x._re - this._re * x._im;
+			const denominator = 1.0 / (x._re * x._re + x._im * x._im);
+			x._re = re * denominator;
+			x._im = im * denominator;
+			return x;
+		}
+	}
+
+	/**
+	 * 割り算の正の余り
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - 複素数を含まない数値 
+	 * @returns {Complex} A mod B
+	 */
+	mod(number) {
+		const x = new Complex(number);
+		if((this._im !== 0) || (x._im !== 0)) {
+			throw "calculation method is undefined.";
+		}
+		let _re = this._re - x._re * (0 | (this._re / x._re));
+		if(_re < 0) {
+			_re += x._re;
+		}
+		x._re = _re;
+		return x;
+	}
+
+	/**
+	 * 逆数
+	 * @returns {Complex} 1 / A
+	 */
+	inv() {
+		if(this._im === 0) {
+			return new Complex(1.0 / this._re);
+		}
+		else if(this._re === 0) {
+			return new Complex([0, - 1.0 / this._im]);
+		}
+		return Complex.ONE.div(this);
+	}
+
+	/**
+	 * 符号値
+	 * @returns {Complex} [-1,1] 複素数の場合はノルムを1にした値。
+	 */
+	sign() {
+		if(this._im === 0) {
+			if(this._re === 0) {
+				return new Complex(0);
+			}
+			else {
+				return new Complex(this._re > 0 ? 1 : -1);
+			}
+		}
+		return this.div(this.norm);
+	}
+	
+	/**
+	 * 最大値
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {Complex} max([A, B])
+	 */
+	max(number, epsilon) {
+		const x = Complex._toComplex(number);
+		if(this.compareTo(x, epsilon) >= 0) {
+			return this;
+		}
+		else {
+			return x;
+		}
+	}
+
+	/**
+	 * 最小値
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {Complex} min([A, B])
+	 */
+	min(number, epsilon) {
+		const x = Complex._toComplex(number);
+		if(this.compareTo(x, epsilon) <= 0) {
+			return this;
+		}
+		else {
+			return x;
+		}
+	}
+
+	/**
+	 * 値同士を比較
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number, epsilon) {
+		const x1 = this;
+		const x2 = Complex._toComplex(number);
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		const a = x1.real + x1.imag;
+		const b = x2.real + x2.imag;
+		if((Math.abs(a - b) < tolerance)) {
+			return 0;
+		}
+		return a > b ? 1 : -1;
+	}
+
+	// ----------------------
+	// テスト系
+	// ----------------------
+	
+	/**
+	 * 整数を判定
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {boolean}
+	 */
+	isInteger(epsilon) {
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		return this.isReal() && (Math.abs(this._re - (this._re | 0)) < tolerance);
+	}
+
+	/**
+	 * 複素整数（整数も含む）を判定
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {boolean} real(A) === 整数 && imag(A) === 整数
+	 */
+	isComplexInteger(epsilon) {
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		// 複素整数
+		return (Math.abs(this._re - (this._re | 0)) < tolerance) &&
+				(Math.abs(this._im - (this._im | 0)) < tolerance);
+	}
+
+	/**
+	 * 0 を判定
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {boolean} A === 0
+	 */
+	isZero(epsilon) {
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		return (Math.abs(this._re) < tolerance) && (Math.abs(this._im) < tolerance);
+	}
+
+	/**
+	 * 1 を判定
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {boolean} A === 1
+	 */
+	isOne(epsilon) {
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		return (Math.abs(this._re - 1.0) < tolerance) && (Math.abs(this._im) < tolerance);
+	}
+
+	/**
+	 * 複素数（虚部が0以外）を判定
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {boolean} imag(A) !== 0
+	 */
+	isComplex(epsilon) {
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		return (Math.abs(this._im) >= tolerance);
+	}
+	
+	/**
+	 * 実数を判定
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @returns {boolean} imag(A) === 0
+	 */
+	isReal(epsilon) {
+		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		return (Math.abs(this._im) < tolerance);
+	}
+
+	/**
+	 * 非数を判定
+	 * @returns {boolean} isNaN(A)
+	 */
+	isNaN() {
+		return isNaN(this._re) || isNaN(this._im);
+	}
+
+	/**
+	 * 実部の正数を判定
+	 * @returns {boolean} real(x) > 0
+	 */
+	isPositive() {
+		// Number.EPSILONは使用しない。どちらにぶれるか不明な点及び
+		// わずかな負の数だった場合に、sqrtでエラーが発生するため
+		return 0.0 < this._re;
+	}
+
+	/**
+	 * 実部の負数を判定
+	 * @returns {boolean} real(x) < 0
+	 */
+	isNegative() {
+		return 0.0 > this._re;
+	}
+
+	/**
+	 * 実部の非負値を判定
+	 * @returns {boolean} real(x) >= 0
+	 */
+	isNotNegative() {
+		return 0.0 <= this._re;
+	}
+
+	/**
+	 * 無限を判定
+	 * @returns {boolean} isInfinite(A)
+	 */
+	isInfinite() {
+		return	(this._re === Number.POSITIVE_INFINITY) ||
+				(this._im === Number.POSITIVE_INFINITY) ||
+				(this._re === Number.NEGATIVE_INFINITY) ||
+				(this._im === Number.NEGATIVE_INFINITY);
+	}
+	
+	/**
+	 * 有限数を判定
+	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
+	 */
+	isFinite() {
+		return !this.isNaN() && !this.isInfinite();
+	}
+
+	// ----------------------
+	// 複素数
+	// ----------------------
+	
+	/**
+	 * 絶対値
+	 * @returns {Complex} abs(A)
+	 */
+	abs() {
+		return new Complex(this.norm);
+	}
+
+	/**
+	 * 共役複素数
+	 * @returns {Complex} real(A) - imag(A)j
+	 */
+	conj() {
+		if(this._im === 0) {
+			return this;
+		}
+		// 共役複素数
+		return new Complex([this._re, -this._im]);
+	}
+
+	/**
+	 * 負数
+	 * @returns {Complex} -A
+	 */
+	negate() {
+		return new Complex([-this._re, -this._im]);
+	}
+
+	// ----------------------
+	// 指数
+	// ----------------------
+	
+	/**
+	 * 累乗
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @returns {Complex} pow(A, B)
+	 */
+	pow(number) {
+		const A = this;
+		const B = new Complex(number);
+		// -2 ^ 0.5 ... 複素数
+		// -2 ^ 1   ... 実数
+		//  2 ^ 0.5 ... 実数
+		if(B.isReal()) {
+			if(A.isReal() && (A.isNotNegative() || B.isInteger())) {
+				B._re = Math.pow(A._re, B._re);
+				return B;
+			}
+			else {
+				const r = Math.pow(A.norm, B._re);
+				const s = A.arg * B._re;
+				B._re = r * Math.cos(s);
+				B._im = r * Math.sin(s);
+				return B;
+			}
+		}
+		else {
+			return B.mul(A.log()).exp();
+		}
+	}
+
+	/**
+	 * 2乗
+	 * @returns {Complex} pow(A, 2)
+	 */
+	square() {
+		if(this._im === 0.0) {
+			return new Complex(this._re * this._re);
+		}
+		return this.mul(this);
+	}
+
+	/**
+	 * 平方根
+	 * @returns {Complex} sqrt(A)
+	 */
+	sqrt() {
+		if(this.isReal()) {
+			if(this.isNotNegative()) {
+				return new Complex(Math.sqrt(this._re));
+			}
+			else {
+				return new Complex([0, Math.sqrt(-this._re)]);
+			}
+		}
+		const r = Math.sqrt(this.norm);
+		const s = this.arg * 0.5;
+		return new Complex([r * Math.cos(s), r * Math.sin(s)]);
+	}
+
+	/**
+	 * 対数
+	 * @returns {Complex} log(A)
+	 */
+	log() {
+		if(this.isReal() && this.isNotNegative()) {
+			return new Complex(Math.log(this._re));
+		}
+		// 負の値が入っているか、もともと複素数が入っている場合は、複素対数関数
+		return new Complex([Math.log(this.norm), this.arg]);
+	}
+
+	/**
+	 * 指数
+	 * @returns {Complex} exp(A)
+	 */
+	exp() {
+		if(this.isReal()) {
+			return new Complex(Math.exp(this._re));
+		}
+		// 複素指数関数
+		const r = Math.exp(this._re);
+		return new Complex([r * Math.cos(this._im), r * Math.sin(this._im)]);
+	}
+
+	// ----------------------
+	// 三角関数
+	// ----------------------
+	
+	/**
+	 * sin
+	 * @returns {Complex} sin(A)
+	 */
+	sin() {
+		if(this.isReal()) {
+			return new Complex(Math.sin(this._re));
+		}
+		// オイラーの公式より
+		// sin x = (e^ix - e^-ex) / 2i
+		const a = this.mul(Complex.I).exp();
+		const b = this.mul(Complex.I.negate()).exp();
+		return a.sub(b).div([0, 2]);
+	}
+
+	/**
+	 * cos
+	 * @returns {Complex} cos(A)
+	 */
+	cos() {
+		if(this.isReal()) {
+			return new Complex(Math.cos(this._re));
+		}
+		// オイラーの公式より
+		// cos x = (e^ix + e^-ex) / 2
+		const a = this.mul(Complex.I).exp();
+		const b = this.mul(Complex.I.negate()).exp();
+		return a.add(b).div(2);
+	}
+
+	/**
+	 * tan
+	 * @returns {Complex} tan(A)
+	 */
+	tan() {
+		if(this.isReal()) {
+			return new Complex(Math.tan(this._re));
+		}
+		// 三角関数の相互関係 tan x = sin x / cos x
+		return this.sin().div(this.cos());
+	}
+
+	/**
+	 * atan
+	 * @returns {Complex} atan(A)
+	 */
+	atan() {
+		if(this.isReal()) {
+			return new Complex(Math.atan(this._re));
+		}
+		// 逆正接 tan-1 x = i/2 log( i+x / i-x )
+		return Complex.I.div(Complex.TWO).mul(Complex.I.add(this).div(Complex.I.sub(this)).log());
+	}
+
+	/**
+	 * atan2
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [number] - 実数で指定。省略時は、本オブジェクトの偏角を返す。
+	 * @returns {Complex} atan2(Y, X)
+	 */
+	atan2(number) {
+		if(arguments.length === 0) {
+			return new Complex(this.arg);
+		}
+		// y.atan2(x) とする。
+		const y = this;
+		const x = Complex._toComplex(number);
+		if(y.isReal() && x.isReal()) {
+			return new Complex(Math.atan2(y._re, x._re));
+		}
+		// 複素数のatan2は未定義である（実装不可能）
+		throw "calculation method is undefined.";
+	}
+	
+	// ----------------------
+	// 信号処理系
+	// ----------------------
+	
+	/**
+	 * 正規化 sinc
+	 * @returns {Complex} sinc(A)
+	 */
+	sinc() {
+		if(this.isReal()) {
+			if(this._re === 0) {
+				return(Complex.ONE);
+			}
+			const x = Math.PI * this._re;
+			return new Complex(Math.sin(x) / x);
+		}
+		const x = this.mul(Complex.PI);
+		return new Complex( x.sin().div(x) );
+	}
+
+	// ----------------------
+	// 丸め
+	// ----------------------
+	
+	/**
+	 * floor
+	 * @returns {Complex} floor(A)
+	 */
+	floor() {
+		return new Complex([Math.floor(this._re), Math.floor(this._im)]);
+	}
+
+	/**
+	 * ceil
+	 * @returns {Complex} ceil(A)
+	 */
+	ceil() {
+		return new Complex([Math.ceil(this._re), Math.ceil(this._im)]);
+	}
+	
+	/**
+	 * 四捨五入
+	 * @returns {Complex} round(A)
+	 */
+	round() {
+		return new Complex([Math.round(this._re), Math.round(this._im)]);
+	}
+
+	/**
+	 * 整数化
+	 * @returns {Complex} fix(A)
+	 */
+	fix() {
+		return new Complex([this._re | 0, this._im | 0]);
+	}
+
+	/**
+	 * 小数部の抽出
+	 * @returns {Complex} fract(A) 
+	 */
+	fract() {
+		return new Complex([this._re - (this._re | 0), this._im - (this._im | 0)]);
+	}
+
+	// ----------------------
+	// 定数
+	// ----------------------
+	
+	/**
+	 * 1
+	 * @returns {Complex} 1
+	 */
+	static get ONE() {
+		return DEFINE$3.ONE;
+	}
+	
+	/**
+	 * 2
+	 * @returns {Complex} 2
+	 */
+	static get TWO() {
+		return DEFINE$3.TWO;
+	}
+	
+	/**
+	 * 10
+	 * @returns {Complex} 10
+	 */
+	static get TEN() {
+		return DEFINE$3.TEN;
+	}
+	
+	/**
+	 * 0
+	 * @returns {Complex} 0
+	 */
+	static get ZERO() {
+		return DEFINE$3.ZERO;
+	}
+
+	/**
+	 * -1
+	 * @returns {Complex} -1
+	 */
+	static get MINUS_ONE() {
+		return DEFINE$3.MINUS_ONE;
+	}
+
+	/**
+	 * i, j
+	 * @returns {Complex} i
+	 */
+	static get I() {
+		return DEFINE$3.I;
+	}
+
+	/**
+	 * PI
+	 * @returns {Complex} 3.14...
+	 */
+	static get PI() {
+		return DEFINE$3.PI;
+	}
+
+	/**
+	 * E
+	 * @returns {Complex} 2.71...
+	 */
+	static get E() {
+		return DEFINE$3.E;
+	}
+
+	/**
+	 * LN2
+	 * @returns {Complex} ln(2)
+	 */
+	static get LN2() {
+		return DEFINE$3.LN2;
+	}
+
+	/**
+	 * LN10
+	 * @returns {Complex} ln(10)
+	 */
+	static get LN10() {
+		return DEFINE$3.LN10;
+	}
+
+	/**
+	 * LOG2E
+	 * @returns {Complex} log_2(e)
+	 */
+	static get LOG2E() {
+		return DEFINE$3.LOG2E;
+	}
+	
+	/**
+	 * LOG10E
+	 * @returns {Complex} log_10(e)
+	 */
+	static get LOG10E() {
+		return DEFINE$3.LOG10E;
+	}
+	
+	/**
+	 * SQRT2
+	 * @returns {Complex} sqrt(2)
+	 */
+	static get SQRT2() {
+		return DEFINE$3.SQRT2;
+	}
+	
+	/**
+	 * SQRT1_2
+	 * @returns {Complex} sqrt(0.5)
+	 */
+	static get SQRT1_2() {
+		return DEFINE$3.SQRT1_2;
+	}
+	
+	/**
+	 * 0.5
+	 * @returns {Complex} 0.5
+	 */
+	static get HALF() {
+		return DEFINE$3.HALF;
+	}
+
+	/**
+	 * 正の無限大
+	 * @returns {Complex} Infinity
+	 */
+	static get POSITIVE_INFINITY() {
+		return DEFINE$3.POSITIVE_INFINITY;
+	}
+	
+	/**
+	 * 負の無限大
+	 * @returns {Complex} -Infinity
+	 */
+	static get NEGATIVE_INFINITY() {
+		return DEFINE$3.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * 非数
+	 * @returns {Complex} NaN
+	 */
+	static get NaN() {
+		return DEFINE$3.NaN;
+	}
+
+}
+
+/**
+ * 内部で使用する定数値
+ * @ignore
+ */
+const DEFINE$3 = {
+
+	/**
+	 * 0
+	 */
+	ZERO : new Complex(0),
+
+	/**
+	 * 1
+	 */
+	ONE : new Complex(1),
+
+	/**
+	 * 2
+	 */
+	TWO : new Complex(2),
+
+	/**
+	 * 10
+	 */
+	TEN : new Complex(10),
+
+	/**
+	 * -1
+	 */
+	MINUS_ONE : new Complex(-1),
+
+	/**
+	 * i
+	 */
+	I : new Complex([0, 1]),
+
+	/**
+	 * PI
+	 */
+	PI : new Complex(Math.PI),
+
+	/**
+	 * E
+	 */
+	E : new Complex(Math.E),
+
+	/**
+	 * ln2
+	 */
+	LN2 : new Complex(Math.LN2),
+
+	/**
+	 * ln10
+	 */
+	LN10 : new Complex(Math.LN10),
+
+	/**
+	 * log_2(e)
+	 */
+	LOG2E : new Complex(Math.LOG2E),
+
+	/**
+	 * log_10(e)
+	 */
+	LOG10E : new Complex(Math.LOG10E),
+
+	/**
+	 * sqrt(2)
+	 */
+	SQRT2 : new Complex(Math.SQRT2),
+
+	/**
+	 * sqrt(0.5)
+	 */
+	SQRT1_2 : new Complex(Math.SQRT1_2),
+
+	/**
+	 * 0.5
+	 */
+	HALF : new Complex(0.5),
+
+	/**
+	 * Infinity
+	 */
+	POSITIVE_INFINITY : new Complex(Number.POSITIVE_INFINITY),
+
+	/**
+	 * -Infinity
+	 */
+	NEGATIVE_INFINITY : new Complex(Number.NEGATIVE_INFINITY),
+
+	/**
+	 * NaN
+	 */
+	NaN : new Complex(Number.NaN)
+};
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * 計算に利用できるデータを提供するクラス
+ * 大まかに、 BigInteger, BigDecimal, Matrix の3つに分かれる。
+ * Matrix は、 Complex を包括している。
+ * 多倍長整数演算を特化した計算クラスは、 BigInteger 。
+ * 任意精度浮動小数点演算を特化した計算クラスは、 BigDecimal 。
+ * 信号処理や統計処理等を備えた汎用的な計算クラスは、 Matrix 。
+ */
+class konpeito {
+
+	/**
+	 * フォーマットクラス
+	 * @returns {typeof Log}
+	 * @ignore
+	 */
+	static get Log() {
+		return Log;
+	}
+
+	/**
+	 * 多倍長整数クラス
+	 * @returns {typeof BigInteger}
+	 */
+	static get BigInteger() {
+		return BigInteger;
+	}
+
+	/**
+	 * 任意精度浮動小数点クラス
+	 * @returns {typeof BigDecimal}
+	 */
+	static get BigDecimal() {
+		return BigDecimal;
+	}
+
+	/**
+	 * BigDecimal用の丸め設定クラス
+	 * @returns {typeof RoundingMode}
+	 */
+	static get RoundingMode() {
+		return RoundingMode;
+	}
+
+	/**
+	 * BigDecimal用の環境設定クラス
+	 * @returns {typeof MathContext}
+	 */
+	static get MathContext() {
+		return MathContext;
+	}
+
+	/**
+	 * 複素数クラス
+	 * @returns {typeof Complex}
+	 */
+	static get Complex() {
+		return Complex;
+	}
+
+	/**
+	 * 複素行列クラス
+	 * @returns {typeof Matrix}
+	 */
+	static get Matrix() {
+		return Matrix;
+	}
+
+	/**
+	 * 乱数クラス
+	 * @returns {typeof Random}
+	 */
+	static get Random() {
+		return Random;
+	}
+	
+}
+
+export default konpeito;

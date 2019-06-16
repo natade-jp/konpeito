@@ -2,8 +2,8 @@
 	"name": "konpeito",
 	"version": "0.1.8",
 	"description": "The collection of javascirpt library such as numerical calculation.",
-	"main": "./build/konpeito.umd.js",
-	"module": "./build/konpeito.module.mjs",
+	"main": "./build/konpeito.umd.min.js",
+	"module": "./build/konpeito.module.min.mjs",
 	"keywords": [
 		"math",
 		"mathematics",

@@ -1,5 +1,6 @@
 ﻿const File = require("./File.js");
 
+// npx jsdoc -c ".jsdoc.json" -r "./src/"
 File.exec("npx jsdoc -c \".jsdoc.json\" -r \"./src/\"");
 
 File.copy(

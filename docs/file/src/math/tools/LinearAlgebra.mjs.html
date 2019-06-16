@@ -75,7 +75,7 @@ class LinearAlgebraTool {
 	/**
 	 * &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x5316;
 	 * &#x5B9F;&#x6570;&#x3067;&#x306E;&#x8A08;&#x7B97;&#x306E;&#x307F;&#x5BFE;&#x5FDC;
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
 	 * @returns {{P: Matrix, H: Matrix}}
 	 */
 	static tridiagonalize(mat) {
@@ -110,7 +110,7 @@ class LinearAlgebraTool {
 		 * @param {Array&lt;number&gt;} x - &#x30CF;&#x30A6;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x30FC;&#x5909;&#x63DB;&#x3057;&#x305F;&#x3044;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
 		 * @param {number} [index_offset=0] - &#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;(&#x3053;&#x306E;&#x5024;&#x304B;&#x3089;&#x884C;&#x3046;)
 		 * @param {number} [index_max=x.length] - &#x6700;&#x5927;(&#x3053;&#x306E;&#x5024;&#x306F;&#x542B;&#x3081;&#x306A;&#x3044;)
-		 * @returns {Object&lt;string, Matrix&gt;} 
+		 * @returns {{y1: number, v: Array&lt;number&gt;}} 
 		 */
 		const house = function(x, index_offset, index_max) {
 			const ioffset = index_offset ? index_offset : 0;
@@ -227,7 +227,7 @@ class LinearAlgebraTool {
 	/**
 	 * &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x56FA;&#x6709;&#x5024;&#x5206;&#x89E3;
 	 * &#x5B9F;&#x6570;&#x3067;&#x306E;&#x8A08;&#x7B97;&#x306E;&#x307F;&#x5BFE;&#x5FDC;
-	 * @param {Matrix} mat - &#x5BFE;&#x79F0;&#x884C;&#x5217;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - &#x5BFE;&#x79F0;&#x884C;&#x5217;
 	 * @returns {{V: Matrix, D: Matrix}}
 	 */
 	static eig(mat) {
@@ -419,7 +419,7 @@ class LinearAlgebraTool {
 	
 	/**
 	 * &#x884C;&#x5217;&#x306E;&#x5168;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x3001;&#x76F4;&#x884C;&#x3057;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
 	 * @param {number} [epsilon=1.0e-10] - &#x8AA4;&#x5DEE;
 	 * @returns {Matrix|null} &#x76F4;&#x884C;&#x3057;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x304C;&#x306A;&#x3051;&#x308C;&#x3070;NULL&#x3092;&#x8FD4;&#x3059;
 	 */
@@ -482,7 +482,7 @@ class LinearAlgebraTool {
 
 	/**
 	 * &#x5217;&#x306E;&#x4E2D;&#x3067;&#x6700;&#x3082;&#x30CE;&#x30EB;&#x30E0;&#x304C;&#x6700;&#x5927;&#x306E;&#x5024;&#x304C;&#x3042;&#x308B;&#x884C;&#x756A;&#x53F7;
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
 	 * @param {number} column_index - &#x5217;&#x756A;&#x53F7;
 	 * @param {number} [row_index_offset=0] - &#x884C;&#x306E;&#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;(&#x3053;&#x306E;&#x5024;&#x304B;&#x3089;&#x884C;&#x3046;)
 	 * @param {number} [row_index_max] - &#x884C;&#x306E;&#x6700;&#x5927;(&#x3053;&#x306E;&#x5024;&#x306F;&#x542B;&#x3081;&#x306A;&#x3044;)
@@ -511,7 +511,7 @@ class LinearAlgebraTool {
 
 	/**
 	 * &#x884C;&#x5217;&#x306E;&#x5404;&#x884C;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x898B;&#x7ACB;&#x3066;&#x3001;&#x7DDA;&#x578B;&#x5F93;&#x5C5E;&#x3057;&#x3066;&#x3044;&#x308B;&#x884C;&#x3092;&#x62BD;&#x51FA;
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
 	 * @param {number} [epsilon=1.0e-10] - &#x8AA4;&#x5DEE;
 	 * @returns {Array} &#x884C;&#x756A;&#x53F7;&#x306E;&#x884C;&#x5217;(&#x6607;&#x9806;)
 	 * @private
@@ -843,7 +843,7 @@ export default class LinearAlgebra {
 		else {
 			// &#x30B5;&#x30A4;&#x30BA;&#x304C;&#x5927;&#x304D;&#x3044;&#x5834;&#x5408;&#x306F;&#x3001;lu&#x5206;&#x89E3;&#x3092;&#x5229;&#x7528;&#x3059;&#x308B;
 			const lup = LinearAlgebra.lup(M);
-			const exchange_count = (len - lup.P.diag().sum().scalar) / 2;
+			const exchange_count = (len - lup.P.diag().sum().scalar.real) / 2;
 			// &#x4E0A;&#x884C;&#x5217;&#x306E;&#x5BFE;&#x89D2;&#x7DDA;&#x4E0A;&#x306E;&#x5024;&#x3092;&#x639B;&#x3051;&#x7B97;&#x3059;&#x308B;
 			let y = lup.U.diag().prod();
 			if((exchange_count % 2) === 1) {
@@ -976,7 +976,7 @@ export default class LinearAlgebra {
 		for(let row = len - 2; row &gt;= 0; row--) {
 			y[row] = long_matrix_array[row][long_length - 1];
 			for(let j = row + 1; j &lt; len; j++) {
-				y[row] = y[row].sub(long_matrix_array[row][j] * y[j]);
+				y[row] = y[row].sub(long_matrix_array[row][j].mul(y[j]));
 			}
 			y[row] = y[row].div(long_matrix_array[row][row]);
 		}

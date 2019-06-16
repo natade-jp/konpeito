@@ -2405,7 +2405,7 @@ declare class Matrix {
     std(type?: any): Matrix;
     /**
      * 標準偏差
-     * @param {{dimension : (?string|?number), correction : ?number}} [type]
+     * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     mad(type?: any): Matrix;
@@ -2417,20 +2417,20 @@ declare class Matrix {
     skewness(type?: any): Matrix;
     /**
      * 共分散行列
-     * @param {{correction : ?number}} [type]
+     * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     cov(type?: any): Matrix;
     /**
      * 標本の標準化
      * 平均値0、標準偏差1に変更する
-     * @param {{dimension : (?string|?number)}} [type]
+     * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     normalize(type?: any): Matrix;
     /**
      * 相関行列
-     * @param {{dimension : (?string|?number)}} [type]
+     * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     corrcoef(type?: any): Matrix;

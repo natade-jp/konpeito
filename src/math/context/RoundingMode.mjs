@@ -312,14 +312,11 @@ export default class RoundingMode {
 	/**
 	 * 指定した文字列で表される丸めクラスを取得する
 	 * @param {string|RoundingModeEntity|Object} name - モードの英数名
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static valueOf(name) {
 		let check_string;
-		if(name instanceof RoundingModeEntity) {
-			return name;
-		}
-		else if(typeof name === "string") {
+		if(typeof name === "string") {
 			check_string = name;
 		}
 		else if(name instanceof Object) {
@@ -353,7 +350,7 @@ export default class RoundingMode {
 	
 	/**
 	 * 絶対値の切り上げ（1桁目が0より大きければ桁上げする）
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get UP() {
 		return RoundingMode_UP;
@@ -361,7 +358,7 @@ export default class RoundingMode {
 
 	/**
 	 * 絶対値の切り下げ（1桁目が0より大きければ桁下げする）
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get DOWN() {
 		return RoundingMode_DOWN;
@@ -369,7 +366,7 @@ export default class RoundingMode {
 
 	/**
 	 * 正の無限大に近づく
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get CEILING() {
 		return RoundingMode_CEILING;
@@ -377,7 +374,7 @@ export default class RoundingMode {
 
 	/**
 	 * 負の無限大に近づく
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get FLOOR() {
 		return RoundingMode_FLOOR;
@@ -385,7 +382,7 @@ export default class RoundingMode {
 
 	/**
 	 * 四捨五入
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_UP() {
 		return RoundingMode_HALF_UP;
@@ -393,7 +390,7 @@ export default class RoundingMode {
 
 	/**
 	 * 五捨六入
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_DOWN() {
 		return RoundingMode_HALF_DOWN;
@@ -401,7 +398,7 @@ export default class RoundingMode {
 
 	/**
 	 * 等間隔なら偶数側へ丸める
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_EVEN() {
 		return RoundingMode_HALF_EVEN;
@@ -409,7 +406,7 @@ export default class RoundingMode {
 
 	/**
 	 * 丸めない（丸める必要が出る場合はエラー）
-	 * @returns {RoundingModeEntity}
+	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get UNNECESSARY() {
 		return RoundingMode_UNNECESSARY;

@@ -1189,3 +1189,4 @@ export default class Signal {
 	
 	
 }
+

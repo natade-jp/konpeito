@@ -76,7 +76,7 @@ node --experimental-modules main.mjs
 arbitrary-precision integer class.
 
 ```
-import konpeito from "konpeito.module.mjs";
+import konpeito from "konpeito.module.min.mjs";
 const BigInteger = konpeito.BigInteger;
 const $ = BigInteger.create;
 
@@ -92,7 +92,7 @@ console.log($("7").pow("50").toString());
 floating-point math class.
 
 ```
-import konpeito from "konpeito.module.mjs";
+import konpeito from "konpeito.module.min.mjs";
 const BigDecimal = konpeito.BigDecimal;
 const MathContext = konpeito.MathContext;
 const $ = BigDecimal.create;
@@ -109,7 +109,7 @@ complex class.
 - use the JavaScript standard number.
 
 ```
-import konpeito from "konpeito.module.mjs";
+import konpeito from "konpeito.module.min.mjs";
 const Complex = konpeito.Complex;
 const $ = Complex.create;
 
@@ -125,7 +125,7 @@ complex matrix class.
 - Some methods do not support complex arithmetic.
 
 ```
-import konpeito from "konpeito.module.mjs";
+import konpeito from "konpeito.module.min.mjs";
 const Matrix = konpeito.Matrix;
 const $ = Matrix.create;
 

@@ -35,29 +35,31 @@ class MatrixTool {
 	 * @returns {Array<number>}
 	 */
 	static toPositionArrayFromObject(data, max, geta) {
-		let y;
 		if(typeof data === "string") {
 			const array_or_string = MatrixTool.toArrayFromString(data);
 			if(array_or_string === ":") {
 				// : が指定された場合
-				y = new Array(max);
+				const y = new Array(max);
 				for(let i = 0; i < max; i++) {
 					y[i] =  i + geta;
 				}
+				return y;
 			}
 			else if(array_or_string instanceof Array) {
-				y = array_or_string;
+				// 複素数の配列から中身を取り出す
+				const y = array_or_string;
+				const num_y = new Array(y.length);
 				for(let i = 0; i < y.length; i++) {
-					y[i] = y[i].real | 0;
+					num_y[i] = y[i].real | 0;
 				}
+				return num_y;
 			}
 			else {
 				throw "toArrayFromString[" + data + "][" + array_or_string + "]";
 			}
-			return y;
 		}
 		let t_data = data;
-		if(!(t_data instanceof Matrix) && !(t_data instanceof Complex) && !((typeof t_data === "number") || (t_data instanceof Number))) {
+		if(!(t_data instanceof Matrix) && !(t_data instanceof Complex) && !((typeof t_data === "number"))) {
 			t_data = Matrix._toMatrix(t_data);
 		}
 		if(t_data instanceof Matrix) {
@@ -65,7 +67,7 @@ class MatrixTool {
 				throw "getMatrix argument " + t_data;
 			}
 			const len = t_data.length;
-			y = new Array(t_data.length);
+			const y = new Array(t_data.length);
 			if(t_data.isRow()) {
 				for(let i = 0; i < len; i++) {
 					y[i] = t_data.matrix_array[0][i].real | 0;
@@ -166,7 +168,7 @@ class MatrixTool {
 	static InterpolationCalculation(from, delta, to) {
 		const FromIsGreaterThanTo = from.compareTo(to);
 		if(FromIsGreaterThanTo === 0) {
-			return from;
+			return [from];
 		}
 		if(delta.isZero()) {
 			throw "IllegalArgumentException";
@@ -3037,7 +3039,7 @@ export default class Matrix {
 
 	/**
 	 * 標準偏差
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
 	mad(type) {
@@ -3055,7 +3057,7 @@ export default class Matrix {
 
 	/**
 	 * 共分散行列
-	 * @param {{correction : ?number}} [type]
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
 	cov(type) {
@@ -3065,7 +3067,7 @@ export default class Matrix {
 	/**
 	 * 標本の標準化
 	 * 平均値0、標準偏差1に変更する
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
 	normalize(type) {
@@ -3074,7 +3076,7 @@ export default class Matrix {
 
 	/**
 	 * 相関行列
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
 	corrcoef(type) {
@@ -3143,16 +3145,16 @@ export default class Matrix {
 	 * 2次元の離散フーリエ変換
 	 * @returns {Matrix}
 	 */
-	fft2(type) {
-		return Signal.fft2(this, type);
+	fft2() {
+		return Signal.fft2(this);
 	}
 
 	/**
 	 * 2次元の逆離散フーリエ変換
 	 * @returns {Matrix}
 	 */
-	ifft2(type) {
-		return Signal.ifft2(this, type);
+	ifft2() {
+		return Signal.ifft2(this);
 	}
 
 	/**

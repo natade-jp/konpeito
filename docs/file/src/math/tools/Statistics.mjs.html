@@ -798,7 +798,7 @@ class StatisticsComplex {
 
 	/**
 	 * gammaln(x) &#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
-	 * @param {Complex} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
 	 * @returns {Complex}
 	 */
 	static gammaln(x) {
@@ -807,7 +807,7 @@ class StatisticsComplex {
 	
 	/**
 	 * gamma(z) &#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570; 
-	 * @param {Complex} z
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} z
 	 * @returns {Complex}
 	 */
 	static gamma(z) {
@@ -816,8 +816,8 @@ class StatisticsComplex {
 	
 	/**
 	 * gammainc(x, a, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} a
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} a
 	 * @param {string} [tail=&quot;lower&quot;] - lower/upper
 	 * @returns {Complex}
 	 */
@@ -830,9 +830,9 @@ class StatisticsComplex {
 
 	/**
 	 * gampdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {Complex} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
 	 * @returns {Complex}
 	 */
 	static gampdf(x, k, s) {
@@ -844,9 +844,9 @@ class StatisticsComplex {
 
 	/**
 	 * gamcdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {Complex} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
 	 * @returns {Complex}
 	 */
 	static gamcdf(x, k, s) {
@@ -858,9 +858,9 @@ class StatisticsComplex {
 
 	/**
 	 * gaminv(p, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
-	 * @param {Complex} p
-	 * @param {Complex} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {Complex} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
 	 * @returns {Complex}
 	 */
 	static gaminv(p, k, s) {
@@ -872,8 +872,8 @@ class StatisticsComplex {
 
 	/**
 	 * beta(x, y) &#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} y
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} y
 	 * @returns {Complex}
 	 */
 	static beta(x, y) {
@@ -884,9 +884,9 @@ class StatisticsComplex {
 
 	/**
 	 * betainc(x, a, b, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} a
-	 * @param {Complex} b
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} b
 	 * @param {string} [tail=&quot;lower&quot;] lower/upper
 	 * @returns {Complex}
 	 */
@@ -900,9 +900,9 @@ class StatisticsComplex {
 
 	/**
 	 * betapdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} a
-	 * @param {Complex} b
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} b
 	 * @returns {Complex}
 	 */
 	static betapdf(x, a, b) {
@@ -914,9 +914,9 @@ class StatisticsComplex {
 
 	/**
 	 * betacdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} a
-	 * @param {Complex} b
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} b
 	 * @returns {Complex}
 	 */
 	static betacdf(x, a, b) {
@@ -928,9 +928,9 @@ class StatisticsComplex {
 
 	/**
 	 * betainv(p, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
-	 * @param {Complex} p
-	 * @param {Complex} a
-	 * @param {Complex} b
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} b
 	 * @returns {Complex}
 	 */
 	static betainv(p, a, b) {
@@ -942,7 +942,7 @@ class StatisticsComplex {
 
 	/**
 	 * factorial(n), n! &#x968E;&#x4E57;&#x95A2;&#x6570;
-	 * @param {Complex} n
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} n
 	 * @returns {Complex}
 	 */
 	static factorial(n) {
@@ -951,8 +951,8 @@ class StatisticsComplex {
 
 	/**
 	 * nchoosek(n, k), nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;
-	 * @param {Complex} n
-	 * @param {Complex} k
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} n
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k
 	 * @returns {Complex}
 	 */
 	static nchoosek(n, k) {
@@ -963,7 +963,7 @@ class StatisticsComplex {
 	
 	/**
 	 * erf(x) &#x8AA4;&#x5DEE;&#x95A2;&#x6570;
-	 * @param {Complex} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
 	 * @returns {Complex}
 	 */
 	static erf(x) {
@@ -973,7 +973,7 @@ class StatisticsComplex {
 
 	/**
 	 * erfc(x) &#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;
-	 * @param {Complex} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
 	 * @returns {Complex}
 	 */
 	static erfc(x) {
@@ -983,50 +983,50 @@ class StatisticsComplex {
 
 	/**
 	 * normpdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {Complex} [s=1.0] - &#x5206;&#x6563;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [s=1.0] - &#x5206;&#x6563;
 	 * @returns {Complex}
 	 */
-	static normpdf(x, u=0.0, s=1.0) {
+	static normpdf(x, u, s) {
 		const X = Complex._toDouble(x);
-		const u_ = Complex._toDouble(u);
-		const s_ = Complex._toDouble(s);
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
 		return new Complex(StatisticsTool.normpdf(X, u_, s_));
 	}
 
 	/**
 	 * normcdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {Complex} [s=1.0] - &#x5206;&#x6563;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [s=1.0] - &#x5206;&#x6563;
 	 * @returns {Complex}
 	 */
-	static normcdf(x, u=0.0, s=1.0) {
+	static normcdf(x, u, s) {
 		const X = Complex._toDouble(x);
-		const u_ = Complex._toDouble(u);
-		const s_ = Complex._toDouble(s);
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
 		return new Complex(StatisticsTool.normcdf(X, u_, s_));
 	}
 
 	/**
 	 * norminv(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {Complex} [s=1.0] - &#x5206;&#x6563;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [u=0.0] - &#x5E73;&#x5747;&#x5024;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [s=1.0] - &#x5206;&#x6563;
 	 * @returns {Complex}
 	 */
-	static norminv(x, u=0.0, s=1.0) {
+	static norminv(x, u, s) {
 		const X = Complex._toDouble(x);
-		const u_ = Complex._toDouble(u);
-		const s_ = Complex._toDouble(s);
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
 		return new Complex(StatisticsTool.norminv(X, u_, s_));
 	}
 	
 	/**
 	 * tpdf(x, v) t&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - &#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Complex}
 	 */
 	static tpdf(x, v) {
@@ -1037,8 +1037,8 @@ class StatisticsComplex {
 
 	/**
 	 * tcdf(t, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {Complex} t
-	 * @param {Complex} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} t
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - &#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Complex}
 	 */
 	static tcdf(t, v) {
@@ -1049,8 +1049,8 @@ class StatisticsComplex {
 
 	/**
 	 * tinv(p, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
-	 * @param {Complex} p
-	 * @param {Complex} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - &#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Complex}
 	 */
 	static tinv(p, v) {
@@ -1061,9 +1061,9 @@ class StatisticsComplex {
 
 	/**
 	 * tdist(t, v, tails) &#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {Complex} t
-	 * @param {Complex} v - &#x81EA;&#x7531;&#x5EA6;
-	 * @param {Complex} tails - &#x5C3E;&#x90E8;(1...&#x7247;&#x5074;&#x3001;2...&#x4E21;&#x5074;)
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} t
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} tails - &#x5C3E;&#x90E8;(1...&#x7247;&#x5074;&#x3001;2...&#x4E21;&#x5074;)
 	 * @returns {Complex}
 	 */
 	static tdist(t, v, tails) {
@@ -1075,8 +1075,8 @@ class StatisticsComplex {
 
 	/**
 	 * tinv2(p, v) &#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {Complex} p
-	 * @param {Complex} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - &#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Complex}
 	 */
 	static tinv2(p, v) {
@@ -1087,8 +1087,8 @@ class StatisticsComplex {
 
 	/**
 	 * chi2pdf(x, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - &#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Complex}
 	 */
 	static chi2pdf(x, k) {
@@ -1099,8 +1099,8 @@ class StatisticsComplex {
 
 	/**
 	 * chi2cdf(x, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - &#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Complex}
 	 */
 	static chi2cdf(x, k) {
@@ -1111,8 +1111,8 @@ class StatisticsComplex {
 
 	/**
 	 * chi2inv(p, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
-	 * @param {Complex} p
-	 * @param {Complex} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - &#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Complex}
 	 */
 	static chi2inv(p, k) {
@@ -1123,9 +1123,9 @@ class StatisticsComplex {
 
 	/**
 	 * fpdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {Complex} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Complex}
 	 */
 	static fpdf(x, d1, d2) {
@@ -1137,9 +1137,9 @@ class StatisticsComplex {
 
 	/**
 	 * fcdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {Complex} x
-	 * @param {Complex} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {Complex} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Complex}
 	 */
 	static fcdf(x, d1, d2) {
@@ -1151,9 +1151,9 @@ class StatisticsComplex {
 
 	/**
 	 * finv(p, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
-	 * @param {Complex} p
-	 * @param {Complex} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {Complex} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
 	 * @returns {Complex}
 	 */
 	static finv(p, d1, d2) {
@@ -1395,10 +1395,10 @@ export default class Statistics {
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - &#x5206;&#x6563;
 	 * @returns {Matrix}
 	 */
-	static normpdf(x, u=0.0, s=1.0) {
+	static normpdf(x, u, s) {
 		const X = Matrix._toMatrix(x);
-		const u_ = Complex._toDouble(u);
-		const s_ = Complex._toDouble(s);
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
 		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.normpdf(num, u_, s_);
 		});
@@ -1411,10 +1411,10 @@ export default class Statistics {
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - &#x5206;&#x6563;
 	 * @returns {Matrix}
 	 */
-	static normcdf(x, u=0.0, s=1.0) {
+	static normcdf(x, u, s) {
 		const X = Matrix._toMatrix(x);
-		const u_ = Complex._toDouble(u);
-		const s_ = Complex._toDouble(s);
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
 		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.normcdf(num, u_, s_);
 		});
@@ -1427,10 +1427,10 @@ export default class Statistics {
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - &#x5206;&#x6563;
 	 * @returns {Matrix}
 	 */
-	static norminv(x, u=0.0, s=1.0) {
+	static norminv(x, u, s) {
 		const X = Matrix._toMatrix(x);
-		const u_ = Complex._toDouble(u);
-		const s_ = Complex._toDouble(s);
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
 		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.norminv(num, u_, s_);
 		});

@@ -742,7 +742,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} A * 10^floor(n)
 	 */
 	scaleByPowerOfTen(n) {
-		const x = BigDecimal._toBigInteger(n);
+		const x = BigDecimal._toInteger(n);
 		const output = this.clone();
 		output._scale = this.scale() - x;
 		return output;
@@ -754,7 +754,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	movePointLeft(n) {
-		const x = BigDecimal._toBigInteger(n);
+		const x = BigDecimal._toInteger(n);
 		let output = this.scaleByPowerOfTen( -x );
 		output = output.setScale(Math.max(this.scale() + x, 0));
 		return output;
@@ -766,7 +766,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	movePointRight(n) {
-		const x = BigDecimal._toBigInteger(n);
+		const x = BigDecimal._toInteger(n);
 		let output = this.scaleByPowerOfTen( x );
 		output = output.setScale(Math.max(this.scale() - x, 0));
 		return output;
@@ -1135,8 +1135,8 @@ export default class BigDecimal {
 	 * @returns {number}
 	 */
 	get intValue() {
-		let x = this.toBigInteger();
-		x = x.intValue;
+		const bigintdata = this.toBigInteger();
+		const x = bigintdata.intValue;
 		return x & 0xFFFFFFFF;
 	}
 
@@ -1146,8 +1146,8 @@ export default class BigDecimal {
 	 * @returns {number}
 	 */
 	get intValueExact() {
-		let x = this.toBigIntegerExact();
-		x = x.intValue;
+		const bigintdata = this.toBigIntegerExact();
+		const x = bigintdata.intValue;
 		if((x < -2147483648) || (2147483647 < x)) {
 			throw "ArithmeticException";
 		}

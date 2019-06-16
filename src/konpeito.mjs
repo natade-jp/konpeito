@@ -45,7 +45,7 @@ export default class konpeito {
 
 	/**
 	 * フォーマットクラス
-	 * @returns {Log}
+	 * @returns {typeof Log}
 	 * @ignore
 	 */
 	static get Log() {
@@ -54,7 +54,7 @@ export default class konpeito {
 
 	/**
 	 * 多倍長整数クラス
-	 * @returns {BigInteger}
+	 * @returns {typeof BigInteger}
 	 */
 	static get BigInteger() {
 		return BigInteger;
@@ -62,7 +62,7 @@ export default class konpeito {
 
 	/**
 	 * 任意精度浮動小数点クラス
-	 * @returns {BigDecimal}
+	 * @returns {typeof BigDecimal}
 	 */
 	static get BigDecimal() {
 		return BigDecimal;
@@ -70,7 +70,7 @@ export default class konpeito {
 
 	/**
 	 * BigDecimal用の丸め設定クラス
-	 * @returns {RoundingMode}
+	 * @returns {typeof RoundingMode}
 	 */
 	static get RoundingMode() {
 		return RoundingMode;
@@ -78,7 +78,7 @@ export default class konpeito {
 
 	/**
 	 * BigDecimal用の環境設定クラス
-	 * @returns {MathContext}
+	 * @returns {typeof MathContext}
 	 */
 	static get MathContext() {
 		return MathContext;
@@ -86,7 +86,7 @@ export default class konpeito {
 
 	/**
 	 * 複素数クラス
-	 * @returns {Complex}
+	 * @returns {typeof Complex}
 	 */
 	static get Complex() {
 		return Complex;
@@ -94,7 +94,7 @@ export default class konpeito {
 
 	/**
 	 * 複素行列クラス
-	 * @returns {Matrix}
+	 * @returns {typeof Matrix}
 	 */
 	static get Matrix() {
 		return Matrix;
@@ -102,7 +102,7 @@ export default class konpeito {
 
 	/**
 	 * 乱数クラス
-	 * @returns {Random}
+	 * @returns {typeof Random}
 	 */
 	static get Random() {
 		return Random;

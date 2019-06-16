@@ -27,7 +27,7 @@ class LinearAlgebraTool {
 	/**
 	 * 対称行列の三重対角化
 	 * 実数での計算のみ対応
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {{P: Matrix, H: Matrix}}
 	 */
 	static tridiagonalize(mat) {
@@ -62,7 +62,7 @@ class LinearAlgebraTool {
 		 * @param {Array<number>} x - ハウスホルダー変換したいベクトル
 		 * @param {number} [index_offset=0] - オフセット(この値から行う)
 		 * @param {number} [index_max=x.length] - 最大(この値は含めない)
-		 * @returns {Object<string, Matrix>} 
+		 * @returns {{y1: number, v: Array<number>}} 
 		 */
 		const house = function(x, index_offset, index_max) {
 			const ioffset = index_offset ? index_offset : 0;
@@ -179,7 +179,7 @@ class LinearAlgebraTool {
 	/**
 	 * 対称行列の固有値分解
 	 * 実数での計算のみ対応
-	 * @param {Matrix} mat - 対称行列
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - 対称行列
 	 * @returns {{V: Matrix, D: Matrix}}
 	 */
 	static eig(mat) {
@@ -371,7 +371,7 @@ class LinearAlgebraTool {
 	
 	/**
 	 * 行列の全行ベクトルに対して、直行したベクトルを作成する
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @param {number} [epsilon=1.0e-10] - 誤差
 	 * @returns {Matrix|null} 直行したベクトルがなければNULLを返す
 	 */
@@ -434,7 +434,7 @@ class LinearAlgebraTool {
 
 	/**
 	 * 列の中で最もノルムが最大の値がある行番号
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @param {number} column_index - 列番号
 	 * @param {number} [row_index_offset=0] - 行のオフセット(この値から行う)
 	 * @param {number} [row_index_max] - 行の最大(この値は含めない)
@@ -463,7 +463,7 @@ class LinearAlgebraTool {
 
 	/**
 	 * 行列の各行をベクトルと見立て、線型従属している行を抽出
-	 * @param {Matrix} mat
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @param {number} [epsilon=1.0e-10] - 誤差
 	 * @returns {Array} 行番号の行列(昇順)
 	 * @private
@@ -795,7 +795,7 @@ export default class LinearAlgebra {
 		else {
 			// サイズが大きい場合は、lu分解を利用する
 			const lup = LinearAlgebra.lup(M);
-			const exchange_count = (len - lup.P.diag().sum().scalar) / 2;
+			const exchange_count = (len - lup.P.diag().sum().scalar.real) / 2;
 			// 上行列の対角線上の値を掛け算する
 			let y = lup.U.diag().prod();
 			if((exchange_count % 2) === 1) {
@@ -928,7 +928,7 @@ export default class LinearAlgebra {
 		for(let row = len - 2; row >= 0; row--) {
 			y[row] = long_matrix_array[row][long_length - 1];
 			for(let j = row + 1; j < len; j++) {
-				y[row] = y[row].sub(long_matrix_array[row][j] * y[j]);
+				y[row] = y[row].sub(long_matrix_array[row][j].mul(y[j]));
 			}
 			y[row] = y[row].div(long_matrix_array[row][row]);
 		}

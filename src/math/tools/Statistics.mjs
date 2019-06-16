@@ -750,7 +750,7 @@ class StatisticsComplex {
 
 	/**
 	 * gammaln(x) 対数ガンマ関数
-	 * @param {Complex} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @returns {Complex}
 	 */
 	static gammaln(x) {
@@ -759,7 +759,7 @@ class StatisticsComplex {
 	
 	/**
 	 * gamma(z) ガンマ関数 
-	 * @param {Complex} z
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} z
 	 * @returns {Complex}
 	 */
 	static gamma(z) {
@@ -768,8 +768,8 @@ class StatisticsComplex {
 	
 	/**
 	 * gammainc(x, a, tail) 不完全ガンマ関数
-	 * @param {Complex} x
-	 * @param {Complex} a
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
 	 * @param {string} [tail="lower"] - lower/upper
 	 * @returns {Complex}
 	 */
@@ -782,9 +782,9 @@ class StatisticsComplex {
 
 	/**
 	 * gampdf(x, k, s) ガンマ分布の確率密度関数
-	 * @param {Complex} x
-	 * @param {Complex} k - 形状母数
-	 * @param {Complex} s - 尺度母数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 形状母数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - 尺度母数
 	 * @returns {Complex}
 	 */
 	static gampdf(x, k, s) {
@@ -796,9 +796,9 @@ class StatisticsComplex {
 
 	/**
 	 * gamcdf(x, k, s) ガンマ分布の確率密度関数
-	 * @param {Complex} x
-	 * @param {Complex} k - 形状母数
-	 * @param {Complex} s - 尺度母数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 形状母数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - 尺度母数
 	 * @returns {Complex}
 	 */
 	static gamcdf(x, k, s) {
@@ -810,9 +810,9 @@ class StatisticsComplex {
 
 	/**
 	 * gaminv(p, k, s) ガンマ分布の累積分布関数の逆関数
-	 * @param {Complex} p
-	 * @param {Complex} k - 形状母数
-	 * @param {Complex} s - 尺度母数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 形状母数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - 尺度母数
 	 * @returns {Complex}
 	 */
 	static gaminv(p, k, s) {
@@ -824,8 +824,8 @@ class StatisticsComplex {
 
 	/**
 	 * beta(x, y) ベータ関数
-	 * @param {Complex} x
-	 * @param {Complex} y
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} y
 	 * @returns {Complex}
 	 */
 	static beta(x, y) {
@@ -836,9 +836,9 @@ class StatisticsComplex {
 
 	/**
 	 * betainc(x, a, b, tail) 不完全ベータ関数
-	 * @param {Complex} x
-	 * @param {Complex} a
-	 * @param {Complex} b
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
 	 * @param {string} [tail="lower"] lower/upper
 	 * @returns {Complex}
 	 */
@@ -852,9 +852,9 @@ class StatisticsComplex {
 
 	/**
 	 * betapdf(x, a, b) ベータ分布の確率密度関数
-	 * @param {Complex} x
-	 * @param {Complex} a
-	 * @param {Complex} b
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
 	 * @returns {Complex}
 	 */
 	static betapdf(x, a, b) {
@@ -866,9 +866,9 @@ class StatisticsComplex {
 
 	/**
 	 * betacdf(x, a, b) ベータ分布の累積分布関数
-	 * @param {Complex} x
-	 * @param {Complex} a
-	 * @param {Complex} b
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
 	 * @returns {Complex}
 	 */
 	static betacdf(x, a, b) {
@@ -880,9 +880,9 @@ class StatisticsComplex {
 
 	/**
 	 * betainv(p, a, b) ベータ分布の累積分布関数の逆関数
-	 * @param {Complex} p
-	 * @param {Complex} a
-	 * @param {Complex} b
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
 	 * @returns {Complex}
 	 */
 	static betainv(p, a, b) {
@@ -894,7 +894,7 @@ class StatisticsComplex {
 
 	/**
 	 * factorial(n), n! 階乗関数
-	 * @param {Complex} n
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} n
 	 * @returns {Complex}
 	 */
 	static factorial(n) {
@@ -903,8 +903,8 @@ class StatisticsComplex {
 
 	/**
 	 * nchoosek(n, k), nCk 二項係数またはすべての組合わせ
-	 * @param {Complex} n
-	 * @param {Complex} k
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} n
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k
 	 * @returns {Complex}
 	 */
 	static nchoosek(n, k) {
@@ -915,7 +915,7 @@ class StatisticsComplex {
 	
 	/**
 	 * erf(x) 誤差関数
-	 * @param {Complex} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @returns {Complex}
 	 */
 	static erf(x) {
@@ -925,7 +925,7 @@ class StatisticsComplex {
 
 	/**
 	 * erfc(x) 相補誤差関数
-	 * @param {Complex} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @returns {Complex}
 	 */
 	static erfc(x) {
@@ -935,50 +935,50 @@ class StatisticsComplex {
 
 	/**
 	 * normpdf(x, u, s) 正規分布の確率密度関数
-	 * @param {Complex} x
-	 * @param {Complex} [u=0.0] - 平均値
-	 * @param {Complex} [s=1.0] - 分散
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - 平均値
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - 分散
 	 * @returns {Complex}
 	 */
-	static normpdf(x, u=0.0, s=1.0) {
+	static normpdf(x, u, s) {
 		const X = Complex._toDouble(x);
-		const u_ = Complex._toDouble(u);
-		const s_ = Complex._toDouble(s);
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
 		return new Complex(StatisticsTool.normpdf(X, u_, s_));
 	}
 
 	/**
 	 * normcdf(x, u, s) 正規分布の累積分布関数
-	 * @param {Complex} x
-	 * @param {Complex} [u=0.0] - 平均値
-	 * @param {Complex} [s=1.0] - 分散
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - 平均値
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - 分散
 	 * @returns {Complex}
 	 */
-	static normcdf(x, u=0.0, s=1.0) {
+	static normcdf(x, u, s) {
 		const X = Complex._toDouble(x);
-		const u_ = Complex._toDouble(u);
-		const s_ = Complex._toDouble(s);
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
 		return new Complex(StatisticsTool.normcdf(X, u_, s_));
 	}
 
 	/**
 	 * norminv(x, u, s) 正規分布の累積分布関数の逆関数
-	 * @param {Complex} x
-	 * @param {Complex} [u=0.0] - 平均値
-	 * @param {Complex} [s=1.0] - 分散
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - 平均値
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - 分散
 	 * @returns {Complex}
 	 */
-	static norminv(x, u=0.0, s=1.0) {
+	static norminv(x, u, s) {
 		const X = Complex._toDouble(x);
-		const u_ = Complex._toDouble(u);
-		const s_ = Complex._toDouble(s);
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
 		return new Complex(StatisticsTool.norminv(X, u_, s_));
 	}
 	
 	/**
 	 * tpdf(x, v) t分布の確率密度関数
-	 * @param {Complex} x
-	 * @param {Complex} v - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
 	 * @returns {Complex}
 	 */
 	static tpdf(x, v) {
@@ -989,8 +989,8 @@ class StatisticsComplex {
 
 	/**
 	 * tcdf(t, v) t分布の累積分布関数
-	 * @param {Complex} t
-	 * @param {Complex} v - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} t
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
 	 * @returns {Complex}
 	 */
 	static tcdf(t, v) {
@@ -1001,8 +1001,8 @@ class StatisticsComplex {
 
 	/**
 	 * tinv(p, v) t分布の累積分布関数の逆関数
-	 * @param {Complex} p
-	 * @param {Complex} v - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
 	 * @returns {Complex}
 	 */
 	static tinv(p, v) {
@@ -1013,9 +1013,9 @@ class StatisticsComplex {
 
 	/**
 	 * tdist(t, v, tails) 尾部が指定可能なt分布の累積分布関数
-	 * @param {Complex} t
-	 * @param {Complex} v - 自由度
-	 * @param {Complex} tails - 尾部(1...片側、2...両側)
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} t
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} tails - 尾部(1...片側、2...両側)
 	 * @returns {Complex}
 	 */
 	static tdist(t, v, tails) {
@@ -1027,8 +1027,8 @@ class StatisticsComplex {
 
 	/**
 	 * tinv2(p, v) 両側検定時のt分布の累積分布関数
-	 * @param {Complex} p
-	 * @param {Complex} v - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
 	 * @returns {Complex}
 	 */
 	static tinv2(p, v) {
@@ -1039,8 +1039,8 @@ class StatisticsComplex {
 
 	/**
 	 * chi2pdf(x, k) カイ二乗分布の確率密度関数
-	 * @param {Complex} x
-	 * @param {Complex} k - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 自由度
 	 * @returns {Complex}
 	 */
 	static chi2pdf(x, k) {
@@ -1051,8 +1051,8 @@ class StatisticsComplex {
 
 	/**
 	 * chi2cdf(x, k) カイ二乗分布の累積分布関数
-	 * @param {Complex} x
-	 * @param {Complex} k - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 自由度
 	 * @returns {Complex}
 	 */
 	static chi2cdf(x, k) {
@@ -1063,8 +1063,8 @@ class StatisticsComplex {
 
 	/**
 	 * chi2inv(p, k) カイ二乗分布の累積分布関数の逆関数
-	 * @param {Complex} p
-	 * @param {Complex} k - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 自由度
 	 * @returns {Complex}
 	 */
 	static chi2inv(p, k) {
@@ -1075,9 +1075,9 @@ class StatisticsComplex {
 
 	/**
 	 * fpdf(x, d1, d2) F分布の確率密度関数
-	 * @param {Complex} x
-	 * @param {Complex} d1 - 分子の自由度
-	 * @param {Complex} d2 - 分母の自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - 分子の自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - 分母の自由度
 	 * @returns {Complex}
 	 */
 	static fpdf(x, d1, d2) {
@@ -1089,9 +1089,9 @@ class StatisticsComplex {
 
 	/**
 	 * fcdf(x, d1, d2) F分布の累積分布関数
-	 * @param {Complex} x
-	 * @param {Complex} d1 - 分子の自由度
-	 * @param {Complex} d2 - 分母の自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - 分子の自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - 分母の自由度
 	 * @returns {Complex}
 	 */
 	static fcdf(x, d1, d2) {
@@ -1103,9 +1103,9 @@ class StatisticsComplex {
 
 	/**
 	 * finv(p, d1, d2) F分布の累積分布関数の逆関数
-	 * @param {Complex} p
-	 * @param {Complex} d1 - 分子の自由度
-	 * @param {Complex} d2 - 分母の自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - 分子の自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - 分母の自由度
 	 * @returns {Complex}
 	 */
 	static finv(p, d1, d2) {
@@ -1347,10 +1347,10 @@ export default class Statistics {
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
 	 * @returns {Matrix}
 	 */
-	static normpdf(x, u=0.0, s=1.0) {
+	static normpdf(x, u, s) {
 		const X = Matrix._toMatrix(x);
-		const u_ = Complex._toDouble(u);
-		const s_ = Complex._toDouble(s);
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
 		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.normpdf(num, u_, s_);
 		});
@@ -1363,10 +1363,10 @@ export default class Statistics {
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
 	 * @returns {Matrix}
 	 */
-	static normcdf(x, u=0.0, s=1.0) {
+	static normcdf(x, u, s) {
 		const X = Matrix._toMatrix(x);
-		const u_ = Complex._toDouble(u);
-		const s_ = Complex._toDouble(s);
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
 		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.normcdf(num, u_, s_);
 		});
@@ -1379,10 +1379,10 @@ export default class Statistics {
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
 	 * @returns {Matrix}
 	 */
-	static norminv(x, u=0.0, s=1.0) {
+	static norminv(x, u, s) {
 		const X = Matrix._toMatrix(x);
-		const u_ = Complex._toDouble(u);
-		const s_ = Complex._toDouble(s);
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
 		return X.cloneMatrixDoEachCalculation(function(num) {
 			return StatisticsComplex.norminv(num, u_, s_);
 		});
