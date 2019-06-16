@@ -1,8 +1,8 @@
 ﻿const File = require("./File.js");
 
-// npx jsdoc -c ".jsdoc.json" -r "./src/"
+// npx jsdoc -c "./scripts/.dts.json" -r "./src/"
 try {
-	File.exec("npx jsdoc -c \".jsdoc.json\" -r \"./src/\"");
+	File.exec("npx jsdoc -c \"./scripts/.dts.json\" -r \"./src/\"");
 }
 catch (error) {
 	// {typeof XXX} という型で不正エラーが発生するが、
