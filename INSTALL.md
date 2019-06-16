@@ -34,6 +34,7 @@ npm run test
 
 # Test only one file.
 npm run test_target -- Matrix
+npm run test_target -- Complex
 npm run test_target -- LinearAlgebra
 ...
 ```
@@ -64,7 +65,7 @@ npm install --save-dev rollup
 npm install --save-dev rollup-plugin-buble
 npm install --save-dev rollup-plugin-uglify
 npm install --save-dev rollup-plugin-uglify-es
-npm install --save-dev acorn@^6.0.0
+npm install --save-dev acorn
 
 # For error check of ES6.
 npm install --save-dev eslint

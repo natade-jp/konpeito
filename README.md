@@ -53,8 +53,8 @@ node --experimental-modules main.mjs
 1. Download the [zip](https://github.com/natade-jp/konpeito/archive/master.zip) by [GitHub](https://github.com/natade-jp/konpeito).
 
 2. Please use mjs file when using ES6 modules. And use js file when using UMD.
-- `./build/konpeito.module.mjs`
-- `./build/konpeito.umd.js`
+- `./build/konpeito.module.min.mjs`
+- `./build/konpeito.umd.min.js`
 
 ### with ES6 module.
 ```
