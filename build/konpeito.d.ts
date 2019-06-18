@@ -11,37 +11,37 @@ declare class konpeito {
      * 多倍長整数クラス
      * @returns {typeof BigInteger}
      */
-    static BigInteger: any;
+    static BigInteger: typeof BigInteger;
     /**
      * 任意精度浮動小数点クラス
      * @returns {typeof BigDecimal}
      */
-    static BigDecimal: any;
+    static BigDecimal: typeof BigDecimal;
     /**
      * BigDecimal用の丸め設定クラス
      * @returns {typeof RoundingMode}
      */
-    static RoundingMode: any;
+    static RoundingMode: typeof RoundingMode;
     /**
      * BigDecimal用の環境設定クラス
      * @returns {typeof MathContext}
      */
-    static MathContext: any;
+    static MathContext: typeof MathContext;
     /**
      * 複素数クラス
      * @returns {typeof Complex}
      */
-    static Complex: any;
+    static Complex: typeof Complex;
     /**
      * 複素行列クラス
      * @returns {typeof Matrix}
      */
-    static Matrix: any;
+    static Matrix: typeof Matrix;
     /**
      * 乱数クラス
      * @returns {typeof Random}
      */
-    static Random: any;
+    static Random: typeof Random;
 }
 
 /**
@@ -192,9 +192,9 @@ declare class BigDecimal {
      * 数値を範囲に収める
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
-     * @returns {BigInteger} min(max(x, min), max)
+     * @returns {BigDecimal} min(max(x, min), max)
      */
-    clip(min: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, max: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigInteger;
+    clip(min: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, max: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
     /**
      * 精度は変更させずスケールのみを変更させ10の倍数を乗算
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n
@@ -310,23 +310,23 @@ declare class BigDecimal {
      * 32ビット整数に変換
      * @returns {number}
      */
-    intValue: any;
+    intValue: number;
     /**
      * 32ビット整数に変換
      * 変換に失敗した場合は例外
      * @returns {number}
      */
-    intValueExact: any;
+    intValueExact: number;
     /**
      * 32ビット実数に変換
      * @returns {number}
      */
-    floatValue: any;
+    floatValue: number;
     /**
      * 64ビット実数に変換
      * @returns {number}
      */
-    doubleValue: any;
+    doubleValue: number;
     /**
      * 累乗
      * 巨大な乗算をする場合は例外を発生させる
@@ -349,22 +349,22 @@ declare class BigDecimal {
      * 0
      * @returns {BigDecimal} 0
      */
-    static ZERO: any;
+    static ZERO: BigDecimal;
     /**
      * 1
      * @returns {BigDecimal} 1
      */
-    static ONE: any;
+    static ONE: BigDecimal;
     /**
      * 2
      * @returns {BigDecimal} 2
      */
-    static TWO: any;
+    static TWO: BigDecimal;
     /**
      * 10
      * @returns {BigDecimal} 10
      */
-    static TEN: any;
+    static TEN: BigDecimal;
 }
 
 /**
@@ -426,19 +426,19 @@ declare class BigInteger {
      * 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある
      * @returns {number}
      */
-    intValue: any;
+    intValue: number;
     /**
      * 64ビット整数値
      * 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある
      * @returns {number}
      */
-    longValue: any;
+    longValue: number;
     /**
      * 64ビット実数値
      * 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある
      * @returns {number}
      */
-    doubleValue: any;
+    doubleValue: number;
     /**
      * ディープコピー
      * @returns {BigInteger}
@@ -744,22 +744,22 @@ declare class BigInteger {
      * 0
      * @returns {BigInteger} 0
      */
-    static ZERO: any;
+    static ZERO: BigInteger;
     /**
      * 1
      * @returns {BigInteger} 1
      */
-    static ONE: any;
+    static ONE: BigInteger;
     /**
      * 2
      * @returns {BigInteger} 2
      */
-    static TWO: any;
+    static TWO: BigInteger;
     /**
      * 10
      * @returns {BigInteger} 10
      */
-    static TEN: any;
+    static TEN: BigInteger;
 }
 
 /**
@@ -784,12 +784,12 @@ declare class Complex {
      * 32ビット整数に変換
      * @returns {number}
      */
-    intValue: any;
+    intValue: number;
     /**
      * 64ビット実数に変換
      * @returns {number}
      */
-    doubleValue: any;
+    doubleValue: number;
     /**
      * ディープコピー
      * @returns {Complex}
@@ -821,22 +821,22 @@ declare class Complex {
      * 実部
      * @returns {number} real(A)
      */
-    real: any;
+    real: number;
     /**
      * 虚部
      * @returns {number} imag(A)
      */
-    imag: any;
+    imag: number;
     /**
      * ノルム
      * @returns {number} |A|
      */
-    norm: any;
+    norm: number;
     /**
      * 偏角
      * @returns {number} arg(A)
      */
-    arg: any;
+    arg: number;
     /**
      * 実部、虚部を表す際の小数点以下の桁数
      * @returns {number} 小数点の桁数
@@ -1081,92 +1081,92 @@ declare class Complex {
      * 1
      * @returns {Complex} 1
      */
-    static ONE: any;
+    static ONE: Complex;
     /**
      * 2
      * @returns {Complex} 2
      */
-    static TWO: any;
+    static TWO: Complex;
     /**
      * 10
      * @returns {Complex} 10
      */
-    static TEN: any;
+    static TEN: Complex;
     /**
      * 0
      * @returns {Complex} 0
      */
-    static ZERO: any;
+    static ZERO: Complex;
     /**
      * -1
      * @returns {Complex} -1
      */
-    static MINUS_ONE: any;
+    static MINUS_ONE: Complex;
     /**
      * i, j
      * @returns {Complex} i
      */
-    static I: any;
+    static I: Complex;
     /**
      * PI
      * @returns {Complex} 3.14...
      */
-    static PI: any;
+    static PI: Complex;
     /**
      * E
      * @returns {Complex} 2.71...
      */
-    static E: any;
+    static E: Complex;
     /**
      * LN2
      * @returns {Complex} ln(2)
      */
-    static LN2: any;
+    static LN2: Complex;
     /**
      * LN10
      * @returns {Complex} ln(10)
      */
-    static LN10: any;
+    static LN10: Complex;
     /**
      * LOG2E
      * @returns {Complex} log_2(e)
      */
-    static LOG2E: any;
+    static LOG2E: Complex;
     /**
      * LOG10E
      * @returns {Complex} log_10(e)
      */
-    static LOG10E: any;
+    static LOG10E: Complex;
     /**
      * SQRT2
      * @returns {Complex} sqrt(2)
      */
-    static SQRT2: any;
+    static SQRT2: Complex;
     /**
      * SQRT1_2
      * @returns {Complex} sqrt(0.5)
      */
-    static SQRT1_2: any;
+    static SQRT1_2: Complex;
     /**
      * 0.5
      * @returns {Complex} 0.5
      */
-    static HALF: any;
+    static HALF: Complex;
     /**
      * 正の無限大
      * @returns {Complex} Infinity
      */
-    static POSITIVE_INFINITY: any;
+    static POSITIVE_INFINITY: Complex;
     /**
      * 負の無限大
      * @returns {Complex} -Infinity
      */
-    static NEGATIVE_INFINITY: any;
+    static NEGATIVE_INFINITY: Complex;
     /**
      * 非数
      * @returns {Complex} NaN
      */
-    static NaN: any;
+    static NaN: Complex;
 }
 
 /**
@@ -1201,22 +1201,22 @@ declare class MathContext {
      * 制限を設けない（ただし、割り算で循環小数の場合にエラーが出ます。）
      * @returns {MathContext}
      */
-    static UNLIMITED: any;
+    static UNLIMITED: MathContext;
     /**
      * 32ビットの実数型 ( float ) と同等
      * @returns {MathContext}
      */
-    static DECIMAL32: any;
+    static DECIMAL32: MathContext;
     /**
      * 64ビットの実数型 ( double ) と同等
      * @returns {MathContext}
      */
-    static DECIMAL64: any;
+    static DECIMAL64: MathContext;
     /**
      * 128ビットの実数型 ( long double ) と同等
      * @returns {MathContext}
      */
-    static DECIMAL128: any;
+    static DECIMAL128: MathContext;
 }
 
 /**
@@ -1414,47 +1414,47 @@ declare class RoundingMode {
      * @param {string|RoundingModeEntity|Object} name - モードの英数名
      * @returns {typeof RoundingModeEntity}
      */
-    static valueOf(name: string | RoundingModeEntity | any): any;
+    static valueOf(name: string | RoundingModeEntity | any): typeof RoundingModeEntity;
     /**
      * 絶対値の切り上げ（1桁目が0より大きければ桁上げする）
      * @returns {typeof RoundingModeEntity}
      */
-    static UP: any;
+    static UP: typeof RoundingModeEntity;
     /**
      * 絶対値の切り下げ（1桁目が0より大きければ桁下げする）
      * @returns {typeof RoundingModeEntity}
      */
-    static DOWN: any;
+    static DOWN: typeof RoundingModeEntity;
     /**
      * 正の無限大に近づく
      * @returns {typeof RoundingModeEntity}
      */
-    static CEILING: any;
+    static CEILING: typeof RoundingModeEntity;
     /**
      * 負の無限大に近づく
      * @returns {typeof RoundingModeEntity}
      */
-    static FLOOR: any;
+    static FLOOR: typeof RoundingModeEntity;
     /**
      * 四捨五入
      * @returns {typeof RoundingModeEntity}
      */
-    static HALF_UP: any;
+    static HALF_UP: typeof RoundingModeEntity;
     /**
      * 五捨六入
      * @returns {typeof RoundingModeEntity}
      */
-    static HALF_DOWN: any;
+    static HALF_DOWN: typeof RoundingModeEntity;
     /**
      * 等間隔なら偶数側へ丸める
      * @returns {typeof RoundingModeEntity}
      */
-    static HALF_EVEN: any;
+    static HALF_EVEN: typeof RoundingModeEntity;
     /**
      * 丸めない（丸める必要が出る場合はエラー）
      * @returns {typeof RoundingModeEntity}
      */
-    static UNNECESSARY: any;
+    static UNNECESSARY: typeof RoundingModeEntity;
 }
 
 /**
@@ -1592,32 +1592,32 @@ declare class Matrix {
      * 行列の最初の要素の整数値
      * @returns {number}
      */
-    intValue: any;
+    intValue: number;
     /**
      * 行列の最初の要素の実数値
      * @returns {number}
      */
-    doubleValue: any;
+    doubleValue: number;
     /**
      * 行列の最初の要素
      * @returns {Complex}
      */
-    scalar: any;
+    scalar: Complex;
     /**
      * 行数及び列数の最大値
      * @returns {number}
      */
-    length: any;
+    length: number;
     /**
      * 1ノルム
      * @returns {number}
      */
-    norm1: any;
+    norm1: number;
     /**
      * 2ノルム
      * @returns {number}
      */
-    norm2: any;
+    norm2: number;
     /**
      * pノルム
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
@@ -2187,12 +2187,12 @@ declare class Matrix {
      * LUP分解
      * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
      */
-    lup(): any;
+    lup(): {P: Matrix, L: Matrix, U: Matrix};
     /**
      * LU分解
      * @returns {{L: Matrix, U: Matrix}} L*U=A
      */
-    lu(): any;
+    lu(): {L: Matrix, U: Matrix};
     /**
      * 一次方程式を解く
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
@@ -2203,22 +2203,22 @@ declare class Matrix {
      * QR分解
      * @returns {{Q: Matrix, R: Matrix}} Q*R=A, Qは正規直行行列、Rは上三角行列
      */
-    qr(): any;
+    qr(): {Q: Matrix, R: Matrix};
     /**
      * 対称行列の三重対角化
      * @returns {{P: Matrix, H: Matrix}} P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致
      */
-    tridiagonalize(): any;
+    tridiagonalize(): {P: Matrix, H: Matrix};
     /**
      * 対称行列の固有値分解
      * @returns {{V: Matrix, D: Matrix}} V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列
      */
-    eig(): any;
+    eig(): {V: Matrix, D: Matrix};
     /**
      * 特異値分解
      * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
      */
-    svd(): any;
+    svd(): {U: Matrix, S: Matrix, V: Matrix};
     /**
      * 逆行列
      * @returns {Matrix} A^-1
@@ -2665,13 +2665,13 @@ declare class LinearAlgebra {
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
      */
-    static lup(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): any;
+    static lup(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {P: Matrix, L: Matrix, U: Matrix};
     /**
      * LU分解
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {{L: Matrix, U: Matrix}} L*U=A
      */
-    static lu(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): any;
+    static lu(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {L: Matrix, U: Matrix};
     /**
      * 連立一次方程式を解く
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
@@ -2685,26 +2685,26 @@ declare class LinearAlgebra {
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {{Q: Matrix, R: Matrix}}  Q*R=A, Qは正規直行行列、Rは上三角行列
      */
-    static qr(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): any;
+    static qr(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {Q: Matrix, R: Matrix};
     /**
      * 対称行列の三重対角化
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {{P: Matrix, H: Matrix}} P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致
      */
-    static tridiagonalize(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): any;
+    static tridiagonalize(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {P: Matrix, H: Matrix};
     /**
      * 対称行列の固有値分解
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {{V: Matrix, D: Matrix}} V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列
      * @todo 対称行列しか対応できていないので、対称行列ではないものはQR分解を用いた手法に切り替える予定。
      */
-    static eig(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): any;
+    static eig(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {V: Matrix, D: Matrix};
     /**
      * 特異値分解
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
      */
-    static svd(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): any;
+    static svd(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {U: Matrix, S: Matrix, V: Matrix};
     /**
      * 逆行列
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
