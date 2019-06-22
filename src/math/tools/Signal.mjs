@@ -269,14 +269,14 @@ class FFT {
  * FFTで用いるテーブルなどをキャッシュ
  * @ignore
  */
-class Chash {
+class Cache {
 	
 	/**
 	 * 簡易キャッシュ
-	 * @param {number} chash_size - キャッシュの最大サイズ
+	 * @param {number} cache_size - キャッシュの最大サイズ
 	 * @param {*} object - 作成するオブジェクト
 	 */
-	constructor(chash_size, object) {
+	constructor(cache_size, object) {
 
 		/**
 		 * キャッシュするクラス
@@ -286,7 +286,7 @@ class Chash {
 		/**
 		 * キャッシュする最大数
 		 */
-		this.table_max = chash_size;
+		this.table_max = cache_size;
 
 		/**
 		 * 現在キャッシュしている数
@@ -328,10 +328,10 @@ class Chash {
 
 /**
  * FFT用のキャッシュ
- * @type {Chash}
+ * @type {Cache}
  * @ignore
  */
-const fft_chash = new Chash(4, FFT);
+const fft_cache = new Cache(4, FFT);
 
 /**
  * 離散コサイン変換のクラス
@@ -398,7 +398,7 @@ class DCT {
 			re[i] = i < this.size ? real[i] : 0.0;
 			im[i] = 0.0;
 		}
-		const fft = fft_chash.get(this.dct_size).fft(re, im);
+		const fft = fft_cache.get(this.dct_size).fft(re, im);
 		for(let i = 0; i < this.size; i++) {
 			re[i] = fft.real[i] * this.dct_re[i] - fft.imag[i] * this.dct_im[i];
 		}
@@ -419,7 +419,7 @@ class DCT {
 			re[i] = i < this.size ? (denormlize * real[i] *    this.dct_re[i])  : 0.0;
 			im[i] = i < this.size ? (denormlize * real[i] * (- this.dct_im[i])) : 0.0;
 		}
-		const ifft = fft_chash.get(this.dct_size).ifft(re, im);
+		const ifft = fft_cache.get(this.dct_size).ifft(re, im);
 		ifft.real.splice(this.size);
 		return ifft.real;
 	}
@@ -430,7 +430,7 @@ class DCT {
  * 離散コサイン変換用のキャッシュ
  * @ignore
  */
-const dct_chash = new Chash(4, DCT);
+const dct_cache = new Cache(4, DCT);
 
 /**
  * Signalクラスの内部で使用する関数集
@@ -459,7 +459,7 @@ class SignalTool {
 	 * @returns {Object<string, Array<number>>}
 	 */
 	static fft(real, imag) {
-		const obj = fft_chash.get(real.length);
+		const obj = fft_cache.get(real.length);
 		return obj.fft(real, imag);
 	}
 
@@ -470,7 +470,7 @@ class SignalTool {
 	 * @returns {Object<string, Array<number>>}
 	 */
 	static ifft(real, imag) {
-		const obj = fft_chash.get(real.length);
+		const obj = fft_cache.get(real.length);
 		return obj.ifft(real, imag);
 	}
 
@@ -480,7 +480,7 @@ class SignalTool {
 	 * @returns {Array<number>}
 	 */
 	static dct(real) {
-		const obj = dct_chash.get(real.length);
+		const obj = dct_cache.get(real.length);
 		return obj.dct(real);
 	}
 
@@ -490,7 +490,7 @@ class SignalTool {
 	 * @returns {Array<number>}
 	 */
 	static idct(real) {
-		const obj = dct_chash.get(real.length);
+		const obj = dct_cache.get(real.length);
 		return obj.idct(real);
 	}
 

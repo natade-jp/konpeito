@@ -11,7 +11,6 @@
 
 /**
  * BigDecimal用の丸めモードの基底クラス
- * @interface
  */
 export class RoundingModeEntity {
 	

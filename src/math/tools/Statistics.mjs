@@ -148,7 +148,7 @@ class StatisticsTool {
 	 * gammainc(x, a, tail) 不完全ガンマ関数
 	 * @param {number} x
 	 * @param {number} a
-	 * @param {string} [tail="lower"] lower(デフォルト)/upper
+	 * @param {string} [tail="lower"] - lower(デフォルト)/upper
 	 * @returns {number}
 	 */
 	static gammainc(x, a, tail) {
@@ -310,7 +310,7 @@ class StatisticsTool {
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} b
-	 * @param {string} [tail="lower"] {string} lower(デフォルト)/upper
+	 * @param {string} [tail="lower"] - lower(デフォルト)/upper
 	 * @returns {number}
 	 */
 	static betainc(x, a, b, tail) {
@@ -839,7 +839,7 @@ class StatisticsComplex {
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
-	 * @param {string} [tail="lower"] lower/upper
+	 * @param {string} [tail="lower"] - lower/upper
 	 * @returns {Complex}
 	 */
 	static betainc(x, a, b, tail) {

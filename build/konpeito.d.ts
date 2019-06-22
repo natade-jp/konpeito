@@ -1221,20 +1221,19 @@ declare class MathContext {
 
 /**
  * BigDecimal用の丸めモードの基底クラス
- * @interface
  */
-declare interface RoundingModeEntity {
+declare class RoundingModeEntity {
     /**
      * 丸めモードの名前を英語の大文字で取得する
      * @returns {string} 丸めモード名
      */
-    toString(): string;
+    static toString(): string;
     /**
      * 丸めに必要な加算値
      * @param {number} x - 1ケタ目の値
      * @returns {number} いくつ足すと丸められるか
      */
-    getAddNumber(x: number): number;
+    static getAddNumber(x: number): number;
 }
 
 declare interface RoundingMode_UP extends RoundingModeEntity {

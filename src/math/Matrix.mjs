@@ -29,9 +29,9 @@ class MatrixTool {
 
 	/**
 	 * 行列の位置を指定するデータから、実際の値を作成
-	 * @param data {string|number|Matrix|Complex} - 調査する値
-	 * @param max {number} - ":"が指定された時に初期化する配列の長さ
-	 * @param geta {number} - ":"が指定された時に初期化する値のオフセット
+	 * @param {string|number|Matrix|Complex} data - 調査する値
+	 * @param {number} max - ":"が指定された時に初期化する配列の長さ
+	 * @param {number} geta - ":"が指定された時に初期化する値のオフセット
 	 * @returns {Array<number>}
 	 */
 	static toPositionArrayFromObject(data, max, geta) {
@@ -2811,7 +2811,7 @@ export default class Matrix {
 	/**
 	 * ドット積
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] 計算するときに使用する次元（1 or 2）
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] - 計算するときに使用する次元（1 or 2）
 	 * @returns {Matrix} A・B
 	 */
 	inner(number, dimension=1) {

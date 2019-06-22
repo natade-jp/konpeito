@@ -2,9 +2,9 @@
 {
 	"source": "./src/",
 	"destination": "./docs/",
-	"includes" : ["\\.mjs$"],
+	"includes": ["\\.mjs$"],
 	"excludes": ["\\.test\\.mjs$"],
-	"index" : "./README.md",
+	"index": "./README.md",
 	"plugins": [
 		{
 			"name": "esdoc-standard-plugin",

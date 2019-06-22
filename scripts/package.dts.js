@@ -22,12 +22,12 @@ for(let i = 0; i < dts_text_line.length; i++) {
 	let returns = null;
 	for(let j = i - 3; j < i; j++) {
 		// {} の入れ子について
-		// 1重 ()
-		// 2重 (([^{]*{[^}]*})*)
-		// 3重 ((([^{]*{[^}]*})*)*)
+		// 1重 (\{[^{]*\})
+		// 2重 (\{[^{]*((\{[^{]*\})*[^{]*)\})
+		// 3重 (\{[^{]*((\{[^{]*((\{[^{]*\})*[^{]*)\})*[^{]*)\})
 		// 3重まで対応
-		if(/(\s*\*\s*@returns?\s*)({((([^{]*{[^}]*})*)*)[^}]*})/.test(dts_text_line[j])) {
-			const match = dts_text_line[j].match(/(\s*\*\s*@returns?\s*)({((([^{]*{[^}]*})*)*)[^}]*})/)[0];
+		if(/(\s*\*\s*@returns?\s*)(\{[^{]*((\{[^{]*((\{[^{]*\})*[^{]*)\})*[^{]*)\})/.test(dts_text_line[j])) {
+			const match = dts_text_line[j].match(/(\s*\*\s*@returns?\s*)(\{[^{]*((\{[^{]*((\{[^{]*\})*[^{]*)\})*[^{]*)\})/)[0];
 			const with_block = match.replace(/(\s*\*\s*@returns?\s*)/, "");
 			returns = with_block.replace(/(^{)|(}$)/g, "");
 			break;

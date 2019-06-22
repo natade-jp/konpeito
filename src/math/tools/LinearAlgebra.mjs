@@ -526,7 +526,7 @@ export default class LinearAlgebra {
 	 * ドット積
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} A
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} B
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] 計算するときに使用する次元（1 or 2）
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] - 計算するときに使用する次元（1 or 2）
 	 * @returns {Matrix} A・B 
 	 */
 	static inner(A, B, dimension) {

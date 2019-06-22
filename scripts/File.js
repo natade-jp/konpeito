@@ -1,3 +1,12 @@
+/*!
+ * File.js
+ * https://github.com/natade-jp/konpeito
+ * Copyright 2013-2019 natade < https://github.com/natade-jp >
+ *
+ * The MIT license.
+ * https://opensource.org/licenses/MIT
+ */
+
 const fs = require("fs");
 const child_process = require("child_process");
 
@@ -135,10 +144,11 @@ class File {
 	 * @return {Array<string>}
 	 */
 	static createList(path) {
-		const load_list = fs.readdirSync(path);
+		const dir_path = path.replace(/[\\/]+$/, "");
+		const load_list = fs.readdirSync(dir_path);
 		const list = [];
 		for(let i = 0; i < load_list.length; i++) {
-			list[i] = path + "/" + load_list[i];
+			list[i] = dir_path + "/" + load_list[i];
 		}
 		for(let i = 0; i < list.length; i++) {
 			if(File.isDirectory(list[i])) {
@@ -184,6 +194,51 @@ class File {
 		// 最後に目的のフォルダを削除
 		fs.rmdirSync(path);
 	}
+
+	/**
+	 * 指定した条件のファイルのリストを作成
+	 * @param {{source : string, destination : string, includes : Array<string>, excludes : Array<string>}} types 
+	 * @return {Array<string>}
+	 */
+	static createTargetList(types) {
+		
+		const filelist = File.createList(types.source);
+
+		/**
+		 * @type {Array<string>}
+		 */
+		const target_list = [];
+
+		for(const i in filelist) {
+			let is_target = false;
+			if(types.includes) {
+				for(const j in types.includes) {
+					if(new RegExp(types.includes[j]).test(filelist[i])) {
+						is_target = true;
+						break;
+					}
+				}
+			}
+			if(!is_target) {
+				continue;
+			}
+			if(types.excludes) {
+				for(const j in types.excludes) {
+					if(new RegExp(types.excludes[j]).test(filelist[i])) {
+						is_target = false;
+						break;
+					}
+				}
+			}
+			if(!is_target) {
+				continue;
+			}
+			target_list.push(filelist[i]);
+		}
+
+		return target_list;
+	}
+
 }
 
 module.exports = File;
