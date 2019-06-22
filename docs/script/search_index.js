@@ -3562,17 +3562,5 @@ window.esdocSearchIndex = [
     "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-var",
     "src/math/tools/Statistics.mjs~Statistics.var",
     "method"
-  ],
-  [
-    "src/utility/format.mjs",
-    "file/src/utility/Format.mjs.html",
-    "src/utility/Format.mjs",
-    "file"
-  ],
-  [
-    "src/utility/log.mjs",
-    "file/src/utility/Log.mjs.html",
-    "src/utility/Log.mjs",
-    "file"
   ]
 ]

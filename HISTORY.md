@@ -3,6 +3,7 @@
 ## v0.1.X
 - BigDecimal clip の戻り値のコメントが誤っていたのを修正
 - 型定義ファイルで戻り値が「any」となっていた部分を修正
+- デバッグ用のクラス Log を削除
 
 ## v0.1.10
 - arange, crip, circshift, roll, fftshift, reshape, indexsort 追加

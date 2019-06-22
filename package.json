@@ -18,7 +18,7 @@
 		"svd"
 	],
 	"license": "MIT",
-	"author": "natade-jp <natade3@gmail.com> (https://www.natade.net/)",
+	"author": "natade-jp <natade3@gmail.com>",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/natade-jp/konpeito.git"

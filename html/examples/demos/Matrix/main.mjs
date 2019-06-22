@@ -1,6 +1,6 @@
-﻿import konpeito from "../../libs/konpeito.mjs";
+﻿import Log from "../../libs/Log.module.mjs";
+import konpeito from "../../libs/konpeito.mjs";
 
-const Log = konpeito.Log;
 const Matrix = konpeito.Matrix;
 const $ = Matrix.create;
 

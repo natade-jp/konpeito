@@ -1,11 +1,11 @@
 {
   "coverage": "100%",
-  "expectCount": 765,
-  "actualCount": 765,
+  "expectCount": 756,
+  "actualCount": 756,
   "files": {
     "src/konpeito.mjs": {
-      "expectCount": 9,
-      "actualCount": 9,
+      "expectCount": 8,
+      "actualCount": 8,
       "undocumentLines": []
     },
     "src/math/BigDecimal.mjs": {
@@ -56,16 +56,6 @@
     "src/math/tools/Statistics.mjs": {
       "expectCount": 113,
       "actualCount": 113,
-      "undocumentLines": []
-    },
-    "src/utility/Format.mjs": {
-      "expectCount": 2,
-      "actualCount": 2,
-      "undocumentLines": []
-    },
-    "src/utility/Log.mjs": {
-      "expectCount": 6,
-      "actualCount": 6,
       "undocumentLines": []
     }
   }

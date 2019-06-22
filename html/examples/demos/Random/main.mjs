@@ -1,7 +1,7 @@
+import Log from "../../libs/Log.module.mjs";
 import konpeito from "../../libs/konpeito.mjs";
 
 const Random = konpeito.Random;
-const Log = konpeito.Log;
 
 const main = function() {
 

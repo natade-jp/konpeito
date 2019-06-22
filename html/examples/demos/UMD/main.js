@@ -1,9 +1,6 @@
 ﻿/* global konpeito */
 
 // @ts-ignore
-const Log = konpeito.Log;
-
-// @ts-ignore
 const Matrix = konpeito.Matrix;
 const $ = Matrix.create;
 

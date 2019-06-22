@@ -1,8 +1,8 @@
-﻿import konpeito from "../../libs/konpeito.mjs";
+﻿import Log from "../../libs/Log.module.mjs";
+import konpeito from "../../libs/konpeito.mjs";
 
 const BigInteger = konpeito.BigInteger;
 const Random = konpeito.Random;
-const Log = konpeito.Log;
 const $ = BigInteger.create;
 
 const main = function() {

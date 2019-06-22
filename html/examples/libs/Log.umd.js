@@ -1,54 +1,61 @@
-﻿/**
- * The script is part of konpeito.
- * 
- * AUTHOR:
- *  natade (http://twitter.com/natadea)
- * 
- * LICENSE:
- *  The MIT license https://opensource.org/licenses/MIT
+/*!
+ * Log.js
+ * https://github.com/natade-jp/konpeito
+ * Copyright 2013-2019 natade < https://github.com/natade-jp >
+ *
+ * The MIT license.
+ * https://opensource.org/licenses/MIT
  */
 // @ts-check
 
-/**
-  * 
-  * @ignore
-  */
-export default class Format {
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global = global || self, global.Log = factory());
+}(this, function () {
 
 	/**
-	 * C言語のprintfを再現
-	 * ロケール、日付時刻等はサポートしていません。
-	 * sprintfの変換指定子のpとnはサポートしていません。
-	 * @param {string} text 
-	 * @param {string} parmeter パラメータは可変引数
-	 * @returns {string}
-	 * @ignore
+	 * The script is part of konpeito.
+	 * 
+	 * AUTHOR:
+	 *  natade (http://twitter.com/natadea)
+	 * 
+	 * LICENSE:
+	 *  The MIT license https://opensource.org/licenses/MIT
 	 */
-	static format(text, parmeter) {
-		let parm_number = 1;
-		const parm = arguments;
-		const toUnsign  = function(num) {
-			let x = num;
+	// @ts-check
+
+	/**
+	  * 
+	  * @ignore
+	  */
+	var Format = function Format () {};
+
+	Format.format = function format (text, parmeter) {
+		var parm_number = 1;
+		var parm = arguments;
+		var toUnsign  = function(num) {
+			var x = num;
 			if(x >= 0) {
 				return(x);
 			}
 			else {
 				x = -x;
 				//16ビットごとに分けてビット反転
-				let high = ((~x) >> 16) & 0xFFFF;
+				var high = ((~x) >> 16) & 0xFFFF;
 				high *= 0x00010000;
-				const low  =  (~x) & 0xFFFF;
+				var low  =  (~x) & 0xFFFF;
 				return(high + low + 1);
 			}
 		};
-		const func = function(text) {
-			let str = text;
+		var func = function(text) {
+			var str = text;
 			// 1文字目の%を除去
 			str = str.substring(1, str.length);
-			let buff;
+			var buff;
 			// [6] 変換指定子(最後の1文字を取得)
 			buff = str.match(/.$/);
-			const type = buff[0];
+			var type = buff[0];
 			if(type === "%") {
 				return("%");
 			}
@@ -65,17 +72,14 @@ export default class Format {
 				parm_number = parseInt(buff , 10);
 			}
 			// 引数を取得
-			let parameter = parm[parm_number];
+			var parameter = parm[parm_number];
 			parm_number = parm_number + 1;
 			// [2] フラグ
 			buff = str.match(/^[-+ #0]+/);
-			let isFlagSharp = false;
-			let isFlagTextAlignLeft = false;
-			const isFlagFill = false;
-			let sFillCharacter = " ";
-			let isFlagFillZero = false;
-			let isFlagDrawSign = false;
-			let sSignCharacter = "";
+			var isFlagSharp = false;
+			var isFlagTextAlignLeft = false;
+			var isFlagFillZero = false;
+			var sSignCharacter = "";
 			if(buff !== null) {
 				buff = buff[0];
 				// 残りの文字列を取得
@@ -87,20 +91,17 @@ export default class Format {
 					isFlagTextAlignLeft = true;
 				}
 				if(buff.indexOf(" ") !== -1) {
-					isFlagDrawSign = true;
 					sSignCharacter = " ";
 				}
 				if(buff.indexOf("+") !== -1) {
-					isFlagDrawSign = true;
 					sSignCharacter = "+";
 				}
 				if(buff.indexOf("0") !== -1) {
 					isFlagFillZero = true;
-					sFillCharacter = "0";
 				}
 			}
 			// [3] 最小フィールド幅
-			let width = 0;
+			var width = 0;
 			buff = str.match(/^([0-9]+|\*)/);
 			if(buff !== null) {
 				buff = buff[0];
@@ -116,8 +117,8 @@ export default class Format {
 				}
 			}
 			// [4] 精度の指定
-			let isPrecision = false;
-			let precision = 0;
+			var isPrecision = false;
+			var precision = 0;
 			buff = str.match(/^(\.((-?[0-9]+)|\*)|\.)/); //.-3, .* , .
 			if(buff !== null) {
 				buff = buff[0];
@@ -143,8 +144,8 @@ export default class Format {
 				str = str.substring(buff.length, str.length);
 			}
 			// 文字列を作成する
-			let output = "";
-			let isInteger = false;
+			var output = "";
+			var isInteger = false;
 			switch(type.toLowerCase()) {
 				// 数字関連
 				case "d":
@@ -159,9 +160,9 @@ export default class Format {
 				case "f":
 				case "g":
 				{
-					let sharpdata = "";
-					let textlength = 0; // 現在の文字を構成するために必要な長さ
-					let spacesize;  // 追加する横幅
+					var sharpdata = "";
+					var textlength = 0; // 現在の文字を構成するために必要な長さ
+					var spacesize;  // 追加する横幅
 					// 整数
 					if(isInteger) {
 						// 数字に変換
@@ -253,7 +254,7 @@ export default class Format {
 					if(isInteger) {
 						if(isPrecision) { // 精度の付け足し
 							spacesize  = precision - output.length;
-							for(let i = 0; i < spacesize; i++) {
+							for(var i = 0; i < spacesize; i++) {
 								output = "0" + output;
 							}
 						}
@@ -274,8 +275,8 @@ export default class Format {
 					}
 					// 指数表記は、3桁表示(double型のため)
 					if(output.indexOf("e") !== -1) {
-						const buff = function(str) {
-							const l   = str.length;
+						var buff$1 = function(str) {
+							var l   = str.length;
 							if(str.length === 3) { // e+1 -> e+001
 								return(str.substring(0, l - 1) + "00" + str.substring(l - 1, l));
 							}
@@ -283,19 +284,19 @@ export default class Format {
 								return(str.substring(0, l - 2) + "0" + str.substring(l - 2, l));
 							}
 						};
-						output = output.replace(/e[+-][0-9]{1,2}$/, buff);
+						output = output.replace(/e[+-][0-9]{1,2}$/, buff$1);
 					}
 					textlength = output.length + sharpdata.length + sSignCharacter.length;
 					spacesize  = width - textlength;
 					// 左よせ
 					if(isFlagTextAlignLeft) {
-						for(let i = 0; i < spacesize; i++) {
+						for(var i$1 = 0; i$1 < spacesize; i$1++) {
 							output = output + " ";
 						}
 					}
 					// 0を埋める場合
 					if(isFlagFillZero) {
-						for(let i = 0; i < spacesize; i++) {
+						for(var i$2 = 0; i$2 < spacesize; i$2++) {
 							output = "0" + output;
 						}
 					}
@@ -304,7 +305,7 @@ export default class Format {
 					output = sSignCharacter + output;
 					// 0 で埋めない場合
 					if((!isFlagFillZero) && (!isFlagTextAlignLeft)) {
-						for(let i = 0; i < spacesize; i++) {
+						for(var i$3 = 0; i$3 < spacesize; i$3++) {
 							output = " " + output;
 						}
 					}
@@ -331,18 +332,18 @@ export default class Format {
 							output = output.substring(0, precision);
 						}
 					}
-					const s_textlength = output.length; // 現在の文字を構成するために必要な長さ
-					const s_spacesize  = width - s_textlength;  // 追加する横幅
+					var s_textlength = output.length; // 現在の文字を構成するために必要な長さ
+					var s_spacesize  = width - s_textlength;  // 追加する横幅
 					// 左よせ / 右よせ
 					if(isFlagTextAlignLeft) {
-						for(let i = 0; i < s_spacesize; i++) {
+						for(var i$4 = 0; i$4 < s_spacesize; i$4++) {
 							output = output + " ";
 						}
 					}
 					else {
 						// 拡張
-						const s = isFlagFillZero ? "0" : " ";
-						for(let i = 0; i < s_spacesize; i++) {
+						var s = isFlagFillZero ? "0" : " ";
+						for(var i$5 = 0; i$5 < s_spacesize; i$5++) {
 							output = s + output;
 						}
 					}
@@ -364,6 +365,93 @@ export default class Format {
 			return (output);	
 		};
 		return (parm[0].replace(/%[^diubBoxXeEfFgGaAcspn%]*[diubBoxXeEfFgGaAcspn%]/g, func));
-	}
+	};
 
-}
+	/**
+	 * The script is part of konpeito.
+	 * 
+	 * AUTHOR:
+	 *  natade (http://twitter.com/natadea)
+	 * 
+	 * LICENSE:
+	 *  The MIT license https://opensource.org/licenses/MIT
+	 */
+
+	/**
+	 * ログのバッファ
+	 * @ignore
+	 */
+	var printbuffer = "";
+
+	/**
+	 * ログを記録するクラス
+	 * @ignore
+	 */
+	var Log = function Log () {};
+
+	Log._toStringFromObj = function _toStringFromObj (text_obj) {
+		var text;
+		if((typeof text_obj === "string")||(text_obj instanceof String)) {
+			if(text_obj.length === 0) {
+				// Edge だと console.log("") でエラー表示になるため
+				text = " ";
+			}
+			else {
+				text = text_obj;
+			}
+		}
+		else if(typeof text_obj === "undefined") {
+			text = typeof text_obj;
+		}
+		else if(text_obj === null) {
+			text = "null";
+		}
+		else if(typeof text_obj.toString === "function") {
+			text = text_obj.toString();
+		}
+		else if(text_obj instanceof Object) {
+			text = "Object";
+		}
+		else {
+			text = "null";
+		}
+		return text;
+	};
+		
+	/**
+		 * データを文字列化して記録
+		 * @param {*} text_obj 
+		 */
+	Log.println = function println (text_obj) {
+		var text = printbuffer + Log._toStringFromObj(text_obj);
+		printbuffer = "";
+		console.log(text);
+	};
+		
+	/**
+		 * データを文字列化して記録（折り返し禁止）
+		 * @param {*} text_obj 
+		 */
+	Log.print = function print (text_obj) {
+		printbuffer += Log._toStringFromObj(text_obj);
+	};
+		
+	/**
+		 * ログを記録する
+		 * C言語のprintfのようなフォーマットが指定可能
+		 * @param {string} text 
+		 * @param {string} parmeter パラメータは可変引数
+		 */
+	Log.printf = function printf (text, parmeter) {
+			var arguments$1 = arguments;
+
+		var x = [];
+		for(var i = 0 ; i < arguments.length ; i++) {
+			x.push(arguments$1[i]);
+		}
+		Log.print(Format.format.apply(this, x));
+	};
+
+	return Log;
+
+}));

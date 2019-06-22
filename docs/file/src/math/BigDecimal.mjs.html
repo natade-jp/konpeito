@@ -788,7 +788,7 @@ export default class BigDecimal {
 	 * &#x6570;&#x5024;&#x3092;&#x7BC4;&#x56F2;&#x306B;&#x53CE;&#x3081;&#x308B;
 	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
 	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
-	 * @returns {BigInteger} min(max(x, min), max)
+	 * @returns {BigDecimal} min(max(x, min), max)
 	 */
 	clip(min, max) {
 		const min_ = BigDecimal._toBigDecimal(min);

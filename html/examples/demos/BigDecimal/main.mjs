@@ -1,9 +1,9 @@
-﻿import konpeito from "../../libs/konpeito.mjs";
+﻿import Log from "../../libs/Log.module.mjs";
+import konpeito from "../../libs/konpeito.mjs";
 
 const BigDecimal = konpeito.BigDecimal;
 const RoundingMode = konpeito.RoundingMode;
 const MathContext = konpeito.MathContext;
-const Log = konpeito.Log;
 const $ = BigDecimal.create;
 
 const testPlainStringAndEngineeringString = function(text) {

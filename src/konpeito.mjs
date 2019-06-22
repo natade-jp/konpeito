@@ -10,9 +10,6 @@
 // @ts-check
 
 // @ts-ignore
-import Log from "./utility/Log.mjs";
-
-// @ts-ignore
 import Random from "./math/tools/Random.mjs";
 
 // @ts-ignore
@@ -42,15 +39,6 @@ import Matrix from "./math/Matrix.mjs";
  * 信号処理や統計処理等を備えた汎用的な計算クラスは、 Matrix 。
  */
 export default class konpeito {
-
-	/**
-	 * フォーマットクラス
-	 * @returns {typeof Log}
-	 * @ignore
-	 */
-	static get Log() {
-		return Log;
-	}
 
 	/**
 	 * 多倍長整数クラス
