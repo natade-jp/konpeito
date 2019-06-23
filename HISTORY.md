@@ -4,7 +4,7 @@
 - BigDecimal clip の戻り値のコメントが誤っていたのを修正
 - 型定義ファイルで戻り値が「any」となっていた部分を修正
 - デバッグ用のクラス Log を削除
-- 英語に翻訳中（112/1479）
+- 英語に翻訳中（247/1479）
 
 ## v0.1.10
 - arange, crip, circshift, roll, fftshift, reshape, indexsort 追加
