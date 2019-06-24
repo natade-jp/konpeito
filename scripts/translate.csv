@@ -3,15 +3,15 @@
 2		BigInteger	static get	returns			
 3		BigDecimal	static get	desc		任意精度浮動小数点クラス	
 4		BigDecimal	static get	returns			
-5		RoundingMode	static get	desc		BigDecimal用の丸め設定クラス	
+5		RoundingMode	static get	desc		BigDecimal用の丸め設定クラス	Rounding class for BigDecimal.
 6		RoundingMode	static get	returns			
-7		MathContext	static get	desc		BigDecimal用の環境設定クラス	
+7		MathContext	static get	desc		BigDecimal用の環境設定クラス	Configuration class for BigDecimal.
 8		MathContext	static get	returns			
 9		Complex	static get	desc		複素数クラス	
 10		Complex	static get	returns			
-11		Matrix	static get	desc		複素行列クラス	
+11		Matrix	static get	desc		複素行列クラス	Complex matrix class.
 12		Matrix	static get	returns			
-13		Random	static get	desc		乱数クラス	
+13		Random	static get	desc		乱数クラス	Random number class.
 14		Random	static get	returns			
 15		DEFAULT_CONTEXT	let	desc		初期化するときにcontextを設定しなかった場合のデフォルト値	
 16	DecimalTool	DecimalTool	class	desc		BigDecimal 内で使用する関数群	
@@ -57,14 +57,14 @@
 53	DecimalTool	scale		desc		倍率	The scale of this BigDecimal.
 54	DecimalTool	scale		returns			
 55	DecimalTool	signum		desc		"符号値
-1, -1, 0の場合は0を返す"	"Positive or negative signs of number.
+1, -1, 0の場合は0を返す"	"The positive or negative sign of this number.
 * +1 if positive, -1 if negative, 0 if 0."
 56	DecimalTool	signum		returns			
 57	DecimalTool	sign		desc		"符号値
-1, -1, 0の場合は0を返す"	"Positive or negative signs of number.
+1, -1, 0の場合は0を返す"	"The positive or negative sign of this number.
 * +1 if positive, -1 if negative, 0 if 0."
 58	DecimalTool	sign		returns			
-59	DecimalTool	precision		desc		精度	
+59	DecimalTool	precision		desc		精度	Precision.
 60	DecimalTool	precision		returns			
 61	DecimalTool	unscaledValue		desc		指数表記部分を取り除いた整数	An integer with the exponent part removed.
 62	DecimalTool	unscaledValue		returns			
@@ -85,16 +85,16 @@
 76	DecimalTool	setScale		param	rounding_mode	精度を変換する際の丸め方	
 77	DecimalTool	setScale		param	mc	切り替え先の設定（これのみ変更する場合は、roundを使用すること）	
 78	DecimalTool	setScale		returns	mc		
-79	DecimalTool	round		desc		環境設定を切り替える	
+79	DecimalTool	round		desc		環境設定を切り替える	Round with specified settings.
 80	DecimalTool	round		param	mc	切り替え先の設定	
 81	DecimalTool	round		returns	mc		
 82	DecimalTool	abs		desc		絶対値	
 83	DecimalTool	abs		param	mc	計算に使用する設定	
 84	DecimalTool	abs		returns	mc	abs(A)	
-85	DecimalTool	plus		desc		正数	
+85	DecimalTool	plus		desc		正数	this * 1
 86	DecimalTool	plus		param	mc	計算に使用する設定	
 87	DecimalTool	plus		returns	mc	+A	
-88	DecimalTool	negate		desc		負数	
+88	DecimalTool	negate		desc		負数	this * -1
 89	DecimalTool	negate		param	mc	計算に使用する設定	
 90	DecimalTool	negate		returns	mc	-A	
 91	DecimalTool	compareTo		desc		値同士を比較	
@@ -104,10 +104,10 @@
 精度やスケール含めて等しいかをテストする"	
 95	DecimalTool	equals		param	number		
 96	DecimalTool	equals		returns	number	A === B	
-97	DecimalTool	max		desc		最大値	
+97	DecimalTool	max		desc		最大値	Maximum number.
 98	DecimalTool	max		param	number		
 99	DecimalTool	max		returns	number	max([A, B])	
-100	DecimalTool	min		desc		最小値	
+100	DecimalTool	min		desc		最小値	Minimum number.
 101	DecimalTool	min		param	number		
 102	DecimalTool	min		returns	number	min([A, B])	
 103	DecimalTool	clip		desc		数値を範囲に収める	
@@ -118,10 +118,10 @@
 Only the scale is changed without changing the precision."
 108	DecimalTool	scaleByPowerOfTen		param	n		
 109	DecimalTool	scaleByPowerOfTen		returns	n	A * 10^floor(n)	
-110	DecimalTool	movePointLeft		desc		小数点の位置を左へ移動	
+110	DecimalTool	movePointLeft		desc		小数点の位置を左へ移動	Move the decimal point to the left.
 111	DecimalTool	movePointLeft		param	n		
 112	DecimalTool	movePointLeft		returns	n		
-113	DecimalTool	movePointRight		desc		小数点の位置を右へ移動	
+113	DecimalTool	movePointRight		desc		小数点の位置を右へ移動	Move the decimal point to the right.
 114	DecimalTool	movePointRight		param	n		
 115	DecimalTool	movePointRight		returns	n		
 116	DecimalTool	stripTrailingZeros		desc		数字の右側にある0を取り除き、スケールを正規化	Remove the 0 to the right of the numbers and normalize the scale.
@@ -138,11 +138,11 @@ Only the scale is changed without changing the precision."
 127	DecimalTool	sub		param	number		
 128	DecimalTool	sub		param	context	計算に使用する設定、省略した場合は、減算先の設定デフォルト値を使用する	
 129	DecimalTool	sub		returns	context	A - B	
-130	DecimalTool	multiply		desc		乗算	
+130	DecimalTool	multiply		desc		乗算	Multiply.
 131	DecimalTool	multiply		param	number		
 132	DecimalTool	multiply		param	context	計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する	
 133	DecimalTool	multiply		returns	context	A * B	
-134	DecimalTool	mul		desc		乗算	
+134	DecimalTool	mul		desc		乗算	Multiply.
 135	DecimalTool	mul		param	number		
 136	DecimalTool	mul		param	context	計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する	
 137	DecimalTool	mul		returns	context	A * B	
@@ -154,11 +154,11 @@ Only the scale is changed without changing the precision."
 143	DecimalTool	divideAndRemainder		param	number		
 144	DecimalTool	divideAndRemainder		param	context	計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する	
 145	DecimalTool	divideAndRemainder		returns	context	[C = (int)(A / B), A - C * B]	
-146	DecimalTool	rem		desc		割り算の余り	
+146	DecimalTool	rem		desc		割り算の余り	Remainder of division.
 147	DecimalTool	rem		param	number		
 148	DecimalTool	rem		param	context	計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する	
 149	DecimalTool	rem		returns	context	A % B	
-150	DecimalTool	mod		desc		割り算の正の余り	
+150	DecimalTool	mod		desc		割り算の正の余り	Modulo, positive remainder of division.
 151	DecimalTool	mod		param	number		
 152	DecimalTool	mod		param	context	計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する	
 153	DecimalTool	mod		returns	context	A mod B	
@@ -186,7 +186,8 @@ An error occurs if conversion fails."
 172	DecimalTool	doubleValue	get	desc		64ビット実数に変換	
 173	DecimalTool	doubleValue	get	returns			
 174	DecimalTool	pow		desc		"累乗
-巨大な乗算をする場合は例外を発生させる"	
+巨大な乗算をする場合は例外を発生させる"	"Power function.
+An exception occurs when doing a huge multiplication."
 175	DecimalTool	pow		param	number		
 176	DecimalTool	pow		param	context	計算に使用する設定、省略した場合は、累乗先の設定デフォルト値を使用する	
 177	DecimalTool	pow		returns	context	pow(A, B)	
@@ -197,7 +198,7 @@ This is used if you do not specify MathContext when creating a new object."
 181	DecimalTool	getDefaultContext	static	returns			
 182	DecimalTool	ZERO	static get	desc		0	0
 183	DecimalTool	ZERO	static get	returns		0	
-184	DecimalTool	ONE	static get	desc		1	
+184	DecimalTool	ONE	static get	desc		1	1
 185	DecimalTool	ONE	static get	returns		1	
 186	DecimalTool	TWO	static get	desc		2	2
 187	DecimalTool	TWO	static get	returns		2	
@@ -205,7 +206,7 @@ This is used if you do not specify MathContext when creating a new object."
 189	DecimalTool	TEN	static get	returns		10	
 190	DecimalTool	DEFINE	const	desc		内部で使用する定数値	
 191	DecimalTool	ZERO		desc		0	0
-192	DecimalTool	ONE		desc		1	
+192	DecimalTool	ONE		desc		1	1
 193	DecimalTool	TWO		desc		2	2
 194	DecimalTool	TEN		desc		10	10
 195		DEFAULT_RANDOM	let	desc		乱数用クラスを指定しなかった場合に使用するデフォルト乱数クラス	
@@ -214,7 +215,7 @@ This is used if you do not specify MathContext when creating a new object."
 198	IntegerTool	string_to_binary_number	static	param	text	数値が入ったテキストデータ（負の値などを含めない）	
 199	IntegerTool	string_to_binary_number	static	param	radix	テキストデータの進数	
 200	IntegerTool	string_to_binary_number	static	returns	radix	_16進数ごとに代入された配列	
-201	IntegerTool	number_to_binary_number	static	desc		数値から16進数ごとの配列へ変換する	
+201	IntegerTool	number_to_binary_number	static	desc		数値から16進数ごとの配列へ変換する	Convert numbers to hexadecimal array.
 202	IntegerTool	number_to_binary_number	static	param	x	変換したい数値	
 203	IntegerTool	number_to_binary_number	static	returns	x	_16進数ごとに代入された配列	
 204	IntegerTool	binary_number_to_string	static	desc		16進数の配列データから数列が入った文字列を作成	
@@ -254,7 +255,7 @@ This is used if you do not specify MathContext when creating a new object."
 233	IntegerTool	createRandomBigInteger	static	param	bitsize	作成する乱数のビット数	
 234	IntegerTool	createRandomBigInteger	static	param	random	作成に使用するRandom	
 235	IntegerTool	createRandomBigInteger	static	returns	random		
-236	IntegerTool	probablePrime	static	desc		指定したビット数以内の素数	
+236	IntegerTool	probablePrime	static	desc		指定したビット長以内で表される素数	Prime represented within the specified bit length.
 237	IntegerTool	probablePrime	static	param	bits	作成する素数の乱数のビット数	
 238	IntegerTool	probablePrime	static	param	random	作成に使用するRandom	
 239	IntegerTool	probablePrime	static	param	certainty	ミラーラビン素数判定法に使用する繰り返し回数	
@@ -304,18 +305,18 @@ This is used if you do not specify MathContext when creating a new object."
 280	IntegerTool	_or		desc		論理和（ミュータブル）	
 281	IntegerTool	_or		param	number		
 282	IntegerTool	_or		returns	number	A |= B	
-283	IntegerTool	or		desc		論理和	
+283	IntegerTool	or		desc		論理和	Logical OR.
 284	IntegerTool	or		param	number		
 285	IntegerTool	or		returns	number	A | B	
 286	IntegerTool	_xor		desc		排他的論理和（ミュータブル）	
 287	IntegerTool	_xor		param	number		
 288	IntegerTool	_xor		returns	number	A ^= B	
-289	IntegerTool	xor		desc		排他的論理和	Exclusive OR.
+289	IntegerTool	xor		desc		排他的論理和	Logical Exclusive-OR.
 290	IntegerTool	xor		param	number		
 291	IntegerTool	xor		returns	number	A ^ B	
 292	IntegerTool	_not		desc		ビット反転	
 293	IntegerTool	_not		returns		A = !A	
-294	IntegerTool	not		desc		ビット反転（ミュータブル）	
+294	IntegerTool	not		desc		ビット反転（ミュータブル）	Logical Not. (mutable)
 295	IntegerTool	not		returns		!A	
 296	IntegerTool	_andNot		desc		否定論理積（ミュータブル）	
 297	IntegerTool	_andNot		param	number		
@@ -326,19 +327,19 @@ This is used if you do not specify MathContext when creating a new object."
 302	IntegerTool	_nand		desc		否定論理積（ミュータブル）	
 303	IntegerTool	_nand		param	number		
 304	IntegerTool	_nand		returns	number	A &= (!B)	
-305	IntegerTool	nand		desc		否定論理積	
+305	IntegerTool	nand		desc		否定論理積	Logical Not-AND.
 306	IntegerTool	nand		param	number		
 307	IntegerTool	nand		returns	number	A & (!B)	
 308	IntegerTool	_orNot		desc		否定論理和（ミュータブル）	
 309	IntegerTool	_orNot		param	number		
 310	IntegerTool	_orNot		returns	number	A = !(A | B)	
-311	IntegerTool	orNot		desc		否定論理和	
+311	IntegerTool	orNot		desc		否定論理和	Logical Not-OR.
 312	IntegerTool	orNot		param	number		
 313	IntegerTool	orNot		returns	number	!(A | B)	
 314	IntegerTool	_nor		desc		否定論理和（ミュータブル）	
 315	IntegerTool	_nor		param	number		
 316	IntegerTool	_nor		returns	number	A = !(A | B)	
-317	IntegerTool	nor		desc		否定論理和	
+317	IntegerTool	nor		desc		否定論理和	Logical Not-OR.
 318	IntegerTool	nor		param	number		
 319	IntegerTool	nor		returns	number	!(A | B)	
 320	IntegerTool	_memory_allocation		desc		指定したビット長まで配列を拡張（ミュータブル）	
@@ -358,13 +359,13 @@ This is used if you do not specify MathContext when creating a new object."
 334	IntegerTool	abs		returns		abs(A)	
 335	IntegerTool	_negate		desc		負数（ミュータブル）	
 336	IntegerTool	_negate		returns		A = -A	
-337	IntegerTool	negate		desc		負数	
+337	IntegerTool	negate		desc		負数	this * -1
 338	IntegerTool	negate		returns		-A	
 339	IntegerTool	signum		desc		"符号値
-1, -1, 0の場合は0を返す"	"Positive or negative signs of number.
+1, -1, 0の場合は0を返す"	"The positive or negative sign of this number.
 * +1 if positive, -1 if negative, 0 if 0."
 340	IntegerTool	signum		returns		1, -1, 0の場合は0を返す	
-341	IntegerTool	sign		desc		符号値	"Positive or negative signs of number.
+341	IntegerTool	sign		desc		符号値	"The positive or negative sign of this number.
 * +1 if positive, -1 if negative, 0 if 0."
 342	IntegerTool	sign		returns		1, -1, 0の場合は0を返す	
 343	IntegerTool	compareToAbs		desc		符号を除いた値同士を比較	
@@ -373,10 +374,10 @@ This is used if you do not specify MathContext when creating a new object."
 346	IntegerTool	compareTo		desc		値同士を比較	
 347	IntegerTool	compareTo		param	number		
 348	IntegerTool	compareTo		returns	number	A > B ? 1 : (A === B ? 0 : -1)	
-349	IntegerTool	max		desc		最大値	
+349	IntegerTool	max		desc		最大値	Maximum number.
 350	IntegerTool	max		param	number		
 351	IntegerTool	max		returns	number	max([A, B])	
-352	IntegerTool	min		desc		最小値	
+352	IntegerTool	min		desc		最小値	Minimum number.
 353	IntegerTool	min		param	number		
 354	IntegerTool	min		returns	number	min([A, B])	
 355	IntegerTool	clip		desc		数値を範囲に収める	
@@ -413,10 +414,10 @@ This is used if you do not specify MathContext when creating a new object."
 386	IntegerTool	_multiply		desc		乗算（ミュータブル）	
 387	IntegerTool	_multiply		param	number		
 388	IntegerTool	_multiply		returns	number	A *= B	
-389	IntegerTool	multiply		desc		乗算	
+389	IntegerTool	multiply		desc		乗算	Multiply.
 390	IntegerTool	multiply		param	number		
 391	IntegerTool	multiply		returns	number	A * B	
-392	IntegerTool	mul		desc		乗算	
+392	IntegerTool	mul		desc		乗算	Multiply.
 393	IntegerTool	mul		param	number		
 394	IntegerTool	mul		returns	number	A * B	
 395	IntegerTool	_divideAndRemainder		desc		割り算と余り（ミュータブル）	
@@ -437,16 +438,16 @@ This is used if you do not specify MathContext when creating a new object."
 410	IntegerTool	_remainder		desc		割り算の余り（ミュータブル）	
 411	IntegerTool	_remainder		param	number		
 412	IntegerTool	_remainder		returns	number	A %= B	
-413	IntegerTool	remainder		desc		割り算の余り	
+413	IntegerTool	remainder		desc		割り算の余り	Remainder of division.
 414	IntegerTool	remainder		param	number		
 415	IntegerTool	remainder		returns	number	A % B	
-416	IntegerTool	rem		desc		割り算の余り	
+416	IntegerTool	rem		desc		割り算の余り	Remainder of division.
 417	IntegerTool	rem		param	number		
 418	IntegerTool	rem		returns	number	A % B	
 419	IntegerTool	_mod		desc		割り算の正の余り（ミュータブル）	
 420	IntegerTool	_mod		param	number		
 421	IntegerTool	_mod		returns	number	A = A mod B	
-422	IntegerTool	mod		desc		割り算の正の余り	
+422	IntegerTool	mod		desc		割り算の正の余り	Modulo, positive remainder of division.
 423	IntegerTool	mod		param	number		
 424	IntegerTool	mod		returns	number	A mod B	
 425	IntegerTool	_setBit		desc		特定のビットを立てる（ミュータブル）	
@@ -467,21 +468,21 @@ This is used if you do not specify MathContext when creating a new object."
 440	IntegerTool	testBit		desc		指定のビットの判定	Test if a particular bit is on.
 441	IntegerTool	testBit		param	bit		
 442	IntegerTool	testBit		returns	bit		
-443	IntegerTool	pow		desc		累乗	
+443	IntegerTool	pow		desc		累乗	Power function.
 444	IntegerTool	pow		param	exponent		
 445	IntegerTool	pow		returns	exponent	pow(A, B)	
-446	IntegerTool	modPow		desc		冪剰余	
+446	IntegerTool	modPow		desc		冪剰余	Modular exponentiation.
 447	IntegerTool	modPow		param	exponent		
 448	IntegerTool	modPow		param	m		
 449	IntegerTool	modPow		returns	m	A^B mod m	
-450	IntegerTool	modInverse		desc		モジュラ逆数	
+450	IntegerTool	modInverse		desc		モジュラ逆数	Modular multiplicative inverse.
 451	IntegerTool	modInverse		param	m		
 452	IntegerTool	modInverse		returns	m	A^(-1) mod m	
 453	IntegerTool	isProbablePrime		desc		"ミラーラビン素数判定法による複素判定
 （非常に重たいので注意）"	
 454	IntegerTool	isProbablePrime		param	certainty	素数判定法の繰り返し回数	
 455	IntegerTool	isProbablePrime		returns	certainty		
-456	IntegerTool	nextProbablePrime		desc		次の素数	
+456	IntegerTool	nextProbablePrime		desc		次の素数	Next prime.
 457	IntegerTool	nextProbablePrime		param	certainty	素数判定法の繰り返し回数	
 458	IntegerTool	nextProbablePrime		param	search_max	次の素数を見つけるまでの回数	
 459	IntegerTool	nextProbablePrime		returns	search_max		
@@ -494,18 +495,18 @@ This is used if you do not specify a random number."
 465	IntegerTool	getDefaultRandom	static	returns			
 466	IntegerTool	ZERO	static get	desc		0	0
 467	IntegerTool	ZERO	static get	returns		0	
-468	IntegerTool	ONE	static get	desc		1	
+468	IntegerTool	ONE	static get	desc		1	1
 469	IntegerTool	ONE	static get	returns		1	
 470	IntegerTool	TWO	static get	desc		2	2
 471	IntegerTool	TWO	static get	returns		2	
 472	IntegerTool	TEN	static get	desc		10	10
 473	IntegerTool	TEN	static get	returns		10	
 474	IntegerTool	DEFINE	const	desc		内部で使用する定数値	
-475	IntegerTool	ONE		desc		1	
+475	IntegerTool	ONE		desc		1	1
 476	IntegerTool	TWO		desc		2	2
 477	IntegerTool	TEN		desc		10	10
 478	IntegerTool	ZERO		desc		0	0
-479		random_class	const	desc		Complex 内で使用する乱数生成クラス	
+479		random_class	const	desc		Complex 内で使用する乱数生成クラス	Random number generation class used within Complex.
 480	ComplexTool	ComplexTool	class	desc		Complex 内で使用する関数群	
 481	ComplexTool	ToComplexFromString	static	desc		文字列から複素数用データの作成	Create data for complex numbers from strings.
 482	ComplexTool	ToComplexFromString	static	param	text	解析したい文字列	
@@ -538,19 +539,19 @@ This is used if you do not specify a random number."
 509	ComplexTool	clone		returns			
 510	ComplexTool	toString		desc		文字列化	Convert to string.
 511	ComplexTool	toString		returns			
-512	ComplexTool	rand	static	desc		ランダムな値を作成	
+512	ComplexTool	rand	static	desc		一様乱数に従うランダムな値を作成	Create random values with uniform random numbers.
 513	ComplexTool	rand	static	returns			
-514	ComplexTool	randn	static	desc		正規分布に従うランダムな値を作成	
+514	ComplexTool	randn	static	desc		正規分布に従うランダムな値を作成	Create random values with normal distribution.
 515	ComplexTool	randn	static	returns			
 516	ComplexTool	equals		desc		等式	
 517	ComplexTool	equals		param	number		
 518	ComplexTool	equals		param	epsilon	誤差を実数で指定	
 519	ComplexTool	equals		returns	epsilon	A === B	
-520	ComplexTool	real	get	desc		実部	
+520	ComplexTool	real	get	desc		実部	Real part.
 521	ComplexTool	real	get	returns		real(A)	
 522	ComplexTool	imag	get	desc		虚部	
 523	ComplexTool	imag	get	returns		imag(A)	
-524	ComplexTool	norm	get	desc		ノルム	
+524	ComplexTool	norm	get	desc		ノルム	norm.
 525	ComplexTool	norm	get	returns		|A|	
 526	ComplexTool	arg	get	desc		偏角	
 527	ComplexTool	arg	get	returns		arg(A)	
@@ -562,7 +563,7 @@ This is used if you do not specify a random number."
 533	ComplexTool	sub		desc		減算	Subtract.
 534	ComplexTool	sub		param	number		
 535	ComplexTool	sub		returns	number	A - B	
-536	ComplexTool	mul		desc		乗算	
+536	ComplexTool	mul		desc		乗算	Multiply.
 537	ComplexTool	mul		param	number		
 538	ComplexTool	mul		returns	number	A * B	
 539	ComplexTool	dot		desc		ドット積	
@@ -571,22 +572,22 @@ This is used if you do not specify a random number."
 542	ComplexTool	div		desc		割り算	
 543	ComplexTool	div		param	number		
 544	ComplexTool	div		returns	number	A / B	
-545	ComplexTool	mod		desc		割り算の正の余り	
+545	ComplexTool	mod		desc		割り算の正の余り	Modulo, positive remainder of division.
 546	ComplexTool	mod		param	number	複素数を含まない数値	
 547	ComplexTool	mod		returns	number	A mod B	
 548	ComplexTool	inv		desc		逆数	
 549	ComplexTool	inv		returns		1 / A	
-550	ComplexTool	sign		desc		符号値	"Positive or negative signs of number.
+550	ComplexTool	sign		desc		符号値	"The positive or negative sign of this number.
 * +1 if positive, -1 if negative, 0 if 0."
 551	ComplexTool	sign		returns		[-1,1] 複素数の場合はノルムを1にした値。	
 552	ComplexTool	compareTo		desc		値同士を比較	
 553	ComplexTool	compareTo		param	number		
 554	ComplexTool	compareTo		param	epsilon	誤差を実数で指定	
 555	ComplexTool	compareTo		returns	epsilon	A > B ? 1 : (A === B ? 0 : -1)	
-556	ComplexTool	max		desc		最大値	
+556	ComplexTool	max		desc		最大値	Maximum number.
 557	ComplexTool	max		param	number		
 558	ComplexTool	max		returns	number	max([A, B])	
-559	ComplexTool	min		desc		最小値	
+559	ComplexTool	min		desc		最小値	Minimum number.
 560	ComplexTool	min		param	number		
 561	ComplexTool	min		returns	number	min([A, B])	
 562	ComplexTool	clip		desc		数値を範囲に収める	
@@ -627,9 +628,9 @@ This is used if you do not specify a random number."
 597	ComplexTool	abs		returns		abs(A)	
 598	ComplexTool	conj		desc		共役複素数	
 599	ComplexTool	conj		returns		real(A) - imag(A)j	
-600	ComplexTool	negate		desc		負数	
+600	ComplexTool	negate		desc		負数	this * -1
 601	ComplexTool	negate		returns		-A	
-602	ComplexTool	pow		desc		累乗	
+602	ComplexTool	pow		desc		累乗	Power function.
 603	ComplexTool	pow		param	number		
 604	ComplexTool	pow		returns	number	pow(A, B)	
 605	ComplexTool	square		desc		2乗	Square.
@@ -657,13 +658,13 @@ This is used if you do not specify a random number."
 627	ComplexTool	floor		returns		floor(A)	
 628	ComplexTool	ceil		desc		ceil	
 629	ComplexTool	ceil		returns		ceil(A)	
-630	ComplexTool	round		desc		四捨五入	
+630	ComplexTool	round		desc		四捨五入	Rounding to the nearest integer.
 631	ComplexTool	round		returns		round(A)	
 632	ComplexTool	fix		desc		整数化	
 633	ComplexTool	fix		returns		fix(A)	
 634	ComplexTool	fract		desc		小数部の抽出	
 635	ComplexTool	fract		returns		fract(A)	
-636	ComplexTool	ONE	static get	desc		1	
+636	ComplexTool	ONE	static get	desc		1	1
 637	ComplexTool	ONE	static get	returns		1	
 638	ComplexTool	TWO	static get	desc		2	2
 639	ComplexTool	TWO	static get	returns		2	
@@ -671,11 +672,11 @@ This is used if you do not specify a random number."
 641	ComplexTool	TEN	static get	returns		10	
 642	ComplexTool	ZERO	static get	desc		0	0
 643	ComplexTool	ZERO	static get	returns		0	
-644	ComplexTool	MINUS_ONE	static get	desc		-1	
+644	ComplexTool	MINUS_ONE	static get	desc		-1	-1
 645	ComplexTool	MINUS_ONE	static get	returns		-1	
 646	ComplexTool	I	static get	desc		i, j	
 647	ComplexTool	I	static get	returns		i	
-648	ComplexTool	PI	static get	desc		PI	
+648	ComplexTool	PI	static get	desc		PI	PI
 649	ComplexTool	PI	static get	returns		3.14...	
 650	ComplexTool	E	static get	desc		E	
 651	ComplexTool	E	static get	returns		2.71...	
@@ -693,20 +694,20 @@ This is used if you do not specify a random number."
 663	ComplexTool	SQRT1_2	static get	returns		sqrt(0.5)	
 664	ComplexTool	HALF	static get	desc		0.5	
 665	ComplexTool	HALF	static get	returns		0.5	
-666	ComplexTool	POSITIVE_INFINITY	static get	desc		正の無限大	
+666	ComplexTool	POSITIVE_INFINITY	static get	desc		正の無限大	Positive infinity.
 667	ComplexTool	POSITIVE_INFINITY	static get	returns		Infinity	
-668	ComplexTool	NEGATIVE_INFINITY	static get	desc		負の無限大	
+668	ComplexTool	NEGATIVE_INFINITY	static get	desc		負の無限大	Negative Infinity.
 669	ComplexTool	NEGATIVE_INFINITY	static get	returns		-Infinity	
-670	ComplexTool	NaN	static get	desc		非数	
+670	ComplexTool	NaN	static get	desc		非数	Not a Number.
 671	ComplexTool	NaN	static get	returns		NaN	
 672	ComplexTool	DEFINE	const	desc		内部で使用する定数値	
 673	ComplexTool	ZERO		desc		0	0
-674	ComplexTool	ONE		desc		1	
+674	ComplexTool	ONE		desc		1	1
 675	ComplexTool	TWO		desc		2	2
 676	ComplexTool	TEN		desc		10	10
-677	ComplexTool	MINUS_ONE		desc		-1	
+677	ComplexTool	MINUS_ONE		desc		-1	-1
 678	ComplexTool	I		desc		i	
-679	ComplexTool	PI		desc		PI	
+679	ComplexTool	PI		desc		PI	PI
 680	ComplexTool	E		desc		E	
 681	ComplexTool	LN2		desc		ln2	
 682	ComplexTool	LN10		desc		ln10	
@@ -715,16 +716,16 @@ This is used if you do not specify a random number."
 685	ComplexTool	SQRT2		desc		sqrt(2)	sqrt(2)
 686	ComplexTool	SQRT1_2		desc		sqrt(0.5)	sqrt(0.5)
 687	ComplexTool	HALF		desc		0.5	
-688	ComplexTool	POSITIVE_INFINITY		desc		Infinity	
-689	ComplexTool	NEGATIVE_INFINITY		desc		-Infinity	
-690	ComplexTool	NaN		desc		NaN	
-691	MatrixTool	MatrixTool	class	desc		Matrix 内で使用する関数群	
+688	ComplexTool	POSITIVE_INFINITY		desc		正の無限大	Positive infinity.
+689	ComplexTool	NEGATIVE_INFINITY		desc		負の無限大	Negative Infinity.
+690	ComplexTool	NaN		desc		非数	Not a Number.
+691	MatrixTool	MatrixTool	class	desc		Matrix 内で使用する関数集	Collection of functions used in Matrix.
 692	MatrixTool	toPositionArrayFromObject	static	desc		行列の位置を指定するデータから、実際の値を作成	Create actual values from data specifying matrix position.
 693	MatrixTool	toPositionArrayFromObject	static	param	data	調査する値	
 694	MatrixTool	toPositionArrayFromObject	static	param	max	":"が指定された時に初期化する配列の長さ	
 695	MatrixTool	toPositionArrayFromObject	static	param	geta	":"が指定された時に初期化する値のオフセット	
 696	MatrixTool	toPositionArrayFromObject	static	returns	geta		
-697	MatrixTool	match2	static	desc		対象ではないregexpの情報以外も抽出match	
+697	MatrixTool	match2	static	desc		マッチした文字列を除いた文字列も抽出可能なmatch関数	A match function that can also extract strings excluding matched strings.
 698	MatrixTool	match2	static	param	text	検索対象	
 699	MatrixTool	match2	static	param	regexp	検索したい正規表現	
 700	MatrixTool	match2	static	returns	regexp		
@@ -859,19 +860,19 @@ Estimate the matrix by extracting parts like numbers."
 818	MatrixTool	scalar	get	returns			
 819	MatrixTool	length	get	desc		行数及び列数の最大値	
 820	MatrixTool	length	get	returns			
-821	MatrixTool	norm1	get	desc		1ノルム	
+821	MatrixTool	norm1	get	desc		1ノルム	1-norm.
 822	MatrixTool	norm1	get	returns			
-823	MatrixTool	norm2	get	desc		2ノルム	
+823	MatrixTool	norm2	get	desc		2ノルム	2-norm.
 824	MatrixTool	norm2	get	returns			
-825	MatrixTool	norm		desc		pノルム	
+825	MatrixTool	norm		desc		pノルム	p-norm.
 826	MatrixTool	norm		param	p		
 827	MatrixTool	norm		returns	p		
 828	MatrixTool	cond		desc		条件数	
 829	MatrixTool	cond		param	p		
 830	MatrixTool	cond		returns	p		
-831	MatrixTool	rcond		desc		1ノルムの条件数の逆数	
+831	MatrixTool	rcond		desc		1ノルムの条件数の逆数	Inverse condition number.
 832	MatrixTool	rcond		returns			
-833	MatrixTool	rank		desc		ランク	
+833	MatrixTool	rank		desc		ランク	Rank.
 834	MatrixTool	rank		param	epsilon	誤差	
 835	MatrixTool	rank		returns	epsilon	rank(A)	
 836	MatrixTool	trace		desc		トレース	"Trace of a matrix.
@@ -879,7 +880,7 @@ Sum of diagonal elements."
 837	MatrixTool	trace		returns		trace(A)	
 838	MatrixTool	det		desc		行列式	
 839	MatrixTool	det		returns		|A|	
-840	MatrixTool	memset	static	desc		指定した数値で初期化	
+840	MatrixTool	memset	static	desc		指定した数値で初期化	Creates a matrix composed of the specified number.
 841	MatrixTool	memset	static	param	number	初期値	
 842	MatrixTool	memset	static	param	dimension	次元数	
 843	MatrixTool	memset	static	param	column_length	列数	
@@ -892,15 +893,15 @@ Sum of diagonal elements."
 850	MatrixTool	zeros	static	param	dimension	次元数	
 851	MatrixTool	zeros	static	param	column_length	列数	
 852	MatrixTool	zeros	static	returns	column_length		
-853	MatrixTool	ones	static	desc		1で構成した行列を生成	
+853	MatrixTool	ones	static	desc		1で構成した行列を生成	Create a matrix of all ones.
 854	MatrixTool	ones	static	param	dimension	次元数	
 855	MatrixTool	ones	static	param	column_length	列数	
 856	MatrixTool	ones	static	returns	column_length		
-857	MatrixTool	rand	static	desc		乱数で構成した行列を生成	
+857	MatrixTool	rand	static	desc		一様乱数に従う乱数で構成した行列を生成	Generate a matrix composed of random values with uniform random numbers.
 858	MatrixTool	rand	static	param	dimension	次元数	
 859	MatrixTool	rand	static	param	column_length	列数	
 860	MatrixTool	rand	static	returns	column_length		
-861	MatrixTool	randn	static	desc		正規分布に従う乱数で構成した行列を生成	
+861	MatrixTool	randn	static	desc		正規分布に従う乱数で構成した行列を生成	Generate a matrix composed of random values with normal distribution.
 862	MatrixTool	randn	static	param	dimension	次元数	
 863	MatrixTool	randn	static	param	column_length	列数	
 864	MatrixTool	randn	static	returns	column_length		
@@ -974,33 +975,34 @@ Sum of diagonal elements."
 930	MatrixTool	sub		desc		減算	Subtract.
 931	MatrixTool	sub		param	number		
 932	MatrixTool	sub		returns	number	A - B	
-933	MatrixTool	mul		desc		乗算	
+933	MatrixTool	mul		desc		乗算	Multiply.
 934	MatrixTool	mul		param	number		
 935	MatrixTool	mul		returns	number	A * B	
 936	MatrixTool	div		desc		割り算	
 937	MatrixTool	div		param	number		
 938	MatrixTool	div		returns	number	A / B	
-939	MatrixTool	pow		desc		整数での累乗	
+939	MatrixTool	pow		desc		累乗（整数に対応）	"Power function.
+Supports only integers."
 940	MatrixTool	pow		param	number	整数	
 941	MatrixTool	pow		returns	number	pow(A, B)	
-942	MatrixTool	nmul		desc		行列の各項ごとの掛け算	
+942	MatrixTool	nmul		desc		行列の各項ごとの掛け算	Multiplication for each element of matrix.
 943	MatrixTool	nmul		param	number		
 944	MatrixTool	nmul		returns	number	A .* B	
-945	MatrixTool	ndiv		desc		行列の各項ごとの割り算	
+945	MatrixTool	ndiv		desc		行列の各項ごとの割り算	Division for each element of matrix.
 946	MatrixTool	ndiv		param	number		
 947	MatrixTool	ndiv		returns	number	A ./ B	
-948	MatrixTool	ninv		desc		行列の各項ごとの逆数	
+948	MatrixTool	ninv		desc		行列の各項ごとの逆数	Inverse of each element of matrix.
 949	MatrixTool	ninv		returns		1 ./ A	
-950	MatrixTool	npow		desc		行列の各項ごとの累乗	
+950	MatrixTool	npow		desc		行列の各項ごとの累乗	Power function for each element of the matrix.
 951	MatrixTool	npow		param	number		
 952	MatrixTool	npow		returns	number	A .^ B	
-953	MatrixTool	real		desc		各項の実部	
+953	MatrixTool	real		desc		各項の実部	Real part of each element.
 954	MatrixTool	real		returns		real(A)	
 955	MatrixTool	imag		desc		各項の虚部	
 956	MatrixTool	imag		returns		imag(A)	
 957	MatrixTool	arg		desc		各項の偏角	
 958	MatrixTool	arg		returns		arg(A)	
-959	MatrixTool	sign		desc		各項の符号値	"Positive or negative signs of each element of the matrix.
+959	MatrixTool	sign		desc		各項の符号値	"The positive or negative signs of each element of the matrix.
 * +1 if positive, -1 if negative, 0 if 0."
 960	MatrixTool	sign		returns		[-1,1] 複素数の場合はノルムを1にした値。	
 961	MatrixTool	testInteger		desc		各項の整数を判定	"Test if each element of the matrix is integer.
@@ -1049,7 +1051,7 @@ Sum of diagonal elements."
 992	MatrixTool	abs		returns		abs(A)	
 993	MatrixTool	conj		desc		複素共役行列	
 994	MatrixTool	conj		returns		real(A) - imag(A)j	
-995	MatrixTool	negate		desc		負数	
+995	MatrixTool	negate		desc		負数	this * -1
 996	MatrixTool	negate		returns		-A	
 997	MatrixTool	sqrt		desc		平方根	Square root.
 998	MatrixTool	sqrt		returns		sqrt(A)	
@@ -1072,7 +1074,7 @@ Sum of diagonal elements."
 1015	MatrixTool	floor		returns		floor(A)	
 1016	MatrixTool	ceil		desc		ceil	
 1017	MatrixTool	ceil		returns		ceil(A)	
-1018	MatrixTool	round		desc		四捨五入	
+1018	MatrixTool	round		desc		四捨五入	Rounding to the nearest integer.
 1019	MatrixTool	round		returns		round(A)	
 1020	MatrixTool	fix		desc		整数化	
 1021	MatrixTool	fix		returns		fix(A)	
@@ -1084,7 +1086,7 @@ Sum of diagonal elements."
 ミュータブル"	
 1027	MatrixTool	_rot90		param	rot_90_count	回転する回数	
 1028	MatrixTool	_rot90		returns	rot_90_count	処理実行後の行列	
-1029	MatrixTool	rot90		desc		行列を時計回りに回転	
+1029	MatrixTool	rot90		desc		行列を時計回りに回転	Rotate matrix 90 degrees clockwise.
 1030	MatrixTool	rot90		param	rot_90_count	回転する回数	
 1031	MatrixTool	rot90		returns	rot_90_count	処理実行後の行列	
 1032	MatrixTool	_resize		desc		"行列を拡張、拡張した項は、0で初期化。
@@ -1092,7 +1094,8 @@ Sum of diagonal elements."
 1033	MatrixTool	_resize		param	new_row_length	新しい行の長さ	
 1034	MatrixTool	_resize		param	new_column_length	新しい列の長さ	
 1035	MatrixTool	_resize		returns	new_column_length	処理実行後の行列	
-1036	MatrixTool	resize		desc		行列を拡張、拡張した項は、0で初期化	
+1036	MatrixTool	resize		desc		行列を拡張、拡張した項は、0で初期化	"Change the size of the matrix.
+Initialized with 0 when expanding."
 1037	MatrixTool	resize		param	row_length	新しい行の長さ	
 1038	MatrixTool	resize		param	column_length	新しい列の長さ	
 1039	MatrixTool	resize		returns	column_length	処理実行後の行列	
@@ -1155,11 +1158,12 @@ Sum of diagonal elements."
 1090	MatrixTool	circshift		param	shift_size		
 1091	MatrixTool	circshift		param	type		
 1092	MatrixTool	circshift		returns	type	処理実行後の行列	
-1093	MatrixTool	roll		desc		循環シフト	
+1093	MatrixTool	roll		desc		循環シフト	Circular shift.
 1094	MatrixTool	roll		param	shift_size		
 1095	MatrixTool	roll		param	type		
 1096	MatrixTool	roll		returns	type	処理実行後の行列	
-1097	MatrixTool	reshape		desc		行列の形状を変更	
+1097	MatrixTool	reshape		desc		行列の形状を変更	"Change the shape of the matrix.
+The number of elements in the matrix doesn't increase or decrease."
 1098	MatrixTool	reshape		param	row_length	新しい行の長さ	
 1099	MatrixTool	reshape		param	column_length	新しい列の長さ	
 1100	MatrixTool	reshape		returns	column_length	処理実行後の行列	
@@ -1183,14 +1187,14 @@ Sum of diagonal elements."
 1118	MatrixTool	inner		param	number		
 1119	MatrixTool	inner		param	dimension	計算するときに使用する次元（1 or 2）	
 1120	MatrixTool	inner		returns	dimension	A・B	
-1121	MatrixTool	lup		desc		LUP分解	
+1121	MatrixTool	lup		desc		LUP分解	LUP decomposition.
 1122	MatrixTool	lup		returns		P'*L*U=A	
-1123	MatrixTool	lu		desc		LU分解	
+1123	MatrixTool	lu		desc		LU分解	LU decomposition.
 1124	MatrixTool	lu		returns		L*U=A	
 1125	MatrixTool	linsolve		desc		一次方程式を解く	
 1126	MatrixTool	linsolve		param	number	B	
 1127	MatrixTool	linsolve		returns	number	Ax=B となる x	
-1128	MatrixTool	qr		desc		QR分解	
+1128	MatrixTool	qr		desc		QR分解	QR decomposition.
 1129	MatrixTool	qr		returns		Q*R=A, Qは正規直行行列、Rは上三角行列	
 1130	MatrixTool	tridiagonalize		desc		対称行列の三重対角化	"Tridiagonalization of symmetric matrix.
 * Don't support complex numbers."
@@ -1201,7 +1205,7 @@ Sum of diagonal elements."
 1135	MatrixTool	svd		returns		U*S*V'=A	
 1136	MatrixTool	inv		desc		逆行列	
 1137	MatrixTool	inv		returns		A^-1	
-1138	MatrixTool	pinv		desc		疑似逆行列	
+1138	MatrixTool	pinv		desc		疑似逆行列	Pseudo-inverse matrix.
 1139	MatrixTool	pinv		returns		A^+	
 1140	MatrixTool	gammaln		desc		対数ガンマ関数	
 1141	MatrixTool	gammaln		returns			
@@ -1245,22 +1249,22 @@ Sum of diagonal elements."
 1179	MatrixTool	betainv		returns	b		
 1180	MatrixTool	factorial		desc		x! 階乗関数	
 1181	MatrixTool	factorial		returns			
-1182	MatrixTool	nchoosek		desc		nCk 二項係数またはすべての組合わせ	
+1182	MatrixTool	nchoosek		desc		二項係数またはすべての組合わせ (nCk)	Binomial coefficient, number of all combinations, nCk.
 1183	MatrixTool	nchoosek		param	k		
 1184	MatrixTool	nchoosek		returns	k		
 1185	MatrixTool	erf		desc		誤差関数	
 1186	MatrixTool	erf		returns			
 1187	MatrixTool	erfc		desc		相補誤差関数	
 1188	MatrixTool	erfc		returns			
-1189	MatrixTool	normpdf		desc		正規分布の確率密度関数	
+1189	MatrixTool	normpdf		desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
 1190	MatrixTool	normpdf		param	u	平均値	
 1191	MatrixTool	normpdf		param	s	分散	
 1192	MatrixTool	normpdf		returns	s		
-1193	MatrixTool	normcdf		desc		正規分布の累積分布関数	
+1193	MatrixTool	normcdf		desc		正規分布の累積分布関数	Cumulative distribution function (CDF) of normal distribution.
 1194	MatrixTool	normcdf		param	u	平均値	
 1195	MatrixTool	normcdf		param	s	分散	
 1196	MatrixTool	normcdf		returns	s		
-1197	MatrixTool	norminv		desc		正規分布の累積分布関数の逆関数	
+1197	MatrixTool	norminv		desc		正規分布の累積分布関数の逆関数	Inverse of CDF of normal distribution.
 1198	MatrixTool	norminv		param	u	平均値	
 1199	MatrixTool	norminv		param	s	分散	
 1200	MatrixTool	norminv		returns	s		
@@ -1301,31 +1305,31 @@ Sum of diagonal elements."
 1235	MatrixTool	finv		param	d1	分子の自由度	
 1236	MatrixTool	finv		param	d2	分母の自由度	
 1237	MatrixTool	finv		returns	d2		
-1238	MatrixTool	max		desc		最大値	
+1238	MatrixTool	max		desc		最大値	Maximum number.
 1239	MatrixTool	max		param	type		
 1240	MatrixTool	max		returns	type	max([A, B])	
-1241	MatrixTool	min		desc		最小値	
+1241	MatrixTool	min		desc		最小値	Minimum number.
 1242	MatrixTool	min		param	type		
 1243	MatrixTool	min		returns	type	min([A, B])	
 1244	MatrixTool	sum		desc		合計	Sum.
 1245	MatrixTool	sum		param	type		
 1246	MatrixTool	sum		returns	type		
-1247	MatrixTool	mean		desc		相加平均	
+1247	MatrixTool	mean		desc		相加平均	Arithmetic average.
 1248	MatrixTool	mean		param	type		
 1249	MatrixTool	mean		returns	type		
-1250	MatrixTool	prod		desc		配列の積	
+1250	MatrixTool	prod		desc		配列の積	Product of array elements.
 1251	MatrixTool	prod		param	type		
 1252	MatrixTool	prod		returns	type		
 1253	MatrixTool	geomean		desc		相乗平均／幾何平均	
 1254	MatrixTool	geomean		param	type		
 1255	MatrixTool	geomean		returns	type		
-1256	MatrixTool	median		desc		中央値	
+1256	MatrixTool	median		desc		中央値	Median.
 1257	MatrixTool	median		param	type		
 1258	MatrixTool	median		returns	type		
-1259	MatrixTool	mode		desc		最頻値	
+1259	MatrixTool	mode		desc		最頻値	Mode.
 1260	MatrixTool	mode		param	type		
 1261	MatrixTool	mode		returns	type		
-1262	MatrixTool	moment		desc		中心積率	
+1262	MatrixTool	moment		desc		中心積率	Moment.
 1263	MatrixTool	moment		param	type		
 1264	MatrixTool	moment		returns	type		
 1265	MatrixTool	var		desc		分散	Variance.
@@ -1334,7 +1338,7 @@ Sum of diagonal elements."
 1268	MatrixTool	std		desc		標準偏差	Standard deviation.
 1269	MatrixTool	std		param	type		
 1270	MatrixTool	std		returns	type		
-1271	MatrixTool	mad		desc		標準偏差	
+1271	MatrixTool	mad		desc		平均絶対偏差	Mean absolute deviation.
 1272	MatrixTool	mad		param	type		
 1273	MatrixTool	mad		returns	type		
 1274	MatrixTool	skewness		desc		歪度	Skewness.
@@ -1343,8 +1347,7 @@ Sum of diagonal elements."
 1277	MatrixTool	cov		desc		共分散行列	
 1278	MatrixTool	cov		param	type		
 1279	MatrixTool	cov		returns	type		
-1280	MatrixTool	normalize		desc		"標本の標準化
-平均値0、標準偏差1に変更する"	
+1280	MatrixTool	normalize		desc		標本を平均値0、標準偏差1に正規化	The samples are normalized to a mean value of 0, standard deviation of 1.
 1281	MatrixTool	normalize		param	type		
 1282	MatrixTool	normalize		returns	type		
 1283	MatrixTool	corrcoef		desc		相関行列	
@@ -1359,7 +1362,7 @@ Sum of diagonal elements."
 1292	MatrixTool	ifft		desc		逆離散フーリエ変換	
 1293	MatrixTool	ifft		param	type		
 1294	MatrixTool	ifft		returns	type	ifft(x)	
-1295	MatrixTool	powerfft		desc		パワースペクトル密度	
+1295	MatrixTool	powerfft		desc		パワースペクトル密度	Power spectral density.
 1296	MatrixTool	powerfft		param	type		
 1297	MatrixTool	powerfft		returns	type	abs(fft(x)).^2	
 1298	MatrixTool	dct		desc		離散コサイン変換	
@@ -1414,7 +1417,7 @@ Sum of diagonal elements."
 1347		toString		desc		文字列化	Convert to string.
 1348		toString		returns			
 1349		UNLIMITED	static get	desc		"小数点の制限を設けない
-ただし、割り算で循環小数の場合に例外を発生"	"No decimal point limit
+ただし、割り算で循環小数の場合に例外を発生"	"No decimal point limit.
 However, an error occurs in the case of cyclic fraction in division."
 1350		UNLIMITED	static get	returns			
 1351		DECIMAL32	static get	desc		32ビットの実数型 ( float ) と同等	
@@ -1425,7 +1428,7 @@ However, an error occurs in the case of cyclic fraction in division."
 1356		DECIMAL128	static get	returns			
 1357		DEFINE	const	desc		内部で使用する定数値	
 1358		UNLIMITED		desc		"小数点の制限を設けない
-ただし、割り算で循環小数の場合に例外を発生"	"No decimal point limit
+ただし、割り算で循環小数の場合に例外を発生"	"No decimal point limit.
 However, an error occurs in the case of cyclic fraction in division."
 1359		DECIMAL32		desc		32ビットの実数型	
 1360		DECIMAL64		desc		64ビットの実数型	
@@ -1598,7 +1601,7 @@ Error if you need to round it."
 1474	LinearAlgebraTool	inner	static	param	B		
 1475	LinearAlgebraTool	inner	static	param	dimension	計算するときに使用する次元（1 or 2）	
 1476	LinearAlgebraTool	inner	static	returns	dimension	A・B	
-1477	LinearAlgebraTool	norm	static	desc		pノルム	
+1477	LinearAlgebraTool	norm	static	desc		pノルム	p-norm.
 1478	LinearAlgebraTool	norm	static	param	mat		
 1479	LinearAlgebraTool	norm	static	param	p		
 1480	LinearAlgebraTool	norm	static	returns	p		
@@ -1606,10 +1609,10 @@ Error if you need to round it."
 1482	LinearAlgebraTool	cond	static	param	mat		
 1483	LinearAlgebraTool	cond	static	param	p		
 1484	LinearAlgebraTool	cond	static	returns	p		
-1485	LinearAlgebraTool	rcond	static	desc		1ノルムの条件数の逆数	
+1485	LinearAlgebraTool	rcond	static	desc		1ノルムの条件数の逆数	Inverse condition number.
 1486	LinearAlgebraTool	rcond	static	param	mat		
 1487	LinearAlgebraTool	rcond	static	returns	mat		
-1488	LinearAlgebraTool	rank	static	desc		ランク	
+1488	LinearAlgebraTool	rank	static	desc		ランク	Rank.
 1489	LinearAlgebraTool	rank	static	param	mat		
 1490	LinearAlgebraTool	rank	static	param	epsilon	誤差	
 1491	LinearAlgebraTool	rank	static	returns	epsilon	rank(A)	
@@ -1620,17 +1623,17 @@ Sum of diagonal elements."
 1495	LinearAlgebraTool	det	static	desc		行列式	
 1496	LinearAlgebraTool	det	static	param	mat		
 1497	LinearAlgebraTool	det	static	returns	mat	|A|	
-1498	LinearAlgebraTool	lup	static	desc		LUP分解	
+1498	LinearAlgebraTool	lup	static	desc		LUP分解	LUP decomposition.
 1499	LinearAlgebraTool	lup	static	param	mat	A	
 1500	LinearAlgebraTool	lup	static	returns	mat	P'*L*U=A	
-1501	LinearAlgebraTool	lu	static	desc		LU分解	
+1501	LinearAlgebraTool	lu	static	desc		LU分解	LU decomposition.
 1502	LinearAlgebraTool	lu	static	param	mat	A	
 1503	LinearAlgebraTool	lu	static	returns	mat	L*U=A	
 1504	LinearAlgebraTool	linsolve	static	desc		連立一次方程式を解く	
 1505	LinearAlgebraTool	linsolve	static	param	mat	A	
 1506	LinearAlgebraTool	linsolve	static	param	number	B	
 1507	LinearAlgebraTool	linsolve	static	returns	number	Ax=B となる x	
-1508	LinearAlgebraTool	qr	static	desc		QR分解	
+1508	LinearAlgebraTool	qr	static	desc		QR分解	QR decomposition.
 1509	LinearAlgebraTool	qr	static	param	mat	A	
 1510	LinearAlgebraTool	qr	static	returns	mat	Q*R=A, Qは正規直行行列、Rは上三角行列	
 1511	LinearAlgebraTool	tridiagonalize	static	desc		対称行列の三重対角化	"Tridiagonalization of symmetric matrix.
@@ -1646,14 +1649,14 @@ Sum of diagonal elements."
 1520	LinearAlgebraTool	inv	static	desc		逆行列	
 1521	LinearAlgebraTool	inv	static	param	mat	A	
 1522	LinearAlgebraTool	inv	static	returns	mat	A^-1	
-1523	LinearAlgebraTool	pinv	static	desc		疑似逆行列	
+1523	LinearAlgebraTool	pinv	static	desc		疑似逆行列	Pseudo-inverse matrix.
 1524	LinearAlgebraTool	pinv	static	param	mat	A	
 1525	LinearAlgebraTool	pinv	static	returns	mat	A^+	
-1526	RandomTool	RandomTool	class	desc		乱数クラス内で使用するツール集	
+1526	RandomTool	RandomTool	class	desc		乱数クラス内で使用するツール集	Collection of tools used in the Random.
 1527	RandomTool	unsigned32	static	desc		32ビットの負ではない整数を作成する	Create a 32-bit nonnegative integer.
 1528	RandomTool	unsigned32	static	param	x		
 1529	RandomTool	unsigned32	static	returns	x		
-1530	RandomTool	multiplication32	static	desc		2つの32ビット整数を掛け算して、32ビットの整数を出力する	
+1530	RandomTool	multiplication32	static	desc		2つの32ビット整数を掛け算して、32ビットの整数を出力する	Multiply two 32-bit integers and output a 32-bit integer.
 1531	RandomTool	multiplication32	static	param	x1		
 1532	RandomTool	multiplication32	static	param	x2		
 1533	RandomTool	multiplication32	static	returns	x2		
@@ -1669,28 +1672,29 @@ Sum of diagonal elements."
 1543	RandomTool	this.nextNextGaussian		desc		次のガウシアン分布に基づく乱数	Next random number based on Gaussian distribution.
 1544	RandomTool	genrand_int32		desc		32ビットの乱数	
 1545	RandomTool	genrand_int32		returns		- 32ビットの乱数	
-1546	RandomTool	next		desc		指定したビット数の乱数	
+1546	RandomTool	next		desc		指定したビット数以下で表せられる乱数	Random number of specified bit length.
 1547	RandomTool	next		param	bits	必要なビット数（64まで可能）	
 1548	RandomTool	next		returns	bits		
-1549	RandomTool	nextBytes		desc		指定したサイズの8ビットの乱数	
+1549	RandomTool	nextBytes		desc		指定したサイズの8ビット乱数配列	8-bit random number array of specified length.
 1550	RandomTool	nextBytes		param	size	必要な長さ	
 1551	RandomTool	nextBytes		returns	size		
-1552	RandomTool	nextShort		desc		16ビットの乱数	
+1552	RandomTool	nextShort		desc		16ビットの乱数	16-bit random number.
 1553	RandomTool	nextShort		returns			
-1554	RandomTool	nextInt		desc		32ビットの乱数	
+1554	RandomTool	nextInt		desc		32ビットの乱数	64-bit random number.
 1555	RandomTool	nextInt		param	x	指定した値未満の数値を作る	
 1556	RandomTool	nextInt		returns	x		
-1557	RandomTool	nextLong		desc		64ビットの乱数	
+1557	RandomTool	nextLong		desc		64ビットの乱数	32-bit random number.
 1558	RandomTool	nextLong		returns			
-1559	RandomTool	nextBoolean		desc		正負の乱数	
+1559	RandomTool	nextBoolean		desc		乱数の真偽値	Random boolean.
 1560	RandomTool	nextBoolean		returns			
-1561	RandomTool	nextFloat		desc		0 <= x < 1 のFloat(23ビット)乱数	
+1561	RandomTool	nextFloat		desc		0 <= x < 1 のFloat(23ビット)乱数	Float type random number in the range of [0, 1).
 1562	RandomTool	nextFloat		returns			
-1563	RandomTool	nextDouble		desc		0 <= x < 1 のDouble(52ビット)乱数	
+1563	RandomTool	nextDouble		desc		0 <= x < 1 のDouble(52ビット)乱数	Double type random number in the range of [0, 1).
 1564	RandomTool	nextDouble		returns			
-1565	RandomTool	nextGaussian		desc		平均値0、標準偏差1のガウシアン分布に基づく乱数	
+1565	RandomTool	nextGaussian		desc		平均値0、標準偏差1のガウシアン分布に基づく乱数	"Random numbers from a Gaussian distribution.
+This random number is a distribution with an average value of 0 and a standard deviation of 1."
 1566	RandomTool	nextGaussian		returns			
-1567	RandomTool	Random.seedUniquifier		desc		シードを設定しない場合の乱数作成用整数	
+1567	RandomTool	Random.seedUniquifier		desc		シードを設定しない場合の乱数作成用整数	Random number creation integer when no seed is set.
 1568	FFT	FFT	class	desc		高速フーリエ変換用クラス	
 1569	FFT	bit_reverse_32	static	desc		ビット反転	
 1570	FFT	bit_reverse_32	static	param	x	ビット反転させる値（32ビット整数）	
@@ -1764,7 +1768,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1635	SignalTool	idct	static	desc		DCT-III (IDCT)	
 1636	SignalTool	idct	static	param	real	実数部	
 1637	SignalTool	idct	static	returns	real		
-1638	SignalTool	powerfft	static	desc		パワースペクトル密度	
+1638	SignalTool	powerfft	static	desc		パワースペクトル密度	Power spectral density.
 1639	SignalTool	powerfft	static	param	real	実数部	
 1640	SignalTool	powerfft	static	param	imag	虚数部	
 1641	SignalTool	powerfft	static	returns	imag		
@@ -1802,7 +1806,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1673	SignalTool	ifft	static	param	X		
 1674	SignalTool	ifft	static	param	type		
 1675	SignalTool	ifft	static	returns	type	ifft(X)	
-1676	SignalTool	powerfft	static	desc		パワースペクトル密度	
+1676	SignalTool	powerfft	static	desc		パワースペクトル密度	Power spectral density.
 1677	SignalTool	powerfft	static	param	x		
 1678	SignalTool	powerfft	static	param	type		
 1679	SignalTool	powerfft	static	returns	type	abs(fft(x)).^2	
@@ -1855,12 +1859,12 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1726	StatisticsTool	gammaln	static	desc		gammaln(x) 対数ガンマ関数	
 1727	StatisticsTool	gammaln	static	param	x		
 1728	StatisticsTool	gammaln	static	returns	x		
-1729	StatisticsTool	q_gamma	static	desc		q_gamma(x, a, gammaln_a) 不完全ガンマ関数 上側	
+1729	StatisticsTool	q_gamma	static	desc		不完全ガンマ関数 上側	Incomplete gamma function upper side.
 1730	StatisticsTool	q_gamma	static	param	x		
 1731	StatisticsTool	q_gamma	static	param	a		
 1732	StatisticsTool	q_gamma	static	param	gammaln_a		
 1733	StatisticsTool	q_gamma	static	returns	gammaln_a		
-1734	StatisticsTool	p_gamma	static	desc		p_gamma(x, a, gammaln_a) 不完全ガンマ関数 下側	
+1734	StatisticsTool	p_gamma	static	desc		不完全ガンマ関数 下側	Incomplete gamma function lower side.
 1735	StatisticsTool	p_gamma	static	param	x		
 1736	StatisticsTool	p_gamma	static	param	a		
 1737	StatisticsTool	p_gamma	static	param	gammaln_a		
@@ -1892,12 +1896,12 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1763	StatisticsTool	beta	static	param	x		
 1764	StatisticsTool	beta	static	param	y		
 1765	StatisticsTool	beta	static	returns	y		
-1766	StatisticsTool	p_beta	static	desc		p_beta(x, a, b) 不完全ベータ関数 下側	
+1766	StatisticsTool	p_beta	static	desc		不完全ベータ関数 下側	Incomplete beta function lower side.
 1767	StatisticsTool	p_beta	static	param	x		
 1768	StatisticsTool	p_beta	static	param	a		
 1769	StatisticsTool	p_beta	static	param	b		
 1770	StatisticsTool	p_beta	static	returns	b		
-1771	StatisticsTool	q_beta	static	desc		q_beta(x, a, b) 不完全ベータ関数 上側	
+1771	StatisticsTool	q_beta	static	desc		不完全ベータ関数 上側	Incomplete beta function upper side.
 1772	StatisticsTool	q_beta	static	param	x		
 1773	StatisticsTool	q_beta	static	param	a		
 1774	StatisticsTool	q_beta	static	param	b		
@@ -1929,7 +1933,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1800	StatisticsTool	factorial	static	desc		factorial(n) = n! 階乗関数	
 1801	StatisticsTool	factorial	static	param	n		
 1802	StatisticsTool	factorial	static	returns	n		
-1803	StatisticsTool	nchoosek	static	desc		nchoosek(n, k) = nCk 二項係数またはすべての組合わせ	
+1803	StatisticsTool	nchoosek	static	desc		二項係数またはすべての組合わせ (nCk)	Binomial coefficient, number of all combinations, nCk.
 1804	StatisticsTool	nchoosek	static	param	n		
 1805	StatisticsTool	nchoosek	static	param	k		
 1806	StatisticsTool	nchoosek	static	returns	k	nCk	
@@ -1939,17 +1943,17 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1810	StatisticsTool	erfc	static	desc		erfc(x) 相補誤差関数	
 1811	StatisticsTool	erfc	static	param	x		
 1812	StatisticsTool	erfc	static	returns	x		
-1813	StatisticsTool	normpdf	static	desc		normpdf(x, u, s) 正規分布の確率密度関数	
+1813	StatisticsTool	normpdf	static	desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
 1814	StatisticsTool	normpdf	static	param	x		
 1815	StatisticsTool	normpdf	static	param	u	平均値	
 1816	StatisticsTool	normpdf	static	param	s	分散	
 1817	StatisticsTool	normpdf	static	returns	s		
-1818	StatisticsTool	normcdf	static	desc		normcdf(x, u, s) 正規分布の累積分布関数	
+1818	StatisticsTool	normcdf	static	desc		正規分布の累積分布関数	Cumulative distribution function (CDF) of normal distribution.
 1819	StatisticsTool	normcdf	static	param	x		
 1820	StatisticsTool	normcdf	static	param	u	平均値	
 1821	StatisticsTool	normcdf	static	param	s	分散	
 1822	StatisticsTool	normcdf	static	returns	s		
-1823	StatisticsTool	norminv	static	desc		norminv(p, u, s) 正規分布の累積分布関数の逆関数	
+1823	StatisticsTool	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse of CDF of normal distribution.
 1824	StatisticsTool	norminv	static	param	p	確率	
 1825	StatisticsTool	norminv	static	param	u	平均値	
 1826	StatisticsTool	norminv	static	param	s	分散	
@@ -2059,7 +2063,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1930	StatisticsComplex	factorial	static	desc		factorial(n), n! 階乗関数	
 1931	StatisticsComplex	factorial	static	param	n		
 1932	StatisticsComplex	factorial	static	returns	n		
-1933	StatisticsComplex	nchoosek	static	desc		nchoosek(n, k), nCk 二項係数またはすべての組合わせ	
+1933	StatisticsComplex	nchoosek	static	desc		二項係数またはすべての組合わせ (nCk)	Binomial coefficient, number of all combinations, nCk.
 1934	StatisticsComplex	nchoosek	static	param	n		
 1935	StatisticsComplex	nchoosek	static	param	k		
 1936	StatisticsComplex	nchoosek	static	returns	k		
@@ -2069,17 +2073,17 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1940	StatisticsComplex	erfc	static	desc		erfc(x) 相補誤差関数	
 1941	StatisticsComplex	erfc	static	param	x		
 1942	StatisticsComplex	erfc	static	returns	x		
-1943	StatisticsComplex	normpdf	static	desc		normpdf(x, u, s) 正規分布の確率密度関数	
+1943	StatisticsComplex	normpdf	static	desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
 1944	StatisticsComplex	normpdf	static	param	x		
 1945	StatisticsComplex	normpdf	static	param	u	平均値	
 1946	StatisticsComplex	normpdf	static	param	s	分散	
 1947	StatisticsComplex	normpdf	static	returns	s		
-1948	StatisticsComplex	normcdf	static	desc		normcdf(x, u, s) 正規分布の累積分布関数	
+1948	StatisticsComplex	normcdf	static	desc		正規分布の累積分布関数	Cumulative distribution function (CDF) of normal distribution.
 1949	StatisticsComplex	normcdf	static	param	x		
 1950	StatisticsComplex	normcdf	static	param	u	平均値	
 1951	StatisticsComplex	normcdf	static	param	s	分散	
 1952	StatisticsComplex	normcdf	static	returns	s		
-1953	StatisticsComplex	norminv	static	desc		norminv(x, u, s) 正規分布の累積分布関数の逆関数	
+1953	StatisticsComplex	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse of CDF of normal distribution.
 1954	StatisticsComplex	norminv	static	param	x		
 1955	StatisticsComplex	norminv	static	param	u	平均値	
 1956	StatisticsComplex	norminv	static	param	s	分散	
@@ -2187,7 +2191,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 2058	StatisticsComplex	factorial	static	desc		x! 階乗関数	
 2059	StatisticsComplex	factorial	static	param	x		
 2060	StatisticsComplex	factorial	static	returns	x		
-2061	StatisticsComplex	nchoosek	static	desc		nCk 二項係数またはすべての組合わせ	
+2061	StatisticsComplex	nchoosek	static	desc		二項係数またはすべての組合わせ (nCk)	Binomial coefficient, number of all combinations, nCk.
 2062	StatisticsComplex	nchoosek	static	param	x		
 2063	StatisticsComplex	nchoosek	static	param	k		
 2064	StatisticsComplex	nchoosek	static	returns	k		
@@ -2197,17 +2201,17 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 2068	StatisticsComplex	erfc	static	desc		相補誤差関数	
 2069	StatisticsComplex	erfc	static	param	x		
 2070	StatisticsComplex	erfc	static	returns	x		
-2071	StatisticsComplex	normpdf	static	desc		正規分布の確率密度関数	
+2071	StatisticsComplex	normpdf	static	desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
 2072	StatisticsComplex	normpdf	static	param	x		
 2073	StatisticsComplex	normpdf	static	param	u	平均値	
 2074	StatisticsComplex	normpdf	static	param	s	分散	
 2075	StatisticsComplex	normpdf	static	returns	s		
-2076	StatisticsComplex	normcdf	static	desc		正規分布の累積分布関数	
+2076	StatisticsComplex	normcdf	static	desc		正規分布の累積分布関数	Cumulative distribution function (CDF) of normal distribution.
 2077	StatisticsComplex	normcdf	static	param	x		
 2078	StatisticsComplex	normcdf	static	param	u	平均値	
 2079	StatisticsComplex	normcdf	static	param	s	分散	
 2080	StatisticsComplex	normcdf	static	returns	s		
-2081	StatisticsComplex	norminv	static	desc		正規分布の累積分布関数の逆関数	
+2081	StatisticsComplex	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse of CDF of normal distribution.
 2082	StatisticsComplex	norminv	static	param	x		
 2083	StatisticsComplex	norminv	static	param	u	平均値	
 2084	StatisticsComplex	norminv	static	param	s	分散	
@@ -2260,11 +2264,11 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 2131	StatisticsComplex	finv	static	param	d1	分子の自由度	
 2132	StatisticsComplex	finv	static	param	d2	分母の自由度	
 2133	StatisticsComplex	finv	static	returns	d2		
-2134	StatisticsComplex	max	static	desc		最大値	
+2134	StatisticsComplex	max	static	desc		最大値	Maximum number.
 2135	StatisticsComplex	max	static	param	x		
 2136	StatisticsComplex	max	static	param	type		
 2137	StatisticsComplex	max	static	returns	type	max([A, B])	
-2138	StatisticsComplex	min	static	desc		最小値	
+2138	StatisticsComplex	min	static	desc		最小値	Minimum number.
 2139	StatisticsComplex	min	static	param	x		
 2140	StatisticsComplex	min	static	param	type		
 2141	StatisticsComplex	min	static	returns	type	min([A, B])	
@@ -2272,11 +2276,11 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 2143	StatisticsComplex	sum	static	param	x		
 2144	StatisticsComplex	sum	static	param	type		
 2145	StatisticsComplex	sum	static	returns	type		
-2146	StatisticsComplex	mean	static	desc		相加平均	
+2146	StatisticsComplex	mean	static	desc		相加平均	Arithmetic average.
 2147	StatisticsComplex	mean	static	param	x		
 2148	StatisticsComplex	mean	static	param	type		
 2149	StatisticsComplex	mean	static	returns	type		
-2150	StatisticsComplex	prod	static	desc		配列の積	
+2150	StatisticsComplex	prod	static	desc		配列の積	Product of array elements.
 2151	StatisticsComplex	prod	static	param	x		
 2152	StatisticsComplex	prod	static	param	type		
 2153	StatisticsComplex	prod	static	returns	type		
@@ -2284,15 +2288,15 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 2155	StatisticsComplex	geomean	static	param	x		
 2156	StatisticsComplex	geomean	static	param	type		
 2157	StatisticsComplex	geomean	static	returns	type		
-2158	StatisticsComplex	median	static	desc		中央値	
+2158	StatisticsComplex	median	static	desc		中央値	Median.
 2159	StatisticsComplex	median	static	param	x		
 2160	StatisticsComplex	median	static	param	type		
 2161	StatisticsComplex	median	static	returns	type		
-2162	StatisticsComplex	mode	static	desc		最頻値	
+2162	StatisticsComplex	mode	static	desc		最頻値	Mode.
 2163	StatisticsComplex	mode	static	param	x		
 2164	StatisticsComplex	mode	static	param	type		
 2165	StatisticsComplex	mode	static	returns	type		
-2166	StatisticsComplex	moment	static	desc		中心積率	
+2166	StatisticsComplex	moment	static	desc		中心積率	Moment.
 2167	StatisticsComplex	moment	static	param	x		
 2168	StatisticsComplex	moment	static	param	type		
 2169	StatisticsComplex	moment	static	returns	type	n次のモーメント、2で分散の定義と同等。	
@@ -2304,7 +2308,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 2175	StatisticsComplex	std	static	param	x		
 2176	StatisticsComplex	std	static	param	type		
 2177	StatisticsComplex	std	static	returns	type		
-2178	StatisticsComplex	mad	static	desc		絶対偏差	
+2178	StatisticsComplex	mad	static	desc		平均絶対偏差	Mean absolute deviation.
 2179	StatisticsComplex	mad	static	param	x		
 2180	StatisticsComplex	mad	static	param	type		
 2181	StatisticsComplex	mad	static	returns	type		
@@ -2316,8 +2320,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 2187	StatisticsComplex	cov	static	param	x		
 2188	StatisticsComplex	cov	static	param	type		
 2189	StatisticsComplex	cov	static	returns	type		
-2190	StatisticsComplex	normalize	static	desc		"標本の標準化
-平均値0、標準偏差1に変更する"	
+2190	StatisticsComplex	normalize	static	desc		標本を平均値0、標準偏差1に正規化	The samples are normalized to a mean value of 0, standard deviation of 1.
 2191	StatisticsComplex	normalize	static	param	x		
 2192	StatisticsComplex	normalize	static	param	type		
 2193	StatisticsComplex	normalize	static	returns	type		
