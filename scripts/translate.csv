@@ -101,7 +101,8 @@
 92	DecimalTool	compareTo		param	number		
 93	DecimalTool	compareTo		returns	number	A > B ? 1 : (A === B ? 0 : -1)	
 94	DecimalTool	equals		desc		"等式
-精度やスケール含めて等しいかをテストする"	
+精度やスケール含めて等しいかをテストする"	"Equals.
+Test for equality, including precision and scale."
 95	DecimalTool	equals		param	number		
 96	DecimalTool	equals		returns	number	A === B	
 97	DecimalTool	max		desc		最大値	Maximum number.
@@ -170,20 +171,21 @@ Only the scale is changed without changing the precision."
 159	DecimalTool	div		param	number		
 160	DecimalTool	div		param	type	計算に使用する scale, context, roundingMode を設定する	
 161	DecimalTool	div		returns	type	A / B	
-162	DecimalTool	toBigInteger		desc		BigInteger に変換	Convert to BigInteger.
+162	DecimalTool	toBigInteger		desc		BigInteger に変換	Get as a BigInteger.
 163	DecimalTool	toBigInteger		returns			
 164	DecimalTool	toBigIntegerExact		desc		"BigInteger に変換
-変換に失敗した場合は例外を発生"	"Convert to BigInteger.
+変換に失敗した場合は例外を発生"	"Get as a BigInteger.
 An error occurs if conversion fails."
 165	DecimalTool	toBigIntegerExact		returns			
-166	DecimalTool	intValue	get	desc		32ビット整数に変換	
+166	DecimalTool	intValue	get	desc		32ビット整数に変換	32-bit integer value.
 167	DecimalTool	intValue	get	returns			
 168	DecimalTool	intValueExact	get	desc		"32ビット整数に変換
-変換に失敗した場合は例外"	
+変換に失敗した場合は例外"	"32-bit integer value.
+An error occurs if conversion fails."
 169	DecimalTool	intValueExact	get	returns			
-170	DecimalTool	floatValue	get	desc		32ビット実数に変換	
+170	DecimalTool	floatValue	get	desc		32ビット浮動小数に変換	32-bit floating point.
 171	DecimalTool	floatValue	get	returns			
-172	DecimalTool	doubleValue	get	desc		64ビット実数に変換	
+172	DecimalTool	doubleValue	get	desc		64ビット浮動小数に変換	64-bit floating point.
 173	DecimalTool	doubleValue	get	returns			
 174	DecimalTool	pow		desc		"累乗
 巨大な乗算をする場合は例外を発生させる"	"Power function.
@@ -210,7 +212,7 @@ This is used if you do not specify MathContext when creating a new object."
 193	DecimalTool	TWO		desc		2	2
 194	DecimalTool	TEN		desc		10	10
 195		DEFAULT_RANDOM	let	desc		乱数用クラスを指定しなかった場合に使用するデフォルト乱数クラス	
-196	IntegerTool	IntegerTool	class	desc		BigInteger 内で使用する関数群	
+196	IntegerTool	IntegerTool	class	desc		BigInteger 内で使用する関数群	Collection of functions used in BigInteger.
 197	IntegerTool	string_to_binary_number	static	desc		数値が入った文字列から16進数ごとの配列へ変換する	Convert a string containing numbers into a hex array.
 198	IntegerTool	string_to_binary_number	static	param	text	数値が入ったテキストデータ（負の値などを含めない）	
 199	IntegerTool	string_to_binary_number	static	param	radix	テキストデータの進数	
@@ -261,39 +263,42 @@ This is used if you do not specify MathContext when creating a new object."
 239	IntegerTool	probablePrime	static	param	certainty	ミラーラビン素数判定法に使用する繰り返し回数	
 240	IntegerTool	probablePrime	static	param	create_count	乱数生成回数	
 241	IntegerTool	probablePrime	static	returns	create_count		
-242	IntegerTool	equals		desc		等式	
+242	IntegerTool	equals		desc		等式	Equals.
 243	IntegerTool	equals		param	number		
 244	IntegerTool	equals		returns	number	A === B	
 245	IntegerTool	toString		desc		文字列化	Convert to string.
 246	IntegerTool	toString		param	radix	文字列変換後の進数	
 247	IntegerTool	toString		returns	radix		
-248	IntegerTool	getShort		desc		16進数ごとの配列で構成される内部値の指定した位置の値	
+248	IntegerTool	getShort		desc		16進数ごとの配列で構成される内部値の指定した位置の値	Value at the specified position of the internally used array that composed of hexadecimal numbers.
 249	IntegerTool	getShort		param	point	内部配列の位置	
 250	IntegerTool	getShort		returns	point		
 251	IntegerTool	intValue	get	desc		"32ビット整数値
-数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある"	
+数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある"	"32-bit integer value.
+If it is outside the range of JavaScript Number, it will not be an accurate number."
 252	IntegerTool	intValue	get	returns			
 253	IntegerTool	longValue	get	desc		"64ビット整数値
-数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある"	
+数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある"	"64-bit integer value.
+If it is outside the range of JavaScript Number, it will not be an accurate number."
 254	IntegerTool	longValue	get	returns			
-255	IntegerTool	doubleValue	get	desc		"64ビット実数値
-数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある"	
+255	IntegerTool	doubleValue	get	desc		"64ビット浮動小数に変換
+数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある"	"64-bit floating point.
+If it is outside the range of JavaScript Number, it will not be an accurate number."
 256	IntegerTool	doubleValue	get	returns			
 257	IntegerTool	clone		desc		ディープコピー	
 258	IntegerTool	clone		returns			
-259	IntegerTool	isNegative		desc		実部の負数を判定	
+259	IntegerTool	isNegative		desc		負数を判定	this < 0
 260	IntegerTool	isNegative		returns		real(x) < 0	
-261	IntegerTool	isZero		desc		0 を判定	
+261	IntegerTool	isZero		desc		0 を判定	this === 0
 262	IntegerTool	isZero		returns		A === 0	
-263	IntegerTool	isPositive		desc		正数を判定	
+263	IntegerTool	isPositive		desc		正数を判定	Return true if the value is positive number.
 264	IntegerTool	isPositive		returns		real(x) > 0	
-265	IntegerTool	getLowestSetBit		desc		2進数で表した場合に最も右側に現れる1の桁数	
+265	IntegerTool	getLowestSetBit		desc		2進数で表した場合に、最初に数字の1が現れる桁数	Number of digits in which the number "1" appears first when expressed in binary.
 266	IntegerTool	getLowestSetBit		returns		存在しない場合は -1	
 267	IntegerTool	bitLength		desc		2進数で表した場合の長さ	
 268	IntegerTool	bitLength		returns			
 269	IntegerTool	bitCount		desc		2の補数表現で表した場合に立つビットの数	
 270	IntegerTool	bitCount		returns			
-271	IntegerTool	getTwosComplement		desc		加算に適用できる数値（負の場合は、2の補数表現）	
+271	IntegerTool	getTwosComplement		desc		加算に適用できる数値（負の場合は、2の補数表現）	Addition number (if negative, two's complement).
 272	IntegerTool	getTwosComplement		param	bit_length	ビット長（省略時は自動計算）	
 273	IntegerTool	getTwosComplement		returns	bit_length		
 274	IntegerTool	_and		desc		論理積（ミュータブル）	
@@ -478,8 +483,9 @@ This is used if you do not specify MathContext when creating a new object."
 450	IntegerTool	modInverse		desc		モジュラ逆数	Modular multiplicative inverse.
 451	IntegerTool	modInverse		param	m		
 452	IntegerTool	modInverse		returns	m	A^(-1) mod m	
-453	IntegerTool	isProbablePrime		desc		"ミラーラビン素数判定法による複素判定
-（非常に重たいので注意）"	
+453	IntegerTool	isProbablePrime		desc		"ミラーラビン素数判定法による素数判定
+（非常に重たいので注意）"	"Return true if the value is prime number by Miller-Labin prime number determination method.
+Please note because it takes a very long time to process."
 454	IntegerTool	isProbablePrime		param	certainty	素数判定法の繰り返し回数	
 455	IntegerTool	isProbablePrime		returns	certainty		
 456	IntegerTool	nextProbablePrime		desc		次の素数	Next prime.
@@ -531,9 +537,9 @@ This is used if you do not specify a random number."
 501	ComplexTool	_toInteger	static	desc		整数を作成	
 502	ComplexTool	_toInteger	static	param	number		
 503	ComplexTool	_toInteger	static	returns	number		
-504	ComplexTool	intValue	get	desc		32ビット整数に変換	
+504	ComplexTool	intValue	get	desc		32ビット整数に変換	32-bit integer value.
 505	ComplexTool	intValue	get	returns			
-506	ComplexTool	doubleValue	get	desc		64ビット実数に変換	
+506	ComplexTool	doubleValue	get	desc		64ビット浮動小数に変換	64-bit floating point.
 507	ComplexTool	doubleValue	get	returns			
 508	ComplexTool	clone		desc		ディープコピー	
 509	ComplexTool	clone		returns			
@@ -543,13 +549,13 @@ This is used if you do not specify a random number."
 513	ComplexTool	rand	static	returns			
 514	ComplexTool	randn	static	desc		正規分布に従うランダムな値を作成	Create random values with normal distribution.
 515	ComplexTool	randn	static	returns			
-516	ComplexTool	equals		desc		等式	
+516	ComplexTool	equals		desc		等式	Equals.
 517	ComplexTool	equals		param	number		
 518	ComplexTool	equals		param	epsilon	誤差を実数で指定	
 519	ComplexTool	equals		returns	epsilon	A === B	
-520	ComplexTool	real	get	desc		実部	Real part.
+520	ComplexTool	real	get	desc		実部	The real part of this Comlex.
 521	ComplexTool	real	get	returns		real(A)	
-522	ComplexTool	imag	get	desc		虚部	
+522	ComplexTool	imag	get	desc		虚部	The imaginary part of this Comlex.
 523	ComplexTool	imag	get	returns		imag(A)	
 524	ComplexTool	norm	get	desc		ノルム	norm.
 525	ComplexTool	norm	get	returns		|A|	
@@ -575,7 +581,7 @@ This is used if you do not specify a random number."
 545	ComplexTool	mod		desc		割り算の正の余り	Modulo, positive remainder of division.
 546	ComplexTool	mod		param	number	複素数を含まない数値	
 547	ComplexTool	mod		returns	number	A mod B	
-548	ComplexTool	inv		desc		逆数	
+548	ComplexTool	inv		desc		逆数	Inverse number of this value.
 549	ComplexTool	inv		returns		1 / A	
 550	ComplexTool	sign		desc		符号値	"The positive or negative sign of this number.
 * +1 if positive, -1 if negative, 0 if 0."
@@ -594,35 +600,35 @@ This is used if you do not specify a random number."
 563	ComplexTool	clip		param	min		
 564	ComplexTool	clip		param	max		
 565	ComplexTool	clip		returns	max	min(max(x, min), max)	
-566	ComplexTool	isInteger		desc		整数を判定	
+566	ComplexTool	isInteger		desc		整数を判定	Return true if the value is integer.
 567	ComplexTool	isInteger		param	epsilon	誤差を実数で指定	
 568	ComplexTool	isInteger		returns	epsilon		
-569	ComplexTool	isComplexInteger		desc		複素整数（整数も含む）を判定	
+569	ComplexTool	isComplexInteger		desc		複素整数（整数も含む）を判定	Returns true if the vallue is complex integer (including normal integer).
 570	ComplexTool	isComplexInteger		param	epsilon	誤差を実数で指定	
 571	ComplexTool	isComplexInteger		returns	epsilon	real(A) === 整数 && imag(A) === 整数	
-572	ComplexTool	isZero		desc		0 を判定	
+572	ComplexTool	isZero		desc		0 を判定	this === 0
 573	ComplexTool	isZero		param	epsilon	誤差を実数で指定	
 574	ComplexTool	isZero		returns	epsilon	A === 0	
-575	ComplexTool	isOne		desc		1 を判定	
+575	ComplexTool	isOne		desc		1 を判定	this === 1
 576	ComplexTool	isOne		param	epsilon	誤差を実数で指定	
 577	ComplexTool	isOne		returns	epsilon	A === 1	
-578	ComplexTool	isComplex		desc		複素数（虚部が0以外）を判定	
+578	ComplexTool	isComplex		desc		複素数（虚部が0以外）を判定	Returns true if the vallue is complex number (imaginary part is not 0).
 579	ComplexTool	isComplex		param	epsilon	誤差を実数で指定	
 580	ComplexTool	isComplex		returns	epsilon	imag(A) !== 0	
-581	ComplexTool	isReal		desc		実数を判定	
+581	ComplexTool	isReal		desc		実数を判定	Return true if the value is real number.
 582	ComplexTool	isReal		param	epsilon	誤差を実数で指定	
 583	ComplexTool	isReal		returns	epsilon	imag(A) === 0	
-584	ComplexTool	isNaN		desc		非数を判定	
+584	ComplexTool	isNaN		desc		非数を判定	this === NaN
 585	ComplexTool	isNaN		returns		isNaN(A)	
-586	ComplexTool	isPositive		desc		実部の正数を判定	
+586	ComplexTool	isPositive		desc		実部の正数を判定	Return true if this real part of the complex positive.
 587	ComplexTool	isPositive		returns		real(x) > 0	
-588	ComplexTool	isNegative		desc		実部の負数を判定	
+588	ComplexTool	isNegative		desc		実部の負数を判定	real(this) < 0
 589	ComplexTool	isNegative		returns		real(x) < 0	
-590	ComplexTool	isNotNegative		desc		実部の非負値を判定	
+590	ComplexTool	isNotNegative		desc		実部の非負値を判定	real(this) >= 0
 591	ComplexTool	isNotNegative		returns		real(x) >= 0	
-592	ComplexTool	isInfinite		desc		無限を判定	
+592	ComplexTool	isInfinite		desc		無限を判定	this === Infinity
 593	ComplexTool	isInfinite		returns		isInfinite(A)	
-594	ComplexTool	isFinite		desc		有限数を判定	
+594	ComplexTool	isFinite		desc		有限数を判定	Return true if the value is finite number.
 595	ComplexTool	isFinite		returns		!isNaN(A) && !isInfinite(A)	
 596	ComplexTool	abs		desc		絶対値	
 597	ComplexTool	abs		returns		abs(A)	
@@ -637,7 +643,7 @@ This is used if you do not specify a random number."
 606	ComplexTool	square		returns		pow(A, 2)	
 607	ComplexTool	sqrt		desc		平方根	Square root.
 608	ComplexTool	sqrt		returns		sqrt(A)	
-609	ComplexTool	log		desc		対数	
+609	ComplexTool	log		desc		対数	Logarithm.
 610	ComplexTool	log		returns		log(A)	
 611	ComplexTool	exp		desc		指数	
 612	ComplexTool	exp		returns		exp(A)	
@@ -674,25 +680,25 @@ This is used if you do not specify a random number."
 643	ComplexTool	ZERO	static get	returns		0	
 644	ComplexTool	MINUS_ONE	static get	desc		-1	-1
 645	ComplexTool	MINUS_ONE	static get	returns		-1	
-646	ComplexTool	I	static get	desc		i, j	
+646	ComplexTool	I	static get	desc		i, j	i, j
 647	ComplexTool	I	static get	returns		i	
 648	ComplexTool	PI	static get	desc		PI	PI
 649	ComplexTool	PI	static get	returns		3.14...	
 650	ComplexTool	E	static get	desc		E	
 651	ComplexTool	E	static get	returns		2.71...	
-652	ComplexTool	LN2	static get	desc		LN2	
+652	ComplexTool	LN2	static get	desc		log_e(2)	log_e(2)
 653	ComplexTool	LN2	static get	returns		ln(2)	
-654	ComplexTool	LN10	static get	desc		LN10	
+654	ComplexTool	LN10	static get	desc		log_e(10)	log_e(10)
 655	ComplexTool	LN10	static get	returns		ln(10)	
-656	ComplexTool	LOG2E	static get	desc		LOG2E	
+656	ComplexTool	LOG2E	static get	desc		log_2(e)	log_2(e)
 657	ComplexTool	LOG2E	static get	returns		log_2(e)	
-658	ComplexTool	LOG10E	static get	desc		LOG10E	
+658	ComplexTool	LOG10E	static get	desc		log_10(e)	log_10(e)
 659	ComplexTool	LOG10E	static get	returns		log_10(e)	
 660	ComplexTool	SQRT2	static get	desc		sqrt(2)	sqrt(2)
 661	ComplexTool	SQRT2	static get	returns		sqrt(2)	
 662	ComplexTool	SQRT1_2	static get	desc		sqrt(0.5)	sqrt(0.5)
 663	ComplexTool	SQRT1_2	static get	returns		sqrt(0.5)	
-664	ComplexTool	HALF	static get	desc		0.5	
+664	ComplexTool	HALF	static get	desc		0.5	0.5
 665	ComplexTool	HALF	static get	returns		0.5	
 666	ComplexTool	POSITIVE_INFINITY	static get	desc		正の無限大	Positive infinity.
 667	ComplexTool	POSITIVE_INFINITY	static get	returns		Infinity	
@@ -706,16 +712,16 @@ This is used if you do not specify a random number."
 675	ComplexTool	TWO		desc		2	2
 676	ComplexTool	TEN		desc		10	10
 677	ComplexTool	MINUS_ONE		desc		-1	-1
-678	ComplexTool	I		desc		i	
+678	ComplexTool	I		desc		i, j	i, j
 679	ComplexTool	PI		desc		PI	PI
 680	ComplexTool	E		desc		E	
-681	ComplexTool	LN2		desc		ln2	
-682	ComplexTool	LN10		desc		ln10	
-683	ComplexTool	LOG2E		desc		log_2(e)	
-684	ComplexTool	LOG10E		desc		log_10(e)	
+681	ComplexTool	LN2		desc		log_e(2)	log_e(2)
+682	ComplexTool	LN10		desc		log_e(10)	log_e(10)
+683	ComplexTool	LOG2E		desc		log_2(e)	log_2(e)
+684	ComplexTool	LOG10E		desc		log_10(e)	log_10(e)
 685	ComplexTool	SQRT2		desc		sqrt(2)	sqrt(2)
 686	ComplexTool	SQRT1_2		desc		sqrt(0.5)	sqrt(0.5)
-687	ComplexTool	HALF		desc		0.5	
+687	ComplexTool	HALF		desc		0.5	0.5
 688	ComplexTool	POSITIVE_INFINITY		desc		正の無限大	Positive infinity.
 689	ComplexTool	NEGATIVE_INFINITY		desc		負の無限大	Negative Infinity.
 690	ComplexTool	NaN		desc		非数	Not a Number.
@@ -735,7 +741,7 @@ This is used if you do not specify a random number."
 704	MatrixTool	toMatrixArrayFromStringForArrayJSON	static	desc		JSONで定義された文字列データからMatrix型のデータを作成する	Create Matrix type data from string data defined in JSON.
 705	MatrixTool	toMatrixArrayFromStringForArrayJSON	static	param	text	調査したい文字列([xx,xx,xx],[xx,xx,xx])	
 706	MatrixTool	toMatrixArrayFromStringForArrayJSON	static	returns	text	Matrix型で使用される内部の配列	
-707	MatrixTool	InterpolationCalculation	static	desc		初期値と差分値と最終値から、その値が入った配列を作成する	
+707	MatrixTool	InterpolationCalculation	static	desc		初期値と差分値と最終値から、その値が入った配列を作成する	Create a numeric array from initial values, difference values, and final values.
 708	MatrixTool	InterpolationCalculation	static	param	from	最初の値	
 709	MatrixTool	InterpolationCalculation	static	param	delta	差分	
 710	MatrixTool	InterpolationCalculation	static	param	to	繰り返す先の値	
@@ -758,7 +764,7 @@ Estimate the matrix by extracting parts like numbers."
 725	MatrixTool	toMatrixArrayFromString	static	desc		文字列データからMatrix型のデータを作成する	Create Matrix type data from string data.
 726	MatrixTool	toMatrixArrayFromString	static	param	text	調査したい文字列	
 727	MatrixTool	toMatrixArrayFromString	static	returns	text	Matrix型で使用される内部の配列	
-728	MatrixTool	isCorrectMatrixArray	static	desc		Matrix型内部データが行列データとして正しいかを調べる	
+728	MatrixTool	isCorrectMatrixArray	static	desc		Matrix型内部データが行列データとして正しいかを調べる	Returns true if Matrix type internal data is correct as matrix data.
 729	MatrixTool	isCorrectMatrixArray	static	param	m_array		
 730	MatrixTool	isCorrectMatrixArray	static	returns	m_array		
 731	MatrixTool	export		desc		複素行列クラス (immutable)	
@@ -800,11 +806,11 @@ Estimate the matrix by extracting parts like numbers."
 760	MatrixTool	toString		returns			
 761	MatrixTool	toOneLineString		desc		1行で文字列化	Convert to string in one line.
 762	MatrixTool	toOneLineString		returns			
-763	MatrixTool	equals		desc		等式	
+763	MatrixTool	equals		desc		等式	Equals.
 764	MatrixTool	equals		param	number		
 765	MatrixTool	equals		param	epsilon	誤差	
 766	MatrixTool	equals		returns	epsilon	A === B	
-767	MatrixTool	getNumberMatrixArray		desc		行列を構成する複素数の実部の配列	
+767	MatrixTool	getNumberMatrixArray		desc		行列を構成する複素数の実部の配列	Array of real parts of elements in matrix.
 768	MatrixTool	getNumberMatrixArray		returns			
 769	MatrixTool	getComplexMatrixArray		desc		行列を構成する複素数のComplex型の配列	
 770	MatrixTool	getComplexMatrixArray		returns			
@@ -837,7 +843,7 @@ Estimate the matrix by extracting parts like numbers."
 795	MatrixTool	eachVector		param	array_function	Function(array)	
 796	MatrixTool	eachVector		param	dimtype	0/"auto", 1/"row", 2/"column", 3/"both"	
 797	MatrixTool	eachVector		returns	dimtype	処理実行後の行列	
-798	MatrixTool	getMatrix		desc		行列内の指定した箇所の行列	
+798	MatrixTool	getMatrix		desc		行列内の指定した箇所の行列	Extract the specified part of the matrix.
 799	MatrixTool	getMatrix		param	row	抽出する行番号が入ったベクトル,":"で全ての行抽出	
 800	MatrixTool	getMatrix		param	col	抽出する列番号が入ったベクトル,":"で全ての列抽出	
 801	MatrixTool	getMatrix		param	isUpOffset	位置のオフセットを1にするか	
@@ -852,13 +858,13 @@ Estimate the matrix by extracting parts like numbers."
 810	MatrixTool	getComplex		param	row_or_pos	行列なら行番号, ベクトルの場合は値の位置番号	
 811	MatrixTool	getComplex		param	col	列番号（行列の場合は指定する）	
 812	MatrixTool	getComplex		returns	col		
-813	MatrixTool	intValue	get	desc		行列の最初の要素の整数値	
+813	MatrixTool	intValue	get	desc		行列の最初の要素の整数値	Integer value of the first element of the matrix.
 814	MatrixTool	intValue	get	returns			
 815	MatrixTool	doubleValue	get	desc		行列の最初の要素の実数値	
 816	MatrixTool	doubleValue	get	returns			
 817	MatrixTool	scalar	get	desc		行列の最初の要素	First element of this matrix.
 818	MatrixTool	scalar	get	returns			
-819	MatrixTool	length	get	desc		行数及び列数の最大値	
+819	MatrixTool	length	get	desc		行数及び列数の最大値	Maximum size of rows or columns in the matrix.
 820	MatrixTool	length	get	returns			
 821	MatrixTool	norm1	get	desc		1ノルム	1-norm.
 822	MatrixTool	norm1	get	returns			
@@ -907,58 +913,58 @@ Sum of diagonal elements."
 864	MatrixTool	randn	static	returns	column_length		
 865	MatrixTool	diag		desc		行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成	
 866	MatrixTool	diag		returns		行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成	
-867	MatrixTool	isScalar		desc		スカラー値の判定	
+867	MatrixTool	isScalar		desc		スカラー値の判定	Return true if the matrix is ​​scalar.
 868	MatrixTool	isScalar		returns			
-869	MatrixTool	isRow		desc		行ベクトル／横ベクトルの判定	
+869	MatrixTool	isRow		desc		行ベクトル／横ベクトルの判定	Return true if the matrix is ​​row vector.
 870	MatrixTool	isRow		returns			
-871	MatrixTool	isColumn		desc		列ベクトル／縦ベクトルの判定	
+871	MatrixTool	isColumn		desc		列ベクトル／縦ベクトルの判定	Return true if the matrix is column vector.
 872	MatrixTool	isColumn		returns			
-873	MatrixTool	isVector		desc		ベクトルの判定	
+873	MatrixTool	isVector		desc		ベクトルの判定	Return true if the matrix is ​​vector.
 874	MatrixTool	isVector		returns			
-875	MatrixTool	isMatrix		desc		行列の判定	
+875	MatrixTool	isMatrix		desc		行列の判定	Return true if the value is not ​​scalar.
 876	MatrixTool	isMatrix		returns			
-877	MatrixTool	isSquare		desc		正方行列の判定	
+877	MatrixTool	isSquare		desc		正方行列の判定	Return true if the matrix is ​​square matrix.
 878	MatrixTool	isSquare		returns			
-879	MatrixTool	isReal		desc		実行列の判定	
+879	MatrixTool	isReal		desc		実行列の判定	Return true if the matrix is real matrix.
 880	MatrixTool	isReal		param	epsilon	誤差	
 881	MatrixTool	isReal		returns	epsilon		
-882	MatrixTool	isComplex		desc		複素行列の判定	
+882	MatrixTool	isComplex		desc		複素行列の判定	Return true if the matrix is complex matrix.
 883	MatrixTool	isComplex		param	epsilon	誤差	
 884	MatrixTool	isComplex		returns	epsilon		
-885	MatrixTool	isZeros		desc		零行列を判定	
+885	MatrixTool	isZeros		desc		零行列を判定	Test to find out if the matrix is ​​zero matrix.
 886	MatrixTool	isZeros		param	epsilon	誤差	
 887	MatrixTool	isZeros		returns	epsilon		
-888	MatrixTool	isIdentity		desc		単位行列を判定	
+888	MatrixTool	isIdentity		desc		単位行列を判定	Return true if the matrix is identity matrix.
 889	MatrixTool	isIdentity		param	epsilon	誤差	
 890	MatrixTool	isIdentity		returns	epsilon		
-891	MatrixTool	isDiagonal		desc		対角行列を判定	
+891	MatrixTool	isDiagonal		desc		対角行列を判定	Return true if the matrix is diagonal matrix.
 892	MatrixTool	isDiagonal		param	epsilon	誤差	
 893	MatrixTool	isDiagonal		returns	epsilon		
-894	MatrixTool	isTridiagonal		desc		三重対角行列を判定	
+894	MatrixTool	isTridiagonal		desc		三重対角行列を判定	Return true if the matrix is ​​tridiagonal matrix.
 895	MatrixTool	isTridiagonal		param	epsilon	誤差	
 896	MatrixTool	isTridiagonal		returns	epsilon		
-897	MatrixTool	isRegular		desc		正則行列を判定	
+897	MatrixTool	isRegular		desc		正則行列を判定	Return true if the matrix is ​​regular matrix.
 898	MatrixTool	isRegular		param	epsilon	誤差	
 899	MatrixTool	isRegular		returns	epsilon		
-900	MatrixTool	isOrthogonal		desc		直行行列を判定	
+900	MatrixTool	isOrthogonal		desc		直行行列を判定	Return true if the matrix is orthogonal matrix.
 901	MatrixTool	isOrthogonal		param	epsilon	誤差	
 902	MatrixTool	isOrthogonal		returns	epsilon		
-903	MatrixTool	isUnitary		desc		ユニタリ行列を判定	
+903	MatrixTool	isUnitary		desc		ユニタリ行列を判定	Return true if the matrix is ​​unitary matrix.
 904	MatrixTool	isUnitary		param	epsilon	誤差	
 905	MatrixTool	isUnitary		returns	epsilon		
-906	MatrixTool	isSymmetric		desc		対称行列を判定	
+906	MatrixTool	isSymmetric		desc		対称行列を判定	Return true if the matrix is ​​symmetric matrix.
 907	MatrixTool	isSymmetric		param	epsilon	誤差	
 908	MatrixTool	isSymmetric		returns	epsilon		
-909	MatrixTool	isHermitian		desc		エルミート行列を判定	
+909	MatrixTool	isHermitian		desc		エルミート行列を判定	Return true if the matrix is hermitian matrix.
 910	MatrixTool	isHermitian		param	epsilon	誤差	
 911	MatrixTool	isHermitian		returns	epsilon		
-912	MatrixTool	isTriangleUpper		desc		上三角行列を判定	
+912	MatrixTool	isTriangleUpper		desc		上三角行列を判定	Return true if the matrix is ​​upper triangular matrix.
 913	MatrixTool	isTriangleUpper		param	epsilon	誤差	
 914	MatrixTool	isTriangleUpper		returns	epsilon		
-915	MatrixTool	isTriangleLower		desc		下三角行列を判定	
+915	MatrixTool	isTriangleLower		desc		下三角行列を判定	Return true if the matrix is ​​ lower triangular matrix.
 916	MatrixTool	isTriangleLower		param	epsilon	誤差	
 917	MatrixTool	isTriangleLower		returns	epsilon		
-918	MatrixTool	isPermutation		desc		置換行列を判定	
+918	MatrixTool	isPermutation		desc		置換行列を判定	Return true if the matrix is permutation matrix.
 919	MatrixTool	isPermutation		param	epsilon	誤差	
 920	MatrixTool	isPermutation		returns	epsilon		
 921	MatrixTool	size		desc		行列の行数と列数	Number of rows and columns of matrix.
@@ -998,7 +1004,7 @@ Supports only integers."
 952	MatrixTool	npow		returns	number	A .^ B	
 953	MatrixTool	real		desc		各項の実部	Real part of each element.
 954	MatrixTool	real		returns		real(A)	
-955	MatrixTool	imag		desc		各項の虚部	
+955	MatrixTool	imag		desc		各項の虚部	Imaginary part of each element of the matrix.
 956	MatrixTool	imag		returns		imag(A)	
 957	MatrixTool	arg		desc		各項の偏角	
 958	MatrixTool	arg		returns		arg(A)	
@@ -1055,7 +1061,7 @@ Supports only integers."
 996	MatrixTool	negate		returns		-A	
 997	MatrixTool	sqrt		desc		平方根	Square root.
 998	MatrixTool	sqrt		returns		sqrt(A)	
-999	MatrixTool	log		desc		対数	
+999	MatrixTool	log		desc		対数	Logarithm.
 1000	MatrixTool	log		returns		log(A)	
 1001	MatrixTool	exp		desc		指数	
 1002	MatrixTool	exp		returns		exp(A)	
@@ -1174,7 +1180,7 @@ The number of elements in the matrix doesn't increase or decrease."
 1105	MatrixTool	flip		desc		行列を反転	
 1106	MatrixTool	flip		param	type		
 1107	MatrixTool	flip		returns	type	処理実行後の行列	
-1108	MatrixTool	indexsort		desc		インデックスソート	
+1108	MatrixTool	indexsort		desc		インデックスソート	Index sort.
 1109	MatrixTool	indexsort		param	v	インデックス（列 or 行）ベクトル	
 1110	MatrixTool	indexsort		returns	v	処理実行後の行列	
 1111	MatrixTool	transpose		desc		転置行列	Transpose a matrix.
@@ -1183,7 +1189,7 @@ The number of elements in the matrix doesn't increase or decrease."
 1114	MatrixTool	ctranspose		returns		A^T	
 1115	MatrixTool	T		desc		エルミート転置行列	Hermitian transpose.
 1116	MatrixTool	T		returns		A^T	
-1117	MatrixTool	inner		desc		ドット積	
+1117	MatrixTool	inner		desc		ドット積	Inner product/Dot product.
 1118	MatrixTool	inner		param	number		
 1119	MatrixTool	inner		param	dimension	計算するときに使用する次元（1 or 2）	
 1120	MatrixTool	inner		returns	dimension	A・B	
@@ -1191,7 +1197,7 @@ The number of elements in the matrix doesn't increase or decrease."
 1122	MatrixTool	lup		returns		P'*L*U=A	
 1123	MatrixTool	lu		desc		LU分解	LU decomposition.
 1124	MatrixTool	lu		returns		L*U=A	
-1125	MatrixTool	linsolve		desc		一次方程式を解く	
+1125	MatrixTool	linsolve		desc		連立一次方程式を解く	Solve simultaneous linear equations.
 1126	MatrixTool	linsolve		param	number	B	
 1127	MatrixTool	linsolve		returns	number	Ax=B となる x	
 1128	MatrixTool	qr		desc		QR分解	QR decomposition.
@@ -1203,7 +1209,7 @@ The number of elements in the matrix doesn't increase or decrease."
 1133	MatrixTool	eig		returns		V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列	
 1134	MatrixTool	svd		desc		特異値分解	Singular Value Decomposition (SVD).
 1135	MatrixTool	svd		returns		U*S*V'=A	
-1136	MatrixTool	inv		desc		逆行列	
+1136	MatrixTool	inv		desc		逆行列	Inverse matrix of this matrix.
 1137	MatrixTool	inv		returns		A^-1	
 1138	MatrixTool	pinv		desc		疑似逆行列	Pseudo-inverse matrix.
 1139	MatrixTool	pinv		returns		A^+	
@@ -1359,25 +1365,25 @@ The number of elements in the matrix doesn't increase or decrease."
 1289	MatrixTool	fft		desc		離散フーリエ変換	
 1290	MatrixTool	fft		param	type		
 1291	MatrixTool	fft		returns	type	fft(x)	
-1292	MatrixTool	ifft		desc		逆離散フーリエ変換	
+1292	MatrixTool	ifft		desc		逆離散フーリエ変換	Inverse discrete Fourier transform (IDFT).
 1293	MatrixTool	ifft		param	type		
 1294	MatrixTool	ifft		returns	type	ifft(x)	
 1295	MatrixTool	powerfft		desc		パワースペクトル密度	Power spectral density.
 1296	MatrixTool	powerfft		param	type		
 1297	MatrixTool	powerfft		returns	type	abs(fft(x)).^2	
-1298	MatrixTool	dct		desc		離散コサイン変換	
+1298	MatrixTool	dct		desc		離散コサイン変換	Discrete cosine transform (DCT-II, DCT).
 1299	MatrixTool	dct		param	type		
 1300	MatrixTool	dct		returns	type	dct(x)	
-1301	MatrixTool	idct		desc		逆離散コサイン変換	
+1301	MatrixTool	idct		desc		逆離散コサイン変換	Inverse discrete cosine transform (DCT-III, IDCT).
 1302	MatrixTool	idct		param	type		
 1303	MatrixTool	idct		returns	type	idct(x)	
-1304	MatrixTool	fft2		desc		2次元の離散フーリエ変換	
+1304	MatrixTool	fft2		desc		2次元の離散フーリエ変換	Discrete two-dimensional Fourier transform (2D DFT).
 1305	MatrixTool	fft2		returns			
-1306	MatrixTool	ifft2		desc		2次元の逆離散フーリエ変換	
+1306	MatrixTool	ifft2		desc		2次元の逆離散フーリエ変換	Inverse discrete two-dimensional Fourier transform (2D IDFT).
 1307	MatrixTool	ifft2		returns			
-1308	MatrixTool	dct2		desc		2次元の離散コサイン変換	
+1308	MatrixTool	dct2		desc		2次元の離散コサイン変換	Discrete two-dimensional cosine transform (2D DCT).
 1309	MatrixTool	dct2		returns			
-1310	MatrixTool	idct2		desc		2次元の逆離散コサイン変換	
+1310	MatrixTool	idct2		desc		2次元の逆離散コサイン変換	Inverse discrete two-dimensional cosine transform (2D IDCT).
 1311	MatrixTool	idct2		returns			
 1312	MatrixTool	conv		desc		畳み込み積分、多項式乗算	
 1313	MatrixTool	conv		param	number		
@@ -1390,11 +1396,11 @@ The number of elements in the matrix doesn't increase or decrease."
 1320	MatrixTool	window	static	param	size	長さ	
 1321	MatrixTool	window	static	param	periodic	0/"symmetric", 1/"periodic"	
 1322	MatrixTool	window	static	returns	periodic	列ベクトル	
-1323	MatrixTool	hann	static	desc		ハニング窓	
+1323	MatrixTool	hann	static	desc		ハニング窓	Hann (Hanning) window.
 1324	MatrixTool	hann	static	param	size	長さ	
 1325	MatrixTool	hann	static	param	periodic	0/"symmetric", 1/"periodic"	
 1326	MatrixTool	hann	static	returns	periodic	列ベクトル	
-1327	MatrixTool	hamming	static	desc		ハミング窓	
+1327	MatrixTool	hamming	static	desc		ハミング窓	Hamming window.
 1328	MatrixTool	hamming	static	param	size	長さ	
 1329	MatrixTool	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	
 1330	MatrixTool	hamming	static	returns	periodic	列ベクトル	
@@ -1406,12 +1412,12 @@ The number of elements in the matrix doesn't increase or decrease."
 1336		constructor		param	precision_or_name	精度を数値で指定するか、設定自体を文字列で指定する	
 1337		constructor		param	roundingMode	丸めモード	
 1338		this.precision		desc		精度	The precision of this BigDecimal.
-1339		this.roundingMode		desc		丸めモード	Rounding mode.
-1340		getPrecision		desc		精度	
+1339		this.roundingMode		desc		丸めモード	Method of rounding.
+1340		getPrecision		desc		精度	The precision of this BigDecimal.
 1341		getPrecision		returns			
-1342		getRoundingMode		desc		丸め方	
+1342		getRoundingMode		desc		丸め方	Method of rounding.
 1343		getRoundingMode		returns			
-1344		equals		desc		環境が等しいか	
+1344		equals		desc		環境が等しいか	Equals.
 1345		equals		param	x	比較対象	
 1346		equals		returns	x		
 1347		toString		desc		文字列化	Convert to string.
@@ -1436,7 +1442,8 @@ However, an error occurs in the case of cyclic fraction in division."
 1362		export		desc		BigDecimal用の丸めモードの基底クラス	
 1363		toString	static	desc		丸めモードの名前を英語の大文字で取得する	Get rounding mode name in upper case English.
 1364		toString	static	returns		丸めモード名	
-1365		getAddNumber	static	desc		丸めに必要な加算値	
+1365		getAddNumber	static	desc		丸めに必要な加算値	"Numeric value to add.
+It is rounded when this value is added."
 1366		getAddNumber	static	param	x	1ケタ目の値	
 1367		getAddNumber	static	returns	x	いくつ足すと丸められるか	
 1368	RoundingMode_UP	RoundingMode_UP	class	desc		絶対値の切り上げ（1桁目が0より大きければ桁上げする）	"Directed rounding to an integer.
@@ -1557,19 +1564,19 @@ Round to the nearest side. If the median, round to the even side."
 丸める必要が出る場合はエラー"	"Do not round.
 Error if you need to round it."
 1435	RoundingMode_UNNECESSARY	UNNECESSARY	static get	returns			
-1436	LinearAlgebraTool	LinearAlgebraTool	class	desc		線形代数用の関数集	
+1436	LinearAlgebraTool	LinearAlgebraTool	class	desc		線形代数用の関数集	Collection of functions for linear algebra.
 1437	LinearAlgebraTool	tridiagonalize	static	desc		"対称行列の三重対角化
 ※複素数に非対応"	"Tridiagonalization of symmetric matrix.
 * Don't support complex numbers."
 1438	LinearAlgebraTool	tridiagonalize	static	param	mat		
 1439	LinearAlgebraTool	tridiagonalize	static	returns	mat		
-1440	LinearAlgebraTool	innerproduct	const	desc		ベクトルx1とベクトルx2の内積をとる	
+1440	LinearAlgebraTool	innerproduct	const	desc		ベクトルx1とベクトルx2の内積をとる	Inner product of vector x1 and vector x2.
 1441	LinearAlgebraTool	innerproduct	const	param	x1		
 1442	LinearAlgebraTool	innerproduct	const	param	x2		
 1443	LinearAlgebraTool	innerproduct	const	param	index_offset	オフセット(この値から行う)	
 1444	LinearAlgebraTool	innerproduct	const	param	index_max	最大(この値は含めない)	
 1445	LinearAlgebraTool	innerproduct	const	returns	index_max		
-1446	LinearAlgebraTool	house	const	desc		ハウスホルダー変換	
+1446	LinearAlgebraTool	house	const	desc		ハウスホルダー変換	Householder transformation.
 1447	LinearAlgebraTool	house	const	param	x	ハウスホルダー変換したいベクトル	
 1448	LinearAlgebraTool	house	const	param	index_offset	オフセット(この値から行う)	
 1449	LinearAlgebraTool	house	const	param	index_max	最大(この値は含めない)	
@@ -1585,18 +1592,18 @@ Error if you need to round it."
 1458	LinearAlgebraTool	createOrthogonalVector	static	param	mat		
 1459	LinearAlgebraTool	createOrthogonalVector	static	param	epsilon	誤差	
 1460	LinearAlgebraTool	createOrthogonalVector	static	returns	epsilon	直行したベクトルがなければNULLを返す	
-1461	LinearAlgebraTool	getMaxRowNumber	static	desc		列の中で最もノルムが最大の値がある行番号	
+1461	LinearAlgebraTool	getMaxRowNumber	static	desc		行列の指定した列の中で最もノルムが最大の値がある行番号	Row number with the largest norm value in the specified column of the matrix.
 1462	LinearAlgebraTool	getMaxRowNumber	static	param	mat		
 1463	LinearAlgebraTool	getMaxRowNumber	static	param	column_index	列番号	
 1464	LinearAlgebraTool	getMaxRowNumber	static	param	row_index_offset	行のオフセット(この値から行う)	
 1465	LinearAlgebraTool	getMaxRowNumber	static	param	row_index_max	行の最大(この値は含めない)	
 1466	LinearAlgebraTool	getMaxRowNumber	static	returns	row_index_max	行番号	
-1467	LinearAlgebraTool	getLinearDependenceVector	static	desc		行列の各行をベクトルと見立て、線型従属している行を抽出	
+1467	LinearAlgebraTool	getLinearDependenceVector	static	desc		行列の各行をベクトルと見立て、線型従属している行を抽出	Extract linearly dependent rows when each row of matrix is a vector.
 1468	LinearAlgebraTool	getLinearDependenceVector	static	param	mat		
 1469	LinearAlgebraTool	getLinearDependenceVector	static	param	epsilon	誤差	
 1470	LinearAlgebraTool	getLinearDependenceVector	static	returns	epsilon	行番号の行列(昇順)	
 1471	LinearAlgebraTool	export		desc		Matrix用の線形代数用の計算クラス	
-1472	LinearAlgebraTool	inner	static	desc		ドット積	
+1472	LinearAlgebraTool	inner	static	desc		ドット積	Inner product/Dot product.
 1473	LinearAlgebraTool	inner	static	param	A		
 1474	LinearAlgebraTool	inner	static	param	B		
 1475	LinearAlgebraTool	inner	static	param	dimension	計算するときに使用する次元（1 or 2）	
@@ -1629,7 +1636,7 @@ Sum of diagonal elements."
 1501	LinearAlgebraTool	lu	static	desc		LU分解	LU decomposition.
 1502	LinearAlgebraTool	lu	static	param	mat	A	
 1503	LinearAlgebraTool	lu	static	returns	mat	L*U=A	
-1504	LinearAlgebraTool	linsolve	static	desc		連立一次方程式を解く	
+1504	LinearAlgebraTool	linsolve	static	desc		連立一次方程式を解く	Solve simultaneous linear equations.
 1505	LinearAlgebraTool	linsolve	static	param	mat	A	
 1506	LinearAlgebraTool	linsolve	static	param	number	B	
 1507	LinearAlgebraTool	linsolve	static	returns	number	Ax=B となる x	
@@ -1646,7 +1653,7 @@ Sum of diagonal elements."
 1517	LinearAlgebraTool	svd	static	desc		特異値分解	Singular Value Decomposition (SVD).
 1518	LinearAlgebraTool	svd	static	param	mat	A	
 1519	LinearAlgebraTool	svd	static	returns	mat	U*S*V'=A	
-1520	LinearAlgebraTool	inv	static	desc		逆行列	
+1520	LinearAlgebraTool	inv	static	desc		逆行列	Inverse matrix of this matrix.
 1521	LinearAlgebraTool	inv	static	param	mat	A	
 1522	LinearAlgebraTool	inv	static	returns	mat	A^-1	
 1523	LinearAlgebraTool	pinv	static	desc		疑似逆行列	Pseudo-inverse matrix.
@@ -1716,7 +1723,7 @@ This random number is a distribution with an average value of 0 and a standard d
 1586	FFT	fft		param	real	実数部	
 1587	FFT	fft		param	imag	虚数部	
 1588	FFT	fft		returns	imag		
-1589	FFT	ifft		desc		逆離散フーリエ変換	
+1589	FFT	ifft		desc		逆離散フーリエ変換	Inverse discrete Fourier transform (IDFT),
 1590	FFT	ifft		param	real	実数部	
 1591	FFT	ifft		param	imag	虚数部	
 1592	FFT	ifft		returns	imag		
@@ -1746,26 +1753,26 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1613	DCT	dct		desc		DCT-II	
 1614	DCT	dct		param	real	実数部	
 1615	DCT	dct		returns	real		
-1616	DCT	idct		desc		DCT-III (IDCT)	
+1616	DCT	idct		desc		DCT-III (IDCT)	Inverse discrete cosine transform (DCT-III, IDCT),
 1617	DCT	idct		param	real	実数部	
 1618	DCT	idct		returns	real		
 1619	DCT	dct_cash	const	desc		離散コサイン変換用のキャッシュ	
 1620	SignalTool	SignalTool	class	desc		Signalクラスの内部で使用する関数集	Collection of functions used inside Signal class.
-1621	SignalTool	isContainsZero	static	desc		0が含まれるか	
+1621	SignalTool	isContainsZero	static	desc		配列に0が含まれるか	Returns true if the array contains 0.
 1622	SignalTool	isContainsZero	static	param	x	調べたい配列	
 1623	SignalTool	isContainsZero	static	returns	x		
 1624	SignalTool	fft	static	desc		離散フーリエ変換	
 1625	SignalTool	fft	static	param	real	実数部	
 1626	SignalTool	fft	static	param	imag	虚数部	
 1627	SignalTool	fft	static	returns	imag		
-1628	SignalTool	ifft	static	desc		逆離散フーリエ変換	
+1628	SignalTool	ifft	static	desc		逆離散フーリエ変換	Inverse discrete Fourier transform (IDFT),
 1629	SignalTool	ifft	static	param	real	実数部	
 1630	SignalTool	ifft	static	param	imag	虚数部	
 1631	SignalTool	ifft	static	returns	imag		
 1632	SignalTool	dct	static	desc		DCT-II (DCT)	
 1633	SignalTool	dct	static	param	real	実数部	
 1634	SignalTool	dct	static	returns	real		
-1635	SignalTool	idct	static	desc		DCT-III (IDCT)	
+1635	SignalTool	idct	static	desc		DCT-III (IDCT)	Inverse discrete cosine transform (DCT-III, IDCT),
 1636	SignalTool	idct	static	param	real	実数部	
 1637	SignalTool	idct	static	returns	real		
 1638	SignalTool	powerfft	static	desc		パワースペクトル密度	Power spectral density.
@@ -1789,11 +1796,11 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1656	SignalTool	window	static	param	size	長さ	
 1657	SignalTool	window	static	param	periodic	0/"symmetric", 1/"periodic"	
 1658	SignalTool	window	static	returns	periodic		
-1659	SignalTool	hann	static	desc		ハニング窓	
+1659	SignalTool	hann	static	desc		ハニング窓	Hann (Hanning) window.
 1660	SignalTool	hann	static	param	size	長さ	
 1661	SignalTool	hann	static	param	periodic	0/"symmetric", 1/"periodic"	
 1662	SignalTool	hann	static	returns	periodic		
-1663	SignalTool	hamming	static	desc		ハミング窓を作成	
+1663	SignalTool	hamming	static	desc		ハミング窓を作成	Hamming window.
 1664	SignalTool	hamming	static	param	size	長さ	
 1665	SignalTool	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	
 1666	SignalTool	hamming	static	returns	periodic		
@@ -1802,7 +1809,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1669	SignalTool	fft	static	param	x		
 1670	SignalTool	fft	static	param	type		
 1671	SignalTool	fft	static	returns	type	fft(x)	
-1672	SignalTool	ifft	static	desc		逆離散フーリエ変換	
+1672	SignalTool	ifft	static	desc		逆離散フーリエ変換	Inverse discrete Fourier transform (IDFT),
 1673	SignalTool	ifft	static	param	X		
 1674	SignalTool	ifft	static	param	type		
 1675	SignalTool	ifft	static	returns	type	ifft(X)	
@@ -1814,20 +1821,20 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1681	SignalTool	dct	static	param	x		
 1682	SignalTool	dct	static	param	type		
 1683	SignalTool	dct	static	returns	type	dct(x)	
-1684	SignalTool	idct	static	desc		逆離散コサイン変換	
+1684	SignalTool	idct	static	desc		逆離散コサイン変換	Inverse discrete cosine transform (DCT-III, IDCT),
 1685	SignalTool	idct	static	param	X		
 1686	SignalTool	idct	static	param	type		
 1687	SignalTool	idct	static	returns	type	idct(x)	
 1688	SignalTool	fft2	static	desc		2次元の離散フーリエ変換	
 1689	SignalTool	fft2	static	param	x		
 1690	SignalTool	fft2	static	returns	x		
-1691	SignalTool	ifft2	static	desc		2次元の逆離散フーリエ変換	
+1691	SignalTool	ifft2	static	desc		2次元の逆離散フーリエ変換	Inverse discrete two-dimensional Fourier transform (2D IDFT),
 1692	SignalTool	ifft2	static	param	X		
 1693	SignalTool	ifft2	static	returns	X		
 1694	SignalTool	dct2	static	desc		2次元のDCT変換	
 1695	SignalTool	dct2	static	param	x		
 1696	SignalTool	dct2	static	returns	x		
-1697	SignalTool	idct2	static	desc		2次元の逆DCT変換	
+1697	SignalTool	idct2	static	desc		2次元の逆離散コサイン変換	Inverse discrete two-dimensional cosine transform (2D IDCT),
 1698	SignalTool	idct2	static	param	X		
 1699	SignalTool	idct2	static	returns	X		
 1700	SignalTool	conv	static	desc		畳み込み積分、多項式乗算	
@@ -1843,11 +1850,11 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1710	SignalTool	window	static	param	size	長さ	
 1711	SignalTool	window	static	param	periodic	0/"symmetric", 1/"periodic"	
 1712	SignalTool	window	static	returns	periodic	列ベクトル	
-1713	SignalTool	hann	static	desc		ハニング窓	
+1713	SignalTool	hann	static	desc		ハニング窓	Hann (Hanning) window.
 1714	SignalTool	hann	static	param	size	長さ	
 1715	SignalTool	hann	static	param	periodic	0/"symmetric", 1/"periodic"	
 1716	SignalTool	hann	static	returns	periodic	列ベクトル	
-1717	SignalTool	hamming	static	desc		ハミング窓	
+1717	SignalTool	hamming	static	desc		ハミング窓	Hamming window.
 1718	SignalTool	hamming	static	param	size	長さ	
 1719	SignalTool	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	
 1720	SignalTool	hamming	static	returns	periodic	列ベクトル	
@@ -1912,7 +1919,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1779	StatisticsTool	betainc	static	param	b		
 1780	StatisticsTool	betainc	static	param	tail	lower(デフォルト)/upper	
 1781	StatisticsTool	betainc	static	returns	tail		
-1782	StatisticsTool	isInteger	static	desc		isInteger(x) xが整数かどうか	
+1782	StatisticsTool	isInteger	static	desc		整数を判定	Return true if the value is integer.
 1783	StatisticsTool	isInteger	static	param	x		
 1784	StatisticsTool	isInteger	static	returns	x		
 1785	StatisticsTool	betapdf	static	desc		betapdf(x, a, b) ベータ分布の確率密度関数	
@@ -2006,7 +2013,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1873	StatisticsTool	finv	static	param	d1	分子の自由度	
 1874	StatisticsTool	finv	static	param	d2	分母の自由度	
 1875	StatisticsTool	finv	static	returns	d2		
-1876	StatisticsTool	isStr	const	desc		文字列か判定	
+1876	StatisticsTool	isStr	const	desc		文字列か判定	typeof this === string
 1877	StatisticsTool	isStr	const	param			
 1878	StatisticsComplex	StatisticsComplex	class	desc		Complexクラスから利用する統計処理関数集	Collection of statistical functions used from Complex class.
 1879	StatisticsComplex	gammaln	static	desc		gammaln(x) 対数ガンマ関数	

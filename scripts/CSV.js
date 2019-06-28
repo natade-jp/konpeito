@@ -160,7 +160,7 @@ class CSV {
 			 */
 			const json_data = {};
 			for(let j = 0; j < line.length; j++) {
-				json_data[key_name[i]] = line[i];
+				json_data[key_name[j]] = line[j];
 			}
 			json_array.push(json_data);
 		}
