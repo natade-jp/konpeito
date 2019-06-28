@@ -9,7 +9,7 @@
 8	konpeito	MathContext	static get	returns			
 9	konpeito	Complex	static get	desc		複素数クラス	
 10	konpeito	Complex	static get	returns			
-11	konpeito	Matrix	static get	desc		複素行列クラス	Complex matrix class.
+11	konpeito	Matrix	static get	desc		複素行列クラス	Complex matrix class. (immutable)
 12	konpeito	Matrix	static get	returns			
 13	konpeito	Random	static get	desc		乱数クラス	Random number class.
 14	konpeito	Random	static get	returns			
@@ -147,11 +147,11 @@ Only the scale is changed without changing the precision."
 135	BigDecimal	mul		param	number		
 136	BigDecimal	mul		param	context	計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する	
 137	BigDecimal	mul		returns	context	A * B	
-138	BigDecimal	divideToIntegralValue		desc		小数点まで求めない割り算	
+138	BigDecimal	divideToIntegralValue		desc		小数点まで求めない割り算	Divide not calculated to the decimal point.
 139	BigDecimal	divideToIntegralValue		param	number		
 140	BigDecimal	divideToIntegralValue		param	context	計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する	
 141	BigDecimal	divideToIntegralValue		returns	context	(int)(A / B)	
-142	BigDecimal	divideAndRemainder		desc		割り算と余り	
+142	BigDecimal	divideAndRemainder		desc		割り算と余り	Divide and remainder.
 143	BigDecimal	divideAndRemainder		param	number		
 144	BigDecimal	divideAndRemainder		param	context	計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する	
 145	BigDecimal	divideAndRemainder		returns	context	[C = (int)(A / B), A - C * B]	
@@ -163,11 +163,11 @@ Only the scale is changed without changing the precision."
 151	BigDecimal	mod		param	number		
 152	BigDecimal	mod		param	context	計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する	
 153	BigDecimal	mod		returns	context	A mod B	
-154	BigDecimal	divide		desc		割り算	
+154	BigDecimal	divide		desc		割り算	Divide.
 155	BigDecimal	divide		param	number		
 156	BigDecimal	divide		param	type	計算に使用する scale, context, roundingMode を設定する	
 157	BigDecimal	divide		returns	type		
-158	BigDecimal	div		desc		割り算	
+158	BigDecimal	div		desc		割り算	Divide.
 159	BigDecimal	div		param	number		
 160	BigDecimal	div		param	type	計算に使用する scale, context, roundingMode を設定する	
 161	BigDecimal	div		returns	type	A / B	
@@ -196,7 +196,8 @@ An exception occurs when doing a huge multiplication."
 178	BigDecimal	setDefaultContext	static	desc		オブジェクトを新規作成時に環境設定を変更しなかった場合に設定されるデフォルト設定	"Set default the MathContext.
 This is used if you do not specify MathContext when creating a new object."
 179	BigDecimal	setDefaultContext	static	param	context		
-180	BigDecimal	getDefaultContext	static	desc		オブジェクトを新規作成時に環境設定を変更しなかった場合に設定されるデフォルト設定を取得	
+180	BigDecimal	getDefaultContext	static	desc		オブジェクトを新規作成時に環境設定を変更しなかった場合に設定されるデフォルト設定を取得	"Return default MathContext class.
+Used when MathContext not specified explicitly."
 181	BigDecimal	getDefaultContext	static	returns			
 182	BigDecimal	ZERO	static get	desc		0	0
 183	BigDecimal	ZERO	static get	returns		0	
@@ -350,11 +351,11 @@ If it is outside the range of JavaScript Number, it will not be an accurate numb
 320	BigInteger	_memory_allocation		desc		指定したビット長まで配列を拡張（ミュータブル）	
 321	BigInteger	_memory_allocation		param	bit_length	ビット数	
 322	BigInteger	_memory_reduction		desc		内部データの正規化（ミュータブル）	
-323	BigInteger	gcd		desc		ユークリッド互除法	
+323	BigInteger	gcd		desc		ユークリッド互除法	Euclidean algorithm.
 324	BigInteger	gcd		param	number		
 325	BigInteger	gcd		returns	number	gcd(x, y)	
 326	BigInteger	x	let	desc			
-327	BigInteger	extgcd		desc		拡張ユークリッド互除法	
+327	BigInteger	extgcd		desc		拡張ユークリッド互除法	Extended Euclidean algorithm.
 328	BigInteger	extgcd		param	number		
 329	BigInteger	extgcd		returns	number	a*x + b*y = c = gcd(x, y) となる [a, b, c]	
 330	BigInteger	r0	let	desc			
@@ -428,16 +429,16 @@ If it is outside the range of JavaScript Number, it will not be an accurate numb
 395	BigInteger	_divideAndRemainder		desc		割り算と余り（ミュータブル）	
 396	BigInteger	_divideAndRemainder		param	number		
 397	BigInteger	_divideAndRemainder		returns	number	[C = floor(A / B), A - C * B]	
-398	BigInteger	divideAndRemainder		desc		割り算と余り	
+398	BigInteger	divideAndRemainder		desc		割り算と余り	Divide and remainder.
 399	BigInteger	divideAndRemainder		param	number		
 400	BigInteger	divideAndRemainder		returns	number	[C = floor(A / B), A - C * B]	
 401	BigInteger	_divide		desc		割り算（ミュータブル）	
 402	BigInteger	_divide		param	number		
 403	BigInteger	_divide		returns	number	floor(A / B)	
-404	BigInteger	divide		desc		割り算	
+404	BigInteger	divide		desc		割り算	Divide.
 405	BigInteger	divide		param	number		
 406	BigInteger	divide		returns	number	floor(A / B)	
-407	BigInteger	div		desc		割り算	
+407	BigInteger	div		desc		割り算	Divide.
 408	BigInteger	div		param	number		
 409	BigInteger	div		returns	number	floor(A / B)	
 410	BigInteger	_remainder		desc		割り算の余り（ミュータブル）	
@@ -464,7 +465,7 @@ If it is outside the range of JavaScript Number, it will not be an accurate numb
 431	BigInteger	_flipBit		desc		特定のビットを反転させる（ミュータブル）	
 432	BigInteger	_flipBit		param	bit		
 433	BigInteger	_flipBit		returns	bit		
-434	BigInteger	flipBit		desc		特定のビットを反転させる	
+434	BigInteger	flipBit		desc		特定のビットを反転させる	Invert a specific bit.
 435	BigInteger	flipBit		param	bit		
 436	BigInteger	flipBit		returns	bit		
 437	BigInteger	clearBit		desc		特定のビットを下げる	
@@ -492,12 +493,13 @@ Please note because it takes a very long time to process."
 457	BigInteger	nextProbablePrime		param	certainty	素数判定法の繰り返し回数	
 458	BigInteger	nextProbablePrime		param	search_max	次の素数を見つけるまでの回数	
 459	BigInteger	nextProbablePrime		returns	search_max		
-460	BigInteger	factorial		desc		階乗関数	
+460	BigInteger	factorial		desc		階乗関数	Factorial function, x!.
 461	BigInteger	factorial		returns		n!	
 462	BigInteger	setDefaultRandom	static	desc		乱数を指定しなかった場合のデフォルト乱数を設定する	"Set default class of random.
 This is used if you do not specify a random number."
 463	BigInteger	setDefaultRandom	static	param	random		
-464	BigInteger	getDefaultRandom	static	desc		乱数を指定しなかった場合のデフォルト乱数を取得する	
+464	BigInteger	getDefaultRandom	static	desc		乱数を指定しなかった場合のデフォルト乱数を取得する	"Return default Random class.
+Used when Random not specified explicitly."
 465	BigInteger	getDefaultRandom	static	returns			
 466	BigInteger	ZERO	static get	desc		0	0
 467	BigInteger	ZERO	static get	returns		0	
@@ -561,7 +563,8 @@ This is used if you do not specify a random number."
 525	Complex	norm	get	returns		|A|	
 526	Complex	arg	get	desc		偏角	
 527	Complex	arg	get	returns		arg(A)	
-528	Complex	getDecimalPosition		desc		実部、虚部を表す際の小数点以下の桁数	
+528	Complex	getDecimalPosition		desc		実部、虚部を表す際の小数点以下の桁数	"Number of decimal places for real and imaginary parts.
+Used to make a string."
 529	Complex	getDecimalPosition		returns		小数点の桁数	
 530	Complex	add		desc		加算	
 531	Complex	add		param	number		
@@ -572,10 +575,10 @@ This is used if you do not specify a random number."
 536	Complex	mul		desc		乗算	Multiply.
 537	Complex	mul		param	number		
 538	Complex	mul		returns	number	A * B	
-539	Complex	dot		desc		ドット積	
+539	Complex	dot		desc		ドット積	Inner product/Dot product.
 540	Complex	dot		param	number		
 541	Complex	dot		returns	number	A * conj(B)	
-542	Complex	div		desc		割り算	
+542	Complex	div		desc		割り算	Divide.
 543	Complex	div		param	number		
 544	Complex	div		returns	number	A / B	
 545	Complex	mod		desc		割り算の正の余り	Modulo, positive remainder of division.
@@ -643,9 +646,9 @@ This is used if you do not specify a random number."
 606	Complex	square		returns		pow(A, 2)	
 607	Complex	sqrt		desc		平方根	Square root.
 608	Complex	sqrt		returns		sqrt(A)	
-609	Complex	log		desc		対数	Logarithm.
+609	Complex	log		desc		対数	Logarithmic function.
 610	Complex	log		returns		log(A)	
-611	Complex	exp		desc		指数	
+611	Complex	exp		desc		指数	Exponential function.
 612	Complex	exp		returns		exp(A)	
 613	Complex	sin		desc		sin	Sine function.
 614	Complex	sin		returns		sin(A)	
@@ -660,15 +663,15 @@ This is used if you do not specify a random number."
 623	Complex	atan2		returns	number	atan2(Y, X)	
 624	Complex	sinc		desc		sinc	Normalized sinc function.
 625	Complex	sinc		returns		sinc(A)	
-626	Complex	floor		desc		floor	
+626	Complex	floor		desc		floor	Floor.
 627	Complex	floor		returns		floor(A)	
 628	Complex	ceil		desc		ceil	
 629	Complex	ceil		returns		ceil(A)	
 630	Complex	round		desc		四捨五入	Rounding to the nearest integer.
 631	Complex	round		returns		round(A)	
-632	Complex	fix		desc		整数化	
+632	Complex	fix		desc		整数化	To integer rounded down to the nearest.
 633	Complex	fix		returns		fix(A)	
-634	Complex	fract		desc		小数部の抽出	
+634	Complex	fract		desc		小数部の抽出	Fraction.
 635	Complex	fract		returns		fract(A)	
 636	Complex	ONE	static get	desc		1	1
 637	Complex	ONE	static get	returns		1	
@@ -682,9 +685,9 @@ This is used if you do not specify a random number."
 645	Complex	MINUS_ONE	static get	returns		-1	
 646	Complex	I	static get	desc		i, j	i, j
 647	Complex	I	static get	returns		i	
-648	Complex	PI	static get	desc		PI	PI
+648	Complex	PI	static get	desc		PI	Pi.
 649	Complex	PI	static get	returns		3.14...	
-650	Complex	E	static get	desc		E	
+650	Complex	E	static get	desc		E	E, Napier's constant.
 651	Complex	E	static get	returns		2.71...	
 652	Complex	LN2	static get	desc		log_e(2)	log_e(2)
 653	Complex	LN2	static get	returns		ln(2)	
@@ -713,8 +716,8 @@ This is used if you do not specify a random number."
 676	Complex	TEN		desc		10	10
 677	Complex	MINUS_ONE		desc		-1	-1
 678	Complex	I		desc		i, j	i, j
-679	Complex	PI		desc		PI	PI
-680	Complex	E		desc		E	
+679	Complex	PI		desc		PI	Pi.
+680	Complex	E		desc		E	E, Napier's constant.
 681	Complex	LN2		desc		log_e(2)	log_e(2)
 682	Complex	LN10		desc		log_e(10)	log_e(10)
 683	Complex	LOG2E		desc		log_2(e)	log_2(e)
@@ -767,7 +770,7 @@ Estimate the matrix by extracting parts like numbers."
 728	MatrixTool	isCorrectMatrixArray	static	desc		Matrix型内部データが行列データとして正しいかを調べる	Returns true if Matrix type internal data is correct as matrix data.
 729	MatrixTool	isCorrectMatrixArray	static	param	m_array		
 730	MatrixTool	isCorrectMatrixArray	static	returns	m_array		
-731	Matrix	Matrix	export default class	desc		複素行列クラス (immutable)	
+731	Matrix	Matrix	export default class	desc		複素行列クラス (immutable)	Complex matrix class. (immutable)
 732	Matrix	constructor		desc		"複素行列を作成
 引数は次のタイプをとれます
 ・4 				整数や実数
@@ -812,7 +815,7 @@ Estimate the matrix by extracting parts like numbers."
 766	Matrix	equals		returns	epsilon	A === B	
 767	Matrix	getNumberMatrixArray		desc		行列を構成する複素数の実部の配列	Array of real parts of elements in matrix.
 768	Matrix	getNumberMatrixArray		returns			
-769	Matrix	getComplexMatrixArray		desc		行列を構成する複素数のComplex型の配列	
+769	Matrix	getComplexMatrixArray		desc		行列を構成する複素数のComplex型の配列	Complex array of complex numbers of each element of the matrix.
 770	Matrix	getComplexMatrixArray		returns			
 771	Matrix	_each		desc		"本オブジェクト内の全要素に同一処理を実行
 ミュータブル"	
@@ -826,20 +829,24 @@ Estimate the matrix by extracting parts like numbers."
 779	Matrix	createMatrixDoEachCalculation	static	param	dimension	次元数	
 780	Matrix	createMatrixDoEachCalculation	static	param	column_length	列数	
 781	Matrix	createMatrixDoEachCalculation	static	returns	column_length	処理実行後の行列	
-782	Matrix	eachVectorAuto		desc		行列の列をベクトルとみなし同一処理を実行、行ベクトルであれば行ベクトルに対し同一処理を実行	
+782	Matrix	eachVectorAuto		desc		行列の列をベクトルとみなし同一処理を実行、行ベクトルであれば行ベクトルに対し同一処理を実行	"Treat the columns of the matrix as vectors and execute the same process.
+If the matrix is a row vector, it performs the same processing for the row vector."
 783	Matrix	eachVectorAuto		param	array_function	Function(array)	
 784	Matrix	eachVectorAuto		returns	array_function	処理実行後の行列	
 785	Matrix	eachVectorBoth		desc		"行列の行と列をベクトルとみなし同一処理を実行
-先に行に対して同一処理を実行後の行列に対し、列ごとにさらに同一処理を実行する"	
+先に行に対して同一処理を実行後の行列に対し、列ごとにさらに同一処理を実行する"	"Treat the rows and columns of the matrix as vectors and perform the same processing.
+1. First run the same process for the row.
+2. Finally perform the same processing for the column."
 786	Matrix	eachVectorBoth		param	array_function	Function(array)	
 787	Matrix	eachVectorBoth		returns	array_function	処理実行後の行列	
-788	Matrix	eachVectorRow		desc		行列の行をベクトルとみなし同一処理を実行	
+788	Matrix	eachVectorRow		desc		行列の行をベクトルとみなし同一処理を実行	Treat the rows of the matrix as vectors and execute the same process.
 789	Matrix	eachVectorRow		param	array_function	Function(array)	
 790	Matrix	eachVectorRow		returns	array_function	処理実行後の行列	
-791	Matrix	eachVectorColumn		desc		行列の列をベクトルとみなし同一処理を実行	
+791	Matrix	eachVectorColumn		desc		行列の列をベクトルとみなし同一処理を実行	Treat the columns of the matrix as vectors and execute the same process.
 792	Matrix	eachVectorColumn		param	array_function	Function(array)	
 793	Matrix	eachVectorColumn		returns	array_function	処理実行後の行列	
-794	Matrix	eachVector		desc		引数に設定された行／列をベクトルとみなし同一処理を実行	
+794	Matrix	eachVector		desc		引数に設定された行／列をベクトルとみなし同一処理を実行	"Treat the rows and columns of the matrix as vectors and perform the same processing.
+The arguments of the method can switch the direction of the matrix to be executed."
 795	Matrix	eachVector		param	array_function	Function(array)	
 796	Matrix	eachVector		param	dimtype	0/"auto", 1/"row", 2/"column", 3/"both"	
 797	Matrix	eachVector		returns	dimtype	処理実行後の行列	
@@ -854,13 +861,14 @@ Estimate the matrix by extracting parts like numbers."
 806	Matrix	setMatrix		param	replace	変更内容の行列	
 807	Matrix	setMatrix		param	isUpOffset	位置のオフセットを1にするか	
 808	Matrix	setMatrix		returns	isUpOffset		
-809	Matrix	getComplex		desc		行列内の指定した箇所の値	
+809	Matrix	getComplex		desc		行列内の指定した箇所の値	"Returns the specified element in the matrix.
+Each element of the matrix is composed of complex numbers."
 810	Matrix	getComplex		param	row_or_pos	行列なら行番号, ベクトルの場合は値の位置番号	
 811	Matrix	getComplex		param	col	列番号（行列の場合は指定する）	
 812	Matrix	getComplex		returns	col		
 813	Matrix	intValue	get	desc		行列の最初の要素の整数値	Integer value of the first element of the matrix.
 814	Matrix	intValue	get	returns			
-815	Matrix	doubleValue	get	desc		行列の最初の要素の実数値	
+815	Matrix	doubleValue	get	desc		行列の最初の要素の実数値	Real value of first element of the matrix.
 816	Matrix	doubleValue	get	returns			
 817	Matrix	scalar	get	desc		行列の最初の要素	First element of this matrix.
 818	Matrix	scalar	get	returns			
@@ -884,14 +892,14 @@ Estimate the matrix by extracting parts like numbers."
 836	Matrix	trace		desc		トレース	"Trace of a matrix.
 Sum of diagonal elements."
 837	Matrix	trace		returns		trace(A)	
-838	Matrix	det		desc		行列式	
+838	Matrix	det		desc		行列式	Determinant.
 839	Matrix	det		returns		|A|	
 840	Matrix	memset	static	desc		指定した数値で初期化	Creates a matrix composed of the specified number.
 841	Matrix	memset	static	param	number	初期値	
 842	Matrix	memset	static	param	dimension	次元数	
 843	Matrix	memset	static	param	column_length	列数	
 844	Matrix	memset	static	returns	column_length		
-845	Matrix	eye	static	desc		単位行列を生成	
+845	Matrix	eye	static	desc		単位行列を生成	Return identity matrix.
 846	Matrix	eye	static	param	dimension	次元数	
 847	Matrix	eye	static	param	column_length	列数	
 848	Matrix	eye	static	returns	column_length		
@@ -911,7 +919,8 @@ Sum of diagonal elements."
 862	Matrix	randn	static	param	dimension	次元数	
 863	Matrix	randn	static	param	column_length	列数	
 864	Matrix	randn	static	returns	column_length		
-865	Matrix	diag		desc		行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成	
+865	Matrix	diag		desc		行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成	"If matrix, generate diagonal column vector.
+If vector, generate a matrix with diagonal elements."
 866	Matrix	diag		returns		行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成	
 867	Matrix	isScalar		desc		スカラー値の判定	Return true if the matrix is ​​scalar.
 868	Matrix	isScalar		returns			
@@ -984,7 +993,7 @@ Sum of diagonal elements."
 933	Matrix	mul		desc		乗算	Multiply.
 934	Matrix	mul		param	number		
 935	Matrix	mul		returns	number	A * B	
-936	Matrix	div		desc		割り算	
+936	Matrix	div		desc		割り算	Divide.
 937	Matrix	div		param	number		
 938	Matrix	div		returns	number	A / B	
 939	Matrix	pow		desc		累乗（整数に対応）	"Power function.
@@ -1061,9 +1070,9 @@ Supports only integers."
 996	Matrix	negate		returns		-A	
 997	Matrix	sqrt		desc		平方根	Square root.
 998	Matrix	sqrt		returns		sqrt(A)	
-999	Matrix	log		desc		対数	Logarithm.
+999	Matrix	log		desc		対数	Logarithmic function.
 1000	Matrix	log		returns		log(A)	
-1001	Matrix	exp		desc		指数	
+1001	Matrix	exp		desc		指数	Exponential function.
 1002	Matrix	exp		returns		exp(A)	
 1003	Matrix	sin		desc		sin	Sine function.
 1004	Matrix	sin		returns		sin(A)	
@@ -1076,15 +1085,15 @@ Supports only integers."
 1011	Matrix	atan2		desc		atan2	
 1012	Matrix	atan2		param	number	スカラー	
 1013	Matrix	atan2		returns	number	atan2(Y, X)	
-1014	Matrix	floor		desc		floor	
+1014	Matrix	floor		desc		floor	Floor.
 1015	Matrix	floor		returns		floor(A)	
 1016	Matrix	ceil		desc		ceil	
 1017	Matrix	ceil		returns		ceil(A)	
 1018	Matrix	round		desc		四捨五入	Rounding to the nearest integer.
 1019	Matrix	round		returns		round(A)	
-1020	Matrix	fix		desc		整数化	
+1020	Matrix	fix		desc		整数化	To integer rounded down to the nearest.
 1021	Matrix	fix		returns		fix(A)	
-1022	Matrix	fract		desc		小数部の抽出	
+1022	Matrix	fract		desc		小数部の抽出	Fraction.
 1023	Matrix	fract		returns		fract(A)	
 1024	Matrix	sinc		desc		sinc	Normalized sinc function.
 1025	Matrix	sinc		returns		sinc(A)	
@@ -1129,11 +1138,11 @@ Initialized with 0 when expanding."
 1057	Matrix	_exchangeColumn		param	exchange_column_index1	行番号1	
 1058	Matrix	_exchangeColumn		param	exchange_column_index2	行番号2	
 1059	Matrix	_exchangeColumn		returns	exchange_column_index2	処理実行後の行列	
-1060	Matrix	exchangeRow		desc		行列内の行を交換	
+1060	Matrix	exchangeRow		desc		行列内の行を交換	Swap rows in the matrix.
 1061	Matrix	exchangeRow		param	exchange_row_index1	行番号1	
 1062	Matrix	exchangeRow		param	exchange_row_index2	行番号2	
 1063	Matrix	exchangeRow		returns	exchange_row_index2	処理実行後の行列	
-1064	Matrix	exchangeColumn		desc		行列内の列を交換	
+1064	Matrix	exchangeColumn		desc		行列内の列を交換	Swap columns in the matrix.
 1065	Matrix	exchangeColumn		param	exchange_column_index1	行番号1	
 1066	Matrix	exchangeColumn		param	exchange_column_index2	行番号2	
 1067	Matrix	exchangeColumn		returns	exchange_column_index2	処理実行後の行列	
@@ -1173,11 +1182,11 @@ The number of elements in the matrix doesn't increase or decrease."
 1098	Matrix	reshape		param	row_length	新しい行の長さ	
 1099	Matrix	reshape		param	column_length	新しい列の長さ	
 1100	Matrix	reshape		returns	column_length	処理実行後の行列	
-1101	Matrix	fliplr		desc		行列を左右反転	
+1101	Matrix	fliplr		desc		行列を左右反転	Flip this matrix left and right.
 1102	Matrix	fliplr		returns		処理実行後の行列	
-1103	Matrix	flipud		desc		行列を上下反転	
+1103	Matrix	flipud		desc		行列を上下反転	Flip this matrix up and down.
 1104	Matrix	flipud		returns		処理実行後の行列	
-1105	Matrix	flip		desc		行列を反転	
+1105	Matrix	flip		desc		行列を反転	Flip this matrix.
 1106	Matrix	flip		param	type		
 1107	Matrix	flip		returns	type	処理実行後の行列	
 1108	Matrix	indexsort		desc		インデックスソート	Index sort.
@@ -1205,7 +1214,9 @@ The number of elements in the matrix doesn't increase or decrease."
 1130	Matrix	tridiagonalize		desc		対称行列の三重対角化	"Tridiagonalization of symmetric matrix.
 * Don't support complex numbers."
 1131	Matrix	tridiagonalize		returns		P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致	
-1132	Matrix	eig		desc		対称行列の固有値分解	
+1132	Matrix	eig		desc		"対称行列の固有値分解
+実数での計算のみ対応"	"Eigendecomposition of a matrix.
+This function only supports real symmetric matrices."
 1133	Matrix	eig		returns		V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列	
 1134	Matrix	svd		desc		特異値分解	Singular Value Decomposition (SVD).
 1135	Matrix	svd		returns		U*S*V'=A	
@@ -1213,23 +1224,23 @@ The number of elements in the matrix doesn't increase or decrease."
 1137	Matrix	inv		returns		A^-1	
 1138	Matrix	pinv		desc		疑似逆行列	Pseudo-inverse matrix.
 1139	Matrix	pinv		returns		A^+	
-1140	Matrix	gammaln		desc		対数ガンマ関数	
+1140	Matrix	gammaln		desc		対数ガンマ関数	Log-gamma function.
 1141	Matrix	gammaln		returns			
-1142	Matrix	gamma		desc		ガンマ関数	
+1142	Matrix	gamma		desc		ガンマ関数	Gamma function.
 1143	Matrix	gamma		returns			
-1144	Matrix	gammainc		desc		不完全ガンマ関数	
+1144	Matrix	gammainc		desc		不完全ガンマ関数	Incomplete gamma function.
 1145	Matrix	gammainc		param	a		
 1146	Matrix	gammainc		param	tail	lower/upper	
 1147	Matrix	gammainc		returns	tail		
-1148	Matrix	gampdf		desc		ガンマ分布の確率密度関数	
+1148	Matrix	gampdf		desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 1149	Matrix	gampdf		param	k	形状母数	
 1150	Matrix	gampdf		param	s	尺度母数	
 1151	Matrix	gampdf		returns	s		
-1152	Matrix	gamcdf		desc		ガンマ分布の確率密度関数	
+1152	Matrix	gamcdf		desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 1153	Matrix	gamcdf		param	k	形状母数	
 1154	Matrix	gamcdf		param	s	尺度母数	
 1155	Matrix	gamcdf		returns	s		
-1156	Matrix	gaminv		desc		ガンマ分布の累積分布関数の逆関数	
+1156	Matrix	gaminv		desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 1157	Matrix	gaminv		param	k	形状母数	
 1158	Matrix	gaminv		param	s	尺度母数	
 1159	Matrix	gaminv		returns	s		
@@ -1253,14 +1264,14 @@ The number of elements in the matrix doesn't increase or decrease."
 1177	Matrix	betainv		param	a		
 1178	Matrix	betainv		param	b		
 1179	Matrix	betainv		returns	b		
-1180	Matrix	factorial		desc		x! 階乗関数	
+1180	Matrix	factorial		desc		階乗関数	Factorial function, x!.
 1181	Matrix	factorial		returns			
 1182	Matrix	nchoosek		desc		二項係数またはすべての組合わせ (nCk)	Binomial coefficient, number of all combinations, nCk.
 1183	Matrix	nchoosek		param	k		
 1184	Matrix	nchoosek		returns	k		
-1185	Matrix	erf		desc		誤差関数	
+1185	Matrix	erf		desc		誤差関数	Error function.
 1186	Matrix	erf		returns			
-1187	Matrix	erfc		desc		相補誤差関数	
+1187	Matrix	erfc		desc		相補誤差関数	Complementary error function.
 1188	Matrix	erfc		returns			
 1189	Matrix	normpdf		desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
 1190	Matrix	normpdf		param	u	平均値	
@@ -1270,7 +1281,7 @@ The number of elements in the matrix doesn't increase or decrease."
 1194	Matrix	normcdf		param	u	平均値	
 1195	Matrix	normcdf		param	s	分散	
 1196	Matrix	normcdf		returns	s		
-1197	Matrix	norminv		desc		正規分布の累積分布関数の逆関数	Inverse of CDF of normal distribution.
+1197	Matrix	norminv		desc		正規分布の累積分布関数の逆関数	Inverse function of probability density function (PDF) of normal distribution.
 1198	Matrix	norminv		param	u	平均値	
 1199	Matrix	norminv		param	s	分散	
 1200	Matrix	norminv		returns	s		
@@ -1299,15 +1310,15 @@ The number of elements in the matrix doesn't increase or decrease."
 1223	Matrix	chi2inv		desc		カイ二乗分布の累積分布関数の逆関数	
 1224	Matrix	chi2inv		param	k	自由度	
 1225	Matrix	chi2inv		returns	k		
-1226	Matrix	fpdf		desc		F分布の確率密度関数	
+1226	Matrix	fpdf		desc		F分布の確率密度関数	Probability density function (PDF) of F-distribution.
 1227	Matrix	fpdf		param	d1	分子の自由度	
 1228	Matrix	fpdf		param	d2	分母の自由度	
 1229	Matrix	fpdf		returns	d2		
-1230	Matrix	fcdf		desc		F分布の累積分布関数	
+1230	Matrix	fcdf		desc		F分布の累積分布関数	Cumulative distribution function (CDF) of F-distribution.
 1231	Matrix	fcdf		param	d1	分子の自由度	
 1232	Matrix	fcdf		param	d2	分母の自由度	
 1233	Matrix	fcdf		returns	d2		
-1234	Matrix	finv		desc		F分布の累積分布関数の逆関数	
+1234	Matrix	finv		desc		F分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of F-distribution.
 1235	Matrix	finv		param	d1	分子の自由度	
 1236	Matrix	finv		param	d2	分母の自由度	
 1237	Matrix	finv		returns	d2		
@@ -1326,7 +1337,7 @@ The number of elements in the matrix doesn't increase or decrease."
 1250	Matrix	prod		desc		配列の積	Product of array elements.
 1251	Matrix	prod		param	type		
 1252	Matrix	prod		returns	type		
-1253	Matrix	geomean		desc		相乗平均／幾何平均	
+1253	Matrix	geomean		desc		相乗平均／幾何平均	Geometric mean.
 1254	Matrix	geomean		param	type		
 1255	Matrix	geomean		returns	type		
 1256	Matrix	median		desc		中央値	Median.
@@ -1362,7 +1373,7 @@ The number of elements in the matrix doesn't increase or decrease."
 1286	Matrix	sort		desc		ソート	Sort.
 1287	Matrix	sort		param	type		
 1288	Matrix	sort		returns	type		
-1289	Matrix	fft		desc		離散フーリエ変換	
+1289	Matrix	fft		desc		離散フーリエ変換	Discrete Fourier transform (DFT).
 1290	Matrix	fft		param	type		
 1291	Matrix	fft		returns	type	fft(x)	
 1292	Matrix	ifft		desc		逆離散フーリエ変換	Inverse discrete Fourier transform (IDFT).
@@ -1404,10 +1415,11 @@ The number of elements in the matrix doesn't increase or decrease."
 1328	Matrix	hamming	static	param	size	長さ	
 1329	Matrix	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	
 1330	Matrix	hamming	static	returns	periodic	列ベクトル	
-1331	Matrix	fftshift		desc		FFTシフト	
+1331	Matrix	fftshift		desc		FFTシフト	"FFT shift.
+Circular shift beginning at the center of the signal."
 1332	Matrix	fftshift		param	type		
 1333	Matrix	fftshift		returns	type		
-1334	MathContext	MathContext	export default class	desc		BigDecimal用の環境設定	
+1334	MathContext	MathContext	export default class	desc		BigDecimal用の環境設定	Configuration class for BigDecimal.
 1335	MathContext	constructor		desc		任意精度の環境設定データ	
 1336	MathContext	constructor		param	precision_or_name	精度を数値で指定するか、設定自体を文字列で指定する	
 1337	MathContext	constructor		param	roundingMode	丸めモード	
@@ -1582,10 +1594,12 @@ Error if you need to round it."
 1449	LinearAlgebraTool	house	const	param	index_max	最大(この値は含めない)	
 1450	LinearAlgebraTool	house	const	returns	index_max		
 1451	LinearAlgebraTool	eig	static	desc		"対称行列の固有値分解
-実数での計算のみ対応"	
+実数での計算のみ対応"	"Eigendecomposition of a matrix.
+This function only supports real symmetric matrices."
 1452	LinearAlgebraTool	eig	static	param	mat	対称行列	
 1453	LinearAlgebraTool	eig	static	returns	mat		
-1454	LinearAlgebraTool	doGramSchmidtOrthonormalization	static	desc		行列をベクトルと見立て、正規直行化し、QとRの行列を作る	
+1454	LinearAlgebraTool	doGramSchmidtOrthonormalization	static	desc		行列をベクトルと見立て、正規直行化し、QとRの行列を作る	"Treat matrices as vectors, make them orthonormal, and make matrices of Q and R.
+The method of Gram-Schmidt orthonormalization is used."
 1455	LinearAlgebraTool	doGramSchmidtOrthonormalization	static	param	mat	正方行列	
 1456	LinearAlgebraTool	doGramSchmidtOrthonormalization	static	returns	mat		
 1457	LinearAlgebraTool	createOrthogonalVector	static	desc		行列の全行ベクトルに対して、直行したベクトルを作成する	
@@ -1627,7 +1641,7 @@ Error if you need to round it."
 Sum of diagonal elements."
 1493	LinearAlgebra	trace	static	param	mat		
 1494	LinearAlgebra	trace	static	returns	mat		
-1495	LinearAlgebra	det	static	desc		行列式	
+1495	LinearAlgebra	det	static	desc		行列式	Determinant.
 1496	LinearAlgebra	det	static	param	mat		
 1497	LinearAlgebra	det	static	returns	mat	|A|	
 1498	LinearAlgebra	lup	static	desc		LUP分解	LUP decomposition.
@@ -1647,7 +1661,9 @@ Sum of diagonal elements."
 * Don't support complex numbers."
 1512	LinearAlgebra	tridiagonalize	static	param	mat	A	
 1513	LinearAlgebra	tridiagonalize	static	returns	mat	P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致	
-1514	LinearAlgebra	eig	static	desc		対称行列の固有値分解	
+1514	LinearAlgebra	eig	static	desc		"対称行列の固有値分解
+実数での計算のみ対応"	"Eigendecomposition of a matrix.
+This function only supports real symmetric matrices."
 1515	LinearAlgebra	eig	static	param	mat	A	
 1516	LinearAlgebra	eig	static	returns	mat	V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列	
 1517	LinearAlgebra	svd	static	desc		特異値分解	Singular Value Decomposition (SVD).
@@ -1667,7 +1683,7 @@ Sum of diagonal elements."
 1531	RandomTool	multiplication32	static	param	x1		
 1532	RandomTool	multiplication32	static	param	x2		
 1533	RandomTool	multiplication32	static	returns	x2		
-1534	Random	Random	export default class	desc		乱数クラス	
+1534	Random	Random	export default class	desc		乱数クラス	Random number class.
 1535	Random	constructor		desc		乱数を初期化する	
 1536	Random	constructor		param	seed	乱数のシード値、指定しない場合は時刻から作成する	
 1537	Random	this.x		desc		乱数配列	Random number array.
@@ -1677,7 +1693,7 @@ Sum of diagonal elements."
 1541	Random	this.xi		desc		乱数配列の何番目を使用しているか	Number of random number array to use.
 1542	Random	this.haveNextNextGaussian		desc		ガウシアン分布に基づく乱数を保持しているか	Is keep random numbers based on Gaussian distribution.
 1543	Random	this.nextNextGaussian		desc		次のガウシアン分布に基づく乱数	Next random number based on Gaussian distribution.
-1544	Random	genrand_int32		desc		32ビットの乱数	
+1544	Random	genrand_int32		desc		32ビットの乱数	32-bit random number.
 1545	Random	genrand_int32		returns		- 32ビットの乱数	
 1546	Random	next		desc		指定したビット数以下で表せられる乱数	Random number of specified bit length.
 1547	Random	next		param	bits	必要なビット数（64まで可能）	
@@ -1702,7 +1718,7 @@ Sum of diagonal elements."
 This random number is a distribution with an average value of 0 and a standard deviation of 1."
 1566	Random	nextGaussian		returns			
 1567	Random	Random.seedUniquifier		desc		シードを設定しない場合の乱数作成用整数	Random number creation integer when no seed is set.
-1568	FFT	FFT	class	desc		高速フーリエ変換用クラス	
+1568	FFT	FFT	class	desc		高速フーリエ変換用クラス	Fast Fourier Transform (FFT) Class.
 1569	FFT	bit_reverse_32	static	desc		ビット反転	
 1570	FFT	bit_reverse_32	static	param	x	ビット反転させる値（32ビット整数）	
 1571	FFT	bit_reverse_32	static	returns	x	ビット反転した値	
@@ -1719,7 +1735,7 @@ This random number is a distribution with an average value of 0 and a standard d
 1582	FFT	this.fft_re		desc		複素数同士の掛け算に使用する実部テーブル	Real part table used for multiplication of complex numbers.
 1583	FFT	this.fft_im		desc		複素数同士の掛け算に使用する虚部テーブル	Imaginary table used for multiplication of complex numbers.
 1584	FFT	delete		desc		中のデータを消去する	
-1585	FFT	fft		desc		離散フーリエ変換	
+1585	FFT	fft		desc		離散フーリエ変換	Discrete Fourier transform (DFT).
 1586	FFT	fft		param	real	実数部	
 1587	FFT	fft		param	imag	虚数部	
 1588	FFT	fft		returns	imag		
@@ -1736,10 +1752,11 @@ FFTで用いるテーブルなどをキャッシュ"
 1598	Cache	this.table_max		desc		キャッシュする最大数	Maximum number of caches.
 1599	Cache	this.table_size		desc		現在キャッシュしている数	Number of caches currently.
 1600	Cache	this.table		desc		キャッシュテーブル	Cache table.
-1601	Cache	get		desc		指定した長さのデータを作成する。キャッシュに存在すればキャッシュから使用する。	
+1601	Cache	get		desc		指定した長さのデータを作成する。キャッシュに存在すればキャッシュから使用する。	"Create a class initialized with the specified data length.
+Use from cache if it exists in cache."
 1602	Cache	get		param	size	作成するオブジェクトのサイズ	
 1603	Cache	get		returns	size		
-1604	Cache	fft_cache	const	desc		FFT用のキャッシュ	
+1604	Cache	fft_cache	const	desc		FFT用のキャッシュ	Cache for FFT.
 1605	DCT	DCT	class	desc		離散コサイン変換のクラス	
 1606	DCT	constructor		desc		DCTクラスの初期化	
 1607	DCT	constructor		param	size	信号の長さ	
@@ -1761,7 +1778,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1621	SignalTool	isContainsZero	static	desc		配列に0が含まれるか	Returns true if the array contains 0.
 1622	SignalTool	isContainsZero	static	param	x	調べたい配列	
 1623	SignalTool	isContainsZero	static	returns	x		
-1624	SignalTool	fft	static	desc		離散フーリエ変換	
+1624	SignalTool	fft	static	desc		離散フーリエ変換	Discrete Fourier transform (DFT).
 1625	SignalTool	fft	static	param	real	実数部	
 1626	SignalTool	fft	static	param	imag	虚数部	
 1627	SignalTool	fft	static	returns	imag		
@@ -1805,7 +1822,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1665	SignalTool	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	
 1666	SignalTool	hamming	static	returns	periodic		
 1667	Signal	Signal	export default class	desc		Matrix用の信号処理用の計算クラス	
-1668	Signal	fft	static	desc		離散フーリエ変換	
+1668	Signal	fft	static	desc		離散フーリエ変換	Discrete Fourier transform (DFT).
 1669	Signal	fft	static	param	x		
 1670	Signal	fft	static	param	type		
 1671	Signal	fft	static	returns	type	fft(x)	
@@ -1825,7 +1842,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1685	Signal	idct	static	param	X		
 1686	Signal	idct	static	param	type		
 1687	Signal	idct	static	returns	type	idct(x)	
-1688	Signal	fft2	static	desc		2次元の離散フーリエ変換	
+1688	Signal	fft2	static	desc		2次元の離散フーリエ変換	Discrete two-dimensional Fourier transform (2D DFT).
 1689	Signal	fft2	static	param	x		
 1690	Signal	fft2	static	returns	x		
 1691	Signal	ifft2	static	desc		2次元の逆離散フーリエ変換	Inverse discrete two-dimensional Fourier transform (2D IDFT),
@@ -1858,12 +1875,13 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1718	Signal	hamming	static	param	size	長さ	
 1719	Signal	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	
 1720	Signal	hamming	static	returns	periodic	列ベクトル	
-1721	Signal	fftshift	static	desc		FFTシフト	
+1721	Signal	fftshift	static	desc		FFTシフト	"FFT shift.
+Circular shift beginning at the center of the signal."
 1722	Signal	fftshift	static	param	x		
 1723	Signal	fftshift	static	param	type		
 1724	Signal	fftshift	static	returns	type		
 1725	StatisticsTool	StatisticsTool	class	desc		実数専用の統計処理用の関数集	Collection of statistical functions using real numbers.
-1726	StatisticsTool	gammaln	static	desc		gammaln(x) 対数ガンマ関数	
+1726	StatisticsTool	gammaln	static	desc		対数ガンマ関数	Log-gamma function.
 1727	StatisticsTool	gammaln	static	param	x		
 1728	StatisticsTool	gammaln	static	returns	x		
 1729	StatisticsTool	q_gamma	static	desc		不完全ガンマ関数 上側	Incomplete gamma function upper side.
@@ -1876,25 +1894,25 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1736	StatisticsTool	p_gamma	static	param	a		
 1737	StatisticsTool	p_gamma	static	param	gammaln_a		
 1738	StatisticsTool	p_gamma	static	returns	gammaln_a		
-1739	StatisticsTool	gamma	static	desc		gamma(z) ガンマ関数	
+1739	StatisticsTool	gamma	static	desc		ガンマ関数	Gamma function.
 1740	StatisticsTool	gamma	static	param	z		
 1741	StatisticsTool	gamma	static	returns	z		
-1742	StatisticsTool	gammainc	static	desc		gammainc(x, a, tail) 不完全ガンマ関数	
+1742	StatisticsTool	gammainc	static	desc		不完全ガンマ関数	Incomplete gamma function.
 1743	StatisticsTool	gammainc	static	param	x		
 1744	StatisticsTool	gammainc	static	param	a		
 1745	StatisticsTool	gammainc	static	param	tail	lower(デフォルト)/upper	
 1746	StatisticsTool	gammainc	static	returns	tail		
-1747	StatisticsTool	gampdf	static	desc		gampdf(x, k, s) ガンマ分布の確率密度関数	
+1747	StatisticsTool	gampdf	static	desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 1748	StatisticsTool	gampdf	static	param	x		
 1749	StatisticsTool	gampdf	static	param	k	形状母数	
 1750	StatisticsTool	gampdf	static	param	s	尺度母数	
 1751	StatisticsTool	gampdf	static	returns	s		
-1752	StatisticsTool	gamcdf	static	desc		gamcdf(x, k, s) ガンマ分布の累積分布関数	
+1752	StatisticsTool	gamcdf	static	desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 1753	StatisticsTool	gamcdf	static	param	x		
 1754	StatisticsTool	gamcdf	static	param	k	形状母数	
 1755	StatisticsTool	gamcdf	static	param	s	尺度母数	
 1756	StatisticsTool	gamcdf	static	returns	s		
-1757	StatisticsTool	gaminv	static	desc		gaminv(p, k, s) ガンマ分布の累積分布関数の逆関数	
+1757	StatisticsTool	gaminv	static	desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 1758	StatisticsTool	gaminv	static	param	p		
 1759	StatisticsTool	gaminv	static	param	k	形状母数	
 1760	StatisticsTool	gaminv	static	param	s	尺度母数	
@@ -1937,17 +1955,17 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1797	StatisticsTool	betainv	static	param	a		
 1798	StatisticsTool	betainv	static	param	b		
 1799	StatisticsTool	betainv	static	returns	b		
-1800	StatisticsTool	factorial	static	desc		factorial(n) = n! 階乗関数	
+1800	StatisticsTool	factorial	static	desc		階乗関数	Factorial function, x!.
 1801	StatisticsTool	factorial	static	param	n		
 1802	StatisticsTool	factorial	static	returns	n		
 1803	StatisticsTool	nchoosek	static	desc		二項係数またはすべての組合わせ (nCk)	Binomial coefficient, number of all combinations, nCk.
 1804	StatisticsTool	nchoosek	static	param	n		
 1805	StatisticsTool	nchoosek	static	param	k		
 1806	StatisticsTool	nchoosek	static	returns	k	nCk	
-1807	StatisticsTool	erf	static	desc		erf(x) 誤差関数	
+1807	StatisticsTool	erf	static	desc		誤差関数	Error function.
 1808	StatisticsTool	erf	static	param	x		
 1809	StatisticsTool	erf	static	returns	x		
-1810	StatisticsTool	erfc	static	desc		erfc(x) 相補誤差関数	
+1810	StatisticsTool	erfc	static	desc		相補誤差関数	Complementary error function.
 1811	StatisticsTool	erfc	static	param	x		
 1812	StatisticsTool	erfc	static	returns	x		
 1813	StatisticsTool	normpdf	static	desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
@@ -1960,7 +1978,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1820	StatisticsTool	normcdf	static	param	u	平均値	
 1821	StatisticsTool	normcdf	static	param	s	分散	
 1822	StatisticsTool	normcdf	static	returns	s		
-1823	StatisticsTool	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse of CDF of normal distribution.
+1823	StatisticsTool	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse function of probability density function (PDF) of normal distribution.
 1824	StatisticsTool	norminv	static	param	p	確率	
 1825	StatisticsTool	norminv	static	param	u	平均値	
 1826	StatisticsTool	norminv	static	param	s	分散	
@@ -1998,46 +2016,46 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1858	StatisticsTool	chi2inv	static	param	p	確率	
 1859	StatisticsTool	chi2inv	static	param	k	自由度	
 1860	StatisticsTool	chi2inv	static	returns	k		
-1861	StatisticsTool	fpdf	static	desc		fpdf(x, d1, d2) F分布の確率密度関数	
+1861	StatisticsTool	fpdf	static	desc		F分布の確率密度関数	Probability density function (PDF) of F-distribution.
 1862	StatisticsTool	fpdf	static	param	x		
 1863	StatisticsTool	fpdf	static	param	d1	分子の自由度	
 1864	StatisticsTool	fpdf	static	param	d2	分母の自由度	
 1865	StatisticsTool	fpdf	static	returns	d2		
-1866	StatisticsTool	fcdf	static	desc		fcdf(x, d1, d2) F分布の累積分布関数	
+1866	StatisticsTool	fcdf	static	desc		F分布の累積分布関数	Cumulative distribution function (CDF) of F-distribution.
 1867	StatisticsTool	fcdf	static	param	x		
 1868	StatisticsTool	fcdf	static	param	d1	分子の自由度	
 1869	StatisticsTool	fcdf	static	param	d2	分母の自由度	
 1870	StatisticsTool	fcdf	static	returns	d2		
-1871	StatisticsTool	finv	static	desc		finv(p, d1, d2) F分布の累積分布関数の逆関数	
+1871	StatisticsTool	finv	static	desc		F分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of F-distribution.
 1872	StatisticsTool	finv	static	param	p	確率	
 1873	StatisticsTool	finv	static	param	d1	分子の自由度	
 1874	StatisticsTool	finv	static	param	d2	分母の自由度	
 1875	StatisticsTool	finv	static	returns	d2		
 1876	StatisticsTool	isStr	const	desc		文字列か判定	typeof this === string
 1877	StatisticsTool	isStr	const	param			
-1878	StatisticsComplex	StatisticsComplex	class	desc		Complexクラスから利用する統計処理関数集	Collection of statistical functions used from Complex class.
-1879	StatisticsComplex	gammaln	static	desc		gammaln(x) 対数ガンマ関数	
+1878	StatisticsComplex	StatisticsComplex	class	desc		Complexクラスから利用する統計処理関数集	Collection of statistical functions used from the Complex class.
+1879	StatisticsComplex	gammaln	static	desc		対数ガンマ関数	Log-gamma function.
 1880	StatisticsComplex	gammaln	static	param	x		
 1881	StatisticsComplex	gammaln	static	returns	x		
-1882	StatisticsComplex	gamma	static	desc		gamma(z) ガンマ関数	
+1882	StatisticsComplex	gamma	static	desc		ガンマ関数	Gamma function.
 1883	StatisticsComplex	gamma	static	param	z		
 1884	StatisticsComplex	gamma	static	returns	z		
-1885	StatisticsComplex	gammainc	static	desc		gammainc(x, a, tail) 不完全ガンマ関数	
+1885	StatisticsComplex	gammainc	static	desc		不完全ガンマ関数	Incomplete gamma function.
 1886	StatisticsComplex	gammainc	static	param	x		
 1887	StatisticsComplex	gammainc	static	param	a		
 1888	StatisticsComplex	gammainc	static	param	tail	lower/upper	
 1889	StatisticsComplex	gammainc	static	returns	tail		
-1890	StatisticsComplex	gampdf	static	desc		gampdf(x, k, s) ガンマ分布の確率密度関数	
+1890	StatisticsComplex	gampdf	static	desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 1891	StatisticsComplex	gampdf	static	param	x		
 1892	StatisticsComplex	gampdf	static	param	k	形状母数	
 1893	StatisticsComplex	gampdf	static	param	s	尺度母数	
 1894	StatisticsComplex	gampdf	static	returns	s		
-1895	StatisticsComplex	gamcdf	static	desc		gamcdf(x, k, s) ガンマ分布の確率密度関数	
+1895	StatisticsComplex	gamcdf	static	desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 1896	StatisticsComplex	gamcdf	static	param	x		
 1897	StatisticsComplex	gamcdf	static	param	k	形状母数	
 1898	StatisticsComplex	gamcdf	static	param	s	尺度母数	
 1899	StatisticsComplex	gamcdf	static	returns	s		
-1900	StatisticsComplex	gaminv	static	desc		gaminv(p, k, s) ガンマ分布の累積分布関数の逆関数	
+1900	StatisticsComplex	gaminv	static	desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 1901	StatisticsComplex	gaminv	static	param	p		
 1902	StatisticsComplex	gaminv	static	param	k	形状母数	
 1903	StatisticsComplex	gaminv	static	param	s	尺度母数	
@@ -2067,17 +2085,17 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1927	StatisticsComplex	betainv	static	param	a		
 1928	StatisticsComplex	betainv	static	param	b		
 1929	StatisticsComplex	betainv	static	returns	b		
-1930	StatisticsComplex	factorial	static	desc		factorial(n), n! 階乗関数	
+1930	StatisticsComplex	factorial	static	desc		階乗関数	Factorial function, x!.
 1931	StatisticsComplex	factorial	static	param	n		
 1932	StatisticsComplex	factorial	static	returns	n		
 1933	StatisticsComplex	nchoosek	static	desc		二項係数またはすべての組合わせ (nCk)	Binomial coefficient, number of all combinations, nCk.
 1934	StatisticsComplex	nchoosek	static	param	n		
 1935	StatisticsComplex	nchoosek	static	param	k		
 1936	StatisticsComplex	nchoosek	static	returns	k		
-1937	StatisticsComplex	erf	static	desc		erf(x) 誤差関数	
+1937	StatisticsComplex	erf	static	desc		誤差関数	Error function.
 1938	StatisticsComplex	erf	static	param	x		
 1939	StatisticsComplex	erf	static	returns	x		
-1940	StatisticsComplex	erfc	static	desc		erfc(x) 相補誤差関数	
+1940	StatisticsComplex	erfc	static	desc		相補誤差関数	Complementary error function.
 1941	StatisticsComplex	erfc	static	param	x		
 1942	StatisticsComplex	erfc	static	returns	x		
 1943	StatisticsComplex	normpdf	static	desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
@@ -2090,7 +2108,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1950	StatisticsComplex	normcdf	static	param	u	平均値	
 1951	StatisticsComplex	normcdf	static	param	s	分散	
 1952	StatisticsComplex	normcdf	static	returns	s		
-1953	StatisticsComplex	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse of CDF of normal distribution.
+1953	StatisticsComplex	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse function of probability density function (PDF) of normal distribution.
 1954	StatisticsComplex	norminv	static	param	x		
 1955	StatisticsComplex	norminv	static	param	u	平均値	
 1956	StatisticsComplex	norminv	static	param	s	分散	
@@ -2128,44 +2146,44 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1988	StatisticsComplex	chi2inv	static	param	p		
 1989	StatisticsComplex	chi2inv	static	param	k	自由度	
 1990	StatisticsComplex	chi2inv	static	returns	k		
-1991	StatisticsComplex	fpdf	static	desc		fpdf(x, d1, d2) F分布の確率密度関数	
+1991	StatisticsComplex	fpdf	static	desc		F分布の確率密度関数	Probability density function (PDF) of F-distribution.
 1992	StatisticsComplex	fpdf	static	param	x		
 1993	StatisticsComplex	fpdf	static	param	d1	分子の自由度	
 1994	StatisticsComplex	fpdf	static	param	d2	分母の自由度	
 1995	StatisticsComplex	fpdf	static	returns	d2		
-1996	StatisticsComplex	fcdf	static	desc		fcdf(x, d1, d2) F分布の累積分布関数	
+1996	StatisticsComplex	fcdf	static	desc		F分布の累積分布関数	Cumulative distribution function (CDF) of F-distribution.
 1997	StatisticsComplex	fcdf	static	param	x		
 1998	StatisticsComplex	fcdf	static	param	d1	分子の自由度	
 1999	StatisticsComplex	fcdf	static	param	d2	分母の自由度	
 2000	StatisticsComplex	fcdf	static	returns	d2		
-2001	StatisticsComplex	finv	static	desc		finv(p, d1, d2) F分布の累積分布関数の逆関数	
+2001	StatisticsComplex	finv	static	desc		F分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of F-distribution.
 2002	StatisticsComplex	finv	static	param	p		
 2003	StatisticsComplex	finv	static	param	d1	分子の自由度	
 2004	StatisticsComplex	finv	static	param	d2	分母の自由度	
 2005	StatisticsComplex	finv	static	returns	d2		
-2006	Statistics	Statistics	export default class	desc		Matrix用の統計処理用の計算クラス	
-2007	Statistics	gammaln	static	desc		対数ガンマ関数	
+2006	Statistics	Statistics	export default class	desc		Matrixクラスから利用する統計処理関数集	Collection of statistical functions used from the Matrix class.
+2007	Statistics	gammaln	static	desc		対数ガンマ関数	Log-gamma function.
 2008	Statistics	gammaln	static	param	x		
 2009	Statistics	gammaln	static	returns	x		
-2010	Statistics	gamma	static	desc		ガンマ関数	
+2010	Statistics	gamma	static	desc		ガンマ関数	Gamma function.
 2011	Statistics	gamma	static	param	x		
 2012	Statistics	gamma	static	returns	x		
-2013	Statistics	gammainc	static	desc		不完全ガンマ関数	
+2013	Statistics	gammainc	static	desc		不完全ガンマ関数	Incomplete gamma function.
 2014	Statistics	gammainc	static	param	x		
 2015	Statistics	gammainc	static	param	a		
 2016	Statistics	gammainc	static	param	tail	lower/upper	
 2017	Statistics	gammainc	static	returns	tail		
-2018	Statistics	gampdf	static	desc		ガンマ分布の確率密度関数	
+2018	Statistics	gampdf	static	desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 2019	Statistics	gampdf	static	param	x		
 2020	Statistics	gampdf	static	param	k	形状母数	
 2021	Statistics	gampdf	static	param	s	尺度母数	
 2022	Statistics	gampdf	static	returns	s		
-2023	Statistics	gamcdf	static	desc		ガンマ分布の確率密度関数	
+2023	Statistics	gamcdf	static	desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 2024	Statistics	gamcdf	static	param	x		
 2025	Statistics	gamcdf	static	param	k	形状母数	
 2026	Statistics	gamcdf	static	param	s	尺度母数	
 2027	Statistics	gamcdf	static	returns	s		
-2028	Statistics	gaminv	static	desc		ガンマ分布の累積分布関数の逆関数	
+2028	Statistics	gaminv	static	desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 2029	Statistics	gaminv	static	param	x		
 2030	Statistics	gaminv	static	param	k	形状母数	
 2031	Statistics	gaminv	static	param	s	尺度母数	
@@ -2195,17 +2213,17 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 2055	Statistics	betainv	static	param	a		
 2056	Statistics	betainv	static	param	b		
 2057	Statistics	betainv	static	returns	b		
-2058	Statistics	factorial	static	desc		x! 階乗関数	
+2058	Statistics	factorial	static	desc		階乗関数	Factorial function, x!.
 2059	Statistics	factorial	static	param	x		
 2060	Statistics	factorial	static	returns	x		
 2061	Statistics	nchoosek	static	desc		二項係数またはすべての組合わせ (nCk)	Binomial coefficient, number of all combinations, nCk.
 2062	Statistics	nchoosek	static	param	x		
 2063	Statistics	nchoosek	static	param	k		
 2064	Statistics	nchoosek	static	returns	k		
-2065	Statistics	erf	static	desc		誤差関数	
+2065	Statistics	erf	static	desc		誤差関数	Error function.
 2066	Statistics	erf	static	param	x		
 2067	Statistics	erf	static	returns	x		
-2068	Statistics	erfc	static	desc		相補誤差関数	
+2068	Statistics	erfc	static	desc		相補誤差関数	Complementary error function.
 2069	Statistics	erfc	static	param	x		
 2070	Statistics	erfc	static	returns	x		
 2071	Statistics	normpdf	static	desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
@@ -2218,7 +2236,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 2078	Statistics	normcdf	static	param	u	平均値	
 2079	Statistics	normcdf	static	param	s	分散	
 2080	Statistics	normcdf	static	returns	s		
-2081	Statistics	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse of CDF of normal distribution.
+2081	Statistics	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse function of probability density function (PDF) of normal distribution.
 2082	Statistics	norminv	static	param	x		
 2083	Statistics	norminv	static	param	u	平均値	
 2084	Statistics	norminv	static	param	s	分散	
@@ -2256,17 +2274,17 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 2116	Statistics	chi2inv	static	param	x		
 2117	Statistics	chi2inv	static	param	k	自由度	
 2118	Statistics	chi2inv	static	returns	k		
-2119	Statistics	fpdf	static	desc		F分布の確率密度関数	
+2119	Statistics	fpdf	static	desc		F分布の確率密度関数	Probability density function (PDF) of F-distribution.
 2120	Statistics	fpdf	static	param	x		
 2121	Statistics	fpdf	static	param	d1	分子の自由度	
 2122	Statistics	fpdf	static	param	d2	分母の自由度	
 2123	Statistics	fpdf	static	returns	d2		
-2124	Statistics	fcdf	static	desc		F分布の累積分布関数	
+2124	Statistics	fcdf	static	desc		F分布の累積分布関数	Cumulative distribution function (CDF) of F-distribution.
 2125	Statistics	fcdf	static	param	x		
 2126	Statistics	fcdf	static	param	d1	分子の自由度	
 2127	Statistics	fcdf	static	param	d2	分母の自由度	
 2128	Statistics	fcdf	static	returns	d2		
-2129	Statistics	finv	static	desc		F分布の累積分布関数の逆関数	
+2129	Statistics	finv	static	desc		F分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of F-distribution.
 2130	Statistics	finv	static	param	x		
 2131	Statistics	finv	static	param	d1	分子の自由度	
 2132	Statistics	finv	static	param	d2	分母の自由度	
@@ -2291,7 +2309,7 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 2151	Statistics	prod	static	param	x		
 2152	Statistics	prod	static	param	type		
 2153	Statistics	prod	static	returns	type		
-2154	Statistics	geomean	static	desc		相乗平均／幾何平均	
+2154	Statistics	geomean	static	desc		相乗平均／幾何平均	Geometric mean.
 2155	Statistics	geomean	static	param	x		
 2156	Statistics	geomean	static	param	type		
 2157	Statistics	geomean	static	returns	type		
