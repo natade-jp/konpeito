@@ -50,7 +50,7 @@ class JSDocTranslater {
 			};
 			{
 				// 最後の関数名などを取り出す
-				const define_line = lines[lines.length - 1].match(/(((static|get|set|class|let|const)([ \t]+))*)?([\w\.\$]+)/)[0];
+				const define_line = lines[lines.length - 1].match(/(((static|get|set|class|let|const|export|default)([ \t]+))*)?([\w\.\$]+)/)[0];
 				const define_lines = define_line.split(/[ \t]+/);
 				type_data.name = define_lines.pop();
 				type_data.modifier = define_lines.join(" ");

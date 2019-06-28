@@ -31,4 +31,4 @@ for(const i in filelist) {
 const csv_obj = CSV.toCSVArrayFromJSONArray(type_list);
 const csv_text = CSV.create(csv_obj);
 
-File.saveTextFileWithBOM(type.destination + "translate.csv", csv_text);
+File.saveTextFileWithBOM(type.destination + "translate2.csv", csv_text);
