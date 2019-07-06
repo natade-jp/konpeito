@@ -579,7 +579,7 @@ If type conversion is unnecessary, return the value as it is."
 515	Complex	randn	static	returns			
 516	Complex	equals		desc		等式	Equals.
 517	Complex	equals		param	number		
-518	Complex	equals		param	epsilon	誤差を実数で指定	Numerical error of calculation.
+518	Complex	equals		param	epsilon	誤差を実数で指定	Calculation tolerance of calculation.
 519	Complex	equals		returns		A === B	A === B
 520	Complex	real	get	desc		実部	The real part of this Comlex.
 521	Complex	real	get	returns		real(A)	real(A)
@@ -608,7 +608,7 @@ Used to make a string."
 543	Complex	div		param	number		
 544	Complex	div		returns		A / B	A / B
 545	Complex	mod		desc		割り算の正の余り	Modulo, positive remainder of division.
-546	Complex	mod		param	number	複素数を含まない数値	
+546	Complex	mod		param	number	複素数を含まない数値	Divided value (real number only).
 547	Complex	mod		returns		A mod B	A mod B
 548	Complex	inv		desc		逆数	Inverse number of this value.
 549	Complex	inv		returns		1 / A	1 / A
@@ -617,7 +617,7 @@ Used to make a string."
 551	Complex	sign		returns		[-1,1] 複素数の場合はノルムを1にした値。	
 552	Complex	compareTo		desc		値同士を比較	Compare values.
 553	Complex	compareTo		param	number		
-554	Complex	compareTo		param	epsilon	誤差を実数で指定	Numerical error of calculation.
+554	Complex	compareTo		param	epsilon	誤差を実数で指定	Calculation tolerance of calculation.
 555	Complex	compareTo		returns		A > B ? 1 : (A === B ? 0 : -1)	A > B ? 1 : (A === B ? 0 : -1)
 556	Complex	max		desc		最大値	Maximum number.
 557	Complex	max		param	number		
@@ -630,22 +630,22 @@ Used to make a string."
 564	Complex	clip		param	max		
 565	Complex	clip		returns		min(max(x, min), max)	min(max(x, min), max)
 566	Complex	isInteger		desc		整数を判定	Return true if the value is integer.
-567	Complex	isInteger		param	epsilon	誤差を実数で指定	
+567	Complex	isInteger		param	epsilon	誤差を実数で指定	Calculation tolerance of calculation.
 568	Complex	isInteger		returns			
 569	Complex	isComplexInteger		desc		複素整数（整数も含む）を判定	Returns true if the vallue is complex integer (including normal integer).
-570	Complex	isComplexInteger		param	epsilon	誤差を実数で指定	
+570	Complex	isComplexInteger		param	epsilon	誤差を実数で指定	Calculation tolerance of calculation.
 571	Complex	isComplexInteger		returns		real(A) === 整数 && imag(A) === 整数	real(A) === integer && imag(A) === integer
 572	Complex	isZero		desc		0 を判定	this === 0
-573	Complex	isZero		param	epsilon	誤差を実数で指定	
+573	Complex	isZero		param	epsilon	誤差を実数で指定	Calculation tolerance of calculation.
 574	Complex	isZero		returns		A === 0	A === 0
 575	Complex	isOne		desc		1 を判定	this === 1
-576	Complex	isOne		param	epsilon	誤差を実数で指定	
+576	Complex	isOne		param	epsilon	誤差を実数で指定	Calculation tolerance of calculation.
 577	Complex	isOne		returns		A === 1	A === 1
 578	Complex	isComplex		desc		複素数（虚部が0以外）を判定	Returns true if the vallue is complex number (imaginary part is not 0).
-579	Complex	isComplex		param	epsilon	誤差を実数で指定	
+579	Complex	isComplex		param	epsilon	誤差を実数で指定	Calculation tolerance of calculation.
 580	Complex	isComplex		returns		imag(A) !== 0	imag(A) !== 0
 581	Complex	isReal		desc		実数を判定	Return true if the value is real number.
-582	Complex	isReal		param	epsilon	誤差を実数で指定	
+582	Complex	isReal		param	epsilon	誤差を実数で指定	Calculation tolerance of calculation.
 583	Complex	isReal		returns		imag(A) === 0	imag(A) === 0
 584	Complex	isNaN		desc		非数を判定	this === NaN
 585	Complex	isNaN		returns		isNaN(A)	isNaN(A)
@@ -758,43 +758,45 @@ Return the values of [-PI, PI] ."
 690	Complex	NaN		desc		非数	Not a Number.
 691	MatrixTool	MatrixTool	class	desc		Matrix 内で使用する関数集	Collection of functions used in Matrix.
 692	MatrixTool	toPositionArrayFromObject	static	desc		行列の位置を指定するデータから、実際の値を作成	Create actual values from data specifying matrix position.
-693	MatrixTool	toPositionArrayFromObject	static	param	data	調査する値	
-694	MatrixTool	toPositionArrayFromObject	static	param	max	":"が指定された時に初期化する配列の長さ	
-695	MatrixTool	toPositionArrayFromObject	static	param	geta	":"が指定された時に初期化する値のオフセット	
+693	MatrixTool	toPositionArrayFromObject	static	param	data	調査する値	A value indicating the position in a matrix.
+694	MatrixTool	toPositionArrayFromObject	static	param	max	":"が指定された時に初期化する配列の長さ	Length to initialize. (Used when ":" is specified at matrix creation.)
+695	MatrixTool	toPositionArrayFromObject	static	param	geta	":"が指定された時に初期化する値のオフセット	Offset at initialization. (Used when ":" is specified at matrix creation.)
 696	MatrixTool	toPositionArrayFromObject	static	returns			
 697	MatrixTool	match2	static	desc		マッチした文字列を除いた文字列も抽出可能なmatch関数	A match function that can also extract strings excluding matched strings.
-698	MatrixTool	match2	static	param	text	検索対象	
-699	MatrixTool	match2	static	param	regexp	検索したい正規表現	
+698	MatrixTool	match2	static	param	text	検索対象	Search target.
+699	MatrixTool	match2	static	param	regexp	検索したい正規表現	Regular expression.
 700	MatrixTool	match2	static	returns			
-701	MatrixTool	trimBracket	static	desc		ブラケットに囲まれていた場合に、前後のブラケットを除去	Removed front and back brackets when enclosed by brackets.
-702	MatrixTool	trimBracket	static	param	text	ブラケットを除去したい文字	
-703	MatrixTool	trimBracket	static	returns		除去した文字列（ブラケットがない場合は、null）	
-704	MatrixTool	toMatrixArrayFromStringForArrayJSON	static	desc		JSONで定義された文字列データからMatrix型のデータを作成する	Create Matrix type data from string data defined in JSON.
-705	MatrixTool	toMatrixArrayFromStringForArrayJSON	static	param	text	調査したい文字列([xx,xx,xx],[xx,xx,xx])	
-706	MatrixTool	toMatrixArrayFromStringForArrayJSON	static	returns		Matrix型で使用される内部の配列	
+701	MatrixTool	trimBracket	static	desc		ブラケットに囲まれていた場合に、前後のブラケットを除去	"Removed front and back brackets when enclosed by brackets.
+* Return null if the string has no brackets."
+702	MatrixTool	trimBracket	static	param	text	ブラケットを除去したい文字	String to be processed.
+703	MatrixTool	trimBracket	static	returns		除去した文字列（ブラケットがない場合は、null）	String after brackets removal or null.
+704	MatrixTool	toMatrixArrayFromStringForArrayJSON	static	desc		JSONで定義された文字列データからMatrix型のデータを作成する	"Create Matrix type data from string data defined in JSON.
+* For example, ""[xx,xx,xx], [xx,xx,xx]"""
+705	MatrixTool	toMatrixArrayFromStringForArrayJSON	static	param	text	調査したい文字列([xx,xx,xx],[xx,xx,xx])	String to be processed.
+706	MatrixTool	toMatrixArrayFromStringForArrayJSON	static	returns		Matrix型で使用される内部の配列	Internal array used by Matrix type.
 707	MatrixTool	InterpolationCalculation	static	desc		初期値と差分値と最終値から、その値が入った配列を作成する	Create a numeric array from initial values, difference values, and final values.
-708	MatrixTool	InterpolationCalculation	static	param	from	最初の値	
-709	MatrixTool	InterpolationCalculation	static	param	delta	差分	
-710	MatrixTool	InterpolationCalculation	static	param	to	繰り返す先の値	
-711	MatrixTool	InterpolationCalculation	static	param	is_include_last_number	最後の値を含めるか否か	
+708	MatrixTool	InterpolationCalculation	static	param	from	最初の値	Start value.
+709	MatrixTool	InterpolationCalculation	static	param	delta	差分	Delta.
+710	MatrixTool	InterpolationCalculation	static	param	to	繰り返す先の値	End value.
+711	MatrixTool	InterpolationCalculation	static	param	is_include_last_number	最後の値を含めるか否か	Whether to include the last value.
 712	MatrixTool	InterpolationCalculation	static	returns			
 713	MatrixTool	toArrayFromMatch2String	static	desc		match2で文字列を切り分けたデータから数値の配列を作成する	Create an array of numbers from data separated by match2.
-714	MatrixTool	toArrayFromMatch2String	static	param	match2_string	文字列を切り分けたデータ	
+714	MatrixTool	toArrayFromMatch2String	static	param	match2_string	文字列を切り分けたデータ	Data separated by "toArrayFromString".
 715	MatrixTool	toArrayFromMatch2String	static	returns			
 716	MatrixTool	toArrayFromString	static	desc		"文字列からMatrix型の行列データの行部分に変換
 数字のような部分を抽出することで、行列を推定する"	"Convert string to row part of matrix type matrix data.
 Estimate the matrix by extracting parts like numbers."
-717	MatrixTool	toArrayFromString	static	param	row_text	行列の1行を表す文字列	
+717	MatrixTool	toArrayFromString	static	param	row_text	行列の1行を表す文字列	A string describing one row of the matrix.
 718	MatrixTool	toArrayFromString	static	returns			
 719	MatrixTool	toMatrixArrayFromStringForArraySPACE	static	desc		スペース区切りなどで文字列で定義された文字列データからMatrix型のデータを作成する	Create Matrix type data from string data defined by character string with space separation etc.
-720	MatrixTool	toMatrixArrayFromStringForArraySPACE	static	param	text	調査したい文字列	
-721	MatrixTool	toMatrixArrayFromStringForArraySPACE	static	returns		Matrix型で使用される内部の配列	
+720	MatrixTool	toMatrixArrayFromStringForArraySPACE	static	param	text	調査したい文字列	Strings to analyze.
+721	MatrixTool	toMatrixArrayFromStringForArraySPACE	static	returns		Matrix型で使用される内部の配列	Internal array used by Matrix type.
 722	MatrixTool	toMatrixArrayFromStringInBracket	static	desc		行列用の文字列データから構成されるMatrix型のデータを作成する	Create Matrix type data composed of string data for matrix.
-723	MatrixTool	toMatrixArrayFromStringInBracket	static	param	text	調査したい文字列	
-724	MatrixTool	toMatrixArrayFromStringInBracket	static	returns		Matrix型で使用される内部の配列	
+723	MatrixTool	toMatrixArrayFromStringInBracket	static	param	text	調査したい文字列	Strings to analyze.
+724	MatrixTool	toMatrixArrayFromStringInBracket	static	returns		Matrix型で使用される内部の配列	Internal array used by Matrix type.
 725	MatrixTool	toMatrixArrayFromString	static	desc		文字列データからMatrix型のデータを作成する	Create Matrix type data from string data.
-726	MatrixTool	toMatrixArrayFromString	static	param	text	調査したい文字列	
-727	MatrixTool	toMatrixArrayFromString	static	returns		Matrix型で使用される内部の配列	
+726	MatrixTool	toMatrixArrayFromString	static	param	text	調査したい文字列	Strings to analyze.
+727	MatrixTool	toMatrixArrayFromString	static	returns		Matrix型で使用される内部の配列	Internal array used by Matrix type.
 728	MatrixTool	isCorrectMatrixArray	static	desc		Matrix型内部データが行列データとして正しいかを調べる	Returns true if Matrix type internal data is correct as matrix data.
 729	MatrixTool	isCorrectMatrixArray	static	param	m_array		
 730	MatrixTool	isCorrectMatrixArray	static	returns			
@@ -808,10 +810,10 @@ Estimate the matrix by extracting parts like numbers."
 ・[""1+j"", ""2+j""]	複素数を含んだ行列
 ・""[1 1:0.5:3]""		MATLAB/Octave/Scilab互換"	"Create a complex matrix.
 Initialization can be performed as follows.
-10, ""10"", ""3 + 4j"", ""[ 1 ]"", ""[1, 2, 3]"", ""[1 2 3]"",[1, 2, 3]
-[[1, 2], [3, 4]], ""[1 2; 3 4]"", ""[1+2i 3+4i]"",
-""[1:10]"", ""[1:2:3]"" (MATLAB / Octave / Scilab compatible)."
-733	Matrix	constructor		param	number	行列データ( "1 + j", [1 , 1] など)	
+* 10, ""10"", ""3 + 4j"", ""[ 1 ]"", ""[1, 2, 3]"", ""[1 2 3]"", [1, 2, 3],
+* [[1, 2], [3, 4]], ""[1 2; 3 4]"", ""[1+2i 3+4i]"",
+* ""[1:10]"", ""[1:2:3]"" (MATLAB / Octave / Scilab compatible)."
+733	Matrix	constructor		param	number	行列データ( "1 + j", [1 , 1] など)	Complex matrix. See how to use the function.
 734	Matrix	this.matrix_array		desc		行列を構成する配列	An array of elements in the matrix.
 735	Matrix	this.row_length		desc		行数	The number of rows in a matrix.
 736	Matrix	this.column_length		desc		列数	The number of columns in a matrix.
@@ -845,7 +847,7 @@ If type conversion is unnecessary, return the value as it is."
 762	Matrix	toOneLineString		returns			
 763	Matrix	equals		desc		等式	Equals.
 764	Matrix	equals		param	number		
-765	Matrix	equals		param	epsilon	誤差	
+765	Matrix	equals		param	epsilon	誤差	Calculation tolerance of calculation.
 766	Matrix	equals		returns		A === B	A === B
 767	Matrix	getNumberMatrixArray		desc		行列を構成する複素数の実部の配列	Array of real parts of elements in matrix.
 768	Matrix	getNumberMatrixArray		returns			
@@ -854,51 +856,51 @@ If type conversion is unnecessary, return the value as it is."
 771	Matrix	_each		desc		"本オブジェクト内の全要素に同一処理を実行
 ミュータブル"	Perform the same process on all elements in the matrix. (mutable)
 772	Matrix	_each		param	eachfunc	Function(num, row, col)	Function(num, row, col)
-773	Matrix	_each		returns		処理実行後の行列	
+773	Matrix	_each		returns		処理実行後の行列	Matrix after function processing. (this)
 774	Matrix	cloneMatrixDoEachCalculation		desc		本オブジェクト内の全要素に同一処理を実行	Perform the same process on all elements in the matrix.
 775	Matrix	cloneMatrixDoEachCalculation		param	eachfunc	Function(num, row, col)	Function(num, row, col)
-776	Matrix	cloneMatrixDoEachCalculation		returns		処理実行後の行列	
+776	Matrix	cloneMatrixDoEachCalculation		returns		処理実行後の行列	Matrix after function processing.
 777	Matrix	createMatrixDoEachCalculation	static	desc		行列内の各値に対して指定した初期化を行ったMatrixを作成	Create Matrix with specified initialization for each element in matrix.
 778	Matrix	createMatrixDoEachCalculation	static	param	eachfunc	Function(row, col)	Function(row, col)
-779	Matrix	createMatrixDoEachCalculation	static	param	dimension	次元数	
-780	Matrix	createMatrixDoEachCalculation	static	param	column_length	列数	
-781	Matrix	createMatrixDoEachCalculation	static	returns		処理実行後の行列	
+779	Matrix	createMatrixDoEachCalculation	static	param	dimension	次元数	Number of dimensions or rows.
+780	Matrix	createMatrixDoEachCalculation	static	param	column_length	列数	Number of columns.
+781	Matrix	createMatrixDoEachCalculation	static	returns		処理実行後の行列	Matrix after function processing.
 782	Matrix	eachVectorAuto		desc		行列の列をベクトルとみなし同一処理を実行、行ベクトルであれば行ベクトルに対し同一処理を実行	"Treat the columns of the matrix as vectors and execute the same process.
 If the matrix is a row vector, it performs the same processing for the row vector."
-783	Matrix	eachVectorAuto		param	array_function	Function(array)	
-784	Matrix	eachVectorAuto		returns		処理実行後の行列	
+783	Matrix	eachVectorAuto		param	array_function	Function(array)	Function(array)
+784	Matrix	eachVectorAuto		returns		処理実行後の行列	Matrix after function processing.
 785	Matrix	eachVectorBoth		desc		"行列の行と列をベクトルとみなし同一処理を実行
 先に行に対して同一処理を実行後の行列に対し、列ごとにさらに同一処理を実行する"	"Treat the rows and columns of the matrix as vectors and perform the same processing.
 1. First run the same process for the row.
 2. Finally perform the same processing for the column."
-786	Matrix	eachVectorBoth		param	array_function	Function(array)	
-787	Matrix	eachVectorBoth		returns		処理実行後の行列	
+786	Matrix	eachVectorBoth		param	array_function	Function(array)	Function(array)
+787	Matrix	eachVectorBoth		returns		処理実行後の行列	Matrix after function processing.
 788	Matrix	eachVectorRow		desc		行列の行をベクトルとみなし同一処理を実行	Treat the rows of the matrix as vectors and execute the same process.
-789	Matrix	eachVectorRow		param	array_function	Function(array)	
-790	Matrix	eachVectorRow		returns		処理実行後の行列	
+789	Matrix	eachVectorRow		param	array_function	Function(array)	Function(array)
+790	Matrix	eachVectorRow		returns		処理実行後の行列	Matrix after function processing.
 791	Matrix	eachVectorColumn		desc		行列の列をベクトルとみなし同一処理を実行	Treat the columns of the matrix as vectors and execute the same process.
-792	Matrix	eachVectorColumn		param	array_function	Function(array)	
-793	Matrix	eachVectorColumn		returns		処理実行後の行列	
+792	Matrix	eachVectorColumn		param	array_function	Function(array)	Function(array)
+793	Matrix	eachVectorColumn		returns		処理実行後の行列	Matrix after function processing.
 794	Matrix	eachVector		desc		引数に設定された行／列をベクトルとみなし同一処理を実行	"Treat the rows and columns of the matrix as vectors and perform the same processing.
 The arguments of the method can switch the direction of the matrix to be executed."
-795	Matrix	eachVector		param	array_function	Function(array)	
+795	Matrix	eachVector		param	array_function	Function(array)	Function(array)
 796	Matrix	eachVector		param	dimtype	0/"auto", 1/"row", 2/"column", 3/"both"	0/"auto", 1/"row", 2/"column", 3/"both"
-797	Matrix	eachVector		returns		処理実行後の行列	
+797	Matrix	eachVector		returns		処理実行後の行列	Matrix after function processing.
 798	Matrix	getMatrix		desc		行列内の指定した箇所の行列	Extract the specified part of the matrix.
-799	Matrix	getMatrix		param	row	抽出する行番号が入ったベクトル,":"で全ての行抽出	
-800	Matrix	getMatrix		param	col	抽出する列番号が入ったベクトル,":"で全ての列抽出	
-801	Matrix	getMatrix		param	isUpOffset	位置のオフセットを1にするか	
+799	Matrix	getMatrix		param	row	抽出する行番号が入ったベクトル,":"で全ての行抽出	A vector containing the row numbers to extract from this matrix. If you specify ":" select all rows.
+800	Matrix	getMatrix		param	col	抽出する列番号が入ったベクトル,":"で全ての列抽出	A vector containing the column numbers to extract from this matrix. If you specify ":" select all columns.
+801	Matrix	getMatrix		param	isUpOffset	位置のオフセットを1にするか	Set offset of matrix position to 1 with true.
 802	Matrix	getMatrix		returns			
 803	Matrix	setMatrix		desc		行列内の指定した箇所の値を変更する	Change specified element in matrix.
-804	Matrix	setMatrix		param	row	変更する行番号が入ったベクトル,":"で全ての行抽出	
-805	Matrix	setMatrix		param	col	変更する列番号が入ったベクトル,":"で全ての列抽出	
-806	Matrix	setMatrix		param	replace	変更内容の行列	
-807	Matrix	setMatrix		param	isUpOffset	位置のオフセットを1にするか	
+804	Matrix	setMatrix		param	row	変更する行番号が入ったベクトル,":"で全ての行抽出	A vector containing the row numbers to replace in this matrix. If you specify ":" select all rows.
+805	Matrix	setMatrix		param	col	変更する列番号が入ったベクトル,":"で全ての列抽出	A vector containing the column numbers to replace in this matrix. If you specify ":" select all columns.
+806	Matrix	setMatrix		param	replace	変更内容の行列	Matrix to be replaced.
+807	Matrix	setMatrix		param	isUpOffset	位置のオフセットを1にするか	Set offset of matrix position to 1 with true.
 808	Matrix	setMatrix		returns			
 809	Matrix	getComplex		desc		行列内の指定した箇所の値	"Returns the specified element in the matrix.
 Each element of the matrix is composed of complex numbers."
-810	Matrix	getComplex		param	row_or_pos	行列なら行番号, ベクトルの場合は値の位置番号	
-811	Matrix	getComplex		param	col	列番号（行列の場合は指定する）	
+810	Matrix	getComplex		param	row_or_pos	行列なら行番号, ベクトルの場合は値の位置番号	If this is a matrix, the row number. If this is a vector, the address.
+811	Matrix	getComplex		param	col	列番号（行列の場合は指定する）	If this is a matrix, the column number.
 812	Matrix	getComplex		returns			
 813	Matrix	intValue	get	desc		行列の最初の要素の整数値	Integer value of the first element of the matrix.
 814	Matrix	intValue	get	returns			
@@ -921,7 +923,7 @@ Each element of the matrix is composed of complex numbers."
 831	Matrix	rcond		desc		1ノルムの条件数の逆数	Inverse condition number.
 832	Matrix	rcond		returns			
 833	Matrix	rank		desc		ランク	Rank.
-834	Matrix	rank		param	epsilon	誤差	
+834	Matrix	rank		param	epsilon	誤差	Calculation tolerance of calculation.
 835	Matrix	rank		returns		rank(A)	rank(A)
 836	Matrix	trace		desc		トレース	"Trace of a matrix.
 Sum of diagonal elements."
@@ -929,33 +931,33 @@ Sum of diagonal elements."
 838	Matrix	det		desc		行列式	Determinant.
 839	Matrix	det		returns		|A|	|A|
 840	Matrix	memset	static	desc		指定した数値で初期化	Creates a matrix composed of the specified number.
-841	Matrix	memset	static	param	number	初期値	
-842	Matrix	memset	static	param	dimension	次元数	
-843	Matrix	memset	static	param	column_length	列数	
+841	Matrix	memset	static	param	number	初期値	Value after initialization.
+842	Matrix	memset	static	param	dimension	次元数	Number of dimensions or rows.
+843	Matrix	memset	static	param	column_length	列数	Number of columns.
 844	Matrix	memset	static	returns			
 845	Matrix	eye	static	desc		単位行列を生成	Return identity matrix.
-846	Matrix	eye	static	param	dimension	次元数	
-847	Matrix	eye	static	param	column_length	列数	
+846	Matrix	eye	static	param	dimension	次元数	Number of dimensions or rows.
+847	Matrix	eye	static	param	column_length	列数	Number of columns.
 848	Matrix	eye	static	returns			
 849	Matrix	zeros	static	desc		零行列を生成	Create zero matrix.
-850	Matrix	zeros	static	param	dimension	次元数	
-851	Matrix	zeros	static	param	column_length	列数	
+850	Matrix	zeros	static	param	dimension	次元数	Number of dimensions or rows.
+851	Matrix	zeros	static	param	column_length	列数	Number of columns.
 852	Matrix	zeros	static	returns			
 853	Matrix	ones	static	desc		1で構成した行列を生成	Create a matrix of all ones.
-854	Matrix	ones	static	param	dimension	次元数	
-855	Matrix	ones	static	param	column_length	列数	
+854	Matrix	ones	static	param	dimension	次元数	Number of dimensions or rows.
+855	Matrix	ones	static	param	column_length	列数	Number of columns.
 856	Matrix	ones	static	returns			
 857	Matrix	rand	static	desc		一様乱数に従う乱数で構成した行列を生成	Generate a matrix composed of random values with uniform random numbers.
-858	Matrix	rand	static	param	dimension	次元数	
-859	Matrix	rand	static	param	column_length	列数	
+858	Matrix	rand	static	param	dimension	次元数	Number of dimensions or rows.
+859	Matrix	rand	static	param	column_length	列数	Number of columns.
 860	Matrix	rand	static	returns			
 861	Matrix	randn	static	desc		正規分布に従う乱数で構成した行列を生成	Generate a matrix composed of random values with normal distribution.
-862	Matrix	randn	static	param	dimension	次元数	
-863	Matrix	randn	static	param	column_length	列数	
+862	Matrix	randn	static	param	dimension	次元数	Number of dimensions or rows.
+863	Matrix	randn	static	param	column_length	列数	Number of columns.
 864	Matrix	randn	static	returns			
 865	Matrix	diag		desc		行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成	"If matrix, generate diagonal column vector.
 If vector, generate a matrix with diagonal elements."
-866	Matrix	diag		returns		行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成	
+866	Matrix	diag		returns		行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成	Matrix or vector created. See how to use the function.
 867	Matrix	isScalar		desc		スカラー値の判定	Return true if the matrix is ​​scalar.
 868	Matrix	isScalar		returns			
 869	Matrix	isRow		desc		行ベクトル／横ベクトルの判定	Return true if the matrix is ​​row vector.
@@ -969,56 +971,56 @@ If vector, generate a matrix with diagonal elements."
 877	Matrix	isSquare		desc		正方行列の判定	Return true if the matrix is ​​square matrix.
 878	Matrix	isSquare		returns			
 879	Matrix	isReal		desc		実行列の判定	Return true if the matrix is real matrix.
-880	Matrix	isReal		param	epsilon	誤差	
+880	Matrix	isReal		param	epsilon	誤差	Calculation tolerance of calculation.
 881	Matrix	isReal		returns			
 882	Matrix	isComplex		desc		複素行列の判定	Return true if the matrix is complex matrix.
-883	Matrix	isComplex		param	epsilon	誤差	
+883	Matrix	isComplex		param	epsilon	誤差	Calculation tolerance of calculation.
 884	Matrix	isComplex		returns			
 885	Matrix	isZeros		desc		零行列を判定	Return true if the matrix is ​​zero matrix.
-886	Matrix	isZeros		param	epsilon	誤差	
+886	Matrix	isZeros		param	epsilon	誤差	Calculation tolerance of calculation.
 887	Matrix	isZeros		returns			
 888	Matrix	isIdentity		desc		単位行列を判定	Return true if the matrix is identity matrix.
-889	Matrix	isIdentity		param	epsilon	誤差	
+889	Matrix	isIdentity		param	epsilon	誤差	Calculation tolerance of calculation.
 890	Matrix	isIdentity		returns			
 891	Matrix	isDiagonal		desc		対角行列を判定	Return true if the matrix is diagonal matrix.
-892	Matrix	isDiagonal		param	epsilon	誤差	
+892	Matrix	isDiagonal		param	epsilon	誤差	Calculation tolerance of calculation.
 893	Matrix	isDiagonal		returns			
 894	Matrix	isTridiagonal		desc		三重対角行列を判定	Return true if the matrix is ​​tridiagonal matrix.
-895	Matrix	isTridiagonal		param	epsilon	誤差	
+895	Matrix	isTridiagonal		param	epsilon	誤差	Calculation tolerance of calculation.
 896	Matrix	isTridiagonal		returns			
 897	Matrix	isRegular		desc		正則行列を判定	Return true if the matrix is ​​regular matrix.
-898	Matrix	isRegular		param	epsilon	誤差	
+898	Matrix	isRegular		param	epsilon	誤差	Calculation tolerance of calculation.
 899	Matrix	isRegular		returns			
 900	Matrix	isOrthogonal		desc		直行行列を判定	Return true if the matrix is orthogonal matrix.
-901	Matrix	isOrthogonal		param	epsilon	誤差	
+901	Matrix	isOrthogonal		param	epsilon	誤差	Calculation tolerance of calculation.
 902	Matrix	isOrthogonal		returns			
 903	Matrix	isUnitary		desc		ユニタリ行列を判定	Return true if the matrix is ​​unitary matrix.
-904	Matrix	isUnitary		param	epsilon	誤差	
+904	Matrix	isUnitary		param	epsilon	誤差	Calculation tolerance of calculation.
 905	Matrix	isUnitary		returns			
 906	Matrix	isSymmetric		desc		対称行列を判定	Return true if the matrix is ​​symmetric matrix.
-907	Matrix	isSymmetric		param	epsilon	誤差	
+907	Matrix	isSymmetric		param	epsilon	誤差	Calculation tolerance of calculation.
 908	Matrix	isSymmetric		returns			
 909	Matrix	isHermitian		desc		エルミート行列を判定	Return true if the matrix is hermitian matrix.
-910	Matrix	isHermitian		param	epsilon	誤差	
+910	Matrix	isHermitian		param	epsilon	誤差	Calculation tolerance of calculation.
 911	Matrix	isHermitian		returns			
 912	Matrix	isTriangleUpper		desc		上三角行列を判定	Return true if the matrix is ​​upper triangular matrix.
-913	Matrix	isTriangleUpper		param	epsilon	誤差	
+913	Matrix	isTriangleUpper		param	epsilon	誤差	Calculation tolerance of calculation.
 914	Matrix	isTriangleUpper		returns			
 915	Matrix	isTriangleLower		desc		下三角行列を判定	Return true if the matrix is ​​ lower triangular matrix.
-916	Matrix	isTriangleLower		param	epsilon	誤差	
+916	Matrix	isTriangleLower		param	epsilon	誤差	Calculation tolerance of calculation.
 917	Matrix	isTriangleLower		returns			
 918	Matrix	isPermutation		desc		置換行列を判定	Return true if the matrix is permutation matrix.
-919	Matrix	isPermutation		param	epsilon	誤差	
+919	Matrix	isPermutation		param	epsilon	誤差	Calculation tolerance of calculation.
 920	Matrix	isPermutation		returns			
 921	Matrix	size		desc		行列の行数と列数	Number of rows and columns of matrix.
-922	Matrix	size		returns		[row_length column_length]	
+922	Matrix	size		returns		[row_length column_length]	[row_length, column_length]
 923	Matrix	compareTo		desc		"値同士を比較
 スカラー同士の場合の戻り値は、number型。
 行列同士の場合は、各項の比較結果が入った、Matrix型。"	"Compare values.
 Return value between scalars is of type Number.
 Return value between matrices is type Matrix."
 924	Matrix	compareTo		param	number		
-925	Matrix	compareTo		param	epsilon	誤差	
+925	Matrix	compareTo		param	epsilon	誤差	Calculation tolerance of calculation.
 926	Matrix	compareTo		returns		A > B ? 1 : (A === B ? 0 : -1)	A > B ? 1 : (A === B ? 0 : -1)
 927	Matrix	add		desc		加算	Add.
 928	Matrix	add		param	number		
@@ -1054,50 +1056,50 @@ Supports only integers."
 957	Matrix	arg		desc		各項の偏角	The argument of each element of matrix.
 958	Matrix	arg		returns		arg(A)	arg(A)
 959	Matrix	sign		desc		各項の符号値	"The positive or negative signs of each element of the matrix.
-* +1 if positive, -1 if negative, 0 if 0."
+* +1 if positive, -1 if negative, 0 if 0, norm if complex number."
 960	Matrix	sign		returns		[-1,1] 複素数の場合はノルムを1にした値。	
 961	Matrix	testInteger		desc		各項の整数を判定	"Test if each element of the matrix is integer.
 * 1 if true, 0 if false."
-962	Matrix	testInteger		param	epsilon	誤差	
-963	Matrix	testInteger		returns		1 or 0 で構成された行列	
+962	Matrix	testInteger		param	epsilon	誤差	Calculation tolerance of calculation.
+963	Matrix	testInteger		returns		1 or 0 で構成された行列	Matrix with elements of the numerical value of 1 or 0.
 964	Matrix	testComplexInteger		desc		各項の複素整数を判定	"Test if each element of the matrix is complex integer.
 * 1 if true, 0 if false."
-965	Matrix	testComplexInteger		param	epsilon	誤差	
-966	Matrix	testComplexInteger		returns		1 or 0 で構成された行列	
+965	Matrix	testComplexInteger		param	epsilon	誤差	Calculation tolerance of calculation.
+966	Matrix	testComplexInteger		returns		1 or 0 で構成された行列	Matrix with elements of the numerical value of 1 or 0.
 967	Matrix	testZero		desc		各項の 0 を判定	"real(this) === 0
 * 1 if true, 0 if false."
-968	Matrix	testZero		param	epsilon	誤差	
-969	Matrix	testZero		returns		1 or 0 で構成された行列	
+968	Matrix	testZero		param	epsilon	誤差	Calculation tolerance of calculation.
+969	Matrix	testZero		returns		1 or 0 で構成された行列	Matrix with elements of the numerical value of 1 or 0.
 970	Matrix	testOne		desc		各項の 1 を判定	"real(this) === 1
 * 1 if true, 0 if false."
-971	Matrix	testOne		param	epsilon	誤差	
-972	Matrix	testOne		returns		1 or 0 で構成された行列	
+971	Matrix	testOne		param	epsilon	誤差	Calculation tolerance of calculation.
+972	Matrix	testOne		returns		1 or 0 で構成された行列	Matrix with elements of the numerical value of 1 or 0.
 973	Matrix	testComplex		desc		各項の複素数を判定	"Test if each element of the matrix is complex.
 * 1 if true, 0 if false."
-974	Matrix	testComplex		param	epsilon	誤差	
-975	Matrix	testComplex		returns		1 or 0 で構成された行列	
+974	Matrix	testComplex		param	epsilon	誤差	Calculation tolerance of calculation.
+975	Matrix	testComplex		returns		1 or 0 で構成された行列	Matrix with elements of the numerical value of 1 or 0.
 976	Matrix	testReal		desc		各項の実数を判定	"Test if each element of the matrix is real.
 * 1 if true, 0 if false."
-977	Matrix	testReal		param	epsilon	誤差	
-978	Matrix	testReal		returns		1 or 0 で構成された行列	
+977	Matrix	testReal		param	epsilon	誤差	Calculation tolerance of calculation.
+978	Matrix	testReal		returns		1 or 0 で構成された行列	Matrix with elements of the numerical value of 1 or 0.
 979	Matrix	testNaN		desc		各項の非数を判定	"Test if each element of the matrix is NaN.
 * 1 if true, 0 if false."
-980	Matrix	testNaN		returns		1 or 0 で構成された行列	
+980	Matrix	testNaN		returns		1 or 0 で構成された行列	Matrix with elements of the numerical value of 1 or 0.
 981	Matrix	testPositive		desc		real(x) > 0	"real(this) > 0
 * 1 if true, 0 if false."
-982	Matrix	testPositive		returns		1 or 0 で構成された行列	
+982	Matrix	testPositive		returns		1 or 0 で構成された行列	Matrix with elements of the numerical value of 1 or 0.
 983	Matrix	testNegative		desc		real(x) < 0	"real(this) < 0
 * 1 if true, 0 if false."
-984	Matrix	testNegative		returns		1 or 0 で構成された行列	
+984	Matrix	testNegative		returns		1 or 0 で構成された行列	Matrix with elements of the numerical value of 1 or 0.
 985	Matrix	testNotNegative		desc		real(x) >= 0	"real(this) >= 0
 * 1 if true, 0 if false."
-986	Matrix	testNotNegative		returns		1 or 0 で構成された行列	
+986	Matrix	testNotNegative		returns		1 or 0 で構成された行列	Matrix with elements of the numerical value of 1 or 0.
 987	Matrix	testInfinite		desc		各項の無限を判定	"Test if each element of the matrix is infinite.
 * 1 if true, 0 if false."
-988	Matrix	testInfinite		returns		1 or 0 で構成された行列	
+988	Matrix	testInfinite		returns		1 or 0 で構成された行列	Matrix with elements of the numerical value of 1 or 0.
 989	Matrix	testFinite		desc		各項の有限数を判定	"Test if each element of the matrix is finite.
 * 1 if true, 0 if false."
-990	Matrix	testFinite		returns		1 or 0 で構成された行列	
+990	Matrix	testFinite		returns		1 or 0 で構成された行列	Matrix with elements of the numerical value of 1 or 0.
 991	Matrix	abs		desc		絶対値	Absolute value.
 992	Matrix	abs		returns		abs(A)	abs(A)
 993	Matrix	conj		desc		複素共役行列	Complex conjugate matrix.
@@ -1137,68 +1139,68 @@ Return the values of [-PI, PI] ."
 1025	Matrix	sinc		returns		sinc(A)	sinc(A)
 1026	Matrix	_rot90		desc		"行列を時計回りに回転
 ミュータブル"	Rotate matrix 90 degrees clockwise. (mutable)
-1027	Matrix	_rot90		param	rot_90_count	回転する回数	
-1028	Matrix	_rot90		returns		処理実行後の行列	
+1027	Matrix	_rot90		param	rot_90_count	回転する回数	Number of times rotated by 90 degrees.
+1028	Matrix	_rot90		returns		処理実行後の行列	Matrix after function processing. (this)
 1029	Matrix	rot90		desc		行列を時計回りに回転	Rotate matrix 90 degrees clockwise.
-1030	Matrix	rot90		param	rot_90_count	回転する回数	
-1031	Matrix	rot90		returns		処理実行後の行列	
+1030	Matrix	rot90		param	rot_90_count	回転する回数	Number of times rotated by 90 degrees.
+1031	Matrix	rot90		returns		処理実行後の行列	Matrix after function processing.
 1032	Matrix	_resize		desc		"行列を拡張、拡張した項は、0で初期化。
 ミュータブル"	"Change the size of the matrix. (mutable)
 Initialized with 0 when expanding."
-1033	Matrix	_resize		param	new_row_length	新しい行の長さ	
-1034	Matrix	_resize		param	new_column_length	新しい列の長さ	
-1035	Matrix	_resize		returns		処理実行後の行列	
+1033	Matrix	_resize		param	new_row_length	新しい行の長さ	Number of rows of matrix to resize.
+1034	Matrix	_resize		param	new_column_length	新しい列の長さ	Number of columns of matrix to resize.
+1035	Matrix	_resize		returns		処理実行後の行列	Matrix after function processing. (this)
 1036	Matrix	resize		desc		行列を拡張、拡張した項は、0で初期化	"Change the size of the matrix.
 Initialized with 0 when expanding."
-1037	Matrix	resize		param	row_length	新しい行の長さ	
-1038	Matrix	resize		param	column_length	新しい列の長さ	
-1039	Matrix	resize		returns		処理実行後の行列	
+1037	Matrix	resize		param	row_length	新しい行の長さ	Number of rows of matrix to resize.
+1038	Matrix	resize		param	column_length	新しい列の長さ	Number of columns of matrix to resize.
+1039	Matrix	resize		returns		処理実行後の行列	Matrix after function processing.
 1040	Matrix	_deleteRow		desc		"行列内の行を消去
 ミュータブル"	Remove the row in this matrix. (mutable)
-1041	Matrix	_deleteRow		param	delete_row_index	行番号	
-1042	Matrix	_deleteRow		returns		処理実行後の行列	
+1041	Matrix	_deleteRow		param	delete_row_index	行番号	Number of row of matrix to delete.
+1042	Matrix	_deleteRow		returns		処理実行後の行列	Matrix after function processing. (this)
 1043	Matrix	_deleteColumn		desc		"行列内の列を消去
 ミュータブル"	Remove the column in this matrix. (mutable)
-1044	Matrix	_deleteColumn		param	delete_column_index	列番号	
-1045	Matrix	_deleteColumn		returns		処理実行後の行列	
+1044	Matrix	_deleteColumn		param	delete_column_index	列番号	Number of column of matrix to delete.
+1045	Matrix	_deleteColumn		returns		処理実行後の行列	Matrix after function processing. (this)
 1046	Matrix	deleteRow		desc		行列内の行を消去	Remove the row in this matrix.
-1047	Matrix	deleteRow		param	delete_row_index	行番号	
-1048	Matrix	deleteRow		returns		処理実行後の行列	
+1047	Matrix	deleteRow		param	delete_row_index	行番号	Number of row of matrix to delete.
+1048	Matrix	deleteRow		returns		処理実行後の行列	Matrix after function processing.
 1049	Matrix	deleteColumn		desc		行列内の列を消去	Remove the column in this matrix.
-1050	Matrix	deleteColumn		param	delete_column_index	列番号	
-1051	Matrix	deleteColumn		returns		処理実行後の行列	
+1050	Matrix	deleteColumn		param	delete_column_index	列番号	Number of column of matrix to delete.
+1051	Matrix	deleteColumn		returns		処理実行後の行列	Matrix after function processing.
 1052	Matrix	_exchangeRow		desc		"行列内の行を交換
 ミュータブル"	Swap rows in the matrix. (mutable)
-1053	Matrix	_exchangeRow		param	exchange_row_index1	行番号1	
-1054	Matrix	_exchangeRow		param	exchange_row_index2	行番号2	
-1055	Matrix	_exchangeRow		returns		処理実行後の行列	
+1053	Matrix	_exchangeRow		param	exchange_row_index1	行番号1	Number 1 of row of matrix to exchange.
+1054	Matrix	_exchangeRow		param	exchange_row_index2	行番号2	Number 2 of row of matrix to exchange.
+1055	Matrix	_exchangeRow		returns		処理実行後の行列	Matrix after function processing. (this)
 1056	Matrix	_exchangeColumn		desc		"行列内の列を交換
 ミュータブル"	Swap columns in the matrix. (mutable)
-1057	Matrix	_exchangeColumn		param	exchange_column_index1	行番号1	
-1058	Matrix	_exchangeColumn		param	exchange_column_index2	行番号2	
-1059	Matrix	_exchangeColumn		returns		処理実行後の行列	
+1057	Matrix	_exchangeColumn		param	exchange_column_index1	行番号1	Number 1 of column of matrix to exchange.
+1058	Matrix	_exchangeColumn		param	exchange_column_index2	行番号2	Number 2 of column of matrix to exchange.
+1059	Matrix	_exchangeColumn		returns		処理実行後の行列	Matrix after function processing. (this)
 1060	Matrix	exchangeRow		desc		行列内の行を交換	Swap rows in the matrix.
-1061	Matrix	exchangeRow		param	exchange_row_index1	行番号1	
-1062	Matrix	exchangeRow		param	exchange_row_index2	行番号2	
-1063	Matrix	exchangeRow		returns		処理実行後の行列	
+1061	Matrix	exchangeRow		param	exchange_row_index1	行番号1	Number 1 of row of matrix to exchange.
+1062	Matrix	exchangeRow		param	exchange_row_index2	行番号2	Number 2 of row of matrix to exchange.
+1063	Matrix	exchangeRow		returns		処理実行後の行列	Matrix after function processing.
 1064	Matrix	exchangeColumn		desc		行列内の列を交換	Swap columns in the matrix.
-1065	Matrix	exchangeColumn		param	exchange_column_index1	行番号1	
-1066	Matrix	exchangeColumn		param	exchange_column_index2	行番号2	
-1067	Matrix	exchangeColumn		returns		処理実行後の行列	
+1065	Matrix	exchangeColumn		param	exchange_column_index1	行番号1	Number 1 of column of matrix to exchange.
+1066	Matrix	exchangeColumn		param	exchange_column_index2	行番号2	Number 2 of column of matrix to exchange.
+1067	Matrix	exchangeColumn		returns		処理実行後の行列	Matrix after function processing.
 1068	Matrix	_concatRight		desc		"行列の右に行列を結合
 ミュータブル"	Combine matrix to the right of this matrix. (mutable)
-1069	Matrix	_concatRight		param	left_matrix	結合したい行列	
-1070	Matrix	_concatRight		returns		処理実行後の行列	
+1069	Matrix	_concatRight		param	left_matrix	結合したい行列	Matrix to combine.
+1070	Matrix	_concatRight		returns		処理実行後の行列	Matrix after function processing. (this)
 1071	Matrix	_concatBottom		desc		"行列の下に行列を結合
 ミュータブル"	Combine matrix to the bottom of this matrix. (mutable)
-1072	Matrix	_concatBottom		param	bottom_matrix	結合したい行列	
-1073	Matrix	_concatBottom		returns		処理実行後の行列	
+1072	Matrix	_concatBottom		param	bottom_matrix	結合したい行列	Matrix to combine.
+1073	Matrix	_concatBottom		returns		処理実行後の行列	Matrix after function processing. (this)
 1074	Matrix	concatRight		desc		行列の右に行列を結合	Combine matrix to the right of this matrix.
-1075	Matrix	concatRight		param	left_matrix	結合したい行列	
-1076	Matrix	concatRight		returns		処理実行後の行列	
+1075	Matrix	concatRight		param	left_matrix	結合したい行列	Matrix to combine.
+1076	Matrix	concatRight		returns		処理実行後の行列	Matrix after function processing.
 1077	Matrix	concatBottom		desc		行列の下に行列を結合	Combine matrix to the bottom of this matrix.
-1078	Matrix	concatBottom		param	bottom_matrix	結合したい行列	
-1079	Matrix	concatBottom		returns		処理実行後の行列	
+1078	Matrix	concatBottom		param	bottom_matrix	結合したい行列	Matrix to combine.
+1079	Matrix	concatBottom		returns		処理実行後の行列	Matrix after function processing.
 1080	Matrix	clip		desc		行列の各項を指定した範囲に収める	Clip each element of matrix to specified range.
 1081	Matrix	clip		param	min		
 1082	Matrix	clip		param	max		
@@ -1211,26 +1213,28 @@ Initialized with 0 when expanding."
 1089	Matrix	circshift		desc		循環シフト	Circular shift.
 1090	Matrix	circshift		param	shift_size		
 1091	Matrix	circshift		param	type		
-1092	Matrix	circshift		returns		処理実行後の行列	
+1092	Matrix	circshift		returns		処理実行後の行列	Matrix after function processing.
 1093	Matrix	roll		desc		循環シフト	Circular shift.
 1094	Matrix	roll		param	shift_size		
 1095	Matrix	roll		param	type		
-1096	Matrix	roll		returns		処理実行後の行列	
+1096	Matrix	roll		returns		処理実行後の行列	Matrix after function processing.
 1097	Matrix	reshape		desc		行列の形状を変更	"Change the shape of the matrix.
 The number of elements in the matrix doesn't increase or decrease."
-1098	Matrix	reshape		param	row_length	新しい行の長さ	
-1099	Matrix	reshape		param	column_length	新しい列の長さ	
-1100	Matrix	reshape		returns		処理実行後の行列	
+1098	Matrix	reshape		param	row_length	新しい行の長さ	Number of rows of matrix to reshape.
+1099	Matrix	reshape		param	column_length	新しい列の長さ	Number of columns of matrix to reshape.
+1100	Matrix	reshape		returns		処理実行後の行列	Matrix after function processing.
 1101	Matrix	fliplr		desc		行列を左右反転	Flip this matrix left and right.
-1102	Matrix	fliplr		returns		処理実行後の行列	
+1102	Matrix	fliplr		returns		処理実行後の行列	Matrix after function processing.
 1103	Matrix	flipud		desc		行列を上下反転	Flip this matrix up and down.
-1104	Matrix	flipud		returns		処理実行後の行列	
+1104	Matrix	flipud		returns		処理実行後の行列	Matrix after function processing.
 1105	Matrix	flip		desc		行列を反転	Flip this matrix.
 1106	Matrix	flip		param	type		
-1107	Matrix	flip		returns		処理実行後の行列	
-1108	Matrix	indexsort		desc		インデックスソート	Index sort.
-1109	Matrix	indexsort		param	v	インデックス（列 or 行）ベクトル	
-1110	Matrix	indexsort		returns		処理実行後の行列	
+1107	Matrix	flip		returns		処理実行後の行列	Matrix after function processing.
+1108	Matrix	indexsort		desc		インデックスソート	"Index sort.
+* Sorts by row when setting index by row vector to the argument.
+* Sorts by column when setting index by column vector to the argument."
+1109	Matrix	indexsort		param	v	インデックス（列 or 行）ベクトル	Vector with index. (See the description of this function)
+1110	Matrix	indexsort		returns		処理実行後の行列	Matrix after function processing.
 1111	Matrix	transpose		desc		転置行列	Transpose a matrix.
 1112	Matrix	transpose		returns		A^T	A^T
 1113	Matrix	ctranspose		desc		エルミート転置行列	Hermitian transpose.
@@ -1239,7 +1243,7 @@ The number of elements in the matrix doesn't increase or decrease."
 1116	Matrix	T		returns		A^T	A^T
 1117	Matrix	inner		desc		ドット積	Inner product/Dot product.
 1118	Matrix	inner		param	number		
-1119	Matrix	inner		param	dimension	計算するときに使用する次元（1 or 2）	
+1119	Matrix	inner		param	dimension	計算するときに使用する次元（1 or 2）	Dimension of matrix used for calculation. (1 or 2)
 1120	Matrix	inner		returns		A・B	A・B
 1121	Matrix	lup		desc		LUP分解	LUP decomposition.
 1122	Matrix	lup		returns		P'*L*U=A	P'*L*U=A
@@ -1650,7 +1654,7 @@ The method of Gram-Schmidt orthonormalization is used."
 1456	LinearAlgebraTool	doGramSchmidtOrthonormalization	static	returns			
 1457	LinearAlgebraTool	createOrthogonalVector	static	desc		行列の全行ベクトルに対して、直行したベクトルを作成する	Create orthogonal vectors for all row vectors of the matrix.
 1458	LinearAlgebraTool	createOrthogonalVector	static	param	mat		
-1459	LinearAlgebraTool	createOrthogonalVector	static	param	epsilon	誤差	
+1459	LinearAlgebraTool	createOrthogonalVector	static	param	epsilon	誤差	Calculation tolerance of calculation.
 1460	LinearAlgebraTool	createOrthogonalVector	static	returns		直行したベクトルがなければNULLを返す	
 1461	LinearAlgebraTool	getMaxRowNumber	static	desc		行列の指定した列の中で最もノルムが最大の値がある行番号	Row number with the largest norm value in the specified column of the matrix.
 1462	LinearAlgebraTool	getMaxRowNumber	static	param	mat		
@@ -1660,13 +1664,13 @@ The method of Gram-Schmidt orthonormalization is used."
 1466	LinearAlgebraTool	getMaxRowNumber	static	returns		行番号	
 1467	LinearAlgebraTool	getLinearDependenceVector	static	desc		行列の各行をベクトルと見立て、線型従属している行を抽出	Extract linearly dependent rows when each row of matrix is a vector.
 1468	LinearAlgebraTool	getLinearDependenceVector	static	param	mat		
-1469	LinearAlgebraTool	getLinearDependenceVector	static	param	epsilon	誤差	
+1469	LinearAlgebraTool	getLinearDependenceVector	static	param	epsilon	誤差	Calculation tolerance of calculation.
 1470	LinearAlgebraTool	getLinearDependenceVector	static	returns		行番号の行列(昇順)	
 1471	LinearAlgebra	LinearAlgebra	export default class	desc		Matrix用の線形代数用の計算クラス	Class for linear algebra for Matrix class.
 1472	LinearAlgebra	inner	static	desc		ドット積	Inner product/Dot product.
 1473	LinearAlgebra	inner	static	param	A		
 1474	LinearAlgebra	inner	static	param	B		
-1475	LinearAlgebra	inner	static	param	dimension	計算するときに使用する次元（1 or 2）	
+1475	LinearAlgebra	inner	static	param	dimension	計算するときに使用する次元（1 or 2）	Dimension of matrix used for calculation. (1 or 2)
 1476	LinearAlgebra	inner	static	returns		A・B	A・B
 1477	LinearAlgebra	norm	static	desc		pノルム	p-norm.
 1478	LinearAlgebra	norm	static	param	mat		
@@ -1681,7 +1685,7 @@ The method of Gram-Schmidt orthonormalization is used."
 1487	LinearAlgebra	rcond	static	returns			
 1488	LinearAlgebra	rank	static	desc		ランク	Rank.
 1489	LinearAlgebra	rank	static	param	mat		
-1490	LinearAlgebra	rank	static	param	epsilon	誤差	
+1490	LinearAlgebra	rank	static	param	epsilon	誤差	Calculation tolerance of calculation.
 1491	LinearAlgebra	rank	static	returns		rank(A)	rank(A)
 1492	LinearAlgebra	trace	static	desc		トレース	"Trace of a matrix.
 Sum of diagonal elements."
