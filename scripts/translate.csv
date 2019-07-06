@@ -18,10 +18,10 @@ Used when MathContext not specified explicitly."
 16	DecimalTool	DecimalTool	class	desc		BigDecimal 内で使用する関数群	Collection of functions used in BigDecimal.
 17	DecimalTool	ToBigDecimalFromString	static	desc		文字列から BigDecimal で使用するデータの作成	Create data for BigDecimal from strings.
 18	DecimalTool	ToBigDecimalFromString	static	param	ntext		
-19	DecimalTool	ToBigDecimalFromString	static	returns	ntext		
+19	DecimalTool	ToBigDecimalFromString	static	returns			
 20	DecimalTool	ToBigDecimalFromNumber	static	desc		数値から BigDecimal で使用するデータの作成	Create data for BigDecimal from number.
 21	DecimalTool	ToBigDecimalFromNumber	static	param	value		
-22	DecimalTool	ToBigDecimalFromNumber	static	returns	value		
+22	DecimalTool	ToBigDecimalFromNumber	static	returns			
 23	BigDecimal	BigDecimal	export default class	desc		任意精度浮動小数点演算クラス (immutable)	Arbitrary-precision floating-point number class (immutable).
 24	BigDecimal	constructor		desc		"任意精度浮動小数点を作成
 配列で設定する場合は、 BigInteger, [スケール値=0], [環境=default], [精度設定=default]
@@ -29,11 +29,11 @@ Used when MathContext not specified explicitly."
 When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
 When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
 default_context 
-The ""scale"" is an integer scale factor.
-The ""default_context"" is the used when no environment settings are specified during calculation.
-The ""context"" is used to normalize the created floating point.
+* The ""scale"" is an integer scale factor.
+* The ""default_context"" is the used when no environment settings are specified during calculation.
+* The ""context"" is used to normalize the created floating point.
 These 3 settings can be omitted."
-25	BigDecimal	constructor		param	number	任意精度実数データ	
+25	BigDecimal	constructor		param	number	任意精度実数データ	Real data.
 26	BigDecimal	this._scale		desc		スケール	The scale of this BigDecimal.
 27	BigDecimal	this.default_context		desc		初期化時に使用したcontext	Context used during initialization.
 28	BigDecimal	this.integer		desc		整数部分	Integer part.
@@ -42,30 +42,30 @@ These 3 settings can be omitted."
 When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
 When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
 default_context 
-The ""scale"" is an integer scale factor.
-The ""default_context"" is the used when no environment settings are specified during calculation.
-The ""context"" is used to normalize the created floating point.
+* The ""scale"" is an integer scale factor.
+* The ""default_context"" is the used when no environment settings are specified during calculation.
+* The ""context"" is used to normalize the created floating point.
 These 3 settings can be omitted."
-31	BigDecimal	create	static	param	number	任意精度実数データ	
-32	BigDecimal	create	static	returns	number		
+31	BigDecimal	create	static	param	number	任意精度実数データ	Real data.
+32	BigDecimal	create	static	returns			
 33	BigDecimal	valueOf	static	desc		指定した数値から BigDecimal 型に変換	Convert number to BigDecimal type.
 34	BigDecimal	valueOf	static	param	x		
 35	BigDecimal	valueOf	static	param	scale		
-36	BigDecimal	valueOf	static	returns	scale		
+36	BigDecimal	valueOf	static	returns			
 37	BigDecimal	_toBigDecimal	static	desc		BigDecimal を作成	"Convert to BigDecimal.
 If type conversion is unnecessary, return the value as it is."
 38	BigDecimal	_toBigDecimal	static	param	number		
-39	BigDecimal	_toBigDecimal	static	returns	number		
+39	BigDecimal	_toBigDecimal	static	returns			
 40	BigDecimal	_toBigInteger	static	desc		BigInteger を作成	"Convert to BigInteger.
 If type conversion is unnecessary, return the value as it is."
 41	BigDecimal	_toBigInteger	static	param	number		
-42	BigDecimal	_toBigInteger	static	returns	number		
+42	BigDecimal	_toBigInteger	static	returns			
 43	BigDecimal	_toFloat	static	desc		実数を作成	Convert to real number.
 44	BigDecimal	_toFloat	static	param	number		
-45	BigDecimal	_toFloat	static	returns	number		
+45	BigDecimal	_toFloat	static	returns			
 46	BigDecimal	_toInteger	static	desc		整数を作成	Convert to integer.
 47	BigDecimal	_toInteger	static	param	number		
-48	BigDecimal	_toInteger	static	returns	number		
+48	BigDecimal	_toInteger	static	returns			
 49	BigDecimal	_getUnsignedIntegerString		desc		"符号を除いた文字列を作成
 キャッシュがなければ作成し、キャッシュがあればそれを返す"	"Return string of this number without sign.
 If cache is already created, return cache."
@@ -87,8 +87,8 @@ If cache is already created, return cache."
 61	BigDecimal	unscaledValue		desc		指数表記部分を取り除いた整数	An integer with the exponent part removed.
 62	BigDecimal	unscaledValue		returns			
 63	BigDecimal	toScientificNotation		desc		科学的表記法を用いて文字列化	Convert to string using scientific notation.
-64	BigDecimal	toScientificNotation		param	e_len	指数部の桁数	
-65	BigDecimal	toScientificNotation		returns	e_len		
+64	BigDecimal	toScientificNotation		param	e_len	指数部の桁数	Number of digits in exponent part.
+65	BigDecimal	toScientificNotation		returns			
 66	BigDecimal	toString		desc		文字列化	Convert to string.
 67	BigDecimal	toString		returns			
 68	BigDecimal	toEngineeringString		desc		"技術表記法による文字列化
@@ -99,96 +99,96 @@ If cache is already created, return cache."
 72	BigDecimal	ulp		desc		設定された精度で表すことができる最も小さな値	The smallest value that can be represented with the set precision.
 73	BigDecimal	ulp		returns			
 74	BigDecimal	setScale		desc		スケールの再設定	Change the scale.
-75	BigDecimal	setScale		param	new_scale	新しいスケール	
-76	BigDecimal	setScale		param	rounding_mode	精度を変換する際の丸め方	
-77	BigDecimal	setScale		param	mc	切り替え先の設定（これのみ変更する場合は、roundを使用すること）	
-78	BigDecimal	setScale		returns	mc		
+75	BigDecimal	setScale		param	new_scale	新しいスケール	New scale.
+76	BigDecimal	setScale		param	rounding_mode	精度を変換する際の丸め方	Rounding method when converting precision.
+77	BigDecimal	setScale		param	mc	切り替え先の設定（これのみ変更する場合は、roundを使用すること）	Rounding setting after calculation. For rounding purposes, use the round method.
+78	BigDecimal	setScale		returns			
 79	BigDecimal	round		desc		環境設定を切り替える	Round with specified settings.
-80	BigDecimal	round		param	mc	切り替え先の設定	
-81	BigDecimal	round		returns	mc		
+80	BigDecimal	round		param	mc	切り替え先の設定	New setting.
+81	BigDecimal	round		returns			
 82	BigDecimal	abs		desc		絶対値	Absolute value.
-83	BigDecimal	abs		param	mc	計算に使用する設定	
-84	BigDecimal	abs		returns	mc	abs(A)	
+83	BigDecimal	abs		param	mc	計算に使用する設定	MathContext setting after calculation. If omitted, use the MathContext of this object..
+84	BigDecimal	abs		returns		abs(A)	abs(A)
 85	BigDecimal	plus		desc		正数	this * 1
-86	BigDecimal	plus		param	mc	計算に使用する設定	
-87	BigDecimal	plus		returns	mc	+A	
+86	BigDecimal	plus		param	mc	計算に使用する設定	MathContext setting after calculation. If omitted, use the MathContext of this object..
+87	BigDecimal	plus		returns		+A	+A
 88	BigDecimal	negate		desc		負数	this * -1
-89	BigDecimal	negate		param	mc	計算に使用する設定	
-90	BigDecimal	negate		returns	mc	-A	
+89	BigDecimal	negate		param	mc	計算に使用する設定	MathContext setting after calculation. If omitted, use the MathContext of this object..
+90	BigDecimal	negate		returns		-A	-A
 91	BigDecimal	compareTo		desc		値同士を比較	Compare values.
 92	BigDecimal	compareTo		param	number		
-93	BigDecimal	compareTo		returns	number	A > B ? 1 : (A === B ? 0 : -1)	
+93	BigDecimal	compareTo		returns		A > B ? 1 : (A === B ? 0 : -1)	A > B ? 1 : (A === B ? 0 : -1)
 94	BigDecimal	equals		desc		"等式
 精度やスケール含めて等しいかをテストする"	"Equals.
 Test for equality, including precision and scale."
 95	BigDecimal	equals		param	number		
-96	BigDecimal	equals		returns	number	A === B	
+96	BigDecimal	equals		returns		A === B	A === B
 97	BigDecimal	max		desc		最大値	Maximum number.
 98	BigDecimal	max		param	number		
-99	BigDecimal	max		returns	number	max([A, B])	
+99	BigDecimal	max		returns		max([A, B])	max([A, B])
 100	BigDecimal	min		desc		最小値	Minimum number.
 101	BigDecimal	min		param	number		
-102	BigDecimal	min		returns	number	min([A, B])	
+102	BigDecimal	min		returns		min([A, B])	min([A, B])
 103	BigDecimal	clip		desc		数値を範囲に収める	Clip number within range.
 104	BigDecimal	clip		param	min		
 105	BigDecimal	clip		param	max		
-106	BigDecimal	clip		returns	max	min(max(x, min), max)	
+106	BigDecimal	clip		returns		min(max(x, min), max)	min(max(x, min), max)
 107	BigDecimal	scaleByPowerOfTen		desc		精度は変更させずスケールのみを変更させ10の倍数を乗算	"Multiply a multiple of ten.
 Only the scale is changed without changing the precision."
 108	BigDecimal	scaleByPowerOfTen		param	n		
-109	BigDecimal	scaleByPowerOfTen		returns	n	A * 10^floor(n)	
+109	BigDecimal	scaleByPowerOfTen		returns		A * 10^floor(n)	A * 10^floor(n)
 110	BigDecimal	movePointLeft		desc		小数点の位置を左へ移動	Move the decimal point to the left.
 111	BigDecimal	movePointLeft		param	n		
-112	BigDecimal	movePointLeft		returns	n		
+112	BigDecimal	movePointLeft		returns			
 113	BigDecimal	movePointRight		desc		小数点の位置を右へ移動	Move the decimal point to the right.
 114	BigDecimal	movePointRight		param	n		
-115	BigDecimal	movePointRight		returns	n		
+115	BigDecimal	movePointRight		returns			
 116	BigDecimal	stripTrailingZeros		desc		数字の右側にある0を取り除き、スケールを正規化	Remove the 0 to the right of the numbers and normalize the scale.
 117	BigDecimal	stripTrailingZeros		returns			
 118	BigDecimal	add		desc		加算	Add.
 119	BigDecimal	add		param	number		
-120	BigDecimal	add		param	context	計算に使用する設定、省略した場合は、加算先の設定デフォルト値を使用する	
-121	BigDecimal	add		returns	context	A + B	
+120	BigDecimal	add		param	context	計算に使用する設定、省略した場合は、加算先の設定デフォルト値を使用する	MathContext setting after calculation. If omitted, use the MathContext of the B.
+121	BigDecimal	add		returns		A + B	A + B
 122	BigDecimal	subtract		desc		減算	Subtract.
 123	BigDecimal	subtract		param	number		
-124	BigDecimal	subtract		param	context	計算に使用する設定、省略した場合は、減算先の設定デフォルト値を使用する	
-125	BigDecimal	subtract		returns	context	A - B	
+124	BigDecimal	subtract		param	context	計算に使用する設定、省略した場合は、減算先の設定デフォルト値を使用する	MathContext setting after calculation. If omitted, use the MathContext of the B.
+125	BigDecimal	subtract		returns		A - B	A - B
 126	BigDecimal	sub		desc		減算	Subtract.
 127	BigDecimal	sub		param	number		
-128	BigDecimal	sub		param	context	計算に使用する設定、省略した場合は、減算先の設定デフォルト値を使用する	
-129	BigDecimal	sub		returns	context	A - B	
+128	BigDecimal	sub		param	context	計算に使用する設定、省略した場合は、減算先の設定デフォルト値を使用する	MathContext setting after calculation. If omitted, use the MathContext of the B.
+129	BigDecimal	sub		returns		A - B	A - B
 130	BigDecimal	multiply		desc		乗算	Multiply.
 131	BigDecimal	multiply		param	number		
-132	BigDecimal	multiply		param	context	計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する	
-133	BigDecimal	multiply		returns	context	A * B	
+132	BigDecimal	multiply		param	context	計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する	MathContext setting after calculation. If omitted, use the MathContext of the B.
+133	BigDecimal	multiply		returns		A * B	A * B
 134	BigDecimal	mul		desc		乗算	Multiply.
 135	BigDecimal	mul		param	number		
-136	BigDecimal	mul		param	context	計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する	
-137	BigDecimal	mul		returns	context	A * B	
+136	BigDecimal	mul		param	context	計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する	MathContext setting after calculation. If omitted, use the MathContext of the B.
+137	BigDecimal	mul		returns		A * B	A * B
 138	BigDecimal	divideToIntegralValue		desc		小数点まで求めない割り算	Divide not calculated to the decimal point.
 139	BigDecimal	divideToIntegralValue		param	number		
-140	BigDecimal	divideToIntegralValue		param	context	計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する	
-141	BigDecimal	divideToIntegralValue		returns	context	(int)(A / B)	
+140	BigDecimal	divideToIntegralValue		param	context	計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する	MathContext setting after calculation. If omitted, use the MathContext of the B.
+141	BigDecimal	divideToIntegralValue		returns		(int)(A / B)	(int)(A / B)
 142	BigDecimal	divideAndRemainder		desc		割り算と余り	Divide and remainder.
 143	BigDecimal	divideAndRemainder		param	number		
-144	BigDecimal	divideAndRemainder		param	context	計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する	
-145	BigDecimal	divideAndRemainder		returns	context	[C = (int)(A / B), A - C * B]	
+144	BigDecimal	divideAndRemainder		param	context	計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する	MathContext setting after calculation. If omitted, use the MathContext of the B.
+145	BigDecimal	divideAndRemainder		returns		[C = (int)(A / B), A - C * B]	[C = (int)(A / B), A - C * B]
 146	BigDecimal	rem		desc		割り算の余り	Remainder of division.
 147	BigDecimal	rem		param	number		
-148	BigDecimal	rem		param	context	計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する	
-149	BigDecimal	rem		returns	context	A % B	
+148	BigDecimal	rem		param	context	計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する	MathContext setting after calculation. If omitted, use the MathContext of the B.
+149	BigDecimal	rem		returns		A % B	A % B
 150	BigDecimal	mod		desc		割り算の正の余り	Modulo, positive remainder of division.
 151	BigDecimal	mod		param	number		
-152	BigDecimal	mod		param	context	計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する	
-153	BigDecimal	mod		returns	context	A mod B	
+152	BigDecimal	mod		param	context	計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する	MathContext setting after calculation. If omitted, use the MathContext of the B.
+153	BigDecimal	mod		returns		A mod B	A mod B
 154	BigDecimal	divide		desc		割り算	Divide.
 155	BigDecimal	divide		param	number		
-156	BigDecimal	divide		param	type	計算に使用する scale, context, roundingMode を設定する	
-157	BigDecimal	divide		returns	type		
+156	BigDecimal	divide		param	type	計算に使用する scale, context, roundingMode を設定する	Scale, MathContext, RoundingMode used for the calculation.
+157	BigDecimal	divide		returns			
 158	BigDecimal	div		desc		割り算	Divide.
 159	BigDecimal	div		param	number		
-160	BigDecimal	div		param	type	計算に使用する scale, context, roundingMode を設定する	
-161	BigDecimal	div		returns	type	A / B	
+160	BigDecimal	div		param	type	計算に使用する scale, context, roundingMode を設定する	Scale, MathContext, RoundingMode used for the calculation.
+161	BigDecimal	div		returns		A / B	A / B
 162	BigDecimal	toBigInteger		desc		BigInteger に変換	Get as a BigInteger.
 163	BigDecimal	toBigInteger		returns			
 164	BigDecimal	toBigIntegerExact		desc		"BigInteger に変換
@@ -209,8 +209,8 @@ An error occurs if conversion fails."
 巨大な乗算をする場合は例外を発生させる"	"Power function.
 An exception occurs when doing a huge multiplication."
 175	BigDecimal	pow		param	number		
-176	BigDecimal	pow		param	context	計算に使用する設定、省略した場合は、累乗先の設定デフォルト値を使用する	
-177	BigDecimal	pow		returns	context	pow(A, B)	
+176	BigDecimal	pow		param	context	計算に使用する設定、省略した場合は、累乗先の設定デフォルト値を使用する	MathContext setting after calculation. If omitted, use the MathContext of the B.
+177	BigDecimal	pow		returns		pow(A, B)	pow(A, B)
 178	BigDecimal	setDefaultContext	static	desc		オブジェクトを新規作成時に環境設定を変更しなかった場合に設定されるデフォルト設定	"Set default the MathContext.
 This is used if you do not specify MathContext when creating a new object."
 179	BigDecimal	setDefaultContext	static	param	context		
@@ -218,13 +218,13 @@ This is used if you do not specify MathContext when creating a new object."
 Used when MathContext not specified explicitly."
 181	BigDecimal	getDefaultContext	static	returns			
 182	BigDecimal	ZERO	static get	desc		0	0
-183	BigDecimal	ZERO	static get	returns		0	
+183	BigDecimal	ZERO	static get	returns		0	0
 184	BigDecimal	ONE	static get	desc		1	1
-185	BigDecimal	ONE	static get	returns		1	
+185	BigDecimal	ONE	static get	returns		1	1
 186	BigDecimal	TWO	static get	desc		2	2
-187	BigDecimal	TWO	static get	returns		2	
+187	BigDecimal	TWO	static get	returns		2	2
 188	BigDecimal	TEN	static get	desc		10	10
-189	BigDecimal	TEN	static get	returns		10	
+189	BigDecimal	TEN	static get	returns		10	10
 190	BigDecimal	DEFINE	const	desc		内部で使用する定数値	Collection of constant values used in the class.
 191	BigDecimal	ZERO		desc		0	0
 192	BigDecimal	ONE		desc		1	1
@@ -233,27 +233,27 @@ Used when MathContext not specified explicitly."
 195		DEFAULT_RANDOM	let	desc		乱数用クラスを指定しなかった場合に使用するデフォルト乱数クラス	Random number class to be used when the random number class is not set.
 196	IntegerTool	IntegerTool	class	desc		BigInteger 内で使用する関数群	Collection of functions used in BigInteger.
 197	IntegerTool	string_to_binary_number	static	desc		数値が入った文字列から16進数ごとの配列へ変換する	Return a hex array from a string containing numbers.
-198	IntegerTool	string_to_binary_number	static	param	text	数値が入ったテキストデータ（負の値などを含めない）	
-199	IntegerTool	string_to_binary_number	static	param	radix	テキストデータの進数	
-200	IntegerTool	string_to_binary_number	static	returns	radix	_16進数ごとに代入された配列	
-201	IntegerTool	number_to_binary_number	static	desc		数値から16進数ごとの配列へ変換する	Return a hexadecimal array from numbers.
-202	IntegerTool	number_to_binary_number	static	param	x	変換したい数値	
-203	IntegerTool	number_to_binary_number	static	returns	x	_16進数ごとに代入された配列	
+198	IntegerTool	string_to_binary_number	static	param	text	数値が入ったテキストデータ（負の値などを含めない）	String containing a number (remove the negative sign).
+199	IntegerTool	string_to_binary_number	static	param	radix	テキストデータの進数	Base number.
+200	IntegerTool	string_to_binary_number	static	returns		16進数ごとに代入された配列	Hex array.
+201	IntegerTool	number_to_binary_number	static	desc		数値から16進数ごとの配列へ変換する	Return a hexadecimal array from the number.
+202	IntegerTool	number_to_binary_number	static	param	x	変換したい数値	Target number.
+203	IntegerTool	number_to_binary_number	static	returns		16進数ごとに代入された配列	Hex array.
 204	IntegerTool	binary_number_to_string	static	desc		16進数の配列データから数列が入った文字列を作成	Return string of number from a hexadecimal array.
-205	IntegerTool	binary_number_to_string	static	param	binary	16進数ごとに代入された配列	
-206	IntegerTool	binary_number_to_string	static	param	radix	変換後の進数	
-207	IntegerTool	binary_number_to_string	static	returns	radix	指定した進数で桁ごとに代入された数値配列	
+205	IntegerTool	binary_number_to_string	static	param	binary	16進数ごとに代入された配列	Hex array.
+206	IntegerTool	binary_number_to_string	static	param	radix	変換後の進数	Base number.
+207	IntegerTool	binary_number_to_string	static	returns		指定した進数で桁ごとに代入された数値配列	Numeric array for each digit in the specified base number.
 208	IntegerTool	ToBigIntegerFromString	static	desc		文字列から多倍長数値を表すためのデータを作成	Return data to represent multi-precision numbers from strings.
-209	IntegerTool	ToBigIntegerFromString	static	param	text	数値が入ったテキストデータ	
-210	IntegerTool	ToBigIntegerFromString	static	param	radix	テキストデータの進数	
-211	IntegerTool	ToBigIntegerFromString	static	returns	radix	多倍長数値を表すためのデータ	
+209	IntegerTool	ToBigIntegerFromString	static	param	text	数値が入ったテキストデータ	String containing a number.
+210	IntegerTool	ToBigIntegerFromString	static	param	radix	テキストデータの進数	Base number.
+211	IntegerTool	ToBigIntegerFromString	static	returns		多倍長数値を表すためのデータ	Data for BigInteger.
 212	BigInteger	BigInteger	export default class	desc		多倍長整数演算クラス (immutable)	Arbitrary-precision integer class (immutable).
 213	BigInteger	constructor		desc		"多倍長整数を作成
 文字列で指定する場合は指数表記には非対応。
 指定した進数で指定する場合は[""ff"", 16] という配列で指定する。"	"Create an arbitrary-precision integer.
-Does not support strings using exponential notation.
-If you want to initialize with the specified base number, please set up with an array [""ff"", 16]."
-214	BigInteger	constructor		param	number	整数値	
+* Does not support strings using exponential notation.
+* If you want to initialize with the specified base number, please set up with an array [""ff"", 16]."
+214	BigInteger	constructor		param	number	整数値	Numeric data. See how to use the function.
 215	BigInteger	this.element		desc		1要素、16ビット整数の配列	An integer consisting of 16 bits per element of the array.
 216	BigInteger	this._sign		desc		"正負（プラスなら+1、マイナスなら-1、0なら0）
 ※計算によってはここの値の再設定をしていない箇所があるので、ここを見る時は注意"	"Positive or negative signs of number.
@@ -261,135 +261,136 @@ If you want to initialize with the specified base number, please set up with an 
 * This value may not be correct ?"
 217	BigInteger	create	static	desc		BigIntegerを作成する	Create an entity object of this class.
 218	BigInteger	create	static	param	number		
-219	BigInteger	create	static	returns	number		
+219	BigInteger	create	static	returns			
 220	BigInteger	valueOf	static	desc		指定した数値から BigInteger 型に変換	"Create an arbitrary-precision integer.
-Does not support strings using exponential notation.
-If you want to initialize with the specified base number, please set up with an array [""ff"", 16]."
+* Does not support strings using exponential notation.
+* If you want to initialize with the specified base number, please set up with an array [""ff"", 16]."
 221	BigInteger	valueOf	static	param	number		
-222	BigInteger	valueOf	static	returns	number		
+222	BigInteger	valueOf	static	returns			
 223	BigInteger	_toBigInteger	static	desc		BigInteger を作成	"Convert to BigInteger.
 If type conversion is unnecessary, return the value as it is."
 224	BigInteger	_toBigInteger	static	param	number		
-225	BigInteger	_toBigInteger	static	returns	number		
+225	BigInteger	_toBigInteger	static	returns			
 226	BigInteger	_toFloat	static	desc		実数を作成	Convert to real number.
 227	BigInteger	_toFloat	static	param	number		
-228	BigInteger	_toFloat	static	returns	number		
+228	BigInteger	_toFloat	static	returns			
 229	BigInteger	_toInteger	static	desc		整数を作成	Convert to integer.
 230	BigInteger	_toInteger	static	param	number		
-231	BigInteger	_toInteger	static	returns	number		
+231	BigInteger	_toInteger	static	returns			
 232	BigInteger	createRandomBigInteger	static	desc		指定したビット数以内の乱数	Random number of specified bit length.
-233	BigInteger	createRandomBigInteger	static	param	bitsize	作成する乱数のビット数	
-234	BigInteger	createRandomBigInteger	static	param	random	作成に使用するRandom	
-235	BigInteger	createRandomBigInteger	static	returns	random		
+233	BigInteger	createRandomBigInteger	static	param	bitsize	作成する乱数のビット数	Bit length.
+234	BigInteger	createRandomBigInteger	static	param	random	作成に使用するRandom	Class for creating random numbers.
+235	BigInteger	createRandomBigInteger	static	returns			
 236	BigInteger	probablePrime	static	desc		指定したビット長以内で表される素数	Prime represented within the specified bit length.
-237	BigInteger	probablePrime	static	param	bits	作成する素数の乱数のビット数	
-238	BigInteger	probablePrime	static	param	random	作成に使用するRandom	
-239	BigInteger	probablePrime	static	param	certainty	ミラーラビン素数判定法に使用する繰り返し回数	
-240	BigInteger	probablePrime	static	param	create_count	乱数生成回数	
-241	BigInteger	probablePrime	static	returns	create_count		
+237	BigInteger	probablePrime	static	param	bits	作成する素数の乱数のビット数	Bit length.
+238	BigInteger	probablePrime	static	param	random	作成に使用するRandom	Class for creating random numbers.
+239	BigInteger	probablePrime	static	param	certainty	ミラーラビン素数判定法に使用する繰り返し回数	Repeat count (prime precision).
+240	BigInteger	probablePrime	static	param	create_count	乱数生成回数	Number of times to retry if prime generation fails.
+241	BigInteger	probablePrime	static	returns			
 242	BigInteger	equals		desc		等式	Equals.
 243	BigInteger	equals		param	number		
-244	BigInteger	equals		returns	number	A === B	
+244	BigInteger	equals		returns		A === B	A === B
 245	BigInteger	toString		desc		文字列化	Convert to string.
-246	BigInteger	toString		param	radix	文字列変換後の進数	
-247	BigInteger	toString		returns	radix		
+246	BigInteger	toString		param	radix	文字列変換後の進数	Base number.
+247	BigInteger	toString		returns			
 248	BigInteger	getShort		desc		16進数ごとの配列で構成される内部値の指定した位置の値	Value at the specified position of the internally used array that composed of hexadecimal numbers.
-249	BigInteger	getShort		param	point	内部配列の位置	
-250	BigInteger	getShort		returns	point		
+249	BigInteger	getShort		param	point	内部配列の位置	Array address.
+250	BigInteger	getShort		returns			
 251	BigInteger	intValue	get	desc		"32ビット整数値
 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある"	"32-bit integer value.
-If it is outside the range of JavaScript Number, it will not be an accurate number."
+* If it is outside the range of JavaScript Number, it will not be an accurate number."
 252	BigInteger	intValue	get	returns			
 253	BigInteger	longValue	get	desc		"64ビット整数値
 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある"	"64-bit integer value.
-If it is outside the range of JavaScript Number, it will not be an accurate number."
+* If it is outside the range of JavaScript Number, it will not be an accurate number."
 254	BigInteger	longValue	get	returns			
 255	BigInteger	doubleValue	get	desc		"64ビット浮動小数に変換
 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある"	"64-bit floating point.
-If it is outside the range of JavaScript Number, it will not be an accurate number."
+* If it is outside the range of JavaScript Number, it will not be an accurate number."
 256	BigInteger	doubleValue	get	returns			
 257	BigInteger	clone		desc		ディープコピー	Deep copy.
 258	BigInteger	clone		returns			
 259	BigInteger	isNegative		desc		負数を判定	this < 0
-260	BigInteger	isNegative		returns		real(x) < 0	
+260	BigInteger	isNegative		returns		real(x) < 0	real(x) < 0
 261	BigInteger	isZero		desc		0 を判定	this === 0
-262	BigInteger	isZero		returns		A === 0	
+262	BigInteger	isZero		returns		A === 0	A === 0
 263	BigInteger	isPositive		desc		正数を判定	Return true if the value is positive number.
-264	BigInteger	isPositive		returns		real(x) > 0	
-265	BigInteger	getLowestSetBit		desc		2進数で表した場合に、最初に数字の1が現れる桁数	Number of digits in which the number "1" appears first when expressed in binary.
+264	BigInteger	isPositive		returns		real(x) > 0	real(x) > 0
+265	BigInteger	getLowestSetBit		desc		2進数で表した場合に、最初に数字の1が現れる桁数	"Number of digits in which the number ""1"" appears first when expressed in binary.
+* Return -1 If 1 is not found it."
 266	BigInteger	getLowestSetBit		returns		存在しない場合は -1	
 267	BigInteger	bitLength		desc		2進数で表した場合の長さ	Length when the number is binary.
 268	BigInteger	bitLength		returns			
 269	BigInteger	bitCount		desc		2の補数表現で表した場合に立つビットの数	Sum that the bit is 1 when represented in the two's complement.
 270	BigInteger	bitCount		returns			
-271	BigInteger	getTwosComplement		desc		加算に適用できる数値（負の場合は、2の補数表現）	Addition number (if negative, two's complement).
-272	BigInteger	getTwosComplement		param	bit_length	ビット長（省略時は自動計算）	
-273	BigInteger	getTwosComplement		returns	bit_length		
+271	BigInteger	getTwosComplement		desc		加算に適用できる数値（負の場合は、2の補数表現）	Create a numerical value for addition. If negative, two's complement.
+272	BigInteger	getTwosComplement		param	bit_length	ビット長（省略時は自動計算）	Bit length. If not set, it will be calculated automatically.
+273	BigInteger	getTwosComplement		returns			
 274	BigInteger	_and		desc		論理積（ミュータブル）	Logical AND. (mutable)
 275	BigInteger	_and		param	number		
-276	BigInteger	_and		returns	number	A &= B	
+276	BigInteger	_and		returns		A &= B	A &= B
 277	BigInteger	and		desc		論理積	Logical AND.
 278	BigInteger	and		param	number		
-279	BigInteger	and		returns	number	A & B	
+279	BigInteger	and		returns		A & B	A & B
 280	BigInteger	_or		desc		論理和（ミュータブル）	Logical OR. (mutable)
 281	BigInteger	_or		param	number		
-282	BigInteger	_or		returns	number	A |= B	
+282	BigInteger	_or		returns		A |= B	A |= B
 283	BigInteger	or		desc		論理和	Logical OR.
 284	BigInteger	or		param	number		
-285	BigInteger	or		returns	number	A | B	
+285	BigInteger	or		returns		A | B	A | B
 286	BigInteger	_xor		desc		排他的論理和（ミュータブル）	Logical Exclusive-OR. (mutable)
 287	BigInteger	_xor		param	number		
-288	BigInteger	_xor		returns	number	A ^= B	
+288	BigInteger	_xor		returns		A ^= B	A ^= B
 289	BigInteger	xor		desc		排他的論理和	Logical Exclusive-OR.
 290	BigInteger	xor		param	number		
-291	BigInteger	xor		returns	number	A ^ B	
+291	BigInteger	xor		returns		A ^ B	A ^ B
 292	BigInteger	_not		desc		ビット反転	Logical Not.
-293	BigInteger	_not		returns		A = !A	
+293	BigInteger	_not		returns		A = !A	A = !A
 294	BigInteger	not		desc		ビット反転（ミュータブル）	Logical Not. (mutable)
-295	BigInteger	not		returns		!A	
+295	BigInteger	not		returns		!A	!A
 296	BigInteger	_andNot		desc		否定論理積（ミュータブル）	Logical Not-AND. (mutable)
 297	BigInteger	_andNot		param	number		
-298	BigInteger	_andNot		returns	number	A &= (!B)	
+298	BigInteger	_andNot		returns		A &= (!B)	A &= (!B)
 299	BigInteger	andNot		desc		否定論理積	Logical Not-AND.
 300	BigInteger	andNot		param	number		
-301	BigInteger	andNot		returns	number	A & (!B)	
+301	BigInteger	andNot		returns		A & (!B)	A & (!B)
 302	BigInteger	_nand		desc		否定論理積（ミュータブル）	Logical Not-AND. (mutable)
 303	BigInteger	_nand		param	number		
-304	BigInteger	_nand		returns	number	A &= (!B)	
+304	BigInteger	_nand		returns		A &= (!B)	A &= (!B)
 305	BigInteger	nand		desc		否定論理積	Logical Not-AND.
 306	BigInteger	nand		param	number		
-307	BigInteger	nand		returns	number	A & (!B)	
+307	BigInteger	nand		returns		A & (!B)	A & (!B)
 308	BigInteger	_orNot		desc		否定論理和（ミュータブル）	Logical Not-OR. (mutable)
 309	BigInteger	_orNot		param	number		
-310	BigInteger	_orNot		returns	number	A = !(A | B)	
+310	BigInteger	_orNot		returns		A = !(A | B)	A = !(A | B)
 311	BigInteger	orNot		desc		否定論理和	Logical Not-OR.
 312	BigInteger	orNot		param	number		
-313	BigInteger	orNot		returns	number	!(A | B)	
+313	BigInteger	orNot		returns		!(A | B)	!(A | B)
 314	BigInteger	_nor		desc		否定論理和（ミュータブル）	Logical Not-OR. (mutable)
 315	BigInteger	_nor		param	number		
-316	BigInteger	_nor		returns	number	A = !(A | B)	
+316	BigInteger	_nor		returns		A = !(A | B)	A = !(A | B)
 317	BigInteger	nor		desc		否定論理和	Logical Not-OR.
 318	BigInteger	nor		param	number		
-319	BigInteger	nor		returns	number	!(A | B)	
+319	BigInteger	nor		returns		!(A | B)	!(A | B)
 320	BigInteger	_memory_allocation		desc		指定したビット長まで配列を拡張（ミュータブル）	Expand memory to specified bit length. (mutable)
-321	BigInteger	_memory_allocation		param	bit_length	ビット数	
+321	BigInteger	_memory_allocation		param	bit_length	ビット数	Bit length.
 322	BigInteger	_memory_reduction		desc		内部データの正規化（ミュータブル）	Normalization of the internal data. (mutable)
 323	BigInteger	gcd		desc		ユークリッド互除法	Euclidean algorithm.
 324	BigInteger	gcd		param	number		
-325	BigInteger	gcd		returns	number	gcd(x, y)	
+325	BigInteger	gcd		returns		gcd(x, y)	gcd(x, y)
 326	BigInteger	x	let	desc			
 327	BigInteger	extgcd		desc		拡張ユークリッド互除法	Extended Euclidean algorithm.
 328	BigInteger	extgcd		param	number		
-329	BigInteger	extgcd		returns	number	a*x + b*y = c = gcd(x, y) となる [a, b, c]	
+329	BigInteger	extgcd		returns		a*x + b*y = c = gcd(x, y) となる [a, b, c]	[a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
 330	BigInteger	r0	let	desc			
 331	BigInteger	_abs		desc		絶対値（ミュータブル）	Absolute value. (mutable)
-332	BigInteger	_abs		returns		A = abs(A)	
+332	BigInteger	_abs		returns		A = abs(A)	A = abs(A)
 333	BigInteger	abs		desc		絶対値	Absolute value.
-334	BigInteger	abs		returns		abs(A)	
+334	BigInteger	abs		returns		abs(A)	abs(A)
 335	BigInteger	_negate		desc		負数（ミュータブル）	this *= -1
-336	BigInteger	_negate		returns		A = -A	
+336	BigInteger	_negate		returns		A = -A	A = -A
 337	BigInteger	negate		desc		負数	this * -1
-338	BigInteger	negate		returns		-A	
+338	BigInteger	negate		returns		-A	-A
 339	BigInteger	signum		desc		"符号値
 1, -1, 0の場合は0を返す"	"The positive or negative sign of this number.
 * +1 if positive, -1 if negative, 0 if 0."
@@ -399,125 +400,125 @@ If it is outside the range of JavaScript Number, it will not be an accurate numb
 342	BigInteger	sign		returns		1, -1, 0の場合は0を返す	
 343	BigInteger	compareToAbs		desc		符号を除いた値同士を比較	Compare values without sign.
 344	BigInteger	compareToAbs		param	number		
-345	BigInteger	compareToAbs		returns	number	abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)	
+345	BigInteger	compareToAbs		returns		abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)	abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
 346	BigInteger	compareTo		desc		値同士を比較	Compare values.
 347	BigInteger	compareTo		param	number		
-348	BigInteger	compareTo		returns	number	A > B ? 1 : (A === B ? 0 : -1)	
+348	BigInteger	compareTo		returns		A > B ? 1 : (A === B ? 0 : -1)	A > B ? 1 : (A === B ? 0 : -1)
 349	BigInteger	max		desc		最大値	Maximum number.
 350	BigInteger	max		param	number		
-351	BigInteger	max		returns	number	max([A, B])	
+351	BigInteger	max		returns		max([A, B])	max([A, B])
 352	BigInteger	min		desc		最小値	Minimum number.
 353	BigInteger	min		param	number		
-354	BigInteger	min		returns	number	min([A, B])	
+354	BigInteger	min		returns		min([A, B])	min([A, B])
 355	BigInteger	clip		desc		数値を範囲に収める	Clip number within range.
 356	BigInteger	clip		param	min		
 357	BigInteger	clip		param	max		
-358	BigInteger	clip		returns	max	min(max(x, min), max)	
+358	BigInteger	clip		returns		min(max(x, min), max)	min(max(x, min), max)
 359	BigInteger	_shift		desc		ビットシフト（ミュータブル）	this <<= n
-360	BigInteger	_shift		param	shift_length	上位へのビットシフト数	
-361	BigInteger	_shift		returns	shift_length	A <<= n	
+360	BigInteger	_shift		param	shift_length	上位へのビットシフト数	Bit shift size.
+361	BigInteger	_shift		returns		A <<= n	A <<= n
 362	BigInteger	shift		desc		ビットシフト	this << n
 363	BigInteger	shift		param	n		
-364	BigInteger	shift		returns	n	A << n	
+364	BigInteger	shift		returns		A << n	A << n
 365	BigInteger	shiftLeft		desc		左へビットシフト	this << n
 366	BigInteger	shiftLeft		param	n		
-367	BigInteger	shiftLeft		returns	n	A << n	
+367	BigInteger	shiftLeft		returns		A << n	A << n
 368	BigInteger	shiftRight		desc		右へビットシフト	this >> n
 369	BigInteger	shiftRight		param	n		
-370	BigInteger	shiftRight		returns	n	A >> n	
+370	BigInteger	shiftRight		returns		A >> n	A >> n
 371	BigInteger	_add		desc		加算（ミュータブル）	Add. (mutable)
 372	BigInteger	_add		param	number		
-373	BigInteger	_add		returns	number	A += B	
+373	BigInteger	_add		returns		A += B	A += B
 374	BigInteger	add		desc		加算	Add.
 375	BigInteger	add		param	number		
-376	BigInteger	add		returns	number	A + B	
+376	BigInteger	add		returns		A + B	A + B
 377	BigInteger	_subtract		desc		減算（ミュータブル）	Subtract. (mutable)
 378	BigInteger	_subtract		param	number		
-379	BigInteger	_subtract		returns	number	A -= B	
+379	BigInteger	_subtract		returns		A -= B	A -= B
 380	BigInteger	subtract		desc		減算	Subtract.
 381	BigInteger	subtract		param	number		
-382	BigInteger	subtract		returns	number	A - B	
+382	BigInteger	subtract		returns		A - B	A - B
 383	BigInteger	sub		desc		減算	Subtract.
 384	BigInteger	sub		param	number		
-385	BigInteger	sub		returns	number	A - B	
+385	BigInteger	sub		returns		A - B	A - B
 386	BigInteger	_multiply		desc		乗算（ミュータブル）	Multiply. (mutable)
 387	BigInteger	_multiply		param	number		
-388	BigInteger	_multiply		returns	number	A *= B	
+388	BigInteger	_multiply		returns		A *= B	A *= B
 389	BigInteger	multiply		desc		乗算	Multiply.
 390	BigInteger	multiply		param	number		
-391	BigInteger	multiply		returns	number	A * B	
+391	BigInteger	multiply		returns		A * B	A * B
 392	BigInteger	mul		desc		乗算	Multiply.
 393	BigInteger	mul		param	number		
-394	BigInteger	mul		returns	number	A * B	
+394	BigInteger	mul		returns		A * B	A * B
 395	BigInteger	_divideAndRemainder		desc		割り算と余り（ミュータブル）	Divide and remainder. (mutable)
 396	BigInteger	_divideAndRemainder		param	number		
-397	BigInteger	_divideAndRemainder		returns	number	[C = floor(A / B), A - C * B]	
+397	BigInteger	_divideAndRemainder		returns		[C = floor(A / B), A - C * B]	[C = floor(A / B), A - C * B]
 398	BigInteger	divideAndRemainder		desc		割り算と余り	Divide and remainder.
 399	BigInteger	divideAndRemainder		param	number		
-400	BigInteger	divideAndRemainder		returns	number	[C = floor(A / B), A - C * B]	
+400	BigInteger	divideAndRemainder		returns		[C = floor(A / B), A - C * B]	[C = floor(A / B), A - C * B]
 401	BigInteger	_divide		desc		割り算（ミュータブル）	Divide. (mutable)
 402	BigInteger	_divide		param	number		
-403	BigInteger	_divide		returns	number	floor(A / B)	
+403	BigInteger	_divide		returns		floor(A / B)	floor(A / B)
 404	BigInteger	divide		desc		割り算	Divide.
 405	BigInteger	divide		param	number		
-406	BigInteger	divide		returns	number	floor(A / B)	
+406	BigInteger	divide		returns		floor(A / B)	floor(A / B)
 407	BigInteger	div		desc		割り算	Divide.
 408	BigInteger	div		param	number		
-409	BigInteger	div		returns	number	floor(A / B)	
+409	BigInteger	div		returns		floor(A / B)	floor(A / B)
 410	BigInteger	_remainder		desc		割り算の余り（ミュータブル）	Remainder of division. (mutable)
 411	BigInteger	_remainder		param	number		
-412	BigInteger	_remainder		returns	number	A %= B	
+412	BigInteger	_remainder		returns		A %= B	A %= B
 413	BigInteger	remainder		desc		割り算の余り	Remainder of division.
 414	BigInteger	remainder		param	number		
-415	BigInteger	remainder		returns	number	A % B	
+415	BigInteger	remainder		returns		A % B	A % B
 416	BigInteger	rem		desc		割り算の余り	Remainder of division.
 417	BigInteger	rem		param	number		
-418	BigInteger	rem		returns	number	A % B	
+418	BigInteger	rem		returns		A % B	A % B
 419	BigInteger	_mod		desc		割り算の正の余り（ミュータブル）	Modulo, positive remainder of division. (mutable)
 420	BigInteger	_mod		param	number		
-421	BigInteger	_mod		returns	number	A = A mod B	
+421	BigInteger	_mod		returns		A = A mod B	A = A mod B
 422	BigInteger	mod		desc		割り算の正の余り	Modulo, positive remainder of division.
 423	BigInteger	mod		param	number		
-424	BigInteger	mod		returns	number	A mod B	
+424	BigInteger	mod		returns		A mod B	A mod B
 425	BigInteger	_setBit		desc		特定のビットを立てる（ミュータブル）	this | (1 << n) (mutable)
 426	BigInteger	_setBit		param	bit		
-427	BigInteger	_setBit		returns	bit		
+427	BigInteger	_setBit		returns			
 428	BigInteger	setBit		desc		特定のビットを立てる	this | (1 << n)
 429	BigInteger	setBit		param	bit		
-430	BigInteger	setBit		returns	bit		
+430	BigInteger	setBit		returns			
 431	BigInteger	_flipBit		desc		特定のビットを反転させる（ミュータブル）	Invert a specific bit.) (mutable)
 432	BigInteger	_flipBit		param	bit		
-433	BigInteger	_flipBit		returns	bit		
+433	BigInteger	_flipBit		returns			
 434	BigInteger	flipBit		desc		特定のビットを反転させる	Invert a specific bit.
 435	BigInteger	flipBit		param	bit		
-436	BigInteger	flipBit		returns	bit		
+436	BigInteger	flipBit		returns			
 437	BigInteger	clearBit		desc		特定のビットを下げる	Lower a specific bit.
 438	BigInteger	clearBit		param	bit		
-439	BigInteger	clearBit		returns	bit		
+439	BigInteger	clearBit		returns			
 440	BigInteger	testBit		desc		指定のビットの判定	Test if a particular bit is on.
 441	BigInteger	testBit		param	bit		
-442	BigInteger	testBit		returns	bit		
+442	BigInteger	testBit		returns			
 443	BigInteger	pow		desc		累乗	Power function.
 444	BigInteger	pow		param	exponent		
-445	BigInteger	pow		returns	exponent	pow(A, B)	
+445	BigInteger	pow		returns		pow(A, B)	pow(A, B)
 446	BigInteger	modPow		desc		冪剰余	Modular exponentiation.
 447	BigInteger	modPow		param	exponent		
 448	BigInteger	modPow		param	m		
-449	BigInteger	modPow		returns	m	A^B mod m	
+449	BigInteger	modPow		returns		A^B mod m	A^B mod m
 450	BigInteger	modInverse		desc		モジュラ逆数	Modular multiplicative inverse.
 451	BigInteger	modInverse		param	m		
-452	BigInteger	modInverse		returns	m	A^(-1) mod m	
+452	BigInteger	modInverse		returns		A^(-1) mod m	A^(-1) mod m
 453	BigInteger	isProbablePrime		desc		"ミラーラビン素数判定法による素数判定
 （非常に重たいので注意）"	"Return true if the value is prime number by Miller-Labin prime number determination method.
-Please note because it takes a very long time to process."
-454	BigInteger	isProbablePrime		param	certainty	素数判定法の繰り返し回数	
-455	BigInteger	isProbablePrime		returns	certainty		
+Attention : it takes a very long time to process."
+454	BigInteger	isProbablePrime		param	certainty	素数判定法の繰り返し回数	Repeat count (prime precision).
+455	BigInteger	isProbablePrime		returns			
 456	BigInteger	nextProbablePrime		desc		次の素数	Next prime.
-457	BigInteger	nextProbablePrime		param	certainty	素数判定法の繰り返し回数	
-458	BigInteger	nextProbablePrime		param	search_max	次の素数を見つけるまでの回数	
-459	BigInteger	nextProbablePrime		returns	search_max		
+457	BigInteger	nextProbablePrime		param	certainty	素数判定法の繰り返し回数	Repeat count (prime precision).
+458	BigInteger	nextProbablePrime		param	search_max	次の素数を見つけるまでの回数	Search range of next prime.
+459	BigInteger	nextProbablePrime		returns			
 460	BigInteger	factorial		desc		階乗関数	Factorial function, x!.
-461	BigInteger	factorial		returns		n!	
+461	BigInteger	factorial		returns		n!	n!
 462	BigInteger	setDefaultRandom	static	desc		乱数を指定しなかった場合のデフォルト乱数を設定する	"Set default class of random.
 This is used if you do not specify a random number."
 463	BigInteger	setDefaultRandom	static	param	random		
@@ -525,13 +526,13 @@ This is used if you do not specify a random number."
 Used when Random not specified explicitly."
 465	BigInteger	getDefaultRandom	static	returns			
 466	BigInteger	ZERO	static get	desc		0	0
-467	BigInteger	ZERO	static get	returns		0	
+467	BigInteger	ZERO	static get	returns		0	0
 468	BigInteger	ONE	static get	desc		1	1
-469	BigInteger	ONE	static get	returns		1	
+469	BigInteger	ONE	static get	returns		1	1
 470	BigInteger	TWO	static get	desc		2	2
-471	BigInteger	TWO	static get	returns		2	
+471	BigInteger	TWO	static get	returns		2	2
 472	BigInteger	TEN	static get	desc		10	10
-473	BigInteger	TEN	static get	returns		10	
+473	BigInteger	TEN	static get	returns		10	10
 474	BigInteger	DEFINE	const	desc		内部で使用する定数値	Collection of constant values used in the class.
 475	BigInteger	ONE		desc		1	1
 476	BigInteger	TWO		desc		2	2
@@ -540,30 +541,30 @@ Used when Random not specified explicitly."
 479		random_class	const	desc		Complex 内で使用する乱数生成クラス	Random number generation class used within Complex.
 480	ComplexTool	ComplexTool	class	desc		Complex 内で使用する関数群	Collection of functions used in Complex.
 481	ComplexTool	ToComplexFromString	static	desc		文字列から複素数用データの作成	Create data for complex numbers from strings.
-482	ComplexTool	ToComplexFromString	static	param	text	解析したい文字列	
-483	ComplexTool	ToComplexFromString	static	returns	text		
+482	ComplexTool	ToComplexFromString	static	param	text	解析したい文字列	Target strings.
+483	ComplexTool	ToComplexFromString	static	returns			
 484	Complex	Complex	export default class	desc		複素数クラス (immutable)	Complex number class. (immutable)
 485	Complex	constructor		desc		複素数を作成	"Create a complex number.
 When using a complex number, initialize it as ""3 + 4i"" or ""4j + 3"" or [3, 4]."
-486	Complex	constructor		param	number	複素数( "1 + j", [1 , 1] など)	
+486	Complex	constructor		param	number	複素数( "1 + j", [1 , 1] など)	Complex number. See how to use the function.
 487	Complex	this._re		desc		実部	The real part of this Comlex.
 488	Complex	this._im		desc		虚部	The imaginary part of this Comlex.
 489	Complex	create	static	desc		Complex を作成	Create an entity object of this class.
 490	Complex	create	static	param	number		
-491	Complex	create	static	returns	number		
+491	Complex	create	static	returns			
 492	Complex	valueOf	static	desc		指定した数値から Complex 型に変換	Convert number to Complex type.
 493	Complex	valueOf	static	param	number		
-494	Complex	valueOf	static	returns	number		
+494	Complex	valueOf	static	returns			
 495	Complex	_toComplex	static	desc		複素数を作成	"Convert to Complex.
 If type conversion is unnecessary, return the value as it is."
 496	Complex	_toComplex	static	param	number		
-497	Complex	_toComplex	static	returns	number		
+497	Complex	_toComplex	static	returns			
 498	Complex	_toDouble	static	desc		実数を作成	Convert to real number.
 499	Complex	_toDouble	static	param	number		
-500	Complex	_toDouble	static	returns	number		
+500	Complex	_toDouble	static	returns			
 501	Complex	_toInteger	static	desc		整数を作成	Convert to integer.
 502	Complex	_toInteger	static	param	number		
-503	Complex	_toInteger	static	returns	number		
+503	Complex	_toInteger	static	returns			
 504	Complex	intValue	get	desc		32ビット整数に変換	32-bit integer value.
 505	Complex	intValue	get	returns			
 506	Complex	doubleValue	get	desc		64ビット浮動小数に変換	64-bit floating point.
@@ -578,164 +579,164 @@ If type conversion is unnecessary, return the value as it is."
 515	Complex	randn	static	returns			
 516	Complex	equals		desc		等式	Equals.
 517	Complex	equals		param	number		
-518	Complex	equals		param	epsilon	誤差を実数で指定	
-519	Complex	equals		returns	epsilon	A === B	
+518	Complex	equals		param	epsilon	誤差を実数で指定	Numerical error of calculation.
+519	Complex	equals		returns		A === B	A === B
 520	Complex	real	get	desc		実部	The real part of this Comlex.
-521	Complex	real	get	returns		real(A)	
+521	Complex	real	get	returns		real(A)	real(A)
 522	Complex	imag	get	desc		虚部	The imaginary part of this Comlex.
-523	Complex	imag	get	returns		imag(A)	
+523	Complex	imag	get	returns		imag(A)	imag(A)
 524	Complex	norm	get	desc		ノルム	norm.
-525	Complex	norm	get	returns		|A|	
+525	Complex	norm	get	returns		|A|	|A|
 526	Complex	arg	get	desc		偏角	The argument of this complex number.
-527	Complex	arg	get	returns		arg(A)	
-528	Complex	getDecimalPosition		desc		実部、虚部を表す際の小数点以下の桁数	"Number of decimal places for real and imaginary parts.
+527	Complex	arg	get	returns		arg(A)	arg(A)
+528	Complex	getDecimalPosition		desc		実部、虚部を表す際の小数点以下の桁数	"Return number of decimal places for real and imaginary parts.
 Used to make a string."
-529	Complex	getDecimalPosition		returns		小数点の桁数	
+529	Complex	getDecimalPosition		returns		小数点の桁数	Number of decimal places.
 530	Complex	add		desc		加算	Add.
 531	Complex	add		param	number		
-532	Complex	add		returns	number	A + B	
+532	Complex	add		returns		A + B	A + B
 533	Complex	sub		desc		減算	Subtract.
 534	Complex	sub		param	number		
-535	Complex	sub		returns	number	A - B	
+535	Complex	sub		returns		A - B	A - B
 536	Complex	mul		desc		乗算	Multiply.
 537	Complex	mul		param	number		
-538	Complex	mul		returns	number	A * B	
+538	Complex	mul		returns		A * B	A * B
 539	Complex	dot		desc		ドット積	Inner product/Dot product.
 540	Complex	dot		param	number		
-541	Complex	dot		returns	number	A * conj(B)	
+541	Complex	dot		returns		A * conj(B)	A * conj(B)
 542	Complex	div		desc		割り算	Divide.
 543	Complex	div		param	number		
-544	Complex	div		returns	number	A / B	
+544	Complex	div		returns		A / B	A / B
 545	Complex	mod		desc		割り算の正の余り	Modulo, positive remainder of division.
 546	Complex	mod		param	number	複素数を含まない数値	
-547	Complex	mod		returns	number	A mod B	
+547	Complex	mod		returns		A mod B	A mod B
 548	Complex	inv		desc		逆数	Inverse number of this value.
-549	Complex	inv		returns		1 / A	
+549	Complex	inv		returns		1 / A	1 / A
 550	Complex	sign		desc		符号値	"The positive or negative sign of this number.
 * +1 if positive, -1 if negative, 0 if 0."
 551	Complex	sign		returns		[-1,1] 複素数の場合はノルムを1にした値。	
 552	Complex	compareTo		desc		値同士を比較	Compare values.
 553	Complex	compareTo		param	number		
-554	Complex	compareTo		param	epsilon	誤差を実数で指定	
-555	Complex	compareTo		returns	epsilon	A > B ? 1 : (A === B ? 0 : -1)	
+554	Complex	compareTo		param	epsilon	誤差を実数で指定	Numerical error of calculation.
+555	Complex	compareTo		returns		A > B ? 1 : (A === B ? 0 : -1)	A > B ? 1 : (A === B ? 0 : -1)
 556	Complex	max		desc		最大値	Maximum number.
 557	Complex	max		param	number		
-558	Complex	max		returns	number	max([A, B])	
+558	Complex	max		returns		max([A, B])	max([A, B])
 559	Complex	min		desc		最小値	Minimum number.
 560	Complex	min		param	number		
-561	Complex	min		returns	number	min([A, B])	
+561	Complex	min		returns		min([A, B])	min([A, B])
 562	Complex	clip		desc		数値を範囲に収める	Clip number within range.
 563	Complex	clip		param	min		
 564	Complex	clip		param	max		
-565	Complex	clip		returns	max	min(max(x, min), max)	
+565	Complex	clip		returns		min(max(x, min), max)	min(max(x, min), max)
 566	Complex	isInteger		desc		整数を判定	Return true if the value is integer.
 567	Complex	isInteger		param	epsilon	誤差を実数で指定	
-568	Complex	isInteger		returns	epsilon		
+568	Complex	isInteger		returns			
 569	Complex	isComplexInteger		desc		複素整数（整数も含む）を判定	Returns true if the vallue is complex integer (including normal integer).
 570	Complex	isComplexInteger		param	epsilon	誤差を実数で指定	
-571	Complex	isComplexInteger		returns	epsilon	real(A) === 整数 && imag(A) === 整数	
+571	Complex	isComplexInteger		returns		real(A) === 整数 && imag(A) === 整数	real(A) === integer && imag(A) === integer
 572	Complex	isZero		desc		0 を判定	this === 0
 573	Complex	isZero		param	epsilon	誤差を実数で指定	
-574	Complex	isZero		returns	epsilon	A === 0	
+574	Complex	isZero		returns		A === 0	A === 0
 575	Complex	isOne		desc		1 を判定	this === 1
 576	Complex	isOne		param	epsilon	誤差を実数で指定	
-577	Complex	isOne		returns	epsilon	A === 1	
+577	Complex	isOne		returns		A === 1	A === 1
 578	Complex	isComplex		desc		複素数（虚部が0以外）を判定	Returns true if the vallue is complex number (imaginary part is not 0).
 579	Complex	isComplex		param	epsilon	誤差を実数で指定	
-580	Complex	isComplex		returns	epsilon	imag(A) !== 0	
+580	Complex	isComplex		returns		imag(A) !== 0	imag(A) !== 0
 581	Complex	isReal		desc		実数を判定	Return true if the value is real number.
 582	Complex	isReal		param	epsilon	誤差を実数で指定	
-583	Complex	isReal		returns	epsilon	imag(A) === 0	
+583	Complex	isReal		returns		imag(A) === 0	imag(A) === 0
 584	Complex	isNaN		desc		非数を判定	this === NaN
-585	Complex	isNaN		returns		isNaN(A)	
+585	Complex	isNaN		returns		isNaN(A)	isNaN(A)
 586	Complex	isPositive		desc		実部の正数を判定	Return true if this real part of the complex positive.
-587	Complex	isPositive		returns		real(x) > 0	
+587	Complex	isPositive		returns		real(x) > 0	real(x) > 0
 588	Complex	isNegative		desc		実部の負数を判定	real(this) < 0
-589	Complex	isNegative		returns		real(x) < 0	
+589	Complex	isNegative		returns		real(x) < 0	real(x) < 0
 590	Complex	isNotNegative		desc		実部の非負値を判定	real(this) >= 0
-591	Complex	isNotNegative		returns		real(x) >= 0	
+591	Complex	isNotNegative		returns		real(x) >= 0	real(x) >= 0
 592	Complex	isInfinite		desc		無限を判定	this === Infinity
-593	Complex	isInfinite		returns		isInfinite(A)	
+593	Complex	isInfinite		returns		isInfinite(A)	isInfinite(A)
 594	Complex	isFinite		desc		有限数を判定	Return true if the value is finite number.
-595	Complex	isFinite		returns		!isNaN(A) && !isInfinite(A)	
+595	Complex	isFinite		returns		!isNaN(A) && !isInfinite(A)	!isNaN(A) && !isInfinite(A)
 596	Complex	abs		desc		絶対値	Absolute value.
-597	Complex	abs		returns		abs(A)	
+597	Complex	abs		returns		abs(A)	abs(A)
 598	Complex	conj		desc		共役複素数	Complex conjugate.
-599	Complex	conj		returns		real(A) - imag(A)j	
+599	Complex	conj		returns		real(A) - imag(A)j	real(A) - imag(A)j
 600	Complex	negate		desc		負数	this * -1
-601	Complex	negate		returns		-A	
+601	Complex	negate		returns		-A	-A
 602	Complex	pow		desc		累乗	Power function.
 603	Complex	pow		param	number		
-604	Complex	pow		returns	number	pow(A, B)	
+604	Complex	pow		returns		pow(A, B)	pow(A, B)
 605	Complex	square		desc		2乗	Square.
-606	Complex	square		returns		pow(A, 2)	
+606	Complex	square		returns		pow(A, 2)	pow(A, 2)
 607	Complex	sqrt		desc		平方根	Square root.
-608	Complex	sqrt		returns		sqrt(A)	
+608	Complex	sqrt		returns		sqrt(A)	sqrt(A)
 609	Complex	log		desc		対数	Logarithmic function.
-610	Complex	log		returns		log(A)	
+610	Complex	log		returns		log(A)	log(A)
 611	Complex	exp		desc		指数	Exponential function.
-612	Complex	exp		returns		exp(A)	
+612	Complex	exp		returns		exp(A)	exp(A)
 613	Complex	sin		desc		sin	Sine function.
-614	Complex	sin		returns		sin(A)	
+614	Complex	sin		returns		sin(A)	sin(A)
 615	Complex	cos		desc		cos	Cosine function.
-616	Complex	cos		returns		cos(A)	
+616	Complex	cos		returns		cos(A)	cos(A)
 617	Complex	tan		desc		tan	Tangent function.
-618	Complex	tan		returns		tan(A)	
+618	Complex	tan		returns		tan(A)	tan(A)
 619	Complex	atan		desc		atan	"Atan (arc tangent) function.
 Return the values of [-PI/2, PI/2]."
-620	Complex	atan		returns		atan(A)	
+620	Complex	atan		returns		atan(A)	atan(A)
 621	Complex	atan2		desc		atan2	"Atan (arc tangent) function.
 Return the values of [-PI, PI] ."
 622	Complex	atan2		param	number	実数で指定。省略時は、本オブジェクトの偏角を返す。	
-623	Complex	atan2		returns	number	atan2(Y, X)	
+623	Complex	atan2		returns		atan2(Y, X)	atan2(Y, X)
 624	Complex	sinc		desc		sinc	Normalized sinc function.
-625	Complex	sinc		returns		sinc(A)	
+625	Complex	sinc		returns		sinc(A)	sinc(A)
 626	Complex	floor		desc		floor	Floor.
-627	Complex	floor		returns		floor(A)	
+627	Complex	floor		returns		floor(A)	floor(A)
 628	Complex	ceil		desc		ceil	Ceil.
-629	Complex	ceil		returns		ceil(A)	
+629	Complex	ceil		returns		ceil(A)	ceil(A)
 630	Complex	round		desc		四捨五入	Rounding to the nearest integer.
-631	Complex	round		returns		round(A)	
+631	Complex	round		returns		round(A)	round(A)
 632	Complex	fix		desc		整数化	To integer rounded down to the nearest.
-633	Complex	fix		returns		fix(A)	
+633	Complex	fix		returns		fix(A)	fix(A)
 634	Complex	fract		desc		小数部の抽出	Fraction.
-635	Complex	fract		returns		fract(A)	
+635	Complex	fract		returns		fract(A)	fract(A)
 636	Complex	ONE	static get	desc		1	1
-637	Complex	ONE	static get	returns		1	
+637	Complex	ONE	static get	returns		1	1
 638	Complex	TWO	static get	desc		2	2
-639	Complex	TWO	static get	returns		2	
+639	Complex	TWO	static get	returns		2	2
 640	Complex	TEN	static get	desc		10	10
-641	Complex	TEN	static get	returns		10	
+641	Complex	TEN	static get	returns		10	10
 642	Complex	ZERO	static get	desc		0	0
-643	Complex	ZERO	static get	returns		0	
+643	Complex	ZERO	static get	returns		0	0
 644	Complex	MINUS_ONE	static get	desc		-1	-1
-645	Complex	MINUS_ONE	static get	returns		-1	
+645	Complex	MINUS_ONE	static get	returns		-1	-1
 646	Complex	I	static get	desc		i, j	i, j
-647	Complex	I	static get	returns		i	
+647	Complex	I	static get	returns		i	i
 648	Complex	PI	static get	desc		PI	Pi.
-649	Complex	PI	static get	returns		3.14...	
+649	Complex	PI	static get	returns		3.14...	3.14...
 650	Complex	E	static get	desc		E	E, Napier's constant.
-651	Complex	E	static get	returns		2.71...	
+651	Complex	E	static get	returns		2.71...	2.71...
 652	Complex	LN2	static get	desc		log_e(2)	log_e(2)
-653	Complex	LN2	static get	returns		ln(2)	
+653	Complex	LN2	static get	returns		ln(2)	ln(2)
 654	Complex	LN10	static get	desc		log_e(10)	log_e(10)
-655	Complex	LN10	static get	returns		ln(10)	
+655	Complex	LN10	static get	returns		ln(10)	ln(10)
 656	Complex	LOG2E	static get	desc		log_2(e)	log_2(e)
-657	Complex	LOG2E	static get	returns		log_2(e)	
+657	Complex	LOG2E	static get	returns		log_2(e)	log_2(e)
 658	Complex	LOG10E	static get	desc		log_10(e)	log_10(e)
-659	Complex	LOG10E	static get	returns		log_10(e)	
+659	Complex	LOG10E	static get	returns		log_10(e)	log_10(e)
 660	Complex	SQRT2	static get	desc		sqrt(2)	sqrt(2)
-661	Complex	SQRT2	static get	returns		sqrt(2)	
+661	Complex	SQRT2	static get	returns		sqrt(2)	sqrt(2)
 662	Complex	SQRT1_2	static get	desc		sqrt(0.5)	sqrt(0.5)
-663	Complex	SQRT1_2	static get	returns		sqrt(0.5)	
+663	Complex	SQRT1_2	static get	returns		sqrt(0.5)	sqrt(0.5)
 664	Complex	HALF	static get	desc		0.5	0.5
-665	Complex	HALF	static get	returns		0.5	
+665	Complex	HALF	static get	returns		0.5	0.5
 666	Complex	POSITIVE_INFINITY	static get	desc		正の無限大	Positive infinity.
-667	Complex	POSITIVE_INFINITY	static get	returns		Infinity	
+667	Complex	POSITIVE_INFINITY	static get	returns		Infinity	Infinity
 668	Complex	NEGATIVE_INFINITY	static get	desc		負の無限大	Negative Infinity.
-669	Complex	NEGATIVE_INFINITY	static get	returns		-Infinity	
+669	Complex	NEGATIVE_INFINITY	static get	returns		-Infinity	-Infinity
 670	Complex	NaN	static get	desc		非数	Not a Number.
-671	Complex	NaN	static get	returns		NaN	
+671	Complex	NaN	static get	returns		NaN	NaN
 672	Complex	DEFINE	const	desc		内部で使用する定数値	Collection of constant values used in the class.
 673	Complex	ZERO		desc		0	0
 674	Complex	ONE		desc		1	1
@@ -760,43 +761,43 @@ Return the values of [-PI, PI] ."
 693	MatrixTool	toPositionArrayFromObject	static	param	data	調査する値	
 694	MatrixTool	toPositionArrayFromObject	static	param	max	":"が指定された時に初期化する配列の長さ	
 695	MatrixTool	toPositionArrayFromObject	static	param	geta	":"が指定された時に初期化する値のオフセット	
-696	MatrixTool	toPositionArrayFromObject	static	returns	geta		
+696	MatrixTool	toPositionArrayFromObject	static	returns			
 697	MatrixTool	match2	static	desc		マッチした文字列を除いた文字列も抽出可能なmatch関数	A match function that can also extract strings excluding matched strings.
 698	MatrixTool	match2	static	param	text	検索対象	
 699	MatrixTool	match2	static	param	regexp	検索したい正規表現	
-700	MatrixTool	match2	static	returns	regexp		
+700	MatrixTool	match2	static	returns			
 701	MatrixTool	trimBracket	static	desc		ブラケットに囲まれていた場合に、前後のブラケットを除去	Removed front and back brackets when enclosed by brackets.
 702	MatrixTool	trimBracket	static	param	text	ブラケットを除去したい文字	
-703	MatrixTool	trimBracket	static	returns	text	除去した文字列（ブラケットがない場合は、null）	
+703	MatrixTool	trimBracket	static	returns		除去した文字列（ブラケットがない場合は、null）	
 704	MatrixTool	toMatrixArrayFromStringForArrayJSON	static	desc		JSONで定義された文字列データからMatrix型のデータを作成する	Create Matrix type data from string data defined in JSON.
 705	MatrixTool	toMatrixArrayFromStringForArrayJSON	static	param	text	調査したい文字列([xx,xx,xx],[xx,xx,xx])	
-706	MatrixTool	toMatrixArrayFromStringForArrayJSON	static	returns	text	Matrix型で使用される内部の配列	
+706	MatrixTool	toMatrixArrayFromStringForArrayJSON	static	returns		Matrix型で使用される内部の配列	
 707	MatrixTool	InterpolationCalculation	static	desc		初期値と差分値と最終値から、その値が入った配列を作成する	Create a numeric array from initial values, difference values, and final values.
 708	MatrixTool	InterpolationCalculation	static	param	from	最初の値	
 709	MatrixTool	InterpolationCalculation	static	param	delta	差分	
 710	MatrixTool	InterpolationCalculation	static	param	to	繰り返す先の値	
 711	MatrixTool	InterpolationCalculation	static	param	is_include_last_number	最後の値を含めるか否か	
-712	MatrixTool	InterpolationCalculation	static	returns	is_include_last_number		
+712	MatrixTool	InterpolationCalculation	static	returns			
 713	MatrixTool	toArrayFromMatch2String	static	desc		match2で文字列を切り分けたデータから数値の配列を作成する	Create an array of numbers from data separated by match2.
 714	MatrixTool	toArrayFromMatch2String	static	param	match2_string	文字列を切り分けたデータ	
-715	MatrixTool	toArrayFromMatch2String	static	returns	match2_string		
+715	MatrixTool	toArrayFromMatch2String	static	returns			
 716	MatrixTool	toArrayFromString	static	desc		"文字列からMatrix型の行列データの行部分に変換
 数字のような部分を抽出することで、行列を推定する"	"Convert string to row part of matrix type matrix data.
 Estimate the matrix by extracting parts like numbers."
 717	MatrixTool	toArrayFromString	static	param	row_text	行列の1行を表す文字列	
-718	MatrixTool	toArrayFromString	static	returns	row_text		
+718	MatrixTool	toArrayFromString	static	returns			
 719	MatrixTool	toMatrixArrayFromStringForArraySPACE	static	desc		スペース区切りなどで文字列で定義された文字列データからMatrix型のデータを作成する	Create Matrix type data from string data defined by character string with space separation etc.
 720	MatrixTool	toMatrixArrayFromStringForArraySPACE	static	param	text	調査したい文字列	
-721	MatrixTool	toMatrixArrayFromStringForArraySPACE	static	returns	text	Matrix型で使用される内部の配列	
+721	MatrixTool	toMatrixArrayFromStringForArraySPACE	static	returns		Matrix型で使用される内部の配列	
 722	MatrixTool	toMatrixArrayFromStringInBracket	static	desc		行列用の文字列データから構成されるMatrix型のデータを作成する	Create Matrix type data composed of string data for matrix.
 723	MatrixTool	toMatrixArrayFromStringInBracket	static	param	text	調査したい文字列	
-724	MatrixTool	toMatrixArrayFromStringInBracket	static	returns	text	Matrix型で使用される内部の配列	
+724	MatrixTool	toMatrixArrayFromStringInBracket	static	returns		Matrix型で使用される内部の配列	
 725	MatrixTool	toMatrixArrayFromString	static	desc		文字列データからMatrix型のデータを作成する	Create Matrix type data from string data.
 726	MatrixTool	toMatrixArrayFromString	static	param	text	調査したい文字列	
-727	MatrixTool	toMatrixArrayFromString	static	returns	text	Matrix型で使用される内部の配列	
+727	MatrixTool	toMatrixArrayFromString	static	returns		Matrix型で使用される内部の配列	
 728	MatrixTool	isCorrectMatrixArray	static	desc		Matrix型内部データが行列データとして正しいかを調べる	Returns true if Matrix type internal data is correct as matrix data.
 729	MatrixTool	isCorrectMatrixArray	static	param	m_array		
-730	MatrixTool	isCorrectMatrixArray	static	returns	m_array		
+730	MatrixTool	isCorrectMatrixArray	static	returns			
 731	Matrix	Matrix	export default class	desc		複素行列クラス (immutable)	Complex matrix class. (immutable)
 732	Matrix	constructor		desc		"複素行列を作成
 引数は次のタイプをとれます
@@ -817,24 +818,24 @@ Initialization can be performed as follows.
 737	Matrix	this.string_cash		desc		文字列化したデータを記録するキャッシュ	A cache that records data converted to a string.
 738	Matrix	create	static	desc		Matrix を作成	Create an entity object of this class.
 739	Matrix	create	static	param	number		
-740	Matrix	create	static	returns	number		
+740	Matrix	create	static	returns			
 741	Matrix	valueOf	static	desc		指定した数値から Matrix 型に変換	Convert number to Matrix type.
 742	Matrix	valueOf	static	param	number		
-743	Matrix	valueOf	static	returns	number		
+743	Matrix	valueOf	static	returns			
 744	Matrix	_toMatrix	static	desc		行列を作成	"Convert to Matrix.
 If type conversion is unnecessary, return the value as it is."
 745	Matrix	_toMatrix	static	param	number		
-746	Matrix	_toMatrix	static	returns	number		
+746	Matrix	_toMatrix	static	returns			
 747	Matrix	_toComplex	static	desc		複素数を作成	"Convert to Complex.
 If type conversion is unnecessary, return the value as it is."
 748	Matrix	_toComplex	static	param	number		
-749	Matrix	_toComplex	static	returns	number		
+749	Matrix	_toComplex	static	returns			
 750	Matrix	_toDouble	static	desc		実数を作成	Convert to real number.
 751	Matrix	_toDouble	static	param	number		
-752	Matrix	_toDouble	static	returns	number		
+752	Matrix	_toDouble	static	returns			
 753	Matrix	_toInteger	static	desc		整数を作成	Convert to integer.
 754	Matrix	_toInteger	static	param	number		
-755	Matrix	_toInteger	static	returns	number		
+755	Matrix	_toInteger	static	returns			
 756	Matrix	_clearCash		desc		キャッシュを削除	Delete cache.
 757	Matrix	clone		desc		ディープコピー	Deep copy.
 758	Matrix	clone		returns			
@@ -845,60 +846,60 @@ If type conversion is unnecessary, return the value as it is."
 763	Matrix	equals		desc		等式	Equals.
 764	Matrix	equals		param	number		
 765	Matrix	equals		param	epsilon	誤差	
-766	Matrix	equals		returns	epsilon	A === B	
+766	Matrix	equals		returns		A === B	A === B
 767	Matrix	getNumberMatrixArray		desc		行列を構成する複素数の実部の配列	Array of real parts of elements in matrix.
 768	Matrix	getNumberMatrixArray		returns			
 769	Matrix	getComplexMatrixArray		desc		行列を構成する複素数のComplex型の配列	Complex array of complex numbers of each element of the matrix.
 770	Matrix	getComplexMatrixArray		returns			
 771	Matrix	_each		desc		"本オブジェクト内の全要素に同一処理を実行
 ミュータブル"	Perform the same process on all elements in the matrix. (mutable)
-772	Matrix	_each		param	eachfunc	Function(num, row, col)	
-773	Matrix	_each		returns	eachfunc	処理実行後の行列	
+772	Matrix	_each		param	eachfunc	Function(num, row, col)	Function(num, row, col)
+773	Matrix	_each		returns		処理実行後の行列	
 774	Matrix	cloneMatrixDoEachCalculation		desc		本オブジェクト内の全要素に同一処理を実行	Perform the same process on all elements in the matrix.
-775	Matrix	cloneMatrixDoEachCalculation		param	eachfunc	Function(num, row, col)	
-776	Matrix	cloneMatrixDoEachCalculation		returns	eachfunc	処理実行後の行列	
+775	Matrix	cloneMatrixDoEachCalculation		param	eachfunc	Function(num, row, col)	Function(num, row, col)
+776	Matrix	cloneMatrixDoEachCalculation		returns		処理実行後の行列	
 777	Matrix	createMatrixDoEachCalculation	static	desc		行列内の各値に対して指定した初期化を行ったMatrixを作成	Create Matrix with specified initialization for each element in matrix.
-778	Matrix	createMatrixDoEachCalculation	static	param	eachfunc	Function(row, col)	
+778	Matrix	createMatrixDoEachCalculation	static	param	eachfunc	Function(row, col)	Function(row, col)
 779	Matrix	createMatrixDoEachCalculation	static	param	dimension	次元数	
 780	Matrix	createMatrixDoEachCalculation	static	param	column_length	列数	
-781	Matrix	createMatrixDoEachCalculation	static	returns	column_length	処理実行後の行列	
+781	Matrix	createMatrixDoEachCalculation	static	returns		処理実行後の行列	
 782	Matrix	eachVectorAuto		desc		行列の列をベクトルとみなし同一処理を実行、行ベクトルであれば行ベクトルに対し同一処理を実行	"Treat the columns of the matrix as vectors and execute the same process.
 If the matrix is a row vector, it performs the same processing for the row vector."
 783	Matrix	eachVectorAuto		param	array_function	Function(array)	
-784	Matrix	eachVectorAuto		returns	array_function	処理実行後の行列	
+784	Matrix	eachVectorAuto		returns		処理実行後の行列	
 785	Matrix	eachVectorBoth		desc		"行列の行と列をベクトルとみなし同一処理を実行
 先に行に対して同一処理を実行後の行列に対し、列ごとにさらに同一処理を実行する"	"Treat the rows and columns of the matrix as vectors and perform the same processing.
 1. First run the same process for the row.
 2. Finally perform the same processing for the column."
 786	Matrix	eachVectorBoth		param	array_function	Function(array)	
-787	Matrix	eachVectorBoth		returns	array_function	処理実行後の行列	
+787	Matrix	eachVectorBoth		returns		処理実行後の行列	
 788	Matrix	eachVectorRow		desc		行列の行をベクトルとみなし同一処理を実行	Treat the rows of the matrix as vectors and execute the same process.
 789	Matrix	eachVectorRow		param	array_function	Function(array)	
-790	Matrix	eachVectorRow		returns	array_function	処理実行後の行列	
+790	Matrix	eachVectorRow		returns		処理実行後の行列	
 791	Matrix	eachVectorColumn		desc		行列の列をベクトルとみなし同一処理を実行	Treat the columns of the matrix as vectors and execute the same process.
 792	Matrix	eachVectorColumn		param	array_function	Function(array)	
-793	Matrix	eachVectorColumn		returns	array_function	処理実行後の行列	
+793	Matrix	eachVectorColumn		returns		処理実行後の行列	
 794	Matrix	eachVector		desc		引数に設定された行／列をベクトルとみなし同一処理を実行	"Treat the rows and columns of the matrix as vectors and perform the same processing.
 The arguments of the method can switch the direction of the matrix to be executed."
 795	Matrix	eachVector		param	array_function	Function(array)	
-796	Matrix	eachVector		param	dimtype	0/"auto", 1/"row", 2/"column", 3/"both"	
-797	Matrix	eachVector		returns	dimtype	処理実行後の行列	
+796	Matrix	eachVector		param	dimtype	0/"auto", 1/"row", 2/"column", 3/"both"	0/"auto", 1/"row", 2/"column", 3/"both"
+797	Matrix	eachVector		returns		処理実行後の行列	
 798	Matrix	getMatrix		desc		行列内の指定した箇所の行列	Extract the specified part of the matrix.
 799	Matrix	getMatrix		param	row	抽出する行番号が入ったベクトル,":"で全ての行抽出	
 800	Matrix	getMatrix		param	col	抽出する列番号が入ったベクトル,":"で全ての列抽出	
 801	Matrix	getMatrix		param	isUpOffset	位置のオフセットを1にするか	
-802	Matrix	getMatrix		returns	isUpOffset		
+802	Matrix	getMatrix		returns			
 803	Matrix	setMatrix		desc		行列内の指定した箇所の値を変更する	Change specified element in matrix.
 804	Matrix	setMatrix		param	row	変更する行番号が入ったベクトル,":"で全ての行抽出	
 805	Matrix	setMatrix		param	col	変更する列番号が入ったベクトル,":"で全ての列抽出	
 806	Matrix	setMatrix		param	replace	変更内容の行列	
 807	Matrix	setMatrix		param	isUpOffset	位置のオフセットを1にするか	
-808	Matrix	setMatrix		returns	isUpOffset		
+808	Matrix	setMatrix		returns			
 809	Matrix	getComplex		desc		行列内の指定した箇所の値	"Returns the specified element in the matrix.
 Each element of the matrix is composed of complex numbers."
 810	Matrix	getComplex		param	row_or_pos	行列なら行番号, ベクトルの場合は値の位置番号	
 811	Matrix	getComplex		param	col	列番号（行列の場合は指定する）	
-812	Matrix	getComplex		returns	col		
+812	Matrix	getComplex		returns			
 813	Matrix	intValue	get	desc		行列の最初の要素の整数値	Integer value of the first element of the matrix.
 814	Matrix	intValue	get	returns			
 815	Matrix	doubleValue	get	desc		行列の最初の要素の実数値	Real value of first element of the matrix.
@@ -913,45 +914,45 @@ Each element of the matrix is composed of complex numbers."
 824	Matrix	norm2	get	returns			
 825	Matrix	norm		desc		pノルム	p-norm.
 826	Matrix	norm		param	p		
-827	Matrix	norm		returns	p		
+827	Matrix	norm		returns			
 828	Matrix	cond		desc		条件数	Condition number of the matrix
 829	Matrix	cond		param	p		
-830	Matrix	cond		returns	p		
+830	Matrix	cond		returns			
 831	Matrix	rcond		desc		1ノルムの条件数の逆数	Inverse condition number.
 832	Matrix	rcond		returns			
 833	Matrix	rank		desc		ランク	Rank.
 834	Matrix	rank		param	epsilon	誤差	
-835	Matrix	rank		returns	epsilon	rank(A)	
+835	Matrix	rank		returns		rank(A)	rank(A)
 836	Matrix	trace		desc		トレース	"Trace of a matrix.
 Sum of diagonal elements."
-837	Matrix	trace		returns		trace(A)	
+837	Matrix	trace		returns		trace(A)	trace(A)
 838	Matrix	det		desc		行列式	Determinant.
-839	Matrix	det		returns		|A|	
+839	Matrix	det		returns		|A|	|A|
 840	Matrix	memset	static	desc		指定した数値で初期化	Creates a matrix composed of the specified number.
 841	Matrix	memset	static	param	number	初期値	
 842	Matrix	memset	static	param	dimension	次元数	
 843	Matrix	memset	static	param	column_length	列数	
-844	Matrix	memset	static	returns	column_length		
+844	Matrix	memset	static	returns			
 845	Matrix	eye	static	desc		単位行列を生成	Return identity matrix.
 846	Matrix	eye	static	param	dimension	次元数	
 847	Matrix	eye	static	param	column_length	列数	
-848	Matrix	eye	static	returns	column_length		
+848	Matrix	eye	static	returns			
 849	Matrix	zeros	static	desc		零行列を生成	Create zero matrix.
 850	Matrix	zeros	static	param	dimension	次元数	
 851	Matrix	zeros	static	param	column_length	列数	
-852	Matrix	zeros	static	returns	column_length		
+852	Matrix	zeros	static	returns			
 853	Matrix	ones	static	desc		1で構成した行列を生成	Create a matrix of all ones.
 854	Matrix	ones	static	param	dimension	次元数	
 855	Matrix	ones	static	param	column_length	列数	
-856	Matrix	ones	static	returns	column_length		
+856	Matrix	ones	static	returns			
 857	Matrix	rand	static	desc		一様乱数に従う乱数で構成した行列を生成	Generate a matrix composed of random values with uniform random numbers.
 858	Matrix	rand	static	param	dimension	次元数	
 859	Matrix	rand	static	param	column_length	列数	
-860	Matrix	rand	static	returns	column_length		
+860	Matrix	rand	static	returns			
 861	Matrix	randn	static	desc		正規分布に従う乱数で構成した行列を生成	Generate a matrix composed of random values with normal distribution.
 862	Matrix	randn	static	param	dimension	次元数	
 863	Matrix	randn	static	param	column_length	列数	
-864	Matrix	randn	static	returns	column_length		
+864	Matrix	randn	static	returns			
 865	Matrix	diag		desc		行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成	"If matrix, generate diagonal column vector.
 If vector, generate a matrix with diagonal elements."
 866	Matrix	diag		returns		行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成	
@@ -969,46 +970,46 @@ If vector, generate a matrix with diagonal elements."
 878	Matrix	isSquare		returns			
 879	Matrix	isReal		desc		実行列の判定	Return true if the matrix is real matrix.
 880	Matrix	isReal		param	epsilon	誤差	
-881	Matrix	isReal		returns	epsilon		
+881	Matrix	isReal		returns			
 882	Matrix	isComplex		desc		複素行列の判定	Return true if the matrix is complex matrix.
 883	Matrix	isComplex		param	epsilon	誤差	
-884	Matrix	isComplex		returns	epsilon		
+884	Matrix	isComplex		returns			
 885	Matrix	isZeros		desc		零行列を判定	Return true if the matrix is ​​zero matrix.
 886	Matrix	isZeros		param	epsilon	誤差	
-887	Matrix	isZeros		returns	epsilon		
+887	Matrix	isZeros		returns			
 888	Matrix	isIdentity		desc		単位行列を判定	Return true if the matrix is identity matrix.
 889	Matrix	isIdentity		param	epsilon	誤差	
-890	Matrix	isIdentity		returns	epsilon		
+890	Matrix	isIdentity		returns			
 891	Matrix	isDiagonal		desc		対角行列を判定	Return true if the matrix is diagonal matrix.
 892	Matrix	isDiagonal		param	epsilon	誤差	
-893	Matrix	isDiagonal		returns	epsilon		
+893	Matrix	isDiagonal		returns			
 894	Matrix	isTridiagonal		desc		三重対角行列を判定	Return true if the matrix is ​​tridiagonal matrix.
 895	Matrix	isTridiagonal		param	epsilon	誤差	
-896	Matrix	isTridiagonal		returns	epsilon		
+896	Matrix	isTridiagonal		returns			
 897	Matrix	isRegular		desc		正則行列を判定	Return true if the matrix is ​​regular matrix.
 898	Matrix	isRegular		param	epsilon	誤差	
-899	Matrix	isRegular		returns	epsilon		
+899	Matrix	isRegular		returns			
 900	Matrix	isOrthogonal		desc		直行行列を判定	Return true if the matrix is orthogonal matrix.
 901	Matrix	isOrthogonal		param	epsilon	誤差	
-902	Matrix	isOrthogonal		returns	epsilon		
+902	Matrix	isOrthogonal		returns			
 903	Matrix	isUnitary		desc		ユニタリ行列を判定	Return true if the matrix is ​​unitary matrix.
 904	Matrix	isUnitary		param	epsilon	誤差	
-905	Matrix	isUnitary		returns	epsilon		
+905	Matrix	isUnitary		returns			
 906	Matrix	isSymmetric		desc		対称行列を判定	Return true if the matrix is ​​symmetric matrix.
 907	Matrix	isSymmetric		param	epsilon	誤差	
-908	Matrix	isSymmetric		returns	epsilon		
+908	Matrix	isSymmetric		returns			
 909	Matrix	isHermitian		desc		エルミート行列を判定	Return true if the matrix is hermitian matrix.
 910	Matrix	isHermitian		param	epsilon	誤差	
-911	Matrix	isHermitian		returns	epsilon		
+911	Matrix	isHermitian		returns			
 912	Matrix	isTriangleUpper		desc		上三角行列を判定	Return true if the matrix is ​​upper triangular matrix.
 913	Matrix	isTriangleUpper		param	epsilon	誤差	
-914	Matrix	isTriangleUpper		returns	epsilon		
+914	Matrix	isTriangleUpper		returns			
 915	Matrix	isTriangleLower		desc		下三角行列を判定	Return true if the matrix is ​​ lower triangular matrix.
 916	Matrix	isTriangleLower		param	epsilon	誤差	
-917	Matrix	isTriangleLower		returns	epsilon		
+917	Matrix	isTriangleLower		returns			
 918	Matrix	isPermutation		desc		置換行列を判定	Return true if the matrix is permutation matrix.
 919	Matrix	isPermutation		param	epsilon	誤差	
-920	Matrix	isPermutation		returns	epsilon		
+920	Matrix	isPermutation		returns			
 921	Matrix	size		desc		行列の行数と列数	Number of rows and columns of matrix.
 922	Matrix	size		returns		[row_length column_length]	
 923	Matrix	compareTo		desc		"値同士を比較
@@ -1018,67 +1019,67 @@ Return value between scalars is of type Number.
 Return value between matrices is type Matrix."
 924	Matrix	compareTo		param	number		
 925	Matrix	compareTo		param	epsilon	誤差	
-926	Matrix	compareTo		returns	epsilon	A > B ? 1 : (A === B ? 0 : -1)	
+926	Matrix	compareTo		returns		A > B ? 1 : (A === B ? 0 : -1)	A > B ? 1 : (A === B ? 0 : -1)
 927	Matrix	add		desc		加算	Add.
 928	Matrix	add		param	number		
-929	Matrix	add		returns	number	A + B	
+929	Matrix	add		returns		A + B	A + B
 930	Matrix	sub		desc		減算	Subtract.
 931	Matrix	sub		param	number		
-932	Matrix	sub		returns	number	A - B	
+932	Matrix	sub		returns		A - B	A - B
 933	Matrix	mul		desc		乗算	Multiply.
 934	Matrix	mul		param	number		
-935	Matrix	mul		returns	number	A * B	
+935	Matrix	mul		returns		A * B	A * B
 936	Matrix	div		desc		割り算	Divide.
 937	Matrix	div		param	number		
-938	Matrix	div		returns	number	A / B	
+938	Matrix	div		returns		A / B	A / B
 939	Matrix	pow		desc		累乗（整数に対応）	"Power function.
 Supports only integers."
 940	Matrix	pow		param	number	整数	
-941	Matrix	pow		returns	number	pow(A, B)	
+941	Matrix	pow		returns		pow(A, B)	pow(A, B)
 942	Matrix	nmul		desc		行列の各項ごとの掛け算	Multiplication for each element of matrix.
 943	Matrix	nmul		param	number		
-944	Matrix	nmul		returns	number	A .* B	
+944	Matrix	nmul		returns		A .* B	A .* B
 945	Matrix	ndiv		desc		行列の各項ごとの割り算	Division for each element of matrix.
 946	Matrix	ndiv		param	number		
-947	Matrix	ndiv		returns	number	A ./ B	
+947	Matrix	ndiv		returns		A ./ B	A ./ B
 948	Matrix	ninv		desc		行列の各項ごとの逆数	Inverse of each element of matrix.
-949	Matrix	ninv		returns		1 ./ A	
+949	Matrix	ninv		returns		1 ./ A	1 ./ A
 950	Matrix	npow		desc		行列の各項ごとの累乗	Power function for each element of the matrix.
 951	Matrix	npow		param	number		
-952	Matrix	npow		returns	number	A .^ B	
+952	Matrix	npow		returns		A .^ B	A .^ B
 953	Matrix	real		desc		各項の実部	Real part of each element.
-954	Matrix	real		returns		real(A)	
+954	Matrix	real		returns		real(A)	real(A)
 955	Matrix	imag		desc		各項の虚部	Imaginary part of each element of the matrix.
-956	Matrix	imag		returns		imag(A)	
+956	Matrix	imag		returns		imag(A)	imag(A)
 957	Matrix	arg		desc		各項の偏角	The argument of each element of matrix.
-958	Matrix	arg		returns		arg(A)	
+958	Matrix	arg		returns		arg(A)	arg(A)
 959	Matrix	sign		desc		各項の符号値	"The positive or negative signs of each element of the matrix.
 * +1 if positive, -1 if negative, 0 if 0."
 960	Matrix	sign		returns		[-1,1] 複素数の場合はノルムを1にした値。	
 961	Matrix	testInteger		desc		各項の整数を判定	"Test if each element of the matrix is integer.
 * 1 if true, 0 if false."
 962	Matrix	testInteger		param	epsilon	誤差	
-963	Matrix	testInteger		returns	epsilon	1 or 0 で構成された行列	
+963	Matrix	testInteger		returns		1 or 0 で構成された行列	
 964	Matrix	testComplexInteger		desc		各項の複素整数を判定	"Test if each element of the matrix is complex integer.
 * 1 if true, 0 if false."
 965	Matrix	testComplexInteger		param	epsilon	誤差	
-966	Matrix	testComplexInteger		returns	epsilon	1 or 0 で構成された行列	
+966	Matrix	testComplexInteger		returns		1 or 0 で構成された行列	
 967	Matrix	testZero		desc		各項の 0 を判定	"real(this) === 0
 * 1 if true, 0 if false."
 968	Matrix	testZero		param	epsilon	誤差	
-969	Matrix	testZero		returns	epsilon	1 or 0 で構成された行列	
+969	Matrix	testZero		returns		1 or 0 で構成された行列	
 970	Matrix	testOne		desc		各項の 1 を判定	"real(this) === 1
 * 1 if true, 0 if false."
 971	Matrix	testOne		param	epsilon	誤差	
-972	Matrix	testOne		returns	epsilon	1 or 0 で構成された行列	
+972	Matrix	testOne		returns		1 or 0 で構成された行列	
 973	Matrix	testComplex		desc		各項の複素数を判定	"Test if each element of the matrix is complex.
 * 1 if true, 0 if false."
 974	Matrix	testComplex		param	epsilon	誤差	
-975	Matrix	testComplex		returns	epsilon	1 or 0 で構成された行列	
+975	Matrix	testComplex		returns		1 or 0 で構成された行列	
 976	Matrix	testReal		desc		各項の実数を判定	"Test if each element of the matrix is real.
 * 1 if true, 0 if false."
 977	Matrix	testReal		param	epsilon	誤差	
-978	Matrix	testReal		returns	epsilon	1 or 0 で構成された行列	
+978	Matrix	testReal		returns		1 or 0 で構成された行列	
 979	Matrix	testNaN		desc		各項の非数を判定	"Test if each element of the matrix is NaN.
 * 1 if true, 0 if false."
 980	Matrix	testNaN		returns		1 or 0 で構成された行列	
@@ -1098,155 +1099,155 @@ Supports only integers."
 * 1 if true, 0 if false."
 990	Matrix	testFinite		returns		1 or 0 で構成された行列	
 991	Matrix	abs		desc		絶対値	Absolute value.
-992	Matrix	abs		returns		abs(A)	
+992	Matrix	abs		returns		abs(A)	abs(A)
 993	Matrix	conj		desc		複素共役行列	Complex conjugate matrix.
-994	Matrix	conj		returns		real(A) - imag(A)j	
+994	Matrix	conj		returns		real(A) - imag(A)j	real(A) - imag(A)j
 995	Matrix	negate		desc		負数	this * -1
-996	Matrix	negate		returns		-A	
+996	Matrix	negate		returns		-A	-A
 997	Matrix	sqrt		desc		平方根	Square root.
-998	Matrix	sqrt		returns		sqrt(A)	
+998	Matrix	sqrt		returns		sqrt(A)	sqrt(A)
 999	Matrix	log		desc		対数	Logarithmic function.
-1000	Matrix	log		returns		log(A)	
+1000	Matrix	log		returns		log(A)	log(A)
 1001	Matrix	exp		desc		指数	Exponential function.
-1002	Matrix	exp		returns		exp(A)	
+1002	Matrix	exp		returns		exp(A)	exp(A)
 1003	Matrix	sin		desc		sin	Sine function.
-1004	Matrix	sin		returns		sin(A)	
+1004	Matrix	sin		returns		sin(A)	sin(A)
 1005	Matrix	cos		desc		cos	Cosine function.
-1006	Matrix	cos		returns		cos(A)	
+1006	Matrix	cos		returns		cos(A)	cos(A)
 1007	Matrix	tan		desc		tan	Tangent function.
-1008	Matrix	tan		returns		tan(A)	
+1008	Matrix	tan		returns		tan(A)	tan(A)
 1009	Matrix	atan		desc		atan	"Atan (arc tangent) function.
 Return the values of [-PI/2, PI/2]."
-1010	Matrix	atan		returns		atan(A)	
+1010	Matrix	atan		returns		atan(A)	atan(A)
 1011	Matrix	atan2		desc		atan2	"Atan (arc tangent) function.
 Return the values of [-PI, PI] ."
 1012	Matrix	atan2		param	number	スカラー	
-1013	Matrix	atan2		returns	number	atan2(Y, X)	
+1013	Matrix	atan2		returns		atan2(Y, X)	atan2(Y, X)
 1014	Matrix	floor		desc		floor	Floor.
-1015	Matrix	floor		returns		floor(A)	
+1015	Matrix	floor		returns		floor(A)	floor(A)
 1016	Matrix	ceil		desc		ceil	Ceil.
-1017	Matrix	ceil		returns		ceil(A)	
+1017	Matrix	ceil		returns		ceil(A)	ceil(A)
 1018	Matrix	round		desc		四捨五入	Rounding to the nearest integer.
-1019	Matrix	round		returns		round(A)	
+1019	Matrix	round		returns		round(A)	round(A)
 1020	Matrix	fix		desc		整数化	To integer rounded down to the nearest.
-1021	Matrix	fix		returns		fix(A)	
+1021	Matrix	fix		returns		fix(A)	fix(A)
 1022	Matrix	fract		desc		小数部の抽出	Fraction.
-1023	Matrix	fract		returns		fract(A)	
+1023	Matrix	fract		returns		fract(A)	fract(A)
 1024	Matrix	sinc		desc		sinc	Normalized sinc function.
-1025	Matrix	sinc		returns		sinc(A)	
+1025	Matrix	sinc		returns		sinc(A)	sinc(A)
 1026	Matrix	_rot90		desc		"行列を時計回りに回転
 ミュータブル"	Rotate matrix 90 degrees clockwise. (mutable)
 1027	Matrix	_rot90		param	rot_90_count	回転する回数	
-1028	Matrix	_rot90		returns	rot_90_count	処理実行後の行列	
+1028	Matrix	_rot90		returns		処理実行後の行列	
 1029	Matrix	rot90		desc		行列を時計回りに回転	Rotate matrix 90 degrees clockwise.
 1030	Matrix	rot90		param	rot_90_count	回転する回数	
-1031	Matrix	rot90		returns	rot_90_count	処理実行後の行列	
+1031	Matrix	rot90		returns		処理実行後の行列	
 1032	Matrix	_resize		desc		"行列を拡張、拡張した項は、0で初期化。
 ミュータブル"	"Change the size of the matrix. (mutable)
 Initialized with 0 when expanding."
 1033	Matrix	_resize		param	new_row_length	新しい行の長さ	
 1034	Matrix	_resize		param	new_column_length	新しい列の長さ	
-1035	Matrix	_resize		returns	new_column_length	処理実行後の行列	
+1035	Matrix	_resize		returns		処理実行後の行列	
 1036	Matrix	resize		desc		行列を拡張、拡張した項は、0で初期化	"Change the size of the matrix.
 Initialized with 0 when expanding."
 1037	Matrix	resize		param	row_length	新しい行の長さ	
 1038	Matrix	resize		param	column_length	新しい列の長さ	
-1039	Matrix	resize		returns	column_length	処理実行後の行列	
+1039	Matrix	resize		returns		処理実行後の行列	
 1040	Matrix	_deleteRow		desc		"行列内の行を消去
 ミュータブル"	Remove the row in this matrix. (mutable)
 1041	Matrix	_deleteRow		param	delete_row_index	行番号	
-1042	Matrix	_deleteRow		returns	delete_row_index	処理実行後の行列	
+1042	Matrix	_deleteRow		returns		処理実行後の行列	
 1043	Matrix	_deleteColumn		desc		"行列内の列を消去
 ミュータブル"	Remove the column in this matrix. (mutable)
 1044	Matrix	_deleteColumn		param	delete_column_index	列番号	
-1045	Matrix	_deleteColumn		returns	delete_column_index	処理実行後の行列	
+1045	Matrix	_deleteColumn		returns		処理実行後の行列	
 1046	Matrix	deleteRow		desc		行列内の行を消去	Remove the row in this matrix.
 1047	Matrix	deleteRow		param	delete_row_index	行番号	
-1048	Matrix	deleteRow		returns	delete_row_index	処理実行後の行列	
+1048	Matrix	deleteRow		returns		処理実行後の行列	
 1049	Matrix	deleteColumn		desc		行列内の列を消去	Remove the column in this matrix.
 1050	Matrix	deleteColumn		param	delete_column_index	列番号	
-1051	Matrix	deleteColumn		returns	delete_column_index	処理実行後の行列	
+1051	Matrix	deleteColumn		returns		処理実行後の行列	
 1052	Matrix	_exchangeRow		desc		"行列内の行を交換
 ミュータブル"	Swap rows in the matrix. (mutable)
 1053	Matrix	_exchangeRow		param	exchange_row_index1	行番号1	
 1054	Matrix	_exchangeRow		param	exchange_row_index2	行番号2	
-1055	Matrix	_exchangeRow		returns	exchange_row_index2	処理実行後の行列	
+1055	Matrix	_exchangeRow		returns		処理実行後の行列	
 1056	Matrix	_exchangeColumn		desc		"行列内の列を交換
 ミュータブル"	Swap columns in the matrix. (mutable)
 1057	Matrix	_exchangeColumn		param	exchange_column_index1	行番号1	
 1058	Matrix	_exchangeColumn		param	exchange_column_index2	行番号2	
-1059	Matrix	_exchangeColumn		returns	exchange_column_index2	処理実行後の行列	
+1059	Matrix	_exchangeColumn		returns		処理実行後の行列	
 1060	Matrix	exchangeRow		desc		行列内の行を交換	Swap rows in the matrix.
 1061	Matrix	exchangeRow		param	exchange_row_index1	行番号1	
 1062	Matrix	exchangeRow		param	exchange_row_index2	行番号2	
-1063	Matrix	exchangeRow		returns	exchange_row_index2	処理実行後の行列	
+1063	Matrix	exchangeRow		returns		処理実行後の行列	
 1064	Matrix	exchangeColumn		desc		行列内の列を交換	Swap columns in the matrix.
 1065	Matrix	exchangeColumn		param	exchange_column_index1	行番号1	
 1066	Matrix	exchangeColumn		param	exchange_column_index2	行番号2	
-1067	Matrix	exchangeColumn		returns	exchange_column_index2	処理実行後の行列	
+1067	Matrix	exchangeColumn		returns		処理実行後の行列	
 1068	Matrix	_concatRight		desc		"行列の右に行列を結合
 ミュータブル"	Combine matrix to the right of this matrix. (mutable)
 1069	Matrix	_concatRight		param	left_matrix	結合したい行列	
-1070	Matrix	_concatRight		returns	left_matrix	処理実行後の行列	
+1070	Matrix	_concatRight		returns		処理実行後の行列	
 1071	Matrix	_concatBottom		desc		"行列の下に行列を結合
 ミュータブル"	Combine matrix to the bottom of this matrix. (mutable)
 1072	Matrix	_concatBottom		param	bottom_matrix	結合したい行列	
-1073	Matrix	_concatBottom		returns	bottom_matrix	処理実行後の行列	
+1073	Matrix	_concatBottom		returns		処理実行後の行列	
 1074	Matrix	concatRight		desc		行列の右に行列を結合	Combine matrix to the right of this matrix.
 1075	Matrix	concatRight		param	left_matrix	結合したい行列	
-1076	Matrix	concatRight		returns	left_matrix	処理実行後の行列	
+1076	Matrix	concatRight		returns		処理実行後の行列	
 1077	Matrix	concatBottom		desc		行列の下に行列を結合	Combine matrix to the bottom of this matrix.
 1078	Matrix	concatBottom		param	bottom_matrix	結合したい行列	
-1079	Matrix	concatBottom		returns	bottom_matrix	処理実行後の行列	
+1079	Matrix	concatBottom		returns		処理実行後の行列	
 1080	Matrix	clip		desc		行列の各項を指定した範囲に収める	Clip each element of matrix to specified range.
 1081	Matrix	clip		param	min		
 1082	Matrix	clip		param	max		
-1083	Matrix	clip		returns	max	min(max(x, min), max)	
+1083	Matrix	clip		returns		min(max(x, min), max)	min(max(x, min), max)
 1084	Matrix	arange	static	desc		指定した初期値、ステップ値、終了条件で行ベクトルを作成	Create row vector with specified initial value, step value, end condition.
 1085	Matrix	arange	static	param	start_or_stop		
 1086	Matrix	arange	static	param	stop		
 1087	Matrix	arange	static	param	step		
-1088	Matrix	arange	static	returns	step		
+1088	Matrix	arange	static	returns			
 1089	Matrix	circshift		desc		循環シフト	Circular shift.
 1090	Matrix	circshift		param	shift_size		
 1091	Matrix	circshift		param	type		
-1092	Matrix	circshift		returns	type	処理実行後の行列	
+1092	Matrix	circshift		returns		処理実行後の行列	
 1093	Matrix	roll		desc		循環シフト	Circular shift.
 1094	Matrix	roll		param	shift_size		
 1095	Matrix	roll		param	type		
-1096	Matrix	roll		returns	type	処理実行後の行列	
+1096	Matrix	roll		returns		処理実行後の行列	
 1097	Matrix	reshape		desc		行列の形状を変更	"Change the shape of the matrix.
 The number of elements in the matrix doesn't increase or decrease."
 1098	Matrix	reshape		param	row_length	新しい行の長さ	
 1099	Matrix	reshape		param	column_length	新しい列の長さ	
-1100	Matrix	reshape		returns	column_length	処理実行後の行列	
+1100	Matrix	reshape		returns		処理実行後の行列	
 1101	Matrix	fliplr		desc		行列を左右反転	Flip this matrix left and right.
 1102	Matrix	fliplr		returns		処理実行後の行列	
 1103	Matrix	flipud		desc		行列を上下反転	Flip this matrix up and down.
 1104	Matrix	flipud		returns		処理実行後の行列	
 1105	Matrix	flip		desc		行列を反転	Flip this matrix.
 1106	Matrix	flip		param	type		
-1107	Matrix	flip		returns	type	処理実行後の行列	
+1107	Matrix	flip		returns		処理実行後の行列	
 1108	Matrix	indexsort		desc		インデックスソート	Index sort.
 1109	Matrix	indexsort		param	v	インデックス（列 or 行）ベクトル	
-1110	Matrix	indexsort		returns	v	処理実行後の行列	
+1110	Matrix	indexsort		returns		処理実行後の行列	
 1111	Matrix	transpose		desc		転置行列	Transpose a matrix.
-1112	Matrix	transpose		returns		A^T	
+1112	Matrix	transpose		returns		A^T	A^T
 1113	Matrix	ctranspose		desc		エルミート転置行列	Hermitian transpose.
-1114	Matrix	ctranspose		returns		A^T	
+1114	Matrix	ctranspose		returns		A^T	A^T
 1115	Matrix	T		desc		エルミート転置行列	Hermitian transpose.
-1116	Matrix	T		returns		A^T	
+1116	Matrix	T		returns		A^T	A^T
 1117	Matrix	inner		desc		ドット積	Inner product/Dot product.
 1118	Matrix	inner		param	number		
 1119	Matrix	inner		param	dimension	計算するときに使用する次元（1 or 2）	
-1120	Matrix	inner		returns	dimension	A・B	
+1120	Matrix	inner		returns		A・B	A・B
 1121	Matrix	lup		desc		LUP分解	LUP decomposition.
-1122	Matrix	lup		returns		P'*L*U=A	
+1122	Matrix	lup		returns		P'*L*U=A	P'*L*U=A
 1123	Matrix	lu		desc		LU分解	LU decomposition.
-1124	Matrix	lu		returns		L*U=A	
+1124	Matrix	lu		returns		L*U=A	L*U=A
 1125	Matrix	linsolve		desc		連立一次方程式を解く	Solve simultaneous linear equations.
-1126	Matrix	linsolve		param	number	B	
-1127	Matrix	linsolve		returns	number	Ax=B となる x	
+1126	Matrix	linsolve		param	number	B	B
+1127	Matrix	linsolve		returns		Ax=B となる x	
 1128	Matrix	qr		desc		QR分解	QR decomposition.
 1129	Matrix	qr		returns		Q*R=A, Qは正規直行行列、Rは上三角行列	
 1130	Matrix	tridiagonalize		desc		"対称行列の三重対角化
@@ -1258,56 +1259,56 @@ The number of elements in the matrix doesn't increase or decrease."
 * Don't support complex numbers."
 1133	Matrix	eig		returns		V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列	
 1134	Matrix	svd		desc		特異値分解	Singular Value Decomposition (SVD).
-1135	Matrix	svd		returns		U*S*V'=A	
+1135	Matrix	svd		returns		U*S*V'=A	U*S*V'=A
 1136	Matrix	inv		desc		逆行列	Inverse matrix of this matrix.
-1137	Matrix	inv		returns		A^-1	
+1137	Matrix	inv		returns		A^-1	A^-1
 1138	Matrix	pinv		desc		疑似逆行列	Pseudo-inverse matrix.
-1139	Matrix	pinv		returns		A^+	
+1139	Matrix	pinv		returns		A^+	A^+
 1140	Matrix	gammaln		desc		対数ガンマ関数	Log-gamma function.
 1141	Matrix	gammaln		returns			
 1142	Matrix	gamma		desc		ガンマ関数	Gamma function.
 1143	Matrix	gamma		returns			
 1144	Matrix	gammainc		desc		不完全ガンマ関数	Incomplete gamma function.
 1145	Matrix	gammainc		param	a		
-1146	Matrix	gammainc		param	tail	lower/upper	
-1147	Matrix	gammainc		returns	tail		
+1146	Matrix	gammainc		param	tail	lower/upper	lower/upper
+1147	Matrix	gammainc		returns			
 1148	Matrix	gampdf		desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 1149	Matrix	gampdf		param	k	形状母数	
 1150	Matrix	gampdf		param	s	尺度母数	
-1151	Matrix	gampdf		returns	s		
+1151	Matrix	gampdf		returns			
 1152	Matrix	gamcdf		desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 1153	Matrix	gamcdf		param	k	形状母数	
 1154	Matrix	gamcdf		param	s	尺度母数	
-1155	Matrix	gamcdf		returns	s		
+1155	Matrix	gamcdf		returns			
 1156	Matrix	gaminv		desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 1157	Matrix	gaminv		param	k	形状母数	
 1158	Matrix	gaminv		param	s	尺度母数	
-1159	Matrix	gaminv		returns	s		
+1159	Matrix	gaminv		returns			
 1160	Matrix	beta		desc		ベータ関数	Beta function.
 1161	Matrix	beta		param	y		
-1162	Matrix	beta		returns	y		
+1162	Matrix	beta		returns			
 1163	Matrix	betainc		desc		不完全ベータ関数	Incomplete beta function.
 1164	Matrix	betainc		param	a		
 1165	Matrix	betainc		param	b		
-1166	Matrix	betainc		param	tail	lower/upper	
-1167	Matrix	betainc		returns	tail		
+1166	Matrix	betainc		param	tail	lower/upper	lower/upper
+1167	Matrix	betainc		returns			
 1168	Matrix	betacdf		desc		ベータ分布の累積分布関数	Cumulative distribution function (CDF) of beta distribution.
 1169	Matrix	betacdf		param	a		
 1170	Matrix	betacdf		param	b		
-1171	Matrix	betacdf		returns	b		
+1171	Matrix	betacdf		returns			
 1172	Matrix	betapdf		desc		ベータ分布の確率密度関数	Probability density function (PDF) of beta distribution.
 1173	Matrix	betapdf		param	a		
 1174	Matrix	betapdf		param	b		
-1175	Matrix	betapdf		returns	b		
+1175	Matrix	betapdf		returns			
 1176	Matrix	betainv		desc		ベータ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of beta distribution.
 1177	Matrix	betainv		param	a		
 1178	Matrix	betainv		param	b		
-1179	Matrix	betainv		returns	b		
+1179	Matrix	betainv		returns			
 1180	Matrix	factorial		desc		階乗関数	Factorial function, x!.
 1181	Matrix	factorial		returns			
 1182	Matrix	nchoosek		desc		二項係数またはすべての組合わせ (nCk)	Binomial coefficient, number of all combinations, nCk.
 1183	Matrix	nchoosek		param	k		
-1184	Matrix	nchoosek		returns	k		
+1184	Matrix	nchoosek		returns			
 1185	Matrix	erf		desc		誤差関数	Error function.
 1186	Matrix	erf		returns			
 1187	Matrix	erfc		desc		相補誤差関数	Complementary error function.
@@ -1315,118 +1316,118 @@ The number of elements in the matrix doesn't increase or decrease."
 1189	Matrix	normpdf		desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
 1190	Matrix	normpdf		param	u	平均値	
 1191	Matrix	normpdf		param	s	分散	
-1192	Matrix	normpdf		returns	s		
+1192	Matrix	normpdf		returns			
 1193	Matrix	normcdf		desc		正規分布の累積分布関数	Cumulative distribution function (CDF) of normal distribution.
 1194	Matrix	normcdf		param	u	平均値	
 1195	Matrix	normcdf		param	s	分散	
-1196	Matrix	normcdf		returns	s		
+1196	Matrix	normcdf		returns			
 1197	Matrix	norminv		desc		正規分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of normal distribution.
 1198	Matrix	norminv		param	u	平均値	
 1199	Matrix	norminv		param	s	分散	
-1200	Matrix	norminv		returns	s		
+1200	Matrix	norminv		returns			
 1201	Matrix	tpdf		desc		t分布の確率密度関数	Probability density function (PDF) of Student's t-distribution.
 1202	Matrix	tpdf		param	v	自由度	
-1203	Matrix	tpdf		returns	v		
+1203	Matrix	tpdf		returns			
 1204	Matrix	tcdf		desc		t分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution.
 1205	Matrix	tcdf		param	v	自由度	
-1206	Matrix	tcdf		returns	v		
+1206	Matrix	tcdf		returns			
 1207	Matrix	tinv		desc		t分布の累積分布関数の逆関数	Inverse of cumulative distribution function (CDF) of Student's t-distribution.
 1208	Matrix	tinv		param	v	自由度	
-1209	Matrix	tinv		returns	v		
+1209	Matrix	tinv		returns			
 1210	Matrix	tdist		desc		尾部が指定可能なt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
 1211	Matrix	tdist		param	v	自由度	
 1212	Matrix	tdist		param	tails	尾部(1...片側、2...両側)	
-1213	Matrix	tdist		returns	tails		
+1213	Matrix	tdist		returns			
 1214	Matrix	tinv2		desc		両側検定時のt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 1215	Matrix	tinv2		param	v	自由度	
-1216	Matrix	tinv2		returns	v		
+1216	Matrix	tinv2		returns			
 1217	Matrix	chi2pdf		desc		カイ二乗分布の確率密度関数	Probability density function (PDF) of chi-square distribution.
 1218	Matrix	chi2pdf		param	k	自由度	
-1219	Matrix	chi2pdf		returns	k		
+1219	Matrix	chi2pdf		returns			
 1220	Matrix	chi2cdf		desc		カイ二乗分布の累積分布関数	Cumulative distribution function (CDF) of chi-square distribution.
 1221	Matrix	chi2cdf		param	k	自由度	
-1222	Matrix	chi2cdf		returns	k		
+1222	Matrix	chi2cdf		returns			
 1223	Matrix	chi2inv		desc		カイ二乗分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of chi-square distribution.
 1224	Matrix	chi2inv		param	k	自由度	
-1225	Matrix	chi2inv		returns	k		
+1225	Matrix	chi2inv		returns			
 1226	Matrix	fpdf		desc		F分布の確率密度関数	Probability density function (PDF) of F-distribution.
 1227	Matrix	fpdf		param	d1	分子の自由度	
 1228	Matrix	fpdf		param	d2	分母の自由度	
-1229	Matrix	fpdf		returns	d2		
+1229	Matrix	fpdf		returns			
 1230	Matrix	fcdf		desc		F分布の累積分布関数	Cumulative distribution function (CDF) of F-distribution.
 1231	Matrix	fcdf		param	d1	分子の自由度	
 1232	Matrix	fcdf		param	d2	分母の自由度	
-1233	Matrix	fcdf		returns	d2		
+1233	Matrix	fcdf		returns			
 1234	Matrix	finv		desc		F分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of F-distribution.
 1235	Matrix	finv		param	d1	分子の自由度	
 1236	Matrix	finv		param	d2	分母の自由度	
-1237	Matrix	finv		returns	d2		
+1237	Matrix	finv		returns			
 1238	Matrix	max		desc		最大値	Maximum number.
 1239	Matrix	max		param	type		
-1240	Matrix	max		returns	type	max([A, B])	
+1240	Matrix	max		returns		max([A, B])	max([A, B])
 1241	Matrix	min		desc		最小値	Minimum number.
 1242	Matrix	min		param	type		
-1243	Matrix	min		returns	type	min([A, B])	
+1243	Matrix	min		returns		min([A, B])	min([A, B])
 1244	Matrix	sum		desc		合計	Sum.
 1245	Matrix	sum		param	type		
-1246	Matrix	sum		returns	type		
+1246	Matrix	sum		returns			
 1247	Matrix	mean		desc		相加平均	Arithmetic average.
 1248	Matrix	mean		param	type		
-1249	Matrix	mean		returns	type		
+1249	Matrix	mean		returns			
 1250	Matrix	prod		desc		配列の積	Product of array elements.
 1251	Matrix	prod		param	type		
-1252	Matrix	prod		returns	type		
+1252	Matrix	prod		returns			
 1253	Matrix	geomean		desc		相乗平均／幾何平均	Geometric mean.
 1254	Matrix	geomean		param	type		
-1255	Matrix	geomean		returns	type		
+1255	Matrix	geomean		returns			
 1256	Matrix	median		desc		中央値	Median.
 1257	Matrix	median		param	type		
-1258	Matrix	median		returns	type		
+1258	Matrix	median		returns			
 1259	Matrix	mode		desc		最頻値	Mode.
 1260	Matrix	mode		param	type		
-1261	Matrix	mode		returns	type		
+1261	Matrix	mode		returns			
 1262	Matrix	moment		desc		中心積率	Moment.
 1263	Matrix	moment		param	type		
-1264	Matrix	moment		returns	type		
+1264	Matrix	moment		returns			
 1265	Matrix	var		desc		分散	Variance.
 1266	Matrix	var		param	type		
-1267	Matrix	var		returns	type		
+1267	Matrix	var		returns			
 1268	Matrix	std		desc		標準偏差	Standard deviation.
 1269	Matrix	std		param	type		
-1270	Matrix	std		returns	type		
+1270	Matrix	std		returns			
 1271	Matrix	mad		desc		平均絶対偏差	Mean absolute deviation.
 1272	Matrix	mad		param	type		
-1273	Matrix	mad		returns	type		
+1273	Matrix	mad		returns			
 1274	Matrix	skewness		desc		歪度	Skewness.
 1275	Matrix	skewness		param	type		
-1276	Matrix	skewness		returns	type		
+1276	Matrix	skewness		returns			
 1277	Matrix	cov		desc		共分散行列	Covariance matrix.
 1278	Matrix	cov		param	type		
-1279	Matrix	cov		returns	type		
+1279	Matrix	cov		returns			
 1280	Matrix	normalize		desc		標本を平均値0、標準偏差1に正規化	The samples are normalized to a mean value of 0, standard deviation of 1.
 1281	Matrix	normalize		param	type		
-1282	Matrix	normalize		returns	type		
+1282	Matrix	normalize		returns			
 1283	Matrix	corrcoef		desc		相関行列	Correlation matrix.
 1284	Matrix	corrcoef		param	type		
-1285	Matrix	corrcoef		returns	type		
+1285	Matrix	corrcoef		returns			
 1286	Matrix	sort		desc		ソート	Sort.
 1287	Matrix	sort		param	type		
-1288	Matrix	sort		returns	type		
+1288	Matrix	sort		returns			
 1289	Matrix	fft		desc		離散フーリエ変換	Discrete Fourier transform (DFT).
 1290	Matrix	fft		param	type		
-1291	Matrix	fft		returns	type	fft(x)	
+1291	Matrix	fft		returns		fft(x)	fft(x)
 1292	Matrix	ifft		desc		逆離散フーリエ変換	Inverse discrete Fourier transform (IDFT).
 1293	Matrix	ifft		param	type		
-1294	Matrix	ifft		returns	type	ifft(x)	
+1294	Matrix	ifft		returns		ifft(x)	ifft(x)
 1295	Matrix	powerfft		desc		パワースペクトル密度	Power spectral density.
 1296	Matrix	powerfft		param	type		
-1297	Matrix	powerfft		returns	type	abs(fft(x)).^2	
+1297	Matrix	powerfft		returns		abs(fft(x)).^2	abs(fft(x)).^2
 1298	Matrix	dct		desc		離散コサイン変換	Discrete cosine transform (DCT-II, DCT).
 1299	Matrix	dct		param	type		
-1300	Matrix	dct		returns	type	dct(x)	
+1300	Matrix	dct		returns		dct(x)	dct(x)
 1301	Matrix	idct		desc		逆離散コサイン変換	Inverse discrete cosine transform (DCT-III, IDCT).
 1302	Matrix	idct		param	type		
-1303	Matrix	idct		returns	type	idct(x)	
+1303	Matrix	idct		returns		idct(x)	idct(x)
 1304	Matrix	fft2		desc		2次元の離散フーリエ変換	Discrete two-dimensional Fourier transform (2D DFT).
 1305	Matrix	fft2		returns			
 1306	Matrix	ifft2		desc		2次元の逆離散フーリエ変換	Inverse discrete two-dimensional Fourier transform (2D IDFT).
@@ -1437,27 +1438,27 @@ The number of elements in the matrix doesn't increase or decrease."
 1311	Matrix	idct2		returns			
 1312	Matrix	conv		desc		畳み込み積分、多項式乗算	Convolution integral, Polynomial multiplication.
 1313	Matrix	conv		param	number		
-1314	Matrix	conv		returns	number		
+1314	Matrix	conv		returns			
 1315	Matrix	xcorr		desc		自己相関関数、相互相関関数	ACF(Autocorrelation function), cros-correlation function.
 1316	Matrix	xcorr		param	number	省略した場合は自己相関関数	
-1317	Matrix	xcorr		returns	number		
+1317	Matrix	xcorr		returns			
 1318	Matrix	window	static	desc		窓関数を作成する	Create window function for signal processing.
 1319	Matrix	window	static	param	name	窓関数の名前	
 1320	Matrix	window	static	param	size	長さ	
-1321	Matrix	window	static	param	periodic	0/"symmetric", 1/"periodic"	
-1322	Matrix	window	static	returns	periodic	列ベクトル	
+1321	Matrix	window	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
+1322	Matrix	window	static	returns		列ベクトル	
 1323	Matrix	hann	static	desc		ハニング窓	Hann (Hanning) window.
 1324	Matrix	hann	static	param	size	長さ	
-1325	Matrix	hann	static	param	periodic	0/"symmetric", 1/"periodic"	
-1326	Matrix	hann	static	returns	periodic	列ベクトル	
+1325	Matrix	hann	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
+1326	Matrix	hann	static	returns		列ベクトル	
 1327	Matrix	hamming	static	desc		ハミング窓	Hamming window.
 1328	Matrix	hamming	static	param	size	長さ	
-1329	Matrix	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	
-1330	Matrix	hamming	static	returns	periodic	列ベクトル	
+1329	Matrix	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
+1330	Matrix	hamming	static	returns		列ベクトル	
 1331	Matrix	fftshift		desc		FFTシフト	"FFT shift.
 Circular shift beginning at the center of the signal."
 1332	Matrix	fftshift		param	type		
-1333	Matrix	fftshift		returns	type		
+1333	Matrix	fftshift		returns			
 1334	MathContext	MathContext	export default class	desc		BigDecimal用の環境設定	Configuration class for BigDecimal.
 1335	MathContext	constructor		desc		任意精度の環境設定データ	Create BigDecimal configuration.
 1336	MathContext	constructor		param	precision_or_name	精度を数値で指定するか、設定自体を文字列で指定する	
@@ -1470,7 +1471,7 @@ Circular shift beginning at the center of the signal."
 1343	MathContext	getRoundingMode		returns			
 1344	MathContext	equals		desc		環境が等しいか	Equals.
 1345	MathContext	equals		param	x	比較対象	
-1346	MathContext	equals		returns	x		
+1346	MathContext	equals		returns			
 1347	MathContext	toString		desc		文字列化	Convert to string.
 1348	MathContext	toString		returns			
 1349	MathContext	UNLIMITED	static get	desc		"小数点の制限を設けない
@@ -1502,7 +1503,7 @@ Equivalent of the C language long double."
 1365	RoundingModeEntity	getAddNumber	static	desc		丸めに必要な加算値	"Numeric value to add.
 It is rounded when this value is added."
 1366	RoundingModeEntity	getAddNumber	static	param	x	1ケタ目の値	
-1367	RoundingModeEntity	getAddNumber	static	returns	x	いくつ足すと丸められるか	
+1367	RoundingModeEntity	getAddNumber	static	returns		いくつ足すと丸められるか	
 1368	RoundingMode_UP	RoundingMode_UP	class	desc		絶対値の切り上げ（1桁目が0より大きければ桁上げする）	"Directed rounding to an integer.
 Round towards positive infinity if positive, negative infinity if negative."
 1369	RoundingMode_UP	toString	static	desc		丸めモードの名前を英語の大文字で取得する	Get rounding mode name in upper case English.
@@ -1512,7 +1513,7 @@ It is rounded when this value is added."
 1372	RoundingMode_UP	getAddNumber	static	param	x	"丸めたい値。
 この値の1桁目に対して丸めを行う。"	"Rounding value.
 When specified as an integer, the first digit is rounded."
-1373	RoundingMode_UP	getAddNumber	static	returns	x	"加算値。
+1373	RoundingMode_UP	getAddNumber	static	returns		"加算値。
 この値を加算すると丸められる。"	Numeric value to add.
 1374	RoundingMode_DOWN	RoundingMode_DOWN	class	desc		絶対値の切り下げ（1桁目が0より大きければ桁下げする）	"Directed rounding to an integer.
 Round towards 0."
@@ -1523,7 +1524,7 @@ It is rounded when this value is added."
 1378	RoundingMode_DOWN	getAddNumber	static	param	x	"丸めたい値。
 この値の1桁目に対して丸めを行う。"	"Rounding value.
 When specified as an integer, the first digit is rounded."
-1379	RoundingMode_DOWN	getAddNumber	static	returns	x	"加算値。
+1379	RoundingMode_DOWN	getAddNumber	static	returns		"加算値。
 この値を加算すると丸められる。"	Numeric value to add.
 1380	RoundingMode_CEILING	RoundingMode_CEILING	class	desc		正の無限大に近づく	"Directed rounding to an integer.
 Round up to positive infinity."
@@ -1534,7 +1535,7 @@ It is rounded when this value is added."
 1384	RoundingMode_CEILING	getAddNumber	static	param	x	"丸めたい値。
 この値の1桁目に対して丸めを行う。"	"Rounding value.
 When specified as an integer, the first digit is rounded."
-1385	RoundingMode_CEILING	getAddNumber	static	returns	x	"加算値。
+1385	RoundingMode_CEILING	getAddNumber	static	returns		"加算値。
 この値を加算すると丸められる。"	Numeric value to add.
 1386	RoundingMode_FLOOR	RoundingMode_FLOOR	class	desc		負の無限大に近づく	"Directed rounding to an integer.
 Round down to negative infinity."
@@ -1545,7 +1546,7 @@ It is rounded when this value is added."
 1390	RoundingMode_FLOOR	getAddNumber	static	param	x	"丸めたい値。
 この値の1桁目に対して丸めを行う。"	"Rounding value.
 When specified as an integer, the first digit is rounded."
-1391	RoundingMode_FLOOR	getAddNumber	static	returns	x	"加算値。
+1391	RoundingMode_FLOOR	getAddNumber	static	returns		"加算値。
 この値を加算すると丸められる。"	Numeric value to add.
 1392	RoundingMode_HALF_UP	RoundingMode_HALF_UP	class	desc		四捨五入	"Rounding to the nearest integer.
 Round half towards positive infinity."
@@ -1556,7 +1557,7 @@ It is rounded when this value is added."
 1396	RoundingMode_HALF_UP	getAddNumber	static	param	x	"丸めたい値。
 この値の1桁目に対して丸めを行う。"	"Rounding value.
 When specified as an integer, the first digit is rounded."
-1397	RoundingMode_HALF_UP	getAddNumber	static	returns	x	"加算値。
+1397	RoundingMode_HALF_UP	getAddNumber	static	returns		"加算値。
 この値を加算すると丸められる。"	Numeric value to add.
 1398	RoundingMode_HALF_DOWN	RoundingMode_HALF_DOWN	class	desc		五捨六入	"Rounding to the nearest integer.
 Round half towards negative infinity."
@@ -1567,7 +1568,7 @@ It is rounded when this value is added."
 1402	RoundingMode_HALF_DOWN	getAddNumber	static	param	x	"丸めたい値。
 この値の1桁目に対して丸めを行う。"	"Rounding value.
 When specified as an integer, the first digit is rounded."
-1403	RoundingMode_HALF_DOWN	getAddNumber	static	returns	x	"加算値。
+1403	RoundingMode_HALF_DOWN	getAddNumber	static	returns		"加算値。
 この値を加算すると丸められる。"	Numeric value to add.
 1404	RoundingMode_HALF_EVEN	RoundingMode_HALF_EVEN	class	desc		等間隔なら偶数側へ丸める	"Rounding to the nearest integer
 Round to the nearest side. If the median, round to the even side."
@@ -1578,7 +1579,7 @@ It is rounded when this value is added."
 1408	RoundingMode_HALF_EVEN	getAddNumber	static	param	x	"丸めたい値。
 この値の1桁目に対して丸めを行う。"	"Rounding value.
 When specified as an integer, the first digit is rounded."
-1409	RoundingMode_HALF_EVEN	getAddNumber	static	returns	x	"加算値。
+1409	RoundingMode_HALF_EVEN	getAddNumber	static	returns		"加算値。
 この値を加算すると丸められる。"	Numeric value to add.
 1410	RoundingMode_UNNECESSARY	RoundingMode_UNNECESSARY	class	desc		丸めない（丸める必要が出る場合はエラー）	"Do not round.
 Error if you need to round it."
@@ -1589,12 +1590,12 @@ It is rounded when this value is added."
 1414	RoundingMode_UNNECESSARY	getAddNumber	static	param	x	"丸めたい値。
 この値の1桁目に対して丸めを行う。"	"Rounding value.
 When specified as an integer, the first digit is rounded."
-1415	RoundingMode_UNNECESSARY	getAddNumber	static	returns	x	"加算値。
+1415	RoundingMode_UNNECESSARY	getAddNumber	static	returns		"加算値。
 この値を加算すると丸められる。"	Numeric value to add.
 1416	RoundingMode	RoundingMode	export default class	desc		BigDecimal用の丸めモードクラス	Rounding mode class for BigDecimal.
 1417	RoundingMode	valueOf	static	desc		指定した文字列で表される丸めクラスを取得する	Get rounding class represented by specified string.
 1418	RoundingMode	valueOf	static	param	name	モードの英数名	
-1419	RoundingMode	valueOf	static	returns	name		
+1419	RoundingMode	valueOf	static	returns			
 1420	RoundingMode	UP	static get	desc		"絶対値の切り上げ
 1桁目が0より大きければ桁上げする"	"Directed rounding to an integer.
 Round towards positive infinity if positive, negative infinity if negative."
@@ -1626,109 +1627,109 @@ Error if you need to round it."
 実数での計算のみ対応"	"Tridiagonalization of symmetric matrix.
 * Don't support complex numbers."
 1438	LinearAlgebraTool	tridiagonalize	static	param	mat		
-1439	LinearAlgebraTool	tridiagonalize	static	returns	mat		
+1439	LinearAlgebraTool	tridiagonalize	static	returns			
 1440	LinearAlgebraTool	innerproduct	const	desc		ベクトルx1とベクトルx2の内積をとる	Inner product of vector x1 and vector x2.
 1441	LinearAlgebraTool	innerproduct	const	param	x1		
 1442	LinearAlgebraTool	innerproduct	const	param	x2		
 1443	LinearAlgebraTool	innerproduct	const	param	index_offset	オフセット(この値から行う)	
 1444	LinearAlgebraTool	innerproduct	const	param	index_max	最大(この値は含めない)	
-1445	LinearAlgebraTool	innerproduct	const	returns	index_max		
+1445	LinearAlgebraTool	innerproduct	const	returns			
 1446	LinearAlgebraTool	house	const	desc		ハウスホルダー変換	Householder transformation.
 1447	LinearAlgebraTool	house	const	param	x	ハウスホルダー変換したいベクトル	
 1448	LinearAlgebraTool	house	const	param	index_offset	オフセット(この値から行う)	
 1449	LinearAlgebraTool	house	const	param	index_max	最大(この値は含めない)	
-1450	LinearAlgebraTool	house	const	returns	index_max		
+1450	LinearAlgebraTool	house	const	returns			
 1451	LinearAlgebraTool	eig	static	desc		"対称行列の固有値分解
 実数での計算のみ対応"	"Eigendecomposition of symmetric matrix.
 * Don't support complex numbers."
 1452	LinearAlgebraTool	eig	static	param	mat	対称行列	
-1453	LinearAlgebraTool	eig	static	returns	mat		
+1453	LinearAlgebraTool	eig	static	returns			
 1454	LinearAlgebraTool	doGramSchmidtOrthonormalization	static	desc		行列をベクトルと見立て、正規直行化し、QとRの行列を作る	"Treat matrices as vectors, make them orthonormal, and make matrices of Q and R.
 The method of Gram-Schmidt orthonormalization is used."
 1455	LinearAlgebraTool	doGramSchmidtOrthonormalization	static	param	mat	正方行列	
-1456	LinearAlgebraTool	doGramSchmidtOrthonormalization	static	returns	mat		
+1456	LinearAlgebraTool	doGramSchmidtOrthonormalization	static	returns			
 1457	LinearAlgebraTool	createOrthogonalVector	static	desc		行列の全行ベクトルに対して、直行したベクトルを作成する	Create orthogonal vectors for all row vectors of the matrix.
 1458	LinearAlgebraTool	createOrthogonalVector	static	param	mat		
 1459	LinearAlgebraTool	createOrthogonalVector	static	param	epsilon	誤差	
-1460	LinearAlgebraTool	createOrthogonalVector	static	returns	epsilon	直行したベクトルがなければNULLを返す	
+1460	LinearAlgebraTool	createOrthogonalVector	static	returns		直行したベクトルがなければNULLを返す	
 1461	LinearAlgebraTool	getMaxRowNumber	static	desc		行列の指定した列の中で最もノルムが最大の値がある行番号	Row number with the largest norm value in the specified column of the matrix.
 1462	LinearAlgebraTool	getMaxRowNumber	static	param	mat		
 1463	LinearAlgebraTool	getMaxRowNumber	static	param	column_index	列番号	
 1464	LinearAlgebraTool	getMaxRowNumber	static	param	row_index_offset	行のオフセット(この値から行う)	
 1465	LinearAlgebraTool	getMaxRowNumber	static	param	row_index_max	行の最大(この値は含めない)	
-1466	LinearAlgebraTool	getMaxRowNumber	static	returns	row_index_max	行番号	
+1466	LinearAlgebraTool	getMaxRowNumber	static	returns		行番号	
 1467	LinearAlgebraTool	getLinearDependenceVector	static	desc		行列の各行をベクトルと見立て、線型従属している行を抽出	Extract linearly dependent rows when each row of matrix is a vector.
 1468	LinearAlgebraTool	getLinearDependenceVector	static	param	mat		
 1469	LinearAlgebraTool	getLinearDependenceVector	static	param	epsilon	誤差	
-1470	LinearAlgebraTool	getLinearDependenceVector	static	returns	epsilon	行番号の行列(昇順)	
+1470	LinearAlgebraTool	getLinearDependenceVector	static	returns		行番号の行列(昇順)	
 1471	LinearAlgebra	LinearAlgebra	export default class	desc		Matrix用の線形代数用の計算クラス	Class for linear algebra for Matrix class.
 1472	LinearAlgebra	inner	static	desc		ドット積	Inner product/Dot product.
 1473	LinearAlgebra	inner	static	param	A		
 1474	LinearAlgebra	inner	static	param	B		
 1475	LinearAlgebra	inner	static	param	dimension	計算するときに使用する次元（1 or 2）	
-1476	LinearAlgebra	inner	static	returns	dimension	A・B	
+1476	LinearAlgebra	inner	static	returns		A・B	A・B
 1477	LinearAlgebra	norm	static	desc		pノルム	p-norm.
 1478	LinearAlgebra	norm	static	param	mat		
 1479	LinearAlgebra	norm	static	param	p		
-1480	LinearAlgebra	norm	static	returns	p		
+1480	LinearAlgebra	norm	static	returns			
 1481	LinearAlgebra	cond	static	desc		条件数	Condition number of the matrix
 1482	LinearAlgebra	cond	static	param	mat		
 1483	LinearAlgebra	cond	static	param	p		
-1484	LinearAlgebra	cond	static	returns	p		
+1484	LinearAlgebra	cond	static	returns			
 1485	LinearAlgebra	rcond	static	desc		1ノルムの条件数の逆数	Inverse condition number.
 1486	LinearAlgebra	rcond	static	param	mat		
-1487	LinearAlgebra	rcond	static	returns	mat		
+1487	LinearAlgebra	rcond	static	returns			
 1488	LinearAlgebra	rank	static	desc		ランク	Rank.
 1489	LinearAlgebra	rank	static	param	mat		
 1490	LinearAlgebra	rank	static	param	epsilon	誤差	
-1491	LinearAlgebra	rank	static	returns	epsilon	rank(A)	
+1491	LinearAlgebra	rank	static	returns		rank(A)	rank(A)
 1492	LinearAlgebra	trace	static	desc		トレース	"Trace of a matrix.
 Sum of diagonal elements."
 1493	LinearAlgebra	trace	static	param	mat		
-1494	LinearAlgebra	trace	static	returns	mat		
+1494	LinearAlgebra	trace	static	returns			
 1495	LinearAlgebra	det	static	desc		行列式	Determinant.
 1496	LinearAlgebra	det	static	param	mat		
-1497	LinearAlgebra	det	static	returns	mat	|A|	
+1497	LinearAlgebra	det	static	returns		|A|	|A|
 1498	LinearAlgebra	lup	static	desc		LUP分解	LUP decomposition.
-1499	LinearAlgebra	lup	static	param	mat	A	
-1500	LinearAlgebra	lup	static	returns	mat	P'*L*U=A	
+1499	LinearAlgebra	lup	static	param	mat	A	A
+1500	LinearAlgebra	lup	static	returns		P'*L*U=A	P'*L*U=A
 1501	LinearAlgebra	lu	static	desc		LU分解	LU decomposition.
-1502	LinearAlgebra	lu	static	param	mat	A	
-1503	LinearAlgebra	lu	static	returns	mat	L*U=A	
+1502	LinearAlgebra	lu	static	param	mat	A	A
+1503	LinearAlgebra	lu	static	returns		L*U=A	L*U=A
 1504	LinearAlgebra	linsolve	static	desc		連立一次方程式を解く	Solve simultaneous linear equations.
-1505	LinearAlgebra	linsolve	static	param	mat	A	
-1506	LinearAlgebra	linsolve	static	param	number	B	
-1507	LinearAlgebra	linsolve	static	returns	number	Ax=B となる x	
+1505	LinearAlgebra	linsolve	static	param	mat	A	A
+1506	LinearAlgebra	linsolve	static	param	number	B	B
+1507	LinearAlgebra	linsolve	static	returns		Ax=B となる x	
 1508	LinearAlgebra	qr	static	desc		QR分解	QR decomposition.
-1509	LinearAlgebra	qr	static	param	mat	A	
-1510	LinearAlgebra	qr	static	returns	mat	Q*R=A, Qは正規直行行列、Rは上三角行列	
+1509	LinearAlgebra	qr	static	param	mat	A	A
+1510	LinearAlgebra	qr	static	returns		Q*R=A, Qは正規直行行列、Rは上三角行列	
 1511	LinearAlgebra	tridiagonalize	static	desc		"対称行列の三重対角化
 実数での計算のみ対応"	"Tridiagonalization of symmetric matrix.
 * Don't support complex numbers."
-1512	LinearAlgebra	tridiagonalize	static	param	mat	A	
-1513	LinearAlgebra	tridiagonalize	static	returns	mat	P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致	
+1512	LinearAlgebra	tridiagonalize	static	param	mat	A	A
+1513	LinearAlgebra	tridiagonalize	static	returns		P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致	
 1514	LinearAlgebra	eig	static	desc		"対称行列の固有値分解
 実数での計算のみ対応"	"Eigendecomposition of symmetric matrix.
 * Don't support complex numbers."
-1515	LinearAlgebra	eig	static	param	mat	A	
-1516	LinearAlgebra	eig	static	returns	mat	V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列	
+1515	LinearAlgebra	eig	static	param	mat	A	A
+1516	LinearAlgebra	eig	static	returns		V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列	
 1517	LinearAlgebra	svd	static	desc		特異値分解	Singular Value Decomposition (SVD).
-1518	LinearAlgebra	svd	static	param	mat	A	
-1519	LinearAlgebra	svd	static	returns	mat	U*S*V'=A	
+1518	LinearAlgebra	svd	static	param	mat	A	A
+1519	LinearAlgebra	svd	static	returns		U*S*V'=A	U*S*V'=A
 1520	LinearAlgebra	inv	static	desc		逆行列	Inverse matrix of this matrix.
-1521	LinearAlgebra	inv	static	param	mat	A	
-1522	LinearAlgebra	inv	static	returns	mat	A^-1	
+1521	LinearAlgebra	inv	static	param	mat	A	A
+1522	LinearAlgebra	inv	static	returns		A^-1	A^-1
 1523	LinearAlgebra	pinv	static	desc		疑似逆行列	Pseudo-inverse matrix.
-1524	LinearAlgebra	pinv	static	param	mat	A	
-1525	LinearAlgebra	pinv	static	returns	mat	A^+	
+1524	LinearAlgebra	pinv	static	param	mat	A	A
+1525	LinearAlgebra	pinv	static	returns		A^+	A^+
 1526	RandomTool	RandomTool	class	desc		乱数クラス内で使用するツール集	Collection of tools used in the Random.
 1527	RandomTool	unsigned32	static	desc		32ビットの負ではない整数を作成する	Create a 32-bit nonnegative integer.
 1528	RandomTool	unsigned32	static	param	x		
-1529	RandomTool	unsigned32	static	returns	x		
+1529	RandomTool	unsigned32	static	returns			
 1530	RandomTool	multiplication32	static	desc		2つの32ビット整数を掛け算して、32ビットの整数を出力する	Multiply two 32-bit integers and output a 32-bit integer.
 1531	RandomTool	multiplication32	static	param	x1		
 1532	RandomTool	multiplication32	static	param	x2		
-1533	RandomTool	multiplication32	static	returns	x2		
+1533	RandomTool	multiplication32	static	returns			
 1534	Random	Random	export default class	desc		乱数クラス	Random number class.
 1535	Random	constructor		desc		乱数を初期化する	Create Random.
 1536	Random	constructor		param	seed	乱数のシード値、指定しない場合は時刻から作成する	
@@ -1743,15 +1744,15 @@ Sum of diagonal elements."
 1545	Random	genrand_int32		returns		- 32ビットの乱数	
 1546	Random	next		desc		指定したビット数以下で表せられる乱数	Random number of specified bit length.
 1547	Random	next		param	bits	必要なビット数（64まで可能）	
-1548	Random	next		returns	bits		
+1548	Random	next		returns			
 1549	Random	nextBytes		desc		指定したサイズの8ビット乱数配列	8-bit random number array of specified length.
 1550	Random	nextBytes		param	size	必要な長さ	
-1551	Random	nextBytes		returns	size		
+1551	Random	nextBytes		returns			
 1552	Random	nextShort		desc		16ビットの乱数	16-bit random number.
 1553	Random	nextShort		returns			
 1554	Random	nextInt		desc		32ビットの乱数	64-bit random number.
 1555	Random	nextInt		param	x	指定した値未満の数値を作る	
-1556	Random	nextInt		returns	x		
+1556	Random	nextInt		returns			
 1557	Random	nextLong		desc		64ビットの乱数	32-bit random number.
 1558	Random	nextLong		returns			
 1559	Random	nextBoolean		desc		乱数の真偽値	Random boolean.
@@ -1767,10 +1768,10 @@ This random number is a distribution with an average value of 0 and a standard d
 1568	FFT	FFT	class	desc		高速フーリエ変換用クラス	Fast Fourier Transform (FFT) Class.
 1569	FFT	bit_reverse_32	static	desc		ビット反転	Return the number with reversed bits.
 1570	FFT	bit_reverse_32	static	param	x	ビット反転させる値（32ビット整数）	
-1571	FFT	bit_reverse_32	static	returns	x	ビット反転した値	
+1571	FFT	bit_reverse_32	static	returns		ビット反転した値	
 1572	FFT	create_bit_reverse_table	static	desc		指定したビット分の数値データをビット反転した配列を返す	Create a bit reversal lookup table.
 1573	FFT	create_bit_reverse_table	static	param	bit	ビット数	
-1574	FFT	create_bit_reverse_table	static	returns	bit	ビット反転した値の配列	
+1574	FFT	create_bit_reverse_table	static	returns		ビット反転した値の配列	
 1575	FFT	constructor		desc		FFTクラスの初期化	Create FFT.
 1576	FFT	constructor		param	size	信号の長さ	
 1577	FFT	this.size		desc		信号の長さ	Signal length.
@@ -1784,11 +1785,11 @@ This random number is a distribution with an average value of 0 and a standard d
 1585	FFT	fft		desc		離散フーリエ変換	Discrete Fourier transform (DFT).
 1586	FFT	fft		param	real	実数部	
 1587	FFT	fft		param	imag	虚数部	
-1588	FFT	fft		returns	imag		
+1588	FFT	fft		returns			
 1589	FFT	ifft		desc		逆離散フーリエ変換	Inverse discrete Fourier transform (IDFT),
 1590	FFT	ifft		param	real	実数部	
 1591	FFT	ifft		param	imag	虚数部	
-1592	FFT	ifft		returns	imag		
+1592	FFT	ifft		returns			
 1593	Cache	Cache	class	desc		"簡易キャッシュクラス
 FFTで用いるテーブルなどをキャッシュ"	"Simple cache class.
 Cache tables used in FFT."
@@ -1802,7 +1803,7 @@ Cache tables used in FFT."
 1601	Cache	get		desc		指定した長さのデータを作成する。キャッシュに存在すればキャッシュから使用する。	"Create a class initialized with the specified data length.
 Use from cache if it exists in cache."
 1602	Cache	get		param	size	作成するオブジェクトのサイズ	
-1603	Cache	get		returns	size		
+1603	Cache	get		returns			
 1604	Cache	fft_cache	const	desc		FFT用のキャッシュ	Cache for FFT.
 1605	DCT	DCT	class	desc		離散コサイン変換のクラス	Discrete cosine transform (DCT) class.
 1606	DCT	constructor		desc		DCTクラスの初期化	Create DCT.
@@ -1816,591 +1817,591 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1612	DCT	delete		desc		中のデータを消去する	Frees the memory reserved.
 1613	DCT	dct		desc		DCT-II	Discrete cosine transform (DCT-II, DCT).
 1614	DCT	dct		param	real	実数部	
-1615	DCT	dct		returns	real		
+1615	DCT	dct		returns			
 1616	DCT	idct		desc		DCT-III (IDCT)	Inverse discrete cosine transform (DCT-III, IDCT),
 1617	DCT	idct		param	real	実数部	
-1618	DCT	idct		returns	real		
+1618	DCT	idct		returns			
 1619	DCT	dct_cache	const	desc		離散コサイン変換用のキャッシュ	Cache for discrete cosine transform.
 1620	SignalTool	SignalTool	class	desc		Signalクラスの内部で使用する関数集	Collection of functions used inside Signal class.
 1621	SignalTool	isContainsZero	static	desc		配列に0が含まれるか	Returns true if the array contains 0.
 1622	SignalTool	isContainsZero	static	param	x	調べたい配列	
-1623	SignalTool	isContainsZero	static	returns	x		
+1623	SignalTool	isContainsZero	static	returns			
 1624	SignalTool	fft	static	desc		離散フーリエ変換	Discrete Fourier transform (DFT).
 1625	SignalTool	fft	static	param	real	実数部	
 1626	SignalTool	fft	static	param	imag	虚数部	
-1627	SignalTool	fft	static	returns	imag		
+1627	SignalTool	fft	static	returns			
 1628	SignalTool	ifft	static	desc		逆離散フーリエ変換	Inverse discrete Fourier transform (IDFT),
 1629	SignalTool	ifft	static	param	real	実数部	
 1630	SignalTool	ifft	static	param	imag	虚数部	
-1631	SignalTool	ifft	static	returns	imag		
+1631	SignalTool	ifft	static	returns			
 1632	SignalTool	dct	static	desc		DCT-II (DCT)	Discrete cosine transform (DCT-II, DCT).
 1633	SignalTool	dct	static	param	real	実数部	
-1634	SignalTool	dct	static	returns	real		
+1634	SignalTool	dct	static	returns			
 1635	SignalTool	idct	static	desc		DCT-III (IDCT)	Inverse discrete cosine transform (DCT-III, IDCT),
 1636	SignalTool	idct	static	param	real	実数部	
-1637	SignalTool	idct	static	returns	real		
+1637	SignalTool	idct	static	returns			
 1638	SignalTool	powerfft	static	desc		パワースペクトル密度	Power spectral density.
 1639	SignalTool	powerfft	static	param	real	実数部	
 1640	SignalTool	powerfft	static	param	imag	虚数部	
-1641	SignalTool	powerfft	static	returns	imag		
+1641	SignalTool	powerfft	static	returns			
 1642	SignalTool	conv	static	desc		畳み込み積分、多項式乗算	Convolution integral, Polynomial multiplication.
 1643	SignalTool	conv	static	param	x1_real	実数部	
 1644	SignalTool	conv	static	param	x1_imag	虚数部	
 1645	SignalTool	conv	static	param	x2_real	実数部	
 1646	SignalTool	conv	static	param	x2_imag	虚数部	
-1647	SignalTool	conv	static	returns	x2_imag		
+1647	SignalTool	conv	static	returns			
 1648	SignalTool	xcorr	static	desc		自己相関関数、相互相関関数	ACF(Autocorrelation function), Cros-correlation function.
 1649	SignalTool	xcorr	static	param	x1_real	実数部	
 1650	SignalTool	xcorr	static	param	x1_imag	虚数部	
 1651	SignalTool	xcorr	static	param	x2_real	実数部	
 1652	SignalTool	xcorr	static	param	x2_imag	虚数部	
-1653	SignalTool	xcorr	static	returns	x2_imag		
+1653	SignalTool	xcorr	static	returns			
 1654	SignalTool	window	static	desc		窓関数を作成する	Create window function for signal processing.
 1655	SignalTool	window	static	param	name	窓関数の名前	
 1656	SignalTool	window	static	param	size	長さ	
-1657	SignalTool	window	static	param	periodic	0/"symmetric", 1/"periodic"	
-1658	SignalTool	window	static	returns	periodic		
+1657	SignalTool	window	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
+1658	SignalTool	window	static	returns			
 1659	SignalTool	hann	static	desc		ハニング窓	Hann (Hanning) window.
 1660	SignalTool	hann	static	param	size	長さ	
-1661	SignalTool	hann	static	param	periodic	0/"symmetric", 1/"periodic"	
-1662	SignalTool	hann	static	returns	periodic		
+1661	SignalTool	hann	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
+1662	SignalTool	hann	static	returns			
 1663	SignalTool	hamming	static	desc		ハミング窓を作成	Hamming window.
 1664	SignalTool	hamming	static	param	size	長さ	
-1665	SignalTool	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	
-1666	SignalTool	hamming	static	returns	periodic		
+1665	SignalTool	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
+1666	SignalTool	hamming	static	returns			
 1667	Signal	Signal	export default class	desc		Matrix用の信号処理用の計算クラス	Signal processing class for Matrix class.
 1668	Signal	fft	static	desc		離散フーリエ変換	Discrete Fourier transform (DFT).
 1669	Signal	fft	static	param	x		
 1670	Signal	fft	static	param	type		
-1671	Signal	fft	static	returns	type	fft(x)	
+1671	Signal	fft	static	returns		fft(x)	fft(x)
 1672	Signal	ifft	static	desc		逆離散フーリエ変換	Inverse discrete Fourier transform (IDFT),
 1673	Signal	ifft	static	param	X		
 1674	Signal	ifft	static	param	type		
-1675	Signal	ifft	static	returns	type	ifft(X)	
+1675	Signal	ifft	static	returns		ifft(X)	ifft(X)
 1676	Signal	powerfft	static	desc		パワースペクトル密度	Power spectral density.
 1677	Signal	powerfft	static	param	x		
 1678	Signal	powerfft	static	param	type		
-1679	Signal	powerfft	static	returns	type	abs(fft(x)).^2	
+1679	Signal	powerfft	static	returns		abs(fft(x)).^2	abs(fft(x)).^2
 1680	Signal	dct	static	desc		離散コサイン変換	Discrete cosine transform (DCT-II, DCT).
 1681	Signal	dct	static	param	x		
 1682	Signal	dct	static	param	type		
-1683	Signal	dct	static	returns	type	dct(x)	
+1683	Signal	dct	static	returns		dct(x)	dct(x)
 1684	Signal	idct	static	desc		逆離散コサイン変換	Inverse discrete cosine transform (DCT-III, IDCT),
 1685	Signal	idct	static	param	X		
 1686	Signal	idct	static	param	type		
-1687	Signal	idct	static	returns	type	idct(x)	
+1687	Signal	idct	static	returns		idct(x)	idct(x)
 1688	Signal	fft2	static	desc		2次元の離散フーリエ変換	Discrete two-dimensional Fourier transform (2D DFT).
 1689	Signal	fft2	static	param	x		
-1690	Signal	fft2	static	returns	x		
+1690	Signal	fft2	static	returns			
 1691	Signal	ifft2	static	desc		2次元の逆離散フーリエ変換	Inverse discrete two-dimensional Fourier transform (2D IDFT),
 1692	Signal	ifft2	static	param	X		
-1693	Signal	ifft2	static	returns	X		
+1693	Signal	ifft2	static	returns			
 1694	Signal	dct2	static	desc		2次元の離散コサイン変換	Discrete two-dimensional cosine transform (2D DCT).
 1695	Signal	dct2	static	param	x		
-1696	Signal	dct2	static	returns	x		
+1696	Signal	dct2	static	returns			
 1697	Signal	idct2	static	desc		2次元の逆離散コサイン変換	Inverse discrete two-dimensional cosine transform (2D IDCT),
 1698	Signal	idct2	static	param	X		
-1699	Signal	idct2	static	returns	X		
+1699	Signal	idct2	static	returns			
 1700	Signal	conv	static	desc		畳み込み積分、多項式乗算	Convolution integral, Polynomial multiplication.
 1701	Signal	conv	static	param	x1		
 1702	Signal	conv	static	param	x2		
-1703	Signal	conv	static	returns	x2		
+1703	Signal	conv	static	returns			
 1704	Signal	xcorr	static	desc		自己相関関数、相互相関関数	ACF(Autocorrelation function), Cros-correlation function.
 1705	Signal	xcorr	static	param	x1		
 1706	Signal	xcorr	static	param	x2	省略した場合は自己相関関数	
-1707	Signal	xcorr	static	returns	x2		
+1707	Signal	xcorr	static	returns			
 1708	Signal	window	static	desc		窓関数を作成する	Create window function for signal processing.
 1709	Signal	window	static	param	name	窓関数の名前	
 1710	Signal	window	static	param	size	長さ	
-1711	Signal	window	static	param	periodic	0/"symmetric", 1/"periodic"	
-1712	Signal	window	static	returns	periodic	列ベクトル	
+1711	Signal	window	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
+1712	Signal	window	static	returns		列ベクトル	
 1713	Signal	hann	static	desc		ハニング窓	Hann (Hanning) window.
 1714	Signal	hann	static	param	size	長さ	
-1715	Signal	hann	static	param	periodic	0/"symmetric", 1/"periodic"	
-1716	Signal	hann	static	returns	periodic	列ベクトル	
+1715	Signal	hann	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
+1716	Signal	hann	static	returns		列ベクトル	
 1717	Signal	hamming	static	desc		ハミング窓	Hamming window.
 1718	Signal	hamming	static	param	size	長さ	
-1719	Signal	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	
-1720	Signal	hamming	static	returns	periodic	列ベクトル	
+1719	Signal	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
+1720	Signal	hamming	static	returns		列ベクトル	
 1721	Signal	fftshift	static	desc		FFTシフト	"FFT shift.
 Circular shift beginning at the center of the signal."
 1722	Signal	fftshift	static	param	x		
 1723	Signal	fftshift	static	param	type		
-1724	Signal	fftshift	static	returns	type		
+1724	Signal	fftshift	static	returns			
 1725	StatisticsTool	StatisticsTool	class	desc		実数専用の統計処理用の関数集	Collection of statistical functions using real numbers.
 1726	StatisticsTool	gammaln	static	desc		対数ガンマ関数	Log-gamma function.
 1727	StatisticsTool	gammaln	static	param	x		
-1728	StatisticsTool	gammaln	static	returns	x		
+1728	StatisticsTool	gammaln	static	returns			
 1729	StatisticsTool	q_gamma	static	desc		不完全ガンマ関数 上側	Incomplete gamma function upper side.
 1730	StatisticsTool	q_gamma	static	param	x		
 1731	StatisticsTool	q_gamma	static	param	a		
 1732	StatisticsTool	q_gamma	static	param	gammaln_a		
-1733	StatisticsTool	q_gamma	static	returns	gammaln_a		
+1733	StatisticsTool	q_gamma	static	returns			
 1734	StatisticsTool	p_gamma	static	desc		不完全ガンマ関数 下側	Incomplete gamma function lower side.
 1735	StatisticsTool	p_gamma	static	param	x		
 1736	StatisticsTool	p_gamma	static	param	a		
 1737	StatisticsTool	p_gamma	static	param	gammaln_a		
-1738	StatisticsTool	p_gamma	static	returns	gammaln_a		
+1738	StatisticsTool	p_gamma	static	returns			
 1739	StatisticsTool	gamma	static	desc		ガンマ関数	Gamma function.
 1740	StatisticsTool	gamma	static	param	z		
-1741	StatisticsTool	gamma	static	returns	z		
+1741	StatisticsTool	gamma	static	returns			
 1742	StatisticsTool	gammainc	static	desc		不完全ガンマ関数	Incomplete gamma function.
 1743	StatisticsTool	gammainc	static	param	x		
 1744	StatisticsTool	gammainc	static	param	a		
-1745	StatisticsTool	gammainc	static	param	tail	lower(デフォルト)/upper	
-1746	StatisticsTool	gammainc	static	returns	tail		
+1745	StatisticsTool	gammainc	static	param	tail	lower(デフォルト)/upper	lower (default) / upper
+1746	StatisticsTool	gammainc	static	returns			
 1747	StatisticsTool	gampdf	static	desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 1748	StatisticsTool	gampdf	static	param	x		
 1749	StatisticsTool	gampdf	static	param	k	形状母数	
 1750	StatisticsTool	gampdf	static	param	s	尺度母数	
-1751	StatisticsTool	gampdf	static	returns	s		
+1751	StatisticsTool	gampdf	static	returns			
 1752	StatisticsTool	gamcdf	static	desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 1753	StatisticsTool	gamcdf	static	param	x		
 1754	StatisticsTool	gamcdf	static	param	k	形状母数	
 1755	StatisticsTool	gamcdf	static	param	s	尺度母数	
-1756	StatisticsTool	gamcdf	static	returns	s		
+1756	StatisticsTool	gamcdf	static	returns			
 1757	StatisticsTool	gaminv	static	desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 1758	StatisticsTool	gaminv	static	param	p		
 1759	StatisticsTool	gaminv	static	param	k	形状母数	
 1760	StatisticsTool	gaminv	static	param	s	尺度母数	
-1761	StatisticsTool	gaminv	static	returns	s		
+1761	StatisticsTool	gaminv	static	returns			
 1762	StatisticsTool	beta	static	desc		ベータ関数	Beta function.
 1763	StatisticsTool	beta	static	param	x		
 1764	StatisticsTool	beta	static	param	y		
-1765	StatisticsTool	beta	static	returns	y		
+1765	StatisticsTool	beta	static	returns			
 1766	StatisticsTool	p_beta	static	desc		不完全ベータ関数 下側	Incomplete beta function lower side.
 1767	StatisticsTool	p_beta	static	param	x		
 1768	StatisticsTool	p_beta	static	param	a		
 1769	StatisticsTool	p_beta	static	param	b		
-1770	StatisticsTool	p_beta	static	returns	b		
+1770	StatisticsTool	p_beta	static	returns			
 1771	StatisticsTool	q_beta	static	desc		不完全ベータ関数 上側	Incomplete beta function upper side.
 1772	StatisticsTool	q_beta	static	param	x		
 1773	StatisticsTool	q_beta	static	param	a		
 1774	StatisticsTool	q_beta	static	param	b		
-1775	StatisticsTool	q_beta	static	returns	b		
+1775	StatisticsTool	q_beta	static	returns			
 1776	StatisticsTool	betainc	static	desc		不完全ベータ関数	Incomplete beta function.
 1777	StatisticsTool	betainc	static	param	x		
 1778	StatisticsTool	betainc	static	param	a		
 1779	StatisticsTool	betainc	static	param	b		
-1780	StatisticsTool	betainc	static	param	tail	lower(デフォルト)/upper	
-1781	StatisticsTool	betainc	static	returns	tail		
+1780	StatisticsTool	betainc	static	param	tail	lower(デフォルト)/upper	lower (default) / upper
+1781	StatisticsTool	betainc	static	returns			
 1782	StatisticsTool	isInteger	static	desc		整数を判定	Return true if the value is integer.
 1783	StatisticsTool	isInteger	static	param	x		
-1784	StatisticsTool	isInteger	static	returns	x		
+1784	StatisticsTool	isInteger	static	returns			
 1785	StatisticsTool	betapdf	static	desc		ベータ分布の確率密度関数	Probability density function (PDF) of beta distribution.
 1786	StatisticsTool	betapdf	static	param	x		
 1787	StatisticsTool	betapdf	static	param	a		
 1788	StatisticsTool	betapdf	static	param	b		
-1789	StatisticsTool	betapdf	static	returns	b		
+1789	StatisticsTool	betapdf	static	returns			
 1790	StatisticsTool	betacdf	static	desc		ベータ分布の累積分布関数	Cumulative distribution function (CDF) of beta distribution.
 1791	StatisticsTool	betacdf	static	param	x		
 1792	StatisticsTool	betacdf	static	param	a		
 1793	StatisticsTool	betacdf	static	param	b		
-1794	StatisticsTool	betacdf	static	returns	b		
+1794	StatisticsTool	betacdf	static	returns			
 1795	StatisticsTool	betainv	static	desc		ベータ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of beta distribution.
 1796	StatisticsTool	betainv	static	param	p		
 1797	StatisticsTool	betainv	static	param	a		
 1798	StatisticsTool	betainv	static	param	b		
-1799	StatisticsTool	betainv	static	returns	b		
+1799	StatisticsTool	betainv	static	returns			
 1800	StatisticsTool	factorial	static	desc		階乗関数	Factorial function, x!.
 1801	StatisticsTool	factorial	static	param	n		
-1802	StatisticsTool	factorial	static	returns	n		
+1802	StatisticsTool	factorial	static	returns			
 1803	StatisticsTool	nchoosek	static	desc		二項係数またはすべての組合わせ (nCk)	Binomial coefficient, number of all combinations, nCk.
 1804	StatisticsTool	nchoosek	static	param	n		
 1805	StatisticsTool	nchoosek	static	param	k		
-1806	StatisticsTool	nchoosek	static	returns	k	nCk	
+1806	StatisticsTool	nchoosek	static	returns		nCk	
 1807	StatisticsTool	erf	static	desc		誤差関数	Error function.
 1808	StatisticsTool	erf	static	param	x		
-1809	StatisticsTool	erf	static	returns	x		
+1809	StatisticsTool	erf	static	returns			
 1810	StatisticsTool	erfc	static	desc		相補誤差関数	Complementary error function.
 1811	StatisticsTool	erfc	static	param	x		
-1812	StatisticsTool	erfc	static	returns	x		
+1812	StatisticsTool	erfc	static	returns			
 1813	StatisticsTool	normpdf	static	desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
 1814	StatisticsTool	normpdf	static	param	x		
 1815	StatisticsTool	normpdf	static	param	u	平均値	
 1816	StatisticsTool	normpdf	static	param	s	分散	
-1817	StatisticsTool	normpdf	static	returns	s		
+1817	StatisticsTool	normpdf	static	returns			
 1818	StatisticsTool	normcdf	static	desc		正規分布の累積分布関数	Cumulative distribution function (CDF) of normal distribution.
 1819	StatisticsTool	normcdf	static	param	x		
 1820	StatisticsTool	normcdf	static	param	u	平均値	
 1821	StatisticsTool	normcdf	static	param	s	分散	
-1822	StatisticsTool	normcdf	static	returns	s		
+1822	StatisticsTool	normcdf	static	returns			
 1823	StatisticsTool	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of normal distribution.
 1824	StatisticsTool	norminv	static	param	p	確率	
 1825	StatisticsTool	norminv	static	param	u	平均値	
 1826	StatisticsTool	norminv	static	param	s	分散	
-1827	StatisticsTool	norminv	static	returns	s		
+1827	StatisticsTool	norminv	static	returns			
 1828	StatisticsTool	tpdf	static	desc		t分布の確率密度関数	Probability density function (PDF) of Student's t-distribution.
 1829	StatisticsTool	tpdf	static	param	t	t値	
 1830	StatisticsTool	tpdf	static	param	v	自由度	
-1831	StatisticsTool	tpdf	static	returns	v		
+1831	StatisticsTool	tpdf	static	returns			
 1832	StatisticsTool	tcdf	static	desc		t分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution.
 1833	StatisticsTool	tcdf	static	param	t	t値	
 1834	StatisticsTool	tcdf	static	param	v	自由度	
-1835	StatisticsTool	tcdf	static	returns	v		
+1835	StatisticsTool	tcdf	static	returns			
 1836	StatisticsTool	tinv	static	desc		t分布の累積分布関数の逆関数	Inverse of cumulative distribution function (CDF) of Student's t-distribution.
 1837	StatisticsTool	tinv	static	param	p	確率	
 1838	StatisticsTool	tinv	static	param	v	自由度	
-1839	StatisticsTool	tinv	static	returns	v		
+1839	StatisticsTool	tinv	static	returns			
 1840	StatisticsTool	tdist	static	desc		尾部が指定可能なt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
 1841	StatisticsTool	tdist	static	param	t	t値	
 1842	StatisticsTool	tdist	static	param	v	自由度	
 1843	StatisticsTool	tdist	static	param	tails	尾部(1...片側、2...両側)	
-1844	StatisticsTool	tdist	static	returns	tails		
+1844	StatisticsTool	tdist	static	returns			
 1845	StatisticsTool	tinv2	static	desc		両側検定時のt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 1846	StatisticsTool	tinv2	static	param	p	確率	
 1847	StatisticsTool	tinv2	static	param	v	自由度	
-1848	StatisticsTool	tinv2	static	returns	v		
+1848	StatisticsTool	tinv2	static	returns			
 1849	StatisticsTool	chi2pdf	static	desc		カイ二乗分布の確率密度関数	Probability density function (PDF) of chi-square distribution.
 1850	StatisticsTool	chi2pdf	static	param	x		
 1851	StatisticsTool	chi2pdf	static	param	k	自由度	
-1852	StatisticsTool	chi2pdf	static	returns	k		
+1852	StatisticsTool	chi2pdf	static	returns			
 1853	StatisticsTool	chi2cdf	static	desc		カイ二乗分布の累積分布関数	Cumulative distribution function (CDF) of chi-square distribution.
 1854	StatisticsTool	chi2cdf	static	param	x		
 1855	StatisticsTool	chi2cdf	static	param	k	自由度	
-1856	StatisticsTool	chi2cdf	static	returns	k		
+1856	StatisticsTool	chi2cdf	static	returns			
 1857	StatisticsTool	chi2inv	static	desc		カイ二乗分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of chi-square distribution.
 1858	StatisticsTool	chi2inv	static	param	p	確率	
 1859	StatisticsTool	chi2inv	static	param	k	自由度	
-1860	StatisticsTool	chi2inv	static	returns	k		
+1860	StatisticsTool	chi2inv	static	returns			
 1861	StatisticsTool	fpdf	static	desc		F分布の確率密度関数	Probability density function (PDF) of F-distribution.
 1862	StatisticsTool	fpdf	static	param	x		
 1863	StatisticsTool	fpdf	static	param	d1	分子の自由度	
 1864	StatisticsTool	fpdf	static	param	d2	分母の自由度	
-1865	StatisticsTool	fpdf	static	returns	d2		
+1865	StatisticsTool	fpdf	static	returns			
 1866	StatisticsTool	fcdf	static	desc		F分布の累積分布関数	Cumulative distribution function (CDF) of F-distribution.
 1867	StatisticsTool	fcdf	static	param	x		
 1868	StatisticsTool	fcdf	static	param	d1	分子の自由度	
 1869	StatisticsTool	fcdf	static	param	d2	分母の自由度	
-1870	StatisticsTool	fcdf	static	returns	d2		
+1870	StatisticsTool	fcdf	static	returns			
 1871	StatisticsTool	finv	static	desc		F分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of F-distribution.
 1872	StatisticsTool	finv	static	param	p	確率	
 1873	StatisticsTool	finv	static	param	d1	分子の自由度	
 1874	StatisticsTool	finv	static	param	d2	分母の自由度	
-1875	StatisticsTool	finv	static	returns	d2		
+1875	StatisticsTool	finv	static	returns			
 1876	StatisticsTool	isStr	const	desc		文字列か判定	typeof this === string
 1877	StatisticsTool	isStr	const	param			
 1878	StatisticsComplex	StatisticsComplex	class	desc		Complexクラスから利用する統計処理関数集	Collection of statistical functions used from the Complex class.
 1879	StatisticsComplex	gammaln	static	desc		対数ガンマ関数	Log-gamma function.
 1880	StatisticsComplex	gammaln	static	param	x		
-1881	StatisticsComplex	gammaln	static	returns	x		
+1881	StatisticsComplex	gammaln	static	returns			
 1882	StatisticsComplex	gamma	static	desc		ガンマ関数	Gamma function.
 1883	StatisticsComplex	gamma	static	param	z		
-1884	StatisticsComplex	gamma	static	returns	z		
+1884	StatisticsComplex	gamma	static	returns			
 1885	StatisticsComplex	gammainc	static	desc		不完全ガンマ関数	Incomplete gamma function.
 1886	StatisticsComplex	gammainc	static	param	x		
 1887	StatisticsComplex	gammainc	static	param	a		
 1888	StatisticsComplex	gammainc	static	param	tail	lower/upper	
-1889	StatisticsComplex	gammainc	static	returns	tail		
+1889	StatisticsComplex	gammainc	static	returns			
 1890	StatisticsComplex	gampdf	static	desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 1891	StatisticsComplex	gampdf	static	param	x		
 1892	StatisticsComplex	gampdf	static	param	k	形状母数	
 1893	StatisticsComplex	gampdf	static	param	s	尺度母数	
-1894	StatisticsComplex	gampdf	static	returns	s		
+1894	StatisticsComplex	gampdf	static	returns			
 1895	StatisticsComplex	gamcdf	static	desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 1896	StatisticsComplex	gamcdf	static	param	x		
 1897	StatisticsComplex	gamcdf	static	param	k	形状母数	
 1898	StatisticsComplex	gamcdf	static	param	s	尺度母数	
-1899	StatisticsComplex	gamcdf	static	returns	s		
+1899	StatisticsComplex	gamcdf	static	returns			
 1900	StatisticsComplex	gaminv	static	desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 1901	StatisticsComplex	gaminv	static	param	p		
 1902	StatisticsComplex	gaminv	static	param	k	形状母数	
 1903	StatisticsComplex	gaminv	static	param	s	尺度母数	
-1904	StatisticsComplex	gaminv	static	returns	s		
+1904	StatisticsComplex	gaminv	static	returns			
 1905	StatisticsComplex	beta	static	desc		ベータ関数	Beta function.
 1906	StatisticsComplex	beta	static	param	x		
 1907	StatisticsComplex	beta	static	param	y		
-1908	StatisticsComplex	beta	static	returns	y		
+1908	StatisticsComplex	beta	static	returns			
 1909	StatisticsComplex	betainc	static	desc		不完全ベータ関数	Incomplete beta function.
 1910	StatisticsComplex	betainc	static	param	x		
 1911	StatisticsComplex	betainc	static	param	a		
 1912	StatisticsComplex	betainc	static	param	b		
 1913	StatisticsComplex	betainc	static	param	tail	lower/upper	
-1914	StatisticsComplex	betainc	static	returns	tail		
+1914	StatisticsComplex	betainc	static	returns			
 1915	StatisticsComplex	betapdf	static	desc		ベータ分布の確率密度関数	Probability density function (PDF) of beta distribution.
 1916	StatisticsComplex	betapdf	static	param	x		
 1917	StatisticsComplex	betapdf	static	param	a		
 1918	StatisticsComplex	betapdf	static	param	b		
-1919	StatisticsComplex	betapdf	static	returns	b		
+1919	StatisticsComplex	betapdf	static	returns			
 1920	StatisticsComplex	betacdf	static	desc		ベータ分布の累積分布関数	Cumulative distribution function (CDF) of beta distribution.
 1921	StatisticsComplex	betacdf	static	param	x		
 1922	StatisticsComplex	betacdf	static	param	a		
 1923	StatisticsComplex	betacdf	static	param	b		
-1924	StatisticsComplex	betacdf	static	returns	b		
+1924	StatisticsComplex	betacdf	static	returns			
 1925	StatisticsComplex	betainv	static	desc		ベータ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of beta distribution.
 1926	StatisticsComplex	betainv	static	param	p		
 1927	StatisticsComplex	betainv	static	param	a		
 1928	StatisticsComplex	betainv	static	param	b		
-1929	StatisticsComplex	betainv	static	returns	b		
+1929	StatisticsComplex	betainv	static	returns			
 1930	StatisticsComplex	factorial	static	desc		階乗関数	Factorial function, x!.
 1931	StatisticsComplex	factorial	static	param	n		
-1932	StatisticsComplex	factorial	static	returns	n		
+1932	StatisticsComplex	factorial	static	returns			
 1933	StatisticsComplex	nchoosek	static	desc		二項係数またはすべての組合わせ (nCk)	Binomial coefficient, number of all combinations, nCk.
 1934	StatisticsComplex	nchoosek	static	param	n		
 1935	StatisticsComplex	nchoosek	static	param	k		
-1936	StatisticsComplex	nchoosek	static	returns	k		
+1936	StatisticsComplex	nchoosek	static	returns			
 1937	StatisticsComplex	erf	static	desc		誤差関数	Error function.
 1938	StatisticsComplex	erf	static	param	x		
-1939	StatisticsComplex	erf	static	returns	x		
+1939	StatisticsComplex	erf	static	returns			
 1940	StatisticsComplex	erfc	static	desc		相補誤差関数	Complementary error function.
 1941	StatisticsComplex	erfc	static	param	x		
-1942	StatisticsComplex	erfc	static	returns	x		
+1942	StatisticsComplex	erfc	static	returns			
 1943	StatisticsComplex	normpdf	static	desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
 1944	StatisticsComplex	normpdf	static	param	x		
 1945	StatisticsComplex	normpdf	static	param	u	平均値	
 1946	StatisticsComplex	normpdf	static	param	s	分散	
-1947	StatisticsComplex	normpdf	static	returns	s		
+1947	StatisticsComplex	normpdf	static	returns			
 1948	StatisticsComplex	normcdf	static	desc		正規分布の累積分布関数	Cumulative distribution function (CDF) of normal distribution.
 1949	StatisticsComplex	normcdf	static	param	x		
 1950	StatisticsComplex	normcdf	static	param	u	平均値	
 1951	StatisticsComplex	normcdf	static	param	s	分散	
-1952	StatisticsComplex	normcdf	static	returns	s		
+1952	StatisticsComplex	normcdf	static	returns			
 1953	StatisticsComplex	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of normal distribution.
 1954	StatisticsComplex	norminv	static	param	x		
 1955	StatisticsComplex	norminv	static	param	u	平均値	
 1956	StatisticsComplex	norminv	static	param	s	分散	
-1957	StatisticsComplex	norminv	static	returns	s		
+1957	StatisticsComplex	norminv	static	returns			
 1958	StatisticsComplex	tpdf	static	desc		t分布の確率密度関数	Probability density function (PDF) of Student's t-distribution.
 1959	StatisticsComplex	tpdf	static	param	x		
 1960	StatisticsComplex	tpdf	static	param	v	自由度	
-1961	StatisticsComplex	tpdf	static	returns	v		
+1961	StatisticsComplex	tpdf	static	returns			
 1962	StatisticsComplex	tcdf	static	desc		t分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution.
 1963	StatisticsComplex	tcdf	static	param	t		
 1964	StatisticsComplex	tcdf	static	param	v	自由度	
-1965	StatisticsComplex	tcdf	static	returns	v		
+1965	StatisticsComplex	tcdf	static	returns			
 1966	StatisticsComplex	tinv	static	desc		t分布の累積分布関数の逆関数	Inverse of cumulative distribution function (CDF) of Student's t-distribution.
 1967	StatisticsComplex	tinv	static	param	p		
 1968	StatisticsComplex	tinv	static	param	v	自由度	
-1969	StatisticsComplex	tinv	static	returns	v		
+1969	StatisticsComplex	tinv	static	returns			
 1970	StatisticsComplex	tdist	static	desc		尾部が指定可能なt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
 1971	StatisticsComplex	tdist	static	param	t		
 1972	StatisticsComplex	tdist	static	param	v	自由度	
 1973	StatisticsComplex	tdist	static	param	tails	尾部(1...片側、2...両側)	
-1974	StatisticsComplex	tdist	static	returns	tails		
+1974	StatisticsComplex	tdist	static	returns			
 1975	StatisticsComplex	tinv2	static	desc		両側検定時のt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 1976	StatisticsComplex	tinv2	static	param	p		
 1977	StatisticsComplex	tinv2	static	param	v	自由度	
-1978	StatisticsComplex	tinv2	static	returns	v		
+1978	StatisticsComplex	tinv2	static	returns			
 1979	StatisticsComplex	chi2pdf	static	desc		カイ二乗分布の確率密度関数	Probability density function (PDF) of chi-square distribution.
 1980	StatisticsComplex	chi2pdf	static	param	x		
 1981	StatisticsComplex	chi2pdf	static	param	k	自由度	
-1982	StatisticsComplex	chi2pdf	static	returns	k		
+1982	StatisticsComplex	chi2pdf	static	returns			
 1983	StatisticsComplex	chi2cdf	static	desc		カイ二乗分布の累積分布関数	Cumulative distribution function (CDF) of chi-square distribution.
 1984	StatisticsComplex	chi2cdf	static	param	x		
 1985	StatisticsComplex	chi2cdf	static	param	k	自由度	
-1986	StatisticsComplex	chi2cdf	static	returns	k		
+1986	StatisticsComplex	chi2cdf	static	returns			
 1987	StatisticsComplex	chi2inv	static	desc		カイ二乗分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of chi-square distribution.
 1988	StatisticsComplex	chi2inv	static	param	p		
 1989	StatisticsComplex	chi2inv	static	param	k	自由度	
-1990	StatisticsComplex	chi2inv	static	returns	k		
+1990	StatisticsComplex	chi2inv	static	returns			
 1991	StatisticsComplex	fpdf	static	desc		F分布の確率密度関数	Probability density function (PDF) of F-distribution.
 1992	StatisticsComplex	fpdf	static	param	x		
 1993	StatisticsComplex	fpdf	static	param	d1	分子の自由度	
 1994	StatisticsComplex	fpdf	static	param	d2	分母の自由度	
-1995	StatisticsComplex	fpdf	static	returns	d2		
+1995	StatisticsComplex	fpdf	static	returns			
 1996	StatisticsComplex	fcdf	static	desc		F分布の累積分布関数	Cumulative distribution function (CDF) of F-distribution.
 1997	StatisticsComplex	fcdf	static	param	x		
 1998	StatisticsComplex	fcdf	static	param	d1	分子の自由度	
 1999	StatisticsComplex	fcdf	static	param	d2	分母の自由度	
-2000	StatisticsComplex	fcdf	static	returns	d2		
+2000	StatisticsComplex	fcdf	static	returns			
 2001	StatisticsComplex	finv	static	desc		F分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of F-distribution.
 2002	StatisticsComplex	finv	static	param	p		
 2003	StatisticsComplex	finv	static	param	d1	分子の自由度	
 2004	StatisticsComplex	finv	static	param	d2	分母の自由度	
-2005	StatisticsComplex	finv	static	returns	d2		
+2005	StatisticsComplex	finv	static	returns			
 2006	Statistics	Statistics	export default class	desc		Matrixクラスから利用する統計処理関数集	Class for statistical processing for Matrix class.
 2007	Statistics	gammaln	static	desc		対数ガンマ関数	Log-gamma function.
 2008	Statistics	gammaln	static	param	x		
-2009	Statistics	gammaln	static	returns	x		
+2009	Statistics	gammaln	static	returns			
 2010	Statistics	gamma	static	desc		ガンマ関数	Gamma function.
 2011	Statistics	gamma	static	param	x		
-2012	Statistics	gamma	static	returns	x		
+2012	Statistics	gamma	static	returns			
 2013	Statistics	gammainc	static	desc		不完全ガンマ関数	Incomplete gamma function.
 2014	Statistics	gammainc	static	param	x		
 2015	Statistics	gammainc	static	param	a		
 2016	Statistics	gammainc	static	param	tail	lower/upper	
-2017	Statistics	gammainc	static	returns	tail		
+2017	Statistics	gammainc	static	returns			
 2018	Statistics	gampdf	static	desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 2019	Statistics	gampdf	static	param	x		
 2020	Statistics	gampdf	static	param	k	形状母数	
 2021	Statistics	gampdf	static	param	s	尺度母数	
-2022	Statistics	gampdf	static	returns	s		
+2022	Statistics	gampdf	static	returns			
 2023	Statistics	gamcdf	static	desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 2024	Statistics	gamcdf	static	param	x		
 2025	Statistics	gamcdf	static	param	k	形状母数	
 2026	Statistics	gamcdf	static	param	s	尺度母数	
-2027	Statistics	gamcdf	static	returns	s		
+2027	Statistics	gamcdf	static	returns			
 2028	Statistics	gaminv	static	desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 2029	Statistics	gaminv	static	param	x		
 2030	Statistics	gaminv	static	param	k	形状母数	
 2031	Statistics	gaminv	static	param	s	尺度母数	
-2032	Statistics	gaminv	static	returns	s		
+2032	Statistics	gaminv	static	returns			
 2033	Statistics	beta	static	desc		ベータ関数	Beta function.
 2034	Statistics	beta	static	param	x		
 2035	Statistics	beta	static	param	y		
-2036	Statistics	beta	static	returns	y		
+2036	Statistics	beta	static	returns			
 2037	Statistics	betainc	static	desc		不完全ベータ関数	Incomplete beta function.
 2038	Statistics	betainc	static	param	x		
 2039	Statistics	betainc	static	param	a		
 2040	Statistics	betainc	static	param	b		
 2041	Statistics	betainc	static	param	tail	lower/upper	
-2042	Statistics	betainc	static	returns	tail		
+2042	Statistics	betainc	static	returns			
 2043	Statistics	betacdf	static	desc		ベータ分布の累積分布関数	Cumulative distribution function (CDF) of beta distribution.
 2044	Statistics	betacdf	static	param	x		
 2045	Statistics	betacdf	static	param	a		
 2046	Statistics	betacdf	static	param	b		
-2047	Statistics	betacdf	static	returns	b		
+2047	Statistics	betacdf	static	returns			
 2048	Statistics	betapdf	static	desc		ベータ分布の確率密度関数	Probability density function (PDF) of beta distribution.
 2049	Statistics	betapdf	static	param	x		
 2050	Statistics	betapdf	static	param	a		
 2051	Statistics	betapdf	static	param	b		
-2052	Statistics	betapdf	static	returns	b		
+2052	Statistics	betapdf	static	returns			
 2053	Statistics	betainv	static	desc		ベータ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of beta distribution.
 2054	Statistics	betainv	static	param	x		
 2055	Statistics	betainv	static	param	a		
 2056	Statistics	betainv	static	param	b		
-2057	Statistics	betainv	static	returns	b		
+2057	Statistics	betainv	static	returns			
 2058	Statistics	factorial	static	desc		階乗関数	Factorial function, x!.
 2059	Statistics	factorial	static	param	x		
-2060	Statistics	factorial	static	returns	x		
+2060	Statistics	factorial	static	returns			
 2061	Statistics	nchoosek	static	desc		二項係数またはすべての組合わせ (nCk)	Binomial coefficient, number of all combinations, nCk.
 2062	Statistics	nchoosek	static	param	x		
 2063	Statistics	nchoosek	static	param	k		
-2064	Statistics	nchoosek	static	returns	k		
+2064	Statistics	nchoosek	static	returns			
 2065	Statistics	erf	static	desc		誤差関数	Error function.
 2066	Statistics	erf	static	param	x		
-2067	Statistics	erf	static	returns	x		
+2067	Statistics	erf	static	returns			
 2068	Statistics	erfc	static	desc		相補誤差関数	Complementary error function.
 2069	Statistics	erfc	static	param	x		
-2070	Statistics	erfc	static	returns	x		
+2070	Statistics	erfc	static	returns			
 2071	Statistics	normpdf	static	desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
 2072	Statistics	normpdf	static	param	x		
 2073	Statistics	normpdf	static	param	u	平均値	
 2074	Statistics	normpdf	static	param	s	分散	
-2075	Statistics	normpdf	static	returns	s		
+2075	Statistics	normpdf	static	returns			
 2076	Statistics	normcdf	static	desc		正規分布の累積分布関数	Cumulative distribution function (CDF) of normal distribution.
 2077	Statistics	normcdf	static	param	x		
 2078	Statistics	normcdf	static	param	u	平均値	
 2079	Statistics	normcdf	static	param	s	分散	
-2080	Statistics	normcdf	static	returns	s		
+2080	Statistics	normcdf	static	returns			
 2081	Statistics	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of normal distribution.
 2082	Statistics	norminv	static	param	x		
 2083	Statistics	norminv	static	param	u	平均値	
 2084	Statistics	norminv	static	param	s	分散	
-2085	Statistics	norminv	static	returns	s		
+2085	Statistics	norminv	static	returns			
 2086	Statistics	tpdf	static	desc		t分布の確率密度関数	Probability density function (PDF) of Student's t-distribution.
 2087	Statistics	tpdf	static	param	x		
 2088	Statistics	tpdf	static	param	v	自由度	
-2089	Statistics	tpdf	static	returns	v		
+2089	Statistics	tpdf	static	returns			
 2090	Statistics	tcdf	static	desc		t分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution.
 2091	Statistics	tcdf	static	param	x		
 2092	Statistics	tcdf	static	param	v	自由度	
-2093	Statistics	tcdf	static	returns	v		
+2093	Statistics	tcdf	static	returns			
 2094	Statistics	tinv	static	desc		t分布の累積分布関数の逆関数	Inverse of cumulative distribution function (CDF) of Student's t-distribution.
 2095	Statistics	tinv	static	param	x		
 2096	Statistics	tinv	static	param	v	自由度	
-2097	Statistics	tinv	static	returns	v		
+2097	Statistics	tinv	static	returns			
 2098	Statistics	tdist	static	desc		尾部が指定可能なt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
 2099	Statistics	tdist	static	param	x		
 2100	Statistics	tdist	static	param	v	自由度	
 2101	Statistics	tdist	static	param	tails	尾部(1...片側、2...両側)	
-2102	Statistics	tdist	static	returns	tails		
+2102	Statistics	tdist	static	returns			
 2103	Statistics	tinv2	static	desc		両側検定時のt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 2104	Statistics	tinv2	static	param	x		
 2105	Statistics	tinv2	static	param	v	自由度	
-2106	Statistics	tinv2	static	returns	v		
+2106	Statistics	tinv2	static	returns			
 2107	Statistics	chi2pdf	static	desc		カイ二乗分布の確率密度関数	Probability density function (PDF) of chi-square distribution.
 2108	Statistics	chi2pdf	static	param	x		
 2109	Statistics	chi2pdf	static	param	k	自由度	
-2110	Statistics	chi2pdf	static	returns	k		
+2110	Statistics	chi2pdf	static	returns			
 2111	Statistics	chi2cdf	static	desc		カイ二乗分布の累積分布関数	Cumulative distribution function (CDF) of chi-square distribution.
 2112	Statistics	chi2cdf	static	param	x		
 2113	Statistics	chi2cdf	static	param	k	自由度	
-2114	Statistics	chi2cdf	static	returns	k		
+2114	Statistics	chi2cdf	static	returns			
 2115	Statistics	chi2inv	static	desc		カイ二乗分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of chi-square distribution.
 2116	Statistics	chi2inv	static	param	x		
 2117	Statistics	chi2inv	static	param	k	自由度	
-2118	Statistics	chi2inv	static	returns	k		
+2118	Statistics	chi2inv	static	returns			
 2119	Statistics	fpdf	static	desc		F分布の確率密度関数	Probability density function (PDF) of F-distribution.
 2120	Statistics	fpdf	static	param	x		
 2121	Statistics	fpdf	static	param	d1	分子の自由度	
 2122	Statistics	fpdf	static	param	d2	分母の自由度	
-2123	Statistics	fpdf	static	returns	d2		
+2123	Statistics	fpdf	static	returns			
 2124	Statistics	fcdf	static	desc		F分布の累積分布関数	Cumulative distribution function (CDF) of F-distribution.
 2125	Statistics	fcdf	static	param	x		
 2126	Statistics	fcdf	static	param	d1	分子の自由度	
 2127	Statistics	fcdf	static	param	d2	分母の自由度	
-2128	Statistics	fcdf	static	returns	d2		
+2128	Statistics	fcdf	static	returns			
 2129	Statistics	finv	static	desc		F分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of F-distribution.
 2130	Statistics	finv	static	param	x		
 2131	Statistics	finv	static	param	d1	分子の自由度	
 2132	Statistics	finv	static	param	d2	分母の自由度	
-2133	Statistics	finv	static	returns	d2		
+2133	Statistics	finv	static	returns			
 2134	Statistics	max	static	desc		最大値	Maximum number.
 2135	Statistics	max	static	param	x		
 2136	Statistics	max	static	param	type		
-2137	Statistics	max	static	returns	type	max([A, B])	
+2137	Statistics	max	static	returns		max([A, B])	
 2138	Statistics	min	static	desc		最小値	Minimum number.
 2139	Statistics	min	static	param	x		
 2140	Statistics	min	static	param	type		
-2141	Statistics	min	static	returns	type	min([A, B])	
+2141	Statistics	min	static	returns		min([A, B])	
 2142	Statistics	sum	static	desc		合計	Sum.
 2143	Statistics	sum	static	param	x		
 2144	Statistics	sum	static	param	type		
-2145	Statistics	sum	static	returns	type		
+2145	Statistics	sum	static	returns			
 2146	Statistics	mean	static	desc		相加平均	Arithmetic average.
 2147	Statistics	mean	static	param	x		
 2148	Statistics	mean	static	param	type		
-2149	Statistics	mean	static	returns	type		
+2149	Statistics	mean	static	returns			
 2150	Statistics	prod	static	desc		配列の積	Product of array elements.
 2151	Statistics	prod	static	param	x		
 2152	Statistics	prod	static	param	type		
-2153	Statistics	prod	static	returns	type		
+2153	Statistics	prod	static	returns			
 2154	Statistics	geomean	static	desc		相乗平均／幾何平均	Geometric mean.
 2155	Statistics	geomean	static	param	x		
 2156	Statistics	geomean	static	param	type		
-2157	Statistics	geomean	static	returns	type		
+2157	Statistics	geomean	static	returns			
 2158	Statistics	median	static	desc		中央値	Median.
 2159	Statistics	median	static	param	x		
 2160	Statistics	median	static	param	type		
-2161	Statistics	median	static	returns	type		
+2161	Statistics	median	static	returns			
 2162	Statistics	mode	static	desc		最頻値	Mode.
 2163	Statistics	mode	static	param	x		
 2164	Statistics	mode	static	param	type		
-2165	Statistics	mode	static	returns	type		
+2165	Statistics	mode	static	returns			
 2166	Statistics	moment	static	desc		中心積率	Moment.
 2167	Statistics	moment	static	param	x		
 2168	Statistics	moment	static	param	type		
-2169	Statistics	moment	static	returns	type	n次のモーメント、2で分散の定義と同等。	
+2169	Statistics	moment	static	returns		n次のモーメント、2で分散の定義と同等。	
 2170	Statistics	var	static	desc		分散	Variance.
 2171	Statistics	var	static	param	x		
 2172	Statistics	var	static	param	type		
-2173	Statistics	var	static	returns	type		
+2173	Statistics	var	static	returns			
 2174	Statistics	std	static	desc		標準偏差	Standard deviation.
 2175	Statistics	std	static	param	x		
 2176	Statistics	std	static	param	type		
-2177	Statistics	std	static	returns	type		
+2177	Statistics	std	static	returns			
 2178	Statistics	mad	static	desc		平均絶対偏差	Mean absolute deviation.
 2179	Statistics	mad	static	param	x		
 2180	Statistics	mad	static	param	type		
-2181	Statistics	mad	static	returns	type		
+2181	Statistics	mad	static	returns			
 2182	Statistics	skewness	static	desc		歪度	Skewness.
 2183	Statistics	skewness	static	param	x		
 2184	Statistics	skewness	static	param	type		
-2185	Statistics	skewness	static	returns	type		
+2185	Statistics	skewness	static	returns			
 2186	Statistics	cov	static	desc		共分散行列	Covariance matrix.
 2187	Statistics	cov	static	param	x		
 2188	Statistics	cov	static	param	type		
-2189	Statistics	cov	static	returns	type		
+2189	Statistics	cov	static	returns			
 2190	Statistics	normalize	static	desc		標本を平均値0、標準偏差1に正規化	The samples are normalized to a mean value of 0, standard deviation of 1.
 2191	Statistics	normalize	static	param	x		
 2192	Statistics	normalize	static	param	type		
-2193	Statistics	normalize	static	returns	type		
+2193	Statistics	normalize	static	returns			
 2194	Statistics	corrcoef	static	desc		相関行列	Correlation matrix.
 2195	Statistics	corrcoef	static	param	x		
 2196	Statistics	corrcoef	static	param	type		
-2197	Statistics	corrcoef	static	returns	type		
+2197	Statistics	corrcoef	static	returns			
 2198	Statistics	sort	static	desc		ソート	Sort.
 2199	Statistics	sort	static	param	x		
 2200	Statistics	sort	static	param	type		
-2201	Statistics	sort	static	returns	type		
+2201	Statistics	sort	static	returns			

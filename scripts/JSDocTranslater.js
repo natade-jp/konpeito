@@ -140,6 +140,7 @@ class JSDocTranslater {
 							}
 							right_str = comment_lines[i].substr(match[0].length);
 						}
+						type_data.prm_name = "";
 						type_data.text = right_str.trim();
 						type_list.push(copy(type_data));
 					}
