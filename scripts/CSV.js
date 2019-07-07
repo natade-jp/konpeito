@@ -170,16 +170,23 @@ class CSV {
 	/**
 	 * 共通の型のJSON配列をCSV配列へ変換
 	 * @param {Array<Object<string, string>>} json_array 
+	 * @param {Array<string>} [title_array] 
 	 * @returns {Array<Array<string>>}
 	 */
-	static toCSVArrayFromJSONArray(json_array) {
+	static toCSVArrayFromJSONArray(json_array, title_array) {
 		const csv_array = [];
-		const title_list = [];
-		for(const key in json_array[0]) {
-			title_list.push(key);
+		let title_list = null;
+		if(title_array === undefined) {
+			title_list = [];
+			for(const key in json_array[0]) {
+				title_list.push(key);
+			}
+		}
+		else {
+			title_list = title_array;
 		}
 		csv_array.push(title_list);
-		for(let i = 1; i < json_array.length; i++) {
+		for(let i = 0; i < json_array.length; i++) {
 			const line = json_array[i];
 			const data_list = [];
 			for(let j = 0; j < title_list.length; j++) {
