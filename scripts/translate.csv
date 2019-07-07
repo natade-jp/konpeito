@@ -545,7 +545,8 @@ Used when Random not specified explicitly."
 483	ComplexTool	ToComplexFromString	static	returns			
 484	Complex	Complex	export default class	desc		複素数クラス (immutable)	Complex number class. (immutable)
 485	Complex	constructor		desc		複素数を作成	"Create a complex number.
-When using a complex number, initialize it as ""3 + 4i"" or ""4j + 3"" or [3, 4]."
+Initialization can be performed as follows.
+* ""3 + 4i"", ""4j + 3"", [3, 4]."
 486	Complex	constructor		param	number	複素数( "1 + j", [1 , 1] など)	Complex number. See how to use the function.
 487	Complex	this._re		desc		実部	The real part of this Comlex.
 488	Complex	this._im		desc		虚部	The imaginary part of this Comlex.
@@ -590,7 +591,7 @@ If type conversion is unnecessary, return the value as it is."
 526	Complex	arg	get	desc		偏角	The argument of this complex number.
 527	Complex	arg	get	returns		arg(A)	arg(A)
 528	Complex	getDecimalPosition		desc		実部、虚部を表す際の小数点以下の桁数	"Return number of decimal places for real and imaginary parts.
-Used to make a string."
+* Used to make a string."
 529	Complex	getDecimalPosition		returns		小数点の桁数	Number of decimal places.
 530	Complex	add		desc		加算	Add.
 531	Complex	add		param	number		
@@ -683,11 +684,12 @@ Used to make a string."
 617	Complex	tan		desc		tan	Tangent function.
 618	Complex	tan		returns		tan(A)	tan(A)
 619	Complex	atan		desc		atan	"Atan (arc tangent) function.
-Return the values of [-PI/2, PI/2]."
+* Return the values of [-PI/2, PI/2]."
 620	Complex	atan		returns		atan(A)	atan(A)
 621	Complex	atan2		desc		atan2	"Atan (arc tangent) function.
-Return the values of [-PI, PI] ."
-622	Complex	atan2		param	number	実数で指定。省略時は、本オブジェクトの偏角を返す。	
+* Return the values of [-PI, PI] .
+* Supports only real numbers."
+622	Complex	atan2		param	number	実数で指定。省略時は、本オブジェクトの偏角を返す。	X
 623	Complex	atan2		returns		atan2(Y, X)	atan2(Y, X)
 624	Complex	sinc		desc		sinc	Normalized sinc function.
 625	Complex	sinc		returns		sinc(A)	sinc(A)
@@ -866,7 +868,7 @@ If type conversion is unnecessary, return the value as it is."
 780	Matrix	createMatrixDoEachCalculation	static	param	column_length	列数	Number of columns.
 781	Matrix	createMatrixDoEachCalculation	static	returns		処理実行後の行列	Matrix after function processing.
 782	Matrix	eachVectorAuto		desc		行列の列をベクトルとみなし同一処理を実行、行ベクトルであれば行ベクトルに対し同一処理を実行	"Treat the columns of the matrix as vectors and execute the same process.
-If the matrix is a row vector, it performs the same processing for the row vector."
+* If the matrix is a row vector, it performs the same processing for the row vector."
 783	Matrix	eachVectorAuto		param	array_function	Function(array)	Function(array)
 784	Matrix	eachVectorAuto		returns		処理実行後の行列	Matrix after function processing.
 785	Matrix	eachVectorBoth		desc		"行列の行と列をベクトルとみなし同一処理を実行
@@ -1017,8 +1019,8 @@ If vector, generate a matrix with diagonal elements."
 923	Matrix	compareTo		desc		"値同士を比較
 スカラー同士の場合の戻り値は、number型。
 行列同士の場合は、各項の比較結果が入った、Matrix型。"	"Compare values.
-Return value between scalars is of type Number.
-Return value between matrices is type Matrix."
+* Return value between scalars is of type Number.
+* Return value between matrices is type Matrix."
 924	Matrix	compareTo		param	number		
 925	Matrix	compareTo		param	epsilon	誤差	Calculation tolerance of calculation.
 926	Matrix	compareTo		returns		A > B ? 1 : (A === B ? 0 : -1)	A > B ? 1 : (A === B ? 0 : -1)
@@ -1035,7 +1037,7 @@ Return value between matrices is type Matrix."
 937	Matrix	div		param	number		
 938	Matrix	div		returns		A / B	A / B
 939	Matrix	pow		desc		累乗（整数に対応）	"Power function.
-Supports only integers."
+* Supports only integers."
 940	Matrix	pow		param	number	整数	
 941	Matrix	pow		returns		pow(A, B)	pow(A, B)
 942	Matrix	nmul		desc		行列の各項ごとの掛け算	Multiplication for each element of matrix.
@@ -1119,11 +1121,12 @@ Supports only integers."
 1007	Matrix	tan		desc		tan	Tangent function.
 1008	Matrix	tan		returns		tan(A)	tan(A)
 1009	Matrix	atan		desc		atan	"Atan (arc tangent) function.
-Return the values of [-PI/2, PI/2]."
+* Return the values of [-PI/2, PI/2]."
 1010	Matrix	atan		returns		atan(A)	atan(A)
 1011	Matrix	atan2		desc		atan2	"Atan (arc tangent) function.
-Return the values of [-PI, PI] ."
-1012	Matrix	atan2		param	number	スカラー	
+* Return the values of [-PI, PI].
+* Supports only real numbers."
+1012	Matrix	atan2		param	number	スカラー	X
 1013	Matrix	atan2		returns		atan2(Y, X)	atan2(Y, X)
 1014	Matrix	floor		desc		floor	Floor.
 1015	Matrix	floor		returns		floor(A)	floor(A)
@@ -1287,18 +1290,18 @@ The number of elements in the matrix doesn't increase or decrease."
 1143	Matrix	gamma		returns			
 1144	Matrix	gammainc		desc		不完全ガンマ関数	Incomplete gamma function.
 1145	Matrix	gammainc		param	a		
-1146	Matrix	gammainc		param	tail	lower/upper	lower/upper
+1146	Matrix	gammainc		param	tail	lower/upper	tail ("lower", "upper")
 1147	Matrix	gammainc		returns			
 1148	Matrix	gampdf		desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 1149	Matrix	gampdf		param	k	形状母数	Shape parameter.
 1150	Matrix	gampdf		param	s	尺度母数	Scale parameter.
 1151	Matrix	gampdf		returns			
 1152	Matrix	gamcdf		desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
-1153	Matrix	gamcdf		param	k	形状母数	
+1153	Matrix	gamcdf		param	k	形状母数	Shape parameter.
 1154	Matrix	gamcdf		param	s	尺度母数	Scale parameter.
 1155	Matrix	gamcdf		returns			
 1156	Matrix	gaminv		desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
-1157	Matrix	gaminv		param	k	形状母数	
+1157	Matrix	gaminv		param	k	形状母数	Shape parameter.
 1158	Matrix	gaminv		param	s	尺度母数	Scale parameter.
 1159	Matrix	gaminv		returns			
 1160	Matrix	beta		desc		ベータ関数	Beta function.
@@ -1307,7 +1310,7 @@ The number of elements in the matrix doesn't increase or decrease."
 1163	Matrix	betainc		desc		不完全ベータ関数	Incomplete beta function.
 1164	Matrix	betainc		param	a		
 1165	Matrix	betainc		param	b		
-1166	Matrix	betainc		param	tail	lower/upper	lower/upper
+1166	Matrix	betainc		param	tail	lower/upper	tail ("lower", "upper")
 1167	Matrix	betainc		returns			
 1168	Matrix	betacdf		desc		ベータ分布の累積分布関数	Cumulative distribution function (CDF) of beta distribution.
 1169	Matrix	betacdf		param	a		
@@ -1406,7 +1409,8 @@ The number of elements in the matrix doesn't increase or decrease."
 1259	Matrix	mode		desc		最頻値	Mode.
 1260	Matrix	mode		param	type		
 1261	Matrix	mode		returns			
-1262	Matrix	moment		desc		中心積率	Moment.
+1262	Matrix	moment		desc		中心積率	"Moment.
+* Moment of order n. Equivalent to the definition of variance at 2."
 1263	Matrix	moment		param	type		
 1264	Matrix	moment		returns			
 1265	Matrix	var		desc		分散	Variance.
@@ -1459,20 +1463,31 @@ The number of elements in the matrix doesn't increase or decrease."
 1312	Matrix	conv		desc		畳み込み積分、多項式乗算	Convolution integral, Polynomial multiplication.
 1313	Matrix	conv		param	number		
 1314	Matrix	conv		returns			
-1315	Matrix	xcorr		desc		自己相関関数、相互相関関数	ACF(Autocorrelation function), cros-correlation function.
-1316	Matrix	xcorr		param	number	省略した場合は自己相関関数	
+1315	Matrix	xcorr		desc		自己相関関数、相互相関関数	"ACF(Autocorrelation function), cros-correlation function.
+* If the argument is omitted, it is calculated by the autocorrelation function."
+1316	Matrix	xcorr		param	number	省略した場合は自己相関関数	Matrix to calculate the correlation.
 1317	Matrix	xcorr		returns			
-1318	Matrix	window	static	desc		窓関数を作成する	Create window function for signal processing.
-1319	Matrix	window	static	param	name	窓関数の名前	
-1320	Matrix	window	static	param	size	長さ	
+1318	Matrix	window	static	desc		窓関数を作成する	"Create window function for signal processing.
+The following window functions are available.
+* ""rectangle"": Rectangular window
+* ""hann"": Hann/Hanning window.
+* ""hamming"": Hamming window.
+* ""blackman"": Blackman window.
+* ""blackmanharris"": Blackman-Harris window.
+* ""blackmannuttall"": Blackman-Nuttall window.
+* ""flattop"": Flat top window.
+* ""sin"", Half cycle sine window.
+* ""vorbis"", Vorbis window."
+1319	Matrix	window	static	param	name	窓関数の名前	Window function name.
+1320	Matrix	window	static	param	size	長さ	Window length
 1321	Matrix	window	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
 1322	Matrix	window	static	returns		列ベクトル	Column vector.
 1323	Matrix	hann	static	desc		ハニング窓	Hann (Hanning) window.
-1324	Matrix	hann	static	param	size	長さ	
+1324	Matrix	hann	static	param	size	長さ	Window length
 1325	Matrix	hann	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
 1326	Matrix	hann	static	returns		列ベクトル	Column vector.
 1327	Matrix	hamming	static	desc		ハミング窓	Hamming window.
-1328	Matrix	hamming	static	param	size	長さ	
+1328	Matrix	hamming	static	param	size	長さ	Window length
 1329	Matrix	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
 1330	Matrix	hamming	static	returns		列ベクトル	Column vector.
 1331	Matrix	fftshift		desc		FFTシフト	"FFT shift.
@@ -1481,8 +1496,8 @@ Circular shift beginning at the center of the signal."
 1333	Matrix	fftshift		returns			
 1334	MathContext	MathContext	export default class	desc		BigDecimal用の環境設定	Configuration class for BigDecimal.
 1335	MathContext	constructor		desc		任意精度の環境設定データ	Create BigDecimal configuration.
-1336	MathContext	constructor		param	precision_or_name	精度を数値で指定するか、設定自体を文字列で指定する	
-1337	MathContext	constructor		param	roundingMode	丸めモード	
+1336	MathContext	constructor		param	precision_or_name	精度を数値で指定するか、設定自体を文字列で指定する	Precision. Or String output by MathContext.toString.
+1337	MathContext	constructor		param	roundingMode	丸めモード	RoundingMode.
 1338	MathContext	this.precision		desc		精度	The precision of this BigDecimal.
 1339	MathContext	this.roundingMode		desc		丸めモード	Method of rounding.
 1340	MathContext	getPrecision		desc		精度	The precision of this BigDecimal.
@@ -1490,7 +1505,7 @@ Circular shift beginning at the center of the signal."
 1342	MathContext	getRoundingMode		desc		丸め方	Method of rounding.
 1343	MathContext	getRoundingMode		returns			
 1344	MathContext	equals		desc		環境が等しいか	Equals.
-1345	MathContext	equals		param	x	比較対象	
+1345	MathContext	equals		param	x	比較対象	Number to compare.
 1346	MathContext	equals		returns			
 1347	MathContext	toString		desc		文字列化	Convert to string.
 1348	MathContext	toString		returns			
@@ -1517,13 +1532,14 @@ Equivalent of the C language float."
 Equivalent of the C language double."
 1361	MathContext	DECIMAL128		desc		128ビットの実数型 ( long double ) と同等	"128-bit floating point.
 Equivalent of the C language long double."
-1362	RoundingModeEntity	RoundingModeEntity	export class	desc		BigDecimal用の丸めモードの基底クラス	
+1362	RoundingModeEntity	RoundingModeEntity	export class	desc		BigDecimal用の丸めモードの基底クラス	Base class for rounding mode for BigDecimal.
 1363	RoundingModeEntity	toString	static	desc		丸めモードの名前を英語の大文字で取得する	Get rounding mode name in upper case English.
 1364	RoundingModeEntity	toString	static	returns		丸めモード名	Rounding method name.
 1365	RoundingModeEntity	getAddNumber	static	desc		丸めに必要な加算値	"Numeric value to add.
 It is rounded when this value is added."
-1366	RoundingModeEntity	getAddNumber	static	param	x	1ケタ目の値	
-1367	RoundingModeEntity	getAddNumber	static	returns		いくつ足すと丸められるか	
+1366	RoundingModeEntity	getAddNumber	static	param	x	1ケタ目の値	"Rounding value.
+When specified as an integer, the first digit is rounded."
+1367	RoundingModeEntity	getAddNumber	static	returns		いくつ足すと丸められるか	Numeric value to add.
 1368	RoundingMode_UP	RoundingMode_UP	class	desc		絶対値の切り上げ（1桁目が0より大きければ桁上げする）	"Directed rounding to an integer.
 Round towards positive infinity if positive, negative infinity if negative."
 1369	RoundingMode_UP	toString	static	desc		丸めモードの名前を英語の大文字で取得する	Get rounding mode name in upper case English.
@@ -1655,13 +1671,13 @@ Error if you need to round it."
 1440	LinearAlgebraTool	innerproduct	const	desc		ベクトルx1とベクトルx2の内積をとる	Inner product of vector x1 and vector x2.
 1441	LinearAlgebraTool	innerproduct	const	param	x1		
 1442	LinearAlgebraTool	innerproduct	const	param	x2		
-1443	LinearAlgebraTool	innerproduct	const	param	index_offset	オフセット(この値から行う)	
-1444	LinearAlgebraTool	innerproduct	const	param	index_max	最大(この値は含めない)	
+1443	LinearAlgebraTool	innerproduct	const	param	index_offset	オフセット(この値から行う)	Offset of the position of the vector to be calculated.
+1444	LinearAlgebraTool	innerproduct	const	param	index_max	最大(この値は含めない)	Maximum value of position of vector to be calculated (do not include this value).
 1445	LinearAlgebraTool	innerproduct	const	returns			
 1446	LinearAlgebraTool	house	const	desc		ハウスホルダー変換	Householder transformation.
 1447	LinearAlgebraTool	house	const	param	x	ハウスホルダー変換したいベクトル	
-1448	LinearAlgebraTool	house	const	param	index_offset	オフセット(この値から行う)	
-1449	LinearAlgebraTool	house	const	param	index_max	最大(この値は含めない)	
+1448	LinearAlgebraTool	house	const	param	index_offset	オフセット(この値から行う)	Offset of the position of the vector to be calculated.
+1449	LinearAlgebraTool	house	const	param	index_max	最大(この値は含めない)	Maximum value of position of vector to be calculated (do not include this value).
 1450	LinearAlgebraTool	house	const	returns			
 1451	LinearAlgebraTool	eig	static	desc		"対称行列の固有値分解
 実数での計算のみ対応"	"Eigendecomposition of symmetric matrix.
@@ -1669,26 +1685,27 @@ Error if you need to round it."
 * V*D*V'=A.
 * V is orthonormal matrix. and columns of V are the right eigenvectors.
 * D is a matrix containing the eigenvalues on the diagonal component."
-1452	LinearAlgebraTool	eig	static	param	mat	対称行列	
+1452	LinearAlgebraTool	eig	static	param	mat	対称行列	Symmetric matrix.
 1453	LinearAlgebraTool	eig	static	returns			
 1454	LinearAlgebraTool	doGramSchmidtOrthonormalization	static	desc		行列をベクトルと見立て、正規直行化し、QとRの行列を作る	"Treat matrices as vectors, make them orthonormal, and make matrices of Q and R.
 The method of Gram-Schmidt orthonormalization is used."
-1455	LinearAlgebraTool	doGramSchmidtOrthonormalization	static	param	mat	正方行列	
+1455	LinearAlgebraTool	doGramSchmidtOrthonormalization	static	param	mat	正方行列	Square matrix.
 1456	LinearAlgebraTool	doGramSchmidtOrthonormalization	static	returns			
-1457	LinearAlgebraTool	createOrthogonalVector	static	desc		行列の全行ベクトルに対して、直行したベクトルを作成する	Create orthogonal vectors for all row vectors of the matrix.
+1457	LinearAlgebraTool	createOrthogonalVector	static	desc		行列の全行ベクトルに対して、直行したベクトルを作成する	"Create orthogonal vectors for all row vectors of the matrix.
+- If the vector can not be found, it returns NULL."
 1458	LinearAlgebraTool	createOrthogonalVector	static	param	mat		
 1459	LinearAlgebraTool	createOrthogonalVector	static	param	epsilon	誤差	Calculation tolerance of calculation.
-1460	LinearAlgebraTool	createOrthogonalVector	static	returns		直行したベクトルがなければNULLを返す	
+1460	LinearAlgebraTool	createOrthogonalVector	static	returns		直行したベクトルがなければNULLを返す	An orthogonal vector.
 1461	LinearAlgebraTool	getMaxRowNumber	static	desc		行列の指定した列の中で最もノルムが最大の値がある行番号	Row number with the largest norm value in the specified column of the matrix.
 1462	LinearAlgebraTool	getMaxRowNumber	static	param	mat		
 1463	LinearAlgebraTool	getMaxRowNumber	static	param	column_index	列番号	Number of column of matrix.
-1464	LinearAlgebraTool	getMaxRowNumber	static	param	row_index_offset	行のオフセット(この値から行う)	
-1465	LinearAlgebraTool	getMaxRowNumber	static	param	row_index_max	行の最大(この値は含めない)	
-1466	LinearAlgebraTool	getMaxRowNumber	static	returns		行番号	
+1464	LinearAlgebraTool	getMaxRowNumber	static	param	row_index_offset	行のオフセット(この値から行う)	Offset of the position of the vector to be calculated.
+1465	LinearAlgebraTool	getMaxRowNumber	static	param	row_index_max	行の最大(この値は含めない)	Maximum value of position of vector to be calculated (do not include this value).
+1466	LinearAlgebraTool	getMaxRowNumber	static	returns		行番号	Matrix row number.
 1467	LinearAlgebraTool	getLinearDependenceVector	static	desc		行列の各行をベクトルと見立て、線型従属している行を抽出	Extract linearly dependent rows when each row of matrix is a vector.
 1468	LinearAlgebraTool	getLinearDependenceVector	static	param	mat		
 1469	LinearAlgebraTool	getLinearDependenceVector	static	param	epsilon	誤差	Calculation tolerance of calculation.
-1470	LinearAlgebraTool	getLinearDependenceVector	static	returns		行番号の行列(昇順)	
+1470	LinearAlgebraTool	getLinearDependenceVector	static	returns		行番号の行列(昇順)	Array of matrix row numbers in ascending order.
 1471	LinearAlgebra	LinearAlgebra	export default class	desc		Matrix用の線形代数用の計算クラス	Class for linear algebra for Matrix class.
 1472	LinearAlgebra	inner	static	desc		ドット積	Inner product/Dot product.
 1473	LinearAlgebra	inner	static	param	A		
@@ -1783,17 +1800,17 @@ Sum of diagonal elements."
 1544	Random	genrand_int32		desc		32ビットの乱数	32-bit random number.
 1545	Random	genrand_int32		returns		- 32ビットの乱数	
 1546	Random	next		desc		指定したビット数以下で表せられる乱数	Random number of specified bit length.
-1547	Random	next		param	bits	必要なビット数（64まで可能）	
+1547	Random	next		param	bits	必要なビット数（64まで可能）	Required number of bits (up to 64 possible).
 1548	Random	next		returns			
 1549	Random	nextBytes		desc		指定したサイズの8ビット乱数配列	8-bit random number array of specified length.
 1550	Random	nextBytes		param	size	必要な長さ	
 1551	Random	nextBytes		returns			
 1552	Random	nextShort		desc		16ビットの乱数	16-bit random number.
 1553	Random	nextShort		returns			
-1554	Random	nextInt		desc		32ビットの乱数	64-bit random number.
+1554	Random	nextInt		desc		32ビットの乱数	32-bit random number.
 1555	Random	nextInt		param	x	指定した値未満の数値を作る	
 1556	Random	nextInt		returns			
-1557	Random	nextLong		desc		64ビットの乱数	32-bit random number.
+1557	Random	nextLong		desc		64ビットの乱数	64-bit random number.
 1558	Random	nextLong		returns			
 1559	Random	nextBoolean		desc		乱数の真偽値	Random boolean.
 1560	Random	nextBoolean		returns			
@@ -1807,13 +1824,13 @@ This random number is a distribution with an average value of 0 and a standard d
 1567	Random	Random.seedUniquifier		desc		シードを設定しない場合の乱数作成用整数	Random number creation integer when no seed is set.
 1568	FFT	FFT	class	desc		高速フーリエ変換用クラス	Fast Fourier Transform (FFT) Class.
 1569	FFT	bit_reverse_32	static	desc		ビット反転	Return the number with reversed bits.
-1570	FFT	bit_reverse_32	static	param	x	ビット反転させる値（32ビット整数）	
+1570	FFT	bit_reverse_32	static	param	x	ビット反転させる値（32ビット整数）	Bit-reversed value. (32-bit integer)
 1571	FFT	bit_reverse_32	static	returns		ビット反転した値	
 1572	FFT	create_bit_reverse_table	static	desc		指定したビット分の数値データをビット反転した配列を返す	Create a bit reversal lookup table.
 1573	FFT	create_bit_reverse_table	static	param	bit	ビット数	
 1574	FFT	create_bit_reverse_table	static	returns		ビット反転した値の配列	
 1575	FFT	constructor		desc		FFTクラスの初期化	Create FFT.
-1576	FFT	constructor		param	size	信号の長さ	
+1576	FFT	constructor		param	size	信号の長さ	Signal length.
 1577	FFT	this.size		desc		信号の長さ	Signal length.
 1578	FFT	this.inv_size		desc		信号の長さの逆数	Inverse of signal length.
 1579	FFT	this.bit_size		desc		信号の長さを二進数で表した場合のビット数	Number of bits when the signal length is expressed in binary number.
@@ -1834,20 +1851,20 @@ This random number is a distribution with an average value of 0 and a standard d
 FFTで用いるテーブルなどをキャッシュ"	"Simple cache class.
 Cache tables used in FFT."
 1594	Cache	constructor		desc		簡易キャッシュ	Create Cache.
-1595	Cache	constructor		param	cache_size	キャッシュの最大サイズ	
-1596	Cache	constructor		param	object	作成するオブジェクト	
+1595	Cache	constructor		param	cache_size	キャッシュの最大サイズ	Maximum number of caches.
+1596	Cache	constructor		param	object	作成するオブジェクト	Target class you want to build a cache.
 1597	Cache	this.object		desc		キャッシュするクラス	Class for cache.
 1598	Cache	this.table_max		desc		キャッシュする最大数	Maximum number of caches.
 1599	Cache	this.table_size		desc		現在キャッシュしている数	Number of caches currently.
 1600	Cache	this.table		desc		キャッシュテーブル	Cache table.
 1601	Cache	get		desc		指定した長さのデータを作成する。キャッシュに存在すればキャッシュから使用する。	"Create a class initialized with the specified data length.
 Use from cache if it exists in cache."
-1602	Cache	get		param	size	作成するオブジェクトのサイズ	
+1602	Cache	get		param	size	作成するオブジェクトのサイズ	Data length.
 1603	Cache	get		returns			
 1604	Cache	fft_cache	const	desc		FFT用のキャッシュ	Cache for FFT.
 1605	DCT	DCT	class	desc		離散コサイン変換のクラス	Discrete cosine transform (DCT) class.
 1606	DCT	constructor		desc		DCTクラスの初期化	Create DCT.
-1607	DCT	constructor		param	size	信号の長さ	
+1607	DCT	constructor		param	size	信号の長さ	Signal length.
 1608	DCT	this.size		desc		信号の長さ	Signal length.
 1609	DCT	this.dct_size		desc		"信号長の2倍
 DCT変換では、実際の信号にゼロ詰めした2倍の信号長を用意しそれに対してFFTを行う。"	"Twice the signal length.
@@ -1896,17 +1913,27 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1651	SignalTool	xcorr	static	param	x2_real	実数部	Array of real parts of vector.
 1652	SignalTool	xcorr	static	param	x2_imag	虚数部	Array of imaginary parts of vector.
 1653	SignalTool	xcorr	static	returns			
-1654	SignalTool	window	static	desc		窓関数を作成する	Create window function for signal processing.
-1655	SignalTool	window	static	param	name	窓関数の名前	
-1656	SignalTool	window	static	param	size	長さ	
+1654	SignalTool	window	static	desc		窓関数を作成する	"Create window function for signal processing.
+The following window functions are available.
+* ""rectangle"": Rectangular window
+* ""hann"": Hann/Hanning window.
+* ""hamming"": Hamming window.
+* ""blackman"": Blackman window.
+* ""blackmanharris"": Blackman-Harris window.
+* ""blackmannuttall"": Blackman-Nuttall window.
+* ""flattop"": Flat top window.
+* ""sin"", Half cycle sine window.
+* ""vorbis"", Vorbis window."
+1655	SignalTool	window	static	param	name	窓関数の名前	Window function name.
+1656	SignalTool	window	static	param	size	長さ	Window length.
 1657	SignalTool	window	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
 1658	SignalTool	window	static	returns			
 1659	SignalTool	hann	static	desc		ハニング窓	Hann (Hanning) window.
-1660	SignalTool	hann	static	param	size	長さ	
+1660	SignalTool	hann	static	param	size	長さ	Window length.
 1661	SignalTool	hann	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
 1662	SignalTool	hann	static	returns			
 1663	SignalTool	hamming	static	desc		ハミング窓を作成	Hamming window.
-1664	SignalTool	hamming	static	param	size	長さ	
+1664	SignalTool	hamming	static	param	size	長さ	Window length.
 1665	SignalTool	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
 1666	SignalTool	hamming	static	returns			
 1667	Signal	Signal	export default class	desc		Matrix用の信号処理用の計算クラス	Signal processing class for Matrix class.
@@ -1946,21 +1973,32 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1701	Signal	conv	static	param	x1		
 1702	Signal	conv	static	param	x2		
 1703	Signal	conv	static	returns			
-1704	Signal	xcorr	static	desc		自己相関関数、相互相関関数	ACF(Autocorrelation function), Cros-correlation function.
+1704	Signal	xcorr	static	desc		自己相関関数、相互相関関数	"ACF(Autocorrelation function), cros-correlation function.
+* If the argument is omitted, it is calculated by the autocorrelation function."
 1705	Signal	xcorr	static	param	x1		
-1706	Signal	xcorr	static	param	x2	省略した場合は自己相関関数	
+1706	Signal	xcorr	static	param	x2	省略した場合は自己相関関数	Matrix to calculate the correlation.
 1707	Signal	xcorr	static	returns			
-1708	Signal	window	static	desc		窓関数を作成する	Create window function for signal processing.
-1709	Signal	window	static	param	name	窓関数の名前	
-1710	Signal	window	static	param	size	長さ	
+1708	Signal	window	static	desc		窓関数を作成する	"Create window function for signal processing.
+The following window functions are available.
+* ""rectangle"": Rectangular window
+* ""hann"": Hann/Hanning window.
+* ""hamming"": Hamming window.
+* ""blackman"": Blackman window.
+* ""blackmanharris"": Blackman-Harris window.
+* ""blackmannuttall"": Blackman-Nuttall window.
+* ""flattop"": Flat top window.
+* ""sin"", Half cycle sine window.
+* ""vorbis"", Vorbis window."
+1709	Signal	window	static	param	name	窓関数の名前	Window function name.
+1710	Signal	window	static	param	size	長さ	Window length
 1711	Signal	window	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
 1712	Signal	window	static	returns		列ベクトル	Column vector.
 1713	Signal	hann	static	desc		ハニング窓	Hann (Hanning) window.
-1714	Signal	hann	static	param	size	長さ	
+1714	Signal	hann	static	param	size	長さ	Window length
 1715	Signal	hann	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
 1716	Signal	hann	static	returns		列ベクトル	Column vector.
 1717	Signal	hamming	static	desc		ハミング窓	Hamming window.
-1718	Signal	hamming	static	param	size	長さ	
+1718	Signal	hamming	static	param	size	長さ	Window length
 1719	Signal	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
 1720	Signal	hamming	static	returns		列ベクトル	Column vector.
 1721	Signal	fftshift	static	desc		FFTシフト	"FFT shift.
@@ -1992,17 +2030,17 @@ Circular shift beginning at the center of the signal."
 1746	StatisticsTool	gammainc	static	returns			
 1747	StatisticsTool	gampdf	static	desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 1748	StatisticsTool	gampdf	static	param	x		
-1749	StatisticsTool	gampdf	static	param	k	形状母数	
+1749	StatisticsTool	gampdf	static	param	k	形状母数	Shape parameter.
 1750	StatisticsTool	gampdf	static	param	s	尺度母数	Scale parameter.
 1751	StatisticsTool	gampdf	static	returns			
 1752	StatisticsTool	gamcdf	static	desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 1753	StatisticsTool	gamcdf	static	param	x		
-1754	StatisticsTool	gamcdf	static	param	k	形状母数	
+1754	StatisticsTool	gamcdf	static	param	k	形状母数	Shape parameter.
 1755	StatisticsTool	gamcdf	static	param	s	尺度母数	Scale parameter.
 1756	StatisticsTool	gamcdf	static	returns			
 1757	StatisticsTool	gaminv	static	desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 1758	StatisticsTool	gaminv	static	param	p		
-1759	StatisticsTool	gaminv	static	param	k	形状母数	
+1759	StatisticsTool	gaminv	static	param	k	形状母数	Shape parameter.
 1760	StatisticsTool	gaminv	static	param	s	尺度母数	Scale parameter.
 1761	StatisticsTool	gaminv	static	returns			
 1762	StatisticsTool	beta	static	desc		ベータ関数	Beta function.
@@ -2131,21 +2169,21 @@ Circular shift beginning at the center of the signal."
 1885	StatisticsComplex	gammainc	static	desc		不完全ガンマ関数	Incomplete gamma function.
 1886	StatisticsComplex	gammainc	static	param	x		
 1887	StatisticsComplex	gammainc	static	param	a		
-1888	StatisticsComplex	gammainc	static	param	tail	lower/upper	
+1888	StatisticsComplex	gammainc	static	param	tail	lower/upper	tail ("lower", "upper")
 1889	StatisticsComplex	gammainc	static	returns			
 1890	StatisticsComplex	gampdf	static	desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 1891	StatisticsComplex	gampdf	static	param	x		
-1892	StatisticsComplex	gampdf	static	param	k	形状母数	
+1892	StatisticsComplex	gampdf	static	param	k	形状母数	Shape parameter.
 1893	StatisticsComplex	gampdf	static	param	s	尺度母数	Scale parameter.
 1894	StatisticsComplex	gampdf	static	returns			
 1895	StatisticsComplex	gamcdf	static	desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 1896	StatisticsComplex	gamcdf	static	param	x		
-1897	StatisticsComplex	gamcdf	static	param	k	形状母数	
+1897	StatisticsComplex	gamcdf	static	param	k	形状母数	Shape parameter.
 1898	StatisticsComplex	gamcdf	static	param	s	尺度母数	Scale parameter.
 1899	StatisticsComplex	gamcdf	static	returns			
 1900	StatisticsComplex	gaminv	static	desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 1901	StatisticsComplex	gaminv	static	param	p		
-1902	StatisticsComplex	gaminv	static	param	k	形状母数	
+1902	StatisticsComplex	gaminv	static	param	k	形状母数	Shape parameter.
 1903	StatisticsComplex	gaminv	static	param	s	尺度母数	Scale parameter.
 1904	StatisticsComplex	gaminv	static	returns			
 1905	StatisticsComplex	beta	static	desc		ベータ関数	Beta function.
@@ -2156,7 +2194,7 @@ Circular shift beginning at the center of the signal."
 1910	StatisticsComplex	betainc	static	param	x		
 1911	StatisticsComplex	betainc	static	param	a		
 1912	StatisticsComplex	betainc	static	param	b		
-1913	StatisticsComplex	betainc	static	param	tail	lower/upper	
+1913	StatisticsComplex	betainc	static	param	tail	lower/upper	tail ("lower", "upper")
 1914	StatisticsComplex	betainc	static	returns			
 1915	StatisticsComplex	betapdf	static	desc		ベータ分布の確率密度関数	Probability density function (PDF) of beta distribution.
 1916	StatisticsComplex	betapdf	static	param	x		
@@ -2259,21 +2297,21 @@ Circular shift beginning at the center of the signal."
 2013	Statistics	gammainc	static	desc		不完全ガンマ関数	Incomplete gamma function.
 2014	Statistics	gammainc	static	param	x		
 2015	Statistics	gammainc	static	param	a		
-2016	Statistics	gammainc	static	param	tail	lower/upper	
+2016	Statistics	gammainc	static	param	tail	lower/upper	tail ("lower", "upper")
 2017	Statistics	gammainc	static	returns			
 2018	Statistics	gampdf	static	desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 2019	Statistics	gampdf	static	param	x		
-2020	Statistics	gampdf	static	param	k	形状母数	
+2020	Statistics	gampdf	static	param	k	形状母数	Shape parameter.
 2021	Statistics	gampdf	static	param	s	尺度母数	Scale parameter.
 2022	Statistics	gampdf	static	returns			
 2023	Statistics	gamcdf	static	desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 2024	Statistics	gamcdf	static	param	x		
-2025	Statistics	gamcdf	static	param	k	形状母数	
+2025	Statistics	gamcdf	static	param	k	形状母数	Shape parameter.
 2026	Statistics	gamcdf	static	param	s	尺度母数	Scale parameter.
 2027	Statistics	gamcdf	static	returns			
 2028	Statistics	gaminv	static	desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 2029	Statistics	gaminv	static	param	x		
-2030	Statistics	gaminv	static	param	k	形状母数	
+2030	Statistics	gaminv	static	param	k	形状母数	Shape parameter.
 2031	Statistics	gaminv	static	param	s	尺度母数	Scale parameter.
 2032	Statistics	gaminv	static	returns			
 2033	Statistics	beta	static	desc		ベータ関数	Beta function.
@@ -2284,7 +2322,7 @@ Circular shift beginning at the center of the signal."
 2038	Statistics	betainc	static	param	x		
 2039	Statistics	betainc	static	param	a		
 2040	Statistics	betainc	static	param	b		
-2041	Statistics	betainc	static	param	tail	lower/upper	
+2041	Statistics	betainc	static	param	tail	lower/upper	tail ("lower", "upper")
 2042	Statistics	betainc	static	returns			
 2043	Statistics	betacdf	static	desc		ベータ分布の累積分布関数	Cumulative distribution function (CDF) of beta distribution.
 2044	Statistics	betacdf	static	param	x		
@@ -2409,7 +2447,8 @@ Circular shift beginning at the center of the signal."
 2163	Statistics	mode	static	param	x		
 2164	Statistics	mode	static	param	type		
 2165	Statistics	mode	static	returns			
-2166	Statistics	moment	static	desc		中心積率	Moment.
+2166	Statistics	moment	static	desc		中心積率	"Moment.
+* Moment of order n. Equivalent to the definition of variance at 2."
 2167	Statistics	moment	static	param	x		
 2168	Statistics	moment	static	param	type		
 2169	Statistics	moment	static	returns		n次のモーメント、2で分散の定義と同等。	
