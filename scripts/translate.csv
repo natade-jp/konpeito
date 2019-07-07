@@ -1249,20 +1249,33 @@ The number of elements in the matrix doesn't increase or decrease."
 1122	Matrix	lup		returns		P'*L*U=A	P'*L*U=A
 1123	Matrix	lu		desc		LU分解	LU decomposition.
 1124	Matrix	lu		returns		L*U=A	L*U=A
-1125	Matrix	linsolve		desc		連立一次方程式を解く	Solve simultaneous linear equations.
+1125	Matrix	linsolve		desc		連立一次方程式を解く	Solving a system of linear equations to be Ax = B
 1126	Matrix	linsolve		param	number	B	B
-1127	Matrix	linsolve		returns		Ax=B となる x	
-1128	Matrix	qr		desc		QR分解	QR decomposition.
-1129	Matrix	qr		returns		Q*R=A, Qは正規直行行列、Rは上三角行列	
+1127	Matrix	linsolve		returns		Ax=B となる x	x
+1128	Matrix	qr		desc		QR分解	"QR decomposition.
+* Q*R=A
+* Q is orthonormal matrix.
+* R is upper triangular matrix."
+1129	Matrix	qr		returns		Q*R=A, Qは正規直行行列、Rは上三角行列	{Q, R}
 1130	Matrix	tridiagonalize		desc		"対称行列の三重対角化
 実数での計算のみ対応"	"Tridiagonalization of symmetric matrix.
-* Don't support complex numbers."
-1131	Matrix	tridiagonalize		returns		P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致	
+* Don't support complex numbers.
+* P*H*P'=A
+* P is orthonormal matrix.
+* H is tridiagonal matrix.
+* The eigenvalues of H match the eigenvalues of A."
+1131	Matrix	tridiagonalize		returns		P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致	{P, H}
 1132	Matrix	eig		desc		"対称行列の固有値分解
 実数での計算のみ対応"	"Eigendecomposition of symmetric matrix.
-* Don't support complex numbers."
-1133	Matrix	eig		returns		V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列	
-1134	Matrix	svd		desc		特異値分解	Singular Value Decomposition (SVD).
+* Don't support complex numbers.
+* V*D*V'=A.
+* V is orthonormal matrix. and columns of V are the right eigenvectors.
+* D is a matrix containing the eigenvalues on the diagonal component."
+1133	Matrix	eig		returns		V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列	{D, V}
+1134	Matrix	svd		desc		特異値分解	"Singular Value Decomposition (SVD).
+* U*S*V'=A
+* U and V are orthonormal matrices.
+* S is a matrix with singular values in the diagonal."
 1135	Matrix	svd		returns		U*S*V'=A	U*S*V'=A
 1136	Matrix	inv		desc		逆行列	Inverse matrix of this matrix.
 1137	Matrix	inv		returns		A^-1	A^-1
@@ -1277,16 +1290,16 @@ The number of elements in the matrix doesn't increase or decrease."
 1146	Matrix	gammainc		param	tail	lower/upper	lower/upper
 1147	Matrix	gammainc		returns			
 1148	Matrix	gampdf		desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
-1149	Matrix	gampdf		param	k	形状母数	
-1150	Matrix	gampdf		param	s	尺度母数	
+1149	Matrix	gampdf		param	k	形状母数	Shape parameter.
+1150	Matrix	gampdf		param	s	尺度母数	Scale parameter.
 1151	Matrix	gampdf		returns			
 1152	Matrix	gamcdf		desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 1153	Matrix	gamcdf		param	k	形状母数	
-1154	Matrix	gamcdf		param	s	尺度母数	
+1154	Matrix	gamcdf		param	s	尺度母数	Scale parameter.
 1155	Matrix	gamcdf		returns			
 1156	Matrix	gaminv		desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 1157	Matrix	gaminv		param	k	形状母数	
-1158	Matrix	gaminv		param	s	尺度母数	
+1158	Matrix	gaminv		param	s	尺度母数	Scale parameter.
 1159	Matrix	gaminv		returns			
 1160	Matrix	beta		desc		ベータ関数	Beta function.
 1161	Matrix	beta		param	y		
@@ -1318,53 +1331,56 @@ The number of elements in the matrix doesn't increase or decrease."
 1187	Matrix	erfc		desc		相補誤差関数	Complementary error function.
 1188	Matrix	erfc		returns			
 1189	Matrix	normpdf		desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
-1190	Matrix	normpdf		param	u	平均値	
-1191	Matrix	normpdf		param	s	分散	
+1190	Matrix	normpdf		param	u	平均値	Average value.
+1191	Matrix	normpdf		param	s	分散	Variance value.
 1192	Matrix	normpdf		returns			
 1193	Matrix	normcdf		desc		正規分布の累積分布関数	Cumulative distribution function (CDF) of normal distribution.
-1194	Matrix	normcdf		param	u	平均値	
-1195	Matrix	normcdf		param	s	分散	
+1194	Matrix	normcdf		param	u	平均値	Average value.
+1195	Matrix	normcdf		param	s	分散	Variance value.
 1196	Matrix	normcdf		returns			
 1197	Matrix	norminv		desc		正規分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of normal distribution.
-1198	Matrix	norminv		param	u	平均値	
-1199	Matrix	norminv		param	s	分散	
+1198	Matrix	norminv		param	u	平均値	Average value.
+1199	Matrix	norminv		param	s	分散	Variance value.
 1200	Matrix	norminv		returns			
 1201	Matrix	tpdf		desc		t分布の確率密度関数	Probability density function (PDF) of Student's t-distribution.
-1202	Matrix	tpdf		param	v	自由度	
+1202	Matrix	tpdf		param	v	自由度	The degrees of freedom. (DF)
 1203	Matrix	tpdf		returns			
 1204	Matrix	tcdf		desc		t分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution.
-1205	Matrix	tcdf		param	v	自由度	
+1205	Matrix	tcdf		param	v	自由度	The degrees of freedom. (DF)
 1206	Matrix	tcdf		returns			
 1207	Matrix	tinv		desc		t分布の累積分布関数の逆関数	Inverse of cumulative distribution function (CDF) of Student's t-distribution.
-1208	Matrix	tinv		param	v	自由度	
+1208	Matrix	tinv		param	v	自由度	The degrees of freedom. (DF)
 1209	Matrix	tinv		returns			
-1210	Matrix	tdist		desc		尾部が指定可能なt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-1211	Matrix	tdist		param	v	自由度	
-1212	Matrix	tdist		param	tails	尾部(1...片側、2...両側)	
+1210	Matrix	tdist		desc		尾部が指定可能なt分布の累積分布関数	"Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
+* If tails = 1, TDIST returns the one-tailed distribution.
+* If tails = 2, TDIST returns the two-tailed distribution."
+1211	Matrix	tdist		param	v	自由度	The degrees of freedom. (DF)
+1212	Matrix	tdist		param	tails	尾部(1...片側、2...両側)	Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 1213	Matrix	tdist		returns			
 1214	Matrix	tinv2		desc		両側検定時のt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
-1215	Matrix	tinv2		param	v	自由度	
+1215	Matrix	tinv2		param	v	自由度	The degrees of freedom. (DF)
 1216	Matrix	tinv2		returns			
 1217	Matrix	chi2pdf		desc		カイ二乗分布の確率密度関数	Probability density function (PDF) of chi-square distribution.
-1218	Matrix	chi2pdf		param	k	自由度	
+1218	Matrix	chi2pdf		param	k	自由度	The degrees of freedom. (DF)
 1219	Matrix	chi2pdf		returns			
 1220	Matrix	chi2cdf		desc		カイ二乗分布の累積分布関数	Cumulative distribution function (CDF) of chi-square distribution.
-1221	Matrix	chi2cdf		param	k	自由度	
+1221	Matrix	chi2cdf		param	k	自由度	The degrees of freedom. (DF)
 1222	Matrix	chi2cdf		returns			
 1223	Matrix	chi2inv		desc		カイ二乗分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of chi-square distribution.
-1224	Matrix	chi2inv		param	k	自由度	
+1224	Matrix	chi2inv		param	k	自由度	The degrees of freedom. (DF)
 1225	Matrix	chi2inv		returns			
-1226	Matrix	fpdf		desc		F分布の確率密度関数	Probability density function (PDF) of F-distribution.
-1227	Matrix	fpdf		param	d1	分子の自由度	
-1228	Matrix	fpdf		param	d2	分母の自由度	
+1226	Matrix	fpdf		desc		F分布の確率密度関数	"Probability density function (PDF) of F-distribution.
+* In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution."
+1227	Matrix	fpdf		param	d1	分子の自由度	The degree of freedom of the molecules.
+1228	Matrix	fpdf		param	d2	分母の自由度	The degree of freedom of the denominator
 1229	Matrix	fpdf		returns			
 1230	Matrix	fcdf		desc		F分布の累積分布関数	Cumulative distribution function (CDF) of F-distribution.
-1231	Matrix	fcdf		param	d1	分子の自由度	
-1232	Matrix	fcdf		param	d2	分母の自由度	
+1231	Matrix	fcdf		param	d1	分子の自由度	The degree of freedom of the molecules.
+1232	Matrix	fcdf		param	d2	分母の自由度	The degree of freedom of the denominator
 1233	Matrix	fcdf		returns			
 1234	Matrix	finv		desc		F分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of F-distribution.
-1235	Matrix	finv		param	d1	分子の自由度	
-1236	Matrix	finv		param	d2	分母の自由度	
+1235	Matrix	finv		param	d1	分子の自由度	The degree of freedom of the molecules.
+1236	Matrix	finv		param	d2	分母の自由度	The degree of freedom of the denominator
 1237	Matrix	finv		returns			
 1238	Matrix	max		desc		最大値	Maximum number.
 1239	Matrix	max		param	type		
@@ -1450,15 +1466,15 @@ The number of elements in the matrix doesn't increase or decrease."
 1319	Matrix	window	static	param	name	窓関数の名前	
 1320	Matrix	window	static	param	size	長さ	
 1321	Matrix	window	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
-1322	Matrix	window	static	returns		列ベクトル	
+1322	Matrix	window	static	returns		列ベクトル	Column vector.
 1323	Matrix	hann	static	desc		ハニング窓	Hann (Hanning) window.
 1324	Matrix	hann	static	param	size	長さ	
 1325	Matrix	hann	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
-1326	Matrix	hann	static	returns		列ベクトル	
+1326	Matrix	hann	static	returns		列ベクトル	Column vector.
 1327	Matrix	hamming	static	desc		ハミング窓	Hamming window.
 1328	Matrix	hamming	static	param	size	長さ	
 1329	Matrix	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
-1330	Matrix	hamming	static	returns		列ベクトル	
+1330	Matrix	hamming	static	returns		列ベクトル	Column vector.
 1331	Matrix	fftshift		desc		FFTシフト	"FFT shift.
 Circular shift beginning at the center of the signal."
 1332	Matrix	fftshift		param	type		
@@ -1503,7 +1519,7 @@ Equivalent of the C language double."
 Equivalent of the C language long double."
 1362	RoundingModeEntity	RoundingModeEntity	export class	desc		BigDecimal用の丸めモードの基底クラス	
 1363	RoundingModeEntity	toString	static	desc		丸めモードの名前を英語の大文字で取得する	Get rounding mode name in upper case English.
-1364	RoundingModeEntity	toString	static	returns		丸めモード名	
+1364	RoundingModeEntity	toString	static	returns		丸めモード名	Rounding method name.
 1365	RoundingModeEntity	getAddNumber	static	desc		丸めに必要な加算値	"Numeric value to add.
 It is rounded when this value is added."
 1366	RoundingModeEntity	getAddNumber	static	param	x	1ケタ目の値	
@@ -1629,7 +1645,11 @@ Error if you need to round it."
 1436	LinearAlgebraTool	LinearAlgebraTool	class	desc		線形代数用の関数集	Collection of functions for linear algebra.
 1437	LinearAlgebraTool	tridiagonalize	static	desc		"対称行列の三重対角化
 実数での計算のみ対応"	"Tridiagonalization of symmetric matrix.
-* Don't support complex numbers."
+* Don't support complex numbers.
+* P*H*P'=A
+* P is orthonormal matrix.
+* H is tridiagonal matrix.
+* The eigenvalues of H match the eigenvalues of A."
 1438	LinearAlgebraTool	tridiagonalize	static	param	mat		
 1439	LinearAlgebraTool	tridiagonalize	static	returns			
 1440	LinearAlgebraTool	innerproduct	const	desc		ベクトルx1とベクトルx2の内積をとる	Inner product of vector x1 and vector x2.
@@ -1645,7 +1665,10 @@ Error if you need to round it."
 1450	LinearAlgebraTool	house	const	returns			
 1451	LinearAlgebraTool	eig	static	desc		"対称行列の固有値分解
 実数での計算のみ対応"	"Eigendecomposition of symmetric matrix.
-* Don't support complex numbers."
+* Don't support complex numbers.
+* V*D*V'=A.
+* V is orthonormal matrix. and columns of V are the right eigenvectors.
+* D is a matrix containing the eigenvalues on the diagonal component."
 1452	LinearAlgebraTool	eig	static	param	mat	対称行列	
 1453	LinearAlgebraTool	eig	static	returns			
 1454	LinearAlgebraTool	doGramSchmidtOrthonormalization	static	desc		行列をベクトルと見立て、正規直行化し、QとRの行列を作る	"Treat matrices as vectors, make them orthonormal, and make matrices of Q and R.
@@ -1658,7 +1681,7 @@ The method of Gram-Schmidt orthonormalization is used."
 1460	LinearAlgebraTool	createOrthogonalVector	static	returns		直行したベクトルがなければNULLを返す	
 1461	LinearAlgebraTool	getMaxRowNumber	static	desc		行列の指定した列の中で最もノルムが最大の値がある行番号	Row number with the largest norm value in the specified column of the matrix.
 1462	LinearAlgebraTool	getMaxRowNumber	static	param	mat		
-1463	LinearAlgebraTool	getMaxRowNumber	static	param	column_index	列番号	
+1463	LinearAlgebraTool	getMaxRowNumber	static	param	column_index	列番号	Number of column of matrix.
 1464	LinearAlgebraTool	getMaxRowNumber	static	param	row_index_offset	行のオフセット(この値から行う)	
 1465	LinearAlgebraTool	getMaxRowNumber	static	param	row_index_max	行の最大(この値は含めない)	
 1466	LinearAlgebraTool	getMaxRowNumber	static	returns		行番号	
@@ -1700,24 +1723,37 @@ Sum of diagonal elements."
 1501	LinearAlgebra	lu	static	desc		LU分解	LU decomposition.
 1502	LinearAlgebra	lu	static	param	mat	A	A
 1503	LinearAlgebra	lu	static	returns		L*U=A	L*U=A
-1504	LinearAlgebra	linsolve	static	desc		連立一次方程式を解く	Solve simultaneous linear equations.
+1504	LinearAlgebra	linsolve	static	desc		連立一次方程式を解く	Solving a system of linear equations to be Ax = B
 1505	LinearAlgebra	linsolve	static	param	mat	A	A
 1506	LinearAlgebra	linsolve	static	param	number	B	B
-1507	LinearAlgebra	linsolve	static	returns		Ax=B となる x	
-1508	LinearAlgebra	qr	static	desc		QR分解	QR decomposition.
+1507	LinearAlgebra	linsolve	static	returns		Ax=B となる x	x
+1508	LinearAlgebra	qr	static	desc		QR分解	"QR decomposition.
+* Q*R=A
+* Q is orthonormal matrix.
+* R is upper triangular matrix."
 1509	LinearAlgebra	qr	static	param	mat	A	A
-1510	LinearAlgebra	qr	static	returns		Q*R=A, Qは正規直行行列、Rは上三角行列	
+1510	LinearAlgebra	qr	static	returns		Q*R=A, Qは正規直行行列、Rは上三角行列	{Q, R}
 1511	LinearAlgebra	tridiagonalize	static	desc		"対称行列の三重対角化
 実数での計算のみ対応"	"Tridiagonalization of symmetric matrix.
-* Don't support complex numbers."
+* Don't support complex numbers.
+* P*H*P'=A
+* P is orthonormal matrix.
+* H is tridiagonal matrix.
+* The eigenvalues of H match the eigenvalues of A."
 1512	LinearAlgebra	tridiagonalize	static	param	mat	A	A
-1513	LinearAlgebra	tridiagonalize	static	returns		P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致	
+1513	LinearAlgebra	tridiagonalize	static	returns		P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致	{P, H}
 1514	LinearAlgebra	eig	static	desc		"対称行列の固有値分解
 実数での計算のみ対応"	"Eigendecomposition of symmetric matrix.
-* Don't support complex numbers."
+* Don't support complex numbers.
+* V*D*V'=A.
+* V is orthonormal matrix. and columns of V are the right eigenvectors.
+* D is a matrix containing the eigenvalues on the diagonal component."
 1515	LinearAlgebra	eig	static	param	mat	A	A
-1516	LinearAlgebra	eig	static	returns		V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列	
-1517	LinearAlgebra	svd	static	desc		特異値分解	Singular Value Decomposition (SVD).
+1516	LinearAlgebra	eig	static	returns		V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列	{D, V}
+1517	LinearAlgebra	svd	static	desc		特異値分解	"Singular Value Decomposition (SVD).
+* U*S*V'=A
+* U and V are orthonormal matrices.
+* S is a matrix with singular values in the diagonal."
 1518	LinearAlgebra	svd	static	param	mat	A	A
 1519	LinearAlgebra	svd	static	returns		U*S*V'=A	U*S*V'=A
 1520	LinearAlgebra	inv	static	desc		逆行列	Inverse matrix of this matrix.
@@ -1736,7 +1772,7 @@ Sum of diagonal elements."
 1533	RandomTool	multiplication32	static	returns			
 1534	Random	Random	export default class	desc		乱数クラス	Random number class.
 1535	Random	constructor		desc		乱数を初期化する	Create Random.
-1536	Random	constructor		param	seed	乱数のシード値、指定しない場合は時刻から作成する	
+1536	Random	constructor		param	seed	乱数のシード値、指定しない場合は時刻から作成する	Seed number for random number generation. If not specified, create from time.
 1537	Random	this.x		desc		乱数配列	Random number array.
 1538	Random	_rnd521		desc		内部データをシャッフル	
 1539	Random	setSeed		desc		乱数を初期化する	Initialize random seed.
@@ -1787,12 +1823,12 @@ This random number is a distribution with an average value of 0 and a standard d
 1583	FFT	this.fft_im		desc		複素数同士の掛け算に使用する虚部テーブル	Imaginary table used for multiplication of complex numbers.
 1584	FFT	delete		desc		中のデータを消去する	Frees the memory reserved.
 1585	FFT	fft		desc		離散フーリエ変換	Discrete Fourier transform (DFT).
-1586	FFT	fft		param	real	実数部	
-1587	FFT	fft		param	imag	虚数部	
+1586	FFT	fft		param	real	実数部	Array of real parts of vector.
+1587	FFT	fft		param	imag	虚数部	Array of imaginary parts of vector.
 1588	FFT	fft		returns			
 1589	FFT	ifft		desc		逆離散フーリエ変換	Inverse discrete Fourier transform (IDFT),
-1590	FFT	ifft		param	real	実数部	
-1591	FFT	ifft		param	imag	虚数部	
+1590	FFT	ifft		param	real	実数部	Array of real parts of vector.
+1591	FFT	ifft		param	imag	虚数部	Array of imaginary parts of vector.
 1592	FFT	ifft		returns			
 1593	Cache	Cache	class	desc		"簡易キャッシュクラス
 FFTで用いるテーブルなどをキャッシュ"	"Simple cache class.
@@ -1820,10 +1856,10 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1611	DCT	this.dct_im		desc		DCT変換に使用する計算用テーブル	Calculation table used for DCT conversion.
 1612	DCT	delete		desc		中のデータを消去する	Frees the memory reserved.
 1613	DCT	dct		desc		DCT-II	Discrete cosine transform (DCT-II, DCT).
-1614	DCT	dct		param	real	実数部	
+1614	DCT	dct		param	real	実数部	Array of real parts of vector.
 1615	DCT	dct		returns			
 1616	DCT	idct		desc		DCT-III (IDCT)	Inverse discrete cosine transform (DCT-III, IDCT),
-1617	DCT	idct		param	real	実数部	
+1617	DCT	idct		param	real	実数部	Array of real parts of vector.
 1618	DCT	idct		returns			
 1619	DCT	dct_cache	const	desc		離散コサイン変換用のキャッシュ	Cache for discrete cosine transform.
 1620	SignalTool	SignalTool	class	desc		Signalクラスの内部で使用する関数集	Collection of functions used inside Signal class.
@@ -1831,34 +1867,34 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1622	SignalTool	isContainsZero	static	param	x	調べたい配列	
 1623	SignalTool	isContainsZero	static	returns			
 1624	SignalTool	fft	static	desc		離散フーリエ変換	Discrete Fourier transform (DFT).
-1625	SignalTool	fft	static	param	real	実数部	
-1626	SignalTool	fft	static	param	imag	虚数部	
+1625	SignalTool	fft	static	param	real	実数部	Array of real parts of vector.
+1626	SignalTool	fft	static	param	imag	虚数部	Array of imaginary parts of vector.
 1627	SignalTool	fft	static	returns			
 1628	SignalTool	ifft	static	desc		逆離散フーリエ変換	Inverse discrete Fourier transform (IDFT),
-1629	SignalTool	ifft	static	param	real	実数部	
-1630	SignalTool	ifft	static	param	imag	虚数部	
+1629	SignalTool	ifft	static	param	real	実数部	Array of real parts of vector.
+1630	SignalTool	ifft	static	param	imag	虚数部	Array of imaginary parts of vector.
 1631	SignalTool	ifft	static	returns			
 1632	SignalTool	dct	static	desc		DCT-II (DCT)	Discrete cosine transform (DCT-II, DCT).
-1633	SignalTool	dct	static	param	real	実数部	
+1633	SignalTool	dct	static	param	real	実数部	Array of real parts of vector.
 1634	SignalTool	dct	static	returns			
 1635	SignalTool	idct	static	desc		DCT-III (IDCT)	Inverse discrete cosine transform (DCT-III, IDCT),
-1636	SignalTool	idct	static	param	real	実数部	
+1636	SignalTool	idct	static	param	real	実数部	Array of real parts of vector.
 1637	SignalTool	idct	static	returns			
 1638	SignalTool	powerfft	static	desc		パワースペクトル密度	Power spectral density.
-1639	SignalTool	powerfft	static	param	real	実数部	
-1640	SignalTool	powerfft	static	param	imag	虚数部	
+1639	SignalTool	powerfft	static	param	real	実数部	Array of real parts of vector.
+1640	SignalTool	powerfft	static	param	imag	虚数部	Array of imaginary parts of vector.
 1641	SignalTool	powerfft	static	returns			
 1642	SignalTool	conv	static	desc		畳み込み積分、多項式乗算	Convolution integral, Polynomial multiplication.
-1643	SignalTool	conv	static	param	x1_real	実数部	
-1644	SignalTool	conv	static	param	x1_imag	虚数部	
-1645	SignalTool	conv	static	param	x2_real	実数部	
-1646	SignalTool	conv	static	param	x2_imag	虚数部	
+1643	SignalTool	conv	static	param	x1_real	実数部	Array of real parts of vector.
+1644	SignalTool	conv	static	param	x1_imag	虚数部	Array of imaginary parts of vector.
+1645	SignalTool	conv	static	param	x2_real	実数部	Array of real parts of vector.
+1646	SignalTool	conv	static	param	x2_imag	虚数部	Array of imaginary parts of vector.
 1647	SignalTool	conv	static	returns			
 1648	SignalTool	xcorr	static	desc		自己相関関数、相互相関関数	ACF(Autocorrelation function), Cros-correlation function.
-1649	SignalTool	xcorr	static	param	x1_real	実数部	
-1650	SignalTool	xcorr	static	param	x1_imag	虚数部	
-1651	SignalTool	xcorr	static	param	x2_real	実数部	
-1652	SignalTool	xcorr	static	param	x2_imag	虚数部	
+1649	SignalTool	xcorr	static	param	x1_real	実数部	Array of real parts of vector.
+1650	SignalTool	xcorr	static	param	x1_imag	虚数部	Array of imaginary parts of vector.
+1651	SignalTool	xcorr	static	param	x2_real	実数部	Array of real parts of vector.
+1652	SignalTool	xcorr	static	param	x2_imag	虚数部	Array of imaginary parts of vector.
 1653	SignalTool	xcorr	static	returns			
 1654	SignalTool	window	static	desc		窓関数を作成する	Create window function for signal processing.
 1655	SignalTool	window	static	param	name	窓関数の名前	
@@ -1918,15 +1954,15 @@ In the DCT conversion, an actual signal is zero-filled with a doubled signal len
 1709	Signal	window	static	param	name	窓関数の名前	
 1710	Signal	window	static	param	size	長さ	
 1711	Signal	window	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
-1712	Signal	window	static	returns		列ベクトル	
+1712	Signal	window	static	returns		列ベクトル	Column vector.
 1713	Signal	hann	static	desc		ハニング窓	Hann (Hanning) window.
 1714	Signal	hann	static	param	size	長さ	
 1715	Signal	hann	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
-1716	Signal	hann	static	returns		列ベクトル	
+1716	Signal	hann	static	returns		列ベクトル	Column vector.
 1717	Signal	hamming	static	desc		ハミング窓	Hamming window.
 1718	Signal	hamming	static	param	size	長さ	
 1719	Signal	hamming	static	param	periodic	0/"symmetric", 1/"periodic"	0/"symmetric", 1/"periodic"
-1720	Signal	hamming	static	returns		列ベクトル	
+1720	Signal	hamming	static	returns		列ベクトル	Column vector.
 1721	Signal	fftshift	static	desc		FFTシフト	"FFT shift.
 Circular shift beginning at the center of the signal."
 1722	Signal	fftshift	static	param	x		
@@ -1957,17 +1993,17 @@ Circular shift beginning at the center of the signal."
 1747	StatisticsTool	gampdf	static	desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 1748	StatisticsTool	gampdf	static	param	x		
 1749	StatisticsTool	gampdf	static	param	k	形状母数	
-1750	StatisticsTool	gampdf	static	param	s	尺度母数	
+1750	StatisticsTool	gampdf	static	param	s	尺度母数	Scale parameter.
 1751	StatisticsTool	gampdf	static	returns			
 1752	StatisticsTool	gamcdf	static	desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 1753	StatisticsTool	gamcdf	static	param	x		
 1754	StatisticsTool	gamcdf	static	param	k	形状母数	
-1755	StatisticsTool	gamcdf	static	param	s	尺度母数	
+1755	StatisticsTool	gamcdf	static	param	s	尺度母数	Scale parameter.
 1756	StatisticsTool	gamcdf	static	returns			
 1757	StatisticsTool	gaminv	static	desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 1758	StatisticsTool	gaminv	static	param	p		
 1759	StatisticsTool	gaminv	static	param	k	形状母数	
-1760	StatisticsTool	gaminv	static	param	s	尺度母数	
+1760	StatisticsTool	gaminv	static	param	s	尺度母数	Scale parameter.
 1761	StatisticsTool	gaminv	static	returns			
 1762	StatisticsTool	beta	static	desc		ベータ関数	Beta function.
 1763	StatisticsTool	beta	static	param	x		
@@ -2013,7 +2049,7 @@ Circular shift beginning at the center of the signal."
 1803	StatisticsTool	nchoosek	static	desc		二項係数またはすべての組合わせ (nCk)	Binomial coefficient, number of all combinations, nCk.
 1804	StatisticsTool	nchoosek	static	param	n		
 1805	StatisticsTool	nchoosek	static	param	k		
-1806	StatisticsTool	nchoosek	static	returns		nCk	
+1806	StatisticsTool	nchoosek	static	returns		nCk	nCk
 1807	StatisticsTool	erf	static	desc		誤差関数	Error function.
 1808	StatisticsTool	erf	static	param	x		
 1809	StatisticsTool	erf	static	returns			
@@ -2022,66 +2058,66 @@ Circular shift beginning at the center of the signal."
 1812	StatisticsTool	erfc	static	returns			
 1813	StatisticsTool	normpdf	static	desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
 1814	StatisticsTool	normpdf	static	param	x		
-1815	StatisticsTool	normpdf	static	param	u	平均値	
-1816	StatisticsTool	normpdf	static	param	s	分散	
+1815	StatisticsTool	normpdf	static	param	u	平均値	Average value.
+1816	StatisticsTool	normpdf	static	param	s	分散	Variance value.
 1817	StatisticsTool	normpdf	static	returns			
 1818	StatisticsTool	normcdf	static	desc		正規分布の累積分布関数	Cumulative distribution function (CDF) of normal distribution.
 1819	StatisticsTool	normcdf	static	param	x		
-1820	StatisticsTool	normcdf	static	param	u	平均値	
-1821	StatisticsTool	normcdf	static	param	s	分散	
+1820	StatisticsTool	normcdf	static	param	u	平均値	Average value.
+1821	StatisticsTool	normcdf	static	param	s	分散	Variance value.
 1822	StatisticsTool	normcdf	static	returns			
 1823	StatisticsTool	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of normal distribution.
-1824	StatisticsTool	norminv	static	param	p	確率	
-1825	StatisticsTool	norminv	static	param	u	平均値	
-1826	StatisticsTool	norminv	static	param	s	分散	
+1824	StatisticsTool	norminv	static	param	p	確率	Probability.
+1825	StatisticsTool	norminv	static	param	u	平均値	Average value.
+1826	StatisticsTool	norminv	static	param	s	分散	Variance value.
 1827	StatisticsTool	norminv	static	returns			
 1828	StatisticsTool	tpdf	static	desc		t分布の確率密度関数	Probability density function (PDF) of Student's t-distribution.
-1829	StatisticsTool	tpdf	static	param	t	t値	
-1830	StatisticsTool	tpdf	static	param	v	自由度	
+1829	StatisticsTool	tpdf	static	param	t	t値	T-value.
+1830	StatisticsTool	tpdf	static	param	v	自由度	The degrees of freedom. (DF)
 1831	StatisticsTool	tpdf	static	returns			
 1832	StatisticsTool	tcdf	static	desc		t分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution.
-1833	StatisticsTool	tcdf	static	param	t	t値	
-1834	StatisticsTool	tcdf	static	param	v	自由度	
+1833	StatisticsTool	tcdf	static	param	t	t値	T-value.
+1834	StatisticsTool	tcdf	static	param	v	自由度	The degrees of freedom. (DF)
 1835	StatisticsTool	tcdf	static	returns			
 1836	StatisticsTool	tinv	static	desc		t分布の累積分布関数の逆関数	Inverse of cumulative distribution function (CDF) of Student's t-distribution.
-1837	StatisticsTool	tinv	static	param	p	確率	
-1838	StatisticsTool	tinv	static	param	v	自由度	
+1837	StatisticsTool	tinv	static	param	p	確率	Probability.
+1838	StatisticsTool	tinv	static	param	v	自由度	The degrees of freedom. (DF)
 1839	StatisticsTool	tinv	static	returns			
 1840	StatisticsTool	tdist	static	desc		尾部が指定可能なt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-1841	StatisticsTool	tdist	static	param	t	t値	
-1842	StatisticsTool	tdist	static	param	v	自由度	
-1843	StatisticsTool	tdist	static	param	tails	尾部(1...片側、2...両側)	
+1841	StatisticsTool	tdist	static	param	t	t値	T-value.
+1842	StatisticsTool	tdist	static	param	v	自由度	The degrees of freedom. (DF)
+1843	StatisticsTool	tdist	static	param	tails	尾部(1...片側、2...両側)	Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 1844	StatisticsTool	tdist	static	returns			
 1845	StatisticsTool	tinv2	static	desc		両側検定時のt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
-1846	StatisticsTool	tinv2	static	param	p	確率	
-1847	StatisticsTool	tinv2	static	param	v	自由度	
+1846	StatisticsTool	tinv2	static	param	p	確率	Probability.
+1847	StatisticsTool	tinv2	static	param	v	自由度	The degrees of freedom. (DF)
 1848	StatisticsTool	tinv2	static	returns			
 1849	StatisticsTool	chi2pdf	static	desc		カイ二乗分布の確率密度関数	Probability density function (PDF) of chi-square distribution.
 1850	StatisticsTool	chi2pdf	static	param	x		
-1851	StatisticsTool	chi2pdf	static	param	k	自由度	
+1851	StatisticsTool	chi2pdf	static	param	k	自由度	The degrees of freedom. (DF)
 1852	StatisticsTool	chi2pdf	static	returns			
 1853	StatisticsTool	chi2cdf	static	desc		カイ二乗分布の累積分布関数	Cumulative distribution function (CDF) of chi-square distribution.
 1854	StatisticsTool	chi2cdf	static	param	x		
-1855	StatisticsTool	chi2cdf	static	param	k	自由度	
+1855	StatisticsTool	chi2cdf	static	param	k	自由度	The degrees of freedom. (DF)
 1856	StatisticsTool	chi2cdf	static	returns			
 1857	StatisticsTool	chi2inv	static	desc		カイ二乗分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of chi-square distribution.
-1858	StatisticsTool	chi2inv	static	param	p	確率	
-1859	StatisticsTool	chi2inv	static	param	k	自由度	
+1858	StatisticsTool	chi2inv	static	param	p	確率	Probability.
+1859	StatisticsTool	chi2inv	static	param	k	自由度	The degrees of freedom. (DF)
 1860	StatisticsTool	chi2inv	static	returns			
 1861	StatisticsTool	fpdf	static	desc		F分布の確率密度関数	Probability density function (PDF) of F-distribution.
 1862	StatisticsTool	fpdf	static	param	x		
-1863	StatisticsTool	fpdf	static	param	d1	分子の自由度	
-1864	StatisticsTool	fpdf	static	param	d2	分母の自由度	
+1863	StatisticsTool	fpdf	static	param	d1	分子の自由度	The degree of freedom of the molecules.
+1864	StatisticsTool	fpdf	static	param	d2	分母の自由度	The degree of freedom of the denominator
 1865	StatisticsTool	fpdf	static	returns			
 1866	StatisticsTool	fcdf	static	desc		F分布の累積分布関数	Cumulative distribution function (CDF) of F-distribution.
 1867	StatisticsTool	fcdf	static	param	x		
-1868	StatisticsTool	fcdf	static	param	d1	分子の自由度	
-1869	StatisticsTool	fcdf	static	param	d2	分母の自由度	
+1868	StatisticsTool	fcdf	static	param	d1	分子の自由度	The degree of freedom of the molecules.
+1869	StatisticsTool	fcdf	static	param	d2	分母の自由度	The degree of freedom of the denominator
 1870	StatisticsTool	fcdf	static	returns			
 1871	StatisticsTool	finv	static	desc		F分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of F-distribution.
-1872	StatisticsTool	finv	static	param	p	確率	
-1873	StatisticsTool	finv	static	param	d1	分子の自由度	
-1874	StatisticsTool	finv	static	param	d2	分母の自由度	
+1872	StatisticsTool	finv	static	param	p	確率	Probability.
+1873	StatisticsTool	finv	static	param	d1	分子の自由度	The degree of freedom of the molecules.
+1874	StatisticsTool	finv	static	param	d2	分母の自由度	The degree of freedom of the denominator
 1875	StatisticsTool	finv	static	returns			
 1876	StatisticsTool	isStr	const	desc		文字列か判定	typeof this === string
 1877	StatisticsTool	isStr	const	param			
@@ -2100,17 +2136,17 @@ Circular shift beginning at the center of the signal."
 1890	StatisticsComplex	gampdf	static	desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 1891	StatisticsComplex	gampdf	static	param	x		
 1892	StatisticsComplex	gampdf	static	param	k	形状母数	
-1893	StatisticsComplex	gampdf	static	param	s	尺度母数	
+1893	StatisticsComplex	gampdf	static	param	s	尺度母数	Scale parameter.
 1894	StatisticsComplex	gampdf	static	returns			
 1895	StatisticsComplex	gamcdf	static	desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 1896	StatisticsComplex	gamcdf	static	param	x		
 1897	StatisticsComplex	gamcdf	static	param	k	形状母数	
-1898	StatisticsComplex	gamcdf	static	param	s	尺度母数	
+1898	StatisticsComplex	gamcdf	static	param	s	尺度母数	Scale parameter.
 1899	StatisticsComplex	gamcdf	static	returns			
 1900	StatisticsComplex	gaminv	static	desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 1901	StatisticsComplex	gaminv	static	param	p		
 1902	StatisticsComplex	gaminv	static	param	k	形状母数	
-1903	StatisticsComplex	gaminv	static	param	s	尺度母数	
+1903	StatisticsComplex	gaminv	static	param	s	尺度母数	Scale parameter.
 1904	StatisticsComplex	gaminv	static	returns			
 1905	StatisticsComplex	beta	static	desc		ベータ関数	Beta function.
 1906	StatisticsComplex	beta	static	param	x		
@@ -2152,66 +2188,66 @@ Circular shift beginning at the center of the signal."
 1942	StatisticsComplex	erfc	static	returns			
 1943	StatisticsComplex	normpdf	static	desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
 1944	StatisticsComplex	normpdf	static	param	x		
-1945	StatisticsComplex	normpdf	static	param	u	平均値	
-1946	StatisticsComplex	normpdf	static	param	s	分散	
+1945	StatisticsComplex	normpdf	static	param	u	平均値	Average value.
+1946	StatisticsComplex	normpdf	static	param	s	分散	Variance value.
 1947	StatisticsComplex	normpdf	static	returns			
 1948	StatisticsComplex	normcdf	static	desc		正規分布の累積分布関数	Cumulative distribution function (CDF) of normal distribution.
 1949	StatisticsComplex	normcdf	static	param	x		
-1950	StatisticsComplex	normcdf	static	param	u	平均値	
-1951	StatisticsComplex	normcdf	static	param	s	分散	
+1950	StatisticsComplex	normcdf	static	param	u	平均値	Average value.
+1951	StatisticsComplex	normcdf	static	param	s	分散	Variance value.
 1952	StatisticsComplex	normcdf	static	returns			
 1953	StatisticsComplex	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of normal distribution.
 1954	StatisticsComplex	norminv	static	param	x		
-1955	StatisticsComplex	norminv	static	param	u	平均値	
-1956	StatisticsComplex	norminv	static	param	s	分散	
+1955	StatisticsComplex	norminv	static	param	u	平均値	Average value.
+1956	StatisticsComplex	norminv	static	param	s	分散	Variance value.
 1957	StatisticsComplex	norminv	static	returns			
 1958	StatisticsComplex	tpdf	static	desc		t分布の確率密度関数	Probability density function (PDF) of Student's t-distribution.
 1959	StatisticsComplex	tpdf	static	param	x		
-1960	StatisticsComplex	tpdf	static	param	v	自由度	
+1960	StatisticsComplex	tpdf	static	param	v	自由度	The degrees of freedom. (DF)
 1961	StatisticsComplex	tpdf	static	returns			
 1962	StatisticsComplex	tcdf	static	desc		t分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution.
 1963	StatisticsComplex	tcdf	static	param	t		
-1964	StatisticsComplex	tcdf	static	param	v	自由度	
+1964	StatisticsComplex	tcdf	static	param	v	自由度	The degrees of freedom. (DF)
 1965	StatisticsComplex	tcdf	static	returns			
 1966	StatisticsComplex	tinv	static	desc		t分布の累積分布関数の逆関数	Inverse of cumulative distribution function (CDF) of Student's t-distribution.
 1967	StatisticsComplex	tinv	static	param	p		
-1968	StatisticsComplex	tinv	static	param	v	自由度	
+1968	StatisticsComplex	tinv	static	param	v	自由度	The degrees of freedom. (DF)
 1969	StatisticsComplex	tinv	static	returns			
 1970	StatisticsComplex	tdist	static	desc		尾部が指定可能なt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
 1971	StatisticsComplex	tdist	static	param	t		
-1972	StatisticsComplex	tdist	static	param	v	自由度	
-1973	StatisticsComplex	tdist	static	param	tails	尾部(1...片側、2...両側)	
+1972	StatisticsComplex	tdist	static	param	v	自由度	The degrees of freedom. (DF)
+1973	StatisticsComplex	tdist	static	param	tails	尾部(1...片側、2...両側)	Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 1974	StatisticsComplex	tdist	static	returns			
 1975	StatisticsComplex	tinv2	static	desc		両側検定時のt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 1976	StatisticsComplex	tinv2	static	param	p		
-1977	StatisticsComplex	tinv2	static	param	v	自由度	
+1977	StatisticsComplex	tinv2	static	param	v	自由度	The degrees of freedom. (DF)
 1978	StatisticsComplex	tinv2	static	returns			
 1979	StatisticsComplex	chi2pdf	static	desc		カイ二乗分布の確率密度関数	Probability density function (PDF) of chi-square distribution.
 1980	StatisticsComplex	chi2pdf	static	param	x		
-1981	StatisticsComplex	chi2pdf	static	param	k	自由度	
+1981	StatisticsComplex	chi2pdf	static	param	k	自由度	The degrees of freedom. (DF)
 1982	StatisticsComplex	chi2pdf	static	returns			
 1983	StatisticsComplex	chi2cdf	static	desc		カイ二乗分布の累積分布関数	Cumulative distribution function (CDF) of chi-square distribution.
 1984	StatisticsComplex	chi2cdf	static	param	x		
-1985	StatisticsComplex	chi2cdf	static	param	k	自由度	
+1985	StatisticsComplex	chi2cdf	static	param	k	自由度	The degrees of freedom. (DF)
 1986	StatisticsComplex	chi2cdf	static	returns			
 1987	StatisticsComplex	chi2inv	static	desc		カイ二乗分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of chi-square distribution.
 1988	StatisticsComplex	chi2inv	static	param	p		
-1989	StatisticsComplex	chi2inv	static	param	k	自由度	
+1989	StatisticsComplex	chi2inv	static	param	k	自由度	The degrees of freedom. (DF)
 1990	StatisticsComplex	chi2inv	static	returns			
 1991	StatisticsComplex	fpdf	static	desc		F分布の確率密度関数	Probability density function (PDF) of F-distribution.
 1992	StatisticsComplex	fpdf	static	param	x		
-1993	StatisticsComplex	fpdf	static	param	d1	分子の自由度	
-1994	StatisticsComplex	fpdf	static	param	d2	分母の自由度	
+1993	StatisticsComplex	fpdf	static	param	d1	分子の自由度	The degree of freedom of the molecules.
+1994	StatisticsComplex	fpdf	static	param	d2	分母の自由度	The degree of freedom of the denominator
 1995	StatisticsComplex	fpdf	static	returns			
 1996	StatisticsComplex	fcdf	static	desc		F分布の累積分布関数	Cumulative distribution function (CDF) of F-distribution.
 1997	StatisticsComplex	fcdf	static	param	x		
-1998	StatisticsComplex	fcdf	static	param	d1	分子の自由度	
-1999	StatisticsComplex	fcdf	static	param	d2	分母の自由度	
+1998	StatisticsComplex	fcdf	static	param	d1	分子の自由度	The degree of freedom of the molecules.
+1999	StatisticsComplex	fcdf	static	param	d2	分母の自由度	The degree of freedom of the denominator
 2000	StatisticsComplex	fcdf	static	returns			
 2001	StatisticsComplex	finv	static	desc		F分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of F-distribution.
 2002	StatisticsComplex	finv	static	param	p		
-2003	StatisticsComplex	finv	static	param	d1	分子の自由度	
-2004	StatisticsComplex	finv	static	param	d2	分母の自由度	
+2003	StatisticsComplex	finv	static	param	d1	分子の自由度	The degree of freedom of the molecules.
+2004	StatisticsComplex	finv	static	param	d2	分母の自由度	The degree of freedom of the denominator
 2005	StatisticsComplex	finv	static	returns			
 2006	Statistics	Statistics	export default class	desc		Matrixクラスから利用する統計処理関数集	Class for statistical processing for Matrix class.
 2007	Statistics	gammaln	static	desc		対数ガンマ関数	Log-gamma function.
@@ -2228,17 +2264,17 @@ Circular shift beginning at the center of the signal."
 2018	Statistics	gampdf	static	desc		ガンマ分布の確率密度関数	Probability density function (PDF) of the gamma distribution.
 2019	Statistics	gampdf	static	param	x		
 2020	Statistics	gampdf	static	param	k	形状母数	
-2021	Statistics	gampdf	static	param	s	尺度母数	
+2021	Statistics	gampdf	static	param	s	尺度母数	Scale parameter.
 2022	Statistics	gampdf	static	returns			
 2023	Statistics	gamcdf	static	desc		ガンマ分布の累積分布関数	Cumulative distribution function (CDF) of gamma distribution.
 2024	Statistics	gamcdf	static	param	x		
 2025	Statistics	gamcdf	static	param	k	形状母数	
-2026	Statistics	gamcdf	static	param	s	尺度母数	
+2026	Statistics	gamcdf	static	param	s	尺度母数	Scale parameter.
 2027	Statistics	gamcdf	static	returns			
 2028	Statistics	gaminv	static	desc		ガンマ分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of gamma distribution.
 2029	Statistics	gaminv	static	param	x		
 2030	Statistics	gaminv	static	param	k	形状母数	
-2031	Statistics	gaminv	static	param	s	尺度母数	
+2031	Statistics	gaminv	static	param	s	尺度母数	Scale parameter.
 2032	Statistics	gaminv	static	returns			
 2033	Statistics	beta	static	desc		ベータ関数	Beta function.
 2034	Statistics	beta	static	param	x		
@@ -2280,75 +2316,75 @@ Circular shift beginning at the center of the signal."
 2070	Statistics	erfc	static	returns			
 2071	Statistics	normpdf	static	desc		正規分布の確率密度関数	Probability density function (PDF) of normal distribution.
 2072	Statistics	normpdf	static	param	x		
-2073	Statistics	normpdf	static	param	u	平均値	
-2074	Statistics	normpdf	static	param	s	分散	
+2073	Statistics	normpdf	static	param	u	平均値	Average value.
+2074	Statistics	normpdf	static	param	s	分散	Variance value.
 2075	Statistics	normpdf	static	returns			
 2076	Statistics	normcdf	static	desc		正規分布の累積分布関数	Cumulative distribution function (CDF) of normal distribution.
 2077	Statistics	normcdf	static	param	x		
-2078	Statistics	normcdf	static	param	u	平均値	
-2079	Statistics	normcdf	static	param	s	分散	
+2078	Statistics	normcdf	static	param	u	平均値	Average value.
+2079	Statistics	normcdf	static	param	s	分散	Variance value.
 2080	Statistics	normcdf	static	returns			
 2081	Statistics	norminv	static	desc		正規分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of normal distribution.
 2082	Statistics	norminv	static	param	x		
-2083	Statistics	norminv	static	param	u	平均値	
-2084	Statistics	norminv	static	param	s	分散	
+2083	Statistics	norminv	static	param	u	平均値	Average value.
+2084	Statistics	norminv	static	param	s	分散	Variance value.
 2085	Statistics	norminv	static	returns			
 2086	Statistics	tpdf	static	desc		t分布の確率密度関数	Probability density function (PDF) of Student's t-distribution.
 2087	Statistics	tpdf	static	param	x		
-2088	Statistics	tpdf	static	param	v	自由度	
+2088	Statistics	tpdf	static	param	v	自由度	The degrees of freedom. (DF)
 2089	Statistics	tpdf	static	returns			
 2090	Statistics	tcdf	static	desc		t分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution.
 2091	Statistics	tcdf	static	param	x		
-2092	Statistics	tcdf	static	param	v	自由度	
+2092	Statistics	tcdf	static	param	v	自由度	The degrees of freedom. (DF)
 2093	Statistics	tcdf	static	returns			
 2094	Statistics	tinv	static	desc		t分布の累積分布関数の逆関数	Inverse of cumulative distribution function (CDF) of Student's t-distribution.
 2095	Statistics	tinv	static	param	x		
-2096	Statistics	tinv	static	param	v	自由度	
+2096	Statistics	tinv	static	param	v	自由度	The degrees of freedom. (DF)
 2097	Statistics	tinv	static	returns			
 2098	Statistics	tdist	static	desc		尾部が指定可能なt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
 2099	Statistics	tdist	static	param	x		
-2100	Statistics	tdist	static	param	v	自由度	
-2101	Statistics	tdist	static	param	tails	尾部(1...片側、2...両側)	
+2100	Statistics	tdist	static	param	v	自由度	The degrees of freedom. (DF)
+2101	Statistics	tdist	static	param	tails	尾部(1...片側、2...両側)	Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 2102	Statistics	tdist	static	returns			
 2103	Statistics	tinv2	static	desc		両側検定時のt分布の累積分布関数	Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 2104	Statistics	tinv2	static	param	x		
-2105	Statistics	tinv2	static	param	v	自由度	
+2105	Statistics	tinv2	static	param	v	自由度	The degrees of freedom. (DF)
 2106	Statistics	tinv2	static	returns			
 2107	Statistics	chi2pdf	static	desc		カイ二乗分布の確率密度関数	Probability density function (PDF) of chi-square distribution.
 2108	Statistics	chi2pdf	static	param	x		
-2109	Statistics	chi2pdf	static	param	k	自由度	
+2109	Statistics	chi2pdf	static	param	k	自由度	The degrees of freedom. (DF)
 2110	Statistics	chi2pdf	static	returns			
 2111	Statistics	chi2cdf	static	desc		カイ二乗分布の累積分布関数	Cumulative distribution function (CDF) of chi-square distribution.
 2112	Statistics	chi2cdf	static	param	x		
-2113	Statistics	chi2cdf	static	param	k	自由度	
+2113	Statistics	chi2cdf	static	param	k	自由度	The degrees of freedom. (DF)
 2114	Statistics	chi2cdf	static	returns			
 2115	Statistics	chi2inv	static	desc		カイ二乗分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of chi-square distribution.
 2116	Statistics	chi2inv	static	param	x		
-2117	Statistics	chi2inv	static	param	k	自由度	
+2117	Statistics	chi2inv	static	param	k	自由度	The degrees of freedom. (DF)
 2118	Statistics	chi2inv	static	returns			
 2119	Statistics	fpdf	static	desc		F分布の確率密度関数	Probability density function (PDF) of F-distribution.
 2120	Statistics	fpdf	static	param	x		
-2121	Statistics	fpdf	static	param	d1	分子の自由度	
-2122	Statistics	fpdf	static	param	d2	分母の自由度	
+2121	Statistics	fpdf	static	param	d1	分子の自由度	The degree of freedom of the molecules.
+2122	Statistics	fpdf	static	param	d2	分母の自由度	The degree of freedom of the denominator
 2123	Statistics	fpdf	static	returns			
 2124	Statistics	fcdf	static	desc		F分布の累積分布関数	Cumulative distribution function (CDF) of F-distribution.
 2125	Statistics	fcdf	static	param	x		
-2126	Statistics	fcdf	static	param	d1	分子の自由度	
-2127	Statistics	fcdf	static	param	d2	分母の自由度	
+2126	Statistics	fcdf	static	param	d1	分子の自由度	The degree of freedom of the molecules.
+2127	Statistics	fcdf	static	param	d2	分母の自由度	The degree of freedom of the denominator
 2128	Statistics	fcdf	static	returns			
 2129	Statistics	finv	static	desc		F分布の累積分布関数の逆関数	Inverse function of cumulative distribution function (CDF) of F-distribution.
 2130	Statistics	finv	static	param	x		
-2131	Statistics	finv	static	param	d1	分子の自由度	
-2132	Statistics	finv	static	param	d2	分母の自由度	
+2131	Statistics	finv	static	param	d1	分子の自由度	The degree of freedom of the molecules.
+2132	Statistics	finv	static	param	d2	分母の自由度	The degree of freedom of the denominator
 2133	Statistics	finv	static	returns			
 2134	Statistics	max	static	desc		最大値	Maximum number.
 2135	Statistics	max	static	param	x		
 2136	Statistics	max	static	param	type		
-2137	Statistics	max	static	returns		max([A, B])	
+2137	Statistics	max	static	returns		max([A, B])	max([A, B])
 2138	Statistics	min	static	desc		最小値	Minimum number.
 2139	Statistics	min	static	param	x		
 2140	Statistics	min	static	param	type		
-2141	Statistics	min	static	returns		min([A, B])	
+2141	Statistics	min	static	returns		min([A, B])	min([A, B])
 2142	Statistics	sum	static	desc		合計	Sum.
 2143	Statistics	sum	static	param	x		
 2144	Statistics	sum	static	param	type		
