@@ -16,6 +16,53 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+{
+	test("equals 1", () => {
+		expect(
+			$("1000").equals($(1000))
+		).toBe(true);
+	});
+	test("equals 2", () => {
+		expect(
+			$("-1000").equals($(-1000))
+		).toBe(true);
+	});
+	test("equals 3", () => {
+		expect(
+			$("123e10").equals($(123e10))
+		).toBe(true);
+	});
+	test("equals 4", () => {
+		expect(
+			$("-123e10").equals($(-123e10))
+		).toBe(true);
+	});
+	test("equals 5", () => {
+		expect(
+			$("12.3e10").equals($(12.3e10))
+		).toBe(true);
+	});
+	test("equals 6", () => {
+		expect(
+			$("-12.3e10").equals($(-12.3e10))
+		).toBe(true);
+	});
+	test("equals 7", () => {
+		expect(
+			$("12.3e10").equals($("1.23e11"))
+		).toBe(true);
+	});
+	test("equals 8", () => {
+		expect(
+			$("0x1234").equals($(0x1234))
+		).toBe(true);
+	});
+	test("equals 9", () => {
+		expect(
+			$("-0x1234").equals($(-0x1234))
+		).toBe(true);
+	});
+}
 
 {
 	test("add 1", () => {

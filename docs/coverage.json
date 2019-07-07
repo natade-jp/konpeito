@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 756,
-  "actualCount": 756,
+  "expectCount": 757,
+  "actualCount": 757,
   "files": {
     "src/konpeito.mjs": {
       "expectCount": 8,
@@ -14,8 +14,8 @@
       "undocumentLines": []
     },
     "src/math/BigInteger.mjs": {
-      "expectCount": 103,
-      "actualCount": 103,
+      "expectCount": 104,
+      "actualCount": 104,
       "undocumentLines": []
     },
     "src/math/Complex.mjs": {

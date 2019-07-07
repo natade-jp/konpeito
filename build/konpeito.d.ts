@@ -381,8 +381,11 @@ declare class BigDecimal {
 
 /**
  * Create an arbitrary-precision integer.
- * <br>* Does not support strings using exponential notation.
- * <br>* If you want to initialize with the specified base number, please set up with an array ["ff", 16].
+ * <br>Initialization can be performed as follows.
+ * <br>* 1200, "1200", "12e2", "1.2e3"
+ * <br>* "0xff", ["ff", 16]
+ * <br>* "0o01234567", ["01234567", 8]
+ * <br>* "0b0110101", ["0110101", 2]
  * @param {BigInteger|number|string|Array<string|number>|Object} [number] - Numeric data. See how to use the function.
  */
 declare class BigInteger {

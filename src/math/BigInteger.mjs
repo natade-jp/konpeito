@@ -77,13 +77,51 @@ class IntegerTool {
 	}
 
 	/**
+	 * Remove exponent notation in strings representing unsigned numbers.
+	 * @param {string} ntext 
+	 * @returns {string}
+	 */
+	static string_to_string(ntext) {
+		let scale = 0;
+		let buff;
+		// 正規化
+		let text = ntext.replace(/\s/g, "").toLowerCase();
+		const number_text = [];
+		// 整数部を抽出
+		buff = text.match(/^[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			number_text.push(buff);
+		}
+		// 小数部があるか
+		buff = text.match(/^\.[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			buff = buff.substr(1);
+			scale = scale + buff.length;
+			number_text.push(buff);
+		}
+		// 指数表記があるか
+		buff = text.match(/^e[+]?[0-9]+/);
+		if(buff !== null) {
+			scale -= parseInt(text.replace(/^e[+]?([0-9]+)/, "$1"), 10);
+			for(let i = 0; i < -scale; i++) {
+				number_text.push("0");
+			}
+		}
+		return number_text.join("");
+	}
+
+	/**
 	 * Return a hexadecimal array from the number.
 	 * @param {number} x - Target number.
 	 * @returns {Array<number>} Hex array.
 	 */
 	static number_to_binary_number(x) {
 		if(x > 0xFFFFFFFF) {
-			return IntegerTool.string_to_binary_number(x.toFixed(), 10);
+			return IntegerTool.string_to_binary_number(IntegerTool.string_to_string(x.toFixed()), 10);
 		}
 		let num = x;
 		const y = [];
@@ -155,6 +193,7 @@ class IntegerTool {
 				_sign = -1;
 			}
 		}
+
 		if(radix) {
 			element = IntegerTool.string_to_binary_number(x, radix);
 		}
@@ -164,10 +203,11 @@ class IntegerTool {
 		else if(/^0b/.test(x)) {
 			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 2);
 		}
-		else if(/^0/.test(x)) {
-			element = IntegerTool.string_to_binary_number(x.substring(1, x.length), 8);
+		else if(/^0o/.test(x)) {
+			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 8);
 		}
 		else {
+			x = IntegerTool.string_to_string(x);
 			element = IntegerTool.string_to_binary_number(x, 10);
 		}
 		// "0"の場合がある為
@@ -198,8 +238,11 @@ export default class BigInteger {
 
 	/**
 	 * Create an arbitrary-precision integer.
-	 * <br>* Does not support strings using exponential notation.
-	 * <br>* If you want to initialize with the specified base number, please set up with an array ["ff", 16].
+	 * <br>Initialization can be performed as follows.
+	 * <br>* 1200, "1200", "12e2", "1.2e3"
+	 * <br>* "0xff", ["ff", 16]
+	 * <br>* "0o01234567", ["01234567", 8]
+	 * <br>* "0b0110101", ["0110101", 2]
 	 * @param {BigInteger|number|string|Array<string|number>|Object} [number] - Numeric data. See how to use the function.
 	 */
 	constructor(number) {

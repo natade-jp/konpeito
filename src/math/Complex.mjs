@@ -362,7 +362,6 @@ export default class Complex {
 	 * @returns {number} Number of decimal places.
 	 */
 	getDecimalPosition() {
-		const ep = Number.EPSILON;
 		const getDecimal = function(x) {
 			if(!Number.isFinite(x)) {
 				return 0;
@@ -370,7 +369,7 @@ export default class Complex {
 			let a = x;
 			let point = 0;
 			for(let i = 0; i < 20; i++) {
-				if(Math.abs(a - (a | 0)) <= ep) {
+				if(Math.abs(a - Math.round(a)) <= Number.EPSILON) {
 					break;
 				}
 				a *= 10;

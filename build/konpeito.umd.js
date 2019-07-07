@@ -987,13 +987,51 @@
 	};
 
 	/**
+		 * Remove exponent notation in strings representing unsigned numbers.
+		 * @param {string} ntext 
+		 * @returns {string}
+		 */
+	IntegerTool.string_to_string = function string_to_string (ntext) {
+		var scale = 0;
+		var buff;
+		// 正規化
+		var text = ntext.replace(/\s/g, "").toLowerCase();
+		var number_text = [];
+		// 整数部を抽出
+		buff = text.match(/^[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			number_text.push(buff);
+		}
+		// 小数部があるか
+		buff = text.match(/^\.[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			buff = buff.substr(1);
+			scale = scale + buff.length;
+			number_text.push(buff);
+		}
+		// 指数表記があるか
+		buff = text.match(/^e[+]?[0-9]+/);
+		if(buff !== null) {
+			scale -= parseInt(text.replace(/^e[+]?([0-9]+)/, "$1"), 10);
+			for(var i = 0; i < -scale; i++) {
+				number_text.push("0");
+			}
+		}
+		return number_text.join("");
+	};
+
+	/**
 		 * Return a hexadecimal array from the number.
 		 * @param {number} x - Target number.
 		 * @returns {Array<number>} Hex array.
 		 */
 	IntegerTool.number_to_binary_number = function number_to_binary_number (x) {
 		if(x > 0xFFFFFFFF) {
-			return IntegerTool.string_to_binary_number(x.toFixed(), 10);
+			return IntegerTool.string_to_binary_number(IntegerTool.string_to_string(x.toFixed()), 10);
 		}
 		var num = x;
 		var y = [];
@@ -1065,6 +1103,7 @@
 				_sign = -1;
 			}
 		}
+
 		if(radix) {
 			element = IntegerTool.string_to_binary_number(x, radix);
 		}
@@ -1074,10 +1113,11 @@
 		else if(/^0b/.test(x)) {
 			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 2);
 		}
-		else if(/^0/.test(x)) {
-			element = IntegerTool.string_to_binary_number(x.substring(1, x.length), 8);
+		else if(/^0o/.test(x)) {
+			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 8);
 		}
 		else {
+			x = IntegerTool.string_to_string(x);
 			element = IntegerTool.string_to_binary_number(x, 10);
 		}
 		// "0"の場合がある為
@@ -2827,21 +2867,23 @@
 		 * @returns {{scale : number, integer : BigInteger}}
 		 */
 	DecimalTool.ToBigDecimalFromNumber = function ToBigDecimalFromNumber (value) {
-		// 整数か
-		if(value === Math.floor(value)) {
+		// 整数
+		if(value === (value | 0)) {
 			return {
 				scale : 0,
-				integer : new BigInteger(value)
+				integer : new BigInteger(Math.round(value))
 			};
 		}
-		// 実数か
+		// 浮動小数
 		else {
-			var scale = 0;
-			var x = value;
-			for(var i = 0; i < 10; i++) {
+			var scale = (Math.log(Math.abs(value)) / Math.log(10)) | 0;
+			var x = value / Math.pow(10, scale);
+			// スケールを逆にする
+			scale = - scale;
+			for(var i = 0; i < 12; i++) {
 				x = x * 10;
 				scale = scale + 1;
-				if(x === Math.floor(x)) {
+				if(Math.abs(x - Math.round(x)) <= Number.EPSILON) {
 					break;
 				}
 			}
@@ -2849,10 +2891,8 @@
 				scale : scale,
 				integer : new BigInteger(x)
 			};
-			// 今後改善するならば
 			// 64ビットの実数型は15桁程度まで正しい
-			// 余裕をもって10桁程度までを抜き出すのが良いかと思われる。
-			// スケールは右の式から求めて Math.log(x) / Math.log(10)
+			// 余裕をもって12桁程度までを抜き出すのが良いかと思われる。
 		}
 	};
 
@@ -12243,7 +12283,6 @@
 		 * @returns {number} Number of decimal places.
 		 */
 	Complex.prototype.getDecimalPosition = function getDecimalPosition () {
-		var ep = Number.EPSILON;
 		var getDecimal = function(x) {
 			if(!Number.isFinite(x)) {
 				return 0;
@@ -12251,7 +12290,7 @@
 			var a = x;
 			var point = 0;
 			for(var i = 0; i < 20; i++) {
-				if(Math.abs(a - (a | 0)) <= ep) {
+				if(Math.abs(a - Math.round(a)) <= Number.EPSILON) {
 					break;
 				}
 				a *= 10;

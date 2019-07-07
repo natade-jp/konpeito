@@ -56,6 +56,11 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 }
 
 {
+	test("new", () => { expect($(123e50).compareTo("123e50") === 0).toBe(true); });
+	test("new", () => { expect($(1.23e-50).compareTo("1.23e-50") === 0).toBe(true); });
+}
+
+{
 	const x = $("0.0000001234").ulp().toPlainString();
 	const y =   "0.0000000001";
 	test("ulp", () => { expect(x).toBe(y); });

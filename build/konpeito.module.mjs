@@ -984,13 +984,51 @@ class IntegerTool {
 	}
 
 	/**
+	 * Remove exponent notation in strings representing unsigned numbers.
+	 * @param {string} ntext 
+	 * @returns {string}
+	 */
+	static string_to_string(ntext) {
+		let scale = 0;
+		let buff;
+		// 正規化
+		let text = ntext.replace(/\s/g, "").toLowerCase();
+		const number_text = [];
+		// 整数部を抽出
+		buff = text.match(/^[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			number_text.push(buff);
+		}
+		// 小数部があるか
+		buff = text.match(/^\.[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			buff = buff.substr(1);
+			scale = scale + buff.length;
+			number_text.push(buff);
+		}
+		// 指数表記があるか
+		buff = text.match(/^e[+]?[0-9]+/);
+		if(buff !== null) {
+			scale -= parseInt(text.replace(/^e[+]?([0-9]+)/, "$1"), 10);
+			for(let i = 0; i < -scale; i++) {
+				number_text.push("0");
+			}
+		}
+		return number_text.join("");
+	}
+
+	/**
 	 * Return a hexadecimal array from the number.
 	 * @param {number} x - Target number.
 	 * @returns {Array<number>} Hex array.
 	 */
 	static number_to_binary_number(x) {
 		if(x > 0xFFFFFFFF) {
-			return IntegerTool.string_to_binary_number(x.toFixed(), 10);
+			return IntegerTool.string_to_binary_number(IntegerTool.string_to_string(x.toFixed()), 10);
 		}
 		let num = x;
 		const y = [];
@@ -1062,6 +1100,7 @@ class IntegerTool {
 				_sign = -1;
 			}
 		}
+
 		if(radix) {
 			element = IntegerTool.string_to_binary_number(x, radix);
 		}
@@ -1071,10 +1110,11 @@ class IntegerTool {
 		else if(/^0b/.test(x)) {
 			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 2);
 		}
-		else if(/^0/.test(x)) {
-			element = IntegerTool.string_to_binary_number(x.substring(1, x.length), 8);
+		else if(/^0o/.test(x)) {
+			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 8);
 		}
 		else {
+			x = IntegerTool.string_to_string(x);
 			element = IntegerTool.string_to_binary_number(x, 10);
 		}
 		// "0"の場合がある為
@@ -1105,8 +1145,11 @@ class BigInteger {
 
 	/**
 	 * Create an arbitrary-precision integer.
-	 * <br>* Does not support strings using exponential notation.
-	 * <br>* If you want to initialize with the specified base number, please set up with an array ["ff", 16].
+	 * <br>Initialization can be performed as follows.
+	 * <br>* 1200, "1200", "12e2", "1.2e3"
+	 * <br>* "0xff", ["ff", 16]
+	 * <br>* "0o01234567", ["01234567", 8]
+	 * <br>* "0b0110101", ["0110101", 2]
 	 * @param {BigInteger|number|string|Array<string|number>|Object} [number] - Numeric data. See how to use the function.
 	 */
 	constructor(number) {
@@ -2834,21 +2877,23 @@ class DecimalTool {
 	 * @returns {{scale : number, integer : BigInteger}}
 	 */
 	static ToBigDecimalFromNumber(value) {
-		// 整数か
-		if(value === Math.floor(value)) {
+		// 整数
+		if(value === (value | 0)) {
 			return {
 				scale : 0,
-				integer : new BigInteger(value)
+				integer : new BigInteger(Math.round(value))
 			};
 		}
-		// 実数か
+		// 浮動小数
 		else {
-			let scale = 0;
-			let x = value;
-			for(let i = 0; i < 10; i++) {
+			let scale = (Math.log(Math.abs(value)) / Math.log(10)) | 0;
+			let x = value / Math.pow(10, scale);
+			// スケールを逆にする
+			scale = - scale;
+			for(let i = 0; i < 12; i++) {
 				x = x * 10;
 				scale = scale + 1;
-				if(x === Math.floor(x)) {
+				if(Math.abs(x - Math.round(x)) <= Number.EPSILON) {
 					break;
 				}
 			}
@@ -2856,10 +2901,8 @@ class DecimalTool {
 				scale : scale,
 				integer : new BigInteger(x)
 			};
-			// 今後改善するならば
 			// 64ビットの実数型は15桁程度まで正しい
-			// 余裕をもって10桁程度までを抜き出すのが良いかと思われる。
-			// スケールは右の式から求めて Math.log(x) / Math.log(10)
+			// 余裕をもって12桁程度までを抜き出すのが良いかと思われる。
 		}
 	}
 
@@ -12363,7 +12406,6 @@ class Complex {
 	 * @returns {number} Number of decimal places.
 	 */
 	getDecimalPosition() {
-		const ep = Number.EPSILON;
 		const getDecimal = function(x) {
 			if(!Number.isFinite(x)) {
 				return 0;
@@ -12371,7 +12413,7 @@ class Complex {
 			let a = x;
 			let point = 0;
 			for(let i = 0; i < 20; i++) {
-				if(Math.abs(a - (a | 0)) <= ep) {
+				if(Math.abs(a - Math.round(a)) <= Number.EPSILON) {
 					break;
 				}
 				a *= 10;

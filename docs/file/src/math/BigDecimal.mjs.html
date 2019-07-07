@@ -134,21 +134,23 @@ class DecimalTool {
 	 * @returns {{scale : number, integer : BigInteger}}
 	 */
 	static ToBigDecimalFromNumber(value) {
-		// &#x6574;&#x6570;&#x304B;
-		if(value === Math.floor(value)) {
+		// &#x6574;&#x6570;
+		if(value === (value | 0)) {
 			return {
 				scale : 0,
-				integer : new BigInteger(value)
+				integer : new BigInteger(Math.round(value))
 			};
 		}
-		// &#x5B9F;&#x6570;&#x304B;
+		// &#x6D6E;&#x52D5;&#x5C0F;&#x6570;
 		else {
-			let scale = 0;
-			let x = value;
-			for(let i = 0; i &lt; 10; i++) {
+			let scale = (Math.log(Math.abs(value)) / Math.log(10)) | 0;
+			let x = value / Math.pow(10, scale);
+			// &#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x3092;&#x9006;&#x306B;&#x3059;&#x308B;
+			scale = - scale;
+			for(let i = 0; i &lt; 12; i++) {
 				x = x * 10;
 				scale = scale + 1;
-				if(x === Math.floor(x)) {
+				if(Math.abs(x - Math.round(x)) &lt;= Number.EPSILON) {
 					break;
 				}
 			}
@@ -156,10 +158,8 @@ class DecimalTool {
 				scale : scale,
 				integer : new BigInteger(x)
 			};
-			// &#x4ECA;&#x5F8C;&#x6539;&#x5584;&#x3059;&#x308B;&#x306A;&#x3089;&#x3070;
 			// 64&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x5B9F;&#x6570;&#x578B;&#x306F;15&#x6841;&#x7A0B;&#x5EA6;&#x307E;&#x3067;&#x6B63;&#x3057;&#x3044;
-			// &#x4F59;&#x88D5;&#x3092;&#x3082;&#x3063;&#x3066;10&#x6841;&#x7A0B;&#x5EA6;&#x307E;&#x3067;&#x3092;&#x629C;&#x304D;&#x51FA;&#x3059;&#x306E;&#x304C;&#x826F;&#x3044;&#x304B;&#x3068;&#x601D;&#x308F;&#x308C;&#x308B;&#x3002;
-			// &#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x306F;&#x53F3;&#x306E;&#x5F0F;&#x304B;&#x3089;&#x6C42;&#x3081;&#x3066; Math.log(x) / Math.log(10)
+			// &#x4F59;&#x88D5;&#x3092;&#x3082;&#x3063;&#x3066;12&#x6841;&#x7A0B;&#x5EA6;&#x307E;&#x3067;&#x3092;&#x629C;&#x304D;&#x51FA;&#x3059;&#x306E;&#x304C;&#x826F;&#x3044;&#x304B;&#x3068;&#x601D;&#x308F;&#x308C;&#x308B;&#x3002;
 		}
 	}
 

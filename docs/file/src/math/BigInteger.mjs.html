@@ -125,13 +125,51 @@ class IntegerTool {
 	}
 
 	/**
+	 * Remove exponent notation in strings representing unsigned numbers.
+	 * @param {string} ntext 
+	 * @returns {string}
+	 */
+	static string_to_string(ntext) {
+		let scale = 0;
+		let buff;
+		// &#x6B63;&#x898F;&#x5316;
+		let text = ntext.replace(/\s/g, &quot;&quot;).toLowerCase();
+		const number_text = [];
+		// &#x6574;&#x6570;&#x90E8;&#x3092;&#x62BD;&#x51FA;
+		buff = text.match(/^[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			number_text.push(buff);
+		}
+		// &#x5C0F;&#x6570;&#x90E8;&#x304C;&#x3042;&#x308B;&#x304B;
+		buff = text.match(/^\.[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			buff = buff.substr(1);
+			scale = scale + buff.length;
+			number_text.push(buff);
+		}
+		// &#x6307;&#x6570;&#x8868;&#x8A18;&#x304C;&#x3042;&#x308B;&#x304B;
+		buff = text.match(/^e[+]?[0-9]+/);
+		if(buff !== null) {
+			scale -= parseInt(text.replace(/^e[+]?([0-9]+)/, &quot;$1&quot;), 10);
+			for(let i = 0; i &lt; -scale; i++) {
+				number_text.push(&quot;0&quot;);
+			}
+		}
+		return number_text.join(&quot;&quot;);
+	}
+
+	/**
 	 * Return a hexadecimal array from the number.
 	 * @param {number} x - Target number.
 	 * @returns {Array&lt;number&gt;} Hex array.
 	 */
 	static number_to_binary_number(x) {
 		if(x &gt; 0xFFFFFFFF) {
-			return IntegerTool.string_to_binary_number(x.toFixed(), 10);
+			return IntegerTool.string_to_binary_number(IntegerTool.string_to_string(x.toFixed()), 10);
 		}
 		let num = x;
 		const y = [];
@@ -203,6 +241,7 @@ class IntegerTool {
 				_sign = -1;
 			}
 		}
+
 		if(radix) {
 			element = IntegerTool.string_to_binary_number(x, radix);
 		}
@@ -212,10 +251,11 @@ class IntegerTool {
 		else if(/^0b/.test(x)) {
 			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 2);
 		}
-		else if(/^0/.test(x)) {
-			element = IntegerTool.string_to_binary_number(x.substring(1, x.length), 8);
+		else if(/^0o/.test(x)) {
+			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 8);
 		}
 		else {
+			x = IntegerTool.string_to_string(x);
 			element = IntegerTool.string_to_binary_number(x, 10);
 		}
 		// &quot;0&quot;&#x306E;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;&#x70BA;
@@ -246,8 +286,11 @@ export default class BigInteger {
 
 	/**
 	 * Create an arbitrary-precision integer.
-	 * &lt;br&gt;* Does not support strings using exponential notation.
-	 * &lt;br&gt;* If you want to initialize with the specified base number, please set up with an array [&quot;ff&quot;, 16].
+	 * &lt;br&gt;Initialization can be performed as follows.
+	 * &lt;br&gt;* 1200, &quot;1200&quot;, &quot;12e2&quot;, &quot;1.2e3&quot;
+	 * &lt;br&gt;* &quot;0xff&quot;, [&quot;ff&quot;, 16]
+	 * &lt;br&gt;* &quot;0o01234567&quot;, [&quot;01234567&quot;, 8]
+	 * &lt;br&gt;* &quot;0b0110101&quot;, [&quot;0110101&quot;, 2]
 	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} [number] - Numeric data. See how to use the function.
 	 */
 	constructor(number) {

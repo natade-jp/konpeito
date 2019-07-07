@@ -86,21 +86,23 @@ class DecimalTool {
 	 * @returns {{scale : number, integer : BigInteger}}
 	 */
 	static ToBigDecimalFromNumber(value) {
-		// 整数か
-		if(value === Math.floor(value)) {
+		// 整数
+		if(value === (value | 0)) {
 			return {
 				scale : 0,
-				integer : new BigInteger(value)
+				integer : new BigInteger(Math.round(value))
 			};
 		}
-		// 実数か
+		// 浮動小数
 		else {
-			let scale = 0;
-			let x = value;
-			for(let i = 0; i < 10; i++) {
+			let scale = (Math.log(Math.abs(value)) / Math.log(10)) | 0;
+			let x = value / Math.pow(10, scale);
+			// スケールを逆にする
+			scale = - scale;
+			for(let i = 0; i < 12; i++) {
 				x = x * 10;
 				scale = scale + 1;
-				if(x === Math.floor(x)) {
+				if(Math.abs(x - Math.round(x)) <= Number.EPSILON) {
 					break;
 				}
 			}
@@ -108,10 +110,8 @@ class DecimalTool {
 				scale : scale,
 				integer : new BigInteger(x)
 			};
-			// 今後改善するならば
 			// 64ビットの実数型は15桁程度まで正しい
-			// 余裕をもって10桁程度までを抜き出すのが良いかと思われる。
-			// スケールは右の式から求めて Math.log(x) / Math.log(10)
+			// 余裕をもって12桁程度までを抜き出すのが良いかと思われる。
 		}
 	}
 
