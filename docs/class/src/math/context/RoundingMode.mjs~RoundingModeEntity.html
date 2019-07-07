@@ -36,7 +36,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
@@ -46,13 +46,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {RoundingModeEntity} from &apos;<span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber16">konpeito/src/math/context/RoundingMode.mjs</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import {RoundingModeEntity} from &apos;<span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber15">konpeito/src/math/context/RoundingMode.mjs</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
-  <span data-ice="kind">interface</span>
+  <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber16">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber15">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -72,7 +72,7 @@
 
   
   
-  <div class="description" data-ice="description"><p>BigDecimal&#x7528;&#x306E;&#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x57FA;&#x5E95;&#x30AF;&#x30E9;&#x30B9;</p>
+  <div class="description" data-ice="description"><p>Base class for rounding mode for BigDecimal.</p>
 </div>
   
 
@@ -110,7 +110,7 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;</p>
+        <div data-ice="description"><p>Numeric value to add.</p>
 </div>
       </div>
     </td>
@@ -139,7 +139,7 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;</p>
+        <div data-ice="description"><p>Get rounding mode name in upper case English.</p>
 </div>
       </div>
     </td>
@@ -179,7 +179,8 @@
   
   
   
-  <div data-ice="description"><p>&#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;</p>
+  <div data-ice="description"><p>Numeric value to add.
+<br>It is rounded when this value is added.</p>
 </div>
 
   
@@ -196,7 +197,7 @@
       <td data-ice="name" class="code" data-depth="0">x</td>
       <td data-ice="type" class="code"><span>number</span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;</p>
+      <td data-ice="description"><p>Rounding value. When specified as an integer, the first digit is rounded.</p>
 </td>
     </tr>
 </tbody>
@@ -210,7 +211,7 @@
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>number</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>&#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;</p>
+          <td class="return-desc" data-ice="returnDescription"><p>Numeric value to add.</p>
 </td>
         </tr>
       </tbody>
@@ -246,14 +247,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber22">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber21">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;</p>
+  <div data-ice="description"><p>Get rounding mode name in upper case English.</p>
 </div>
 
   
@@ -267,7 +268,7 @@
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>string</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>&#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;</p>
+          <td class="return-desc" data-ice="returnDescription"><p>Rounding method name.</p>
 </td>
         </tr>
       </tbody>

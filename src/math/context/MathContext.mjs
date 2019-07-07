@@ -1,4 +1,4 @@
-/**
+﻿/**
  * The script is part of konpeito.
  * 
  * AUTHOR:
@@ -13,26 +13,26 @@
 import RoundingMode, {RoundingModeEntity} from "./RoundingMode.mjs";
 
 /**
- * BigDecimal用の環境設定
+ * Configuration class for BigDecimal.
  */
 export default class MathContext {
 
 	/**
-	 * 任意精度の環境設定データ
-	 * @param {string|number} precision_or_name - 精度を数値で指定するか、設定自体を文字列で指定する
-	 * @param {RoundingModeEntity} [roundingMode=RoundingMode.HALF_UP] - 丸めモード
+	 * Create BigDecimal configuration.
+	 * @param {string|number} precision_or_name - Precision. Or String output by MathContext.toString.
+	 * @param {RoundingModeEntity} [roundingMode=RoundingMode.HALF_UP] - RoundingMode.
 	 */
 	constructor(precision_or_name, roundingMode) {
 
 		/**
-		 * 精度
+		 * The precision of this BigDecimal.
 		 * @type {number}
 		 * @private
 		 */
 		this.precision = 0;
 		
 		/**
-		 * 丸めモード
+		 * Method of rounding.
 		 * @type {RoundingModeEntity}
 		 * @private
 		 */
@@ -60,7 +60,7 @@ export default class MathContext {
 	}
 
 	/**
-	 * 精度
+	 * The precision of this BigDecimal.
 	 * @returns {number}
 	 */
 	getPrecision() {
@@ -68,7 +68,7 @@ export default class MathContext {
 	}
 
 	/**
-	 * 丸め方
+	 * Method of rounding.
 	 * @returns {RoundingModeEntity}
 	 */
 	getRoundingMode() {
@@ -76,8 +76,8 @@ export default class MathContext {
 	}
 
 	/**
-	 * 環境が等しいか
-	 * @param {MathContext} x - 比較対象
+	 * Equals.
+	 * @param {MathContext} x - Number to compare.
 	 * @returns {boolean}
 	 */
 	equals(x) {
@@ -90,7 +90,7 @@ export default class MathContext {
 	}
 
 	/**
-	 * 文字列化
+	 * Convert to string.
 	 * @returns {string}
 	 */
 	toString() {
@@ -102,7 +102,8 @@ export default class MathContext {
 	// ----------------------
 	
 	/**
-	 * 制限を設けない（ただし、割り算で循環小数の場合にエラーが出ます。）
+	 * No decimal point limit.
+	 * <br>However, an error occurs in the case of cyclic fraction in division.
 	 * @returns {MathContext}
 	 */
 	static get UNLIMITED() {
@@ -110,7 +111,8 @@ export default class MathContext {
 	}
 
 	/**
-	 * 32ビットの実数型 ( float ) と同等
+	 * 32-bit floating point.
+	 * <br>Equivalent of the C language float.
 	 * @returns {MathContext}
 	 */
 	static get DECIMAL32() {
@@ -119,7 +121,8 @@ export default class MathContext {
 
 
 	/**
-	 * 64ビットの実数型 ( double ) と同等
+	 * 64-bit floating point.
+	 * <br>Equivalent of the C language double.
 	 * @returns {MathContext}
 	 */
 	static get DECIMAL64() {
@@ -127,7 +130,8 @@ export default class MathContext {
 	}
 
 	/**
-	 * 128ビットの実数型 ( long double ) と同等
+	 * 128-bit floating point.
+	 * <br>Equivalent of the C language long double.
 	 * @returns {MathContext}
 	 */
 	static get DECIMAL128() {
@@ -137,31 +141,35 @@ export default class MathContext {
 }
 
 /**
- * 内部で使用する定数値
+ * Collection of constant values used in the class.
  * @ignore
  */
 const DEFINE = {
 
 	/**
-	 * 制限なし
+	 * No decimal point limit.
+	 * <br>However, an error occurs in the case of cyclic fraction in division.
 	 * @type {MathContext}
 	 */
 	UNLIMITED	: new MathContext(0,	RoundingMode.HALF_UP),
 
 	/**
-	 * 32ビットの実数型
+	 * 32-bit floating point.
+	 * <br>Equivalent of the C language float.
 	 * @type {MathContext}
 	 */
 	DECIMAL32	: new MathContext(7,	RoundingMode.HALF_EVEN),
 
 	/**
-	 * 64ビットの実数型
+	 * 64-bit floating point.
+	 * <br>Equivalent of the C language double.
 	 * @type {MathContext}
 	 */
 	DECIMAL64	: new MathContext(16,	RoundingMode.HALF_EVEN),
 
 	/**
-	 * 128ビットの実数型
+	 * 128-bit floating point.
+	 * <br>Equivalent of the C language long double.
 	 * @type {MathContext}
 	 */
 	DECIMAL128	: new MathContext(34,	RoundingMode.HALF_EVEN)

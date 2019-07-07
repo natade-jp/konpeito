@@ -1,4 +1,4 @@
-/**
+﻿/**
  * The script is part of konpeito.
  * 
  * AUTHOR:
@@ -16,14 +16,14 @@ import Complex from "../Complex.mjs";
 import Matrix from "../Matrix.mjs";
 
 /**
- * 高速フーリエ変換用クラス
+ * Fast Fourier Transform (FFT) Class.
  * @ignore
  */
 class FFT {
 
 	/**
-	 * ビット反転
-	 * @param {number} x - ビット反転させる値（32ビット整数）
+	 * Return the number with reversed bits.
+	 * @param {number} x - Bit-reversed value. (32-bit integer)
 	 * @returns {number} ビット反転した値
 	 */
 	static bit_reverse_32(x) {
@@ -38,7 +38,7 @@ class FFT {
 	}
 	
 	/**
-	 * 指定したビット分の数値データをビット反転した配列を返す
+	 * Create a bit reversal lookup table.
 	 * @param {number} bit - ビット数
 	 * @returns {Array<number>} ビット反転した値の配列
 	 */
@@ -52,43 +52,43 @@ class FFT {
 	}
 
 	/**
-	 * FFTクラスの初期化
-	 * @param {number} size - 信号の長さ
+	 * Create FFT.
+	 * @param {number} size - Signal length.
 	 */
 	constructor(size) {
 		
 		/**
-		 * 信号の長さ
+		 * Signal length.
 		 */
 		this.size = size;
 
 		/**
-		 * 信号の長さの逆数
+		 * Inverse of signal length.
 		 */
 		this.inv_size = 1.0 / this.size;
 
 		/**
-		 * 信号の長さをビット数で表した場合の値
+		 * Number of bits when the signal length is expressed in binary number.
 		 */
 		this.bit_size = Math.round(Math.log(this.size)/Math.log(2));
 
 		/**
-		 * FFTのアルゴリズムが使用できるか
+		 * FFT algorithm available.
 		 */
 		this.is_fast = (1 << this.bit_size) === this.size;
 
 		/**
-		 * バタフライ演算用のビットリバーステーブル
+		 * Bit reverse table for butterfly operation.
 		 */
 		this.bitrv = null;
 
 		/**
-		 * 複素数同士の掛け算に使用する実部テーブル
+		 * Real part table used for multiplication of complex numbers.
 		 */
 		this.fft_re = new Array(this.size);
 		
 		/**
-		 * 複素数同士の掛け算に使用する虚部テーブル
+		 * Imaginary table used for multiplication of complex numbers.
 		 */
 		this.fft_im = new Array(this.size);
 		{
@@ -110,7 +110,7 @@ class FFT {
 	}
 
 	/**
-	 * 中のデータを消去する
+	 * Frees the memory reserved.
 	 */
 	delete() {
 		delete this.size;
@@ -123,9 +123,9 @@ class FFT {
 	}
 	
 	/**
-	 * 離散フーリエ変換
-	 * @param {Array<number>} real - 実数部
-	 * @param {Array<number>} imag - 虚数部
+	 * Discrete Fourier transform (DFT).
+	 * @param {Array<number>} real - Array of real parts of vector.
+	 * @param {Array<number>} imag - Array of imaginary parts of vector.
 	 * @returns {Object<string, Array<number>>}
 	 */
 	fft(real, imag) {
@@ -191,9 +191,9 @@ class FFT {
 	}
 
 	/**
-	 * 逆離散フーリエ変換
-	 * @param {Array} real - 実数部
-	 * @param {Array} imag - 虚数部
+	 * Inverse discrete Fourier transform (IDFT),
+	 * @param {Array} real - Array of real parts of vector.
+	 * @param {Array} imag - Array of imaginary parts of vector.
 	 * @returns {Object<string, Array<number>>}
 	 */
 	ifft(real, imag) {
@@ -265,43 +265,44 @@ class FFT {
 }
 
 /**
- * 簡易キャッシュクラス
- * FFTで用いるテーブルなどをキャッシュ
+ * Simple cache class.
+ * <br>Cache tables used in FFT.
  * @ignore
  */
 class Cache {
 	
 	/**
-	 * 簡易キャッシュ
-	 * @param {number} cache_size - キャッシュの最大サイズ
-	 * @param {*} object - 作成するオブジェクト
+	 * Create Cache.
+	 * @param {number} cache_size - Maximum number of caches.
+	 * @param {*} object - Target class you want to build a cache.
 	 */
 	constructor(cache_size, object) {
 
 		/**
-		 * キャッシュするクラス
+		 * Class for cache.
 		 */
 		this.object = object;
 
 		/**
-		 * キャッシュする最大数
+		 * Maximum number of caches.
 		 */
 		this.table_max = cache_size;
 
 		/**
-		 * 現在キャッシュしている数
+		 * Number of caches currently.
 		 */
 		this.table_size = 0;
 
 		/**
-		 * キャッシュテーブル
+		 * Cache table.
 		 */
 		this.table = [];
 	}
 
 	/**
-	 * 指定した長さのデータを作成する。キャッシュに存在すればキャッシュから使用する。
-	 * @param {number} size - 作成するオブジェクトのサイズ
+	 * Create a class initialized with the specified data length.
+	 * <br>Use from cache if it exists in cache.
+	 * @param {number} size - Data length.
 	 * @returns {*}
 	 */
 	get(size) {
@@ -327,42 +328,42 @@ class Cache {
 }
 
 /**
- * FFT用のキャッシュ
+ * Cache for FFT.
  * @type {Cache}
  * @ignore
  */
 const fft_cache = new Cache(4, FFT);
 
 /**
- * 離散コサイン変換のクラス
+ * Discrete cosine transform (DCT) class.
  * @ignore
  */
 class DCT {
 	
 	/**
-	 * DCTクラスの初期化
-	 * @param {number} size - 信号の長さ
+	 * Create DCT.
+	 * @param {number} size - Signal length.
 	 */
 	constructor(size) {
 
 		/**
-		 * 信号長
+		 * Signal length.
 		 */
 		this.size = size;
 
 		/**
-		 * 信号長の2倍
-		 * DCT変換では、実際の信号にゼロ詰めした2倍の信号長を用意しそれに対してFFTを行う。
+		 * Twice the signal length.
+		 * <br>In the DCT conversion, an actual signal is zero-filled with a doubled signal length, and an FFT is performed on it.
 		 */
 		this.dct_size = size * 2;
 
 		/**
-		 * DCT変換に使用する計算用テーブル
+		 * Calculation table used for DCT conversion.
 		 */
 		this.dct_re = new Array(this.size);
 
 		/**
-		 * DCT変換に使用する計算用テーブル
+		 * Calculation table used for DCT conversion.
 		 */
 		this.dct_im = new Array(this.size);
 		{
@@ -377,7 +378,7 @@ class DCT {
 	}
 	
 	/**
-	 * 中のデータを消去する
+	 * Frees the memory reserved.
 	 */
 	delete() {
 		delete this.size;
@@ -387,8 +388,8 @@ class DCT {
 	}
 
 	/**
-	 * DCT-II
-	 * @param {Array<number>} real - 実数部
+	 * Discrete cosine transform (DCT-II, DCT).
+	 * @param {Array<number>} real - Array of real parts of vector.
 	 * @returns {Array<number>}
 	 */
 	dct(real) {
@@ -407,8 +408,8 @@ class DCT {
 	}
 
 	/**
-	 * DCT-III (IDCT)
-	 * @param {Array<number>} real - 実数部
+	 * Inverse discrete cosine transform (DCT-III, IDCT),
+	 * @param {Array<number>} real - Array of real parts of vector.
 	 * @returns {Array<number>}
 	 */
 	idct(real) {
@@ -427,19 +428,19 @@ class DCT {
 }
 
 /**
- * 離散コサイン変換用のキャッシュ
+ * Cache for discrete cosine transform.
  * @ignore
  */
 const dct_cache = new Cache(4, DCT);
 
 /**
- * Signalクラスの内部で使用する関数集
+ * Collection of functions used inside Signal class.
  * @ignore
  */
 class SignalTool {
 	
 	/**
-	 * 0が含まれるか
+	 * Returns true if the array contains 0.
 	 * @param {Array<number>} x - 調べたい配列
 	 * @returns {boolean}
 	 */
@@ -453,9 +454,9 @@ class SignalTool {
 	}
 
 	/**
-	 * 離散フーリエ変換
-	 * @param {Array<number>} real - 実数部
-	 * @param {Array<number>} imag - 虚数部
+	 * Discrete Fourier transform (DFT).
+	 * @param {Array<number>} real - Array of real parts of vector.
+	 * @param {Array<number>} imag - Array of imaginary parts of vector.
 	 * @returns {Object<string, Array<number>>}
 	 */
 	static fft(real, imag) {
@@ -464,9 +465,9 @@ class SignalTool {
 	}
 
 	/**
-	 * 逆離散フーリエ変換
-	 * @param {Array<number>} real - 実数部
-	 * @param {Array<number>} imag - 虚数部
+	 * Inverse discrete Fourier transform (IDFT),
+	 * @param {Array<number>} real - Array of real parts of vector.
+	 * @param {Array<number>} imag - Array of imaginary parts of vector.
 	 * @returns {Object<string, Array<number>>}
 	 */
 	static ifft(real, imag) {
@@ -475,8 +476,8 @@ class SignalTool {
 	}
 
 	/**
-	 * DCT-II (DCT)
-	 * @param {Array<number>} real - 実数部
+	 * Discrete cosine transform (DCT-II, DCT).
+	 * @param {Array<number>} real - Array of real parts of vector.
 	 * @returns {Array<number>}
 	 */
 	static dct(real) {
@@ -485,8 +486,8 @@ class SignalTool {
 	}
 
 	/**
-	 * DCT-III (IDCT)
-	 * @param {Array<number>} real - 実数部
+	 * Inverse discrete cosine transform (DCT-III, IDCT),
+	 * @param {Array<number>} real - Array of real parts of vector.
 	 * @returns {Array<number>}
 	 */
 	static idct(real) {
@@ -495,9 +496,9 @@ class SignalTool {
 	}
 
 	/**
-	 * パワースペクトル密度
-	 * @param {Array<number>} real - 実数部
-	 * @param {Array<number>} imag - 虚数部
+	 * Power spectral density.
+	 * @param {Array<number>} real - Array of real parts of vector.
+	 * @param {Array<number>} imag - Array of imaginary parts of vector.
 	 * @returns {Array<number>}
 	 */
 	static powerfft(real, imag) {
@@ -511,11 +512,11 @@ class SignalTool {
 	}
 
 	/**
-	 * 畳み込み積分、多項式乗算
-	 * @param {Array} x1_real - 実数部
-	 * @param {Array} x1_imag - 虚数部
-	 * @param {Array} x2_real - 実数部
-	 * @param {Array} x2_imag - 虚数部
+	 * Convolution integral, Polynomial multiplication.
+	 * @param {Array} x1_real - Array of real parts of vector.
+	 * @param {Array} x1_imag - Array of imaginary parts of vector.
+	 * @param {Array} x2_real - Array of real parts of vector.
+	 * @param {Array} x2_imag - Array of imaginary parts of vector.
 	 * @returns {Object<string, Array<number>>}
 	 */
 	static conv(x1_real, x1_imag, x2_real, x2_imag) {
@@ -621,11 +622,11 @@ class SignalTool {
 	}
 
 	/**
-	 * 自己相関関数、相互相関関数
-	 * @param {Array} x1_real - 実数部
-	 * @param {Array} x1_imag - 虚数部
-	 * @param {Array} x2_real - 実数部
-	 * @param {Array} x2_imag - 虚数部
+	 * ACF(Autocorrelation function), Cros-correlation function.
+	 * @param {Array} x1_real - Array of real parts of vector.
+	 * @param {Array} x1_imag - Array of imaginary parts of vector.
+	 * @param {Array} x2_real - Array of real parts of vector.
+	 * @param {Array} x2_imag - Array of imaginary parts of vector.
 	 * @returns {Object<string, Array<number>>}
 	 */
 	static xcorr(x1_real, x1_imag, x2_real, x2_imag) {
@@ -769,9 +770,19 @@ class SignalTool {
 	}
 
 	/**
-	 * 窓を作成する
-	 * @param {string} name - 窓関数の名前
-	 * @param {number} size - 長さ
+	 * Create window function for signal processing.
+	 * <br>The following window functions are available.
+	 * <br>* "rectangle": Rectangular window
+	 * <br>* "hann": Hann/Hanning window.
+	 * <br>* "hamming": Hamming window.
+	 * <br>* "blackman": Blackman window.
+	 * <br>* "blackmanharris": Blackman-Harris window.
+	 * <br>* "blackmannuttall": Blackman-Nuttall window.
+	 * <br>* "flattop": Flat top window.
+	 * <br>* "sin", Half cycle sine window.
+	 * <br>* "vorbis", Vorbis window.
+	 * @param {string} name - Window function name.
+	 * @param {number} size - Window length.
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
 	 * @returns {Array<number>}
 	 */
@@ -859,8 +870,8 @@ class SignalTool {
 	}
 
 	/**
-	 * ハニング窓
-	 * @param {number} size - 長さ
+	 * Hann (Hanning) window.
+	 * @param {number} size - Window length.
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
 	 * @returns {Array<number>}
 	 */
@@ -869,8 +880,8 @@ class SignalTool {
 	}
 	
 	/**
-	 * ハミング窓を作成
-	 * @param {number} size - 長さ
+	 * Hamming window.
+	 * @param {number} size - Window length.
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
 	 * @returns {Array<number>}
 	 */
@@ -881,12 +892,12 @@ class SignalTool {
 }
 
 /**
- * Matrix用の信号処理用の計算クラス
+ * Signal processing class for Matrix class.
  */
 export default class Signal {
 	
 	/**
-	 * 離散フーリエ変換
+	 * Discrete Fourier transform (DFT).
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} fft(x)
@@ -912,7 +923,7 @@ export default class Signal {
 	}
 
 	/**
-	 * 逆離散フーリエ変換
+	 * Inverse discrete Fourier transform (IDFT),
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} ifft(X)
@@ -938,7 +949,7 @@ export default class Signal {
 	}
 
 	/**
-	 * パワースペクトル密度
+	 * Power spectral density.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} abs(fft(x)).^2
@@ -964,7 +975,7 @@ export default class Signal {
 	}
 
 	/**
-	 * 離散コサイン変換
+	 * Discrete cosine transform (DCT-II, DCT).
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} dct(x)
@@ -991,7 +1002,7 @@ export default class Signal {
 	}
 
 	/**
-	 * 逆離散コサイン変換
+	 * Inverse discrete cosine transform (DCT-III, IDCT),
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} idct(x)
@@ -1018,7 +1029,7 @@ export default class Signal {
 	}
 
 	/**
-	 * 2次元の離散フーリエ変換
+	 * Discrete two-dimensional Fourier transform (2D DFT).
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @returns {Matrix}
 	 */
@@ -1027,7 +1038,7 @@ export default class Signal {
 	}
 
 	/**
-	 * 2次元の逆離散フーリエ変換
+	 * Inverse discrete two-dimensional Fourier transform (2D IDFT),
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
 	 * @returns {Matrix}
 	 */
@@ -1036,7 +1047,7 @@ export default class Signal {
 	}
 
 	/**
-	 * 2次元のDCT変換
+	 * Discrete two-dimensional cosine transform (2D DCT).
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @returns {Matrix}
 	 */
@@ -1045,7 +1056,7 @@ export default class Signal {
 	}
 
 	/**
-	 * 2次元の逆DCT変換
+	 * Inverse discrete two-dimensional cosine transform (2D IDCT),
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
 	 * @returns {Matrix}
 	 */
@@ -1054,7 +1065,7 @@ export default class Signal {
 	}
 
 	/**
-	 * 畳み込み積分、多項式乗算
+	 * Convolution integral, Polynomial multiplication.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x2
 	 * @returns {Matrix}
@@ -1103,9 +1114,10 @@ export default class Signal {
 	}
 
 	/**
-	 * 自己相関関数、相互相関関数
+	 * ACF(Autocorrelation function), cros-correlation function.
+	 * <br>* If the argument is omitted, it is calculated by the autocorrelation function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [x2] - 省略した場合は自己相関関数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [x2] - Matrix to calculate the correlation.
 	 * @returns {Matrix}
 	 */
 	static xcorr(x1, x2) {
@@ -1155,11 +1167,21 @@ export default class Signal {
 	}
 
 	/**
-	 * 窓関数
-	 * @param {string} name - 窓関数の名前
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+	 * Create window function for signal processing.
+	 * <br>The following window functions are available.
+	 * <br>* "rectangle": Rectangular window
+	 * <br>* "hann": Hann/Hanning window.
+	 * <br>* "hamming": Hamming window.
+	 * <br>* "blackman": Blackman window.
+	 * <br>* "blackmanharris": Blackman-Harris window.
+	 * <br>* "blackmannuttall": Blackman-Nuttall window.
+	 * <br>* "flattop": Flat top window.
+	 * <br>* "sin", Half cycle sine window.
+	 * <br>* "vorbis", Vorbis window.
+	 * @param {string} name - Window function name.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
-	 * @returns {Matrix} 列ベクトル
+	 * @returns {Matrix} Column vector.
 	 */
 	static window(name, size, periodic) {
 		const size_ = Matrix._toInteger(size);
@@ -1168,27 +1190,28 @@ export default class Signal {
 	}
 
 	/**
-	 * ハニング窓
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+	 * Hann (Hanning) window.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
-	 * @returns {Matrix} 列ベクトル
+	 * @returns {Matrix} Column vector.
 	 */
 	static hann(size, periodic) {
 		return Signal.window("hann", size, periodic);
 	}
 	
 	/**
-	 * ハミング窓
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+	 * Hamming window.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
-	 * @returns {Matrix} 列ベクトル
+	 * @returns {Matrix} Column vector.
 	 */
 	static hamming(size, periodic) {
 		return Signal.window("hamming", size, periodic);
 	}
 	
 	/**
-	 * FFTシフト
+	 * FFT shift.
+	 * <br>Circular shift beginning at the center of the signal.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x 
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}

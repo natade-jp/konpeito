@@ -214,18 +214,20 @@ class JSDocTranslater {
 			{
 				// 説明部分を抽出して
 				let start = -1;
-				let delete_line = 0;
+				let delete_line = -1;
 				for(let i = 0; i < comment_lines.length; i++) {
 					if(/^[^@]/.test(comment_lines[i])) {
 						if(start === -1) {
 							start = i;
-							delete_line = 1;
 						}
 					}
 					else if(start !== -1) {
 						delete_line = i - start;
 						break;
 					}
+				}
+				if(delete_line === -1) {
+					delete_line = comment_lines.length - start;
 				}
 
 				// ★説明部分を翻訳
@@ -235,8 +237,9 @@ class JSDocTranslater {
 				if(text) {
 					const text_array = text.split("\n");
 					// 改行が必要な場合は、4つの半角スペース
+					// ... 4つの半角スペースはソースコード扱いになるらしい。すなおにタグを使用する。
 					for(let i = 1; i < text_array.length; i++) {
-						text_array[i] = "    " + text_array[i];
+						text_array[i] = "<br>" + text_array[i];
 					}
 					// 今ある文章と入れ替える
 					comment_lines.splice(start, delete_line);
@@ -322,11 +325,12 @@ class JSDocTranslater {
 			{
 				const output_comments = [];
 				// 左のタブのみを抽出
-				const tab = lines[1].match(/^[\t ]+/)[0];
+				const tab_match = lines[0].match(/^[\t ]+/);
+				const tab = tab_match ? tab_match[0] : "";
 				// コメントを作成
 				output_comments.push(tab + "/**");
 				for(let i = 0; i < comment_lines.length; i++) {
-					output_comments.push(tab + "/* " + comment_lines[i]);
+					output_comments.push(tab + " * " + comment_lines[i]);
 				}
 				output_comments.push(tab + " */");
 				// 最後の関数名を結合

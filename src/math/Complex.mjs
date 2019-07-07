@@ -16,21 +16,21 @@ import Random from "./tools/Random.mjs";
 import Matrix from "./Matrix.mjs";
 
 /**
- * Complex 内で使用する乱数生成クラス
+ * Random number generation class used within Complex.
  * @type {Random}
  * @ignore
  */
 const random_class = new Random();
 
 /**
- * Complex 内で使用する関数群
+ * Collection of functions used in Complex.
  * @ignore
  */
 class ComplexTool {
 
 	/**
-	 * 文字列から複素数を解析する
-	 * @param {string} text - 解析したい文字列
+	 * Create data for complex numbers from strings.
+	 * @param {string} text - Target strings.
 	 * @returns {{real : number, imag : number}}
 	 */
 	static ToComplexFromString(text) {
@@ -74,13 +74,15 @@ class ComplexTool {
 }
 
 /**
- * 複素数クラス (immutable)
+ * Complex number class. (immutable)
  */
 export default class Complex {
 
 	/**
-	 * 複素数を作成
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - 複素数( "1 + j", [1 , 1] など)
+	 * Create a complex number.
+	 * <br>Initialization can be performed as follows.
+	 * <br>* "3 + 4i", "4j + 3", [3, 4].
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Complex number. See how to use the function.
 	 */
 	constructor(number) {
 		// 行列で使うためイミュータブルは必ず守ること。
@@ -89,14 +91,14 @@ export default class Complex {
 			if(obj instanceof Complex) {
 				
 				/**
-				 * 実部
+				 * The real part of this Comlex.
 				 * @private
 				 * @type {number}
 				 */
 				this._re = obj._re;
 				
 				/**
-				 * 虚部
+				 * The imaginary part of this Comlex.
 				 * @private
 				 * @type {number}
 				 */
@@ -139,7 +141,7 @@ export default class Complex {
 	}
 
 	/**
-	 * Complex を作成
+	 * Create an entity object of this class.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
 	 * @returns {Complex}
 	 */
@@ -153,7 +155,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * 指定した数値から Complex 型に変換
+	 * Convert number to Complex type.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
 	 * @returns {Complex}
 	 */
@@ -162,7 +164,8 @@ export default class Complex {
 	}
 	
 	/**
-	 * 複素数を作成
+	 * Convert to Complex.
+	 * <br>If type conversion is unnecessary, return the value as it is.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
 	 * @returns {Complex}
 	 * @private
@@ -180,7 +183,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 実数を作成
+	 * Convert to real number.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
 	 * @returns {number}
 	 * @private
@@ -199,7 +202,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 整数を作成
+	 * Convert to integer.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
 	 * @returns {number}
 	 * @private
@@ -209,7 +212,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 32ビット整数に変換
+	 * 32-bit integer value.
 	 * @returns {number}
 	 */
 	get intValue() {
@@ -217,7 +220,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 64ビット実数に変換
+	 * 64-bit floating point.
 	 * @returns {number}
 	 */
 	get doubleValue() {
@@ -225,7 +228,7 @@ export default class Complex {
 	}
 
 	/**
-	 * ディープコピー
+	 * Deep copy.
 	 * @returns {Complex} 
 	 */
 	clone() {
@@ -233,7 +236,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 文字列データ
+	 * Convert to string.
 	 * @returns {string} 
 	 */
 	toString() {
@@ -273,7 +276,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * ランダムな値を作成
+	 * Create random values with uniform random numbers.
 	 * @returns {Complex}
 	 */
 	static rand() {
@@ -281,7 +284,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 正規分布に従うランダムな値を作成
+	 * Create random values with normal distribution.
 	 * @returns {Complex}
 	 */
 	static randn() {
@@ -289,9 +292,9 @@ export default class Complex {
 	}
 
 	/**
-	 * 等式
+	 * Equals.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === B
 	 */
 	equals(number, epsilon) {
@@ -306,7 +309,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 実部
+	 * The real part of this Comlex.
 	 * @returns {number} real(A)
 	 */
 	get real() {
@@ -314,7 +317,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * 虚部
+	 * The imaginary part of this Comlex.
 	 * @returns {number} imag(A)
 	 */
 	get imag() {
@@ -322,7 +325,7 @@ export default class Complex {
 	}
 
 	/**
-	 * ノルム
+	 * norm.
 	 * @returns {number} |A|
 	 */
 	get norm() {
@@ -338,7 +341,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 偏角
+	 * The argument of this complex number.
 	 * @returns {number} arg(A)
 	 */
 	get arg() {
@@ -354,8 +357,9 @@ export default class Complex {
 	}
 
 	/**
-	 * 実部、虚部を表す際の小数点以下の桁数
-	 * @returns {number} 小数点の桁数
+	 * Return number of decimal places for real and imaginary parts.
+	 * <br>* Used to make a string.
+	 * @returns {number} Number of decimal places.
 	 */
 	getDecimalPosition() {
 		const ep = Number.EPSILON;
@@ -378,7 +382,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 加算
+	 * Add.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
 	 * @returns {Complex} A + B
 	 */
@@ -390,7 +394,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 減算
+	 * Subtract.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
 	 * @returns {Complex} A - B
 	 */
@@ -402,7 +406,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 乗算
+	 * Multiply.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
 	 * @returns {Complex} A * B
 	 */
@@ -427,7 +431,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * ドット積
+	 * Inner product/Dot product.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
 	 * @returns {Complex} A * conj(B)
 	 */
@@ -452,7 +456,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * 割り算
+	 * Divide.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
 	 * @returns {Complex} A / B
 	 */
@@ -478,8 +482,8 @@ export default class Complex {
 	}
 
 	/**
-	 * 割り算の正の余り
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - 複素数を含まない数値 
+	 * Modulo, positive remainder of division.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Divided value (real number only).
 	 * @returns {Complex} A mod B
 	 */
 	mod(number) {
@@ -496,7 +500,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 逆数
+	 * Inverse number of this value.
 	 * @returns {Complex} 1 / A
 	 */
 	inv() {
@@ -510,7 +514,8 @@ export default class Complex {
 	}
 
 	/**
-	 * 符号値
+	 * The positive or negative sign of this number.
+	 * <br>* +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {Complex} [-1,1] 複素数の場合はノルムを1にした値。
 	 */
 	sign() {
@@ -526,9 +531,9 @@ export default class Complex {
 	}
 	
 	/**
-	 * 値同士を比較
+	 * Compare values.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, epsilon) {
@@ -544,7 +549,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * 最大値
+	 * Maximum number.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
 	 * @returns {Complex} max([A, B])
 	 */
@@ -559,7 +564,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 最小値
+	 * Minimum number.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
 	 * @returns {Complex} min([A, B])
 	 */
@@ -574,7 +579,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 数値を範囲に収める
+	 * Clip number within range.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} min 
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} max
 	 * @returns {Complex} min(max(x, min), max)
@@ -603,8 +608,8 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * 整数を判定
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * Return true if the value is integer.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isInteger(epsilon) {
@@ -613,9 +618,9 @@ export default class Complex {
 	}
 
 	/**
-	 * 複素整数（整数も含む）を判定
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
-	 * @returns {boolean} real(A) === 整数 && imag(A) === 整数
+	 * Returns true if the vallue is complex integer (including normal integer).
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @returns {boolean} real(A) === integer && imag(A) === integer
 	 */
 	isComplexInteger(epsilon) {
 		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
@@ -625,8 +630,8 @@ export default class Complex {
 	}
 
 	/**
-	 * 0 を判定
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * this === 0
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === 0
 	 */
 	isZero(epsilon) {
@@ -635,8 +640,8 @@ export default class Complex {
 	}
 
 	/**
-	 * 1 を判定
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * this === 1
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === 1
 	 */
 	isOne(epsilon) {
@@ -645,8 +650,8 @@ export default class Complex {
 	}
 
 	/**
-	 * 複素数（虚部が0以外）を判定
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * Returns true if the vallue is complex number (imaginary part is not 0).
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} imag(A) !== 0
 	 */
 	isComplex(epsilon) {
@@ -655,8 +660,8 @@ export default class Complex {
 	}
 	
 	/**
-	 * 実数を判定
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+	 * Return true if the value is real number.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} imag(A) === 0
 	 */
 	isReal(epsilon) {
@@ -665,7 +670,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 非数を判定
+	 * this === NaN
 	 * @returns {boolean} isNaN(A)
 	 */
 	isNaN() {
@@ -673,7 +678,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 実部の正数を判定
+	 * Return true if this real part of the complex positive.
 	 * @returns {boolean} real(x) > 0
 	 */
 	isPositive() {
@@ -683,7 +688,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 実部の負数を判定
+	 * real(this) < 0
 	 * @returns {boolean} real(x) < 0
 	 */
 	isNegative() {
@@ -691,7 +696,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 実部の非負値を判定
+	 * real(this) >= 0
 	 * @returns {boolean} real(x) >= 0
 	 */
 	isNotNegative() {
@@ -699,7 +704,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 無限を判定
+	 * this === Infinity
 	 * @returns {boolean} isInfinite(A)
 	 */
 	isInfinite() {
@@ -710,7 +715,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * 有限数を判定
+	 * Return true if the value is finite number.
 	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
 	 */
 	isFinite() {
@@ -722,7 +727,7 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * 絶対値
+	 * Absolute value.
 	 * @returns {Complex} abs(A)
 	 */
 	abs() {
@@ -730,7 +735,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 共役複素数
+	 * Complex conjugate.
 	 * @returns {Complex} real(A) - imag(A)j
 	 */
 	conj() {
@@ -742,7 +747,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 負数
+	 * this * -1
 	 * @returns {Complex} -A
 	 */
 	negate() {
@@ -754,7 +759,7 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * 累乗
+	 * Power function.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
 	 * @returns {Complex} pow(A, B)
 	 */
@@ -783,7 +788,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 2乗
+	 * Square.
 	 * @returns {Complex} pow(A, 2)
 	 */
 	square() {
@@ -794,7 +799,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 平方根
+	 * Square root.
 	 * @returns {Complex} sqrt(A)
 	 */
 	sqrt() {
@@ -812,7 +817,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 対数
+	 * Logarithmic function.
 	 * @returns {Complex} log(A)
 	 */
 	log() {
@@ -824,7 +829,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 指数
+	 * Exponential function.
 	 * @returns {Complex} exp(A)
 	 */
 	exp() {
@@ -841,7 +846,7 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * sin
+	 * Sine function.
 	 * @returns {Complex} sin(A)
 	 */
 	sin() {
@@ -856,7 +861,7 @@ export default class Complex {
 	}
 
 	/**
-	 * cos
+	 * Cosine function.
 	 * @returns {Complex} cos(A)
 	 */
 	cos() {
@@ -871,7 +876,7 @@ export default class Complex {
 	}
 
 	/**
-	 * tan
+	 * Tangent function.
 	 * @returns {Complex} tan(A)
 	 */
 	tan() {
@@ -883,7 +888,8 @@ export default class Complex {
 	}
 
 	/**
-	 * atan
+	 * Atan (arc tangent) function.
+	 * <br>* Return the values of [-PI/2, PI/2].
 	 * @returns {Complex} atan(A)
 	 */
 	atan() {
@@ -895,8 +901,10 @@ export default class Complex {
 	}
 
 	/**
-	 * atan2
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [number] - 実数で指定。省略時は、本オブジェクトの偏角を返す。
+	 * Atan (arc tangent) function.
+	 * <br>* Return the values of [-PI, PI] .
+	 * <br>* Supports only real numbers.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [number] - X
 	 * @returns {Complex} atan2(Y, X)
 	 */
 	atan2(number) {
@@ -918,7 +926,7 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * 正規化 sinc
+	 * Normalized sinc function.
 	 * @returns {Complex} sinc(A)
 	 */
 	sinc() {
@@ -938,7 +946,7 @@ export default class Complex {
 	// ----------------------
 	
 	/**
-	 * floor
+	 * Floor.
 	 * @returns {Complex} floor(A)
 	 */
 	floor() {
@@ -946,7 +954,7 @@ export default class Complex {
 	}
 
 	/**
-	 * ceil
+	 * Ceil.
 	 * @returns {Complex} ceil(A)
 	 */
 	ceil() {
@@ -954,7 +962,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * 四捨五入
+	 * Rounding to the nearest integer.
 	 * @returns {Complex} round(A)
 	 */
 	round() {
@@ -962,7 +970,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 整数化
+	 * To integer rounded down to the nearest.
 	 * @returns {Complex} fix(A)
 	 */
 	fix() {
@@ -970,8 +978,8 @@ export default class Complex {
 	}
 
 	/**
-	 * 小数部の抽出
-	 * @returns {Complex} fract(A) 
+	 * Fraction.
+	 * @returns {Complex} fract(A)
 	 */
 	fract() {
 		return new Complex([this._re - (this._re | 0), this._im - (this._im | 0)]);
@@ -1030,7 +1038,7 @@ export default class Complex {
 	}
 
 	/**
-	 * PI
+	 * Pi.
 	 * @returns {Complex} 3.14...
 	 */
 	static get PI() {
@@ -1038,7 +1046,7 @@ export default class Complex {
 	}
 
 	/**
-	 * E
+	 * E, Napier's constant.
 	 * @returns {Complex} 2.71...
 	 */
 	static get E() {
@@ -1046,7 +1054,7 @@ export default class Complex {
 	}
 
 	/**
-	 * LN2
+	 * log_e(2)
 	 * @returns {Complex} ln(2)
 	 */
 	static get LN2() {
@@ -1054,7 +1062,7 @@ export default class Complex {
 	}
 
 	/**
-	 * LN10
+	 * log_e(10)
 	 * @returns {Complex} ln(10)
 	 */
 	static get LN10() {
@@ -1062,7 +1070,7 @@ export default class Complex {
 	}
 
 	/**
-	 * LOG2E
+	 * log_2(e)
 	 * @returns {Complex} log_2(e)
 	 */
 	static get LOG2E() {
@@ -1070,7 +1078,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * LOG10E
+	 * log_10(e)
 	 * @returns {Complex} log_10(e)
 	 */
 	static get LOG10E() {
@@ -1078,7 +1086,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * SQRT2
+	 * sqrt(2)
 	 * @returns {Complex} sqrt(2)
 	 */
 	static get SQRT2() {
@@ -1086,7 +1094,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * SQRT1_2
+	 * sqrt(0.5)
 	 * @returns {Complex} sqrt(0.5)
 	 */
 	static get SQRT1_2() {
@@ -1102,7 +1110,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 正の無限大
+	 * Positive infinity.
 	 * @returns {Complex} Infinity
 	 */
 	static get POSITIVE_INFINITY() {
@@ -1110,7 +1118,7 @@ export default class Complex {
 	}
 	
 	/**
-	 * 負の無限大
+	 * Negative Infinity.
 	 * @returns {Complex} -Infinity
 	 */
 	static get NEGATIVE_INFINITY() {
@@ -1118,7 +1126,7 @@ export default class Complex {
 	}
 
 	/**
-	 * 非数
+	 * Not a Number.
 	 * @returns {Complex} NaN
 	 */
 	static get NaN() {
@@ -1128,7 +1136,7 @@ export default class Complex {
 }
 
 /**
- * 内部で使用する定数値
+ * Collection of constant values used in the class.
  * @ignore
  */
 const DEFINE = {
@@ -1159,27 +1167,27 @@ const DEFINE = {
 	MINUS_ONE : new Complex(-1),
 
 	/**
-	 * i
+	 * i, j
 	 */
 	I : new Complex([0, 1]),
 
 	/**
-	 * PI
+	 * Pi.
 	 */
 	PI : new Complex(Math.PI),
 
 	/**
-	 * E
+	 * E, Napier's constant.
 	 */
 	E : new Complex(Math.E),
 
 	/**
-	 * ln2
+	 * log_e(2)
 	 */
 	LN2 : new Complex(Math.LN2),
 
 	/**
-	 * ln10
+	 * log_e(10)
 	 */
 	LN10 : new Complex(Math.LN10),
 
@@ -1209,17 +1217,17 @@ const DEFINE = {
 	HALF : new Complex(0.5),
 
 	/**
-	 * Infinity
+	 * Positive infinity.
 	 */
 	POSITIVE_INFINITY : new Complex(Number.POSITIVE_INFINITY),
 
 	/**
-	 * -Infinity
+	 * Negative Infinity.
 	 */
 	NEGATIVE_INFINITY : new Complex(Number.NEGATIVE_INFINITY),
 
 	/**
-	 * NaN
+	 * Not a Number.
 	 */
 	NaN : new Complex(Number.NaN)
 };

@@ -13,23 +13,23 @@
 import Random from "./tools/Random.mjs";
 
 /**
- * 乱数用クラスを指定しなかった場合に使用するデフォルト乱数クラス
+ * Random number class to be used when the random number class is not set.
  * @type {Random}
  * @ignore
  */
 let DEFAULT_RANDOM = new Random();
 
 /**
- * BigInteger 内で使用する関数群
+ * Collection of functions used in BigInteger.
  * @ignore
  */
 class IntegerTool {
 
 	/**
-	 * 数値が入った文字列から16進数ごとの配列へ変換する
-	 * @param {string} text - 数値が入ったテキストデータ（負の値などを含めない）
-	 * @param {number} radix - テキストデータの進数
-	 * @returns {Array<number>}  _16進数ごとに代入された配列 
+	 * Return a hex array from a string containing numbers.
+	 * @param {string} text - String containing a number (remove the negative sign).
+	 * @param {number} radix - Base number.
+	 * @returns {Array<number>} Hex array.
 	 */
 	static string_to_binary_number(text, radix) {
 		// 下の変換をすることで、2進数での変換時に内部のforの繰り返す回数が減る
@@ -77,9 +77,9 @@ class IntegerTool {
 	}
 
 	/**
-	 * 数値から16進数ごとの配列へ変換する
-	 * @param {number} x - 変換したい数値 
-	 * @returns {Array<number>} _16進数ごとに代入された配列 
+	 * Return a hexadecimal array from the number.
+	 * @param {number} x - Target number.
+	 * @returns {Array<number>} Hex array.
 	 */
 	static number_to_binary_number(x) {
 		if(x > 0xFFFFFFFF) {
@@ -99,10 +99,10 @@ class IntegerTool {
 	}
 
 	/**
-	 * 16進数の配列データから数列が入った文字列を作成
-	 * @param {Array<number>} binary - 16進数ごとに代入された配列 
-	 * @param {number} radix - 変換後の進数
-	 * @returns {Array<number>} 指定した進数で桁ごとに代入された数値配列 
+	 * Return string of number from a hexadecimal array.
+	 * @param {Array<number>} binary - Hex array.
+	 * @param {number} radix - Base number.
+	 * @returns {Array<number>} Numeric array for each digit in the specified base number.
 	 */
 	static binary_number_to_string(binary, radix) {
 		const add = function(x1, x2, y) {
@@ -136,10 +136,10 @@ class IntegerTool {
 	}
 
 	/**
-	 * 数値が入った文字列から多倍長数値を表すためのデータを作成する
-	 * @param {string} text - 数値が入ったテキストデータ
-	 * @param {number} [radix=10] - テキストデータの進数
-	 * @returns {Object} 多倍長数値を表すためのデータ 
+	 * Return data to represent multi-precision numbers from strings.
+	 * @param {string} text - String containing a number.
+	 * @param {number} [radix=10] - Base number.
+	 * @returns {Object} Data for BigInteger.
 	 */
 	static ToBigIntegerFromString(text, radix) {
 		let x = text.replace(/\s/g, "").toLowerCase();
@@ -192,30 +192,31 @@ class IntegerTool {
 // 内部の「_」から始まるメソッドは内部計算用で非公開です。またミュータブルです。
 
 /**
- * 多倍長整数演算クラス (immutable)
+ * Arbitrary-precision integer class (immutable).
  */
 export default class BigInteger {
 
 	/**
-	 * 多倍長整数を作成
-	 * 文字列で指定する場合は指数表記には非対応。
-	 * 指定した進数で指定する場合は["ff", 16] という配列で指定する。
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [number] - 整数値
+	 * Create an arbitrary-precision integer.
+	 * <br>* Does not support strings using exponential notation.
+	 * <br>* If you want to initialize with the specified base number, please set up with an array ["ff", 16].
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [number] - Numeric data. See how to use the function.
 	 */
 	constructor(number) {
 		
 		if(arguments.length === 0) {
 
 			/**
-			 * 1要素、16ビット整数の配列
+			 * An integer consisting of 16 bits per element of the array.
 			 * @private
 			 * @type {Array<number>}
 			 */
 			this.element     = [];
 
 			/**
-			 * 正負（プラスなら+1、マイナスなら-1、0なら0）
-			 * ※計算によってはここの値の再設定をしていない箇所があるので、ここを見る時は注意
+			 * Positive or negative signs of number.
+			 * <br>* +1 if positive, -1 if negative, 0 if 0.
+			 * <br>* This value may not be correct ?
 			 * @private
 			 * @type {number}
 			 */
@@ -265,7 +266,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * BigIntegerを作成する
+	 * Create an entity object of this class.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger}
 	 */
@@ -279,7 +280,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * BigInteger を作成
+	 * Create an arbitrary-precision integer.
+	 * <br>* Does not support strings using exponential notation.
+	 * <br>* If you want to initialize with the specified base number, please set up with an array ["ff", 16].
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger}
 	 */
@@ -288,7 +291,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * BigInteger を作成
+	 * Convert to BigInteger.
+	 * <br>If type conversion is unnecessary, return the value as it is.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger}
 	 * @private
@@ -303,7 +307,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 実数を作成
+	 * Convert to real number.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {number}
 	 * @private
@@ -321,7 +325,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 整数を作成
+	 * Convert to integer.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {number}
 	 * @private
@@ -339,9 +343,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 指定したビット数以内の乱数
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bitsize - 作成する乱数のビット数
-	 * @param {Random} [random] - 作成に使用するRandom
+	 * Random number of specified bit length.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bitsize - Bit length.
+	 * @param {Random} [random] - Class for creating random numbers.
 	 * @returns {BigInteger}
 	 */
 	static createRandomBigInteger(bitsize, random) {
@@ -376,11 +380,11 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 指定したビット数以内の素数
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bits - 作成する素数の乱数のビット数
-	 * @param {Random} [random] - 作成に使用するRandom
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - ミラーラビン素数判定法に使用する繰り返し回数
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - 乱数生成回数
+	 * Prime represented within the specified bit length.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bits - Bit length.
+	 * @param {Random} [random] - Class for creating random numbers.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - Number of times to retry if prime generation fails.
 	 * @returns {BigInteger}
 	 */
 	static probablePrime(bits, random, certainty, create_count ) {
@@ -396,7 +400,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 等式
+	 * Equals.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {boolean} A === B
 	 */
@@ -417,8 +421,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 文字列化
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [radix=10] - 文字列変換後の進数
+	 * Convert to string.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [radix=10] - Base number.
 	 * @returns {string}
 	 */
 	toString(radix) {
@@ -457,8 +461,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 16進数ごとの配列で構成される内部値の指定した位置の値
-	 * @param {BigInteger|number|string|Array<string|number>|Object} point - 内部配列の位置
+	 * Value at the specified position of the internally used array that composed of hexadecimal numbers.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} point - Array address.
 	 * @returns {number}
 	 */
 	getShort(point) {
@@ -470,8 +474,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 32ビット整数値
-	 * 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある
+	 * 32-bit integer value.
+	 * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
 	 * @returns {number}
 	 */
 	get intValue() {
@@ -484,8 +488,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 64ビット整数値
-	 * 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある
+	 * 64-bit integer value.
+	 * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
 	 * @returns {number}
 	 */
 	get longValue() {
@@ -501,8 +505,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 64ビット実数値
-	 * 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある
+	 * 64-bit floating point.
+	 * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
 	 * @returns {number}
 	 */
 	get doubleValue() {
@@ -510,7 +514,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * ディープコピー
+	 * Deep copy.
 	 * @returns {BigInteger}
 	 */
 	clone() {
@@ -518,7 +522,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 実部の負数を判定
+	 * this < 0
 	 * @returns {boolean} real(x) < 0
 	 */
 	isNegative() {
@@ -526,7 +530,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 0 を判定
+	 * this === 0
 	 * @returns {boolean} A === 0
 	 */
 	isZero() {
@@ -535,7 +539,7 @@ export default class BigInteger {
 	}
 	
 	/**
-	 * 正数を判定
+	 * Return true if the value is positive number.
 	 * @returns {boolean} real(x) > 0
 	 */
 	isPositive() {
@@ -543,7 +547,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 2進数で表した場合に最も右側に現れる1の桁数
+	 * Number of digits in which the number "1" appears first when expressed in binary.
+	 * <br>* Return -1 If 1 is not found it.
 	 * @returns {number} 存在しない場合は -1
 	 */
 	getLowestSetBit() {
@@ -561,7 +566,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 2進数で表した場合の長さ
+	 * Length when the number is binary.
 	 * @returns {number}
 	 */
 	bitLength() {
@@ -579,7 +584,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 2の補数表現で表した場合に立つビットの数
+	 * Sum that the bit is 1 when represented in the two's complement.
 	 * @returns {number}
 	 */
 	bitCount() {
@@ -605,8 +610,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 加算に適用できる数値（負の場合は、2の補数表現）
-	 * @param {number} [bit_length] - ビット長（省略時は自動計算）
+	 * Create a numerical value for addition. If negative, two's complement.
+	 * @param {number} [bit_length] - Bit length. If not set, it will be calculated automatically.
 	 * @returns {BigInteger}
 	 * @private
 	 */
@@ -637,7 +642,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 論理積（ミュータブル）
+	 * Logical AND. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} A &= B
 	 * @private
@@ -673,7 +678,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 論理積
+	 * Logical AND.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} A & B
 	 */
@@ -682,7 +687,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 論理和（ミュータブル）
+	 * Logical OR. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} A |= B
 	 * @private
@@ -712,7 +717,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 論理和
+	 * Logical OR.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} A | B
 	 */
@@ -721,7 +726,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 排他的論理和（ミュータブル）
+	 * Logical Exclusive-OR. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} A ^= B
 	 * @private
@@ -751,7 +756,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 排他的論理和
+	 * Logical Exclusive-OR.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} A ^ B
 	 */
@@ -760,7 +765,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * ビット反転
+	 * Logical Not.
 	 * @returns {BigInteger} A = !A
 	 * @private
 	 */
@@ -769,7 +774,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * ビット反転（ミュータブル）
+	 * Logical Not. (mutable)
 	 * @returns {BigInteger} !A
 	 */
 	not() {
@@ -777,7 +782,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 否定論理積（ミュータブル）
+	 * Logical Not-AND. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} A &= (!B)
 	 * @private
@@ -788,7 +793,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 否定論理積
+	 * Logical Not-AND.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} A & (!B)
 	 */
@@ -797,7 +802,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 否定論理積（ミュータブル）
+	 * Logical Not-AND. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} A &= (!B)
 	 * @private
@@ -807,7 +812,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 否定論理積
+	 * Logical Not-AND.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} A & (!B)
 	 */
@@ -816,7 +821,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 否定論理和（ミュータブル）
+	 * Logical Not-OR. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} A = !(A | B)
 	 * @private
@@ -827,7 +832,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 否定論理和
+	 * Logical Not-OR.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} !(A | B)
 	 */
@@ -836,7 +841,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 否定論理和（ミュータブル）
+	 * Logical Not-OR. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} A = !(A | B)
 	 * @private
@@ -846,7 +851,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 否定論理和
+	 * Logical Not-OR.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} !(A | B)
 	 */
@@ -855,8 +860,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 指定したビット長まで配列を拡張（ミュータブル）
-	 * @param {number} bit_length - ビット数
+	 * Expand memory to specified bit length. (mutable)
+	 * @param {number} bit_length - Bit length.
 	 * @private
 	 */
 	_memory_allocation(bit_length) {
@@ -871,7 +876,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 内部データの正規化（ミュータブル）
+	 * Normalization of the internal data. (mutable)
 	 * @private
 	 */
 	_memory_reduction() {
@@ -888,7 +893,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * ユークリッド互除法
+	 * Euclidean algorithm.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger} gcd(x, y)
 	 */
@@ -907,9 +912,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 拡張ユークリッド互除法
+	 * Extended Euclidean algorithm.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-	 * @returns {Array<BigInteger>} a*x + b*y = c = gcd(x, y) となる [a, b, c]
+	 * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
 	 */
 	extgcd(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -939,7 +944,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 絶対値（ミュータブル）
+	 * Absolute value. (mutable)
 	 * @returns {BigInteger} A = abs(A)
 	 * @private
 	 */
@@ -950,7 +955,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 絶対値
+	 * Absolute value.
 	 * @returns {BigInteger} abs(A)
 	 */
 	abs() {
@@ -958,7 +963,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 負数（ミュータブル）
+	 * this *= -1
 	 * @returns {BigInteger} A = -A
 	 * @private
 	 */
@@ -968,7 +973,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 負数
+	 * this * -1
 	 * @returns {BigInteger} -A
 	 */
 	negate() {
@@ -976,7 +981,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 符号値
+	 * The positive or negative sign of this number.
+	 * <br>* +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number} 1, -1, 0の場合は0を返す
 	 */
 	signum() {
@@ -987,7 +993,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 符号値
+	 * The positive or negative sign of this number.
+	 * <br>* +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number} 1, -1, 0の場合は0を返す
 	 */
 	sign() {
@@ -995,7 +1002,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 符号を除いた値同士を比較
+	 * Compare values without sign.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
 	 */
@@ -1017,7 +1024,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 値同士を比較
+	 * Compare values.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
@@ -1038,7 +1045,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 最大値
+	 * Maximum number.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} max([A, B])
 	 */
@@ -1053,7 +1060,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 最小値
+	 * Minimum number.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} min([A, B])
 	 */
@@ -1068,7 +1075,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 数値を範囲に収める
+	 * Clip number within range.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} min 
 	 * @param {BigInteger|number|string|Array<string|number>|Object} max
 	 * @returns {BigInteger} min(max(x, min), max)
@@ -1093,8 +1100,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * ビットシフト（ミュータブル）
-	 * @param {BigInteger|number|string|Array<string|number>|Object} shift_length - 上位へのビットシフト数
+	 * this <<= n
+	 * @param {BigInteger|number|string|Array<string|number>|Object} shift_length - Bit shift size.
 	 * @returns {BigInteger} A <<= n
 	 * @private
 	 */
@@ -1186,7 +1193,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * ビットシフト
+	 * this << n
 	 * @param {BigInteger|number|string|Array<string|number>|Object} n
 	 * @returns {BigInteger} A << n
 	 */
@@ -1195,7 +1202,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 左へビットシフト
+	 * this << n
 	 * @param {BigInteger|number|string|Array<string|number>|Object} n
 	 * @returns {BigInteger} A << n
 	 */
@@ -1204,7 +1211,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 右へビットシフト
+	 * this >> n
 	 * @param {BigInteger|number|string|Array<string|number>|Object} n
 	 * @returns {BigInteger} A >> n
 	 */
@@ -1213,7 +1220,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 加算（ミュータブル）
+	 * Add. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} A += B
 	 * @private
@@ -1274,7 +1281,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 加算
+	 * Add.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} A + B
 	 */
@@ -1283,7 +1290,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 減算（ミュータブル）
+	 * Subtract. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} A -= B
 	 * @private
@@ -1297,7 +1304,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 減算
+	 * Subtract.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} A - B
 	 */
@@ -1306,7 +1313,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 減算
+	 * Subtract.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} A - B
 	 */
@@ -1315,7 +1322,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 乗算（ミュータブル）
+	 * Multiply. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} A *= B
 	 * @private
@@ -1328,7 +1335,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 乗算
+	 * Multiply.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} A * B
 	 */
@@ -1390,7 +1397,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 乗算
+	 * Multiply.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} A * B
 	 */
@@ -1399,7 +1406,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 割り算と余り（ミュータブル）
+	 * Divide and remainder. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {Array<BigInteger>} [C = floor(A / B), A - C * B]
 	 * @private
@@ -1446,7 +1453,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 割り算と余り
+	 * Divide and remainder.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {Array<BigInteger>} [C = floor(A / B), A - C * B]
 	 */
@@ -1455,7 +1462,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 割り算（ミュータブル）
+	 * Divide. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} floor(A / B)
 	 * @private
@@ -1465,7 +1472,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 割り算
+	 * Divide.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} floor(A / B)
 	 */
@@ -1474,7 +1481,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 割り算
+	 * Divide.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} floor(A / B)
 	 */
@@ -1483,7 +1490,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 割り算の余り（ミュータブル）
+	 * Remainder of division. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} A %= B
 	 * @private
@@ -1493,7 +1500,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 割り算の余り
+	 * Remainder of division.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} A % B
 	 */
@@ -1502,7 +1509,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 割り算の余り
+	 * Remainder of division.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} A % B
 	 */
@@ -1511,7 +1518,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 割り算の正の余り（ミュータブル）
+	 * Modulo, positive remainder of division. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} A = A mod B
 	 * @private
@@ -1534,7 +1541,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 割り算の正の余り
+	 * Modulo, positive remainder of division.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
 	 * @returns {BigInteger} A mod B
 	 */
@@ -1543,7 +1550,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 特定のビットを立てる（ミュータブル）
+	 * this | (1 << n) (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
 	 * @returns {BigInteger}
 	 * @private
@@ -1556,7 +1563,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 特定のビットを立てる
+	 * this | (1 << n)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
 	 * @returns {BigInteger}
 	 */
@@ -1566,7 +1573,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 特定のビットを反転させる（ミュータブル）
+	 * Invert a specific bit.) (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
 	 * @returns {BigInteger}
 	 * @private
@@ -1579,7 +1586,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 特定のビットを反転させる
+	 * Invert a specific bit.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
 	 * @returns {BigInteger}
 	 */
@@ -1589,7 +1596,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 特定のビットを下げる
+	 * Lower a specific bit.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} bit 
 	 * @returns {BigInteger}
 	 */
@@ -1602,7 +1609,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 指定のビットの判定
+	 * Test if a particular bit is on.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
 	 * @returns {boolean}
 	 */
@@ -1612,7 +1619,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 累乗
+	 * Power function.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
 	 * @returns {BigInteger} pow(A, B)
 	 */
@@ -1631,7 +1638,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 冪剰余
+	 * Modular exponentiation.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
 	 * @param {BigInteger|number|string|Array<string|number>|Object} m 
 	 * @returns {BigInteger} A^B mod m
@@ -1652,7 +1659,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * モジュラ逆数
+	 * Modular multiplicative inverse.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} m
 	 * @returns {BigInteger} A^(-1) mod m
 	 */
@@ -1668,9 +1675,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * ミラーラビン素数判定法による複素判定
-	 * （非常に重たいので注意）
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - 素数判定法の繰り返し回数
+	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * <br>Attention : it takes a very long time to process.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
 	 * @returns {boolean}
 	 */
 	isProbablePrime(certainty) {
@@ -1725,9 +1732,9 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 次の素数
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - 素数判定法の繰り返し回数
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - 次の素数を見つけるまでの回数
+	 * Next prime.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - Search range of next prime.
 	 * @returns {BigInteger}
 	 */
 	nextProbablePrime(certainty, search_max) {
@@ -1744,7 +1751,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 階乗関数
+	 * Factorial function, x!.
 	 * @returns {BigInteger} n!
 	 */
 	factorial() {
@@ -1757,7 +1764,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 乱数を指定しなかった場合のデフォルト乱数を設定する
+	 * Set default class of random.
+	 * <br>This is used if you do not specify a random number.
 	 * @param {Random} random
 	 */
 	static setDefaultRandom(random) {
@@ -1765,7 +1773,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * 乱数を指定しなかった場合のデフォルト乱数を取得する
+	 * Return default Random class.
+	 * <br>Used when Random not specified explicitly.
 	 * @returns {Random}
 	 */
 	static getDefaultRandom() {
@@ -1814,7 +1823,7 @@ export default class BigInteger {
 }
 
 /**
- * 内部で使用する定数値
+ * Collection of constant values used in the class.
  * @ignore
  */
 const DEFINE = {

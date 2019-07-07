@@ -31,17 +31,16 @@ import Complex from "./math/Complex.mjs";
 import Matrix from "./math/Matrix.mjs";
 
 /**
- * 計算に利用できるデータを提供するクラス
- * 大まかに、 BigInteger, BigDecimal, Matrix の3つに分かれる。
- * Matrix は、 Complex を包括している。
- * 多倍長整数演算を特化した計算クラスは、 BigInteger 。
- * 任意精度浮動小数点演算を特化した計算クラスは、 BigDecimal 。
- * 信号処理や統計処理等を備えた汎用的な計算クラスは、 Matrix 。
+ * Class collection of numerical calculation processing.
+ * <br>These classes are classified into a BigInteger and BigDecimal and Matrix.
+ * <br>- BigInteger is the calculation class for arbitrary-precision integer arithmetic.
+ * <br>- BigDecimal is a calculation class for arbitrary-precision floating point arithmetic.
+ * <br>- Matrix is a general-purpose calculation class with signal processing and statistical processing.
  */
 export default class konpeito {
 
 	/**
-	 * 多倍長整数クラス
+	 * Return typedef BigInteger for arbitrary-precision integer calculation.
 	 * @returns {typeof BigInteger}
 	 */
 	static get BigInteger() {
@@ -49,7 +48,7 @@ export default class konpeito {
 	}
 
 	/**
-	 * 任意精度浮動小数点クラス
+	 * Return typedef BigDecimal for arbitrary-precision floating-point number.
 	 * @returns {typeof BigDecimal}
 	 */
 	static get BigDecimal() {
@@ -57,7 +56,7 @@ export default class konpeito {
 	}
 
 	/**
-	 * BigDecimal用の丸め設定クラス
+	 * Return Rounding class for BigDecimal.
 	 * @returns {typeof RoundingMode}
 	 */
 	static get RoundingMode() {
@@ -65,7 +64,7 @@ export default class konpeito {
 	}
 
 	/**
-	 * BigDecimal用の環境設定クラス
+	 * Return Configuration class for BigDecimal.
 	 * @returns {typeof MathContext}
 	 */
 	static get MathContext() {
@@ -73,7 +72,7 @@ export default class konpeito {
 	}
 
 	/**
-	 * 複素数クラス
+	 * Return typedef Complex for complex number calculation.
 	 * @returns {typeof Complex}
 	 */
 	static get Complex() {
@@ -81,7 +80,7 @@ export default class konpeito {
 	}
 
 	/**
-	 * 複素行列クラス
+	 * Return typedef Matrix for complex matrix calculation.
 	 * @returns {typeof Matrix}
 	 */
 	static get Matrix() {
@@ -89,7 +88,7 @@ export default class konpeito {
 	}
 
 	/**
-	 * 乱数クラス
+	 * Return typedef Random.
 	 * @returns {typeof Random}
 	 */
 	static get Random() {

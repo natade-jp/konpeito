@@ -71,7 +71,7 @@ else if(action_type === "import") {
 	for(let i = 0; i < filelist.length; i++) {
 		const text = File.loadTextFile(filelist[i]);
 		const text_translate = JSDocTranslater.importTypeList(text, dictionary);
-		break;
+		File.saveTextFileWithBOM(filelist[i], text_translate);
 	}
 }
 

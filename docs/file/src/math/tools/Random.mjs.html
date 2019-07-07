@@ -36,7 +36,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
@@ -58,13 +58,13 @@
 // @ts-check
 
 /**
- * &#x4E71;&#x6570;&#x30AF;&#x30E9;&#x30B9;&#x5185;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x30C4;&#x30FC;&#x30EB;&#x96C6;
+ * Collection of tools used in the Random.
  * @ignore
  */
 class RandomTool {
 
 	/**
-	 * 32&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x8CA0;&#x3067;&#x306F;&#x306A;&#x3044;&#x6574;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * Create a 32-bit nonnegative integer.
 	 * @param {number} x 
 	 * @returns {number}
 	 */
@@ -73,7 +73,7 @@ class RandomTool {
 	}
 
 	/**
-	 * 2&#x3064;&#x306E;32&#x30D3;&#x30C3;&#x30C8;&#x6574;&#x6570;&#x3092;&#x639B;&#x3051;&#x7B97;&#x3057;&#x3066;&#x3001;32&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x6574;&#x6570;&#x3092;&#x51FA;&#x529B;&#x3059;&#x308B;
+	 * Multiply two 32-bit integers and output a 32-bit integer.
 	 * @param {number} x1 
 	 * @param {number} x2 
 	 * @returns {number}
@@ -92,13 +92,13 @@ class RandomTool {
 }
 
 /**
- * &#x4E71;&#x6570;&#x30AF;&#x30E9;&#x30B9;
+ * Random number class.
  */
 export default class Random {
 	
 	/**
-	 * &#x4E71;&#x6570;&#x3092;&#x521D;&#x671F;&#x5316;&#x3059;&#x308B;
-	 * @param {number} [seed] - &#x4E71;&#x6570;&#x306E;&#x30B7;&#x30FC;&#x30C9;&#x5024;&#x3001;&#x6307;&#x5B9A;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x6642;&#x523B;&#x304B;&#x3089;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * Create Random.
+	 * @param {number} [seed] - Seed number for random number generation. If not specified, create from time.
 	 */
 	constructor(seed) {
 		// &#x300C;M&#x7CFB;&#x5217;&#x4E71;&#x6570;&#x300D;&#x3067;&#x4E71;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
@@ -107,7 +107,7 @@ export default class Random {
 		// &#x4E71;&#x6570;&#x306F;C&#x3067;&#x306E;&#x52D5;&#x4F5C;&#x3068;&#x540C;&#x3058;&#x5024;&#x304C;&#x51FA;&#x308B;&#x3053;&#x3068;&#x3092;&#x78BA;&#x8A8D;&#x3002;(seed = 1&#x3068;&#x3057;&#x3066;1000&#x756A;&#x76EE;&#x306E;&#x5024;&#x304C;&#x7B49;&#x3057;&#x3044;&#x3053;&#x3068;&#x3092;&#x78BA;&#x8A8D;)
 
 		/**
-		 * &#x4E71;&#x6570;&#x914D;&#x5217;
+		 * Random number array.
 		 * @private
 		 * @type {Array&lt;number&gt;}
 		 */
@@ -140,7 +140,7 @@ export default class Random {
 	}
 
 	/**
-	 * &#x4E71;&#x6570;&#x3092;&#x521D;&#x671F;&#x5316;&#x3059;&#x308B;
+	 * Initialize random seed.
 	 * @param {number} seed
 	 */
 	setSeed(seed) {
@@ -167,21 +167,21 @@ export default class Random {
 		}
 		
 		/**
-		 * &#x4E71;&#x6570;&#x914D;&#x5217;&#x306E;&#x4F55;&#x756A;&#x76EE;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3044;&#x308B;&#x304B;
+		 * Number of random number array to use.
 		 * @private
 		 * @type {number}
 		 */
 		this.xi = 0;
 		
 		/**
-		 * &#x30AC;&#x30A6;&#x30B7;&#x30A2;&#x30F3;&#x5206;&#x5E03;&#x306B;&#x57FA;&#x3065;&#x304F;&#x4E71;&#x6570;&#x3092;&#x4FDD;&#x6301;&#x3057;&#x3066;&#x3044;&#x308B;&#x304B;
+		 * Is keep random numbers based on Gaussian distribution.
 		 * @private
 		 * @type {boolean}
 		 */
 		this.haveNextNextGaussian = false;
 		
 		/**
-		 * &#x4FDD;&#x6301;&#x3057;&#x305F;&#x30AC;&#x30A6;&#x30B7;&#x30A2;&#x30F3;&#x5206;&#x5E03;&#x306B;&#x57FA;&#x3065;&#x304F;&#x4E71;&#x6570;
+		 * Next random number based on Gaussian distribution.
 		 * @private
 		 * @type {number}
 		 */
@@ -189,7 +189,7 @@ export default class Random {
 	}
 
 	/**
-	 * 32&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x4E71;&#x6570;
+	 * 32-bit random number.
 	 * @returns {number} - 32&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x4E71;&#x6570;
 	 */
 	genrand_int32() {
@@ -204,8 +204,8 @@ export default class Random {
 	}
 
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#x306E;&#x4E71;&#x6570;
-	 * @param {number} bits - &#x5FC5;&#x8981;&#x306A;&#x30D3;&#x30C3;&#x30C8;&#x6570;&#xFF08;64&#x307E;&#x3067;&#x53EF;&#x80FD;&#xFF09;
+	 * Random number of specified bit length.
+	 * @param {number} bits - Required number of bits (up to 64 possible).
 	 * @returns {number}
 	 */
 	next(bits) {
@@ -235,7 +235,7 @@ export default class Random {
 	}
 
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x30B5;&#x30A4;&#x30BA;&#x306E;8&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x4E71;&#x6570;
+	 * 8-bit random number array of specified length.
 	 * @param {number} size - &#x5FC5;&#x8981;&#x306A;&#x9577;&#x3055;
 	 * @returns {Array&lt;number&gt;}
 	 */
@@ -250,7 +250,7 @@ export default class Random {
 	}
 
 	/**
-	 * 16&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x4E71;&#x6570;
+	 * 16-bit random number.
 	 * @returns {number}
 	 */
 	nextShort() {
@@ -258,7 +258,7 @@ export default class Random {
 	}
 
 	/**
-	 * 32&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x4E71;&#x6570;
+	 * 32-bit random number.
 	 * @param {number} [x] - &#x6307;&#x5B9A;&#x3057;&#x305F;&#x5024;&#x672A;&#x6E80;&#x306E;&#x6570;&#x5024;&#x3092;&#x4F5C;&#x308B;
 	 * @returns {number}
 	 */
@@ -275,7 +275,7 @@ export default class Random {
 	}
 
 	/**
-	 * 64&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x4E71;&#x6570;
+	 * 64-bit random number.
 	 * @returns {number}
 	 */
 	nextLong() {
@@ -283,7 +283,7 @@ export default class Random {
 	}
 
 	/**
-	 * &#x6B63;&#x8CA0;&#x306E;&#x4E71;&#x6570;
+	 * Random boolean.
 	 * @returns {boolean}
 	 */
 	nextBoolean() {
@@ -292,7 +292,7 @@ export default class Random {
 	}
 
 	/**
-	 * 0 &lt;= x &lt; 1 &#x306E;Float(23&#x30D3;&#x30C3;&#x30C8;)&#x4E71;&#x6570;
+	 * Float type random number in the range of [0, 1).
 	 * @returns {number}
 	 */
 	nextFloat() {
@@ -300,7 +300,7 @@ export default class Random {
 	}
 
 	/**
-	 * 0 &lt;= x &lt; 1 &#x306E;Double(52&#x30D3;&#x30C3;&#x30C8;)&#x4E71;&#x6570;
+	 * Double type random number in the range of [0, 1).
 	 * @returns {number}
 	 */
 	nextDouble() {
@@ -310,7 +310,8 @@ export default class Random {
 	}
 
 	/**
-	 * &#x5E73;&#x5747;&#x5024;0&#x3001;&#x6A19;&#x6E96;&#x504F;&#x5DEE;1&#x306E;&#x30AC;&#x30A6;&#x30B7;&#x30A2;&#x30F3;&#x5206;&#x5E03;&#x306B;&#x57FA;&#x3065;&#x304F;&#x4E71;&#x6570;
+	 * Random numbers from a Gaussian distribution.
+	 * &lt;br&gt;This random number is a distribution with an average value of 0 and a standard deviation of 1.
 	 * @returns {number}
 	 */
 	nextGaussian() {
@@ -329,7 +330,7 @@ export default class Random {
 }
 
 /**
- * &#x30B7;&#x30FC;&#x30C9;&#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306E;&#x4E71;&#x6570;&#x4F5C;&#x6210;&#x7528;&#x6574;&#x6570;
+ * Random number creation integer when no seed is set.
  * @type {number}
  * @ignore
  */

@@ -1,4 +1,4 @@
-/**
+﻿/**
  * The script is part of konpeito.
  * 
  * AUTHOR:
@@ -19,14 +19,18 @@ import Complex from "../Complex.mjs";
 import Matrix from "../Matrix.mjs";
 
 /**
- * 線形代数用の関数集
+ * Collection of functions for linear algebra.
  * @ignore
  */
 class LinearAlgebraTool {
 
 	/**
-	 * 対称行列の三重対角化
-	 * 実数での計算のみ対応
+	 * Tridiagonalization of symmetric matrix.
+	 * <br>* Don't support complex numbers.
+	 * <br>* P*H*P'=A
+	 * <br>* P is orthonormal matrix.
+	 * <br>* H is tridiagonal matrix.
+	 * <br>* The eigenvalues of H match the eigenvalues of A.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {{P: Matrix, H: Matrix}}
 	 */
@@ -40,11 +44,11 @@ class LinearAlgebraTool {
 		// 3重対角化の成分を取得する
 		
 		/**
-		 * ベクトルx1とベクトルx2の内積をとる
+		 * Inner product of vector x1 and vector x2.
 		 * @param {Array<number>} x1
 		 * @param {Array<number>} x2
-		 * @param {number} [index_offset=0] - オフセット(この値から行う)
-		 * @param {number} [index_max=x1.length] - 最大(この値は含めない)
+		 * @param {number} [index_offset=0] - Offset of the position of the vector to be calculated.
+		 * @param {number} [index_max=x1.length] - Maximum value of position of vector to be calculated (do not include this value).
 		 * @returns {number} 
 		 */
 		const innerproduct = function(x1, x2, index_offset, index_max) {
@@ -58,10 +62,10 @@ class LinearAlgebraTool {
 		};
 
 		/**
-		 * ハウスホルダー変換
+		 * Householder transformation.
 		 * @param {Array<number>} x - ハウスホルダー変換したいベクトル
-		 * @param {number} [index_offset=0] - オフセット(この値から行う)
-		 * @param {number} [index_max=x.length] - 最大(この値は含めない)
+		 * @param {number} [index_offset=0] - Offset of the position of the vector to be calculated.
+		 * @param {number} [index_max=x.length] - Maximum value of position of vector to be calculated (do not include this value).
 		 * @returns {{y1: number, v: Array<number>}} 
 		 */
 		const house = function(x, index_offset, index_max) {
@@ -177,9 +181,12 @@ class LinearAlgebraTool {
 	}
 
 	/**
-	 * 対称行列の固有値分解
-	 * 実数での計算のみ対応
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - 対称行列
+	 * Eigendecomposition of symmetric matrix.
+	 * <br>* Don't support complex numbers.
+	 * <br>* V*D*V'=A.
+	 * <br>* V is orthonormal matrix. and columns of V are the right eigenvectors.
+	 * <br>* D is a matrix containing the eigenvalues on the diagonal component.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - Symmetric matrix.
 	 * @returns {{V: Matrix, D: Matrix}}
 	 */
 	static eig(mat) {
@@ -302,8 +309,9 @@ class LinearAlgebraTool {
 	}
 
 	/**
-	 * 行列をベクトルと見立て、正規直行化し、QとRの行列を作る
-	 * @param {Matrix} mat - 正方行列
+	 * Treat matrices as vectors, make them orthonormal, and make matrices of Q and R.
+	 * <br>The method of Gram-Schmidt orthonormalization is used.
+	 * @param {Matrix} mat - Square matrix.
 	 * @returns {{Q: Matrix, R: Matrix, non_orthogonalized : Array<number>}}
 	 */
 	static doGramSchmidtOrthonormalization(mat) {
@@ -370,10 +378,11 @@ class LinearAlgebraTool {
 	}
 	
 	/**
-	 * 行列の全行ベクトルに対して、直行したベクトルを作成する
+	 * Create orthogonal vectors for all row vectors of the matrix.
+	 * <br>- If the vector can not be found, it returns NULL.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {number} [epsilon=1.0e-10] - 誤差
-	 * @returns {Matrix|null} 直行したベクトルがなければNULLを返す
+	 * @param {number} [epsilon=1.0e-10] - Calculation tolerance of calculation.
+	 * @returns {Matrix|null} An orthogonal vector.
 	 */
 	static createOrthogonalVector(mat, epsilon) {
 		const M = new Matrix(mat);
@@ -433,12 +442,12 @@ class LinearAlgebraTool {
 	}
 
 	/**
-	 * 列の中で最もノルムが最大の値がある行番号
+	 * Row number with the largest norm value in the specified column of the matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {number} column_index - 列番号
-	 * @param {number} [row_index_offset=0] - 行のオフセット(この値から行う)
-	 * @param {number} [row_index_max] - 行の最大(この値は含めない)
-	 * @returns {{index: number, max: number}} 行番号
+	 * @param {number} column_index - Number of column of matrix.
+	 * @param {number} [row_index_offset=0] - Offset of the position of the vector to be calculated.
+	 * @param {number} [row_index_max] - Maximum value of position of vector to be calculated (do not include this value).
+	 * @returns {{index: number, max: number}} Matrix row number.
 	 * @private
 	 */
 	static getMaxRowNumber(mat, column_index, row_index_offset, row_index_max) {
@@ -462,10 +471,10 @@ class LinearAlgebraTool {
 	}
 
 	/**
-	 * 行列の各行をベクトルと見立て、線型従属している行を抽出
+	 * Extract linearly dependent rows when each row of matrix is a vector.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {number} [epsilon=1.0e-10] - 誤差
-	 * @returns {Array} 行番号の行列(昇順)
+	 * @param {number} [epsilon=1.0e-10] - Calculation tolerance of calculation.
+	 * @returns {Array} Array of matrix row numbers in ascending order.
 	 * @private
 	 */
 	static getLinearDependenceVector(mat, epsilon) {
@@ -518,16 +527,16 @@ class LinearAlgebraTool {
 }
 
 /**
- * Matrix用の線形代数用の計算クラス
+ * Class for linear algebra for Matrix class.
  */
 export default class LinearAlgebra {
 
 	/**
-	 * ドット積
+	 * Inner product/Dot product.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} A
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} B
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] - 計算するときに使用する次元（1 or 2）
-	 * @returns {Matrix} A・B 
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
+	 * @returns {Matrix} A・B
 	 */
 	static inner(A, B, dimension) {
 		const M1 = Matrix._toMatrix(A);
@@ -577,7 +586,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * pノルム
+	 * p-norm.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
 	 * @returns {number}
@@ -681,7 +690,7 @@ export default class LinearAlgebra {
 	}
 	
 	/**
-	 * 条件数
+	 * Condition number of the matrix
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
 	 * @returns {number}
@@ -709,7 +718,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * 1ノルムの条件数の逆数
+	 * Inverse condition number.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {number}
 	 */
@@ -718,9 +727,9 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * ランク
+	 * Rank.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {number} rank(A)
 	 */
 	static rank(mat, epsilon) {
@@ -735,7 +744,8 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * トレース
+	 * Trace of a matrix.
+	 * <br>Sum of diagonal elements.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {Complex}
 	 */
@@ -750,7 +760,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * 行列式
+	 * Determinant.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {Matrix} |A|
 	 */
@@ -806,7 +816,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * LUP分解
+	 * LUP decomposition.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
 	 */
@@ -860,7 +870,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * LU分解
+	 * LU decomposition.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @returns {{L: Matrix, U: Matrix}} L*U=A
 	 */
@@ -874,10 +884,10 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * 連立一次方程式を解く
+	 * Solving a system of linear equations to be Ax = B
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
-	 * @returns {Matrix} Ax=B となる x
+	 * @returns {Matrix} x
 	 * @todo 安定化のためQR分解を用いた手法に切り替える。あるいはlup分解を使用した関数に作り替える。
 	 */
 	static linsolve(mat, number) {
@@ -941,9 +951,12 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * QR分解
+	 * QR decomposition.
+	 * <br>* Q*R=A
+	 * <br>* Q is orthonormal matrix.
+	 * <br>* R is upper triangular matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-	 * @returns {{Q: Matrix, R: Matrix}}  Q*R=A, Qは正規直行行列、Rは上三角行列
+	 * @returns {{Q: Matrix, R: Matrix}} {Q, R}
 	 */
 	static qr(mat) {
 		// 行列を準備する
@@ -1006,9 +1019,14 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * 対称行列の三重対角化
+	 * Tridiagonalization of symmetric matrix.
+	 * <br>* Don't support complex numbers.
+	 * <br>* P*H*P'=A
+	 * <br>* P is orthonormal matrix.
+	 * <br>* H is tridiagonal matrix.
+	 * <br>* The eigenvalues of H match the eigenvalues of A.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-	 * @returns {{P: Matrix, H: Matrix}} P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致
+	 * @returns {{P: Matrix, H: Matrix}} {P, H}
 	 */
 	static tridiagonalize(mat) {
 		const M = new Matrix(mat);
@@ -1025,9 +1043,13 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * 対称行列の固有値分解
+	 * Eigendecomposition of symmetric matrix.
+	 * <br>* Don't support complex numbers.
+	 * <br>* V*D*V'=A.
+	 * <br>* V is orthonormal matrix. and columns of V are the right eigenvectors.
+	 * <br>* D is a matrix containing the eigenvalues on the diagonal component.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-	 * @returns {{V: Matrix, D: Matrix}} V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列
+	 * @returns {{V: Matrix, D: Matrix}} {D, V}
 	 * @todo 対称行列しか対応できていないので、対称行列ではないものはQR分解を用いた手法に切り替える予定。
 	 */
 	static eig(mat) {
@@ -1045,7 +1067,10 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * 特異値分解
+	 * Singular Value Decomposition (SVD).
+	 * <br>* U*S*V'=A
+	 * <br>* U and V are orthonormal matrices.
+	 * <br>* S is a matrix with singular values in the diagonal.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
 	 */
@@ -1091,7 +1116,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * 逆行列
+	 * Inverse matrix of this matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @returns {Matrix} A^-1
 	 */
@@ -1163,7 +1188,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * 疑似逆行列
+	 * Pseudo-inverse matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @returns {Matrix} A^+
 	 */

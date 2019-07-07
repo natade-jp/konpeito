@@ -1,4 +1,4 @@
-/**
+﻿/**
  * The script is part of konpeito.
  * 
  * AUTHOR:
@@ -10,22 +10,23 @@
 // @ts-check
 
 /**
- * BigDecimal用の丸めモードの基底クラス
+ * Base class for rounding mode for BigDecimal.
  */
 export class RoundingModeEntity {
 	
 	/**
-	 * 丸めモードの名前を英語の大文字で取得する
-	 * @returns {string} 丸めモード名
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return "NONE";
 	}
 
 	/**
-	 * 丸めに必要な加算値
-	 * @param {number} x - 1ケタ目の値
-	 * @returns {number} いくつ足すと丸められるか
+	 * Numeric value to add.
+	 * <br>It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		return 0;
@@ -34,23 +35,25 @@ export class RoundingModeEntity {
 }
 
 /**
- * 絶対値の切り上げ（1桁目が0より大きければ桁上げする）
+ * Directed rounding to an integer.
+ * <br>Round towards positive infinity if positive, negative infinity if negative.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_UP extends RoundingModeEntity {
 
 	/**
-	 * 丸めモードの名前を英語の大文字で取得する
-	 * @returns {string} 丸めモード名
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return "UP";
 	}
 
 	/**
-	 * 丸めに必要な加算値
-	 * @param {number} x - 1ケタ目の値
-	 * @returns {number} いくつ足すと丸められるか
+	 * Numeric value to add.
+	 * <br>It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		const y = x % 10;
@@ -68,23 +71,25 @@ class RoundingMode_UP extends RoundingModeEntity {
 }
 
 /**
- * 絶対値の切り下げ（1桁目が0より大きければ桁下げする）
+ * Directed rounding to an integer.
+ * <br>Round towards 0.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_DOWN extends RoundingModeEntity {
 
 	/**
-	 * 丸めモードの名前を英語の大文字で取得する
-	 * @returns {string} 丸めモード名
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return "DOWN";
 	}
 
 	/**
-	 * 丸めに必要な加算値
-	 * @param {number} x - 1ケタ目の値
-	 * @returns {number} いくつ足すと丸められるか
+	 * Numeric value to add.
+	 * <br>It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		return -(x % 10);
@@ -93,23 +98,25 @@ class RoundingMode_DOWN extends RoundingModeEntity {
 }
 
 /**
- * 正の無限大に近づく
+ * Directed rounding to an integer.
+ * <br>Round up to positive infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_CEILING extends RoundingModeEntity {
 
 	/**
-	 * 丸めモードの名前を英語の大文字で取得する
-	 * @returns {string} 丸めモード名
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return "CEILING";
 	}
 
 	/**
-	 * 丸めに必要な加算値
-	 * @param {number} x - 1ケタ目の値
-	 * @returns {number} いくつ足すと丸められるか
+	 * Numeric value to add.
+	 * <br>It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		const y = x % 10;
@@ -127,23 +134,25 @@ class RoundingMode_CEILING extends RoundingModeEntity {
 }
 
 /**
- * 負の無限大に近づく
+ * Directed rounding to an integer.
+ * <br>Round down to negative infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_FLOOR extends RoundingModeEntity {
 
 	/**
-	 * 丸めモードの名前を英語の大文字で取得する
-	 * @returns {string} 丸めモード名
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return "FLOOR";
 	}
 
 	/**
-	 * 丸めに必要な加算値
-	 * @param {number} x - 1ケタ目の値
-	 * @returns {number} いくつ足すと丸められるか
+	 * Numeric value to add.
+	 * <br>It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		const y = x % 10;
@@ -161,23 +170,25 @@ class RoundingMode_FLOOR extends RoundingModeEntity {
 }
 
 /**
- * 四捨五入
+ * Rounding to the nearest integer.
+ * <br>Round half towards positive infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_HALF_UP extends RoundingModeEntity {
 
 	/**
-	 * 丸めモードの名前を英語の大文字で取得する
-	 * @returns {string} 丸めモード名
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return "HALF_UP";
 	}
 
 	/**
-	 * 丸めに必要な加算値
-	 * @param {number} x - 1ケタ目の値
-	 * @returns {number} いくつ足すと丸められるか
+	 * Numeric value to add.
+	 * <br>It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		const y = x % 10;
@@ -193,23 +204,25 @@ class RoundingMode_HALF_UP extends RoundingModeEntity {
 }
 
 /**
- * 五捨六入
+ * Rounding to the nearest integer.
+ * <br>Round half towards negative infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_HALF_DOWN extends RoundingModeEntity {
 
 	/**
-	 * 丸めモードの名前を英語の大文字で取得する
-	 * @returns {string} 丸めモード名
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return "HALF_DOWN";
 	}
 
 	/**
-	 * 丸めに必要な加算値
-	 * @param {number} x - 1ケタ目の値
-	 * @returns {number} いくつ足すと丸められるか
+	 * Numeric value to add.
+	 * <br>It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		const y = x % 10;
@@ -225,23 +238,25 @@ class RoundingMode_HALF_DOWN extends RoundingModeEntity {
 }
 
 /**
- * 等間隔なら偶数側へ丸める
+ * Rounding to the nearest integer
+ * <br>Round to the nearest side. If the median, round to the even side.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_HALF_EVEN extends RoundingModeEntity {
 
 	/**
-	 * 丸めモードの名前を英語の大文字で取得する
-	 * @returns {string} 丸めモード名
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return "HALF_EVEN";
 	}
 
 	/**
-	 * 丸めに必要な加算値
-	 * @param {number} x - 1ケタ目の値
-	 * @returns {number} いくつ足すと丸められるか
+	 * Numeric value to add.
+	 * <br>It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		let y = x % 100;
@@ -273,23 +288,25 @@ class RoundingMode_HALF_EVEN extends RoundingModeEntity {
 }
 
 /**
- * 丸めない（丸める必要が出る場合はエラー）
+ * Do not round.
+ * <br>Error if you need to round it.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_UNNECESSARY extends RoundingModeEntity {
 
 	/**
-	 * 丸めモードの名前を英語の大文字で取得する
-	 * @returns {string} 丸めモード名
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return "UNNECESSARY";
 	}
 
 	/**
-	 * 丸めに必要な加算値
-	 * @param {number} x - 1ケタ目の値
-	 * @returns {number} いくつ足すと丸められるか
+	 * Numeric value to add.
+	 * <br>It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		const y = x % 10;
@@ -304,12 +321,12 @@ class RoundingMode_UNNECESSARY extends RoundingModeEntity {
 }
 
 /**
- * BigDecimal用の丸めモードクラス
+ * Rounding mode class for BigDecimal.
  */
 export default class RoundingMode {
 
 	/**
-	 * 指定した文字列で表される丸めクラスを取得する
+	 * Get rounding class represented by specified string.
 	 * @param {string|RoundingModeEntity|Object} name - モードの英数名
 	 * @returns {typeof RoundingModeEntity}
 	 */
@@ -348,7 +365,8 @@ export default class RoundingMode {
 	// ----------------------
 	
 	/**
-	 * 絶対値の切り上げ（1桁目が0より大きければ桁上げする）
+	 * Directed rounding to an integer.
+	 * <br>Round towards positive infinity if positive, negative infinity if negative.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get UP() {
@@ -356,7 +374,8 @@ export default class RoundingMode {
 	}
 
 	/**
-	 * 絶対値の切り下げ（1桁目が0より大きければ桁下げする）
+	 * Directed rounding to an integer.
+	 * <br>Round towards 0.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get DOWN() {
@@ -364,7 +383,8 @@ export default class RoundingMode {
 	}
 
 	/**
-	 * 正の無限大に近づく
+	 * Directed rounding to an integer.
+	 * <br>Round up to positive infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get CEILING() {
@@ -372,7 +392,8 @@ export default class RoundingMode {
 	}
 
 	/**
-	 * 負の無限大に近づく
+	 * Directed rounding to an integer.
+	 * <br>Round down to negative infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get FLOOR() {
@@ -380,7 +401,8 @@ export default class RoundingMode {
 	}
 
 	/**
-	 * 四捨五入
+	 * Rounding to the nearest integer.
+	 * <br>Round half towards positive infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_UP() {
@@ -388,7 +410,8 @@ export default class RoundingMode {
 	}
 
 	/**
-	 * 五捨六入
+	 * Rounding to the nearest integer.
+	 * <br>Round half towards negative infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_DOWN() {
@@ -396,7 +419,8 @@ export default class RoundingMode {
 	}
 
 	/**
-	 * 等間隔なら偶数側へ丸める
+	 * Rounding to the nearest integer
+	 * <br>Round to the nearest side. If the median, round to the even side.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_EVEN() {
@@ -404,7 +428,8 @@ export default class RoundingMode {
 	}
 
 	/**
-	 * 丸めない（丸める必要が出る場合はエラー）
+	 * Do not round.
+	 * <br>Error if you need to round it.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get UNNECESSARY() {

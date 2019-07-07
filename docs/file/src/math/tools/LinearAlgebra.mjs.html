@@ -36,7 +36,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
@@ -46,7 +46,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/math/tools/LinearAlgebra.mjs</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
  * The script is part of konpeito.
  * 
  * AUTHOR:
@@ -67,14 +67,18 @@ import Complex from &quot;../Complex.mjs&quot;;
 import Matrix from &quot;../Matrix.mjs&quot;;
 
 /**
- * &#x7DDA;&#x5F62;&#x4EE3;&#x6570;&#x7528;&#x306E;&#x95A2;&#x6570;&#x96C6;
+ * Collection of functions for linear algebra.
  * @ignore
  */
 class LinearAlgebraTool {
 
 	/**
-	 * &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x5316;
-	 * &#x5B9F;&#x6570;&#x3067;&#x306E;&#x8A08;&#x7B97;&#x306E;&#x307F;&#x5BFE;&#x5FDC;
+	 * Tridiagonalization of symmetric matrix.
+	 * &lt;br&gt;* Don&apos;t support complex numbers.
+	 * &lt;br&gt;* P*H*P&apos;=A
+	 * &lt;br&gt;* P is orthonormal matrix.
+	 * &lt;br&gt;* H is tridiagonal matrix.
+	 * &lt;br&gt;* The eigenvalues of H match the eigenvalues of A.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
 	 * @returns {{P: Matrix, H: Matrix}}
 	 */
@@ -88,11 +92,11 @@ class LinearAlgebraTool {
 		// 3&#x91CD;&#x5BFE;&#x89D2;&#x5316;&#x306E;&#x6210;&#x5206;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;
 		
 		/**
-		 * &#x30D9;&#x30AF;&#x30C8;&#x30EB;x1&#x3068;&#x30D9;&#x30AF;&#x30C8;&#x30EB;x2&#x306E;&#x5185;&#x7A4D;&#x3092;&#x3068;&#x308B;
+		 * Inner product of vector x1 and vector x2.
 		 * @param {Array&lt;number&gt;} x1
 		 * @param {Array&lt;number&gt;} x2
-		 * @param {number} [index_offset=0] - &#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;(&#x3053;&#x306E;&#x5024;&#x304B;&#x3089;&#x884C;&#x3046;)
-		 * @param {number} [index_max=x1.length] - &#x6700;&#x5927;(&#x3053;&#x306E;&#x5024;&#x306F;&#x542B;&#x3081;&#x306A;&#x3044;)
+		 * @param {number} [index_offset=0] - Offset of the position of the vector to be calculated.
+		 * @param {number} [index_max=x1.length] - Maximum value of position of vector to be calculated (do not include this value).
 		 * @returns {number} 
 		 */
 		const innerproduct = function(x1, x2, index_offset, index_max) {
@@ -106,10 +110,10 @@ class LinearAlgebraTool {
 		};
 
 		/**
-		 * &#x30CF;&#x30A6;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x30FC;&#x5909;&#x63DB;
+		 * Householder transformation.
 		 * @param {Array&lt;number&gt;} x - &#x30CF;&#x30A6;&#x30B9;&#x30DB;&#x30EB;&#x30C0;&#x30FC;&#x5909;&#x63DB;&#x3057;&#x305F;&#x3044;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
-		 * @param {number} [index_offset=0] - &#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;(&#x3053;&#x306E;&#x5024;&#x304B;&#x3089;&#x884C;&#x3046;)
-		 * @param {number} [index_max=x.length] - &#x6700;&#x5927;(&#x3053;&#x306E;&#x5024;&#x306F;&#x542B;&#x3081;&#x306A;&#x3044;)
+		 * @param {number} [index_offset=0] - Offset of the position of the vector to be calculated.
+		 * @param {number} [index_max=x.length] - Maximum value of position of vector to be calculated (do not include this value).
 		 * @returns {{y1: number, v: Array&lt;number&gt;}} 
 		 */
 		const house = function(x, index_offset, index_max) {
@@ -225,9 +229,12 @@ class LinearAlgebraTool {
 	}
 
 	/**
-	 * &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x56FA;&#x6709;&#x5024;&#x5206;&#x89E3;
-	 * &#x5B9F;&#x6570;&#x3067;&#x306E;&#x8A08;&#x7B97;&#x306E;&#x307F;&#x5BFE;&#x5FDC;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - &#x5BFE;&#x79F0;&#x884C;&#x5217;
+	 * Eigendecomposition of symmetric matrix.
+	 * &lt;br&gt;* Don&apos;t support complex numbers.
+	 * &lt;br&gt;* V*D*V&apos;=A.
+	 * &lt;br&gt;* V is orthonormal matrix. and columns of V are the right eigenvectors.
+	 * &lt;br&gt;* D is a matrix containing the eigenvalues on the diagonal component.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - Symmetric matrix.
 	 * @returns {{V: Matrix, D: Matrix}}
 	 */
 	static eig(mat) {
@@ -350,8 +357,9 @@ class LinearAlgebraTool {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x898B;&#x7ACB;&#x3066;&#x3001;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x5316;&#x3057;&#x3001;Q&#x3068;R&#x306E;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x308B;
-	 * @param {Matrix} mat - &#x6B63;&#x65B9;&#x884C;&#x5217;
+	 * Treat matrices as vectors, make them orthonormal, and make matrices of Q and R.
+	 * &lt;br&gt;The method of Gram-Schmidt orthonormalization is used.
+	 * @param {Matrix} mat - Square matrix.
 	 * @returns {{Q: Matrix, R: Matrix, non_orthogonalized : Array&lt;number&gt;}}
 	 */
 	static doGramSchmidtOrthonormalization(mat) {
@@ -418,10 +426,11 @@ class LinearAlgebraTool {
 	}
 	
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x5168;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x3001;&#x76F4;&#x884C;&#x3057;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
+	 * Create orthogonal vectors for all row vectors of the matrix.
+	 * &lt;br&gt;- If the vector can not be found, it returns NULL.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
-	 * @param {number} [epsilon=1.0e-10] - &#x8AA4;&#x5DEE;
-	 * @returns {Matrix|null} &#x76F4;&#x884C;&#x3057;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x304C;&#x306A;&#x3051;&#x308C;&#x3070;NULL&#x3092;&#x8FD4;&#x3059;
+	 * @param {number} [epsilon=1.0e-10] - Calculation tolerance of calculation.
+	 * @returns {Matrix|null} An orthogonal vector.
 	 */
 	static createOrthogonalVector(mat, epsilon) {
 		const M = new Matrix(mat);
@@ -481,12 +490,12 @@ class LinearAlgebraTool {
 	}
 
 	/**
-	 * &#x5217;&#x306E;&#x4E2D;&#x3067;&#x6700;&#x3082;&#x30CE;&#x30EB;&#x30E0;&#x304C;&#x6700;&#x5927;&#x306E;&#x5024;&#x304C;&#x3042;&#x308B;&#x884C;&#x756A;&#x53F7;
+	 * Row number with the largest norm value in the specified column of the matrix.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
-	 * @param {number} column_index - &#x5217;&#x756A;&#x53F7;
-	 * @param {number} [row_index_offset=0] - &#x884C;&#x306E;&#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;(&#x3053;&#x306E;&#x5024;&#x304B;&#x3089;&#x884C;&#x3046;)
-	 * @param {number} [row_index_max] - &#x884C;&#x306E;&#x6700;&#x5927;(&#x3053;&#x306E;&#x5024;&#x306F;&#x542B;&#x3081;&#x306A;&#x3044;)
-	 * @returns {{index: number, max: number}} &#x884C;&#x756A;&#x53F7;
+	 * @param {number} column_index - Number of column of matrix.
+	 * @param {number} [row_index_offset=0] - Offset of the position of the vector to be calculated.
+	 * @param {number} [row_index_max] - Maximum value of position of vector to be calculated (do not include this value).
+	 * @returns {{index: number, max: number}} Matrix row number.
 	 * @private
 	 */
 	static getMaxRowNumber(mat, column_index, row_index_offset, row_index_max) {
@@ -510,10 +519,10 @@ class LinearAlgebraTool {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x5404;&#x884C;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x898B;&#x7ACB;&#x3066;&#x3001;&#x7DDA;&#x578B;&#x5F93;&#x5C5E;&#x3057;&#x3066;&#x3044;&#x308B;&#x884C;&#x3092;&#x62BD;&#x51FA;
+	 * Extract linearly dependent rows when each row of matrix is a vector.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
-	 * @param {number} [epsilon=1.0e-10] - &#x8AA4;&#x5DEE;
-	 * @returns {Array} &#x884C;&#x756A;&#x53F7;&#x306E;&#x884C;&#x5217;(&#x6607;&#x9806;)
+	 * @param {number} [epsilon=1.0e-10] - Calculation tolerance of calculation.
+	 * @returns {Array} Array of matrix row numbers in ascending order.
 	 * @private
 	 */
 	static getLinearDependenceVector(mat, epsilon) {
@@ -566,16 +575,16 @@ class LinearAlgebraTool {
 }
 
 /**
- * Matrix&#x7528;&#x306E;&#x7DDA;&#x5F62;&#x4EE3;&#x6570;&#x7528;&#x306E;&#x8A08;&#x7B97;&#x30AF;&#x30E9;&#x30B9;
+ * Class for linear algebra for Matrix class.
  */
 export default class LinearAlgebra {
 
 	/**
-	 * &#x30C9;&#x30C3;&#x30C8;&#x7A4D;
+	 * Inner product/Dot product.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} A
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} B
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [dimension=1] &#x8A08;&#x7B97;&#x3059;&#x308B;&#x3068;&#x304D;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x6B21;&#x5143;&#xFF08;1 or 2&#xFF09;
-	 * @returns {Matrix} A&#x30FB;B 
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
+	 * @returns {Matrix} A&#x30FB;B
 	 */
 	static inner(A, B, dimension) {
 		const M1 = Matrix._toMatrix(A);
@@ -625,7 +634,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * p&#x30CE;&#x30EB;&#x30E0;
+	 * p-norm.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [p=2]
 	 * @returns {number}
@@ -729,7 +738,7 @@ export default class LinearAlgebra {
 	}
 	
 	/**
-	 * &#x6761;&#x4EF6;&#x6570;
+	 * Condition number of the matrix
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [p=2]
 	 * @returns {number}
@@ -757,7 +766,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * 1&#x30CE;&#x30EB;&#x30E0;&#x306E;&#x6761;&#x4EF6;&#x6570;&#x306E;&#x9006;&#x6570;
+	 * Inverse condition number.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
 	 * @returns {number}
 	 */
@@ -766,9 +775,9 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * &#x30E9;&#x30F3;&#x30AF;
+	 * Rank.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {number} rank(A)
 	 */
 	static rank(mat, epsilon) {
@@ -783,7 +792,8 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * &#x30C8;&#x30EC;&#x30FC;&#x30B9;
+	 * Trace of a matrix.
+	 * &lt;br&gt;Sum of diagonal elements.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
 	 * @returns {Complex}
 	 */
@@ -798,7 +808,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5F0F;
+	 * Determinant.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
 	 * @returns {Matrix} |A|
 	 */
@@ -854,7 +864,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * LUP&#x5206;&#x89E3;
+	 * LUP decomposition.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
 	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} P&apos;*L*U=A
 	 */
@@ -908,7 +918,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * LU&#x5206;&#x89E3;
+	 * LU decomposition.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
 	 * @returns {{L: Matrix, U: Matrix}} L*U=A
 	 */
@@ -922,10 +932,10 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * &#x9023;&#x7ACB;&#x4E00;&#x6B21;&#x65B9;&#x7A0B;&#x5F0F;&#x3092;&#x89E3;&#x304F;
+	 * Solving a system of linear equations to be Ax = B
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number - B
-	 * @returns {Matrix} Ax=B &#x3068;&#x306A;&#x308B; x
+	 * @returns {Matrix} x
 	 * @todo &#x5B89;&#x5B9A;&#x5316;&#x306E;&#x305F;&#x3081;QR&#x5206;&#x89E3;&#x3092;&#x7528;&#x3044;&#x305F;&#x624B;&#x6CD5;&#x306B;&#x5207;&#x308A;&#x66FF;&#x3048;&#x308B;&#x3002;&#x3042;&#x308B;&#x3044;&#x306F;lup&#x5206;&#x89E3;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x305F;&#x95A2;&#x6570;&#x306B;&#x4F5C;&#x308A;&#x66FF;&#x3048;&#x308B;&#x3002;
 	 */
 	static linsolve(mat, number) {
@@ -989,9 +999,12 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * QR&#x5206;&#x89E3;
+	 * QR decomposition.
+	 * &lt;br&gt;* Q*R=A
+	 * &lt;br&gt;* Q is orthonormal matrix.
+	 * &lt;br&gt;* R is upper triangular matrix.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
-	 * @returns {{Q: Matrix, R: Matrix}}  Q*R=A, Q&#x306F;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3001;R&#x306F;&#x4E0A;&#x4E09;&#x89D2;&#x884C;&#x5217;
+	 * @returns {{Q: Matrix, R: Matrix}} {Q, R}
 	 */
 	static qr(mat) {
 		// &#x884C;&#x5217;&#x3092;&#x6E96;&#x5099;&#x3059;&#x308B;
@@ -1054,9 +1067,14 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x5316;
+	 * Tridiagonalization of symmetric matrix.
+	 * &lt;br&gt;* Don&apos;t support complex numbers.
+	 * &lt;br&gt;* P*H*P&apos;=A
+	 * &lt;br&gt;* P is orthonormal matrix.
+	 * &lt;br&gt;* H is tridiagonal matrix.
+	 * &lt;br&gt;* The eigenvalues of H match the eigenvalues of A.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
-	 * @returns {{P: Matrix, H: Matrix}} P*H*P&apos;=A, H&#x306F;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x884C;&#x5217;&#x3001;P&#x306F;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3001;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x884C;&#x5217;&#x306E;&#x56FA;&#x6709;&#x5024;&#x306F;&#x5143;&#x306E;&#x884C;&#x5217;&#x3068;&#x4E00;&#x81F4;
+	 * @returns {{P: Matrix, H: Matrix}} {P, H}
 	 */
 	static tridiagonalize(mat) {
 		const M = new Matrix(mat);
@@ -1073,9 +1091,13 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x56FA;&#x6709;&#x5024;&#x5206;&#x89E3;
+	 * Eigendecomposition of symmetric matrix.
+	 * &lt;br&gt;* Don&apos;t support complex numbers.
+	 * &lt;br&gt;* V*D*V&apos;=A.
+	 * &lt;br&gt;* V is orthonormal matrix. and columns of V are the right eigenvectors.
+	 * &lt;br&gt;* D is a matrix containing the eigenvalues on the diagonal component.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
-	 * @returns {{V: Matrix, D: Matrix}} V*D*V&apos;=A, V&#x306F;&#x53F3;&#x56FA;&#x6709;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x5217;&#x306B;&#x3082;&#x3064;&#x884C;&#x5217;&#x3067;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3001;D&#x306F;&#x56FA;&#x6709;&#x5024;&#x3092;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x306B;&#x6301;&#x3064;&#x884C;&#x5217;
+	 * @returns {{V: Matrix, D: Matrix}} {D, V}
 	 * @todo &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x3057;&#x304B;&#x5BFE;&#x5FDC;&#x3067;&#x304D;&#x3066;&#x3044;&#x306A;&#x3044;&#x306E;&#x3067;&#x3001;&#x5BFE;&#x79F0;&#x884C;&#x5217;&#x3067;&#x306F;&#x306A;&#x3044;&#x3082;&#x306E;&#x306F;QR&#x5206;&#x89E3;&#x3092;&#x7528;&#x3044;&#x305F;&#x624B;&#x6CD5;&#x306B;&#x5207;&#x308A;&#x66FF;&#x3048;&#x308B;&#x4E88;&#x5B9A;&#x3002;
 	 */
 	static eig(mat) {
@@ -1093,7 +1115,10 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * &#x7279;&#x7570;&#x5024;&#x5206;&#x89E3;
+	 * Singular Value Decomposition (SVD).
+	 * &lt;br&gt;* U*S*V&apos;=A
+	 * &lt;br&gt;* U and V are orthonormal matrices.
+	 * &lt;br&gt;* S is a matrix with singular values in the diagonal.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
 	 * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V&apos;=A
 	 */
@@ -1139,7 +1164,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * &#x9006;&#x884C;&#x5217;
+	 * Inverse matrix of this matrix.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
 	 * @returns {Matrix} A^-1
 	 */
@@ -1211,7 +1236,7 @@ export default class LinearAlgebra {
 	}
 
 	/**
-	 * &#x7591;&#x4F3C;&#x9006;&#x884C;&#x5217;
+	 * Pseudo-inverse matrix.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
 	 * @returns {Matrix} A^+
 	 */

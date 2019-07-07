@@ -36,7 +36,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
@@ -46,7 +46,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/math/context/RoundingMode.mjs</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
  * The script is part of konpeito.
  * 
  * AUTHOR:
@@ -58,23 +58,23 @@
 // @ts-check
 
 /**
- * BigDecimal&#x7528;&#x306E;&#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x57FA;&#x5E95;&#x30AF;&#x30E9;&#x30B9;
- * @interface
+ * Base class for rounding mode for BigDecimal.
  */
 export class RoundingModeEntity {
 	
 	/**
-	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
-	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return &quot;NONE&quot;;
 	}
 
 	/**
-	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
-	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
-	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 * Numeric value to add.
+	 * &lt;br&gt;It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		return 0;
@@ -83,23 +83,25 @@ export class RoundingModeEntity {
 }
 
 /**
- * &#x7D76;&#x5BFE;&#x5024;&#x306E;&#x5207;&#x308A;&#x4E0A;&#x3052;&#xFF08;1&#x6841;&#x76EE;&#x304C;0&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x6841;&#x4E0A;&#x3052;&#x3059;&#x308B;&#xFF09;
+ * Directed rounding to an integer.
+ * &lt;br&gt;Round towards positive infinity if positive, negative infinity if negative.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_UP extends RoundingModeEntity {
 
 	/**
-	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
-	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return &quot;UP&quot;;
 	}
 
 	/**
-	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
-	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
-	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 * Numeric value to add.
+	 * &lt;br&gt;It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		const y = x % 10;
@@ -117,23 +119,25 @@ class RoundingMode_UP extends RoundingModeEntity {
 }
 
 /**
- * &#x7D76;&#x5BFE;&#x5024;&#x306E;&#x5207;&#x308A;&#x4E0B;&#x3052;&#xFF08;1&#x6841;&#x76EE;&#x304C;0&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x6841;&#x4E0B;&#x3052;&#x3059;&#x308B;&#xFF09;
+ * Directed rounding to an integer.
+ * &lt;br&gt;Round towards 0.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_DOWN extends RoundingModeEntity {
 
 	/**
-	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
-	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return &quot;DOWN&quot;;
 	}
 
 	/**
-	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
-	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
-	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 * Numeric value to add.
+	 * &lt;br&gt;It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		return -(x % 10);
@@ -142,23 +146,25 @@ class RoundingMode_DOWN extends RoundingModeEntity {
 }
 
 /**
- * &#x6B63;&#x306E;&#x7121;&#x9650;&#x5927;&#x306B;&#x8FD1;&#x3065;&#x304F;
+ * Directed rounding to an integer.
+ * &lt;br&gt;Round up to positive infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_CEILING extends RoundingModeEntity {
 
 	/**
-	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
-	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return &quot;CEILING&quot;;
 	}
 
 	/**
-	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
-	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
-	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 * Numeric value to add.
+	 * &lt;br&gt;It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		const y = x % 10;
@@ -176,23 +182,25 @@ class RoundingMode_CEILING extends RoundingModeEntity {
 }
 
 /**
- * &#x8CA0;&#x306E;&#x7121;&#x9650;&#x5927;&#x306B;&#x8FD1;&#x3065;&#x304F;
+ * Directed rounding to an integer.
+ * &lt;br&gt;Round down to negative infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_FLOOR extends RoundingModeEntity {
 
 	/**
-	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
-	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return &quot;FLOOR&quot;;
 	}
 
 	/**
-	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
-	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
-	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 * Numeric value to add.
+	 * &lt;br&gt;It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		const y = x % 10;
@@ -210,23 +218,25 @@ class RoundingMode_FLOOR extends RoundingModeEntity {
 }
 
 /**
- * &#x56DB;&#x6368;&#x4E94;&#x5165;
+ * Rounding to the nearest integer.
+ * &lt;br&gt;Round half towards positive infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_HALF_UP extends RoundingModeEntity {
 
 	/**
-	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
-	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return &quot;HALF_UP&quot;;
 	}
 
 	/**
-	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
-	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
-	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 * Numeric value to add.
+	 * &lt;br&gt;It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		const y = x % 10;
@@ -242,23 +252,25 @@ class RoundingMode_HALF_UP extends RoundingModeEntity {
 }
 
 /**
- * &#x4E94;&#x6368;&#x516D;&#x5165;
+ * Rounding to the nearest integer.
+ * &lt;br&gt;Round half towards negative infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_HALF_DOWN extends RoundingModeEntity {
 
 	/**
-	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
-	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return &quot;HALF_DOWN&quot;;
 	}
 
 	/**
-	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
-	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
-	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 * Numeric value to add.
+	 * &lt;br&gt;It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		const y = x % 10;
@@ -274,23 +286,25 @@ class RoundingMode_HALF_DOWN extends RoundingModeEntity {
 }
 
 /**
- * &#x7B49;&#x9593;&#x9694;&#x306A;&#x3089;&#x5076;&#x6570;&#x5074;&#x3078;&#x4E38;&#x3081;&#x308B;
+ * Rounding to the nearest integer
+ * &lt;br&gt;Round to the nearest side. If the median, round to the even side.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_HALF_EVEN extends RoundingModeEntity {
 
 	/**
-	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
-	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return &quot;HALF_EVEN&quot;;
 	}
 
 	/**
-	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
-	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
-	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 * Numeric value to add.
+	 * &lt;br&gt;It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		let y = x % 100;
@@ -322,23 +336,25 @@ class RoundingMode_HALF_EVEN extends RoundingModeEntity {
 }
 
 /**
- * &#x4E38;&#x3081;&#x306A;&#x3044;&#xFF08;&#x4E38;&#x3081;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x51FA;&#x308B;&#x5834;&#x5408;&#x306F;&#x30A8;&#x30E9;&#x30FC;&#xFF09;
+ * Do not round.
+ * &lt;br&gt;Error if you need to round it.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_UNNECESSARY extends RoundingModeEntity {
 
 	/**
-	 * &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x306E;&#x540D;&#x524D;&#x3092;&#x82F1;&#x8A9E;&#x306E;&#x5927;&#x6587;&#x5B57;&#x3067;&#x53D6;&#x5F97;&#x3059;&#x308B;
-	 * @returns {string} &#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x540D;
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
 	 */
 	static toString() {
 		return &quot;UNNECESSARY&quot;;
 	}
 
 	/**
-	 * &#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x52A0;&#x7B97;&#x5024;
-	 * @param {number} x - 1&#x30B1;&#x30BF;&#x76EE;&#x306E;&#x5024;
-	 * @returns {number} &#x3044;&#x304F;&#x3064;&#x8DB3;&#x3059;&#x3068;&#x4E38;&#x3081;&#x3089;&#x308C;&#x308B;&#x304B;
+	 * Numeric value to add.
+	 * &lt;br&gt;It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
 	 */
 	static getAddNumber(x) {
 		const y = x % 10;
@@ -353,12 +369,12 @@ class RoundingMode_UNNECESSARY extends RoundingModeEntity {
 }
 
 /**
- * BigDecimal&#x7528;&#x306E;&#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x30AF;&#x30E9;&#x30B9;
+ * Rounding mode class for BigDecimal.
  */
 export default class RoundingMode {
 
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3067;&#x8868;&#x3055;&#x308C;&#x308B;&#x4E38;&#x3081;&#x30AF;&#x30E9;&#x30B9;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;
+	 * Get rounding class represented by specified string.
 	 * @param {string|RoundingModeEntity|Object} name - &#x30E2;&#x30FC;&#x30C9;&#x306E;&#x82F1;&#x6570;&#x540D;
 	 * @returns {typeof RoundingModeEntity}
 	 */
@@ -397,7 +413,8 @@ export default class RoundingMode {
 	// ----------------------
 	
 	/**
-	 * &#x7D76;&#x5BFE;&#x5024;&#x306E;&#x5207;&#x308A;&#x4E0A;&#x3052;&#xFF08;1&#x6841;&#x76EE;&#x304C;0&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x6841;&#x4E0A;&#x3052;&#x3059;&#x308B;&#xFF09;
+	 * Directed rounding to an integer.
+	 * &lt;br&gt;Round towards positive infinity if positive, negative infinity if negative.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get UP() {
@@ -405,7 +422,8 @@ export default class RoundingMode {
 	}
 
 	/**
-	 * &#x7D76;&#x5BFE;&#x5024;&#x306E;&#x5207;&#x308A;&#x4E0B;&#x3052;&#xFF08;1&#x6841;&#x76EE;&#x304C;0&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x6841;&#x4E0B;&#x3052;&#x3059;&#x308B;&#xFF09;
+	 * Directed rounding to an integer.
+	 * &lt;br&gt;Round towards 0.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get DOWN() {
@@ -413,7 +431,8 @@ export default class RoundingMode {
 	}
 
 	/**
-	 * &#x6B63;&#x306E;&#x7121;&#x9650;&#x5927;&#x306B;&#x8FD1;&#x3065;&#x304F;
+	 * Directed rounding to an integer.
+	 * &lt;br&gt;Round up to positive infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get CEILING() {
@@ -421,7 +440,8 @@ export default class RoundingMode {
 	}
 
 	/**
-	 * &#x8CA0;&#x306E;&#x7121;&#x9650;&#x5927;&#x306B;&#x8FD1;&#x3065;&#x304F;
+	 * Directed rounding to an integer.
+	 * &lt;br&gt;Round down to negative infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get FLOOR() {
@@ -429,7 +449,8 @@ export default class RoundingMode {
 	}
 
 	/**
-	 * &#x56DB;&#x6368;&#x4E94;&#x5165;
+	 * Rounding to the nearest integer.
+	 * &lt;br&gt;Round half towards positive infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_UP() {
@@ -437,7 +458,8 @@ export default class RoundingMode {
 	}
 
 	/**
-	 * &#x4E94;&#x6368;&#x516D;&#x5165;
+	 * Rounding to the nearest integer.
+	 * &lt;br&gt;Round half towards negative infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_DOWN() {
@@ -445,7 +467,8 @@ export default class RoundingMode {
 	}
 
 	/**
-	 * &#x7B49;&#x9593;&#x9694;&#x306A;&#x3089;&#x5076;&#x6570;&#x5074;&#x3078;&#x4E38;&#x3081;&#x308B;
+	 * Rounding to the nearest integer
+	 * &lt;br&gt;Round to the nearest side. If the median, round to the even side.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_EVEN() {
@@ -453,7 +476,8 @@ export default class RoundingMode {
 	}
 
 	/**
-	 * &#x4E38;&#x3081;&#x306A;&#x3044;&#xFF08;&#x4E38;&#x3081;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x51FA;&#x308B;&#x5834;&#x5408;&#x306F;&#x30A8;&#x30E9;&#x30FC;&#xFF09;
+	 * Do not round.
+	 * &lt;br&gt;Error if you need to round it.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get UNNECESSARY() {

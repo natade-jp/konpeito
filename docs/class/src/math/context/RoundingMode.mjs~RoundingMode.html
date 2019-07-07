@@ -36,7 +36,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
@@ -46,13 +46,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import RoundingMode from &apos;<span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber310">konpeito/src/math/context/RoundingMode.mjs</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import RoundingMode from &apos;<span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber326">konpeito/src/math/context/RoundingMode.mjs</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber310">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber326">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -72,7 +72,7 @@
 
   
   
-  <div class="description" data-ice="description"><p>BigDecimal&#x7528;&#x306E;&#x4E38;&#x3081;&#x30E2;&#x30FC;&#x30C9;&#x30AF;&#x30E9;&#x30B9;</p>
+  <div class="description" data-ice="description"><p>Rounding mode class for BigDecimal.</p>
 </div>
   
 
@@ -109,7 +109,7 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x6B63;&#x306E;&#x7121;&#x9650;&#x5927;&#x306B;&#x8FD1;&#x3065;&#x304F;</p>
+        <div data-ice="description"><p>Directed rounding to an integer.</p>
 </div>
       </div>
     </td>
@@ -138,7 +138,7 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x7D76;&#x5BFE;&#x5024;&#x306E;&#x5207;&#x308A;&#x4E0B;&#x3052;&#xFF08;1&#x6841;&#x76EE;&#x304C;0&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x6841;&#x4E0B;&#x3052;&#x3059;&#x308B;&#xFF09;</p>
+        <div data-ice="description"><p>Directed rounding to an integer.</p>
 </div>
       </div>
     </td>
@@ -167,7 +167,7 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x8CA0;&#x306E;&#x7121;&#x9650;&#x5927;&#x306B;&#x8FD1;&#x3065;&#x304F;</p>
+        <div data-ice="description"><p>Directed rounding to an integer.</p>
 </div>
       </div>
     </td>
@@ -196,7 +196,7 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x4E94;&#x6368;&#x516D;&#x5165;</p>
+        <div data-ice="description"><p>Rounding to the nearest integer.</p>
 </div>
       </div>
     </td>
@@ -225,7 +225,8 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x7B49;&#x9593;&#x9694;&#x306A;&#x3089;&#x5076;&#x6570;&#x5074;&#x3078;&#x4E38;&#x3081;&#x308B;</p>
+        <div data-ice="description"><p>Rounding to the nearest integer
+<br>Round to the nearest side.</p>
 </div>
       </div>
     </td>
@@ -254,7 +255,7 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x56DB;&#x6368;&#x4E94;&#x5165;</p>
+        <div data-ice="description"><p>Rounding to the nearest integer.</p>
 </div>
       </div>
     </td>
@@ -283,7 +284,7 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x4E38;&#x3081;&#x306A;&#x3044;&#xFF08;&#x4E38;&#x3081;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x51FA;&#x308B;&#x5834;&#x5408;&#x306F;&#x30A8;&#x30E9;&#x30FC;&#xFF09;</p>
+        <div data-ice="description"><p>Do not round.</p>
 </div>
       </div>
     </td>
@@ -312,7 +313,7 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x7D76;&#x5BFE;&#x5024;&#x306E;&#x5207;&#x308A;&#x4E0A;&#x3052;&#xFF08;1&#x6841;&#x76EE;&#x304C;0&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x6841;&#x4E0A;&#x3052;&#x3059;&#x308B;&#xFF09;</p>
+        <div data-ice="description"><p>Directed rounding to an integer.</p>
 </div>
       </div>
     </td>
@@ -348,7 +349,7 @@
       <div>
         
         
-        <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3067;&#x8868;&#x3055;&#x308C;&#x308B;&#x4E38;&#x3081;&#x30AF;&#x30E9;&#x30B9;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;</p>
+        <div data-ice="description"><p>Get rounding class represented by specified string.</p>
 </div>
       </div>
     </td>
@@ -380,14 +381,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber371">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber390">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x6B63;&#x306E;&#x7121;&#x9650;&#x5927;&#x306B;&#x8FD1;&#x3065;&#x304F;</p>
+  <div data-ice="description"><p>Directed rounding to an integer.
+<br>Round up to positive infinity.</p>
 </div>
 
   
@@ -436,14 +438,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber363">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber381">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x7D76;&#x5BFE;&#x5024;&#x306E;&#x5207;&#x308A;&#x4E0B;&#x3052;&#xFF08;1&#x6841;&#x76EE;&#x304C;0&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x6841;&#x4E0B;&#x3052;&#x3059;&#x308B;&#xFF09;</p>
+  <div data-ice="description"><p>Directed rounding to an integer.
+<br>Round towards 0.</p>
 </div>
 
   
@@ -492,14 +495,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber379">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber399">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x8CA0;&#x306E;&#x7121;&#x9650;&#x5927;&#x306B;&#x8FD1;&#x3065;&#x304F;</p>
+  <div data-ice="description"><p>Directed rounding to an integer.
+<br>Round down to negative infinity.</p>
 </div>
 
   
@@ -548,14 +552,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber395">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber417">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x4E94;&#x6368;&#x516D;&#x5165;</p>
+  <div data-ice="description"><p>Rounding to the nearest integer.
+<br>Round half towards negative infinity.</p>
 </div>
 
   
@@ -604,14 +609,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber403">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber426">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x7B49;&#x9593;&#x9694;&#x306A;&#x3089;&#x5076;&#x6570;&#x5074;&#x3078;&#x4E38;&#x3081;&#x308B;</p>
+  <div data-ice="description"><p>Rounding to the nearest integer
+<br>Round to the nearest side. If the median, round to the even side.</p>
 </div>
 
   
@@ -660,14 +666,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber387">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber408">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x56DB;&#x6368;&#x4E94;&#x5165;</p>
+  <div data-ice="description"><p>Rounding to the nearest integer.
+<br>Round half towards positive infinity.</p>
 </div>
 
   
@@ -716,14 +723,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber411">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber435">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x4E38;&#x3081;&#x306A;&#x3044;&#xFF08;&#x4E38;&#x3081;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x51FA;&#x308B;&#x5834;&#x5408;&#x306F;&#x30A8;&#x30E9;&#x30FC;&#xFF09;</p>
+  <div data-ice="description"><p>Do not round.
+<br>Error if you need to round it.</p>
 </div>
 
   
@@ -772,14 +780,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber355">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber372">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x7D76;&#x5BFE;&#x5024;&#x306E;&#x5207;&#x308A;&#x4E0A;&#x3052;&#xFF08;1&#x6841;&#x76EE;&#x304C;0&#x3088;&#x308A;&#x5927;&#x304D;&#x3051;&#x308C;&#x3070;&#x6841;&#x4E0A;&#x3052;&#x3059;&#x308B;&#xFF09;</p>
+  <div data-ice="description"><p>Directed rounding to an integer.
+<br>Round towards positive infinity if positive, negative infinity if negative.</p>
 </div>
 
   
@@ -831,14 +840,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber317">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/context/RoundingMode.mjs.html#lineNumber333">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>&#x6307;&#x5B9A;&#x3057;&#x305F;&#x6587;&#x5B57;&#x5217;&#x3067;&#x8868;&#x3055;&#x308C;&#x308B;&#x4E38;&#x3081;&#x30AF;&#x30E9;&#x30B9;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;</p>
+  <div data-ice="description"><p>Get rounding class represented by specified string.</p>
 </div>
 
   

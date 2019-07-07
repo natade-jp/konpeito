@@ -36,7 +36,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
@@ -64,13 +64,13 @@ import Complex from &quot;../Complex.mjs&quot;;
 import Matrix from &quot;../Matrix.mjs&quot;;
 
 /**
- * &#x5B9F;&#x6570;&#x5C02;&#x7528;&#x306E;&#x7D71;&#x8A08;&#x51E6;&#x7406;&#x7528;&#x306E;&#x95A2;&#x6570;&#x96C6;
+ * Collection of statistical functions using real numbers.
  * @ignore
  */
 class StatisticsTool {
 
 	/**
-	 * gammaln(x) &#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570; 
+	 * Log-gamma function.
 	 * @param {number} x
 	 * @returns {number}
 	 */
@@ -118,7 +118,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * q_gamma(x, a, gammaln_a) &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570; &#x4E0A;&#x5074;
+	 * Incomplete gamma function upper side.
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} gammaln_a
@@ -151,7 +151,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * p_gamma(x, a, gammaln_a) &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570; &#x4E0B;&#x5074;
+	 * Incomplete gamma function lower side.
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} gammaln_a
@@ -180,7 +180,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * gamma(z) &#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * Gamma function.
 	 * @param {number} z
 	 * @returns {number}
 	 */
@@ -193,10 +193,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * gammainc(x, a, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * Incomplete gamma function.
 	 * @param {number} x
 	 * @param {number} a
-	 * @param {string} [tail=&quot;lower&quot;] lower(&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;)/upper
+	 * @param {string} [tail=&quot;lower&quot;] - lower (default) / upper
 	 * @returns {number}
 	 */
 	static gammainc(x, a, tail) {
@@ -216,10 +216,10 @@ class StatisticsTool {
 	}
 	
 	/**
-	 * gampdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of the gamma distribution.
 	 * @param {number} x
-	 * @param {number} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {number} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @param {number} k - Shape parameter.
+	 * @param {number} s - Scale parameter.
 	 * @returns {number}
 	 */
 	static gampdf(x, k, s) {
@@ -230,10 +230,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * gamcdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of gamma distribution.
 	 * @param {number} x
-	 * @param {number} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {number} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @param {number} k - Shape parameter.
+	 * @param {number} s - Scale parameter.
 	 * @returns {number}
 	 */
 	static gamcdf(x, k, s) {
@@ -241,10 +241,10 @@ class StatisticsTool {
 	}
 	
 	/**
-	 * gaminv(p, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
 	 * @param {number} p
-	 * @param {number} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {number} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @param {number} k - Shape parameter.
+	 * @param {number} s - Scale parameter.
 	 * @returns {number}
 	 */
 	static gaminv(p, k, s) {
@@ -281,7 +281,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * beta(x, y) &#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * Beta function.
 	 * @param {number} x
 	 * @param {number} y
 	 * @returns {number}
@@ -292,7 +292,7 @@ class StatisticsTool {
 	}
 	
 	/**
-	 * p_beta(x, a, b) &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570; &#x4E0B;&#x5074;
+	 * Incomplete beta function lower side.
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} b
@@ -343,7 +343,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * q_beta(x, a, b) &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570; &#x4E0A;&#x5074;
+	 * Incomplete beta function upper side.
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} b
@@ -354,11 +354,11 @@ class StatisticsTool {
 	}
 
 	/**
-	 * betainc(x, a, b, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * Incomplete beta function.
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} b
-	 * @param {string} [tail=&quot;lower&quot;] {string} lower(&#x30C7;&#x30D5;&#x30A9;&#x30EB;&#x30C8;)/upper
+	 * @param {string} [tail=&quot;lower&quot;] - lower (default) / upper
 	 * @returns {number}
 	 */
 	static betainc(x, a, b, tail) {
@@ -378,7 +378,7 @@ class StatisticsTool {
 	}
 	
 	/**
-	 * isInteger(x) x&#x304C;&#x6574;&#x6570;&#x304B;&#x3069;&#x3046;&#x304B;
+	 * Return true if the value is integer.
 	 * @param {number} x
 	 * @returns {boolean}
 	 */
@@ -387,7 +387,7 @@ class StatisticsTool {
 	}
 	
 	/**
-	 * betapdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of beta distribution.
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} b
@@ -407,7 +407,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * betacdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of beta distribution.
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} b
@@ -418,7 +418,7 @@ class StatisticsTool {
 	}
 	
 	/**
-	 * betainv(p, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
 	 * @param {number} p
 	 * @param {number} a
 	 * @param {number} b
@@ -470,7 +470,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * factorial(n) = n! &#x968E;&#x4E57;&#x95A2;&#x6570;
+	 * Factorial function, x!.
 	 * @param {number} n
 	 * @returns {number}
 	 */
@@ -485,7 +485,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * nchoosek(n, k) = nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;
+	 * Binomial coefficient, number of all combinations, nCk.
 	 * @param {number} n
 	 * @param {number} k
 	 * @returns {number} nCk
@@ -495,7 +495,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * erf(x) &#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * Error function.
 	 * @param {number} x
 	 * @returns {number}
 	 */
@@ -504,7 +504,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * erfc(x) &#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * Complementary error function.
 	 * @param {number} x
 	 * @returns {number}
 	 */
@@ -561,10 +561,10 @@ class StatisticsTool {
 	*/
 
 	/**
-	 * normpdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of normal distribution.
 	 * @param {number} x
-	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {number} [s=1.0] - &#x5206;&#x6563;
+	 * @param {number} [u=0.0] - Average value.
+	 * @param {number} [s=1.0] - Variance value.
 	 * @returns {number}
 	 */
 	static normpdf(x, u, s) {
@@ -576,10 +576,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * normcdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of normal distribution.
 	 * @param {number} x
-	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {number} [s=1.0] - &#x5206;&#x6563;
+	 * @param {number} [u=0.0] - Average value.
+	 * @param {number} [s=1.0] - Variance value.
 	 * @returns {number}
 	 */
 	static normcdf(x, u, s) {
@@ -589,10 +589,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * norminv(p, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
-	 * @param {number} p - &#x78BA;&#x7387;
-	 * @param {number} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {number} [s=1.0] - &#x5206;&#x6563;
+	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
+	 * @param {number} p - Probability.
+	 * @param {number} [u=0.0] - Average value.
+	 * @param {number} [s=1.0] - Variance value.
 	 * @returns {number}
 	 */
 	static norminv(p, u, s) {
@@ -628,9 +628,9 @@ class StatisticsTool {
 	}
 
 	/**
-	 * tpdf(t, k) t&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
-	 * @param {number} t - t&#x5024;
-	 * @param {number} v - &#x81EA;&#x7531;&#x5EA6;
+	 * Probability density function (PDF) of Student&apos;s t-distribution.
+	 * @param {number} t - T-value.
+	 * @param {number} v - The degrees of freedom. (DF)
 	 * @returns {number}
 	 */
 	static tpdf(t, v) {
@@ -640,9 +640,9 @@ class StatisticsTool {
 	}
 
 	/**
-	 * tcdf(t) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {number} t - t&#x5024;
-	 * @param {number} v - &#x81EA;&#x7531;&#x5EA6;
+	 * Cumulative distribution function (CDF) of Student&apos;s t-distribution.
+	 * @param {number} t - T-value.
+	 * @param {number} v - The degrees of freedom. (DF)
 	 * @returns {number}
 	 */
 	static tcdf(t, v) {
@@ -652,9 +652,9 @@ class StatisticsTool {
 	}
 
 	/**
-	 * tinv(p, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
-	 * @param {number} p - &#x78BA;&#x7387;
-	 * @param {number} v - &#x81EA;&#x7531;&#x5EA6;
+	 * Inverse of cumulative distribution function (CDF) of Student&apos;s t-distribution.
+	 * @param {number} p - Probability.
+	 * @param {number} v - The degrees of freedom. (DF)
 	 * @returns {number}
 	 */
 	static tinv(p, v) {
@@ -678,10 +678,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * tdist(t, v, tails) &#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {number} t - t&#x5024;
-	 * @param {number} v - &#x81EA;&#x7531;&#x5EA6;
-	 * @param {number} tails - &#x5C3E;&#x90E8;(1...&#x7247;&#x5074;&#x3001;2...&#x4E21;&#x5074;)
+	 * Cumulative distribution function (CDF) of Student&apos;s t-distribution that can specify tail.
+	 * @param {number} t - T-value.
+	 * @param {number} v - The degrees of freedom. (DF)
+	 * @param {number} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {number}
 	 */
 	static tdist(t, v, tails) {
@@ -689,9 +689,9 @@ class StatisticsTool {
 	}
 
 	/**
-	 * tinv2(p, v) &#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {number} p - &#x78BA;&#x7387;
-	 * @param {number} v - &#x81EA;&#x7531;&#x5EA6;
+	 * Cumulative distribution function (CDF) of Student&apos;s t-distribution in two-sided test.
+	 * @param {number} p - Probability.
+	 * @param {number} v - The degrees of freedom. (DF)
 	 * @returns {number}
 	 */
 	static tinv2(p, v) {
@@ -699,9 +699,9 @@ class StatisticsTool {
 	}
 
 	/**
-	 * chi2pdf(x, v) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of chi-square distribution.
 	 * @param {number} x 
-	 * @param {number} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {number} k - The degrees of freedom. (DF)
 	 * @returns {number}
 	 */
 	static chi2pdf(x, k) {
@@ -717,9 +717,9 @@ class StatisticsTool {
 	}
 
 	/**
-	 * chi2cdf(x, v) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of chi-square distribution.
 	 * @param {number} x 
-	 * @param {number} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {number} k - The degrees of freedom. (DF)
 	 * @returns {number}
 	 */
 	static chi2cdf(x, k) {
@@ -727,9 +727,9 @@ class StatisticsTool {
 	}
 
 	/**
-	 * chi2inv(p, v) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x9006;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {number} p - &#x78BA;&#x7387;
-	 * @param {number} k - &#x81EA;&#x7531;&#x5EA6;
+	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
+	 * @param {number} p - Probability.
+	 * @param {number} k - The degrees of freedom. (DF)
 	 * @returns {number}
 	 */
 	static chi2inv(p, k) {
@@ -737,10 +737,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * fpdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of F-distribution.
 	 * @param {number} x
-	 * @param {number} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {number} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {number} d1 - The degree of freedom of the molecules.
+	 * @param {number} d2 - The degree of freedom of the denominator
 	 * @returns {number}
 	 */
 	static fpdf(x, d1, d2) {
@@ -758,10 +758,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * fcdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of F-distribution.
 	 * @param {number} x
-	 * @param {number} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {number} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {number} d1 - The degree of freedom of the molecules.
+	 * @param {number} d2 - The degree of freedom of the denominator
 	 * @returns {number}
 	 */
 	static fcdf(x, d1, d2) {
@@ -769,10 +769,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * finv(p, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
-	 * @param {number} p - &#x78BA;&#x7387;
-	 * @param {number} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {number} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
+	 * @param {number} p - Probability.
+	 * @param {number} d1 - The degree of freedom of the molecules.
+	 * @param {number} d2 - The degree of freedom of the denominator
 	 * @returns {number}
 	 */
 	static finv(p, d1, d2) {
@@ -782,7 +782,7 @@ class StatisticsTool {
 }
 
 /**
- * &#x6587;&#x5B57;&#x5217;&#x304B;&#x5224;&#x5B9A;
+ * typeof this === string
  * @param text 
  * @ignore
  */
@@ -791,13 +791,13 @@ const isStr = function(text) {
 };
 
 /**
- * Complex&#x30AF;&#x30E9;&#x30B9;&#x304B;&#x3089;&#x5229;&#x7528;&#x3059;&#x308B;&#x7D71;&#x8A08;&#x51E6;&#x7406;&#x95A2;&#x6570;&#x96C6;
+ * Collection of statistical functions used from the Complex class.
  * @ignore
  */
 class StatisticsComplex {
 
 	/**
-	 * gammaln(x) &#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * Log-gamma function.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
 	 * @returns {Complex}
 	 */
@@ -806,7 +806,7 @@ class StatisticsComplex {
 	}
 	
 	/**
-	 * gamma(z) &#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570; 
+	 * Gamma function.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} z
 	 * @returns {Complex}
 	 */
@@ -815,10 +815,10 @@ class StatisticsComplex {
 	}
 	
 	/**
-	 * gammainc(x, a, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * Incomplete gamma function.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} a
-	 * @param {string} [tail=&quot;lower&quot;] - lower/upper
+	 * @param {string} [tail=&quot;lower&quot;] - tail (&quot;lower&quot;, &quot;upper&quot;)
 	 * @returns {Complex}
 	 */
 	static gammainc(x, a, tail) {
@@ -829,10 +829,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * gampdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of the gamma distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - Shape parameter.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} s - Scale parameter.
 	 * @returns {Complex}
 	 */
 	static gampdf(x, k, s) {
@@ -843,10 +843,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * gamcdf(x, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of gamma distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - Shape parameter.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} s - Scale parameter.
 	 * @returns {Complex}
 	 */
 	static gamcdf(x, k, s) {
@@ -857,10 +857,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * gaminv(p, k, s) &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - Shape parameter.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} s - Scale parameter.
 	 * @returns {Complex}
 	 */
 	static gaminv(p, k, s) {
@@ -871,7 +871,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * beta(x, y) &#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * Beta function.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} y
 	 * @returns {Complex}
@@ -883,11 +883,11 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * betainc(x, a, b, tail) &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * Incomplete beta function.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} a
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} b
-	 * @param {string} [tail=&quot;lower&quot;] lower/upper
+	 * @param {string} [tail=&quot;lower&quot;] - tail (&quot;lower&quot;, &quot;upper&quot;)
 	 * @returns {Complex}
 	 */
 	static betainc(x, a, b, tail) {
@@ -899,7 +899,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * betapdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of beta distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} a
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} b
@@ -913,7 +913,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * betacdf(x, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of beta distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} a
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} b
@@ -927,7 +927,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * betainv(p, a, b) &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} p
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} a
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} b
@@ -941,7 +941,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * factorial(n), n! &#x968E;&#x4E57;&#x95A2;&#x6570;
+	 * Factorial function, x!.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} n
 	 * @returns {Complex}
 	 */
@@ -950,7 +950,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * nchoosek(n, k), nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;
+	 * Binomial coefficient, number of all combinations, nCk.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} n
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k
 	 * @returns {Complex}
@@ -962,7 +962,7 @@ class StatisticsComplex {
 	}
 	
 	/**
-	 * erf(x) &#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * Error function.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
 	 * @returns {Complex}
 	 */
@@ -972,7 +972,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * erfc(x) &#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * Complementary error function.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
 	 * @returns {Complex}
 	 */
@@ -982,10 +982,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * normpdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of normal distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [s=1.0] - &#x5206;&#x6563;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [u=0.0] - Average value.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
 	 * @returns {Complex}
 	 */
 	static normpdf(x, u, s) {
@@ -996,10 +996,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * normcdf(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of normal distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [s=1.0] - &#x5206;&#x6563;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [u=0.0] - Average value.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
 	 * @returns {Complex}
 	 */
 	static normcdf(x, u, s) {
@@ -1010,10 +1010,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * norminv(x, u, s) &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [s=1.0] - &#x5206;&#x6563;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [u=0.0] - Average value.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
 	 * @returns {Complex}
 	 */
 	static norminv(x, u, s) {
@@ -1024,9 +1024,9 @@ class StatisticsComplex {
 	}
 	
 	/**
-	 * tpdf(x, v) t&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of Student&apos;s t-distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static tpdf(x, v) {
@@ -1036,9 +1036,9 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * tcdf(t, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of Student&apos;s t-distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} t
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static tcdf(t, v) {
@@ -1048,9 +1048,9 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * tinv(p, v) t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse of cumulative distribution function (CDF) of Student&apos;s t-distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static tinv(p, v) {
@@ -1060,10 +1060,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * tdist(t, v, tails) &#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of Student&apos;s t-distribution that can specify tail.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} t
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - &#x81EA;&#x7531;&#x5EA6;
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} tails - &#x5C3E;&#x90E8;(1...&#x7247;&#x5074;&#x3001;2...&#x4E21;&#x5074;)
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {Complex}
 	 */
 	static tdist(t, v, tails) {
@@ -1074,9 +1074,9 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * tinv2(p, v) &#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of Student&apos;s t-distribution in two-sided test.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static tinv2(p, v) {
@@ -1086,9 +1086,9 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * chi2pdf(x, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of chi-square distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static chi2pdf(x, k) {
@@ -1098,9 +1098,9 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * chi2cdf(x, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of chi-square distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static chi2cdf(x, k) {
@@ -1110,9 +1110,9 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * chi2inv(p, k) &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static chi2inv(p, k) {
@@ -1122,10 +1122,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * fpdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of F-distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Complex}
 	 */
 	static fpdf(x, d1, d2) {
@@ -1136,10 +1136,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * fcdf(x, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of F-distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Complex}
 	 */
 	static fcdf(x, d1, d2) {
@@ -1150,10 +1150,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * finv(p, d1, d2) F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Complex}
 	 */
 	static finv(p, d1, d2) {
@@ -1166,12 +1166,12 @@ class StatisticsComplex {
 }
 
 /**
- * Matrix&#x7528;&#x306E;&#x7D71;&#x8A08;&#x51E6;&#x7406;&#x7528;&#x306E;&#x8A08;&#x7B97;&#x30AF;&#x30E9;&#x30B9;
+ * Class for statistical processing for Matrix class.
  */
 export default class Statistics {
 
 	/**
-	 * &#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * Log-gamma function.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @returns {Matrix}
 	 */
@@ -1183,7 +1183,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * Gamma function.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @returns {Matrix}
 	 */
@@ -1195,10 +1195,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * Incomplete gamma function.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
-	 * @param {string} [tail=&quot;lower&quot;] - lower/upper
+	 * @param {string} [tail=&quot;lower&quot;] - tail (&quot;lower&quot;, &quot;upper&quot;)
 	 * @returns {Matrix}
 	 */
 	static gammainc(x, a, tail) {
@@ -1211,10 +1211,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of the gamma distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - Shape parameter.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	static gampdf(x, k, s) {
@@ -1227,10 +1227,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of gamma distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - Shape parameter.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	static gamcdf(x, k, s) {
@@ -1243,10 +1243,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - Shape parameter.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	static gaminv(x, k, s) {
@@ -1259,7 +1259,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * Beta function.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} y
 	 * @returns {Matrix}
@@ -1273,11 +1273,11 @@ export default class Statistics {
 	}
 	
 	/**
-	 * &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * Incomplete beta function.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} b
-	 * @param {string} [tail=&quot;lower&quot;] - lower/upper
+	 * @param {string} [tail=&quot;lower&quot;] - tail (&quot;lower&quot;, &quot;upper&quot;)
 	 * @returns {Matrix}
 	 */
 	static betainc(x, a, b, tail) {
@@ -1291,7 +1291,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of beta distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} b
@@ -1307,7 +1307,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of beta distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} b
@@ -1323,7 +1323,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} b
@@ -1339,7 +1339,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * x! &#x968E;&#x4E57;&#x95A2;&#x6570;
+	 * Factorial function, x!.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @returns {Matrix}
 	 */
@@ -1351,7 +1351,7 @@ export default class Statistics {
 	}
 	
 	/**
-	 * nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;
+	 * Binomial coefficient, number of all combinations, nCk.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k
 	 * @returns {Matrix}
@@ -1365,7 +1365,7 @@ export default class Statistics {
 	}
 	
 	/**
-	 * &#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * Error function.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @returns {Matrix}
 	 */
@@ -1377,7 +1377,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * Complementary error function.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @returns {Matrix}
 	 */
@@ -1389,10 +1389,10 @@ export default class Statistics {
 	}
 	
 	/**
-	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of normal distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - &#x5206;&#x6563;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - Average value.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	static normpdf(x, u, s) {
@@ -1405,10 +1405,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of normal distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - &#x5206;&#x6563;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - Average value.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	static normcdf(x, u, s) {
@@ -1421,10 +1421,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - &#x5206;&#x6563;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - Average value.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	static norminv(x, u, s) {
@@ -1437,9 +1437,9 @@ export default class Statistics {
 	}
 
 	/**
-	 * t&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of Student&apos;s t-distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tpdf(x, v) {
@@ -1451,9 +1451,9 @@ export default class Statistics {
 	}
 
 	/**
-	 * t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of Student&apos;s t-distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tcdf(x, v) {
@@ -1465,9 +1465,9 @@ export default class Statistics {
 	}
 
 	/**
-	 * t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse of cumulative distribution function (CDF) of Student&apos;s t-distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tinv(x, v) {
@@ -1479,10 +1479,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of Student&apos;s t-distribution that can specify tail.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - &#x81EA;&#x7531;&#x5EA6;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} tails - &#x5C3E;&#x90E8;(1...&#x7247;&#x5074;&#x3001;2...&#x4E21;&#x5074;)
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {Matrix}
 	 */
 	static tdist(x, v, tails) {
@@ -1495,9 +1495,9 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of Student&apos;s t-distribution in two-sided test.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tinv2(x, v) {
@@ -1509,9 +1509,9 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of chi-square distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static chi2pdf(x, k) {
@@ -1523,9 +1523,9 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of chi-square distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static chi2cdf(x, k) {
@@ -1537,9 +1537,9 @@ export default class Statistics {
 	}
 	
 	/**
-	 * &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - &#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static chi2inv(x, k) {
@@ -1551,10 +1551,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of F-distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	static fpdf(x, d1, d2) {
@@ -1567,10 +1567,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of F-distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	static fcdf(x, d1, d2) {
@@ -1583,10 +1583,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	static finv(x, d1, d2) {
@@ -1599,7 +1599,7 @@ export default class Statistics {
 	}
 	
 	/**
-	 * &#x6700;&#x5927;&#x5024;
+	 * Maximum number.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} max([A, B])
@@ -1620,7 +1620,7 @@ export default class Statistics {
 	}
 	
 	/**
-	 * &#x6700;&#x5C0F;&#x5024;
+	 * Minimum number.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} min([A, B])
@@ -1641,7 +1641,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x5408;&#x8A08;
+	 * Sum.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -1665,7 +1665,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x76F8;&#x52A0;&#x5E73;&#x5747;
+	 * Arithmetic average.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -1689,7 +1689,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x914D;&#x5217;&#x306E;&#x7A4D;
+	 * Product of array elements.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -1708,7 +1708,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x76F8;&#x4E57;&#x5E73;&#x5747;&#xFF0F;&#x5E7E;&#x4F55;&#x5E73;&#x5747;
+	 * Geometric mean.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -1727,7 +1727,7 @@ export default class Statistics {
 	}
 	
 	/**
-	 * &#x4E2D;&#x592E;&#x5024;
+	 * Median.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -1755,7 +1755,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x6700;&#x983B;&#x5024;
+	 * Mode.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -1796,7 +1796,8 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x4E2D;&#x5FC3;&#x7A4D;&#x7387;
+	 * Moment.
+	 * &lt;br&gt;* Moment of order n. Equivalent to the definition of variance at 2.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
 	 * @returns {Matrix} n&#x6B21;&#x306E;&#x30E2;&#x30FC;&#x30E1;&#x30F3;&#x30C8;&#x3001;2&#x3067;&#x5206;&#x6563;&#x306E;&#x5B9A;&#x7FA9;&#x3068;&#x540C;&#x7B49;&#x3002;
@@ -1838,7 +1839,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x5206;&#x6563;
+	 * Variance.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
@@ -1868,7 +1869,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x6A19;&#x6E96;&#x504F;&#x5DEE;
+	 * Standard deviation.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
@@ -1886,7 +1887,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x7D76;&#x5BFE;&#x504F;&#x5DEE;
+	 * Mean absolute deviation.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -1907,7 +1908,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x6B6A;&#x5EA6;
+	 * Skewness.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
@@ -1928,7 +1929,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x5171;&#x5206;&#x6563;&#x884C;&#x5217;
+	 * Covariance matrix.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
@@ -1967,8 +1968,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x6A19;&#x672C;&#x306E;&#x6A19;&#x6E96;&#x5316;
-	 * &#x5E73;&#x5747;&#x5024;0&#x3001;&#x6A19;&#x6E96;&#x504F;&#x5DEE;1&#x306B;&#x5909;&#x66F4;&#x3059;&#x308B;
+	 * The samples are normalized to a mean value of 0, standard deviation of 1.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
@@ -1981,7 +1981,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x76F8;&#x95A2;&#x884C;&#x5217;
+	 * Correlation matrix.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
@@ -1992,7 +1992,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * &#x30BD;&#x30FC;&#x30C8;
+	 * Sort.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
 	 * @param {{dimension : (?string|?number), order : ?string}} [type]
 	 * @returns {Matrix}

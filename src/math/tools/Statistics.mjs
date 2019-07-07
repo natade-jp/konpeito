@@ -16,13 +16,13 @@ import Complex from "../Complex.mjs";
 import Matrix from "../Matrix.mjs";
 
 /**
- * 実数専用の統計処理用の関数集
+ * Collection of statistical functions using real numbers.
  * @ignore
  */
 class StatisticsTool {
 
 	/**
-	 * gammaln(x) 対数ガンマ関数 
+	 * Log-gamma function.
 	 * @param {number} x
 	 * @returns {number}
 	 */
@@ -70,7 +70,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * q_gamma(x, a, gammaln_a) 不完全ガンマ関数 上側
+	 * Incomplete gamma function upper side.
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} gammaln_a
@@ -103,7 +103,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * p_gamma(x, a, gammaln_a) 不完全ガンマ関数 下側
+	 * Incomplete gamma function lower side.
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} gammaln_a
@@ -132,7 +132,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * gamma(z) ガンマ関数
+	 * Gamma function.
 	 * @param {number} z
 	 * @returns {number}
 	 */
@@ -145,10 +145,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * gammainc(x, a, tail) 不完全ガンマ関数
+	 * Incomplete gamma function.
 	 * @param {number} x
 	 * @param {number} a
-	 * @param {string} [tail="lower"] - lower(デフォルト)/upper
+	 * @param {string} [tail="lower"] - lower (default) / upper
 	 * @returns {number}
 	 */
 	static gammainc(x, a, tail) {
@@ -168,10 +168,10 @@ class StatisticsTool {
 	}
 	
 	/**
-	 * gampdf(x, k, s) ガンマ分布の確率密度関数
+	 * Probability density function (PDF) of the gamma distribution.
 	 * @param {number} x
-	 * @param {number} k - 形状母数
-	 * @param {number} s - 尺度母数
+	 * @param {number} k - Shape parameter.
+	 * @param {number} s - Scale parameter.
 	 * @returns {number}
 	 */
 	static gampdf(x, k, s) {
@@ -182,10 +182,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * gamcdf(x, k, s) ガンマ分布の累積分布関数
+	 * Cumulative distribution function (CDF) of gamma distribution.
 	 * @param {number} x
-	 * @param {number} k - 形状母数
-	 * @param {number} s - 尺度母数
+	 * @param {number} k - Shape parameter.
+	 * @param {number} s - Scale parameter.
 	 * @returns {number}
 	 */
 	static gamcdf(x, k, s) {
@@ -193,10 +193,10 @@ class StatisticsTool {
 	}
 	
 	/**
-	 * gaminv(p, k, s) ガンマ分布の累積分布関数の逆関数
+	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
 	 * @param {number} p
-	 * @param {number} k - 形状母数
-	 * @param {number} s - 尺度母数
+	 * @param {number} k - Shape parameter.
+	 * @param {number} s - Scale parameter.
 	 * @returns {number}
 	 */
 	static gaminv(p, k, s) {
@@ -233,7 +233,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * beta(x, y) ベータ関数
+	 * Beta function.
 	 * @param {number} x
 	 * @param {number} y
 	 * @returns {number}
@@ -244,7 +244,7 @@ class StatisticsTool {
 	}
 	
 	/**
-	 * p_beta(x, a, b) 不完全ベータ関数 下側
+	 * Incomplete beta function lower side.
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} b
@@ -295,7 +295,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * q_beta(x, a, b) 不完全ベータ関数 上側
+	 * Incomplete beta function upper side.
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} b
@@ -306,11 +306,11 @@ class StatisticsTool {
 	}
 
 	/**
-	 * betainc(x, a, b, tail) 不完全ベータ関数
+	 * Incomplete beta function.
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} b
-	 * @param {string} [tail="lower"] - lower(デフォルト)/upper
+	 * @param {string} [tail="lower"] - lower (default) / upper
 	 * @returns {number}
 	 */
 	static betainc(x, a, b, tail) {
@@ -330,7 +330,7 @@ class StatisticsTool {
 	}
 	
 	/**
-	 * isInteger(x) xが整数かどうか
+	 * Return true if the value is integer.
 	 * @param {number} x
 	 * @returns {boolean}
 	 */
@@ -339,7 +339,7 @@ class StatisticsTool {
 	}
 	
 	/**
-	 * betapdf(x, a, b) ベータ分布の確率密度関数
+	 * Probability density function (PDF) of beta distribution.
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} b
@@ -359,7 +359,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * betacdf(x, a, b) ベータ分布の累積分布関数
+	 * Cumulative distribution function (CDF) of beta distribution.
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} b
@@ -370,7 +370,7 @@ class StatisticsTool {
 	}
 	
 	/**
-	 * betainv(p, a, b) ベータ分布の累積分布関数の逆関数
+	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
 	 * @param {number} p
 	 * @param {number} a
 	 * @param {number} b
@@ -422,7 +422,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * factorial(n) = n! 階乗関数
+	 * Factorial function, x!.
 	 * @param {number} n
 	 * @returns {number}
 	 */
@@ -437,7 +437,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * nchoosek(n, k) = nCk 二項係数またはすべての組合わせ
+	 * Binomial coefficient, number of all combinations, nCk.
 	 * @param {number} n
 	 * @param {number} k
 	 * @returns {number} nCk
@@ -447,7 +447,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * erf(x) 誤差関数
+	 * Error function.
 	 * @param {number} x
 	 * @returns {number}
 	 */
@@ -456,7 +456,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * erfc(x) 相補誤差関数
+	 * Complementary error function.
 	 * @param {number} x
 	 * @returns {number}
 	 */
@@ -513,10 +513,10 @@ class StatisticsTool {
 	*/
 
 	/**
-	 * normpdf(x, u, s) 正規分布の確率密度関数
+	 * Probability density function (PDF) of normal distribution.
 	 * @param {number} x
-	 * @param {number} [u=0.0] - 平均値
-	 * @param {number} [s=1.0] - 分散
+	 * @param {number} [u=0.0] - Average value.
+	 * @param {number} [s=1.0] - Variance value.
 	 * @returns {number}
 	 */
 	static normpdf(x, u, s) {
@@ -528,10 +528,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * normcdf(x, u, s) 正規分布の累積分布関数
+	 * Cumulative distribution function (CDF) of normal distribution.
 	 * @param {number} x
-	 * @param {number} [u=0.0] - 平均値
-	 * @param {number} [s=1.0] - 分散
+	 * @param {number} [u=0.0] - Average value.
+	 * @param {number} [s=1.0] - Variance value.
 	 * @returns {number}
 	 */
 	static normcdf(x, u, s) {
@@ -541,10 +541,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * norminv(p, u, s) 正規分布の累積分布関数の逆関数
-	 * @param {number} p - 確率
-	 * @param {number} [u=0.0] - 平均値
-	 * @param {number} [s=1.0] - 分散
+	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
+	 * @param {number} p - Probability.
+	 * @param {number} [u=0.0] - Average value.
+	 * @param {number} [s=1.0] - Variance value.
 	 * @returns {number}
 	 */
 	static norminv(p, u, s) {
@@ -580,9 +580,9 @@ class StatisticsTool {
 	}
 
 	/**
-	 * tpdf(t, k) t分布の確率密度関数
-	 * @param {number} t - t値
-	 * @param {number} v - 自由度
+	 * Probability density function (PDF) of Student's t-distribution.
+	 * @param {number} t - T-value.
+	 * @param {number} v - The degrees of freedom. (DF)
 	 * @returns {number}
 	 */
 	static tpdf(t, v) {
@@ -592,9 +592,9 @@ class StatisticsTool {
 	}
 
 	/**
-	 * tcdf(t) t分布の累積分布関数
-	 * @param {number} t - t値
-	 * @param {number} v - 自由度
+	 * Cumulative distribution function (CDF) of Student's t-distribution.
+	 * @param {number} t - T-value.
+	 * @param {number} v - The degrees of freedom. (DF)
 	 * @returns {number}
 	 */
 	static tcdf(t, v) {
@@ -604,9 +604,9 @@ class StatisticsTool {
 	}
 
 	/**
-	 * tinv(p, v) t分布の累積分布関数の逆関数
-	 * @param {number} p - 確率
-	 * @param {number} v - 自由度
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
+	 * @param {number} p - Probability.
+	 * @param {number} v - The degrees of freedom. (DF)
 	 * @returns {number}
 	 */
 	static tinv(p, v) {
@@ -630,10 +630,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * tdist(t, v, tails) 尾部が指定可能なt分布の累積分布関数
-	 * @param {number} t - t値
-	 * @param {number} v - 自由度
-	 * @param {number} tails - 尾部(1...片側、2...両側)
+	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
+	 * @param {number} t - T-value.
+	 * @param {number} v - The degrees of freedom. (DF)
+	 * @param {number} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {number}
 	 */
 	static tdist(t, v, tails) {
@@ -641,9 +641,9 @@ class StatisticsTool {
 	}
 
 	/**
-	 * tinv2(p, v) 両側検定時のt分布の累積分布関数
-	 * @param {number} p - 確率
-	 * @param {number} v - 自由度
+	 * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+	 * @param {number} p - Probability.
+	 * @param {number} v - The degrees of freedom. (DF)
 	 * @returns {number}
 	 */
 	static tinv2(p, v) {
@@ -651,9 +651,9 @@ class StatisticsTool {
 	}
 
 	/**
-	 * chi2pdf(x, v) カイ二乗分布の確率密度関数
+	 * Probability density function (PDF) of chi-square distribution.
 	 * @param {number} x 
-	 * @param {number} k - 自由度
+	 * @param {number} k - The degrees of freedom. (DF)
 	 * @returns {number}
 	 */
 	static chi2pdf(x, k) {
@@ -669,9 +669,9 @@ class StatisticsTool {
 	}
 
 	/**
-	 * chi2cdf(x, v) カイ二乗分布の累積分布関数
+	 * Cumulative distribution function (CDF) of chi-square distribution.
 	 * @param {number} x 
-	 * @param {number} k - 自由度
+	 * @param {number} k - The degrees of freedom. (DF)
 	 * @returns {number}
 	 */
 	static chi2cdf(x, k) {
@@ -679,9 +679,9 @@ class StatisticsTool {
 	}
 
 	/**
-	 * chi2inv(p, v) カイ二乗分布の逆累積分布関数
-	 * @param {number} p - 確率
-	 * @param {number} k - 自由度
+	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
+	 * @param {number} p - Probability.
+	 * @param {number} k - The degrees of freedom. (DF)
 	 * @returns {number}
 	 */
 	static chi2inv(p, k) {
@@ -689,10 +689,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * fpdf(x, d1, d2) F分布の確率密度関数
+	 * Probability density function (PDF) of F-distribution.
 	 * @param {number} x
-	 * @param {number} d1 - 分子の自由度
-	 * @param {number} d2 - 分母の自由度
+	 * @param {number} d1 - The degree of freedom of the molecules.
+	 * @param {number} d2 - The degree of freedom of the denominator
 	 * @returns {number}
 	 */
 	static fpdf(x, d1, d2) {
@@ -710,10 +710,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * fcdf(x, d1, d2) F分布の累積分布関数
+	 * Cumulative distribution function (CDF) of F-distribution.
 	 * @param {number} x
-	 * @param {number} d1 - 分子の自由度
-	 * @param {number} d2 - 分母の自由度
+	 * @param {number} d1 - The degree of freedom of the molecules.
+	 * @param {number} d2 - The degree of freedom of the denominator
 	 * @returns {number}
 	 */
 	static fcdf(x, d1, d2) {
@@ -721,10 +721,10 @@ class StatisticsTool {
 	}
 
 	/**
-	 * finv(p, d1, d2) F分布の累積分布関数の逆関数
-	 * @param {number} p - 確率
-	 * @param {number} d1 - 分子の自由度
-	 * @param {number} d2 - 分母の自由度
+	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
+	 * @param {number} p - Probability.
+	 * @param {number} d1 - The degree of freedom of the molecules.
+	 * @param {number} d2 - The degree of freedom of the denominator
 	 * @returns {number}
 	 */
 	static finv(p, d1, d2) {
@@ -734,7 +734,7 @@ class StatisticsTool {
 }
 
 /**
- * 文字列か判定
+ * typeof this === string
  * @param text 
  * @ignore
  */
@@ -743,13 +743,13 @@ const isStr = function(text) {
 };
 
 /**
- * Complexクラスから利用する統計処理関数集
+ * Collection of statistical functions used from the Complex class.
  * @ignore
  */
 class StatisticsComplex {
 
 	/**
-	 * gammaln(x) 対数ガンマ関数
+	 * Log-gamma function.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @returns {Complex}
 	 */
@@ -758,7 +758,7 @@ class StatisticsComplex {
 	}
 	
 	/**
-	 * gamma(z) ガンマ関数 
+	 * Gamma function.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} z
 	 * @returns {Complex}
 	 */
@@ -767,10 +767,10 @@ class StatisticsComplex {
 	}
 	
 	/**
-	 * gammainc(x, a, tail) 不完全ガンマ関数
+	 * Incomplete gamma function.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
-	 * @param {string} [tail="lower"] - lower/upper
+	 * @param {string} [tail="lower"] - tail ("lower", "upper")
 	 * @returns {Complex}
 	 */
 	static gammainc(x, a, tail) {
@@ -781,10 +781,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * gampdf(x, k, s) ガンマ分布の確率密度関数
+	 * Probability density function (PDF) of the gamma distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 形状母数
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - 尺度母数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - Shape parameter.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - Scale parameter.
 	 * @returns {Complex}
 	 */
 	static gampdf(x, k, s) {
@@ -795,10 +795,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * gamcdf(x, k, s) ガンマ分布の確率密度関数
+	 * Cumulative distribution function (CDF) of gamma distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 形状母数
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - 尺度母数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - Shape parameter.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - Scale parameter.
 	 * @returns {Complex}
 	 */
 	static gamcdf(x, k, s) {
@@ -809,10 +809,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * gaminv(p, k, s) ガンマ分布の累積分布関数の逆関数
+	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 形状母数
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - 尺度母数
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - Shape parameter.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - Scale parameter.
 	 * @returns {Complex}
 	 */
 	static gaminv(p, k, s) {
@@ -823,7 +823,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * beta(x, y) ベータ関数
+	 * Beta function.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} y
 	 * @returns {Complex}
@@ -835,11 +835,11 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * betainc(x, a, b, tail) 不完全ベータ関数
+	 * Incomplete beta function.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
-	 * @param {string} [tail="lower"] - lower/upper
+	 * @param {string} [tail="lower"] - tail ("lower", "upper")
 	 * @returns {Complex}
 	 */
 	static betainc(x, a, b, tail) {
@@ -851,7 +851,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * betapdf(x, a, b) ベータ分布の確率密度関数
+	 * Probability density function (PDF) of beta distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
@@ -865,7 +865,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * betacdf(x, a, b) ベータ分布の累積分布関数
+	 * Cumulative distribution function (CDF) of beta distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
@@ -879,7 +879,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * betainv(p, a, b) ベータ分布の累積分布関数の逆関数
+	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
@@ -893,7 +893,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * factorial(n), n! 階乗関数
+	 * Factorial function, x!.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} n
 	 * @returns {Complex}
 	 */
@@ -902,7 +902,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * nchoosek(n, k), nCk 二項係数またはすべての組合わせ
+	 * Binomial coefficient, number of all combinations, nCk.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} n
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k
 	 * @returns {Complex}
@@ -914,7 +914,7 @@ class StatisticsComplex {
 	}
 	
 	/**
-	 * erf(x) 誤差関数
+	 * Error function.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @returns {Complex}
 	 */
@@ -924,7 +924,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * erfc(x) 相補誤差関数
+	 * Complementary error function.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @returns {Complex}
 	 */
@@ -934,10 +934,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * normpdf(x, u, s) 正規分布の確率密度関数
+	 * Probability density function (PDF) of normal distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - 平均値
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - 分散
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - Average value.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
 	 * @returns {Complex}
 	 */
 	static normpdf(x, u, s) {
@@ -948,10 +948,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * normcdf(x, u, s) 正規分布の累積分布関数
+	 * Cumulative distribution function (CDF) of normal distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - 平均値
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - 分散
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - Average value.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
 	 * @returns {Complex}
 	 */
 	static normcdf(x, u, s) {
@@ -962,10 +962,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * norminv(x, u, s) 正規分布の累積分布関数の逆関数
+	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - 平均値
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - 分散
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - Average value.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
 	 * @returns {Complex}
 	 */
 	static norminv(x, u, s) {
@@ -976,9 +976,9 @@ class StatisticsComplex {
 	}
 	
 	/**
-	 * tpdf(x, v) t分布の確率密度関数
+	 * Probability density function (PDF) of Student's t-distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static tpdf(x, v) {
@@ -988,9 +988,9 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * tcdf(t, v) t分布の累積分布関数
+	 * Cumulative distribution function (CDF) of Student's t-distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} t
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static tcdf(t, v) {
@@ -1000,9 +1000,9 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * tinv(p, v) t分布の累積分布関数の逆関数
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static tinv(p, v) {
@@ -1012,10 +1012,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * tdist(t, v, tails) 尾部が指定可能なt分布の累積分布関数
+	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} t
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} tails - 尾部(1...片側、2...両側)
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {Complex}
 	 */
 	static tdist(t, v, tails) {
@@ -1026,9 +1026,9 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * tinv2(p, v) 両側検定時のt分布の累積分布関数
+	 * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static tinv2(p, v) {
@@ -1038,9 +1038,9 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * chi2pdf(x, k) カイ二乗分布の確率密度関数
+	 * Probability density function (PDF) of chi-square distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static chi2pdf(x, k) {
@@ -1050,9 +1050,9 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * chi2cdf(x, k) カイ二乗分布の累積分布関数
+	 * Cumulative distribution function (CDF) of chi-square distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static chi2cdf(x, k) {
@@ -1062,9 +1062,9 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * chi2inv(p, k) カイ二乗分布の累積分布関数の逆関数
+	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - 自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static chi2inv(p, k) {
@@ -1074,10 +1074,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * fpdf(x, d1, d2) F分布の確率密度関数
+	 * Probability density function (PDF) of F-distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - 分子の自由度
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - 分母の自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Complex}
 	 */
 	static fpdf(x, d1, d2) {
@@ -1088,10 +1088,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * fcdf(x, d1, d2) F分布の累積分布関数
+	 * Cumulative distribution function (CDF) of F-distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - 分子の自由度
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - 分母の自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Complex}
 	 */
 	static fcdf(x, d1, d2) {
@@ -1102,10 +1102,10 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * finv(p, d1, d2) F分布の累積分布関数の逆関数
+	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - 分子の自由度
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - 分母の自由度
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Complex}
 	 */
 	static finv(p, d1, d2) {
@@ -1118,12 +1118,12 @@ class StatisticsComplex {
 }
 
 /**
- * Matrix用の統計処理用の計算クラス
+ * Class for statistical processing for Matrix class.
  */
 export default class Statistics {
 
 	/**
-	 * 対数ガンマ関数
+	 * Log-gamma function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @returns {Matrix}
 	 */
@@ -1135,7 +1135,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * ガンマ関数
+	 * Gamma function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @returns {Matrix}
 	 */
@@ -1147,10 +1147,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * 不完全ガンマ関数
+	 * Incomplete gamma function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {string} [tail="lower"] - lower/upper
+	 * @param {string} [tail="lower"] - tail ("lower", "upper")
 	 * @returns {Matrix}
 	 */
 	static gammainc(x, a, tail) {
@@ -1163,10 +1163,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * ガンマ分布の確率密度関数
+	 * Probability density function (PDF) of the gamma distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	static gampdf(x, k, s) {
@@ -1179,10 +1179,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * ガンマ分布の確率密度関数
+	 * Cumulative distribution function (CDF) of gamma distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	static gamcdf(x, k, s) {
@@ -1195,10 +1195,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * ガンマ分布の累積分布関数の逆関数
+	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	static gaminv(x, k, s) {
@@ -1211,7 +1211,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * ベータ関数
+	 * Beta function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} y
 	 * @returns {Matrix}
@@ -1225,11 +1225,11 @@ export default class Statistics {
 	}
 	
 	/**
-	 * 不完全ベータ関数
+	 * Incomplete beta function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-	 * @param {string} [tail="lower"] - lower/upper
+	 * @param {string} [tail="lower"] - tail ("lower", "upper")
 	 * @returns {Matrix}
 	 */
 	static betainc(x, a, b, tail) {
@@ -1243,7 +1243,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * ベータ分布の確率密度関数
+	 * Cumulative distribution function (CDF) of beta distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
@@ -1259,7 +1259,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * ベータ分布の累積分布関数
+	 * Probability density function (PDF) of beta distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
@@ -1275,7 +1275,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * ベータ分布の累積分布関数の逆関数
+	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
@@ -1291,7 +1291,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * x! 階乗関数
+	 * Factorial function, x!.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @returns {Matrix}
 	 */
@@ -1303,7 +1303,7 @@ export default class Statistics {
 	}
 	
 	/**
-	 * nCk 二項係数またはすべての組合わせ
+	 * Binomial coefficient, number of all combinations, nCk.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k
 	 * @returns {Matrix}
@@ -1317,7 +1317,7 @@ export default class Statistics {
 	}
 	
 	/**
-	 * 誤差関数
+	 * Error function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @returns {Matrix}
 	 */
@@ -1329,7 +1329,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * 相補誤差関数
+	 * Complementary error function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @returns {Matrix}
 	 */
@@ -1341,10 +1341,10 @@ export default class Statistics {
 	}
 	
 	/**
-	 * 正規分布の確率密度関数
+	 * Probability density function (PDF) of normal distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	static normpdf(x, u, s) {
@@ -1357,10 +1357,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * 正規分布の累積分布関数
+	 * Cumulative distribution function (CDF) of normal distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	static normcdf(x, u, s) {
@@ -1373,10 +1373,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * 正規分布の累積分布関数の逆関数
+	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	static norminv(x, u, s) {
@@ -1389,9 +1389,9 @@ export default class Statistics {
 	}
 
 	/**
-	 * t分布の確率密度関数
+	 * Probability density function (PDF) of Student's t-distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tpdf(x, v) {
@@ -1403,9 +1403,9 @@ export default class Statistics {
 	}
 
 	/**
-	 * t分布の累積分布関数
+	 * Cumulative distribution function (CDF) of Student's t-distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tcdf(x, v) {
@@ -1417,9 +1417,9 @@ export default class Statistics {
 	}
 
 	/**
-	 * t分布の累積分布関数の逆関数
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tinv(x, v) {
@@ -1431,10 +1431,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * 尾部が指定可能なt分布の累積分布関数
+	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - 尾部(1...片側、2...両側)
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {Matrix}
 	 */
 	static tdist(x, v, tails) {
@@ -1447,9 +1447,9 @@ export default class Statistics {
 	}
 
 	/**
-	 * 両側検定時のt分布の累積分布関数
+	 * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tinv2(x, v) {
@@ -1461,9 +1461,9 @@ export default class Statistics {
 	}
 
 	/**
-	 * カイ二乗分布の確率密度関数
+	 * Probability density function (PDF) of chi-square distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static chi2pdf(x, k) {
@@ -1475,9 +1475,9 @@ export default class Statistics {
 	}
 
 	/**
-	 * カイ二乗分布の累積分布関数
+	 * Cumulative distribution function (CDF) of chi-square distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static chi2cdf(x, k) {
@@ -1489,9 +1489,9 @@ export default class Statistics {
 	}
 	
 	/**
-	 * カイ二乗分布の累積分布関数の逆関数
+	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static chi2inv(x, k) {
@@ -1503,10 +1503,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * F分布の確率密度関数
+	 * Probability density function (PDF) of F-distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	static fpdf(x, d1, d2) {
@@ -1519,10 +1519,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * F分布の累積分布関数
+	 * Cumulative distribution function (CDF) of F-distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	static fcdf(x, d1, d2) {
@@ -1535,10 +1535,10 @@ export default class Statistics {
 	}
 
 	/**
-	 * F分布の累積分布関数の逆関数
+	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	static finv(x, d1, d2) {
@@ -1551,7 +1551,7 @@ export default class Statistics {
 	}
 	
 	/**
-	 * 最大値
+	 * Maximum number.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} max([A, B])
@@ -1572,7 +1572,7 @@ export default class Statistics {
 	}
 	
 	/**
-	 * 最小値
+	 * Minimum number.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} min([A, B])
@@ -1593,7 +1593,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * 合計
+	 * Sum.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -1617,7 +1617,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * 相加平均
+	 * Arithmetic average.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -1641,7 +1641,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * 配列の積
+	 * Product of array elements.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -1660,7 +1660,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * 相乗平均／幾何平均
+	 * Geometric mean.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -1679,7 +1679,7 @@ export default class Statistics {
 	}
 	
 	/**
-	 * 中央値
+	 * Median.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -1707,7 +1707,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * 最頻値
+	 * Mode.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -1748,7 +1748,8 @@ export default class Statistics {
 	}
 
 	/**
-	 * 中心積率
+	 * Moment.
+	 * <br>* Moment of order n. Equivalent to the definition of variance at 2.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
 	 * @returns {Matrix} n次のモーメント、2で分散の定義と同等。
@@ -1790,7 +1791,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * 分散
+	 * Variance.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
@@ -1820,7 +1821,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * 標準偏差
+	 * Standard deviation.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
@@ -1838,7 +1839,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * 絶対偏差
+	 * Mean absolute deviation.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -1859,7 +1860,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * 歪度
+	 * Skewness.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
@@ -1880,7 +1881,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * 共分散行列
+	 * Covariance matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
@@ -1919,8 +1920,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * 標本の標準化
-	 * 平均値0、標準偏差1に変更する
+	 * The samples are normalized to a mean value of 0, standard deviation of 1.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
@@ -1933,7 +1933,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * 相関行列
+	 * Correlation matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
@@ -1944,7 +1944,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * ソート
+	 * Sort.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), order : ?string}} [type]
 	 * @returns {Matrix}

@@ -36,7 +36,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-interface">I</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
@@ -70,16 +70,16 @@ import Signal from &quot;./tools/Signal.mjs&quot;;
 import Complex from &quot;./Complex.mjs&quot;;
 
 /**
- * Matrix &#x5185;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x95A2;&#x6570;&#x7FA4;
+ * Collection of functions used in Matrix.
  * @ignore
  */
 class MatrixTool {
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x4F4D;&#x7F6E;&#x3092;&#x6307;&#x5B9A;&#x3059;&#x308B;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;&#x3001;&#x5B9F;&#x969B;&#x306E;&#x5024;&#x3092;&#x4F5C;&#x6210;
-	 * @param data {string|number|Matrix|Complex} - &#x8ABF;&#x67FB;&#x3059;&#x308B;&#x5024;
-	 * @param max {number} - &quot;:&quot;&#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x521D;&#x671F;&#x5316;&#x3059;&#x308B;&#x914D;&#x5217;&#x306E;&#x9577;&#x3055;
-	 * @param geta {number} - &quot;:&quot;&#x304C;&#x6307;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x6642;&#x306B;&#x521D;&#x671F;&#x5316;&#x3059;&#x308B;&#x5024;&#x306E;&#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;
+	 * Create actual values from data specifying matrix position.
+	 * @param {string|number|Matrix|Complex} data - A value indicating the position in a matrix.
+	 * @param {number} max - Length to initialize. (Used when &quot;:&quot; is specified at matrix creation.)
+	 * @param {number} geta - Offset at initialization. (Used when &quot;:&quot; is specified at matrix creation.)
 	 * @returns {Array&lt;number&gt;}
 	 */
 	static toPositionArrayFromObject(data, max, geta) {
@@ -132,9 +132,9 @@ class MatrixTool {
 	}
 
 	/**
-	 * &#x5BFE;&#x8C61;&#x3067;&#x306F;&#x306A;&#x3044;regexp&#x306E;&#x60C5;&#x5831;&#x4EE5;&#x5916;&#x3082;&#x62BD;&#x51FA;match
-	 * @param {string} text - &#x691C;&#x7D22;&#x5BFE;&#x8C61;
-	 * @param {RegExp} regexp - &#x691C;&#x7D22;&#x3057;&#x305F;&#x3044;&#x6B63;&#x898F;&#x8868;&#x73FE;
+	 * A match function that can also extract strings excluding matched strings.
+	 * @param {string} text - Search target.
+	 * @param {RegExp} regexp - Regular expression.
 	 * @returns {Array&lt;Object&lt;boolean, string&gt;&gt;}
 	 */
 	static match2(text, regexp) {
@@ -166,9 +166,10 @@ class MatrixTool {
 	}
 	
 	/**
-	 * &#x30D6;&#x30E9;&#x30B1;&#x30C3;&#x30C8;&#x306B;&#x56F2;&#x307E;&#x308C;&#x3066;&#x3044;&#x305F;&#x3089;&#x3001;&#x524D;&#x5F8C;&#x306E;&#x30D6;&#x30E9;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x9664;&#x53BB;
-	 * @param {string} text - &#x30D6;&#x30E9;&#x30B1;&#x30C3;&#x30C8;&#x3092;&#x9664;&#x53BB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;
-	 * @returns {string|null} &#x9664;&#x53BB;&#x3057;&#x305F;&#x6587;&#x5B57;&#x5217;&#xFF08;&#x30D6;&#x30E9;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x3001;null&#xFF09;
+	 * Removed front and back brackets when enclosed by brackets.
+	 * &lt;br&gt;* Return null if the string has no brackets.
+	 * @param {string} text - String to be processed.
+	 * @returns {string|null} String after brackets removal or null.
 	 */
 	static trimBracket(text) {
 		// &#x524D;&#x5F8C;&#x306B;[]&#x304C;&#x3042;&#x308B;&#x304B;&#x78BA;&#x8A8D;
@@ -180,9 +181,10 @@ class MatrixTool {
 	}
 
 	/**
-	 * JSON&#x3067;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;Matrix&#x578B;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-	 * @param {string} text - &#x8ABF;&#x67FB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;&#x5217;([xx,xx,xx],[xx,xx,xx])
-	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Matrix&#x578B;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x306E;&#x914D;&#x5217;
+	 * Create Matrix type data from string data defined in JSON.
+	 * &lt;br&gt;* For example, &quot;[xx,xx,xx], [xx,xx,xx]&quot;
+	 * @param {string} text - String to be processed.
+	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Internal array used by Matrix type.
 	 */
 	static toMatrixArrayFromStringForArrayJSON(text) {
 		const matrix_array = [];
@@ -207,11 +209,11 @@ class MatrixTool {
 	}
 
 	/**
-	 * &#x521D;&#x671F;&#x5024;&#x3068;&#x5DEE;&#x5206;&#x5024;&#x3068;&#x6700;&#x7D42;&#x5024;&#x304B;&#x3089;&#x3001;&#x305D;&#x306E;&#x5024;&#x304C;&#x5165;&#x3063;&#x305F;&#x914D;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-	 * @param {Complex} from - &#x6700;&#x521D;&#x306E;&#x5024;
-	 * @param {Complex} delta - &#x5DEE;&#x5206;
-	 * @param {Complex} to - &#x7E70;&#x308A;&#x8FD4;&#x3059;&#x5148;&#x306E;&#x5024;
-	 * @param {boolean} [is_include_last_number=true] - &#x6700;&#x5F8C;&#x306E;&#x5024;&#x3092;&#x542B;&#x3081;&#x308B;&#x304B;&#x5426;&#x304B;
+	 * Create a numeric array from initial values, difference values, and final values.
+	 * @param {Complex} from - Start value.
+	 * @param {Complex} delta - Delta.
+	 * @param {Complex} to - End value.
+	 * @param {boolean} [is_include_last_number=true] - Whether to include the last value.
 	 * @returns {Array&lt;Complex&gt;}
 	 */
 	static InterpolationCalculation(from, delta, to, is_include_last_number) {
@@ -251,8 +253,8 @@ class MatrixTool {
 	}
 
 	/**
-	 * match2&#x3067;&#x6587;&#x5B57;&#x5217;&#x3092;&#x5207;&#x308A;&#x5206;&#x3051;&#x305F;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;&#x6570;&#x5024;&#x306E;&#x914D;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-	 * @param {Array&lt;Object&lt;boolean, string&gt;&gt;} match2_string - &#x6587;&#x5B57;&#x5217;&#x3092;&#x5207;&#x308A;&#x5206;&#x3051;&#x305F;&#x30C7;&#x30FC;&#x30BF;
+	 * Create an array of numbers from data separated by match2.
+	 * @param {Array&lt;Object&lt;boolean, string&gt;&gt;} match2_string - Data separated by &quot;toArrayFromString&quot;.
 	 * @returns {Array&lt;Complex&gt;}
 	 */
 	static toArrayFromMatch2String(match2_string) {
@@ -293,9 +295,9 @@ class MatrixTool {
 	}
 
 	/**
-	 * &#x6587;&#x5B57;&#x5217;&#x304B;&#x3089;Matrix&#x578B;&#x306E;&#x884C;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x884C;&#x90E8;&#x5206;&#x306B;&#x5909;&#x63DB;
-	 * &#x6570;&#x5B57;&#x306E;&#x3088;&#x3046;&#x306A;&#x90E8;&#x5206;&#x3092;&#x62BD;&#x51FA;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x3001;&#x884C;&#x5217;&#x3092;&#x63A8;&#x5B9A;&#x3059;&#x308B;
-	 * @param {string} row_text - &#x884C;&#x5217;&#x306E;1&#x884C;&#x3092;&#x8868;&#x3059;&#x6587;&#x5B57;&#x5217;
+	 * Convert string to row part of matrix type matrix data.
+	 * &lt;br&gt;Estimate the matrix by extracting parts like numbers.
+	 * @param {string} row_text - A string describing one row of the matrix.
 	 * @returns {Array&lt;Complex&gt;|string}
 	 */
 	static toArrayFromString(row_text) {
@@ -315,9 +317,9 @@ class MatrixTool {
 	}
 
 	/**
-	 * &#x30B9;&#x30DA;&#x30FC;&#x30B9;&#x533A;&#x5207;&#x308A;&#x306A;&#x3069;&#x3067;&#x6587;&#x5B57;&#x5217;&#x3067;&#x5B9A;&#x7FA9;&#x3055;&#x308C;&#x305F;&#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;Matrix&#x578B;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-	 * @param {string} text - &#x8ABF;&#x67FB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;&#x5217;
-	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Matrix&#x578B;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x306E;&#x914D;&#x5217;
+	 * Create Matrix type data from string data defined by character string with space separation etc.
+	 * @param {string} text - Strings to analyze.
+	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Internal array used by Matrix type.
 	 */
 	static toMatrixArrayFromStringForArraySPACE(text) {
 		// &#x884C;&#x3054;&#x3068;&#x3092;&#x62BD;&#x51FA;&#x3057;&#x3066;
@@ -331,9 +333,9 @@ class MatrixTool {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x7528;&#x306E;&#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;&#x69CB;&#x6210;&#x3055;&#x308C;&#x308B;Matrix&#x578B;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-	 * @param {string} text - &#x8ABF;&#x67FB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;&#x5217;
-	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Matrix&#x578B;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x306E;&#x914D;&#x5217;
+	 * Create Matrix type data composed of string data for matrix.
+	 * @param {string} text - Strings to analyze.
+	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Internal array used by Matrix type.
 	 */
 	static toMatrixArrayFromStringInBracket(text) {
 		// &#x30D6;&#x30E9;&#x30B1;&#x30C3;&#x30C8;&#x306E;&#x4E2D;&#x306B;&#x30D6;&#x30E9;&#x30B1;&#x30C3;&#x30C8;&#x304C;&#x3042;&#x308B;&#xFF1D;JSON&#x5F62;&#x5F0F;
@@ -347,9 +349,9 @@ class MatrixTool {
 	}
 
 	/**
-	 * &#x6587;&#x5B57;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x304B;&#x3089;Matrix&#x578B;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-	 * @param {string} text - &#x8ABF;&#x67FB;&#x3057;&#x305F;&#x3044;&#x6587;&#x5B57;&#x5217;
-	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Matrix&#x578B;&#x3067;&#x4F7F;&#x7528;&#x3055;&#x308C;&#x308B;&#x5185;&#x90E8;&#x306E;&#x914D;&#x5217;
+	 * Create Matrix type data from string data.
+	 * @param {string} text - Strings to analyze.
+	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;} Internal array used by Matrix type.
 	 */
 	static toMatrixArrayFromString(text) {
 		// &#x524D;&#x5F8C;&#x306E;&#x30B9;&#x30DA;&#x30FC;&#x30B9;&#x3092;&#x9664;&#x53BB;
@@ -367,7 +369,7 @@ class MatrixTool {
 	}
 
 	/**
-	 * Matrix&#x578B;&#x5185;&#x90E8;&#x30C7;&#x30FC;&#x30BF;&#x304C;&#x884C;&#x5217;&#x30C7;&#x30FC;&#x30BF;&#x3068;&#x3057;&#x3066;&#x6B63;&#x3057;&#x3044;&#x304B;&#x3092;&#x8ABF;&#x3079;&#x308B;
+	 * Returns true if Matrix type internal data is correct as matrix data.
 	 * @param {Array&lt;Array&lt;Complex&gt;&gt;} m_array
 	 * @returns {boolean} 
 	 */
@@ -389,20 +391,17 @@ class MatrixTool {
 }
 
 /**
- * &#x8907;&#x7D20;&#x884C;&#x5217;&#x30AF;&#x30E9;&#x30B9; (immutable)
+ * Complex matrix class. (immutable)
  */
 export default class Matrix {
 	
 	/**
-	 * &#x8907;&#x7D20;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;
-	 * &#x5F15;&#x6570;&#x306F;&#x6B21;&#x306E;&#x30BF;&#x30A4;&#x30D7;&#x3092;&#x3068;&#x308C;&#x307E;&#x3059;
-	 * &#x30FB;4 				&#x6574;&#x6570;&#x3084;&#x5B9F;&#x6570;
-	 * &#x30FB;&quot;1 + j&quot;		&#x6587;&#x5B57;&#x5217;&#x3067;&#x8907;&#x7D20;&#x6570;&#x3092;&#x308F;&#x305F;&#x3059;
-	 * &#x30FB;[1,2]			1&#x6B21;&#x5143;&#x914D;&#x5217;
-	 * &#x30FB;[[1,2],[3,4]]	&#x884C;&#x5217;
-	 * &#x30FB;[&quot;1+j&quot;, &quot;2+j&quot;]	&#x8907;&#x7D20;&#x6570;&#x3092;&#x542B;&#x3093;&#x3060;&#x884C;&#x5217;
-	 * &#x30FB;&quot;[1 1:0.5:3]&quot;		MATLAB/Octave/Scilab&#x4E92;&#x63DB;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number - &#x884C;&#x5217;&#x30C7;&#x30FC;&#x30BF;( &quot;1 + j&quot;, [1 , 1] &#x306A;&#x3069;)
+	 * Create a complex matrix.
+	 * &lt;br&gt;Initialization can be performed as follows.
+	 * &lt;br&gt;* 10, &quot;10&quot;, &quot;3 + 4j&quot;, &quot;[ 1 ]&quot;, &quot;[1, 2, 3]&quot;, &quot;[1 2 3]&quot;, [1, 2, 3],
+	 * &lt;br&gt;* [[1, 2], [3, 4]], &quot;[1 2; 3 4]&quot;, &quot;[1+2i 3+4i]&quot;,
+	 * &lt;br&gt;* &quot;[1:10]&quot;, &quot;[1:2:3]&quot; (MATLAB / Octave / Scilab compatible).
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number - Complex matrix. See how to use the function.
 	 */
 	constructor(number) {
 		let matrix_array = null;
@@ -510,28 +509,28 @@ export default class Matrix {
 		}
 		
 		/**
-		 * &#x884C;&#x5217;&#x3092;&#x69CB;&#x6210;&#x3059;&#x308B;&#x914D;&#x5217;
+		 * An array of elements in the matrix.
 		 * @private
 		 * @type {Array&lt;Array&lt;Complex&gt;&gt;}
 		 */
 		this.matrix_array = matrix_array;
 
 		/**
-		 * &#x884C;&#x6570;
+		 * The number of rows in a matrix.
 		 * @private
 		 * @type {number}
 		 */
 		this.row_length = this.matrix_array.length;
 		
 		/**
-		 * &#x5217;&#x6570;
+		 * The number of columns in a matrix.
 		 * @private
 		 * @type {number}
 		 */
 		this.column_length = this.matrix_array[0].length;
 
 		/**
-		 * &#x6587;&#x5B57;&#x5217;&#x5316;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;
+		 * A cache that records data converted to a string.
 		 * @private
 		 * @type {string}
 		 */
@@ -539,7 +538,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * Matrix &#x3092;&#x4F5C;&#x6210;
+	 * Create an entity object of this class.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number
 	 * @returns {Matrix}
 	 */
@@ -553,7 +552,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6570;&#x5024;&#x304B;&#x3089; Matrix &#x578B;&#x306B;&#x5909;&#x63DB;
+	 * Convert number to Matrix type.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number
 	 * @returns {Matrix}
 	 */
@@ -562,7 +561,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x4F5C;&#x6210;
+	 * Convert to Matrix.
+	 * &lt;br&gt;If type conversion is unnecessary, return the value as it is.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number 
 	 * @returns {Matrix}
 	 * @private
@@ -577,7 +577,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x8907;&#x7D20;&#x6570;&#x3092;&#x4F5C;&#x6210;
+	 * Convert to Complex.
+	 * &lt;br&gt;If type conversion is unnecessary, return the value as it is.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number 
 	 * @returns {Complex}
 	 * @private
@@ -596,7 +597,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5B9F;&#x6570;&#x3092;&#x4F5C;&#x6210;
+	 * Convert to real number.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number 
 	 * @returns {number}
 	 * @private
@@ -615,7 +616,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6574;&#x6570;&#x3092;&#x4F5C;&#x6210;
+	 * Convert to integer.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number 
 	 * @returns {number}
 	 * @private
@@ -625,7 +626,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3092;&#x524A;&#x9664;
+	 * Delete cache.
 	 */
 	_clearCash() {
 		if(this.string_cash) {
@@ -634,7 +635,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30C7;&#x30A3;&#x30FC;&#x30D7;&#x30B3;&#x30D4;&#x30FC;
+	 * Deep copy.
 	 * @returns {Matrix}
 	 */
 	clone() {
@@ -642,7 +643,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6587;&#x5B57;&#x5217;&#x5316;
+	 * Convert to string.
 	 * @returns {string} 
 	 */
 	toString() {
@@ -755,7 +756,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6587;&#x5B57;&#x5217;&#x5316;&#xFF08;1&#x884C;&#x3067;&#x8868;&#x3059;&#xFF09;
+	 * Convert to string in one line.
 	 * @returns {string} 
 	 */
 	toOneLineString() {
@@ -781,9 +782,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x7B49;&#x5F0F;
+	 * Equals.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === B
 	 */
 	equals(number, epsilon) {
@@ -808,7 +809,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x69CB;&#x6210;&#x3059;&#x308B;&#x8907;&#x7D20;&#x6570;&#x306E;&#x5B9F;&#x90E8;&#x306E;&#x914D;&#x5217;
+	 * Array of real parts of elements in matrix.
 	 * @returns {Array&lt;Array&lt;number&gt;&gt;}
 	 */
 	getNumberMatrixArray() {
@@ -823,7 +824,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x69CB;&#x6210;&#x3059;&#x308B;&#x8907;&#x7D20;&#x6570;&#x306E;Complex&#x578B;&#x306E;&#x914D;&#x5217;
+	 * Complex array of complex numbers of each element of the matrix.
 	 * @returns {Array&lt;Array&lt;Complex&gt;&gt;}
 	 */
 	getComplexMatrixArray() {
@@ -838,10 +839,9 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x5185;&#x306E;&#x5168;&#x8981;&#x7D20;&#x306B;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
-	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
+	 * Perform the same process on all elements in the matrix. (mutable)
 	 * @param {function(Complex, number, number): ?Object } eachfunc - Function(num, row, col)
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
 	_each(eachfunc) {
@@ -872,20 +872,20 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x672C;&#x30AA;&#x30D6;&#x30B8;&#x30A7;&#x30AF;&#x30C8;&#x5185;&#x306E;&#x5168;&#x8981;&#x7D20;&#x306B;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
+	 * Perform the same process on all elements in the matrix.
 	 * @param {function(Complex, number, number): ?Object } eachfunc - Function(num, row, col)
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	cloneMatrixDoEachCalculation(eachfunc) {
 		return this.clone()._each(eachfunc);
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x5404;&#x5024;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x521D;&#x671F;&#x5316;&#x3092;&#x884C;&#x3063;&#x305F;Matrix&#x3092;&#x4F5C;&#x6210;
+	 * Create Matrix with specified initialization for each element in matrix.
 	 * @param {function(number, number): ?Object } eachfunc - Function(row, col)
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - &#x6B21;&#x5143;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length=dimension] - &#x5217;&#x6570;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - Number of dimensions or rows.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length=dimension] - Number of columns.
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	static createMatrixDoEachCalculation(eachfunc, dimension, column_length) {
 		if((arguments.length === 0) || (arguments.length &gt; 3)) {
@@ -910,9 +910,10 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x5217;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x307F;&#x306A;&#x3057;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;&#x3001;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3067;&#x3042;&#x308C;&#x3070;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306B;&#x5BFE;&#x3057;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
+	 * Treat the columns of the matrix as vectors and execute the same process.
+	 * &lt;br&gt;* If the matrix is a row vector, it performs the same processing for the row vector.
 	 * @param {function(Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	eachVectorAuto(array_function) {
 		if(this.isRow()) {
@@ -943,10 +944,11 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x884C;&#x3068;&#x5217;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x307F;&#x306A;&#x3057;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
-	 * &#x5148;&#x306B;&#x884C;&#x306B;&#x5BFE;&#x3057;&#x3066;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;&#x306B;&#x5BFE;&#x3057;&#x3001;&#x5217;&#x3054;&#x3068;&#x306B;&#x3055;&#x3089;&#x306B;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;&#x3059;&#x308B;
+	 * Treat the rows and columns of the matrix as vectors and perform the same processing.
+	 * &lt;br&gt;1. First run the same process for the row.
+	 * &lt;br&gt;2. Finally perform the same processing for the column.
 	 * @param {function(Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	eachVectorBoth(array_function) {
 		const y1 = new Matrix(0);
@@ -981,9 +983,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x884C;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x307F;&#x306A;&#x3057;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
+	 * Treat the rows of the matrix as vectors and execute the same process.
 	 * @param {function(Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	eachVectorRow(array_function) {
 		const y = new Matrix(0);
@@ -1004,9 +1006,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x5217;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x307F;&#x306A;&#x3057;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
+	 * Treat the columns of the matrix as vectors and execute the same process.
 	 * @param {function(Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	eachVectorColumn(array_function) {
 		const y = new Matrix(0);
@@ -1027,10 +1029,11 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5F15;&#x6570;&#x306B;&#x8A2D;&#x5B9A;&#x3055;&#x308C;&#x305F;&#x884C;&#xFF0F;&#x5217;&#x3092;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3068;&#x307F;&#x306A;&#x3057;&#x540C;&#x4E00;&#x51E6;&#x7406;&#x3092;&#x5B9F;&#x884C;
+	 * Treat the rows and columns of the matrix as vectors and perform the same processing.
+	 * &lt;br&gt;The arguments of the method can switch the direction of the matrix to be executed.
 	 * @param {function(Array&lt;Complex&gt;): Array&lt;Complex&gt;} array_function - Function(array)
 	 * @param {string|number} [dimtype=&quot;auto&quot;] - 0/&quot;auto&quot;, 1/&quot;row&quot;, 2/&quot;column&quot;, 3/&quot;both&quot;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	eachVector(array_function, dimtype) {
 		let target = dimtype !== undefined ? dimtype : &quot;auto&quot;;
@@ -1058,10 +1061,10 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x7B87;&#x6240;&#x306E;&#x884C;&#x5217;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} row - &#x62BD;&#x51FA;&#x3059;&#x308B;&#x884C;&#x756A;&#x53F7;&#x304C;&#x5165;&#x3063;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;,&quot;:&quot;&#x3067;&#x5168;&#x3066;&#x306E;&#x884C;&#x62BD;&#x51FA;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} col - &#x62BD;&#x51FA;&#x3059;&#x308B;&#x5217;&#x756A;&#x53F7;&#x304C;&#x5165;&#x3063;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;,&quot;:&quot;&#x3067;&#x5168;&#x3066;&#x306E;&#x5217;&#x62BD;&#x51FA;
-	 * @param {boolean} [isUpOffset=false] - &#x4F4D;&#x7F6E;&#x306E;&#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;&#x3092;1&#x306B;&#x3059;&#x308B;&#x304B;
+	 * Extract the specified part of the matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} row - A vector containing the row numbers to extract from this matrix. If you specify &quot;:&quot; select all rows.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} col - A vector containing the column numbers to extract from this matrix. If you specify &quot;:&quot; select all columns.
+	 * @param {boolean} [isUpOffset=false] - Set offset of matrix position to 1 with true.
 	 * @returns {Matrix} 
 	 */
 	getMatrix(row, col, isUpOffset=false) {
@@ -1081,11 +1084,11 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x7B87;&#x6240;&#x306E;&#x5024;&#x3092;&#x5909;&#x66F4;&#x3059;&#x308B;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} row - &#x5909;&#x66F4;&#x3059;&#x308B;&#x884C;&#x756A;&#x53F7;&#x304C;&#x5165;&#x3063;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;,&quot;:&quot;&#x3067;&#x5168;&#x3066;&#x306E;&#x884C;&#x62BD;&#x51FA;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} col - &#x5909;&#x66F4;&#x3059;&#x308B;&#x5217;&#x756A;&#x53F7;&#x304C;&#x5165;&#x3063;&#x305F;&#x30D9;&#x30AF;&#x30C8;&#x30EB;,&quot;:&quot;&#x3067;&#x5168;&#x3066;&#x306E;&#x5217;&#x62BD;&#x51FA;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} replace - &#x5909;&#x66F4;&#x5185;&#x5BB9;&#x306E;&#x884C;&#x5217;
-	 * @param {boolean} [isUpOffset=false] - &#x4F4D;&#x7F6E;&#x306E;&#x30AA;&#x30D5;&#x30BB;&#x30C3;&#x30C8;&#x3092;1&#x306B;&#x3059;&#x308B;&#x304B;
+	 * Change specified element in matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} row - A vector containing the row numbers to replace in this matrix. If you specify &quot;:&quot; select all rows.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} col - A vector containing the column numbers to replace in this matrix. If you specify &quot;:&quot; select all columns.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} replace - Matrix to be replaced.
+	 * @param {boolean} [isUpOffset=false] - Set offset of matrix position to 1 with true.
 	 * @returns {Matrix} 
 	 */
 	setMatrix(row, col, replace, isUpOffset=false) {
@@ -1105,9 +1108,10 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x7B87;&#x6240;&#x306E;&#x5024;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} row_or_pos - &#x884C;&#x5217;&#x306A;&#x3089;&#x884C;&#x756A;&#x53F7;, &#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x5834;&#x5408;&#x306F;&#x5024;&#x306E;&#x4F4D;&#x7F6E;&#x756A;&#x53F7;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [col] - &#x5217;&#x756A;&#x53F7;&#xFF08;&#x884C;&#x5217;&#x306E;&#x5834;&#x5408;&#x306F;&#x6307;&#x5B9A;&#x3059;&#x308B;&#xFF09;
+	 * Returns the specified element in the matrix.
+	 * &lt;br&gt;Each element of the matrix is composed of complex numbers.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} row_or_pos - If this is a matrix, the row number. If this is a vector, the address.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [col] - If this is a matrix, the column number.
 	 * @returns {Complex} 
 	 */
 	getComplex(row_or_pos, col) {
@@ -1136,7 +1140,7 @@ export default class Matrix {
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 	
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x6700;&#x521D;&#x306E;&#x8981;&#x7D20;&#x306E;&#x6574;&#x6570;&#x5024;
+	 * Integer value of the first element of the matrix.
 	 * @returns {number}
 	 */
 	get intValue() {
@@ -1144,7 +1148,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x6700;&#x521D;&#x306E;&#x8981;&#x7D20;&#x306E;&#x5B9F;&#x6570;&#x5024;
+	 * Real value of first element of the matrix.
 	 * @returns {number}
 	 */
 	get doubleValue() {
@@ -1152,7 +1156,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x6700;&#x521D;&#x306E;&#x8981;&#x7D20;
+	 * First element of this matrix.
 	 * @returns {Complex}
 	 */
 	get scalar() {
@@ -1160,7 +1164,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x6570;&#x53CA;&#x3073;&#x5217;&#x6570;&#x306E;&#x6700;&#x5927;&#x5024;
+	 * Maximum size of rows or columns in the matrix.
 	 * @returns {number}
 	 */
 	get length() {
@@ -1168,7 +1172,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 1&#x30CE;&#x30EB;&#x30E0;
+	 * 1-norm.
 	 * @returns {number}
 	 */
 	get norm1() {
@@ -1176,7 +1180,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * 2&#x30CE;&#x30EB;&#x30E0;
+	 * 2-norm.
 	 * @returns {number}
 	 */
 	get norm2() {
@@ -1184,7 +1188,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * p&#x30CE;&#x30EB;&#x30E0;
+	 * p-norm.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [p=2]
 	 * @returns {number}
 	 */
@@ -1193,7 +1197,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6761;&#x4EF6;&#x6570;
+	 * Condition number of the matrix
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [p=2]
 	 * @returns {number}
 	 */
@@ -1202,7 +1206,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 1&#x30CE;&#x30EB;&#x30E0;&#x306E;&#x6761;&#x4EF6;&#x6570;&#x306E;&#x9006;&#x6570;
+	 * Inverse condition number.
 	 * @returns {number}
 	 */
 	rcond() {
@@ -1210,8 +1214,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30E9;&#x30F3;&#x30AF;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Rank.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {number} rank(A)
 	 */
 	rank(epsilon) {
@@ -1219,7 +1223,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30C8;&#x30EC;&#x30FC;&#x30B9;
+	 * Trace of a matrix.
+	 * &lt;br&gt;Sum of diagonal elements.
 	 * @returns {Complex} trace(A)
 	 */
 	trace() {
@@ -1227,7 +1232,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5F0F;
+	 * Determinant.
 	 * @returns {Matrix} |A|
 	 */
 	det() {
@@ -1239,10 +1244,10 @@ export default class Matrix {
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 	
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6570;&#x5024;&#x3067;&#x521D;&#x671F;&#x5316;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number - &#x521D;&#x671F;&#x5024;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - &#x6B21;&#x5143;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length] - &#x5217;&#x6570;
+	 * Creates a matrix composed of the specified number.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number - Value after initialization.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - Number of dimensions or rows.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static memset(number, dimension, column_length) {
@@ -1267,9 +1272,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5358;&#x4F4D;&#x884C;&#x5217;&#x3092;&#x751F;&#x6210;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - &#x6B21;&#x5143;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length] - &#x5217;&#x6570;
+	 * Return identity matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - Number of dimensions or rows.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static eye(dimension, column_length) {
@@ -1279,9 +1284,9 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x96F6;&#x884C;&#x5217;&#x3092;&#x751F;&#x6210;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - &#x6B21;&#x5143;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length] - &#x5217;&#x6570;
+	 * Create zero matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - Number of dimensions or rows.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static zeros(dimension, column_length) {
@@ -1292,9 +1297,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * 1&#x3067;&#x69CB;&#x6210;&#x3057;&#x305F;&#x884C;&#x5217;&#x3092;&#x751F;&#x6210;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - &#x6B21;&#x5143;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length] - &#x5217;&#x6570;
+	 * Create a matrix of all ones.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - Number of dimensions or rows.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static ones(dimension, column_length) {
@@ -1305,9 +1310,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x4E71;&#x6570;&#x3067;&#x69CB;&#x6210;&#x3057;&#x305F;&#x884C;&#x5217;&#x3092;&#x751F;&#x6210;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - &#x6B21;&#x5143;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length] - &#x5217;&#x6570;
+	 * Generate a matrix composed of random values with uniform random numbers.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - Number of dimensions or rows.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static rand(dimension, column_length) {
@@ -1317,9 +1322,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306B;&#x5F93;&#x3046;&#x4E71;&#x6570;&#x3067;&#x69CB;&#x6210;&#x3057;&#x305F;&#x884C;&#x5217;&#x3092;&#x751F;&#x6210;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - &#x6B21;&#x5143;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length] - &#x5217;&#x6570;
+	 * Generate a matrix composed of random values with normal distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} dimension - Number of dimensions or rows.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static randn(dimension, column_length) {
@@ -1329,8 +1334,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306A;&#x3089;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x3092;&#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x751F;&#x6210;&#x3001;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306A;&#x3089;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x3092;&#x6301;&#x3064;&#x884C;&#x5217;&#x3092;&#x751F;&#x6210;
-	 * @returns {Matrix} &#x884C;&#x5217;&#x306A;&#x3089;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x3092;&#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x751F;&#x6210;&#x3001;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306A;&#x3089;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x3092;&#x6301;&#x3064;&#x884C;&#x5217;&#x3092;&#x751F;&#x6210;
+	 * If matrix, generate diagonal column vector.
+	 * &lt;br&gt;If vector, generate a matrix with diagonal elements.
+	 * @returns {Matrix} Matrix or vector created. See how to use the function.
 	 */
 	diag() {
 		if(this.isVector()) {
@@ -1364,7 +1370,7 @@ export default class Matrix {
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 
 	/**
-	 * &#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x5024;&#x306E;&#x5224;&#x5B9A;
+	 * Return true if the matrix is &#x200B;&#x200B;scalar.
 	 * @returns {boolean}
 	 */
 	isScalar() {
@@ -1372,7 +1378,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#xFF0F;&#x6A2A;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x5224;&#x5B9A;
+	 * Return true if the matrix is &#x200B;&#x200B;row vector.
 	 * @returns {boolean}
 	 */
 	isRow() {
@@ -1380,7 +1386,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#xFF0F;&#x7E26;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x5224;&#x5B9A;
+	 * Return true if the matrix is column vector.
 	 * @returns {boolean}
 	 */
 	isColumn() {
@@ -1388,7 +1394,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x5224;&#x5B9A;
+	 * Return true if the matrix is &#x200B;&#x200B;vector.
 	 * @returns {boolean}
 	 */
 	isVector() {
@@ -1396,7 +1402,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x5224;&#x5B9A;
+	 * Return true if the value is not &#x200B;&#x200B;scalar.
 	 * @returns {boolean}
 	 */
 	isMatrix() {
@@ -1404,7 +1410,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6B63;&#x65B9;&#x884C;&#x5217;&#x306E;&#x5224;&#x5B9A;
+	 * Return true if the matrix is &#x200B;&#x200B;square matrix.
 	 * @returns {boolean}
 	 */
 	isSquare() {
@@ -1412,8 +1418,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5B9F;&#x884C;&#x5217;&#x306E;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Return true if the matrix is real matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isReal(epsilon) {
@@ -1427,8 +1433,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x8907;&#x7D20;&#x884C;&#x5217;&#x306E;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Return true if the matrix is complex matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isComplex(epsilon) {
@@ -1436,8 +1442,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x96F6;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Return true if the matrix is &#x200B;&#x200B;zero matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isZeros(epsilon) {
@@ -1452,8 +1458,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5358;&#x4F4D;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Return true if the matrix is identity matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isIdentity(epsilon) {
@@ -1477,8 +1483,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5BFE;&#x89D2;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Return true if the matrix is diagonal matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isDiagonal(epsilon) {
@@ -1493,8 +1499,8 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Return true if the matrix is &#x200B;&#x200B;tridiagonal matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isTridiagonal(epsilon) {
@@ -1509,8 +1515,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6B63;&#x5247;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Return true if the matrix is &#x200B;&#x200B;regular matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isRegular(epsilon) {
@@ -1525,8 +1531,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x76F4;&#x884C;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Return true if the matrix is orthogonal matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isOrthogonal(epsilon) {
@@ -1538,8 +1544,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30E6;&#x30CB;&#x30BF;&#x30EA;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Return true if the matrix is &#x200B;&#x200B;unitary matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isUnitary(epsilon) {
@@ -1551,8 +1557,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Return true if the matrix is &#x200B;&#x200B;symmetric matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isSymmetric(epsilon) {
@@ -1571,8 +1577,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30A8;&#x30EB;&#x30DF;&#x30FC;&#x30C8;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Return true if the matrix is hermitian matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isHermitian(epsilon) {
@@ -1596,8 +1602,8 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x4E0A;&#x4E09;&#x89D2;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Return true if the matrix is &#x200B;&#x200B;upper triangular matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isTriangleUpper(epsilon) {
@@ -1612,8 +1618,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x4E0B;&#x4E09;&#x89D2;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Return true if the matrix is &#x200B;&#x200B; lower triangular matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isTriangleLower(epsilon) {
@@ -1628,8 +1634,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x7F6E;&#x63DB;&#x884C;&#x5217;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * Return true if the matrix is permutation matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isPermutation(epsilon) {
@@ -1665,8 +1671,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x884C;&#x6570;&#x3068;&#x5217;&#x6570;
-	 * @returns {Matrix} [row_length column_length]
+	 * Number of rows and columns of matrix.
+	 * @returns {Matrix} [row_length, column_length]
 	 */
 	size() {
 		// &#x884C;&#x5217;&#x306E;&#x30B5;&#x30A4;&#x30BA;&#x3092;&#x53D6;&#x5F97;
@@ -1674,11 +1680,11 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5024;&#x540C;&#x58EB;&#x3092;&#x6BD4;&#x8F03;
-	 * &#x30B9;&#x30AB;&#x30E9;&#x30FC;&#x540C;&#x58EB;&#x306E;&#x5834;&#x5408;&#x306E;&#x623B;&#x308A;&#x5024;&#x306F;&#x3001;number&#x578B;&#x3002;
-	 * &#x884C;&#x5217;&#x540C;&#x58EB;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x5404;&#x9805;&#x306E;&#x6BD4;&#x8F03;&#x7D50;&#x679C;&#x304C;&#x5165;&#x3063;&#x305F;&#x3001;Matrix&#x578B;&#x3002;
+	 * Compare values.
+	 * &lt;br&gt;* Return value between scalars is of type Number.
+	 * &lt;br&gt;* Return value between matrices is type Matrix.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number 
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {number|Matrix} A &gt; B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, epsilon) {
@@ -1702,7 +1708,7 @@ export default class Matrix {
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 	
 	/**
-	 * &#x52A0;&#x7B97;
+	 * Add.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number 
 	 * @returns {Matrix} A + B
 	 */
@@ -1722,7 +1728,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6E1B;&#x7B97;
+	 * Subtract.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number 
 	 * @returns {Matrix} A - B
 	 */
@@ -1742,7 +1748,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x4E57;&#x7B97;
+	 * Multiply.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number 
 	 * @returns {Matrix} A * B
 	 */
@@ -1794,7 +1800,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5272;&#x308A;&#x7B97;
+	 * Divide.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number 
 	 * @returns {Matrix} A / B
 	 */
@@ -1834,7 +1840,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6574;&#x6570;&#x3067;&#x306E;&#x7D2F;&#x4E57;
+	 * Power function.
+	 * &lt;br&gt;* Supports only integers.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number - &#x6574;&#x6570;
 	 * @returns {Matrix} pow(A, B)
 	 */
@@ -1860,7 +1867,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x5404;&#x9805;&#x3054;&#x3068;&#x306E;&#x639B;&#x3051;&#x7B97;
+	 * Multiplication for each element of matrix.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number 
 	 * @returns {Matrix} A .* B
 	 */
@@ -1880,7 +1887,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x5404;&#x9805;&#x3054;&#x3068;&#x306E;&#x5272;&#x308A;&#x7B97;
+	 * Division for each element of matrix.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number 
 	 * @returns {Matrix} A ./ B
 	 */
@@ -1900,7 +1907,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x5404;&#x9805;&#x3054;&#x3068;&#x306E;&#x9006;&#x6570;
+	 * Inverse of each element of matrix.
 	 * @returns {Matrix} 1 ./ A
 	 */
 	ninv() {
@@ -1912,7 +1919,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x5404;&#x9805;&#x3054;&#x3068;&#x306E;&#x7D2F;&#x4E57;
+	 * Power function for each element of the matrix.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number 
 	 * @returns {Matrix} A .^ B
 	 */
@@ -1936,7 +1943,7 @@ export default class Matrix {
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x5B9F;&#x90E8;
+	 * Real part of each element.
 	 * @returns {Matrix} real(A)
 	 */
 	real() {
@@ -1946,7 +1953,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x865A;&#x90E8;
+	 * Imaginary part of each element of the matrix.
 	 * @returns {Matrix} imag(A)
 	 */
 	imag() {
@@ -1956,7 +1963,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x504F;&#x89D2;
+	 * The argument of each element of matrix.
 	 * @returns {Matrix} arg(A)
 	 */
 	arg() {
@@ -1966,7 +1973,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x7B26;&#x53F7;&#x5024;
+	 * The positive or negative signs of each element of the matrix.
+	 * &lt;br&gt;* +1 if positive, -1 if negative, 0 if 0, norm if complex number.
 	 * @returns {Matrix} [-1,1] &#x8907;&#x7D20;&#x6570;&#x306E;&#x5834;&#x5408;&#x306F;&#x30CE;&#x30EB;&#x30E0;&#x3092;1&#x306B;&#x3057;&#x305F;&#x5024;&#x3002;
 	 */
 	sign() {
@@ -1976,9 +1984,10 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x6574;&#x6570;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
-	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
+	 * Test if each element of the matrix is integer.
+	 * &lt;br&gt;* 1 if true, 0 if false.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testInteger(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1987,9 +1996,10 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x8907;&#x7D20;&#x6574;&#x6570;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
-	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
+	 * Test if each element of the matrix is complex integer.
+	 * &lt;br&gt;* 1 if true, 0 if false.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testComplexInteger(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -1998,9 +2008,10 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E; 0 &#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
-	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
+	 * real(this) === 0
+	 * &lt;br&gt;* 1 if true, 0 if false.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testZero(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2009,9 +2020,10 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E; 1 &#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
-	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
+	 * real(this) === 1
+	 * &lt;br&gt;* 1 if true, 0 if false.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testOne(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2020,9 +2032,10 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x8907;&#x7D20;&#x6570;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
-	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
+	 * Test if each element of the matrix is complex.
+	 * &lt;br&gt;* 1 if true, 0 if false.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testComplex(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2031,9 +2044,10 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x5B9F;&#x6570;&#x3092;&#x5224;&#x5B9A;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - &#x8AA4;&#x5DEE;
-	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
+	 * Test if each element of the matrix is real.
+	 * &lt;br&gt;* 1 if true, 0 if false.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testReal(epsilon) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2042,8 +2056,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x975E;&#x6570;&#x3092;&#x5224;&#x5B9A;
-	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
+	 * Test if each element of the matrix is NaN.
+	 * &lt;br&gt;* 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNaN() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2053,8 +2068,9 @@ export default class Matrix {
 
 
 	/**
-	 * real(x) &gt; 0
-	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
+	 * real(this) &gt; 0
+	 * &lt;br&gt;* 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testPositive() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2063,8 +2079,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * real(x) &lt; 0
-	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
+	 * real(this) &lt; 0
+	 * &lt;br&gt;* 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNegative() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2073,8 +2090,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * real(x) &gt;= 0
-	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
+	 * real(this) &gt;= 0
+	 * &lt;br&gt;* 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNotNegative() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2083,8 +2101,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x7121;&#x9650;&#x3092;&#x5224;&#x5B9A;
-	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
+	 * Test if each element of the matrix is infinite.
+	 * &lt;br&gt;* 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testInfinite() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2093,8 +2112,9 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x5404;&#x9805;&#x306E;&#x6709;&#x9650;&#x6570;&#x3092;&#x5224;&#x5B9A;
-	 * @returns {Matrix} 1 or 0 &#x3067;&#x69CB;&#x6210;&#x3055;&#x308C;&#x305F;&#x884C;&#x5217;
+	 * Test if each element of the matrix is finite.
+	 * &lt;br&gt;* 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testFinite() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -2103,7 +2123,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x7D76;&#x5BFE;&#x5024;
+	 * Absolute value.
 	 * @returns {Matrix} abs(A)
 	 */
 	abs() {
@@ -2113,7 +2133,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x8907;&#x7D20;&#x5171;&#x5F79;&#x884C;&#x5217;
+	 * Complex conjugate matrix.
 	 * @returns {Matrix} real(A) - imag(A)j
 	 */
 	conj() {
@@ -2123,7 +2143,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x8CA0;&#x6570;
+	 * this * -1
 	 * @returns {Matrix} -A
 	 */
 	negate() {
@@ -2133,7 +2153,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5E73;&#x65B9;&#x6839;
+	 * Square root.
 	 * @returns {Matrix} sqrt(A)
 	 */
 	sqrt() {
@@ -2143,7 +2163,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5BFE;&#x6570;
+	 * Logarithmic function.
 	 * @returns {Matrix} log(A)
 	 */
 	log() {
@@ -2153,7 +2173,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6307;&#x6570;
+	 * Exponential function.
 	 * @returns {Matrix} exp(A)
 	 */
 	exp() {
@@ -2163,7 +2183,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * sin
+	 * Sine function.
 	 * @returns {Matrix} sin(A)
 	 */
 	sin() {
@@ -2173,7 +2193,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * cos
+	 * Cosine function.
 	 * @returns {Matrix} cos(A)
 	 */
 	cos() {
@@ -2183,7 +2203,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * tan
+	 * Tangent function.
 	 * @returns {Matrix} tan(A)
 	 */
 	tan() {
@@ -2193,7 +2213,8 @@ export default class Matrix {
 	}
 	
 	/**
-	 * atan
+	 * Atan (arc tangent) function.
+	 * &lt;br&gt;* Return the values of [-PI/2, PI/2].
 	 * @returns {Matrix} atan(A)
 	 */
 	atan() {
@@ -2203,8 +2224,10 @@ export default class Matrix {
 	}
 
 	/**
-	 * atan2
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number - &#x30B9;&#x30AB;&#x30E9;&#x30FC;
+	 * Atan (arc tangent) function.
+	 * &lt;br&gt;* Return the values of [-PI, PI].
+	 * &lt;br&gt;* Supports only real numbers.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number - X
 	 * @returns {Matrix} atan2(Y, X)
 	 */
 	atan2(number) {
@@ -2215,7 +2238,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * floor
+	 * Floor.
 	 * @returns {Matrix} floor(A)
 	 */
 	floor() {
@@ -2225,7 +2248,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * ceil
+	 * Ceil.
 	 * @returns {Matrix} ceil(A)
 	 */
 	ceil() {
@@ -2235,7 +2258,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x56DB;&#x6368;&#x4E94;&#x5165;
+	 * Rounding to the nearest integer.
 	 * @returns {Matrix} round(A)
 	 */
 	round() {
@@ -2245,7 +2268,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6574;&#x6570;&#x5316;
+	 * To integer rounded down to the nearest.
 	 * @returns {Matrix} fix(A)
 	 */
 	fix() {
@@ -2255,7 +2278,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5C0F;&#x6570;&#x90E8;&#x306E;&#x62BD;&#x51FA;
+	 * Fraction.
 	 * @returns {Matrix} fract(A)
 	 */
 	fract() {
@@ -2265,7 +2288,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * sinc
+	 * Normalized sinc function.
 	 * @returns {Matrix} sinc(A)
 	 */
 	sinc() {
@@ -2282,10 +2305,9 @@ export default class Matrix {
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x6642;&#x8A08;&#x56DE;&#x308A;&#x306B;&#x56DE;&#x8EE2;
-	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} rot_90_count - &#x56DE;&#x8EE2;&#x3059;&#x308B;&#x56DE;&#x6570;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Rotate matrix 90 degrees clockwise. (mutable)
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} rot_90_count - Number of times rotated by 90 degrees.
+	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
 	_rot90(rot_90_count) {
@@ -2351,20 +2373,20 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x6642;&#x8A08;&#x56DE;&#x308A;&#x306B;&#x56DE;&#x8EE2;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} rot_90_count - &#x56DE;&#x8EE2;&#x3059;&#x308B;&#x56DE;&#x6570;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Rotate matrix 90 degrees clockwise.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} rot_90_count - Number of times rotated by 90 degrees.
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	rot90(rot_90_count) {
 		return this.clone()._rot90(rot_90_count);
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x62E1;&#x5F35;&#x3001;&#x62E1;&#x5F35;&#x3057;&#x305F;&#x9805;&#x306F;&#x3001;0&#x3067;&#x521D;&#x671F;&#x5316;&#x3002;
-	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} new_row_length - &#x65B0;&#x3057;&#x3044;&#x884C;&#x306E;&#x9577;&#x3055;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} new_column_length - &#x65B0;&#x3057;&#x3044;&#x5217;&#x306E;&#x9577;&#x3055;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Change the size of the matrix. (mutable)
+	 * &lt;br&gt;Initialized with 0 when expanding.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} new_row_length - Number of rows of matrix to resize.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} new_column_length - Number of columns of matrix to resize.
+	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
 	_resize(new_row_length, new_column_length) {
@@ -2406,20 +2428,20 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x62E1;&#x5F35;&#x3001;&#x62E1;&#x5F35;&#x3057;&#x305F;&#x9805;&#x306F;&#x3001;0&#x3067;&#x521D;&#x671F;&#x5316;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} row_length - &#x65B0;&#x3057;&#x3044;&#x884C;&#x306E;&#x9577;&#x3055;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} column_length - &#x65B0;&#x3057;&#x3044;&#x5217;&#x306E;&#x9577;&#x3055;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Change the size of the matrix.
+	 * &lt;br&gt;Initialized with 0 when expanding.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} row_length - Number of rows of matrix to resize.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} column_length - Number of columns of matrix to resize.
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	resize(row_length, column_length) {
 		return this.clone()._resize(row_length, column_length);
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x884C;&#x3092;&#x6D88;&#x53BB;
-	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} delete_row_index - &#x884C;&#x756A;&#x53F7;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Remove the row in this matrix. (mutable)
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} delete_row_index - Number of row of matrix to delete.
+	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
 	_deleteRow(delete_row_index) {
@@ -2434,10 +2456,9 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x5217;&#x3092;&#x6D88;&#x53BB;
-	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} delete_column_index - &#x5217;&#x756A;&#x53F7;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Remove the column in this matrix. (mutable)
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} delete_column_index - Number of column of matrix to delete.
+	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
 	_deleteColumn(delete_column_index) {
@@ -2454,29 +2475,28 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x884C;&#x3092;&#x6D88;&#x53BB;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} delete_row_index - &#x884C;&#x756A;&#x53F7;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Remove the row in this matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} delete_row_index - Number of row of matrix to delete.
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	deleteRow(delete_row_index) {
 		return this.clone()._deleteRow(delete_row_index);
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x5217;&#x3092;&#x6D88;&#x53BB;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} delete_column_index - &#x5217;&#x756A;&#x53F7;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Remove the column in this matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} delete_column_index - Number of column of matrix to delete.
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	deleteColumn(delete_column_index) {
 		return this.clone()._deleteColumn(delete_column_index);
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x884C;&#x3092;&#x4EA4;&#x63DB;
-	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_row_index1 - &#x884C;&#x756A;&#x53F7;1
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_row_index2 - &#x884C;&#x756A;&#x53F7;2
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Swap rows in the matrix. (mutable)
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_row_index1 - Number 1 of row of matrix to exchange.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_row_index2 - Number 2 of row of matrix to exchange.
+	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
 	_exchangeRow(exchange_row_index1, exchange_row_index2) {
@@ -2496,11 +2516,10 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x5217;&#x3092;&#x4EA4;&#x63DB;
-	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_column_index1 - &#x884C;&#x756A;&#x53F7;1
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_column_index2 - &#x884C;&#x756A;&#x53F7;2
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Swap columns in the matrix. (mutable)
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_column_index1 - Number 1 of column of matrix to exchange.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_column_index2 - Number 2 of column of matrix to exchange.
+	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
 	_exchangeColumn(exchange_column_index1, exchange_column_index2) {
@@ -2522,30 +2541,29 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x884C;&#x3092;&#x4EA4;&#x63DB;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_row_index1 - &#x884C;&#x756A;&#x53F7;1
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_row_index2 - &#x884C;&#x756A;&#x53F7;2
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Swap rows in the matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_row_index1 - Number 1 of row of matrix to exchange.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_row_index2 - Number 2 of row of matrix to exchange.
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	exchangeRow(exchange_row_index1, exchange_row_index2) {
 		return this.clone()._exchangeRow(exchange_row_index1, exchange_row_index2);
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x5185;&#x306E;&#x5217;&#x3092;&#x4EA4;&#x63DB;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_column_index1 - &#x884C;&#x756A;&#x53F7;1
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_column_index2 - &#x884C;&#x756A;&#x53F7;2
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Swap columns in the matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_column_index1 - Number 1 of column of matrix to exchange.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} exchange_column_index2 - Number 2 of column of matrix to exchange.
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	exchangeColumn(exchange_column_index1, exchange_column_index2) {
 		return this.clone()._exchangeColumn(exchange_column_index1, exchange_column_index2);
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x53F3;&#x306B;&#x884C;&#x5217;&#x3092;&#x7D50;&#x5408;
-	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} left_matrix - &#x7D50;&#x5408;&#x3057;&#x305F;&#x3044;&#x884C;&#x5217;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Combine matrix to the right of this matrix. (mutable)
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} left_matrix - Matrix to combine.
+	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
 	_concatRight(left_matrix) {
@@ -2564,10 +2582,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x4E0B;&#x306B;&#x884C;&#x5217;&#x3092;&#x7D50;&#x5408;
-	 * &#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} bottom_matrix - &#x7D50;&#x5408;&#x3057;&#x305F;&#x3044;&#x884C;&#x5217;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Combine matrix to the bottom of this matrix. (mutable)
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} bottom_matrix - Matrix to combine.
+	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
 	_concatBottom(bottom_matrix) {
@@ -2584,25 +2601,25 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x53F3;&#x306B;&#x884C;&#x5217;&#x3092;&#x7D50;&#x5408;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} left_matrix - &#x7D50;&#x5408;&#x3057;&#x305F;&#x3044;&#x884C;&#x5217;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Combine matrix to the right of this matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} left_matrix - Matrix to combine.
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	concatRight(left_matrix) {
 		return this.clone()._concatRight(left_matrix);
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x4E0B;&#x306B;&#x884C;&#x5217;&#x3092;&#x7D50;&#x5408;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} bottom_matrix - &#x7D50;&#x5408;&#x3057;&#x305F;&#x3044;&#x884C;&#x5217;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Combine matrix to the bottom of this matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} bottom_matrix - Matrix to combine.
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	concatBottom(bottom_matrix) {
 		return this.clone()._concatBottom(bottom_matrix);
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x5404;&#x9805;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x305F;&#x7BC4;&#x56F2;&#x306B;&#x53CE;&#x3081;&#x308B;
+	 * Clip each element of matrix to specified range.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} min 
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} max 
 	 * @returns {Matrix} min(max(x, min), max)
@@ -2622,7 +2639,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6307;&#x5B9A;&#x3057;&#x305F;&#x521D;&#x671F;&#x5024;&#x3001;&#x30B9;&#x30C6;&#x30C3;&#x30D7;&#x5024;&#x3001;&#x7D42;&#x4E86;&#x6761;&#x4EF6;&#x3067;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x4F5C;&#x6210;
+	 * Create row vector with specified initial value, step value, end condition.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} start_or_stop 
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [stop]
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [step=1] 
@@ -2636,10 +2653,10 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5FAA;&#x74B0;&#x30B7;&#x30D5;&#x30C8;
+	 * Circular shift.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} shift_size 
 	 * @param {{dimension : (?string|?number)}} [type]
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	circshift(shift_size, type) {
 		const shift = Matrix._toInteger(shift_size);
@@ -2659,20 +2676,21 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5FAA;&#x74B0;&#x30B7;&#x30D5;&#x30C8;
+	 * Circular shift.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} shift_size 
 	 * @param {{dimension : (?string|?number)}} [type]
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	roll(shift_size, type) {
 		return this.circshift(shift_size, type);
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x306E;&#x5F62;&#x72B6;&#x3092;&#x5909;&#x66F4;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} row_length - &#x65B0;&#x3057;&#x3044;&#x884C;&#x306E;&#x9577;&#x3055;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} column_length - &#x65B0;&#x3057;&#x3044;&#x5217;&#x306E;&#x9577;&#x3055;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Change the shape of the matrix.
+	 * &lt;br&gt;The number of elements in the matrix doesn&apos;t increase or decrease.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} row_length - Number of rows of matrix to reshape.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} column_length - Number of columns of matrix to reshape.
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	reshape(row_length, column_length) {
 		const new_row_length = Matrix._toInteger(row_length);
@@ -2701,25 +2719,25 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x5DE6;&#x53F3;&#x53CD;&#x8EE2;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Flip this matrix left and right.
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	fliplr() {
 		return this.flip({dimension : &quot;row&quot;});
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x4E0A;&#x4E0B;&#x53CD;&#x8EE2;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Flip this matrix up and down.
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	flipud() {
 		return this.flip({dimension : &quot;column&quot;});
 	}
 
 	/**
-	 * &#x884C;&#x5217;&#x3092;&#x53CD;&#x8EE2;
+	 * Flip this matrix.
 	 * @param {{dimension : (?string|?number)}} [type]
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	flip(type) {
 		const dim = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
@@ -2734,9 +2752,11 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30A4;&#x30F3;&#x30C7;&#x30C3;&#x30AF;&#x30B9;&#x30BD;&#x30FC;&#x30C8;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - &#x30A4;&#x30F3;&#x30C7;&#x30C3;&#x30AF;&#x30B9;&#xFF08;&#x5217; or &#x884C;&#xFF09;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
-	 * @returns {Matrix} &#x51E6;&#x7406;&#x5B9F;&#x884C;&#x5F8C;&#x306E;&#x884C;&#x5217;
+	 * Index sort.
+	 * &lt;br&gt;* Sorts by row when setting index by row vector to the argument.
+	 * &lt;br&gt;* Sorts by column when setting index by column vector to the argument.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - Vector with index. (See the description of this function)
+	 * @returns {Matrix} Matrix after function processing.
 	 */
 	indexsort(v) {
 		const V = Matrix._toMatrix(v);
@@ -2826,7 +2846,7 @@ export default class Matrix {
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 
 	/**
-	 * &#x8EE2;&#x7F6E;&#x884C;&#x5217;
+	 * Transpose a matrix.
 	 * @returns {Matrix} A^T
 	 */
 	transpose() {
@@ -2841,7 +2861,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30A8;&#x30EB;&#x30DF;&#x30FC;&#x30C8;&#x8EE2;&#x7F6E;&#x884C;&#x5217;
+	 * Hermitian transpose.
 	 * @returns {Matrix} A^T
 	 */
 	ctranspose() {
@@ -2849,7 +2869,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30A8;&#x30EB;&#x30DF;&#x30FC;&#x30C8;&#x8EE2;&#x7F6E;&#x884C;&#x5217;
+	 * Hermitian transpose.
 	 * @returns {Matrix} A^T
 	 */
 	T() {
@@ -2857,9 +2877,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30C9;&#x30C3;&#x30C8;&#x7A4D;
+	 * Inner product/Dot product.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number 
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [dimension=1] &#x8A08;&#x7B97;&#x3059;&#x308B;&#x3068;&#x304D;&#x306B;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x6B21;&#x5143;&#xFF08;1 or 2&#xFF09;
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
 	 * @returns {Matrix} A&#x30FB;B
 	 */
 	inner(number, dimension=1) {
@@ -2867,7 +2887,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * LUP&#x5206;&#x89E3;
+	 * LUP decomposition.
 	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} P&apos;*L*U=A
 	 */
 	lup() {
@@ -2875,7 +2895,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * LU&#x5206;&#x89E3;
+	 * LU decomposition.
 	 * @returns {{L: Matrix, U: Matrix}} L*U=A
 	 */
 	lu() {
@@ -2883,40 +2903,55 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x4E00;&#x6B21;&#x65B9;&#x7A0B;&#x5F0F;&#x3092;&#x89E3;&#x304F;
+	 * Solving a system of linear equations to be Ax = B
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number - B
-	 * @returns {Matrix} Ax=B &#x3068;&#x306A;&#x308B; x
+	 * @returns {Matrix} x
 	 */
 	linsolve(number) {
 		return LinearAlgebra.linsolve(this, number);
 	}
 
 	/**
-	 * QR&#x5206;&#x89E3;
-	 * @returns {{Q: Matrix, R: Matrix}} Q*R=A, Q&#x306F;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3001;R&#x306F;&#x4E0A;&#x4E09;&#x89D2;&#x884C;&#x5217;
+	 * QR decomposition.
+	 * &lt;br&gt;* Q*R=A
+	 * &lt;br&gt;* Q is orthonormal matrix.
+	 * &lt;br&gt;* R is upper triangular matrix.
+	 * @returns {{Q: Matrix, R: Matrix}} {Q, R}
 	 */
 	qr() {
 		return LinearAlgebra.qr(this);
 	}
 
 	/**
-	 * &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x5316;
-	 * @returns {{P: Matrix, H: Matrix}} P*H*P&apos;=A, H&#x306F;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x884C;&#x5217;&#x3001;P&#x306F;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3001;&#x4E09;&#x91CD;&#x5BFE;&#x89D2;&#x884C;&#x5217;&#x306E;&#x56FA;&#x6709;&#x5024;&#x306F;&#x5143;&#x306E;&#x884C;&#x5217;&#x3068;&#x4E00;&#x81F4;
+	 * Tridiagonalization of symmetric matrix.
+	 * &lt;br&gt;* Don&apos;t support complex numbers.
+	 * &lt;br&gt;* P*H*P&apos;=A
+	 * &lt;br&gt;* P is orthonormal matrix.
+	 * &lt;br&gt;* H is tridiagonal matrix.
+	 * &lt;br&gt;* The eigenvalues of H match the eigenvalues of A.
+	 * @returns {{P: Matrix, H: Matrix}} {P, H}
 	 */
 	tridiagonalize() {
 		return LinearAlgebra.tridiagonalize(this);
 	}
 
 	/**
-	 * &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x306E;&#x56FA;&#x6709;&#x5024;&#x5206;&#x89E3;
-	 * @returns {{V: Matrix, D: Matrix}} V*D*V&apos;=A, V&#x306F;&#x53F3;&#x56FA;&#x6709;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x5217;&#x306B;&#x3082;&#x3064;&#x884C;&#x5217;&#x3067;&#x6B63;&#x898F;&#x76F4;&#x884C;&#x884C;&#x5217;&#x3001;D&#x306F;&#x56FA;&#x6709;&#x5024;&#x3092;&#x5BFE;&#x89D2;&#x6210;&#x5206;&#x306B;&#x6301;&#x3064;&#x884C;&#x5217;
+	 * Eigendecomposition of symmetric matrix.
+	 * &lt;br&gt;* Don&apos;t support complex numbers.
+	 * &lt;br&gt;* V*D*V&apos;=A.
+	 * &lt;br&gt;* V is orthonormal matrix. and columns of V are the right eigenvectors.
+	 * &lt;br&gt;* D is a matrix containing the eigenvalues on the diagonal component.
+	 * @returns {{V: Matrix, D: Matrix}} {D, V}
 	 */
 	eig() {
 		return LinearAlgebra.eig(this);
 	}
 
 	/**
-	 * &#x7279;&#x7570;&#x5024;&#x5206;&#x89E3;
+	 * Singular Value Decomposition (SVD).
+	 * &lt;br&gt;* U*S*V&apos;=A
+	 * &lt;br&gt;* U and V are orthonormal matrices.
+	 * &lt;br&gt;* S is a matrix with singular values in the diagonal.
 	 * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V&apos;=A
 	 */
 	svd() {
@@ -2924,7 +2959,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x9006;&#x884C;&#x5217;
+	 * Inverse matrix of this matrix.
 	 * @returns {Matrix} A^-1
 	 */
 	inv() {
@@ -2932,7 +2967,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x7591;&#x4F3C;&#x9006;&#x884C;&#x5217;
+	 * Pseudo-inverse matrix.
 	 * @returns {Matrix} A^+
 	 */
 	pinv() {
@@ -2944,7 +2979,7 @@ export default class Matrix {
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 
 	/**
-	 * &#x5BFE;&#x6570;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * Log-gamma function.
 	 * @returns {Matrix}
 	 */
 	gammaln() {
@@ -2952,7 +2987,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * Gamma function.
 	 * @returns {Matrix}
 	 */
 	gamma() {
@@ -2960,9 +2995,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x4E0D;&#x5B8C;&#x5168;&#x30AC;&#x30F3;&#x30DE;&#x95A2;&#x6570;
+	 * Incomplete gamma function.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
-	 * @param {string} [tail=&quot;lower&quot;] - lower/upper
+	 * @param {string} [tail=&quot;lower&quot;] - tail (&quot;lower&quot;, &quot;upper&quot;)
 	 * @returns {Matrix}
 	 */
 	gammainc(a, tail) {
@@ -2970,9 +3005,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * Probability density function (PDF) of the gamma distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - Shape parameter.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	gampdf(k, s) {
@@ -2980,9 +3015,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * Cumulative distribution function (CDF) of gamma distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - Shape parameter.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	gamcdf(k, s) {
@@ -2990,9 +3025,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30AC;&#x30F3;&#x30DE;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - &#x5F62;&#x72B6;&#x6BCD;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - &#x5C3A;&#x5EA6;&#x6BCD;&#x6570;
+	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - Shape parameter.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	gaminv(k, s) {
@@ -3000,7 +3035,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * Beta function.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} y
 	 * @returns {Matrix}
 	 */
@@ -3009,10 +3044,10 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x4E0D;&#x5B8C;&#x5168;&#x30D9;&#x30FC;&#x30BF;&#x95A2;&#x6570;
+	 * Incomplete beta function.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} b
-	 * @param {string} [tail=&quot;lower&quot;] - lower/upper
+	 * @param {string} [tail=&quot;lower&quot;] - tail (&quot;lower&quot;, &quot;upper&quot;)
 	 * @returns {Matrix}
 	 */
 	betainc(a, b, tail) {
@@ -3020,7 +3055,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
+	 * Cumulative distribution function (CDF) of beta distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} b
 	 * @returns {Matrix}
@@ -3030,7 +3065,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
+	 * Probability density function (PDF) of beta distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} b
 	 * @returns {Matrix}
@@ -3040,7 +3075,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30D9;&#x30FC;&#x30BF;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
+	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} b
 	 * @returns {Matrix}
@@ -3050,7 +3085,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * x! &#x968E;&#x4E57;&#x95A2;&#x6570;
+	 * Factorial function, x!.
 	 * @returns {Matrix}
 	 */
 	factorial() {
@@ -3058,7 +3093,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * nCk &#x4E8C;&#x9805;&#x4FC2;&#x6570;&#x307E;&#x305F;&#x306F;&#x3059;&#x3079;&#x3066;&#x306E;&#x7D44;&#x5408;&#x308F;&#x305B;
+	 * Binomial coefficient, number of all combinations, nCk.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k
 	 * @returns {Matrix}
 	 */
@@ -3067,7 +3102,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * Error function.
 	 * @returns {Matrix}
 	 */
 	erf() {
@@ -3075,7 +3110,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x76F8;&#x88DC;&#x8AA4;&#x5DEE;&#x95A2;&#x6570;
+	 * Complementary error function.
 	 * @returns {Matrix}
 	 */
 	erfc() {
@@ -3083,9 +3118,9 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - &#x5206;&#x6563;
+	 * Probability density function (PDF) of normal distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - Average value.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	normpdf(u=0.0, s=1.0) {
@@ -3093,9 +3128,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - &#x5206;&#x6563;
+	 * Cumulative distribution function (CDF) of normal distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - Average value.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	normcdf(u=0.0, s=1.0) {
@@ -3103,9 +3138,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6B63;&#x898F;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - &#x5E73;&#x5747;&#x5024;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - &#x5206;&#x6563;
+	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - Average value.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	norminv(u=0.0, s=1.0) {
@@ -3113,8 +3148,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * t&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - &#x81EA;&#x7531;&#x5EA6;
+	 * Probability density function (PDF) of Student&apos;s t-distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tpdf(v) {
@@ -3122,8 +3157,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - &#x81EA;&#x7531;&#x5EA6;
+	 * Cumulative distribution function (CDF) of Student&apos;s t-distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tcdf(v) {
@@ -3131,8 +3166,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - &#x81EA;&#x7531;&#x5EA6;
+	 * Inverse of cumulative distribution function (CDF) of Student&apos;s t-distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tinv(v) {
@@ -3140,9 +3175,11 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5C3E;&#x90E8;&#x304C;&#x6307;&#x5B9A;&#x53EF;&#x80FD;&#x306A;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - &#x81EA;&#x7531;&#x5EA6;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} tails - &#x5C3E;&#x90E8;(1...&#x7247;&#x5074;&#x3001;2...&#x4E21;&#x5074;)
+	 * Cumulative distribution function (CDF) of Student&apos;s t-distribution that can specify tail.
+	 * &lt;br&gt;* If tails = 1, TDIST returns the one-tailed distribution.
+	 * &lt;br&gt;* If tails = 2, TDIST returns the two-tailed distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {Matrix}
 	 */
 	tdist(v, tails) {
@@ -3150,8 +3187,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x4E21;&#x5074;&#x691C;&#x5B9A;&#x6642;&#x306E;t&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - &#x81EA;&#x7531;&#x5EA6;
+	 * Cumulative distribution function (CDF) of Student&apos;s t-distribution in two-sided test.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tinv2(v) {
@@ -3159,8 +3196,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - &#x81EA;&#x7531;&#x5EA6;
+	 * Probability density function (PDF) of chi-square distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	chi2pdf(k) {
@@ -3168,8 +3205,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - &#x81EA;&#x7531;&#x5EA6;
+	 * Cumulative distribution function (CDF) of chi-square distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	chi2cdf(k) {
@@ -3177,8 +3214,8 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x30AB;&#x30A4;&#x4E8C;&#x4E57;&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - &#x81EA;&#x7531;&#x5EA6;
+	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	chi2inv(k) {
@@ -3186,9 +3223,10 @@ export default class Matrix {
 	}
 
 	/**
-	 * F&#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * Probability density function (PDF) of F-distribution.
+	 * &lt;br&gt;* In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	fpdf(d1, d2) {
@@ -3196,9 +3234,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * Cumulative distribution function (CDF) of F-distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	fcdf(d1, d2) {
@@ -3206,9 +3244,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * F&#x5206;&#x5E03;&#x306E;&#x7D2F;&#x7A4D;&#x5206;&#x5E03;&#x95A2;&#x6570;&#x306E;&#x9006;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - &#x5206;&#x5B50;&#x306E;&#x81EA;&#x7531;&#x5EA6;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - &#x5206;&#x6BCD;&#x306E;&#x81EA;&#x7531;&#x5EA6;
+	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	finv(d1, d2) {
@@ -3216,7 +3254,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x6700;&#x5927;&#x5024;
+	 * Maximum number.
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} max([A, B])
 	 */
@@ -3225,7 +3263,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x6700;&#x5C0F;&#x5024;
+	 * Minimum number.
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} min([A, B])
 	 */
@@ -3234,7 +3272,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * &#x5408;&#x8A08;
+	 * Sum.
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3243,7 +3281,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x76F8;&#x52A0;&#x5E73;&#x5747;
+	 * Arithmetic average.
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3252,7 +3290,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x914D;&#x5217;&#x306E;&#x7A4D;
+	 * Product of array elements.
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3261,7 +3299,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x76F8;&#x4E57;&#x5E73;&#x5747;&#xFF0F;&#x5E7E;&#x4F55;&#x5E73;&#x5747;
+	 * Geometric mean.
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3270,7 +3308,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x4E2D;&#x592E;&#x5024;
+	 * Median.
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3279,7 +3317,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6700;&#x983B;&#x5024;
+	 * Mode.
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3288,7 +3326,8 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x4E2D;&#x5FC3;&#x7A4D;&#x7387;
+	 * Moment.
+	 * &lt;br&gt;* Moment of order n. Equivalent to the definition of variance at 2.
 	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3297,7 +3336,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5206;&#x6563;
+	 * Variance.
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3306,7 +3345,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6A19;&#x6E96;&#x504F;&#x5DEE;
+	 * Standard deviation.
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3315,7 +3354,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6A19;&#x6E96;&#x504F;&#x5DEE;
+	 * Mean absolute deviation.
 	 * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3324,7 +3363,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6B6A;&#x5EA6;
+	 * Skewness.
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3333,7 +3372,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x5171;&#x5206;&#x6563;&#x884C;&#x5217;
+	 * Covariance matrix.
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3342,8 +3381,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x6A19;&#x672C;&#x306E;&#x6A19;&#x6E96;&#x5316;
-	 * &#x5E73;&#x5747;&#x5024;0&#x3001;&#x6A19;&#x6E96;&#x504F;&#x5DEE;1&#x306B;&#x5909;&#x66F4;&#x3059;&#x308B;
+	 * The samples are normalized to a mean value of 0, standard deviation of 1.
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3352,7 +3390,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x76F8;&#x95A2;&#x884C;&#x5217;
+	 * Correlation matrix.
 	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3361,7 +3399,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30BD;&#x30FC;&#x30C8;
+	 * Sort.
 	 * @param {{dimension : (?string|?number), order : ?string}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3374,7 +3412,7 @@ export default class Matrix {
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 
 	/**
-	 * &#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * Discrete Fourier transform (DFT).
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} fft(x)
 	 */
@@ -3383,7 +3421,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x9006;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * Inverse discrete Fourier transform (IDFT).
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} ifft(x)
 	 */
@@ -3392,7 +3430,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x30D1;&#x30EF;&#x30FC;&#x30B9;&#x30DA;&#x30AF;&#x30C8;&#x30EB;&#x5BC6;&#x5EA6;
+	 * Power spectral density.
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} abs(fft(x)).^2
 	 */
@@ -3401,7 +3439,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x96E2;&#x6563;&#x30B3;&#x30B5;&#x30A4;&#x30F3;&#x5909;&#x63DB;
+	 * Discrete cosine transform (DCT-II, DCT).
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} dct(x)
 	 */
@@ -3410,7 +3448,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x9006;&#x96E2;&#x6563;&#x30B3;&#x30B5;&#x30A4;&#x30F3;&#x5909;&#x63DB;
+	 * Inverse discrete cosine transform (DCT-III, IDCT).
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix} idct(x)
 	 */
@@ -3419,7 +3457,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 2&#x6B21;&#x5143;&#x306E;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * Discrete two-dimensional Fourier transform (2D DFT).
 	 * @returns {Matrix}
 	 */
 	fft2() {
@@ -3427,7 +3465,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 2&#x6B21;&#x5143;&#x306E;&#x9006;&#x96E2;&#x6563;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+	 * Inverse discrete two-dimensional Fourier transform (2D IDFT).
 	 * @returns {Matrix}
 	 */
 	ifft2() {
@@ -3435,7 +3473,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 2&#x6B21;&#x5143;&#x306E;&#x96E2;&#x6563;&#x30B3;&#x30B5;&#x30A4;&#x30F3;&#x5909;&#x63DB;
+	 * Discrete two-dimensional cosine transform (2D DCT).
 	 * @returns {Matrix}
 	 */
 	dct2() {
@@ -3443,7 +3481,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * 2&#x6B21;&#x5143;&#x306E;&#x9006;&#x96E2;&#x6563;&#x30B3;&#x30B5;&#x30A4;&#x30F3;&#x5909;&#x63DB;
+	 * Inverse discrete two-dimensional cosine transform (2D IDCT).
 	 * @returns {Matrix}
 	 */
 	idct2() {
@@ -3451,7 +3489,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x7573;&#x307F;&#x8FBC;&#x307F;&#x7A4D;&#x5206;&#x3001;&#x591A;&#x9805;&#x5F0F;&#x4E57;&#x7B97;
+	 * Convolution integral, Polynomial multiplication.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number
 	 * @returns {Matrix}
 	 */
@@ -3460,8 +3498,9 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x95A2;&#x6570;&#x3001;&#x76F8;&#x4E92;&#x76F8;&#x95A2;&#x95A2;&#x6570;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [number] - &#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;&#x306F;&#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x95A2;&#x6570;
+	 * ACF(Autocorrelation function), cros-correlation function.
+	 * &lt;br&gt;* If the argument is omitted, it is calculated by the autocorrelation function.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [number] - Matrix to calculate the correlation.
 	 * @returns {Matrix}
 	 */
 	xcorr(number) {
@@ -3469,38 +3508,49 @@ export default class Matrix {
 	}
 
 	/**
-	 * &#x7A93;&#x95A2;&#x6570;
-	 * @param {string} name - &#x7A93;&#x95A2;&#x6570;&#x306E;&#x540D;&#x524D;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - &#x9577;&#x3055;
+	 * Create window function for signal processing.
+	 * &lt;br&gt;The following window functions are available.
+	 * &lt;br&gt;* &quot;rectangle&quot;: Rectangular window
+	 * &lt;br&gt;* &quot;hann&quot;: Hann/Hanning window.
+	 * &lt;br&gt;* &quot;hamming&quot;: Hamming window.
+	 * &lt;br&gt;* &quot;blackman&quot;: Blackman window.
+	 * &lt;br&gt;* &quot;blackmanharris&quot;: Blackman-Harris window.
+	 * &lt;br&gt;* &quot;blackmannuttall&quot;: Blackman-Nuttall window.
+	 * &lt;br&gt;* &quot;flattop&quot;: Flat top window.
+	 * &lt;br&gt;* &quot;sin&quot;, Half cycle sine window.
+	 * &lt;br&gt;* &quot;vorbis&quot;, Vorbis window.
+	 * @param {string} name - Window function name.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - Window length
 	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
-	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
+	 * @returns {Matrix} Column vector.
 	 */
 	static window(name, size, periodic) {
 		return Signal.window(name, size, periodic);
 	}
 
 	/**
-	 * &#x30CF;&#x30CB;&#x30F3;&#x30B0;&#x7A93;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - &#x9577;&#x3055;
+	 * Hann (Hanning) window.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - Window length
 	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
-	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
+	 * @returns {Matrix} Column vector.
 	 */
 	static hann(size, periodic) {
 		return Signal.hann(size, periodic);
 	}
 	
 	/**
-	 * &#x30CF;&#x30DF;&#x30F3;&#x30B0;&#x7A93;
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - &#x9577;&#x3055;
+	 * Hamming window.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - Window length
 	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
-	 * @returns {Matrix} &#x5217;&#x30D9;&#x30AF;&#x30C8;&#x30EB;
+	 * @returns {Matrix} Column vector.
 	 */
 	static hamming(size, periodic) {
 		return Signal.hamming(size, periodic);
 	}
 	
 	/**
-	 * FFT&#x30B7;&#x30D5;&#x30C8;
+	 * FFT shift.
+	 * &lt;br&gt;Circular shift beginning at the center of the signal.
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */

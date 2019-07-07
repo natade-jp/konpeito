@@ -10,13 +10,13 @@
 // @ts-check
 
 /**
- * 乱数クラス内で使用するツール集
+ * Collection of tools used in the Random.
  * @ignore
  */
 class RandomTool {
 
 	/**
-	 * 32ビットの負ではない整数を作成する
+	 * Create a 32-bit nonnegative integer.
 	 * @param {number} x 
 	 * @returns {number}
 	 */
@@ -25,7 +25,7 @@ class RandomTool {
 	}
 
 	/**
-	 * 2つの32ビット整数を掛け算して、32ビットの整数を出力する
+	 * Multiply two 32-bit integers and output a 32-bit integer.
 	 * @param {number} x1 
 	 * @param {number} x2 
 	 * @returns {number}
@@ -44,13 +44,13 @@ class RandomTool {
 }
 
 /**
- * 乱数クラス
+ * Random number class.
  */
 export default class Random {
 	
 	/**
-	 * 乱数を初期化する
-	 * @param {number} [seed] - 乱数のシード値、指定しない場合は時刻から作成する
+	 * Create Random.
+	 * @param {number} [seed] - Seed number for random number generation. If not specified, create from time.
 	 */
 	constructor(seed) {
 		// 「M系列乱数」で乱数を作成します。
@@ -59,7 +59,7 @@ export default class Random {
 		// 乱数はCでの動作と同じ値が出ることを確認。(seed = 1として1000番目の値が等しいことを確認)
 
 		/**
-		 * 乱数配列
+		 * Random number array.
 		 * @private
 		 * @type {Array<number>}
 		 */
@@ -92,7 +92,7 @@ export default class Random {
 	}
 
 	/**
-	 * 乱数を初期化する
+	 * Initialize random seed.
 	 * @param {number} seed
 	 */
 	setSeed(seed) {
@@ -119,21 +119,21 @@ export default class Random {
 		}
 		
 		/**
-		 * 乱数配列の何番目を使用しているか
+		 * Number of random number array to use.
 		 * @private
 		 * @type {number}
 		 */
 		this.xi = 0;
 		
 		/**
-		 * ガウシアン分布に基づく乱数を保持しているか
+		 * Is keep random numbers based on Gaussian distribution.
 		 * @private
 		 * @type {boolean}
 		 */
 		this.haveNextNextGaussian = false;
 		
 		/**
-		 * 保持したガウシアン分布に基づく乱数
+		 * Next random number based on Gaussian distribution.
 		 * @private
 		 * @type {number}
 		 */
@@ -141,7 +141,7 @@ export default class Random {
 	}
 
 	/**
-	 * 32ビットの乱数
+	 * 32-bit random number.
 	 * @returns {number} - 32ビットの乱数
 	 */
 	genrand_int32() {
@@ -156,8 +156,8 @@ export default class Random {
 	}
 
 	/**
-	 * 指定したビット数の乱数
-	 * @param {number} bits - 必要なビット数（64まで可能）
+	 * Random number of specified bit length.
+	 * @param {number} bits - Required number of bits (up to 64 possible).
 	 * @returns {number}
 	 */
 	next(bits) {
@@ -187,7 +187,7 @@ export default class Random {
 	}
 
 	/**
-	 * 指定したサイズの8ビットの乱数
+	 * 8-bit random number array of specified length.
 	 * @param {number} size - 必要な長さ
 	 * @returns {Array<number>}
 	 */
@@ -202,7 +202,7 @@ export default class Random {
 	}
 
 	/**
-	 * 16ビットの乱数
+	 * 16-bit random number.
 	 * @returns {number}
 	 */
 	nextShort() {
@@ -210,7 +210,7 @@ export default class Random {
 	}
 
 	/**
-	 * 32ビットの乱数
+	 * 32-bit random number.
 	 * @param {number} [x] - 指定した値未満の数値を作る
 	 * @returns {number}
 	 */
@@ -227,7 +227,7 @@ export default class Random {
 	}
 
 	/**
-	 * 64ビットの乱数
+	 * 64-bit random number.
 	 * @returns {number}
 	 */
 	nextLong() {
@@ -235,7 +235,7 @@ export default class Random {
 	}
 
 	/**
-	 * 正負の乱数
+	 * Random boolean.
 	 * @returns {boolean}
 	 */
 	nextBoolean() {
@@ -244,7 +244,7 @@ export default class Random {
 	}
 
 	/**
-	 * 0 <= x < 1 のFloat(23ビット)乱数
+	 * Float type random number in the range of [0, 1).
 	 * @returns {number}
 	 */
 	nextFloat() {
@@ -252,7 +252,7 @@ export default class Random {
 	}
 
 	/**
-	 * 0 <= x < 1 のDouble(52ビット)乱数
+	 * Double type random number in the range of [0, 1).
 	 * @returns {number}
 	 */
 	nextDouble() {
@@ -262,7 +262,8 @@ export default class Random {
 	}
 
 	/**
-	 * 平均値0、標準偏差1のガウシアン分布に基づく乱数
+	 * Random numbers from a Gaussian distribution.
+	 * <br>This random number is a distribution with an average value of 0 and a standard deviation of 1.
 	 * @returns {number}
 	 */
 	nextGaussian() {
@@ -281,7 +282,7 @@ export default class Random {
 }
 
 /**
- * シードを設定しない場合の乱数作成用整数
+ * Random number creation integer when no seed is set.
  * @type {number}
  * @ignore
  */

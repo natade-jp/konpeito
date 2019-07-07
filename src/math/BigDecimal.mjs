@@ -19,20 +19,21 @@ import RoundingMode, {RoundingModeEntity} from "./context/RoundingMode.mjs";
 import MathContext from "./context/MathContext.mjs";
 
 /**
- * 初期化するときにcontextを設定しなかった場合のデフォルト値
+ * Default MathContext class.
+ * <br>Used when MathContext not specified explicitly.
  * @type {MathContext}
  * @ignore
  */
 let DEFAULT_CONTEXT = MathContext.DECIMAL128;
 
 /**
- * BigDecimal 内で使用する関数群
+ * Collection of functions used in BigDecimal.
  * @ignore
  */
 class DecimalTool {
 
 	/**
-	 * 文字列から BigDecimal で使用するデータに変換
+	 * Create data for BigDecimal from strings.
 	 * @param {string} ntext 
 	 * @returns {{scale : number, integer : BigInteger}}
 	 */
@@ -80,7 +81,7 @@ class DecimalTool {
 	}
 
 	/**
-	 * 数値から BigDecimal で使用するデータに変換
+	 * Create data for BigDecimal from number.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} value 
 	 * @returns {{scale : number, integer : BigInteger}}
 	 */
@@ -117,27 +118,32 @@ class DecimalTool {
 }
 
 /**
- * 任意精度浮動小数点演算クラス (immutable)
+ * Arbitrary-precision floating-point number class (immutable).
  */
 export default class BigDecimal {
 	
 	/**
-	 * 任意精度浮動小数点を作成
-	 * 配列で設定する場合は、 BigInteger, [スケール値=0], [環境=default], [精度設定=default]
-	 * オブジェクトで設定する場合は、 integer, [scale=0], [default_context=default], [context=default]
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - 任意精度実数データ
+	 * Create an arbitrary-precision floating-point number.
+	 * <br>When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
+	 * <br>When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
+	 * <br>default_context 
+	 * <br>* The "scale" is an integer scale factor.
+	 * <br>* The "default_context" is the used when no environment settings are specified during calculation.
+	 * <br>* The "context" is used to normalize the created floating point.
+	 * <br>These 3 settings can be omitted.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
 	 */
 	constructor(number) {
 
 		/**
-		 * スケール
+		 * The scale of this BigDecimal.
 		 * @private
 		 * @type {number}
 		 */
 		this._scale	= 0;
 		
 		/**
-		 * 初期化時に使用したcontext
+		 * Context used during initialization.
 		 * @private
 		 * @type {MathContext}
 		 */
@@ -151,7 +157,7 @@ export default class BigDecimal {
 		if(number instanceof BigDecimal) {
 
 			/**
-			 * 整数部分
+			 * Integer part.
 			 * @private
 			 * @type {BigInteger}
 			 */
@@ -160,7 +166,7 @@ export default class BigDecimal {
 			this._scale				= number._scale;
 			
 			/**
-			 * 文字列化した整数部分（キャッシュ用）
+			 * Integer part of string (for cache).
 			 * @private
 			 * @type {string}
 			 */
@@ -250,8 +256,15 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * BigDecimal を作成
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - 任意精度実数データ
+	 * Create an arbitrary-precision floating-point number.
+	 * <br>When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
+	 * <br>When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
+	 * <br>default_context 
+	 * <br>* The "scale" is an integer scale factor.
+	 * <br>* The "default_context" is the used when no environment settings are specified during calculation.
+	 * <br>* The "context" is used to normalize the created floating point.
+	 * <br>These 3 settings can be omitted.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
 	 * @returns {BigDecimal}
 	 */
 	static create(number) {
@@ -264,7 +277,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 指定した数値から BigDecimal 型に変換
+	 * Convert number to BigDecimal type.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} x 
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [scale] 
 	 * @returns {BigDecimal}
@@ -279,7 +292,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * BigDecimal を作成
+	 * Convert to BigDecimal.
+	 * <br>If type conversion is unnecessary, return the value as it is.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {BigDecimal}
 	 * @private
@@ -294,7 +308,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * BigInteger を作成
+	 * Convert to BigInteger.
+	 * <br>If type conversion is unnecessary, return the value as it is.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {BigInteger}
 	 * @private
@@ -312,7 +327,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 実数を作成
+	 * Convert to real number.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {number}
 	 * @private
@@ -330,7 +345,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 整数を作成
+	 * Convert to integer.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {number}
 	 * @private
@@ -348,8 +363,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 符号を除いた文字列を作成
-	 * キャッシュがなければ作成し、キャッシュがあればそれを返す
+	 * Return string of this number without sign.
+	 * <br>If cache is already created, return cache.
 	 * @returns {string} 
 	 */
 	_getUnsignedIntegerString() {
@@ -361,7 +376,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * ディープコピー
+	 * Deep copy.
 	 * @returns {BigDecimal} 
 	 */
 	clone() {
@@ -369,7 +384,7 @@ export default class BigDecimal {
 	}
 	
 	/**
-	 * 倍率
+	 * The scale of this BigDecimal.
 	 * @returns {number} 
 	 */
 	scale() {
@@ -377,8 +392,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 符号値
-	 * 1, -1, 0の場合は0を返す
+	 * The positive or negative sign of this number.
+	 * <br>* +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number}
 	 */
 	signum() {
@@ -386,8 +401,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 符号値
-	 * 1, -1, 0の場合は0を返す
+	 * The positive or negative sign of this number.
+	 * <br>* +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number}
 	 */
 	sign() {
@@ -395,7 +410,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 精度
+	 * Precision.
 	 * @returns {number} 
 	 */
 	precision() {
@@ -403,7 +418,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 指数表記部分を取り除いた整数
+	 * An integer with the exponent part removed.
 	 * @returns {BigInteger} 
 	 */
 	unscaledValue() {
@@ -411,8 +426,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 科学的表記法による文字列化
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - 指数部の桁数
+	 * Convert to string using scientific notation.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - Number of digits in exponent part.
 	 * @returns {string} 
 	 */
 	toScientificNotation(e_len) {
@@ -460,8 +475,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 文字列化
-	 * 指数が不要の場合は指数表記なし
+	 * Convert to string.
 	 * @returns {string} 
 	 */
 	toString() {
@@ -477,8 +491,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 技術表記法による文字列化
-	 * 指数が不要の場合は指数表記なし
+	 * Convert to string usding technical notation.
 	 * @returns {string} 
 	 */
 	toEngineeringString() {
@@ -495,7 +508,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 指数表記なしの文字列化
+	 * Convert to string without exponential notation.
 	 * @returns {string} 
 	 */
 	toPlainString() {
@@ -514,7 +527,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 設定された精度で表すことができる最も小さな値
+	 * The smallest value that can be represented with the set precision.
 	 * @returns {BigDecimal} 
 	 */
 	ulp() {
@@ -522,10 +535,10 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * スケールの再設定
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - 新しいスケール
-	 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - 精度を変換する際の丸め方
-	 * @param {MathContext} [mc] - 切り替え先の設定（これのみ変更する場合は、roundを使用すること）
+	 * Change the scale.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - New scale.
+	 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
+	 * @param {MathContext} [mc] - Rounding setting after calculation. For rounding purposes, use the round method.
 	 * @returns {BigDecimal} 
 	 */
 	setScale(new_scale, rounding_mode, mc) {
@@ -590,8 +603,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 環境設定を切り替える
-	 * @param {MathContext} mc - 切り替え先の設定
+	 * Round with specified settings.
+	 * @param {MathContext} mc - New setting.
 	 * @returns {BigDecimal} 
 	 */
 	round(mc) {
@@ -620,8 +633,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 絶対値
-	 * @param {MathContext} [mc] - 計算に使用する設定
+	 * Absolute value.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
 	 * @returns {BigDecimal} abs(A)
 	 */
 	abs(mc) {
@@ -631,8 +644,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 正数
-	 * @param {MathContext} [mc] - 計算に使用する設定
+	 * this * 1
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
 	 * @returns {BigDecimal} +A
 	 */
 	plus(mc) {
@@ -641,8 +654,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 負数
-	 * @param {MathContext} [mc] - 計算に使用する設定
+	 * this * -1
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
 	 * @returns {BigDecimal} -A
 	 */
 	negate(mc) {
@@ -652,7 +665,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 値同士を比較
+	 * Compare values.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
@@ -688,8 +701,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 等式
-	 * 精度やスケール含めて等しいかをテストする
+	 * Equals.
+	 * <br>Test for equality, including precision and scale.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {boolean} A === B
 	 */
@@ -707,7 +720,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 最大値
+	 * Maximum number.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
 	 * @returns {BigDecimal} max([A, B])
 	 */
@@ -722,7 +735,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 最小値
+	 * Minimum number.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {BigDecimal} min([A, B])
 	 */
@@ -737,7 +750,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 数値を範囲に収める
+	 * Clip number within range.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
 	 * @returns {BigDecimal} min(max(x, min), max)
@@ -762,7 +775,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 精度は変更させずスケールのみを変更させ10の倍数を乗算
+	 * Multiply a multiple of ten.
+	 * <br>Only the scale is changed without changing the precision.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
 	 * @returns {BigDecimal} A * 10^floor(n)
 	 */
@@ -774,7 +788,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 小数点の位置を左へ移動
+	 * Move the decimal point to the left.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
 	 * @returns {BigDecimal} 
 	 */
@@ -786,7 +800,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 小数点の位置を右へ移動
+	 * Move the decimal point to the right.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
 	 * @returns {BigDecimal} 
 	 */
@@ -798,7 +812,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 数字の右側にある0を取り除き、スケールを正規化
+	 * Remove the 0 to the right of the numbers and normalize the scale.
 	 * @returns {BigDecimal} 
 	 */
 	stripTrailingZeros() {
@@ -817,9 +831,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 加算
+	 * Add.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、加算先の設定デフォルト値を使用する
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A + B
 	 */
 	add(number, context) {
@@ -847,9 +861,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 減算
+	 * Subtract.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、減算先の設定デフォルト値を使用する
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A - B
 	 */
 	subtract(number, context) {
@@ -872,9 +886,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 減算
+	 * Subtract.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、減算先の設定デフォルト値を使用する
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A - B
 	 */
 	sub(number, context) {
@@ -882,9 +896,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 乗算
+	 * Multiply.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A * B
 	 */
 	multiply(number, context) {
@@ -899,9 +913,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 乗算
+	 * Multiply.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A * B
 	 */
 	mul(number, context) {
@@ -909,9 +923,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 小数点まで求めない割り算
+	 * Divide not calculated to the decimal point.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} (int)(A / B)
 	 */
 	divideToIntegralValue(number, context) {
@@ -986,9 +1000,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 割り算と余り
+	 * Divide and remainder.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {Array<BigDecimal>} [C = (int)(A / B), A - C * B]
 	 */
 	divideAndRemainder(number, context) {
@@ -1016,9 +1030,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 割り算の余り
+	 * Remainder of division.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A % B
 	 */
 	rem(number, context) {
@@ -1026,9 +1040,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 割り算の正の余り
+	 * Modulo, positive remainder of division.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A mod B
 	 */
 	mod(number, context) {
@@ -1039,9 +1053,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 割り算
+	 * Divide.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - 計算に使用する scale, context, roundingMode を設定する
+	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal}
 	 */
 	divide(number, type) {
@@ -1127,9 +1141,9 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 割り算
+	 * Divide.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - 計算に使用する scale, context, roundingMode を設定する
+	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal} A / B
 	 */
 	div(number, type) {
@@ -1137,7 +1151,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * BigInteger に変換
+	 * Get as a BigInteger.
 	 * @returns {BigInteger}
 	 */
 	toBigInteger() {
@@ -1146,8 +1160,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * BigInteger に変換
-	 * 変換に失敗した場合は例外
+	 * Get as a BigInteger.
+	 * <br>An error occurs if conversion fails.
 	 * @returns {BigInteger}
 	 */
 	toBigIntegerExact() {
@@ -1156,7 +1170,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 32ビット整数に変換
+	 * 32-bit integer value.
 	 * @returns {number}
 	 */
 	get intValue() {
@@ -1166,8 +1180,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 32ビット整数に変換
-	 * 変換に失敗した場合は例外
+	 * 32-bit integer value.
+	 * <br>An error occurs if conversion fails.
 	 * @returns {number}
 	 */
 	get intValueExact() {
@@ -1180,7 +1194,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 32ビット実数に変換
+	 * 32-bit floating point.
 	 * @returns {number}
 	 */
 	get floatValue() {
@@ -1192,7 +1206,7 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 64ビット実数に変換
+	 * 64-bit floating point.
 	 * @returns {number}
 	 */
 	get doubleValue() {
@@ -1204,10 +1218,10 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * 累乗
-	 * 巨大な乗算をする場合は例外を発生させる
+	 * Power function.
+	 * <br>An exception occurs when doing a huge multiplication.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
-	 * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、累乗先の設定デフォルト値を使用する
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} pow(A, B)
 	 */
 	pow(number, context) {
@@ -1236,7 +1250,8 @@ export default class BigDecimal {
 	}
 	
 	/**
-	 * オブジェクトを新規作成時に環境設定を変更しなかった場合に設定されるデフォルト設定
+	 * Set default the MathContext.
+	 * <br>This is used if you do not specify MathContext when creating a new object.
 	 * @param {MathContext} [context=MathContext.DECIMAL128]
 	 */
 	static setDefaultContext(context) {
@@ -1244,7 +1259,8 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * オブジェクトを新規作成時に環境設定を変更しなかった場合に設定されるデフォルト設定を取得
+	 * Return default MathContext class.
+	 * <br>Used when MathContext not specified explicitly.
 	 * @returns {MathContext}
 	 */
 	static getDefaultContext() {
@@ -1298,7 +1314,7 @@ export default class BigDecimal {
 }
 
 /**
- * 内部で使用する定数値
+ * Collection of constant values used in the class.
  * @ignore
  */
 const DEFINE = {

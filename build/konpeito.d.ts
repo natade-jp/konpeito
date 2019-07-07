@@ -1,347 +1,359 @@
 /**
- * 計算に利用できるデータを提供するクラス
- * 大まかに、 BigInteger, BigDecimal, Matrix の3つに分かれる。
- * Matrix は、 Complex を包括している。
- * 多倍長整数演算を特化した計算クラスは、 BigInteger 。
- * 任意精度浮動小数点演算を特化した計算クラスは、 BigDecimal 。
- * 信号処理や統計処理等を備えた汎用的な計算クラスは、 Matrix 。
+ * Class collection of numerical calculation processing.
+ * <br>These classes are classified into a BigInteger and BigDecimal and Matrix.
+ * <br>- BigInteger is the calculation class for arbitrary-precision integer arithmetic.
+ * <br>- BigDecimal is a calculation class for arbitrary-precision floating point arithmetic.
+ * <br>- Matrix is a general-purpose calculation class with signal processing and statistical processing.
  */
 declare class konpeito {
     /**
-     * 多倍長整数クラス
+     * Return typedef BigInteger for arbitrary-precision integer calculation.
      * @returns {typeof BigInteger}
      */
     static BigInteger: typeof BigInteger;
     /**
-     * 任意精度浮動小数点クラス
+     * Return typedef BigDecimal for arbitrary-precision floating-point number.
      * @returns {typeof BigDecimal}
      */
     static BigDecimal: typeof BigDecimal;
     /**
-     * BigDecimal用の丸め設定クラス
+     * Return Rounding class for BigDecimal.
      * @returns {typeof RoundingMode}
      */
     static RoundingMode: typeof RoundingMode;
     /**
-     * BigDecimal用の環境設定クラス
+     * Return Configuration class for BigDecimal.
      * @returns {typeof MathContext}
      */
     static MathContext: typeof MathContext;
     /**
-     * 複素数クラス
+     * Return typedef Complex for complex number calculation.
      * @returns {typeof Complex}
      */
     static Complex: typeof Complex;
     /**
-     * 複素行列クラス
+     * Return typedef Matrix for complex matrix calculation.
      * @returns {typeof Matrix}
      */
     static Matrix: typeof Matrix;
     /**
-     * 乱数クラス
+     * Return typedef Random.
      * @returns {typeof Random}
      */
     static Random: typeof Random;
 }
 
 /**
- * 任意精度浮動小数点を作成
- * 配列で設定する場合は、 BigInteger, [スケール値=0], [環境=default], [精度設定=default]
- * オブジェクトで設定する場合は、 integer, [scale=0], [default_context=default], [context=default]
- * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - 任意精度実数データ
+ * Create an arbitrary-precision floating-point number.
+ * <br>When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
+ * <br>When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
+ * <br>default_context
+ * <br>* The "scale" is an integer scale factor.
+ * <br>* The "default_context" is the used when no environment settings are specified during calculation.
+ * <br>* The "context" is used to normalize the created floating point.
+ * <br>These 3 settings can be omitted.
+ * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
  */
 declare class BigDecimal {
     constructor(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any);
     /**
-     * BigDecimal を作成
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - 任意精度実数データ
+     * Create an arbitrary-precision floating-point number.
+     * <br>When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
+     * <br>When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
+     * <br>default_context
+     * <br>* The "scale" is an integer scale factor.
+     * <br>* The "default_context" is the used when no environment settings are specified during calculation.
+     * <br>* The "context" is used to normalize the created floating point.
+     * <br>These 3 settings can be omitted.
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
      * @returns {BigDecimal}
      */
     static create(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
     /**
-     * 指定した数値から BigDecimal 型に変換
+     * Convert number to BigDecimal type.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} x
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [scale]
      * @returns {BigDecimal}
      */
     static valueOf(x: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, scale?: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
     /**
-     * 符号を除いた文字列を作成
-     * キャッシュがなければ作成し、キャッシュがあればそれを返す
+     * Return string of this number without sign.
+     * <br>If cache is already created, return cache.
      * @returns {string}
      */
     _getUnsignedIntegerString(): string;
     /**
-     * ディープコピー
+     * Deep copy.
      * @returns {BigDecimal}
      */
     clone(): BigDecimal;
     /**
-     * 倍率
+     * The scale of this BigDecimal.
      * @returns {number}
      */
     scale(): number;
     /**
-     * 符号値
-     * 1, -1, 0の場合は0を返す
+     * The positive or negative sign of this number.
+     * <br>* +1 if positive, -1 if negative, 0 if 0.
      * @returns {number}
      */
     signum(): number;
     /**
-     * 符号値
-     * 1, -1, 0の場合は0を返す
+     * The positive or negative sign of this number.
+     * <br>* +1 if positive, -1 if negative, 0 if 0.
      * @returns {number}
      */
     sign(): number;
     /**
-     * 精度
+     * Precision.
      * @returns {number}
      */
     precision(): number;
     /**
-     * 指数表記部分を取り除いた整数
+     * An integer with the exponent part removed.
      * @returns {BigInteger}
      */
     unscaledValue(): BigInteger;
     /**
-     * 科学的表記法による文字列化
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - 指数部の桁数
+     * Convert to string using scientific notation.
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - Number of digits in exponent part.
      * @returns {string}
      */
     toScientificNotation(e_len: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): string;
     /**
-     * 文字列化
-     * 指数が不要の場合は指数表記なし
+     * Convert to string.
      * @returns {string}
      */
     toString(): string;
     /**
-     * 技術表記法による文字列化
-     * 指数が不要の場合は指数表記なし
+     * Convert to string usding technical notation.
      * @returns {string}
      */
     toEngineeringString(): string;
     /**
-     * 指数表記なしの文字列化
+     * Convert to string without exponential notation.
      * @returns {string}
      */
     toPlainString(): string;
     /**
-     * 設定された精度で表すことができる最も小さな値
+     * The smallest value that can be represented with the set precision.
      * @returns {BigDecimal}
      */
     ulp(): BigDecimal;
     /**
-     * スケールの再設定
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - 新しいスケール
-     * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - 精度を変換する際の丸め方
-     * @param {MathContext} [mc] - 切り替え先の設定（これのみ変更する場合は、roundを使用すること）
+     * Change the scale.
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - New scale.
+     * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
+     * @param {MathContext} [mc] - Rounding setting after calculation. For rounding purposes, use the round method.
      * @returns {BigDecimal}
      */
     setScale(new_scale: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, rounding_mode?: RoundingModeEntity, mc?: MathContext): BigDecimal;
     /**
-     * 環境設定を切り替える
-     * @param {MathContext} mc - 切り替え先の設定
+     * Round with specified settings.
+     * @param {MathContext} mc - New setting.
      * @returns {BigDecimal}
      */
     round(mc: MathContext): BigDecimal;
     /**
-     * 絶対値
-     * @param {MathContext} [mc] - 計算に使用する設定
+     * Absolute value.
+     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
      * @returns {BigDecimal} abs(A)
      */
     abs(mc?: MathContext): BigDecimal;
     /**
-     * 正数
-     * @param {MathContext} [mc] - 計算に使用する設定
+     * this * 1
+     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
      * @returns {BigDecimal} +A
      */
     plus(mc?: MathContext): BigDecimal;
     /**
-     * 負数
-     * @param {MathContext} [mc] - 計算に使用する設定
+     * this * -1
+     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
      * @returns {BigDecimal} -A
      */
     negate(mc?: MathContext): BigDecimal;
     /**
-     * 値同士を比較
+     * Compare values.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
      * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
      */
     compareTo(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): number;
     /**
-     * 等式
-     * 精度やスケール含めて等しいかをテストする
+     * Equals.
+     * <br>Test for equality, including precision and scale.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
      * @returns {boolean} A === B
      */
     equals(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): boolean;
     /**
-     * 最大値
+     * Maximum number.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
      * @returns {BigDecimal} max([A, B])
      */
     max(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
     /**
-     * 最小値
+     * Minimum number.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
      * @returns {BigDecimal} min([A, B])
      */
     min(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
     /**
-     * 数値を範囲に収める
+     * Clip number within range.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
      * @returns {BigDecimal} min(max(x, min), max)
      */
     clip(min: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, max: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
     /**
-     * 精度は変更させずスケールのみを変更させ10の倍数を乗算
+     * Multiply a multiple of ten.
+     * <br>Only the scale is changed without changing the precision.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n
      * @returns {BigDecimal} A * 10^floor(n)
      */
     scaleByPowerOfTen(n: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
     /**
-     * 小数点の位置を左へ移動
+     * Move the decimal point to the left.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n
      * @returns {BigDecimal}
      */
     movePointLeft(n: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
     /**
-     * 小数点の位置を右へ移動
+     * Move the decimal point to the right.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n
      * @returns {BigDecimal}
      */
     movePointRight(n: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
     /**
-     * 数字の右側にある0を取り除き、スケールを正規化
+     * Remove the 0 to the right of the numbers and normalize the scale.
      * @returns {BigDecimal}
      */
     stripTrailingZeros(): BigDecimal;
     /**
-     * 加算
+     * Add.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、加算先の設定デフォルト値を使用する
+     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
      * @returns {BigDecimal} A + B
      */
     add(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
     /**
-     * 減算
+     * Subtract.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、減算先の設定デフォルト値を使用する
+     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
      * @returns {BigDecimal} A - B
      */
     subtract(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
     /**
-     * 減算
+     * Subtract.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、減算先の設定デフォルト値を使用する
+     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
      * @returns {BigDecimal} A - B
      */
     sub(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
     /**
-     * 乗算
+     * Multiply.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する
+     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
      * @returns {BigDecimal} A * B
      */
     multiply(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
     /**
-     * 乗算
+     * Multiply.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、乗算先の設定デフォルト値を使用する
+     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
      * @returns {BigDecimal} A * B
      */
     mul(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
     /**
-     * 小数点まで求めない割り算
+     * Divide not calculated to the decimal point.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
      * @returns {BigDecimal} (int)(A / B)
      */
     divideToIntegralValue(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
     /**
-     * 割り算と余り
+     * Divide and remainder.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
      * @returns {Array<BigDecimal>} [C = (int)(A / B), A - C * B]
      */
     divideAndRemainder(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal[];
     /**
-     * 割り算の余り
+     * Remainder of division.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
      * @returns {BigDecimal} A % B
      */
     rem(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
     /**
-     * 割り算の正の余り
+     * Modulo, positive remainder of division.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、割る先の設定デフォルト値を使用する
+     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
      * @returns {BigDecimal} A mod B
      */
     mod(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
     /**
-     * 割り算
+     * Divide.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - 計算に使用する scale, context, roundingMode を設定する
+     * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - Scale, MathContext, RoundingMode used for the calculation.
      * @returns {BigDecimal}
      */
     divide(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, type?: any): BigDecimal;
     /**
-     * 割り算
+     * Divide.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - 計算に使用する scale, context, roundingMode を設定する
+     * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - Scale, MathContext, RoundingMode used for the calculation.
      * @returns {BigDecimal} A / B
      */
     div(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, type?: any): BigDecimal;
     /**
-     * BigInteger に変換
+     * Get as a BigInteger.
      * @returns {BigInteger}
      */
     toBigInteger(): BigInteger;
     /**
-     * BigInteger に変換
-     * 変換に失敗した場合は例外
+     * Get as a BigInteger.
+     * <br>An error occurs if conversion fails.
      * @returns {BigInteger}
      */
     toBigIntegerExact(): BigInteger;
     /**
-     * 32ビット整数に変換
+     * 32-bit integer value.
      * @returns {number}
      */
     intValue: number;
     /**
-     * 32ビット整数に変換
-     * 変換に失敗した場合は例外
+     * 32-bit integer value.
+     * <br>An error occurs if conversion fails.
      * @returns {number}
      */
     intValueExact: number;
     /**
-     * 32ビット実数に変換
+     * 32-bit floating point.
      * @returns {number}
      */
     floatValue: number;
     /**
-     * 64ビット実数に変換
+     * 64-bit floating point.
      * @returns {number}
      */
     doubleValue: number;
     /**
-     * 累乗
-     * 巨大な乗算をする場合は例外を発生させる
+     * Power function.
+     * <br>An exception occurs when doing a huge multiplication.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - 計算に使用する設定、省略した場合は、累乗先の設定デフォルト値を使用する
+     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
      * @returns {BigDecimal} pow(A, B)
      */
     pow(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
     /**
-     * オブジェクトを新規作成時に環境設定を変更しなかった場合に設定されるデフォルト設定
+     * Set default the MathContext.
+     * <br>This is used if you do not specify MathContext when creating a new object.
      * @param {MathContext} [context=MathContext.DECIMAL128]
      */
     static setDefaultContext(context?: MathContext): void;
     /**
-     * オブジェクトを新規作成時に環境設定を変更しなかった場合に設定されるデフォルト設定を取得
+     * Return default MathContext class.
+     * <br>Used when MathContext not specified explicitly.
      * @returns {MathContext}
      */
     static getDefaultContext(): MathContext;
@@ -368,375 +380,382 @@ declare class BigDecimal {
 }
 
 /**
- * 多倍長整数を作成
- * 文字列で指定する場合は指数表記には非対応。
- * 指定した進数で指定する場合は["ff", 16] という配列で指定する。
- * @param {BigInteger|number|string|Array<string|number>|Object} [number] - 整数値
+ * Create an arbitrary-precision integer.
+ * <br>* Does not support strings using exponential notation.
+ * <br>* If you want to initialize with the specified base number, please set up with an array ["ff", 16].
+ * @param {BigInteger|number|string|Array<string|number>|Object} [number] - Numeric data. See how to use the function.
  */
 declare class BigInteger {
     constructor(number?: BigInteger | number | string | (string | number)[] | any);
     /**
-     * BigIntegerを作成する
+     * Create an entity object of this class.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger}
      */
     static create(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * BigInteger を作成
+     * Create an arbitrary-precision integer.
+     * <br>* Does not support strings using exponential notation.
+     * <br>* If you want to initialize with the specified base number, please set up with an array ["ff", 16].
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger}
      */
     static valueOf(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 指定したビット数以内の乱数
-     * @param {BigInteger|number|string|Array<string|number>|Object} bitsize - 作成する乱数のビット数
-     * @param {Random} [random] - 作成に使用するRandom
+     * Random number of specified bit length.
+     * @param {BigInteger|number|string|Array<string|number>|Object} bitsize - Bit length.
+     * @param {Random} [random] - Class for creating random numbers.
      * @returns {BigInteger}
      */
     static createRandomBigInteger(bitsize: BigInteger | number | string | (string | number)[] | any, random?: Random): BigInteger;
     /**
-     * 指定したビット数以内の素数
-     * @param {BigInteger|number|string|Array<string|number>|Object} bits - 作成する素数の乱数のビット数
-     * @param {Random} [random] - 作成に使用するRandom
-     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - ミラーラビン素数判定法に使用する繰り返し回数
-     * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - 乱数生成回数
+     * Prime represented within the specified bit length.
+     * @param {BigInteger|number|string|Array<string|number>|Object} bits - Bit length.
+     * @param {Random} [random] - Class for creating random numbers.
+     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+     * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - Number of times to retry if prime generation fails.
      * @returns {BigInteger}
      */
     static probablePrime(bits: BigInteger | number | string | (string | number)[] | any, random?: Random, certainty?: BigInteger | number | string | (string | number)[] | any, create_count?: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 等式
+     * Equals.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {boolean} A === B
      */
     equals(number: BigInteger | number | string | (string | number)[] | any): boolean;
     /**
-     * 文字列化
-     * @param {BigInteger|number|string|Array<string|number>|Object} [radix=10] - 文字列変換後の進数
+     * Convert to string.
+     * @param {BigInteger|number|string|Array<string|number>|Object} [radix=10] - Base number.
      * @returns {string}
      */
     toString(radix?: BigInteger | number | string | (string | number)[] | any): string;
     /**
-     * 16進数ごとの配列で構成される内部値の指定した位置の値
-     * @param {BigInteger|number|string|Array<string|number>|Object} point - 内部配列の位置
+     * Value at the specified position of the internally used array that composed of hexadecimal numbers.
+     * @param {BigInteger|number|string|Array<string|number>|Object} point - Array address.
      * @returns {number}
      */
     getShort(point: BigInteger | number | string | (string | number)[] | any): number;
     /**
-     * 32ビット整数値
-     * 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある
+     * 32-bit integer value.
+     * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
      * @returns {number}
      */
     intValue: number;
     /**
-     * 64ビット整数値
-     * 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある
+     * 64-bit integer value.
+     * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
      * @returns {number}
      */
     longValue: number;
     /**
-     * 64ビット実数値
-     * 数値が大きいなど、収まりきらない場合に正確な数値にならない場合がある
+     * 64-bit floating point.
+     * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
      * @returns {number}
      */
     doubleValue: number;
     /**
-     * ディープコピー
+     * Deep copy.
      * @returns {BigInteger}
      */
     clone(): BigInteger;
     /**
-     * 実部の負数を判定
+     * this < 0
      * @returns {boolean} real(x) < 0
      */
     isNegative(): boolean;
     /**
-     * 0 を判定
+     * this === 0
      * @returns {boolean} A === 0
      */
     isZero(): boolean;
     /**
-     * 正数を判定
+     * Return true if the value is positive number.
      * @returns {boolean} real(x) > 0
      */
     isPositive(): boolean;
     /**
-     * 2進数で表した場合に最も右側に現れる1の桁数
+     * Number of digits in which the number "1" appears first when expressed in binary.
+     * <br>* Return -1 If 1 is not found it.
      * @returns {number} 存在しない場合は -1
      */
     getLowestSetBit(): number;
     /**
-     * 2進数で表した場合の長さ
+     * Length when the number is binary.
      * @returns {number}
      */
     bitLength(): number;
     /**
-     * 2の補数表現で表した場合に立つビットの数
+     * Sum that the bit is 1 when represented in the two's complement.
      * @returns {number}
      */
     bitCount(): number;
     /**
-     * 論理積
+     * Logical AND.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} A & B
      */
     and(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 論理和
+     * Logical OR.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} A | B
      */
     or(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 排他的論理和
+     * Logical Exclusive-OR.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} A ^ B
      */
     xor(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * ビット反転（ミュータブル）
+     * Logical Not. (mutable)
      * @returns {BigInteger} !A
      */
     not(): BigInteger;
     /**
-     * 否定論理積
+     * Logical Not-AND.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} A & (!B)
      */
     andNot(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 否定論理積
+     * Logical Not-AND.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} A & (!B)
      */
     nand(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 否定論理和
+     * Logical Not-OR.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} !(A | B)
      */
     orNot(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 否定論理和
+     * Logical Not-OR.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} !(A | B)
      */
     nor(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * ユークリッド互除法
+     * Euclidean algorithm.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} gcd(x, y)
      */
     gcd(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 拡張ユークリッド互除法
+     * Extended Euclidean algorithm.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {Array<BigInteger>} a*x + b*y = c = gcd(x, y) となる [a, b, c]
+     * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
      */
     extgcd(number: BigInteger | number | string | (string | number)[] | any): BigInteger[];
     /**
-     * 絶対値
+     * Absolute value.
      * @returns {BigInteger} abs(A)
      */
     abs(): BigInteger;
     /**
-     * 負数
+     * this * -1
      * @returns {BigInteger} -A
      */
     negate(): BigInteger;
     /**
-     * 符号値
+     * The positive or negative sign of this number.
+     * <br>* +1 if positive, -1 if negative, 0 if 0.
      * @returns {number} 1, -1, 0の場合は0を返す
      */
     signum(): number;
     /**
-     * 符号値
+     * The positive or negative sign of this number.
+     * <br>* +1 if positive, -1 if negative, 0 if 0.
      * @returns {number} 1, -1, 0の場合は0を返す
      */
     sign(): number;
     /**
-     * 符号を除いた値同士を比較
+     * Compare values without sign.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
      */
     compareToAbs(number: BigInteger | number | string | (string | number)[] | any): number;
     /**
-     * 値同士を比較
+     * Compare values.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
      */
     compareTo(number: BigInteger | number | string | (string | number)[] | any): number;
     /**
-     * 最大値
+     * Maximum number.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} max([A, B])
      */
     max(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 最小値
+     * Minimum number.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} min([A, B])
      */
     min(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 数値を範囲に収める
+     * Clip number within range.
      * @param {BigInteger|number|string|Array<string|number>|Object} min
      * @param {BigInteger|number|string|Array<string|number>|Object} max
      * @returns {BigInteger} min(max(x, min), max)
      */
     clip(min: BigInteger | number | string | (string | number)[] | any, max: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * ビットシフト
+     * this << n
      * @param {BigInteger|number|string|Array<string|number>|Object} n
      * @returns {BigInteger} A << n
      */
     shift(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 左へビットシフト
+     * this << n
      * @param {BigInteger|number|string|Array<string|number>|Object} n
      * @returns {BigInteger} A << n
      */
     shiftLeft(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 右へビットシフト
+     * this >> n
      * @param {BigInteger|number|string|Array<string|number>|Object} n
      * @returns {BigInteger} A >> n
      */
     shiftRight(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 加算
+     * Add.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} A + B
      */
     add(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 減算
+     * Subtract.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} A - B
      */
     subtract(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 減算
+     * Subtract.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} A - B
      */
     sub(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 乗算
+     * Multiply.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} A * B
      */
     multiply(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 乗算
+     * Multiply.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} A * B
      */
     mul(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 割り算と余り
+     * Divide and remainder.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {Array<BigInteger>} [C = floor(A / B), A - C * B]
      */
     divideAndRemainder(number: BigInteger | number | string | (string | number)[] | any): BigInteger[];
     /**
-     * 割り算
+     * Divide.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} floor(A / B)
      */
     divide(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 割り算
+     * Divide.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} floor(A / B)
      */
     div(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 割り算の余り
+     * Remainder of division.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} A % B
      */
     remainder(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 割り算の余り
+     * Remainder of division.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} A % B
      */
     rem(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 割り算の正の余り
+     * Modulo, positive remainder of division.
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger} A mod B
      */
     mod(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 特定のビットを立てる
+     * this | (1 << n)
      * @param {BigInteger|number|string|Array<string|number>|Object} bit
      * @returns {BigInteger}
      */
     setBit(bit: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 特定のビットを反転させる
+     * Invert a specific bit.
      * @param {BigInteger|number|string|Array<string|number>|Object} bit
      * @returns {BigInteger}
      */
     flipBit(bit: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 特定のビットを下げる
+     * Lower a specific bit.
      * @param {BigInteger|number|string|Array<string|number>|Object} bit
      * @returns {BigInteger}
      */
     clearBit(bit: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 指定のビットの判定
+     * Test if a particular bit is on.
      * @param {BigInteger|number|string|Array<string|number>|Object} bit
      * @returns {boolean}
      */
     testBit(bit: BigInteger | number | string | (string | number)[] | any): boolean;
     /**
-     * 累乗
+     * Power function.
      * @param {BigInteger|number|string|Array<string|number>|Object} exponent
      * @returns {BigInteger} pow(A, B)
      */
     pow(exponent: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 冪剰余
+     * Modular exponentiation.
      * @param {BigInteger|number|string|Array<string|number>|Object} exponent
      * @param {BigInteger|number|string|Array<string|number>|Object} m
      * @returns {BigInteger} A^B mod m
      */
     modPow(exponent: BigInteger | number | string | (string | number)[] | any, m: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * モジュラ逆数
+     * Modular multiplicative inverse.
      * @param {BigInteger|number|string|Array<string|number>|Object} m
      * @returns {BigInteger} A^(-1) mod m
      */
     modInverse(m: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * ミラーラビン素数判定法による複素判定
-     * （非常に重たいので注意）
-     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - 素数判定法の繰り返し回数
+     * Return true if the value is prime number by Miller-Labin prime number determination method.
+     * <br>Attention : it takes a very long time to process.
+     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
      * @returns {boolean}
      */
     isProbablePrime(certainty?: BigInteger | number | string | (string | number)[] | any): boolean;
     /**
-     * 次の素数
-     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - 素数判定法の繰り返し回数
-     * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - 次の素数を見つけるまでの回数
+     * Next prime.
+     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+     * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - Search range of next prime.
      * @returns {BigInteger}
      */
     nextProbablePrime(certainty?: BigInteger | number | string | (string | number)[] | any, search_max?: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * 階乗関数
+     * Factorial function, x!.
      * @returns {BigInteger} n!
      */
     factorial(): BigInteger;
     /**
-     * 乱数を指定しなかった場合のデフォルト乱数を設定する
+     * Set default class of random.
+     * <br>This is used if you do not specify a random number.
      * @param {Random} random
      */
     static setDefaultRandom(random: Random): void;
     /**
-     * 乱数を指定しなかった場合のデフォルト乱数を取得する
+     * Return default Random class.
+     * <br>Used when Random not specified explicitly.
      * @returns {Random}
      */
     static getDefaultRandom(): Random;
@@ -763,317 +782,324 @@ declare class BigInteger {
 }
 
 /**
- * 複素数を作成
- * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - 複素数( "1 + j", [1 , 1] など)
+ * Create a complex number.
+ * <br>Initialization can be performed as follows.
+ * <br>* "3 + 4i", "4j + 3", [3, 4].
+ * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Complex number. See how to use the function.
  */
 declare class Complex {
     constructor(number: Complex | number | string | number[] | any | any);
     /**
-     * Complex を作成
+     * Create an entity object of this class.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
      * @returns {Complex}
      */
     static create(number: Complex | number | string | number[] | any | any): Complex;
     /**
-     * 指定した数値から Complex 型に変換
+     * Convert number to Complex type.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
      * @returns {Complex}
      */
     static valueOf(number: Complex | number | string | number[] | any | any): Complex;
     /**
-     * 32ビット整数に変換
+     * 32-bit integer value.
      * @returns {number}
      */
     intValue: number;
     /**
-     * 64ビット実数に変換
+     * 64-bit floating point.
      * @returns {number}
      */
     doubleValue: number;
     /**
-     * ディープコピー
+     * Deep copy.
      * @returns {Complex}
      */
     clone(): Complex;
     /**
-     * 文字列データ
+     * Convert to string.
      * @returns {string}
      */
     toString(): string;
     /**
-     * ランダムな値を作成
+     * Create random values with uniform random numbers.
      * @returns {Complex}
      */
     static rand(): Complex;
     /**
-     * 正規分布に従うランダムな値を作成
+     * Create random values with normal distribution.
      * @returns {Complex}
      */
     static randn(): Complex;
     /**
-     * 等式
+     * Equals.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} A === B
      */
     equals(number: Complex | number | string | number[] | any | any, epsilon?: Complex | number | string | number[] | any | any): boolean;
     /**
-     * 実部
+     * The real part of this Comlex.
      * @returns {number} real(A)
      */
     real: number;
     /**
-     * 虚部
+     * The imaginary part of this Comlex.
      * @returns {number} imag(A)
      */
     imag: number;
     /**
-     * ノルム
+     * norm.
      * @returns {number} |A|
      */
     norm: number;
     /**
-     * 偏角
+     * The argument of this complex number.
      * @returns {number} arg(A)
      */
     arg: number;
     /**
-     * 実部、虚部を表す際の小数点以下の桁数
-     * @returns {number} 小数点の桁数
+     * Return number of decimal places for real and imaginary parts.
+     * <br>* Used to make a string.
+     * @returns {number} Number of decimal places.
      */
     getDecimalPosition(): number;
     /**
-     * 加算
+     * Add.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
      * @returns {Complex} A + B
      */
     add(number: Complex | number | string | number[] | any | any): Complex;
     /**
-     * 減算
+     * Subtract.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
      * @returns {Complex} A - B
      */
     sub(number: Complex | number | string | number[] | any | any): Complex;
     /**
-     * 乗算
+     * Multiply.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
      * @returns {Complex} A * B
      */
     mul(number: Complex | number | string | number[] | any | any): Complex;
     /**
-     * ドット積
+     * Inner product/Dot product.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
      * @returns {Complex} A * conj(B)
      */
     dot(number: Complex | number | string | number[] | any | any): Complex;
     /**
-     * 割り算
+     * Divide.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
      * @returns {Complex} A / B
      */
     div(number: Complex | number | string | number[] | any | any): Complex;
     /**
-     * 割り算の正の余り
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - 複素数を含まない数値
+     * Modulo, positive remainder of division.
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Divided value (real number only).
      * @returns {Complex} A mod B
      */
     mod(number: Complex | number | string | number[] | any | any): Complex;
     /**
-     * 逆数
+     * Inverse number of this value.
      * @returns {Complex} 1 / A
      */
     inv(): Complex;
     /**
-     * 符号値
+     * The positive or negative sign of this number.
+     * <br>* +1 if positive, -1 if negative, 0 if 0.
      * @returns {Complex} [-1,1] 複素数の場合はノルムを1にした値。
      */
     sign(): Complex;
     /**
-     * 値同士を比較
+     * Compare values.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
      */
     compareTo(number: Complex | number | string | number[] | any | any, epsilon?: Complex | number | string | number[] | any | any): number;
     /**
-     * 最大値
+     * Maximum number.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
      * @returns {Complex} max([A, B])
      */
     max(number: Complex | number | string | number[] | any | any): Complex;
     /**
-     * 最小値
+     * Minimum number.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
      * @returns {Complex} min([A, B])
      */
     min(number: Complex | number | string | number[] | any | any): Complex;
     /**
-     * 数値を範囲に収める
+     * Clip number within range.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} min
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} max
      * @returns {Complex} min(max(x, min), max)
      */
     clip(min: Complex | number | string | number[] | any | any, max: Complex | number | string | number[] | any | any): Complex;
     /**
-     * 整数を判定
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+     * Return true if the value is integer.
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isInteger(epsilon?: Complex | number | string | number[] | any | any): boolean;
     /**
-     * 複素整数（整数も含む）を判定
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
-     * @returns {boolean} real(A) === 整数 && imag(A) === 整数
+     * Returns true if the vallue is complex integer (including normal integer).
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+     * @returns {boolean} real(A) === integer && imag(A) === integer
      */
     isComplexInteger(epsilon?: Complex | number | string | number[] | any | any): boolean;
     /**
-     * 0 を判定
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+     * this === 0
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} A === 0
      */
     isZero(epsilon?: Complex | number | string | number[] | any | any): boolean;
     /**
-     * 1 を判定
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+     * this === 1
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} A === 1
      */
     isOne(epsilon?: Complex | number | string | number[] | any | any): boolean;
     /**
-     * 複素数（虚部が0以外）を判定
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+     * Returns true if the vallue is complex number (imaginary part is not 0).
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} imag(A) !== 0
      */
     isComplex(epsilon?: Complex | number | string | number[] | any | any): boolean;
     /**
-     * 実数を判定
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - 誤差を実数で指定
+     * Return true if the value is real number.
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} imag(A) === 0
      */
     isReal(epsilon?: Complex | number | string | number[] | any | any): boolean;
     /**
-     * 非数を判定
+     * this === NaN
      * @returns {boolean} isNaN(A)
      */
     isNaN(): boolean;
     /**
-     * 実部の正数を判定
+     * Return true if this real part of the complex positive.
      * @returns {boolean} real(x) > 0
      */
     isPositive(): boolean;
     /**
-     * 実部の負数を判定
+     * real(this) < 0
      * @returns {boolean} real(x) < 0
      */
     isNegative(): boolean;
     /**
-     * 実部の非負値を判定
+     * real(this) >= 0
      * @returns {boolean} real(x) >= 0
      */
     isNotNegative(): boolean;
     /**
-     * 無限を判定
+     * this === Infinity
      * @returns {boolean} isInfinite(A)
      */
     isInfinite(): boolean;
     /**
-     * 有限数を判定
+     * Return true if the value is finite number.
      * @returns {boolean} !isNaN(A) && !isInfinite(A)
      */
     isFinite(): boolean;
     /**
-     * 絶対値
+     * Absolute value.
      * @returns {Complex} abs(A)
      */
     abs(): Complex;
     /**
-     * 共役複素数
+     * Complex conjugate.
      * @returns {Complex} real(A) - imag(A)j
      */
     conj(): Complex;
     /**
-     * 負数
+     * this * -1
      * @returns {Complex} -A
      */
     negate(): Complex;
     /**
-     * 累乗
+     * Power function.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
      * @returns {Complex} pow(A, B)
      */
     pow(number: Complex | number | string | number[] | any | any): Complex;
     /**
-     * 2乗
+     * Square.
      * @returns {Complex} pow(A, 2)
      */
     square(): Complex;
     /**
-     * 平方根
+     * Square root.
      * @returns {Complex} sqrt(A)
      */
     sqrt(): Complex;
     /**
-     * 対数
+     * Logarithmic function.
      * @returns {Complex} log(A)
      */
     log(): Complex;
     /**
-     * 指数
+     * Exponential function.
      * @returns {Complex} exp(A)
      */
     exp(): Complex;
     /**
-     * sin
+     * Sine function.
      * @returns {Complex} sin(A)
      */
     sin(): Complex;
     /**
-     * cos
+     * Cosine function.
      * @returns {Complex} cos(A)
      */
     cos(): Complex;
     /**
-     * tan
+     * Tangent function.
      * @returns {Complex} tan(A)
      */
     tan(): Complex;
     /**
-     * atan
+     * Atan (arc tangent) function.
+     * <br>* Return the values of [-PI/2, PI/2].
      * @returns {Complex} atan(A)
      */
     atan(): Complex;
     /**
-     * atan2
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [number] - 実数で指定。省略時は、本オブジェクトの偏角を返す。
+     * Atan (arc tangent) function.
+     * <br>* Return the values of [-PI, PI] .
+     * <br>* Supports only real numbers.
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [number] - X
      * @returns {Complex} atan2(Y, X)
      */
     atan2(number?: Complex | number | string | number[] | any | any): Complex;
     /**
-     * 正規化 sinc
+     * Normalized sinc function.
      * @returns {Complex} sinc(A)
      */
     sinc(): Complex;
     /**
-     * floor
+     * Floor.
      * @returns {Complex} floor(A)
      */
     floor(): Complex;
     /**
-     * ceil
+     * Ceil.
      * @returns {Complex} ceil(A)
      */
     ceil(): Complex;
     /**
-     * 四捨五入
+     * Rounding to the nearest integer.
      * @returns {Complex} round(A)
      */
     round(): Complex;
     /**
-     * 整数化
+     * To integer rounded down to the nearest.
      * @returns {Complex} fix(A)
      */
     fix(): Complex;
     /**
-     * 小数部の抽出
+     * Fraction.
      * @returns {Complex} fract(A)
      */
     fract(): Complex;
@@ -1108,42 +1134,42 @@ declare class Complex {
      */
     static I: Complex;
     /**
-     * PI
+     * Pi.
      * @returns {Complex} 3.14...
      */
     static PI: Complex;
     /**
-     * E
+     * E, Napier's constant.
      * @returns {Complex} 2.71...
      */
     static E: Complex;
     /**
-     * LN2
+     * log_e(2)
      * @returns {Complex} ln(2)
      */
     static LN2: Complex;
     /**
-     * LN10
+     * log_e(10)
      * @returns {Complex} ln(10)
      */
     static LN10: Complex;
     /**
-     * LOG2E
+     * log_2(e)
      * @returns {Complex} log_2(e)
      */
     static LOG2E: Complex;
     /**
-     * LOG10E
+     * log_10(e)
      * @returns {Complex} log_10(e)
      */
     static LOG10E: Complex;
     /**
-     * SQRT2
+     * sqrt(2)
      * @returns {Complex} sqrt(2)
      */
     static SQRT2: Complex;
     /**
-     * SQRT1_2
+     * sqrt(0.5)
      * @returns {Complex} sqrt(0.5)
      */
     static SQRT1_2: Complex;
@@ -1153,85 +1179,90 @@ declare class Complex {
      */
     static HALF: Complex;
     /**
-     * 正の無限大
+     * Positive infinity.
      * @returns {Complex} Infinity
      */
     static POSITIVE_INFINITY: Complex;
     /**
-     * 負の無限大
+     * Negative Infinity.
      * @returns {Complex} -Infinity
      */
     static NEGATIVE_INFINITY: Complex;
     /**
-     * 非数
+     * Not a Number.
      * @returns {Complex} NaN
      */
     static NaN: Complex;
 }
 
 /**
- * 任意精度の環境設定データ
- * @param {string|number} precision_or_name - 精度を数値で指定するか、設定自体を文字列で指定する
- * @param {RoundingModeEntity} [roundingMode=RoundingMode.HALF_UP] - 丸めモード
+ * Create BigDecimal configuration.
+ * @param {string|number} precision_or_name - Precision. Or String output by MathContext.toString.
+ * @param {RoundingModeEntity} [roundingMode=RoundingMode.HALF_UP] - RoundingMode.
  */
 declare class MathContext {
     constructor(precision_or_name: string | number, roundingMode?: RoundingModeEntity);
     /**
-     * 精度
+     * The precision of this BigDecimal.
      * @returns {number}
      */
     getPrecision(): number;
     /**
-     * 丸め方
+     * Method of rounding.
      * @returns {RoundingModeEntity}
      */
     getRoundingMode(): RoundingModeEntity;
     /**
-     * 環境が等しいか
-     * @param {MathContext} x - 比較対象
+     * Equals.
+     * @param {MathContext} x - Number to compare.
      * @returns {boolean}
      */
     equals(x: MathContext): boolean;
     /**
-     * 文字列化
+     * Convert to string.
      * @returns {string}
      */
     toString(): string;
     /**
-     * 制限を設けない（ただし、割り算で循環小数の場合にエラーが出ます。）
+     * No decimal point limit.
+     * <br>However, an error occurs in the case of cyclic fraction in division.
      * @returns {MathContext}
      */
     static UNLIMITED: MathContext;
     /**
-     * 32ビットの実数型 ( float ) と同等
+     * 32-bit floating point.
+     * <br>Equivalent of the C language float.
      * @returns {MathContext}
      */
     static DECIMAL32: MathContext;
     /**
-     * 64ビットの実数型 ( double ) と同等
+     * 64-bit floating point.
+     * <br>Equivalent of the C language double.
      * @returns {MathContext}
      */
     static DECIMAL64: MathContext;
     /**
-     * 128ビットの実数型 ( long double ) と同等
+     * 128-bit floating point.
+     * <br>Equivalent of the C language long double.
      * @returns {MathContext}
      */
     static DECIMAL128: MathContext;
 }
 
 /**
- * BigDecimal用の丸めモードの基底クラス
+ * Base class for rounding mode for BigDecimal.
  */
 declare class RoundingModeEntity {
     /**
-     * 丸めモードの名前を英語の大文字で取得する
-     * @returns {string} 丸めモード名
+     * Get rounding mode name in upper case English.
+     * @returns {string} Rounding method name.
      */
     static toString(): string;
     /**
-     * 丸めに必要な加算値
-     * @param {number} x - 1ケタ目の値
-     * @returns {number} いくつ足すと丸められるか
+     * Numeric value to add.
+     * <br>It is rounded when this value is added.
+     * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+     * @returns {number} Numeric value to add.
      */
     static getAddNumber(x: number): number;
 }
@@ -1240,19 +1271,21 @@ declare interface RoundingMode_UP extends RoundingModeEntity {
 }
 
 /**
- * 絶対値の切り上げ（1桁目が0より大きければ桁上げする）
+ * Directed rounding to an integer.
+ * <br>Round towards positive infinity if positive, negative infinity if negative.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_UP implements RoundingModeEntity {
     /**
-     * 丸めモードの名前を英語の大文字で取得する
-     * @returns {string} 丸めモード名
+     * Get rounding mode name in upper case English.
+     * @returns {string} Rounding method name.
      */
     static toString(): string;
     /**
-     * 丸めに必要な加算値
-     * @param {number} x - 1ケタ目の値
-     * @returns {number} いくつ足すと丸められるか
+     * Numeric value to add.
+     * <br>It is rounded when this value is added.
+     * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+     * @returns {number} Numeric value to add.
      */
     static getAddNumber(x: number): number;
 }
@@ -1261,19 +1294,21 @@ declare interface RoundingMode_DOWN extends RoundingModeEntity {
 }
 
 /**
- * 絶対値の切り下げ（1桁目が0より大きければ桁下げする）
+ * Directed rounding to an integer.
+ * <br>Round towards 0.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_DOWN implements RoundingModeEntity {
     /**
-     * 丸めモードの名前を英語の大文字で取得する
-     * @returns {string} 丸めモード名
+     * Get rounding mode name in upper case English.
+     * @returns {string} Rounding method name.
      */
     static toString(): string;
     /**
-     * 丸めに必要な加算値
-     * @param {number} x - 1ケタ目の値
-     * @returns {number} いくつ足すと丸められるか
+     * Numeric value to add.
+     * <br>It is rounded when this value is added.
+     * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+     * @returns {number} Numeric value to add.
      */
     static getAddNumber(x: number): number;
 }
@@ -1282,19 +1317,21 @@ declare interface RoundingMode_CEILING extends RoundingModeEntity {
 }
 
 /**
- * 正の無限大に近づく
+ * Directed rounding to an integer.
+ * <br>Round up to positive infinity.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_CEILING implements RoundingModeEntity {
     /**
-     * 丸めモードの名前を英語の大文字で取得する
-     * @returns {string} 丸めモード名
+     * Get rounding mode name in upper case English.
+     * @returns {string} Rounding method name.
      */
     static toString(): string;
     /**
-     * 丸めに必要な加算値
-     * @param {number} x - 1ケタ目の値
-     * @returns {number} いくつ足すと丸められるか
+     * Numeric value to add.
+     * <br>It is rounded when this value is added.
+     * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+     * @returns {number} Numeric value to add.
      */
     static getAddNumber(x: number): number;
 }
@@ -1303,19 +1340,21 @@ declare interface RoundingMode_FLOOR extends RoundingModeEntity {
 }
 
 /**
- * 負の無限大に近づく
+ * Directed rounding to an integer.
+ * <br>Round down to negative infinity.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_FLOOR implements RoundingModeEntity {
     /**
-     * 丸めモードの名前を英語の大文字で取得する
-     * @returns {string} 丸めモード名
+     * Get rounding mode name in upper case English.
+     * @returns {string} Rounding method name.
      */
     static toString(): string;
     /**
-     * 丸めに必要な加算値
-     * @param {number} x - 1ケタ目の値
-     * @returns {number} いくつ足すと丸められるか
+     * Numeric value to add.
+     * <br>It is rounded when this value is added.
+     * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+     * @returns {number} Numeric value to add.
      */
     static getAddNumber(x: number): number;
 }
@@ -1324,19 +1363,21 @@ declare interface RoundingMode_HALF_UP extends RoundingModeEntity {
 }
 
 /**
- * 四捨五入
+ * Rounding to the nearest integer.
+ * <br>Round half towards positive infinity.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_HALF_UP implements RoundingModeEntity {
     /**
-     * 丸めモードの名前を英語の大文字で取得する
-     * @returns {string} 丸めモード名
+     * Get rounding mode name in upper case English.
+     * @returns {string} Rounding method name.
      */
     static toString(): string;
     /**
-     * 丸めに必要な加算値
-     * @param {number} x - 1ケタ目の値
-     * @returns {number} いくつ足すと丸められるか
+     * Numeric value to add.
+     * <br>It is rounded when this value is added.
+     * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+     * @returns {number} Numeric value to add.
      */
     static getAddNumber(x: number): number;
 }
@@ -1345,19 +1386,21 @@ declare interface RoundingMode_HALF_DOWN extends RoundingModeEntity {
 }
 
 /**
- * 五捨六入
+ * Rounding to the nearest integer.
+ * <br>Round half towards negative infinity.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_HALF_DOWN implements RoundingModeEntity {
     /**
-     * 丸めモードの名前を英語の大文字で取得する
-     * @returns {string} 丸めモード名
+     * Get rounding mode name in upper case English.
+     * @returns {string} Rounding method name.
      */
     static toString(): string;
     /**
-     * 丸めに必要な加算値
-     * @param {number} x - 1ケタ目の値
-     * @returns {number} いくつ足すと丸められるか
+     * Numeric value to add.
+     * <br>It is rounded when this value is added.
+     * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+     * @returns {number} Numeric value to add.
      */
     static getAddNumber(x: number): number;
 }
@@ -1366,19 +1409,21 @@ declare interface RoundingMode_HALF_EVEN extends RoundingModeEntity {
 }
 
 /**
- * 等間隔なら偶数側へ丸める
+ * Rounding to the nearest integer
+ * <br>Round to the nearest side. If the median, round to the even side.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_HALF_EVEN implements RoundingModeEntity {
     /**
-     * 丸めモードの名前を英語の大文字で取得する
-     * @returns {string} 丸めモード名
+     * Get rounding mode name in upper case English.
+     * @returns {string} Rounding method name.
      */
     static toString(): string;
     /**
-     * 丸めに必要な加算値
-     * @param {number} x - 1ケタ目の値
-     * @returns {number} いくつ足すと丸められるか
+     * Numeric value to add.
+     * <br>It is rounded when this value is added.
+     * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+     * @returns {number} Numeric value to add.
      */
     static getAddNumber(x: number): number;
 }
@@ -1387,730 +1432,761 @@ declare interface RoundingMode_UNNECESSARY extends RoundingModeEntity {
 }
 
 /**
- * 丸めない（丸める必要が出る場合はエラー）
+ * Do not round.
+ * <br>Error if you need to round it.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_UNNECESSARY implements RoundingModeEntity {
     /**
-     * 丸めモードの名前を英語の大文字で取得する
-     * @returns {string} 丸めモード名
+     * Get rounding mode name in upper case English.
+     * @returns {string} Rounding method name.
      */
     static toString(): string;
     /**
-     * 丸めに必要な加算値
-     * @param {number} x - 1ケタ目の値
-     * @returns {number} いくつ足すと丸められるか
+     * Numeric value to add.
+     * <br>It is rounded when this value is added.
+     * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+     * @returns {number} Numeric value to add.
      */
     static getAddNumber(x: number): number;
 }
 
 /**
- * BigDecimal用の丸めモードクラス
+ * Rounding mode class for BigDecimal.
  */
 declare class RoundingMode {
     /**
-     * 指定した文字列で表される丸めクラスを取得する
+     * Get rounding class represented by specified string.
      * @param {string|RoundingModeEntity|Object} name - モードの英数名
      * @returns {typeof RoundingModeEntity}
      */
     static valueOf(name: string | RoundingModeEntity | any): typeof RoundingModeEntity;
     /**
-     * 絶対値の切り上げ（1桁目が0より大きければ桁上げする）
+     * Directed rounding to an integer.
+     * <br>Round towards positive infinity if positive, negative infinity if negative.
      * @returns {typeof RoundingModeEntity}
      */
     static UP: typeof RoundingModeEntity;
     /**
-     * 絶対値の切り下げ（1桁目が0より大きければ桁下げする）
+     * Directed rounding to an integer.
+     * <br>Round towards 0.
      * @returns {typeof RoundingModeEntity}
      */
     static DOWN: typeof RoundingModeEntity;
     /**
-     * 正の無限大に近づく
+     * Directed rounding to an integer.
+     * <br>Round up to positive infinity.
      * @returns {typeof RoundingModeEntity}
      */
     static CEILING: typeof RoundingModeEntity;
     /**
-     * 負の無限大に近づく
+     * Directed rounding to an integer.
+     * <br>Round down to negative infinity.
      * @returns {typeof RoundingModeEntity}
      */
     static FLOOR: typeof RoundingModeEntity;
     /**
-     * 四捨五入
+     * Rounding to the nearest integer.
+     * <br>Round half towards positive infinity.
      * @returns {typeof RoundingModeEntity}
      */
     static HALF_UP: typeof RoundingModeEntity;
     /**
-     * 五捨六入
+     * Rounding to the nearest integer.
+     * <br>Round half towards negative infinity.
      * @returns {typeof RoundingModeEntity}
      */
     static HALF_DOWN: typeof RoundingModeEntity;
     /**
-     * 等間隔なら偶数側へ丸める
+     * Rounding to the nearest integer
+     * <br>Round to the nearest side. If the median, round to the even side.
      * @returns {typeof RoundingModeEntity}
      */
     static HALF_EVEN: typeof RoundingModeEntity;
     /**
-     * 丸めない（丸める必要が出る場合はエラー）
+     * Do not round.
+     * <br>Error if you need to round it.
      * @returns {typeof RoundingModeEntity}
      */
     static UNNECESSARY: typeof RoundingModeEntity;
 }
 
 /**
- * 複素行列を作成
- * 引数は次のタイプをとれます
- * ・4 				整数や実数
- * ・"1 + j"		文字列で複素数をわたす
- * ・[1,2]			1次元配列
- * ・[[1,2],[3,4]]	行列
- * ・["1+j", "2+j"]	複素数を含んだ行列
- * ・"[1 1:0.5:3]"		MATLAB/Octave/Scilab互換
- * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 行列データ( "1 + j", [1 , 1] など)
+ * Create a complex matrix.
+ * <br>Initialization can be performed as follows.
+ * <br>* 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
+ * <br>* [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
+ * <br>* "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
+ * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - Complex matrix. See how to use the function.
  */
 declare class Matrix {
     constructor(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any);
     /**
-     * Matrix を作成
+     * Create an entity object of this class.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
      * @returns {Matrix}
      */
     static create(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 指定した数値から Matrix 型に変換
+     * Convert number to Matrix type.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
      * @returns {Matrix}
      */
     static valueOf(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * キャッシュを削除
+     * Delete cache.
      */
     _clearCash(): void;
     /**
-     * ディープコピー
+     * Deep copy.
      * @returns {Matrix}
      */
     clone(): Matrix;
     /**
-     * 文字列化
+     * Convert to string.
      * @returns {string}
      */
     toString(): string;
     /**
-     * 文字列化（1行で表す）
+     * Convert to string in one line.
      * @returns {string}
      */
     toOneLineString(): string;
     /**
-     * 等式
+     * Equals.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean} A === B
      */
     equals(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * 行列を構成する複素数の実部の配列
+     * Array of real parts of elements in matrix.
      * @returns {Array<Array<number>>}
      */
     getNumberMatrixArray(): number[][];
     /**
-     * 行列を構成する複素数のComplex型の配列
+     * Complex array of complex numbers of each element of the matrix.
      * @returns {Array<Array<Complex>>}
      */
     getComplexMatrixArray(): Complex[][];
     /**
-     * 本オブジェクト内の全要素に同一処理を実行
+     * Perform the same process on all elements in the matrix.
      * @param {function(Complex, number, number): ?Object } eachfunc - Function(num, row, col)
-     * @returns {Matrix} 処理実行後の行列
+     * @returns {Matrix} Matrix after function processing.
      */
     cloneMatrixDoEachCalculation(eachfunc: (...params: any[]) => any): Matrix;
     /**
-     * 行列内の各値に対して指定した初期化を行ったMatrixを作成
+     * Create Matrix with specified initialization for each element in matrix.
      * @param {function(number, number): ?Object } eachfunc - Function(row, col)
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length=dimension] - 列数
-     * @returns {Matrix} 処理実行後の行列
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length=dimension] - Number of columns.
+     * @returns {Matrix} Matrix after function processing.
      */
     static createMatrixDoEachCalculation(eachfunc: (...params: any[]) => any, dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 行列の列をベクトルとみなし同一処理を実行、行ベクトルであれば行ベクトルに対し同一処理を実行
+     * Treat the columns of the matrix as vectors and execute the same process.
+     * <br>* If the matrix is a row vector, it performs the same processing for the row vector.
      * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
-     * @returns {Matrix} 処理実行後の行列
+     * @returns {Matrix} Matrix after function processing.
      */
     eachVectorAuto(array_function: (...params: any[]) => any): Matrix;
     /**
-     * 行列の行と列をベクトルとみなし同一処理を実行
-     * 先に行に対して同一処理を実行後の行列に対し、列ごとにさらに同一処理を実行する
+     * Treat the rows and columns of the matrix as vectors and perform the same processing.
+     * <br>1. First run the same process for the row.
+     * <br>2. Finally perform the same processing for the column.
      * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
-     * @returns {Matrix} 処理実行後の行列
+     * @returns {Matrix} Matrix after function processing.
      */
     eachVectorBoth(array_function: (...params: any[]) => any): Matrix;
     /**
-     * 行列の行をベクトルとみなし同一処理を実行
+     * Treat the rows of the matrix as vectors and execute the same process.
      * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
-     * @returns {Matrix} 処理実行後の行列
+     * @returns {Matrix} Matrix after function processing.
      */
     eachVectorRow(array_function: (...params: any[]) => any): Matrix;
     /**
-     * 行列の列をベクトルとみなし同一処理を実行
+     * Treat the columns of the matrix as vectors and execute the same process.
      * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
-     * @returns {Matrix} 処理実行後の行列
+     * @returns {Matrix} Matrix after function processing.
      */
     eachVectorColumn(array_function: (...params: any[]) => any): Matrix;
     /**
-     * 引数に設定された行／列をベクトルとみなし同一処理を実行
+     * Treat the rows and columns of the matrix as vectors and perform the same processing.
+     * <br>The arguments of the method can switch the direction of the matrix to be executed.
      * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
      * @param {string|number} [dimtype="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
-     * @returns {Matrix} 処理実行後の行列
+     * @returns {Matrix} Matrix after function processing.
      */
     eachVector(array_function: (...params: any[]) => any, dimtype?: string | number): Matrix;
     /**
-     * 行列内の指定した箇所の行列
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row - 抽出する行番号が入ったベクトル,":"で全ての行抽出
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} col - 抽出する列番号が入ったベクトル,":"で全ての列抽出
-     * @param {boolean} [isUpOffset=false] - 位置のオフセットを1にするか
+     * Extract the specified part of the matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row - A vector containing the row numbers to extract from this matrix. If you specify ":" select all rows.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} col - A vector containing the column numbers to extract from this matrix. If you specify ":" select all columns.
+     * @param {boolean} [isUpOffset=false] - Set offset of matrix position to 1 with true.
      * @returns {Matrix}
      */
     getMatrix(row: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, col: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, isUpOffset?: boolean): Matrix;
     /**
-     * 行列内の指定した箇所の値を変更する
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row - 変更する行番号が入ったベクトル,":"で全ての行抽出
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} col - 変更する列番号が入ったベクトル,":"で全ての列抽出
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} replace - 変更内容の行列
-     * @param {boolean} [isUpOffset=false] - 位置のオフセットを1にするか
+     * Change specified element in matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row - A vector containing the row numbers to replace in this matrix. If you specify ":" select all rows.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} col - A vector containing the column numbers to replace in this matrix. If you specify ":" select all columns.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} replace - Matrix to be replaced.
+     * @param {boolean} [isUpOffset=false] - Set offset of matrix position to 1 with true.
      * @returns {Matrix}
      */
     setMatrix(row: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, col: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, replace: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, isUpOffset?: boolean): Matrix;
     /**
-     * 行列内の指定した箇所の値
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_or_pos - 行列なら行番号, ベクトルの場合は値の位置番号
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [col] - 列番号（行列の場合は指定する）
+     * Returns the specified element in the matrix.
+     * <br>Each element of the matrix is composed of complex numbers.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_or_pos - If this is a matrix, the row number. If this is a vector, the address.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [col] - If this is a matrix, the column number.
      * @returns {Complex}
      */
     getComplex(row_or_pos: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, col?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Complex;
     /**
-     * 行列の最初の要素の整数値
+     * Integer value of the first element of the matrix.
      * @returns {number}
      */
     intValue: number;
     /**
-     * 行列の最初の要素の実数値
+     * Real value of first element of the matrix.
      * @returns {number}
      */
     doubleValue: number;
     /**
-     * 行列の最初の要素
+     * First element of this matrix.
      * @returns {Complex}
      */
     scalar: Complex;
     /**
-     * 行数及び列数の最大値
+     * Maximum size of rows or columns in the matrix.
      * @returns {number}
      */
     length: number;
     /**
-     * 1ノルム
+     * 1-norm.
      * @returns {number}
      */
     norm1: number;
     /**
-     * 2ノルム
+     * 2-norm.
      * @returns {number}
      */
     norm2: number;
     /**
-     * pノルム
+     * p-norm.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
      * @returns {number}
      */
     norm(p?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
     /**
-     * 条件数
+     * Condition number of the matrix
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
      * @returns {number}
      */
     cond(p?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
     /**
-     * 1ノルムの条件数の逆数
+     * Inverse condition number.
      * @returns {number}
      */
     rcond(): number;
     /**
-     * ランク
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Rank.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {number} rank(A)
      */
     rank(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
     /**
-     * トレース
+     * Trace of a matrix.
+     * <br>Sum of diagonal elements.
      * @returns {Complex} trace(A)
      */
     trace(): Complex;
     /**
-     * 行列式
+     * Determinant.
      * @returns {Matrix} |A|
      */
     det(): Matrix;
     /**
-     * 指定した数値で初期化
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 初期値
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
+     * Creates a matrix composed of the specified number.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - Value after initialization.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
      * @returns {Matrix}
      */
     static memset(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 単位行列を生成
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
+     * Return identity matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
      * @returns {Matrix}
      */
     static eye(dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 零行列を生成
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
+     * Create zero matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
      * @returns {Matrix}
      */
     static zeros(dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 1で構成した行列を生成
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
+     * Create a matrix of all ones.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
      * @returns {Matrix}
      */
     static ones(dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 乱数で構成した行列を生成
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
+     * Generate a matrix composed of random values with uniform random numbers.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
      * @returns {Matrix}
      */
     static rand(dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 正規分布に従う乱数で構成した行列を生成
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - 次元数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - 列数
+     * Generate a matrix composed of random values with normal distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
      * @returns {Matrix}
      */
     static randn(dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成
-     * @returns {Matrix} 行列なら対角成分を列ベクトルを生成、ベクトルなら対角成分を持つ行列を生成
+     * If matrix, generate diagonal column vector.
+     * <br>If vector, generate a matrix with diagonal elements.
+     * @returns {Matrix} Matrix or vector created. See how to use the function.
      */
     diag(): Matrix;
     /**
-     * スカラー値の判定
+     * Return true if the matrix is ​​scalar.
      * @returns {boolean}
      */
     isScalar(): boolean;
     /**
-     * 行ベクトル／横ベクトルの判定
+     * Return true if the matrix is ​​row vector.
      * @returns {boolean}
      */
     isRow(): boolean;
     /**
-     * 列ベクトル／縦ベクトルの判定
+     * Return true if the matrix is column vector.
      * @returns {boolean}
      */
     isColumn(): boolean;
     /**
-     * ベクトルの判定
+     * Return true if the matrix is ​​vector.
      * @returns {boolean}
      */
     isVector(): boolean;
     /**
-     * 行列の判定
+     * Return true if the value is not ​​scalar.
      * @returns {boolean}
      */
     isMatrix(): boolean;
     /**
-     * 正方行列の判定
+     * Return true if the matrix is ​​square matrix.
      * @returns {boolean}
      */
     isSquare(): boolean;
     /**
-     * 実行列の判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Return true if the matrix is real matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isReal(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * 複素行列の判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Return true if the matrix is complex matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isComplex(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * 零行列を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Return true if the matrix is ​​zero matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isZeros(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * 単位行列を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Return true if the matrix is identity matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isIdentity(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * 対角行列を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Return true if the matrix is diagonal matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isDiagonal(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * 三重対角行列を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Return true if the matrix is ​​tridiagonal matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isTridiagonal(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * 正則行列を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Return true if the matrix is ​​regular matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isRegular(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * 直行行列を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Return true if the matrix is orthogonal matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isOrthogonal(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * ユニタリ行列を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Return true if the matrix is ​​unitary matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isUnitary(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * 対称行列を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Return true if the matrix is ​​symmetric matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isSymmetric(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * エルミート行列を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Return true if the matrix is hermitian matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isHermitian(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * 上三角行列を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Return true if the matrix is ​​upper triangular matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isTriangleUpper(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * 下三角行列を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Return true if the matrix is ​​ lower triangular matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isTriangleLower(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * 置換行列を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * Return true if the matrix is permutation matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isPermutation(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * 行列の行数と列数
-     * @returns {Matrix} [row_length column_length]
+     * Number of rows and columns of matrix.
+     * @returns {Matrix} [row_length, column_length]
      */
     size(): Matrix;
     /**
-     * 値同士を比較
-     * スカラー同士の場合の戻り値は、number型。
-     * 行列同士の場合は、各項の比較結果が入った、Matrix型。
+     * Compare values.
+     * <br>* Return value between scalars is of type Number.
+     * <br>* Return value between matrices is type Matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
      */
     compareTo(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number | Matrix;
     /**
-     * 加算
+     * Add.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
      * @returns {Matrix} A + B
      */
     add(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 減算
+     * Subtract.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
      * @returns {Matrix} A - B
      */
     sub(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 乗算
+     * Multiply.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
      * @returns {Matrix} A * B
      */
     mul(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 割り算
+     * Divide.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
      * @returns {Matrix} A / B
      */
     div(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 整数での累乗
+     * Power function.
+     * <br>* Supports only integers.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 整数
      * @returns {Matrix} pow(A, B)
      */
     pow(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 行列の各項ごとの掛け算
+     * Multiplication for each element of matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
      * @returns {Matrix} A .* B
      */
     nmul(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 行列の各項ごとの割り算
+     * Division for each element of matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
      * @returns {Matrix} A ./ B
      */
     ndiv(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 行列の各項ごとの逆数
+     * Inverse of each element of matrix.
      * @returns {Matrix} 1 ./ A
      */
     ninv(): Matrix;
     /**
-     * 行列の各項ごとの累乗
+     * Power function for each element of the matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
      * @returns {Matrix} A .^ B
      */
     npow(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 各項の実部
+     * Real part of each element.
      * @returns {Matrix} real(A)
      */
     real(): Matrix;
     /**
-     * 各項の虚部
+     * Imaginary part of each element of the matrix.
      * @returns {Matrix} imag(A)
      */
     imag(): Matrix;
     /**
-     * 各項の偏角
+     * The argument of each element of matrix.
      * @returns {Matrix} arg(A)
      */
     arg(): Matrix;
     /**
-     * 各項の符号値
+     * The positive or negative signs of each element of the matrix.
+     * <br>* +1 if positive, -1 if negative, 0 if 0, norm if complex number.
      * @returns {Matrix} [-1,1] 複素数の場合はノルムを1にした値。
      */
     sign(): Matrix;
     /**
-     * 各項の整数を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
-     * @returns {Matrix} 1 or 0 で構成された行列
+     * Test if each element of the matrix is integer.
+     * <br>* 1 if true, 0 if false.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testInteger(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 各項の複素整数を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
-     * @returns {Matrix} 1 or 0 で構成された行列
+     * Test if each element of the matrix is complex integer.
+     * <br>* 1 if true, 0 if false.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testComplexInteger(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 各項の 0 を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
-     * @returns {Matrix} 1 or 0 で構成された行列
+     * real(this) === 0
+     * <br>* 1 if true, 0 if false.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testZero(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 各項の 1 を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
-     * @returns {Matrix} 1 or 0 で構成された行列
+     * real(this) === 1
+     * <br>* 1 if true, 0 if false.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testOne(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 各項の複素数を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
-     * @returns {Matrix} 1 or 0 で構成された行列
+     * Test if each element of the matrix is complex.
+     * <br>* 1 if true, 0 if false.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testComplex(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 各項の実数を判定
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
-     * @returns {Matrix} 1 or 0 で構成された行列
+     * Test if each element of the matrix is real.
+     * <br>* 1 if true, 0 if false.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testReal(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 各項の非数を判定
-     * @returns {Matrix} 1 or 0 で構成された行列
+     * Test if each element of the matrix is NaN.
+     * <br>* 1 if true, 0 if false.
+     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testNaN(): Matrix;
     /**
-     * real(x) > 0
-     * @returns {Matrix} 1 or 0 で構成された行列
+     * real(this) > 0
+     * <br>* 1 if true, 0 if false.
+     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testPositive(): Matrix;
     /**
-     * real(x) < 0
-     * @returns {Matrix} 1 or 0 で構成された行列
+     * real(this) < 0
+     * <br>* 1 if true, 0 if false.
+     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testNegative(): Matrix;
     /**
-     * real(x) >= 0
-     * @returns {Matrix} 1 or 0 で構成された行列
+     * real(this) >= 0
+     * <br>* 1 if true, 0 if false.
+     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testNotNegative(): Matrix;
     /**
-     * 各項の無限を判定
-     * @returns {Matrix} 1 or 0 で構成された行列
+     * Test if each element of the matrix is infinite.
+     * <br>* 1 if true, 0 if false.
+     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testInfinite(): Matrix;
     /**
-     * 各項の有限数を判定
-     * @returns {Matrix} 1 or 0 で構成された行列
+     * Test if each element of the matrix is finite.
+     * <br>* 1 if true, 0 if false.
+     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testFinite(): Matrix;
     /**
-     * 絶対値
+     * Absolute value.
      * @returns {Matrix} abs(A)
      */
     abs(): Matrix;
     /**
-     * 複素共役行列
+     * Complex conjugate matrix.
      * @returns {Matrix} real(A) - imag(A)j
      */
     conj(): Matrix;
     /**
-     * 負数
+     * this * -1
      * @returns {Matrix} -A
      */
     negate(): Matrix;
     /**
-     * 平方根
+     * Square root.
      * @returns {Matrix} sqrt(A)
      */
     sqrt(): Matrix;
     /**
-     * 対数
+     * Logarithmic function.
      * @returns {Matrix} log(A)
      */
     log(): Matrix;
     /**
-     * 指数
+     * Exponential function.
      * @returns {Matrix} exp(A)
      */
     exp(): Matrix;
     /**
-     * sin
+     * Sine function.
      * @returns {Matrix} sin(A)
      */
     sin(): Matrix;
     /**
-     * cos
+     * Cosine function.
      * @returns {Matrix} cos(A)
      */
     cos(): Matrix;
     /**
-     * tan
+     * Tangent function.
      * @returns {Matrix} tan(A)
      */
     tan(): Matrix;
     /**
-     * atan
+     * Atan (arc tangent) function.
+     * <br>* Return the values of [-PI/2, PI/2].
      * @returns {Matrix} atan(A)
      */
     atan(): Matrix;
     /**
-     * atan2
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - スカラー
+     * Atan (arc tangent) function.
+     * <br>* Return the values of [-PI, PI].
+     * <br>* Supports only real numbers.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - X
      * @returns {Matrix} atan2(Y, X)
      */
     atan2(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * floor
+     * Floor.
      * @returns {Matrix} floor(A)
      */
     floor(): Matrix;
     /**
-     * ceil
+     * Ceil.
      * @returns {Matrix} ceil(A)
      */
     ceil(): Matrix;
     /**
-     * 四捨五入
+     * Rounding to the nearest integer.
      * @returns {Matrix} round(A)
      */
     round(): Matrix;
     /**
-     * 整数化
+     * To integer rounded down to the nearest.
      * @returns {Matrix} fix(A)
      */
     fix(): Matrix;
     /**
-     * 小数部の抽出
+     * Fraction.
      * @returns {Matrix} fract(A)
      */
     fract(): Matrix;
     /**
-     * sinc
+     * Normalized sinc function.
      * @returns {Matrix} sinc(A)
      */
     sinc(): Matrix;
     /**
-     * 行列を時計回りに回転
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} rot_90_count - 回転する回数
-     * @returns {Matrix} 処理実行後の行列
+     * Rotate matrix 90 degrees clockwise.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} rot_90_count - Number of times rotated by 90 degrees.
+     * @returns {Matrix} Matrix after function processing.
      */
     rot90(rot_90_count: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 行列を拡張、拡張した項は、0で初期化
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - 新しい行の長さ
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - 新しい列の長さ
-     * @returns {Matrix} 処理実行後の行列
+     * Change the size of the matrix.
+     * <br>Initialized with 0 when expanding.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - Number of rows of matrix to resize.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - Number of columns of matrix to resize.
+     * @returns {Matrix} Matrix after function processing.
      */
     resize(row_length: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 行列内の行を消去
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_row_index - 行番号
-     * @returns {Matrix} 処理実行後の行列
+     * Remove the row in this matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_row_index - Number of row of matrix to delete.
+     * @returns {Matrix} Matrix after function processing.
      */
     deleteRow(delete_row_index: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 行列内の列を消去
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_column_index - 列番号
-     * @returns {Matrix} 処理実行後の行列
+     * Remove the column in this matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_column_index - Number of column of matrix to delete.
+     * @returns {Matrix} Matrix after function processing.
      */
     deleteColumn(delete_column_index: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 行列内の行を交換
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index1 - 行番号1
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index2 - 行番号2
-     * @returns {Matrix} 処理実行後の行列
+     * Swap rows in the matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index1 - Number 1 of row of matrix to exchange.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index2 - Number 2 of row of matrix to exchange.
+     * @returns {Matrix} Matrix after function processing.
      */
     exchangeRow(exchange_row_index1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, exchange_row_index2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 行列内の列を交換
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index1 - 行番号1
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index2 - 行番号2
-     * @returns {Matrix} 処理実行後の行列
+     * Swap columns in the matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index1 - Number 1 of column of matrix to exchange.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index2 - Number 2 of column of matrix to exchange.
+     * @returns {Matrix} Matrix after function processing.
      */
     exchangeColumn(exchange_column_index1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, exchange_column_index2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 行列の右に行列を結合
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} left_matrix - 結合したい行列
-     * @returns {Matrix} 処理実行後の行列
+     * Combine matrix to the right of this matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} left_matrix - Matrix to combine.
+     * @returns {Matrix} Matrix after function processing.
      */
     concatRight(left_matrix: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 行列の下に行列を結合
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} bottom_matrix - 結合したい行列
-     * @returns {Matrix} 処理実行後の行列
+     * Combine matrix to the bottom of this matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} bottom_matrix - Matrix to combine.
+     * @returns {Matrix} Matrix after function processing.
      */
     concatBottom(bottom_matrix: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 行列の各項を指定した範囲に収める
+     * Clip each element of matrix to specified range.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} min
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} max
      * @returns {Matrix} min(max(x, min), max)
      */
     clip(min: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, max: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 指定した初期値、ステップ値、終了条件で行ベクトルを作成
+     * Create row vector with specified initial value, step value, end condition.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} start_or_stop
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [stop]
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [step=1]
@@ -2118,490 +2194,523 @@ declare class Matrix {
      */
     static arange(start_or_stop: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, stop?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, step?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 循環シフト
+     * Circular shift.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size
      * @param {{dimension : (?string|?number)}} [type]
-     * @returns {Matrix} 処理実行後の行列
+     * @returns {Matrix} Matrix after function processing.
      */
     circshift(shift_size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 循環シフト
+     * Circular shift.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size
      * @param {{dimension : (?string|?number)}} [type]
-     * @returns {Matrix} 処理実行後の行列
+     * @returns {Matrix} Matrix after function processing.
      */
     roll(shift_size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 行列の形状を変更
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - 新しい行の長さ
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - 新しい列の長さ
-     * @returns {Matrix} 処理実行後の行列
+     * Change the shape of the matrix.
+     * <br>The number of elements in the matrix doesn't increase or decrease.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - Number of rows of matrix to reshape.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - Number of columns of matrix to reshape.
+     * @returns {Matrix} Matrix after function processing.
      */
     reshape(row_length: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 行列を左右反転
-     * @returns {Matrix} 処理実行後の行列
+     * Flip this matrix left and right.
+     * @returns {Matrix} Matrix after function processing.
      */
     fliplr(): Matrix;
     /**
-     * 行列を上下反転
-     * @returns {Matrix} 処理実行後の行列
+     * Flip this matrix up and down.
+     * @returns {Matrix} Matrix after function processing.
      */
     flipud(): Matrix;
     /**
-     * 行列を反転
+     * Flip this matrix.
      * @param {{dimension : (?string|?number)}} [type]
-     * @returns {Matrix} 処理実行後の行列
+     * @returns {Matrix} Matrix after function processing.
      */
     flip(type?: any): Matrix;
     /**
-     * インデックスソート
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - インデックス（列 or 行）ベクトル
-     * @returns {Matrix} 処理実行後の行列
+     * Index sort.
+     * <br>* Sorts by row when setting index by row vector to the argument.
+     * <br>* Sorts by column when setting index by column vector to the argument.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - Vector with index. (See the description of this function)
+     * @returns {Matrix} Matrix after function processing.
      */
     indexsort(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 転置行列
+     * Transpose a matrix.
      * @returns {Matrix} A^T
      */
     transpose(): Matrix;
     /**
-     * エルミート転置行列
+     * Hermitian transpose.
      * @returns {Matrix} A^T
      */
     ctranspose(): Matrix;
     /**
-     * エルミート転置行列
+     * Hermitian transpose.
      * @returns {Matrix} A^T
      */
     T(): Matrix;
     /**
-     * ドット積
+     * Inner product/Dot product.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] 計算するときに使用する次元（1 or 2）
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
      * @returns {Matrix} A・B
      */
     inner(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, dimension?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * LUP分解
+     * LUP decomposition.
      * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
      */
     lup(): {P: Matrix, L: Matrix, U: Matrix};
     /**
-     * LU分解
+     * LU decomposition.
      * @returns {{L: Matrix, U: Matrix}} L*U=A
      */
     lu(): {L: Matrix, U: Matrix};
     /**
-     * 一次方程式を解く
+     * Solving a system of linear equations to be Ax = B
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
-     * @returns {Matrix} Ax=B となる x
+     * @returns {Matrix} x
      */
     linsolve(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * QR分解
-     * @returns {{Q: Matrix, R: Matrix}} Q*R=A, Qは正規直行行列、Rは上三角行列
+     * QR decomposition.
+     * <br>* Q*R=A
+     * <br>* Q is orthonormal matrix.
+     * <br>* R is upper triangular matrix.
+     * @returns {{Q: Matrix, R: Matrix}} {Q, R}
      */
     qr(): {Q: Matrix, R: Matrix};
     /**
-     * 対称行列の三重対角化
-     * @returns {{P: Matrix, H: Matrix}} P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致
+     * Tridiagonalization of symmetric matrix.
+     * <br>* Don't support complex numbers.
+     * <br>* P*H*P'=A
+     * <br>* P is orthonormal matrix.
+     * <br>* H is tridiagonal matrix.
+     * <br>* The eigenvalues of H match the eigenvalues of A.
+     * @returns {{P: Matrix, H: Matrix}} {P, H}
      */
     tridiagonalize(): {P: Matrix, H: Matrix};
     /**
-     * 対称行列の固有値分解
-     * @returns {{V: Matrix, D: Matrix}} V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列
+     * Eigendecomposition of symmetric matrix.
+     * <br>* Don't support complex numbers.
+     * <br>* V*D*V'=A.
+     * <br>* V is orthonormal matrix. and columns of V are the right eigenvectors.
+     * <br>* D is a matrix containing the eigenvalues on the diagonal component.
+     * @returns {{V: Matrix, D: Matrix}} {D, V}
      */
     eig(): {V: Matrix, D: Matrix};
     /**
-     * 特異値分解
+     * Singular Value Decomposition (SVD).
+     * <br>* U*S*V'=A
+     * <br>* U and V are orthonormal matrices.
+     * <br>* S is a matrix with singular values in the diagonal.
      * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
      */
     svd(): {U: Matrix, S: Matrix, V: Matrix};
     /**
-     * 逆行列
+     * Inverse matrix of this matrix.
      * @returns {Matrix} A^-1
      */
     inv(): Matrix;
     /**
-     * 疑似逆行列
+     * Pseudo-inverse matrix.
      * @returns {Matrix} A^+
      */
     pinv(): Matrix;
     /**
-     * 対数ガンマ関数
+     * Log-gamma function.
      * @returns {Matrix}
      */
     gammaln(): Matrix;
     /**
-     * ガンマ関数
+     * Gamma function.
      * @returns {Matrix}
      */
     gamma(): Matrix;
     /**
-     * 不完全ガンマ関数
+     * Incomplete gamma function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-     * @param {string} [tail="lower"] - lower/upper
+     * @param {string} [tail="lower"] - tail ("lower", "upper")
      * @returns {Matrix}
      */
     gammainc(a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tail?: string): Matrix;
     /**
-     * ガンマ分布の確率密度関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+     * Probability density function (PDF) of the gamma distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
      * @returns {Matrix}
      */
     gampdf(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * ガンマ分布の確率密度関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+     * Cumulative distribution function (CDF) of gamma distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
      * @returns {Matrix}
      */
     gamcdf(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * ガンマ分布の累積分布関数の逆関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+     * Inverse function of cumulative distribution function (CDF) of gamma distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
      * @returns {Matrix}
      */
     gaminv(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * ベータ関数
+     * Beta function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} y
      * @returns {Matrix}
      */
     beta(y: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 不完全ベータ関数
+     * Incomplete beta function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-     * @param {string} [tail="lower"] - lower/upper
+     * @param {string} [tail="lower"] - tail ("lower", "upper")
      * @returns {Matrix}
      */
     betainc(a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tail?: string): Matrix;
     /**
-     * ベータ分布の確率密度関数
+     * Cumulative distribution function (CDF) of beta distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
      * @returns {Matrix}
      */
     betacdf(a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * ベータ分布の累積分布関数
+     * Probability density function (PDF) of beta distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
      * @returns {Matrix}
      */
     betapdf(a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * ベータ分布の累積分布関数の逆関数
+     * Inverse function of cumulative distribution function (CDF) of beta distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
      * @returns {Matrix}
      */
     betainv(a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * x! 階乗関数
+     * Factorial function, x!.
      * @returns {Matrix}
      */
     factorial(): Matrix;
     /**
-     * nCk 二項係数またはすべての組合わせ
+     * Binomial coefficient, number of all combinations, nCk.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k
      * @returns {Matrix}
      */
     nchoosek(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 誤差関数
+     * Error function.
      * @returns {Matrix}
      */
     erf(): Matrix;
     /**
-     * 相補誤差関数
+     * Complementary error function.
      * @returns {Matrix}
      */
     erfc(): Matrix;
     /**
-     * 正規分布の確率密度関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+     * Probability density function (PDF) of normal distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
      * @returns {Matrix}
      */
     normpdf(u?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 正規分布の累積分布関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+     * Cumulative distribution function (CDF) of normal distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
      * @returns {Matrix}
      */
     normcdf(u?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 正規分布の累積分布関数の逆関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+     * Inverse function of cumulative distribution function (CDF) of normal distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
      * @returns {Matrix}
      */
     norminv(u?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * t分布の確率密度関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+     * Probability density function (PDF) of Student's t-distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
     tpdf(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * t分布の累積分布関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+     * Cumulative distribution function (CDF) of Student's t-distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
     tcdf(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * t分布の累積分布関数の逆関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+     * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
     tinv(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 尾部が指定可能なt分布の累積分布関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - 尾部(1...片側、2...両側)
+     * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
+     * <br>* If tails = 1, TDIST returns the one-tailed distribution.
+     * <br>* If tails = 2, TDIST returns the two-tailed distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
      * @returns {Matrix}
      */
     tdist(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tails: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 両側検定時のt分布の累積分布関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+     * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
     tinv2(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * カイ二乗分布の確率密度関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+     * Probability density function (PDF) of chi-square distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
     chi2pdf(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * カイ二乗分布の累積分布関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+     * Cumulative distribution function (CDF) of chi-square distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
     chi2cdf(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * カイ二乗分布の累積分布関数の逆関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+     * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
     chi2inv(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * F分布の確率密度関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+     * Probability density function (PDF) of F-distribution.
+     * <br>* In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
      * @returns {Matrix}
      */
     fpdf(d1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * F分布の累積分布関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+     * Cumulative distribution function (CDF) of F-distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
      * @returns {Matrix}
      */
     fcdf(d1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * F分布の累積分布関数の逆関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+     * Inverse function of cumulative distribution function (CDF) of F-distribution.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
      * @returns {Matrix}
      */
     finv(d1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 最大値
+     * Maximum number.
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix} max([A, B])
      */
     max(type?: any): Matrix;
     /**
-     * 最小値
+     * Minimum number.
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix} min([A, B])
      */
     min(type?: any): Matrix;
     /**
-     * 合計
+     * Sum.
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     sum(type?: any): Matrix;
     /**
-     * 相加平均
+     * Arithmetic average.
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     mean(type?: any): Matrix;
     /**
-     * 配列の積
+     * Product of array elements.
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     prod(type?: any): Matrix;
     /**
-     * 相乗平均／幾何平均
+     * Geometric mean.
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     geomean(type?: any): Matrix;
     /**
-     * 中央値
+     * Median.
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     median(type?: any): Matrix;
     /**
-     * 最頻値
+     * Mode.
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     mode(type?: any): Matrix;
     /**
-     * 中心積率
+     * Moment.
+     * <br>* Moment of order n. Equivalent to the definition of variance at 2.
      * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
      * @returns {Matrix}
      */
     moment(type?: any): Matrix;
     /**
-     * 分散
+     * Variance.
      * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     var(type?: any): Matrix;
     /**
-     * 標準偏差
+     * Standard deviation.
      * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     std(type?: any): Matrix;
     /**
-     * 標準偏差
+     * Mean absolute deviation.
      * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     mad(type?: any): Matrix;
     /**
-     * 歪度
+     * Skewness.
      * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     skewness(type?: any): Matrix;
     /**
-     * 共分散行列
+     * Covariance matrix.
      * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     cov(type?: any): Matrix;
     /**
-     * 標本の標準化
-     * 平均値0、標準偏差1に変更する
+     * The samples are normalized to a mean value of 0, standard deviation of 1.
      * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     normalize(type?: any): Matrix;
     /**
-     * 相関行列
+     * Correlation matrix.
      * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     corrcoef(type?: any): Matrix;
     /**
-     * ソート
+     * Sort.
      * @param {{dimension : (?string|?number), order : ?string}} [type]
      * @returns {Matrix}
      */
     sort(type?: any): Matrix;
     /**
-     * 離散フーリエ変換
+     * Discrete Fourier transform (DFT).
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix} fft(x)
      */
     fft(type?: any): Matrix;
     /**
-     * 逆離散フーリエ変換
+     * Inverse discrete Fourier transform (IDFT).
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix} ifft(x)
      */
     ifft(type?: any): Matrix;
     /**
-     * パワースペクトル密度
+     * Power spectral density.
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix} abs(fft(x)).^2
      */
     powerfft(type?: any): Matrix;
     /**
-     * 離散コサイン変換
+     * Discrete cosine transform (DCT-II, DCT).
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix} dct(x)
      */
     dct(type?: any): Matrix;
     /**
-     * 逆離散コサイン変換
+     * Inverse discrete cosine transform (DCT-III, IDCT).
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix} idct(x)
      */
     idct(type?: any): Matrix;
     /**
-     * 2次元の離散フーリエ変換
+     * Discrete two-dimensional Fourier transform (2D DFT).
      * @returns {Matrix}
      */
     fft2(): Matrix;
     /**
-     * 2次元の逆離散フーリエ変換
+     * Inverse discrete two-dimensional Fourier transform (2D IDFT).
      * @returns {Matrix}
      */
     ifft2(): Matrix;
     /**
-     * 2次元の離散コサイン変換
+     * Discrete two-dimensional cosine transform (2D DCT).
      * @returns {Matrix}
      */
     dct2(): Matrix;
     /**
-     * 2次元の逆離散コサイン変換
+     * Inverse discrete two-dimensional cosine transform (2D IDCT).
      * @returns {Matrix}
      */
     idct2(): Matrix;
     /**
-     * 畳み込み積分、多項式乗算
+     * Convolution integral, Polynomial multiplication.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
      * @returns {Matrix}
      */
     conv(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 自己相関関数、相互相関関数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [number] - 省略した場合は自己相関関数
+     * ACF(Autocorrelation function), cros-correlation function.
+     * <br>* If the argument is omitted, it is calculated by the autocorrelation function.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [number] - Matrix to calculate the correlation.
      * @returns {Matrix}
      */
     xcorr(number?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 窓関数
-     * @param {string} name - 窓関数の名前
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+     * Create window function for signal processing.
+     * <br>The following window functions are available.
+     * <br>* "rectangle": Rectangular window
+     * <br>* "hann": Hann/Hanning window.
+     * <br>* "hamming": Hamming window.
+     * <br>* "blackman": Blackman window.
+     * <br>* "blackmanharris": Blackman-Harris window.
+     * <br>* "blackmannuttall": Blackman-Nuttall window.
+     * <br>* "flattop": Flat top window.
+     * <br>* "sin", Half cycle sine window.
+     * <br>* "vorbis", Vorbis window.
+     * @param {string} name - Window function name.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
      * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
-     * @returns {Matrix} 列ベクトル
+     * @returns {Matrix} Column vector.
      */
     static window(name: string, size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
     /**
-     * ハニング窓
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+     * Hann (Hanning) window.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
      * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
-     * @returns {Matrix} 列ベクトル
+     * @returns {Matrix} Column vector.
      */
     static hann(size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
     /**
-     * ハミング窓
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+     * Hamming window.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
      * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
-     * @returns {Matrix} 列ベクトル
+     * @returns {Matrix} Column vector.
      */
     static hamming(size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
     /**
-     * FFTシフト
+     * FFT shift.
+     * <br>Circular shift beginning at the center of the signal.
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
      */
@@ -2609,109 +2718,125 @@ declare class Matrix {
 }
 
 /**
- * Matrix用の線形代数用の計算クラス
+ * Class for linear algebra for Matrix class.
  */
 declare class LinearAlgebra {
     /**
-     * ドット積
+     * Inner product/Dot product.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} A
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} B
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] 計算するときに使用する次元（1 or 2）
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
      * @returns {Matrix} A・B
      */
     static inner(A: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, B: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, dimension?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * pノルム
+     * p-norm.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
      * @returns {number}
      */
     static norm(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, p?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
     /**
-     * 条件数
+     * Condition number of the matrix
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
      * @returns {number}
      */
     static cond(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, p?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
     /**
-     * 1ノルムの条件数の逆数
+     * Inverse condition number.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
      * @returns {number}
      */
     static rcond(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
     /**
-     * ランク
+     * Rank.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - 誤差
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {number} rank(A)
      */
     static rank(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
     /**
-     * トレース
+     * Trace of a matrix.
+     * <br>Sum of diagonal elements.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
      * @returns {Complex}
      */
     static trace(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Complex;
     /**
-     * 行列式
+     * Determinant.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
      * @returns {Matrix} |A|
      */
     static det(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * LUP分解
+     * LUP decomposition.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
      */
     static lup(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {P: Matrix, L: Matrix, U: Matrix};
     /**
-     * LU分解
+     * LU decomposition.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {{L: Matrix, U: Matrix}} L*U=A
      */
     static lu(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {L: Matrix, U: Matrix};
     /**
-     * 連立一次方程式を解く
+     * Solving a system of linear equations to be Ax = B
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
-     * @returns {Matrix} Ax=B となる x
+     * @returns {Matrix} x
      * @todo 安定化のためQR分解を用いた手法に切り替える。あるいはlup分解を使用した関数に作り替える。
      */
     static linsolve(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * QR分解
+     * QR decomposition.
+     * <br>* Q*R=A
+     * <br>* Q is orthonormal matrix.
+     * <br>* R is upper triangular matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-     * @returns {{Q: Matrix, R: Matrix}}  Q*R=A, Qは正規直行行列、Rは上三角行列
+     * @returns {{Q: Matrix, R: Matrix}} {Q, R}
      */
     static qr(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {Q: Matrix, R: Matrix};
     /**
-     * 対称行列の三重対角化
+     * Tridiagonalization of symmetric matrix.
+     * <br>* Don't support complex numbers.
+     * <br>* P*H*P'=A
+     * <br>* P is orthonormal matrix.
+     * <br>* H is tridiagonal matrix.
+     * <br>* The eigenvalues of H match the eigenvalues of A.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-     * @returns {{P: Matrix, H: Matrix}} P*H*P'=A, Hは三重対角行列、Pは正規直行行列、三重対角行列の固有値は元の行列と一致
+     * @returns {{P: Matrix, H: Matrix}} {P, H}
      */
     static tridiagonalize(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {P: Matrix, H: Matrix};
     /**
-     * 対称行列の固有値分解
+     * Eigendecomposition of symmetric matrix.
+     * <br>* Don't support complex numbers.
+     * <br>* V*D*V'=A.
+     * <br>* V is orthonormal matrix. and columns of V are the right eigenvectors.
+     * <br>* D is a matrix containing the eigenvalues on the diagonal component.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-     * @returns {{V: Matrix, D: Matrix}} V*D*V'=A, Vは右固有ベクトルを列にもつ行列で正規直行行列、Dは固有値を対角成分に持つ行列
+     * @returns {{V: Matrix, D: Matrix}} {D, V}
      * @todo 対称行列しか対応できていないので、対称行列ではないものはQR分解を用いた手法に切り替える予定。
      */
     static eig(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {V: Matrix, D: Matrix};
     /**
-     * 特異値分解
+     * Singular Value Decomposition (SVD).
+     * <br>* U*S*V'=A
+     * <br>* U and V are orthonormal matrices.
+     * <br>* S is a matrix with singular values in the diagonal.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
      */
     static svd(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {U: Matrix, S: Matrix, V: Matrix};
     /**
-     * 逆行列
+     * Inverse matrix of this matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {Matrix} A^-1
      */
     static inv(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 疑似逆行列
+     * Pseudo-inverse matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {Matrix} A^+
      */
@@ -2719,8 +2844,8 @@ declare class LinearAlgebra {
 }
 
 /**
- * 乱数を初期化する
- * @param {number} [seed] - 乱数のシード値、指定しない場合は時刻から作成する
+ * Create Random.
+ * @param {number} [seed] - Seed number for random number generation. If not specified, create from time.
  */
 declare class Random {
     constructor(seed?: number);
@@ -2729,166 +2854,179 @@ declare class Random {
      */
     _rnd521(): void;
     /**
-     * 乱数を初期化する
+     * Initialize random seed.
      * @param {number} seed
      */
     setSeed(seed: number): void;
     /**
-     * 32ビットの乱数
+     * 32-bit random number.
      * @returns {number} - 32ビットの乱数
      */
     genrand_int32(): number;
     /**
-     * 指定したビット数の乱数
-     * @param {number} bits - 必要なビット数（64まで可能）
+     * Random number of specified bit length.
+     * @param {number} bits - Required number of bits (up to 64 possible).
      * @returns {number}
      */
     next(bits: number): number;
     /**
-     * 指定したサイズの8ビットの乱数
+     * 8-bit random number array of specified length.
      * @param {number} size - 必要な長さ
      * @returns {Array<number>}
      */
     nextBytes(size: number): number[];
     /**
-     * 16ビットの乱数
+     * 16-bit random number.
      * @returns {number}
      */
     nextShort(): number;
     /**
-     * 32ビットの乱数
+     * 32-bit random number.
      * @param {number} [x] - 指定した値未満の数値を作る
      * @returns {number}
      */
     nextInt(x?: number): number;
     /**
-     * 64ビットの乱数
+     * 64-bit random number.
      * @returns {number}
      */
     nextLong(): number;
     /**
-     * 正負の乱数
+     * Random boolean.
      * @returns {boolean}
      */
     nextBoolean(): boolean;
     /**
-     * 0 <= x < 1 のFloat(23ビット)乱数
+     * Float type random number in the range of [0, 1).
      * @returns {number}
      */
     nextFloat(): number;
     /**
-     * 0 <= x < 1 のDouble(52ビット)乱数
+     * Double type random number in the range of [0, 1).
      * @returns {number}
      */
     nextDouble(): number;
     /**
-     * 平均値0、標準偏差1のガウシアン分布に基づく乱数
+     * Random numbers from a Gaussian distribution.
+     * <br>This random number is a distribution with an average value of 0 and a standard deviation of 1.
      * @returns {number}
      */
     nextGaussian(): number;
 }
 
 /**
- * Matrix用の信号処理用の計算クラス
+ * Signal processing class for Matrix class.
  */
 declare class Signal {
     /**
-     * 離散フーリエ変換
+     * Discrete Fourier transform (DFT).
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix} fft(x)
      */
     static fft(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 逆離散フーリエ変換
+     * Inverse discrete Fourier transform (IDFT),
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix} ifft(X)
      */
     static ifft(X: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * パワースペクトル密度
+     * Power spectral density.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix} abs(fft(x)).^2
      */
     static powerfft(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 離散コサイン変換
+     * Discrete cosine transform (DCT-II, DCT).
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix} dct(x)
      */
     static dct(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 逆離散コサイン変換
+     * Inverse discrete cosine transform (DCT-III, IDCT),
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix} idct(x)
      */
     static idct(X: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 2次元の離散フーリエ変換
+     * Discrete two-dimensional Fourier transform (2D DFT).
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @returns {Matrix}
      */
     static fft2(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 2次元の逆離散フーリエ変換
+     * Inverse discrete two-dimensional Fourier transform (2D IDFT),
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
      * @returns {Matrix}
      */
     static ifft2(X: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 2次元のDCT変換
+     * Discrete two-dimensional cosine transform (2D DCT).
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @returns {Matrix}
      */
     static dct2(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 2次元の逆DCT変換
+     * Inverse discrete two-dimensional cosine transform (2D IDCT),
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
      * @returns {Matrix}
      */
     static idct2(X: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 畳み込み積分、多項式乗算
+     * Convolution integral, Polynomial multiplication.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x2
      * @returns {Matrix}
      */
     static conv(x1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, x2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 自己相関関数、相互相関関数
+     * ACF(Autocorrelation function), cros-correlation function.
+     * <br>* If the argument is omitted, it is calculated by the autocorrelation function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [x2] - 省略した場合は自己相関関数
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [x2] - Matrix to calculate the correlation.
      * @returns {Matrix}
      */
     static xcorr(x1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, x2?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 窓関数
-     * @param {string} name - 窓関数の名前
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+     * Create window function for signal processing.
+     * <br>The following window functions are available.
+     * <br>* "rectangle": Rectangular window
+     * <br>* "hann": Hann/Hanning window.
+     * <br>* "hamming": Hamming window.
+     * <br>* "blackman": Blackman window.
+     * <br>* "blackmanharris": Blackman-Harris window.
+     * <br>* "blackmannuttall": Blackman-Nuttall window.
+     * <br>* "flattop": Flat top window.
+     * <br>* "sin", Half cycle sine window.
+     * <br>* "vorbis", Vorbis window.
+     * @param {string} name - Window function name.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
      * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
-     * @returns {Matrix} 列ベクトル
+     * @returns {Matrix} Column vector.
      */
     static window(name: string, size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
     /**
-     * ハニング窓
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+     * Hann (Hanning) window.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
      * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
-     * @returns {Matrix} 列ベクトル
+     * @returns {Matrix} Column vector.
      */
     static hann(size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
     /**
-     * ハミング窓
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - 長さ
+     * Hamming window.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
      * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
-     * @returns {Matrix} 列ベクトル
+     * @returns {Matrix} Column vector.
      */
     static hamming(size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
     /**
-     * FFTシフト
+     * FFT shift.
+     * <br>Circular shift beginning at the center of the signal.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
@@ -2897,71 +3035,71 @@ declare class Signal {
 }
 
 /**
- * Matrix用の統計処理用の計算クラス
+ * Class for statistical processing for Matrix class.
  */
 declare class Statistics {
     /**
-     * 対数ガンマ関数
+     * Log-gamma function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @returns {Matrix}
      */
     static gammaln(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * ガンマ関数
+     * Gamma function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @returns {Matrix}
      */
     static gamma(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 不完全ガンマ関数
+     * Incomplete gamma function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-     * @param {string} [tail="lower"] - lower/upper
+     * @param {string} [tail="lower"] - tail ("lower", "upper")
      * @returns {Matrix}
      */
     static gammainc(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tail?: string): Matrix;
     /**
-     * ガンマ分布の確率密度関数
+     * Probability density function (PDF) of the gamma distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
      * @returns {Matrix}
      */
     static gampdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * ガンマ分布の確率密度関数
+     * Cumulative distribution function (CDF) of gamma distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
      * @returns {Matrix}
      */
     static gamcdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * ガンマ分布の累積分布関数の逆関数
+     * Inverse function of cumulative distribution function (CDF) of gamma distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 形状母数
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - 尺度母数
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
      * @returns {Matrix}
      */
     static gaminv(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * ベータ関数
+     * Beta function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} y
      * @returns {Matrix}
      */
     static beta(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, y: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 不完全ベータ関数
+     * Incomplete beta function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-     * @param {string} [tail="lower"] - lower/upper
+     * @param {string} [tail="lower"] - tail ("lower", "upper")
      * @returns {Matrix}
      */
     static betainc(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tail?: string): Matrix;
     /**
-     * ベータ分布の確率密度関数
+     * Cumulative distribution function (CDF) of beta distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
@@ -2969,7 +3107,7 @@ declare class Statistics {
      */
     static betacdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * ベータ分布の累積分布関数
+     * Probability density function (PDF) of beta distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
@@ -2977,7 +3115,7 @@ declare class Statistics {
      */
     static betapdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * ベータ分布の累積分布関数の逆関数
+     * Inverse function of cumulative distribution function (CDF) of beta distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
@@ -2985,250 +3123,250 @@ declare class Statistics {
      */
     static betainv(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * x! 階乗関数
+     * Factorial function, x!.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @returns {Matrix}
      */
     static factorial(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * nCk 二項係数またはすべての組合わせ
+     * Binomial coefficient, number of all combinations, nCk.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k
      * @returns {Matrix}
      */
     static nchoosek(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 誤差関数
+     * Error function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @returns {Matrix}
      */
     static erf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 相補誤差関数
+     * Complementary error function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @returns {Matrix}
      */
     static erfc(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 正規分布の確率密度関数
+     * Probability density function (PDF) of normal distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
      * @returns {Matrix}
      */
     static normpdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, u?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 正規分布の累積分布関数
+     * Cumulative distribution function (CDF) of normal distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
      * @returns {Matrix}
      */
     static normcdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, u?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 正規分布の累積分布関数の逆関数
+     * Inverse function of cumulative distribution function (CDF) of normal distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - 平均値
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - 分散
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
      * @returns {Matrix}
      */
     static norminv(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, u?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * t分布の確率密度関数
+     * Probability density function (PDF) of Student's t-distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
     static tpdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * t分布の累積分布関数
+     * Cumulative distribution function (CDF) of Student's t-distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
     static tcdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * t分布の累積分布関数の逆関数
+     * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
     static tinv(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 尾部が指定可能なt分布の累積分布関数
+     * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - 尾部(1...片側、2...両側)
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
      * @returns {Matrix}
      */
     static tdist(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tails: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 両側検定時のt分布の累積分布関数
+     * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - 自由度
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
     static tinv2(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * カイ二乗分布の確率密度関数
+     * Probability density function (PDF) of chi-square distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
     static chi2pdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * カイ二乗分布の累積分布関数
+     * Cumulative distribution function (CDF) of chi-square distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
     static chi2cdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * カイ二乗分布の累積分布関数の逆関数
+     * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - 自由度
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
     static chi2inv(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * F分布の確率密度関数
+     * Probability density function (PDF) of F-distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
      * @returns {Matrix}
      */
     static fpdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * F分布の累積分布関数
+     * Cumulative distribution function (CDF) of F-distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
      * @returns {Matrix}
      */
     static fcdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * F分布の累積分布関数の逆関数
+     * Inverse function of cumulative distribution function (CDF) of F-distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - 分子の自由度
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - 分母の自由度
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
      * @returns {Matrix}
      */
     static finv(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * 最大値
+     * Maximum number.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix} max([A, B])
      */
     static max(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 最小値
+     * Minimum number.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix} min([A, B])
      */
     static min(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 合計
+     * Sum.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     static sum(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 相加平均
+     * Arithmetic average.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     static mean(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 配列の積
+     * Product of array elements.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     static prod(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 相乗平均／幾何平均
+     * Geometric mean.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     static geomean(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 中央値
+     * Median.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     static median(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 最頻値
+     * Mode.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     static mode(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 中心積率
+     * Moment.
+     * <br>* Moment of order n. Equivalent to the definition of variance at 2.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
      * @returns {Matrix} n次のモーメント、2で分散の定義と同等。
      */
     static moment(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 分散
+     * Variance.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     static var(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 標準偏差
+     * Standard deviation.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     static std(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 絶対偏差
+     * Mean absolute deviation.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
      * @returns {Matrix}
      */
     static mad(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 歪度
+     * Skewness.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     static skewness(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 共分散行列
+     * Covariance matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     static cov(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 標本の標準化
-     * 平均値0、標準偏差1に変更する
+     * The samples are normalized to a mean value of 0, standard deviation of 1.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     static normalize(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * 相関行列
+     * Correlation matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number), correction : ?number}} [type]
      * @returns {Matrix}
      */
     static corrcoef(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
-     * ソート
+     * Sort.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number), order : ?string}} [type]
      * @returns {Matrix}
