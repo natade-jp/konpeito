@@ -104,11 +104,19 @@ class IntegerTool {
 			number_text.push(buff);
 		}
 		// 指数表記があるか
-		buff = text.match(/^e[+]?[0-9]+/);
+		buff = text.match(/^e[+-]?[0-9]+/);
 		if(buff !== null) {
-			scale -= parseInt(text.replace(/^e[+]?([0-9]+)/, "$1"), 10);
-			for(let i = 0; i < -scale; i++) {
-				number_text.push("0");
+			buff = buff[0].substr(1);
+			scale -= parseInt(buff, 10);
+			if(scale < 0) {
+				for(let i = 0; i < -scale; i++) {
+					number_text.push("0");
+				}
+			}
+			else {
+				let join_text = number_text.join("");
+				join_text = join_text.substring(0, join_text.length - scale);
+				return join_text.length !== 0 ? join_text : "0";
 			}
 		}
 		return number_text.join("");
@@ -238,11 +246,12 @@ export default class BigInteger {
 
 	/**
 	 * Create an arbitrary-precision integer.
-	 * <br>Initialization can be performed as follows.
-	 * <br>* 1200, "1200", "12e2", "1.2e3"
-	 * <br>* "0xff", ["ff", 16]
-	 * <br>* "0o01234567", ["01234567", 8]
-	 * <br>* "0b0110101", ["0110101", 2]
+	 * 
+	 * Initialization can be performed as follows.
+	 * - 1200, "1200", "12e2", "1.2e3", ["1200", 10]
+	 * - "0xff", ["ff", 16]
+	 * - "0o01234567", ["01234567", 8]
+	 * - "0b0110101", ["0110101", 2]
 	 * @param {BigInteger|number|string|Array<string|number>|Object} [number] - Numeric data. See how to use the function.
 	 */
 	constructor(number) {
@@ -258,8 +267,8 @@ export default class BigInteger {
 
 			/**
 			 * Positive or negative signs of number.
-			 * <br>* +1 if positive, -1 if negative, 0 if 0.
-			 * <br>* This value may not be correct ?
+			 * - +1 if positive, -1 if negative, 0 if 0.
+			 * - This value may not be correct ?
 			 * @private
 			 * @type {number}
 			 */
@@ -324,8 +333,8 @@ export default class BigInteger {
 
 	/**
 	 * Create an arbitrary-precision integer.
-	 * <br>* Does not support strings using exponential notation.
-	 * <br>* If you want to initialize with the specified base number, please set up with an array ["ff", 16].
+	 * - Does not support strings using exponential notation.
+	 * - If you want to initialize with the specified base number, please set up with an array ["ff", 16].
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger}
 	 */
@@ -335,7 +344,7 @@ export default class BigInteger {
 
 	/**
 	 * Convert to BigInteger.
-	 * <br>If type conversion is unnecessary, return the value as it is.
+	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger}
 	 * @private
@@ -518,7 +527,7 @@ export default class BigInteger {
 
 	/**
 	 * 32-bit integer value.
-	 * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
 	 * @returns {number}
 	 */
 	get intValue() {
@@ -532,7 +541,7 @@ export default class BigInteger {
 
 	/**
 	 * 64-bit integer value.
-	 * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
 	 * @returns {number}
 	 */
 	get longValue() {
@@ -549,7 +558,7 @@ export default class BigInteger {
 
 	/**
 	 * 64-bit floating point.
-	 * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
 	 * @returns {number}
 	 */
 	get doubleValue() {
@@ -591,7 +600,7 @@ export default class BigInteger {
 
 	/**
 	 * Number of digits in which the number "1" appears first when expressed in binary.
-	 * <br>* Return -1 If 1 is not found it.
+	 * - Return -1 If 1 is not found it.
 	 * @returns {number} 存在しない場合は -1
 	 */
 	getLowestSetBit() {
@@ -1025,7 +1034,7 @@ export default class BigInteger {
 
 	/**
 	 * The positive or negative sign of this number.
-	 * <br>* +1 if positive, -1 if negative, 0 if 0.
+	 * - +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number} 1, -1, 0の場合は0を返す
 	 */
 	signum() {
@@ -1037,7 +1046,7 @@ export default class BigInteger {
 
 	/**
 	 * The positive or negative sign of this number.
-	 * <br>* +1 if positive, -1 if negative, 0 if 0.
+	 * - +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number} 1, -1, 0の場合は0を返す
 	 */
 	sign() {
@@ -1719,7 +1728,7 @@ export default class BigInteger {
 
 	/**
 	 * Return true if the value is prime number by Miller-Labin prime number determination method.
-	 * <br>Attention : it takes a very long time to process.
+	 * Attention : it takes a very long time to process.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
 	 * @returns {boolean}
 	 */
@@ -1808,7 +1817,7 @@ export default class BigInteger {
 
 	/**
 	 * Set default class of random.
-	 * <br>This is used if you do not specify a random number.
+	 * This is used if you do not specify a random number.
 	 * @param {Random} random
 	 */
 	static setDefaultRandom(random) {
@@ -1817,7 +1826,7 @@ export default class BigInteger {
 
 	/**
 	 * Return default Random class.
-	 * <br>Used when Random not specified explicitly.
+	 * Used when Random not specified explicitly.
 	 * @returns {Random}
 	 */
 	static getDefaultRandom() {

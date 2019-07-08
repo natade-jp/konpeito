@@ -20,7 +20,7 @@ import MathContext from "./context/MathContext.mjs";
 
 /**
  * Default MathContext class.
- * <br>Used when MathContext not specified explicitly.
+ * Used when MathContext not specified explicitly.
  * @type {MathContext}
  * @ignore
  */
@@ -87,7 +87,7 @@ class DecimalTool {
 	 */
 	static ToBigDecimalFromNumber(value) {
 		// 整数
-		if(value === (value | 0)) {
+		if(value === Math.floor(value)) {
 			return {
 				scale : 0,
 				integer : new BigInteger(Math.round(value))
@@ -124,13 +124,13 @@ export default class BigDecimal {
 	
 	/**
 	 * Create an arbitrary-precision floating-point number.
-	 * <br>When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
-	 * <br>When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
-	 * <br>default_context 
-	 * <br>* The "scale" is an integer scale factor.
-	 * <br>* The "default_context" is the used when no environment settings are specified during calculation.
-	 * <br>* The "context" is used to normalize the created floating point.
-	 * <br>These 3 settings can be omitted.
+	 * When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
+	 * When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
+	 * default_context
+	 * - The "scale" is an integer scale factor.
+	 * - The "default_context" is the used when no environment settings are specified during calculation.
+	 * - The "context" is used to normalize the created floating point.
+	 * These 3 settings can be omitted.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
 	 */
 	constructor(number) {
@@ -257,13 +257,15 @@ export default class BigDecimal {
 
 	/**
 	 * Create an arbitrary-precision floating-point number.
-	 * <br>When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
-	 * <br>When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
-	 * <br>default_context 
-	 * <br>* The "scale" is an integer scale factor.
-	 * <br>* The "default_context" is the used when no environment settings are specified during calculation.
-	 * <br>* The "context" is used to normalize the created floating point.
-	 * <br>These 3 settings can be omitted.
+	 * - When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
+	 * - When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
+	 * 
+	 * default_context
+	 * - The "scale" is an integer scale factor.
+	 * - The "default_context" is the used when no environment settings are specified during calculation.
+	 * - The "context" is used to normalize the created floating point.
+	 * 
+	 * These 3 settings can be omitted.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
 	 * @returns {BigDecimal}
 	 */
@@ -293,7 +295,7 @@ export default class BigDecimal {
 
 	/**
 	 * Convert to BigDecimal.
-	 * <br>If type conversion is unnecessary, return the value as it is.
+	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {BigDecimal}
 	 * @private
@@ -309,7 +311,7 @@ export default class BigDecimal {
 
 	/**
 	 * Convert to BigInteger.
-	 * <br>If type conversion is unnecessary, return the value as it is.
+	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {BigInteger}
 	 * @private
@@ -364,7 +366,7 @@ export default class BigDecimal {
 
 	/**
 	 * Return string of this number without sign.
-	 * <br>If cache is already created, return cache.
+	 * If cache is already created, return cache.
 	 * @returns {string} 
 	 */
 	_getUnsignedIntegerString() {
@@ -393,7 +395,7 @@ export default class BigDecimal {
 
 	/**
 	 * The positive or negative sign of this number.
-	 * <br>* +1 if positive, -1 if negative, 0 if 0.
+	 * - +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number}
 	 */
 	signum() {
@@ -402,7 +404,7 @@ export default class BigDecimal {
 
 	/**
 	 * The positive or negative sign of this number.
-	 * <br>* +1 if positive, -1 if negative, 0 if 0.
+	 * - +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number}
 	 */
 	sign() {
@@ -702,7 +704,7 @@ export default class BigDecimal {
 
 	/**
 	 * Equals.
-	 * <br>Test for equality, including precision and scale.
+	 * Test for equality, including precision and scale.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {boolean} A === B
 	 */
@@ -776,7 +778,7 @@ export default class BigDecimal {
 
 	/**
 	 * Multiply a multiple of ten.
-	 * <br>Only the scale is changed without changing the precision.
+	 * Only the scale is changed without changing the precision.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
 	 * @returns {BigDecimal} A * 10^floor(n)
 	 */
@@ -1161,7 +1163,7 @@ export default class BigDecimal {
 
 	/**
 	 * Get as a BigInteger.
-	 * <br>An error occurs if conversion fails.
+	 * An error occurs if conversion fails.
 	 * @returns {BigInteger}
 	 */
 	toBigIntegerExact() {
@@ -1181,7 +1183,7 @@ export default class BigDecimal {
 
 	/**
 	 * 32-bit integer value.
-	 * <br>An error occurs if conversion fails.
+	 * An error occurs if conversion fails.
 	 * @returns {number}
 	 */
 	get intValueExact() {
@@ -1219,7 +1221,7 @@ export default class BigDecimal {
 
 	/**
 	 * Power function.
-	 * <br>An exception occurs when doing a huge multiplication.
+	 * An exception occurs when doing a huge multiplication.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} pow(A, B)
@@ -1251,7 +1253,7 @@ export default class BigDecimal {
 	
 	/**
 	 * Set default the MathContext.
-	 * <br>This is used if you do not specify MathContext when creating a new object.
+	 * This is used if you do not specify MathContext when creating a new object.
 	 * @param {MathContext} [context=MathContext.DECIMAL128]
 	 */
 	static setDefaultContext(context) {
@@ -1260,7 +1262,7 @@ export default class BigDecimal {
 
 	/**
 	 * Return default MathContext class.
-	 * <br>Used when MathContext not specified explicitly.
+	 * Used when MathContext not specified explicitly.
 	 * @returns {MathContext}
 	 */
 	static getDefaultContext() {

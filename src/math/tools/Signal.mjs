@@ -266,7 +266,7 @@ class FFT {
 
 /**
  * Simple cache class.
- * <br>Cache tables used in FFT.
+ * Cache tables used in FFT.
  * @ignore
  */
 class Cache {
@@ -301,7 +301,7 @@ class Cache {
 
 	/**
 	 * Create a class initialized with the specified data length.
-	 * <br>Use from cache if it exists in cache.
+	 * Use from cache if it exists in cache.
 	 * @param {number} size - Data length.
 	 * @returns {*}
 	 */
@@ -353,7 +353,7 @@ class DCT {
 
 		/**
 		 * Twice the signal length.
-		 * <br>In the DCT conversion, an actual signal is zero-filled with a doubled signal length, and an FFT is performed on it.
+		 * In the DCT conversion, an actual signal is zero-filled with a doubled signal length, and an FFT is performed on it.
 		 */
 		this.dct_size = size * 2;
 
@@ -771,19 +771,19 @@ class SignalTool {
 
 	/**
 	 * Create window function for signal processing.
-	 * <br>The following window functions are available.
-	 * <br>* "rectangle": Rectangular window
-	 * <br>* "hann": Hann/Hanning window.
-	 * <br>* "hamming": Hamming window.
-	 * <br>* "blackman": Blackman window.
-	 * <br>* "blackmanharris": Blackman-Harris window.
-	 * <br>* "blackmannuttall": Blackman-Nuttall window.
-	 * <br>* "flattop": Flat top window.
-	 * <br>* "sin", Half cycle sine window.
-	 * <br>* "vorbis", Vorbis window.
+	 * The following window functions are available.
+	 * - "rectangle": Rectangular window
+	 * - "hann": Hann/Hanning window.
+	 * - "hamming": Hamming window.
+	 * - "blackman": Blackman window.
+	 * - "blackmanharris": Blackman-Harris window.
+	 * - "blackmannuttall": Blackman-Nuttall window.
+	 * - "flattop": Flat top window.
+	 * - "sin", Half cycle sine window.
+	 * - "vorbis", Vorbis window.
 	 * @param {string} name - Window function name.
 	 * @param {number} size - Window length.
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Array<number>}
 	 */
 	static window(name, size, periodic) {
@@ -872,7 +872,7 @@ class SignalTool {
 	/**
 	 * Hann (Hanning) window.
 	 * @param {number} size - Window length.
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Array<number>}
 	 */
 	static hann(size, periodic) {
@@ -882,7 +882,7 @@ class SignalTool {
 	/**
 	 * Hamming window.
 	 * @param {number} size - Window length.
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Array<number>}
 	 */
 	static hamming(size, periodic) {
@@ -1115,7 +1115,7 @@ export default class Signal {
 
 	/**
 	 * ACF(Autocorrelation function), cros-correlation function.
-	 * <br>* If the argument is omitted, it is calculated by the autocorrelation function.
+	 * - If the argument is omitted, it is calculated by the autocorrelation function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [x2] - Matrix to calculate the correlation.
 	 * @returns {Matrix}
@@ -1168,19 +1168,19 @@ export default class Signal {
 
 	/**
 	 * Create window function for signal processing.
-	 * <br>The following window functions are available.
-	 * <br>* "rectangle": Rectangular window
-	 * <br>* "hann": Hann/Hanning window.
-	 * <br>* "hamming": Hamming window.
-	 * <br>* "blackman": Blackman window.
-	 * <br>* "blackmanharris": Blackman-Harris window.
-	 * <br>* "blackmannuttall": Blackman-Nuttall window.
-	 * <br>* "flattop": Flat top window.
-	 * <br>* "sin", Half cycle sine window.
-	 * <br>* "vorbis", Vorbis window.
+	 * The following window functions are available.
+	 * - "rectangle": Rectangular window
+	 * - "hann": Hann/Hanning window.
+	 * - "hamming": Hamming window.
+	 * - "blackman": Blackman window.
+	 * - "blackmanharris": Blackman-Harris window.
+	 * - "blackmannuttall": Blackman-Nuttall window.
+	 * - "flattop": Flat top window.
+	 * - "sin", Half cycle sine window.
+	 * - "vorbis", Vorbis window.
 	 * @param {string} name - Window function name.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
 	static window(name, size, periodic) {
@@ -1192,7 +1192,7 @@ export default class Signal {
 	/**
 	 * Hann (Hanning) window.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
 	static hann(size, periodic) {
@@ -1202,7 +1202,7 @@ export default class Signal {
 	/**
 	 * Hamming window.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
 	static hamming(size, periodic) {
@@ -1211,7 +1211,7 @@ export default class Signal {
 	
 	/**
 	 * FFT shift.
-	 * <br>Circular shift beginning at the center of the signal.
+	 * Circular shift beginning at the center of the signal.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x 
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}

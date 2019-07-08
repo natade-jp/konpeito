@@ -119,7 +119,7 @@ class MatrixTool {
 	
 	/**
 	 * Removed front and back brackets when enclosed by brackets.
-	 * <br>* Return null if the string has no brackets.
+	 * - Return null if the string has no brackets.
 	 * @param {string} text - String to be processed.
 	 * @returns {string|null} String after brackets removal or null.
 	 */
@@ -134,7 +134,7 @@ class MatrixTool {
 
 	/**
 	 * Create Matrix type data from string data defined in JSON.
-	 * <br>* For example, "[xx,xx,xx], [xx,xx,xx]"
+	 * - For example, "[xx,xx,xx], [xx,xx,xx]"
 	 * @param {string} text - String to be processed.
 	 * @returns {Array<Array<Complex>>} Internal array used by Matrix type.
 	 */
@@ -248,7 +248,7 @@ class MatrixTool {
 
 	/**
 	 * Convert string to row part of matrix type matrix data.
-	 * <br>Estimate the matrix by extracting parts like numbers.
+	 * Estimate the matrix by extracting parts like numbers.
 	 * @param {string} row_text - A string describing one row of the matrix.
 	 * @returns {Array<Complex>|string}
 	 */
@@ -349,10 +349,10 @@ export default class Matrix {
 	
 	/**
 	 * Create a complex matrix.
-	 * <br>Initialization can be performed as follows.
-	 * <br>* 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
-	 * <br>* [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
-	 * <br>* "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
+	 * Initialization can be performed as follows.
+	 * - 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
+	 * - [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
+	 * - "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - Complex matrix. See how to use the function.
 	 */
 	constructor(number) {
@@ -514,7 +514,7 @@ export default class Matrix {
 
 	/**
 	 * Convert to Matrix.
-	 * <br>If type conversion is unnecessary, return the value as it is.
+	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @returns {Matrix}
 	 * @private
@@ -530,7 +530,7 @@ export default class Matrix {
 
 	/**
 	 * Convert to Complex.
-	 * <br>If type conversion is unnecessary, return the value as it is.
+	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @returns {Complex}
 	 * @private
@@ -863,7 +863,7 @@ export default class Matrix {
 
 	/**
 	 * Treat the columns of the matrix as vectors and execute the same process.
-	 * <br>* If the matrix is a row vector, it performs the same processing for the row vector.
+	 * - If the matrix is a row vector, it performs the same processing for the row vector.
 	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} Matrix after function processing.
 	 */
@@ -897,8 +897,8 @@ export default class Matrix {
 
 	/**
 	 * Treat the rows and columns of the matrix as vectors and perform the same processing.
-	 * <br>1. First run the same process for the row.
-	 * <br>2. Finally perform the same processing for the column.
+	 * 1. First run the same process for the row.
+	 * 2. Finally perform the same processing for the column.
 	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} Matrix after function processing.
 	 */
@@ -982,7 +982,7 @@ export default class Matrix {
 
 	/**
 	 * Treat the rows and columns of the matrix as vectors and perform the same processing.
-	 * <br>The arguments of the method can switch the direction of the matrix to be executed.
+	 * The arguments of the method can switch the direction of the matrix to be executed.
 	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @param {string|number} [dimtype="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
 	 * @returns {Matrix} Matrix after function processing.
@@ -1061,7 +1061,7 @@ export default class Matrix {
 
 	/**
 	 * Returns the specified element in the matrix.
-	 * <br>Each element of the matrix is composed of complex numbers.
+	 * Each element of the matrix is composed of complex numbers.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_or_pos - If this is a matrix, the row number. If this is a vector, the address.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [col] - If this is a matrix, the column number.
 	 * @returns {Complex} 
@@ -1176,7 +1176,7 @@ export default class Matrix {
 
 	/**
 	 * Trace of a matrix.
-	 * <br>Sum of diagonal elements.
+	 * Sum of diagonal elements.
 	 * @returns {Complex} trace(A)
 	 */
 	trace() {
@@ -1287,7 +1287,7 @@ export default class Matrix {
 
 	/**
 	 * If matrix, generate diagonal column vector.
-	 * <br>If vector, generate a matrix with diagonal elements.
+	 * If vector, generate a matrix with diagonal elements.
 	 * @returns {Matrix} Matrix or vector created. See how to use the function.
 	 */
 	diag() {
@@ -1322,7 +1322,7 @@ export default class Matrix {
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 
 	/**
-	 * Return true if the matrix is ​​scalar.
+	 * Return true if the matrix is scalar.
 	 * @returns {boolean}
 	 */
 	isScalar() {
@@ -1330,7 +1330,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * Return true if the matrix is ​​row vector.
+	 * Return true if the matrix is row vector.
 	 * @returns {boolean}
 	 */
 	isRow() {
@@ -1346,7 +1346,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * Return true if the matrix is ​​vector.
+	 * Return true if the matrix is vector.
 	 * @returns {boolean}
 	 */
 	isVector() {
@@ -1354,7 +1354,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * Return true if the value is not ​​scalar.
+	 * Return true if the value is not scalar.
 	 * @returns {boolean}
 	 */
 	isMatrix() {
@@ -1362,7 +1362,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * Return true if the matrix is ​​square matrix.
+	 * Return true if the matrix is square matrix.
 	 * @returns {boolean}
 	 */
 	isSquare() {
@@ -1394,7 +1394,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * Return true if the matrix is ​​zero matrix.
+	 * Return true if the matrix is zero matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
@@ -1451,7 +1451,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * Return true if the matrix is ​​tridiagonal matrix.
+	 * Return true if the matrix is tridiagonal matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
@@ -1467,7 +1467,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * Return true if the matrix is ​​regular matrix.
+	 * Return true if the matrix is regular matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
@@ -1496,7 +1496,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * Return true if the matrix is ​​unitary matrix.
+	 * Return true if the matrix is unitary matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
@@ -1509,7 +1509,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * Return true if the matrix is ​​symmetric matrix.
+	 * Return true if the matrix is symmetric matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
@@ -1554,7 +1554,7 @@ export default class Matrix {
 	}
 	
 	/**
-	 * Return true if the matrix is ​​upper triangular matrix.
+	 * Return true if the matrix is upper triangular matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
@@ -1570,7 +1570,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * Return true if the matrix is ​​ lower triangular matrix.
+	 * Return true if the matrix is  lower triangular matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
@@ -1633,8 +1633,8 @@ export default class Matrix {
 
 	/**
 	 * Compare values.
-	 * <br>* Return value between scalars is of type Number.
-	 * <br>* Return value between matrices is type Matrix.
+	 * - Return value between scalars is of type Number.
+	 * - Return value between matrices is type Matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
@@ -1793,7 +1793,7 @@ export default class Matrix {
 
 	/**
 	 * Power function.
-	 * <br>* Supports only integers.
+	 * - Supports only integers.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 整数
 	 * @returns {Matrix} pow(A, B)
 	 */
@@ -1926,7 +1926,7 @@ export default class Matrix {
 
 	/**
 	 * The positive or negative signs of each element of the matrix.
-	 * <br>* +1 if positive, -1 if negative, 0 if 0, norm if complex number.
+	 * - +1 if positive, -1 if negative, 0 if 0, norm if complex number.
 	 * @returns {Matrix} [-1,1] 複素数の場合はノルムを1にした値。
 	 */
 	sign() {
@@ -1937,7 +1937,7 @@ export default class Matrix {
 
 	/**
 	 * Test if each element of the matrix is integer.
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -1949,7 +1949,7 @@ export default class Matrix {
 
 	/**
 	 * Test if each element of the matrix is complex integer.
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -1961,7 +1961,7 @@ export default class Matrix {
 
 	/**
 	 * real(this) === 0
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -1973,7 +1973,7 @@ export default class Matrix {
 
 	/**
 	 * real(this) === 1
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -1985,7 +1985,7 @@ export default class Matrix {
 	
 	/**
 	 * Test if each element of the matrix is complex.
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -1997,7 +1997,7 @@ export default class Matrix {
 
 	/**
 	 * Test if each element of the matrix is real.
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -2009,7 +2009,7 @@ export default class Matrix {
 
 	/**
 	 * Test if each element of the matrix is NaN.
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNaN() {
@@ -2021,7 +2021,7 @@ export default class Matrix {
 
 	/**
 	 * real(this) > 0
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testPositive() {
@@ -2032,7 +2032,7 @@ export default class Matrix {
 
 	/**
 	 * real(this) < 0
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNegative() {
@@ -2043,7 +2043,7 @@ export default class Matrix {
 
 	/**
 	 * real(this) >= 0
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNotNegative() {
@@ -2054,7 +2054,7 @@ export default class Matrix {
 
 	/**
 	 * Test if each element of the matrix is infinite.
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testInfinite() {
@@ -2065,7 +2065,7 @@ export default class Matrix {
 	
 	/**
 	 * Test if each element of the matrix is finite.
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testFinite() {
@@ -2166,7 +2166,7 @@ export default class Matrix {
 	
 	/**
 	 * Atan (arc tangent) function.
-	 * <br>* Return the values of [-PI/2, PI/2].
+	 * - Return the values of [-PI/2, PI/2].
 	 * @returns {Matrix} atan(A)
 	 */
 	atan() {
@@ -2177,8 +2177,8 @@ export default class Matrix {
 
 	/**
 	 * Atan (arc tangent) function.
-	 * <br>* Return the values of [-PI, PI].
-	 * <br>* Supports only real numbers.
+	 * - Return the values of [-PI, PI].
+	 * - Supports only real numbers.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - X
 	 * @returns {Matrix} atan2(Y, X)
 	 */
@@ -2335,7 +2335,7 @@ export default class Matrix {
 
 	/**
 	 * Change the size of the matrix. (mutable)
-	 * <br>Initialized with 0 when expanding.
+	 * Initialized with 0 when expanding.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} new_row_length - Number of rows of matrix to resize.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} new_column_length - Number of columns of matrix to resize.
 	 * @returns {Matrix} Matrix after function processing. (this)
@@ -2381,7 +2381,7 @@ export default class Matrix {
 
 	/**
 	 * Change the size of the matrix.
-	 * <br>Initialized with 0 when expanding.
+	 * Initialized with 0 when expanding.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - Number of rows of matrix to resize.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - Number of columns of matrix to resize.
 	 * @returns {Matrix} Matrix after function processing.
@@ -2639,7 +2639,7 @@ export default class Matrix {
 
 	/**
 	 * Change the shape of the matrix.
-	 * <br>The number of elements in the matrix doesn't increase or decrease.
+	 * The number of elements in the matrix doesn't increase or decrease.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - Number of rows of matrix to reshape.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - Number of columns of matrix to reshape.
 	 * @returns {Matrix} Matrix after function processing.
@@ -2705,8 +2705,8 @@ export default class Matrix {
 
 	/**
 	 * Index sort.
-	 * <br>* Sorts by row when setting index by row vector to the argument.
-	 * <br>* Sorts by column when setting index by column vector to the argument.
+	 * - Sorts by row when setting index by row vector to the argument.
+	 * - Sorts by column when setting index by column vector to the argument.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - Vector with index. (See the description of this function)
 	 * @returns {Matrix} Matrix after function processing.
 	 */
@@ -2840,7 +2840,11 @@ export default class Matrix {
 	
 	/**
 	 * LUP decomposition.
-	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
+	 * - P'*L*U=A
+	 * - P is permutation matrix.
+	 * - L is lower triangular matrix.
+	 * - U is upper triangular matrix.
+	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} {L, U, P}
 	 */
 	lup() {
 		return LinearAlgebra.lup(this);
@@ -2848,7 +2852,10 @@ export default class Matrix {
 
 	/**
 	 * LU decomposition.
-	 * @returns {{L: Matrix, U: Matrix}} L*U=A
+	 * - L*U=A
+	 * - L is lower triangular matrix.
+	 * - U is upper triangular matrix.
+	 * @returns {{L: Matrix, U: Matrix}} {L, U}
 	 */
 	lu() {
 		return LinearAlgebra.lu(this);
@@ -2865,9 +2872,9 @@ export default class Matrix {
 
 	/**
 	 * QR decomposition.
-	 * <br>* Q*R=A
-	 * <br>* Q is orthonormal matrix.
-	 * <br>* R is upper triangular matrix.
+	 * - Q*R=A
+	 * - Q is orthonormal matrix.
+	 * - R is upper triangular matrix.
 	 * @returns {{Q: Matrix, R: Matrix}} {Q, R}
 	 */
 	qr() {
@@ -2876,11 +2883,11 @@ export default class Matrix {
 
 	/**
 	 * Tridiagonalization of symmetric matrix.
-	 * <br>* Don't support complex numbers.
-	 * <br>* P*H*P'=A
-	 * <br>* P is orthonormal matrix.
-	 * <br>* H is tridiagonal matrix.
-	 * <br>* The eigenvalues of H match the eigenvalues of A.
+	 * - Don't support complex numbers.
+	 * - P*H*P'=A
+	 * - P is orthonormal matrix.
+	 * - H is tridiagonal matrix.
+	 * - The eigenvalues of H match the eigenvalues of A.
 	 * @returns {{P: Matrix, H: Matrix}} {P, H}
 	 */
 	tridiagonalize() {
@@ -2889,10 +2896,10 @@ export default class Matrix {
 
 	/**
 	 * Eigendecomposition of symmetric matrix.
-	 * <br>* Don't support complex numbers.
-	 * <br>* V*D*V'=A.
-	 * <br>* V is orthonormal matrix. and columns of V are the right eigenvectors.
-	 * <br>* D is a matrix containing the eigenvalues on the diagonal component.
+	 * - Don't support complex numbers.
+	 * - V*D*V'=A.
+	 * - V is orthonormal matrix. and columns of V are the right eigenvectors.
+	 * - D is a matrix containing the eigenvalues on the diagonal component.
 	 * @returns {{V: Matrix, D: Matrix}} {D, V}
 	 */
 	eig() {
@@ -2901,9 +2908,9 @@ export default class Matrix {
 
 	/**
 	 * Singular Value Decomposition (SVD).
-	 * <br>* U*S*V'=A
-	 * <br>* U and V are orthonormal matrices.
-	 * <br>* S is a matrix with singular values in the diagonal.
+	 * - U*S*V'=A
+	 * - U and V are orthonormal matrices.
+	 * - S is a matrix with singular values in the diagonal.
 	 * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
 	 */
 	svd() {
@@ -2949,7 +2956,7 @@ export default class Matrix {
 	/**
 	 * Incomplete gamma function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {string} [tail="lower"] - tail ("lower", "upper")
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
 	gammainc(a, tail) {
@@ -2999,7 +3006,7 @@ export default class Matrix {
 	 * Incomplete beta function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-	 * @param {string} [tail="lower"] - tail ("lower", "upper")
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
 	betainc(a, b, tail) {
@@ -3128,8 +3135,8 @@ export default class Matrix {
 
 	/**
 	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-	 * <br>* If tails = 1, TDIST returns the one-tailed distribution.
-	 * <br>* If tails = 2, TDIST returns the two-tailed distribution.
+	 * - If tails = 1, TDIST returns the one-tailed distribution.
+	 * - If tails = 2, TDIST returns the two-tailed distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {Matrix}
@@ -3139,7 +3146,7 @@ export default class Matrix {
 	}
 
 	/**
-	 * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
@@ -3176,7 +3183,7 @@ export default class Matrix {
 
 	/**
 	 * Probability density function (PDF) of F-distribution.
-	 * <br>* In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution.
+	 * - In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
@@ -3279,7 +3286,7 @@ export default class Matrix {
 
 	/**
 	 * Moment.
-	 * <br>* Moment of order n. Equivalent to the definition of variance at 2.
+	 * - Moment of order n. Equivalent to the definition of variance at 2.
 	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
 	 * @returns {Matrix}
 	 */
@@ -3451,7 +3458,7 @@ export default class Matrix {
 
 	/**
 	 * ACF(Autocorrelation function), cros-correlation function.
-	 * <br>* If the argument is omitted, it is calculated by the autocorrelation function.
+	 * - If the argument is omitted, it is calculated by the autocorrelation function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [number] - Matrix to calculate the correlation.
 	 * @returns {Matrix}
 	 */
@@ -3461,19 +3468,19 @@ export default class Matrix {
 
 	/**
 	 * Create window function for signal processing.
-	 * <br>The following window functions are available.
-	 * <br>* "rectangle": Rectangular window
-	 * <br>* "hann": Hann/Hanning window.
-	 * <br>* "hamming": Hamming window.
-	 * <br>* "blackman": Blackman window.
-	 * <br>* "blackmanharris": Blackman-Harris window.
-	 * <br>* "blackmannuttall": Blackman-Nuttall window.
-	 * <br>* "flattop": Flat top window.
-	 * <br>* "sin", Half cycle sine window.
-	 * <br>* "vorbis", Vorbis window.
+	 * The following window functions are available.
+	 * - "rectangle": Rectangular window
+	 * - "hann": Hann/Hanning window.
+	 * - "hamming": Hamming window.
+	 * - "blackman": Blackman window.
+	 * - "blackmanharris": Blackman-Harris window.
+	 * - "blackmannuttall": Blackman-Nuttall window.
+	 * - "flattop": Flat top window.
+	 * - "sin", Half cycle sine window.
+	 * - "vorbis", Vorbis window.
 	 * @param {string} name - Window function name.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
 	static window(name, size, periodic) {
@@ -3483,7 +3490,7 @@ export default class Matrix {
 	/**
 	 * Hann (Hanning) window.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
 	static hann(size, periodic) {
@@ -3493,7 +3500,7 @@ export default class Matrix {
 	/**
 	 * Hamming window.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
 	static hamming(size, periodic) {
@@ -3502,7 +3509,7 @@ export default class Matrix {
 	
 	/**
 	 * FFT shift.
-	 * <br>Circular shift beginning at the center of the signal.
+	 * Circular shift beginning at the center of the signal.
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */

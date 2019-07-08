@@ -26,11 +26,11 @@ class LinearAlgebraTool {
 
 	/**
 	 * Tridiagonalization of symmetric matrix.
-	 * <br>* Don't support complex numbers.
-	 * <br>* P*H*P'=A
-	 * <br>* P is orthonormal matrix.
-	 * <br>* H is tridiagonal matrix.
-	 * <br>* The eigenvalues of H match the eigenvalues of A.
+	 * - Don't support complex numbers.
+	 * - P*H*P'=A
+	 * - P is orthonormal matrix.
+	 * - H is tridiagonal matrix.
+	 * - The eigenvalues of H match the eigenvalues of A.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {{P: Matrix, H: Matrix}}
 	 */
@@ -63,7 +63,7 @@ class LinearAlgebraTool {
 
 		/**
 		 * Householder transformation.
-		 * @param {Array<number>} x - ハウスホルダー変換したいベクトル
+		 * @param {Array<number>} x
 		 * @param {number} [index_offset=0] - Offset of the position of the vector to be calculated.
 		 * @param {number} [index_max=x.length] - Maximum value of position of vector to be calculated (do not include this value).
 		 * @returns {{y1: number, v: Array<number>}} 
@@ -182,10 +182,10 @@ class LinearAlgebraTool {
 
 	/**
 	 * Eigendecomposition of symmetric matrix.
-	 * <br>* Don't support complex numbers.
-	 * <br>* V*D*V'=A.
-	 * <br>* V is orthonormal matrix. and columns of V are the right eigenvectors.
-	 * <br>* D is a matrix containing the eigenvalues on the diagonal component.
+	 * - Don't support complex numbers.
+	 * - V*D*V'=A.
+	 * - V is orthonormal matrix. and columns of V are the right eigenvectors.
+	 * - D is a matrix containing the eigenvalues on the diagonal component.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - Symmetric matrix.
 	 * @returns {{V: Matrix, D: Matrix}}
 	 */
@@ -310,7 +310,7 @@ class LinearAlgebraTool {
 
 	/**
 	 * Treat matrices as vectors, make them orthonormal, and make matrices of Q and R.
-	 * <br>The method of Gram-Schmidt orthonormalization is used.
+	 * The method of Gram-Schmidt orthonormalization is used.
 	 * @param {Matrix} mat - Square matrix.
 	 * @returns {{Q: Matrix, R: Matrix, non_orthogonalized : Array<number>}}
 	 */
@@ -379,7 +379,7 @@ class LinearAlgebraTool {
 	
 	/**
 	 * Create orthogonal vectors for all row vectors of the matrix.
-	 * <br>- If the vector can not be found, it returns NULL.
+	 * - If the vector can not be found, it returns NULL.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @param {number} [epsilon=1.0e-10] - Calculation tolerance of calculation.
 	 * @returns {Matrix|null} An orthogonal vector.
@@ -745,7 +745,7 @@ export default class LinearAlgebra {
 
 	/**
 	 * Trace of a matrix.
-	 * <br>Sum of diagonal elements.
+	 * Sum of diagonal elements.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {Complex}
 	 */
@@ -817,8 +817,12 @@ export default class LinearAlgebra {
 
 	/**
 	 * LUP decomposition.
+	 * - P'*L*U=A
+	 * - P is permutation matrix.
+	 * - L is lower triangular matrix.
+	 * - U is upper triangular matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
+	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} {L, U, P}
 	 */
 	static lup(mat) {
 		const A = new Matrix(mat);
@@ -871,8 +875,11 @@ export default class LinearAlgebra {
 
 	/**
 	 * LU decomposition.
+	 * - L*U=A
+	 * - L is lower triangular matrix.
+	 * - U is upper triangular matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-	 * @returns {{L: Matrix, U: Matrix}} L*U=A
+	 * @returns {{L: Matrix, U: Matrix}} {L, U}
 	 */
 	static lu(mat) {
 		const lup = LinearAlgebra.lup(mat);
@@ -952,9 +959,9 @@ export default class LinearAlgebra {
 
 	/**
 	 * QR decomposition.
-	 * <br>* Q*R=A
-	 * <br>* Q is orthonormal matrix.
-	 * <br>* R is upper triangular matrix.
+	 * - Q*R=A
+	 * - Q is orthonormal matrix.
+	 * - R is upper triangular matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @returns {{Q: Matrix, R: Matrix}} {Q, R}
 	 */
@@ -1020,11 +1027,11 @@ export default class LinearAlgebra {
 
 	/**
 	 * Tridiagonalization of symmetric matrix.
-	 * <br>* Don't support complex numbers.
-	 * <br>* P*H*P'=A
-	 * <br>* P is orthonormal matrix.
-	 * <br>* H is tridiagonal matrix.
-	 * <br>* The eigenvalues of H match the eigenvalues of A.
+	 * - Don't support complex numbers.
+	 * - P*H*P'=A
+	 * - P is orthonormal matrix.
+	 * - H is tridiagonal matrix.
+	 * - The eigenvalues of H match the eigenvalues of A.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @returns {{P: Matrix, H: Matrix}} {P, H}
 	 */
@@ -1044,10 +1051,10 @@ export default class LinearAlgebra {
 
 	/**
 	 * Eigendecomposition of symmetric matrix.
-	 * <br>* Don't support complex numbers.
-	 * <br>* V*D*V'=A.
-	 * <br>* V is orthonormal matrix. and columns of V are the right eigenvectors.
-	 * <br>* D is a matrix containing the eigenvalues on the diagonal component.
+	 * - Don't support complex numbers.
+	 * - V*D*V'=A.
+	 * - V is orthonormal matrix. and columns of V are the right eigenvectors.
+	 * - D is a matrix containing the eigenvalues on the diagonal component.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @returns {{V: Matrix, D: Matrix}} {D, V}
 	 * @todo 対称行列しか対応できていないので、対称行列ではないものはQR分解を用いた手法に切り替える予定。
@@ -1068,9 +1075,9 @@ export default class LinearAlgebra {
 
 	/**
 	 * Singular Value Decomposition (SVD).
-	 * <br>* U*S*V'=A
-	 * <br>* U and V are orthonormal matrices.
-	 * <br>* S is a matrix with singular values in the diagonal.
+	 * - U*S*V'=A
+	 * - U and V are orthonormal matrices.
+	 * - S is a matrix with singular values in the diagonal.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
 	 */

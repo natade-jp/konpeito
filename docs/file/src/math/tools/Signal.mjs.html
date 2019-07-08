@@ -314,7 +314,7 @@ class FFT {
 
 /**
  * Simple cache class.
- * &lt;br&gt;Cache tables used in FFT.
+ * Cache tables used in FFT.
  * @ignore
  */
 class Cache {
@@ -349,7 +349,7 @@ class Cache {
 
 	/**
 	 * Create a class initialized with the specified data length.
-	 * &lt;br&gt;Use from cache if it exists in cache.
+	 * Use from cache if it exists in cache.
 	 * @param {number} size - Data length.
 	 * @returns {*}
 	 */
@@ -401,7 +401,7 @@ class DCT {
 
 		/**
 		 * Twice the signal length.
-		 * &lt;br&gt;In the DCT conversion, an actual signal is zero-filled with a doubled signal length, and an FFT is performed on it.
+		 * In the DCT conversion, an actual signal is zero-filled with a doubled signal length, and an FFT is performed on it.
 		 */
 		this.dct_size = size * 2;
 
@@ -819,19 +819,19 @@ class SignalTool {
 
 	/**
 	 * Create window function for signal processing.
-	 * &lt;br&gt;The following window functions are available.
-	 * &lt;br&gt;* &quot;rectangle&quot;: Rectangular window
-	 * &lt;br&gt;* &quot;hann&quot;: Hann/Hanning window.
-	 * &lt;br&gt;* &quot;hamming&quot;: Hamming window.
-	 * &lt;br&gt;* &quot;blackman&quot;: Blackman window.
-	 * &lt;br&gt;* &quot;blackmanharris&quot;: Blackman-Harris window.
-	 * &lt;br&gt;* &quot;blackmannuttall&quot;: Blackman-Nuttall window.
-	 * &lt;br&gt;* &quot;flattop&quot;: Flat top window.
-	 * &lt;br&gt;* &quot;sin&quot;, Half cycle sine window.
-	 * &lt;br&gt;* &quot;vorbis&quot;, Vorbis window.
+	 * The following window functions are available.
+	 * - &quot;rectangle&quot;: Rectangular window
+	 * - &quot;hann&quot;: Hann/Hanning window.
+	 * - &quot;hamming&quot;: Hamming window.
+	 * - &quot;blackman&quot;: Blackman window.
+	 * - &quot;blackmanharris&quot;: Blackman-Harris window.
+	 * - &quot;blackmannuttall&quot;: Blackman-Nuttall window.
+	 * - &quot;flattop&quot;: Flat top window.
+	 * - &quot;sin&quot;, Half cycle sine window.
+	 * - &quot;vorbis&quot;, Vorbis window.
 	 * @param {string} name - Window function name.
 	 * @param {number} size - Window length.
-	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;
 	 * @returns {Array&lt;number&gt;}
 	 */
 	static window(name, size, periodic) {
@@ -920,7 +920,7 @@ class SignalTool {
 	/**
 	 * Hann (Hanning) window.
 	 * @param {number} size - Window length.
-	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;
 	 * @returns {Array&lt;number&gt;}
 	 */
 	static hann(size, periodic) {
@@ -930,7 +930,7 @@ class SignalTool {
 	/**
 	 * Hamming window.
 	 * @param {number} size - Window length.
-	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;
 	 * @returns {Array&lt;number&gt;}
 	 */
 	static hamming(size, periodic) {
@@ -1163,7 +1163,7 @@ export default class Signal {
 
 	/**
 	 * ACF(Autocorrelation function), cros-correlation function.
-	 * &lt;br&gt;* If the argument is omitted, it is calculated by the autocorrelation function.
+	 * - If the argument is omitted, it is calculated by the autocorrelation function.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x1
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [x2] - Matrix to calculate the correlation.
 	 * @returns {Matrix}
@@ -1216,19 +1216,19 @@ export default class Signal {
 
 	/**
 	 * Create window function for signal processing.
-	 * &lt;br&gt;The following window functions are available.
-	 * &lt;br&gt;* &quot;rectangle&quot;: Rectangular window
-	 * &lt;br&gt;* &quot;hann&quot;: Hann/Hanning window.
-	 * &lt;br&gt;* &quot;hamming&quot;: Hamming window.
-	 * &lt;br&gt;* &quot;blackman&quot;: Blackman window.
-	 * &lt;br&gt;* &quot;blackmanharris&quot;: Blackman-Harris window.
-	 * &lt;br&gt;* &quot;blackmannuttall&quot;: Blackman-Nuttall window.
-	 * &lt;br&gt;* &quot;flattop&quot;: Flat top window.
-	 * &lt;br&gt;* &quot;sin&quot;, Half cycle sine window.
-	 * &lt;br&gt;* &quot;vorbis&quot;, Vorbis window.
+	 * The following window functions are available.
+	 * - &quot;rectangle&quot;: Rectangular window
+	 * - &quot;hann&quot;: Hann/Hanning window.
+	 * - &quot;hamming&quot;: Hamming window.
+	 * - &quot;blackman&quot;: Blackman window.
+	 * - &quot;blackmanharris&quot;: Blackman-Harris window.
+	 * - &quot;blackmannuttall&quot;: Blackman-Nuttall window.
+	 * - &quot;flattop&quot;: Flat top window.
+	 * - &quot;sin&quot;, Half cycle sine window.
+	 * - &quot;vorbis&quot;, Vorbis window.
 	 * @param {string} name - Window function name.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - Window length
-	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;
 	 * @returns {Matrix} Column vector.
 	 */
 	static window(name, size, periodic) {
@@ -1240,7 +1240,7 @@ export default class Signal {
 	/**
 	 * Hann (Hanning) window.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - Window length
-	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;
 	 * @returns {Matrix} Column vector.
 	 */
 	static hann(size, periodic) {
@@ -1250,7 +1250,7 @@ export default class Signal {
 	/**
 	 * Hamming window.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - Window length
-	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot;, 1/&quot;periodic&quot;
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;
 	 * @returns {Matrix} Column vector.
 	 */
 	static hamming(size, periodic) {
@@ -1259,7 +1259,7 @@ export default class Signal {
 	
 	/**
 	 * FFT shift.
-	 * &lt;br&gt;Circular shift beginning at the center of the signal.
+	 * Circular shift beginning at the center of the signal.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x 
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}

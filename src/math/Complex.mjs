@@ -80,8 +80,8 @@ export default class Complex {
 
 	/**
 	 * Create a complex number.
-	 * <br>Initialization can be performed as follows.
-	 * <br>* "3 + 4i", "4j + 3", [3, 4].
+	 * Initialization can be performed as follows.
+	 * - "3 + 4i", "4j + 3", [3, 4].
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Complex number. See how to use the function.
 	 */
 	constructor(number) {
@@ -165,7 +165,7 @@ export default class Complex {
 	
 	/**
 	 * Convert to Complex.
-	 * <br>If type conversion is unnecessary, return the value as it is.
+	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
 	 * @returns {Complex}
 	 * @private
@@ -358,7 +358,7 @@ export default class Complex {
 
 	/**
 	 * Return number of decimal places for real and imaginary parts.
-	 * <br>* Used to make a string.
+	 * - Used to make a string.
 	 * @returns {number} Number of decimal places.
 	 */
 	getDecimalPosition() {
@@ -514,7 +514,7 @@ export default class Complex {
 
 	/**
 	 * The positive or negative sign of this number.
-	 * <br>* +1 if positive, -1 if negative, 0 if 0.
+	 * - +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {Complex} [-1,1] 複素数の場合はノルムを1にした値。
 	 */
 	sign() {
@@ -888,7 +888,7 @@ export default class Complex {
 
 	/**
 	 * Atan (arc tangent) function.
-	 * <br>* Return the values of [-PI/2, PI/2].
+	 * - Return the values of [-PI/2, PI/2].
 	 * @returns {Complex} atan(A)
 	 */
 	atan() {
@@ -901,8 +901,8 @@ export default class Complex {
 
 	/**
 	 * Atan (arc tangent) function.
-	 * <br>* Return the values of [-PI, PI] .
-	 * <br>* Supports only real numbers.
+	 * Return the values of [-PI, PI] .
+	 * Supports only real numbers.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [number] - X
 	 * @returns {Complex} atan2(Y, X)
 	 */

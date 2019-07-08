@@ -1,9 +1,9 @@
 /**
  * Class collection of numerical calculation processing.
- * <br>These classes are classified into a BigInteger and BigDecimal and Matrix.
- * <br>- BigInteger is the calculation class for arbitrary-precision integer arithmetic.
- * <br>- BigDecimal is a calculation class for arbitrary-precision floating point arithmetic.
- * <br>- Matrix is a general-purpose calculation class with signal processing and statistical processing.
+ * These classes are classified into a BigInteger and BigDecimal and Matrix.
+ * - BigInteger is the calculation class for arbitrary-precision integer arithmetic.
+ * - BigDecimal is a calculation class for arbitrary-precision floating point arithmetic.
+ * - Matrix is a general-purpose calculation class with signal processing and statistical processing.
  */
 declare class konpeito {
     /**
@@ -45,26 +45,28 @@ declare class konpeito {
 
 /**
  * Create an arbitrary-precision floating-point number.
- * <br>When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
- * <br>When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
- * <br>default_context
- * <br>* The "scale" is an integer scale factor.
- * <br>* The "default_context" is the used when no environment settings are specified during calculation.
- * <br>* The "context" is used to normalize the created floating point.
- * <br>These 3 settings can be omitted.
+ * When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
+ * When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
+ * default_context
+ * - The "scale" is an integer scale factor.
+ * - The "default_context" is the used when no environment settings are specified during calculation.
+ * - The "context" is used to normalize the created floating point.
+ * These 3 settings can be omitted.
  * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
  */
 declare class BigDecimal {
     constructor(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any);
     /**
      * Create an arbitrary-precision floating-point number.
-     * <br>When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
-     * <br>When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
-     * <br>default_context
-     * <br>* The "scale" is an integer scale factor.
-     * <br>* The "default_context" is the used when no environment settings are specified during calculation.
-     * <br>* The "context" is used to normalize the created floating point.
-     * <br>These 3 settings can be omitted.
+     * - When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
+     * - When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
+     *
+     * default_context
+     * - The "scale" is an integer scale factor.
+     * - The "default_context" is the used when no environment settings are specified during calculation.
+     * - The "context" is used to normalize the created floating point.
+     *
+     * These 3 settings can be omitted.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
      * @returns {BigDecimal}
      */
@@ -78,7 +80,7 @@ declare class BigDecimal {
     static valueOf(x: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, scale?: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
     /**
      * Return string of this number without sign.
-     * <br>If cache is already created, return cache.
+     * If cache is already created, return cache.
      * @returns {string}
      */
     _getUnsignedIntegerString(): string;
@@ -94,13 +96,13 @@ declare class BigDecimal {
     scale(): number;
     /**
      * The positive or negative sign of this number.
-     * <br>* +1 if positive, -1 if negative, 0 if 0.
+     * - +1 if positive, -1 if negative, 0 if 0.
      * @returns {number}
      */
     signum(): number;
     /**
      * The positive or negative sign of this number.
-     * <br>* +1 if positive, -1 if negative, 0 if 0.
+     * - +1 if positive, -1 if negative, 0 if 0.
      * @returns {number}
      */
     sign(): number;
@@ -180,7 +182,7 @@ declare class BigDecimal {
     compareTo(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): number;
     /**
      * Equals.
-     * <br>Test for equality, including precision and scale.
+     * Test for equality, including precision and scale.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
      * @returns {boolean} A === B
      */
@@ -206,7 +208,7 @@ declare class BigDecimal {
     clip(min: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, max: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
     /**
      * Multiply a multiple of ten.
-     * <br>Only the scale is changed without changing the precision.
+     * Only the scale is changed without changing the precision.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n
      * @returns {BigDecimal} A * 10^floor(n)
      */
@@ -312,7 +314,7 @@ declare class BigDecimal {
     toBigInteger(): BigInteger;
     /**
      * Get as a BigInteger.
-     * <br>An error occurs if conversion fails.
+     * An error occurs if conversion fails.
      * @returns {BigInteger}
      */
     toBigIntegerExact(): BigInteger;
@@ -323,7 +325,7 @@ declare class BigDecimal {
     intValue: number;
     /**
      * 32-bit integer value.
-     * <br>An error occurs if conversion fails.
+     * An error occurs if conversion fails.
      * @returns {number}
      */
     intValueExact: number;
@@ -339,7 +341,7 @@ declare class BigDecimal {
     doubleValue: number;
     /**
      * Power function.
-     * <br>An exception occurs when doing a huge multiplication.
+     * An exception occurs when doing a huge multiplication.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
      * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
      * @returns {BigDecimal} pow(A, B)
@@ -347,13 +349,13 @@ declare class BigDecimal {
     pow(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
     /**
      * Set default the MathContext.
-     * <br>This is used if you do not specify MathContext when creating a new object.
+     * This is used if you do not specify MathContext when creating a new object.
      * @param {MathContext} [context=MathContext.DECIMAL128]
      */
     static setDefaultContext(context?: MathContext): void;
     /**
      * Return default MathContext class.
-     * <br>Used when MathContext not specified explicitly.
+     * Used when MathContext not specified explicitly.
      * @returns {MathContext}
      */
     static getDefaultContext(): MathContext;
@@ -381,11 +383,12 @@ declare class BigDecimal {
 
 /**
  * Create an arbitrary-precision integer.
- * <br>Initialization can be performed as follows.
- * <br>* 1200, "1200", "12e2", "1.2e3"
- * <br>* "0xff", ["ff", 16]
- * <br>* "0o01234567", ["01234567", 8]
- * <br>* "0b0110101", ["0110101", 2]
+ *
+ * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3", ["1200", 10]
+ * - "0xff", ["ff", 16]
+ * - "0o01234567", ["01234567", 8]
+ * - "0b0110101", ["0110101", 2]
  * @param {BigInteger|number|string|Array<string|number>|Object} [number] - Numeric data. See how to use the function.
  */
 declare class BigInteger {
@@ -398,8 +401,8 @@ declare class BigInteger {
     static create(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
      * Create an arbitrary-precision integer.
-     * <br>* Does not support strings using exponential notation.
-     * <br>* If you want to initialize with the specified base number, please set up with an array ["ff", 16].
+     * - Does not support strings using exponential notation.
+     * - If you want to initialize with the specified base number, please set up with an array ["ff", 16].
      * @param {BigInteger|number|string|Array<string|number>|Object} number
      * @returns {BigInteger}
      */
@@ -440,19 +443,19 @@ declare class BigInteger {
     getShort(point: BigInteger | number | string | (string | number)[] | any): number;
     /**
      * 32-bit integer value.
-     * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
+     * - If it is outside the range of JavaScript Number, it will not be an accurate number.
      * @returns {number}
      */
     intValue: number;
     /**
      * 64-bit integer value.
-     * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
+     * - If it is outside the range of JavaScript Number, it will not be an accurate number.
      * @returns {number}
      */
     longValue: number;
     /**
      * 64-bit floating point.
-     * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
+     * - If it is outside the range of JavaScript Number, it will not be an accurate number.
      * @returns {number}
      */
     doubleValue: number;
@@ -478,7 +481,7 @@ declare class BigInteger {
     isPositive(): boolean;
     /**
      * Number of digits in which the number "1" appears first when expressed in binary.
-     * <br>* Return -1 If 1 is not found it.
+     * - Return -1 If 1 is not found it.
      * @returns {number} 存在しない場合は -1
      */
     getLowestSetBit(): number;
@@ -563,13 +566,13 @@ declare class BigInteger {
     negate(): BigInteger;
     /**
      * The positive or negative sign of this number.
-     * <br>* +1 if positive, -1 if negative, 0 if 0.
+     * - +1 if positive, -1 if negative, 0 if 0.
      * @returns {number} 1, -1, 0の場合は0を返す
      */
     signum(): number;
     /**
      * The positive or negative sign of this number.
-     * <br>* +1 if positive, -1 if negative, 0 if 0.
+     * - +1 if positive, -1 if negative, 0 if 0.
      * @returns {number} 1, -1, 0の場合は0を返す
      */
     sign(): number;
@@ -733,7 +736,7 @@ declare class BigInteger {
     modInverse(m: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
      * Return true if the value is prime number by Miller-Labin prime number determination method.
-     * <br>Attention : it takes a very long time to process.
+     * Attention : it takes a very long time to process.
      * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
      * @returns {boolean}
      */
@@ -752,13 +755,13 @@ declare class BigInteger {
     factorial(): BigInteger;
     /**
      * Set default class of random.
-     * <br>This is used if you do not specify a random number.
+     * This is used if you do not specify a random number.
      * @param {Random} random
      */
     static setDefaultRandom(random: Random): void;
     /**
      * Return default Random class.
-     * <br>Used when Random not specified explicitly.
+     * Used when Random not specified explicitly.
      * @returns {Random}
      */
     static getDefaultRandom(): Random;
@@ -786,8 +789,8 @@ declare class BigInteger {
 
 /**
  * Create a complex number.
- * <br>Initialization can be performed as follows.
- * <br>* "3 + 4i", "4j + 3", [3, 4].
+ * Initialization can be performed as follows.
+ * - "3 + 4i", "4j + 3", [3, 4].
  * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Complex number. See how to use the function.
  */
 declare class Complex {
@@ -863,7 +866,7 @@ declare class Complex {
     arg: number;
     /**
      * Return number of decimal places for real and imaginary parts.
-     * <br>* Used to make a string.
+     * - Used to make a string.
      * @returns {number} Number of decimal places.
      */
     getDecimalPosition(): number;
@@ -910,7 +913,7 @@ declare class Complex {
     inv(): Complex;
     /**
      * The positive or negative sign of this number.
-     * <br>* +1 if positive, -1 if negative, 0 if 0.
+     * - +1 if positive, -1 if negative, 0 if 0.
      * @returns {Complex} [-1,1] 複素数の場合はノルムを1にした値。
      */
     sign(): Complex;
@@ -1064,14 +1067,14 @@ declare class Complex {
     tan(): Complex;
     /**
      * Atan (arc tangent) function.
-     * <br>* Return the values of [-PI/2, PI/2].
+     * - Return the values of [-PI/2, PI/2].
      * @returns {Complex} atan(A)
      */
     atan(): Complex;
     /**
      * Atan (arc tangent) function.
-     * <br>* Return the values of [-PI, PI] .
-     * <br>* Supports only real numbers.
+     * Return the values of [-PI, PI] .
+     * Supports only real numbers.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [number] - X
      * @returns {Complex} atan2(Y, X)
      */
@@ -1228,25 +1231,25 @@ declare class MathContext {
     toString(): string;
     /**
      * No decimal point limit.
-     * <br>However, an error occurs in the case of cyclic fraction in division.
+     * However, an error occurs in the case of cyclic fraction in division.
      * @returns {MathContext}
      */
     static UNLIMITED: MathContext;
     /**
      * 32-bit floating point.
-     * <br>Equivalent of the C language float.
+     * Equivalent of the C language float.
      * @returns {MathContext}
      */
     static DECIMAL32: MathContext;
     /**
      * 64-bit floating point.
-     * <br>Equivalent of the C language double.
+     * Equivalent of the C language double.
      * @returns {MathContext}
      */
     static DECIMAL64: MathContext;
     /**
      * 128-bit floating point.
-     * <br>Equivalent of the C language long double.
+     * Equivalent of the C language long double.
      * @returns {MathContext}
      */
     static DECIMAL128: MathContext;
@@ -1263,7 +1266,7 @@ declare class RoundingModeEntity {
     static toString(): string;
     /**
      * Numeric value to add.
-     * <br>It is rounded when this value is added.
+     * It is rounded when this value is added.
      * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
      * @returns {number} Numeric value to add.
      */
@@ -1275,7 +1278,7 @@ declare interface RoundingMode_UP extends RoundingModeEntity {
 
 /**
  * Directed rounding to an integer.
- * <br>Round towards positive infinity if positive, negative infinity if negative.
+ * Round towards positive infinity if positive, negative infinity if negative.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_UP implements RoundingModeEntity {
@@ -1286,7 +1289,7 @@ declare class RoundingMode_UP implements RoundingModeEntity {
     static toString(): string;
     /**
      * Numeric value to add.
-     * <br>It is rounded when this value is added.
+     * It is rounded when this value is added.
      * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
      * @returns {number} Numeric value to add.
      */
@@ -1298,7 +1301,7 @@ declare interface RoundingMode_DOWN extends RoundingModeEntity {
 
 /**
  * Directed rounding to an integer.
- * <br>Round towards 0.
+ * Round towards 0.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_DOWN implements RoundingModeEntity {
@@ -1309,7 +1312,7 @@ declare class RoundingMode_DOWN implements RoundingModeEntity {
     static toString(): string;
     /**
      * Numeric value to add.
-     * <br>It is rounded when this value is added.
+     * It is rounded when this value is added.
      * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
      * @returns {number} Numeric value to add.
      */
@@ -1321,7 +1324,7 @@ declare interface RoundingMode_CEILING extends RoundingModeEntity {
 
 /**
  * Directed rounding to an integer.
- * <br>Round up to positive infinity.
+ * Round up to positive infinity.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_CEILING implements RoundingModeEntity {
@@ -1332,7 +1335,7 @@ declare class RoundingMode_CEILING implements RoundingModeEntity {
     static toString(): string;
     /**
      * Numeric value to add.
-     * <br>It is rounded when this value is added.
+     * It is rounded when this value is added.
      * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
      * @returns {number} Numeric value to add.
      */
@@ -1344,7 +1347,7 @@ declare interface RoundingMode_FLOOR extends RoundingModeEntity {
 
 /**
  * Directed rounding to an integer.
- * <br>Round down to negative infinity.
+ * Round down to negative infinity.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_FLOOR implements RoundingModeEntity {
@@ -1355,7 +1358,7 @@ declare class RoundingMode_FLOOR implements RoundingModeEntity {
     static toString(): string;
     /**
      * Numeric value to add.
-     * <br>It is rounded when this value is added.
+     * It is rounded when this value is added.
      * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
      * @returns {number} Numeric value to add.
      */
@@ -1367,7 +1370,7 @@ declare interface RoundingMode_HALF_UP extends RoundingModeEntity {
 
 /**
  * Rounding to the nearest integer.
- * <br>Round half towards positive infinity.
+ * Round half towards positive infinity.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_HALF_UP implements RoundingModeEntity {
@@ -1378,7 +1381,7 @@ declare class RoundingMode_HALF_UP implements RoundingModeEntity {
     static toString(): string;
     /**
      * Numeric value to add.
-     * <br>It is rounded when this value is added.
+     * It is rounded when this value is added.
      * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
      * @returns {number} Numeric value to add.
      */
@@ -1390,7 +1393,7 @@ declare interface RoundingMode_HALF_DOWN extends RoundingModeEntity {
 
 /**
  * Rounding to the nearest integer.
- * <br>Round half towards negative infinity.
+ * Round half towards negative infinity.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_HALF_DOWN implements RoundingModeEntity {
@@ -1401,7 +1404,7 @@ declare class RoundingMode_HALF_DOWN implements RoundingModeEntity {
     static toString(): string;
     /**
      * Numeric value to add.
-     * <br>It is rounded when this value is added.
+     * It is rounded when this value is added.
      * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
      * @returns {number} Numeric value to add.
      */
@@ -1413,7 +1416,7 @@ declare interface RoundingMode_HALF_EVEN extends RoundingModeEntity {
 
 /**
  * Rounding to the nearest integer
- * <br>Round to the nearest side. If the median, round to the even side.
+ * Round to the nearest side. If the median, round to the even side.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_HALF_EVEN implements RoundingModeEntity {
@@ -1424,7 +1427,7 @@ declare class RoundingMode_HALF_EVEN implements RoundingModeEntity {
     static toString(): string;
     /**
      * Numeric value to add.
-     * <br>It is rounded when this value is added.
+     * It is rounded when this value is added.
      * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
      * @returns {number} Numeric value to add.
      */
@@ -1436,7 +1439,7 @@ declare interface RoundingMode_UNNECESSARY extends RoundingModeEntity {
 
 /**
  * Do not round.
- * <br>Error if you need to round it.
+ * Error if you need to round it.
  * @implements {RoundingModeEntity}
  */
 declare class RoundingMode_UNNECESSARY implements RoundingModeEntity {
@@ -1447,7 +1450,7 @@ declare class RoundingMode_UNNECESSARY implements RoundingModeEntity {
     static toString(): string;
     /**
      * Numeric value to add.
-     * <br>It is rounded when this value is added.
+     * It is rounded when this value is added.
      * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
      * @returns {number} Numeric value to add.
      */
@@ -1460,55 +1463,55 @@ declare class RoundingMode_UNNECESSARY implements RoundingModeEntity {
 declare class RoundingMode {
     /**
      * Get rounding class represented by specified string.
-     * @param {string|RoundingModeEntity|Object} name - モードの英数名
+     * @param {string|RoundingModeEntity|Object} name - Mode name.
      * @returns {typeof RoundingModeEntity}
      */
     static valueOf(name: string | RoundingModeEntity | any): typeof RoundingModeEntity;
     /**
      * Directed rounding to an integer.
-     * <br>Round towards positive infinity if positive, negative infinity if negative.
+     * Round towards positive infinity if positive, negative infinity if negative.
      * @returns {typeof RoundingModeEntity}
      */
     static UP: typeof RoundingModeEntity;
     /**
      * Directed rounding to an integer.
-     * <br>Round towards 0.
+     * Round towards 0.
      * @returns {typeof RoundingModeEntity}
      */
     static DOWN: typeof RoundingModeEntity;
     /**
      * Directed rounding to an integer.
-     * <br>Round up to positive infinity.
+     * Round up to positive infinity.
      * @returns {typeof RoundingModeEntity}
      */
     static CEILING: typeof RoundingModeEntity;
     /**
      * Directed rounding to an integer.
-     * <br>Round down to negative infinity.
+     * Round down to negative infinity.
      * @returns {typeof RoundingModeEntity}
      */
     static FLOOR: typeof RoundingModeEntity;
     /**
      * Rounding to the nearest integer.
-     * <br>Round half towards positive infinity.
+     * Round half towards positive infinity.
      * @returns {typeof RoundingModeEntity}
      */
     static HALF_UP: typeof RoundingModeEntity;
     /**
      * Rounding to the nearest integer.
-     * <br>Round half towards negative infinity.
+     * Round half towards negative infinity.
      * @returns {typeof RoundingModeEntity}
      */
     static HALF_DOWN: typeof RoundingModeEntity;
     /**
      * Rounding to the nearest integer
-     * <br>Round to the nearest side. If the median, round to the even side.
+     * Round to the nearest side. If the median, round to the even side.
      * @returns {typeof RoundingModeEntity}
      */
     static HALF_EVEN: typeof RoundingModeEntity;
     /**
      * Do not round.
-     * <br>Error if you need to round it.
+     * Error if you need to round it.
      * @returns {typeof RoundingModeEntity}
      */
     static UNNECESSARY: typeof RoundingModeEntity;
@@ -1516,10 +1519,10 @@ declare class RoundingMode {
 
 /**
  * Create a complex matrix.
- * <br>Initialization can be performed as follows.
- * <br>* 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
- * <br>* [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
- * <br>* "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
+ * Initialization can be performed as follows.
+ * - 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
+ * - [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
+ * - "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
  * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - Complex matrix. See how to use the function.
  */
 declare class Matrix {
@@ -1588,15 +1591,15 @@ declare class Matrix {
     static createMatrixDoEachCalculation(eachfunc: (...params: any[]) => any, dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Treat the columns of the matrix as vectors and execute the same process.
-     * <br>* If the matrix is a row vector, it performs the same processing for the row vector.
+     * - If the matrix is a row vector, it performs the same processing for the row vector.
      * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
      * @returns {Matrix} Matrix after function processing.
      */
     eachVectorAuto(array_function: (...params: any[]) => any): Matrix;
     /**
      * Treat the rows and columns of the matrix as vectors and perform the same processing.
-     * <br>1. First run the same process for the row.
-     * <br>2. Finally perform the same processing for the column.
+     * 1. First run the same process for the row.
+     * 2. Finally perform the same processing for the column.
      * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
      * @returns {Matrix} Matrix after function processing.
      */
@@ -1615,7 +1618,7 @@ declare class Matrix {
     eachVectorColumn(array_function: (...params: any[]) => any): Matrix;
     /**
      * Treat the rows and columns of the matrix as vectors and perform the same processing.
-     * <br>The arguments of the method can switch the direction of the matrix to be executed.
+     * The arguments of the method can switch the direction of the matrix to be executed.
      * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
      * @param {string|number} [dimtype="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
      * @returns {Matrix} Matrix after function processing.
@@ -1640,7 +1643,7 @@ declare class Matrix {
     setMatrix(row: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, col: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, replace: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, isUpOffset?: boolean): Matrix;
     /**
      * Returns the specified element in the matrix.
-     * <br>Each element of the matrix is composed of complex numbers.
+     * Each element of the matrix is composed of complex numbers.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_or_pos - If this is a matrix, the row number. If this is a vector, the address.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [col] - If this is a matrix, the column number.
      * @returns {Complex}
@@ -1701,7 +1704,7 @@ declare class Matrix {
     rank(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
     /**
      * Trace of a matrix.
-     * <br>Sum of diagonal elements.
+     * Sum of diagonal elements.
      * @returns {Complex} trace(A)
      */
     trace(): Complex;
@@ -1755,17 +1758,17 @@ declare class Matrix {
     static randn(dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * If matrix, generate diagonal column vector.
-     * <br>If vector, generate a matrix with diagonal elements.
+     * If vector, generate a matrix with diagonal elements.
      * @returns {Matrix} Matrix or vector created. See how to use the function.
      */
     diag(): Matrix;
     /**
-     * Return true if the matrix is ​​scalar.
+     * Return true if the matrix is scalar.
      * @returns {boolean}
      */
     isScalar(): boolean;
     /**
-     * Return true if the matrix is ​​row vector.
+     * Return true if the matrix is row vector.
      * @returns {boolean}
      */
     isRow(): boolean;
@@ -1775,17 +1778,17 @@ declare class Matrix {
      */
     isColumn(): boolean;
     /**
-     * Return true if the matrix is ​​vector.
+     * Return true if the matrix is vector.
      * @returns {boolean}
      */
     isVector(): boolean;
     /**
-     * Return true if the value is not ​​scalar.
+     * Return true if the value is not scalar.
      * @returns {boolean}
      */
     isMatrix(): boolean;
     /**
-     * Return true if the matrix is ​​square matrix.
+     * Return true if the matrix is square matrix.
      * @returns {boolean}
      */
     isSquare(): boolean;
@@ -1802,7 +1805,7 @@ declare class Matrix {
      */
     isComplex(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * Return true if the matrix is ​​zero matrix.
+     * Return true if the matrix is zero matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
@@ -1820,13 +1823,13 @@ declare class Matrix {
      */
     isDiagonal(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * Return true if the matrix is ​​tridiagonal matrix.
+     * Return true if the matrix is tridiagonal matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isTridiagonal(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * Return true if the matrix is ​​regular matrix.
+     * Return true if the matrix is regular matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
@@ -1838,13 +1841,13 @@ declare class Matrix {
      */
     isOrthogonal(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * Return true if the matrix is ​​unitary matrix.
+     * Return true if the matrix is unitary matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isUnitary(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * Return true if the matrix is ​​symmetric matrix.
+     * Return true if the matrix is symmetric matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
@@ -1856,13 +1859,13 @@ declare class Matrix {
      */
     isHermitian(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * Return true if the matrix is ​​upper triangular matrix.
+     * Return true if the matrix is upper triangular matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
     isTriangleUpper(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
-     * Return true if the matrix is ​​ lower triangular matrix.
+     * Return true if the matrix is  lower triangular matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
@@ -1880,8 +1883,8 @@ declare class Matrix {
     size(): Matrix;
     /**
      * Compare values.
-     * <br>* Return value between scalars is of type Number.
-     * <br>* Return value between matrices is type Matrix.
+     * - Return value between scalars is of type Number.
+     * - Return value between matrices is type Matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
@@ -1913,7 +1916,7 @@ declare class Matrix {
     div(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Power function.
-     * <br>* Supports only integers.
+     * - Supports only integers.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 整数
      * @returns {Matrix} pow(A, B)
      */
@@ -1958,85 +1961,85 @@ declare class Matrix {
     arg(): Matrix;
     /**
      * The positive or negative signs of each element of the matrix.
-     * <br>* +1 if positive, -1 if negative, 0 if 0, norm if complex number.
+     * - +1 if positive, -1 if negative, 0 if 0, norm if complex number.
      * @returns {Matrix} [-1,1] 複素数の場合はノルムを1にした値。
      */
     sign(): Matrix;
     /**
      * Test if each element of the matrix is integer.
-     * <br>* 1 if true, 0 if false.
+     * - 1 if true, 0 if false.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testInteger(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Test if each element of the matrix is complex integer.
-     * <br>* 1 if true, 0 if false.
+     * - 1 if true, 0 if false.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testComplexInteger(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * real(this) === 0
-     * <br>* 1 if true, 0 if false.
+     * - 1 if true, 0 if false.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testZero(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * real(this) === 1
-     * <br>* 1 if true, 0 if false.
+     * - 1 if true, 0 if false.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testOne(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Test if each element of the matrix is complex.
-     * <br>* 1 if true, 0 if false.
+     * - 1 if true, 0 if false.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testComplex(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Test if each element of the matrix is real.
-     * <br>* 1 if true, 0 if false.
+     * - 1 if true, 0 if false.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testReal(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Test if each element of the matrix is NaN.
-     * <br>* 1 if true, 0 if false.
+     * - 1 if true, 0 if false.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testNaN(): Matrix;
     /**
      * real(this) > 0
-     * <br>* 1 if true, 0 if false.
+     * - 1 if true, 0 if false.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testPositive(): Matrix;
     /**
      * real(this) < 0
-     * <br>* 1 if true, 0 if false.
+     * - 1 if true, 0 if false.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testNegative(): Matrix;
     /**
      * real(this) >= 0
-     * <br>* 1 if true, 0 if false.
+     * - 1 if true, 0 if false.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testNotNegative(): Matrix;
     /**
      * Test if each element of the matrix is infinite.
-     * <br>* 1 if true, 0 if false.
+     * - 1 if true, 0 if false.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testInfinite(): Matrix;
     /**
      * Test if each element of the matrix is finite.
-     * <br>* 1 if true, 0 if false.
+     * - 1 if true, 0 if false.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
     testFinite(): Matrix;
@@ -2087,14 +2090,14 @@ declare class Matrix {
     tan(): Matrix;
     /**
      * Atan (arc tangent) function.
-     * <br>* Return the values of [-PI/2, PI/2].
+     * - Return the values of [-PI/2, PI/2].
      * @returns {Matrix} atan(A)
      */
     atan(): Matrix;
     /**
      * Atan (arc tangent) function.
-     * <br>* Return the values of [-PI, PI].
-     * <br>* Supports only real numbers.
+     * - Return the values of [-PI, PI].
+     * - Supports only real numbers.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - X
      * @returns {Matrix} atan2(Y, X)
      */
@@ -2137,7 +2140,7 @@ declare class Matrix {
     rot90(rot_90_count: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Change the size of the matrix.
-     * <br>Initialized with 0 when expanding.
+     * Initialized with 0 when expanding.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - Number of rows of matrix to resize.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - Number of columns of matrix to resize.
      * @returns {Matrix} Matrix after function processing.
@@ -2212,7 +2215,7 @@ declare class Matrix {
     roll(shift_size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
      * Change the shape of the matrix.
-     * <br>The number of elements in the matrix doesn't increase or decrease.
+     * The number of elements in the matrix doesn't increase or decrease.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - Number of rows of matrix to reshape.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - Number of columns of matrix to reshape.
      * @returns {Matrix} Matrix after function processing.
@@ -2236,8 +2239,8 @@ declare class Matrix {
     flip(type?: any): Matrix;
     /**
      * Index sort.
-     * <br>* Sorts by row when setting index by row vector to the argument.
-     * <br>* Sorts by column when setting index by column vector to the argument.
+     * - Sorts by row when setting index by row vector to the argument.
+     * - Sorts by column when setting index by column vector to the argument.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - Vector with index. (See the description of this function)
      * @returns {Matrix} Matrix after function processing.
      */
@@ -2266,12 +2269,19 @@ declare class Matrix {
     inner(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, dimension?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * LUP decomposition.
-     * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
+     * - P'*L*U=A
+     * - P is permutation matrix.
+     * - L is lower triangular matrix.
+     * - U is upper triangular matrix.
+     * @returns {{P: Matrix, L: Matrix, U: Matrix}} {L, U, P}
      */
     lup(): {P: Matrix, L: Matrix, U: Matrix};
     /**
      * LU decomposition.
-     * @returns {{L: Matrix, U: Matrix}} L*U=A
+     * - L*U=A
+     * - L is lower triangular matrix.
+     * - U is upper triangular matrix.
+     * @returns {{L: Matrix, U: Matrix}} {L, U}
      */
     lu(): {L: Matrix, U: Matrix};
     /**
@@ -2282,36 +2292,36 @@ declare class Matrix {
     linsolve(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * QR decomposition.
-     * <br>* Q*R=A
-     * <br>* Q is orthonormal matrix.
-     * <br>* R is upper triangular matrix.
+     * - Q*R=A
+     * - Q is orthonormal matrix.
+     * - R is upper triangular matrix.
      * @returns {{Q: Matrix, R: Matrix}} {Q, R}
      */
     qr(): {Q: Matrix, R: Matrix};
     /**
      * Tridiagonalization of symmetric matrix.
-     * <br>* Don't support complex numbers.
-     * <br>* P*H*P'=A
-     * <br>* P is orthonormal matrix.
-     * <br>* H is tridiagonal matrix.
-     * <br>* The eigenvalues of H match the eigenvalues of A.
+     * - Don't support complex numbers.
+     * - P*H*P'=A
+     * - P is orthonormal matrix.
+     * - H is tridiagonal matrix.
+     * - The eigenvalues of H match the eigenvalues of A.
      * @returns {{P: Matrix, H: Matrix}} {P, H}
      */
     tridiagonalize(): {P: Matrix, H: Matrix};
     /**
      * Eigendecomposition of symmetric matrix.
-     * <br>* Don't support complex numbers.
-     * <br>* V*D*V'=A.
-     * <br>* V is orthonormal matrix. and columns of V are the right eigenvectors.
-     * <br>* D is a matrix containing the eigenvalues on the diagonal component.
+     * - Don't support complex numbers.
+     * - V*D*V'=A.
+     * - V is orthonormal matrix. and columns of V are the right eigenvectors.
+     * - D is a matrix containing the eigenvalues on the diagonal component.
      * @returns {{V: Matrix, D: Matrix}} {D, V}
      */
     eig(): {V: Matrix, D: Matrix};
     /**
      * Singular Value Decomposition (SVD).
-     * <br>* U*S*V'=A
-     * <br>* U and V are orthonormal matrices.
-     * <br>* S is a matrix with singular values in the diagonal.
+     * - U*S*V'=A
+     * - U and V are orthonormal matrices.
+     * - S is a matrix with singular values in the diagonal.
      * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
      */
     svd(): {U: Matrix, S: Matrix, V: Matrix};
@@ -2338,7 +2348,7 @@ declare class Matrix {
     /**
      * Incomplete gamma function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-     * @param {string} [tail="lower"] - tail ("lower", "upper")
+     * @param {string} [tail="lower"] - lower (default) , "upper"
      * @returns {Matrix}
      */
     gammainc(a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tail?: string): Matrix;
@@ -2373,7 +2383,7 @@ declare class Matrix {
      * Incomplete beta function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-     * @param {string} [tail="lower"] - tail ("lower", "upper")
+     * @param {string} [tail="lower"] - lower (default) , "upper"
      * @returns {Matrix}
      */
     betainc(a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tail?: string): Matrix;
@@ -2460,15 +2470,15 @@ declare class Matrix {
     tinv(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-     * <br>* If tails = 1, TDIST returns the one-tailed distribution.
-     * <br>* If tails = 2, TDIST returns the two-tailed distribution.
+     * - If tails = 1, TDIST returns the one-tailed distribution.
+     * - If tails = 2, TDIST returns the two-tailed distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
      * @returns {Matrix}
      */
     tdist(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tails: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+     * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
      * @returns {Matrix}
      */
@@ -2493,7 +2503,7 @@ declare class Matrix {
     chi2inv(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Probability density function (PDF) of F-distribution.
-     * <br>* In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution.
+     * - In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
      * @returns {Matrix}
@@ -2563,7 +2573,7 @@ declare class Matrix {
     mode(type?: any): Matrix;
     /**
      * Moment.
-     * <br>* Moment of order n. Equivalent to the definition of variance at 2.
+     * - Moment of order n. Equivalent to the definition of variance at 2.
      * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
      * @returns {Matrix}
      */
@@ -2674,46 +2684,46 @@ declare class Matrix {
     conv(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * ACF(Autocorrelation function), cros-correlation function.
-     * <br>* If the argument is omitted, it is calculated by the autocorrelation function.
+     * - If the argument is omitted, it is calculated by the autocorrelation function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [number] - Matrix to calculate the correlation.
      * @returns {Matrix}
      */
     xcorr(number?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Create window function for signal processing.
-     * <br>The following window functions are available.
-     * <br>* "rectangle": Rectangular window
-     * <br>* "hann": Hann/Hanning window.
-     * <br>* "hamming": Hamming window.
-     * <br>* "blackman": Blackman window.
-     * <br>* "blackmanharris": Blackman-Harris window.
-     * <br>* "blackmannuttall": Blackman-Nuttall window.
-     * <br>* "flattop": Flat top window.
-     * <br>* "sin", Half cycle sine window.
-     * <br>* "vorbis", Vorbis window.
+     * The following window functions are available.
+     * - "rectangle": Rectangular window
+     * - "hann": Hann/Hanning window.
+     * - "hamming": Hamming window.
+     * - "blackman": Blackman window.
+     * - "blackmanharris": Blackman-Harris window.
+     * - "blackmannuttall": Blackman-Nuttall window.
+     * - "flattop": Flat top window.
+     * - "sin", Half cycle sine window.
+     * - "vorbis", Vorbis window.
      * @param {string} name - Window function name.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-     * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+     * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
      * @returns {Matrix} Column vector.
      */
     static window(name: string, size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
     /**
      * Hann (Hanning) window.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-     * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+     * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
      * @returns {Matrix} Column vector.
      */
     static hann(size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
     /**
      * Hamming window.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-     * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+     * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
      * @returns {Matrix} Column vector.
      */
     static hamming(size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
     /**
      * FFT shift.
-     * <br>Circular shift beginning at the center of the signal.
+     * Circular shift beginning at the center of the signal.
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
      */
@@ -2761,7 +2771,7 @@ declare class LinearAlgebra {
     static rank(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
     /**
      * Trace of a matrix.
-     * <br>Sum of diagonal elements.
+     * Sum of diagonal elements.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
      * @returns {Complex}
      */
@@ -2774,14 +2784,21 @@ declare class LinearAlgebra {
     static det(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * LUP decomposition.
+     * - P'*L*U=A
+     * - P is permutation matrix.
+     * - L is lower triangular matrix.
+     * - U is upper triangular matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-     * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
+     * @returns {{P: Matrix, L: Matrix, U: Matrix}} {L, U, P}
      */
     static lup(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {P: Matrix, L: Matrix, U: Matrix};
     /**
      * LU decomposition.
+     * - L*U=A
+     * - L is lower triangular matrix.
+     * - U is upper triangular matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-     * @returns {{L: Matrix, U: Matrix}} L*U=A
+     * @returns {{L: Matrix, U: Matrix}} {L, U}
      */
     static lu(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {L: Matrix, U: Matrix};
     /**
@@ -2794,30 +2811,30 @@ declare class LinearAlgebra {
     static linsolve(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * QR decomposition.
-     * <br>* Q*R=A
-     * <br>* Q is orthonormal matrix.
-     * <br>* R is upper triangular matrix.
+     * - Q*R=A
+     * - Q is orthonormal matrix.
+     * - R is upper triangular matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {{Q: Matrix, R: Matrix}} {Q, R}
      */
     static qr(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {Q: Matrix, R: Matrix};
     /**
      * Tridiagonalization of symmetric matrix.
-     * <br>* Don't support complex numbers.
-     * <br>* P*H*P'=A
-     * <br>* P is orthonormal matrix.
-     * <br>* H is tridiagonal matrix.
-     * <br>* The eigenvalues of H match the eigenvalues of A.
+     * - Don't support complex numbers.
+     * - P*H*P'=A
+     * - P is orthonormal matrix.
+     * - H is tridiagonal matrix.
+     * - The eigenvalues of H match the eigenvalues of A.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {{P: Matrix, H: Matrix}} {P, H}
      */
     static tridiagonalize(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {P: Matrix, H: Matrix};
     /**
      * Eigendecomposition of symmetric matrix.
-     * <br>* Don't support complex numbers.
-     * <br>* V*D*V'=A.
-     * <br>* V is orthonormal matrix. and columns of V are the right eigenvectors.
-     * <br>* D is a matrix containing the eigenvalues on the diagonal component.
+     * - Don't support complex numbers.
+     * - V*D*V'=A.
+     * - V is orthonormal matrix. and columns of V are the right eigenvectors.
+     * - D is a matrix containing the eigenvalues on the diagonal component.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {{V: Matrix, D: Matrix}} {D, V}
      * @todo 対称行列しか対応できていないので、対称行列ではないものはQR分解を用いた手法に切り替える予定。
@@ -2825,9 +2842,9 @@ declare class LinearAlgebra {
     static eig(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {V: Matrix, D: Matrix};
     /**
      * Singular Value Decomposition (SVD).
-     * <br>* U*S*V'=A
-     * <br>* U and V are orthonormal matrices.
-     * <br>* S is a matrix with singular values in the diagonal.
+     * - U*S*V'=A
+     * - U and V are orthonormal matrices.
+     * - S is a matrix with singular values in the diagonal.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
      * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
      */
@@ -2911,7 +2928,7 @@ declare class Random {
     nextDouble(): number;
     /**
      * Random numbers from a Gaussian distribution.
-     * <br>This random number is a distribution with an average value of 0 and a standard deviation of 1.
+     * This random number is a distribution with an average value of 0 and a standard deviation of 1.
      * @returns {number}
      */
     nextGaussian(): number;
@@ -2989,7 +3006,7 @@ declare class Signal {
     static conv(x1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, x2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * ACF(Autocorrelation function), cros-correlation function.
-     * <br>* If the argument is omitted, it is calculated by the autocorrelation function.
+     * - If the argument is omitted, it is calculated by the autocorrelation function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [x2] - Matrix to calculate the correlation.
      * @returns {Matrix}
@@ -2997,39 +3014,39 @@ declare class Signal {
     static xcorr(x1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, x2?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Create window function for signal processing.
-     * <br>The following window functions are available.
-     * <br>* "rectangle": Rectangular window
-     * <br>* "hann": Hann/Hanning window.
-     * <br>* "hamming": Hamming window.
-     * <br>* "blackman": Blackman window.
-     * <br>* "blackmanharris": Blackman-Harris window.
-     * <br>* "blackmannuttall": Blackman-Nuttall window.
-     * <br>* "flattop": Flat top window.
-     * <br>* "sin", Half cycle sine window.
-     * <br>* "vorbis", Vorbis window.
+     * The following window functions are available.
+     * - "rectangle": Rectangular window
+     * - "hann": Hann/Hanning window.
+     * - "hamming": Hamming window.
+     * - "blackman": Blackman window.
+     * - "blackmanharris": Blackman-Harris window.
+     * - "blackmannuttall": Blackman-Nuttall window.
+     * - "flattop": Flat top window.
+     * - "sin", Half cycle sine window.
+     * - "vorbis", Vorbis window.
      * @param {string} name - Window function name.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-     * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+     * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
      * @returns {Matrix} Column vector.
      */
     static window(name: string, size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
     /**
      * Hann (Hanning) window.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-     * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+     * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
      * @returns {Matrix} Column vector.
      */
     static hann(size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
     /**
      * Hamming window.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-     * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+     * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
      * @returns {Matrix} Column vector.
      */
     static hamming(size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
     /**
      * FFT shift.
-     * <br>Circular shift beginning at the center of the signal.
+     * Circular shift beginning at the center of the signal.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number)}} [type]
      * @returns {Matrix}
@@ -3057,7 +3074,7 @@ declare class Statistics {
      * Incomplete gamma function.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-     * @param {string} [tail="lower"] - tail ("lower", "upper")
+     * @param {string} [tail="lower"] - lower (default) , "upper"
      * @returns {Matrix}
      */
     static gammainc(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tail?: string): Matrix;
@@ -3097,7 +3114,7 @@ declare class Statistics {
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-     * @param {string} [tail="lower"] - tail ("lower", "upper")
+     * @param {string} [tail="lower"] - lower (default) , "upper"
      * @returns {Matrix}
      */
     static betainc(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tail?: string): Matrix;
@@ -3204,7 +3221,7 @@ declare class Statistics {
      */
     static tdist(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tails: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
-     * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+     * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
      * @returns {Matrix}
@@ -3313,7 +3330,7 @@ declare class Statistics {
     static mode(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: any): Matrix;
     /**
      * Moment.
-     * <br>* Moment of order n. Equivalent to the definition of variance at 2.
+     * - Moment of order n. Equivalent to the definition of variance at 2.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
      * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
      * @returns {Matrix} n次のモーメント、2で分散の定義と同等。

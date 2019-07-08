@@ -937,7 +937,7 @@
   
   
   <div data-ice="description"><p>FFT shift.
-<br>Circular shift beginning at the center of the signal.</p>
+Circular shift beginning at the center of the signal.</p>
 </div>
 
   
@@ -1040,7 +1040,7 @@
       <td data-ice="type" class="code"><span>string</span> | <span>number</span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: &quot;symmetric&quot;</li></ul></td>
-      <td data-ice="description"><p>0/&quot;symmetric&quot;, 1/&quot;periodic&quot;</p>
+      <td data-ice="description"><p>0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;</p>
 </td>
     </tr>
 </tbody>
@@ -1122,7 +1122,7 @@
       <td data-ice="type" class="code"><span>string</span> | <span>number</span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: &quot;symmetric&quot;</li></ul></td>
-      <td data-ice="description"><p>0/&quot;symmetric&quot;, 1/&quot;periodic&quot;</p>
+      <td data-ice="description"><p>0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;</p>
 </td>
     </tr>
 </tbody>
@@ -1561,16 +1561,18 @@
   
   
   <div data-ice="description"><p>Create window function for signal processing.
-<br>The following window functions are available.
-<br><em> &quot;rectangle&quot;: Rectangular window
-<br></em> &quot;hann&quot;: Hann/Hanning window.
-<br><em> &quot;hamming&quot;: Hamming window.
-<br></em> &quot;blackman&quot;: Blackman window.
-<br><em> &quot;blackmanharris&quot;: Blackman-Harris window.
-<br></em> &quot;blackmannuttall&quot;: Blackman-Nuttall window.
-<br><em> &quot;flattop&quot;: Flat top window.
-<br></em> &quot;sin&quot;, Half cycle sine window.
-<br>* &quot;vorbis&quot;, Vorbis window.</p>
+The following window functions are available.</p>
+<ul>
+<li>&quot;rectangle&quot;: Rectangular window</li>
+<li>&quot;hann&quot;: Hann/Hanning window.</li>
+<li>&quot;hamming&quot;: Hamming window.</li>
+<li>&quot;blackman&quot;: Blackman window.</li>
+<li>&quot;blackmanharris&quot;: Blackman-Harris window.</li>
+<li>&quot;blackmannuttall&quot;: Blackman-Nuttall window.</li>
+<li>&quot;flattop&quot;: Flat top window.</li>
+<li>&quot;sin&quot;, Half cycle sine window.</li>
+<li>&quot;vorbis&quot;, Vorbis window.</li>
+</ul>
 </div>
 
   
@@ -1602,7 +1604,7 @@
       <td data-ice="type" class="code"><span>string</span> | <span>number</span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: &quot;symmetric&quot;</li></ul></td>
-      <td data-ice="description"><p>0/&quot;symmetric&quot;, 1/&quot;periodic&quot;</p>
+      <td data-ice="description"><p>0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;</p>
 </td>
     </tr>
 </tbody>
@@ -1659,8 +1661,10 @@
   
   
   
-  <div data-ice="description"><p>ACF(Autocorrelation function), cros-correlation function.
-<br>* If the argument is omitted, it is calculated by the autocorrelation function.</p>
+  <div data-ice="description"><p>ACF(Autocorrelation function), cros-correlation function.</p>
+<ul>
+<li>If the argument is omitted, it is calculated by the autocorrelation function.</li>
+</ul>
 </div>
 
   

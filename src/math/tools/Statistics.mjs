@@ -148,7 +148,7 @@ class StatisticsTool {
 	 * Incomplete gamma function.
 	 * @param {number} x
 	 * @param {number} a
-	 * @param {string} [tail="lower"] - lower (default) / upper
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {number}
 	 */
 	static gammainc(x, a, tail) {
@@ -310,7 +310,7 @@ class StatisticsTool {
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} b
-	 * @param {string} [tail="lower"] - lower (default) / upper
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {number}
 	 */
 	static betainc(x, a, b, tail) {
@@ -641,7 +641,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 	 * @param {number} p - Probability.
 	 * @param {number} v - The degrees of freedom. (DF)
 	 * @returns {number}
@@ -770,7 +770,7 @@ class StatisticsComplex {
 	 * Incomplete gamma function.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
-	 * @param {string} [tail="lower"] - tail ("lower", "upper")
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Complex}
 	 */
 	static gammainc(x, a, tail) {
@@ -839,7 +839,7 @@ class StatisticsComplex {
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
-	 * @param {string} [tail="lower"] - tail ("lower", "upper")
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Complex}
 	 */
 	static betainc(x, a, b, tail) {
@@ -1026,7 +1026,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
 	 * @returns {Complex}
@@ -1150,7 +1150,7 @@ export default class Statistics {
 	 * Incomplete gamma function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {string} [tail="lower"] - tail ("lower", "upper")
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
 	static gammainc(x, a, tail) {
@@ -1229,7 +1229,7 @@ export default class Statistics {
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-	 * @param {string} [tail="lower"] - tail ("lower", "upper")
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
 	static betainc(x, a, b, tail) {
@@ -1447,7 +1447,7 @@ export default class Statistics {
 	}
 
 	/**
-	 * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
@@ -1749,7 +1749,7 @@ export default class Statistics {
 
 	/**
 	 * Moment.
-	 * <br>* Moment of order n. Equivalent to the definition of variance at 2.
+	 * - Moment of order n. Equivalent to the definition of variance at 2.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
 	 * @returns {Matrix} n次のモーメント、2で分散の定義と同等。

@@ -271,7 +271,7 @@ class Random {
 
 	/**
 	 * Random numbers from a Gaussian distribution.
-	 * <br>This random number is a distribution with an average value of 0 and a standard deviation of 1.
+	 * This random number is a distribution with an average value of 0 and a standard deviation of 1.
 	 * @returns {number}
 	 */
 	nextGaussian() {
@@ -322,7 +322,7 @@ class RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -334,7 +334,7 @@ class RoundingModeEntity {
 
 /**
  * Directed rounding to an integer.
- * <br>Round towards positive infinity if positive, negative infinity if negative.
+ * Round towards positive infinity if positive, negative infinity if negative.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_UP extends RoundingModeEntity {
@@ -349,7 +349,7 @@ class RoundingMode_UP extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -370,7 +370,7 @@ class RoundingMode_UP extends RoundingModeEntity {
 
 /**
  * Directed rounding to an integer.
- * <br>Round towards 0.
+ * Round towards 0.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_DOWN extends RoundingModeEntity {
@@ -385,7 +385,7 @@ class RoundingMode_DOWN extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -397,7 +397,7 @@ class RoundingMode_DOWN extends RoundingModeEntity {
 
 /**
  * Directed rounding to an integer.
- * <br>Round up to positive infinity.
+ * Round up to positive infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_CEILING extends RoundingModeEntity {
@@ -412,7 +412,7 @@ class RoundingMode_CEILING extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -433,7 +433,7 @@ class RoundingMode_CEILING extends RoundingModeEntity {
 
 /**
  * Directed rounding to an integer.
- * <br>Round down to negative infinity.
+ * Round down to negative infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_FLOOR extends RoundingModeEntity {
@@ -448,7 +448,7 @@ class RoundingMode_FLOOR extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -469,7 +469,7 @@ class RoundingMode_FLOOR extends RoundingModeEntity {
 
 /**
  * Rounding to the nearest integer.
- * <br>Round half towards positive infinity.
+ * Round half towards positive infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_HALF_UP extends RoundingModeEntity {
@@ -484,7 +484,7 @@ class RoundingMode_HALF_UP extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -503,7 +503,7 @@ class RoundingMode_HALF_UP extends RoundingModeEntity {
 
 /**
  * Rounding to the nearest integer.
- * <br>Round half towards negative infinity.
+ * Round half towards negative infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_HALF_DOWN extends RoundingModeEntity {
@@ -518,7 +518,7 @@ class RoundingMode_HALF_DOWN extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -537,7 +537,7 @@ class RoundingMode_HALF_DOWN extends RoundingModeEntity {
 
 /**
  * Rounding to the nearest integer
- * <br>Round to the nearest side. If the median, round to the even side.
+ * Round to the nearest side. If the median, round to the even side.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_HALF_EVEN extends RoundingModeEntity {
@@ -552,7 +552,7 @@ class RoundingMode_HALF_EVEN extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -587,7 +587,7 @@ class RoundingMode_HALF_EVEN extends RoundingModeEntity {
 
 /**
  * Do not round.
- * <br>Error if you need to round it.
+ * Error if you need to round it.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_UNNECESSARY extends RoundingModeEntity {
@@ -602,7 +602,7 @@ class RoundingMode_UNNECESSARY extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -625,7 +625,7 @@ class RoundingMode {
 
 	/**
 	 * Get rounding class represented by specified string.
-	 * @param {string|RoundingModeEntity|Object} name - モードの英数名
+	 * @param {string|RoundingModeEntity|Object} name - Mode name.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static valueOf(name) {
@@ -664,7 +664,7 @@ class RoundingMode {
 	
 	/**
 	 * Directed rounding to an integer.
-	 * <br>Round towards positive infinity if positive, negative infinity if negative.
+	 * Round towards positive infinity if positive, negative infinity if negative.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get UP() {
@@ -673,7 +673,7 @@ class RoundingMode {
 
 	/**
 	 * Directed rounding to an integer.
-	 * <br>Round towards 0.
+	 * Round towards 0.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get DOWN() {
@@ -682,7 +682,7 @@ class RoundingMode {
 
 	/**
 	 * Directed rounding to an integer.
-	 * <br>Round up to positive infinity.
+	 * Round up to positive infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get CEILING() {
@@ -691,7 +691,7 @@ class RoundingMode {
 
 	/**
 	 * Directed rounding to an integer.
-	 * <br>Round down to negative infinity.
+	 * Round down to negative infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get FLOOR() {
@@ -700,7 +700,7 @@ class RoundingMode {
 
 	/**
 	 * Rounding to the nearest integer.
-	 * <br>Round half towards positive infinity.
+	 * Round half towards positive infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_UP() {
@@ -709,7 +709,7 @@ class RoundingMode {
 
 	/**
 	 * Rounding to the nearest integer.
-	 * <br>Round half towards negative infinity.
+	 * Round half towards negative infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_DOWN() {
@@ -718,7 +718,7 @@ class RoundingMode {
 
 	/**
 	 * Rounding to the nearest integer
-	 * <br>Round to the nearest side. If the median, round to the even side.
+	 * Round to the nearest side. If the median, round to the even side.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_EVEN() {
@@ -727,7 +727,7 @@ class RoundingMode {
 
 	/**
 	 * Do not round.
-	 * <br>Error if you need to round it.
+	 * Error if you need to round it.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get UNNECESSARY() {
@@ -837,7 +837,7 @@ class MathContext {
 	
 	/**
 	 * No decimal point limit.
-	 * <br>However, an error occurs in the case of cyclic fraction in division.
+	 * However, an error occurs in the case of cyclic fraction in division.
 	 * @returns {MathContext}
 	 */
 	static get UNLIMITED() {
@@ -846,7 +846,7 @@ class MathContext {
 
 	/**
 	 * 32-bit floating point.
-	 * <br>Equivalent of the C language float.
+	 * Equivalent of the C language float.
 	 * @returns {MathContext}
 	 */
 	static get DECIMAL32() {
@@ -856,7 +856,7 @@ class MathContext {
 
 	/**
 	 * 64-bit floating point.
-	 * <br>Equivalent of the C language double.
+	 * Equivalent of the C language double.
 	 * @returns {MathContext}
 	 */
 	static get DECIMAL64() {
@@ -865,7 +865,7 @@ class MathContext {
 
 	/**
 	 * 128-bit floating point.
-	 * <br>Equivalent of the C language long double.
+	 * Equivalent of the C language long double.
 	 * @returns {MathContext}
 	 */
 	static get DECIMAL128() {
@@ -882,28 +882,28 @@ const DEFINE = {
 
 	/**
 	 * No decimal point limit.
-	 * <br>However, an error occurs in the case of cyclic fraction in division.
+	 * However, an error occurs in the case of cyclic fraction in division.
 	 * @type {MathContext}
 	 */
 	UNLIMITED	: new MathContext(0,	RoundingMode.HALF_UP),
 
 	/**
 	 * 32-bit floating point.
-	 * <br>Equivalent of the C language float.
+	 * Equivalent of the C language float.
 	 * @type {MathContext}
 	 */
 	DECIMAL32	: new MathContext(7,	RoundingMode.HALF_EVEN),
 
 	/**
 	 * 64-bit floating point.
-	 * <br>Equivalent of the C language double.
+	 * Equivalent of the C language double.
 	 * @type {MathContext}
 	 */
 	DECIMAL64	: new MathContext(16,	RoundingMode.HALF_EVEN),
 
 	/**
 	 * 128-bit floating point.
-	 * <br>Equivalent of the C language long double.
+	 * Equivalent of the C language long double.
 	 * @type {MathContext}
 	 */
 	DECIMAL128	: new MathContext(34,	RoundingMode.HALF_EVEN)
@@ -1011,11 +1011,19 @@ class IntegerTool {
 			number_text.push(buff);
 		}
 		// 指数表記があるか
-		buff = text.match(/^e[+]?[0-9]+/);
+		buff = text.match(/^e[+-]?[0-9]+/);
 		if(buff !== null) {
-			scale -= parseInt(text.replace(/^e[+]?([0-9]+)/, "$1"), 10);
-			for(let i = 0; i < -scale; i++) {
-				number_text.push("0");
+			buff = buff[0].substr(1);
+			scale -= parseInt(buff, 10);
+			if(scale < 0) {
+				for(let i = 0; i < -scale; i++) {
+					number_text.push("0");
+				}
+			}
+			else {
+				let join_text = number_text.join("");
+				join_text = join_text.substring(0, join_text.length - scale);
+				return join_text.length !== 0 ? join_text : "0";
 			}
 		}
 		return number_text.join("");
@@ -1145,11 +1153,12 @@ class BigInteger {
 
 	/**
 	 * Create an arbitrary-precision integer.
-	 * <br>Initialization can be performed as follows.
-	 * <br>* 1200, "1200", "12e2", "1.2e3"
-	 * <br>* "0xff", ["ff", 16]
-	 * <br>* "0o01234567", ["01234567", 8]
-	 * <br>* "0b0110101", ["0110101", 2]
+	 * 
+	 * Initialization can be performed as follows.
+	 * - 1200, "1200", "12e2", "1.2e3", ["1200", 10]
+	 * - "0xff", ["ff", 16]
+	 * - "0o01234567", ["01234567", 8]
+	 * - "0b0110101", ["0110101", 2]
 	 * @param {BigInteger|number|string|Array<string|number>|Object} [number] - Numeric data. See how to use the function.
 	 */
 	constructor(number) {
@@ -1165,8 +1174,8 @@ class BigInteger {
 
 			/**
 			 * Positive or negative signs of number.
-			 * <br>* +1 if positive, -1 if negative, 0 if 0.
-			 * <br>* This value may not be correct ?
+			 * - +1 if positive, -1 if negative, 0 if 0.
+			 * - This value may not be correct ?
 			 * @private
 			 * @type {number}
 			 */
@@ -1231,8 +1240,8 @@ class BigInteger {
 
 	/**
 	 * Create an arbitrary-precision integer.
-	 * <br>* Does not support strings using exponential notation.
-	 * <br>* If you want to initialize with the specified base number, please set up with an array ["ff", 16].
+	 * - Does not support strings using exponential notation.
+	 * - If you want to initialize with the specified base number, please set up with an array ["ff", 16].
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger}
 	 */
@@ -1242,7 +1251,7 @@ class BigInteger {
 
 	/**
 	 * Convert to BigInteger.
-	 * <br>If type conversion is unnecessary, return the value as it is.
+	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
 	 * @returns {BigInteger}
 	 * @private
@@ -1425,7 +1434,7 @@ class BigInteger {
 
 	/**
 	 * 32-bit integer value.
-	 * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
 	 * @returns {number}
 	 */
 	get intValue() {
@@ -1439,7 +1448,7 @@ class BigInteger {
 
 	/**
 	 * 64-bit integer value.
-	 * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
 	 * @returns {number}
 	 */
 	get longValue() {
@@ -1456,7 +1465,7 @@ class BigInteger {
 
 	/**
 	 * 64-bit floating point.
-	 * <br>* If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
 	 * @returns {number}
 	 */
 	get doubleValue() {
@@ -1498,7 +1507,7 @@ class BigInteger {
 
 	/**
 	 * Number of digits in which the number "1" appears first when expressed in binary.
-	 * <br>* Return -1 If 1 is not found it.
+	 * - Return -1 If 1 is not found it.
 	 * @returns {number} 存在しない場合は -1
 	 */
 	getLowestSetBit() {
@@ -1932,7 +1941,7 @@ class BigInteger {
 
 	/**
 	 * The positive or negative sign of this number.
-	 * <br>* +1 if positive, -1 if negative, 0 if 0.
+	 * - +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number} 1, -1, 0の場合は0を返す
 	 */
 	signum() {
@@ -1944,7 +1953,7 @@ class BigInteger {
 
 	/**
 	 * The positive or negative sign of this number.
-	 * <br>* +1 if positive, -1 if negative, 0 if 0.
+	 * - +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number} 1, -1, 0の場合は0を返す
 	 */
 	sign() {
@@ -2626,7 +2635,7 @@ class BigInteger {
 
 	/**
 	 * Return true if the value is prime number by Miller-Labin prime number determination method.
-	 * <br>Attention : it takes a very long time to process.
+	 * Attention : it takes a very long time to process.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
 	 * @returns {boolean}
 	 */
@@ -2715,7 +2724,7 @@ class BigInteger {
 
 	/**
 	 * Set default class of random.
-	 * <br>This is used if you do not specify a random number.
+	 * This is used if you do not specify a random number.
 	 * @param {Random} random
 	 */
 	static setDefaultRandom(random) {
@@ -2724,7 +2733,7 @@ class BigInteger {
 
 	/**
 	 * Return default Random class.
-	 * <br>Used when Random not specified explicitly.
+	 * Used when Random not specified explicitly.
 	 * @returns {Random}
 	 */
 	static getDefaultRandom() {
@@ -2811,7 +2820,7 @@ const DEFINE$1 = {
 
 /**
  * Default MathContext class.
- * <br>Used when MathContext not specified explicitly.
+ * Used when MathContext not specified explicitly.
  * @type {MathContext}
  * @ignore
  */
@@ -2878,7 +2887,7 @@ class DecimalTool {
 	 */
 	static ToBigDecimalFromNumber(value) {
 		// 整数
-		if(value === (value | 0)) {
+		if(value === Math.floor(value)) {
 			return {
 				scale : 0,
 				integer : new BigInteger(Math.round(value))
@@ -2915,13 +2924,13 @@ class BigDecimal {
 	
 	/**
 	 * Create an arbitrary-precision floating-point number.
-	 * <br>When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
-	 * <br>When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
-	 * <br>default_context 
-	 * <br>* The "scale" is an integer scale factor.
-	 * <br>* The "default_context" is the used when no environment settings are specified during calculation.
-	 * <br>* The "context" is used to normalize the created floating point.
-	 * <br>These 3 settings can be omitted.
+	 * When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
+	 * When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
+	 * default_context
+	 * - The "scale" is an integer scale factor.
+	 * - The "default_context" is the used when no environment settings are specified during calculation.
+	 * - The "context" is used to normalize the created floating point.
+	 * These 3 settings can be omitted.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
 	 */
 	constructor(number) {
@@ -3048,13 +3057,15 @@ class BigDecimal {
 
 	/**
 	 * Create an arbitrary-precision floating-point number.
-	 * <br>When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
-	 * <br>When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
-	 * <br>default_context 
-	 * <br>* The "scale" is an integer scale factor.
-	 * <br>* The "default_context" is the used when no environment settings are specified during calculation.
-	 * <br>* The "context" is used to normalize the created floating point.
-	 * <br>These 3 settings can be omitted.
+	 * - When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
+	 * - When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
+	 * 
+	 * default_context
+	 * - The "scale" is an integer scale factor.
+	 * - The "default_context" is the used when no environment settings are specified during calculation.
+	 * - The "context" is used to normalize the created floating point.
+	 * 
+	 * These 3 settings can be omitted.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
 	 * @returns {BigDecimal}
 	 */
@@ -3084,7 +3095,7 @@ class BigDecimal {
 
 	/**
 	 * Convert to BigDecimal.
-	 * <br>If type conversion is unnecessary, return the value as it is.
+	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {BigDecimal}
 	 * @private
@@ -3100,7 +3111,7 @@ class BigDecimal {
 
 	/**
 	 * Convert to BigInteger.
-	 * <br>If type conversion is unnecessary, return the value as it is.
+	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {BigInteger}
 	 * @private
@@ -3155,7 +3166,7 @@ class BigDecimal {
 
 	/**
 	 * Return string of this number without sign.
-	 * <br>If cache is already created, return cache.
+	 * If cache is already created, return cache.
 	 * @returns {string} 
 	 */
 	_getUnsignedIntegerString() {
@@ -3184,7 +3195,7 @@ class BigDecimal {
 
 	/**
 	 * The positive or negative sign of this number.
-	 * <br>* +1 if positive, -1 if negative, 0 if 0.
+	 * - +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number}
 	 */
 	signum() {
@@ -3193,7 +3204,7 @@ class BigDecimal {
 
 	/**
 	 * The positive or negative sign of this number.
-	 * <br>* +1 if positive, -1 if negative, 0 if 0.
+	 * - +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number}
 	 */
 	sign() {
@@ -3493,7 +3504,7 @@ class BigDecimal {
 
 	/**
 	 * Equals.
-	 * <br>Test for equality, including precision and scale.
+	 * Test for equality, including precision and scale.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @returns {boolean} A === B
 	 */
@@ -3567,7 +3578,7 @@ class BigDecimal {
 
 	/**
 	 * Multiply a multiple of ten.
-	 * <br>Only the scale is changed without changing the precision.
+	 * Only the scale is changed without changing the precision.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
 	 * @returns {BigDecimal} A * 10^floor(n)
 	 */
@@ -3952,7 +3963,7 @@ class BigDecimal {
 
 	/**
 	 * Get as a BigInteger.
-	 * <br>An error occurs if conversion fails.
+	 * An error occurs if conversion fails.
 	 * @returns {BigInteger}
 	 */
 	toBigIntegerExact() {
@@ -3972,7 +3983,7 @@ class BigDecimal {
 
 	/**
 	 * 32-bit integer value.
-	 * <br>An error occurs if conversion fails.
+	 * An error occurs if conversion fails.
 	 * @returns {number}
 	 */
 	get intValueExact() {
@@ -4010,7 +4021,7 @@ class BigDecimal {
 
 	/**
 	 * Power function.
-	 * <br>An exception occurs when doing a huge multiplication.
+	 * An exception occurs when doing a huge multiplication.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} pow(A, B)
@@ -4042,7 +4053,7 @@ class BigDecimal {
 	
 	/**
 	 * Set default the MathContext.
-	 * <br>This is used if you do not specify MathContext when creating a new object.
+	 * This is used if you do not specify MathContext when creating a new object.
 	 * @param {MathContext} [context=MathContext.DECIMAL128]
 	 */
 	static setDefaultContext(context) {
@@ -4051,7 +4062,7 @@ class BigDecimal {
 
 	/**
 	 * Return default MathContext class.
-	 * <br>Used when MathContext not specified explicitly.
+	 * Used when MathContext not specified explicitly.
 	 * @returns {MathContext}
 	 */
 	static getDefaultContext() {
@@ -4152,11 +4163,11 @@ class LinearAlgebraTool {
 
 	/**
 	 * Tridiagonalization of symmetric matrix.
-	 * <br>* Don't support complex numbers.
-	 * <br>* P*H*P'=A
-	 * <br>* P is orthonormal matrix.
-	 * <br>* H is tridiagonal matrix.
-	 * <br>* The eigenvalues of H match the eigenvalues of A.
+	 * - Don't support complex numbers.
+	 * - P*H*P'=A
+	 * - P is orthonormal matrix.
+	 * - H is tridiagonal matrix.
+	 * - The eigenvalues of H match the eigenvalues of A.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {{P: Matrix, H: Matrix}}
 	 */
@@ -4189,7 +4200,7 @@ class LinearAlgebraTool {
 
 		/**
 		 * Householder transformation.
-		 * @param {Array<number>} x - ハウスホルダー変換したいベクトル
+		 * @param {Array<number>} x
 		 * @param {number} [index_offset=0] - Offset of the position of the vector to be calculated.
 		 * @param {number} [index_max=x.length] - Maximum value of position of vector to be calculated (do not include this value).
 		 * @returns {{y1: number, v: Array<number>}} 
@@ -4308,10 +4319,10 @@ class LinearAlgebraTool {
 
 	/**
 	 * Eigendecomposition of symmetric matrix.
-	 * <br>* Don't support complex numbers.
-	 * <br>* V*D*V'=A.
-	 * <br>* V is orthonormal matrix. and columns of V are the right eigenvectors.
-	 * <br>* D is a matrix containing the eigenvalues on the diagonal component.
+	 * - Don't support complex numbers.
+	 * - V*D*V'=A.
+	 * - V is orthonormal matrix. and columns of V are the right eigenvectors.
+	 * - D is a matrix containing the eigenvalues on the diagonal component.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - Symmetric matrix.
 	 * @returns {{V: Matrix, D: Matrix}}
 	 */
@@ -4436,7 +4447,7 @@ class LinearAlgebraTool {
 
 	/**
 	 * Treat matrices as vectors, make them orthonormal, and make matrices of Q and R.
-	 * <br>The method of Gram-Schmidt orthonormalization is used.
+	 * The method of Gram-Schmidt orthonormalization is used.
 	 * @param {Matrix} mat - Square matrix.
 	 * @returns {{Q: Matrix, R: Matrix, non_orthogonalized : Array<number>}}
 	 */
@@ -4505,7 +4516,7 @@ class LinearAlgebraTool {
 	
 	/**
 	 * Create orthogonal vectors for all row vectors of the matrix.
-	 * <br>- If the vector can not be found, it returns NULL.
+	 * - If the vector can not be found, it returns NULL.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @param {number} [epsilon=1.0e-10] - Calculation tolerance of calculation.
 	 * @returns {Matrix|null} An orthogonal vector.
@@ -4871,7 +4882,7 @@ class LinearAlgebra {
 
 	/**
 	 * Trace of a matrix.
-	 * <br>Sum of diagonal elements.
+	 * Sum of diagonal elements.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
 	 * @returns {Complex}
 	 */
@@ -4943,8 +4954,12 @@ class LinearAlgebra {
 
 	/**
 	 * LUP decomposition.
+	 * - P'*L*U=A
+	 * - P is permutation matrix.
+	 * - L is lower triangular matrix.
+	 * - U is upper triangular matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
+	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} {L, U, P}
 	 */
 	static lup(mat) {
 		const A = new Matrix(mat);
@@ -4997,8 +5012,11 @@ class LinearAlgebra {
 
 	/**
 	 * LU decomposition.
+	 * - L*U=A
+	 * - L is lower triangular matrix.
+	 * - U is upper triangular matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-	 * @returns {{L: Matrix, U: Matrix}} L*U=A
+	 * @returns {{L: Matrix, U: Matrix}} {L, U}
 	 */
 	static lu(mat) {
 		const lup = LinearAlgebra.lup(mat);
@@ -5078,9 +5096,9 @@ class LinearAlgebra {
 
 	/**
 	 * QR decomposition.
-	 * <br>* Q*R=A
-	 * <br>* Q is orthonormal matrix.
-	 * <br>* R is upper triangular matrix.
+	 * - Q*R=A
+	 * - Q is orthonormal matrix.
+	 * - R is upper triangular matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @returns {{Q: Matrix, R: Matrix}} {Q, R}
 	 */
@@ -5146,11 +5164,11 @@ class LinearAlgebra {
 
 	/**
 	 * Tridiagonalization of symmetric matrix.
-	 * <br>* Don't support complex numbers.
-	 * <br>* P*H*P'=A
-	 * <br>* P is orthonormal matrix.
-	 * <br>* H is tridiagonal matrix.
-	 * <br>* The eigenvalues of H match the eigenvalues of A.
+	 * - Don't support complex numbers.
+	 * - P*H*P'=A
+	 * - P is orthonormal matrix.
+	 * - H is tridiagonal matrix.
+	 * - The eigenvalues of H match the eigenvalues of A.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @returns {{P: Matrix, H: Matrix}} {P, H}
 	 */
@@ -5170,10 +5188,10 @@ class LinearAlgebra {
 
 	/**
 	 * Eigendecomposition of symmetric matrix.
-	 * <br>* Don't support complex numbers.
-	 * <br>* V*D*V'=A.
-	 * <br>* V is orthonormal matrix. and columns of V are the right eigenvectors.
-	 * <br>* D is a matrix containing the eigenvalues on the diagonal component.
+	 * - Don't support complex numbers.
+	 * - V*D*V'=A.
+	 * - V is orthonormal matrix. and columns of V are the right eigenvectors.
+	 * - D is a matrix containing the eigenvalues on the diagonal component.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @returns {{V: Matrix, D: Matrix}} {D, V}
 	 * @todo 対称行列しか対応できていないので、対称行列ではないものはQR分解を用いた手法に切り替える予定。
@@ -5194,9 +5212,9 @@ class LinearAlgebra {
 
 	/**
 	 * Singular Value Decomposition (SVD).
-	 * <br>* U*S*V'=A
-	 * <br>* U and V are orthonormal matrices.
-	 * <br>* S is a matrix with singular values in the diagonal.
+	 * - U*S*V'=A
+	 * - U and V are orthonormal matrices.
+	 * - S is a matrix with singular values in the diagonal.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
 	 * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
 	 */
@@ -5488,7 +5506,7 @@ class StatisticsTool {
 	 * Incomplete gamma function.
 	 * @param {number} x
 	 * @param {number} a
-	 * @param {string} [tail="lower"] - lower (default) / upper
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {number}
 	 */
 	static gammainc(x, a, tail) {
@@ -5650,7 +5668,7 @@ class StatisticsTool {
 	 * @param {number} x
 	 * @param {number} a
 	 * @param {number} b
-	 * @param {string} [tail="lower"] - lower (default) / upper
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {number}
 	 */
 	static betainc(x, a, b, tail) {
@@ -5981,7 +5999,7 @@ class StatisticsTool {
 	}
 
 	/**
-	 * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 	 * @param {number} p - Probability.
 	 * @param {number} v - The degrees of freedom. (DF)
 	 * @returns {number}
@@ -6110,7 +6128,7 @@ class StatisticsComplex {
 	 * Incomplete gamma function.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
-	 * @param {string} [tail="lower"] - tail ("lower", "upper")
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Complex}
 	 */
 	static gammainc(x, a, tail) {
@@ -6179,7 +6197,7 @@ class StatisticsComplex {
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
-	 * @param {string} [tail="lower"] - tail ("lower", "upper")
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Complex}
 	 */
 	static betainc(x, a, b, tail) {
@@ -6366,7 +6384,7 @@ class StatisticsComplex {
 	}
 
 	/**
-	 * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
 	 * @returns {Complex}
@@ -6490,7 +6508,7 @@ class Statistics {
 	 * Incomplete gamma function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {string} [tail="lower"] - tail ("lower", "upper")
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
 	static gammainc(x, a, tail) {
@@ -6569,7 +6587,7 @@ class Statistics {
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-	 * @param {string} [tail="lower"] - tail ("lower", "upper")
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
 	static betainc(x, a, b, tail) {
@@ -6787,7 +6805,7 @@ class Statistics {
 	}
 
 	/**
-	 * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
@@ -7089,7 +7107,7 @@ class Statistics {
 
 	/**
 	 * Moment.
-	 * <br>* Moment of order n. Equivalent to the definition of variance at 2.
+	 * - Moment of order n. Equivalent to the definition of variance at 2.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
 	 * @returns {Matrix} n次のモーメント、2で分散の定義と同等。
@@ -7575,7 +7593,7 @@ class FFT {
 
 /**
  * Simple cache class.
- * <br>Cache tables used in FFT.
+ * Cache tables used in FFT.
  * @ignore
  */
 class Cache {
@@ -7610,7 +7628,7 @@ class Cache {
 
 	/**
 	 * Create a class initialized with the specified data length.
-	 * <br>Use from cache if it exists in cache.
+	 * Use from cache if it exists in cache.
 	 * @param {number} size - Data length.
 	 * @returns {*}
 	 */
@@ -7662,7 +7680,7 @@ class DCT {
 
 		/**
 		 * Twice the signal length.
-		 * <br>In the DCT conversion, an actual signal is zero-filled with a doubled signal length, and an FFT is performed on it.
+		 * In the DCT conversion, an actual signal is zero-filled with a doubled signal length, and an FFT is performed on it.
 		 */
 		this.dct_size = size * 2;
 
@@ -8080,19 +8098,19 @@ class SignalTool {
 
 	/**
 	 * Create window function for signal processing.
-	 * <br>The following window functions are available.
-	 * <br>* "rectangle": Rectangular window
-	 * <br>* "hann": Hann/Hanning window.
-	 * <br>* "hamming": Hamming window.
-	 * <br>* "blackman": Blackman window.
-	 * <br>* "blackmanharris": Blackman-Harris window.
-	 * <br>* "blackmannuttall": Blackman-Nuttall window.
-	 * <br>* "flattop": Flat top window.
-	 * <br>* "sin", Half cycle sine window.
-	 * <br>* "vorbis", Vorbis window.
+	 * The following window functions are available.
+	 * - "rectangle": Rectangular window
+	 * - "hann": Hann/Hanning window.
+	 * - "hamming": Hamming window.
+	 * - "blackman": Blackman window.
+	 * - "blackmanharris": Blackman-Harris window.
+	 * - "blackmannuttall": Blackman-Nuttall window.
+	 * - "flattop": Flat top window.
+	 * - "sin", Half cycle sine window.
+	 * - "vorbis", Vorbis window.
 	 * @param {string} name - Window function name.
 	 * @param {number} size - Window length.
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Array<number>}
 	 */
 	static window(name, size, periodic) {
@@ -8181,7 +8199,7 @@ class SignalTool {
 	/**
 	 * Hann (Hanning) window.
 	 * @param {number} size - Window length.
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Array<number>}
 	 */
 	static hann(size, periodic) {
@@ -8191,7 +8209,7 @@ class SignalTool {
 	/**
 	 * Hamming window.
 	 * @param {number} size - Window length.
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Array<number>}
 	 */
 	static hamming(size, periodic) {
@@ -8424,7 +8442,7 @@ class Signal {
 
 	/**
 	 * ACF(Autocorrelation function), cros-correlation function.
-	 * <br>* If the argument is omitted, it is calculated by the autocorrelation function.
+	 * - If the argument is omitted, it is calculated by the autocorrelation function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [x2] - Matrix to calculate the correlation.
 	 * @returns {Matrix}
@@ -8477,19 +8495,19 @@ class Signal {
 
 	/**
 	 * Create window function for signal processing.
-	 * <br>The following window functions are available.
-	 * <br>* "rectangle": Rectangular window
-	 * <br>* "hann": Hann/Hanning window.
-	 * <br>* "hamming": Hamming window.
-	 * <br>* "blackman": Blackman window.
-	 * <br>* "blackmanharris": Blackman-Harris window.
-	 * <br>* "blackmannuttall": Blackman-Nuttall window.
-	 * <br>* "flattop": Flat top window.
-	 * <br>* "sin", Half cycle sine window.
-	 * <br>* "vorbis", Vorbis window.
+	 * The following window functions are available.
+	 * - "rectangle": Rectangular window
+	 * - "hann": Hann/Hanning window.
+	 * - "hamming": Hamming window.
+	 * - "blackman": Blackman window.
+	 * - "blackmanharris": Blackman-Harris window.
+	 * - "blackmannuttall": Blackman-Nuttall window.
+	 * - "flattop": Flat top window.
+	 * - "sin", Half cycle sine window.
+	 * - "vorbis", Vorbis window.
 	 * @param {string} name - Window function name.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
 	static window(name, size, periodic) {
@@ -8501,7 +8519,7 @@ class Signal {
 	/**
 	 * Hann (Hanning) window.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
 	static hann(size, periodic) {
@@ -8511,7 +8529,7 @@ class Signal {
 	/**
 	 * Hamming window.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
 	static hamming(size, periodic) {
@@ -8520,7 +8538,7 @@ class Signal {
 	
 	/**
 	 * FFT shift.
-	 * <br>Circular shift beginning at the center of the signal.
+	 * Circular shift beginning at the center of the signal.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x 
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
@@ -8656,7 +8674,7 @@ class MatrixTool {
 	
 	/**
 	 * Removed front and back brackets when enclosed by brackets.
-	 * <br>* Return null if the string has no brackets.
+	 * - Return null if the string has no brackets.
 	 * @param {string} text - String to be processed.
 	 * @returns {string|null} String after brackets removal or null.
 	 */
@@ -8671,7 +8689,7 @@ class MatrixTool {
 
 	/**
 	 * Create Matrix type data from string data defined in JSON.
-	 * <br>* For example, "[xx,xx,xx], [xx,xx,xx]"
+	 * - For example, "[xx,xx,xx], [xx,xx,xx]"
 	 * @param {string} text - String to be processed.
 	 * @returns {Array<Array<Complex>>} Internal array used by Matrix type.
 	 */
@@ -8785,7 +8803,7 @@ class MatrixTool {
 
 	/**
 	 * Convert string to row part of matrix type matrix data.
-	 * <br>Estimate the matrix by extracting parts like numbers.
+	 * Estimate the matrix by extracting parts like numbers.
 	 * @param {string} row_text - A string describing one row of the matrix.
 	 * @returns {Array<Complex>|string}
 	 */
@@ -8886,10 +8904,10 @@ class Matrix {
 	
 	/**
 	 * Create a complex matrix.
-	 * <br>Initialization can be performed as follows.
-	 * <br>* 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
-	 * <br>* [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
-	 * <br>* "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
+	 * Initialization can be performed as follows.
+	 * - 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
+	 * - [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
+	 * - "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - Complex matrix. See how to use the function.
 	 */
 	constructor(number) {
@@ -9051,7 +9069,7 @@ class Matrix {
 
 	/**
 	 * Convert to Matrix.
-	 * <br>If type conversion is unnecessary, return the value as it is.
+	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @returns {Matrix}
 	 * @private
@@ -9067,7 +9085,7 @@ class Matrix {
 
 	/**
 	 * Convert to Complex.
-	 * <br>If type conversion is unnecessary, return the value as it is.
+	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @returns {Complex}
 	 * @private
@@ -9400,7 +9418,7 @@ class Matrix {
 
 	/**
 	 * Treat the columns of the matrix as vectors and execute the same process.
-	 * <br>* If the matrix is a row vector, it performs the same processing for the row vector.
+	 * - If the matrix is a row vector, it performs the same processing for the row vector.
 	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} Matrix after function processing.
 	 */
@@ -9434,8 +9452,8 @@ class Matrix {
 
 	/**
 	 * Treat the rows and columns of the matrix as vectors and perform the same processing.
-	 * <br>1. First run the same process for the row.
-	 * <br>2. Finally perform the same processing for the column.
+	 * 1. First run the same process for the row.
+	 * 2. Finally perform the same processing for the column.
 	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @returns {Matrix} Matrix after function processing.
 	 */
@@ -9519,7 +9537,7 @@ class Matrix {
 
 	/**
 	 * Treat the rows and columns of the matrix as vectors and perform the same processing.
-	 * <br>The arguments of the method can switch the direction of the matrix to be executed.
+	 * The arguments of the method can switch the direction of the matrix to be executed.
 	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
 	 * @param {string|number} [dimtype="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
 	 * @returns {Matrix} Matrix after function processing.
@@ -9598,7 +9616,7 @@ class Matrix {
 
 	/**
 	 * Returns the specified element in the matrix.
-	 * <br>Each element of the matrix is composed of complex numbers.
+	 * Each element of the matrix is composed of complex numbers.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_or_pos - If this is a matrix, the row number. If this is a vector, the address.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [col] - If this is a matrix, the column number.
 	 * @returns {Complex} 
@@ -9713,7 +9731,7 @@ class Matrix {
 
 	/**
 	 * Trace of a matrix.
-	 * <br>Sum of diagonal elements.
+	 * Sum of diagonal elements.
 	 * @returns {Complex} trace(A)
 	 */
 	trace() {
@@ -9824,7 +9842,7 @@ class Matrix {
 
 	/**
 	 * If matrix, generate diagonal column vector.
-	 * <br>If vector, generate a matrix with diagonal elements.
+	 * If vector, generate a matrix with diagonal elements.
 	 * @returns {Matrix} Matrix or vector created. See how to use the function.
 	 */
 	diag() {
@@ -9859,7 +9877,7 @@ class Matrix {
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 
 	/**
-	 * Return true if the matrix is ​​scalar.
+	 * Return true if the matrix is scalar.
 	 * @returns {boolean}
 	 */
 	isScalar() {
@@ -9867,7 +9885,7 @@ class Matrix {
 	}
 	
 	/**
-	 * Return true if the matrix is ​​row vector.
+	 * Return true if the matrix is row vector.
 	 * @returns {boolean}
 	 */
 	isRow() {
@@ -9883,7 +9901,7 @@ class Matrix {
 	}
 
 	/**
-	 * Return true if the matrix is ​​vector.
+	 * Return true if the matrix is vector.
 	 * @returns {boolean}
 	 */
 	isVector() {
@@ -9891,7 +9909,7 @@ class Matrix {
 	}
 
 	/**
-	 * Return true if the value is not ​​scalar.
+	 * Return true if the value is not scalar.
 	 * @returns {boolean}
 	 */
 	isMatrix() {
@@ -9899,7 +9917,7 @@ class Matrix {
 	}
 
 	/**
-	 * Return true if the matrix is ​​square matrix.
+	 * Return true if the matrix is square matrix.
 	 * @returns {boolean}
 	 */
 	isSquare() {
@@ -9931,7 +9949,7 @@ class Matrix {
 	}
 
 	/**
-	 * Return true if the matrix is ​​zero matrix.
+	 * Return true if the matrix is zero matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
@@ -9988,7 +10006,7 @@ class Matrix {
 	}
 	
 	/**
-	 * Return true if the matrix is ​​tridiagonal matrix.
+	 * Return true if the matrix is tridiagonal matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
@@ -10004,7 +10022,7 @@ class Matrix {
 	}
 
 	/**
-	 * Return true if the matrix is ​​regular matrix.
+	 * Return true if the matrix is regular matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
@@ -10033,7 +10051,7 @@ class Matrix {
 	}
 
 	/**
-	 * Return true if the matrix is ​​unitary matrix.
+	 * Return true if the matrix is unitary matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
@@ -10046,7 +10064,7 @@ class Matrix {
 	}
 
 	/**
-	 * Return true if the matrix is ​​symmetric matrix.
+	 * Return true if the matrix is symmetric matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
@@ -10091,7 +10109,7 @@ class Matrix {
 	}
 	
 	/**
-	 * Return true if the matrix is ​​upper triangular matrix.
+	 * Return true if the matrix is upper triangular matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
@@ -10107,7 +10125,7 @@ class Matrix {
 	}
 
 	/**
-	 * Return true if the matrix is ​​ lower triangular matrix.
+	 * Return true if the matrix is  lower triangular matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
@@ -10170,8 +10188,8 @@ class Matrix {
 
 	/**
 	 * Compare values.
-	 * <br>* Return value between scalars is of type Number.
-	 * <br>* Return value between matrices is type Matrix.
+	 * - Return value between scalars is of type Number.
+	 * - Return value between matrices is type Matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
@@ -10330,7 +10348,7 @@ class Matrix {
 
 	/**
 	 * Power function.
-	 * <br>* Supports only integers.
+	 * - Supports only integers.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 整数
 	 * @returns {Matrix} pow(A, B)
 	 */
@@ -10463,7 +10481,7 @@ class Matrix {
 
 	/**
 	 * The positive or negative signs of each element of the matrix.
-	 * <br>* +1 if positive, -1 if negative, 0 if 0, norm if complex number.
+	 * - +1 if positive, -1 if negative, 0 if 0, norm if complex number.
 	 * @returns {Matrix} [-1,1] 複素数の場合はノルムを1にした値。
 	 */
 	sign() {
@@ -10474,7 +10492,7 @@ class Matrix {
 
 	/**
 	 * Test if each element of the matrix is integer.
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -10486,7 +10504,7 @@ class Matrix {
 
 	/**
 	 * Test if each element of the matrix is complex integer.
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -10498,7 +10516,7 @@ class Matrix {
 
 	/**
 	 * real(this) === 0
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -10510,7 +10528,7 @@ class Matrix {
 
 	/**
 	 * real(this) === 1
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -10522,7 +10540,7 @@ class Matrix {
 	
 	/**
 	 * Test if each element of the matrix is complex.
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -10534,7 +10552,7 @@ class Matrix {
 
 	/**
 	 * Test if each element of the matrix is real.
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -10546,7 +10564,7 @@ class Matrix {
 
 	/**
 	 * Test if each element of the matrix is NaN.
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNaN() {
@@ -10558,7 +10576,7 @@ class Matrix {
 
 	/**
 	 * real(this) > 0
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testPositive() {
@@ -10569,7 +10587,7 @@ class Matrix {
 
 	/**
 	 * real(this) < 0
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNegative() {
@@ -10580,7 +10598,7 @@ class Matrix {
 
 	/**
 	 * real(this) >= 0
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNotNegative() {
@@ -10591,7 +10609,7 @@ class Matrix {
 
 	/**
 	 * Test if each element of the matrix is infinite.
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testInfinite() {
@@ -10602,7 +10620,7 @@ class Matrix {
 	
 	/**
 	 * Test if each element of the matrix is finite.
-	 * <br>* 1 if true, 0 if false.
+	 * - 1 if true, 0 if false.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testFinite() {
@@ -10703,7 +10721,7 @@ class Matrix {
 	
 	/**
 	 * Atan (arc tangent) function.
-	 * <br>* Return the values of [-PI/2, PI/2].
+	 * - Return the values of [-PI/2, PI/2].
 	 * @returns {Matrix} atan(A)
 	 */
 	atan() {
@@ -10714,8 +10732,8 @@ class Matrix {
 
 	/**
 	 * Atan (arc tangent) function.
-	 * <br>* Return the values of [-PI, PI].
-	 * <br>* Supports only real numbers.
+	 * - Return the values of [-PI, PI].
+	 * - Supports only real numbers.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - X
 	 * @returns {Matrix} atan2(Y, X)
 	 */
@@ -10872,7 +10890,7 @@ class Matrix {
 
 	/**
 	 * Change the size of the matrix. (mutable)
-	 * <br>Initialized with 0 when expanding.
+	 * Initialized with 0 when expanding.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} new_row_length - Number of rows of matrix to resize.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} new_column_length - Number of columns of matrix to resize.
 	 * @returns {Matrix} Matrix after function processing. (this)
@@ -10918,7 +10936,7 @@ class Matrix {
 
 	/**
 	 * Change the size of the matrix.
-	 * <br>Initialized with 0 when expanding.
+	 * Initialized with 0 when expanding.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - Number of rows of matrix to resize.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - Number of columns of matrix to resize.
 	 * @returns {Matrix} Matrix after function processing.
@@ -11176,7 +11194,7 @@ class Matrix {
 
 	/**
 	 * Change the shape of the matrix.
-	 * <br>The number of elements in the matrix doesn't increase or decrease.
+	 * The number of elements in the matrix doesn't increase or decrease.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - Number of rows of matrix to reshape.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - Number of columns of matrix to reshape.
 	 * @returns {Matrix} Matrix after function processing.
@@ -11242,8 +11260,8 @@ class Matrix {
 
 	/**
 	 * Index sort.
-	 * <br>* Sorts by row when setting index by row vector to the argument.
-	 * <br>* Sorts by column when setting index by column vector to the argument.
+	 * - Sorts by row when setting index by row vector to the argument.
+	 * - Sorts by column when setting index by column vector to the argument.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - Vector with index. (See the description of this function)
 	 * @returns {Matrix} Matrix after function processing.
 	 */
@@ -11377,7 +11395,11 @@ class Matrix {
 	
 	/**
 	 * LUP decomposition.
-	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} P'*L*U=A
+	 * - P'*L*U=A
+	 * - P is permutation matrix.
+	 * - L is lower triangular matrix.
+	 * - U is upper triangular matrix.
+	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} {L, U, P}
 	 */
 	lup() {
 		return LinearAlgebra.lup(this);
@@ -11385,7 +11407,10 @@ class Matrix {
 
 	/**
 	 * LU decomposition.
-	 * @returns {{L: Matrix, U: Matrix}} L*U=A
+	 * - L*U=A
+	 * - L is lower triangular matrix.
+	 * - U is upper triangular matrix.
+	 * @returns {{L: Matrix, U: Matrix}} {L, U}
 	 */
 	lu() {
 		return LinearAlgebra.lu(this);
@@ -11402,9 +11427,9 @@ class Matrix {
 
 	/**
 	 * QR decomposition.
-	 * <br>* Q*R=A
-	 * <br>* Q is orthonormal matrix.
-	 * <br>* R is upper triangular matrix.
+	 * - Q*R=A
+	 * - Q is orthonormal matrix.
+	 * - R is upper triangular matrix.
 	 * @returns {{Q: Matrix, R: Matrix}} {Q, R}
 	 */
 	qr() {
@@ -11413,11 +11438,11 @@ class Matrix {
 
 	/**
 	 * Tridiagonalization of symmetric matrix.
-	 * <br>* Don't support complex numbers.
-	 * <br>* P*H*P'=A
-	 * <br>* P is orthonormal matrix.
-	 * <br>* H is tridiagonal matrix.
-	 * <br>* The eigenvalues of H match the eigenvalues of A.
+	 * - Don't support complex numbers.
+	 * - P*H*P'=A
+	 * - P is orthonormal matrix.
+	 * - H is tridiagonal matrix.
+	 * - The eigenvalues of H match the eigenvalues of A.
 	 * @returns {{P: Matrix, H: Matrix}} {P, H}
 	 */
 	tridiagonalize() {
@@ -11426,10 +11451,10 @@ class Matrix {
 
 	/**
 	 * Eigendecomposition of symmetric matrix.
-	 * <br>* Don't support complex numbers.
-	 * <br>* V*D*V'=A.
-	 * <br>* V is orthonormal matrix. and columns of V are the right eigenvectors.
-	 * <br>* D is a matrix containing the eigenvalues on the diagonal component.
+	 * - Don't support complex numbers.
+	 * - V*D*V'=A.
+	 * - V is orthonormal matrix. and columns of V are the right eigenvectors.
+	 * - D is a matrix containing the eigenvalues on the diagonal component.
 	 * @returns {{V: Matrix, D: Matrix}} {D, V}
 	 */
 	eig() {
@@ -11438,9 +11463,9 @@ class Matrix {
 
 	/**
 	 * Singular Value Decomposition (SVD).
-	 * <br>* U*S*V'=A
-	 * <br>* U and V are orthonormal matrices.
-	 * <br>* S is a matrix with singular values in the diagonal.
+	 * - U*S*V'=A
+	 * - U and V are orthonormal matrices.
+	 * - S is a matrix with singular values in the diagonal.
 	 * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
 	 */
 	svd() {
@@ -11486,7 +11511,7 @@ class Matrix {
 	/**
 	 * Incomplete gamma function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {string} [tail="lower"] - tail ("lower", "upper")
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
 	gammainc(a, tail) {
@@ -11536,7 +11561,7 @@ class Matrix {
 	 * Incomplete beta function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-	 * @param {string} [tail="lower"] - tail ("lower", "upper")
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
 	betainc(a, b, tail) {
@@ -11665,8 +11690,8 @@ class Matrix {
 
 	/**
 	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-	 * <br>* If tails = 1, TDIST returns the one-tailed distribution.
-	 * <br>* If tails = 2, TDIST returns the two-tailed distribution.
+	 * - If tails = 1, TDIST returns the one-tailed distribution.
+	 * - If tails = 2, TDIST returns the two-tailed distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {Matrix}
@@ -11676,7 +11701,7 @@ class Matrix {
 	}
 
 	/**
-	 * Cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
@@ -11713,7 +11738,7 @@ class Matrix {
 
 	/**
 	 * Probability density function (PDF) of F-distribution.
-	 * <br>* In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution.
+	 * - In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
@@ -11816,7 +11841,7 @@ class Matrix {
 
 	/**
 	 * Moment.
-	 * <br>* Moment of order n. Equivalent to the definition of variance at 2.
+	 * - Moment of order n. Equivalent to the definition of variance at 2.
 	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
 	 * @returns {Matrix}
 	 */
@@ -11988,7 +12013,7 @@ class Matrix {
 
 	/**
 	 * ACF(Autocorrelation function), cros-correlation function.
-	 * <br>* If the argument is omitted, it is calculated by the autocorrelation function.
+	 * - If the argument is omitted, it is calculated by the autocorrelation function.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [number] - Matrix to calculate the correlation.
 	 * @returns {Matrix}
 	 */
@@ -11998,19 +12023,19 @@ class Matrix {
 
 	/**
 	 * Create window function for signal processing.
-	 * <br>The following window functions are available.
-	 * <br>* "rectangle": Rectangular window
-	 * <br>* "hann": Hann/Hanning window.
-	 * <br>* "hamming": Hamming window.
-	 * <br>* "blackman": Blackman window.
-	 * <br>* "blackmanharris": Blackman-Harris window.
-	 * <br>* "blackmannuttall": Blackman-Nuttall window.
-	 * <br>* "flattop": Flat top window.
-	 * <br>* "sin", Half cycle sine window.
-	 * <br>* "vorbis", Vorbis window.
+	 * The following window functions are available.
+	 * - "rectangle": Rectangular window
+	 * - "hann": Hann/Hanning window.
+	 * - "hamming": Hamming window.
+	 * - "blackman": Blackman window.
+	 * - "blackmanharris": Blackman-Harris window.
+	 * - "blackmannuttall": Blackman-Nuttall window.
+	 * - "flattop": Flat top window.
+	 * - "sin", Half cycle sine window.
+	 * - "vorbis", Vorbis window.
 	 * @param {string} name - Window function name.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
 	static window(name, size, periodic) {
@@ -12020,7 +12045,7 @@ class Matrix {
 	/**
 	 * Hann (Hanning) window.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
 	static hann(size, periodic) {
@@ -12030,7 +12055,7 @@ class Matrix {
 	/**
 	 * Hamming window.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
-	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric", 1/"periodic"
+	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
 	static hamming(size, periodic) {
@@ -12039,7 +12064,7 @@ class Matrix {
 	
 	/**
 	 * FFT shift.
-	 * <br>Circular shift beginning at the center of the signal.
+	 * Circular shift beginning at the center of the signal.
 	 * @param {{dimension : (?string|?number)}} [type]
 	 * @returns {Matrix}
 	 */
@@ -12124,8 +12149,8 @@ class Complex {
 
 	/**
 	 * Create a complex number.
-	 * <br>Initialization can be performed as follows.
-	 * <br>* "3 + 4i", "4j + 3", [3, 4].
+	 * Initialization can be performed as follows.
+	 * - "3 + 4i", "4j + 3", [3, 4].
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Complex number. See how to use the function.
 	 */
 	constructor(number) {
@@ -12209,7 +12234,7 @@ class Complex {
 	
 	/**
 	 * Convert to Complex.
-	 * <br>If type conversion is unnecessary, return the value as it is.
+	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
 	 * @returns {Complex}
 	 * @private
@@ -12402,7 +12427,7 @@ class Complex {
 
 	/**
 	 * Return number of decimal places for real and imaginary parts.
-	 * <br>* Used to make a string.
+	 * - Used to make a string.
 	 * @returns {number} Number of decimal places.
 	 */
 	getDecimalPosition() {
@@ -12558,7 +12583,7 @@ class Complex {
 
 	/**
 	 * The positive or negative sign of this number.
-	 * <br>* +1 if positive, -1 if negative, 0 if 0.
+	 * - +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {Complex} [-1,1] 複素数の場合はノルムを1にした値。
 	 */
 	sign() {
@@ -12932,7 +12957,7 @@ class Complex {
 
 	/**
 	 * Atan (arc tangent) function.
-	 * <br>* Return the values of [-PI/2, PI/2].
+	 * - Return the values of [-PI/2, PI/2].
 	 * @returns {Complex} atan(A)
 	 */
 	atan() {
@@ -12945,8 +12970,8 @@ class Complex {
 
 	/**
 	 * Atan (arc tangent) function.
-	 * <br>* Return the values of [-PI, PI] .
-	 * <br>* Supports only real numbers.
+	 * Return the values of [-PI, PI] .
+	 * Supports only real numbers.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [number] - X
 	 * @returns {Complex} atan2(Y, X)
 	 */
@@ -13287,10 +13312,10 @@ const DEFINE$3 = {
 
 /**
  * Class collection of numerical calculation processing.
- * <br>These classes are classified into a BigInteger and BigDecimal and Matrix.
- * <br>- BigInteger is the calculation class for arbitrary-precision integer arithmetic.
- * <br>- BigDecimal is a calculation class for arbitrary-precision floating point arithmetic.
- * <br>- Matrix is a general-purpose calculation class with signal processing and statistical processing.
+ * These classes are classified into a BigInteger and BigDecimal and Matrix.
+ * - BigInteger is the calculation class for arbitrary-precision integer arithmetic.
+ * - BigDecimal is a calculation class for arbitrary-precision floating point arithmetic.
+ * - Matrix is a general-purpose calculation class with signal processing and statistical processing.
  */
 class konpeito {
 

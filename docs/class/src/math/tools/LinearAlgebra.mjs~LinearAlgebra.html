@@ -730,18 +730,20 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber1055">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber1062">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Eigendecomposition of symmetric matrix.
-<br><em> Don&apos;t support complex numbers.
-<br></em> V<em>D</em>V&apos;=A.
-<br><em> V is orthonormal matrix. and columns of V are the right eigenvectors.
-<br></em> D is a matrix containing the eigenvalues on the diagonal component.</p>
+  <div data-ice="description"><p>Eigendecomposition of symmetric matrix.</p>
+<ul>
+<li>Don&apos;t support complex numbers.</li>
+<li>V<em>D</em>V&apos;=A.</li>
+<li>V is orthonormal matrix. and columns of V are the right eigenvectors.</li>
+<li>D is a matrix containing the eigenvalues on the diagonal component.</li>
+</ul>
 </div>
 
   
@@ -895,7 +897,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber1123">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber1130">source</a></span></span>
     </span>
   </h3>
 
@@ -969,7 +971,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber893">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber900">source</a></span></span>
     </span>
   </h3>
 
@@ -1050,7 +1052,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber877">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber884">source</a></span></span>
     </span>
   </h3>
 
@@ -1058,6 +1060,11 @@
   
   
   <div data-ice="description"><p>LU decomposition.</p>
+<ul>
+<li>L*U=A</li>
+<li>L is lower triangular matrix.</li>
+<li>U is upper triangular matrix.</li>
+</ul>
 </div>
 
   
@@ -1088,7 +1095,7 @@
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType">{L: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, U: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>}</td>
-          <td class="return-desc" data-ice="returnDescription"><p>L*U=A</p>
+          <td class="return-desc" data-ice="returnDescription"><p>{L, U}</p>
 </td>
         </tr>
       </tbody>
@@ -1124,7 +1131,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber823">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber827">source</a></span></span>
     </span>
   </h3>
 
@@ -1132,6 +1139,12 @@
   
   
   <div data-ice="description"><p>LUP decomposition.</p>
+<ul>
+<li>P&apos;<em>L</em>U=A</li>
+<li>P is permutation matrix.</li>
+<li>L is lower triangular matrix.</li>
+<li>U is upper triangular matrix.</li>
+</ul>
 </div>
 
   
@@ -1162,7 +1175,7 @@
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType">{P: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, L: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>, U: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span>}</td>
-          <td class="return-desc" data-ice="returnDescription"><p>P&apos;<em>L</em>U=A</p>
+          <td class="return-desc" data-ice="returnDescription"><p>{L, U, P}</p>
 </td>
         </tr>
       </tbody>
@@ -1277,7 +1290,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber1195">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber1202">source</a></span></span>
     </span>
   </h3>
 
@@ -1351,17 +1364,19 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber961">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber968">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>QR decomposition.
-<br><em> Q</em>R=A
-<br><em> Q is orthonormal matrix.
-<br></em> R is upper triangular matrix.</p>
+  <div data-ice="description"><p>QR decomposition.</p>
+<ul>
+<li>Q*R=A</li>
+<li>Q is orthonormal matrix.</li>
+<li>R is upper triangular matrix.</li>
+</ul>
 </div>
 
   
@@ -1580,17 +1595,19 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber1077">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber1084">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Singular Value Decomposition (SVD).
-<br><em> U</em>S<em>V&apos;=A
-<br></em> U and V are orthonormal matrices.
-<br>* S is a matrix with singular values in the diagonal.</p>
+  <div data-ice="description"><p>Singular Value Decomposition (SVD).</p>
+<ul>
+<li>U<em>S</em>V&apos;=A</li>
+<li>U and V are orthonormal matrices.</li>
+<li>S is a matrix with singular values in the diagonal.</li>
+</ul>
 </div>
 
   
@@ -1665,7 +1682,7 @@
   
   
   <div data-ice="description"><p>Trace of a matrix.
-<br>Sum of diagonal elements.</p>
+Sum of diagonal elements.</p>
 </div>
 
   
@@ -1730,19 +1747,21 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber1031">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.mjs.html#lineNumber1038">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Tridiagonalization of symmetric matrix.
-<br><em> Don&apos;t support complex numbers.
-<br></em> P<em>H</em>P&apos;=A
-<br><em> P is orthonormal matrix.
-<br></em> H is tridiagonal matrix.
-<br>* The eigenvalues of H match the eigenvalues of A.</p>
+  <div data-ice="description"><p>Tridiagonalization of symmetric matrix.</p>
+<ul>
+<li>Don&apos;t support complex numbers.</li>
+<li>P<em>H</em>P&apos;=A</li>
+<li>P is orthonormal matrix.</li>
+<li>H is tridiagonal matrix.</li>
+<li>The eigenvalues of H match the eigenvalues of A.</li>
+</ul>
 </div>
 
   

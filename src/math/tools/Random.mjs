@@ -263,7 +263,7 @@ export default class Random {
 
 	/**
 	 * Random numbers from a Gaussian distribution.
-	 * <br>This random number is a distribution with an average value of 0 and a standard deviation of 1.
+	 * This random number is a distribution with an average value of 0 and a standard deviation of 1.
 	 * @returns {number}
 	 */
 	nextGaussian() {

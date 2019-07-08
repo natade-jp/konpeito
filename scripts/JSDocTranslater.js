@@ -237,10 +237,13 @@ class JSDocTranslater {
 				if(text) {
 					const text_array = text.split("\n");
 					// 改行が必要な場合は、4つの半角スペース
-					// ... 4つの半角スペースはソースコード扱いになるらしい。すなおにタグを使用する。
-					for(let i = 1; i < text_array.length; i++) {
-						text_array[i] = "<br>" + text_array[i];
-					}
+					// ... 4つの半角スペースはソースコード扱いになるらしい。すなおに<br>タグを使用する。
+					// ただ、<br>タグの場合は、esdocでは改行されるが、1行目が<em>に囲まれる。
+					// 従って、<br>も使用しないほうが良い。
+					// 項目を表すのならば「*」ではなく、「-」を使うとよい。
+					// for(let i = 1; i < text_array.length; i++) {
+					// 	text_array[i] = text_array[i];
+					// }
 					// 今ある文章と入れ替える
 					comment_lines.splice(start, delete_line);
 					for(let i = 0; i < text_array.length; i++) {

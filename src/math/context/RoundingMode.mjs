@@ -24,7 +24,7 @@ export class RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -36,7 +36,7 @@ export class RoundingModeEntity {
 
 /**
  * Directed rounding to an integer.
- * <br>Round towards positive infinity if positive, negative infinity if negative.
+ * Round towards positive infinity if positive, negative infinity if negative.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_UP extends RoundingModeEntity {
@@ -51,7 +51,7 @@ class RoundingMode_UP extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -72,7 +72,7 @@ class RoundingMode_UP extends RoundingModeEntity {
 
 /**
  * Directed rounding to an integer.
- * <br>Round towards 0.
+ * Round towards 0.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_DOWN extends RoundingModeEntity {
@@ -87,7 +87,7 @@ class RoundingMode_DOWN extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -99,7 +99,7 @@ class RoundingMode_DOWN extends RoundingModeEntity {
 
 /**
  * Directed rounding to an integer.
- * <br>Round up to positive infinity.
+ * Round up to positive infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_CEILING extends RoundingModeEntity {
@@ -114,7 +114,7 @@ class RoundingMode_CEILING extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -135,7 +135,7 @@ class RoundingMode_CEILING extends RoundingModeEntity {
 
 /**
  * Directed rounding to an integer.
- * <br>Round down to negative infinity.
+ * Round down to negative infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_FLOOR extends RoundingModeEntity {
@@ -150,7 +150,7 @@ class RoundingMode_FLOOR extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -171,7 +171,7 @@ class RoundingMode_FLOOR extends RoundingModeEntity {
 
 /**
  * Rounding to the nearest integer.
- * <br>Round half towards positive infinity.
+ * Round half towards positive infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_HALF_UP extends RoundingModeEntity {
@@ -186,7 +186,7 @@ class RoundingMode_HALF_UP extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -205,7 +205,7 @@ class RoundingMode_HALF_UP extends RoundingModeEntity {
 
 /**
  * Rounding to the nearest integer.
- * <br>Round half towards negative infinity.
+ * Round half towards negative infinity.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_HALF_DOWN extends RoundingModeEntity {
@@ -220,7 +220,7 @@ class RoundingMode_HALF_DOWN extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -239,7 +239,7 @@ class RoundingMode_HALF_DOWN extends RoundingModeEntity {
 
 /**
  * Rounding to the nearest integer
- * <br>Round to the nearest side. If the median, round to the even side.
+ * Round to the nearest side. If the median, round to the even side.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_HALF_EVEN extends RoundingModeEntity {
@@ -254,7 +254,7 @@ class RoundingMode_HALF_EVEN extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -289,7 +289,7 @@ class RoundingMode_HALF_EVEN extends RoundingModeEntity {
 
 /**
  * Do not round.
- * <br>Error if you need to round it.
+ * Error if you need to round it.
  * @implements {RoundingModeEntity}
  */
 class RoundingMode_UNNECESSARY extends RoundingModeEntity {
@@ -304,7 +304,7 @@ class RoundingMode_UNNECESSARY extends RoundingModeEntity {
 
 	/**
 	 * Numeric value to add.
-	 * <br>It is rounded when this value is added.
+	 * It is rounded when this value is added.
 	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
 	 * @returns {number} Numeric value to add.
 	 */
@@ -327,7 +327,7 @@ export default class RoundingMode {
 
 	/**
 	 * Get rounding class represented by specified string.
-	 * @param {string|RoundingModeEntity|Object} name - モードの英数名
+	 * @param {string|RoundingModeEntity|Object} name - Mode name.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static valueOf(name) {
@@ -366,7 +366,7 @@ export default class RoundingMode {
 	
 	/**
 	 * Directed rounding to an integer.
-	 * <br>Round towards positive infinity if positive, negative infinity if negative.
+	 * Round towards positive infinity if positive, negative infinity if negative.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get UP() {
@@ -375,7 +375,7 @@ export default class RoundingMode {
 
 	/**
 	 * Directed rounding to an integer.
-	 * <br>Round towards 0.
+	 * Round towards 0.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get DOWN() {
@@ -384,7 +384,7 @@ export default class RoundingMode {
 
 	/**
 	 * Directed rounding to an integer.
-	 * <br>Round up to positive infinity.
+	 * Round up to positive infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get CEILING() {
@@ -393,7 +393,7 @@ export default class RoundingMode {
 
 	/**
 	 * Directed rounding to an integer.
-	 * <br>Round down to negative infinity.
+	 * Round down to negative infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get FLOOR() {
@@ -402,7 +402,7 @@ export default class RoundingMode {
 
 	/**
 	 * Rounding to the nearest integer.
-	 * <br>Round half towards positive infinity.
+	 * Round half towards positive infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_UP() {
@@ -411,7 +411,7 @@ export default class RoundingMode {
 
 	/**
 	 * Rounding to the nearest integer.
-	 * <br>Round half towards negative infinity.
+	 * Round half towards negative infinity.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_DOWN() {
@@ -420,7 +420,7 @@ export default class RoundingMode {
 
 	/**
 	 * Rounding to the nearest integer
-	 * <br>Round to the nearest side. If the median, round to the even side.
+	 * Round to the nearest side. If the median, round to the even side.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get HALF_EVEN() {
@@ -429,7 +429,7 @@ export default class RoundingMode {
 
 	/**
 	 * Do not round.
-	 * <br>Error if you need to round it.
+	 * Error if you need to round it.
 	 * @returns {typeof RoundingModeEntity}
 	 */
 	static get UNNECESSARY() {

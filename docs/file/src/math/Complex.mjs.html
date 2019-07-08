@@ -128,8 +128,8 @@ export default class Complex {
 
 	/**
 	 * Create a complex number.
-	 * &lt;br&gt;Initialization can be performed as follows.
-	 * &lt;br&gt;* &quot;3 + 4i&quot;, &quot;4j + 3&quot;, [3, 4].
+	 * Initialization can be performed as follows.
+	 * - &quot;3 + 4i&quot;, &quot;4j + 3&quot;, [3, 4].
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number - Complex number. See how to use the function.
 	 */
 	constructor(number) {
@@ -213,7 +213,7 @@ export default class Complex {
 	
 	/**
 	 * Convert to Complex.
-	 * &lt;br&gt;If type conversion is unnecessary, return the value as it is.
+	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number 
 	 * @returns {Complex}
 	 * @private
@@ -406,7 +406,7 @@ export default class Complex {
 
 	/**
 	 * Return number of decimal places for real and imaginary parts.
-	 * &lt;br&gt;* Used to make a string.
+	 * - Used to make a string.
 	 * @returns {number} Number of decimal places.
 	 */
 	getDecimalPosition() {
@@ -562,7 +562,7 @@ export default class Complex {
 
 	/**
 	 * The positive or negative sign of this number.
-	 * &lt;br&gt;* +1 if positive, -1 if negative, 0 if 0.
+	 * - +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {Complex} [-1,1] &#x8907;&#x7D20;&#x6570;&#x306E;&#x5834;&#x5408;&#x306F;&#x30CE;&#x30EB;&#x30E0;&#x3092;1&#x306B;&#x3057;&#x305F;&#x5024;&#x3002;
 	 */
 	sign() {
@@ -936,7 +936,7 @@ export default class Complex {
 
 	/**
 	 * Atan (arc tangent) function.
-	 * &lt;br&gt;* Return the values of [-PI/2, PI/2].
+	 * - Return the values of [-PI/2, PI/2].
 	 * @returns {Complex} atan(A)
 	 */
 	atan() {
@@ -949,8 +949,8 @@ export default class Complex {
 
 	/**
 	 * Atan (arc tangent) function.
-	 * &lt;br&gt;* Return the values of [-PI, PI] .
-	 * &lt;br&gt;* Supports only real numbers.
+	 * Return the values of [-PI, PI] .
+	 * Supports only real numbers.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [number] - X
 	 * @returns {Complex} atan2(Y, X)
 	 */
