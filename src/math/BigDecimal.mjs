@@ -124,13 +124,13 @@ export default class BigDecimal {
 	
 	/**
 	 * Create an arbitrary-precision floating-point number.
-	 * When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
-	 * When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
-	 * default_context
+	 * - When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
+	 * - When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
+	 * 
+	 * Description of the settings are as follows, you can also omitted.
 	 * - The "scale" is an integer scale factor.
 	 * - The "default_context" is the used when no environment settings are specified during calculation.
 	 * - The "context" is used to normalize the created floating point.
-	 * These 3 settings can be omitted.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
 	 */
 	constructor(number) {

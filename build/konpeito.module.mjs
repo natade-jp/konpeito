@@ -1015,18 +1015,24 @@ class IntegerTool {
 		if(buff !== null) {
 			buff = buff[0].substr(1);
 			scale -= parseInt(buff, 10);
-			if(scale < 0) {
-				for(let i = 0; i < -scale; i++) {
-					number_text.push("0");
-				}
-			}
-			else {
-				let join_text = number_text.join("");
-				join_text = join_text.substring(0, join_text.length - scale);
-				return join_text.length !== 0 ? join_text : "0";
-			}
 		}
-		return number_text.join("");
+		// 出力用の文字を作成
+		let output_string;
+		if(scale === 0) {
+			output_string = number_text.join("");
+		}
+		if(scale < 0) {
+			for(let i = 0; i < -scale; i++) {
+				number_text.push("0");
+			}
+			output_string = number_text.join("");
+		}
+		else if(scale > 0) {
+			output_string = number_text.join("");
+			output_string = output_string.substring(0, output_string.length - scale);
+			output_string = output_string.length !== 0 ? output_string : "0";
+		}
+		return output_string;
 	}
 
 	/**
@@ -1622,16 +1628,17 @@ class BigInteger {
 			const x2 = (i >= e2_array.length) ? 0 : e2_array[i];
 			this.element[i] = x1 & x2;
 		}
-		if(this.bitLength() === 0) {
-			this.element = [];
-			this._sign = 0;
-		}
+		// 配列の上位が空になる可能性があるためノーマライズが必要
+		this._memory_reduction();
+		// 符号を計算
 		if((s1 === 1)||(s2 === 1)) {
 			this._sign = 1;
 		}
 		// 出力が負の場合は、2の補数
 		else if(this._sign === -1) {
 			this.element = this.getTwosComplement(len).element;
+			// 反転させたことで配列の上位が空になる可能性があるためノーマライズが必要
+			this._memory_reduction();
 		}
 		return this;
 	}
@@ -1667,10 +1674,13 @@ class BigInteger {
 			const x2 = (i >= e2_array.length) ? 0 : e2_array[i];
 			this.element[i] = x1 | x2;
 		}
+		// 符号を計算
 		this._sign = ((s1 === -1)||(s2 === -1)) ? -1 : Math.max(s1, s2);
 		// 出力が負の場合は、2の補数
 		if(this._sign === -1) {
 			this.element = this.getTwosComplement(len).element;
+			// 反転させたことで配列の上位が空になる可能性があるためノーマライズが必要
+			this._memory_reduction();
 		}
 		return this;
 	}
@@ -1702,14 +1712,19 @@ class BigInteger {
 		const size = Math.max(e1_array.length, e2_array.length);
 		this.element = [];
 		for(let i = 0;i < size;i++) {
-			const x1 = (i >= e1_array.length) ? 0 : e1[i];
-			const x2 = (i >= e2_array.length) ? 0 : e2[i];
+			const x1 = (i >= e1_array.length) ? 0 : e1_array[i];
+			const x2 = (i >= e2_array.length) ? 0 : e2_array[i];
 			this.element[i] = x1 ^ x2;
 		}
+		// 配列の上位が空になる可能性があるためノーマライズが必要
+		this._memory_reduction();
+		// 符号を計算
 		this._sign = ((s1 !== 0)&&(s1 !== s2)) ? -1 : 1;
 		// 出力が負の場合は、2の補数
 		if(this._sign === -1) {
 			this.element = this.getTwosComplement(len).element;
+			// 反転したことでさらに空になる可能性がある
+			this._memory_reduction();
 		}
 		return this;
 	}
@@ -2924,13 +2939,13 @@ class BigDecimal {
 	
 	/**
 	 * Create an arbitrary-precision floating-point number.
-	 * When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
-	 * When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
-	 * default_context
+	 * - When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
+	 * - When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
+	 * 
+	 * Description of the settings are as follows, you can also omitted.
 	 * - The "scale" is an integer scale factor.
 	 * - The "default_context" is the used when no environment settings are specified during calculation.
 	 * - The "context" is used to normalize the created floating point.
-	 * These 3 settings can be omitted.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
 	 */
 	constructor(number) {

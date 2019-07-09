@@ -6,22 +6,40 @@ const $ = BigInteger.create;
 
 let test_count = 0;
 
-const testOperator3  = function(operator, x, p1, p2, y) {
-	test_count++;
-	const X = $(x);
-	const Y = X[operator](p1, p2);
-	const Y_str = ""+ Y;
-	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + Y_str;
-	const out = $(Y).equals(y);
-	test(testname, () => { expect(out).toBe(true); });
-};
-
 const testNew = function(x, y) {
 	test_count++;
 	const X = $(x);
 	const Y = $(y);
 	const testname = "equals " + test_count + " $(" + x + ")";
 	const out = $(X).equals(Y);
+	test(testname, () => { expect(out).toBe(true); });
+};
+
+const testOperator1  = function(operator, x, y) {
+	test_count++;
+	const X = $(x);
+	const Y = X[operator]();
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y;
+	const out = $(Y).equals(y);
+	test(testname, () => { expect(out).toBe(true); });
+};
+
+const testOperator2  = function(operator, x1, x2, y) {
+	test_count++;
+	const X1 = $(x1);
+	const X2 = $(x2);
+	const Y = X1[operator](X2);
+	const testname = operator + " " + test_count + " (" + x1 + ")." + operator + "(" + x2 + ") = " + y;
+	const out = $(Y).equals(y);
+	test(testname, () => { expect(out).toBe(true); });
+};
+
+const testOperator3  = function(operator, x, p1, p2, y) {
+	test_count++;
+	const X = $(x);
+	const Y = X[operator](p1, p2);
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + y;
+	const out = $(Y).equals(y);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -37,172 +55,84 @@ const testNew = function(x, y) {
 	testNew("12300e-1", "123e+1");
 	testNew("0x1234", 0x1234);
 	testNew("-0x1234", -0x1234);
+	testNew(["1234ffffff0000000000", 16], "85980274126460708454400");
+	testNew("0x1234ffffff0000000000", "85980274126460708454400");
+	testNew("0b101001000100001000000", "1345600");
+	testNew($(1234567890).longValue, 1234567890);
+	testNew($(-1234567890).longValue, -1234567890);
 }
 
 {
-	test("add 1", () => {
-		expect(
-			$("12345678").add($("12345678")).equals($("24691356"))
-		).toBe(true);
-	});
+	test_count = 0;
+	testOperator2("add", "12345678", "12345678", "24691356");
+	testOperator2("add", "12345678", "-1234", "12344444");
+	testOperator2("add", "-1234", "12345678", "12344444");
+	testOperator2("add", "-1234", "-1234", "-2468");
+}
 
-	test("add 2", () => {
-		expect(
-			$("12345678").add($("-1234")).equals($("12344444"))
-		).toBe(true);
-	});
+{
+	test_count = 0;
+	testOperator2("sub", "12345678", "12345678", "0");
+	testOperator2("sub", "12345678", "-1234", "12346912");
+	testOperator2("sub", "-1234", "12345678", "-12346912");
+	testOperator2("sub", "-1234", "-1234", "0");
+}
 
-	test("add 3", () => {
-		expect(
-			$("-1234").add($("12345678")).equals($("12344444"))
-		).toBe(true);
-	});
+{
+	test_count = 0;
+	testOperator2("mul", "12345678", "-1234", "-15234566652");
+}
 
-	test("add 4", () => {
-		expect(
-			$("-1234").add($("-1234")).equals($("-2468"))
-		).toBe(true);
-	});
+{
+	test_count = 0;
+	testOperator2("div", "12345678", "-1234", "-10004");
+	testOperator2("div", "-1234567890123456789012345678901234567890", "123456789012345678901", "-10000000000000000000");
+}
 
-	test("sub 1", () => {
-		expect(
-			$("12345678").sub($("12345678")).equals($("0"))
-		).toBe(true);
-	});
-
-	test("sub 2", () => {
-		expect(
-			$("12345678").sub($("-1234")).equals($("12346912"))
-		).toBe(true);
-	});
-
-	test("sub 3", () => {
-		expect(
-			$("-1234").sub($("12345678")).equals($("-12346912"))
-		).toBe(true);
-	});
-
-	test("sub 4", () => {
-		expect(
-			$("-1234").sub($("-1234")).equals($("0"))
-		).toBe(true);
-	});
-
-	test("mul", () => {
-		expect(
-			$("12345678").mul($("-1234")).equals($("-15234566652"))
-		).toBe(true);
-	});
-
-	test("div 1", () => {
-		expect(
-			$("12345678").div($("-1234")).equals($("-10004"))
-		).toBe(true);
-	});
-
-	test("div 2", () => {
-		expect(
-			$("-1234567890123456789012345678901234567890").div($("123456789012345678901")).equals($("-10000000000000000000"))
-		).toBe(true);
-	});
-
+{
 	test("divideAndRemainder", () => {
 		expect(
 			$("-1234567890123456789012345678901234567890").divideAndRemainder($("123456789012345678901"))[1].equals($("-2345678901234567890"))
 		).toBe(true);
 	});
-
-	test("rem", () => {
-		expect(
-			$("-1234567890123456789012345678901234567890").rem($("123456789012345678901")).equals($("-2345678901234567890"))
-		).toBe(true);
-	});
-
-	test("mod", () => {
-		expect(
-			$("-1234567890123456789012345678901234567890").mod($("123456789012345678901")).equals($("121111110111111111011"))
-		).toBe(true);
-	});
 }
 
 {
-	test("new 1", () => {
-		expect(
-			$(["1234ffffff0000000000", 16]).equals($("85980274126460708454400"))
-		).toBe(true);
-	});
-
-	test("new 2", () => {
-		expect(
-			$("0x1234ffffff0000000000").equals($("85980274126460708454400"))
-		).toBe(true);
-	});
-
-	test("new 3", () => {
-		expect(
-			$("0b101001000100001000000").equals($("1345600"))
-		).toBe(true);
-	});
-	
-	test("new 4", () => {
-		expect(
-			$(1234567890).longValue === 1234567890
-		).toBe(true);
-	});
-
-	test("new 5", () => {
-		expect(
-			$(-1234567890).longValue === -1234567890
-		).toBe(true);
-	});
+	test_count = 0;
+	testOperator2("rem", "-1234567890123456789012345678901234567890", "123456789012345678901", "-2345678901234567890");
 }
 
-test("toString 1", () => {
-	expect(
-		$("0x1234").toString() === "4660"
-	).toBe(true);
-});
-
-test("toString 2", () => {
-	expect(
-		$("0x1234ffffff0000000000").toString(16) === "1234ffffff0000000000"
-	).toBe(true);
-});
-
-test("toString 3", () => {
-	expect(
-		$("0x1234ffffff0000000000").toString(2) === "10010001101001111111111111111111111110000000000000000000000000000000000000000"
-	).toBe(true);
-});
+{
+	test_count = 0;
+	testOperator2("mod", "-1234567890123456789012345678901234567890", "123456789012345678901", "121111110111111111011");
+}
 
 {
-	const s1 = $(["1234ffffff0000000000", 16]);
-	const s2 = s1.negate();
+	test_count = 0;
+	testOperator1("toString", "0x1234", "4660");
+	testOperator2("toString", "0x1234ffffff0000000000", 16, "1234ffffff0000000000");
+	testOperator2("toString", "0x1234ffffff0000000000", 2, "10010001101001111111111111111111111110000000000000000000000000000000000000000");
+}
 
-	test("bitCount 1", () => {
-		expect(s1.bitCount()).toBe(29);
-	});
+{
+	test_count = 0;
+	testOperator1("bitCount", ["1234ffffff0000000000", 16], 29);
+	testOperator1("bitCount", $(["1234ffffff0000000000", 16]).negate(), 68);
+}
 
-	test("bitCount 2", () => {
-		expect(s2.bitCount()).toBe(68);
-	});
+{
+	test_count = 0;
+	testOperator1("bitLength", ["1234ffffff0000000000", 16], 77);
+	testOperator1("bitLength", $(["1234ffffff0000000000", 16]).negate(), 77);
+}
 
-	test("bitLength 1", () => {
-		expect(s1.bitLength()).toBe(77);
-	});
+{
+	test_count = 0;
+	testOperator1("getLowestSetBit", ["1234ffffff0000000000", 16], 40);
+	testOperator1("getLowestSetBit", $(["1234ffffff0000000000", 16]).negate(), 40);
+}
 
-	test("bitLength 2", () => {
-		expect(s2.bitLength()).toBe(77);
-	});
-
-	test("getLowestSetBit 1", () => {
-		expect(s1.getLowestSetBit()).toBe(40);
-	});
-
-	test("getLowestSetBit 2", () => {
-		expect(s2.getLowestSetBit()).toBe(40);
-	});
-
+{
 	test("shiftLeft, shiftRight", () => {
 		const testFunction = function() {
 			let x = BigInteger.ONE;
@@ -240,7 +170,7 @@ test("toString 3", () => {
 		};
 		expect(testFunction()).toBe(true);
 	});
-
+	
 	test("testBit", () => {
 		const testFunction = function() {
 			const binary_text = "101001000100001000000";
@@ -319,94 +249,38 @@ test("toString 3", () => {
 }
 
 {
-	const s1 = $(["1234ffffff0000000000", 16]);
-	const s2 = s1.negate();
-	const s3 = $(["8765ffffff0000000000", 16]);
-	const s4 = s3.negate();
+	test_count = 0;
+	testOperator2("and", "0x1234ffffff0000000000", $("0x1234ffffff0000000000").negate(), "0x10000000000");
+	testOperator2("and", "0x1234ffffff0000000000", $("0x8765ffffff0000000000"), "0x224ffffff0000000000");
+	testOperator2("and", $("0x1234ffffff0000000000").negate(), $("0x8765ffffff0000000000").negate(), "-0x9775ffffff0000000000");
+}
 
-	test("and 1", () => {
-		expect(
-			s1.and(s2).toString(16) === "10000000000"
-		).toBe(true);
-	});
+{
+	test_count = 0;
+	testOperator2("or", "0x1234ffffff0000000000", $("0x1234ffffff0000000000").negate(), "-0x10000000000");
+	testOperator2("or", "0x1234ffffff0000000000", $("0x8765ffffff0000000000"), "0x9775ffffff0000000000");
+	testOperator2("or", $("0x1234ffffff0000000000").negate(), $("0x8765ffffff0000000000").negate(), "-0x224ffffff0000000000");
+}
 
-	test("and 2", () => {
-		expect(
-			s1.and(s3).toString(16) === "224ffffff0000000000"
-		).toBe(true);
-	});
+{
+	test_count = 0;
+	testOperator2("xor", 123, 456, 435);
+	testOperator2("xor", "0x1234ffffff0000000000", $("0x1234ffffff0000000000").negate(), "-0x20000000000");
+	testOperator2("xor", "0x1234ffffff0000000000", $("0x8765ffffff0000000000"), "0x95510000000000000000");
+	testOperator2("xor", $("0x1234ffffff0000000000").negate(), $("0x8765ffffff0000000000").negate(), "0x95510000000000000000");
+}
 
-	test("and 3", () => {
-		expect(
-			s2.and(s4).toString(16) === "-9775ffffff0000000000"
-		).toBe(true);
-	});
+{
+	test_count = 0;
+	testOperator1("not", "0x1234ffffff0000000000", "-0x1234ffffff0000000001");
+	testOperator1("not", $("0x1234ffffff0000000000").negate(), "0x1234fffffeffffffffff");
+}
 
-	test("or 1", () => {
-		expect(
-			s1.or(s2).toString(16) === "-10000000000"
-		).toBe(true);
-	});
-
-	test("or 2", () => {
-		expect(
-			s1.or(s3).toString(16) === "9775ffffff0000000000"
-		).toBe(true);
-	});
-
-	test("or 3", () => {
-		expect(
-			s2.or(s4).toString(16) === "-224ffffff0000000000"
-		).toBe(true);
-	});
-
-	test("xor 1", () => {
-		expect(
-			s1.xor(s2).toString(16) === "-20000000000000000000"
-		).toBe(true);
-	});
-
-	test("xor 2", () => {
-		expect(
-			s1.xor(s3).toString(16) === "0"
-		).toBe(true);
-	});
-
-	test("xor 3", () => {
-		expect(
-			s2.xor(s4).toString(16) === "0"
-		).toBe(true);
-	});
-
-	test("not 1", () => {
-		expect(
-			s1.not().toString(16) === "-1234ffffff0000000001"
-		).toBe(true);
-	});
-
-	test("not 2", () => {
-		expect(
-			s2.not().toString(16) === "1234fffffeffffffffff"
-		).toBe(true);
-	});
-
-	test("andNot 1", () => {
-		expect(
-			s1.andNot(s2).toString(16) === "1234fffffe0000000000"
-		).toBe(true);
-	});
-
-	test("andNot 2", () => {
-		expect(
-			s1.andNot(s3).toString(16) === "10100000000000000000"
-		).toBe(true);
-	});
-
-	test("andNot 3", () => {
-		expect(
-			s2.andNot(s4).toString(16) === "85410000000000000000"
-		).toBe(true);
-	});
+{
+	test_count = 0;
+	testOperator2("andNot", "0x1234ffffff0000000000", $("0x1234ffffff0000000000").negate(), "0x1234fffffe0000000000");
+	testOperator2("andNot", "0x1234ffffff0000000000", $("0x8765ffffff0000000000"), "0x10100000000000000000");
+	testOperator2("andNot", $("0x1234ffffff0000000000").negate(), $("0x8765ffffff0000000000").negate(), "0x85410000000000000000");
 }
 
 {

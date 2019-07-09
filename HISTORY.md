@@ -1,5 +1,10 @@
 # History
 
+## v0.1.XX
+- BigInteger and,or,xorの計算後にequalsの結果が誤る場合がある問題を修正
+- BigInteger xorの計算結果が異常な値になっていた問題を修正
+- BigInteger テストケース見直し
+
 ## v0.1.13
 - BigInteger の引数で「12300e-1」の文字列でも初期化ができるように修正。
 - ドキュメント（jsdoc）をリファクタリング。記載誤りの修正。
