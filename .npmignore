@@ -1,9 +1,13 @@
 /node_modules/
 /npm-debug.log
 /out/
-/docs/ast/
+/html/
+/docs/
+/.vscode/
 .DS_Store
 Thumbs.db
 *.bak
 jest.config.js
 .npmrc
+.babelrc
+.eslintrc

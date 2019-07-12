@@ -1,6 +1,6 @@
 # History
 
-## v0.1.XX
+## v0.1.14
 - BigInteger and,or,xorの計算後にequalsの結果が誤る場合がある問題を修正
 - BigInteger xorの計算結果が異常な値になっていた問題を修正
 - BigInteger テストケース見直し
