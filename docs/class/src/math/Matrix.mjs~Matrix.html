@@ -33,6 +33,7 @@
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigDecimal.mjs~BigDecimal.html">BigDecimal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.mjs~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
@@ -1971,6 +1972,122 @@
         
         
         <div data-ice="description"><p>Divide.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html#instance-method-dotdiv">dotdiv</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Division for each element of matrix.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html#instance-method-dotinv">dotinv</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Inverse of each element of matrix.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html#instance-method-dotmul">dotmul</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Multiplication for each element of matrix.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html#instance-method-dotpow">dotpow</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Power function for each element of the matrix.</p>
 </div>
       </div>
     </td>
@@ -4230,7 +4347,7 @@
         </p>
       </div>
       <div>
-        
+        <div class="deprecated" data-ice="deprecated">this method was deprecated. use the dotdiv.</div>
         
         <div data-ice="description"><p>Division for each element of matrix.</p>
 </div>
@@ -4288,7 +4405,7 @@
         </p>
       </div>
       <div>
-        
+        <div class="deprecated" data-ice="deprecated">this method was deprecated. use the dotinv.</div>
         
         <div data-ice="description"><p>Inverse of each element of matrix.</p>
 </div>
@@ -4317,7 +4434,7 @@
         </p>
       </div>
       <div>
-        
+        <div class="deprecated" data-ice="deprecated">this method was deprecated. use the dotmul.</div>
         
         <div data-ice="description"><p>Multiplication for each element of matrix.</p>
 </div>
@@ -4491,7 +4608,7 @@
         </p>
       </div>
       <div>
-        
+        <div class="deprecated" data-ice="deprecated">this method was deprecated. use the dotpow.</div>
         
         <div data-ice="description"><p>Power function for each element of the matrix.</p>
 </div>
@@ -6288,7 +6405,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2600">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2639">source</a></span></span>
     </span>
   </h3>
 
@@ -6614,7 +6731,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3506">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3545">source</a></span></span>
     </span>
   </h3>
 
@@ -6696,7 +6813,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3496">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3535">source</a></span></span>
     </span>
   </h3>
 
@@ -7177,7 +7294,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3486">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3525">source</a></span></span>
     </span>
   </h3>
 
@@ -8240,7 +8357,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2827">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2866">source</a></span></span>
     </span>
   </h3>
 
@@ -8297,7 +8414,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2081">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2120">source</a></span></span>
     </span>
   </h3>
 
@@ -8427,7 +8544,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1921">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1960">source</a></span></span>
     </span>
   </h3>
 
@@ -8484,7 +8601,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2172">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2211">source</a></span></span>
     </span>
   </h3>
 
@@ -8544,7 +8661,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2185">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2224">source</a></span></span>
     </span>
   </h3>
 
@@ -8622,7 +8739,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3001">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3040">source</a></span></span>
     </span>
   </h3>
 
@@ -8694,7 +8811,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3022">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3061">source</a></span></span>
     </span>
   </h3>
 
@@ -8772,7 +8889,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3012">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3051">source</a></span></span>
     </span>
   </h3>
 
@@ -8858,7 +8975,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3042">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3081">source</a></span></span>
     </span>
   </h3>
 
@@ -8936,7 +9053,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3032">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3071">source</a></span></span>
     </span>
   </h3>
 
@@ -9014,7 +9131,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2206">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2245">source</a></span></span>
     </span>
   </h3>
 
@@ -9071,7 +9188,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3171">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3210">source</a></span></span>
     </span>
   </h3>
 
@@ -9144,7 +9261,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3180">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3219">source</a></span></span>
     </span>
   </h3>
 
@@ -9217,7 +9334,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3162">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3201">source</a></span></span>
     </span>
   </h3>
 
@@ -9290,7 +9407,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2613">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2652">source</a></span></span>
     </span>
   </h3>
 
@@ -9369,7 +9486,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2579">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2618">source</a></span></span>
     </span>
   </h3>
 
@@ -9662,7 +9779,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2569">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2608">source</a></span></span>
     </span>
   </h3>
 
@@ -9736,7 +9853,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2560">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2599">source</a></span></span>
     </span>
   </h3>
 
@@ -9883,7 +10000,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2091">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2130">source</a></span></span>
     </span>
   </h3>
 
@@ -9940,7 +10057,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3455">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3494">source</a></span></span>
     </span>
   </h3>
 
@@ -10012,7 +10129,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3356">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3395">source</a></span></span>
     </span>
   </h3>
 
@@ -10084,7 +10201,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2151">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2190">source</a></span></span>
     </span>
   </h3>
 
@@ -10141,7 +10258,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3338">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3377">source</a></span></span>
     </span>
   </h3>
 
@@ -10213,7 +10330,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2819">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2858">source</a></span></span>
     </span>
   </h3>
 
@@ -10270,7 +10387,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3405">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3444">source</a></span></span>
     </span>
   </h3>
 
@@ -10343,7 +10460,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3438">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3477">source</a></span></span>
     </span>
   </h3>
 
@@ -10399,7 +10516,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2443">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2482">source</a></span></span>
     </span>
   </h3>
 
@@ -10473,7 +10590,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2434">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2473">source</a></span></span>
     </span>
   </h3>
 
@@ -10700,6 +10817,282 @@ If vector, generate a matrix with diagonal elements.</p>
         <tr>
           <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
           <td class="return-desc" data-ice="returnDescription"><p>A / B</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-dotdiv">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">dotdiv</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1846">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Division for each element of matrix.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>A ./ B</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-dotinv">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">dotinv</span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1865">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Inverse of each element of matrix.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>1 ./ A</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-dotmul">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">dotmul</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1826">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Multiplication for each element of matrix.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>A .* B</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-dotpow">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">dotpow</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1878">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Power function for each element of the matrix.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>A .^ B</p>
 </td>
         </tr>
       </tbody>
@@ -11121,7 +11514,7 @@ The arguments of the method can switch the direction of the matrix to be execute
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2905">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2944">source</a></span></span>
     </span>
   </h3>
 
@@ -11264,7 +11657,7 @@ The arguments of the method can switch the direction of the matrix to be execute
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3067">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3106">source</a></span></span>
     </span>
   </h3>
 
@@ -11320,7 +11713,7 @@ The arguments of the method can switch the direction of the matrix to be execute
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3075">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3114">source</a></span></span>
     </span>
   </h3>
 
@@ -11376,7 +11769,7 @@ The arguments of the method can switch the direction of the matrix to be execute
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2511">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2550">source</a></span></span>
     </span>
   </h3>
 
@@ -11457,7 +11850,7 @@ The arguments of the method can switch the direction of the matrix to be execute
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2501">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2540">source</a></span></span>
     </span>
   </h3>
 
@@ -11538,7 +11931,7 @@ The arguments of the method can switch the direction of the matrix to be execute
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2131">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2170">source</a></span></span>
     </span>
   </h3>
 
@@ -11595,7 +11988,7 @@ The arguments of the method can switch the direction of the matrix to be execute
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3050">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3089">source</a></span></span>
     </span>
   </h3>
 
@@ -11651,7 +12044,7 @@ The arguments of the method can switch the direction of the matrix to be execute
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3201">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3240">source</a></span></span>
     </span>
   </h3>
 
@@ -11731,7 +12124,7 @@ The arguments of the method can switch the direction of the matrix to be execute
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3378">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3417">source</a></span></span>
     </span>
   </h3>
 
@@ -11804,7 +12197,7 @@ The arguments of the method can switch the direction of the matrix to be execute
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3422">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3461">source</a></span></span>
     </span>
   </h3>
 
@@ -11860,7 +12253,7 @@ The arguments of the method can switch the direction of the matrix to be execute
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3516">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3555">source</a></span></span>
     </span>
   </h3>
 
@@ -11933,7 +12326,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3211">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3250">source</a></span></span>
     </span>
   </h3>
 
@@ -12013,7 +12406,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2226">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2265">source</a></span></span>
     </span>
   </h3>
 
@@ -12070,7 +12463,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2694">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2733">source</a></span></span>
     </span>
   </h3>
 
@@ -12143,7 +12536,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2677">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2716">source</a></span></span>
     </span>
   </h3>
 
@@ -12200,7 +12593,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2685">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2724">source</a></span></span>
     </span>
   </h3>
 
@@ -12257,7 +12650,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2196">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2235">source</a></span></span>
     </span>
   </h3>
 
@@ -12314,7 +12707,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3191">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3230">source</a></span></span>
     </span>
   </h3>
 
@@ -12397,7 +12790,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2236">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2275">source</a></span></span>
     </span>
   </h3>
 
@@ -12454,7 +12847,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2982">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3021">source</a></span></span>
     </span>
   </h3>
 
@@ -12534,7 +12927,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2992">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3031">source</a></span></span>
     </span>
   </h3>
 
@@ -12614,7 +13007,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2952">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2991">source</a></span></span>
     </span>
   </h3>
 
@@ -12670,7 +13063,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2962">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3001">source</a></span></span>
     </span>
   </h3>
 
@@ -12750,7 +13143,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2944">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2983">source</a></span></span>
     </span>
   </h3>
 
@@ -12806,7 +13199,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2972">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3011">source</a></span></span>
     </span>
   </h3>
 
@@ -12886,7 +13279,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3265">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3304">source</a></span></span>
     </span>
   </h3>
 
@@ -13239,7 +13632,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3414">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3453">source</a></span></span>
     </span>
   </h3>
 
@@ -13312,7 +13705,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3446">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3485">source</a></span></span>
     </span>
   </h3>
 
@@ -13368,7 +13761,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3387">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3426">source</a></span></span>
     </span>
   </h3>
 
@@ -13441,7 +13834,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3430">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3469">source</a></span></span>
     </span>
   </h3>
 
@@ -13497,7 +13890,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1911">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1950">source</a></span></span>
     </span>
   </h3>
 
@@ -13554,7 +13947,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2713">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2752">source</a></span></span>
     </span>
   </h3>
 
@@ -13632,7 +14025,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2837">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2876">source</a></span></span>
     </span>
   </h3>
 
@@ -13713,7 +14106,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2924">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2963">source</a></span></span>
     </span>
   </h3>
 
@@ -15128,7 +15521,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2869">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2908">source</a></span></span>
     </span>
   </h3>
 
@@ -15202,7 +15595,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2121">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2160">source</a></span></span>
     </span>
   </h3>
 
@@ -15259,7 +15652,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2860">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2899">source</a></span></span>
     </span>
   </h3>
 
@@ -15321,7 +15714,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2849">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2888">source</a></span></span>
     </span>
   </h3>
 
@@ -15384,7 +15777,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3320">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3359">source</a></span></span>
     </span>
   </h3>
 
@@ -15456,7 +15849,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3220">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3259">source</a></span></span>
     </span>
   </h3>
 
@@ -15529,7 +15922,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3247">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3286">source</a></span></span>
     </span>
   </h3>
 
@@ -15601,7 +15994,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3274">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3313">source</a></span></span>
     </span>
   </h3>
 
@@ -15673,7 +16066,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3229">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3268">source</a></span></span>
     </span>
   </h3>
 
@@ -15746,7 +16139,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3283">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3322">source</a></span></span>
     </span>
   </h3>
 
@@ -15818,7 +16211,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3293">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3332">source</a></span></span>
     </span>
   </h3>
 
@@ -15966,7 +16359,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3059">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3098">source</a></span></span>
     </span>
   </h3>
 
@@ -16038,12 +16431,12 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1846">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1909">source</a></span></span>
     </span>
   </h3>
 
   
-  
+  <div class="deprecated" data-ice="deprecated">this method was deprecated. use the dotdiv.</div>
   
   <div data-ice="description"><p>Division for each element of matrix.</p>
 </div>
@@ -16111,7 +16504,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2101">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2140">source</a></span></span>
     </span>
   </h3>
 
@@ -16168,12 +16561,12 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1865">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1918">source</a></span></span>
     </span>
   </h3>
 
   
-  
+  <div class="deprecated" data-ice="deprecated">this method was deprecated. use the dotinv.</div>
   
   <div data-ice="description"><p>Inverse of each element of matrix.</p>
 </div>
@@ -16225,12 +16618,12 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1826">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1899">source</a></span></span>
     </span>
   </h3>
 
   
-  
+  <div class="deprecated" data-ice="deprecated">this method was deprecated. use the dotmul.</div>
   
   <div data-ice="description"><p>Multiplication for each element of matrix.</p>
 </div>
@@ -16371,7 +16764,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3347">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3386">source</a></span></span>
     </span>
   </h3>
 
@@ -16443,7 +16836,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3095">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3134">source</a></span></span>
     </span>
   </h3>
 
@@ -16525,7 +16918,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3105">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3144">source</a></span></span>
     </span>
   </h3>
 
@@ -16607,7 +17000,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3085">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3124">source</a></span></span>
     </span>
   </h3>
 
@@ -16689,12 +17082,12 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1878">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1928">source</a></span></span>
     </span>
   </h3>
 
   
-  
+  <div class="deprecated" data-ice="deprecated">this method was deprecated. use the dotpow.</div>
   
   <div data-ice="description"><p>Power function for each element of the matrix.</p>
 </div>
@@ -16762,7 +17155,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2932">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2971">source</a></span></span>
     </span>
   </h3>
 
@@ -16896,7 +17289,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3396">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3435">source</a></span></span>
     </span>
   </h3>
 
@@ -16969,7 +17362,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3256">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3295">source</a></span></span>
     </span>
   </h3>
 
@@ -17041,7 +17434,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2880">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2919">source</a></span></span>
     </span>
   </h3>
 
@@ -17233,7 +17626,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1901">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1940">source</a></span></span>
     </span>
   </h3>
 
@@ -17290,7 +17683,7 @@ Each element of the matrix is composed of complex numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2647">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2686">source</a></span></span>
     </span>
   </h3>
 
@@ -17372,7 +17765,7 @@ The number of elements in the matrix doesn&apos;t increase or decrease.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2389">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2428">source</a></span></span>
     </span>
   </h3>
 
@@ -17454,7 +17847,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2636">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2675">source</a></span></span>
     </span>
   </h3>
 
@@ -17533,7 +17926,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2332">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2371">source</a></span></span>
     </span>
   </h3>
 
@@ -17607,7 +18000,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2216">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2255">source</a></span></span>
     </span>
   </h3>
 
@@ -17759,7 +18152,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1932">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1971">source</a></span></span>
     </span>
   </h3>
 
@@ -17819,7 +18212,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2141">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2180">source</a></span></span>
     </span>
   </h3>
 
@@ -17876,7 +18269,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2246">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2285">source</a></span></span>
     </span>
   </h3>
 
@@ -17990,7 +18383,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3329">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3368">source</a></span></span>
     </span>
   </h3>
 
@@ -18062,7 +18455,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3365">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3404">source</a></span></span>
     </span>
   </h3>
 
@@ -18134,7 +18527,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2111">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2150">source</a></span></span>
     </span>
   </h3>
 
@@ -18191,7 +18584,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3311">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3350">source</a></span></span>
     </span>
   </h3>
 
@@ -18336,7 +18729,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3238">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3277">source</a></span></span>
     </span>
   </h3>
 
@@ -18408,7 +18801,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2916">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2955">source</a></span></span>
     </span>
   </h3>
 
@@ -18470,7 +18863,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2161">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2200">source</a></span></span>
     </span>
   </h3>
 
@@ -18527,7 +18920,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3123">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3162">source</a></span></span>
     </span>
   </h3>
 
@@ -18600,7 +18993,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3144">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3183">source</a></span></span>
     </span>
   </h3>
 
@@ -18684,7 +19077,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1992">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2031">source</a></span></span>
     </span>
   </h3>
 
@@ -18761,7 +19154,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1956">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1995">source</a></span></span>
     </span>
   </h3>
 
@@ -18838,7 +19231,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2071">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2110">source</a></span></span>
     </span>
   </h3>
 
@@ -18898,7 +19291,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2060">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2099">source</a></span></span>
     </span>
   </h3>
 
@@ -18958,7 +19351,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1944">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1983">source</a></span></span>
     </span>
   </h3>
 
@@ -19035,7 +19428,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2015">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2054">source</a></span></span>
     </span>
   </h3>
 
@@ -19095,7 +19488,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2038">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2077">source</a></span></span>
     </span>
   </h3>
 
@@ -19155,7 +19548,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2049">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2088">source</a></span></span>
     </span>
   </h3>
 
@@ -19215,7 +19608,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1980">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2019">source</a></span></span>
     </span>
   </h3>
 
@@ -19292,7 +19685,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2027">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2066">source</a></span></span>
     </span>
   </h3>
 
@@ -19352,7 +19745,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2004">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2043">source</a></span></span>
     </span>
   </h3>
 
@@ -19429,7 +19822,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber1968">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2007">source</a></span></span>
     </span>
   </h3>
 
@@ -19506,7 +19899,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3132">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3171">source</a></span></span>
     </span>
   </h3>
 
@@ -19579,7 +19972,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3153">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3192">source</a></span></span>
     </span>
   </h3>
 
@@ -19764,7 +20157,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3114">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3153">source</a></span></span>
     </span>
   </h3>
 
@@ -19895,7 +20288,7 @@ Sum of diagonal elements.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2804">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2843">source</a></span></span>
     </span>
   </h3>
 
@@ -19952,7 +20345,7 @@ Sum of diagonal elements.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2893">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2932">source</a></span></span>
     </span>
   </h3>
 
@@ -20016,7 +20409,7 @@ Sum of diagonal elements.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3302">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3341">source</a></span></span>
     </span>
   </h3>
 
@@ -20088,7 +20481,7 @@ Sum of diagonal elements.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3465">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber3504">source</a></span></span>
     </span>
   </h3>
 
@@ -20210,7 +20603,7 @@ Sum of diagonal elements.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2542">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2581">source</a></span></span>
     </span>
   </h3>
 
@@ -20284,7 +20677,7 @@ Sum of diagonal elements.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2521">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2560">source</a></span></span>
     </span>
   </h3>
 
@@ -20358,7 +20751,7 @@ Sum of diagonal elements.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2416">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2455">source</a></span></span>
     </span>
   </h3>
 
@@ -20432,7 +20825,7 @@ Sum of diagonal elements.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2399">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2438">source</a></span></span>
     </span>
   </h3>
 
@@ -20580,7 +20973,7 @@ Sum of diagonal elements.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2477">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2516">source</a></span></span>
     </span>
   </h3>
 
@@ -20661,7 +21054,7 @@ Sum of diagonal elements.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2454">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2493">source</a></span></span>
     </span>
   </h3>
 
@@ -20742,7 +21135,7 @@ Sum of diagonal elements.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2344">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2383">source</a></span></span>
     </span>
   </h3>
 
@@ -20824,7 +21217,7 @@ Initialized with 0 when expanding.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2265">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Matrix.mjs.html#lineNumber2304">source</a></span></span>
     </span>
   </h3>
 

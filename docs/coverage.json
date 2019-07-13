@@ -1,7 +1,7 @@
 {
-  "coverage": "100%",
-  "expectCount": 757,
-  "actualCount": 757,
+  "coverage": "99.61%",
+  "expectCount": 770,
+  "actualCount": 767,
   "files": {
     "src/konpeito.mjs": {
       "expectCount": 8,
@@ -33,9 +33,18 @@
       "actualCount": 37,
       "undocumentLines": []
     },
+    "src/math/Fraction.mjs": {
+      "expectCount": 9,
+      "actualCount": 6,
+      "undocumentLines": [
+        16,
+        195,
+        197
+      ]
+    },
     "src/math/Matrix.mjs": {
-      "expectCount": 224,
-      "actualCount": 224,
+      "expectCount": 228,
+      "actualCount": 228,
       "undocumentLines": []
     },
     "src/math/tools/LinearAlgebra.mjs": {

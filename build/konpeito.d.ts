@@ -45,13 +45,13 @@ declare class konpeito {
 
 /**
  * Create an arbitrary-precision floating-point number.
- * When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
- * When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
- * default_context
+ * - When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
+ * - When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
+ *
+ * Description of the settings are as follows, you can also omitted.
  * - The "scale" is an integer scale factor.
  * - The "default_context" is the used when no environment settings are specified during calculation.
  * - The "context" is used to normalize the created floating point.
- * These 3 settings can be omitted.
  * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
  */
 declare class BigDecimal {
@@ -1518,6 +1518,14 @@ declare class RoundingMode {
 }
 
 /**
+ * Create an fraction.
+ * @param {BigInteger|number|string|Array<string|number>|Object} [number] - Numeric data. See how to use the function.
+ */
+declare class Fraction {
+    constructor(number?: BigInteger | number | string | (string | number)[] | any);
+}
+
+/**
  * Create a complex matrix.
  * Initialization can be performed as follows.
  * - 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
@@ -1926,22 +1934,49 @@ declare class Matrix {
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
      * @returns {Matrix} A .* B
      */
-    nmul(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    dotmul(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Division for each element of matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
      * @returns {Matrix} A ./ B
      */
+    dotdiv(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    /**
+     * Inverse of each element of matrix.
+     * @returns {Matrix} 1 ./ A
+     */
+    dotinv(): Matrix;
+    /**
+     * Power function for each element of the matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+     * @returns {Matrix} A .^ B
+     */
+    dotpow(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    /**
+     * Multiplication for each element of matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+     * @returns {Matrix} A .* B
+     * @deprecated use the dotmul.
+     */
+    nmul(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    /**
+     * Division for each element of matrix.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+     * @returns {Matrix} A ./ B
+     * @deprecated use the dotdiv.
+     */
     ndiv(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Inverse of each element of matrix.
      * @returns {Matrix} 1 ./ A
+     * @deprecated use the dotinv.
      */
     ninv(): Matrix;
     /**
      * Power function for each element of the matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
      * @returns {Matrix} A .^ B
+     * @deprecated use the dotpow.
      */
     npow(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**

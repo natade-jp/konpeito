@@ -7182,10 +7182,10 @@
 		var order = Statistics.moment(X, { correction : cor, dimension : dim, nth_order : 3  });
 		var std = Statistics.std(X, { correction : cor, dimension : dim });
 		if(cor === 1) {
-			return order.ndiv(std.npow(3));
+			return order.dotdiv(std.dotpow(3));
 		}
 		else {
-			return order.ndiv(std.npow(3)).nmul(2);
+			return order.dotdiv(std.dotpow(3)).dotmul(2);
 		}
 	};
 
@@ -7237,7 +7237,7 @@
 	Statistics.normalize = function normalize (x, type) {
 		var X = Matrix._toMatrix(x);
 		var mean_zero = X.sub(Statistics.mean(X, type));
-		var std_one = mean_zero.ndiv(Statistics.std(mean_zero, type));
+		var std_one = mean_zero.dotdiv(Statistics.std(mean_zero, type));
 		return std_one;
 	};
 
@@ -10270,7 +10270,7 @@
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 		 * @returns {Matrix} A .* B
 		 */
-	Matrix.prototype.nmul = function nmul (number) {
+	Matrix.prototype.dotmul = function dotmul (number) {
 		var M1 = this;
 		var M2 = Matrix._toMatrix(number);
 		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
@@ -10290,7 +10290,7 @@
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 		 * @returns {Matrix} A ./ B
 		 */
-	Matrix.prototype.ndiv = function ndiv (number) {
+	Matrix.prototype.dotdiv = function dotdiv (number) {
 		var M1 = this;
 		var M2 = Matrix._toMatrix(number);
 		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
@@ -10309,7 +10309,7 @@
 		 * Inverse of each element of matrix.
 		 * @returns {Matrix} 1 ./ A
 		 */
-	Matrix.prototype.ninv = function ninv () {
+	Matrix.prototype.dotinv = function dotinv () {
 		var M1 = this;
 		var x1 = M1.matrix_array;
 		return Matrix.createMatrixDoEachCalculation(function(row, col) {
@@ -10322,7 +10322,7 @@
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 		 * @returns {Matrix} A .^ B
 		 */
-	Matrix.prototype.npow = function npow (number) {
+	Matrix.prototype.dotpow = function dotpow (number) {
 		var M1 = this;
 		var M2 = Matrix._toMatrix(number);
 		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
@@ -10335,6 +10335,45 @@
 		return Matrix.createMatrixDoEachCalculation(function(row, col) {
 			return x1[row % M1.row_length][col % M1.column_length].pow(x2[row % M2.row_length][col % M2.column_length]);
 		}, y_row_length, y_column_length);
+	};
+
+	/**
+		 * Multiplication for each element of matrix.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+		 * @returns {Matrix} A .* B
+		 * @deprecated use the dotmul.
+		 */
+	Matrix.prototype.nmul = function nmul (number) {
+		return this.dotmul(number);
+	};
+
+	/**
+		 * Division for each element of matrix.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+		 * @returns {Matrix} A ./ B
+		 * @deprecated use the dotdiv.
+		 */
+	Matrix.prototype.ndiv = function ndiv (number) {
+		return this.dotdiv(number);
+	};
+
+	/**
+		 * Inverse of each element of matrix.
+		 * @returns {Matrix} 1 ./ A
+		 * @deprecated use the dotinv.
+		 */
+	Matrix.prototype.ninv = function ninv () {
+		return this.dotinv();
+	};
+
+	/**
+		 * Power function for each element of the matrix.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+		 * @returns {Matrix} A .^ B
+		 * @deprecated use the dotpow.
+		 */
+	Matrix.prototype.npow = function npow (number) {
+		return this.dotpow(number);
 	};
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆

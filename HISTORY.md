@@ -1,6 +1,7 @@
 # History
 
-## v0.1.X
+## v0.1.15
+- ignoreリストを見直し
 - Matrix nmul, ndiv, ninv, npow を廃止予定にし、dotmul, dotdiv, dotinv, dotpow を追加
 
 ## v0.1.14

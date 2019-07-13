@@ -18,6 +18,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "konpeito/src/math/fraction.mjs~fraction",
+    "class/src/math/Fraction.mjs~Fraction.html",
+    "<span>Fraction</span> <span class=\"search-result-import-path\">konpeito/src/math/Fraction.mjs</span>",
+    "class"
+  ],
+  [
     "konpeito/src/math/tools/linearalgebra.mjs~linearalgebra",
     "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html",
     "<span>LinearAlgebra</span> <span class=\"search-result-import-path\">konpeito/src/math/tools/LinearAlgebra.mjs</span>",
@@ -1560,6 +1566,30 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/fraction.mjs",
+    "file/src/math/Fraction.mjs.html",
+    "src/math/Fraction.mjs",
+    "file"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#constructor",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-constructor-constructor",
+    "src/math/Fraction.mjs~Fraction#constructor",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#denominator",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-member-denominator",
+    "src/math/Fraction.mjs~Fraction#denominator",
+    "member"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#numerator",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-member-numerator",
+    "src/math/Fraction.mjs~Fraction#numerator",
+    "member"
+  ],
+  [
     "src/math/matrix.mjs",
     "file/src/math/Matrix.mjs.html",
     "src/math/Matrix.mjs",
@@ -1851,6 +1881,30 @@ window.esdocSearchIndex = [
     "src/math/matrix.mjs~matrix#div",
     "class/src/math/Matrix.mjs~Matrix.html#instance-method-div",
     "src/math/Matrix.mjs~Matrix#div",
+    "method"
+  ],
+  [
+    "src/math/matrix.mjs~matrix#dotdiv",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-dotdiv",
+    "src/math/Matrix.mjs~Matrix#dotdiv",
+    "method"
+  ],
+  [
+    "src/math/matrix.mjs~matrix#dotinv",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-dotinv",
+    "src/math/Matrix.mjs~Matrix#dotinv",
+    "method"
+  ],
+  [
+    "src/math/matrix.mjs~matrix#dotmul",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-dotmul",
+    "src/math/Matrix.mjs~Matrix#dotmul",
+    "method"
+  ],
+  [
+    "src/math/matrix.mjs~matrix#dotpow",
+    "class/src/math/Matrix.mjs~Matrix.html#instance-method-dotpow",
+    "src/math/Matrix.mjs~Matrix#dotpow",
     "method"
   ],
   [
