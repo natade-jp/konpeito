@@ -6,12 +6,21 @@ const $ = BigInteger.create;
 
 let test_count = 0;
 
-const testNew = function(x, y) {
+const testEQ = function(operator, x, y) {
 	test_count++;
 	const X = $(x);
 	const Y = $(y);
-	const testname = "equals " + test_count + " $(" + x + ")";
+	const testname = operator + " " + test_count + " $(" + x + ")";
 	const out = $(X).equals(Y);
+	test(testname, () => { expect(out).toBe(true); });
+};
+
+const testBool = function(operator, x, y) {
+	test_count++;
+	const X = $(x);
+	const Y = X[operator]();
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y;
+	const out = Y === y;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -45,21 +54,25 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 
 {
 	test_count = 0;
-	testNew("1000", 1000);
-	testNew("-1000", -1000);
-	testNew("123e10", 123e10);
-	testNew("-123e10", -123e10);
-	testNew("12.3e10", 12.3e10);
-	testNew("-12.3e10", -12.3e10);
-	testNew("12.3e10", "1.23e11");
-	testNew("12300e-1", "123e+1");
-	testNew("0x1234", 0x1234);
-	testNew("-0x1234", -0x1234);
-	testNew(["1234ffffff0000000000", 16], "85980274126460708454400");
-	testNew("0x1234ffffff0000000000", "85980274126460708454400");
-	testNew("0b101001000100001000000", "1345600");
-	testNew($(1234567890).longValue, 1234567890);
-	testNew($(-1234567890).longValue, -1234567890);
+	testEQ("new", "1000", 1000);
+	testEQ("new", "-1000", -1000);
+	testEQ("new", "123e10", 123e10);
+	testEQ("new", "-123e10", -123e10);
+	testEQ("new", "12.3e10", 12.3e10);
+	testEQ("new", "-12.3e10", -12.3e10);
+	testEQ("new", "12.3e10", "1.23e11");
+	testEQ("new", "12300e-1", "123e+1");
+	testEQ("new", "0x1234", 0x1234);
+	testEQ("new", "-0x1234", -0x1234);
+	testEQ("new", ["1234ffffff0000000000", 16], "85980274126460708454400");
+	testEQ("new", "0x1234ffffff0000000000", "85980274126460708454400");
+	testEQ("new", "0b101001000100001000000", "1345600");
+}
+
+{
+	test_count = 0;
+	testEQ("longValue", $(1234567890).longValue, 1234567890);
+	testEQ("longValue", $(-1234567890).longValue, -1234567890);
 }
 
 {
@@ -350,66 +363,54 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 }
 
 {
-	test("compareTo 1", () => {
-		expect(
-			$(12345678).compareTo(1234567)
-		).toBe(1);
-	});
-
-	test("compareTo 2", () => {
-		expect(
-			$(12345678).compareTo(12345678)
-		).toBe(0);
-	});
-
-	test("compareTo 3", () => {
-		expect(
-			$(12345678).compareTo(123456789)
-		).toBe(-1);
-	});
+	test_count = 0;
+	testOperator2("compareTo", 12345678, 1234567, 1);
+	testOperator2("compareTo", 12345678, 12345678, 0);
+	testOperator2("compareTo", 12345678, 123456789, -1);
 }
 
-test("gcd", () => {
-	expect(
-		$(12).gcd(18).equals(6)
-	).toBe(true);
-});
+{
+	test_count = 0;
+	testOperator2("gcd", 12, 18, 6);
+	testOperator2("gcd", 18, 12, 6);
+}
 
-test("pow", () => {
-	expect(
-		$(2).pow(100).equals("0x10000000000000000000000000")
-	).toBe(true);
-});
+{
+	test_count = 0;
+	testEQ("extgcd", $(12).extgcd(7)[0], 3);
+	testEQ("extgcd", $(12).extgcd(7)[1], -5);
+	testEQ("extgcd", $(12).extgcd(7)[2], 1);
+	testEQ("extgcd", $(12).extgcd(78)[0], -6);
+	testEQ("extgcd", $(12).extgcd(78)[1], 1);
+	testEQ("extgcd", $(12).extgcd(78)[2], 6);
+}
 
-test("modPow 1", () => {
-	expect(
-		$(-324).modPow($(123), $(55)).equals(51)
-	).toBe(true);
-});
+{
+	test_count = 0;
+	testOperator2("lcm", 63, 30, 630);
+}
 
-test("modPow 2", () => {
-	expect(
-		$("14123999253219").modPow($("70276475859277"), $("86706662670157")).equals("285102795107")
-	).toBe(true);
-});
+{
+	test_count = 0;
+	testOperator2("pow", 2, 100, "0x10000000000000000000000000");
+}
 
-test("modInverse 1", () => {
-	expect(
-		$(15).modInverse(4).equals(3)
-	).toBe(true);
-});
+{
+	test_count = 0;
+	testOperator3("modPow", -324, 123, 55, 51);
+	testOperator3("modPow", "14123999253219", "70276475859277", "86706662670157", "285102795107");
+}
 
-test("modInverse 2", () => {
-	expect(
-		$(19).modInverse(41).equals(13)
-	).toBe(true);
-});
+{
+	test_count = 0;
+	testOperator2("modInverse", 15, 4, 3);
+	testOperator2("modInverse", 19, 41, 13);
+}
 
-test("factorial", () => {
-	expect(
-		$(50).factorial().toString(16) === "49eebc961ed279b02b1ef4f28d19a84f5973a1d2c7800000000000"
-	).toBe(true);
-});
+{
+	test_count = 0;
+	testOperator1("factorial", 50, "0x49eebc961ed279b02b1ef4f28d19a84f5973a1d2c7800000000000");
+}
 
 {
 	test_count = 0;
@@ -420,4 +421,51 @@ test("factorial", () => {
 	testOperator3("clip", "-20", "-25", "-15", "-20");
 	testOperator3("clip", "-30", "-25", "-15", "-25");
 }
+
+{
+	test_count = 0;
+	testOperator2("scaleByPowerOfTen", "123456789", 1, "1234567890");
+	testOperator2("scaleByPowerOfTen", "123456789", 0, "123456789");
+	testOperator2("scaleByPowerOfTen", "123456789", -2, "1234567");
+	testOperator2("scaleByPowerOfTen", "-123456789", 3, "-123456789000");
+	testOperator2("scaleByPowerOfTen", "-123456789", 0, "-123456789");
+	testOperator2("scaleByPowerOfTen", "-123456789", -4, "-12345");
+}
+
+{
+	test_count = 0;
+	testBool("isZero", 1, false);
+	testBool("isZero", 0, true);
+	testBool("isZero", -1, false);
+}
+
+{
+	test_count = 0;
+	testBool("isOne", 1, true);
+	testBool("isOne", 0, false);
+	testBool("isOne", -1, false);
+}
+
+{
+	test_count = 0;
+	testBool("isPositive", 1, true);
+	testBool("isPositive", 0, false);
+	testBool("isPositive", -1, false);
+}
+
+{
+	test_count = 0;
+	testBool("isNegative", 1, false);
+	testBool("isNegative", 0, false);
+	testBool("isNegative", -1, true);
+}
+
+{
+	test_count = 0;
+	testBool("isNotNegative", 1, true);
+	testBool("isNotNegative", 0, true);
+	testBool("isNotNegative", -1, false);
+}
+
+
 

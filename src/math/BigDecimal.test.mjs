@@ -7,13 +7,50 @@ const $ = BigDecimal.create;
 
 let test_count = 0;
 
+const testEQ = function(operator, x, y) {
+	test_count++;
+	const X = $(x);
+	const Y = $(y);
+	const testname = operator + " " + test_count + " $(" + x + ")";
+	const out = $(X).compareTo(Y) === 0;
+	test(testname, () => { expect(out).toBe(true); });
+};
+
+const testBool = function(operator, x, y) {
+	test_count++;
+	const X = $(x);
+	const Y = X[operator]();
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y;
+	const out = Y === y;
+	test(testname, () => { expect(out).toBe(true); });
+};
+
+
+const testOperator1  = function(operator, x, y) {
+	test_count++;
+	const X = $(x);
+	const Y = X[operator]();
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y;
+	const out = $(Y).compareTo(y) === 0;
+	test(testname, () => { expect(out).toBe(true); });
+};
+
+const testOperator2  = function(operator, x1, x2, y) {
+	test_count++;
+	const X1 = $(x1);
+	const X2 = $(x2);
+	const Y = X1[operator](X2);
+	const testname = operator + " " + test_count + " (" + x1 + ")." + operator + "(" + x2 + ") = " + y;
+	const out = $(Y).compareTo(y) === 0;
+	test(testname, () => { expect(out).toBe(true); });
+};
+
 const testOperator3  = function(operator, x, p1, p2, y) {
 	test_count++;
 	const X = $(x);
 	const Y = X[operator](p1, p2);
-	const Y_str = ""+ Y;
-	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + Y_str;
-	const out = $(Y).equals(y);
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + y;
+	const out = $(Y).compareTo(y) === 0;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -203,4 +240,49 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	testOperator3("clip", "-1.0", "-2.5", "-1.5", "-1.5");
 	testOperator3("clip", "-2.0", "-2.5", "-1.5", "-2.0");
 	testOperator3("clip", "-3.0", "-2.5", "-1.5", "-2.5");
+}
+
+{
+	test_count = 0;
+	testOperator2("scaleByPowerOfTen", "123456789", 1, "1234567890");
+	testOperator2("scaleByPowerOfTen", "123456789", 0, "123456789");
+	testOperator2("scaleByPowerOfTen", "123456789", -2, "1234567.89");
+	testOperator2("scaleByPowerOfTen", "-123456789", 3, "-123456789000");
+	testOperator2("scaleByPowerOfTen", "-123456789", 0, "-123456789");
+	testOperator2("scaleByPowerOfTen", "-123456789", -4, "-12345.6789");
+}
+
+{
+	test_count = 0;
+	testBool("isZero", 1, false);
+	testBool("isZero", 0, true);
+	testBool("isZero", -1, false);
+}
+
+{
+	test_count = 0;
+	testBool("isOne", 1, true);
+	testBool("isOne", 0, false);
+	testBool("isOne", -1, false);
+}
+
+{
+	test_count = 0;
+	testBool("isPositive", 1, true);
+	testBool("isPositive", 0, false);
+	testBool("isPositive", -1, false);
+}
+
+{
+	test_count = 0;
+	testBool("isNegative", 1, false);
+	testBool("isNegative", 0, false);
+	testBool("isNegative", -1, true);
+}
+
+{
+	test_count = 0;
+	testBool("isNotNegative", 1, true);
+	testBool("isNotNegative", 0, true);
+	testBool("isNotNegative", -1, false);
 }

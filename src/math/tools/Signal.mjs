@@ -16,6 +16,13 @@ import Complex from "../Complex.mjs";
 import Matrix from "../Matrix.mjs";
 
 /**
+ * Collection of calculation settings for matrix.
+ * - Available options vary depending on the method.
+ * @typedef {Object} SignalSettings
+ * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
+ */
+
+/**
  * Fast Fourier Transform (FFT) Class.
  * @ignore
  */
@@ -899,7 +906,7 @@ export default class Signal {
 	/**
 	 * Discrete Fourier transform (DFT).
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} fft(x)
 	 */
 	static fft(x, type) {
@@ -925,7 +932,7 @@ export default class Signal {
 	/**
 	 * Inverse discrete Fourier transform (IDFT),
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} ifft(X)
 	 */
 	static ifft(X, type) {
@@ -951,7 +958,7 @@ export default class Signal {
 	/**
 	 * Power spectral density.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} abs(fft(x)).^2
 	 */
 	static powerfft(x, type) {
@@ -977,7 +984,7 @@ export default class Signal {
 	/**
 	 * Discrete cosine transform (DCT-II, DCT).
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} dct(x)
 	 */
 	static dct(x, type) {
@@ -1004,7 +1011,7 @@ export default class Signal {
 	/**
 	 * Inverse discrete cosine transform (DCT-III, IDCT),
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} idct(x)
 	 */
 	static idct(X, type) {
@@ -1213,7 +1220,7 @@ export default class Signal {
 	 * FFT shift.
 	 * Circular shift beginning at the center of the signal.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x 
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static fftshift(x, type) {

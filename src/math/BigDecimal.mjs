@@ -19,6 +19,14 @@ import RoundingMode, {RoundingModeEntity} from "./context/RoundingMode.mjs";
 import MathContext from "./context/MathContext.mjs";
 
 /**
+ * Setting of calculation result of division.
+ * @typedef {Object} BigDecimalDivideType
+ * @property {number} [scale] Scale of rounding.
+ * @property {RoundingModeEntity} [roundingMode] Rounding mode.
+ * @property {MathContext} [context] Configuration.(scale and roundingMode are unnecessary.)
+ */
+
+/**
  * Default MathContext class.
  * Used when MathContext not specified explicitly.
  * @type {MathContext}
@@ -95,11 +103,11 @@ class DecimalTool {
 		}
 		// 浮動小数
 		else {
-			let scale = (Math.log(Math.abs(value)) / Math.log(10)) | 0;
+			let scale = Math.trunc(Math.log(Math.abs(value)) / Math.log(10));
 			let x = value / Math.pow(10, scale);
 			// スケールを逆にする
 			scale = - scale;
-			for(let i = 0; i < 12; i++) {
+			for(let i = 0; i < 14; i++) {
 				x = x * 10;
 				scale = scale + 1;
 				if(Math.abs(x - Math.round(x)) <= Number.EPSILON) {
@@ -354,7 +362,7 @@ export default class BigDecimal {
 	 */
 	static _toInteger(number) {
 		if(typeof number === "number") {
-			return number | 0;
+			return Math.trunc(number);
 		}
 		else if(number instanceof BigInteger) {
 			return number.intValue;
@@ -700,6 +708,46 @@ export default class BigDecimal {
 			const newsrc = src.setScale(tgt._scale);
 			return newsrc.integer.compareTo(tgt.integer);
 		}
+	}
+
+	/**
+	 * this === 0
+	 * @returns {boolean}
+	 */
+	isZero() {
+		return this.compareTo(BigDecimal.ZERO) === 0;
+	}
+	
+	/**
+	 * this === 1
+	 * @returns {boolean}
+	 */
+	isOne() {
+		return this.compareTo(BigDecimal.ONE) === 0;
+	}
+	
+	/**
+	 * this > 0
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		return this.compareTo(BigDecimal.ZERO) === 1;
+	}
+
+	/**
+	 * this < 0
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return this.compareTo(BigDecimal.ZERO) === -1;
+	}
+
+	/**
+	 * this >= 0
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return this.compareTo(BigDecimal.ZERO) >= 0;
 	}
 
 	/**
@@ -1057,7 +1105,7 @@ export default class BigDecimal {
 	/**
 	 * Divide.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @param {BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal}
 	 */
 	divide(number, type) {
@@ -1145,7 +1193,7 @@ export default class BigDecimal {
 	/**
 	 * Divide.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @param {BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal} A / B
 	 */
 	div(number, type) {
@@ -1274,16 +1322,6 @@ export default class BigDecimal {
 	// ----------------------
 	
 	/**
-	 * 0
-	 * @returns {BigDecimal} 0
-	 */
-	static get ZERO() {
-		const x = new BigDecimal(DEFINE.ZERO);
-		x.default_context = DEFAULT_CONTEXT;
-		return x;
-	}
-
-	/**
 	 * 1
 	 * @returns {BigDecimal} 1
 	 */
@@ -1309,6 +1347,26 @@ export default class BigDecimal {
 	 */
 	static get TEN() {
 		const x = new BigDecimal(DEFINE.TEN);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+
+	/**
+	 * 0
+	 * @returns {BigDecimal} 0
+	 */
+	static get ZERO() {
+		const x = new BigDecimal(DEFINE.ZERO);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+	
+	/**
+	 * -1
+	 * @returns {BigDecimal} -1
+	 */
+	static get MINUS_ONE() {
+		const x = new BigDecimal(DEFINE.MINUS_ONE);
 		x.default_context = DEFAULT_CONTEXT;
 		return x;
 	}
@@ -1339,7 +1397,13 @@ const DEFINE = {
 	/**
 	 * 10
 	 */
-	TEN : new BigDecimal(10)
+	TEN : new BigDecimal(10),
+
+	/**
+	 * -1
+	 */
+	MINUS_ONE : new BigDecimal(-1)
+
 };
 
 BigDecimal.RoundingMode = RoundingMode;

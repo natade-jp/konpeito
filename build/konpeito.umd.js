@@ -928,6 +928,9 @@
 	 *  The MIT license https://opensource.org/licenses/MIT
 	 */
 
+	// @ts-ignore
+	//import BigDecimal from "./BigDecimal.mjs";
+
 	/**
 	 * Random number class to be used when the random number class is not set.
 	 * @type {Random}
@@ -1197,7 +1200,7 @@
 				this._sign = x$1._sign;
 			}
 			else if(number instanceof Array) {
-				if((number.length >= 1) && (typeof number[0] === "string")) {
+				if((number.length === 2) && (typeof number[0] === "string")) {
 					var x$2 = IntegerTool.ToBigIntegerFromString(number[0], number[1]);
 					this.element = x$2.element;
 					this._sign = x$2._sign;
@@ -1206,10 +1209,18 @@
 					throw "BigInteger Unsupported argument " + arguments;
 				}
 			}
-			else if(number instanceof Object) {
-				var x$3 = IntegerTool.ToBigIntegerFromString(number.toString());
+			else if((number instanceof Object) && (number.unscaledValue) && (number.scale)) {
+				// BigDecimal 型の場合を想定する
+				// ※初期化時のため「 instanceof BigDecimal 」は巡回するため使用できない。
+				var value = number.unscaledValue();
+				var x$3 = value.scaleByPowerOfTen(-number.scale());
 				this.element = x$3.element;
 				this._sign = x$3._sign;
+			}
+			else if(number instanceof Object) {
+				var x$4 = IntegerTool.ToBigIntegerFromString(number.toString());
+				this.element = x$4.element;
+				this._sign = x$4._sign;
 			}
 			else {
 				throw "BigInteger Unsupported argument " + number;
@@ -1221,7 +1232,7 @@
 	};
 
 	var prototypeAccessors = { intValue: { configurable: true },longValue: { configurable: true },doubleValue: { configurable: true } };
-	var staticAccessors$2 = { ZERO: { configurable: true },ONE: { configurable: true },TWO: { configurable: true },TEN: { configurable: true } };
+	var staticAccessors$2 = { ONE: { configurable: true },TWO: { configurable: true },TEN: { configurable: true },ZERO: { configurable: true },MINUS_ONE: { configurable: true } };
 
 	/**
 		 * Create an entity object of this class.
@@ -1290,7 +1301,7 @@
 		 */
 	BigInteger._toInteger = function _toInteger (number) {
 		if(typeof number === "number") {
-			return number | 0;
+			return Math.trunc(number);
 		}
 		else if(number instanceof BigInteger) {
 			return number.intValue;
@@ -1480,16 +1491,8 @@
 	};
 
 	/**
-		 * this < 0
-		 * @returns {boolean} real(x) < 0
-		 */
-	BigInteger.prototype.isNegative = function isNegative () {
-		return this._sign < 0;
-	};
-
-	/**
 		 * this === 0
-		 * @returns {boolean} A === 0
+		 * @returns {boolean}
 		 */
 	BigInteger.prototype.isZero = function isZero () {
 		this._memory_reduction();
@@ -1497,17 +1500,42 @@
 	};
 		
 	/**
-		 * Return true if the value is positive number.
-		 * @returns {boolean} real(x) > 0
+		 * this === 1
+		 * @returns {boolean}
+		 */
+	BigInteger.prototype.isOne = function isOne () {
+		return this._sign === 1 && this.element.length === 1 && this.element[0] === 1;
+	};
+		
+	/**
+		 * this > 0
+		 * @returns {boolean}
 		 */
 	BigInteger.prototype.isPositive = function isPositive () {
+		this._memory_reduction();
 		return this._sign > 0;
+	};
+
+	/**
+		 * this < 0
+		 * @returns {boolean}
+		 */
+	BigInteger.prototype.isNegative = function isNegative () {
+		return this._sign < 0;
+	};
+
+	/**
+		 * this >= 0
+		 * @returns {boolean}
+		 */
+	BigInteger.prototype.isNotNegative = function isNotNegative () {
+		return this._sign >= 0;
 	};
 
 	/**
 		 * Number of digits in which the number "1" appears first when expressed in binary.
 		 * - Return -1 If 1 is not found it.
-		 * @returns {number} 存在しない場合は -1
+		 * @returns {number}
 		 */
 	BigInteger.prototype.getLowestSetBit = function getLowestSetBit () {
 		for(var i = 0; i < this.element.length; i++) {
@@ -1908,6 +1936,16 @@
 			r1 = r2;
 		}
 		return [a0, b0, r0];
+	};
+
+	/**
+		 * Least common multiple.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+		 * @returns {BigInteger} lcm(x, y)
+		 */
+	BigInteger.prototype.lcm = function lcm (number) {
+		var val = BigInteger._toBigInteger(number);
+		return this.mul(val).div(this.gcd(val));
 	};
 
 	/**
@@ -2549,6 +2587,7 @@
 		var n = BigInteger._toInteger(bit);
 		this._memory_allocation(n + 1);
 		this.element[n >>> 4] ^= 1 << (n & 0xF);
+		this._memory_reduction();
 		return this;
 	};
 
@@ -2592,8 +2631,8 @@
 		 */
 	BigInteger.prototype.pow = function pow (exponent) {
 		var e = new BigInteger(exponent);
-		var x = new BigInteger(this);
-		var y = new BigInteger(1);
+		var x = BigInteger._toBigInteger(this);
+		var y = BigInteger._toBigInteger(1);
 		while(e.element.length !== 0) {
 			if((e.element[0] & 1) !== 0) {
 				y = y.multiply(x);
@@ -2731,6 +2770,24 @@
 	};
 
 	/**
+		 * Multiply a multiple of ten.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} n
+		 * @returns {BigInteger} x * 10^n
+		 */
+	BigInteger.prototype.scaleByPowerOfTen = function scaleByPowerOfTen (n) {
+		var x = BigInteger._toInteger(n);
+		if(x === 0) {
+			return this;
+		}
+		if(x > 0) {
+			return this.mul(BigInteger.TEN.pow(x));
+		}
+		else {
+			return this.div(BigInteger.TEN.pow(x));
+		}
+	};
+
+	/**
 		 * Set default class of random.
 		 * This is used if you do not specify a random number.
 		 * @param {Random} random
@@ -2748,21 +2805,10 @@
 		return DEFAULT_RANDOM;
 	};
 
-
-
-
 	// ----------------------
 	// 定数
 	// ----------------------
 		
-	/**
-		 * 0
-		 * @returns {BigInteger} 0
-		 */
-	staticAccessors$2.ZERO.get = function () {
-		return DEFINE$1.ZERO;
-	};
-
 	/**
 		 * 1
 		 * @returns {BigInteger} 1
@@ -2785,6 +2831,22 @@
 		 */
 	staticAccessors$2.TEN.get = function () {
 		return DEFINE$1.TEN;
+	};
+
+	/**
+		 * 0
+		 * @returns {BigInteger} 0
+		 */
+	staticAccessors$2.ZERO.get = function () {
+		return DEFINE$1.ZERO;
+	};
+
+	/**
+		 * -1
+		 * @returns {BigInteger} -1
+		 */
+	staticAccessors$2.MINUS_ONE.get = function () {
+		return DEFINE$1.MINUS_ONE;
 	};
 
 	Object.defineProperties( BigInteger.prototype, prototypeAccessors );
@@ -2814,7 +2876,13 @@
 		/**
 		 * 0
 		 */
-		ZERO : new BigInteger(0)
+		ZERO : new BigInteger(0),
+		
+		/**
+		 * -1
+		 */
+		MINUS_ONE : new BigInteger(-1)
+
 	};
 
 	/**
@@ -2825,6 +2893,14 @@
 	 * 
 	 * LICENSE:
 	 *  The MIT license https://opensource.org/licenses/MIT
+	 */
+
+	/**
+	 * Setting of calculation result of division.
+	 * @typedef {Object} BigDecimalDivideType
+	 * @property {number} [scale] Scale of rounding.
+	 * @property {RoundingModeEntity} [roundingMode] Rounding mode.
+	 * @property {MathContext} [context] Configuration.(scale and roundingMode are unnecessary.)
 	 */
 
 	/**
@@ -2899,11 +2975,11 @@
 		}
 		// 浮動小数
 		else {
-			var scale = (Math.log(Math.abs(value)) / Math.log(10)) | 0;
+			var scale = Math.trunc(Math.log(Math.abs(value)) / Math.log(10));
 			var x = value / Math.pow(10, scale);
 			// スケールを逆にする
 			scale = - scale;
-			for(var i = 0; i < 12; i++) {
+			for(var i = 0; i < 14; i++) {
 				x = x * 10;
 				scale = scale + 1;
 				if(Math.abs(x - Math.round(x)) <= Number.EPSILON) {
@@ -3045,7 +3121,7 @@
 	};
 
 	var prototypeAccessors$1 = { intValue: { configurable: true },intValueExact: { configurable: true },floatValue: { configurable: true },doubleValue: { configurable: true } };
-	var staticAccessors$3 = { ZERO: { configurable: true },ONE: { configurable: true },TWO: { configurable: true },TEN: { configurable: true } };
+	var staticAccessors$3 = { ONE: { configurable: true },TWO: { configurable: true },TEN: { configurable: true },ZERO: { configurable: true },MINUS_ONE: { configurable: true } };
 
 	/**
 		 * Create an arbitrary-precision floating-point number.
@@ -3146,7 +3222,7 @@
 		 */
 	BigDecimal._toInteger = function _toInteger (number) {
 		if(typeof number === "number") {
-			return number | 0;
+			return Math.trunc(number);
 		}
 		else if(number instanceof BigInteger) {
 			return number.intValue;
@@ -3492,6 +3568,46 @@
 			var newsrc = src.setScale(tgt._scale);
 			return newsrc.integer.compareTo(tgt.integer);
 		}
+	};
+
+	/**
+		 * this === 0
+		 * @returns {boolean}
+		 */
+	BigDecimal.prototype.isZero = function isZero () {
+		return this.compareTo(BigDecimal.ZERO) === 0;
+	};
+		
+	/**
+		 * this === 1
+		 * @returns {boolean}
+		 */
+	BigDecimal.prototype.isOne = function isOne () {
+		return this.compareTo(BigDecimal.ONE) === 0;
+	};
+		
+	/**
+		 * this > 0
+		 * @returns {boolean}
+		 */
+	BigDecimal.prototype.isPositive = function isPositive () {
+		return this.compareTo(BigDecimal.ZERO) === 1;
+	};
+
+	/**
+		 * this < 0
+		 * @returns {boolean}
+		 */
+	BigDecimal.prototype.isNegative = function isNegative () {
+		return this.compareTo(BigDecimal.ZERO) === -1;
+	};
+
+	/**
+		 * this >= 0
+		 * @returns {boolean}
+		 */
+	BigDecimal.prototype.isNotNegative = function isNotNegative () {
+		return this.compareTo(BigDecimal.ZERO) >= 0;
 	};
 
 	/**
@@ -3849,7 +3965,7 @@
 	/**
 		 * Divide.
 		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-		 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - Scale, MathContext, RoundingMode used for the calculation.
+		 * @param {BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 		 * @returns {BigDecimal}
 		 */
 	BigDecimal.prototype.divide = function divide (number, type) {
@@ -3937,7 +4053,7 @@
 	/**
 		 * Divide.
 		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-		 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - Scale, MathContext, RoundingMode used for the calculation.
+		 * @param {BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 		 * @returns {BigDecimal} A / B
 		 */
 	BigDecimal.prototype.div = function div (number, type) {
@@ -4066,16 +4182,6 @@
 	// ----------------------
 		
 	/**
-		 * 0
-		 * @returns {BigDecimal} 0
-		 */
-	staticAccessors$3.ZERO.get = function () {
-		var x = new BigDecimal(DEFINE$2.ZERO);
-		x.default_context = DEFAULT_CONTEXT;
-		return x;
-	};
-
-	/**
 		 * 1
 		 * @returns {BigDecimal} 1
 		 */
@@ -4101,6 +4207,26 @@
 		 */
 	staticAccessors$3.TEN.get = function () {
 		var x = new BigDecimal(DEFINE$2.TEN);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	};
+
+	/**
+		 * 0
+		 * @returns {BigDecimal} 0
+		 */
+	staticAccessors$3.ZERO.get = function () {
+		var x = new BigDecimal(DEFINE$2.ZERO);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	};
+		
+	/**
+		 * -1
+		 * @returns {BigDecimal} -1
+		 */
+	staticAccessors$3.MINUS_ONE.get = function () {
+		var x = new BigDecimal(DEFINE$2.MINUS_ONE);
 		x.default_context = DEFAULT_CONTEXT;
 		return x;
 	};
@@ -4132,11 +4258,605 @@
 		/**
 		 * 10
 		 */
-		TEN : new BigDecimal(10)
+		TEN : new BigDecimal(10),
+
+		/**
+		 * -1
+		 */
+		MINUS_ONE : new BigDecimal(-1)
+
 	};
 
 	BigDecimal.RoundingMode = RoundingMode;
 	BigDecimal.MathContext = MathContext;
+
+	/**
+	 * The script is part of konpeito.
+	 * 
+	 * AUTHOR:
+	 *  natade (http://twitter.com/natadea)
+	 * 
+	 * LICENSE:
+	 *  The MIT license https://opensource.org/licenses/MIT
+	 */
+
+	/**
+	 * Collection of functions used in Fraction.
+	 * @ignore
+	 */
+	var FractionTool = function FractionTool () {};
+
+	FractionTool.to_fraction_data_from_number_string = function to_fraction_data_from_number_string (ntext) {
+		var scale = 0;
+		var buff;
+		// 正規化
+		var text = ntext.replace(/\s/g, "").toLowerCase();
+		// +-の符号があるか
+		var number_text = [];
+		buff = text.match(/^[+-]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			if(buff.indexOf("-") !== -1) {
+				number_text.push("-");
+			}
+		}
+		// 整数部があるか
+		buff = text.match(/^[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			number_text.push(buff);
+		}
+		// 浮動小数点の計算がない場合はここで完了
+		if(text.length === 0) {
+			return new Fraction([new BigInteger([number_text.join(""), 10]), BigInteger.ONE]);
+		}
+		// 巡回小数点指定があるか
+		var cyclic_decimal = null;
+		if(/[()'"[\]]/.test(text)) {
+			var match_data = text.match(/([^.]*)\.(\d*)[(['"](\d+)[)\]'"](.*)/);
+			if(match_data === null) {
+				throw "Fraction Unsupported argument " + text;
+			}
+			// 巡回少数の場所
+			var cyclic_decimal_scale = match_data[2].length;
+			var cyclic_decimal_text = match_data[3];
+			// 巡回少数以外を抽出
+			if(cyclic_decimal_scale === 0) {
+				text = match_data[1] + match_data[4];
+			}
+			else {
+				text = match_data[1] + "." + match_data[2] + match_data[4];
+			}
+
+			var numerator = new BigInteger([cyclic_decimal_text, 10]);
+			var denominator_string = [];
+			for(var i = 0; i < cyclic_decimal_text.length; i++) {
+				denominator_string.push("9");
+			}
+			var denominator = new BigInteger([denominator_string.join(""), 10]);
+			cyclic_decimal = new Fraction([numerator, denominator]);
+			cyclic_decimal = cyclic_decimal.scaleByPowerOfTen(-cyclic_decimal_scale);
+		}
+		// 小数部があるか
+		buff = text.match(/^\.[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			buff = buff.substr(1);
+			scale = scale + buff.length;
+			number_text.push(buff);
+		}
+		// 指数表記があるか
+		buff = text.match(/^e[+-]?[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0].substr(1);
+			scale = scale - parseInt(buff, 10);
+		}
+
+		var f = null;
+		{
+			var numerator$1 = null;
+			var denominator$1 = null;
+			// 出力用の文字を作成
+			if(scale === 0) {
+				numerator$1 = new BigInteger([number_text.join(""), 10]);
+				denominator$1 = BigInteger.ONE;
+			}
+			if(scale < 0) {
+				for(var i$1 = 0; i$1 < -scale; i$1++) {
+					number_text.push("0");
+				}
+				numerator$1 = new BigInteger([number_text.join(""), 10]);
+				denominator$1 = BigInteger.ONE;
+			}
+			else if(scale > 0) {
+				numerator$1 = new BigInteger([number_text.join(""), 10]);
+				var denominator_string$1 = ["1"];
+				for(var i$2 = 0; i$2 < scale; i$2++) {
+					denominator_string$1.push("0");
+				}
+				denominator$1 = new BigInteger([denominator_string$1.join(""), 10]);
+			}
+			f = new Fraction([numerator$1, denominator$1]);
+		}
+		if(cyclic_decimal) {
+			f = f.add(cyclic_decimal);
+		}
+		return f;
+	};
+
+	/**
+		 * 
+		 * @param ntext {string}
+		 * @return {Fraction}
+		 */
+	FractionTool.to_fraction_data_from_fraction_string = function to_fraction_data_from_fraction_string (ntext) {
+		if(ntext.indexOf("/") === -1) {
+			return FractionTool.to_fraction_data_from_number_string(ntext);
+		}
+		else {
+			var fraction_value = ntext.split("/");
+			var numerator_value = FractionTool.to_fraction_data_from_number_string(fraction_value[0]);
+			var denominator_value = FractionTool.to_fraction_data_from_number_string(fraction_value[1]);
+			return numerator_value.div(denominator_value);
+		}
+	};
+
+	/**
+		 * 
+		 * @param value {number}
+		 * @return {Fraction}
+		 */
+	FractionTool.to_fraction_data_from_number = function to_fraction_data_from_number (value) {
+		var numerator = null;
+		var denominator = null;
+		// 整数
+		if(value === Math.floor(value)) {
+			numerator = new BigInteger(value);
+			denominator = BigInteger.ONE;
+		}
+		// 浮動小数
+		else {
+			var scale = Math.trunc(Math.log(Math.abs(value)) / Math.log(10));
+			var x = value / Math.pow(10, scale);
+			// スケールを逆にする
+			scale = - scale;
+			for(var i = 0; i < 14; i++) {
+				x = x * 10;
+				scale = scale + 1;
+				if(Math.abs(x - Math.round(x)) <= Number.EPSILON) {
+					break;
+				}
+			}
+			if(scale <= 0) {
+				numerator = new BigInteger(value);
+				denominator = BigInteger.ONE;
+			}
+			else {
+				numerator = new BigInteger(x);
+				var denominator_string = ["1"];
+				for(var i$1 = 0; i$1 < scale; i$1++) {
+					denominator_string.push("0");
+				}
+				denominator = new BigInteger([denominator_string.join(""), 10]);
+			}
+		}
+		return new Fraction([numerator, denominator]);
+	};
+
+	/**
+		 * @param value {Fraction}
+		 */
+	FractionTool.normalization = function normalization (value) {
+		if(value.denominator.equals(BigInteger.ONE)) {
+			return;
+		}
+		if(value.denominator.equals(BigInteger.MINUS_ONE)) {
+			value.numerator = value.numerator.negate();
+			value.denominator = BigInteger.ONE;
+			return;
+		}
+		if(value.numerator.equals(BigInteger.ZERO)) {
+			value.denominator = BigInteger.ONE;
+			return;
+		}
+		var gcd = value.numerator.gcd(value.denominator);
+		var numerator = value.numerator.div(gcd);
+		var denominator = value.denominator.div(gcd);
+		if(denominator.sign() < 0) {
+			numerator = numerator.negate();
+			denominator = denominator.negate();
+		}
+		value.numerator = numerator;
+		value.denominator = denominator;
+	};
+
+	/**
+	 * Fraction class (immutable).
+	 */
+	var Fraction = function Fraction(number) {
+			
+		// 分子
+		/**
+			 * @type {BigInteger}
+			 */
+		this.numerator = null;
+
+		// 分母
+		/**
+			 * @type {BigInteger}
+			 */
+		this.denominator = null;
+
+		if(arguments.length === 0) {
+			this.numerator = BigInteger.ZERO;
+			this.denominator = BigInteger.ONE;
+		}
+		else if(arguments.length === 1) {
+			var is_normalization = false;
+			if(typeof number === "number") {
+				var x = FractionTool.to_fraction_data_from_number(number);
+				this.numerator = x.numerator;
+				this.denominator = x.denominator;
+			}
+			else if(typeof number === "string") {
+				var x$1 = FractionTool.to_fraction_data_from_fraction_string(number);
+				this.numerator = x$1.numerator;
+				this.denominator = x$1.denominator;
+			}
+			else if(number instanceof BigInteger) {
+				this.numerator = number;
+				this.denominator = BigInteger.ONE;
+			}
+			else if(number instanceof Fraction) {
+				this.numerator = number.numerator;
+				this.denominator = number.denominator;
+			}
+			else if((number instanceof Array) && (number.length === 2)) {
+				this.numerator = (number[0] instanceof BigInteger) ? number[0] : new BigInteger(number[0]);
+				this.denominator = (number[1] instanceof BigInteger) ? number[1] : new BigInteger(number[1]);
+				is_normalization = true;
+			}
+			else if((number instanceof Object) && number.numerator && number.denominator) {
+				this.numerator = (number.numerator instanceof BigInteger) ? number.numerator : new BigInteger(number.numerator);
+				this.denominator = (number.denominator instanceof BigInteger) ? number.denominator : new BigInteger(number.denominator);
+				is_normalization = true;
+			}
+			else if(number instanceof BigDecimal) {
+				var value = new Fraction(number.unscaledValue());
+				var x$2 = value.scaleByPowerOfTen(-number.scale());
+				this.numerator = x$2.numerator;
+				this.denominator = x$2.denominator;
+			}
+			else if(number instanceof Object) {
+				var x1 = FractionTool.to_fraction_data_from_fraction_string(number.toString());
+				this.numerator = x1.numerator;
+				this.denominator = x1.denominator;
+			}
+			else {
+				throw "Fraction Unsupported argument " + number;
+			}
+			if(is_normalization) {
+				FractionTool.normalization(this);
+			}
+		}
+		else {
+			throw "Fraction Unsupported argument " + number;
+		}
+	};
+
+	var prototypeAccessors$2 = { intValue: { configurable: true },doubleValue: { configurable: true } };
+	var staticAccessors$4 = { ONE: { configurable: true },ZERO: { configurable: true },MINUS_ONE: { configurable: true } };
+
+	/**
+		 * Create an entity object of this class.
+		 * @returns {Fraction}
+		 */
+	Fraction.create = function create (number) {
+		if(number instanceof Fraction) {
+			return number;
+		}
+		else {
+			return new Fraction(number);
+		}
+	};
+
+	/**
+		 * Convert number to Fraction type.
+		 * @returns {Fraction}
+		 */
+	Fraction.valueOf = function valueOf (number) {
+		return Fraction.create(number);
+	};
+
+	/**
+		 * Convert to Fraction.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+		 * @returns {Fraction}
+		 * @private
+		 */
+	Fraction._toFraction = function _toFraction (number) {
+		if(number instanceof Fraction) {
+			return number;
+		}
+		else {
+			return new Fraction(number);
+		}
+	};
+
+	/**
+		 * Convert to real number.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+		 * @returns {number}
+		 * @private
+		 */
+	Fraction._toFloat = function _toFloat (number) {
+		if(typeof number === "number") {
+			return number;
+		}
+		else if(number instanceof Fraction) {
+			return number.doubleValue;
+		}
+		else {
+			return (new Fraction(number)).doubleValue;
+		}
+	};
+
+	/**
+		 * Convert to integer.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+		 * @returns {number}
+		 * @private
+		 */
+	Fraction._toInteger = function _toInteger (number) {
+		if(typeof number === "number") {
+			return Math.trunc(number);
+		}
+		else if(number instanceof Fraction) {
+			return number.intValue;
+		}
+		else {
+			return (new Fraction(number)).intValue;
+		}
+	};
+
+	/**
+		 * Deep copy.
+		 * @returns {Fraction} 
+		 */
+	Fraction.prototype.clone = function clone () {
+		return new Fraction(this);
+	};
+		
+	/**
+		 * integer value.
+		 * @returns {number}
+		 */
+	prototypeAccessors$2.intValue.get = function () {
+		if(this.isInteger()) {
+			return Math.trunc(this.numerator.doubleValue);
+		}
+		return Math.trunc(this.doubleValue);
+	};
+
+	/**
+		 * floating point.
+		 * @returns {number}
+		 */
+	prototypeAccessors$2.doubleValue.get = function () {
+		if(this.isInteger()) {
+			return this.numerator.doubleValue;
+		}
+		var x = new BigDecimal([this.numerator, MathContext.UNLIMITED]);
+		var y = new BigDecimal([this.denominator, MathContext.UNLIMITED]);
+		return x.div(y, {context : MathContext.DECIMAL64}).doubleValue;
+	};
+
+	/**
+		 * Convert to string.
+		 * @returns {string} 
+		 */
+	Fraction.prototype.toString = function toString () {
+		return this.numerator.toString() + " / " + this.denominator.toString();
+	};
+
+	/**
+		 * 
+		 * @return {boolean}
+		 */
+	Fraction.prototype.isInteger = function isInteger () {
+		return this.denominator.equals(BigInteger.ONE);
+	};
+
+	/**
+		 * this === 0
+		 * @return {boolean} A === 0
+		 */
+	Fraction.prototype.isZero = function isZero () {
+		return this.numerator.equals(BigInteger.ZERO) && this.denominator.equals(BigInteger.ONE);
+	};
+
+	/**
+		 * this === 1
+		 * @return {boolean} A === 1
+		 */
+	Fraction.prototype.isOne = function isOne () {
+		return this.numerator.equals(BigInteger.ONE) && this.denominator.equals(BigInteger.ONE);
+	};
+
+	/**
+		 * this > 0
+		 * @returns {boolean}
+		 */
+	Fraction.prototype.isPositive = function isPositive () {
+		return this.numerator.isPositive();
+	};
+
+	/**
+		 * this < 0
+		 * @returns {boolean}
+		 */
+	Fraction.prototype.isNegative = function isNegative () {
+		return this.numerator.isNegative();
+	};
+
+	/**
+		 * this >= 0
+		 * @returns {boolean}
+		 */
+	Fraction.prototype.isNotNegative = function isNotNegative () {
+		return this.numerator.isNotNegative();
+	};
+
+	/**
+		 * Add.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+		 * @return {Fraction}
+		 */
+	Fraction.prototype.add = function add (num) {
+		var x = this;
+		var y = Fraction._toFraction(num);
+		var f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator.add(y.numerator), BigInteger.ONE]);
+		}
+		else {
+			f = new Fraction([
+				x.numerator.mul(y.denominator).add(y.numerator.mul(x.denominator)),
+				x.denominator.mul(y.denominator)
+			]);
+		}
+		return f;
+	};
+
+	/**
+		 * Subtract.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+		 * @return {Fraction}
+		 */
+	Fraction.prototype.sub = function sub (num) {
+		var x = this;
+		var y = Fraction._toFraction(num);
+		var f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator.sub(y.numerator), BigInteger.ONE]);
+		}
+		else {
+			f = new Fraction([
+				x.numerator.mul(y.denominator).sub(y.numerator.mul(x.denominator)),
+				x.denominator.mul(y.denominator)
+			]);
+		}
+		return f;
+	};
+
+	/**
+		 * Multiply.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+		 * @return {Fraction}
+		 */
+	Fraction.prototype.mul = function mul (num) {
+		var x = this;
+		var y = Fraction._toFraction(num);
+		var f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator.mul(y.numerator), BigInteger.ONE]);
+		}
+		else {
+			f = new Fraction([ x.numerator.mul(y.numerator), x.denominator.mul(y.denominator) ]);
+		}
+		return f;
+	};
+
+	/**
+		 * Divide.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+		 * @return {Fraction}
+		 */
+	Fraction.prototype.div = function div (num) {
+		var x = this;
+		var y = Fraction._toFraction(num);
+		var f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator, y.denominator]);
+		}
+		else {
+			f = new Fraction([ x.numerator.mul(y.denominator), y.denominator.mul(x.numerator)]);
+		}
+		return f;
+	};
+
+	/**
+		 * Multiply a multiple of ten.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} n
+		 * @returns {Fraction}
+		 */
+	Fraction.prototype.scaleByPowerOfTen = function scaleByPowerOfTen (n) {
+		var scale = Fraction._toInteger(n);
+		if(scale === 0) {
+			return this;
+		}
+		var f;
+		if(scale > 0) {
+			f = new Fraction([ this.numerator.scaleByPowerOfTen(scale), this.denominator]);
+		}
+		else if(scale < 0) {
+			f = new Fraction([ this.numerator, this.denominator.scaleByPowerOfTen(-scale)]);
+		}
+		return f;
+	};
+
+	/**
+		 * 1
+		 * @returns {Fraction} 1
+		 */
+	staticAccessors$4.ONE.get = function () {
+		return DEFINE$3.ONE;
+	};
+		
+	/**
+		 * 0
+		 * @returns {Fraction} 0
+		 */
+	staticAccessors$4.ZERO.get = function () {
+		return DEFINE$3.ZERO;
+	};
+
+	/**
+		 * -1
+		 * @returns {Fraction} -1
+		 */
+	staticAccessors$4.MINUS_ONE.get = function () {
+		return DEFINE$3.MINUS_ONE;
+	};
+
+	Object.defineProperties( Fraction.prototype, prototypeAccessors$2 );
+	Object.defineProperties( Fraction, staticAccessors$4 );
+
+	/**
+	 * Collection of constant values used in the class.
+	 * @ignore
+	 */
+	var DEFINE$3 = {
+
+		/**
+		 * 1
+		 */
+		ONE : new Fraction([BigInteger.ONE, BigInteger.ONE]),
+
+		/**
+		 * 0
+		 */
+		ZERO : new Fraction([BigInteger.ZERO, BigInteger.ONE]),
+		
+		/**
+		 * -1
+		 */
+		MINUS_ONE : new Fraction([BigInteger.MINUS_ONE, BigInteger.ONE]),
+
+	};
 
 	/**
 	 * The script is part of konpeito.
@@ -4287,7 +5007,7 @@
 				return new Complex(d[row]);
 			}
 			else if(Math.abs(row - col) === 1) {
-				return new Complex(e[((row + col) * 0.5) | 0]);
+				return new Complex(e[Math.trunc((row + col) * 0.5)]);
 			}
 			else {
 				return Complex.ZERO;
@@ -5344,6 +6064,14 @@
 	 */
 
 	/**
+	 * Collection of calculation settings for matrix.
+	 * - Available options vary depending on the method.
+	 * @typedef {Object} StatisticsSettings
+	 * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
+	 * @property {Object} [correction] Correction value. For statistics. 0(unbiased), 1(sample).
+	 */
+
+	/**
 	 * Collection of statistical functions using real numbers.
 	 * @ignore
 	 */
@@ -5658,7 +6386,7 @@
 		 * @returns {boolean}
 		 */
 	StatisticsTool.isInteger = function isInteger (x) {
-		return (x - (x | 0) !== 0.0);
+		return (x - Math.trunc(x) !== 0.0);
 	};
 		
 	/**
@@ -5751,7 +6479,7 @@
 		 */
 	StatisticsTool.factorial = function factorial (n) {
 		var y = StatisticsTool.gamma(n + 1.0);
-		if((n | 0) === n) {
+		if(Math.trunc(n) === n) {
 			return Math.round(y);
 		}
 		else {
@@ -6862,7 +7590,7 @@
 	/**
 		 * Maximum number.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix} max([A, B])
 		 */
 	Statistics.max = function max (x, type) {
@@ -6883,7 +7611,7 @@
 	/**
 		 * Minimum number.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix} min([A, B])
 		 */
 	Statistics.min = function min (x, type) {
@@ -6904,7 +7632,7 @@
 	/**
 		 * Sum.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Statistics.sum = function sum (x, type) {
@@ -6928,7 +7656,7 @@
 	/**
 		 * Arithmetic average.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Statistics.mean = function mean (x, type) {
@@ -6952,7 +7680,7 @@
 	/**
 		 * Product of array elements.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Statistics.prod = function prod (x, type) {
@@ -6971,7 +7699,7 @@
 	/**
 		 * Geometric mean.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Statistics.geomean = function geomean (x, type) {
@@ -6990,7 +7718,7 @@
 	/**
 		 * Median.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Statistics.median = function median (x, type) {
@@ -7018,7 +7746,7 @@
 	/**
 		 * Mode.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Statistics.mode = function mode (x, type) {
@@ -7060,16 +7788,17 @@
 		 * Moment.
 		 * - Moment of order n. Equivalent to the definition of variance at 2.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
+		 * @param {number} nth_order
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix} n次のモーメント、2で分散の定義と同等。
 		 */
-	Statistics.moment = function moment (x, type) {
+	Statistics.moment = function moment (x, nth_order, type) {
 		var X = Matrix._toMatrix(x);
 		var M = Statistics.mean(X);
 		// 補正値 0(不偏分散), 1(標本分散)。規定値は、標本分散とする
 		var cor = !(type && typeof type.correction === "number") ? 1: Matrix._toDouble(type.correction);
 		var dim = !(type && type.dimension) ? "auto" : type.dimension;
-		var order = Matrix._toComplex(type.nth_order);
+		var order = Matrix._toComplex(nth_order);
 		var col = 0;
 		var main = function(data) {
 			var mean;
@@ -7102,7 +7831,7 @@
 	/**
 		 * Variance.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Statistics.var = function var$1 (x, type) {
@@ -7132,7 +7861,7 @@
 	/**
 		 * Standard deviation.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Statistics.std = function std (x, type) {
@@ -7149,13 +7878,15 @@
 
 	/**
 		 * Mean absolute deviation.
+		 * - The "algorithm" can choose "0/mean"(default) and "1/median".
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
+		 * @param {?string|?number} [algorithm]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix}
 		 */
-	Statistics.mad = function mad (x, type) {
+	Statistics.mad = function mad (x, algorithm, type) {
 		var X = Matrix._toMatrix(x);
-		var alg = !(type && type.algorithm) ? "mean" : type.algorithm;
+		var alg = !algorithm ? "mean" : (typeof algorithm === "string" ? algorithm : Matrix._toInteger(algorithm));
 		var dim = !(type && type.dimension) ? "auto" : type.dimension;
 		if((alg === "mean") || (alg === 0)) {
 			return Statistics.mean(X.sub(Statistics.mean(X, {dimension : dim} )).abs(), {dimension : dim});
@@ -7171,7 +7902,7 @@
 	/**
 		 * Skewness.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Statistics.skewness = function skewness (x, type) {
@@ -7179,7 +7910,7 @@
 		// 補正値 0(不偏), 1(標本)。規定値は、標本とする
 		var cor = !(type && typeof type.correction === "number") ? 1: Matrix._toDouble(type.correction);
 		var dim = !(type && type.dimension) ? "auto" : type.dimension;
-		var order = Statistics.moment(X, { correction : cor, dimension : dim, nth_order : 3  });
+		var order = Statistics.moment(X, 3, { correction : cor, dimension : dim });
 		var std = Statistics.std(X, { correction : cor, dimension : dim });
 		if(cor === 1) {
 			return order.dotdiv(std.dotpow(3));
@@ -7192,7 +7923,7 @@
 	/**
 		 * Covariance matrix.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Statistics.cov = function cov (x, type) {
@@ -7231,7 +7962,7 @@
 	/**
 		 * The samples are normalized to a mean value of 0, standard deviation of 1.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Statistics.normalize = function normalize (x, type) {
@@ -7244,7 +7975,7 @@
 	/**
 		 * Correlation matrix.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Statistics.corrcoef = function corrcoef (x, type) {
@@ -7254,16 +7985,18 @@
 
 	/**
 		 * Sort.
+		 * - The "order" can choose "ascend"(default) and "descend".
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number), order : ?string}} [type]
+		 * @param {string} [order]
+		 * @param {StatisticsSettings} [type]
 		 * @returns {Matrix}
 		 */
-	Statistics.sort = function sort (x, type) {
+	Statistics.sort = function sort (x, order, type) {
 		var X = Matrix._toMatrix(x);
 		var dim   = !(type && type.dimension) ? "auto" : type.dimension;
-		var order = !(type && type.order) ? "ascend" : type.order;
+		var order_type = !order ? "ascend" : order;
 		var compare;
-		if(order === "ascend") {
+		if(order_type === "ascend") {
 			compare = function(a, b){
 				return a.compareTo(b);
 			};
@@ -7288,6 +8021,13 @@
 	 * 
 	 * LICENSE:
 	 *  The MIT license https://opensource.org/licenses/MIT
+	 */
+
+	/**
+	 * Collection of calculation settings for matrix.
+	 * - Available options vary depending on the method.
+	 * @typedef {Object} SignalSettings
+	 * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
 	 */
 
 	/**
@@ -8158,7 +8898,7 @@
 	/**
 		 * Inverse discrete Fourier transform (IDFT),
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {SignalSettings} [type]
 		 * @returns {Matrix} ifft(X)
 		 */
 	Signal.ifft = function ifft (X, type) {
@@ -8184,7 +8924,7 @@
 	/**
 		 * Power spectral density.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {SignalSettings} [type]
 		 * @returns {Matrix} abs(fft(x)).^2
 		 */
 	Signal.powerfft = function powerfft (x, type) {
@@ -8210,7 +8950,7 @@
 	/**
 		 * Discrete cosine transform (DCT-II, DCT).
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {SignalSettings} [type]
 		 * @returns {Matrix} dct(x)
 		 */
 	Signal.dct = function dct (x, type) {
@@ -8237,7 +8977,7 @@
 	/**
 		 * Inverse discrete cosine transform (DCT-III, IDCT),
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {SignalSettings} [type]
 		 * @returns {Matrix} idct(x)
 		 */
 	Signal.idct = function idct (X, type) {
@@ -8446,7 +9186,7 @@
 		 * FFT shift.
 		 * Circular shift beginning at the center of the signal.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x 
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {SignalSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Signal.fftshift = function fftshift (x, type) {
@@ -8481,6 +9221,14 @@
 	 */
 
 	/**
+	 * Collection of calculation settings for matrix.
+	 * - Available options vary depending on the method.
+	 * @typedef {Object} MatrixSettings
+	 * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
+	 * @property {Object} [correction] Correction value. For statistics. 0(unbiased), 1(sample).
+	 */
+
+	/**
 	 * Collection of functions used in Matrix.
 	 * @ignore
 	 */
@@ -8502,7 +9250,7 @@
 				var y$1 = array_or_string;
 				var num_y = new Array(y$1.length);
 				for(var i$1 = 0; i$1 < y$1.length; i$1++) {
-					num_y[i$1] = y$1[i$1].real | 0;
+					num_y[i$1] = Math.trunc(y$1[i$1].real);
 				}
 				return num_y;
 			}
@@ -8522,12 +9270,12 @@
 			var y$2 = new Array(t_data.length);
 			if(t_data.isRow()) {
 				for(var i$2 = 0; i$2 < len; i$2++) {
-					y$2[i$2] = t_data.matrix_array[0][i$2].real | 0;
+					y$2[i$2] = Math.trunc(t_data.matrix_array[0][i$2].real);
 				}
 			}
 			else if(t_data.isColumn()) {
 				for(var i$3 = 0; i$3 < len; i$3++) {
-					y$2[i$3] = t_data.matrix_array[i$3][0].real | 0;
+					y$2[i$3] = Math.trunc(t_data.matrix_array[i$3][0].real);
 				}
 			}
 			return y$2;
@@ -8930,7 +9678,7 @@
 		this.string_cash = null;
 	};
 
-	var prototypeAccessors$2 = { intValue: { configurable: true },doubleValue: { configurable: true },scalar: { configurable: true },length: { configurable: true },norm1: { configurable: true },norm2: { configurable: true } };
+	var prototypeAccessors$3 = { intValue: { configurable: true },doubleValue: { configurable: true },scalar: { configurable: true },length: { configurable: true },norm1: { configurable: true },norm2: { configurable: true } };
 
 	/**
 		 * Create an entity object of this class.
@@ -8952,7 +9700,7 @@
 		 * @returns {Matrix}
 		 */
 	Matrix.valueOf = function valueOf (number) {
-		return Matrix.valueOf(number);
+		return Matrix.create(number);
 	};
 
 	/**
@@ -9017,7 +9765,7 @@
 		 * @private
 		 */
 	Matrix._toInteger = function _toInteger (number) {
-		return Matrix._toDouble(number) | 0;
+		return Math.trunc(Matrix._toDouble(number));
 	};
 
 	/**
@@ -9427,11 +10175,11 @@
 		 * Treat the rows and columns of the matrix as vectors and perform the same processing.
 		 * The arguments of the method can switch the direction of the matrix to be executed.
 		 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
-		 * @param {string|number} [dimtype="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
+		 * @param {string|number} [dimension="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
 		 * @returns {Matrix} Matrix after function processing.
 		 */
-	Matrix.prototype.eachVector = function eachVector (array_function, dimtype) {
-		var target = dimtype !== undefined ? dimtype : "auto";
+	Matrix.prototype.eachVector = function eachVector (array_function, dimension) {
+		var target = dimension !== undefined ? dimension : "auto";
 		if(typeof target === "string") {
 			target = target.toLocaleLowerCase();
 		}
@@ -9451,7 +10199,7 @@
 			return this.eachVectorBoth(array_function);
 		}
 		else {
-			throw "eachVector argument " + dimtype;
+			throw "eachVector argument " + dimension;
 		}
 	};
 
@@ -9542,15 +10290,15 @@
 		 * Integer value of the first element of the matrix.
 		 * @returns {number}
 		 */
-	prototypeAccessors$2.intValue.get = function () {
-		return (this.matrix_array[0][0].real) | 0;
+	prototypeAccessors$3.intValue.get = function () {
+		return Math.trunc(this.matrix_array[0][0].real);
 	};
 
 	/**
 		 * Real value of first element of the matrix.
 		 * @returns {number}
 		 */
-	prototypeAccessors$2.doubleValue.get = function () {
+	prototypeAccessors$3.doubleValue.get = function () {
 		return this.matrix_array[0][0].real;
 	};
 
@@ -9558,7 +10306,7 @@
 		 * First element of this matrix.
 		 * @returns {Complex}
 		 */
-	prototypeAccessors$2.scalar.get = function () {
+	prototypeAccessors$3.scalar.get = function () {
 		return this.matrix_array[0][0];
 	};
 
@@ -9566,7 +10314,7 @@
 		 * Maximum size of rows or columns in the matrix.
 		 * @returns {number}
 		 */
-	prototypeAccessors$2.length.get = function () {
+	prototypeAccessors$3.length.get = function () {
 		return this.row_length > this.column_length ? this.row_length : this.column_length;
 	};
 
@@ -9574,7 +10322,7 @@
 		 * 1-norm.
 		 * @returns {number}
 		 */
-	prototypeAccessors$2.norm1.get = function () {
+	prototypeAccessors$3.norm1.get = function () {
 		return LinearAlgebra.norm(this, 1);
 	};
 		
@@ -9582,7 +10330,7 @@
 		 * 2-norm.
 		 * @returns {number}
 		 */
-	prototypeAccessors$2.norm2.get = function () {
+	prototypeAccessors$3.norm2.get = function () {
 		return LinearAlgebra.norm(this, 2);
 	};
 
@@ -11093,7 +11841,7 @@
 	/**
 		 * Circular shift.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size 
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix} Matrix after function processing.
 		 */
 	Matrix.prototype.circshift = function circshift (shift_size, type) {
@@ -11116,7 +11864,7 @@
 	/**
 		 * Circular shift.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size 
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix} Matrix after function processing.
 		 */
 	Matrix.prototype.roll = function roll (shift_size, type) {
@@ -11174,7 +11922,7 @@
 
 	/**
 		 * Flip this matrix.
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix} Matrix after function processing.
 		 */
 	Matrix.prototype.flip = function flip (type) {
@@ -11711,7 +12459,7 @@
 		
 	/**
 		 * Maximum number.
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix} max([A, B])
 		 */
 	Matrix.prototype.max = function max (type) {
@@ -11720,7 +12468,7 @@
 		
 	/**
 		 * Minimum number.
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix} min([A, B])
 		 */
 	Matrix.prototype.min = function min (type) {
@@ -11729,7 +12477,7 @@
 		
 	/**
 		 * Sum.
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Matrix.prototype.sum = function sum (type) {
@@ -11738,7 +12486,7 @@
 
 	/**
 		 * Arithmetic average.
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Matrix.prototype.mean = function mean (type) {
@@ -11747,7 +12495,7 @@
 
 	/**
 		 * Product of array elements.
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Matrix.prototype.prod = function prod (type) {
@@ -11756,7 +12504,7 @@
 
 	/**
 		 * Geometric mean.
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Matrix.prototype.geomean = function geomean (type) {
@@ -11765,7 +12513,7 @@
 
 	/**
 		 * Median.
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Matrix.prototype.median = function median (type) {
@@ -11774,7 +12522,7 @@
 
 	/**
 		 * Mode.
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Matrix.prototype.mode = function mode (type) {
@@ -11784,16 +12532,17 @@
 	/**
 		 * Moment.
 		 * - Moment of order n. Equivalent to the definition of variance at 2.
-		 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
+		 * @param {number} nth_order
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
-	Matrix.prototype.moment = function moment (type) {
-		return Statistics.moment(this, type);
+	Matrix.prototype.moment = function moment (nth_order, type) {
+		return Statistics.moment(this, nth_order, type);
 	};
 
 	/**
 		 * Variance.
-		 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Matrix.prototype.var = function var$1 (type) {
@@ -11802,7 +12551,7 @@
 
 	/**
 		 * Standard deviation.
-		 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Matrix.prototype.std = function std (type) {
@@ -11811,16 +12560,18 @@
 
 	/**
 		 * Mean absolute deviation.
-		 * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
+		 * - The "algorithm" can choose "0/mean"(default) and "1/median".
+		 * @param {?string|?number} [algorithm]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
-	Matrix.prototype.mad = function mad (type) {
-		return Statistics.mad(this, type);
+	Matrix.prototype.mad = function mad (algorithm, type) {
+		return Statistics.mad(this, algorithm, type);
 	};
 
 	/**
 		 * Skewness.
-		 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Matrix.prototype.skewness = function skewness (type) {
@@ -11829,7 +12580,7 @@
 
 	/**
 		 * Covariance matrix.
-		 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Matrix.prototype.cov = function cov (type) {
@@ -11838,7 +12589,7 @@
 
 	/**
 		 * The samples are normalized to a mean value of 0, standard deviation of 1.
-		 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Matrix.prototype.normalize = function normalize (type) {
@@ -11847,7 +12598,7 @@
 
 	/**
 		 * Correlation matrix.
-		 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Matrix.prototype.corrcoef = function corrcoef (type) {
@@ -11856,11 +12607,13 @@
 
 	/**
 		 * Sort.
-		 * @param {{dimension : (?string|?number), order : ?string}} [type]
+		 * - The "order" can choose "ascend"(default) and "descend".
+		 * @param {string} [order]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
-	Matrix.prototype.sort = function sort (type) {
-		return Statistics.sort(this, type);
+	Matrix.prototype.sort = function sort (order, type) {
+		return Statistics.sort(this, order, type);
 	};
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
@@ -11869,7 +12622,7 @@
 
 	/**
 		 * Discrete Fourier transform (DFT).
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix} fft(x)
 		 */
 	Matrix.prototype.fft = function fft (type) {
@@ -11878,7 +12631,7 @@
 
 	/**
 		 * Inverse discrete Fourier transform (IDFT).
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix} ifft(x)
 		 */
 	Matrix.prototype.ifft = function ifft (type) {
@@ -11887,7 +12640,7 @@
 
 	/**
 		 * Power spectral density.
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix} abs(fft(x)).^2
 		 */
 	Matrix.prototype.powerfft = function powerfft (type) {
@@ -11896,7 +12649,7 @@
 
 	/**
 		 * Discrete cosine transform (DCT-II, DCT).
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix} dct(x)
 		 */
 	Matrix.prototype.dct = function dct (type) {
@@ -11905,7 +12658,7 @@
 
 	/**
 		 * Inverse discrete cosine transform (DCT-III, IDCT).
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix} idct(x)
 		 */
 	Matrix.prototype.idct = function idct (type) {
@@ -12007,14 +12760,14 @@
 	/**
 		 * FFT shift.
 		 * Circular shift beginning at the center of the signal.
-		 * @param {{dimension : (?string|?number)}} [type]
+		 * @param {MatrixSettings} [type]
 		 * @returns {Matrix}
 		 */
 	Matrix.prototype.fftshift = function fftshift (type) {
 		return Signal.fftshift(this, type);
 	};
 
-	Object.defineProperties( Matrix.prototype, prototypeAccessors$2 );
+	Object.defineProperties( Matrix.prototype, prototypeAccessors$3 );
 
 	/**
 	 * The script is part of konpeito.
@@ -12136,8 +12889,8 @@
 		}
 	};
 
-	var prototypeAccessors$3 = { intValue: { configurable: true },doubleValue: { configurable: true },real: { configurable: true },imag: { configurable: true },norm: { configurable: true },arg: { configurable: true } };
-	var staticAccessors$4 = { ONE: { configurable: true },TWO: { configurable: true },TEN: { configurable: true },ZERO: { configurable: true },MINUS_ONE: { configurable: true },I: { configurable: true },PI: { configurable: true },E: { configurable: true },LN2: { configurable: true },LN10: { configurable: true },LOG2E: { configurable: true },LOG10E: { configurable: true },SQRT2: { configurable: true },SQRT1_2: { configurable: true },HALF: { configurable: true },POSITIVE_INFINITY: { configurable: true },NEGATIVE_INFINITY: { configurable: true },NaN: { configurable: true } };
+	var prototypeAccessors$4 = { intValue: { configurable: true },doubleValue: { configurable: true },real: { configurable: true },imag: { configurable: true },norm: { configurable: true },arg: { configurable: true } };
+	var staticAccessors$5 = { ONE: { configurable: true },TWO: { configurable: true },TEN: { configurable: true },ZERO: { configurable: true },MINUS_ONE: { configurable: true },I: { configurable: true },PI: { configurable: true },E: { configurable: true },LN2: { configurable: true },LN10: { configurable: true },LOG2E: { configurable: true },LOG10E: { configurable: true },SQRT2: { configurable: true },SQRT1_2: { configurable: true },HALF: { configurable: true },POSITIVE_INFINITY: { configurable: true },NEGATIVE_INFINITY: { configurable: true },NaN: { configurable: true } };
 
 	/**
 		 * Create an entity object of this class.
@@ -12159,7 +12912,7 @@
 		 * @returns {Complex}
 		 */
 	Complex.valueOf = function valueOf (number) {
-		return Complex.valueOf(number);
+		return Complex.create(number);
 	};
 		
 	/**
@@ -12207,22 +12960,22 @@
 		 * @private
 		 */
 	Complex._toInteger = function _toInteger (number) {
-		return Complex._toDouble(number) | 0;
+		return Math.trunc(Complex._toDouble(number));
 	};
 
 	/**
-		 * 32-bit integer value.
+		 * integer value.
 		 * @returns {number}
 		 */
-	prototypeAccessors$3.intValue.get = function () {
-		return this.real | 0;
+	prototypeAccessors$4.intValue.get = function () {
+		return Math.trunc(this.real);
 	};
 
 	/**
-		 * 64-bit floating point.
+		 * floating point.
 		 * @returns {number}
 		 */
-	prototypeAccessors$3.doubleValue.get = function () {
+	prototypeAccessors$4.doubleValue.get = function () {
 		return this.real;
 	};
 
@@ -12311,7 +13064,7 @@
 		 * The real part of this Comlex.
 		 * @returns {number} real(A)
 		 */
-	prototypeAccessors$3.real.get = function () {
+	prototypeAccessors$4.real.get = function () {
 		return this._re;
 	};
 		
@@ -12319,7 +13072,7 @@
 		 * The imaginary part of this Comlex.
 		 * @returns {number} imag(A)
 		 */
-	prototypeAccessors$3.imag.get = function () {
+	prototypeAccessors$4.imag.get = function () {
 		return this._im;
 	};
 
@@ -12327,7 +13080,7 @@
 		 * norm.
 		 * @returns {number} |A|
 		 */
-	prototypeAccessors$3.norm.get = function () {
+	prototypeAccessors$4.norm.get = function () {
 		if(this._im === 0) {
 			return Math.abs(this._re);
 		}
@@ -12343,7 +13096,7 @@
 		 * The argument of this complex number.
 		 * @returns {number} arg(A)
 		 */
-	prototypeAccessors$3.arg.get = function () {
+	prototypeAccessors$4.arg.get = function () {
 		if(this._im === 0) {
 			return this._re >= 0 ? 0 : Math.PI;
 		}
@@ -12612,7 +13365,7 @@
 		 */
 	Complex.prototype.isInteger = function isInteger (epsilon) {
 		var tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return this.isReal() && (Math.abs(this._re - (this._re | 0)) < tolerance);
+		return this.isReal() && (Math.abs(this._re - Math.trunc(this._re)) < tolerance);
 	};
 
 	/**
@@ -12623,8 +13376,8 @@
 	Complex.prototype.isComplexInteger = function isComplexInteger (epsilon) {
 		var tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
 		// 複素整数
-		return (Math.abs(this._re - (this._re | 0)) < tolerance) &&
-				(Math.abs(this._im - (this._im | 0)) < tolerance);
+		return (Math.abs(this._re - Math.trunc(this._re)) < tolerance) &&
+				(Math.abs(this._im - Math.trunc(this._im)) < tolerance);
 	};
 
 	/**
@@ -12972,7 +13725,7 @@
 		 * @returns {Complex} fix(A)
 		 */
 	Complex.prototype.fix = function fix () {
-		return new Complex([this._re | 0, this._im | 0]);
+		return new Complex([Math.trunc(this._re), Math.trunc(this._im)]);
 	};
 
 	/**
@@ -12980,7 +13733,7 @@
 		 * @returns {Complex} fract(A)
 		 */
 	Complex.prototype.fract = function fract () {
-		return new Complex([this._re - (this._re | 0), this._im - (this._im | 0)]);
+		return new Complex([this._re - Math.trunc(this._re), this._im - Math.trunc(this._im)]);
 	};
 
 	// ----------------------
@@ -12991,154 +13744,154 @@
 		 * 1
 		 * @returns {Complex} 1
 		 */
-	staticAccessors$4.ONE.get = function () {
-		return DEFINE$3.ONE;
+	staticAccessors$5.ONE.get = function () {
+		return DEFINE$4.ONE;
 	};
 		
 	/**
 		 * 2
 		 * @returns {Complex} 2
 		 */
-	staticAccessors$4.TWO.get = function () {
-		return DEFINE$3.TWO;
+	staticAccessors$5.TWO.get = function () {
+		return DEFINE$4.TWO;
 	};
 		
 	/**
 		 * 10
 		 * @returns {Complex} 10
 		 */
-	staticAccessors$4.TEN.get = function () {
-		return DEFINE$3.TEN;
+	staticAccessors$5.TEN.get = function () {
+		return DEFINE$4.TEN;
 	};
 		
 	/**
 		 * 0
 		 * @returns {Complex} 0
 		 */
-	staticAccessors$4.ZERO.get = function () {
-		return DEFINE$3.ZERO;
+	staticAccessors$5.ZERO.get = function () {
+		return DEFINE$4.ZERO;
 	};
 
 	/**
 		 * -1
 		 * @returns {Complex} -1
 		 */
-	staticAccessors$4.MINUS_ONE.get = function () {
-		return DEFINE$3.MINUS_ONE;
+	staticAccessors$5.MINUS_ONE.get = function () {
+		return DEFINE$4.MINUS_ONE;
 	};
 
 	/**
 		 * i, j
 		 * @returns {Complex} i
 		 */
-	staticAccessors$4.I.get = function () {
-		return DEFINE$3.I;
+	staticAccessors$5.I.get = function () {
+		return DEFINE$4.I;
 	};
 
 	/**
 		 * Pi.
 		 * @returns {Complex} 3.14...
 		 */
-	staticAccessors$4.PI.get = function () {
-		return DEFINE$3.PI;
+	staticAccessors$5.PI.get = function () {
+		return DEFINE$4.PI;
 	};
 
 	/**
 		 * E, Napier's constant.
 		 * @returns {Complex} 2.71...
 		 */
-	staticAccessors$4.E.get = function () {
-		return DEFINE$3.E;
+	staticAccessors$5.E.get = function () {
+		return DEFINE$4.E;
 	};
 
 	/**
 		 * log_e(2)
 		 * @returns {Complex} ln(2)
 		 */
-	staticAccessors$4.LN2.get = function () {
-		return DEFINE$3.LN2;
+	staticAccessors$5.LN2.get = function () {
+		return DEFINE$4.LN2;
 	};
 
 	/**
 		 * log_e(10)
 		 * @returns {Complex} ln(10)
 		 */
-	staticAccessors$4.LN10.get = function () {
-		return DEFINE$3.LN10;
+	staticAccessors$5.LN10.get = function () {
+		return DEFINE$4.LN10;
 	};
 
 	/**
 		 * log_2(e)
 		 * @returns {Complex} log_2(e)
 		 */
-	staticAccessors$4.LOG2E.get = function () {
-		return DEFINE$3.LOG2E;
+	staticAccessors$5.LOG2E.get = function () {
+		return DEFINE$4.LOG2E;
 	};
 		
 	/**
 		 * log_10(e)
 		 * @returns {Complex} log_10(e)
 		 */
-	staticAccessors$4.LOG10E.get = function () {
-		return DEFINE$3.LOG10E;
+	staticAccessors$5.LOG10E.get = function () {
+		return DEFINE$4.LOG10E;
 	};
 		
 	/**
 		 * sqrt(2)
 		 * @returns {Complex} sqrt(2)
 		 */
-	staticAccessors$4.SQRT2.get = function () {
-		return DEFINE$3.SQRT2;
+	staticAccessors$5.SQRT2.get = function () {
+		return DEFINE$4.SQRT2;
 	};
 		
 	/**
 		 * sqrt(0.5)
 		 * @returns {Complex} sqrt(0.5)
 		 */
-	staticAccessors$4.SQRT1_2.get = function () {
-		return DEFINE$3.SQRT1_2;
+	staticAccessors$5.SQRT1_2.get = function () {
+		return DEFINE$4.SQRT1_2;
 	};
 		
 	/**
 		 * 0.5
 		 * @returns {Complex} 0.5
 		 */
-	staticAccessors$4.HALF.get = function () {
-		return DEFINE$3.HALF;
+	staticAccessors$5.HALF.get = function () {
+		return DEFINE$4.HALF;
 	};
 
 	/**
 		 * Positive infinity.
 		 * @returns {Complex} Infinity
 		 */
-	staticAccessors$4.POSITIVE_INFINITY.get = function () {
-		return DEFINE$3.POSITIVE_INFINITY;
+	staticAccessors$5.POSITIVE_INFINITY.get = function () {
+		return DEFINE$4.POSITIVE_INFINITY;
 	};
 		
 	/**
 		 * Negative Infinity.
 		 * @returns {Complex} -Infinity
 		 */
-	staticAccessors$4.NEGATIVE_INFINITY.get = function () {
-		return DEFINE$3.NEGATIVE_INFINITY;
+	staticAccessors$5.NEGATIVE_INFINITY.get = function () {
+		return DEFINE$4.NEGATIVE_INFINITY;
 	};
 
 	/**
 		 * Not a Number.
 		 * @returns {Complex} NaN
 		 */
-	staticAccessors$4.NaN.get = function () {
-		return DEFINE$3.NaN;
+	staticAccessors$5.NaN.get = function () {
+		return DEFINE$4.NaN;
 	};
 
-	Object.defineProperties( Complex.prototype, prototypeAccessors$3 );
-	Object.defineProperties( Complex, staticAccessors$4 );
+	Object.defineProperties( Complex.prototype, prototypeAccessors$4 );
+	Object.defineProperties( Complex, staticAccessors$5 );
 
 	/**
 	 * Collection of constant values used in the class.
 	 * @ignore
 	 */
-	var DEFINE$3 = {
+	var DEFINE$4 = {
 
 		/**
 		 * 0
@@ -13250,9 +14003,9 @@
 	 */
 	var konpeito = function konpeito () {};
 
-	var staticAccessors$5 = { BigInteger: { configurable: true },BigDecimal: { configurable: true },RoundingMode: { configurable: true },MathContext: { configurable: true },Complex: { configurable: true },Matrix: { configurable: true },Random: { configurable: true } };
+	var staticAccessors$6 = { BigInteger: { configurable: true },BigDecimal: { configurable: true },RoundingMode: { configurable: true },MathContext: { configurable: true },Fraction: { configurable: true },Complex: { configurable: true },Matrix: { configurable: true },Random: { configurable: true } };
 
-	staticAccessors$5.BigInteger.get = function () {
+	staticAccessors$6.BigInteger.get = function () {
 		return BigInteger;
 	};
 
@@ -13260,7 +14013,7 @@
 		 * Return typedef BigDecimal for arbitrary-precision floating-point number.
 		 * @returns {typeof BigDecimal}
 		 */
-	staticAccessors$5.BigDecimal.get = function () {
+	staticAccessors$6.BigDecimal.get = function () {
 		return BigDecimal;
 	};
 
@@ -13268,7 +14021,7 @@
 		 * Return Rounding class for BigDecimal.
 		 * @returns {typeof RoundingMode}
 		 */
-	staticAccessors$5.RoundingMode.get = function () {
+	staticAccessors$6.RoundingMode.get = function () {
 		return RoundingMode;
 	};
 
@@ -13276,15 +14029,23 @@
 		 * Return Configuration class for BigDecimal.
 		 * @returns {typeof MathContext}
 		 */
-	staticAccessors$5.MathContext.get = function () {
+	staticAccessors$6.MathContext.get = function () {
 		return MathContext;
+	};
+
+	/**
+		 * Return typedef Fraction for infinite precision arithmetic.
+		 * @returns {typeof Fraction}
+		 */
+	staticAccessors$6.Fraction.get = function () {
+		return Fraction;
 	};
 
 	/**
 		 * Return typedef Complex for complex number calculation.
 		 * @returns {typeof Complex}
 		 */
-	staticAccessors$5.Complex.get = function () {
+	staticAccessors$6.Complex.get = function () {
 		return Complex;
 	};
 
@@ -13292,7 +14053,7 @@
 		 * Return typedef Matrix for complex matrix calculation.
 		 * @returns {typeof Matrix}
 		 */
-	staticAccessors$5.Matrix.get = function () {
+	staticAccessors$6.Matrix.get = function () {
 		return Matrix;
 	};
 
@@ -13300,11 +14061,11 @@
 		 * Return typedef Random.
 		 * @returns {typeof Random}
 		 */
-	staticAccessors$5.Random.get = function () {
+	staticAccessors$6.Random.get = function () {
 		return Random;
 	};
 
-	Object.defineProperties( konpeito, staticAccessors$5 );
+	Object.defineProperties( konpeito, staticAccessors$6 );
 
 	return konpeito;
 

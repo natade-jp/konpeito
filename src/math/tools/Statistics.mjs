@@ -16,6 +16,14 @@ import Complex from "../Complex.mjs";
 import Matrix from "../Matrix.mjs";
 
 /**
+ * Collection of calculation settings for matrix.
+ * - Available options vary depending on the method.
+ * @typedef {Object} StatisticsSettings
+ * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
+ * @property {Object} [correction] Correction value. For statistics. 0(unbiased), 1(sample).
+ */
+
+/**
  * Collection of statistical functions using real numbers.
  * @ignore
  */
@@ -335,7 +343,7 @@ class StatisticsTool {
 	 * @returns {boolean}
 	 */
 	static isInteger(x) {
-		return (x - (x | 0) !== 0.0);
+		return (x - Math.trunc(x) !== 0.0);
 	}
 	
 	/**
@@ -428,7 +436,7 @@ class StatisticsTool {
 	 */
 	static factorial(n) {
 		const y = StatisticsTool.gamma(n + 1.0);
-		if((n | 0) === n) {
+		if(Math.trunc(n) === n) {
 			return Math.round(y);
 		}
 		else {
@@ -1553,7 +1561,7 @@ export default class Statistics {
 	/**
 	 * Maximum number.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix} max([A, B])
 	 */
 	static max(x, type) {
@@ -1574,7 +1582,7 @@ export default class Statistics {
 	/**
 	 * Minimum number.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix} min([A, B])
 	 */
 	static min(x, type) {
@@ -1595,7 +1603,7 @@ export default class Statistics {
 	/**
 	 * Sum.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static sum(x, type) {
@@ -1619,7 +1627,7 @@ export default class Statistics {
 	/**
 	 * Arithmetic average.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static mean(x, type) {
@@ -1643,7 +1651,7 @@ export default class Statistics {
 	/**
 	 * Product of array elements.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static prod(x, type) {
@@ -1662,7 +1670,7 @@ export default class Statistics {
 	/**
 	 * Geometric mean.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static geomean(x, type) {
@@ -1681,7 +1689,7 @@ export default class Statistics {
 	/**
 	 * Median.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static median(x, type) {
@@ -1709,7 +1717,7 @@ export default class Statistics {
 	/**
 	 * Mode.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static mode(x, type) {
@@ -1751,16 +1759,17 @@ export default class Statistics {
 	 * Moment.
 	 * - Moment of order n. Equivalent to the definition of variance at 2.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
+	 * @param {number} nth_order
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix} n次のモーメント、2で分散の定義と同等。
 	 */
-	static moment(x, type) {
+	static moment(x, nth_order, type) {
 		const X = Matrix._toMatrix(x);
 		const M = Statistics.mean(X);
 		// 補正値 0(不偏分散), 1(標本分散)。規定値は、標本分散とする
 		const cor = !(type && typeof type.correction === "number") ? 1: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
-		const order = Matrix._toComplex(type.nth_order);
+		const order = Matrix._toComplex(nth_order);
 		let col = 0;
 		const main = function(data) {
 			let mean;
@@ -1793,7 +1802,7 @@ export default class Statistics {
 	/**
 	 * Variance.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static var(x, type) {
@@ -1823,7 +1832,7 @@ export default class Statistics {
 	/**
 	 * Standard deviation.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static std(x, type) {
@@ -1840,13 +1849,15 @@ export default class Statistics {
 
 	/**
 	 * Mean absolute deviation.
+	 * - The "algorithm" can choose "0/mean"(default) and "1/median".
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
+	 * @param {?string|?number} [algorithm]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
-	static mad(x, type) {
+	static mad(x, algorithm, type) {
 		const X = Matrix._toMatrix(x);
-		const alg = !(type && type.algorithm) ? "mean" : type.algorithm;
+		const alg = !algorithm ? "mean" : (typeof algorithm === "string" ? algorithm : Matrix._toInteger(algorithm));
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
 		if((alg === "mean") || (alg === 0)) {
 			return Statistics.mean(X.sub(Statistics.mean(X, {dimension : dim} )).abs(), {dimension : dim});
@@ -1862,7 +1873,7 @@ export default class Statistics {
 	/**
 	 * Skewness.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static skewness(x, type) {
@@ -1870,7 +1881,7 @@ export default class Statistics {
 		// 補正値 0(不偏), 1(標本)。規定値は、標本とする
 		const cor = !(type && typeof type.correction === "number") ? 1: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
-		const order = Statistics.moment(X, { correction : cor, dimension : dim, nth_order : 3  });
+		const order = Statistics.moment(X, 3, { correction : cor, dimension : dim });
 		const std = Statistics.std(X, { correction : cor, dimension : dim });
 		if(cor === 1) {
 			return order.dotdiv(std.dotpow(3));
@@ -1883,7 +1894,7 @@ export default class Statistics {
 	/**
 	 * Covariance matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static cov(x, type) {
@@ -1922,7 +1933,7 @@ export default class Statistics {
 	/**
 	 * The samples are normalized to a mean value of 0, standard deviation of 1.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static normalize(x, type) {
@@ -1935,7 +1946,7 @@ export default class Statistics {
 	/**
 	 * Correlation matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static corrcoef(x, type) {
@@ -1945,16 +1956,18 @@ export default class Statistics {
 
 	/**
 	 * Sort.
+	 * - The "order" can choose "ascend"(default) and "descend".
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), order : ?string}} [type]
+	 * @param {string} [order]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
-	static sort(x, type) {
+	static sort(x, order, type) {
 		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
-		const order = !(type && type.order) ? "ascend" : type.order;
+		const order_type = !order ? "ascend" : order;
 		let compare;
-		if(order === "ascend") {
+		if(order_type === "ascend") {
 			compare = function(a, b){
 				return a.compareTo(b);
 			};

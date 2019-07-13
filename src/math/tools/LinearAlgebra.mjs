@@ -167,7 +167,7 @@ class LinearAlgebraTool {
 				return new Complex(d[row]);
 			}
 			else if(Math.abs(row - col) === 1) {
-				return new Complex(e[((row + col) * 0.5) | 0]);
+				return new Complex(e[Math.trunc((row + col) * 0.5)]);
 			}
 			else {
 				return Complex.ZERO;

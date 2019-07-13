@@ -22,6 +22,14 @@ import Signal from "./tools/Signal.mjs";
 import Complex from "./Complex.mjs";
 
 /**
+ * Collection of calculation settings for matrix.
+ * - Available options vary depending on the method.
+ * @typedef {Object} MatrixSettings
+ * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
+ * @property {Object} [correction] Correction value. For statistics. 0(unbiased), 1(sample).
+ */
+
+/**
  * Collection of functions used in Matrix.
  * @ignore
  */
@@ -50,7 +58,7 @@ class MatrixTool {
 				const y = array_or_string;
 				const num_y = new Array(y.length);
 				for(let i = 0; i < y.length; i++) {
-					num_y[i] = y[i].real | 0;
+					num_y[i] = Math.trunc(y[i].real);
 				}
 				return num_y;
 			}
@@ -70,12 +78,12 @@ class MatrixTool {
 			const y = new Array(t_data.length);
 			if(t_data.isRow()) {
 				for(let i = 0; i < len; i++) {
-					y[i] = t_data.matrix_array[0][i].real | 0;
+					y[i] = Math.trunc(t_data.matrix_array[0][i].real);
 				}
 			}
 			else if(t_data.isColumn()) {
 				for(let i = 0; i < len; i++) {
-					y[i] = t_data.matrix_array[i][0].real | 0;
+					y[i] = Math.trunc(t_data.matrix_array[i][0].real);
 				}
 			}
 			return y;
@@ -509,7 +517,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	static valueOf(number) {
-		return Matrix.valueOf(number);
+		return Matrix.create(number);
 	}
 
 	/**
@@ -574,7 +582,7 @@ export default class Matrix {
 	 * @private
 	 */
 	static _toInteger(number) {
-		return Matrix._toDouble(number) | 0;
+		return Math.trunc(Matrix._toDouble(number));
 	}
 
 	/**
@@ -984,11 +992,11 @@ export default class Matrix {
 	 * Treat the rows and columns of the matrix as vectors and perform the same processing.
 	 * The arguments of the method can switch the direction of the matrix to be executed.
 	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
-	 * @param {string|number} [dimtype="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
+	 * @param {string|number} [dimension="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
 	 * @returns {Matrix} Matrix after function processing.
 	 */
-	eachVector(array_function, dimtype) {
-		let target = dimtype !== undefined ? dimtype : "auto";
+	eachVector(array_function, dimension) {
+		let target = dimension !== undefined ? dimension : "auto";
 		if(typeof target === "string") {
 			target = target.toLocaleLowerCase();
 		}
@@ -1008,7 +1016,7 @@ export default class Matrix {
 			return this.eachVectorBoth(array_function);
 		}
 		else {
-			throw "eachVector argument " + dimtype;
+			throw "eachVector argument " + dimension;
 		}
 	}
 
@@ -1096,7 +1104,7 @@ export default class Matrix {
 	 * @returns {number}
 	 */
 	get intValue() {
-		return (this.matrix_array[0][0].real) | 0;
+		return Math.trunc(this.matrix_array[0][0].real);
 	}
 
 	/**
@@ -2646,7 +2654,7 @@ export default class Matrix {
 	/**
 	 * Circular shift.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size 
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	circshift(shift_size, type) {
@@ -2669,7 +2677,7 @@ export default class Matrix {
 	/**
 	 * Circular shift.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size 
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	roll(shift_size, type) {
@@ -2727,7 +2735,7 @@ export default class Matrix {
 
 	/**
 	 * Flip this matrix.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	flip(type) {
@@ -3253,7 +3261,7 @@ export default class Matrix {
 	
 	/**
 	 * Maximum number.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} max([A, B])
 	 */
 	max(type) {
@@ -3262,7 +3270,7 @@ export default class Matrix {
 	
 	/**
 	 * Minimum number.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} min([A, B])
 	 */
 	min(type) {
@@ -3271,7 +3279,7 @@ export default class Matrix {
 	
 	/**
 	 * Sum.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	sum(type) {
@@ -3280,7 +3288,7 @@ export default class Matrix {
 
 	/**
 	 * Arithmetic average.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	mean(type) {
@@ -3289,7 +3297,7 @@ export default class Matrix {
 
 	/**
 	 * Product of array elements.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	prod(type) {
@@ -3298,7 +3306,7 @@ export default class Matrix {
 
 	/**
 	 * Geometric mean.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	geomean(type) {
@@ -3307,7 +3315,7 @@ export default class Matrix {
 
 	/**
 	 * Median.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	median(type) {
@@ -3316,7 +3324,7 @@ export default class Matrix {
 
 	/**
 	 * Mode.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	mode(type) {
@@ -3326,16 +3334,17 @@ export default class Matrix {
 	/**
 	 * Moment.
 	 * - Moment of order n. Equivalent to the definition of variance at 2.
-	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
+	 * @param {number} nth_order
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
-	moment(type) {
-		return Statistics.moment(this, type);
+	moment(nth_order, type) {
+		return Statistics.moment(this, nth_order, type);
 	}
 
 	/**
 	 * Variance.
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	var(type) {
@@ -3344,7 +3353,7 @@ export default class Matrix {
 
 	/**
 	 * Standard deviation.
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	std(type) {
@@ -3353,16 +3362,18 @@ export default class Matrix {
 
 	/**
 	 * Mean absolute deviation.
-	 * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
+	 * - The "algorithm" can choose "0/mean"(default) and "1/median".
+	 * @param {?string|?number} [algorithm]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
-	mad(type) {
-		return Statistics.mad(this, type);
+	mad(algorithm, type) {
+		return Statistics.mad(this, algorithm, type);
 	}
 
 	/**
 	 * Skewness.
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	skewness(type) {
@@ -3371,7 +3382,7 @@ export default class Matrix {
 
 	/**
 	 * Covariance matrix.
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	cov(type) {
@@ -3380,7 +3391,7 @@ export default class Matrix {
 
 	/**
 	 * The samples are normalized to a mean value of 0, standard deviation of 1.
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	normalize(type) {
@@ -3389,7 +3400,7 @@ export default class Matrix {
 
 	/**
 	 * Correlation matrix.
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	corrcoef(type) {
@@ -3398,11 +3409,13 @@ export default class Matrix {
 
 	/**
 	 * Sort.
-	 * @param {{dimension : (?string|?number), order : ?string}} [type]
+	 * - The "order" can choose "ascend"(default) and "descend".
+	 * @param {string} [order]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
-	sort(type) {
-		return Statistics.sort(this, type);
+	sort(order, type) {
+		return Statistics.sort(this, order, type);
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
@@ -3411,7 +3424,7 @@ export default class Matrix {
 
 	/**
 	 * Discrete Fourier transform (DFT).
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} fft(x)
 	 */
 	fft(type) {
@@ -3420,7 +3433,7 @@ export default class Matrix {
 
 	/**
 	 * Inverse discrete Fourier transform (IDFT).
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} ifft(x)
 	 */
 	ifft(type) {
@@ -3429,7 +3442,7 @@ export default class Matrix {
 
 	/**
 	 * Power spectral density.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} abs(fft(x)).^2
 	 */
 	powerfft(type) {
@@ -3438,7 +3451,7 @@ export default class Matrix {
 
 	/**
 	 * Discrete cosine transform (DCT-II, DCT).
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} dct(x)
 	 */
 	dct(type) {
@@ -3447,7 +3460,7 @@ export default class Matrix {
 
 	/**
 	 * Inverse discrete cosine transform (DCT-III, IDCT).
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} idct(x)
 	 */
 	idct(type) {
@@ -3549,7 +3562,7 @@ export default class Matrix {
 	/**
 	 * FFT shift.
 	 * Circular shift beginning at the center of the signal.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	fftshift(type) {

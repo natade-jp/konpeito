@@ -327,9 +327,9 @@ const testOperator3  = function(operator, x1, x2, x3, y, epsilon) {
 
 {
 	test_count = 0;
-	testOperator2("moment", "[3 29 12 32]", {nth_order : 1}, 0);
-	testOperator2("moment", "[3 29 12 32]", {nth_order : 2}, 143.50);
-	testOperator2("moment", "[3 29 12 32]", {nth_order : 3}, -310.50);
+	testOperator2("moment", "[3 29 12 32]", 1, 0);
+	testOperator2("moment", "[3 29 12 32]", 2, 143.50);
+	testOperator2("moment", "[3 29 12 32]", 3, -310.50);
 }
 
 {
@@ -352,8 +352,8 @@ const testOperator3  = function(operator, x1, x2, x3, y, epsilon) {
 	test_count = 0;
 	testOperator1("mad", "[3]", 0);
 	testOperator1("mad", "[3 29 12 32]", 11.500, 0.1);
-	testOperator2("mad", "[3]", {algorithm : "median"}, 0);
-	testOperator2("mad", "[3 29 12 32]", {algorithm : "median"}, 10.000, 0.1);
+	testOperator2("mad", "[3]", "median", 0);
+	testOperator2("mad", "[3 29 12 32]", "median", 10.000, 0.1);
 }
 
 {
@@ -385,6 +385,6 @@ const testOperator3  = function(operator, x1, x2, x3, y, epsilon) {
 
 {
 	test_count = 0;
-	testOperator2("sort", "[4 5 2 3]", {order : "ascend"}, "[2 3 4 5]");
-	testOperator2("sort", "[4 5 2 3]", {order : "descend"}, "[5 4 3 2]");
+	testOperator2("sort", "[4 5 2 3]", "ascend", "[2 3 4 5]");
+	testOperator2("sort", "[4 5 2 3]", "descend", "[5 4 3 2]");
 }

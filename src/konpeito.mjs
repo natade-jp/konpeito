@@ -25,6 +25,9 @@ import BigDecimal from "./math/BigDecimal.mjs";
 import BigInteger from "./math/BigInteger.mjs";
 
 // @ts-ignore
+import Fraction from "./math/Fraction.mjs";
+
+// @ts-ignore
 import Complex from "./math/Complex.mjs";
 
 // @ts-ignore
@@ -69,6 +72,14 @@ export default class konpeito {
 	 */
 	static get MathContext() {
 		return MathContext;
+	}
+
+	/**
+	 * Return typedef Fraction for infinite precision arithmetic.
+	 * @returns {typeof Fraction}
+	 */
+	static get Fraction() {
+		return Fraction;
 	}
 
 	/**

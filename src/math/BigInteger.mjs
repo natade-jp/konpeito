@@ -12,6 +12,9 @@
 // @ts-ignore
 import Random from "./tools/Random.mjs";
 
+// @ts-ignore
+//import BigDecimal from "./BigDecimal.mjs";
+
 /**
  * Random number class to be used when the random number class is not set.
  * @type {Random}
@@ -300,7 +303,7 @@ export default class BigInteger {
 				this._sign = x._sign;
 			}
 			else if(number instanceof Array) {
-				if((number.length >= 1) && (typeof number[0] === "string")) {
+				if((number.length === 2) && (typeof number[0] === "string")) {
 					const x = IntegerTool.ToBigIntegerFromString(number[0], number[1]);
 					this.element = x.element;
 					this._sign = x._sign;
@@ -308,6 +311,14 @@ export default class BigInteger {
 				else {
 					throw "BigInteger Unsupported argument " + arguments;
 				}
+			}
+			else if((number instanceof Object) && (number.unscaledValue) && (number.scale)) {
+				// BigDecimal 型の場合を想定する
+				// ※初期化時のため「 instanceof BigDecimal 」は巡回するため使用できない。
+				const value = number.unscaledValue();
+				const x = value.scaleByPowerOfTen(-number.scale());
+				this.element = x.element;
+				this._sign = x._sign;
 			}
 			else if(number instanceof Object) {
 				const x = IntegerTool.ToBigIntegerFromString(number.toString());
@@ -390,7 +401,7 @@ export default class BigInteger {
 	 */
 	static _toInteger(number) {
 		if(typeof number === "number") {
-			return number | 0;
+			return Math.trunc(number);
 		}
 		else if(number instanceof BigInteger) {
 			return number.intValue;
@@ -580,16 +591,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * this < 0
-	 * @returns {boolean} real(x) < 0
-	 */
-	isNegative() {
-		return this._sign < 0;
-	}
-
-	/**
 	 * this === 0
-	 * @returns {boolean} A === 0
+	 * @returns {boolean}
 	 */
 	isZero() {
 		this._memory_reduction();
@@ -597,17 +600,42 @@ export default class BigInteger {
 	}
 	
 	/**
-	 * Return true if the value is positive number.
-	 * @returns {boolean} real(x) > 0
+	 * this === 1
+	 * @returns {boolean}
+	 */
+	isOne() {
+		return this._sign === 1 && this.element.length === 1 && this.element[0] === 1;
+	}
+	
+	/**
+	 * this > 0
+	 * @returns {boolean}
 	 */
 	isPositive() {
+		this._memory_reduction();
 		return this._sign > 0;
+	}
+
+	/**
+	 * this < 0
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return this._sign < 0;
+	}
+
+	/**
+	 * this >= 0
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return this._sign >= 0;
 	}
 
 	/**
 	 * Number of digits in which the number "1" appears first when expressed in binary.
 	 * - Return -1 If 1 is not found it.
-	 * @returns {number} 存在しない場合は -1
+	 * @returns {number}
 	 */
 	getLowestSetBit() {
 		for(let i = 0; i < this.element.length; i++) {
@@ -1008,6 +1036,16 @@ export default class BigInteger {
 			r1 = r2;
 		}
 		return [a0, b0, r0];
+	}
+
+	/**
+	 * Least common multiple.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} lcm(x, y)
+	 */
+	lcm(number) {
+		const val = BigInteger._toBigInteger(number);
+		return this.mul(val).div(this.gcd(val));
 	}
 
 	/**
@@ -1649,6 +1687,7 @@ export default class BigInteger {
 		const n = BigInteger._toInteger(bit);
 		this._memory_allocation(n + 1);
 		this.element[n >>> 4] ^= 1 << (n & 0xF);
+		this._memory_reduction();
 		return this;
 	}
 
@@ -1692,8 +1731,8 @@ export default class BigInteger {
 	 */
 	pow(exponent) {
 		const e = new BigInteger(exponent);
-		let x = new BigInteger(this);
-		let y = new BigInteger(1);
+		let x = BigInteger._toBigInteger(this);
+		let y = BigInteger._toBigInteger(1);
 		while(e.element.length !== 0) {
 			if((e.element[0] & 1) !== 0) {
 				y = y.multiply(x);
@@ -1831,6 +1870,24 @@ export default class BigInteger {
 	}
 
 	/**
+	 * Multiply a multiple of ten.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @returns {BigInteger} x * 10^n
+	 */
+	scaleByPowerOfTen(n) {
+		const x = BigInteger._toInteger(n);
+		if(x === 0) {
+			return this;
+		}
+		if(x > 0) {
+			return this.mul(BigInteger.TEN.pow(x));
+		}
+		else {
+			return this.div(BigInteger.TEN.pow(x));
+		}
+	}
+
+	/**
 	 * Set default class of random.
 	 * This is used if you do not specify a random number.
 	 * @param {Random} random
@@ -1848,21 +1905,10 @@ export default class BigInteger {
 		return DEFAULT_RANDOM;
 	}
 
-
-
-
 	// ----------------------
 	// 定数
 	// ----------------------
 	
-	/**
-	 * 0
-	 * @returns {BigInteger} 0
-	 */
-	static get ZERO() {
-		return DEFINE.ZERO;
-	}
-
 	/**
 	 * 1
 	 * @returns {BigInteger} 1
@@ -1885,6 +1931,22 @@ export default class BigInteger {
 	 */
 	static get TEN() {
 		return DEFINE.TEN;
+	}
+
+	/**
+	 * 0
+	 * @returns {BigInteger} 0
+	 */
+	static get ZERO() {
+		return DEFINE.ZERO;
+	}
+
+	/**
+	 * -1
+	 * @returns {BigInteger} -1
+	 */
+	static get MINUS_ONE() {
+		return DEFINE.MINUS_ONE;
 	}
 
 }
@@ -1913,5 +1975,11 @@ const DEFINE = {
 	/**
 	 * 0
 	 */
-	ZERO : new BigInteger(0)
+	ZERO : new BigInteger(0),
+	
+	/**
+	 * -1
+	 */
+	MINUS_ONE : new BigInteger(-1)
+
 };

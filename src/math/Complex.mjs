@@ -160,7 +160,7 @@ export default class Complex {
 	 * @returns {Complex}
 	 */
 	static valueOf(number) {
-		return Complex.valueOf(number);
+		return Complex.create(number);
 	}
 	
 	/**
@@ -208,19 +208,19 @@ export default class Complex {
 	 * @private
 	 */
 	static _toInteger(number) {
-		return Complex._toDouble(number) | 0;
+		return Math.trunc(Complex._toDouble(number));
 	}
 
 	/**
-	 * 32-bit integer value.
+	 * integer value.
 	 * @returns {number}
 	 */
 	get intValue() {
-		return this.real | 0;
+		return Math.trunc(this.real);
 	}
 
 	/**
-	 * 64-bit floating point.
+	 * floating point.
 	 * @returns {number}
 	 */
 	get doubleValue() {
@@ -613,7 +613,7 @@ export default class Complex {
 	 */
 	isInteger(epsilon) {
 		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return this.isReal() && (Math.abs(this._re - (this._re | 0)) < tolerance);
+		return this.isReal() && (Math.abs(this._re - Math.trunc(this._re)) < tolerance);
 	}
 
 	/**
@@ -624,8 +624,8 @@ export default class Complex {
 	isComplexInteger(epsilon) {
 		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
 		// 複素整数
-		return (Math.abs(this._re - (this._re | 0)) < tolerance) &&
-				(Math.abs(this._im - (this._im | 0)) < tolerance);
+		return (Math.abs(this._re - Math.trunc(this._re)) < tolerance) &&
+				(Math.abs(this._im - Math.trunc(this._im)) < tolerance);
 	}
 
 	/**
@@ -973,7 +973,7 @@ export default class Complex {
 	 * @returns {Complex} fix(A)
 	 */
 	fix() {
-		return new Complex([this._re | 0, this._im | 0]);
+		return new Complex([Math.trunc(this._re), Math.trunc(this._im)]);
 	}
 
 	/**
@@ -981,7 +981,7 @@ export default class Complex {
 	 * @returns {Complex} fract(A)
 	 */
 	fract() {
-		return new Complex([this._re - (this._re | 0), this._im - (this._im | 0)]);
+		return new Complex([this._re - Math.trunc(this._re), this._im - Math.trunc(this._im)]);
 	}
 
 	// ----------------------

@@ -919,6 +919,9 @@ const DEFINE = {
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+// @ts-ignore
+//import BigDecimal from "./BigDecimal.mjs";
+
 /**
  * Random number class to be used when the random number class is not set.
  * @type {Random}
@@ -1207,7 +1210,7 @@ class BigInteger {
 				this._sign = x._sign;
 			}
 			else if(number instanceof Array) {
-				if((number.length >= 1) && (typeof number[0] === "string")) {
+				if((number.length === 2) && (typeof number[0] === "string")) {
 					const x = IntegerTool.ToBigIntegerFromString(number[0], number[1]);
 					this.element = x.element;
 					this._sign = x._sign;
@@ -1215,6 +1218,14 @@ class BigInteger {
 				else {
 					throw "BigInteger Unsupported argument " + arguments;
 				}
+			}
+			else if((number instanceof Object) && (number.unscaledValue) && (number.scale)) {
+				// BigDecimal 型の場合を想定する
+				// ※初期化時のため「 instanceof BigDecimal 」は巡回するため使用できない。
+				const value = number.unscaledValue();
+				const x = value.scaleByPowerOfTen(-number.scale());
+				this.element = x.element;
+				this._sign = x._sign;
 			}
 			else if(number instanceof Object) {
 				const x = IntegerTool.ToBigIntegerFromString(number.toString());
@@ -1297,7 +1308,7 @@ class BigInteger {
 	 */
 	static _toInteger(number) {
 		if(typeof number === "number") {
-			return number | 0;
+			return Math.trunc(number);
 		}
 		else if(number instanceof BigInteger) {
 			return number.intValue;
@@ -1487,16 +1498,8 @@ class BigInteger {
 	}
 
 	/**
-	 * this < 0
-	 * @returns {boolean} real(x) < 0
-	 */
-	isNegative() {
-		return this._sign < 0;
-	}
-
-	/**
 	 * this === 0
-	 * @returns {boolean} A === 0
+	 * @returns {boolean}
 	 */
 	isZero() {
 		this._memory_reduction();
@@ -1504,17 +1507,42 @@ class BigInteger {
 	}
 	
 	/**
-	 * Return true if the value is positive number.
-	 * @returns {boolean} real(x) > 0
+	 * this === 1
+	 * @returns {boolean}
+	 */
+	isOne() {
+		return this._sign === 1 && this.element.length === 1 && this.element[0] === 1;
+	}
+	
+	/**
+	 * this > 0
+	 * @returns {boolean}
 	 */
 	isPositive() {
+		this._memory_reduction();
 		return this._sign > 0;
+	}
+
+	/**
+	 * this < 0
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return this._sign < 0;
+	}
+
+	/**
+	 * this >= 0
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return this._sign >= 0;
 	}
 
 	/**
 	 * Number of digits in which the number "1" appears first when expressed in binary.
 	 * - Return -1 If 1 is not found it.
-	 * @returns {number} 存在しない場合は -1
+	 * @returns {number}
 	 */
 	getLowestSetBit() {
 		for(let i = 0; i < this.element.length; i++) {
@@ -1915,6 +1943,16 @@ class BigInteger {
 			r1 = r2;
 		}
 		return [a0, b0, r0];
+	}
+
+	/**
+	 * Least common multiple.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} lcm(x, y)
+	 */
+	lcm(number) {
+		const val = BigInteger._toBigInteger(number);
+		return this.mul(val).div(this.gcd(val));
 	}
 
 	/**
@@ -2556,6 +2594,7 @@ class BigInteger {
 		const n = BigInteger._toInteger(bit);
 		this._memory_allocation(n + 1);
 		this.element[n >>> 4] ^= 1 << (n & 0xF);
+		this._memory_reduction();
 		return this;
 	}
 
@@ -2599,8 +2638,8 @@ class BigInteger {
 	 */
 	pow(exponent) {
 		const e = new BigInteger(exponent);
-		let x = new BigInteger(this);
-		let y = new BigInteger(1);
+		let x = BigInteger._toBigInteger(this);
+		let y = BigInteger._toBigInteger(1);
 		while(e.element.length !== 0) {
 			if((e.element[0] & 1) !== 0) {
 				y = y.multiply(x);
@@ -2738,6 +2777,24 @@ class BigInteger {
 	}
 
 	/**
+	 * Multiply a multiple of ten.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @returns {BigInteger} x * 10^n
+	 */
+	scaleByPowerOfTen(n) {
+		const x = BigInteger._toInteger(n);
+		if(x === 0) {
+			return this;
+		}
+		if(x > 0) {
+			return this.mul(BigInteger.TEN.pow(x));
+		}
+		else {
+			return this.div(BigInteger.TEN.pow(x));
+		}
+	}
+
+	/**
 	 * Set default class of random.
 	 * This is used if you do not specify a random number.
 	 * @param {Random} random
@@ -2755,21 +2812,10 @@ class BigInteger {
 		return DEFAULT_RANDOM;
 	}
 
-
-
-
 	// ----------------------
 	// 定数
 	// ----------------------
 	
-	/**
-	 * 0
-	 * @returns {BigInteger} 0
-	 */
-	static get ZERO() {
-		return DEFINE$1.ZERO;
-	}
-
 	/**
 	 * 1
 	 * @returns {BigInteger} 1
@@ -2792,6 +2838,22 @@ class BigInteger {
 	 */
 	static get TEN() {
 		return DEFINE$1.TEN;
+	}
+
+	/**
+	 * 0
+	 * @returns {BigInteger} 0
+	 */
+	static get ZERO() {
+		return DEFINE$1.ZERO;
+	}
+
+	/**
+	 * -1
+	 * @returns {BigInteger} -1
+	 */
+	static get MINUS_ONE() {
+		return DEFINE$1.MINUS_ONE;
 	}
 
 }
@@ -2820,7 +2882,13 @@ const DEFINE$1 = {
 	/**
 	 * 0
 	 */
-	ZERO : new BigInteger(0)
+	ZERO : new BigInteger(0),
+	
+	/**
+	 * -1
+	 */
+	MINUS_ONE : new BigInteger(-1)
+
 };
 
 /**
@@ -2831,6 +2899,14 @@ const DEFINE$1 = {
  * 
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Setting of calculation result of division.
+ * @typedef {Object} BigDecimalDivideType
+ * @property {number} [scale] Scale of rounding.
+ * @property {RoundingModeEntity} [roundingMode] Rounding mode.
+ * @property {MathContext} [context] Configuration.(scale and roundingMode are unnecessary.)
  */
 
 /**
@@ -2910,11 +2986,11 @@ class DecimalTool {
 		}
 		// 浮動小数
 		else {
-			let scale = (Math.log(Math.abs(value)) / Math.log(10)) | 0;
+			let scale = Math.trunc(Math.log(Math.abs(value)) / Math.log(10));
 			let x = value / Math.pow(10, scale);
 			// スケールを逆にする
 			scale = - scale;
-			for(let i = 0; i < 12; i++) {
+			for(let i = 0; i < 14; i++) {
 				x = x * 10;
 				scale = scale + 1;
 				if(Math.abs(x - Math.round(x)) <= Number.EPSILON) {
@@ -3169,7 +3245,7 @@ class BigDecimal {
 	 */
 	static _toInteger(number) {
 		if(typeof number === "number") {
-			return number | 0;
+			return Math.trunc(number);
 		}
 		else if(number instanceof BigInteger) {
 			return number.intValue;
@@ -3515,6 +3591,46 @@ class BigDecimal {
 			const newsrc = src.setScale(tgt._scale);
 			return newsrc.integer.compareTo(tgt.integer);
 		}
+	}
+
+	/**
+	 * this === 0
+	 * @returns {boolean}
+	 */
+	isZero() {
+		return this.compareTo(BigDecimal.ZERO) === 0;
+	}
+	
+	/**
+	 * this === 1
+	 * @returns {boolean}
+	 */
+	isOne() {
+		return this.compareTo(BigDecimal.ONE) === 0;
+	}
+	
+	/**
+	 * this > 0
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		return this.compareTo(BigDecimal.ZERO) === 1;
+	}
+
+	/**
+	 * this < 0
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return this.compareTo(BigDecimal.ZERO) === -1;
+	}
+
+	/**
+	 * this >= 0
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return this.compareTo(BigDecimal.ZERO) >= 0;
 	}
 
 	/**
@@ -3872,7 +3988,7 @@ class BigDecimal {
 	/**
 	 * Divide.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @param {BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal}
 	 */
 	divide(number, type) {
@@ -3960,7 +4076,7 @@ class BigDecimal {
 	/**
 	 * Divide.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {{scale: ?number, context: ?MathContext, roundingMode: ?RoundingModeEntity}} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @param {BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal} A / B
 	 */
 	div(number, type) {
@@ -4089,16 +4205,6 @@ class BigDecimal {
 	// ----------------------
 	
 	/**
-	 * 0
-	 * @returns {BigDecimal} 0
-	 */
-	static get ZERO() {
-		const x = new BigDecimal(DEFINE$2.ZERO);
-		x.default_context = DEFAULT_CONTEXT;
-		return x;
-	}
-
-	/**
 	 * 1
 	 * @returns {BigDecimal} 1
 	 */
@@ -4124,6 +4230,26 @@ class BigDecimal {
 	 */
 	static get TEN() {
 		const x = new BigDecimal(DEFINE$2.TEN);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+
+	/**
+	 * 0
+	 * @returns {BigDecimal} 0
+	 */
+	static get ZERO() {
+		const x = new BigDecimal(DEFINE$2.ZERO);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+	
+	/**
+	 * -1
+	 * @returns {BigDecimal} -1
+	 */
+	static get MINUS_ONE() {
+		const x = new BigDecimal(DEFINE$2.MINUS_ONE);
 		x.default_context = DEFAULT_CONTEXT;
 		return x;
 	}
@@ -4154,11 +4280,614 @@ const DEFINE$2 = {
 	/**
 	 * 10
 	 */
-	TEN : new BigDecimal(10)
+	TEN : new BigDecimal(10),
+
+	/**
+	 * -1
+	 */
+	MINUS_ONE : new BigDecimal(-1)
+
 };
 
 BigDecimal.RoundingMode = RoundingMode;
 BigDecimal.MathContext = MathContext;
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Collection of functions used in Fraction.
+ * @ignore
+ */
+class FractionTool {
+
+	/**
+	 * 
+	 * @param ntext {string}
+	 * @return {Fraction}
+	 */
+	static to_fraction_data_from_number_string(ntext) {
+		let scale = 0;
+		let buff;
+		// 正規化
+		let text = ntext.replace(/\s/g, "").toLowerCase();
+		// +-の符号があるか
+		const number_text = [];
+		buff = text.match(/^[+-]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			if(buff.indexOf("-") !== -1) {
+				number_text.push("-");
+			}
+		}
+		// 整数部があるか
+		buff = text.match(/^[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			number_text.push(buff);
+		}
+		// 浮動小数点の計算がない場合はここで完了
+		if(text.length === 0) {
+			return new Fraction([new BigInteger([number_text.join(""), 10]), BigInteger.ONE]);
+		}
+		// 巡回小数点指定があるか
+		let cyclic_decimal = null;
+		if(/[()'"[\]]/.test(text)) {
+			const match_data = text.match(/([^.]*)\.(\d*)[(['"](\d+)[)\]'"](.*)/);
+			if(match_data === null) {
+				throw "Fraction Unsupported argument " + text;
+			}
+			// 巡回少数の場所
+			const cyclic_decimal_scale = match_data[2].length;
+			const cyclic_decimal_text = match_data[3];
+			// 巡回少数以外を抽出
+			if(cyclic_decimal_scale === 0) {
+				text = match_data[1] + match_data[4];
+			}
+			else {
+				text = match_data[1] + "." + match_data[2] + match_data[4];
+			}
+
+			const numerator = new BigInteger([cyclic_decimal_text, 10]);
+			const denominator_string = [];
+			for(let i = 0; i < cyclic_decimal_text.length; i++) {
+				denominator_string.push("9");
+			}
+			const denominator = new BigInteger([denominator_string.join(""), 10]);
+			cyclic_decimal = new Fraction([numerator, denominator]);
+			cyclic_decimal = cyclic_decimal.scaleByPowerOfTen(-cyclic_decimal_scale);
+		}
+		// 小数部があるか
+		buff = text.match(/^\.[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			buff = buff.substr(1);
+			scale = scale + buff.length;
+			number_text.push(buff);
+		}
+		// 指数表記があるか
+		buff = text.match(/^e[+-]?[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0].substr(1);
+			scale = scale - parseInt(buff, 10);
+		}
+
+		let f = null;
+		{
+			let numerator = null;
+			let denominator = null;
+			// 出力用の文字を作成
+			if(scale === 0) {
+				numerator = new BigInteger([number_text.join(""), 10]);
+				denominator = BigInteger.ONE;
+			}
+			if(scale < 0) {
+				for(let i = 0; i < -scale; i++) {
+					number_text.push("0");
+				}
+				numerator = new BigInteger([number_text.join(""), 10]);
+				denominator = BigInteger.ONE;
+			}
+			else if(scale > 0) {
+				numerator = new BigInteger([number_text.join(""), 10]);
+				const denominator_string = ["1"];
+				for(let i = 0; i < scale; i++) {
+					denominator_string.push("0");
+				}
+				denominator = new BigInteger([denominator_string.join(""), 10]);
+			}
+			f = new Fraction([numerator, denominator]);
+		}
+		if(cyclic_decimal) {
+			f = f.add(cyclic_decimal);
+		}
+		return f;
+	}
+
+	/**
+	 * 
+	 * @param ntext {string}
+	 * @return {Fraction}
+	 */
+	static to_fraction_data_from_fraction_string(ntext) {
+		if(ntext.indexOf("/") === -1) {
+			return FractionTool.to_fraction_data_from_number_string(ntext);
+		}
+		else {
+			const fraction_value = ntext.split("/");
+			const numerator_value = FractionTool.to_fraction_data_from_number_string(fraction_value[0]);
+			const denominator_value = FractionTool.to_fraction_data_from_number_string(fraction_value[1]);
+			return numerator_value.div(denominator_value);
+		}
+	}
+
+	/**
+	 * 
+	 * @param value {number}
+	 * @return {Fraction}
+	 */
+	static to_fraction_data_from_number(value) {
+		let numerator = null;
+		let denominator = null;
+		// 整数
+		if(value === Math.floor(value)) {
+			numerator = new BigInteger(value);
+			denominator = BigInteger.ONE;
+		}
+		// 浮動小数
+		else {
+			let scale = Math.trunc(Math.log(Math.abs(value)) / Math.log(10));
+			let x = value / Math.pow(10, scale);
+			// スケールを逆にする
+			scale = - scale;
+			for(let i = 0; i < 14; i++) {
+				x = x * 10;
+				scale = scale + 1;
+				if(Math.abs(x - Math.round(x)) <= Number.EPSILON) {
+					break;
+				}
+			}
+			if(scale <= 0) {
+				numerator = new BigInteger(value);
+				denominator = BigInteger.ONE;
+			}
+			else {
+				numerator = new BigInteger(x);
+				const denominator_string = ["1"];
+				for(let i = 0; i < scale; i++) {
+					denominator_string.push("0");
+				}
+				denominator = new BigInteger([denominator_string.join(""), 10]);
+			}
+		}
+		return new Fraction([numerator, denominator]);
+	}
+
+	/**
+	 * @param value {Fraction}
+	 */
+	static normalization(value) {
+		if(value.denominator.equals(BigInteger.ONE)) {
+			return;
+		}
+		if(value.denominator.equals(BigInteger.MINUS_ONE)) {
+			value.numerator = value.numerator.negate();
+			value.denominator = BigInteger.ONE;
+			return;
+		}
+		if(value.numerator.equals(BigInteger.ZERO)) {
+			value.denominator = BigInteger.ONE;
+			return;
+		}
+		const gcd = value.numerator.gcd(value.denominator);
+		let numerator = value.numerator.div(gcd);
+		let denominator = value.denominator.div(gcd);
+		if(denominator.sign() < 0) {
+			numerator = numerator.negate();
+			denominator = denominator.negate();
+		}
+		value.numerator = numerator;
+		value.denominator = denominator;
+	}
+
+}
+
+/**
+ * Fraction class (immutable).
+ */
+class Fraction {
+
+	/**
+	 * Create an fraction.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} [number] - Fraction data. See how to use the function.
+	 */
+	constructor(number) {
+		
+		// 分子
+		/**
+		 * @type {BigInteger}
+		 */
+		this.numerator = null;
+
+		// 分母
+		/**
+		 * @type {BigInteger}
+		 */
+		this.denominator = null;
+
+		if(arguments.length === 0) {
+			this.numerator = BigInteger.ZERO;
+			this.denominator = BigInteger.ONE;
+		}
+		else if(arguments.length === 1) {
+			let is_normalization = false;
+			if(typeof number === "number") {
+				const x = FractionTool.to_fraction_data_from_number(number);
+				this.numerator = x.numerator;
+				this.denominator = x.denominator;
+			}
+			else if(typeof number === "string") {
+				const x = FractionTool.to_fraction_data_from_fraction_string(number);
+				this.numerator = x.numerator;
+				this.denominator = x.denominator;
+			}
+			else if(number instanceof BigInteger) {
+				this.numerator = number;
+				this.denominator = BigInteger.ONE;
+			}
+			else if(number instanceof Fraction) {
+				this.numerator = number.numerator;
+				this.denominator = number.denominator;
+			}
+			else if((number instanceof Array) && (number.length === 2)) {
+				this.numerator = (number[0] instanceof BigInteger) ? number[0] : new BigInteger(number[0]);
+				this.denominator = (number[1] instanceof BigInteger) ? number[1] : new BigInteger(number[1]);
+				is_normalization = true;
+			}
+			else if((number instanceof Object) && number.numerator && number.denominator) {
+				this.numerator = (number.numerator instanceof BigInteger) ? number.numerator : new BigInteger(number.numerator);
+				this.denominator = (number.denominator instanceof BigInteger) ? number.denominator : new BigInteger(number.denominator);
+				is_normalization = true;
+			}
+			else if(number instanceof BigDecimal) {
+				const value = new Fraction(number.unscaledValue());
+				const x = value.scaleByPowerOfTen(-number.scale());
+				this.numerator = x.numerator;
+				this.denominator = x.denominator;
+			}
+			else if(number instanceof Object) {
+				const x1 = FractionTool.to_fraction_data_from_fraction_string(number.toString());
+				this.numerator = x1.numerator;
+				this.denominator = x1.denominator;
+			}
+			else {
+				throw "Fraction Unsupported argument " + number;
+			}
+			if(is_normalization) {
+				FractionTool.normalization(this);
+			}
+		}
+		else {
+			throw "Fraction Unsupported argument " + number;
+		}
+	}
+
+	/**
+	 * Create an entity object of this class.
+	 * @returns {Fraction}
+	 */
+	static create(number) {
+		if(number instanceof Fraction) {
+			return number;
+		}
+		else {
+			return new Fraction(number);
+		}
+	}
+
+	/**
+	 * Convert number to Fraction type.
+	 * @returns {Fraction}
+	 */
+	static valueOf(number) {
+		return Fraction.create(number);
+	}
+
+	/**
+	 * Convert to Fraction.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+	 * @returns {Fraction}
+	 * @private
+	 */
+	static _toFraction(number) {
+		if(number instanceof Fraction) {
+			return number;
+		}
+		else {
+			return new Fraction(number);
+		}
+	}
+
+	/**
+	 * Convert to real number.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toFloat(number) {
+		if(typeof number === "number") {
+			return number;
+		}
+		else if(number instanceof Fraction) {
+			return number.doubleValue;
+		}
+		else {
+			return (new Fraction(number)).doubleValue;
+		}
+	}
+
+	/**
+	 * Convert to integer.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		if(typeof number === "number") {
+			return Math.trunc(number);
+		}
+		else if(number instanceof Fraction) {
+			return number.intValue;
+		}
+		else {
+			return (new Fraction(number)).intValue;
+		}
+	}
+
+	/**
+	 * Deep copy.
+	 * @returns {Fraction} 
+	 */
+	clone() {
+		return new Fraction(this);
+	}
+	
+	/**
+	 * integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		if(this.isInteger()) {
+			return Math.trunc(this.numerator.doubleValue);
+		}
+		return Math.trunc(this.doubleValue);
+	}
+
+	/**
+	 * floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		if(this.isInteger()) {
+			return this.numerator.doubleValue;
+		}
+		const x = new BigDecimal([this.numerator, MathContext.UNLIMITED]);
+		const y = new BigDecimal([this.denominator, MathContext.UNLIMITED]);
+		return x.div(y, {context : MathContext.DECIMAL64}).doubleValue;
+	}
+
+	/**
+	 * Convert to string.
+	 * @returns {string} 
+	 */
+	toString() {
+		return this.numerator.toString() + " / " + this.denominator.toString();
+	}
+
+	/**
+	 * 
+	 * @return {boolean}
+	 */
+	isInteger() {
+		return this.denominator.equals(BigInteger.ONE);
+	}
+
+	/**
+	 * this === 0
+	 * @return {boolean} A === 0
+	 */
+	isZero() {
+		return this.numerator.equals(BigInteger.ZERO) && this.denominator.equals(BigInteger.ONE);
+	}
+
+	/**
+	 * this === 1
+	 * @return {boolean} A === 1
+	 */
+	isOne() {
+		return this.numerator.equals(BigInteger.ONE) && this.denominator.equals(BigInteger.ONE);
+	}
+
+	/**
+	 * this > 0
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		return this.numerator.isPositive();
+	}
+
+	/**
+	 * this < 0
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return this.numerator.isNegative();
+	}
+
+	/**
+	 * this >= 0
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return this.numerator.isNotNegative();
+	}
+
+	/**
+	 * Add.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @return {Fraction}
+	 */
+	add(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		let f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator.add(y.numerator), BigInteger.ONE]);
+		}
+		else {
+			f = new Fraction([
+				x.numerator.mul(y.denominator).add(y.numerator.mul(x.denominator)),
+				x.denominator.mul(y.denominator)
+			]);
+		}
+		return f;
+	}
+
+	/**
+	 * Subtract.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @return {Fraction}
+	 */
+	sub(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		let f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator.sub(y.numerator), BigInteger.ONE]);
+		}
+		else {
+			f = new Fraction([
+				x.numerator.mul(y.denominator).sub(y.numerator.mul(x.denominator)),
+				x.denominator.mul(y.denominator)
+			]);
+		}
+		return f;
+	}
+
+	/**
+	 * Multiply.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @return {Fraction}
+	 */
+	mul(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		let f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator.mul(y.numerator), BigInteger.ONE]);
+		}
+		else {
+			f = new Fraction([ x.numerator.mul(y.numerator), x.denominator.mul(y.denominator) ]);
+		}
+		return f;
+	}
+
+	/**
+	 * Divide.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @return {Fraction}
+	 */
+	div(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		let f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator, y.denominator]);
+		}
+		else {
+			f = new Fraction([ x.numerator.mul(y.denominator), y.denominator.mul(x.numerator)]);
+		}
+		return f;
+	}
+
+	/**
+	 * Multiply a multiple of ten.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} n
+	 * @returns {Fraction}
+	 */
+	scaleByPowerOfTen(n) {
+		const scale = Fraction._toInteger(n);
+		if(scale === 0) {
+			return this;
+		}
+		let f;
+		if(scale > 0) {
+			f = new Fraction([ this.numerator.scaleByPowerOfTen(scale), this.denominator]);
+		}
+		else if(scale < 0) {
+			f = new Fraction([ this.numerator, this.denominator.scaleByPowerOfTen(-scale)]);
+		}
+		return f;
+	}
+
+	/**
+	 * 1
+	 * @returns {Fraction} 1
+	 */
+	static get ONE() {
+		return DEFINE$3.ONE;
+	}
+	
+	/**
+	 * 0
+	 * @returns {Fraction} 0
+	 */
+	static get ZERO() {
+		return DEFINE$3.ZERO;
+	}
+
+	/**
+	 * -1
+	 * @returns {Fraction} -1
+	 */
+	static get MINUS_ONE() {
+		return DEFINE$3.MINUS_ONE;
+	}
+
+}
+
+/**
+ * Collection of constant values used in the class.
+ * @ignore
+ */
+const DEFINE$3 = {
+
+	/**
+	 * 1
+	 */
+	ONE : new Fraction([BigInteger.ONE, BigInteger.ONE]),
+
+	/**
+	 * 0
+	 */
+	ZERO : new Fraction([BigInteger.ZERO, BigInteger.ONE]),
+	
+	/**
+	 * -1
+	 */
+	MINUS_ONE : new Fraction([BigInteger.MINUS_ONE, BigInteger.ONE]),
+
+};
 
 /**
  * The script is part of konpeito.
@@ -4319,7 +5048,7 @@ class LinearAlgebraTool {
 				return new Complex(d[row]);
 			}
 			else if(Math.abs(row - col) === 1) {
-				return new Complex(e[((row + col) * 0.5) | 0]);
+				return new Complex(e[Math.trunc((row + col) * 0.5)]);
 			}
 			else {
 				return Complex.ZERO;
@@ -5389,6 +6118,14 @@ class LinearAlgebra {
  */
 
 /**
+ * Collection of calculation settings for matrix.
+ * - Available options vary depending on the method.
+ * @typedef {Object} StatisticsSettings
+ * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
+ * @property {Object} [correction] Correction value. For statistics. 0(unbiased), 1(sample).
+ */
+
+/**
  * Collection of statistical functions using real numbers.
  * @ignore
  */
@@ -5708,7 +6445,7 @@ class StatisticsTool {
 	 * @returns {boolean}
 	 */
 	static isInteger(x) {
-		return (x - (x | 0) !== 0.0);
+		return (x - Math.trunc(x) !== 0.0);
 	}
 	
 	/**
@@ -5801,7 +6538,7 @@ class StatisticsTool {
 	 */
 	static factorial(n) {
 		const y = StatisticsTool.gamma(n + 1.0);
-		if((n | 0) === n) {
+		if(Math.trunc(n) === n) {
 			return Math.round(y);
 		}
 		else {
@@ -6926,7 +7663,7 @@ class Statistics {
 	/**
 	 * Maximum number.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix} max([A, B])
 	 */
 	static max(x, type) {
@@ -6947,7 +7684,7 @@ class Statistics {
 	/**
 	 * Minimum number.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix} min([A, B])
 	 */
 	static min(x, type) {
@@ -6968,7 +7705,7 @@ class Statistics {
 	/**
 	 * Sum.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static sum(x, type) {
@@ -6992,7 +7729,7 @@ class Statistics {
 	/**
 	 * Arithmetic average.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static mean(x, type) {
@@ -7016,7 +7753,7 @@ class Statistics {
 	/**
 	 * Product of array elements.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static prod(x, type) {
@@ -7035,7 +7772,7 @@ class Statistics {
 	/**
 	 * Geometric mean.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static geomean(x, type) {
@@ -7054,7 +7791,7 @@ class Statistics {
 	/**
 	 * Median.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static median(x, type) {
@@ -7082,7 +7819,7 @@ class Statistics {
 	/**
 	 * Mode.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static mode(x, type) {
@@ -7124,16 +7861,17 @@ class Statistics {
 	 * Moment.
 	 * - Moment of order n. Equivalent to the definition of variance at 2.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
+	 * @param {number} nth_order
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix} n次のモーメント、2で分散の定義と同等。
 	 */
-	static moment(x, type) {
+	static moment(x, nth_order, type) {
 		const X = Matrix._toMatrix(x);
 		const M = Statistics.mean(X);
 		// 補正値 0(不偏分散), 1(標本分散)。規定値は、標本分散とする
 		const cor = !(type && typeof type.correction === "number") ? 1: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
-		const order = Matrix._toComplex(type.nth_order);
+		const order = Matrix._toComplex(nth_order);
 		let col = 0;
 		const main = function(data) {
 			let mean;
@@ -7166,7 +7904,7 @@ class Statistics {
 	/**
 	 * Variance.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static var(x, type) {
@@ -7196,7 +7934,7 @@ class Statistics {
 	/**
 	 * Standard deviation.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static std(x, type) {
@@ -7213,13 +7951,15 @@ class Statistics {
 
 	/**
 	 * Mean absolute deviation.
+	 * - The "algorithm" can choose "0/mean"(default) and "1/median".
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
+	 * @param {?string|?number} [algorithm]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
-	static mad(x, type) {
+	static mad(x, algorithm, type) {
 		const X = Matrix._toMatrix(x);
-		const alg = !(type && type.algorithm) ? "mean" : type.algorithm;
+		const alg = !algorithm ? "mean" : (typeof algorithm === "string" ? algorithm : Matrix._toInteger(algorithm));
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
 		if((alg === "mean") || (alg === 0)) {
 			return Statistics.mean(X.sub(Statistics.mean(X, {dimension : dim} )).abs(), {dimension : dim});
@@ -7235,7 +7975,7 @@ class Statistics {
 	/**
 	 * Skewness.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static skewness(x, type) {
@@ -7243,7 +7983,7 @@ class Statistics {
 		// 補正値 0(不偏), 1(標本)。規定値は、標本とする
 		const cor = !(type && typeof type.correction === "number") ? 1: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
-		const order = Statistics.moment(X, { correction : cor, dimension : dim, nth_order : 3  });
+		const order = Statistics.moment(X, 3, { correction : cor, dimension : dim });
 		const std = Statistics.std(X, { correction : cor, dimension : dim });
 		if(cor === 1) {
 			return order.dotdiv(std.dotpow(3));
@@ -7256,7 +7996,7 @@ class Statistics {
 	/**
 	 * Covariance matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static cov(x, type) {
@@ -7295,7 +8035,7 @@ class Statistics {
 	/**
 	 * The samples are normalized to a mean value of 0, standard deviation of 1.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static normalize(x, type) {
@@ -7308,7 +8048,7 @@ class Statistics {
 	/**
 	 * Correlation matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static corrcoef(x, type) {
@@ -7318,16 +8058,18 @@ class Statistics {
 
 	/**
 	 * Sort.
+	 * - The "order" can choose "ascend"(default) and "descend".
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number), order : ?string}} [type]
+	 * @param {string} [order]
+	 * @param {StatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
-	static sort(x, type) {
+	static sort(x, order, type) {
 		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
-		const order = !(type && type.order) ? "ascend" : type.order;
+		const order_type = !order ? "ascend" : order;
 		let compare;
-		if(order === "ascend") {
+		if(order_type === "ascend") {
 			compare = function(a, b){
 				return a.compareTo(b);
 			};
@@ -7355,6 +8097,13 @@ class Statistics {
  * 
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Collection of calculation settings for matrix.
+ * - Available options vary depending on the method.
+ * @typedef {Object} SignalSettings
+ * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
  */
 
 /**
@@ -8241,7 +8990,7 @@ class Signal {
 	/**
 	 * Discrete Fourier transform (DFT).
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} fft(x)
 	 */
 	static fft(x, type) {
@@ -8267,7 +9016,7 @@ class Signal {
 	/**
 	 * Inverse discrete Fourier transform (IDFT),
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} ifft(X)
 	 */
 	static ifft(X, type) {
@@ -8293,7 +9042,7 @@ class Signal {
 	/**
 	 * Power spectral density.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} abs(fft(x)).^2
 	 */
 	static powerfft(x, type) {
@@ -8319,7 +9068,7 @@ class Signal {
 	/**
 	 * Discrete cosine transform (DCT-II, DCT).
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} dct(x)
 	 */
 	static dct(x, type) {
@@ -8346,7 +9095,7 @@ class Signal {
 	/**
 	 * Inverse discrete cosine transform (DCT-III, IDCT),
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} idct(x)
 	 */
 	static idct(X, type) {
@@ -8555,7 +9304,7 @@ class Signal {
 	 * FFT shift.
 	 * Circular shift beginning at the center of the signal.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x 
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static fftshift(x, type) {
@@ -8592,6 +9341,14 @@ class Signal {
  */
 
 /**
+ * Collection of calculation settings for matrix.
+ * - Available options vary depending on the method.
+ * @typedef {Object} MatrixSettings
+ * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
+ * @property {Object} [correction] Correction value. For statistics. 0(unbiased), 1(sample).
+ */
+
+/**
  * Collection of functions used in Matrix.
  * @ignore
  */
@@ -8620,7 +9377,7 @@ class MatrixTool {
 				const y = array_or_string;
 				const num_y = new Array(y.length);
 				for(let i = 0; i < y.length; i++) {
-					num_y[i] = y[i].real | 0;
+					num_y[i] = Math.trunc(y[i].real);
 				}
 				return num_y;
 			}
@@ -8640,12 +9397,12 @@ class MatrixTool {
 			const y = new Array(t_data.length);
 			if(t_data.isRow()) {
 				for(let i = 0; i < len; i++) {
-					y[i] = t_data.matrix_array[0][i].real | 0;
+					y[i] = Math.trunc(t_data.matrix_array[0][i].real);
 				}
 			}
 			else if(t_data.isColumn()) {
 				for(let i = 0; i < len; i++) {
-					y[i] = t_data.matrix_array[i][0].real | 0;
+					y[i] = Math.trunc(t_data.matrix_array[i][0].real);
 				}
 			}
 			return y;
@@ -9079,7 +9836,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	static valueOf(number) {
-		return Matrix.valueOf(number);
+		return Matrix.create(number);
 	}
 
 	/**
@@ -9144,7 +9901,7 @@ class Matrix {
 	 * @private
 	 */
 	static _toInteger(number) {
-		return Matrix._toDouble(number) | 0;
+		return Math.trunc(Matrix._toDouble(number));
 	}
 
 	/**
@@ -9554,11 +10311,11 @@ class Matrix {
 	 * Treat the rows and columns of the matrix as vectors and perform the same processing.
 	 * The arguments of the method can switch the direction of the matrix to be executed.
 	 * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
-	 * @param {string|number} [dimtype="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
+	 * @param {string|number} [dimension="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
 	 * @returns {Matrix} Matrix after function processing.
 	 */
-	eachVector(array_function, dimtype) {
-		let target = dimtype !== undefined ? dimtype : "auto";
+	eachVector(array_function, dimension) {
+		let target = dimension !== undefined ? dimension : "auto";
 		if(typeof target === "string") {
 			target = target.toLocaleLowerCase();
 		}
@@ -9578,7 +10335,7 @@ class Matrix {
 			return this.eachVectorBoth(array_function);
 		}
 		else {
-			throw "eachVector argument " + dimtype;
+			throw "eachVector argument " + dimension;
 		}
 	}
 
@@ -9666,7 +10423,7 @@ class Matrix {
 	 * @returns {number}
 	 */
 	get intValue() {
-		return (this.matrix_array[0][0].real) | 0;
+		return Math.trunc(this.matrix_array[0][0].real);
 	}
 
 	/**
@@ -11216,7 +11973,7 @@ class Matrix {
 	/**
 	 * Circular shift.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size 
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	circshift(shift_size, type) {
@@ -11239,7 +11996,7 @@ class Matrix {
 	/**
 	 * Circular shift.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size 
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	roll(shift_size, type) {
@@ -11297,7 +12054,7 @@ class Matrix {
 
 	/**
 	 * Flip this matrix.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	flip(type) {
@@ -11823,7 +12580,7 @@ class Matrix {
 	
 	/**
 	 * Maximum number.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} max([A, B])
 	 */
 	max(type) {
@@ -11832,7 +12589,7 @@ class Matrix {
 	
 	/**
 	 * Minimum number.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} min([A, B])
 	 */
 	min(type) {
@@ -11841,7 +12598,7 @@ class Matrix {
 	
 	/**
 	 * Sum.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	sum(type) {
@@ -11850,7 +12607,7 @@ class Matrix {
 
 	/**
 	 * Arithmetic average.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	mean(type) {
@@ -11859,7 +12616,7 @@ class Matrix {
 
 	/**
 	 * Product of array elements.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	prod(type) {
@@ -11868,7 +12625,7 @@ class Matrix {
 
 	/**
 	 * Geometric mean.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	geomean(type) {
@@ -11877,7 +12634,7 @@ class Matrix {
 
 	/**
 	 * Median.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	median(type) {
@@ -11886,7 +12643,7 @@ class Matrix {
 
 	/**
 	 * Mode.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	mode(type) {
@@ -11896,16 +12653,17 @@ class Matrix {
 	/**
 	 * Moment.
 	 * - Moment of order n. Equivalent to the definition of variance at 2.
-	 * @param {{dimension : (?string|?number), correction : ?number, nth_order : number}} [type]
+	 * @param {number} nth_order
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
-	moment(type) {
-		return Statistics.moment(this, type);
+	moment(nth_order, type) {
+		return Statistics.moment(this, nth_order, type);
 	}
 
 	/**
 	 * Variance.
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	var(type) {
@@ -11914,7 +12672,7 @@ class Matrix {
 
 	/**
 	 * Standard deviation.
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	std(type) {
@@ -11923,16 +12681,18 @@ class Matrix {
 
 	/**
 	 * Mean absolute deviation.
-	 * @param {{dimension : (?string|?number), algorithm : (?string|?number)}} [type]
+	 * - The "algorithm" can choose "0/mean"(default) and "1/median".
+	 * @param {?string|?number} [algorithm]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
-	mad(type) {
-		return Statistics.mad(this, type);
+	mad(algorithm, type) {
+		return Statistics.mad(this, algorithm, type);
 	}
 
 	/**
 	 * Skewness.
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	skewness(type) {
@@ -11941,7 +12701,7 @@ class Matrix {
 
 	/**
 	 * Covariance matrix.
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	cov(type) {
@@ -11950,7 +12710,7 @@ class Matrix {
 
 	/**
 	 * The samples are normalized to a mean value of 0, standard deviation of 1.
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	normalize(type) {
@@ -11959,7 +12719,7 @@ class Matrix {
 
 	/**
 	 * Correlation matrix.
-	 * @param {{dimension : (?string|?number), correction : ?number}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	corrcoef(type) {
@@ -11968,11 +12728,13 @@ class Matrix {
 
 	/**
 	 * Sort.
-	 * @param {{dimension : (?string|?number), order : ?string}} [type]
+	 * - The "order" can choose "ascend"(default) and "descend".
+	 * @param {string} [order]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
-	sort(type) {
-		return Statistics.sort(this, type);
+	sort(order, type) {
+		return Statistics.sort(this, order, type);
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
@@ -11981,7 +12743,7 @@ class Matrix {
 
 	/**
 	 * Discrete Fourier transform (DFT).
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} fft(x)
 	 */
 	fft(type) {
@@ -11990,7 +12752,7 @@ class Matrix {
 
 	/**
 	 * Inverse discrete Fourier transform (IDFT).
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} ifft(x)
 	 */
 	ifft(type) {
@@ -11999,7 +12761,7 @@ class Matrix {
 
 	/**
 	 * Power spectral density.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} abs(fft(x)).^2
 	 */
 	powerfft(type) {
@@ -12008,7 +12770,7 @@ class Matrix {
 
 	/**
 	 * Discrete cosine transform (DCT-II, DCT).
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} dct(x)
 	 */
 	dct(type) {
@@ -12017,7 +12779,7 @@ class Matrix {
 
 	/**
 	 * Inverse discrete cosine transform (DCT-III, IDCT).
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix} idct(x)
 	 */
 	idct(type) {
@@ -12119,7 +12881,7 @@ class Matrix {
 	/**
 	 * FFT shift.
 	 * Circular shift beginning at the center of the signal.
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {MatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	fftshift(type) {
@@ -12283,7 +13045,7 @@ class Complex {
 	 * @returns {Complex}
 	 */
 	static valueOf(number) {
-		return Complex.valueOf(number);
+		return Complex.create(number);
 	}
 	
 	/**
@@ -12331,19 +13093,19 @@ class Complex {
 	 * @private
 	 */
 	static _toInteger(number) {
-		return Complex._toDouble(number) | 0;
+		return Math.trunc(Complex._toDouble(number));
 	}
 
 	/**
-	 * 32-bit integer value.
+	 * integer value.
 	 * @returns {number}
 	 */
 	get intValue() {
-		return this.real | 0;
+		return Math.trunc(this.real);
 	}
 
 	/**
-	 * 64-bit floating point.
+	 * floating point.
 	 * @returns {number}
 	 */
 	get doubleValue() {
@@ -12736,7 +13498,7 @@ class Complex {
 	 */
 	isInteger(epsilon) {
 		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return this.isReal() && (Math.abs(this._re - (this._re | 0)) < tolerance);
+		return this.isReal() && (Math.abs(this._re - Math.trunc(this._re)) < tolerance);
 	}
 
 	/**
@@ -12747,8 +13509,8 @@ class Complex {
 	isComplexInteger(epsilon) {
 		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
 		// 複素整数
-		return (Math.abs(this._re - (this._re | 0)) < tolerance) &&
-				(Math.abs(this._im - (this._im | 0)) < tolerance);
+		return (Math.abs(this._re - Math.trunc(this._re)) < tolerance) &&
+				(Math.abs(this._im - Math.trunc(this._im)) < tolerance);
 	}
 
 	/**
@@ -13096,7 +13858,7 @@ class Complex {
 	 * @returns {Complex} fix(A)
 	 */
 	fix() {
-		return new Complex([this._re | 0, this._im | 0]);
+		return new Complex([Math.trunc(this._re), Math.trunc(this._im)]);
 	}
 
 	/**
@@ -13104,7 +13866,7 @@ class Complex {
 	 * @returns {Complex} fract(A)
 	 */
 	fract() {
-		return new Complex([this._re - (this._re | 0), this._im - (this._im | 0)]);
+		return new Complex([this._re - Math.trunc(this._re), this._im - Math.trunc(this._im)]);
 	}
 
 	// ----------------------
@@ -13116,7 +13878,7 @@ class Complex {
 	 * @returns {Complex} 1
 	 */
 	static get ONE() {
-		return DEFINE$3.ONE;
+		return DEFINE$4.ONE;
 	}
 	
 	/**
@@ -13124,7 +13886,7 @@ class Complex {
 	 * @returns {Complex} 2
 	 */
 	static get TWO() {
-		return DEFINE$3.TWO;
+		return DEFINE$4.TWO;
 	}
 	
 	/**
@@ -13132,7 +13894,7 @@ class Complex {
 	 * @returns {Complex} 10
 	 */
 	static get TEN() {
-		return DEFINE$3.TEN;
+		return DEFINE$4.TEN;
 	}
 	
 	/**
@@ -13140,7 +13902,7 @@ class Complex {
 	 * @returns {Complex} 0
 	 */
 	static get ZERO() {
-		return DEFINE$3.ZERO;
+		return DEFINE$4.ZERO;
 	}
 
 	/**
@@ -13148,7 +13910,7 @@ class Complex {
 	 * @returns {Complex} -1
 	 */
 	static get MINUS_ONE() {
-		return DEFINE$3.MINUS_ONE;
+		return DEFINE$4.MINUS_ONE;
 	}
 
 	/**
@@ -13156,7 +13918,7 @@ class Complex {
 	 * @returns {Complex} i
 	 */
 	static get I() {
-		return DEFINE$3.I;
+		return DEFINE$4.I;
 	}
 
 	/**
@@ -13164,7 +13926,7 @@ class Complex {
 	 * @returns {Complex} 3.14...
 	 */
 	static get PI() {
-		return DEFINE$3.PI;
+		return DEFINE$4.PI;
 	}
 
 	/**
@@ -13172,7 +13934,7 @@ class Complex {
 	 * @returns {Complex} 2.71...
 	 */
 	static get E() {
-		return DEFINE$3.E;
+		return DEFINE$4.E;
 	}
 
 	/**
@@ -13180,7 +13942,7 @@ class Complex {
 	 * @returns {Complex} ln(2)
 	 */
 	static get LN2() {
-		return DEFINE$3.LN2;
+		return DEFINE$4.LN2;
 	}
 
 	/**
@@ -13188,7 +13950,7 @@ class Complex {
 	 * @returns {Complex} ln(10)
 	 */
 	static get LN10() {
-		return DEFINE$3.LN10;
+		return DEFINE$4.LN10;
 	}
 
 	/**
@@ -13196,7 +13958,7 @@ class Complex {
 	 * @returns {Complex} log_2(e)
 	 */
 	static get LOG2E() {
-		return DEFINE$3.LOG2E;
+		return DEFINE$4.LOG2E;
 	}
 	
 	/**
@@ -13204,7 +13966,7 @@ class Complex {
 	 * @returns {Complex} log_10(e)
 	 */
 	static get LOG10E() {
-		return DEFINE$3.LOG10E;
+		return DEFINE$4.LOG10E;
 	}
 	
 	/**
@@ -13212,7 +13974,7 @@ class Complex {
 	 * @returns {Complex} sqrt(2)
 	 */
 	static get SQRT2() {
-		return DEFINE$3.SQRT2;
+		return DEFINE$4.SQRT2;
 	}
 	
 	/**
@@ -13220,7 +13982,7 @@ class Complex {
 	 * @returns {Complex} sqrt(0.5)
 	 */
 	static get SQRT1_2() {
-		return DEFINE$3.SQRT1_2;
+		return DEFINE$4.SQRT1_2;
 	}
 	
 	/**
@@ -13228,7 +13990,7 @@ class Complex {
 	 * @returns {Complex} 0.5
 	 */
 	static get HALF() {
-		return DEFINE$3.HALF;
+		return DEFINE$4.HALF;
 	}
 
 	/**
@@ -13236,7 +13998,7 @@ class Complex {
 	 * @returns {Complex} Infinity
 	 */
 	static get POSITIVE_INFINITY() {
-		return DEFINE$3.POSITIVE_INFINITY;
+		return DEFINE$4.POSITIVE_INFINITY;
 	}
 	
 	/**
@@ -13244,7 +14006,7 @@ class Complex {
 	 * @returns {Complex} -Infinity
 	 */
 	static get NEGATIVE_INFINITY() {
-		return DEFINE$3.NEGATIVE_INFINITY;
+		return DEFINE$4.NEGATIVE_INFINITY;
 	}
 
 	/**
@@ -13252,7 +14014,7 @@ class Complex {
 	 * @returns {Complex} NaN
 	 */
 	static get NaN() {
-		return DEFINE$3.NaN;
+		return DEFINE$4.NaN;
 	}
 
 }
@@ -13261,7 +14023,7 @@ class Complex {
  * Collection of constant values used in the class.
  * @ignore
  */
-const DEFINE$3 = {
+const DEFINE$4 = {
 
 	/**
 	 * 0
@@ -13403,6 +14165,14 @@ class konpeito {
 	 */
 	static get MathContext() {
 		return MathContext;
+	}
+
+	/**
+	 * Return typedef Fraction for infinite precision arithmetic.
+	 * @returns {typeof Fraction}
+	 */
+	static get Fraction() {
+		return Fraction;
 	}
 
 	/**
