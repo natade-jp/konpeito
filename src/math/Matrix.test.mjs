@@ -409,15 +409,15 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 	testOperator2("mul", "[1 2]", "[3;4]", "[11]");
 	testOperator2("mul", "[1;2]", "3", "[3;6]");
 	testOperator2("mul", "[1;2]", "[3 4]", "[3 4;6 8]");
-	testOperator2("nmul", "[1 2;3 4]", "[1 2]", "[1 4;3 8]");
-	testOperator2("nmul", "[1 2;3 4]", "[1;2]", "[1 2;6 8]");
+	testOperator2("dotmul", "[1 2;3 4]", "[1 2]", "[1 4;3 8]");
+	testOperator2("dotmul", "[1 2;3 4]", "[1;2]", "[1 2;6 8]");
 	testOperator2("mul", "[1 2;3 4]", "[1 2;4 8]", "[9 18;19 38]");
 }
 
 {
 	test_count = 0;
-	testOperator2("ndiv", "[1 2;3 4]", "[1 2]", "[1 1;3 2]");
-	testOperator2("ndiv", "[1 2;3 4]", "[1;2]", "[1 2;1.5 2]");
+	testOperator2("dotdiv", "[1 2;3 4]", "[1 2]", "[1 1;3 2]");
+	testOperator2("dotdiv", "[1 2;3 4]", "[1;2]", "[1 2;1.5 2]");
 }
 
 

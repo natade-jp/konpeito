@@ -1823,7 +1823,7 @@ export default class Matrix {
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @returns {Matrix} A .* B
 	 */
-	nmul(number) {
+	dotmul(number) {
 		const M1 = this;
 		const M2 = Matrix._toMatrix(number);
 		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
@@ -1843,7 +1843,7 @@ export default class Matrix {
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @returns {Matrix} A ./ B
 	 */
-	ndiv(number) {
+	dotdiv(number) {
 		const M1 = this;
 		const M2 = Matrix._toMatrix(number);
 		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
@@ -1862,7 +1862,7 @@ export default class Matrix {
 	 * Inverse of each element of matrix.
 	 * @returns {Matrix} 1 ./ A
 	 */
-	ninv() {
+	dotinv() {
 		const M1 = this;
 		const x1 = M1.matrix_array;
 		return Matrix.createMatrixDoEachCalculation(function(row, col) {
@@ -1875,7 +1875,7 @@ export default class Matrix {
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
 	 * @returns {Matrix} A .^ B
 	 */
-	npow(number) {
+	dotpow(number) {
 		const M1 = this;
 		const M2 = Matrix._toMatrix(number);
 		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
@@ -1888,6 +1888,45 @@ export default class Matrix {
 		return Matrix.createMatrixDoEachCalculation(function(row, col) {
 			return x1[row % M1.row_length][col % M1.column_length].pow(x2[row % M2.row_length][col % M2.column_length]);
 		}, y_row_length, y_column_length);
+	}
+
+	/**
+	 * Multiplication for each element of matrix.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A .* B
+	 * @deprecated use the dotmul.
+	 */
+	nmul(number) {
+		return this.dotmul(number);
+	}
+
+	/**
+	 * Division for each element of matrix.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A ./ B
+	 * @deprecated use the dotdiv.
+	 */
+	ndiv(number) {
+		return this.dotdiv(number);
+	}
+
+	/**
+	 * Inverse of each element of matrix.
+	 * @returns {Matrix} 1 ./ A
+	 * @deprecated use the dotinv.
+	 */
+	ninv() {
+		return this.dotinv();
+	}
+
+	/**
+	 * Power function for each element of the matrix.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @returns {Matrix} A .^ B
+	 * @deprecated use the dotpow.
+	 */
+	npow(number) {
+		return this.dotpow(number);
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆

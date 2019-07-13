@@ -92,8 +92,8 @@ const main = function() {
 	Log.println($("1 + 2i").atan());
 
 	// -0.0151327 - 0.179867i
-	Log.println("npow");
-	Log.println($("1 + 2i").npow("2 + 3i"));
+	Log.println("dotpow");
+	Log.println($("1 + 2i").dotpow("2 + 3i"));
 
 	Log.println("eye");
 	Log.println(Matrix.eye(3));

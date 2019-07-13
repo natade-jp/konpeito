@@ -1873,10 +1873,10 @@ export default class Statistics {
 		const order = Statistics.moment(X, { correction : cor, dimension : dim, nth_order : 3  });
 		const std = Statistics.std(X, { correction : cor, dimension : dim });
 		if(cor === 1) {
-			return order.ndiv(std.npow(3));
+			return order.dotdiv(std.dotpow(3));
 		}
 		else {
-			return order.ndiv(std.npow(3)).nmul(2);
+			return order.dotdiv(std.dotpow(3)).dotmul(2);
 		}
 	}
 
@@ -1928,7 +1928,7 @@ export default class Statistics {
 	static normalize(x, type) {
 		const X = Matrix._toMatrix(x);
 		const mean_zero = X.sub(Statistics.mean(X, type));
-		const std_one = mean_zero.ndiv(Statistics.std(mean_zero, type));
+		const std_one = mean_zero.dotdiv(Statistics.std(mean_zero, type));
 		return std_one;
 	}
 
