@@ -717,7 +717,7 @@ export default class BigDecimal {
 	 * @returns {boolean}
 	 */
 	isZero() {
-		return this.compareTo(BigDecimal.ZERO) === 0;
+		return this.integer.isZero();
 	}
 	
 	/**
@@ -733,7 +733,7 @@ export default class BigDecimal {
 	 * @returns {boolean}
 	 */
 	isPositive() {
-		return this.compareTo(BigDecimal.ZERO) === 1;
+		return this.integer.isPositive();
 	}
 
 	/**
@@ -741,7 +741,7 @@ export default class BigDecimal {
 	 * @returns {boolean}
 	 */
 	isNegative() {
-		return this.compareTo(BigDecimal.ZERO) === -1;
+		return this.integer.isNegative();
 	}
 
 	/**
@@ -749,7 +749,7 @@ export default class BigDecimal {
 	 * @returns {boolean}
 	 */
 	isNotNegative() {
-		return this.compareTo(BigDecimal.ZERO) >= 0;
+		return this.integer.isNotNegative();
 	}
 
 	/**
