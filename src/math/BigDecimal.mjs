@@ -441,259 +441,11 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * Convert to string using scientific notation.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - Number of digits in exponent part.
-	 * @returns {string} 
-	 */
-	toScientificNotation(e_len) {
-		const e		= BigDecimal._toInteger(e_len);
-		const text	= this._getUnsignedIntegerString();
-		let s		= this.scale();
-		const x		= [];
-		let i, k;
-		// -
-		if(this.signum() === -1) {
-			x[x.length] = "-";
-		}
-		// 表示上の桁数
-		s = - e - s;
-		// 小数点が付かない
-		if(s >= 0) {
-			x[x.length] = text;
-			for(i = 0; i < s; i++) {
-				x[x.length] = "0";
-			}
-		}
-		// 小数点が付く
-		else {
-			k = this.precision() + s;
-			if(0 < k) {
-				x[x.length] = text.substring(0, k);
-				x[x.length] = ".";
-				x[x.length] = text.substring(k, text.length);
-			}
-			else {
-				k = - k;
-				x[x.length] = "0.";
-				for(i = 0; i < k; i++) {
-					x[x.length] = "0";
-				}
-				x[x.length] = text;
-			}
-		}
-		x[x.length] = "E";
-		if(e >= 0) {
-			x[x.length] = "+";
-		}
-		x[x.length] = e;
-		return x.join("");
-	}
-
-	/**
-	 * Convert to string.
-	 * @returns {string} 
-	 */
-	toString() {
-		// 「調整された指数」
-		const x = - this.scale() + (this.precision() - 1);
-		// スケールが 0 以上で、「調整された指数」が -6 以上
-		if((this.scale() >= 0) && (x >= -6)) {
-			return this.toPlainString();
-		}
-		else {
-			return this.toScientificNotation(x);
-		}
-	}
-
-	/**
-	 * Convert to string usding technical notation.
-	 * @returns {string} 
-	 */
-	toEngineeringString() {
-		// 「調整された指数」
-		const x = - this.scale() + (this.precision() - 1);
-		// スケールが 0 以上で、「調整された指数」が -6 以上
-		if((this.scale() >= 0) && (x >= -6)) {
-			return this.toPlainString();
-		}
-		else {
-			// 0 でない値の整数部が 1 〜 999 の範囲に収まるように調整
-			return this.toScientificNotation(Math.floor(x / 3) * 3);
-		}
-	}
-
-	/**
-	 * Convert to string without exponential notation.
-	 * @returns {string} 
-	 */
-	toPlainString() {
-		// スケールの変換なし
-		if(this.scale() === 0) {
-			if(this.signum() < 0) {
-				return "-" + this._getUnsignedIntegerString();
-			}
-			else {
-				return this._getUnsignedIntegerString();
-			}
-		}
-		// 指数0で文字列を作成後、Eの後ろの部分をとっぱらう
-		const text = this.toScientificNotation(0);
-		return text.match(/^[^E]*/)[0];
-	}
-
-	/**
 	 * The smallest value that can be represented with the set precision.
 	 * @returns {BigDecimal} 
 	 */
 	ulp() {
 		return new BigDecimal([BigInteger.ONE, this.scale(), this.default_context]);
-	}
-
-	/**
-	 * Change the scale.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - New scale.
-	 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
-	 * @param {MathContext} [mc] - Rounding setting after calculation. For rounding purposes, use the round method.
-	 * @returns {BigDecimal} 
-	 */
-	setScale(new_scale, rounding_mode, mc) {
-		const newScale = BigDecimal._toInteger(new_scale);
-		if(this.scale() === newScale) {
-			// scaleが同一なので処理の必要なし
-			return(this.clone());
-		}
-		const roundingMode = (rounding_mode !== undefined) ? RoundingMode.valueOf(rounding_mode) : RoundingMode.UNNECESSARY;
-		const context = (mc !== undefined) ? mc : this.default_context;
-		// 文字列を扱ううえで、符号があるとやりにくいので外しておく
-		let text		= this._getUnsignedIntegerString();
-		const sign		= this.signum();
-		const sign_text	= sign >= 0 ? "" : "-";
-		// scale の誤差
-		// 0 以上なら 0 を加えればいい。0未満なら0を削るか、四捨五入など丸めを行う
-		const delta		= newScale - this.scale();	// この桁分増やすといい
-		if(0 <= delta) {
-			// 0を加える
-			let i;
-			for(i = 0; i < delta; i++) {
-				text = text + "0";
-			}
-			return new BigDecimal([new BigInteger(sign_text + text), newScale, context]);
-		}
-		const keta = text.length + delta;		// 最終的な桁数
-		const keta_marume = keta + 1;
-		if(keta <= 0) {
-			// 指定した scale では設定できない場合
-			// 例えば "0.1".setScale(-2), "10".setScale(-3) としても表すことは不可能であるため、
-			// sign（-1, 0, +1）のどれかの数値を使用して丸める
-			const outdata = (sign + roundingMode.getAddNumber(sign)) / 10;
-			// 上記の式は、CEILINGなら必ず1、正でCEILINGなら1、負でFLOORなら1、それ以外は0となり、
-			// さらに元々の数値が 0 なら 0、切り捨て不能なら例外が返る計算式である。
-			// これは Java の動作をまねています。
-			return new BigDecimal([new BigInteger(outdata), newScale, context]);
-		}
-		{
-			// 0を削るだけで解決する場合
-			// 単純な切捨て(0を削るのみ)
-			const zeros			= text.match(/0+$/);
-			const zero_length		= (zeros !== null) ? zeros[0].length : 0;
-			if(( (zero_length + delta) >= 0 ) || (roundingMode === RoundingMode.DOWN)) {
-				return new BigDecimal([new BigInteger(sign_text + text.substring(0, keta)), newScale, context]);
-			}
-		}
-		{
-			// 丸め計算で解決する場合
-			// 12345 -> '123'45
-			text = text.substring(0, keta_marume);
-			// 丸め計算に必要な切り取る桁数(後ろの1～2桁を取得)
-			const cutsize = text.length > 1 ? 2 : 1;
-			// '123'45 -> 1'23'4
-			const number = parseInt(text.substring(text.length - cutsize, text.length)) * sign;
-			// 「元の数」と「丸めに必要な数」を足す
-			const x1 = new BigInteger(sign_text + text);
-			const x2 = new BigInteger(roundingMode.getAddNumber(number));
-			text = x1.add(x2).toString();
-			// 丸め後の桁数に戻して
-			return new BigDecimal([new BigInteger(text.substring(0, text.length - 1)), newScale, context]);
-		}
-	}
-
-	/**
-	 * Round with specified settings.
-	 * 
-	 * This method is not a method round the decimal point.
-	 * This method converts numbers in the specified Context and rounds unconvertible digits.
-	 * 
-	 * Use this.setScale(0, RoundingMode.HALF_UP) if you want to round the decimal point.
-	 * When the argument is omitted, such decimal point rounding operation is performed.
-	 * @param {MathContext} [mc] - New setting.
-	 * @returns {BigDecimal} 
-	 */
-	round(mc) {
-		if(mc) {
-			// MathContext を設定した場合
-			if(!(mc instanceof MathContext)) {
-				throw "not MathContext";
-			}
-			const newPrecision	= mc.getPrecision();
-			const delta			= newPrecision - this.precision();
-			if((delta === 0)||(newPrecision === 0)) {
-				return this.clone();
-			}
-			const newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode(), mc);
-			/* 精度を上げる必要があるため、0を加えた場合 */
-			if(delta > 0) {
-				return newBigDecimal;
-			}
-			/* 精度を下げる必要があるため、丸めた場合は、桁の数が正しいか調べる */
-			if(newBigDecimal.precision() === mc.getPrecision()) {
-				return newBigDecimal;
-			}
-			/* 切り上げなどで桁数が１つ増えた場合 */
-			const sign_text	= newBigDecimal.integer.signum() >= 0 ? "" : "-";
-			const abs_text	= newBigDecimal._getUnsignedIntegerString();
-			const inte_text	= sign_text + abs_text.substring(0, abs_text.length - 1);
-			return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1, mc]);
-		}
-		else {
-			// 小数点以下を四捨五入する
-			return this.setScale(0, RoundingMode.HALF_UP);
-		}
-	}
-
-	/**
-	 * Floor.
-	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-	 * @returns {BigDecimal} floor(A)
-	 */
-	floor(mc) {
-		return this.setScale(0, RoundingMode.FLOOR, mc);
-	}
-
-	/**
-	 * Ceil.
-	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-	 * @returns {BigDecimal} ceil(A)
-	 */
-	ceil(mc) {
-		return this.setScale(0, RoundingMode.CEILING, mc);
-	}
-	
-	/**
-	 * To integer rounded down to the nearest.
-	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-	 * @returns {BigDecimal} fix(A), trunc(A)
-	 */
-	fix(mc) {
-		return this.setScale(0, RoundingMode.DOWN, mc);
-	}
-
-	/**
-	 * Fraction.
-	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-	 * @returns {BigDecimal} fract(A)
-	 */
-	fract(mc) {
-		return this.sub(this.floor(mc), mc);
 	}
 
 	/**
@@ -726,180 +478,6 @@ export default class BigDecimal {
 		const output = this.clone();
 		output.integer = output.integer.negate();
 		return (mc === undefined) ? output : output.round(mc);
-	}
-
-	/**
-	 * Compare values.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
-	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
-	 */
-	compareTo(number, tolerance) {
-		const src = this;
-		const tgt = BigDecimal._toBigDecimal(number);
-		if(!tolerance) {
-			// 誤差の指定がない場合
-			// 簡易計算
-			{
-				const src_sign	= src.signum();
-				const tgt_sign	= tgt.signum();
-				if((src_sign === 0) && (src_sign === tgt_sign)) {
-					return 0;
-				}
-				else if(src_sign === 0) {
-					return - tgt_sign;
-				}
-				else if(tgt_sign === 0) {
-					return src_sign;
-				}
-			}
-			// 実際に計算する
-			if(src._scale === tgt._scale) {
-				return src.integer.compareTo(tgt.integer);
-			}
-			else if(src._scale > tgt._scale) {
-				const newdst = tgt.setScale(src._scale);
-				return src.integer.compareTo(newdst.integer);
-			}
-			else {
-				const newsrc = src.setScale(tgt._scale);
-				return newsrc.integer.compareTo(tgt.integer);
-			}
-		}
-		else {
-			const tolerance_ = BigDecimal._toBigDecimal(tolerance);
-			const delta = src.sub(tgt, MathContext.UNLIMITED);
-			const delta_abs = delta.integer.abs();
-			if(delta_abs.compareTo(tolerance_) <= 0) {
-				return 0;
-			}
-			else {
-				return delta.sign();
-			}
-		}
-	}
-
-	/**
-	 * this === 0
-	 * @returns {boolean}
-	 */
-	isZero() {
-		return this.integer.isZero();
-	}
-	
-	/**
-	 * this === 1
-	 * @returns {boolean}
-	 */
-	isOne() {
-		return this.compareTo(BigDecimal.ONE) === 0;
-	}
-	
-	/**
-	 * this > 0
-	 * @returns {boolean}
-	 */
-	isPositive() {
-		return this.integer.isPositive();
-	}
-
-	/**
-	 * this < 0
-	 * @returns {boolean}
-	 */
-	isNegative() {
-		return this.integer.isNegative();
-	}
-
-	/**
-	 * this >= 0
-	 * @returns {boolean}
-	 */
-	isNotNegative() {
-		return this.integer.isNotNegative();
-	}
-
-	/**
-	 * Equals.
-	 * - Attention : Test for equality, including the precision and the scale. 
-	 * - Use the "compareTo" if you only want to find out whether they are also mathematically equal.
-	 * - If you specify a "tolerance", it is calculated by ignoring the test of the precision and the scale.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance] - Calculation tolerance of calculation.
-	 * @returns {boolean} A === B
-	 */
-	equals(number, tolerance) {
-		// 誤差を指定しない場合は、厳密に調査
-		if(!tolerance) {
-			if(number instanceof BigDecimal) {
-				return ((this._scale === number._scale) && (this.integer.equals(number.integer)));
-			}
-			else if((typeof number === "string") || (number instanceof String)) {
-				const val = BigDecimal._toBigDecimal(number);
-				return ((this._scale === val._scale) && (this.integer.equals(val.integer)));
-			}
-			else {
-				return this.compareTo(number) === 0;
-			}
-		}
-		else {
-			return this.compareTo(number, tolerance) === 0;
-		}
-	}
-
-	/**
-	 * Maximum number.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @returns {BigDecimal} max([A, B])
-	 */
-	max(number) {
-		const val = BigDecimal._toBigDecimal(number);
-		if(this.compareTo(val) >= 0) {
-			return this.clone();
-		}
-		else {
-			return val.clone();
-		}
-	}
-
-	/**
-	 * Minimum number.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
-	 * @returns {BigDecimal} min([A, B])
-	 */
-	min(number) {
-		const val = BigDecimal._toBigDecimal(number);
-		if(this.compareTo(val) <= 0) {
-			return this.clone();
-		}
-		else {
-			return val.clone();
-		}
-	}
-
-	/**
-	 * Clip number within range.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
-	 * @returns {BigDecimal} min(max(x, min), max)
-	 */
-	clip(min, max) {
-		const min_ = BigDecimal._toBigDecimal(min);
-		const max_ = BigDecimal._toBigDecimal(max);
-		const arg_check = min_.compareTo(max_);
-		if(arg_check === 1) {
-			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
-		}
-		else if(arg_check === 0) {
-			return min_;
-		}
-		if(this.compareTo(max_) === 1) {
-			return max_;
-		}
-		else if(this.compareTo(min_) === -1) {
-			return min_;
-		}
-		return this;
 	}
 
 	/**
@@ -1347,7 +925,8 @@ export default class BigDecimal {
 
 	/**
 	 * Power function.
-	 * An exception occurs when doing a huge multiplication.
+	 * - Supports only integers.
+	 * - An exception occurs when doing a huge multiplication.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} pow(A, B)
@@ -1396,8 +975,476 @@ export default class BigDecimal {
 	}
 
 	// ----------------------
+	// 比較
+	// ----------------------
+	
+	/**
+	 * Equals.
+	 * - Attention : Test for equality, including the precision and the scale. 
+	 * - Use the "compareTo" if you only want to find out whether they are also mathematically equal.
+	 * - If you specify a "tolerance", it is calculated by ignoring the test of the precision and the scale.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {boolean} A === B
+	 */
+	equals(number, tolerance) {
+		// 誤差を指定しない場合は、厳密に調査
+		if(!tolerance) {
+			if(number instanceof BigDecimal) {
+				return ((this._scale === number._scale) && (this.integer.equals(number.integer)));
+			}
+			else if((typeof number === "string") || (number instanceof String)) {
+				const val = BigDecimal._toBigDecimal(number);
+				return ((this._scale === val._scale) && (this.integer.equals(val.integer)));
+			}
+			else {
+				return this.compareTo(number) === 0;
+			}
+		}
+		else {
+			return this.compareTo(number, tolerance) === 0;
+		}
+	}
+
+	/**
+	 * Compare values.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number, tolerance) {
+		const src = this;
+		const tgt = BigDecimal._toBigDecimal(number);
+		if(!tolerance) {
+			// 誤差の指定がない場合
+			// 簡易計算
+			{
+				const src_sign	= src.signum();
+				const tgt_sign	= tgt.signum();
+				if((src_sign === 0) && (src_sign === tgt_sign)) {
+					return 0;
+				}
+				else if(src_sign === 0) {
+					return - tgt_sign;
+				}
+				else if(tgt_sign === 0) {
+					return src_sign;
+				}
+			}
+			// 実際に計算する
+			if(src._scale === tgt._scale) {
+				return src.integer.compareTo(tgt.integer);
+			}
+			else if(src._scale > tgt._scale) {
+				const newdst = tgt.setScale(src._scale);
+				return src.integer.compareTo(newdst.integer);
+			}
+			else {
+				const newsrc = src.setScale(tgt._scale);
+				return newsrc.integer.compareTo(tgt.integer);
+			}
+		}
+		else {
+			const tolerance_ = BigDecimal._toBigDecimal(tolerance);
+			const delta = src.sub(tgt, MathContext.UNLIMITED);
+			const delta_abs = delta.integer.abs();
+			if(delta_abs.compareTo(tolerance_) <= 0) {
+				return 0;
+			}
+			else {
+				return delta.sign();
+			}
+		}
+	}
+
+	/**
+	 * Maximum number.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @returns {BigDecimal} max([A, B])
+	 */
+	max(number) {
+		const val = BigDecimal._toBigDecimal(number);
+		if(this.compareTo(val) >= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * Minimum number.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @returns {BigDecimal} min([A, B])
+	 */
+	min(number) {
+		const val = BigDecimal._toBigDecimal(number);
+		if(this.compareTo(val) <= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * Clip number within range.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
+	 * @returns {BigDecimal} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = BigDecimal._toBigDecimal(min);
+		const max_ = BigDecimal._toBigDecimal(max);
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	}
+
+	// ----------------------
+	// 文字列化
+	// ----------------------
+	
+	/**
+	 * Convert to string.
+	 * @returns {string} 
+	 */
+	toString() {
+		// 「調整された指数」
+		const x = - this.scale() + (this.precision() - 1);
+		// スケールが 0 以上で、「調整された指数」が -6 以上
+		if((this.scale() >= 0) && (x >= -6)) {
+			return this.toPlainString();
+		}
+		else {
+			return this.toScientificNotation(x);
+		}
+	}
+
+	/**
+	 * Convert to string using scientific notation.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - Number of digits in exponent part.
+	 * @returns {string} 
+	 */
+	toScientificNotation(e_len) {
+		const e		= BigDecimal._toInteger(e_len);
+		const text	= this._getUnsignedIntegerString();
+		let s		= this.scale();
+		const x		= [];
+		let i, k;
+		// -
+		if(this.signum() === -1) {
+			x[x.length] = "-";
+		}
+		// 表示上の桁数
+		s = - e - s;
+		// 小数点が付かない
+		if(s >= 0) {
+			x[x.length] = text;
+			for(i = 0; i < s; i++) {
+				x[x.length] = "0";
+			}
+		}
+		// 小数点が付く
+		else {
+			k = this.precision() + s;
+			if(0 < k) {
+				x[x.length] = text.substring(0, k);
+				x[x.length] = ".";
+				x[x.length] = text.substring(k, text.length);
+			}
+			else {
+				k = - k;
+				x[x.length] = "0.";
+				for(i = 0; i < k; i++) {
+					x[x.length] = "0";
+				}
+				x[x.length] = text;
+			}
+		}
+		x[x.length] = "E";
+		if(e >= 0) {
+			x[x.length] = "+";
+		}
+		x[x.length] = e;
+		return x.join("");
+	}
+
+	/**
+	 * Convert to string usding technical notation.
+	 * @returns {string} 
+	 */
+	toEngineeringString() {
+		// 「調整された指数」
+		const x = - this.scale() + (this.precision() - 1);
+		// スケールが 0 以上で、「調整された指数」が -6 以上
+		if((this.scale() >= 0) && (x >= -6)) {
+			return this.toPlainString();
+		}
+		else {
+			// 0 でない値の整数部が 1 〜 999 の範囲に収まるように調整
+			return this.toScientificNotation(Math.floor(x / 3) * 3);
+		}
+	}
+
+	/**
+	 * Convert to string without exponential notation.
+	 * @returns {string} 
+	 */
+	toPlainString() {
+		// スケールの変換なし
+		if(this.scale() === 0) {
+			if(this.signum() < 0) {
+				return "-" + this._getUnsignedIntegerString();
+			}
+			else {
+				return this._getUnsignedIntegerString();
+			}
+		}
+		// 指数0で文字列を作成後、Eの後ろの部分をとっぱらう
+		const text = this.toScientificNotation(0);
+		return text.match(/^[^E]*/)[0];
+	}
+
+	// ----------------------
+	// 丸め
+	// ----------------------
+	
+	/**
+	 * Change the scale.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - New scale.
+	 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
+	 * @param {MathContext} [mc] - Rounding setting after calculation. For rounding purposes, use the round method.
+	 * @returns {BigDecimal} 
+	 */
+	setScale(new_scale, rounding_mode, mc) {
+		const newScale = BigDecimal._toInteger(new_scale);
+		if(this.scale() === newScale) {
+			// scaleが同一なので処理の必要なし
+			return(this.clone());
+		}
+		const roundingMode = (rounding_mode !== undefined) ? RoundingMode.valueOf(rounding_mode) : RoundingMode.UNNECESSARY;
+		const context = (mc !== undefined) ? mc : this.default_context;
+		// 文字列を扱ううえで、符号があるとやりにくいので外しておく
+		let text		= this._getUnsignedIntegerString();
+		const sign		= this.signum();
+		const sign_text	= sign >= 0 ? "" : "-";
+		// scale の誤差
+		// 0 以上なら 0 を加えればいい。0未満なら0を削るか、四捨五入など丸めを行う
+		const delta		= newScale - this.scale();	// この桁分増やすといい
+		if(0 <= delta) {
+			// 0を加える
+			let i;
+			for(i = 0; i < delta; i++) {
+				text = text + "0";
+			}
+			return new BigDecimal([new BigInteger(sign_text + text), newScale, context]);
+		}
+		const keta = text.length + delta;		// 最終的な桁数
+		const keta_marume = keta + 1;
+		if(keta <= 0) {
+			// 指定した scale では設定できない場合
+			// 例えば "0.1".setScale(-2), "10".setScale(-3) としても表すことは不可能であるため、
+			// sign（-1, 0, +1）のどれかの数値を使用して丸める
+			const outdata = (sign + roundingMode.getAddNumber(sign)) / 10;
+			// 上記の式は、CEILINGなら必ず1、正でCEILINGなら1、負でFLOORなら1、それ以外は0となり、
+			// さらに元々の数値が 0 なら 0、切り捨て不能なら例外が返る計算式である。
+			// これは Java の動作をまねています。
+			return new BigDecimal([new BigInteger(outdata), newScale, context]);
+		}
+		{
+			// 0を削るだけで解決する場合
+			// 単純な切捨て(0を削るのみ)
+			const zeros			= text.match(/0+$/);
+			const zero_length		= (zeros !== null) ? zeros[0].length : 0;
+			if(( (zero_length + delta) >= 0 ) || (roundingMode === RoundingMode.DOWN)) {
+				return new BigDecimal([new BigInteger(sign_text + text.substring(0, keta)), newScale, context]);
+			}
+		}
+		{
+			// 丸め計算で解決する場合
+			// 12345 -> '123'45
+			text = text.substring(0, keta_marume);
+			// 丸め計算に必要な切り取る桁数(後ろの1～2桁を取得)
+			const cutsize = text.length > 1 ? 2 : 1;
+			// '123'45 -> 1'23'4
+			const number = parseInt(text.substring(text.length - cutsize, text.length)) * sign;
+			// 「元の数」と「丸めに必要な数」を足す
+			const x1 = new BigInteger(sign_text + text);
+			const x2 = new BigInteger(roundingMode.getAddNumber(number));
+			text = x1.add(x2).toString();
+			// 丸め後の桁数に戻して
+			return new BigDecimal([new BigInteger(text.substring(0, text.length - 1)), newScale, context]);
+		}
+	}
+
+	/**
+	 * Round with specified settings.
+	 * 
+	 * This method is not a method round the decimal point.
+	 * This method converts numbers in the specified Context and rounds unconvertible digits.
+	 * 
+	 * Use this.setScale(0, RoundingMode.HALF_UP) if you want to round the decimal point.
+	 * When the argument is omitted, such decimal point rounding operation is performed.
+	 * @param {MathContext} [mc] - New setting.
+	 * @returns {BigDecimal} 
+	 */
+	round(mc) {
+		if(mc) {
+			// MathContext を設定した場合
+			if(!(mc instanceof MathContext)) {
+				throw "not MathContext";
+			}
+			const newPrecision	= mc.getPrecision();
+			const delta			= newPrecision - this.precision();
+			if((delta === 0)||(newPrecision === 0)) {
+				return this.clone();
+			}
+			const newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode(), mc);
+			/* 精度を上げる必要があるため、0を加えた場合 */
+			if(delta > 0) {
+				return newBigDecimal;
+			}
+			/* 精度を下げる必要があるため、丸めた場合は、桁の数が正しいか調べる */
+			if(newBigDecimal.precision() === mc.getPrecision()) {
+				return newBigDecimal;
+			}
+			/* 切り上げなどで桁数が１つ増えた場合 */
+			const sign_text	= newBigDecimal.integer.signum() >= 0 ? "" : "-";
+			const abs_text	= newBigDecimal._getUnsignedIntegerString();
+			const inte_text	= sign_text + abs_text.substring(0, abs_text.length - 1);
+			return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1, mc]);
+		}
+		else {
+			// 小数点以下を四捨五入する
+			return this.setScale(0, RoundingMode.HALF_UP);
+		}
+	}
+
+	/**
+	 * Floor.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} floor(A)
+	 */
+	floor(mc) {
+		return this.setScale(0, RoundingMode.FLOOR, mc);
+	}
+
+	/**
+	 * Ceil.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} ceil(A)
+	 */
+	ceil(mc) {
+		return this.setScale(0, RoundingMode.CEILING, mc);
+	}
+	
+	/**
+	 * To integer rounded down to the nearest.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} fix(A), trunc(A)
+	 */
+	fix(mc) {
+		return this.setScale(0, RoundingMode.DOWN, mc);
+	}
+
+	/**
+	 * Fraction.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} fract(A)
+	 */
+	fract(mc) {
+		return this.sub(this.floor(mc), mc);
+	}
+
+	// ----------------------
+	// テスト系
+	// ----------------------
+	
+	/**
+	 * this === 0
+	 * @returns {boolean}
+	 */
+	isZero() {
+		return this.integer.isZero();
+	}
+	
+	/**
+	 * this === 1
+	 * @returns {boolean}
+	 */
+	isOne() {
+		return this.compareTo(BigDecimal.ONE) === 0;
+	}
+	
+	/**
+	 * this > 0
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		return this.integer.isPositive();
+	}
+
+	/**
+	 * this < 0
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return this.integer.isNegative();
+	}
+
+	/**
+	 * this >= 0
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return this.integer.isNotNegative();
+	}
+
+	// ----------------------
 	// 定数
 	// ----------------------
+	
+	/**
+	 * -1
+	 * @returns {BigDecimal} -1
+	 */
+	static get MINUS_ONE() {
+		const x = new BigDecimal(DEFINE.MINUS_ONE);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+
+	/**
+	 * 0
+	 * @returns {BigDecimal} 0
+	 */
+	static get ZERO() {
+		const x = new BigDecimal(DEFINE.ZERO);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
+	
+	/**
+	 * 0.5
+	 * @returns {BigDecimal} 0.5
+	 */
+	static get HALF() {
+		const x = new BigDecimal(DEFINE.HALF);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	}
 	
 	/**
 	 * 1
@@ -1429,26 +1476,6 @@ export default class BigDecimal {
 		return x;
 	}
 
-	/**
-	 * 0
-	 * @returns {BigDecimal} 0
-	 */
-	static get ZERO() {
-		const x = new BigDecimal(DEFINE.ZERO);
-		x.default_context = DEFAULT_CONTEXT;
-		return x;
-	}
-	
-	/**
-	 * -1
-	 * @returns {BigDecimal} -1
-	 */
-	static get MINUS_ONE() {
-		const x = new BigDecimal(DEFINE.MINUS_ONE);
-		x.default_context = DEFAULT_CONTEXT;
-		return x;
-	}
-
 }
 
 /**
@@ -1458,9 +1485,19 @@ export default class BigDecimal {
 const DEFINE = {
 
 	/**
+	 * -1
+	 */
+	MINUS_ONE : new BigDecimal(-1),
+
+	/**
 	 * 0
 	 */
 	ZERO : new BigDecimal(0),
+
+	/**
+	 * 0.5
+	 */
+	HALF : new BigDecimal(0.5),
 
 	/**
 	 * 1
@@ -1475,12 +1512,7 @@ const DEFINE = {
 	/**
 	 * 10
 	 */
-	TEN : new BigDecimal(10),
-
-	/**
-	 * -1
-	 */
-	MINUS_ONE : new BigDecimal(-1)
+	TEN : new BigDecimal(10)
 
 };
 

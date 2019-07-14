@@ -32,6 +32,7 @@ class FractionTool {
 	static to_fraction_data_from_number_string(ntext) {
 		let scale = 0;
 		let buff;
+		let is_negate = false;
 		// 正規化
 		let text = ntext.replace(/\s/g, "").toLowerCase();
 		// +-の符号があるか
@@ -41,6 +42,7 @@ class FractionTool {
 			buff = buff[0];
 			text = text.substr(buff.length);
 			if(buff.indexOf("-") !== -1) {
+				is_negate = true;
 				number_text.push("-");
 			}
 		}
@@ -125,7 +127,12 @@ class FractionTool {
 			f = new Fraction([numerator, denominator]);
 		}
 		if(cyclic_decimal) {
-			f = f.add(cyclic_decimal);
+			if(!is_negate) {
+				f = f.add(cyclic_decimal);
+			}
+			else {
+				f = f.sub(cyclic_decimal);
+			}
 		}
 		return f;
 	}
@@ -415,23 +422,22 @@ export default class Fraction {
 	}
 
 	/**
-	 * Equals.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
-	 * @returns {boolean} A === B
+	 * Absolute value.
+	 * @returns {Fraction} abs(A)
 	 */
-	equals(num) {
-		const x = this;
-		const y = Fraction._toFraction(num);
-		return x.numerator.equals(y.numerator) && x.denominator.equals(y.denominator);
+	abs() {
+		if(this.sign() >= 0) {
+			return this;
+		}
+		return this.negate();
 	}
 
 	/**
-	 * Compare values.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
-	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+	 * this * -1
+	 * @returns {Fraction} -A
 	 */
-	compareTo(num) {
-		return this.sub(num).sign();
+	negate() {
+		return new Fraction([this.numerator.negate(), this.denominator]);
 	}
 
 	/**
@@ -449,54 +455,6 @@ export default class Fraction {
 	 */
 	toString() {
 		return this.numerator.toString() + " / " + this.denominator.toString();
-	}
-
-	/**
-	 * 
-	 * @return {boolean}
-	 */
-	isInteger() {
-		return this.denominator.equals(BigInteger.ONE);
-	}
-
-	/**
-	 * this === 0
-	 * @return {boolean} A === 0
-	 */
-	isZero() {
-		return this.numerator.equals(BigInteger.ZERO) && this.denominator.equals(BigInteger.ONE);
-	}
-
-	/**
-	 * this === 1
-	 * @return {boolean} A === 1
-	 */
-	isOne() {
-		return this.numerator.equals(BigInteger.ONE) && this.denominator.equals(BigInteger.ONE);
-	}
-
-	/**
-	 * this > 0
-	 * @returns {boolean}
-	 */
-	isPositive() {
-		return this.numerator.isPositive();
-	}
-
-	/**
-	 * this < 0
-	 * @returns {boolean}
-	 */
-	isNegative() {
-		return this.numerator.isNegative();
-	}
-
-	/**
-	 * this >= 0
-	 * @returns {boolean}
-	 */
-	isNotNegative() {
-		return this.numerator.isNotNegative();
 	}
 
 	/**
@@ -572,9 +530,29 @@ export default class Fraction {
 			f = new Fraction([ x.numerator, y.numerator]);
 		}
 		else {
-			f = new Fraction([ x.numerator.mul(y.denominator), y.denominator.mul(x.numerator)]);
+			f = new Fraction([ x.numerator.mul(y.denominator), y.numerator.mul(x.denominator)]);
 		}
 		return f;
+	}
+
+	/**
+	 * Inverse number of this value.
+	 * @return {Fraction}
+	 */
+	inv() {
+		return new Fraction([ this.denominator, this.numerator]);
+	}
+
+	/**
+	 * Modulo, positive remainder of division.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @return {Fraction}
+	 */
+	mod(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		// x - y * floor(x/y)
+		return x.sub(y.mul(x.div(y).floor()));
 	}
 
 	/**
@@ -598,13 +576,240 @@ export default class Fraction {
 	}
 
 	/**
-	 * 1
-	 * @returns {Fraction} 1
+	 * Power function.
+	 * - Supports only integers.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @returns {Fraction} pow(A, B)
 	 */
-	static get ONE() {
-		return DEFINE.ONE;
+	pow(num) {
+		const x = this;
+		const y = Fraction._toInteger(num);
+		const numerator = x.numerator.pow(y);
+		const denominator = x.denominator.pow(y);
+		return new Fraction([ numerator, denominator ]);
+	}
+
+	// ----------------------
+	// 比較
+	// ----------------------
+	
+	/**
+	 * Equals.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @returns {boolean} A === B
+	 */
+	equals(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		return x.numerator.equals(y.numerator) && x.denominator.equals(y.denominator);
+	}
+
+	/**
+	 * Compare values.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(num) {
+		return this.sub(num).sign();
+	}
+
+	/**
+	 * Maximum number.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
+	 * @returns {Fraction} max([A, B])
+	 */
+	max(number) {
+		const val = Fraction._toFraction(number);
+		if(this.compareTo(val) >= 0) {
+			return this;
+		}
+		else {
+			return val;
+		}
+	}
+
+	/**
+	 * Minimum number.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
+	 * @returns {Fraction} min([A, B])
+	 */
+	min(number) {
+		const val = Fraction._toFraction(number);
+		if(this.compareTo(val) >= 0) {
+			return val;
+		}
+		else {
+			return this;
+		}
+	}
+
+	/**
+	 * Clip number within range.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} min 
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} max
+	 * @returns {Fraction} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = Fraction._toFraction(min);
+		const max_ = Fraction._toFraction(max);
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	}
+
+	// ----------------------
+	// 丸め
+	// ----------------------
+	
+	/**
+	 * Floor.
+	 * @returns {Fraction} floor(A)
+	 */
+	floor() {
+		if(this.isInteger()) {
+			return this;
+		}
+		const x = this.fix();
+		if(this.sign() > 0) {
+			return x;
+		}
+		else {
+			return new Fraction([x.numerator.sub(BigInteger.ONE), Fraction.ONE]);
+		}
+	}
+
+	/**
+	 * Ceil.
+	 * @returns {Fraction} ceil(A)
+	 */
+	ceil() {
+		if(this.isInteger()) {
+			return this;
+		}
+		const x = this.fix();
+		if(this.sign() > 0) {
+			return new Fraction([x.numerator.add(BigInteger.ONE), Fraction.ONE]);
+		}
+		else {
+			return x;
+		}
 	}
 	
+	/**
+	 * Rounding to the nearest integer.
+	 * @returns {Fraction} round(A)
+	 */
+	round() {
+		if(this.isInteger()) {
+			return this;
+		}
+		const x = this.floor();
+		const fract = this.sub(x);
+		if(fract.compareTo(Fraction.HALF) >= 0) {
+			return new Fraction([x.numerator.add(BigInteger.ONE), Fraction.ONE]);
+		}
+		else {
+			return x;
+		}
+	}
+
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {Fraction} fix(A), trunc(A)
+	 */
+	fix() {
+		if(this.isInteger()) {
+			return this;
+		}
+		return new Fraction([this.numerator.div(this.denominator), Fraction.ONE]);
+	}
+
+	/**
+	 * Fraction.
+	 * @returns {Fraction} fract(A)
+	 */
+	fract() {
+		if(this.isInteger()) {
+			return Fraction.ZERO;
+		}
+		return this.sub(this.floor());
+	}
+
+	// ----------------------
+	// テスト系
+	// ----------------------
+	
+	/**
+	 * Return true if the value is integer.
+	 * @return {boolean}
+	 */
+	isInteger() {
+		return this.denominator.equals(BigInteger.ONE);
+	}
+
+	/**
+	 * this === 0
+	 * @return {boolean} A === 0
+	 */
+	isZero() {
+		return this.numerator.equals(BigInteger.ZERO) && this.denominator.equals(BigInteger.ONE);
+	}
+
+	/**
+	 * this === 1
+	 * @return {boolean} A === 1
+	 */
+	isOne() {
+		return this.numerator.equals(BigInteger.ONE) && this.denominator.equals(BigInteger.ONE);
+	}
+
+	/**
+	 * this > 0
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		return this.numerator.isPositive();
+	}
+
+	/**
+	 * this < 0
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return this.numerator.isNegative();
+	}
+
+	/**
+	 * this >= 0
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return this.numerator.isNotNegative();
+	}
+
+	// ----------------------
+	// 定数
+	// ----------------------
+	
+	/**
+	 * -1
+	 * @returns {Fraction} -1
+	 */
+	static get MINUS_ONE() {
+		return DEFINE.MINUS_ONE;
+	}
+
 	/**
 	 * 0
 	 * @returns {Fraction} 0
@@ -614,11 +819,35 @@ export default class Fraction {
 	}
 
 	/**
-	 * -1
-	 * @returns {Fraction} -1
+	 * 0.5
+	 * @returns {Fraction} 0.5
 	 */
-	static get MINUS_ONE() {
-		return DEFINE.MINUS_ONE;
+	static get HALF() {
+		return DEFINE.HALF;
+	}
+	
+	/**
+	 * 1
+	 * @returns {Fraction} 1
+	 */
+	static get ONE() {
+		return DEFINE.ONE;
+	}
+	
+	/**
+	 * 2
+	 * @returns {Fraction} 2
+	 */
+	static get TWO() {
+		return DEFINE.TWO;
+	}
+	
+	/**
+	 * 10
+	 * @returns {Fraction} 10
+	 */
+	static get TEN() {
+		return DEFINE.TEN;
 	}
 
 }
@@ -630,9 +859,9 @@ export default class Fraction {
 const DEFINE = {
 
 	/**
-	 * 1
+	 * -1
 	 */
-	ONE : new Fraction([BigInteger.ONE, BigInteger.ONE]),
+	MINUS_ONE : new Fraction([BigInteger.MINUS_ONE, BigInteger.ONE]),
 
 	/**
 	 * 0
@@ -640,8 +869,23 @@ const DEFINE = {
 	ZERO : new Fraction([BigInteger.ZERO, BigInteger.ONE]),
 	
 	/**
-	 * -1
+	 * 1
 	 */
-	MINUS_ONE : new Fraction([BigInteger.MINUS_ONE, BigInteger.ONE]),
+	ONE : new Fraction([BigInteger.ONE, BigInteger.ONE]),
+
+	/**
+	 * 0.5
+	 */
+	HALF : new Fraction([BigInteger.ONE, BigInteger.TWO]),
+
+	/**
+	 * 2
+	 */
+	TWO : new Fraction([BigInteger.TWO, BigInteger.ONE]),
+
+	/**
+	 * 10
+	 */
+	TEN : new Fraction([BigInteger.TEN, BigInteger.ONE])
 
 };

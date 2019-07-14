@@ -320,6 +320,13 @@ export default class BigInteger {
 				this.element = x.element;
 				this._sign = x._sign;
 			}
+			else if((number instanceof Object) && (number.numerator) && (number.denominator) && (number.fix)) {
+				// Fraction 型の場合を想定する
+				// ※初期化時のため「 instanceof Fraction 」は巡回するため使用できない。
+				const x = number.fix().numerator;
+				this.element = x.element;
+				this._sign = x._sign;
+			}
 			else if(number instanceof Object) {
 				const x = IntegerTool.ToBigIntegerFromString(number.toString());
 				this.element = x.element;
@@ -449,47 +456,6 @@ export default class BigInteger {
 	}
 
 	/**
-	 * Prime represented within the specified bit length.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bits - Bit length.
-	 * @param {Random} [random] - Class for creating random numbers.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - Number of times to retry if prime generation fails.
-	 * @returns {BigInteger}
-	 */
-	static probablePrime(bits, random, certainty, create_count ) {
-		const certainty_ = certainty ? BigInteger._toInteger(certainty) : 100;
-		const create_count_ = create_count ? BigInteger._toInteger(create_count) : 500;
-		for(let i = 0; i < create_count_; i++) {
-			const x = BigInteger.createRandomBigInteger(bits, random);
-			if(x.isProbablePrime(certainty_)) {
-				return x;
-			}
-		}
-		throw "probablePrime " + create_count;
-	}
-
-	/**
-	 * Equals.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {boolean} A === B
-	 */
-	equals(number) {
-		const x = BigInteger._toBigInteger(number);
-		if(this.signum() !== x.signum()) {
-			return false;
-		}
-		if(this.element.length !== x.element.length) {
-			return false;
-		}
-		for(let i = 0; i < x.element.length; i++) {
-			if(this.element[i] !==  x.element[i]) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
 	 * Convert to string.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} [radix=10] - Base number.
 	 * @returns {string}
@@ -591,47 +557,980 @@ export default class BigInteger {
 	}
 
 	/**
-	 * this === 0
-	 * @returns {boolean}
+	 * Create a numerical value for addition. If negative, two's complement.
+	 * @param {number} [bit_length] - Bit length. If not set, it will be calculated automatically.
+	 * @returns {BigInteger}
+	 * @private
 	 */
-	isZero() {
-		this._memory_reduction();
-		return this._sign === 0;
+	getTwosComplement(bit_length) {
+		const y = this.clone();
+		if(y._sign >= 0) {
+			return y;
+		}
+		else {
+			// 正にする
+			y._sign = 1;
+			// ビットの数が存在しない場合は数える
+			const len = (bit_length !== undefined) ? bit_length : y.bitLength();
+			const e = y.element;
+			// ビット反転後
+			for(let i = 0; i < e.length; i++) {
+				e[i] ^= 0xFFFF;
+			}
+			// 1～15ビット余る場合は、16ビットずつ作成しているので削る
+			// nビットのマスク（なお負の値を表す最上位ビットは削除する）
+			if((len % 16) !== 0) {
+				e[e.length - 1] &= (1 << (len % 16)) - 1;
+			}
+			// 1を加算
+			y._add(new BigInteger(1));
+			return y;
+		}
 	}
+
+	/**
+	 * Expand memory to specified bit length. (mutable)
+	 * @param {number} bit_length - Bit length.
+	 * @private
+	 */
+	_memory_allocation(bit_length) {
+		const n = BigInteger._toInteger(bit_length);
+		const elementsize = this.element.length << 4;
+		if(elementsize < n) {
+			const addsize = (((n - elementsize - 1) & 0xFFFFFFF0) >>> 4) + 1;
+			for(let i = 0;i < addsize;i++) {
+				this.element[this.element.length] = 0;
+			}
+		}
+	}
+
+	/**
+	 * Normalization of the internal data. (mutable)
+	 * @private
+	 */
+	_memory_reduction() {
+		for(let i = this.element.length - 1;i >= 0;i--) {
+			if(this.element[i] !==  0) {
+				if(i < this.element.length - 1) {
+					this.element.splice(i + 1, this.element.length - i - 1);
+				}
+				return;
+			}
+		}
+		this._sign = 0;
+		this.element = [];
+	}
+
+	/**
+	 * Absolute value. (mutable)
+	 * @returns {BigInteger} A = abs(A)
+	 * @private
+	 */
+	_abs() {
+		// -1 -> 1, 0 -> 0, 1 -> 1
+		this._sign *= this._sign;
+		return this;
+	}
+
+	/**
+	 * Absolute value.
+	 * @returns {BigInteger} abs(A)
+	 */
+	abs() {
+		return this.clone()._abs();
+	}
+
+	/**
+	 * this *= -1
+	 * @returns {BigInteger} A = -A
+	 * @private
+	 */
+	_negate() {
+		this._sign *= -1;
+		return this;
+	}
+
+	/**
+	 * this * -1
+	 * @returns {BigInteger} -A
+	 */
+	negate() {
+		return this.clone()._negate();
+	}
+
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number} 1, -1, 0の場合は0を返す
+	 */
+	signum() {
+		if(this.element.length === 0) {
+			return 0;
+		}
+		return this._sign;
+	}
+
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number} 1, -1, 0の場合は0を返す
+	 */
+	sign() {
+		return this.signum();
+	}
+
+	/**
+	 * Add. (mutable)
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A += B
+	 * @private
+	 */
+	_add(number) {
+		const val = BigInteger._toBigInteger(number);
+		const o1 = this;
+		const o2 = val;
+		let x1 = o1.element;
+		let x2 = o2.element;
+		if(o1._sign === o2._sign) {
+			//足し算
+			this._memory_allocation(x2.length << 4);
+			let carry = 0;
+			for(let i = 0; i < x1.length; i++) {
+				x1[i] += ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
+				if(x1[i] > 0xFFFF) {
+					carry = 1;
+					x1[i] &= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				x1[x1.length] = carry;
+			}
+		}
+		else {
+			// 引き算
+			const compare = o1.compareToAbs(o2);
+			if(compare === 0) {
+				this.element = [];
+				this._sign = 1;
+				return this;
+			}
+			else if(compare === -1) {
+				this._sign = o2._sign;
+				const swap = x1;
+				x1 = x2.slice(0);
+				x2 = swap;
+			}
+			let carry = 0;
+			for(let i = 0; i < x1.length; i++) {
+				x1[i] -= ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
+				if(x1[i] < 0) {
+					x1[i] += 0x10000;
+					carry  = 1;
+				}
+				else {
+					carry  = 0;
+				}
+			}
+			this.element = x1;
+			this._memory_reduction();
+		}
+		return this;
+	}
+
+	/**
+	 * Add.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A + B
+	 */
+	add(number) {
+		return this.clone()._add(number);
+	}
+
+	/**
+	 * Subtract. (mutable)
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A -= B
+	 * @private
+	 */
+	_subtract(number) {
+		const val = BigInteger._toBigInteger(number);
+		const _sign = val._sign;
+		const out  = this._add(val._negate());
+		val._sign = _sign;
+		return out;
+	}
+
+	/**
+	 * Subtract.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A - B
+	 */
+	subtract(number) {
+		return this.clone()._subtract(number);
+	}
+
+	/**
+	 * Subtract.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A - B
+	 */
+	sub(number) {
+		return this.subtract(number);
+	}
+
+	/**
+	 * Multiply. (mutable)
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A *= B
+	 * @private
+	 */
+	_multiply(number) {
+		const x = this.multiply(number);
+		this.element = x.element;
+		this._sign    = x._sign;
+		return this;
+	}
+
+	/**
+	 * Multiply.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A * B
+	 */
+	multiply(number) {
+		const val = BigInteger._toBigInteger(number);
+		const out  = new BigInteger();
+		const buff = new BigInteger();
+		const o1 = this;
+		const o2 = val;
+		const x1 = o1.element;
+		const x2 = o2.element;
+		const y  = out.element;
+		for(let i = 0; i < x1.length; i++) {
+			buff.element = [];
+			// x3 = x1[i] * x2
+			const x3 = buff.element;
+			let carry = 0;
+			for(let j = 0; j < x2.length; j++) {
+				x3[j] = x1[i] * x2[j] + carry;
+				if(x3[j] > 0xFFFF) {
+					carry = x3[j] >>> 16;
+					x3[j] &= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				x3[x3.length] = carry;
+			}
+			// x3 = x3 << (i * 16)
+			//buff._shift(i << 4);
+			for(let j = x3.length - 1; j >= 0; j--) {
+				x3[j + i] = x3[j];
+			}
+			for(let j = i - 1; j >= 0; j--) {
+				x3[j] = 0;
+			}
+			// y = y + x3 (out._add(buff))
+			//out._add(buff);
+			carry = 0;
+			out._memory_allocation(x3.length << 4);
+			for(let j = i; j < y.length; j++) {
+				y[j] += ((x3.length >= (j + 1)) ? x3[j] : 0) + carry;
+				if(y[j] > 0xFFFF) {
+					carry = 1;
+					y[j] &= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				y[y.length] = carry;
+			}
+		}
+		out._sign = this._sign * val._sign;
+		return out;
+	}
+
+	/**
+	 * Multiply.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A * B
+	 */
+	mul(number) {
+		return this.multiply(number);
+	}
+
+	/**
+	 * Divide and remainder. (mutable)
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
+	 * @private
+	 */
+	_divideAndRemainder(number) {
+		const val = BigInteger._toBigInteger(number);
+		const out = [];
+		if(val.signum() === 0) {
+			throw "BigInteger divideAndRemainder [" + val.toString() +"]";
+		}
+		const compare = this.compareToAbs(val);
+		if(compare < 0) {
+			out[0] = new BigInteger(0);
+			out[1] = this.clone();
+			return out;
+		}
+		else if(compare === 0) {
+			out[0] = new BigInteger(1);
+			out[0]._sign = this._sign * val._sign;
+			out[1] = new BigInteger(0);
+			return out;
+		}
+		const ONE = new BigInteger(1);
+		const size = this.bitLength() - val.bitLength();
+		const x1 = this.clone()._abs();
+		const x2 = val.shift(size)._abs();
+		const y  = new BigInteger();
+		for(let i = 0; i <= size; i++) {
+			if(x1.compareToAbs(x2) >= 0) {
+				x1._subtract(x2);
+				y._add(ONE);
+			}
+			if(i === size) {
+				break;
+			}
+			x2._shift(-1);
+			y._shift(1);
+		}
+		out[0] = y;
+		out[0]._sign = this._sign * val._sign;
+		out[1] = x1;
+		out[1]._sign = this._sign;
+		return out;
+	}
+
+	/**
+	 * Divide and remainder.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
+	 */
+	divideAndRemainder(number) {
+		return this.clone()._divideAndRemainder(number);
+	}
+
+	/**
+	 * Divide. (mutable)
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} fix(A / B)
+	 * @private
+	 */
+	_divide(number) {
+		return this._divideAndRemainder(number)[0];
+	}
+
+	/**
+	 * Divide.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} fix(A / B)
+	 */
+	divide(number) {
+		return this.clone()._divide(number);
+	}
+
+	/**
+	 * Divide.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} fix(A / B)
+	 */
+	div(number) {
+		return this.divide(number);
+	}
+
+	/**
+	 * Remainder of division. (mutable)
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A %= B
+	 * @private
+	 */
+	_remainder(number) {
+		return this._divideAndRemainder(number)[1];
+	}
+
+	/**
+	 * Remainder of division.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A % B
+	 */
+	remainder(number) {
+		return this.clone()._remainder(number);
+	}
+
+	/**
+	 * Remainder of division.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A % B
+	 */
+	rem(number) {
+		return this.remainder(number);
+	}
+
+	/**
+	 * Modulo, positive remainder of division. (mutable)
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A = A mod B
+	 * @private
+	 */
+	_mod(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(val.signum() < 0) {
+			return null;
+		}
+		const y = this._divideAndRemainder(val);
+		if(y[1] instanceof BigInteger) {
+			if(y[1].signum() >= 0) {
+				return y[1];
+			}
+			else {
+				return y[1]._add(val);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Modulo, positive remainder of division.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} A mod B
+	 */
+	mod(number) {
+		return this.clone()._mod(number);
+	}
+
+	/**
+	 * Power function.
+	 * - Supports only integers.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
+	 * @returns {BigInteger} pow(A, B)
+	 */
+	pow(exponent) {
+		const e = new BigInteger(exponent);
+		let x = BigInteger._toBigInteger(this);
+		let y = BigInteger._toBigInteger(1);
+		while(e.element.length !== 0) {
+			if((e.element[0] & 1) !== 0) {
+				y = y.multiply(x);
+			}
+			x = x.multiply(x);
+			e._shift(-1);
+		}
+		return y;
+	}
+
+	/**
+	 * Modular exponentiation.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
+	 * @param {BigInteger|number|string|Array<string|number>|Object} m 
+	 * @returns {BigInteger} A^B mod m
+	 */
+	modPow(exponent, m) {
+		const m_ = BigInteger._toBigInteger(m);
+		let x = new BigInteger(this);
+		let y = new BigInteger(1);
+		const e = new BigInteger(exponent);
+		while(e.element.length !== 0) {
+			if((e.element[0] & 1) !== 0) {
+				y = y.multiply(x).mod(m_);
+			}
+			x = x.multiply(x).mod(m_);
+			e._shift(-1);
+		}
+		return y;
+	}
+
+	/**
+	 * Modular multiplicative inverse.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} m
+	 * @returns {BigInteger} A^(-1) mod m
+	 */
+	modInverse(m) {
+		const m_ = BigInteger._toBigInteger(m);
+		const y = this.extgcd(m);
+		const ONE  = new BigInteger(1);
+		if(y[2].compareTo(ONE) !== 0) {
+			return null;
+		}
+		// 正にするため remainder ではなく mod を使用する
+		return y[0]._add(m_)._mod(m_);
+	}
+
+	/**
+	 * Factorial function, x!.
+	 * @returns {BigInteger} n!
+	 */
+	factorial() {
+		const loop_max = BigInteger._toInteger(this);
+		let x = BigInteger.ONE;
+		for(let i = 2; i <= loop_max; i++) {
+			x = x.multiply(i);
+		}
+		return x;
+	}
+
+	/**
+	 * Multiply a multiple of ten.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @returns {BigInteger} x * 10^n
+	 */
+	scaleByPowerOfTen(n) {
+		const x = BigInteger._toInteger(n);
+		if(x === 0) {
+			return this;
+		}
+		if(x > 0) {
+			return this.mul(BigInteger.TEN.pow(x));
+		}
+		else {
+			return this.div(BigInteger.TEN.pow(x));
+		}
+	}
+
+	/**
+	 * Set default class of random.
+	 * This is used if you do not specify a random number.
+	 * @param {Random} random
+	 */
+	static setDefaultRandom(random) {
+		DEFAULT_RANDOM = random;
+	}
+
+	/**
+	 * Return default Random class.
+	 * Used when Random not specified explicitly.
+	 * @returns {Random}
+	 */
+	static getDefaultRandom() {
+		return DEFAULT_RANDOM;
+	}
+
+	// ----------------------
+	// gcd, lcm
+	// ----------------------
 	
 	/**
-	 * this === 1
-	 * @returns {boolean}
+	 * Euclidean algorithm.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} gcd(x, y)
 	 */
-	isOne() {
-		return this._sign === 1 && this.element.length === 1 && this.element[0] === 1;
+	gcd(number) {
+		const val = BigInteger._toBigInteger(number);
+		/**
+		 * @type {any}
+		 */
+		let x = this, y = val, z;
+		while(y.signum() !== 0) {
+			z = x.remainder(y);
+			x = y;
+			y = z;
+		}
+		return x;
 	}
+
+	/**
+	 * Extended Euclidean algorithm.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 */
+	extgcd(number) {
+		const val = BigInteger._toBigInteger(number);
+		// 非再帰
+		const ONE  = new BigInteger(1);
+		const ZERO = new BigInteger(0);
+		/**
+		 * @type {any}
+		 */
+		let r0 = this, r1 = val, r2, q1;
+		let a0 = ONE,  a1 = ZERO, a2;
+		let b0 = ZERO, b1 = ONE,  b2;
+		while(r1.signum() !== 0) {
+			const y = r0.divideAndRemainder(r1);
+			q1 = y[0];
+			r2 = y[1];
+			a2 = a0.subtract(q1.multiply(a1));
+			b2 = b0.subtract(q1.multiply(b1));
+			a0 = a1;
+			a1 = a2;
+			b0 = b1;
+			b1 = b2;
+			r0 = r1;
+			r1 = r2;
+		}
+		return [a0, b0, r0];
+	}
+
+	/**
+	 * Least common multiple.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {BigInteger} lcm(x, y)
+	 */
+	lcm(number) {
+		const val = BigInteger._toBigInteger(number);
+		return this.mul(val).div(this.gcd(val));
+	}
+
+	// ----------------------
+	// 比較
+	// ----------------------
 	
 	/**
-	 * this > 0
-	 * @returns {boolean}
+	 * Equals.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {boolean} A === B
 	 */
-	isPositive() {
-		this._memory_reduction();
-		return this._sign > 0;
+	equals(number) {
+		const x = BigInteger._toBigInteger(number);
+		if(this.signum() !== x.signum()) {
+			return false;
+		}
+		if(this.element.length !== x.element.length) {
+			return false;
+		}
+		for(let i = 0; i < x.element.length; i++) {
+			if(this.element[i] !==  x.element[i]) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
-	 * this < 0
-	 * @returns {boolean}
+	 * Compare values without sign.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
 	 */
-	isNegative() {
-		return this._sign < 0;
+	compareToAbs(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(this.element.length < val.element.length) {
+			return -1;
+		}
+		else if(this.element.length > val.element.length) {
+			return 1;
+		}
+		for(let i = this.element.length - 1;i >= 0;i--) {
+			if(this.element[i] !== val.element[i]) {
+				const x = this.element[i] - val.element[i];
+				return ( (x === 0) ? 0 : ((x > 0) ? 1 : -1) );
+			}
+		}
+		return 0;
 	}
 
 	/**
-	 * this >= 0
-	 * @returns {boolean}
+	 * Compare values.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
-	isNotNegative() {
-		return this._sign >= 0;
+	compareTo(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(this.signum() !== val.signum()) {
+			if(this._sign > val._sign) {
+				return 1;
+			}
+			else {
+				return -1;
+			}
+		}
+		else if(this.signum() === 0) {
+			return 0;
+		}
+		return this.compareToAbs(val) * this._sign;
 	}
 
+	/**
+	 * Maximum number.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} max([A, B])
+	 */
+	max(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(this.compareTo(val) >= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * Minimum number.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @returns {BigInteger} min([A, B])
+	 */
+	min(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(this.compareTo(val) >= 0) {
+			return val.clone();
+		}
+		else {
+			return this.clone();
+		}
+	}
+
+	/**
+	 * Clip number within range.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} min 
+	 * @param {BigInteger|number|string|Array<string|number>|Object} max
+	 * @returns {BigInteger} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = BigInteger._toBigInteger(min);
+		const max_ = BigInteger._toBigInteger(max);
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	}
+
+	// ----------------------
+	// 素数系
+	// ----------------------
+	
+	/**
+	 * Prime represented within the specified bit length.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} bits - Bit length.
+	 * @param {Random} [random] - Class for creating random numbers.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - Number of times to retry if prime generation fails.
+	 * @returns {BigInteger}
+	 */
+	static probablePrime(bits, random, certainty, create_count ) {
+		const certainty_ = certainty ? BigInteger._toInteger(certainty) : 100;
+		const create_count_ = create_count ? BigInteger._toInteger(create_count) : 500;
+		for(let i = 0; i < create_count_; i++) {
+			const x = BigInteger.createRandomBigInteger(bits, random);
+			if(x.isProbablePrime(certainty_)) {
+				return x;
+			}
+		}
+		throw "probablePrime " + create_count;
+	}
+
+	/**
+	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * Attention : it takes a very long time to process.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+	 * @returns {boolean}
+	 */
+	isProbablePrime(certainty) {
+		const e = this.element;
+		//0, 1, 2 -> true
+		if( (e.length === 0) || ((e.length === 1)&&(e[0] <= 2)) ) {
+			return true;
+		}
+		//even number -> false
+		else if((e[0] & 1) === 0) {
+			return false;
+		}
+		// ミラーラビン素数判定法
+		// かなり処理が重たいです。まあお遊び程度に使用という感じで。
+		const loop	= certainty !== undefined ? BigInteger._toInteger(certainty) : 100;
+		const ZERO	= new BigInteger(0);
+		const ONE	= new BigInteger(1);
+		const n		= this;
+		const LEN	= n.bitLength();
+		const n_1	= n.subtract(ONE);
+		const s 	= n_1.getLowestSetBit();
+		const d 	= n_1.shift(-s);
+
+		if(loop <= 0) {
+			return false;
+		}
+
+		for(let i = 0; i < loop; i++ ) {
+			//[ 1, n - 1] の範囲から a を選択
+			let a;
+			do {
+				a = BigInteger.createRandomBigInteger(LEN);
+			} while(( a.compareTo(ZERO) === 0 )||( a.compareTo(n) !== -1 ));
+
+			let t = d;
+			// a^t != 1 mod n
+			let y = a.modPow(t, n);
+			
+			while(true) {
+				if((t.equals(n_1)) || (y.equals(ONE)) || (y.equals(n_1))) {
+					break;
+				}
+				y = y.mul(y)._mod(n);
+				t = t.shiftLeft(1);
+			}
+
+			if((!y.equals(n_1)) && ((t.element[0] & 1) === 0)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Next prime.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+	 * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - Search range of next prime.
+	 * @returns {BigInteger}
+	 */
+	nextProbablePrime(certainty, search_max) {
+		const loop	= certainty !== undefined ? (BigInteger._toInteger(certainty) >> 1) : 100 / 2;
+		const search_max_ = search_max !== undefined ? BigInteger._toInteger(search_max) : 100000;
+		const x = this.clone();
+		for(let i = 0; i < search_max_; i++) {
+			x._add(BigInteger.ONE);
+			if(x.isProbablePrime(loop)) {
+				return x;
+			}
+		}
+		throw "nextProbablePrime [" + search_max_ +"]";
+	}
+
+	// ----------------------
+	// シフト演算系
+	// ----------------------
+	
+	/**
+	 * this <<= n
+	 * @param {BigInteger|number|string|Array<string|number>|Object} shift_length - Bit shift size.
+	 * @returns {BigInteger} A <<= n
+	 * @private
+	 */
+	_shift(shift_length) {
+		let n = BigInteger._toInteger(shift_length);
+		if(n === 0) {
+			return this;
+		}
+		const x = this.element;
+		// 1ビットなら専用コードで高速計算
+		if(n === 1) {
+			let i = x.length - 1;
+			if((x[i] & 0x8000) !==  0) {
+				x[x.length] = 1;
+			}
+			for(;i >= 0;i--) {
+				x[i] <<= 1;
+				x[i]  &= 0xFFFF;
+				if((i > 0) && ((x[i - 1] & 0x8000) !==  0)) {
+					x[i] += 1;
+				}
+			}
+		}
+		else if(n === -1) {
+			for(let i = 0;i < x.length;i++) {
+				x[i] >>>= 1;
+				if((i < x.length - 1) && ((x[i + 1] & 1) !==  0)) {
+					x[i] |= 0x8000;
+				}
+			}
+			if(x[x.length - 1] === 0) {
+				x.pop();
+			}
+		}
+		else {
+			// 16ビット単位なら配列を追加削除する高速計算
+			if(n >= 16) {
+				const m = n >>> 4;
+				for(let i = x.length - 1; i >= 0; i--) {
+					x[i + m] = x[i];
+				}
+				for(let i = m - 1; i >= 0; i--) {
+					x[i] = 0;
+				}
+				n &= 0xF;
+			}
+			else if(n <= -16){
+				const m = (-n) >>> 4;
+				x.splice(0, m);
+				n += m << 4;
+			}
+			if(n !== 0) {
+				// 15ビット以内ならビット演算でまとめて操作
+				if(0 < n) {
+					let carry = 0;
+					for(let i = 0; i < x.length; i++) {
+						x[i] = (x[i] << n) + carry;
+						if(x[i] > 0xFFFF) {
+							carry = x[i] >>> 16;
+							x[i] &= 0xFFFF;
+						}
+						else {
+							carry = 0;
+						}
+					}
+					if(carry !== 0) {
+						x[x.length] = carry;
+					}
+				}
+				else {
+					n = -n;
+					for(let i = 0; i < x.length; i++) {
+						if(i !== x.length - 1) {
+							x[i] += x[i + 1] << 16;
+							x[i] >>>= n;
+							x[i] &= 0xFFFF;
+						}
+						else {
+							x[i] >>>= n;
+						}
+					}
+					if(x[x.length - 1] === 0) {
+						x.pop();
+					}
+				}
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * this << n
+	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @returns {BigInteger} A << n
+	 */
+	shift(n) {
+		return this.clone()._shift(n);
+	}
+
+	/**
+	 * this << n
+	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @returns {BigInteger} A << n
+	 */
+	shiftLeft(n) {
+		return this.shift(n);
+	}
+
+	/**
+	 * this >> n
+	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @returns {BigInteger} A >> n
+	 */
+	shiftRight(n) {
+		return this.shift(-n);
+	}
+
+	// ----------------------
+	// ビット演算系
+	// ----------------------
+	
 	/**
 	 * Number of digits in which the number "1" appears first when expressed in binary.
 	 * - Return -1 If 1 is not found it.
@@ -693,38 +1592,6 @@ export default class BigInteger {
 			}
 		}
 		return count;
-	}
-
-	/**
-	 * Create a numerical value for addition. If negative, two's complement.
-	 * @param {number} [bit_length] - Bit length. If not set, it will be calculated automatically.
-	 * @returns {BigInteger}
-	 * @private
-	 */
-	getTwosComplement(bit_length) {
-		const y = this.clone();
-		if(y._sign >= 0) {
-			return y;
-		}
-		else {
-			// 正にする
-			y._sign = 1;
-			// ビットの数が存在しない場合は数える
-			const len = (bit_length !== undefined) ? bit_length : y.bitLength();
-			const e = y.element;
-			// ビット反転後
-			for(let i = 0; i < e.length; i++) {
-				e[i] ^= 0xFFFF;
-			}
-			// 1～15ビット余る場合は、16ビットずつ作成しているので削る
-			// nビットのマスク（なお負の値を表す最上位ビットは削除する）
-			if((len % 16) !== 0) {
-				e[e.length - 1] &= (1 << (len % 16)) - 1;
-			}
-			// 1を加算
-			y._add(new BigInteger(1));
-			return y;
-		}
 	}
 
 	/**
@@ -955,706 +1822,6 @@ export default class BigInteger {
 	}
 
 	/**
-	 * Expand memory to specified bit length. (mutable)
-	 * @param {number} bit_length - Bit length.
-	 * @private
-	 */
-	_memory_allocation(bit_length) {
-		const n = BigInteger._toInteger(bit_length);
-		const elementsize = this.element.length << 4;
-		if(elementsize < n) {
-			const addsize = (((n - elementsize - 1) & 0xFFFFFFF0) >>> 4) + 1;
-			for(let i = 0;i < addsize;i++) {
-				this.element[this.element.length] = 0;
-			}
-		}
-	}
-
-	/**
-	 * Normalization of the internal data. (mutable)
-	 * @private
-	 */
-	_memory_reduction() {
-		for(let i = this.element.length - 1;i >= 0;i--) {
-			if(this.element[i] !==  0) {
-				if(i < this.element.length - 1) {
-					this.element.splice(i + 1, this.element.length - i - 1);
-				}
-				return;
-			}
-		}
-		this._sign = 0;
-		this.element = [];
-	}
-
-	/**
-	 * Euclidean algorithm.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-	 * @returns {BigInteger} gcd(x, y)
-	 */
-	gcd(number) {
-		const val = BigInteger._toBigInteger(number);
-		/**
-		 * @type {any}
-		 */
-		let x = this, y = val, z;
-		while(y.signum() !== 0) {
-			z = x.remainder(y);
-			x = y;
-			y = z;
-		}
-		return x;
-	}
-
-	/**
-	 * Extended Euclidean algorithm.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-	 * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
-	 */
-	extgcd(number) {
-		const val = BigInteger._toBigInteger(number);
-		// 非再帰
-		const ONE  = new BigInteger(1);
-		const ZERO = new BigInteger(0);
-		/**
-		 * @type {any}
-		 */
-		let r0 = this, r1 = val, r2, q1;
-		let a0 = ONE,  a1 = ZERO, a2;
-		let b0 = ZERO, b1 = ONE,  b2;
-		while(r1.signum() !== 0) {
-			const y = r0.divideAndRemainder(r1);
-			q1 = y[0];
-			r2 = y[1];
-			a2 = a0.subtract(q1.multiply(a1));
-			b2 = b0.subtract(q1.multiply(b1));
-			a0 = a1;
-			a1 = a2;
-			b0 = b1;
-			b1 = b2;
-			r0 = r1;
-			r1 = r2;
-		}
-		return [a0, b0, r0];
-	}
-
-	/**
-	 * Least common multiple.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-	 * @returns {BigInteger} lcm(x, y)
-	 */
-	lcm(number) {
-		const val = BigInteger._toBigInteger(number);
-		return this.mul(val).div(this.gcd(val));
-	}
-
-	/**
-	 * Absolute value. (mutable)
-	 * @returns {BigInteger} A = abs(A)
-	 * @private
-	 */
-	_abs() {
-		// -1 -> 1, 0 -> 0, 1 -> 1
-		this._sign *= this._sign;
-		return this;
-	}
-
-	/**
-	 * Absolute value.
-	 * @returns {BigInteger} abs(A)
-	 */
-	abs() {
-		return this.clone()._abs();
-	}
-
-	/**
-	 * this *= -1
-	 * @returns {BigInteger} A = -A
-	 * @private
-	 */
-	_negate() {
-		this._sign *= -1;
-		return this;
-	}
-
-	/**
-	 * this * -1
-	 * @returns {BigInteger} -A
-	 */
-	negate() {
-		return this.clone()._negate();
-	}
-
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number} 1, -1, 0の場合は0を返す
-	 */
-	signum() {
-		if(this.element.length === 0) {
-			return 0;
-		}
-		return this._sign;
-	}
-
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number} 1, -1, 0の場合は0を返す
-	 */
-	sign() {
-		return this.signum();
-	}
-
-	/**
-	 * Compare values without sign.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-	 * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
-	 */
-	compareToAbs(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(this.element.length < val.element.length) {
-			return -1;
-		}
-		else if(this.element.length > val.element.length) {
-			return 1;
-		}
-		for(let i = this.element.length - 1;i >= 0;i--) {
-			if(this.element[i] !== val.element[i]) {
-				const x = this.element[i] - val.element[i];
-				return ( (x === 0) ? 0 : ((x > 0) ? 1 : -1) );
-			}
-		}
-		return 0;
-	}
-
-	/**
-	 * Compare values.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
-	 */
-	compareTo(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(this.signum() !== val.signum()) {
-			if(this._sign > val._sign) {
-				return 1;
-			}
-			else {
-				return -1;
-			}
-		}
-		else if(this.signum() === 0) {
-			return 0;
-		}
-		return this.compareToAbs(val) * this._sign;
-	}
-
-	/**
-	 * Maximum number.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} max([A, B])
-	 */
-	max(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(this.compareTo(val) >= 0) {
-			return this.clone();
-		}
-		else {
-			return val.clone();
-		}
-	}
-
-	/**
-	 * Minimum number.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} min([A, B])
-	 */
-	min(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(this.compareTo(val) >= 0) {
-			return val.clone();
-		}
-		else {
-			return this.clone();
-		}
-	}
-
-	/**
-	 * Clip number within range.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} min 
-	 * @param {BigInteger|number|string|Array<string|number>|Object} max
-	 * @returns {BigInteger} min(max(x, min), max)
-	 */
-	clip(min, max) {
-		const min_ = BigInteger._toBigInteger(min);
-		const max_ = BigInteger._toBigInteger(max);
-		const arg_check = min_.compareTo(max_);
-		if(arg_check === 1) {
-			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
-		}
-		else if(arg_check === 0) {
-			return min_;
-		}
-		if(this.compareTo(max_) === 1) {
-			return max_;
-		}
-		else if(this.compareTo(min_) === -1) {
-			return min_;
-		}
-		return this;
-	}
-
-	/**
-	 * this <<= n
-	 * @param {BigInteger|number|string|Array<string|number>|Object} shift_length - Bit shift size.
-	 * @returns {BigInteger} A <<= n
-	 * @private
-	 */
-	_shift(shift_length) {
-		let n = BigInteger._toInteger(shift_length);
-		if(n === 0) {
-			return this;
-		}
-		const x = this.element;
-		// 1ビットなら専用コードで高速計算
-		if(n === 1) {
-			let i = x.length - 1;
-			if((x[i] & 0x8000) !==  0) {
-				x[x.length] = 1;
-			}
-			for(;i >= 0;i--) {
-				x[i] <<= 1;
-				x[i]  &= 0xFFFF;
-				if((i > 0) && ((x[i - 1] & 0x8000) !==  0)) {
-					x[i] += 1;
-				}
-			}
-		}
-		else if(n === -1) {
-			for(let i = 0;i < x.length;i++) {
-				x[i] >>>= 1;
-				if((i < x.length - 1) && ((x[i + 1] & 1) !==  0)) {
-					x[i] |= 0x8000;
-				}
-			}
-			if(x[x.length - 1] === 0) {
-				x.pop();
-			}
-		}
-		else {
-			// 16ビット単位なら配列を追加削除する高速計算
-			if(n >= 16) {
-				const m = n >>> 4;
-				for(let i = x.length - 1; i >= 0; i--) {
-					x[i + m] = x[i];
-				}
-				for(let i = m - 1; i >= 0; i--) {
-					x[i] = 0;
-				}
-				n &= 0xF;
-			}
-			else if(n <= -16){
-				const m = (-n) >>> 4;
-				x.splice(0, m);
-				n += m << 4;
-			}
-			if(n !== 0) {
-				// 15ビット以内ならビット演算でまとめて操作
-				if(0 < n) {
-					let carry = 0;
-					for(let i = 0; i < x.length; i++) {
-						x[i] = (x[i] << n) + carry;
-						if(x[i] > 0xFFFF) {
-							carry = x[i] >>> 16;
-							x[i] &= 0xFFFF;
-						}
-						else {
-							carry = 0;
-						}
-					}
-					if(carry !== 0) {
-						x[x.length] = carry;
-					}
-				}
-				else {
-					n = -n;
-					for(let i = 0; i < x.length; i++) {
-						if(i !== x.length - 1) {
-							x[i] += x[i + 1] << 16;
-							x[i] >>>= n;
-							x[i] &= 0xFFFF;
-						}
-						else {
-							x[i] >>>= n;
-						}
-					}
-					if(x[x.length - 1] === 0) {
-						x.pop();
-					}
-				}
-			}
-		}
-		return this;
-	}
-
-	/**
-	 * this << n
-	 * @param {BigInteger|number|string|Array<string|number>|Object} n
-	 * @returns {BigInteger} A << n
-	 */
-	shift(n) {
-		return this.clone()._shift(n);
-	}
-
-	/**
-	 * this << n
-	 * @param {BigInteger|number|string|Array<string|number>|Object} n
-	 * @returns {BigInteger} A << n
-	 */
-	shiftLeft(n) {
-		return this.shift(n);
-	}
-
-	/**
-	 * this >> n
-	 * @param {BigInteger|number|string|Array<string|number>|Object} n
-	 * @returns {BigInteger} A >> n
-	 */
-	shiftRight(n) {
-		return this.shift(-n);
-	}
-
-	/**
-	 * Add. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} A += B
-	 * @private
-	 */
-	_add(number) {
-		const val = BigInteger._toBigInteger(number);
-		const o1 = this;
-		const o2 = val;
-		let x1 = o1.element;
-		let x2 = o2.element;
-		if(o1._sign === o2._sign) {
-			//足し算
-			this._memory_allocation(x2.length << 4);
-			let carry = 0;
-			for(let i = 0; i < x1.length; i++) {
-				x1[i] += ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
-				if(x1[i] > 0xFFFF) {
-					carry = 1;
-					x1[i] &= 0xFFFF;
-				}
-				else {
-					carry = 0;
-				}
-			}
-			if(carry !== 0) {
-				x1[x1.length] = carry;
-			}
-		}
-		else {
-			// 引き算
-			const compare = o1.compareToAbs(o2);
-			if(compare === 0) {
-				this.element = [];
-				this._sign = 1;
-				return this;
-			}
-			else if(compare === -1) {
-				this._sign = o2._sign;
-				const swap = x1;
-				x1 = x2.slice(0);
-				x2 = swap;
-			}
-			let carry = 0;
-			for(let i = 0; i < x1.length; i++) {
-				x1[i] -= ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
-				if(x1[i] < 0) {
-					x1[i] += 0x10000;
-					carry  = 1;
-				}
-				else {
-					carry  = 0;
-				}
-			}
-			this.element = x1;
-			this._memory_reduction();
-		}
-		return this;
-	}
-
-	/**
-	 * Add.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} A + B
-	 */
-	add(number) {
-		return this.clone()._add(number);
-	}
-
-	/**
-	 * Subtract. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} A -= B
-	 * @private
-	 */
-	_subtract(number) {
-		const val = BigInteger._toBigInteger(number);
-		const _sign = val._sign;
-		const out  = this._add(val._negate());
-		val._sign = _sign;
-		return out;
-	}
-
-	/**
-	 * Subtract.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} A - B
-	 */
-	subtract(number) {
-		return this.clone()._subtract(number);
-	}
-
-	/**
-	 * Subtract.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} A - B
-	 */
-	sub(number) {
-		return this.subtract(number);
-	}
-
-	/**
-	 * Multiply. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} A *= B
-	 * @private
-	 */
-	_multiply(number) {
-		const x = this.multiply(number);
-		this.element = x.element;
-		this._sign    = x._sign;
-		return this;
-	}
-
-	/**
-	 * Multiply.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} A * B
-	 */
-	multiply(number) {
-		const val = BigInteger._toBigInteger(number);
-		const out  = new BigInteger();
-		const buff = new BigInteger();
-		const o1 = this;
-		const o2 = val;
-		const x1 = o1.element;
-		const x2 = o2.element;
-		const y  = out.element;
-		for(let i = 0; i < x1.length; i++) {
-			buff.element = [];
-			// x3 = x1[i] * x2
-			const x3 = buff.element;
-			let carry = 0;
-			for(let j = 0; j < x2.length; j++) {
-				x3[j] = x1[i] * x2[j] + carry;
-				if(x3[j] > 0xFFFF) {
-					carry = x3[j] >>> 16;
-					x3[j] &= 0xFFFF;
-				}
-				else {
-					carry = 0;
-				}
-			}
-			if(carry !== 0) {
-				x3[x3.length] = carry;
-			}
-			// x3 = x3 << (i * 16)
-			//buff._shift(i << 4);
-			for(let j = x3.length - 1; j >= 0; j--) {
-				x3[j + i] = x3[j];
-			}
-			for(let j = i - 1; j >= 0; j--) {
-				x3[j] = 0;
-			}
-			// y = y + x3 (out._add(buff))
-			//out._add(buff);
-			carry = 0;
-			out._memory_allocation(x3.length << 4);
-			for(let j = i; j < y.length; j++) {
-				y[j] += ((x3.length >= (j + 1)) ? x3[j] : 0) + carry;
-				if(y[j] > 0xFFFF) {
-					carry = 1;
-					y[j] &= 0xFFFF;
-				}
-				else {
-					carry = 0;
-				}
-			}
-			if(carry !== 0) {
-				y[y.length] = carry;
-			}
-		}
-		out._sign = this._sign * val._sign;
-		return out;
-	}
-
-	/**
-	 * Multiply.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} A * B
-	 */
-	mul(number) {
-		return this.multiply(number);
-	}
-
-	/**
-	 * Divide and remainder. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {Array<BigInteger>} [C = floor(A / B), A - C * B]
-	 * @private
-	 */
-	_divideAndRemainder(number) {
-		const val = BigInteger._toBigInteger(number);
-		const out = [];
-		if(val.signum() === 0) {
-			throw "BigInteger divideAndRemainder [" + val.toString() +"]";
-		}
-		const compare = this.compareToAbs(val);
-		if(compare < 0) {
-			out[0] = new BigInteger(0);
-			out[1] = this.clone();
-			return out;
-		}
-		else if(compare === 0) {
-			out[0] = new BigInteger(1);
-			out[0]._sign = this._sign * val._sign;
-			out[1] = new BigInteger(0);
-			return out;
-		}
-		const ONE = new BigInteger(1);
-		const size = this.bitLength() - val.bitLength();
-		const x1 = this.clone()._abs();
-		const x2 = val.shift(size)._abs();
-		const y  = new BigInteger();
-		for(let i = 0; i <= size; i++) {
-			if(x1.compareToAbs(x2) >= 0) {
-				x1._subtract(x2);
-				y._add(ONE);
-			}
-			if(i === size) {
-				break;
-			}
-			x2._shift(-1);
-			y._shift(1);
-		}
-		out[0] = y;
-		out[0]._sign = this._sign * val._sign;
-		out[1] = x1;
-		out[1]._sign = this._sign;
-		return out;
-	}
-
-	/**
-	 * Divide and remainder.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {Array<BigInteger>} [C = floor(A / B), A - C * B]
-	 */
-	divideAndRemainder(number) {
-		return this.clone()._divideAndRemainder(number);
-	}
-
-	/**
-	 * Divide. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} floor(A / B)
-	 * @private
-	 */
-	_divide(number) {
-		return this._divideAndRemainder(number)[0];
-	}
-
-	/**
-	 * Divide.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} floor(A / B)
-	 */
-	divide(number) {
-		return this.clone()._divide(number);
-	}
-
-	/**
-	 * Divide.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} floor(A / B)
-	 */
-	div(number) {
-		return this.divide(number);
-	}
-
-	/**
-	 * Remainder of division. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} A %= B
-	 * @private
-	 */
-	_remainder(number) {
-		return this._divideAndRemainder(number)[1];
-	}
-
-	/**
-	 * Remainder of division.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} A % B
-	 */
-	remainder(number) {
-		return this.clone()._remainder(number);
-	}
-
-	/**
-	 * Remainder of division.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} A % B
-	 */
-	rem(number) {
-		return this.remainder(number);
-	}
-
-	/**
-	 * Modulo, positive remainder of division. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} A = A mod B
-	 * @private
-	 */
-	_mod(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(val.signum() < 0) {
-			return null;
-		}
-		const y = this._divideAndRemainder(val);
-		if(y[1] instanceof BigInteger) {
-			if(y[1].signum() >= 0) {
-				return y[1];
-			}
-			else {
-				return y[1]._add(val);
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Modulo, positive remainder of division.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
-	 * @returns {BigInteger} A mod B
-	 */
-	mod(number) {
-		return this.clone()._mod(number);
-	}
-
-	/**
 	 * this | (1 << n) (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
 	 * @returns {BigInteger}
@@ -1724,191 +1891,72 @@ export default class BigInteger {
 		return ((this.element[n >>> 4] >>> (n & 0xF)) & 1) !== 0;
 	}
 
+	// ----------------------
+	// テスト系
+	// ----------------------
+	
 	/**
-	 * Power function.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
-	 * @returns {BigInteger} pow(A, B)
-	 */
-	pow(exponent) {
-		const e = new BigInteger(exponent);
-		let x = BigInteger._toBigInteger(this);
-		let y = BigInteger._toBigInteger(1);
-		while(e.element.length !== 0) {
-			if((e.element[0] & 1) !== 0) {
-				y = y.multiply(x);
-			}
-			x = x.multiply(x);
-			e._shift(-1);
-		}
-		return y;
-	}
-
-	/**
-	 * Modular exponentiation.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
-	 * @param {BigInteger|number|string|Array<string|number>|Object} m 
-	 * @returns {BigInteger} A^B mod m
-	 */
-	modPow(exponent, m) {
-		const m_ = BigInteger._toBigInteger(m);
-		let x = new BigInteger(this);
-		let y = new BigInteger(1);
-		const e = new BigInteger(exponent);
-		while(e.element.length !== 0) {
-			if((e.element[0] & 1) !== 0) {
-				y = y.multiply(x).mod(m_);
-			}
-			x = x.multiply(x).mod(m_);
-			e._shift(-1);
-		}
-		return y;
-	}
-
-	/**
-	 * Modular multiplicative inverse.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} m
-	 * @returns {BigInteger} A^(-1) mod m
-	 */
-	modInverse(m) {
-		const m_ = BigInteger._toBigInteger(m);
-		const y = this.extgcd(m);
-		const ONE  = new BigInteger(1);
-		if(y[2].compareTo(ONE) !== 0) {
-			return null;
-		}
-		// 正にするため remainder ではなく mod を使用する
-		return y[0]._add(m_)._mod(m_);
-	}
-
-	/**
-	 * Return true if the value is prime number by Miller-Labin prime number determination method.
-	 * Attention : it takes a very long time to process.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+	 * this === 0
 	 * @returns {boolean}
 	 */
-	isProbablePrime(certainty) {
-		const e = this.element;
-		//0, 1, 2 -> true
-		if( (e.length === 0) || ((e.length === 1)&&(e[0] <= 2)) ) {
-			return true;
-		}
-		//even number -> false
-		else if((e[0] & 1) === 0) {
-			return false;
-		}
-		// ミラーラビン素数判定法
-		// かなり処理が重たいです。まあお遊び程度に使用という感じで。
-		const loop	= certainty !== undefined ? BigInteger._toInteger(certainty) : 100;
-		const ZERO	= new BigInteger(0);
-		const ONE	= new BigInteger(1);
-		const n		= this;
-		const LEN	= n.bitLength();
-		const n_1	= n.subtract(ONE);
-		const s 	= n_1.getLowestSetBit();
-		const d 	= n_1.shift(-s);
-
-		if(loop <= 0) {
-			return false;
-		}
-
-		for(let i = 0; i < loop; i++ ) {
-			//[ 1, n - 1] の範囲から a を選択
-			let a;
-			do {
-				a = BigInteger.createRandomBigInteger(LEN);
-			} while(( a.compareTo(ZERO) === 0 )||( a.compareTo(n) !== -1 ));
-
-			let t = d;
-			// a^t != 1 mod n
-			let y = a.modPow(t, n);
-			
-			while(true) {
-				if((t.equals(n_1)) || (y.equals(ONE)) || (y.equals(n_1))) {
-					break;
-				}
-				y = y.mul(y)._mod(n);
-				t = t.shiftLeft(1);
-			}
-
-			if((!y.equals(n_1)) && ((t.element[0] & 1) === 0)) {
-				return false;
-			}
-		}
-		return true;
+	isZero() {
+		this._memory_reduction();
+		return this._sign === 0;
+	}
+	
+	/**
+	 * this === 1
+	 * @returns {boolean}
+	 */
+	isOne() {
+		return this._sign === 1 && this.element.length === 1 && this.element[0] === 1;
+	}
+	
+	/**
+	 * this > 0
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		this._memory_reduction();
+		return this._sign > 0;
 	}
 
 	/**
-	 * Next prime.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - Search range of next prime.
-	 * @returns {BigInteger}
+	 * this < 0
+	 * @returns {boolean}
 	 */
-	nextProbablePrime(certainty, search_max) {
-		const loop	= certainty !== undefined ? (BigInteger._toInteger(certainty) >> 1) : 100 / 2;
-		const search_max_ = search_max !== undefined ? BigInteger._toInteger(search_max) : 100000;
-		const x = this.clone();
-		for(let i = 0; i < search_max_; i++) {
-			x._add(BigInteger.ONE);
-			if(x.isProbablePrime(loop)) {
-				return x;
-			}
-		}
-		throw "nextProbablePrime [" + search_max_ +"]";
+	isNegative() {
+		return this._sign < 0;
 	}
 
 	/**
-	 * Factorial function, x!.
-	 * @returns {BigInteger} n!
+	 * this >= 0
+	 * @returns {boolean}
 	 */
-	factorial() {
-		const loop_max = BigInteger._toInteger(this);
-		let x = BigInteger.ONE;
-		for(let i = 2; i <= loop_max; i++) {
-			x = x.multiply(i);
-		}
-		return x;
-	}
-
-	/**
-	 * Multiply a multiple of ten.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} n
-	 * @returns {BigInteger} x * 10^n
-	 */
-	scaleByPowerOfTen(n) {
-		const x = BigInteger._toInteger(n);
-		if(x === 0) {
-			return this;
-		}
-		if(x > 0) {
-			return this.mul(BigInteger.TEN.pow(x));
-		}
-		else {
-			return this.div(BigInteger.TEN.pow(x));
-		}
-	}
-
-	/**
-	 * Set default class of random.
-	 * This is used if you do not specify a random number.
-	 * @param {Random} random
-	 */
-	static setDefaultRandom(random) {
-		DEFAULT_RANDOM = random;
-	}
-
-	/**
-	 * Return default Random class.
-	 * Used when Random not specified explicitly.
-	 * @returns {Random}
-	 */
-	static getDefaultRandom() {
-		return DEFAULT_RANDOM;
+	isNotNegative() {
+		return this._sign >= 0;
 	}
 
 	// ----------------------
 	// 定数
 	// ----------------------
 	
+	/**
+	 * -1
+	 * @returns {BigInteger} -1
+	 */
+	static get MINUS_ONE() {
+		return DEFINE.MINUS_ONE;
+	}
+	
+	/**
+	 * 0
+	 * @returns {BigInteger} 0
+	 */
+	static get ZERO() {
+		return DEFINE.ZERO;
+	}
+
 	/**
 	 * 1
 	 * @returns {BigInteger} 1
@@ -1933,22 +1981,6 @@ export default class BigInteger {
 		return DEFINE.TEN;
 	}
 
-	/**
-	 * 0
-	 * @returns {BigInteger} 0
-	 */
-	static get ZERO() {
-		return DEFINE.ZERO;
-	}
-
-	/**
-	 * -1
-	 * @returns {BigInteger} -1
-	 */
-	static get MINUS_ONE() {
-		return DEFINE.MINUS_ONE;
-	}
-
 }
 
 /**
@@ -1957,6 +1989,16 @@ export default class BigInteger {
  */
 const DEFINE = {
 
+	/**
+	 * -1
+	 */
+	MINUS_ONE : new BigInteger(-1),
+
+	/**
+	 * 0
+	 */
+	ZERO : new BigInteger(0),
+	
 	/**
 	 * 1
 	 */
@@ -1970,16 +2012,6 @@ const DEFINE = {
 	/**
 	 * 10
 	 */
-	TEN : new BigInteger(10),
-
-	/**
-	 * 0
-	 */
-	ZERO : new BigInteger(0),
-	
-	/**
-	 * -1
-	 */
-	MINUS_ONE : new BigInteger(-1)
+	TEN : new BigInteger(10)
 
 };

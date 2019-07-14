@@ -1,6 +1,7 @@
 # History
 
 ## v1.0.0(beta)
+- Fraction を追加
 - 「x | 0」としている部分の多くを「Math.trunc」に置き換え。
 - BigInteger lcm 最小公倍数を求める計算を追加
 - BigInteger 作成時の引数に BigDecimal を入れた場合を対応

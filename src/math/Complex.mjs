@@ -294,23 +294,6 @@ export default class Complex {
 	}
 
 	/**
-	 * Equals.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
-	 * @returns {boolean} A === B
-	 */
-	equals(number, tolerance) {
-		const x = Complex._toComplex(number);
-		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
-		// 無限大、非数の値も含めて一度確認
-		if((this._re === x._re) && (this._im === x._im)) {
-			return true;
-		}
-		// 誤差を含んだ値の比較
-		return (Math.abs(this._re - x._re) <  tolerance_) && (Math.abs(this._im - x._im) < tolerance_);
-	}
-
-	/**
 	 * The real part of this Comlex.
 	 * @returns {number} real(A)
 	 */
@@ -517,7 +500,7 @@ export default class Complex {
 	/**
 	 * The positive or negative sign of this number.
 	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {Complex} [-1,1] 複素数の場合はノルムを1にした値。
+	 * @returns {Complex} 
 	 */
 	sign() {
 		if(this._im === 0) {
@@ -531,6 +514,27 @@ export default class Complex {
 		return this.div(this.norm);
 	}
 	
+	// ----------------------
+	// 比較
+	// ----------------------
+	
+	/**
+	 * Equals.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @returns {boolean} A === B
+	 */
+	equals(number, tolerance) {
+		const x = Complex._toComplex(number);
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		// 無限大、非数の値も含めて一度確認
+		if((this._re === x._re) && (this._im === x._im)) {
+			return true;
+		}
+		// 誤差を含んだ値の比較
+		return (Math.abs(this._re - x._re) <  tolerance_) && (Math.abs(this._im - x._im) < tolerance_);
+	}
+
 	/**
 	 * Compare values.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number

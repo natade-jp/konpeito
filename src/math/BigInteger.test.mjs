@@ -10,7 +10,7 @@ const testEQ = function(operator, x, y) {
 	test_count++;
 	const X = $(x);
 	const Y = $(y);
-	const testname = operator + " " + test_count + " $(" + x + ")";
+	const testname = operator + " " + test_count + " $(" + x + ")." + operator + "(" + y + ")";
 	const out = $(X).equals(Y);
 	test(testname, () => { expect(out).toBe(true); });
 };
@@ -54,19 +54,19 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 
 {
 	test_count = 0;
-	testEQ("new", "1000", 1000);
-	testEQ("new", "-1000", -1000);
-	testEQ("new", "123e10", 123e10);
-	testEQ("new", "-123e10", -123e10);
-	testEQ("new", "12.3e10", 12.3e10);
-	testEQ("new", "-12.3e10", -12.3e10);
-	testEQ("new", "12.3e10", "1.23e11");
-	testEQ("new", "12300e-1", "123e+1");
-	testEQ("new", "0x1234", 0x1234);
-	testEQ("new", "-0x1234", -0x1234);
-	testEQ("new", ["1234ffffff0000000000", 16], "85980274126460708454400");
-	testEQ("new", "0x1234ffffff0000000000", "85980274126460708454400");
-	testEQ("new", "0b101001000100001000000", "1345600");
+	testEQ("create", "1000", 1000);
+	testEQ("create", "-1000", -1000);
+	testEQ("create", "123e10", 123e10);
+	testEQ("create", "-123e10", -123e10);
+	testEQ("create", "12.3e10", 12.3e10);
+	testEQ("create", "-12.3e10", -12.3e10);
+	testEQ("create", "12.3e10", "1.23e11");
+	testEQ("create", "12300e-1", "123e+1");
+	testEQ("create", "0x1234", 0x1234);
+	testEQ("create", "-0x1234", -0x1234);
+	testEQ("create", ["1234ffffff0000000000", 16], "85980274126460708454400");
+	testEQ("create", "0x1234ffffff0000000000", "85980274126460708454400");
+	testEQ("create", "0b101001000100001000000", "1345600");
 }
 
 {

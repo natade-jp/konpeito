@@ -63,6 +63,9 @@ declare type BigDecimalDivideType = {
 
 /**
  * Create an arbitrary-precision floating-point number.
+ *
+ * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3"
  * - When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
  * - When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
  *
@@ -135,48 +138,13 @@ declare class BigDecimal {
      */
     unscaledValue(): BigInteger;
     /**
-     * Convert to string using scientific notation.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - Number of digits in exponent part.
-     * @returns {string}
-     */
-    toScientificNotation(e_len: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): string;
-    /**
-     * Convert to string.
-     * @returns {string}
-     */
-    toString(): string;
-    /**
-     * Convert to string usding technical notation.
-     * @returns {string}
-     */
-    toEngineeringString(): string;
-    /**
-     * Convert to string without exponential notation.
-     * @returns {string}
-     */
-    toPlainString(): string;
-    /**
      * The smallest value that can be represented with the set precision.
      * @returns {BigDecimal}
      */
     ulp(): BigDecimal;
     /**
-     * Change the scale.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - New scale.
-     * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
-     * @param {MathContext} [mc] - Rounding setting after calculation. For rounding purposes, use the round method.
-     * @returns {BigDecimal}
-     */
-    setScale(new_scale: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, rounding_mode?: RoundingModeEntity, mc?: MathContext): BigDecimal;
-    /**
-     * Round with specified settings.
-     * @param {MathContext} mc - New setting.
-     * @returns {BigDecimal}
-     */
-    round(mc: MathContext): BigDecimal;
-    /**
      * Absolute value.
-     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
+     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
      * @returns {BigDecimal} abs(A)
      */
     abs(mc?: MathContext): BigDecimal;
@@ -192,63 +160,6 @@ declare class BigDecimal {
      * @returns {BigDecimal} -A
      */
     negate(mc?: MathContext): BigDecimal;
-    /**
-     * Compare values.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
-     */
-    compareTo(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): number;
-    /**
-     * this === 0
-     * @returns {boolean}
-     */
-    isZero(): boolean;
-    /**
-     * this === 1
-     * @returns {boolean}
-     */
-    isOne(): boolean;
-    /**
-     * this > 0
-     * @returns {boolean}
-     */
-    isPositive(): boolean;
-    /**
-     * this < 0
-     * @returns {boolean}
-     */
-    isNegative(): boolean;
-    /**
-     * this >= 0
-     * @returns {boolean}
-     */
-    isNotNegative(): boolean;
-    /**
-     * Equals.
-     * Test for equality, including precision and scale.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @returns {boolean} A === B
-     */
-    equals(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): boolean;
-    /**
-     * Maximum number.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @returns {BigDecimal} max([A, B])
-     */
-    max(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
-    /**
-     * Minimum number.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @returns {BigDecimal} min([A, B])
-     */
-    min(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
-    /**
-     * Clip number within range.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
-     * @returns {BigDecimal} min(max(x, min), max)
-     */
-    clip(min: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, max: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
     /**
      * Multiply a multiple of ten.
      * Only the scale is changed without changing the precision.
@@ -384,7 +295,8 @@ declare class BigDecimal {
     doubleValue: number;
     /**
      * Power function.
-     * An exception occurs when doing a huge multiplication.
+     * - Supports only integers.
+     * - An exception occurs when doing a huge multiplication.
      * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
      * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
      * @returns {BigDecimal} pow(A, B)
@@ -403,6 +315,147 @@ declare class BigDecimal {
      */
     static getDefaultContext(): MathContext;
     /**
+     * Equals.
+     * - Attention : Test for equality, including the precision and the scale.
+     * - Use the "compareTo" if you only want to find out whether they are also mathematically equal.
+     * - If you specify a "tolerance", it is calculated by ignoring the test of the precision and the scale.
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance] - Calculation tolerance of calculation.
+     * @returns {boolean} A === B
+     */
+    equals(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, tolerance?: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): boolean;
+    /**
+     * Compare values.
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+     * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+     */
+    compareTo(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, tolerance?: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): number;
+    /**
+     * Maximum number.
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+     * @returns {BigDecimal} max([A, B])
+     */
+    max(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
+    /**
+     * Minimum number.
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+     * @returns {BigDecimal} min([A, B])
+     */
+    min(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
+    /**
+     * Clip number within range.
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
+     * @returns {BigDecimal} min(max(x, min), max)
+     */
+    clip(min: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, max: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
+    /**
+     * Convert to string.
+     * @returns {string}
+     */
+    toString(): string;
+    /**
+     * Convert to string using scientific notation.
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - Number of digits in exponent part.
+     * @returns {string}
+     */
+    toScientificNotation(e_len: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): string;
+    /**
+     * Convert to string usding technical notation.
+     * @returns {string}
+     */
+    toEngineeringString(): string;
+    /**
+     * Convert to string without exponential notation.
+     * @returns {string}
+     */
+    toPlainString(): string;
+    /**
+     * Change the scale.
+     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - New scale.
+     * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
+     * @param {MathContext} [mc] - Rounding setting after calculation. For rounding purposes, use the round method.
+     * @returns {BigDecimal}
+     */
+    setScale(new_scale: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, rounding_mode?: RoundingModeEntity, mc?: MathContext): BigDecimal;
+    /**
+     * Round with specified settings.
+     *
+     * This method is not a method round the decimal point.
+     * This method converts numbers in the specified Context and rounds unconvertible digits.
+     *
+     * Use this.setScale(0, RoundingMode.HALF_UP) if you want to round the decimal point.
+     * When the argument is omitted, such decimal point rounding operation is performed.
+     * @param {MathContext} [mc] - New setting.
+     * @returns {BigDecimal}
+     */
+    round(mc?: MathContext): BigDecimal;
+    /**
+     * Floor.
+     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+     * @returns {BigDecimal} floor(A)
+     */
+    floor(mc?: MathContext): BigDecimal;
+    /**
+     * Ceil.
+     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+     * @returns {BigDecimal} ceil(A)
+     */
+    ceil(mc?: MathContext): BigDecimal;
+    /**
+     * To integer rounded down to the nearest.
+     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+     * @returns {BigDecimal} fix(A), trunc(A)
+     */
+    fix(mc?: MathContext): BigDecimal;
+    /**
+     * Fraction.
+     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+     * @returns {BigDecimal} fract(A)
+     */
+    fract(mc?: MathContext): BigDecimal;
+    /**
+     * this === 0
+     * @returns {boolean}
+     */
+    isZero(): boolean;
+    /**
+     * this === 1
+     * @returns {boolean}
+     */
+    isOne(): boolean;
+    /**
+     * this > 0
+     * @returns {boolean}
+     */
+    isPositive(): boolean;
+    /**
+     * this < 0
+     * @returns {boolean}
+     */
+    isNegative(): boolean;
+    /**
+     * this >= 0
+     * @returns {boolean}
+     */
+    isNotNegative(): boolean;
+    /**
+     * -1
+     * @returns {BigDecimal} -1
+     */
+    static MINUS_ONE: BigDecimal;
+    /**
+     * 0
+     * @returns {BigDecimal} 0
+     */
+    static ZERO: BigDecimal;
+    /**
+     * 0.5
+     * @returns {BigDecimal} 0.5
+     */
+    static HALF: BigDecimal;
+    /**
      * 1
      * @returns {BigDecimal} 1
      */
@@ -417,16 +470,6 @@ declare class BigDecimal {
      * @returns {BigDecimal} 10
      */
     static TEN: BigDecimal;
-    /**
-     * 0
-     * @returns {BigDecimal} 0
-     */
-    static ZERO: BigDecimal;
-    /**
-     * -1
-     * @returns {BigDecimal} -1
-     */
-    static MINUS_ONE: BigDecimal;
 }
 
 /**
@@ -463,21 +506,6 @@ declare class BigInteger {
      */
     static createRandomBigInteger(bitsize: BigInteger | number | string | (string | number)[] | any, random?: Random): BigInteger;
     /**
-     * Prime represented within the specified bit length.
-     * @param {BigInteger|number|string|Array<string|number>|Object} bits - Bit length.
-     * @param {Random} [random] - Class for creating random numbers.
-     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
-     * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - Number of times to retry if prime generation fails.
-     * @returns {BigInteger}
-     */
-    static probablePrime(bits: BigInteger | number | string | (string | number)[] | any, random?: Random, certainty?: BigInteger | number | string | (string | number)[] | any, create_count?: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Equals.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {boolean} A === B
-     */
-    equals(number: BigInteger | number | string | (string | number)[] | any): boolean;
-    /**
      * Convert to string.
      * @param {BigInteger|number|string|Array<string|number>|Object} [radix=10] - Base number.
      * @returns {string}
@@ -513,30 +541,232 @@ declare class BigInteger {
      */
     clone(): BigInteger;
     /**
-     * this === 0
-     * @returns {boolean}
+     * Absolute value.
+     * @returns {BigInteger} abs(A)
      */
-    isZero(): boolean;
+    abs(): BigInteger;
     /**
-     * this === 1
-     * @returns {boolean}
+     * this * -1
+     * @returns {BigInteger} -A
      */
-    isOne(): boolean;
+    negate(): BigInteger;
     /**
-     * this > 0
-     * @returns {boolean}
+     * The positive or negative sign of this number.
+     * - +1 if positive, -1 if negative, 0 if 0.
+     * @returns {number} 1, -1, 0の場合は0を返す
      */
-    isPositive(): boolean;
+    signum(): number;
     /**
-     * this < 0
-     * @returns {boolean}
+     * The positive or negative sign of this number.
+     * - +1 if positive, -1 if negative, 0 if 0.
+     * @returns {number} 1, -1, 0の場合は0を返す
      */
-    isNegative(): boolean;
+    sign(): number;
     /**
-     * this >= 0
+     * Add.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {BigInteger} A + B
+     */
+    add(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Subtract.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {BigInteger} A - B
+     */
+    subtract(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Subtract.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {BigInteger} A - B
+     */
+    sub(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Multiply.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {BigInteger} A * B
+     */
+    multiply(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Multiply.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {BigInteger} A * B
+     */
+    mul(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Divide and remainder.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
+     */
+    divideAndRemainder(number: BigInteger | number | string | (string | number)[] | any): BigInteger[];
+    /**
+     * Divide.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {BigInteger} fix(A / B)
+     */
+    divide(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Divide.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {BigInteger} fix(A / B)
+     */
+    div(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Remainder of division.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {BigInteger} A % B
+     */
+    remainder(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Remainder of division.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {BigInteger} A % B
+     */
+    rem(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Modulo, positive remainder of division.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {BigInteger} A mod B
+     */
+    mod(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Power function.
+     * - Supports only integers.
+     * @param {BigInteger|number|string|Array<string|number>|Object} exponent
+     * @returns {BigInteger} pow(A, B)
+     */
+    pow(exponent: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Modular exponentiation.
+     * @param {BigInteger|number|string|Array<string|number>|Object} exponent
+     * @param {BigInteger|number|string|Array<string|number>|Object} m
+     * @returns {BigInteger} A^B mod m
+     */
+    modPow(exponent: BigInteger | number | string | (string | number)[] | any, m: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Modular multiplicative inverse.
+     * @param {BigInteger|number|string|Array<string|number>|Object} m
+     * @returns {BigInteger} A^(-1) mod m
+     */
+    modInverse(m: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Factorial function, x!.
+     * @returns {BigInteger} n!
+     */
+    factorial(): BigInteger;
+    /**
+     * Multiply a multiple of ten.
+     * @param {BigInteger|number|string|Array<string|number>|Object} n
+     * @returns {BigInteger} x * 10^n
+     */
+    scaleByPowerOfTen(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Set default class of random.
+     * This is used if you do not specify a random number.
+     * @param {Random} random
+     */
+    static setDefaultRandom(random: Random): void;
+    /**
+     * Return default Random class.
+     * Used when Random not specified explicitly.
+     * @returns {Random}
+     */
+    static getDefaultRandom(): Random;
+    /**
+     * Euclidean algorithm.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {BigInteger} gcd(x, y)
+     */
+    gcd(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Extended Euclidean algorithm.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+     */
+    extgcd(number: BigInteger | number | string | (string | number)[] | any): BigInteger[];
+    /**
+     * Least common multiple.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {BigInteger} lcm(x, y)
+     */
+    lcm(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Equals.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {boolean} A === B
+     */
+    equals(number: BigInteger | number | string | (string | number)[] | any): boolean;
+    /**
+     * Compare values without sign.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
+     */
+    compareToAbs(number: BigInteger | number | string | (string | number)[] | any): number;
+    /**
+     * Compare values.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+     */
+    compareTo(number: BigInteger | number | string | (string | number)[] | any): number;
+    /**
+     * Maximum number.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {BigInteger} max([A, B])
+     */
+    max(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Minimum number.
+     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @returns {BigInteger} min([A, B])
+     */
+    min(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Clip number within range.
+     * @param {BigInteger|number|string|Array<string|number>|Object} min
+     * @param {BigInteger|number|string|Array<string|number>|Object} max
+     * @returns {BigInteger} min(max(x, min), max)
+     */
+    clip(min: BigInteger | number | string | (string | number)[] | any, max: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Prime represented within the specified bit length.
+     * @param {BigInteger|number|string|Array<string|number>|Object} bits - Bit length.
+     * @param {Random} [random] - Class for creating random numbers.
+     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+     * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - Number of times to retry if prime generation fails.
+     * @returns {BigInteger}
+     */
+    static probablePrime(bits: BigInteger | number | string | (string | number)[] | any, random?: Random, certainty?: BigInteger | number | string | (string | number)[] | any, create_count?: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * Return true if the value is prime number by Miller-Labin prime number determination method.
+     * Attention : it takes a very long time to process.
+     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
      * @returns {boolean}
      */
-    isNotNegative(): boolean;
+    isProbablePrime(certainty?: BigInteger | number | string | (string | number)[] | any): boolean;
+    /**
+     * Next prime.
+     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+     * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - Search range of next prime.
+     * @returns {BigInteger}
+     */
+    nextProbablePrime(certainty?: BigInteger | number | string | (string | number)[] | any, search_max?: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * this << n
+     * @param {BigInteger|number|string|Array<string|number>|Object} n
+     * @returns {BigInteger} A << n
+     */
+    shift(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * this << n
+     * @param {BigInteger|number|string|Array<string|number>|Object} n
+     * @returns {BigInteger} A << n
+     */
+    shiftLeft(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    /**
+     * this >> n
+     * @param {BigInteger|number|string|Array<string|number>|Object} n
+     * @returns {BigInteger} A >> n
+     */
+    shiftRight(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
      * Number of digits in which the number "1" appears first when expressed in binary.
      * - Return -1 If 1 is not found it.
@@ -601,161 +831,6 @@ declare class BigInteger {
      */
     nor(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
     /**
-     * Euclidean algorithm.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} gcd(x, y)
-     */
-    gcd(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Extended Euclidean algorithm.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
-     */
-    extgcd(number: BigInteger | number | string | (string | number)[] | any): BigInteger[];
-    /**
-     * Least common multiple.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} lcm(x, y)
-     */
-    lcm(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Absolute value.
-     * @returns {BigInteger} abs(A)
-     */
-    abs(): BigInteger;
-    /**
-     * this * -1
-     * @returns {BigInteger} -A
-     */
-    negate(): BigInteger;
-    /**
-     * The positive or negative sign of this number.
-     * - +1 if positive, -1 if negative, 0 if 0.
-     * @returns {number} 1, -1, 0の場合は0を返す
-     */
-    signum(): number;
-    /**
-     * The positive or negative sign of this number.
-     * - +1 if positive, -1 if negative, 0 if 0.
-     * @returns {number} 1, -1, 0の場合は0を返す
-     */
-    sign(): number;
-    /**
-     * Compare values without sign.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
-     */
-    compareToAbs(number: BigInteger | number | string | (string | number)[] | any): number;
-    /**
-     * Compare values.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
-     */
-    compareTo(number: BigInteger | number | string | (string | number)[] | any): number;
-    /**
-     * Maximum number.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} max([A, B])
-     */
-    max(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Minimum number.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} min([A, B])
-     */
-    min(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Clip number within range.
-     * @param {BigInteger|number|string|Array<string|number>|Object} min
-     * @param {BigInteger|number|string|Array<string|number>|Object} max
-     * @returns {BigInteger} min(max(x, min), max)
-     */
-    clip(min: BigInteger | number | string | (string | number)[] | any, max: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * this << n
-     * @param {BigInteger|number|string|Array<string|number>|Object} n
-     * @returns {BigInteger} A << n
-     */
-    shift(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * this << n
-     * @param {BigInteger|number|string|Array<string|number>|Object} n
-     * @returns {BigInteger} A << n
-     */
-    shiftLeft(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * this >> n
-     * @param {BigInteger|number|string|Array<string|number>|Object} n
-     * @returns {BigInteger} A >> n
-     */
-    shiftRight(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Add.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A + B
-     */
-    add(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Subtract.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A - B
-     */
-    subtract(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Subtract.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A - B
-     */
-    sub(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Multiply.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A * B
-     */
-    multiply(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Multiply.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A * B
-     */
-    mul(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Divide and remainder.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {Array<BigInteger>} [C = floor(A / B), A - C * B]
-     */
-    divideAndRemainder(number: BigInteger | number | string | (string | number)[] | any): BigInteger[];
-    /**
-     * Divide.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} floor(A / B)
-     */
-    divide(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Divide.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} floor(A / B)
-     */
-    div(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Remainder of division.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A % B
-     */
-    remainder(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Remainder of division.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A % B
-     */
-    rem(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Modulo, positive remainder of division.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A mod B
-     */
-    mod(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
      * this | (1 << n)
      * @param {BigInteger|number|string|Array<string|number>|Object} bit
      * @returns {BigInteger}
@@ -780,61 +855,40 @@ declare class BigInteger {
      */
     testBit(bit: BigInteger | number | string | (string | number)[] | any): boolean;
     /**
-     * Power function.
-     * @param {BigInteger|number|string|Array<string|number>|Object} exponent
-     * @returns {BigInteger} pow(A, B)
-     */
-    pow(exponent: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Modular exponentiation.
-     * @param {BigInteger|number|string|Array<string|number>|Object} exponent
-     * @param {BigInteger|number|string|Array<string|number>|Object} m
-     * @returns {BigInteger} A^B mod m
-     */
-    modPow(exponent: BigInteger | number | string | (string | number)[] | any, m: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Modular multiplicative inverse.
-     * @param {BigInteger|number|string|Array<string|number>|Object} m
-     * @returns {BigInteger} A^(-1) mod m
-     */
-    modInverse(m: BigInteger | number | string | (string | number)[] | any): BigInteger;
-    /**
-     * Return true if the value is prime number by Miller-Labin prime number determination method.
-     * Attention : it takes a very long time to process.
-     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+     * this === 0
      * @returns {boolean}
      */
-    isProbablePrime(certainty?: BigInteger | number | string | (string | number)[] | any): boolean;
+    isZero(): boolean;
     /**
-     * Next prime.
-     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
-     * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - Search range of next prime.
-     * @returns {BigInteger}
+     * this === 1
+     * @returns {boolean}
      */
-    nextProbablePrime(certainty?: BigInteger | number | string | (string | number)[] | any, search_max?: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    isOne(): boolean;
     /**
-     * Factorial function, x!.
-     * @returns {BigInteger} n!
+     * this > 0
+     * @returns {boolean}
      */
-    factorial(): BigInteger;
+    isPositive(): boolean;
     /**
-     * Multiply a multiple of ten.
-     * @param {BigInteger|number|string|Array<string|number>|Object} n
-     * @returns {BigInteger} x * 10^n
+     * this < 0
+     * @returns {boolean}
      */
-    scaleByPowerOfTen(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    isNegative(): boolean;
     /**
-     * Set default class of random.
-     * This is used if you do not specify a random number.
-     * @param {Random} random
+     * this >= 0
+     * @returns {boolean}
      */
-    static setDefaultRandom(random: Random): void;
+    isNotNegative(): boolean;
     /**
-     * Return default Random class.
-     * Used when Random not specified explicitly.
-     * @returns {Random}
+     * -1
+     * @returns {BigInteger} -1
      */
-    static getDefaultRandom(): Random;
+    static MINUS_ONE: BigInteger;
+    /**
+     * 0
+     * @returns {BigInteger} 0
+     */
+    static ZERO: BigInteger;
     /**
      * 1
      * @returns {BigInteger} 1
@@ -850,21 +904,13 @@ declare class BigInteger {
      * @returns {BigInteger} 10
      */
     static TEN: BigInteger;
-    /**
-     * 0
-     * @returns {BigInteger} 0
-     */
-    static ZERO: BigInteger;
-    /**
-     * -1
-     * @returns {BigInteger} -1
-     */
-    static MINUS_ONE: BigInteger;
 }
 
 /**
  * Create a complex number.
+ *
  * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3"
  * - "3 + 4i", "4j + 3", [3, 4].
  * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Complex number. See how to use the function.
  */
@@ -912,13 +958,6 @@ declare class Complex {
      * @returns {Complex}
      */
     static randn(): Complex;
-    /**
-     * Equals.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
-     * @returns {boolean} A === B
-     */
-    equals(number: Complex | number | string | number[] | any | any, epsilon?: Complex | number | string | number[] | any | any): boolean;
     /**
      * The real part of this Comlex.
      * @returns {number} real(A)
@@ -989,16 +1028,23 @@ declare class Complex {
     /**
      * The positive or negative sign of this number.
      * - +1 if positive, -1 if negative, 0 if 0.
-     * @returns {Complex} [-1,1] 複素数の場合はノルムを1にした値。
+     * @returns {Complex}
      */
     sign(): Complex;
     /**
+     * Equals.
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+     * @returns {boolean} A === B
+     */
+    equals(number: Complex | number | string | number[] | any | any, tolerance?: Complex | number | string | number[] | any | any): boolean;
+    /**
      * Compare values.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
      */
-    compareTo(number: Complex | number | string | number[] | any | any, epsilon?: Complex | number | string | number[] | any | any): number;
+    compareTo(number: Complex | number | string | number[] | any | any, tolerance?: Complex | number | string | number[] | any | any): number;
     /**
      * Maximum number.
      * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
@@ -1020,40 +1066,40 @@ declare class Complex {
     clip(min: Complex | number | string | number[] | any | any, max: Complex | number | string | number[] | any | any): Complex;
     /**
      * Return true if the value is integer.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isInteger(epsilon?: Complex | number | string | number[] | any | any): boolean;
+    isInteger(tolerance?: Complex | number | string | number[] | any | any): boolean;
     /**
      * Returns true if the vallue is complex integer (including normal integer).
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} real(A) === integer && imag(A) === integer
      */
-    isComplexInteger(epsilon?: Complex | number | string | number[] | any | any): boolean;
+    isComplexInteger(tolerance?: Complex | number | string | number[] | any | any): boolean;
     /**
      * this === 0
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} A === 0
      */
-    isZero(epsilon?: Complex | number | string | number[] | any | any): boolean;
+    isZero(tolerance?: Complex | number | string | number[] | any | any): boolean;
     /**
      * this === 1
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} A === 1
      */
-    isOne(epsilon?: Complex | number | string | number[] | any | any): boolean;
+    isOne(tolerance?: Complex | number | string | number[] | any | any): boolean;
     /**
      * Returns true if the vallue is complex number (imaginary part is not 0).
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} imag(A) !== 0
      */
-    isComplex(epsilon?: Complex | number | string | number[] | any | any): boolean;
+    isComplex(tolerance?: Complex | number | string | number[] | any | any): boolean;
     /**
      * Return true if the value is real number.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} imag(A) === 0
      */
-    isReal(epsilon?: Complex | number | string | number[] | any | any): boolean;
+    isReal(tolerance?: Complex | number | string | number[] | any | any): boolean;
     /**
      * this === NaN
      * @returns {boolean} isNaN(A)
@@ -1176,7 +1222,7 @@ declare class Complex {
     round(): Complex;
     /**
      * To integer rounded down to the nearest.
-     * @returns {Complex} fix(A)
+     * @returns {Complex} fix(A), trunc(A)
      */
     fix(): Complex;
     /**
@@ -1594,6 +1640,12 @@ declare class RoundingMode {
 
 /**
  * Create an fraction.
+ *
+ * Initialization can be performed as follows.
+ * - 10, "10", "10/1", "10.0/1.0", ["10", "1"], [10, 1]
+ * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
+ * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
+ * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
  * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} [number] - Fraction data. See how to use the function.
  */
 declare class Fraction {
@@ -1632,12 +1684,132 @@ declare class Fraction {
      */
     doubleValue: number;
     /**
+     * Absolute value.
+     * @returns {Fraction} abs(A)
+     */
+    abs(): Fraction;
+    /**
+     * this * -1
+     * @returns {Fraction} -A
+     */
+    negate(): Fraction;
+    /**
+     * The positive or negative sign of this number.
+     * - +1 if positive, -1 if negative, 0 if 0.
+     * @returns {number}
+     */
+    sign(): number;
+    /**
      * Convert to string.
      * @returns {string}
      */
     toString(): string;
     /**
-     *
+     * Add.
+     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @return {Fraction}
+     */
+    add(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    /**
+     * Subtract.
+     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @return {Fraction}
+     */
+    sub(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    /**
+     * Multiply.
+     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @return {Fraction}
+     */
+    mul(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    /**
+     * Divide.
+     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @return {Fraction}
+     */
+    div(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    /**
+     * Inverse number of this value.
+     * @return {Fraction}
+     */
+    inv(): Fraction;
+    /**
+     * Modulo, positive remainder of division.
+     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @return {Fraction}
+     */
+    mod(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    /**
+     * Multiply a multiple of ten.
+     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} n
+     * @returns {Fraction}
+     */
+    scaleByPowerOfTen(n: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    /**
+     * Power function.
+     * - Supports only integers.
+     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @returns {Fraction} pow(A, B)
+     */
+    pow(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    /**
+     * Equals.
+     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @returns {boolean} A === B
+     */
+    equals(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): boolean;
+    /**
+     * Compare values.
+     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+     */
+    compareTo(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): number;
+    /**
+     * Maximum number.
+     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
+     * @returns {Fraction} max([A, B])
+     */
+    max(number: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    /**
+     * Minimum number.
+     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
+     * @returns {Fraction} min([A, B])
+     */
+    min(number: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    /**
+     * Clip number within range.
+     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} min
+     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} max
+     * @returns {Fraction} min(max(x, min), max)
+     */
+    clip(min: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any, max: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    /**
+     * Floor.
+     * @returns {Fraction} floor(A)
+     */
+    floor(): Fraction;
+    /**
+     * Ceil.
+     * @returns {Fraction} ceil(A)
+     */
+    ceil(): Fraction;
+    /**
+     * Rounding to the nearest integer.
+     * @returns {Fraction} round(A)
+     */
+    round(): Fraction;
+    /**
+     * To integer rounded down to the nearest.
+     * @returns {Fraction} fix(A), trunc(A)
+     */
+    fix(): Fraction;
+    /**
+     * Fraction.
+     * @returns {Fraction} fract(A)
+     */
+    fract(): Fraction;
+    /**
+     * Return true if the value is integer.
      * @return {boolean}
      */
     isInteger(): boolean;
@@ -1667,50 +1839,35 @@ declare class Fraction {
      */
     isNotNegative(): boolean;
     /**
-     * Add.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
-     * @return {Fraction}
+     * -1
+     * @returns {Fraction} -1
      */
-    add(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
-    /**
-     * Subtract.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
-     * @return {Fraction}
-     */
-    sub(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
-    /**
-     * Multiply.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
-     * @return {Fraction}
-     */
-    mul(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
-    /**
-     * Divide.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
-     * @return {Fraction}
-     */
-    div(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
-    /**
-     * Multiply a multiple of ten.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} n
-     * @returns {Fraction}
-     */
-    scaleByPowerOfTen(n: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
-    /**
-     * 1
-     * @returns {Fraction} 1
-     */
-    static ONE: Fraction;
+    static MINUS_ONE: Fraction;
     /**
      * 0
      * @returns {Fraction} 0
      */
     static ZERO: Fraction;
     /**
-     * -1
-     * @returns {Fraction} -1
+     * 0.5
+     * @returns {Fraction} 0.5
      */
-    static MINUS_ONE: Fraction;
+    static HALF: Fraction;
+    /**
+     * 1
+     * @returns {Fraction} 1
+     */
+    static ONE: Fraction;
+    /**
+     * 2
+     * @returns {Fraction} 2
+     */
+    static TWO: Fraction;
+    /**
+     * 10
+     * @returns {Fraction} 10
+     */
+    static TEN: Fraction;
 }
 
 /**
@@ -1769,10 +1926,10 @@ declare class Matrix {
     /**
      * Equals.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean} A === B
      */
-    equals(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    equals(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Array of real parts of elements in matrix.
      * @returns {Array<Array<number>>}
@@ -1906,10 +2063,10 @@ declare class Matrix {
     rcond(): number;
     /**
      * Rank.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {number} rank(A)
      */
-    rank(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
+    rank(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
     /**
      * Trace of a matrix.
      * Sum of diagonal elements.
@@ -2002,88 +2159,88 @@ declare class Matrix {
     isSquare(): boolean;
     /**
      * Return true if the matrix is real matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isReal(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isReal(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Return true if the matrix is complex matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isComplex(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isComplex(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Return true if the matrix is zero matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isZeros(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isZeros(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Return true if the matrix is identity matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isIdentity(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isIdentity(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Return true if the matrix is diagonal matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isDiagonal(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isDiagonal(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Return true if the matrix is tridiagonal matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isTridiagonal(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isTridiagonal(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Return true if the matrix is regular matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isRegular(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isRegular(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Return true if the matrix is orthogonal matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isOrthogonal(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isOrthogonal(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Return true if the matrix is unitary matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isUnitary(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isUnitary(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Return true if the matrix is symmetric matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isSymmetric(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isSymmetric(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Return true if the matrix is hermitian matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isHermitian(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isHermitian(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Return true if the matrix is upper triangular matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isTriangleUpper(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isTriangleUpper(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Return true if the matrix is  lower triangular matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isTriangleLower(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isTriangleLower(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Return true if the matrix is permutation matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isPermutation(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isPermutation(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
     /**
      * Number of rows and columns of matrix.
      * @returns {Matrix} [row_length, column_length]
@@ -2094,10 +2251,10 @@ declare class Matrix {
      * - Return value between scalars is of type Number.
      * - Return value between matrices is type Matrix.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
      */
-    compareTo(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number | Matrix;
+    compareTo(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number | Matrix;
     /**
      * Add.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
@@ -2203,45 +2360,45 @@ declare class Matrix {
     /**
      * Test if each element of the matrix is integer.
      * - 1 if true, 0 if false.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
-    testInteger(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    testInteger(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Test if each element of the matrix is complex integer.
      * - 1 if true, 0 if false.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
-    testComplexInteger(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    testComplexInteger(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * real(this) === 0
      * - 1 if true, 0 if false.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
-    testZero(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    testZero(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * real(this) === 1
      * - 1 if true, 0 if false.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
-    testOne(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    testOne(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Test if each element of the matrix is complex.
      * - 1 if true, 0 if false.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
-    testComplex(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    testComplex(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Test if each element of the matrix is real.
      * - 1 if true, 0 if false.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
      */
-    testReal(epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    testReal(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
     /**
      * Test if each element of the matrix is NaN.
      * - 1 if true, 0 if false.
@@ -2354,7 +2511,7 @@ declare class Matrix {
     round(): Matrix;
     /**
      * To integer rounded down to the nearest.
-     * @returns {Matrix} fix(A)
+     * @returns {Matrix} fix(A), trunc(A)
      */
     fix(): Matrix;
     /**
@@ -3005,10 +3162,10 @@ declare class LinearAlgebra {
     /**
      * Rank.
      * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {number} rank(A)
      */
-    static rank(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, epsilon?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
+    static rank(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
     /**
      * Trace of a matrix.
      * Sum of diagonal elements.

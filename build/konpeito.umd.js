@@ -1232,7 +1232,7 @@
 	};
 
 	var prototypeAccessors = { intValue: { configurable: true },longValue: { configurable: true },doubleValue: { configurable: true } };
-	var staticAccessors$2 = { ONE: { configurable: true },TWO: { configurable: true },TEN: { configurable: true },ZERO: { configurable: true },MINUS_ONE: { configurable: true } };
+	var staticAccessors$2 = { MINUS_ONE: { configurable: true },ZERO: { configurable: true },ONE: { configurable: true },TWO: { configurable: true },TEN: { configurable: true } };
 
 	/**
 		 * Create an entity object of this class.
@@ -1349,47 +1349,6 @@
 	};
 
 	/**
-		 * Prime represented within the specified bit length.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} bits - Bit length.
-		 * @param {Random} [random] - Class for creating random numbers.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
-		 * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - Number of times to retry if prime generation fails.
-		 * @returns {BigInteger}
-		 */
-	BigInteger.probablePrime = function probablePrime (bits, random, certainty, create_count ) {
-		var certainty_ = certainty ? BigInteger._toInteger(certainty) : 100;
-		var create_count_ = create_count ? BigInteger._toInteger(create_count) : 500;
-		for(var i = 0; i < create_count_; i++) {
-			var x = BigInteger.createRandomBigInteger(bits, random);
-			if(x.isProbablePrime(certainty_)) {
-				return x;
-			}
-		}
-		throw "probablePrime " + create_count;
-	};
-
-	/**
-		 * Equals.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {boolean} A === B
-		 */
-	BigInteger.prototype.equals = function equals (number) {
-		var x = BigInteger._toBigInteger(number);
-		if(this.signum() !== x.signum()) {
-			return false;
-		}
-		if(this.element.length !== x.element.length) {
-			return false;
-		}
-		for(var i = 0; i < x.element.length; i++) {
-			if(this.element[i] !==  x.element[i]) {
-				return false;
-			}
-		}
-		return true;
-	};
-
-	/**
 		 * Convert to string.
 		 * @param {BigInteger|number|string|Array<string|number>|Object} [radix=10] - Base number.
 		 * @returns {string}
@@ -1491,47 +1450,980 @@
 	};
 
 	/**
-		 * this === 0
-		 * @returns {boolean}
+		 * Create a numerical value for addition. If negative, two's complement.
+		 * @param {number} [bit_length] - Bit length. If not set, it will be calculated automatically.
+		 * @returns {BigInteger}
+		 * @private
 		 */
-	BigInteger.prototype.isZero = function isZero () {
-		this._memory_reduction();
-		return this._sign === 0;
+	BigInteger.prototype.getTwosComplement = function getTwosComplement (bit_length) {
+		var y = this.clone();
+		if(y._sign >= 0) {
+			return y;
+		}
+		else {
+			// 正にする
+			y._sign = 1;
+			// ビットの数が存在しない場合は数える
+			var len = (bit_length !== undefined) ? bit_length : y.bitLength();
+			var e = y.element;
+			// ビット反転後
+			for(var i = 0; i < e.length; i++) {
+				e[i] ^= 0xFFFF;
+			}
+			// 1～15ビット余る場合は、16ビットずつ作成しているので削る
+			// nビットのマスク（なお負の値を表す最上位ビットは削除する）
+			if((len % 16) !== 0) {
+				e[e.length - 1] &= (1 << (len % 16)) - 1;
+			}
+			// 1を加算
+			y._add(new BigInteger(1));
+			return y;
+		}
 	};
+
+	/**
+		 * Expand memory to specified bit length. (mutable)
+		 * @param {number} bit_length - Bit length.
+		 * @private
+		 */
+	BigInteger.prototype._memory_allocation = function _memory_allocation (bit_length) {
+		var n = BigInteger._toInteger(bit_length);
+		var elementsize = this.element.length << 4;
+		if(elementsize < n) {
+			var addsize = (((n - elementsize - 1) & 0xFFFFFFF0) >>> 4) + 1;
+			for(var i = 0;i < addsize;i++) {
+				this.element[this.element.length] = 0;
+			}
+		}
+	};
+
+	/**
+		 * Normalization of the internal data. (mutable)
+		 * @private
+		 */
+	BigInteger.prototype._memory_reduction = function _memory_reduction () {
+		for(var i = this.element.length - 1;i >= 0;i--) {
+			if(this.element[i] !==  0) {
+				if(i < this.element.length - 1) {
+					this.element.splice(i + 1, this.element.length - i - 1);
+				}
+				return;
+			}
+		}
+		this._sign = 0;
+		this.element = [];
+	};
+
+	/**
+		 * Absolute value. (mutable)
+		 * @returns {BigInteger} A = abs(A)
+		 * @private
+		 */
+	BigInteger.prototype._abs = function _abs () {
+		// -1 -> 1, 0 -> 0, 1 -> 1
+		this._sign *= this._sign;
+		return this;
+	};
+
+	/**
+		 * Absolute value.
+		 * @returns {BigInteger} abs(A)
+		 */
+	BigInteger.prototype.abs = function abs () {
+		return this.clone()._abs();
+	};
+
+	/**
+		 * this *= -1
+		 * @returns {BigInteger} A = -A
+		 * @private
+		 */
+	BigInteger.prototype._negate = function _negate () {
+		this._sign *= -1;
+		return this;
+	};
+
+	/**
+		 * this * -1
+		 * @returns {BigInteger} -A
+		 */
+	BigInteger.prototype.negate = function negate () {
+		return this.clone()._negate();
+	};
+
+	/**
+		 * The positive or negative sign of this number.
+		 * - +1 if positive, -1 if negative, 0 if 0.
+		 * @returns {number} 1, -1, 0の場合は0を返す
+		 */
+	BigInteger.prototype.signum = function signum () {
+		if(this.element.length === 0) {
+			return 0;
+		}
+		return this._sign;
+	};
+
+	/**
+		 * The positive or negative sign of this number.
+		 * - +1 if positive, -1 if negative, 0 if 0.
+		 * @returns {number} 1, -1, 0の場合は0を返す
+		 */
+	BigInteger.prototype.sign = function sign () {
+		return this.signum();
+	};
+
+	/**
+		 * Add. (mutable)
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} A += B
+		 * @private
+		 */
+	BigInteger.prototype._add = function _add (number) {
+		var val = BigInteger._toBigInteger(number);
+		var o1 = this;
+		var o2 = val;
+		var x1 = o1.element;
+		var x2 = o2.element;
+		if(o1._sign === o2._sign) {
+			//足し算
+			this._memory_allocation(x2.length << 4);
+			var carry = 0;
+			for(var i = 0; i < x1.length; i++) {
+				x1[i] += ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
+				if(x1[i] > 0xFFFF) {
+					carry = 1;
+					x1[i] &= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				x1[x1.length] = carry;
+			}
+		}
+		else {
+			// 引き算
+			var compare = o1.compareToAbs(o2);
+			if(compare === 0) {
+				this.element = [];
+				this._sign = 1;
+				return this;
+			}
+			else if(compare === -1) {
+				this._sign = o2._sign;
+				var swap = x1;
+				x1 = x2.slice(0);
+				x2 = swap;
+			}
+			var carry$1 = 0;
+			for(var i$1 = 0; i$1 < x1.length; i$1++) {
+				x1[i$1] -= ((x2.length >= (i$1 + 1)) ? x2[i$1] : 0) + carry$1;
+				if(x1[i$1] < 0) {
+					x1[i$1] += 0x10000;
+					carry$1  = 1;
+				}
+				else {
+					carry$1  = 0;
+				}
+			}
+			this.element = x1;
+			this._memory_reduction();
+		}
+		return this;
+	};
+
+	/**
+		 * Add.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} A + B
+		 */
+	BigInteger.prototype.add = function add (number) {
+		return this.clone()._add(number);
+	};
+
+	/**
+		 * Subtract. (mutable)
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} A -= B
+		 * @private
+		 */
+	BigInteger.prototype._subtract = function _subtract (number) {
+		var val = BigInteger._toBigInteger(number);
+		var _sign = val._sign;
+		var out  = this._add(val._negate());
+		val._sign = _sign;
+		return out;
+	};
+
+	/**
+		 * Subtract.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} A - B
+		 */
+	BigInteger.prototype.subtract = function subtract (number) {
+		return this.clone()._subtract(number);
+	};
+
+	/**
+		 * Subtract.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} A - B
+		 */
+	BigInteger.prototype.sub = function sub (number) {
+		return this.subtract(number);
+	};
+
+	/**
+		 * Multiply. (mutable)
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} A *= B
+		 * @private
+		 */
+	BigInteger.prototype._multiply = function _multiply (number) {
+		var x = this.multiply(number);
+		this.element = x.element;
+		this._sign    = x._sign;
+		return this;
+	};
+
+	/**
+		 * Multiply.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} A * B
+		 */
+	BigInteger.prototype.multiply = function multiply (number) {
+		var val = BigInteger._toBigInteger(number);
+		var out  = new BigInteger();
+		var buff = new BigInteger();
+		var o1 = this;
+		var o2 = val;
+		var x1 = o1.element;
+		var x2 = o2.element;
+		var y  = out.element;
+		for(var i = 0; i < x1.length; i++) {
+			buff.element = [];
+			// x3 = x1[i] * x2
+			var x3 = buff.element;
+			var carry = 0;
+			for(var j = 0; j < x2.length; j++) {
+				x3[j] = x1[i] * x2[j] + carry;
+				if(x3[j] > 0xFFFF) {
+					carry = x3[j] >>> 16;
+					x3[j] &= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				x3[x3.length] = carry;
+			}
+			// x3 = x3 << (i * 16)
+			//buff._shift(i << 4);
+			for(var j$1 = x3.length - 1; j$1 >= 0; j$1--) {
+				x3[j$1 + i] = x3[j$1];
+			}
+			for(var j$2 = i - 1; j$2 >= 0; j$2--) {
+				x3[j$2] = 0;
+			}
+			// y = y + x3 (out._add(buff))
+			//out._add(buff);
+			carry = 0;
+			out._memory_allocation(x3.length << 4);
+			for(var j$3 = i; j$3 < y.length; j$3++) {
+				y[j$3] += ((x3.length >= (j$3 + 1)) ? x3[j$3] : 0) + carry;
+				if(y[j$3] > 0xFFFF) {
+					carry = 1;
+					y[j$3] &= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				y[y.length] = carry;
+			}
+		}
+		out._sign = this._sign * val._sign;
+		return out;
+	};
+
+	/**
+		 * Multiply.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} A * B
+		 */
+	BigInteger.prototype.mul = function mul (number) {
+		return this.multiply(number);
+	};
+
+	/**
+		 * Divide and remainder. (mutable)
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
+		 * @private
+		 */
+	BigInteger.prototype._divideAndRemainder = function _divideAndRemainder (number) {
+		var val = BigInteger._toBigInteger(number);
+		var out = [];
+		if(val.signum() === 0) {
+			throw "BigInteger divideAndRemainder [" + val.toString() +"]";
+		}
+		var compare = this.compareToAbs(val);
+		if(compare < 0) {
+			out[0] = new BigInteger(0);
+			out[1] = this.clone();
+			return out;
+		}
+		else if(compare === 0) {
+			out[0] = new BigInteger(1);
+			out[0]._sign = this._sign * val._sign;
+			out[1] = new BigInteger(0);
+			return out;
+		}
+		var ONE = new BigInteger(1);
+		var size = this.bitLength() - val.bitLength();
+		var x1 = this.clone()._abs();
+		var x2 = val.shift(size)._abs();
+		var y  = new BigInteger();
+		for(var i = 0; i <= size; i++) {
+			if(x1.compareToAbs(x2) >= 0) {
+				x1._subtract(x2);
+				y._add(ONE);
+			}
+			if(i === size) {
+				break;
+			}
+			x2._shift(-1);
+			y._shift(1);
+		}
+		out[0] = y;
+		out[0]._sign = this._sign * val._sign;
+		out[1] = x1;
+		out[1]._sign = this._sign;
+		return out;
+	};
+
+	/**
+		 * Divide and remainder.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
+		 */
+	BigInteger.prototype.divideAndRemainder = function divideAndRemainder (number) {
+		return this.clone()._divideAndRemainder(number);
+	};
+
+	/**
+		 * Divide. (mutable)
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} fix(A / B)
+		 * @private
+		 */
+	BigInteger.prototype._divide = function _divide (number) {
+		return this._divideAndRemainder(number)[0];
+	};
+
+	/**
+		 * Divide.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} fix(A / B)
+		 */
+	BigInteger.prototype.divide = function divide (number) {
+		return this.clone()._divide(number);
+	};
+
+	/**
+		 * Divide.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} fix(A / B)
+		 */
+	BigInteger.prototype.div = function div (number) {
+		return this.divide(number);
+	};
+
+	/**
+		 * Remainder of division. (mutable)
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} A %= B
+		 * @private
+		 */
+	BigInteger.prototype._remainder = function _remainder (number) {
+		return this._divideAndRemainder(number)[1];
+	};
+
+	/**
+		 * Remainder of division.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} A % B
+		 */
+	BigInteger.prototype.remainder = function remainder (number) {
+		return this.clone()._remainder(number);
+	};
+
+	/**
+		 * Remainder of division.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} A % B
+		 */
+	BigInteger.prototype.rem = function rem (number) {
+		return this.remainder(number);
+	};
+
+	/**
+		 * Modulo, positive remainder of division. (mutable)
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} A = A mod B
+		 * @private
+		 */
+	BigInteger.prototype._mod = function _mod (number) {
+		var val = BigInteger._toBigInteger(number);
+		if(val.signum() < 0) {
+			return null;
+		}
+		var y = this._divideAndRemainder(val);
+		if(y[1] instanceof BigInteger) {
+			if(y[1].signum() >= 0) {
+				return y[1];
+			}
+			else {
+				return y[1]._add(val);
+			}
+		}
+		return null;
+	};
+
+	/**
+		 * Modulo, positive remainder of division.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} A mod B
+		 */
+	BigInteger.prototype.mod = function mod (number) {
+		return this.clone()._mod(number);
+	};
+
+	/**
+		 * Power function.
+		 * - Supports only integers.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
+		 * @returns {BigInteger} pow(A, B)
+		 */
+	BigInteger.prototype.pow = function pow (exponent) {
+		var e = new BigInteger(exponent);
+		var x = BigInteger._toBigInteger(this);
+		var y = BigInteger._toBigInteger(1);
+		while(e.element.length !== 0) {
+			if((e.element[0] & 1) !== 0) {
+				y = y.multiply(x);
+			}
+			x = x.multiply(x);
+			e._shift(-1);
+		}
+		return y;
+	};
+
+	/**
+		 * Modular exponentiation.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
+		 * @param {BigInteger|number|string|Array<string|number>|Object} m 
+		 * @returns {BigInteger} A^B mod m
+		 */
+	BigInteger.prototype.modPow = function modPow (exponent, m) {
+		var m_ = BigInteger._toBigInteger(m);
+		var x = new BigInteger(this);
+		var y = new BigInteger(1);
+		var e = new BigInteger(exponent);
+		while(e.element.length !== 0) {
+			if((e.element[0] & 1) !== 0) {
+				y = y.multiply(x).mod(m_);
+			}
+			x = x.multiply(x).mod(m_);
+			e._shift(-1);
+		}
+		return y;
+	};
+
+	/**
+		 * Modular multiplicative inverse.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} m
+		 * @returns {BigInteger} A^(-1) mod m
+		 */
+	BigInteger.prototype.modInverse = function modInverse (m) {
+		var m_ = BigInteger._toBigInteger(m);
+		var y = this.extgcd(m);
+		var ONE  = new BigInteger(1);
+		if(y[2].compareTo(ONE) !== 0) {
+			return null;
+		}
+		// 正にするため remainder ではなく mod を使用する
+		return y[0]._add(m_)._mod(m_);
+	};
+
+	/**
+		 * Factorial function, x!.
+		 * @returns {BigInteger} n!
+		 */
+	BigInteger.prototype.factorial = function factorial () {
+		var loop_max = BigInteger._toInteger(this);
+		var x = BigInteger.ONE;
+		for(var i = 2; i <= loop_max; i++) {
+			x = x.multiply(i);
+		}
+		return x;
+	};
+
+	/**
+		 * Multiply a multiple of ten.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} n
+		 * @returns {BigInteger} x * 10^n
+		 */
+	BigInteger.prototype.scaleByPowerOfTen = function scaleByPowerOfTen (n) {
+		var x = BigInteger._toInteger(n);
+		if(x === 0) {
+			return this;
+		}
+		if(x > 0) {
+			return this.mul(BigInteger.TEN.pow(x));
+		}
+		else {
+			return this.div(BigInteger.TEN.pow(x));
+		}
+	};
+
+	/**
+		 * Set default class of random.
+		 * This is used if you do not specify a random number.
+		 * @param {Random} random
+		 */
+	BigInteger.setDefaultRandom = function setDefaultRandom (random) {
+		DEFAULT_RANDOM = random;
+	};
+
+	/**
+		 * Return default Random class.
+		 * Used when Random not specified explicitly.
+		 * @returns {Random}
+		 */
+	BigInteger.getDefaultRandom = function getDefaultRandom () {
+		return DEFAULT_RANDOM;
+	};
+
+	// ----------------------
+	// gcd, lcm
+	// ----------------------
 		
 	/**
-		 * this === 1
-		 * @returns {boolean}
+		 * Euclidean algorithm.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+		 * @returns {BigInteger} gcd(x, y)
 		 */
-	BigInteger.prototype.isOne = function isOne () {
-		return this._sign === 1 && this.element.length === 1 && this.element[0] === 1;
+	BigInteger.prototype.gcd = function gcd (number) {
+		var val = BigInteger._toBigInteger(number);
+		/**
+			 * @type {any}
+			 */
+		var x = this, y = val, z;
+		while(y.signum() !== 0) {
+			z = x.remainder(y);
+			x = y;
+			y = z;
+		}
+		return x;
 	};
+
+	/**
+		 * Extended Euclidean algorithm.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+		 * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+		 */
+	BigInteger.prototype.extgcd = function extgcd (number) {
+		var val = BigInteger._toBigInteger(number);
+		// 非再帰
+		var ONE  = new BigInteger(1);
+		var ZERO = new BigInteger(0);
+		/**
+			 * @type {any}
+			 */
+		var r0 = this, r1 = val, r2, q1;
+		var a0 = ONE,  a1 = ZERO, a2;
+		var b0 = ZERO, b1 = ONE,  b2;
+		while(r1.signum() !== 0) {
+			var y = r0.divideAndRemainder(r1);
+			q1 = y[0];
+			r2 = y[1];
+			a2 = a0.subtract(q1.multiply(a1));
+			b2 = b0.subtract(q1.multiply(b1));
+			a0 = a1;
+			a1 = a2;
+			b0 = b1;
+			b1 = b2;
+			r0 = r1;
+			r1 = r2;
+		}
+		return [a0, b0, r0];
+	};
+
+	/**
+		 * Least common multiple.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+		 * @returns {BigInteger} lcm(x, y)
+		 */
+	BigInteger.prototype.lcm = function lcm (number) {
+		var val = BigInteger._toBigInteger(number);
+		return this.mul(val).div(this.gcd(val));
+	};
+
+	// ----------------------
+	// 比較
+	// ----------------------
 		
 	/**
-		 * this > 0
-		 * @returns {boolean}
+		 * Equals.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {boolean} A === B
 		 */
-	BigInteger.prototype.isPositive = function isPositive () {
-		this._memory_reduction();
-		return this._sign > 0;
+	BigInteger.prototype.equals = function equals (number) {
+		var x = BigInteger._toBigInteger(number);
+		if(this.signum() !== x.signum()) {
+			return false;
+		}
+		if(this.element.length !== x.element.length) {
+			return false;
+		}
+		for(var i = 0; i < x.element.length; i++) {
+			if(this.element[i] !==  x.element[i]) {
+				return false;
+			}
+		}
+		return true;
 	};
 
 	/**
-		 * this < 0
-		 * @returns {boolean}
+		 * Compare values without sign.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+		 * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
 		 */
-	BigInteger.prototype.isNegative = function isNegative () {
-		return this._sign < 0;
+	BigInteger.prototype.compareToAbs = function compareToAbs (number) {
+		var val = BigInteger._toBigInteger(number);
+		if(this.element.length < val.element.length) {
+			return -1;
+		}
+		else if(this.element.length > val.element.length) {
+			return 1;
+		}
+		for(var i = this.element.length - 1;i >= 0;i--) {
+			if(this.element[i] !== val.element[i]) {
+				var x = this.element[i] - val.element[i];
+				return ( (x === 0) ? 0 : ((x > 0) ? 1 : -1) );
+			}
+		}
+		return 0;
 	};
 
 	/**
-		 * this >= 0
-		 * @returns {boolean}
+		 * Compare values.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+		 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 		 */
-	BigInteger.prototype.isNotNegative = function isNotNegative () {
-		return this._sign >= 0;
+	BigInteger.prototype.compareTo = function compareTo (number) {
+		var val = BigInteger._toBigInteger(number);
+		if(this.signum() !== val.signum()) {
+			if(this._sign > val._sign) {
+				return 1;
+			}
+			else {
+				return -1;
+			}
+		}
+		else if(this.signum() === 0) {
+			return 0;
+		}
+		return this.compareToAbs(val) * this._sign;
 	};
 
+	/**
+		 * Maximum number.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} max([A, B])
+		 */
+	BigInteger.prototype.max = function max (number) {
+		var val = BigInteger._toBigInteger(number);
+		if(this.compareTo(val) >= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	};
+
+	/**
+		 * Minimum number.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} number
+		 * @returns {BigInteger} min([A, B])
+		 */
+	BigInteger.prototype.min = function min (number) {
+		var val = BigInteger._toBigInteger(number);
+		if(this.compareTo(val) >= 0) {
+			return val.clone();
+		}
+		else {
+			return this.clone();
+		}
+	};
+
+	/**
+		 * Clip number within range.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} min 
+		 * @param {BigInteger|number|string|Array<string|number>|Object} max
+		 * @returns {BigInteger} min(max(x, min), max)
+		 */
+	BigInteger.prototype.clip = function clip (min, max) {
+		var min_ = BigInteger._toBigInteger(min);
+		var max_ = BigInteger._toBigInteger(max);
+		var arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	};
+
+	// ----------------------
+	// 素数系
+	// ----------------------
+		
+	/**
+		 * Prime represented within the specified bit length.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} bits - Bit length.
+		 * @param {Random} [random] - Class for creating random numbers.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+		 * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - Number of times to retry if prime generation fails.
+		 * @returns {BigInteger}
+		 */
+	BigInteger.probablePrime = function probablePrime (bits, random, certainty, create_count ) {
+		var certainty_ = certainty ? BigInteger._toInteger(certainty) : 100;
+		var create_count_ = create_count ? BigInteger._toInteger(create_count) : 500;
+		for(var i = 0; i < create_count_; i++) {
+			var x = BigInteger.createRandomBigInteger(bits, random);
+			if(x.isProbablePrime(certainty_)) {
+				return x;
+			}
+		}
+		throw "probablePrime " + create_count;
+	};
+
+	/**
+		 * Return true if the value is prime number by Miller-Labin prime number determination method.
+		 * Attention : it takes a very long time to process.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+		 * @returns {boolean}
+		 */
+	BigInteger.prototype.isProbablePrime = function isProbablePrime (certainty) {
+		var e = this.element;
+		//0, 1, 2 -> true
+		if( (e.length === 0) || ((e.length === 1)&&(e[0] <= 2)) ) {
+			return true;
+		}
+		//even number -> false
+		else if((e[0] & 1) === 0) {
+			return false;
+		}
+		// ミラーラビン素数判定法
+		// かなり処理が重たいです。まあお遊び程度に使用という感じで。
+		var loop= certainty !== undefined ? BigInteger._toInteger(certainty) : 100;
+		var ZERO= new BigInteger(0);
+		var ONE= new BigInteger(1);
+		var n	= this;
+		var LEN= n.bitLength();
+		var n_1= n.subtract(ONE);
+		var s = n_1.getLowestSetBit();
+		var d = n_1.shift(-s);
+
+		if(loop <= 0) {
+			return false;
+		}
+
+		for(var i = 0; i < loop; i++ ) {
+			//[ 1, n - 1] の範囲から a を選択
+			var a = (void 0);
+			do {
+				a = BigInteger.createRandomBigInteger(LEN);
+			} while(( a.compareTo(ZERO) === 0 )||( a.compareTo(n) !== -1 ));
+
+			var t = d;
+			// a^t != 1 mod n
+			var y = a.modPow(t, n);
+				
+			while(true) {
+				if((t.equals(n_1)) || (y.equals(ONE)) || (y.equals(n_1))) {
+					break;
+				}
+				y = y.mul(y)._mod(n);
+				t = t.shiftLeft(1);
+			}
+
+			if((!y.equals(n_1)) && ((t.element[0] & 1) === 0)) {
+				return false;
+			}
+		}
+		return true;
+	};
+
+	/**
+		 * Next prime.
+		 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+		 * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - Search range of next prime.
+		 * @returns {BigInteger}
+		 */
+	BigInteger.prototype.nextProbablePrime = function nextProbablePrime (certainty, search_max) {
+		var loop= certainty !== undefined ? (BigInteger._toInteger(certainty) >> 1) : 100 / 2;
+		var search_max_ = search_max !== undefined ? BigInteger._toInteger(search_max) : 100000;
+		var x = this.clone();
+		for(var i = 0; i < search_max_; i++) {
+			x._add(BigInteger.ONE);
+			if(x.isProbablePrime(loop)) {
+				return x;
+			}
+		}
+		throw "nextProbablePrime [" + search_max_ +"]";
+	};
+
+	// ----------------------
+	// シフト演算系
+	// ----------------------
+		
+	/**
+		 * this <<= n
+		 * @param {BigInteger|number|string|Array<string|number>|Object} shift_length - Bit shift size.
+		 * @returns {BigInteger} A <<= n
+		 * @private
+		 */
+	BigInteger.prototype._shift = function _shift (shift_length) {
+		var n = BigInteger._toInteger(shift_length);
+		if(n === 0) {
+			return this;
+		}
+		var x = this.element;
+		// 1ビットなら専用コードで高速計算
+		if(n === 1) {
+			var i = x.length - 1;
+			if((x[i] & 0x8000) !==  0) {
+				x[x.length] = 1;
+			}
+			for(;i >= 0;i--) {
+				x[i] <<= 1;
+				x[i]  &= 0xFFFF;
+				if((i > 0) && ((x[i - 1] & 0x8000) !==  0)) {
+					x[i] += 1;
+				}
+			}
+		}
+		else if(n === -1) {
+			for(var i$1 = 0;i$1 < x.length;i$1++) {
+				x[i$1] >>>= 1;
+				if((i$1 < x.length - 1) && ((x[i$1 + 1] & 1) !==  0)) {
+					x[i$1] |= 0x8000;
+				}
+			}
+			if(x[x.length - 1] === 0) {
+				x.pop();
+			}
+		}
+		else {
+			// 16ビット単位なら配列を追加削除する高速計算
+			if(n >= 16) {
+				var m = n >>> 4;
+				for(var i$2 = x.length - 1; i$2 >= 0; i$2--) {
+					x[i$2 + m] = x[i$2];
+				}
+				for(var i$3 = m - 1; i$3 >= 0; i$3--) {
+					x[i$3] = 0;
+				}
+				n &= 0xF;
+			}
+			else if(n <= -16){
+				var m$1 = (-n) >>> 4;
+				x.splice(0, m$1);
+				n += m$1 << 4;
+			}
+			if(n !== 0) {
+				// 15ビット以内ならビット演算でまとめて操作
+				if(0 < n) {
+					var carry = 0;
+					for(var i$4 = 0; i$4 < x.length; i$4++) {
+						x[i$4] = (x[i$4] << n) + carry;
+						if(x[i$4] > 0xFFFF) {
+							carry = x[i$4] >>> 16;
+							x[i$4] &= 0xFFFF;
+						}
+						else {
+							carry = 0;
+						}
+					}
+					if(carry !== 0) {
+						x[x.length] = carry;
+					}
+				}
+				else {
+					n = -n;
+					for(var i$5 = 0; i$5 < x.length; i$5++) {
+						if(i$5 !== x.length - 1) {
+							x[i$5] += x[i$5 + 1] << 16;
+							x[i$5] >>>= n;
+							x[i$5] &= 0xFFFF;
+						}
+						else {
+							x[i$5] >>>= n;
+						}
+					}
+					if(x[x.length - 1] === 0) {
+						x.pop();
+					}
+				}
+			}
+		}
+		return this;
+	};
+
+	/**
+		 * this << n
+		 * @param {BigInteger|number|string|Array<string|number>|Object} n
+		 * @returns {BigInteger} A << n
+		 */
+	BigInteger.prototype.shift = function shift (n) {
+		return this.clone()._shift(n);
+	};
+
+	/**
+		 * this << n
+		 * @param {BigInteger|number|string|Array<string|number>|Object} n
+		 * @returns {BigInteger} A << n
+		 */
+	BigInteger.prototype.shiftLeft = function shiftLeft (n) {
+		return this.shift(n);
+	};
+
+	/**
+		 * this >> n
+		 * @param {BigInteger|number|string|Array<string|number>|Object} n
+		 * @returns {BigInteger} A >> n
+		 */
+	BigInteger.prototype.shiftRight = function shiftRight (n) {
+		return this.shift(-n);
+	};
+
+	// ----------------------
+	// ビット演算系
+	// ----------------------
+		
 	/**
 		 * Number of digits in which the number "1" appears first when expressed in binary.
 		 * - Return -1 If 1 is not found it.
@@ -1593,38 +2485,6 @@
 			}
 		}
 		return count;
-	};
-
-	/**
-		 * Create a numerical value for addition. If negative, two's complement.
-		 * @param {number} [bit_length] - Bit length. If not set, it will be calculated automatically.
-		 * @returns {BigInteger}
-		 * @private
-		 */
-	BigInteger.prototype.getTwosComplement = function getTwosComplement (bit_length) {
-		var y = this.clone();
-		if(y._sign >= 0) {
-			return y;
-		}
-		else {
-			// 正にする
-			y._sign = 1;
-			// ビットの数が存在しない場合は数える
-			var len = (bit_length !== undefined) ? bit_length : y.bitLength();
-			var e = y.element;
-			// ビット反転後
-			for(var i = 0; i < e.length; i++) {
-				e[i] ^= 0xFFFF;
-			}
-			// 1～15ビット余る場合は、16ビットずつ作成しているので削る
-			// nビットのマスク（なお負の値を表す最上位ビットは削除する）
-			if((len % 16) !== 0) {
-				e[e.length - 1] &= (1 << (len % 16)) - 1;
-			}
-			// 1を加算
-			y._add(new BigInteger(1));
-			return y;
-		}
 	};
 
 	/**
@@ -1855,706 +2715,6 @@
 	};
 
 	/**
-		 * Expand memory to specified bit length. (mutable)
-		 * @param {number} bit_length - Bit length.
-		 * @private
-		 */
-	BigInteger.prototype._memory_allocation = function _memory_allocation (bit_length) {
-		var n = BigInteger._toInteger(bit_length);
-		var elementsize = this.element.length << 4;
-		if(elementsize < n) {
-			var addsize = (((n - elementsize - 1) & 0xFFFFFFF0) >>> 4) + 1;
-			for(var i = 0;i < addsize;i++) {
-				this.element[this.element.length] = 0;
-			}
-		}
-	};
-
-	/**
-		 * Normalization of the internal data. (mutable)
-		 * @private
-		 */
-	BigInteger.prototype._memory_reduction = function _memory_reduction () {
-		for(var i = this.element.length - 1;i >= 0;i--) {
-			if(this.element[i] !==  0) {
-				if(i < this.element.length - 1) {
-					this.element.splice(i + 1, this.element.length - i - 1);
-				}
-				return;
-			}
-		}
-		this._sign = 0;
-		this.element = [];
-	};
-
-	/**
-		 * Euclidean algorithm.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-		 * @returns {BigInteger} gcd(x, y)
-		 */
-	BigInteger.prototype.gcd = function gcd (number) {
-		var val = BigInteger._toBigInteger(number);
-		/**
-			 * @type {any}
-			 */
-		var x = this, y = val, z;
-		while(y.signum() !== 0) {
-			z = x.remainder(y);
-			x = y;
-			y = z;
-		}
-		return x;
-	};
-
-	/**
-		 * Extended Euclidean algorithm.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-		 * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
-		 */
-	BigInteger.prototype.extgcd = function extgcd (number) {
-		var val = BigInteger._toBigInteger(number);
-		// 非再帰
-		var ONE  = new BigInteger(1);
-		var ZERO = new BigInteger(0);
-		/**
-			 * @type {any}
-			 */
-		var r0 = this, r1 = val, r2, q1;
-		var a0 = ONE,  a1 = ZERO, a2;
-		var b0 = ZERO, b1 = ONE,  b2;
-		while(r1.signum() !== 0) {
-			var y = r0.divideAndRemainder(r1);
-			q1 = y[0];
-			r2 = y[1];
-			a2 = a0.subtract(q1.multiply(a1));
-			b2 = b0.subtract(q1.multiply(b1));
-			a0 = a1;
-			a1 = a2;
-			b0 = b1;
-			b1 = b2;
-			r0 = r1;
-			r1 = r2;
-		}
-		return [a0, b0, r0];
-	};
-
-	/**
-		 * Least common multiple.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-		 * @returns {BigInteger} lcm(x, y)
-		 */
-	BigInteger.prototype.lcm = function lcm (number) {
-		var val = BigInteger._toBigInteger(number);
-		return this.mul(val).div(this.gcd(val));
-	};
-
-	/**
-		 * Absolute value. (mutable)
-		 * @returns {BigInteger} A = abs(A)
-		 * @private
-		 */
-	BigInteger.prototype._abs = function _abs () {
-		// -1 -> 1, 0 -> 0, 1 -> 1
-		this._sign *= this._sign;
-		return this;
-	};
-
-	/**
-		 * Absolute value.
-		 * @returns {BigInteger} abs(A)
-		 */
-	BigInteger.prototype.abs = function abs () {
-		return this.clone()._abs();
-	};
-
-	/**
-		 * this *= -1
-		 * @returns {BigInteger} A = -A
-		 * @private
-		 */
-	BigInteger.prototype._negate = function _negate () {
-		this._sign *= -1;
-		return this;
-	};
-
-	/**
-		 * this * -1
-		 * @returns {BigInteger} -A
-		 */
-	BigInteger.prototype.negate = function negate () {
-		return this.clone()._negate();
-	};
-
-	/**
-		 * The positive or negative sign of this number.
-		 * - +1 if positive, -1 if negative, 0 if 0.
-		 * @returns {number} 1, -1, 0の場合は0を返す
-		 */
-	BigInteger.prototype.signum = function signum () {
-		if(this.element.length === 0) {
-			return 0;
-		}
-		return this._sign;
-	};
-
-	/**
-		 * The positive or negative sign of this number.
-		 * - +1 if positive, -1 if negative, 0 if 0.
-		 * @returns {number} 1, -1, 0の場合は0を返す
-		 */
-	BigInteger.prototype.sign = function sign () {
-		return this.signum();
-	};
-
-	/**
-		 * Compare values without sign.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-		 * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
-		 */
-	BigInteger.prototype.compareToAbs = function compareToAbs (number) {
-		var val = BigInteger._toBigInteger(number);
-		if(this.element.length < val.element.length) {
-			return -1;
-		}
-		else if(this.element.length > val.element.length) {
-			return 1;
-		}
-		for(var i = this.element.length - 1;i >= 0;i--) {
-			if(this.element[i] !== val.element[i]) {
-				var x = this.element[i] - val.element[i];
-				return ( (x === 0) ? 0 : ((x > 0) ? 1 : -1) );
-			}
-		}
-		return 0;
-	};
-
-	/**
-		 * Compare values.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number 
-		 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
-		 */
-	BigInteger.prototype.compareTo = function compareTo (number) {
-		var val = BigInteger._toBigInteger(number);
-		if(this.signum() !== val.signum()) {
-			if(this._sign > val._sign) {
-				return 1;
-			}
-			else {
-				return -1;
-			}
-		}
-		else if(this.signum() === 0) {
-			return 0;
-		}
-		return this.compareToAbs(val) * this._sign;
-	};
-
-	/**
-		 * Maximum number.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} max([A, B])
-		 */
-	BigInteger.prototype.max = function max (number) {
-		var val = BigInteger._toBigInteger(number);
-		if(this.compareTo(val) >= 0) {
-			return this.clone();
-		}
-		else {
-			return val.clone();
-		}
-	};
-
-	/**
-		 * Minimum number.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} min([A, B])
-		 */
-	BigInteger.prototype.min = function min (number) {
-		var val = BigInteger._toBigInteger(number);
-		if(this.compareTo(val) >= 0) {
-			return val.clone();
-		}
-		else {
-			return this.clone();
-		}
-	};
-
-	/**
-		 * Clip number within range.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} min 
-		 * @param {BigInteger|number|string|Array<string|number>|Object} max
-		 * @returns {BigInteger} min(max(x, min), max)
-		 */
-	BigInteger.prototype.clip = function clip (min, max) {
-		var min_ = BigInteger._toBigInteger(min);
-		var max_ = BigInteger._toBigInteger(max);
-		var arg_check = min_.compareTo(max_);
-		if(arg_check === 1) {
-			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
-		}
-		else if(arg_check === 0) {
-			return min_;
-		}
-		if(this.compareTo(max_) === 1) {
-			return max_;
-		}
-		else if(this.compareTo(min_) === -1) {
-			return min_;
-		}
-		return this;
-	};
-
-	/**
-		 * this <<= n
-		 * @param {BigInteger|number|string|Array<string|number>|Object} shift_length - Bit shift size.
-		 * @returns {BigInteger} A <<= n
-		 * @private
-		 */
-	BigInteger.prototype._shift = function _shift (shift_length) {
-		var n = BigInteger._toInteger(shift_length);
-		if(n === 0) {
-			return this;
-		}
-		var x = this.element;
-		// 1ビットなら専用コードで高速計算
-		if(n === 1) {
-			var i = x.length - 1;
-			if((x[i] & 0x8000) !==  0) {
-				x[x.length] = 1;
-			}
-			for(;i >= 0;i--) {
-				x[i] <<= 1;
-				x[i]  &= 0xFFFF;
-				if((i > 0) && ((x[i - 1] & 0x8000) !==  0)) {
-					x[i] += 1;
-				}
-			}
-		}
-		else if(n === -1) {
-			for(var i$1 = 0;i$1 < x.length;i$1++) {
-				x[i$1] >>>= 1;
-				if((i$1 < x.length - 1) && ((x[i$1 + 1] & 1) !==  0)) {
-					x[i$1] |= 0x8000;
-				}
-			}
-			if(x[x.length - 1] === 0) {
-				x.pop();
-			}
-		}
-		else {
-			// 16ビット単位なら配列を追加削除する高速計算
-			if(n >= 16) {
-				var m = n >>> 4;
-				for(var i$2 = x.length - 1; i$2 >= 0; i$2--) {
-					x[i$2 + m] = x[i$2];
-				}
-				for(var i$3 = m - 1; i$3 >= 0; i$3--) {
-					x[i$3] = 0;
-				}
-				n &= 0xF;
-			}
-			else if(n <= -16){
-				var m$1 = (-n) >>> 4;
-				x.splice(0, m$1);
-				n += m$1 << 4;
-			}
-			if(n !== 0) {
-				// 15ビット以内ならビット演算でまとめて操作
-				if(0 < n) {
-					var carry = 0;
-					for(var i$4 = 0; i$4 < x.length; i$4++) {
-						x[i$4] = (x[i$4] << n) + carry;
-						if(x[i$4] > 0xFFFF) {
-							carry = x[i$4] >>> 16;
-							x[i$4] &= 0xFFFF;
-						}
-						else {
-							carry = 0;
-						}
-					}
-					if(carry !== 0) {
-						x[x.length] = carry;
-					}
-				}
-				else {
-					n = -n;
-					for(var i$5 = 0; i$5 < x.length; i$5++) {
-						if(i$5 !== x.length - 1) {
-							x[i$5] += x[i$5 + 1] << 16;
-							x[i$5] >>>= n;
-							x[i$5] &= 0xFFFF;
-						}
-						else {
-							x[i$5] >>>= n;
-						}
-					}
-					if(x[x.length - 1] === 0) {
-						x.pop();
-					}
-				}
-			}
-		}
-		return this;
-	};
-
-	/**
-		 * this << n
-		 * @param {BigInteger|number|string|Array<string|number>|Object} n
-		 * @returns {BigInteger} A << n
-		 */
-	BigInteger.prototype.shift = function shift (n) {
-		return this.clone()._shift(n);
-	};
-
-	/**
-		 * this << n
-		 * @param {BigInteger|number|string|Array<string|number>|Object} n
-		 * @returns {BigInteger} A << n
-		 */
-	BigInteger.prototype.shiftLeft = function shiftLeft (n) {
-		return this.shift(n);
-	};
-
-	/**
-		 * this >> n
-		 * @param {BigInteger|number|string|Array<string|number>|Object} n
-		 * @returns {BigInteger} A >> n
-		 */
-	BigInteger.prototype.shiftRight = function shiftRight (n) {
-		return this.shift(-n);
-	};
-
-	/**
-		 * Add. (mutable)
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} A += B
-		 * @private
-		 */
-	BigInteger.prototype._add = function _add (number) {
-		var val = BigInteger._toBigInteger(number);
-		var o1 = this;
-		var o2 = val;
-		var x1 = o1.element;
-		var x2 = o2.element;
-		if(o1._sign === o2._sign) {
-			//足し算
-			this._memory_allocation(x2.length << 4);
-			var carry = 0;
-			for(var i = 0; i < x1.length; i++) {
-				x1[i] += ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
-				if(x1[i] > 0xFFFF) {
-					carry = 1;
-					x1[i] &= 0xFFFF;
-				}
-				else {
-					carry = 0;
-				}
-			}
-			if(carry !== 0) {
-				x1[x1.length] = carry;
-			}
-		}
-		else {
-			// 引き算
-			var compare = o1.compareToAbs(o2);
-			if(compare === 0) {
-				this.element = [];
-				this._sign = 1;
-				return this;
-			}
-			else if(compare === -1) {
-				this._sign = o2._sign;
-				var swap = x1;
-				x1 = x2.slice(0);
-				x2 = swap;
-			}
-			var carry$1 = 0;
-			for(var i$1 = 0; i$1 < x1.length; i$1++) {
-				x1[i$1] -= ((x2.length >= (i$1 + 1)) ? x2[i$1] : 0) + carry$1;
-				if(x1[i$1] < 0) {
-					x1[i$1] += 0x10000;
-					carry$1  = 1;
-				}
-				else {
-					carry$1  = 0;
-				}
-			}
-			this.element = x1;
-			this._memory_reduction();
-		}
-		return this;
-	};
-
-	/**
-		 * Add.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} A + B
-		 */
-	BigInteger.prototype.add = function add (number) {
-		return this.clone()._add(number);
-	};
-
-	/**
-		 * Subtract. (mutable)
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} A -= B
-		 * @private
-		 */
-	BigInteger.prototype._subtract = function _subtract (number) {
-		var val = BigInteger._toBigInteger(number);
-		var _sign = val._sign;
-		var out  = this._add(val._negate());
-		val._sign = _sign;
-		return out;
-	};
-
-	/**
-		 * Subtract.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} A - B
-		 */
-	BigInteger.prototype.subtract = function subtract (number) {
-		return this.clone()._subtract(number);
-	};
-
-	/**
-		 * Subtract.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} A - B
-		 */
-	BigInteger.prototype.sub = function sub (number) {
-		return this.subtract(number);
-	};
-
-	/**
-		 * Multiply. (mutable)
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} A *= B
-		 * @private
-		 */
-	BigInteger.prototype._multiply = function _multiply (number) {
-		var x = this.multiply(number);
-		this.element = x.element;
-		this._sign    = x._sign;
-		return this;
-	};
-
-	/**
-		 * Multiply.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} A * B
-		 */
-	BigInteger.prototype.multiply = function multiply (number) {
-		var val = BigInteger._toBigInteger(number);
-		var out  = new BigInteger();
-		var buff = new BigInteger();
-		var o1 = this;
-		var o2 = val;
-		var x1 = o1.element;
-		var x2 = o2.element;
-		var y  = out.element;
-		for(var i = 0; i < x1.length; i++) {
-			buff.element = [];
-			// x3 = x1[i] * x2
-			var x3 = buff.element;
-			var carry = 0;
-			for(var j = 0; j < x2.length; j++) {
-				x3[j] = x1[i] * x2[j] + carry;
-				if(x3[j] > 0xFFFF) {
-					carry = x3[j] >>> 16;
-					x3[j] &= 0xFFFF;
-				}
-				else {
-					carry = 0;
-				}
-			}
-			if(carry !== 0) {
-				x3[x3.length] = carry;
-			}
-			// x3 = x3 << (i * 16)
-			//buff._shift(i << 4);
-			for(var j$1 = x3.length - 1; j$1 >= 0; j$1--) {
-				x3[j$1 + i] = x3[j$1];
-			}
-			for(var j$2 = i - 1; j$2 >= 0; j$2--) {
-				x3[j$2] = 0;
-			}
-			// y = y + x3 (out._add(buff))
-			//out._add(buff);
-			carry = 0;
-			out._memory_allocation(x3.length << 4);
-			for(var j$3 = i; j$3 < y.length; j$3++) {
-				y[j$3] += ((x3.length >= (j$3 + 1)) ? x3[j$3] : 0) + carry;
-				if(y[j$3] > 0xFFFF) {
-					carry = 1;
-					y[j$3] &= 0xFFFF;
-				}
-				else {
-					carry = 0;
-				}
-			}
-			if(carry !== 0) {
-				y[y.length] = carry;
-			}
-		}
-		out._sign = this._sign * val._sign;
-		return out;
-	};
-
-	/**
-		 * Multiply.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} A * B
-		 */
-	BigInteger.prototype.mul = function mul (number) {
-		return this.multiply(number);
-	};
-
-	/**
-		 * Divide and remainder. (mutable)
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {Array<BigInteger>} [C = floor(A / B), A - C * B]
-		 * @private
-		 */
-	BigInteger.prototype._divideAndRemainder = function _divideAndRemainder (number) {
-		var val = BigInteger._toBigInteger(number);
-		var out = [];
-		if(val.signum() === 0) {
-			throw "BigInteger divideAndRemainder [" + val.toString() +"]";
-		}
-		var compare = this.compareToAbs(val);
-		if(compare < 0) {
-			out[0] = new BigInteger(0);
-			out[1] = this.clone();
-			return out;
-		}
-		else if(compare === 0) {
-			out[0] = new BigInteger(1);
-			out[0]._sign = this._sign * val._sign;
-			out[1] = new BigInteger(0);
-			return out;
-		}
-		var ONE = new BigInteger(1);
-		var size = this.bitLength() - val.bitLength();
-		var x1 = this.clone()._abs();
-		var x2 = val.shift(size)._abs();
-		var y  = new BigInteger();
-		for(var i = 0; i <= size; i++) {
-			if(x1.compareToAbs(x2) >= 0) {
-				x1._subtract(x2);
-				y._add(ONE);
-			}
-			if(i === size) {
-				break;
-			}
-			x2._shift(-1);
-			y._shift(1);
-		}
-		out[0] = y;
-		out[0]._sign = this._sign * val._sign;
-		out[1] = x1;
-		out[1]._sign = this._sign;
-		return out;
-	};
-
-	/**
-		 * Divide and remainder.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {Array<BigInteger>} [C = floor(A / B), A - C * B]
-		 */
-	BigInteger.prototype.divideAndRemainder = function divideAndRemainder (number) {
-		return this.clone()._divideAndRemainder(number);
-	};
-
-	/**
-		 * Divide. (mutable)
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} floor(A / B)
-		 * @private
-		 */
-	BigInteger.prototype._divide = function _divide (number) {
-		return this._divideAndRemainder(number)[0];
-	};
-
-	/**
-		 * Divide.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} floor(A / B)
-		 */
-	BigInteger.prototype.divide = function divide (number) {
-		return this.clone()._divide(number);
-	};
-
-	/**
-		 * Divide.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} floor(A / B)
-		 */
-	BigInteger.prototype.div = function div (number) {
-		return this.divide(number);
-	};
-
-	/**
-		 * Remainder of division. (mutable)
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} A %= B
-		 * @private
-		 */
-	BigInteger.prototype._remainder = function _remainder (number) {
-		return this._divideAndRemainder(number)[1];
-	};
-
-	/**
-		 * Remainder of division.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} A % B
-		 */
-	BigInteger.prototype.remainder = function remainder (number) {
-		return this.clone()._remainder(number);
-	};
-
-	/**
-		 * Remainder of division.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} A % B
-		 */
-	BigInteger.prototype.rem = function rem (number) {
-		return this.remainder(number);
-	};
-
-	/**
-		 * Modulo, positive remainder of division. (mutable)
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} A = A mod B
-		 * @private
-		 */
-	BigInteger.prototype._mod = function _mod (number) {
-		var val = BigInteger._toBigInteger(number);
-		if(val.signum() < 0) {
-			return null;
-		}
-		var y = this._divideAndRemainder(val);
-		if(y[1] instanceof BigInteger) {
-			if(y[1].signum() >= 0) {
-				return y[1];
-			}
-			else {
-				return y[1]._add(val);
-			}
-		}
-		return null;
-	};
-
-	/**
-		 * Modulo, positive remainder of division.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} number
-		 * @returns {BigInteger} A mod B
-		 */
-	BigInteger.prototype.mod = function mod (number) {
-		return this.clone()._mod(number);
-	};
-
-	/**
 		 * this | (1 << n) (mutable)
 		 * @param {BigInteger|number|string|Array<string|number>|Object} bit
 		 * @returns {BigInteger}
@@ -2624,191 +2784,72 @@
 		return ((this.element[n >>> 4] >>> (n & 0xF)) & 1) !== 0;
 	};
 
+	// ----------------------
+	// テスト系
+	// ----------------------
+		
 	/**
-		 * Power function.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
-		 * @returns {BigInteger} pow(A, B)
-		 */
-	BigInteger.prototype.pow = function pow (exponent) {
-		var e = new BigInteger(exponent);
-		var x = BigInteger._toBigInteger(this);
-		var y = BigInteger._toBigInteger(1);
-		while(e.element.length !== 0) {
-			if((e.element[0] & 1) !== 0) {
-				y = y.multiply(x);
-			}
-			x = x.multiply(x);
-			e._shift(-1);
-		}
-		return y;
-	};
-
-	/**
-		 * Modular exponentiation.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
-		 * @param {BigInteger|number|string|Array<string|number>|Object} m 
-		 * @returns {BigInteger} A^B mod m
-		 */
-	BigInteger.prototype.modPow = function modPow (exponent, m) {
-		var m_ = BigInteger._toBigInteger(m);
-		var x = new BigInteger(this);
-		var y = new BigInteger(1);
-		var e = new BigInteger(exponent);
-		while(e.element.length !== 0) {
-			if((e.element[0] & 1) !== 0) {
-				y = y.multiply(x).mod(m_);
-			}
-			x = x.multiply(x).mod(m_);
-			e._shift(-1);
-		}
-		return y;
-	};
-
-	/**
-		 * Modular multiplicative inverse.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} m
-		 * @returns {BigInteger} A^(-1) mod m
-		 */
-	BigInteger.prototype.modInverse = function modInverse (m) {
-		var m_ = BigInteger._toBigInteger(m);
-		var y = this.extgcd(m);
-		var ONE  = new BigInteger(1);
-		if(y[2].compareTo(ONE) !== 0) {
-			return null;
-		}
-		// 正にするため remainder ではなく mod を使用する
-		return y[0]._add(m_)._mod(m_);
-	};
-
-	/**
-		 * Return true if the value is prime number by Miller-Labin prime number determination method.
-		 * Attention : it takes a very long time to process.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+		 * this === 0
 		 * @returns {boolean}
 		 */
-	BigInteger.prototype.isProbablePrime = function isProbablePrime (certainty) {
-		var e = this.element;
-		//0, 1, 2 -> true
-		if( (e.length === 0) || ((e.length === 1)&&(e[0] <= 2)) ) {
-			return true;
-		}
-		//even number -> false
-		else if((e[0] & 1) === 0) {
-			return false;
-		}
-		// ミラーラビン素数判定法
-		// かなり処理が重たいです。まあお遊び程度に使用という感じで。
-		var loop= certainty !== undefined ? BigInteger._toInteger(certainty) : 100;
-		var ZERO= new BigInteger(0);
-		var ONE= new BigInteger(1);
-		var n	= this;
-		var LEN= n.bitLength();
-		var n_1= n.subtract(ONE);
-		var s = n_1.getLowestSetBit();
-		var d = n_1.shift(-s);
-
-		if(loop <= 0) {
-			return false;
-		}
-
-		for(var i = 0; i < loop; i++ ) {
-			//[ 1, n - 1] の範囲から a を選択
-			var a = (void 0);
-			do {
-				a = BigInteger.createRandomBigInteger(LEN);
-			} while(( a.compareTo(ZERO) === 0 )||( a.compareTo(n) !== -1 ));
-
-			var t = d;
-			// a^t != 1 mod n
-			var y = a.modPow(t, n);
-				
-			while(true) {
-				if((t.equals(n_1)) || (y.equals(ONE)) || (y.equals(n_1))) {
-					break;
-				}
-				y = y.mul(y)._mod(n);
-				t = t.shiftLeft(1);
-			}
-
-			if((!y.equals(n_1)) && ((t.element[0] & 1) === 0)) {
-				return false;
-			}
-		}
-		return true;
+	BigInteger.prototype.isZero = function isZero () {
+		this._memory_reduction();
+		return this._sign === 0;
+	};
+		
+	/**
+		 * this === 1
+		 * @returns {boolean}
+		 */
+	BigInteger.prototype.isOne = function isOne () {
+		return this._sign === 1 && this.element.length === 1 && this.element[0] === 1;
+	};
+		
+	/**
+		 * this > 0
+		 * @returns {boolean}
+		 */
+	BigInteger.prototype.isPositive = function isPositive () {
+		this._memory_reduction();
+		return this._sign > 0;
 	};
 
 	/**
-		 * Next prime.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
-		 * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - Search range of next prime.
-		 * @returns {BigInteger}
+		 * this < 0
+		 * @returns {boolean}
 		 */
-	BigInteger.prototype.nextProbablePrime = function nextProbablePrime (certainty, search_max) {
-		var loop= certainty !== undefined ? (BigInteger._toInteger(certainty) >> 1) : 100 / 2;
-		var search_max_ = search_max !== undefined ? BigInteger._toInteger(search_max) : 100000;
-		var x = this.clone();
-		for(var i = 0; i < search_max_; i++) {
-			x._add(BigInteger.ONE);
-			if(x.isProbablePrime(loop)) {
-				return x;
-			}
-		}
-		throw "nextProbablePrime [" + search_max_ +"]";
+	BigInteger.prototype.isNegative = function isNegative () {
+		return this._sign < 0;
 	};
 
 	/**
-		 * Factorial function, x!.
-		 * @returns {BigInteger} n!
+		 * this >= 0
+		 * @returns {boolean}
 		 */
-	BigInteger.prototype.factorial = function factorial () {
-		var loop_max = BigInteger._toInteger(this);
-		var x = BigInteger.ONE;
-		for(var i = 2; i <= loop_max; i++) {
-			x = x.multiply(i);
-		}
-		return x;
-	};
-
-	/**
-		 * Multiply a multiple of ten.
-		 * @param {BigInteger|number|string|Array<string|number>|Object} n
-		 * @returns {BigInteger} x * 10^n
-		 */
-	BigInteger.prototype.scaleByPowerOfTen = function scaleByPowerOfTen (n) {
-		var x = BigInteger._toInteger(n);
-		if(x === 0) {
-			return this;
-		}
-		if(x > 0) {
-			return this.mul(BigInteger.TEN.pow(x));
-		}
-		else {
-			return this.div(BigInteger.TEN.pow(x));
-		}
-	};
-
-	/**
-		 * Set default class of random.
-		 * This is used if you do not specify a random number.
-		 * @param {Random} random
-		 */
-	BigInteger.setDefaultRandom = function setDefaultRandom (random) {
-		DEFAULT_RANDOM = random;
-	};
-
-	/**
-		 * Return default Random class.
-		 * Used when Random not specified explicitly.
-		 * @returns {Random}
-		 */
-	BigInteger.getDefaultRandom = function getDefaultRandom () {
-		return DEFAULT_RANDOM;
+	BigInteger.prototype.isNotNegative = function isNotNegative () {
+		return this._sign >= 0;
 	};
 
 	// ----------------------
 	// 定数
 	// ----------------------
 		
+	/**
+		 * -1
+		 * @returns {BigInteger} -1
+		 */
+	staticAccessors$2.MINUS_ONE.get = function () {
+		return DEFINE$1.MINUS_ONE;
+	};
+		
+	/**
+		 * 0
+		 * @returns {BigInteger} 0
+		 */
+	staticAccessors$2.ZERO.get = function () {
+		return DEFINE$1.ZERO;
+	};
+
 	/**
 		 * 1
 		 * @returns {BigInteger} 1
@@ -2833,22 +2874,6 @@
 		return DEFINE$1.TEN;
 	};
 
-	/**
-		 * 0
-		 * @returns {BigInteger} 0
-		 */
-	staticAccessors$2.ZERO.get = function () {
-		return DEFINE$1.ZERO;
-	};
-
-	/**
-		 * -1
-		 * @returns {BigInteger} -1
-		 */
-	staticAccessors$2.MINUS_ONE.get = function () {
-		return DEFINE$1.MINUS_ONE;
-	};
-
 	Object.defineProperties( BigInteger.prototype, prototypeAccessors );
 	Object.defineProperties( BigInteger, staticAccessors$2 );
 
@@ -2858,6 +2883,16 @@
 	 */
 	var DEFINE$1 = {
 
+		/**
+		 * -1
+		 */
+		MINUS_ONE : new BigInteger(-1),
+
+		/**
+		 * 0
+		 */
+		ZERO : new BigInteger(0),
+		
 		/**
 		 * 1
 		 */
@@ -2871,17 +2906,7 @@
 		/**
 		 * 10
 		 */
-		TEN : new BigInteger(10),
-
-		/**
-		 * 0
-		 */
-		ZERO : new BigInteger(0),
-		
-		/**
-		 * -1
-		 */
-		MINUS_ONE : new BigInteger(-1)
+		TEN : new BigInteger(10)
 
 	};
 
@@ -2986,6 +3011,8 @@
 					break;
 				}
 			}
+			// 最も下の桁は四捨五入する
+			x = Math.round(x * 1e14) / 1e14;
 			return {
 				scale : scale,
 				integer : new BigInteger(x)
@@ -3121,7 +3148,7 @@
 	};
 
 	var prototypeAccessors$1 = { intValue: { configurable: true },intValueExact: { configurable: true },floatValue: { configurable: true },doubleValue: { configurable: true } };
-	var staticAccessors$3 = { ONE: { configurable: true },TWO: { configurable: true },TEN: { configurable: true },ZERO: { configurable: true },MINUS_ONE: { configurable: true } };
+	var staticAccessors$3 = { MINUS_ONE: { configurable: true },ZERO: { configurable: true },HALF: { configurable: true },ONE: { configurable: true },TWO: { configurable: true },TEN: { configurable: true } };
 
 	/**
 		 * Create an arbitrary-precision floating-point number.
@@ -3296,107 +3323,6 @@
 	};
 
 	/**
-		 * Convert to string using scientific notation.
-		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - Number of digits in exponent part.
-		 * @returns {string} 
-		 */
-	BigDecimal.prototype.toScientificNotation = function toScientificNotation (e_len) {
-		var e	= BigDecimal._toInteger(e_len);
-		var text= this._getUnsignedIntegerString();
-		var s	= this.scale();
-		var x	= [];
-		var i, k;
-		// -
-		if(this.signum() === -1) {
-			x[x.length] = "-";
-		}
-		// 表示上の桁数
-		s = - e - s;
-		// 小数点が付かない
-		if(s >= 0) {
-			x[x.length] = text;
-			for(i = 0; i < s; i++) {
-				x[x.length] = "0";
-			}
-		}
-		// 小数点が付く
-		else {
-			k = this.precision() + s;
-			if(0 < k) {
-				x[x.length] = text.substring(0, k);
-				x[x.length] = ".";
-				x[x.length] = text.substring(k, text.length);
-			}
-			else {
-				k = - k;
-				x[x.length] = "0.";
-				for(i = 0; i < k; i++) {
-					x[x.length] = "0";
-				}
-				x[x.length] = text;
-			}
-		}
-		x[x.length] = "E";
-		if(e >= 0) {
-			x[x.length] = "+";
-		}
-		x[x.length] = e;
-		return x.join("");
-	};
-
-	/**
-		 * Convert to string.
-		 * @returns {string} 
-		 */
-	BigDecimal.prototype.toString = function toString () {
-		// 「調整された指数」
-		var x = - this.scale() + (this.precision() - 1);
-		// スケールが 0 以上で、「調整された指数」が -6 以上
-		if((this.scale() >= 0) && (x >= -6)) {
-			return this.toPlainString();
-		}
-		else {
-			return this.toScientificNotation(x);
-		}
-	};
-
-	/**
-		 * Convert to string usding technical notation.
-		 * @returns {string} 
-		 */
-	BigDecimal.prototype.toEngineeringString = function toEngineeringString () {
-		// 「調整された指数」
-		var x = - this.scale() + (this.precision() - 1);
-		// スケールが 0 以上で、「調整された指数」が -6 以上
-		if((this.scale() >= 0) && (x >= -6)) {
-			return this.toPlainString();
-		}
-		else {
-			// 0 でない値の整数部が 1 〜 999 の範囲に収まるように調整
-			return this.toScientificNotation(Math.floor(x / 3) * 3);
-		}
-	};
-
-	/**
-		 * Convert to string without exponential notation.
-		 * @returns {string} 
-		 */
-	BigDecimal.prototype.toPlainString = function toPlainString () {
-		// スケールの変換なし
-		if(this.scale() === 0) {
-			if(this.signum() < 0) {
-				return "-" + this._getUnsignedIntegerString();
-			}
-			else {
-				return this._getUnsignedIntegerString();
-			}
-		}
-		// 指数0で文字列を作成後、Eの後ろの部分をとっぱらう
-		var text = this.toScientificNotation(0);
-		return text.match(/^[^E]*/)[0];
-	};
-
-	/**
 		 * The smallest value that can be represented with the set precision.
 		 * @returns {BigDecimal} 
 		 */
@@ -3405,106 +3331,8 @@
 	};
 
 	/**
-		 * Change the scale.
-		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - New scale.
-		 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
-		 * @param {MathContext} [mc] - Rounding setting after calculation. For rounding purposes, use the round method.
-		 * @returns {BigDecimal} 
-		 */
-	BigDecimal.prototype.setScale = function setScale (new_scale, rounding_mode, mc) {
-		var newScale = BigDecimal._toInteger(new_scale);
-		if(this.scale() === newScale) {
-			// scaleが同一なので処理の必要なし
-			return(this.clone());
-		}
-		var roundingMode = (rounding_mode !== undefined) ? RoundingMode.valueOf(rounding_mode) : RoundingMode.UNNECESSARY;
-		var context = (mc !== undefined) ? mc : this.default_context;
-		// 文字列を扱ううえで、符号があるとやりにくいので外しておく
-		var text	= this._getUnsignedIntegerString();
-		var sign	= this.signum();
-		var sign_text= sign >= 0 ? "" : "-";
-		// scale の誤差
-		// 0 以上なら 0 を加えればいい。0未満なら0を削るか、四捨五入など丸めを行う
-		var delta	= newScale - this.scale();// この桁分増やすといい
-		if(0 <= delta) {
-			// 0を加える
-			var i;
-			for(i = 0; i < delta; i++) {
-				text = text + "0";
-			}
-			return new BigDecimal([new BigInteger(sign_text + text), newScale, context]);
-		}
-		var keta = text.length + delta;	// 最終的な桁数
-		var keta_marume = keta + 1;
-		if(keta <= 0) {
-			// 指定した scale では設定できない場合
-			// 例えば "0.1".setScale(-2), "10".setScale(-3) としても表すことは不可能であるため、
-			// sign（-1, 0, +1）のどれかの数値を使用して丸める
-			var outdata = (sign + roundingMode.getAddNumber(sign)) / 10;
-			// 上記の式は、CEILINGなら必ず1、正でCEILINGなら1、負でFLOORなら1、それ以外は0となり、
-			// さらに元々の数値が 0 なら 0、切り捨て不能なら例外が返る計算式である。
-			// これは Java の動作をまねています。
-			return new BigDecimal([new BigInteger(outdata), newScale, context]);
-		}
-		{
-			// 0を削るだけで解決する場合
-			// 単純な切捨て(0を削るのみ)
-			var zeros		= text.match(/0+$/);
-			var zero_length	= (zeros !== null) ? zeros[0].length : 0;
-			if(( (zero_length + delta) >= 0 ) || (roundingMode === RoundingMode.DOWN)) {
-				return new BigDecimal([new BigInteger(sign_text + text.substring(0, keta)), newScale, context]);
-			}
-		}
-		{
-			// 丸め計算で解決する場合
-			// 12345 -> '123'45
-			text = text.substring(0, keta_marume);
-			// 丸め計算に必要な切り取る桁数(後ろの1～2桁を取得)
-			var cutsize = text.length > 1 ? 2 : 1;
-			// '123'45 -> 1'23'4
-			var number = parseInt(text.substring(text.length - cutsize, text.length)) * sign;
-			// 「元の数」と「丸めに必要な数」を足す
-			var x1 = new BigInteger(sign_text + text);
-			var x2 = new BigInteger(roundingMode.getAddNumber(number));
-			text = x1.add(x2).toString();
-			// 丸め後の桁数に戻して
-			return new BigDecimal([new BigInteger(text.substring(0, text.length - 1)), newScale, context]);
-		}
-	};
-
-	/**
-		 * Round with specified settings.
-		 * @param {MathContext} mc - New setting.
-		 * @returns {BigDecimal} 
-		 */
-	BigDecimal.prototype.round = function round (mc) {
-		if(!(mc instanceof MathContext)) {
-			throw "not MathContext";
-		}
-		var newPrecision= mc.getPrecision();
-		var delta		= newPrecision - this.precision();
-		if((delta === 0)||(newPrecision === 0)) {
-			return this.clone();
-		}
-		var newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode(), mc);
-		/* 精度を上げる必要があるため、0を加えた場合 */
-		if(delta > 0) {
-			return newBigDecimal;
-		}
-		/* 精度を下げる必要があるため、丸めた場合は、桁の数が正しいか調べる */
-		if(newBigDecimal.precision() === mc.getPrecision()) {
-			return newBigDecimal;
-		}
-		/* 切り上げなどで桁数が１つ増えた場合 */
-		var sign_text= newBigDecimal.integer.signum() >= 0 ? "" : "-";
-		var abs_text= newBigDecimal._getUnsignedIntegerString();
-		var inte_text= sign_text + abs_text.substring(0, abs_text.length - 1);
-		return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1, mc]);
-	};
-
-	/**
 		 * Absolute value.
-		 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
+		 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 		 * @returns {BigDecimal} abs(A)
 		 */
 	BigDecimal.prototype.abs = function abs (mc) {
@@ -3532,156 +3360,6 @@
 		var output = this.clone();
 		output.integer = output.integer.negate();
 		return (mc === undefined) ? output : output.round(mc);
-	};
-
-	/**
-		 * Compare values.
-		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
-		 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
-		 */
-	BigDecimal.prototype.compareTo = function compareTo (number) {
-		var src = this;
-		var tgt = BigDecimal._toBigDecimal(number);
-		// 簡易計算
-		{
-			var src_sign= src.signum();
-			var tgt_sign= tgt.signum();
-			if((src_sign === 0) && (src_sign === tgt_sign)) {
-				return 0;
-			}
-			else if(src_sign === 0) {
-				return - tgt_sign;
-			}
-			else if(tgt_sign === 0) {
-				return src_sign;
-			}
-		}
-		// 実際に計算する
-		if(src._scale === tgt._scale) {
-			return src.integer.compareTo(tgt.integer);
-		}
-		else if(src._scale > tgt._scale) {
-			var newdst = tgt.setScale(src._scale);
-			return src.integer.compareTo(newdst.integer);
-		}
-		else {
-			var newsrc = src.setScale(tgt._scale);
-			return newsrc.integer.compareTo(tgt.integer);
-		}
-	};
-
-	/**
-		 * this === 0
-		 * @returns {boolean}
-		 */
-	BigDecimal.prototype.isZero = function isZero () {
-		return this.compareTo(BigDecimal.ZERO) === 0;
-	};
-		
-	/**
-		 * this === 1
-		 * @returns {boolean}
-		 */
-	BigDecimal.prototype.isOne = function isOne () {
-		return this.compareTo(BigDecimal.ONE) === 0;
-	};
-		
-	/**
-		 * this > 0
-		 * @returns {boolean}
-		 */
-	BigDecimal.prototype.isPositive = function isPositive () {
-		return this.compareTo(BigDecimal.ZERO) === 1;
-	};
-
-	/**
-		 * this < 0
-		 * @returns {boolean}
-		 */
-	BigDecimal.prototype.isNegative = function isNegative () {
-		return this.compareTo(BigDecimal.ZERO) === -1;
-	};
-
-	/**
-		 * this >= 0
-		 * @returns {boolean}
-		 */
-	BigDecimal.prototype.isNotNegative = function isNotNegative () {
-		return this.compareTo(BigDecimal.ZERO) >= 0;
-	};
-
-	/**
-		 * Equals.
-		 * Test for equality, including precision and scale.
-		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
-		 * @returns {boolean} A === B
-		 */
-	BigDecimal.prototype.equals = function equals (number) {
-		if(number instanceof BigDecimal) {
-			return ((this._scale === number._scale) && (this.integer.equals(number.integer)));
-		}
-		else if((typeof number === "string") || (number instanceof String)) {
-			var val = BigDecimal._toBigDecimal(number);
-			return ((this._scale === val._scale) && (this.integer.equals(val.integer)));
-		}
-		else {
-			return this.compareTo(number) === 0;
-		}
-	};
-
-	/**
-		 * Maximum number.
-		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-		 * @returns {BigDecimal} max([A, B])
-		 */
-	BigDecimal.prototype.max = function max (number) {
-		var val = BigDecimal._toBigDecimal(number);
-		if(this.compareTo(val) >= 0) {
-			return this.clone();
-		}
-		else {
-			return val.clone();
-		}
-	};
-
-	/**
-		 * Minimum number.
-		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
-		 * @returns {BigDecimal} min([A, B])
-		 */
-	BigDecimal.prototype.min = function min (number) {
-		var val = BigDecimal._toBigDecimal(number);
-		if(this.compareTo(val) <= 0) {
-			return this.clone();
-		}
-		else {
-			return val.clone();
-		}
-	};
-
-	/**
-		 * Clip number within range.
-		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
-		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
-		 * @returns {BigDecimal} min(max(x, min), max)
-		 */
-	BigDecimal.prototype.clip = function clip (min, max) {
-		var min_ = BigDecimal._toBigDecimal(min);
-		var max_ = BigDecimal._toBigDecimal(max);
-		var arg_check = min_.compareTo(max_);
-		if(arg_check === 1) {
-			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
-		}
-		else if(arg_check === 0) {
-			return min_;
-		}
-		if(this.compareTo(max_) === 1) {
-			return max_;
-		}
-		else if(this.compareTo(min_) === -1) {
-			return min_;
-		}
-		return this;
 	};
 
 	/**
@@ -4129,7 +3807,8 @@
 
 	/**
 		 * Power function.
-		 * An exception occurs when doing a huge multiplication.
+		 * - Supports only integers.
+		 * - An exception occurs when doing a huge multiplication.
 		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 		 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 		 * @returns {BigDecimal} pow(A, B)
@@ -4178,8 +3857,476 @@
 	};
 
 	// ----------------------
+	// 比較
+	// ----------------------
+		
+	/**
+		 * Equals.
+		 * - Attention : Test for equality, including the precision and the scale. 
+		 * - Use the "compareTo" if you only want to find out whether they are also mathematically equal.
+		 * - If you specify a "tolerance", it is calculated by ignoring the test of the precision and the scale.
+		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance] - Calculation tolerance of calculation.
+		 * @returns {boolean} A === B
+		 */
+	BigDecimal.prototype.equals = function equals (number, tolerance) {
+		// 誤差を指定しない場合は、厳密に調査
+		if(!tolerance) {
+			if(number instanceof BigDecimal) {
+				return ((this._scale === number._scale) && (this.integer.equals(number.integer)));
+			}
+			else if((typeof number === "string") || (number instanceof String)) {
+				var val = BigDecimal._toBigDecimal(number);
+				return ((this._scale === val._scale) && (this.integer.equals(val.integer)));
+			}
+			else {
+				return this.compareTo(number) === 0;
+			}
+		}
+		else {
+			return this.compareTo(number, tolerance) === 0;
+		}
+	};
+
+	/**
+		 * Compare values.
+		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+		 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+		 */
+	BigDecimal.prototype.compareTo = function compareTo (number, tolerance) {
+		var src = this;
+		var tgt = BigDecimal._toBigDecimal(number);
+		if(!tolerance) {
+			// 誤差の指定がない場合
+			// 簡易計算
+			{
+				var src_sign= src.signum();
+				var tgt_sign= tgt.signum();
+				if((src_sign === 0) && (src_sign === tgt_sign)) {
+					return 0;
+				}
+				else if(src_sign === 0) {
+					return - tgt_sign;
+				}
+				else if(tgt_sign === 0) {
+					return src_sign;
+				}
+			}
+			// 実際に計算する
+			if(src._scale === tgt._scale) {
+				return src.integer.compareTo(tgt.integer);
+			}
+			else if(src._scale > tgt._scale) {
+				var newdst = tgt.setScale(src._scale);
+				return src.integer.compareTo(newdst.integer);
+			}
+			else {
+				var newsrc = src.setScale(tgt._scale);
+				return newsrc.integer.compareTo(tgt.integer);
+			}
+		}
+		else {
+			var tolerance_ = BigDecimal._toBigDecimal(tolerance);
+			var delta = src.sub(tgt, MathContext.UNLIMITED);
+			var delta_abs = delta.integer.abs();
+			if(delta_abs.compareTo(tolerance_) <= 0) {
+				return 0;
+			}
+			else {
+				return delta.sign();
+			}
+		}
+	};
+
+	/**
+		 * Maximum number.
+		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+		 * @returns {BigDecimal} max([A, B])
+		 */
+	BigDecimal.prototype.max = function max (number) {
+		var val = BigDecimal._toBigDecimal(number);
+		if(this.compareTo(val) >= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	};
+
+	/**
+		 * Minimum number.
+		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+		 * @returns {BigDecimal} min([A, B])
+		 */
+	BigDecimal.prototype.min = function min (number) {
+		var val = BigDecimal._toBigDecimal(number);
+		if(this.compareTo(val) <= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	};
+
+	/**
+		 * Clip number within range.
+		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
+		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
+		 * @returns {BigDecimal} min(max(x, min), max)
+		 */
+	BigDecimal.prototype.clip = function clip (min, max) {
+		var min_ = BigDecimal._toBigDecimal(min);
+		var max_ = BigDecimal._toBigDecimal(max);
+		var arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	};
+
+	// ----------------------
+	// 文字列化
+	// ----------------------
+		
+	/**
+		 * Convert to string.
+		 * @returns {string} 
+		 */
+	BigDecimal.prototype.toString = function toString () {
+		// 「調整された指数」
+		var x = - this.scale() + (this.precision() - 1);
+		// スケールが 0 以上で、「調整された指数」が -6 以上
+		if((this.scale() >= 0) && (x >= -6)) {
+			return this.toPlainString();
+		}
+		else {
+			return this.toScientificNotation(x);
+		}
+	};
+
+	/**
+		 * Convert to string using scientific notation.
+		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - Number of digits in exponent part.
+		 * @returns {string} 
+		 */
+	BigDecimal.prototype.toScientificNotation = function toScientificNotation (e_len) {
+		var e	= BigDecimal._toInteger(e_len);
+		var text= this._getUnsignedIntegerString();
+		var s	= this.scale();
+		var x	= [];
+		var i, k;
+		// -
+		if(this.signum() === -1) {
+			x[x.length] = "-";
+		}
+		// 表示上の桁数
+		s = - e - s;
+		// 小数点が付かない
+		if(s >= 0) {
+			x[x.length] = text;
+			for(i = 0; i < s; i++) {
+				x[x.length] = "0";
+			}
+		}
+		// 小数点が付く
+		else {
+			k = this.precision() + s;
+			if(0 < k) {
+				x[x.length] = text.substring(0, k);
+				x[x.length] = ".";
+				x[x.length] = text.substring(k, text.length);
+			}
+			else {
+				k = - k;
+				x[x.length] = "0.";
+				for(i = 0; i < k; i++) {
+					x[x.length] = "0";
+				}
+				x[x.length] = text;
+			}
+		}
+		x[x.length] = "E";
+		if(e >= 0) {
+			x[x.length] = "+";
+		}
+		x[x.length] = e;
+		return x.join("");
+	};
+
+	/**
+		 * Convert to string usding technical notation.
+		 * @returns {string} 
+		 */
+	BigDecimal.prototype.toEngineeringString = function toEngineeringString () {
+		// 「調整された指数」
+		var x = - this.scale() + (this.precision() - 1);
+		// スケールが 0 以上で、「調整された指数」が -6 以上
+		if((this.scale() >= 0) && (x >= -6)) {
+			return this.toPlainString();
+		}
+		else {
+			// 0 でない値の整数部が 1 〜 999 の範囲に収まるように調整
+			return this.toScientificNotation(Math.floor(x / 3) * 3);
+		}
+	};
+
+	/**
+		 * Convert to string without exponential notation.
+		 * @returns {string} 
+		 */
+	BigDecimal.prototype.toPlainString = function toPlainString () {
+		// スケールの変換なし
+		if(this.scale() === 0) {
+			if(this.signum() < 0) {
+				return "-" + this._getUnsignedIntegerString();
+			}
+			else {
+				return this._getUnsignedIntegerString();
+			}
+		}
+		// 指数0で文字列を作成後、Eの後ろの部分をとっぱらう
+		var text = this.toScientificNotation(0);
+		return text.match(/^[^E]*/)[0];
+	};
+
+	// ----------------------
+	// 丸め
+	// ----------------------
+		
+	/**
+		 * Change the scale.
+		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - New scale.
+		 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
+		 * @param {MathContext} [mc] - Rounding setting after calculation. For rounding purposes, use the round method.
+		 * @returns {BigDecimal} 
+		 */
+	BigDecimal.prototype.setScale = function setScale (new_scale, rounding_mode, mc) {
+		var newScale = BigDecimal._toInteger(new_scale);
+		if(this.scale() === newScale) {
+			// scaleが同一なので処理の必要なし
+			return(this.clone());
+		}
+		var roundingMode = (rounding_mode !== undefined) ? RoundingMode.valueOf(rounding_mode) : RoundingMode.UNNECESSARY;
+		var context = (mc !== undefined) ? mc : this.default_context;
+		// 文字列を扱ううえで、符号があるとやりにくいので外しておく
+		var text	= this._getUnsignedIntegerString();
+		var sign	= this.signum();
+		var sign_text= sign >= 0 ? "" : "-";
+		// scale の誤差
+		// 0 以上なら 0 を加えればいい。0未満なら0を削るか、四捨五入など丸めを行う
+		var delta	= newScale - this.scale();// この桁分増やすといい
+		if(0 <= delta) {
+			// 0を加える
+			var i;
+			for(i = 0; i < delta; i++) {
+				text = text + "0";
+			}
+			return new BigDecimal([new BigInteger(sign_text + text), newScale, context]);
+		}
+		var keta = text.length + delta;	// 最終的な桁数
+		var keta_marume = keta + 1;
+		if(keta <= 0) {
+			// 指定した scale では設定できない場合
+			// 例えば "0.1".setScale(-2), "10".setScale(-3) としても表すことは不可能であるため、
+			// sign（-1, 0, +1）のどれかの数値を使用して丸める
+			var outdata = (sign + roundingMode.getAddNumber(sign)) / 10;
+			// 上記の式は、CEILINGなら必ず1、正でCEILINGなら1、負でFLOORなら1、それ以外は0となり、
+			// さらに元々の数値が 0 なら 0、切り捨て不能なら例外が返る計算式である。
+			// これは Java の動作をまねています。
+			return new BigDecimal([new BigInteger(outdata), newScale, context]);
+		}
+		{
+			// 0を削るだけで解決する場合
+			// 単純な切捨て(0を削るのみ)
+			var zeros		= text.match(/0+$/);
+			var zero_length	= (zeros !== null) ? zeros[0].length : 0;
+			if(( (zero_length + delta) >= 0 ) || (roundingMode === RoundingMode.DOWN)) {
+				return new BigDecimal([new BigInteger(sign_text + text.substring(0, keta)), newScale, context]);
+			}
+		}
+		{
+			// 丸め計算で解決する場合
+			// 12345 -> '123'45
+			text = text.substring(0, keta_marume);
+			// 丸め計算に必要な切り取る桁数(後ろの1～2桁を取得)
+			var cutsize = text.length > 1 ? 2 : 1;
+			// '123'45 -> 1'23'4
+			var number = parseInt(text.substring(text.length - cutsize, text.length)) * sign;
+			// 「元の数」と「丸めに必要な数」を足す
+			var x1 = new BigInteger(sign_text + text);
+			var x2 = new BigInteger(roundingMode.getAddNumber(number));
+			text = x1.add(x2).toString();
+			// 丸め後の桁数に戻して
+			return new BigDecimal([new BigInteger(text.substring(0, text.length - 1)), newScale, context]);
+		}
+	};
+
+	/**
+		 * Round with specified settings.
+		 * 
+		 * This method is not a method round the decimal point.
+		 * This method converts numbers in the specified Context and rounds unconvertible digits.
+		 * 
+		 * Use this.setScale(0, RoundingMode.HALF_UP) if you want to round the decimal point.
+		 * When the argument is omitted, such decimal point rounding operation is performed.
+		 * @param {MathContext} [mc] - New setting.
+		 * @returns {BigDecimal} 
+		 */
+	BigDecimal.prototype.round = function round (mc) {
+		if(mc) {
+			// MathContext を設定した場合
+			if(!(mc instanceof MathContext)) {
+				throw "not MathContext";
+			}
+			var newPrecision= mc.getPrecision();
+			var delta		= newPrecision - this.precision();
+			if((delta === 0)||(newPrecision === 0)) {
+				return this.clone();
+			}
+			var newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode(), mc);
+			/* 精度を上げる必要があるため、0を加えた場合 */
+			if(delta > 0) {
+				return newBigDecimal;
+			}
+			/* 精度を下げる必要があるため、丸めた場合は、桁の数が正しいか調べる */
+			if(newBigDecimal.precision() === mc.getPrecision()) {
+				return newBigDecimal;
+			}
+			/* 切り上げなどで桁数が１つ増えた場合 */
+			var sign_text= newBigDecimal.integer.signum() >= 0 ? "" : "-";
+			var abs_text= newBigDecimal._getUnsignedIntegerString();
+			var inte_text= sign_text + abs_text.substring(0, abs_text.length - 1);
+			return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1, mc]);
+		}
+		else {
+			// 小数点以下を四捨五入する
+			return this.setScale(0, RoundingMode.HALF_UP);
+		}
+	};
+
+	/**
+		 * Floor.
+		 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+		 * @returns {BigDecimal} floor(A)
+		 */
+	BigDecimal.prototype.floor = function floor (mc) {
+		return this.setScale(0, RoundingMode.FLOOR, mc);
+	};
+
+	/**
+		 * Ceil.
+		 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+		 * @returns {BigDecimal} ceil(A)
+		 */
+	BigDecimal.prototype.ceil = function ceil (mc) {
+		return this.setScale(0, RoundingMode.CEILING, mc);
+	};
+		
+	/**
+		 * To integer rounded down to the nearest.
+		 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+		 * @returns {BigDecimal} fix(A), trunc(A)
+		 */
+	BigDecimal.prototype.fix = function fix (mc) {
+		return this.setScale(0, RoundingMode.DOWN, mc);
+	};
+
+	/**
+		 * Fraction.
+		 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+		 * @returns {BigDecimal} fract(A)
+		 */
+	BigDecimal.prototype.fract = function fract (mc) {
+		return this.sub(this.floor(mc), mc);
+	};
+
+	// ----------------------
+	// テスト系
+	// ----------------------
+		
+	/**
+		 * this === 0
+		 * @returns {boolean}
+		 */
+	BigDecimal.prototype.isZero = function isZero () {
+		return this.integer.isZero();
+	};
+		
+	/**
+		 * this === 1
+		 * @returns {boolean}
+		 */
+	BigDecimal.prototype.isOne = function isOne () {
+		return this.compareTo(BigDecimal.ONE) === 0;
+	};
+		
+	/**
+		 * this > 0
+		 * @returns {boolean}
+		 */
+	BigDecimal.prototype.isPositive = function isPositive () {
+		return this.integer.isPositive();
+	};
+
+	/**
+		 * this < 0
+		 * @returns {boolean}
+		 */
+	BigDecimal.prototype.isNegative = function isNegative () {
+		return this.integer.isNegative();
+	};
+
+	/**
+		 * this >= 0
+		 * @returns {boolean}
+		 */
+	BigDecimal.prototype.isNotNegative = function isNotNegative () {
+		return this.integer.isNotNegative();
+	};
+
+	// ----------------------
 	// 定数
 	// ----------------------
+		
+	/**
+		 * -1
+		 * @returns {BigDecimal} -1
+		 */
+	staticAccessors$3.MINUS_ONE.get = function () {
+		var x = new BigDecimal(DEFINE$2.MINUS_ONE);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	};
+
+	/**
+		 * 0
+		 * @returns {BigDecimal} 0
+		 */
+	staticAccessors$3.ZERO.get = function () {
+		var x = new BigDecimal(DEFINE$2.ZERO);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	};
+		
+	/**
+		 * 0.5
+		 * @returns {BigDecimal} 0.5
+		 */
+	staticAccessors$3.HALF.get = function () {
+		var x = new BigDecimal(DEFINE$2.HALF);
+		x.default_context = DEFAULT_CONTEXT;
+		return x;
+	};
 		
 	/**
 		 * 1
@@ -4211,26 +4358,6 @@
 		return x;
 	};
 
-	/**
-		 * 0
-		 * @returns {BigDecimal} 0
-		 */
-	staticAccessors$3.ZERO.get = function () {
-		var x = new BigDecimal(DEFINE$2.ZERO);
-		x.default_context = DEFAULT_CONTEXT;
-		return x;
-	};
-		
-	/**
-		 * -1
-		 * @returns {BigDecimal} -1
-		 */
-	staticAccessors$3.MINUS_ONE.get = function () {
-		var x = new BigDecimal(DEFINE$2.MINUS_ONE);
-		x.default_context = DEFAULT_CONTEXT;
-		return x;
-	};
-
 	Object.defineProperties( BigDecimal.prototype, prototypeAccessors$1 );
 	Object.defineProperties( BigDecimal, staticAccessors$3 );
 
@@ -4241,9 +4368,19 @@
 	var DEFINE$2 = {
 
 		/**
+		 * -1
+		 */
+		MINUS_ONE : new BigDecimal(-1),
+
+		/**
 		 * 0
 		 */
 		ZERO : new BigDecimal(0),
+
+		/**
+		 * 0.5
+		 */
+		HALF : new BigDecimal(0.5),
 
 		/**
 		 * 1
@@ -4258,12 +4395,7 @@
 		/**
 		 * 10
 		 */
-		TEN : new BigDecimal(10),
-
-		/**
-		 * -1
-		 */
-		MINUS_ONE : new BigDecimal(-1)
+		TEN : new BigDecimal(10)
 
 	};
 
@@ -4289,6 +4421,7 @@
 	FractionTool.to_fraction_data_from_number_string = function to_fraction_data_from_number_string (ntext) {
 		var scale = 0;
 		var buff;
+		var is_negate = false;
 		// 正規化
 		var text = ntext.replace(/\s/g, "").toLowerCase();
 		// +-の符号があるか
@@ -4298,6 +4431,7 @@
 			buff = buff[0];
 			text = text.substr(buff.length);
 			if(buff.indexOf("-") !== -1) {
+				is_negate = true;
 				number_text.push("-");
 			}
 		}
@@ -4382,13 +4516,18 @@
 			f = new Fraction([numerator$1, denominator$1]);
 		}
 		if(cyclic_decimal) {
-			f = f.add(cyclic_decimal);
+			if(!is_negate) {
+				f = f.add(cyclic_decimal);
+			}
+			else {
+				f = f.sub(cyclic_decimal);
+			}
 		}
 		return f;
 	};
 
 	/**
-		 * 
+		 * Create data for Fraction from fractional string.
 		 * @param ntext {string}
 		 * @return {Fraction}
 		 */
@@ -4405,7 +4544,7 @@
 	};
 
 	/**
-		 * 
+		 * Create data for Fraction from number.
 		 * @param value {number}
 		 * @return {Fraction}
 		 */
@@ -4430,6 +4569,8 @@
 					break;
 				}
 			}
+			// 最も下の桁は四捨五入する
+			x = Math.round(x * 1e14) / 1e14;
 			if(scale <= 0) {
 				numerator = new BigInteger(value);
 				denominator = BigInteger.ONE;
@@ -4447,6 +4588,10 @@
 	};
 
 	/**
+		 * Normalization.
+		 * - Reduce fraction using gcd.
+		 * - Add the sign to the numerator.
+		 * - If the number is zero, the denominator is one.
 		 * @param value {Fraction}
 		 */
 	FractionTool.normalization = function normalization (value) {
@@ -4548,7 +4693,7 @@
 	};
 
 	var prototypeAccessors$2 = { intValue: { configurable: true },doubleValue: { configurable: true } };
-	var staticAccessors$4 = { ONE: { configurable: true },ZERO: { configurable: true },MINUS_ONE: { configurable: true } };
+	var staticAccessors$4 = { MINUS_ONE: { configurable: true },ZERO: { configurable: true },HALF: { configurable: true },ONE: { configurable: true },TWO: { configurable: true },TEN: { configurable: true } };
 
 	/**
 		 * Create an entity object of this class.
@@ -4629,7 +4774,7 @@
 	Fraction.prototype.clone = function clone () {
 		return new Fraction(this);
 	};
-		
+
 	/**
 		 * integer value.
 		 * @returns {number}
@@ -4655,59 +4800,39 @@
 	};
 
 	/**
+		 * Absolute value.
+		 * @returns {Fraction} abs(A)
+		 */
+	Fraction.prototype.abs = function abs () {
+		if(this.sign() >= 0) {
+			return this;
+		}
+		return this.negate();
+	};
+
+	/**
+		 * this * -1
+		 * @returns {Fraction} -A
+		 */
+	Fraction.prototype.negate = function negate () {
+		return new Fraction([this.numerator.negate(), this.denominator]);
+	};
+
+	/**
+		 * The positive or negative sign of this number.
+		 * - +1 if positive, -1 if negative, 0 if 0.
+		 * @returns {number}
+		 */
+	Fraction.prototype.sign = function sign () {
+		return this.numerator.sign();
+	};
+		
+	/**
 		 * Convert to string.
 		 * @returns {string} 
 		 */
 	Fraction.prototype.toString = function toString () {
 		return this.numerator.toString() + " / " + this.denominator.toString();
-	};
-
-	/**
-		 * 
-		 * @return {boolean}
-		 */
-	Fraction.prototype.isInteger = function isInteger () {
-		return this.denominator.equals(BigInteger.ONE);
-	};
-
-	/**
-		 * this === 0
-		 * @return {boolean} A === 0
-		 */
-	Fraction.prototype.isZero = function isZero () {
-		return this.numerator.equals(BigInteger.ZERO) && this.denominator.equals(BigInteger.ONE);
-	};
-
-	/**
-		 * this === 1
-		 * @return {boolean} A === 1
-		 */
-	Fraction.prototype.isOne = function isOne () {
-		return this.numerator.equals(BigInteger.ONE) && this.denominator.equals(BigInteger.ONE);
-	};
-
-	/**
-		 * this > 0
-		 * @returns {boolean}
-		 */
-	Fraction.prototype.isPositive = function isPositive () {
-		return this.numerator.isPositive();
-	};
-
-	/**
-		 * this < 0
-		 * @returns {boolean}
-		 */
-	Fraction.prototype.isNegative = function isNegative () {
-		return this.numerator.isNegative();
-	};
-
-	/**
-		 * this >= 0
-		 * @returns {boolean}
-		 */
-	Fraction.prototype.isNotNegative = function isNotNegative () {
-		return this.numerator.isNotNegative();
 	};
 
 	/**
@@ -4780,12 +4905,32 @@
 		var y = Fraction._toFraction(num);
 		var f;
 		if(x.isInteger() && y.isInteger()) {
-			f = new Fraction([ x.numerator, y.denominator]);
+			f = new Fraction([ x.numerator, y.numerator]);
 		}
 		else {
-			f = new Fraction([ x.numerator.mul(y.denominator), y.denominator.mul(x.numerator)]);
+			f = new Fraction([ x.numerator.mul(y.denominator), y.numerator.mul(x.denominator)]);
 		}
 		return f;
+	};
+
+	/**
+		 * Inverse number of this value.
+		 * @return {Fraction}
+		 */
+	Fraction.prototype.inv = function inv () {
+		return new Fraction([ this.denominator, this.numerator]);
+	};
+
+	/**
+		 * Modulo, positive remainder of division.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+		 * @return {Fraction}
+		 */
+	Fraction.prototype.mod = function mod (num) {
+		var x = this;
+		var y = Fraction._toFraction(num);
+		// x - y * floor(x/y)
+		return x.sub(y.mul(x.div(y).floor()));
 	};
 
 	/**
@@ -4809,13 +4954,240 @@
 	};
 
 	/**
-		 * 1
-		 * @returns {Fraction} 1
+		 * Power function.
+		 * - Supports only integers.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+		 * @returns {Fraction} pow(A, B)
 		 */
-	staticAccessors$4.ONE.get = function () {
-		return DEFINE$3.ONE;
+	Fraction.prototype.pow = function pow (num) {
+		var x = this;
+		var y = Fraction._toInteger(num);
+		var numerator = x.numerator.pow(y);
+		var denominator = x.denominator.pow(y);
+		return new Fraction([ numerator, denominator ]);
+	};
+
+	// ----------------------
+	// 比較
+	// ----------------------
+		
+	/**
+		 * Equals.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+		 * @returns {boolean} A === B
+		 */
+	Fraction.prototype.equals = function equals (num) {
+		var x = this;
+		var y = Fraction._toFraction(num);
+		return x.numerator.equals(y.numerator) && x.denominator.equals(y.denominator);
+	};
+
+	/**
+		 * Compare values.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+		 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+		 */
+	Fraction.prototype.compareTo = function compareTo (num) {
+		return this.sub(num).sign();
+	};
+
+	/**
+		 * Maximum number.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
+		 * @returns {Fraction} max([A, B])
+		 */
+	Fraction.prototype.max = function max (number) {
+		var val = Fraction._toFraction(number);
+		if(this.compareTo(val) >= 0) {
+			return this;
+		}
+		else {
+			return val;
+		}
+	};
+
+	/**
+		 * Minimum number.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
+		 * @returns {Fraction} min([A, B])
+		 */
+	Fraction.prototype.min = function min (number) {
+		var val = Fraction._toFraction(number);
+		if(this.compareTo(val) >= 0) {
+			return val;
+		}
+		else {
+			return this;
+		}
+	};
+
+	/**
+		 * Clip number within range.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} min 
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} max
+		 * @returns {Fraction} min(max(x, min), max)
+		 */
+	Fraction.prototype.clip = function clip (min, max) {
+		var min_ = Fraction._toFraction(min);
+		var max_ = Fraction._toFraction(max);
+		var arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	};
+
+	// ----------------------
+	// 丸め
+	// ----------------------
+		
+	/**
+		 * Floor.
+		 * @returns {Fraction} floor(A)
+		 */
+	Fraction.prototype.floor = function floor () {
+		if(this.isInteger()) {
+			return this;
+		}
+		var x = this.fix();
+		if(this.sign() > 0) {
+			return x;
+		}
+		else {
+			return new Fraction([x.numerator.sub(BigInteger.ONE), Fraction.ONE]);
+		}
+	};
+
+	/**
+		 * Ceil.
+		 * @returns {Fraction} ceil(A)
+		 */
+	Fraction.prototype.ceil = function ceil () {
+		if(this.isInteger()) {
+			return this;
+		}
+		var x = this.fix();
+		if(this.sign() > 0) {
+			return new Fraction([x.numerator.add(BigInteger.ONE), Fraction.ONE]);
+		}
+		else {
+			return x;
+		}
 	};
 		
+	/**
+		 * Rounding to the nearest integer.
+		 * @returns {Fraction} round(A)
+		 */
+	Fraction.prototype.round = function round () {
+		if(this.isInteger()) {
+			return this;
+		}
+		var x = this.floor();
+		var fract = this.sub(x);
+		if(fract.compareTo(Fraction.HALF) >= 0) {
+			return new Fraction([x.numerator.add(BigInteger.ONE), Fraction.ONE]);
+		}
+		else {
+			return x;
+		}
+	};
+
+	/**
+		 * To integer rounded down to the nearest.
+		 * @returns {Fraction} fix(A), trunc(A)
+		 */
+	Fraction.prototype.fix = function fix () {
+		if(this.isInteger()) {
+			return this;
+		}
+		return new Fraction([this.numerator.div(this.denominator), Fraction.ONE]);
+	};
+
+	/**
+		 * Fraction.
+		 * @returns {Fraction} fract(A)
+		 */
+	Fraction.prototype.fract = function fract () {
+		if(this.isInteger()) {
+			return Fraction.ZERO;
+		}
+		return this.sub(this.floor());
+	};
+
+	// ----------------------
+	// テスト系
+	// ----------------------
+		
+	/**
+		 * Return true if the value is integer.
+		 * @return {boolean}
+		 */
+	Fraction.prototype.isInteger = function isInteger () {
+		return this.denominator.equals(BigInteger.ONE);
+	};
+
+	/**
+		 * this === 0
+		 * @return {boolean} A === 0
+		 */
+	Fraction.prototype.isZero = function isZero () {
+		return this.numerator.equals(BigInteger.ZERO) && this.denominator.equals(BigInteger.ONE);
+	};
+
+	/**
+		 * this === 1
+		 * @return {boolean} A === 1
+		 */
+	Fraction.prototype.isOne = function isOne () {
+		return this.numerator.equals(BigInteger.ONE) && this.denominator.equals(BigInteger.ONE);
+	};
+
+	/**
+		 * this > 0
+		 * @returns {boolean}
+		 */
+	Fraction.prototype.isPositive = function isPositive () {
+		return this.numerator.isPositive();
+	};
+
+	/**
+		 * this < 0
+		 * @returns {boolean}
+		 */
+	Fraction.prototype.isNegative = function isNegative () {
+		return this.numerator.isNegative();
+	};
+
+	/**
+		 * this >= 0
+		 * @returns {boolean}
+		 */
+	Fraction.prototype.isNotNegative = function isNotNegative () {
+		return this.numerator.isNotNegative();
+	};
+
+	// ----------------------
+	// 定数
+	// ----------------------
+		
+	/**
+		 * -1
+		 * @returns {Fraction} -1
+		 */
+	staticAccessors$4.MINUS_ONE.get = function () {
+		return DEFINE$3.MINUS_ONE;
+	};
+
 	/**
 		 * 0
 		 * @returns {Fraction} 0
@@ -4825,11 +5197,35 @@
 	};
 
 	/**
-		 * -1
-		 * @returns {Fraction} -1
+		 * 0.5
+		 * @returns {Fraction} 0.5
 		 */
-	staticAccessors$4.MINUS_ONE.get = function () {
-		return DEFINE$3.MINUS_ONE;
+	staticAccessors$4.HALF.get = function () {
+		return DEFINE$3.HALF;
+	};
+		
+	/**
+		 * 1
+		 * @returns {Fraction} 1
+		 */
+	staticAccessors$4.ONE.get = function () {
+		return DEFINE$3.ONE;
+	};
+		
+	/**
+		 * 2
+		 * @returns {Fraction} 2
+		 */
+	staticAccessors$4.TWO.get = function () {
+		return DEFINE$3.TWO;
+	};
+		
+	/**
+		 * 10
+		 * @returns {Fraction} 10
+		 */
+	staticAccessors$4.TEN.get = function () {
+		return DEFINE$3.TEN;
 	};
 
 	Object.defineProperties( Fraction.prototype, prototypeAccessors$2 );
@@ -4842,9 +5238,9 @@
 	var DEFINE$3 = {
 
 		/**
-		 * 1
+		 * -1
 		 */
-		ONE : new Fraction([BigInteger.ONE, BigInteger.ONE]),
+		MINUS_ONE : new Fraction([BigInteger.MINUS_ONE, BigInteger.ONE]),
 
 		/**
 		 * 0
@@ -4852,9 +5248,24 @@
 		ZERO : new Fraction([BigInteger.ZERO, BigInteger.ONE]),
 		
 		/**
-		 * -1
+		 * 1
 		 */
-		MINUS_ONE : new Fraction([BigInteger.MINUS_ONE, BigInteger.ONE]),
+		ONE : new Fraction([BigInteger.ONE, BigInteger.ONE]),
+
+		/**
+		 * 0.5
+		 */
+		HALF : new Fraction([BigInteger.ONE, BigInteger.TWO]),
+
+		/**
+		 * 2
+		 */
+		TWO : new Fraction([BigInteger.TWO, BigInteger.ONE]),
+
+		/**
+		 * 10
+		 */
+		TEN : new Fraction([BigInteger.TEN, BigInteger.ONE])
 
 	};
 
@@ -4878,7 +5289,7 @@
 
 		var A = Matrix._toMatrix(mat);
 		var a = A.getNumberMatrixArray();
-		var tolerance = 1.0e-10;
+		var tolerance_ = 1.0e-10;
 
 		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
 		// 3重対角化の成分を取得する
@@ -4914,7 +5325,7 @@
 			// xの内積の平方根（ノルム）を計算
 			var y1 = Math.sqrt(innerproduct(x, x, ioffset, imax));
 			var v = [];
-			if(Math.abs(y1) >= tolerance) {
+			if(Math.abs(y1) >= tolerance_) {
 				if(x[ioffset] < 0) {
 					y1 = - y1;
 				}
@@ -4950,7 +5361,7 @@
 						v[k + 1 + i] = H$1.v[i];
 					}
 				}
-				if(Math.abs(e[k]) < tolerance) {
+				if(Math.abs(e[k]) < tolerance_) {
 					continue;
 				}
 				for(var i$1 = k + 1; i$1 < n; i$1++) {
@@ -5034,7 +5445,7 @@
 			
 		// QR法により固有値を求める
 		var is_error = false;
-		var tolerance = 1.0e-10;
+		var tolerance_ = 1.0e-10;
 		var PH = LinearAlgebraTool.tridiagonalize(A);
 		var a = PH.P.getNumberMatrixArray();
 		var h = PH.H.getNumberMatrixArray();
@@ -5053,7 +5464,7 @@
 		for(var h$1 = n - 1; h$1 > 0; h$1--) {
 			var j = h$1;
 			for(j = h$1;j >= 1; j--) {
-				if(Math.abs(e[j]) <= (tolerance * (Math.abs(d[j - 1]) + Math.abs(d[j])))) {
+				if(Math.abs(e[j]) <= (tolerance_ * (Math.abs(d[j - 1]) + Math.abs(d[j])))) {
 					break;
 				}
 			}
@@ -5107,7 +5518,7 @@
 						e[k + 2] *= c;
 					}
 				}
-				if(Math.abs(e[h$1]) <= tolerance * (Math.abs(d[h$1 - 1]) + Math.abs(d[h$1]))) {
+				if(Math.abs(e[h$1]) <= tolerance_ * (Math.abs(d[h$1 - 1]) + Math.abs(d[h$1]))) {
 					break;
 				}
 			}
@@ -5221,16 +5632,16 @@
 		 * Create orthogonal vectors for all row vectors of the matrix.
 		 * - If the vector can not be found, it returns NULL.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-		 * @param {number} [epsilon=1.0e-10] - Calculation tolerance of calculation.
+		 * @param {number} [tolerance=1.0e-10] - Calculation tolerance of calculation.
 		 * @returns {Matrix|null} An orthogonal vector.
 		 */
-	LinearAlgebraTool.createOrthogonalVector = function createOrthogonalVector (mat, epsilon) {
+	LinearAlgebraTool.createOrthogonalVector = function createOrthogonalVector (mat, tolerance) {
 		var M = new Matrix(mat);
 		var column_length = M.column_length;
 		var m = M.matrix_array;
-		var tolerance = epsilon ? epsilon : 1.0e-10;
+		var tolerance_ = tolerance ? tolerance : 1.0e-10;
 		// 正則行列をなす場合に問題となる行番号を取得
-		var not_regular_rows = LinearAlgebraTool.getLinearDependenceVector(M, tolerance);
+		var not_regular_rows = LinearAlgebraTool.getLinearDependenceVector(M, tolerance_);
 		// 不要な行を削除する
 		{
 			// not_regular_rowsは昇順リストなので、後ろから消していく
@@ -5313,14 +5724,14 @@
 	/**
 		 * Extract linearly dependent rows when each row of matrix is a vector.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-		 * @param {number} [epsilon=1.0e-10] - Calculation tolerance of calculation.
+		 * @param {number} [tolerance=1.0e-10] - Calculation tolerance of calculation.
 		 * @returns {Array} Array of matrix row numbers in ascending order.
 		 * @private
 		 */
-	LinearAlgebraTool.getLinearDependenceVector = function getLinearDependenceVector (mat, epsilon) {
+	LinearAlgebraTool.getLinearDependenceVector = function getLinearDependenceVector (mat, tolerance) {
 		var M = new Matrix(mat);
 		var m = M.matrix_array;
-		var tolerance = epsilon ? Matrix._toDouble(epsilon) : 1.0e-10;
+		var tolerance_ = tolerance ? Matrix._toDouble(tolerance) : 1.0e-10;
 		// 確認する行番号（ここから終わった行は削除していく）
 		var row_index_array = new Array(mat.row_length);
 		for(var i = 0; i < mat.row_length; i++) {
@@ -5343,7 +5754,7 @@
 					}
 				}
 				// 大きいのが0である＝その列は全て0である
-				if(row_max <= tolerance) {
+				if(row_max <= tolerance_) {
 					continue;
 				}
 				// 大きな値があった行は、リストから除去する
@@ -5560,17 +5971,17 @@
 	/**
 		 * Rank.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {number} rank(A)
 		 */
-	LinearAlgebra.rank = function rank (mat, epsilon) {
+	LinearAlgebra.rank = function rank (mat, tolerance) {
 		var M = Matrix._toMatrix(mat);
 		// 横が長い行列の場合
 		if(M.row_length <= M.column_length) {
-			return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
+			return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, tolerance)).length;
 		}
 		else {
-			return M.row_length - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
+			return M.row_length - (LinearAlgebraTool.getLinearDependenceVector(M, tolerance)).length;
 		}
 	};
 
@@ -9927,23 +10338,23 @@
 	/**
 		 * Equals.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean} A === B
 		 */
-	Matrix.prototype.equals = function equals (number, epsilon) {
+	Matrix.prototype.equals = function equals (number, tolerance) {
 		var M1 = this;
 		var M2 = Matrix._toMatrix(number);
 		if((M1.row_length !== M2.row_length) || (M1.column_length !== M2.column_length)) {
 			return false;
 		}
 		if((M1.row_length === 1) && (M1.column_length ===1)) {
-			return M1.scalar.equals(M2.scalar, epsilon);
+			return M1.scalar.equals(M2.scalar, tolerance);
 		}
 		var x1 = M1.matrix_array;
 		var x2 = M2.matrix_array;
 		for(var row = 0; row < this.row_length; row++) {
 			for(var col = 0; col < this.column_length; col++) {
-				if(!x1[row][col].equals(x2[row][col], epsilon)) {
+				if(!x1[row][col].equals(x2[row][col], tolerance)) {
 					return false;
 				}
 			}
@@ -10362,11 +10773,11 @@
 
 	/**
 		 * Rank.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {number} rank(A)
 		 */
-	Matrix.prototype.rank = function rank (epsilon) {
-		return LinearAlgebra.rank(this, epsilon);
+	Matrix.prototype.rank = function rank (tolerance) {
+		return LinearAlgebra.rank(this, tolerance);
 	};
 
 	/**
@@ -10566,13 +10977,13 @@
 
 	/**
 		 * Return true if the matrix is real matrix.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Matrix.prototype.isReal = function isReal (epsilon) {
+	Matrix.prototype.isReal = function isReal (tolerance) {
 		var is_real = true;
 		this._each(function(num){
-			if(is_real && (num.isComplex(epsilon))) {
+			if(is_real && (num.isComplex(tolerance))) {
 				is_real = false;
 			}
 		});
@@ -10581,23 +10992,23 @@
 
 	/**
 		 * Return true if the matrix is complex matrix.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Matrix.prototype.isComplex = function isComplex (epsilon) {
-		return !this.isReal(epsilon);
+	Matrix.prototype.isComplex = function isComplex (tolerance) {
+		return !this.isReal(tolerance);
 	};
 
 	/**
 		 * Return true if the matrix is zero matrix.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Matrix.prototype.isZeros = function isZeros (epsilon) {
+	Matrix.prototype.isZeros = function isZeros (tolerance) {
 		var is_zeros = true;
-		var tolerance = epsilon ? epsilon : 1.0e-10;
+		var tolerance_ = tolerance ? tolerance : 1.0e-10;
 		this._each(function(num){
-			if(is_zeros && (!num.isZero(tolerance))) {
+			if(is_zeros && (!num.isZero(tolerance_))) {
 				is_zeros = false;
 			}
 		});
@@ -10606,21 +11017,21 @@
 
 	/**
 		 * Return true if the matrix is identity matrix.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Matrix.prototype.isIdentity = function isIdentity (epsilon) {
+	Matrix.prototype.isIdentity = function isIdentity (tolerance) {
 		var is_identity = true;
-		var tolerance = epsilon ? epsilon : 1.0e-10;
+		var tolerance_ = tolerance ? tolerance : 1.0e-10;
 		this._each(function(num, row, col){
 			if(is_identity) {
 				if(row === col) {
-					if(!num.isOne(tolerance)) {
+					if(!num.isOne(tolerance_)) {
 						is_identity = false;
 					}
 				}
 				else {
-					if(!num.isZero(tolerance)) {
+					if(!num.isZero(tolerance_)) {
 						is_identity = false;
 					}
 				}
@@ -10631,14 +11042,14 @@
 
 	/**
 		 * Return true if the matrix is diagonal matrix.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Matrix.prototype.isDiagonal = function isDiagonal (epsilon) {
+	Matrix.prototype.isDiagonal = function isDiagonal (tolerance) {
 		var is_diagonal = true;
-		var tolerance = epsilon ? epsilon : 1.0e-10;
+		var tolerance_ = tolerance ? tolerance : 1.0e-10;
 		this._each(function(num, row, col){
-			if(is_diagonal && (row !== col) && (!num.isZero(tolerance))) {
+			if(is_diagonal && (row !== col) && (!num.isZero(tolerance_))) {
 				is_diagonal = false;
 			}
 		});
@@ -10647,14 +11058,14 @@
 		
 	/**
 		 * Return true if the matrix is tridiagonal matrix.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Matrix.prototype.isTridiagonal = function isTridiagonal (epsilon) {
+	Matrix.prototype.isTridiagonal = function isTridiagonal (tolerance) {
 		var is_tridiagonal = true;
-		var tolerance = epsilon ? epsilon : 1.0e-10;
+		var tolerance_ = tolerance ? tolerance : 1.0e-10;
 		this._each(function(num, row, col){
-			if(is_tridiagonal && (Math.abs(row - col) > 1) && (!num.isZero(tolerance))) {
+			if(is_tridiagonal && (Math.abs(row - col) > 1) && (!num.isZero(tolerance_))) {
 				is_tridiagonal = false;
 			}
 		});
@@ -10663,59 +11074,59 @@
 
 	/**
 		 * Return true if the matrix is regular matrix.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Matrix.prototype.isRegular = function isRegular (epsilon) {
+	Matrix.prototype.isRegular = function isRegular (tolerance) {
 		if(!this.isSquare()) {
 			return false;
 		}
 		// ランクが行列の次元と等しいかどうかで判定
 		// det(M) != 0 でもよいが、時間がかかる可能性があるので
 		// 誤差は自動で計算など本当はもうすこし良い方法を考える必要がある
-		var tolerance = epsilon ? epsilon : 1.0e-10;
-		return (this.rank(tolerance) === this.row_length);
+		var tolerance_ = tolerance ? tolerance : 1.0e-10;
+		return (this.rank(tolerance_) === this.row_length);
 	};
 
 	/**
 		 * Return true if the matrix is orthogonal matrix.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Matrix.prototype.isOrthogonal = function isOrthogonal (epsilon) {
+	Matrix.prototype.isOrthogonal = function isOrthogonal (tolerance) {
 		if(!this.isSquare()) {
 			return false;
 		}
-		var tolerance = epsilon ? epsilon : 1.0e-10;
-		return (this.mul(this.transpose()).isIdentity(tolerance));
+		var tolerance_ = tolerance ? tolerance : 1.0e-10;
+		return (this.mul(this.transpose()).isIdentity(tolerance_));
 	};
 
 	/**
 		 * Return true if the matrix is unitary matrix.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Matrix.prototype.isUnitary = function isUnitary (epsilon) {
+	Matrix.prototype.isUnitary = function isUnitary (tolerance) {
 		if(!this.isSquare()) {
 			return false;
 		}
-		var tolerance = epsilon ? epsilon : 1.0e-10;
-		return (this.mul(this.ctranspose()).isIdentity(tolerance));
+		var tolerance_ = tolerance ? tolerance : 1.0e-10;
+		return (this.mul(this.ctranspose()).isIdentity(tolerance_));
 	};
 
 	/**
 		 * Return true if the matrix is symmetric matrix.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Matrix.prototype.isSymmetric = function isSymmetric (epsilon) {
+	Matrix.prototype.isSymmetric = function isSymmetric (tolerance) {
 		if(!this.isSquare()) {
 			return false;
 		}
-		var tolerance = epsilon ? epsilon : 1.0e-10;
+		var tolerance_ = tolerance ? tolerance : 1.0e-10;
 		for(var row = 0; row < this.row_length; row++) {
 			for(var col = row + 1; col < this.column_length; col++) {
-				if(!this.matrix_array[row][col].equals(this.matrix_array[col][row], tolerance)) {
+				if(!this.matrix_array[row][col].equals(this.matrix_array[col][row], tolerance_)) {
 					return false;
 				}
 			}
@@ -10725,22 +11136,22 @@
 
 	/**
 		 * Return true if the matrix is hermitian matrix.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Matrix.prototype.isHermitian = function isHermitian (epsilon) {
+	Matrix.prototype.isHermitian = function isHermitian (tolerance) {
 		if(!this.isSquare()) {
 			return false;
 		}
-		var tolerance = epsilon ? epsilon : 1.0e-10;
+		var tolerance_ = tolerance ? tolerance : 1.0e-10;
 		for(var row = 0; row < this.row_length; row++) {
 			for(var col = row; col < this.column_length; col++) {
 				if(row === col) {
-					if(!this.matrix_array[row][col].isReal(tolerance)) {
+					if(!this.matrix_array[row][col].isReal(tolerance_)) {
 						return false;
 					}
 				}
-				else if(!this.matrix_array[row][col].equals(this.matrix_array[col][row].conj(), tolerance)) {
+				else if(!this.matrix_array[row][col].equals(this.matrix_array[col][row].conj(), tolerance_)) {
 					return false;
 				}
 			}
@@ -10750,14 +11161,14 @@
 		
 	/**
 		 * Return true if the matrix is upper triangular matrix.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Matrix.prototype.isTriangleUpper = function isTriangleUpper (epsilon) {
+	Matrix.prototype.isTriangleUpper = function isTriangleUpper (tolerance) {
 		var is_upper = true;
-		var tolerance = epsilon ? epsilon : 1.0e-10;
+		var tolerance_ = tolerance ? tolerance : 1.0e-10;
 		this._each(function(num, row, col){
-			if(is_upper && (row > col) && (!num.isZero(tolerance))) {
+			if(is_upper && (row > col) && (!num.isZero(tolerance_))) {
 				is_upper = false;
 			}
 		});
@@ -10766,14 +11177,14 @@
 
 	/**
 		 * Return true if the matrix is  lower triangular matrix.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Matrix.prototype.isTriangleLower = function isTriangleLower (epsilon) {
+	Matrix.prototype.isTriangleLower = function isTriangleLower (tolerance) {
 		var is_lower = true;
-		var tolerance = epsilon ? epsilon : 1.0e-10;
+		var tolerance_ = tolerance ? tolerance : 1.0e-10;
 		this._each(function(num, row, col){
-			if(is_lower && (row < col) && (!num.isZero(tolerance))) {
+			if(is_lower && (row < col) && (!num.isZero(tolerance_))) {
 				is_lower = false;
 			}
 		});
@@ -10782,20 +11193,20 @@
 
 	/**
 		 * Return true if the matrix is permutation matrix.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Matrix.prototype.isPermutation = function isPermutation (epsilon) {
+	Matrix.prototype.isPermutation = function isPermutation (tolerance) {
 		if(!this.isSquare()) {
 			return false;
 		}
-		var tolerance = epsilon ? epsilon : 1.0e-10;
+		var tolerance_ = tolerance ? tolerance : 1.0e-10;
 		var is_row = new Array(this.row_length);
 		var is_col = new Array(this.column_length);
 		for(var row = 0; row < this.row_length; row++) {
 			for(var col = 0; col < this.column_length; col++) {
 				var target = this.matrix_array[row][col];
-				if(target.isOne(tolerance)) {
+				if(target.isOne(tolerance_)) {
 					if(!is_row[row] && !is_col[col]) {
 						is_row[row] = 1;
 						is_col[col] = 1;
@@ -10804,7 +11215,7 @@
 						return false;
 					}
 				}
-				else if(!target.isZero(tolerance)) {
+				else if(!target.isZero(tolerance_)) {
 					return false;
 				}
 			}
@@ -10831,15 +11242,15 @@
 		 * - Return value between scalars is of type Number.
 		 * - Return value between matrices is type Matrix.
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
 		 */
-	Matrix.prototype.compareTo = function compareTo (number, epsilon) {
+	Matrix.prototype.compareTo = function compareTo (number, tolerance) {
 		var M1 = this;
 		var M2 = Matrix._toMatrix(number);
 		// ※スカラー同士の場合は、実数を返す
 		if(M1.isScalar() && M2.isScalar()) {
-			return M1.scalar.compareTo(M2.scalar, epsilon);
+			return M1.scalar.compareTo(M2.scalar, tolerance);
 		}
 		var x1 = M1.matrix_array;
 		var x2 = M2.matrix_array;
@@ -10969,9 +11380,9 @@
 			return new Matrix(y);
 		}
 		if(M2.row_length === M2.column_length) {
-			var epsilon = 1.0e-10;
+			var tolerance = 1.0e-10;
 			var det = M2.det().scalar.norm;
-			if(det > epsilon) {
+			if(det > tolerance) {
 				// ランク落ちしていないので通常の逆行列を使用する
 				return this.mul(M2.inv());
 			}
@@ -11172,72 +11583,72 @@
 	/**
 		 * Test if each element of the matrix is integer.
 		 * - 1 if true, 0 if false.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 		 */
-	Matrix.prototype.testInteger = function testInteger (epsilon) {
+	Matrix.prototype.testInteger = function testInteger (tolerance) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isInteger(epsilon) ? Complex.ONE : Complex.ZERO;
+			return num.isInteger(tolerance) ? Complex.ONE : Complex.ZERO;
 		});
 	};
 
 	/**
 		 * Test if each element of the matrix is complex integer.
 		 * - 1 if true, 0 if false.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 		 */
-	Matrix.prototype.testComplexInteger = function testComplexInteger (epsilon) {
+	Matrix.prototype.testComplexInteger = function testComplexInteger (tolerance) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isComplexInteger(epsilon) ? Complex.ONE : Complex.ZERO;
+			return num.isComplexInteger(tolerance) ? Complex.ONE : Complex.ZERO;
 		});
 	};
 
 	/**
 		 * real(this) === 0
 		 * - 1 if true, 0 if false.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 		 */
-	Matrix.prototype.testZero = function testZero (epsilon) {
+	Matrix.prototype.testZero = function testZero (tolerance) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isZero(epsilon) ? Complex.ONE : Complex.ZERO;
+			return num.isZero(tolerance) ? Complex.ONE : Complex.ZERO;
 		});
 	};
 
 	/**
 		 * real(this) === 1
 		 * - 1 if true, 0 if false.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 		 */
-	Matrix.prototype.testOne = function testOne (epsilon) {
+	Matrix.prototype.testOne = function testOne (tolerance) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isOne(epsilon) ? Complex.ONE : Complex.ZERO;
+			return num.isOne(tolerance) ? Complex.ONE : Complex.ZERO;
 		});
 	};
 		
 	/**
 		 * Test if each element of the matrix is complex.
 		 * - 1 if true, 0 if false.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 		 */
-	Matrix.prototype.testComplex = function testComplex (epsilon) {
+	Matrix.prototype.testComplex = function testComplex (tolerance) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isComplex(epsilon) ? Complex.ONE : Complex.ZERO;
+			return num.isComplex(tolerance) ? Complex.ONE : Complex.ZERO;
 		});
 	};
 
 	/**
 		 * Test if each element of the matrix is real.
 		 * - 1 if true, 0 if false.
-		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 		 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 		 */
-	Matrix.prototype.testReal = function testReal (epsilon) {
+	Matrix.prototype.testReal = function testReal (tolerance) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isReal(epsilon) ? Complex.ONE : Complex.ZERO;
+			return num.isReal(tolerance) ? Complex.ONE : Complex.ZERO;
 		});
 	};
 
@@ -11455,7 +11866,7 @@
 
 	/**
 		 * To integer rounded down to the nearest.
-		 * @returns {Matrix} fix(A)
+		 * @returns {Matrix} fix(A), trunc(A)
 		 */
 	Matrix.prototype.fix = function fix () {
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -13044,23 +13455,6 @@
 	};
 
 	/**
-		 * Equals.
-		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
-		 * @returns {boolean} A === B
-		 */
-	Complex.prototype.equals = function equals (number, epsilon) {
-		var x = Complex._toComplex(number);
-		var tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		// 無限大、非数の値も含めて一度確認
-		if((this._re === x._re) && (this._im === x._im)) {
-			return true;
-		}
-		// 誤差を含んだ値の比較
-		return (Math.abs(this._re - x._re) <  tolerance) && (Math.abs(this._im - x._im) < tolerance);
-	};
-
-	/**
 		 * The real part of this Comlex.
 		 * @returns {number} real(A)
 		 */
@@ -13267,7 +13661,7 @@
 	/**
 		 * The positive or negative sign of this number.
 		 * - +1 if positive, -1 if negative, 0 if 0.
-		 * @returns {Complex} [-1,1] 複素数の場合はノルムを1にした値。
+		 * @returns {Complex} 
 		 */
 	Complex.prototype.sign = function sign () {
 		if(this._im === 0) {
@@ -13281,19 +13675,40 @@
 		return this.div(this.norm);
 	};
 		
+	// ----------------------
+	// 比較
+	// ----------------------
+		
+	/**
+		 * Equals.
+		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+		 * @returns {boolean} A === B
+		 */
+	Complex.prototype.equals = function equals (number, tolerance) {
+		var x = Complex._toComplex(number);
+		var tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		// 無限大、非数の値も含めて一度確認
+		if((this._re === x._re) && (this._im === x._im)) {
+			return true;
+		}
+		// 誤差を含んだ値の比較
+		return (Math.abs(this._re - x._re) <  tolerance_) && (Math.abs(this._im - x._im) < tolerance_);
+	};
+
 	/**
 		 * Compare values.
 		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 		 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 		 */
-	Complex.prototype.compareTo = function compareTo (number, epsilon) {
+	Complex.prototype.compareTo = function compareTo (number, tolerance) {
 		var x1 = this;
 		var x2 = Complex._toComplex(number);
-		var tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		var tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
 		var a = x1.real + x1.imag;
 		var b = x2.real + x2.imag;
-		if((Math.abs(a - b) < tolerance)) {
+		if((Math.abs(a - b) <= tolerance_)) {
 			return 0;
 		}
 		return a > b ? 1 : -1;
@@ -13360,64 +13775,64 @@
 		
 	/**
 		 * Return true if the value is integer.
-		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 		 * @returns {boolean}
 		 */
-	Complex.prototype.isInteger = function isInteger (epsilon) {
-		var tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return this.isReal() && (Math.abs(this._re - Math.trunc(this._re)) < tolerance);
+	Complex.prototype.isInteger = function isInteger (tolerance) {
+		var tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return this.isReal() && (Math.abs(this._re - Math.trunc(this._re)) < tolerance_);
 	};
 
 	/**
 		 * Returns true if the vallue is complex integer (including normal integer).
-		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 		 * @returns {boolean} real(A) === integer && imag(A) === integer
 		 */
-	Complex.prototype.isComplexInteger = function isComplexInteger (epsilon) {
-		var tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+	Complex.prototype.isComplexInteger = function isComplexInteger (tolerance) {
+		var tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
 		// 複素整数
-		return (Math.abs(this._re - Math.trunc(this._re)) < tolerance) &&
-				(Math.abs(this._im - Math.trunc(this._im)) < tolerance);
+		return (Math.abs(this._re - Math.trunc(this._re)) < tolerance_) &&
+				(Math.abs(this._im - Math.trunc(this._im)) < tolerance_);
 	};
 
 	/**
 		 * this === 0
-		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 		 * @returns {boolean} A === 0
 		 */
-	Complex.prototype.isZero = function isZero (epsilon) {
-		var tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return (Math.abs(this._re) < tolerance) && (Math.abs(this._im) < tolerance);
+	Complex.prototype.isZero = function isZero (tolerance) {
+		var tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._re) < tolerance_) && (Math.abs(this._im) < tolerance_);
 	};
 
 	/**
 		 * this === 1
-		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 		 * @returns {boolean} A === 1
 		 */
-	Complex.prototype.isOne = function isOne (epsilon) {
-		var tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return (Math.abs(this._re - 1.0) < tolerance) && (Math.abs(this._im) < tolerance);
+	Complex.prototype.isOne = function isOne (tolerance) {
+		var tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._re - 1.0) < tolerance_) && (Math.abs(this._im) < tolerance_);
 	};
 
 	/**
 		 * Returns true if the vallue is complex number (imaginary part is not 0).
-		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 		 * @returns {boolean} imag(A) !== 0
 		 */
-	Complex.prototype.isComplex = function isComplex (epsilon) {
-		var tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return (Math.abs(this._im) >= tolerance);
+	Complex.prototype.isComplex = function isComplex (tolerance) {
+		var tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._im) >= tolerance_);
 	};
 		
 	/**
 		 * Return true if the value is real number.
-		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+		 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 		 * @returns {boolean} imag(A) === 0
 		 */
-	Complex.prototype.isReal = function isReal (epsilon) {
-		var tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return (Math.abs(this._im) < tolerance);
+	Complex.prototype.isReal = function isReal (tolerance) {
+		var tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._im) < tolerance_);
 	};
 
 	/**
@@ -13722,7 +14137,7 @@
 
 	/**
 		 * To integer rounded down to the nearest.
-		 * @returns {Complex} fix(A)
+		 * @returns {Complex} fix(A), trunc(A)
 		 */
 	Complex.prototype.fix = function fix () {
 		return new Complex([Math.trunc(this._re), Math.trunc(this._im)]);
@@ -13733,7 +14148,7 @@
 		 * @returns {Complex} fract(A)
 		 */
 	Complex.prototype.fract = function fract () {
-		return new Complex([this._re - Math.trunc(this._re), this._im - Math.trunc(this._im)]);
+		return new Complex([this._re - Math.floor(this._re), this._im - Math.floor(this._im)]);
 	};
 
 	// ----------------------
