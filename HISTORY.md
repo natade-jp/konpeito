@@ -1,6 +1,6 @@
 # History
 
-## v0.1.X
+## v1.0.0(beta)
 - 「x | 0」としている部分の多くを「Math.trunc」に置き換え。
 - BigInteger lcm 最小公倍数を求める計算を追加
 - BigInteger 作成時の引数に BigDecimal を入れた場合を対応
@@ -8,6 +8,7 @@
 - BigInteger, BigDecimal 「-1」の定数を追加
 - BigInteger isOne, isNotNegative, scaleByPowerOfTen を追加
 - BigDecimal isNegative, isZero, isOne, isPositive, isNotNegative を追加
+- BigDecimal の引数にNumber型の浮動小数点で初期化した場合に、小数点の最も下位の桁のみ四捨五入するように動作を変更
 - Matrix, Complex valueOf メソッドが正しく動作していない問題を修正
 - Matrix 引数でメンバーの省略が可能なオブジェクトの指定に typedef で独自型を定義するように修正
 

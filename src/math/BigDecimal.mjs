@@ -114,6 +114,8 @@ class DecimalTool {
 					break;
 				}
 			}
+			// 最も下の桁は四捨五入する
+			x = Math.round(x * 1e14) / 1e14;
 			return {
 				scale : scale,
 				integer : new BigInteger(x)

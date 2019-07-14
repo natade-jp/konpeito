@@ -25,7 +25,7 @@ import MathContext from "./context/MathContext.mjs";
 class FractionTool {
 
 	/**
-	 * 
+	 * Create data for Fraction from strings.
 	 * @param ntext {string}
 	 * @return {Fraction}
 	 */
@@ -131,7 +131,7 @@ class FractionTool {
 	}
 
 	/**
-	 * 
+	 * Create data for Fraction from fractional string.
 	 * @param ntext {string}
 	 * @return {Fraction}
 	 */
@@ -148,7 +148,7 @@ class FractionTool {
 	}
 
 	/**
-	 * 
+	 * Create data for Fraction from number.
 	 * @param value {number}
 	 * @return {Fraction}
 	 */
@@ -173,6 +173,8 @@ class FractionTool {
 					break;
 				}
 			}
+			// 最も下の桁は四捨五入する
+			x = Math.round(x * 1e14) / 1e14;
 			if(scale <= 0) {
 				numerator = new BigInteger(value);
 				denominator = BigInteger.ONE;
@@ -190,6 +192,10 @@ class FractionTool {
 	}
 
 	/**
+	 * Normalization.
+	 * - Reduce fraction using gcd.
+	 * - Add the sign to the numerator.
+	 * - If the number is zero, the denominator is one.
 	 * @param value {Fraction}
 	 */
 	static normalization(value) {
@@ -377,7 +383,7 @@ export default class Fraction {
 	clone() {
 		return new Fraction(this);
 	}
-	
+
 	/**
 	 * integer value.
 	 * @returns {number}
@@ -402,6 +408,35 @@ export default class Fraction {
 		return x.div(y, {context : MathContext.DECIMAL64}).doubleValue;
 	}
 
+	/**
+	 * Equals.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @returns {boolean} A === B
+	 */
+	equals(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		return x.numerator.equals(y.numerator) && x.denominator.equals(y.denominator);
+	}
+
+	/**
+	 * Compare values.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(num) {
+		return this.sub(num).sign();
+	}
+
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	sign() {
+		return this.numerator.sign();
+	}
+	
 	/**
 	 * Convert to string.
 	 * @returns {string} 
@@ -528,7 +563,7 @@ export default class Fraction {
 		const y = Fraction._toFraction(num);
 		let f;
 		if(x.isInteger() && y.isInteger()) {
-			f = new Fraction([ x.numerator, y.denominator]);
+			f = new Fraction([ x.numerator, y.numerator]);
 		}
 		else {
 			f = new Fraction([ x.numerator.mul(y.denominator), y.denominator.mul(x.numerator)]);
