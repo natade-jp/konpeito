@@ -616,37 +616,86 @@ export default class BigDecimal {
 
 	/**
 	 * Round with specified settings.
-	 * @param {MathContext} mc - New setting.
+	 * 
+	 * This method is not a method round the decimal point.
+	 * This method converts numbers in the specified Context and rounds unconvertible digits.
+	 * 
+	 * Use setScale(0, RoundingMode.HALF_UP) if you want to round the decimal point.
+	 * When the argument is omitted, such decimal point rounding operation is performed.
+	 * @param {MathContext} [mc] - New setting.
 	 * @returns {BigDecimal} 
 	 */
 	round(mc) {
-		if(!(mc instanceof MathContext)) {
-			throw "not MathContext";
+		if(mc) {
+			// MathContext を設定した場合
+			if(!(mc instanceof MathContext)) {
+				throw "not MathContext";
+			}
+			const newPrecision	= mc.getPrecision();
+			const delta			= newPrecision - this.precision();
+			if((delta === 0)||(newPrecision === 0)) {
+				return this.clone();
+			}
+			const newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode(), mc);
+			/* 精度を上げる必要があるため、0を加えた場合 */
+			if(delta > 0) {
+				return newBigDecimal;
+			}
+			/* 精度を下げる必要があるため、丸めた場合は、桁の数が正しいか調べる */
+			if(newBigDecimal.precision() === mc.getPrecision()) {
+				return newBigDecimal;
+			}
+			/* 切り上げなどで桁数が１つ増えた場合 */
+			const sign_text	= newBigDecimal.integer.signum() >= 0 ? "" : "-";
+			const abs_text	= newBigDecimal._getUnsignedIntegerString();
+			const inte_text	= sign_text + abs_text.substring(0, abs_text.length - 1);
+			return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1, mc]);
 		}
-		const newPrecision	= mc.getPrecision();
-		const delta			= newPrecision - this.precision();
-		if((delta === 0)||(newPrecision === 0)) {
-			return this.clone();
+		else {
+			// 小数点以下を四捨五入する
+			return this.setScale(0, RoundingMode.HALF_UP);
 		}
-		const newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode(), mc);
-		/* 精度を上げる必要があるため、0を加えた場合 */
-		if(delta > 0) {
-			return newBigDecimal;
-		}
-		/* 精度を下げる必要があるため、丸めた場合は、桁の数が正しいか調べる */
-		if(newBigDecimal.precision() === mc.getPrecision()) {
-			return newBigDecimal;
-		}
-		/* 切り上げなどで桁数が１つ増えた場合 */
-		const sign_text	= newBigDecimal.integer.signum() >= 0 ? "" : "-";
-		const abs_text	= newBigDecimal._getUnsignedIntegerString();
-		const inte_text	= sign_text + abs_text.substring(0, abs_text.length - 1);
-		return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1, mc]);
+	}
+
+	/**
+	 * Floor.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} floor(A)
+	 */
+	floor(mc) {
+		return this.setScale(0, RoundingMode.FLOOR, mc);
+	}
+
+	/**
+	 * Ceil.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} ceil(A)
+	 */
+	ceil(mc) {
+		return this.setScale(0, RoundingMode.CEILING, mc);
+	}
+	
+	/**
+	 * To integer rounded down to the nearest.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} fix(A), trunc(A)
+	 */
+	fix(mc) {
+		return this.setScale(0, RoundingMode.DOWN, mc);
+	}
+
+	/**
+	 * Fraction.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} fract(A)
+	 */
+	fract(mc) {
+		return this.sub(this.floor(mc), mc);
 	}
 
 	/**
 	 * Absolute value.
-	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} abs(A)
 	 */
 	abs(mc) {

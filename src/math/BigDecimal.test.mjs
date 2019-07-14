@@ -309,3 +309,41 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	testBool("isNotNegative", 0, true);
 	testBool("isNotNegative", -1, false);
 }
+
+{
+	test_count = 0;
+	testOperator1("round", 3.2, 3);
+	testOperator1("round", 3.8, 4);
+}
+
+{
+	test_count = 0;
+	testOperator1("floor", 3.2, 3);
+	testOperator1("floor", 3.8, 3);
+	testOperator1("floor", -3.2, -4);
+	testOperator1("floor", -3.8, -4);
+}
+
+{
+	test_count = 0;
+	testOperator1("ceil", 3.2, 4);
+	testOperator1("ceil", 3.8, 4);
+	testOperator1("ceil", -3.2, -3);
+	testOperator1("ceil", -3.8, -3);
+}
+
+{
+	test_count = 0;
+	testOperator1("fix", 3.2, 3);
+	testOperator1("fix", 3.8, 3);
+	testOperator1("fix", -3.2, -3);
+	testOperator1("fix", -3.8, -3);
+}
+
+{
+	test_count = 0;
+	testOperator1("fract", 3.2, 0.2);
+	testOperator1("fract", 3.8, 0.8);
+	testOperator1("fract", -3.2, 0.8);
+	testOperator1("fract", -3.8, 0.2);
+}

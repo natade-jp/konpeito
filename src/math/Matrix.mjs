@@ -2268,7 +2268,7 @@ export default class Matrix {
 
 	/**
 	 * To integer rounded down to the nearest.
-	 * @returns {Matrix} fix(A)
+	 * @returns {Matrix} fix(A), trunc(A)
 	 */
 	fix() {
 		return this.cloneMatrixDoEachCalculation(function(num) {

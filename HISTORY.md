@@ -7,12 +7,14 @@
 - BigInteger 戻り値のコメントに未翻訳があった場所を修正
 - BigInteger, BigDecimal 「-1」の定数を追加
 - BigInteger isOne, isNotNegative, scaleByPowerOfTen を追加
-- BigDecimal isNegative, isZero, isOne, isPositive, isNotNegative を追加
+- BigDecimal isNegative, isZero, isOne, isPositive, isNotNegative, floor, ceil, fix, fract を追加
 - BigDecimal の引数にNumber型の浮動小数点で初期化した場合に、小数点の最も下位の桁のみ四捨五入するように動作を変更
 - BigDecimal の equals, compareTo に許容誤差を設定できる機能を追加
+- BigDecimal の round の引数を省略した場合は、一般的な小数点以下を四捨五入する動作とする機能を追加
 - Matrix, Complex valueOf メソッドが正しく動作していない問題を修正
 - Matrix 引数でメンバーの省略が可能なオブジェクトの指定に typedef で独自型を定義するように修正
 - 引数に epsilon と記載されている変数名をより意味合いに近い tolerance に変更
+- fract の動作が、 x - trunc(x) となっていたのを修正。ただしくは、 x - floor(x)
 
 ## v0.1.15
 - ignoreリストを見直し

@@ -970,7 +970,7 @@ export default class Complex {
 
 	/**
 	 * To integer rounded down to the nearest.
-	 * @returns {Complex} fix(A)
+	 * @returns {Complex} fix(A), trunc(A)
 	 */
 	fix() {
 		return new Complex([Math.trunc(this._re), Math.trunc(this._im)]);
@@ -981,7 +981,7 @@ export default class Complex {
 	 * @returns {Complex} fract(A)
 	 */
 	fract() {
-		return new Complex([this._re - Math.trunc(this._re), this._im - Math.trunc(this._im)]);
+		return new Complex([this._re - Math.floor(this._re), this._im - Math.floor(this._im)]);
 	}
 
 	// ----------------------
