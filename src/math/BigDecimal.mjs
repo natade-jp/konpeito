@@ -134,6 +134,9 @@ export default class BigDecimal {
 	
 	/**
 	 * Create an arbitrary-precision floating-point number.
+	 * 
+	 * Initialization can be performed as follows.
+	 * - 1200, "1200", "12e2", "1.2e3"
 	 * - When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
 	 * - When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
 	 * 
@@ -620,7 +623,7 @@ export default class BigDecimal {
 	 * This method is not a method round the decimal point.
 	 * This method converts numbers in the specified Context and rounds unconvertible digits.
 	 * 
-	 * Use setScale(0, RoundingMode.HALF_UP) if you want to round the decimal point.
+	 * Use this.setScale(0, RoundingMode.HALF_UP) if you want to round the decimal point.
 	 * When the argument is omitted, such decimal point rounding operation is performed.
 	 * @param {MathContext} [mc] - New setting.
 	 * @returns {BigDecimal} 

@@ -80,7 +80,9 @@ export default class Complex {
 
 	/**
 	 * Create a complex number.
+	 * 
 	 * Initialization can be performed as follows.
+	 * - 1200, "1200", "12e2", "1.2e3"
 	 * - "3 + 4i", "4j + 3", [3, 4].
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Complex number. See how to use the function.
 	 */

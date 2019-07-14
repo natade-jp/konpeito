@@ -16,6 +16,8 @@
 - 引数に epsilon と記載されている変数名をより意味合いに近い tolerance に変更
 - fract の動作が、 x - trunc(x) となっていたのを修正。ただしくは、 x - floor(x)
 
+※現在、更新が多岐にわたるため、ドキュメントの更新、ビルドなどは行っていません。
+
 ## v0.1.15
 - ignoreリストを見直し
 - Matrix nmul, ndiv, ninv, npow を廃止予定にし、dotmul, dotdiv, dotinv, dotpow を追加
