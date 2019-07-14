@@ -6,34 +6,34 @@ const $ = Matrix.create;
 
 let test_count = 0;
 
-const testOperator1  = function(operator, x1, y, epsilon) {
+const testOperator1  = function(operator, x1, y, tolerance) {
 	test_count++;
-	const tolerance = epsilon ? epsilon : 0.001;
+	const tolerance_ = tolerance ? tolerance : 0.001;
 	const cy = Signal[operator](x1);
 	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
 	const testname = operator + " " + test_count + " " + operator + "(" + x1 + ") = " + cy_str;
-	const out = $(y).equals(cy, tolerance);
+	const out = $(y).equals(cy, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator2  = function(operator, x1, x2, y, epsilon) {
+const testOperator2  = function(operator, x1, x2, y, tolerance) {
 	test_count++;
-	const tolerance = epsilon ? epsilon : 0.001;
+	const tolerance_ = tolerance ? tolerance : 0.001;
 	const x2_str = (typeof x2 === "object") ? JSON.stringify(x2) : x2.toString();
 	const cy = Signal[operator](x1, x2);
 	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
 	const testname = operator + " " + test_count + " " + operator + "(" + x1 + "," + x2_str + ") = " + cy_str;
-	const out = $(y).equals(cy, tolerance);
+	const out = $(y).equals(cy, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator3  = function(operator, x1, x2, x3, y, epsilon) {
+const testOperator3  = function(operator, x1, x2, x3, y, tolerance) {
 	test_count++;
-	const tolerance = epsilon ? epsilon : 0.001;
+	const tolerance_ = tolerance ? tolerance : 0.001;
 	const cy = Signal[operator](x1, x2, x3);
 	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
 	const testname = operator + " " + test_count + " " + operator + "(" + x1 + "," + x2 + "," + x3 + ") = " + cy_str;
-	const out = $(y).equals(cy, tolerance);
+	const out = $(y).equals(cy, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -56,13 +56,13 @@ const testOperator3  = function(operator, x1, x2, x3, y, epsilon) {
 
 {
 	test_count = 0;
-	const testIFFT = function(x, epsilon) {
-		const tolerance = epsilon ? epsilon : 0.1;
+	const testIFFT = function(x, tolerance) {
+		const tolerance_ = tolerance ? tolerance : 0.1;
 		const X = $(x);
 		const Y = X.fft().ifft();
 		const Y_str = Y.toOneLineString();
 		const name = "ifft " + test_count++ + " " + x + ".fft().iff()=" + Y_str;
-		test(name, () => { expect(X.equals(Y, tolerance)).toBe(true); });
+		test(name, () => { expect(X.equals(Y, tolerance_)).toBe(true); });
 	};
 	testIFFT("[1]");
 	testIFFT("[1 2]");
@@ -89,13 +89,13 @@ const testOperator3  = function(operator, x1, x2, x3, y, epsilon) {
 
 {
 	test_count = 0;
-	const testIDCT = function(x, epsilon) {
-		const tolerance = epsilon ? epsilon : 0.1;
+	const testIDCT = function(x, tolerance) {
+		const tolerance_ = tolerance ? tolerance : 0.1;
 		const X = $(x);
 		const Y = X.dct().idct();
 		const Y_str = Y.toOneLineString();
 		const name = "idct " + test_count++ + " " + x + ".dct().idct()=" + Y_str;
-		test(name, () => { expect(X.equals(Y, tolerance)).toBe(true); });
+		test(name, () => { expect(X.equals(Y, tolerance_)).toBe(true); });
 	};
 	testIDCT("[1]");
 	testIDCT("[1 2]");

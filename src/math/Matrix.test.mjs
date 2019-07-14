@@ -19,36 +19,36 @@ const testGet  = function(operator, x, y) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator1  = function(operator, x, y, epsilon) {
+const testOperator1  = function(operator, x, y, tolerance) {
 	test_count++;
-	const tolerance = epsilon ? epsilon : 0.1;
+	const tolerance_ = tolerance ? tolerance : 0.1;
 	const X = $(x);
 	const Y = X[operator]();
 	const Y_str = Y.toOneLineString();
 	const testname = operator + " " + test_count + " " + x + "." + operator + "() = " + Y_str;
-	const out = $(Y).equals(y, tolerance);
+	const out = $(Y).equals(y, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator2  = function(operator, x, p, y, epsilon) {
+const testOperator2  = function(operator, x, p, y, tolerance) {
 	test_count++;
-	const tolerance = epsilon ? epsilon : 0.1;
+	const tolerance_ = tolerance ? tolerance : 0.1;
 	const X = $(x);
 	const Y = X[operator](p);
 	const Y_str = Y.toOneLineString();
 	const testname = operator + " " + test_count + " " + x + "." + operator + "(" + p + ") = " + Y_str;
-	const out = $(Y).equals(y, tolerance);
+	const out = $(Y).equals(y, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator3  = function(operator, x, p1, p2, y, epsilon) {
+const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	test_count++;
-	const tolerance = epsilon ? epsilon : 0.1;
+	const tolerance_ = tolerance ? tolerance : 0.1;
 	const X = $(x);
 	const Y = X[operator](p1, p2);
 	const Y_str = Y.toOneLineString();
 	const testname = operator + " " + test_count + " " + x + "." + operator + "(" + p1 + "," + p2 + ") = " + Y_str;
-	const out = $(Y).equals(y, tolerance);
+	const out = $(Y).equals(y, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -114,14 +114,14 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 
 {
 	test_count = 0;
-	const testGetMatrix  = function(x, p1, p2, y, epsilon) {
+	const testGetMatrix  = function(x, p1, p2, y, tolerance) {
 		test_count++;
-		const tolerance = epsilon ? epsilon : 0.1;
+		const tolerance_ = tolerance ? tolerance : 0.1;
 		const cx = $(x);
 		const cy = cx.getMatrix(p1, p2);
 		const cy_str = cy.toOneLineString();
 		const testname = "getMatrix " + test_count + " " + x + ".getMatrix(" + p1 + ", " + p2 + ") = " + cy_str;
-		const out = $(y).equals(cy, tolerance);
+		const out = $(y).equals(cy, tolerance_);
 		test(testname, () => { expect(out).toBe(true); });
 	};
 	testGetMatrix("[1 2]", "0", "0", "1");
@@ -142,14 +142,14 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 
 {
 	test_count = 0;
-	const testSetMatrix  = function(x, p1, p2, p3, y, epsilon) {
+	const testSetMatrix  = function(x, p1, p2, p3, y, tolerance) {
 		test_count++;
-		const tolerance = epsilon ? epsilon : 0.1;
+		const tolerance_ = tolerance ? tolerance : 0.1;
 		const cx = $(x);
 		const cy = cx.setMatrix(p1, p2, p3);
 		const cy_str = cy.toOneLineString();
 		const testname = "setMatrix " + test_count + " " + x + ".setMatrix(" + p1 + ", " + p2 + ", " + p3 + ") = " + cy_str;
-		const out = $(y).equals(cy, tolerance);
+		const out = $(y).equals(cy, tolerance_);
 		test(testname, () => { expect(out).toBe(true); });
 	};
 	testSetMatrix("[5]", "0", "0", "6", "[6]");
@@ -423,14 +423,14 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 
 {
 	test_count = 0;
-	const testEachVector  = function(x, p1, p2, y, epsilon) {
+	const testEachVector  = function(x, p1, p2, y, tolerance) {
 		test_count++;
-		const tolerance = epsilon ? epsilon : 0.1;
+		const tolerance_ = tolerance ? tolerance : 0.1;
 		const cx = $(x);
 		const cy = cx.eachVector(p1, p2);
 		const cy_str = cy.toOneLineString();
 		const testname = "eachVector " + test_count + " " + x + ".eachVector(sum, " + p2 + ") = " + cy_str;
-		const out = $(y).equals(cy, tolerance);
+		const out = $(y).equals(cy, tolerance_);
 		test(testname, () => { expect(out).toBe(true); });
 	};
 

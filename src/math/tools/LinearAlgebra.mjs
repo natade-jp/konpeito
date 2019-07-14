@@ -38,7 +38,7 @@ class LinearAlgebraTool {
 
 		const A = Matrix._toMatrix(mat);
 		const a = A.getNumberMatrixArray();
-		const tolerance = 1.0e-10;
+		const tolerance_ = 1.0e-10;
 
 		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
 		// 3重対角化の成分を取得する
@@ -74,7 +74,7 @@ class LinearAlgebraTool {
 			// xの内積の平方根（ノルム）を計算
 			let y1 = Math.sqrt(innerproduct(x, x, ioffset, imax));
 			const v = [];
-			if(Math.abs(y1) >= tolerance) {
+			if(Math.abs(y1) >= tolerance_) {
 				if(x[ioffset] < 0) {
 					y1 = - y1;
 				}
@@ -110,7 +110,7 @@ class LinearAlgebraTool {
 						v[k + 1 + i] = H.v[i];
 					}
 				}
-				if(Math.abs(e[k]) < tolerance) {
+				if(Math.abs(e[k]) < tolerance_) {
 					continue;
 				}
 				for(let i = k + 1; i < n; i++) {
@@ -194,7 +194,7 @@ class LinearAlgebraTool {
 		
 		// QR法により固有値を求める
 		let is_error = false;
-		const tolerance = 1.0e-10;
+		const tolerance_ = 1.0e-10;
 		const PH = LinearAlgebraTool.tridiagonalize(A);
 		const a = PH.P.getNumberMatrixArray();
 		const h = PH.H.getNumberMatrixArray();
@@ -213,7 +213,7 @@ class LinearAlgebraTool {
 		for(let h = n - 1; h > 0; h--) {
 			let j = h;
 			for(j = h;j >= 1; j--) {
-				if(Math.abs(e[j]) <= (tolerance * (Math.abs(d[j - 1]) + Math.abs(d[j])))) {
+				if(Math.abs(e[j]) <= (tolerance_ * (Math.abs(d[j - 1]) + Math.abs(d[j])))) {
 					break;
 				}
 			}
@@ -267,7 +267,7 @@ class LinearAlgebraTool {
 						e[k + 2] *= c;
 					}
 				}
-				if(Math.abs(e[h]) <= tolerance * (Math.abs(d[h - 1]) + Math.abs(d[h]))) {
+				if(Math.abs(e[h]) <= tolerance_ * (Math.abs(d[h - 1]) + Math.abs(d[h]))) {
 					break;
 				}
 			}
@@ -381,16 +381,16 @@ class LinearAlgebraTool {
 	 * Create orthogonal vectors for all row vectors of the matrix.
 	 * - If the vector can not be found, it returns NULL.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {number} [epsilon=1.0e-10] - Calculation tolerance of calculation.
+	 * @param {number} [tolerance=1.0e-10] - Calculation tolerance of calculation.
 	 * @returns {Matrix|null} An orthogonal vector.
 	 */
-	static createOrthogonalVector(mat, epsilon) {
+	static createOrthogonalVector(mat, tolerance) {
 		const M = new Matrix(mat);
 		const column_length = M.column_length;
 		const m = M.matrix_array;
-		const tolerance = epsilon ? epsilon : 1.0e-10;
+		const tolerance_ = tolerance ? tolerance : 1.0e-10;
 		// 正則行列をなす場合に問題となる行番号を取得
-		const not_regular_rows = LinearAlgebraTool.getLinearDependenceVector(M, tolerance);
+		const not_regular_rows = LinearAlgebraTool.getLinearDependenceVector(M, tolerance_);
 		// 不要な行を削除する
 		{
 			// not_regular_rowsは昇順リストなので、後ろから消していく
@@ -473,14 +473,14 @@ class LinearAlgebraTool {
 	/**
 	 * Extract linearly dependent rows when each row of matrix is a vector.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {number} [epsilon=1.0e-10] - Calculation tolerance of calculation.
+	 * @param {number} [tolerance=1.0e-10] - Calculation tolerance of calculation.
 	 * @returns {Array} Array of matrix row numbers in ascending order.
 	 * @private
 	 */
-	static getLinearDependenceVector(mat, epsilon) {
+	static getLinearDependenceVector(mat, tolerance) {
 		const M = new Matrix(mat);
 		const m = M.matrix_array;
-		const tolerance = epsilon ? Matrix._toDouble(epsilon) : 1.0e-10;
+		const tolerance_ = tolerance ? Matrix._toDouble(tolerance) : 1.0e-10;
 		// 確認する行番号（ここから終わった行は削除していく）
 		const row_index_array = new Array(mat.row_length);
 		for(let i = 0; i < mat.row_length; i++) {
@@ -503,7 +503,7 @@ class LinearAlgebraTool {
 					}
 				}
 				// 大きいのが0である＝その列は全て0である
-				if(row_max <= tolerance) {
+				if(row_max <= tolerance_) {
 					continue;
 				}
 				// 大きな値があった行は、リストから除去する
@@ -729,17 +729,17 @@ export default class LinearAlgebra {
 	/**
 	 * Rank.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {number} rank(A)
 	 */
-	static rank(mat, epsilon) {
+	static rank(mat, tolerance) {
 		const M = Matrix._toMatrix(mat);
 		// 横が長い行列の場合
 		if(M.row_length <= M.column_length) {
-			return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
+			return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, tolerance)).length;
 		}
 		else {
-			return M.row_length - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
+			return M.row_length - (LinearAlgebraTool.getLinearDependenceVector(M, tolerance)).length;
 		}
 	}
 

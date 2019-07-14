@@ -744,23 +744,23 @@ export default class Matrix {
 	/**
 	 * Equals.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === B
 	 */
-	equals(number, epsilon) {
+	equals(number, tolerance) {
 		const M1 = this;
 		const M2 = Matrix._toMatrix(number);
 		if((M1.row_length !== M2.row_length) || (M1.column_length !== M2.column_length)) {
 			return false;
 		}
 		if((M1.row_length === 1) && (M1.column_length ===1)) {
-			return M1.scalar.equals(M2.scalar, epsilon);
+			return M1.scalar.equals(M2.scalar, tolerance);
 		}
 		const x1 = M1.matrix_array;
 		const x2 = M2.matrix_array;
 		for(let row = 0; row < this.row_length; row++) {
 			for(let col = 0; col < this.column_length; col++) {
-				if(!x1[row][col].equals(x2[row][col], epsilon)) {
+				if(!x1[row][col].equals(x2[row][col], tolerance)) {
 					return false;
 				}
 			}
@@ -1175,11 +1175,11 @@ export default class Matrix {
 
 	/**
 	 * Rank.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {number} rank(A)
 	 */
-	rank(epsilon) {
-		return LinearAlgebra.rank(this, epsilon);
+	rank(tolerance) {
+		return LinearAlgebra.rank(this, tolerance);
 	}
 
 	/**
@@ -1379,13 +1379,13 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is real matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isReal(epsilon) {
+	isReal(tolerance) {
 		let is_real = true;
 		this._each(function(num){
-			if(is_real && (num.isComplex(epsilon))) {
+			if(is_real && (num.isComplex(tolerance))) {
 				is_real = false;
 			}
 		});
@@ -1394,23 +1394,23 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is complex matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isComplex(epsilon) {
-		return !this.isReal(epsilon);
+	isComplex(tolerance) {
+		return !this.isReal(tolerance);
 	}
 
 	/**
 	 * Return true if the matrix is zero matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isZeros(epsilon) {
+	isZeros(tolerance) {
 		let is_zeros = true;
-		const tolerance = epsilon ? epsilon : 1.0e-10;
+		const tolerance_ = tolerance ? tolerance : 1.0e-10;
 		this._each(function(num){
-			if(is_zeros && (!num.isZero(tolerance))) {
+			if(is_zeros && (!num.isZero(tolerance_))) {
 				is_zeros = false;
 			}
 		});
@@ -1419,21 +1419,21 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is identity matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isIdentity(epsilon) {
+	isIdentity(tolerance) {
 		let is_identity = true;
-		const tolerance = epsilon ? epsilon : 1.0e-10;
+		const tolerance_ = tolerance ? tolerance : 1.0e-10;
 		this._each(function(num, row, col){
 			if(is_identity) {
 				if(row === col) {
-					if(!num.isOne(tolerance)) {
+					if(!num.isOne(tolerance_)) {
 						is_identity = false;
 					}
 				}
 				else {
-					if(!num.isZero(tolerance)) {
+					if(!num.isZero(tolerance_)) {
 						is_identity = false;
 					}
 				}
@@ -1444,14 +1444,14 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is diagonal matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isDiagonal(epsilon) {
+	isDiagonal(tolerance) {
 		let is_diagonal = true;
-		const tolerance = epsilon ? epsilon : 1.0e-10;
+		const tolerance_ = tolerance ? tolerance : 1.0e-10;
 		this._each(function(num, row, col){
-			if(is_diagonal && (row !== col) && (!num.isZero(tolerance))) {
+			if(is_diagonal && (row !== col) && (!num.isZero(tolerance_))) {
 				is_diagonal = false;
 			}
 		});
@@ -1460,14 +1460,14 @@ export default class Matrix {
 	
 	/**
 	 * Return true if the matrix is tridiagonal matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isTridiagonal(epsilon) {
+	isTridiagonal(tolerance) {
 		let is_tridiagonal = true;
-		const tolerance = epsilon ? epsilon : 1.0e-10;
+		const tolerance_ = tolerance ? tolerance : 1.0e-10;
 		this._each(function(num, row, col){
-			if(is_tridiagonal && (Math.abs(row - col) > 1) && (!num.isZero(tolerance))) {
+			if(is_tridiagonal && (Math.abs(row - col) > 1) && (!num.isZero(tolerance_))) {
 				is_tridiagonal = false;
 			}
 		});
@@ -1476,59 +1476,59 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is regular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isRegular(epsilon) {
+	isRegular(tolerance) {
 		if(!this.isSquare()) {
 			return false;
 		}
 		// ランクが行列の次元と等しいかどうかで判定
 		// det(M) != 0 でもよいが、時間がかかる可能性があるので
 		// 誤差は自動で計算など本当はもうすこし良い方法を考える必要がある
-		const tolerance = epsilon ? epsilon : 1.0e-10;
-		return (this.rank(tolerance) === this.row_length);
+		const tolerance_ = tolerance ? tolerance : 1.0e-10;
+		return (this.rank(tolerance_) === this.row_length);
 	}
 
 	/**
 	 * Return true if the matrix is orthogonal matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isOrthogonal(epsilon) {
+	isOrthogonal(tolerance) {
 		if(!this.isSquare()) {
 			return false;
 		}
-		const tolerance = epsilon ? epsilon : 1.0e-10;
-		return (this.mul(this.transpose()).isIdentity(tolerance));
+		const tolerance_ = tolerance ? tolerance : 1.0e-10;
+		return (this.mul(this.transpose()).isIdentity(tolerance_));
 	}
 
 	/**
 	 * Return true if the matrix is unitary matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isUnitary(epsilon) {
+	isUnitary(tolerance) {
 		if(!this.isSquare()) {
 			return false;
 		}
-		const tolerance = epsilon ? epsilon : 1.0e-10;
-		return (this.mul(this.ctranspose()).isIdentity(tolerance));
+		const tolerance_ = tolerance ? tolerance : 1.0e-10;
+		return (this.mul(this.ctranspose()).isIdentity(tolerance_));
 	}
 
 	/**
 	 * Return true if the matrix is symmetric matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isSymmetric(epsilon) {
+	isSymmetric(tolerance) {
 		if(!this.isSquare()) {
 			return false;
 		}
-		const tolerance = epsilon ? epsilon : 1.0e-10;
+		const tolerance_ = tolerance ? tolerance : 1.0e-10;
 		for(let row = 0; row < this.row_length; row++) {
 			for(let col = row + 1; col < this.column_length; col++) {
-				if(!this.matrix_array[row][col].equals(this.matrix_array[col][row], tolerance)) {
+				if(!this.matrix_array[row][col].equals(this.matrix_array[col][row], tolerance_)) {
 					return false;
 				}
 			}
@@ -1538,22 +1538,22 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is hermitian matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isHermitian(epsilon) {
+	isHermitian(tolerance) {
 		if(!this.isSquare()) {
 			return false;
 		}
-		const tolerance = epsilon ? epsilon : 1.0e-10;
+		const tolerance_ = tolerance ? tolerance : 1.0e-10;
 		for(let row = 0; row < this.row_length; row++) {
 			for(let col = row; col < this.column_length; col++) {
 				if(row === col) {
-					if(!this.matrix_array[row][col].isReal(tolerance)) {
+					if(!this.matrix_array[row][col].isReal(tolerance_)) {
 						return false;
 					}
 				}
-				else if(!this.matrix_array[row][col].equals(this.matrix_array[col][row].conj(), tolerance)) {
+				else if(!this.matrix_array[row][col].equals(this.matrix_array[col][row].conj(), tolerance_)) {
 					return false;
 				}
 			}
@@ -1563,14 +1563,14 @@ export default class Matrix {
 	
 	/**
 	 * Return true if the matrix is upper triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isTriangleUpper(epsilon) {
+	isTriangleUpper(tolerance) {
 		let is_upper = true;
-		const tolerance = epsilon ? epsilon : 1.0e-10;
+		const tolerance_ = tolerance ? tolerance : 1.0e-10;
 		this._each(function(num, row, col){
-			if(is_upper && (row > col) && (!num.isZero(tolerance))) {
+			if(is_upper && (row > col) && (!num.isZero(tolerance_))) {
 				is_upper = false;
 			}
 		});
@@ -1579,14 +1579,14 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is  lower triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isTriangleLower(epsilon) {
+	isTriangleLower(tolerance) {
 		let is_lower = true;
-		const tolerance = epsilon ? epsilon : 1.0e-10;
+		const tolerance_ = tolerance ? tolerance : 1.0e-10;
 		this._each(function(num, row, col){
-			if(is_lower && (row < col) && (!num.isZero(tolerance))) {
+			if(is_lower && (row < col) && (!num.isZero(tolerance_))) {
 				is_lower = false;
 			}
 		});
@@ -1595,20 +1595,20 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is permutation matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isPermutation(epsilon) {
+	isPermutation(tolerance) {
 		if(!this.isSquare()) {
 			return false;
 		}
-		const tolerance = epsilon ? epsilon : 1.0e-10;
+		const tolerance_ = tolerance ? tolerance : 1.0e-10;
 		const is_row = new Array(this.row_length);
 		const is_col = new Array(this.column_length);
 		for(let row = 0; row < this.row_length; row++) {
 			for(let col = 0; col < this.column_length; col++) {
 				const target = this.matrix_array[row][col];
-				if(target.isOne(tolerance)) {
+				if(target.isOne(tolerance_)) {
 					if(!is_row[row] && !is_col[col]) {
 						is_row[row] = 1;
 						is_col[col] = 1;
@@ -1617,7 +1617,7 @@ export default class Matrix {
 						return false;
 					}
 				}
-				else if(!target.isZero(tolerance)) {
+				else if(!target.isZero(tolerance_)) {
 					return false;
 				}
 			}
@@ -1644,15 +1644,15 @@ export default class Matrix {
 	 * - Return value between scalars is of type Number.
 	 * - Return value between matrices is type Matrix.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
 	 */
-	compareTo(number, epsilon) {
+	compareTo(number, tolerance) {
 		const M1 = this;
 		const M2 = Matrix._toMatrix(number);
 		// ※スカラー同士の場合は、実数を返す
 		if(M1.isScalar() && M2.isScalar()) {
-			return M1.scalar.compareTo(M2.scalar, epsilon);
+			return M1.scalar.compareTo(M2.scalar, tolerance);
 		}
 		const x1 = M1.matrix_array;
 		const x2 = M2.matrix_array;
@@ -1782,9 +1782,9 @@ export default class Matrix {
 			return new Matrix(y);
 		}
 		if(M2.row_length === M2.column_length) {
-			const epsilon = 1.0e-10;
+			const tolerance = 1.0e-10;
 			const det = M2.det().scalar.norm;
-			if(det > epsilon) {
+			if(det > tolerance) {
 				// ランク落ちしていないので通常の逆行列を使用する
 				return this.mul(M2.inv());
 			}
@@ -1985,72 +1985,72 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is integer.
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
-	testInteger(epsilon) {
+	testInteger(tolerance) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isInteger(epsilon) ? Complex.ONE : Complex.ZERO;
+			return num.isInteger(tolerance) ? Complex.ONE : Complex.ZERO;
 		});
 	}
 
 	/**
 	 * Test if each element of the matrix is complex integer.
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
-	testComplexInteger(epsilon) {
+	testComplexInteger(tolerance) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isComplexInteger(epsilon) ? Complex.ONE : Complex.ZERO;
+			return num.isComplexInteger(tolerance) ? Complex.ONE : Complex.ZERO;
 		});
 	}
 
 	/**
 	 * real(this) === 0
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
-	testZero(epsilon) {
+	testZero(tolerance) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isZero(epsilon) ? Complex.ONE : Complex.ZERO;
+			return num.isZero(tolerance) ? Complex.ONE : Complex.ZERO;
 		});
 	}
 
 	/**
 	 * real(this) === 1
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
-	testOne(epsilon) {
+	testOne(tolerance) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isOne(epsilon) ? Complex.ONE : Complex.ZERO;
+			return num.isOne(tolerance) ? Complex.ONE : Complex.ZERO;
 		});
 	}
 	
 	/**
 	 * Test if each element of the matrix is complex.
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
-	testComplex(epsilon) {
+	testComplex(tolerance) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isComplex(epsilon) ? Complex.ONE : Complex.ZERO;
+			return num.isComplex(tolerance) ? Complex.ONE : Complex.ZERO;
 		});
 	}
 
 	/**
 	 * Test if each element of the matrix is real.
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
-	testReal(epsilon) {
+	testReal(tolerance) {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isReal(epsilon) ? Complex.ONE : Complex.ZERO;
+			return num.isReal(tolerance) ? Complex.ONE : Complex.ZERO;
 		});
 	}
 

@@ -294,18 +294,18 @@ export default class Complex {
 	/**
 	 * Equals.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === B
 	 */
-	equals(number, epsilon) {
+	equals(number, tolerance) {
 		const x = Complex._toComplex(number);
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
 		// 無限大、非数の値も含めて一度確認
 		if((this._re === x._re) && (this._im === x._im)) {
 			return true;
 		}
 		// 誤差を含んだ値の比較
-		return (Math.abs(this._re - x._re) <  tolerance) && (Math.abs(this._im - x._im) < tolerance);
+		return (Math.abs(this._re - x._re) <  tolerance_) && (Math.abs(this._im - x._im) < tolerance_);
 	}
 
 	/**
@@ -532,16 +532,16 @@ export default class Complex {
 	/**
 	 * Compare values.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
-	compareTo(number, epsilon) {
+	compareTo(number, tolerance) {
 		const x1 = this;
 		const x2 = Complex._toComplex(number);
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
 		const a = x1.real + x1.imag;
 		const b = x2.real + x2.imag;
-		if((Math.abs(a - b) < tolerance)) {
+		if((Math.abs(a - b) < tolerance_)) {
 			return 0;
 		}
 		return a > b ? 1 : -1;
@@ -608,64 +608,64 @@ export default class Complex {
 	
 	/**
 	 * Return true if the value is integer.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isInteger(epsilon) {
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return this.isReal() && (Math.abs(this._re - Math.trunc(this._re)) < tolerance);
+	isInteger(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return this.isReal() && (Math.abs(this._re - Math.trunc(this._re)) < tolerance_);
 	}
 
 	/**
 	 * Returns true if the vallue is complex integer (including normal integer).
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} real(A) === integer && imag(A) === integer
 	 */
-	isComplexInteger(epsilon) {
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+	isComplexInteger(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
 		// 複素整数
-		return (Math.abs(this._re - Math.trunc(this._re)) < tolerance) &&
-				(Math.abs(this._im - Math.trunc(this._im)) < tolerance);
+		return (Math.abs(this._re - Math.trunc(this._re)) < tolerance_) &&
+				(Math.abs(this._im - Math.trunc(this._im)) < tolerance_);
 	}
 
 	/**
 	 * this === 0
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === 0
 	 */
-	isZero(epsilon) {
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return (Math.abs(this._re) < tolerance) && (Math.abs(this._im) < tolerance);
+	isZero(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._re) < tolerance_) && (Math.abs(this._im) < tolerance_);
 	}
 
 	/**
 	 * this === 1
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === 1
 	 */
-	isOne(epsilon) {
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return (Math.abs(this._re - 1.0) < tolerance) && (Math.abs(this._im) < tolerance);
+	isOne(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._re - 1.0) < tolerance_) && (Math.abs(this._im) < tolerance_);
 	}
 
 	/**
 	 * Returns true if the vallue is complex number (imaginary part is not 0).
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} imag(A) !== 0
 	 */
-	isComplex(epsilon) {
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return (Math.abs(this._im) >= tolerance);
+	isComplex(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._im) >= tolerance_);
 	}
 	
 	/**
 	 * Return true if the value is real number.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} imag(A) === 0
 	 */
-	isReal(epsilon) {
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return (Math.abs(this._im) < tolerance);
+	isReal(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._im) < tolerance_);
 	}
 
 	/**

@@ -45,36 +45,36 @@ const testGet  = function(operator, x, y) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator1  = function(operator, x, y, epsilon) {
+const testOperator1  = function(operator, x, y, tolerance) {
 	test_count++;
-	const tolerance = epsilon ? epsilon : 0.1;
+	const tolerance_ = tolerance ? tolerance : 0.1;
 	const X = $(x);
 	const Y = X[operator]();
 	const Y_str = Y;
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + Y_str;
-	const out = $(Y).equals(y, tolerance);
+	const out = $(Y).equals(y, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator2  = function(operator, x, p, y, epsilon) {
+const testOperator2  = function(operator, x, p, y, tolerance) {
 	test_count++;
-	const tolerance = epsilon ? epsilon : 0.1;
+	const tolerance_ = tolerance ? tolerance : 0.1;
 	const X = $(x);
 	const Y = X[operator](p);
 	const Y_str = Y;
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p + ") = " + Y_str;
-	const out = $(Y).equals(y, tolerance);
+	const out = $(Y).equals(y, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator3  = function(operator, x, p1, p2, y, epsilon) {
+const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	test_count++;
-	const tolerance = epsilon ? epsilon : 0.1;
+	const tolerance_ = tolerance ? tolerance : 0.1;
 	const X = $(x);
 	const Y = X[operator](p1, p2);
 	const Y_str = Y;
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + Y_str;
-	const out = $(Y).equals(y, tolerance);
+	const out = $(Y).equals(y, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 

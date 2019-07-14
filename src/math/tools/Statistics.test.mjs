@@ -6,34 +6,34 @@ const $ = Matrix.create;
 
 let test_count = 0;
 
-const testOperator1  = function(operator, x1, y, epsilon) {
+const testOperator1  = function(operator, x1, y, tolerance) {
 	test_count++;
-	const tolerance = epsilon ? epsilon : 0.001;
+	const tolerance_ = tolerance ? tolerance : 0.001;
 	const cy = Statistics[operator](x1);
 	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
 	const testname = operator + " " + test_count + " " + operator + "(" + x1 + ") = " + cy_str;
-	const out = $(y).equals(cy, tolerance);
+	const out = $(y).equals(cy, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator2  = function(operator, x1, x2, y, epsilon) {
+const testOperator2  = function(operator, x1, x2, y, tolerance) {
 	test_count++;
-	const tolerance = epsilon ? epsilon : 0.001;
+	const tolerance_ = tolerance ? tolerance : 0.001;
 	const x2_str = (typeof x2 === "object") ? JSON.stringify(x2) : x2.toString();
 	const cy = Statistics[operator](x1, x2);
 	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
 	const testname = operator + " " + test_count + " " + operator + "(" + x1 + "," + x2_str + ") = " + cy_str;
-	const out = $(y).equals(cy, tolerance);
+	const out = $(y).equals(cy, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator3  = function(operator, x1, x2, x3, y, epsilon) {
+const testOperator3  = function(operator, x1, x2, x3, y, tolerance) {
 	test_count++;
-	const tolerance = epsilon ? epsilon : 0.001;
+	const tolerance_ = tolerance ? tolerance : 0.001;
 	const cy = Statistics[operator](x1, x2, x3);
 	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
 	const testname = operator + " " + test_count + " " + operator + "(" + x1 + "," + x2 + "," + x3 + ") = " + cy_str;
-	const out = $(y).equals(cy, tolerance);
+	const out = $(y).equals(cy, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -370,14 +370,14 @@ const testOperator3  = function(operator, x1, x2, x3, y, epsilon) {
 
 {
 	test_count = 0;
-	const testNormalize = function(x, type, epsilon) {
+	const testNormalize = function(x, type, tolerance) {
 		test_count++;
-		const tolerance = epsilon ? epsilon : 0.1;
+		const tolerance_ = tolerance ? tolerance : 0.1;
 		const X = $(x);
 		const Y = X.normalize(type).std(type);
 		const Y_str = Y.toOneLineString();
 		const name = "normalize " + test_count + " ";
-		test(name + "std(normalize(" + x + "," + JSON.stringify(type) + ")) = " + Y_str, () => { expect(Y.equals(1.0, tolerance)).toBe(true); });
+		test(name + "std(normalize(" + x + "," + JSON.stringify(type) + ")) = " + Y_str, () => { expect(Y.equals(1.0, tolerance_)).toBe(true); });
 	};
 	testNormalize("[1.0, 1.2, 1.3]", {correction : 0});
 	testNormalize("[1.0, 1.2, 1.3]", {correction : 1});
