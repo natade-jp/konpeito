@@ -678,37 +678,52 @@ export default class BigDecimal {
 
 	/**
 	 * Compare values.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
-	compareTo(number) {
+	compareTo(number, tolerance) {
 		const src = this;
 		const tgt = BigDecimal._toBigDecimal(number);
-		// 簡易計算
-		{
-			const src_sign	= src.signum();
-			const tgt_sign	= tgt.signum();
-			if((src_sign === 0) && (src_sign === tgt_sign)) {
-				return 0;
+		if(!tolerance) {
+			// 誤差の指定がない場合
+			// 簡易計算
+			{
+				const src_sign	= src.signum();
+				const tgt_sign	= tgt.signum();
+				if((src_sign === 0) && (src_sign === tgt_sign)) {
+					return 0;
+				}
+				else if(src_sign === 0) {
+					return - tgt_sign;
+				}
+				else if(tgt_sign === 0) {
+					return src_sign;
+				}
 			}
-			else if(src_sign === 0) {
-				return - tgt_sign;
+			// 実際に計算する
+			if(src._scale === tgt._scale) {
+				return src.integer.compareTo(tgt.integer);
 			}
-			else if(tgt_sign === 0) {
-				return src_sign;
+			else if(src._scale > tgt._scale) {
+				const newdst = tgt.setScale(src._scale);
+				return src.integer.compareTo(newdst.integer);
 			}
-		}
-		// 実際に計算する
-		if(src._scale === tgt._scale) {
-			return src.integer.compareTo(tgt.integer);
-		}
-		else if(src._scale > tgt._scale) {
-			const newdst = tgt.setScale(src._scale);
-			return src.integer.compareTo(newdst.integer);
+			else {
+				const newsrc = src.setScale(tgt._scale);
+				return newsrc.integer.compareTo(tgt.integer);
+			}
 		}
 		else {
-			const newsrc = src.setScale(tgt._scale);
-			return newsrc.integer.compareTo(tgt.integer);
+			const tolerance_ = BigDecimal._toBigDecimal(tolerance);
+			const delta = src.sub(tgt, MathContext.UNLIMITED);
+			const delta_abs = delta.integer.abs();
+			if(delta_abs.compareTo(tolerance_) <= 0) {
+				return 0;
+			}
+			else {
+				return delta.sign();
+			}
 		}
 	}
 
@@ -754,20 +769,29 @@ export default class BigDecimal {
 
 	/**
 	 * Equals.
-	 * Test for equality, including precision and scale.
+	 * - Attention : Test for equality, including the precision and the scale. 
+	 * - Use the "compareTo" if you only want to find out whether they are also mathematically equal.
+	 * - If you specify a "tolerance", it is calculated by ignoring the test of the precision and the scale.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === B
 	 */
-	equals(number) {
-		if(number instanceof BigDecimal) {
-			return ((this._scale === number._scale) && (this.integer.equals(number.integer)));
-		}
-		else if((typeof number === "string") || (number instanceof String)) {
-			const val = BigDecimal._toBigDecimal(number);
-			return ((this._scale === val._scale) && (this.integer.equals(val.integer)));
+	equals(number, tolerance) {
+		// 誤差を指定しない場合は、厳密に調査
+		if(!tolerance) {
+			if(number instanceof BigDecimal) {
+				return ((this._scale === number._scale) && (this.integer.equals(number.integer)));
+			}
+			else if((typeof number === "string") || (number instanceof String)) {
+				const val = BigDecimal._toBigDecimal(number);
+				return ((this._scale === val._scale) && (this.integer.equals(val.integer)));
+			}
+			else {
+				return this.compareTo(number) === 0;
+			}
 		}
 		else {
-			return this.compareTo(number) === 0;
+			return this.compareTo(number, tolerance) === 0;
 		}
 	}
 

@@ -541,7 +541,7 @@ export default class Complex {
 		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
 		const a = x1.real + x1.imag;
 		const b = x2.real + x2.imag;
-		if((Math.abs(a - b) < tolerance_)) {
+		if((Math.abs(a - b) <= tolerance_)) {
 			return 0;
 		}
 		return a > b ? 1 : -1;

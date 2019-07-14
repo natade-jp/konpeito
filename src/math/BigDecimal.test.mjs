@@ -7,12 +7,12 @@ const $ = BigDecimal.create;
 
 let test_count = 0;
 
-const testEQ = function(operator, x, y) {
+const testCompareTo = function(operator, x, y, z, tolerance) {
 	test_count++;
 	const X = $(x);
 	const Y = $(y);
-	const testname = operator + " " + test_count + " $(" + x + ")";
-	const out = $(X).compareTo(Y) === 0;
+	const testname = operator + " " + test_count + " $(" + x + ", " + tolerance + ")." + operator + "(" + y + ") = " + z;
+	const out = $(X).compareTo(Y, tolerance) === z;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -24,7 +24,6 @@ const testBool = function(operator, x, y) {
 	const out = Y === y;
 	test(testname, () => { expect(out).toBe(true); });
 };
-
 
 const testOperator1  = function(operator, x, y) {
 	test_count++;
@@ -53,6 +52,30 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	const out = $(Y).compareTo(y) === 0;
 	test(testname, () => { expect(out).toBe(true); });
 };
+
+{
+	test_count = 0;
+	testCompareTo("compareTo", 10, 9,  1, null);
+	testCompareTo("compareTo", 10, 10, 0, null);
+	testCompareTo("compareTo", 10, 11,-1, null);
+	testCompareTo("compareTo", -10, -9, -1, null);
+	testCompareTo("compareTo", -10, -10, 0, null);
+	testCompareTo("compareTo", -10, -11, 1, null);
+}
+
+{
+	test_count = 0;
+	testCompareTo("compareTo", 10, 8,  1, 1);
+	testCompareTo("compareTo", 10, 9,  0, 1);
+	testCompareTo("compareTo", 10, 10, 0, 1);
+	testCompareTo("compareTo", 10, 11, 0, 1);
+	testCompareTo("compareTo", 10, 12,-1, 1);
+	testCompareTo("compareTo",-10,-8, -1, 1);
+	testCompareTo("compareTo",-10,-9,  0, 1);
+	testCompareTo("compareTo",-10,-10, 0, 1);
+	testCompareTo("compareTo",-10,-11, 0, 1);
+	testCompareTo("compareTo",-10,-12, 1, 1);
+}
 
 {
 	//	number,			toString,	toPlainString,		toEngineeringString, unscaledValue, scale
