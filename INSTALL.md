@@ -36,8 +36,12 @@ npm run test
 npm run test_target -- Matrix
 npm run test_target -- Complex
 npm run test_target -- LinearAlgebra
+npm run test_target -- Signal
+npm run test_target -- Statistics
 npm run test_target -- BigInteger
 npm run test_target -- BigDecimal
+npm run test_target -- Fraction
+npm run test_target -- Compatibility
 ...
 ```
 

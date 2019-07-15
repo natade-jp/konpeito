@@ -35,9 +35,10 @@ import Matrix from "./math/Matrix.mjs";
 
 /**
  * Class collection of numerical calculation processing.
- * These classes are classified into a BigInteger and BigDecimal and Matrix.
- * - BigInteger is the calculation class for arbitrary-precision integer arithmetic.
+ * These classes are classified into a BigInteger, BigDecimal, Fraction, Matrix.
+ * - BigInteger is a calculation class for arbitrary-precision integer arithmetic.
  * - BigDecimal is a calculation class for arbitrary-precision floating point arithmetic.
+ * - Fraction is a calculation class for fractions with infinite precision.
  * - Matrix is a general-purpose calculation class with signal processing and statistical processing.
  */
 export default class konpeito {

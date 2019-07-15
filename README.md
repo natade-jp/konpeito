@@ -15,20 +15,18 @@
 This library has 4 functions.
 - BigInteger
 - BigDecimal
-- Complex
+- Fraction
 - Matrix
 
 Has the following features.
-- BigDecimal is constructed by BigInteger.
+- BigDecimal and Fraction are constructed by BigInteger.
 - Matrix is constructed by array of Complex.
-- Matrix and Complex can't use huge real numbers like BigInteger or BigDecimal, but they are powerful.
-- Matrix initialization can be described as Scilab, Octave, MATLAB.
+- Matrix can't use huge real numbers like BigInteger or BigDecimal, but they are powerful. Initialization can be described as Scilab, Octave, MATLAB.
 
 Please check the console and main.mjs.
 - [BigDecimal](https://natade-jp.github.io/konpeito/html/examples/demos/BigDecimal/)
 - [BigInteger](https://natade-jp.github.io/konpeito/html/examples/demos/BigInteger/)
 - [Matrix](https://natade-jp.github.io/konpeito/html/examples/demos/Matrix/)
-- [Random](https://natade-jp.github.io/konpeito/html/examples/demos/Random/)
 - [UMD](https://natade-jp.github.io/konpeito/html/examples/demos/UMD/)
 
 ## Install for node.js
@@ -73,7 +71,8 @@ node --experimental-modules main.mjs
 ## Sample
 
 ### BigInteger
-arbitrary-precision integer class.
+- A calculation class for arbitrary-precision integer arithmetic.
+- BigInt of ES2019 is not used.
 
 ```
 import konpeito from "konpeito.module.min.mjs";
@@ -89,7 +88,8 @@ console.log($("7").pow("50").toString());
 ```
 
 ### BigDecimal
-floating-point math class.
+- A calculation class for arbitrary-precision floating point arithmetic.
+- The calculation uses the BigInteger.
 
 ```
 import konpeito from "konpeito.module.min.mjs";
@@ -104,24 +104,24 @@ console.log($("-123456.7890").mul("987654321098765.432109876543210").toString())
 > -121932631124828532112.4828532111263526900
 ```
 
-### Complex
-complex class.
-- use the JavaScript standard number.
+### Fraction
+- A calculation class for fractions with infinite precision.
+- The calculation uses the BigInteger.
 
 ```
 import konpeito from "konpeito.module.min.mjs";
-const Complex = konpeito.Complex;
-const $ = Complex.create;
+const Fraction = konpeito.Fraction;
+const $ = Fraction.create;
 
-console.log($("3 + 4i").pow("2 + 8j").toString());
+console.log($("1/3").add("0.(3)").mul(10).toString());
 ```
 ```
-> -0.0083837 + 0.0124424i
+> 20 / 3
 ```
 
 ### Matrix
-complex matrix class.
-- use the JavaScript standard number.
+- Matrix is a general-purpose calculation class with signal processing and statistical processing.
+- The calculation uses the Complex.
 - Some methods do not support complex arithmetic.
 
 ```
