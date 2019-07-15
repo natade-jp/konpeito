@@ -196,7 +196,7 @@ class IntegerTool {
 	 * @param {number} [radix=10] - Base number.
 	 * @returns {Object} Data for BigInteger.
 	 */
-	static ToBigIntegerFromString(text, radix) {
+	static toBigIntegerFromString(text, radix) {
 		let x = text.replace(/\s/g, "").toLowerCase();
 		const sign_text = x.match(/^[-+]+/);
 
@@ -298,13 +298,13 @@ export default class BigInteger {
 				this.element = IntegerTool.number_to_binary_number(x);
 			}
 			else if(typeof number === "string") {
-				const x = IntegerTool.ToBigIntegerFromString(number);
+				const x = IntegerTool.toBigIntegerFromString(number);
 				this.element = x.element;
 				this._sign = x._sign;
 			}
 			else if(number instanceof Array) {
 				if((number.length === 2) && (typeof number[0] === "string")) {
-					const x = IntegerTool.ToBigIntegerFromString(number[0], number[1]);
+					const x = IntegerTool.toBigIntegerFromString(number[0], number[1]);
 					this.element = x.element;
 					this._sign = x._sign;
 				}
@@ -312,23 +312,13 @@ export default class BigInteger {
 					throw "BigInteger Unsupported argument " + arguments;
 				}
 			}
-			else if((number instanceof Object) && (number.unscaledValue) && (number.scale)) {
-				// BigDecimal 型の場合を想定する
-				// ※初期化時のため「 instanceof BigDecimal 」は巡回するため使用できない。
-				const value = number.unscaledValue();
-				const x = value.scaleByPowerOfTen(-number.scale());
-				this.element = x.element;
-				this._sign = x._sign;
-			}
-			else if((number instanceof Object) && (number.numerator) && (number.denominator) && (number.fix)) {
-				// Fraction 型の場合を想定する
-				// ※初期化時のため「 instanceof Fraction 」は巡回するため使用できない。
-				const x = number.fix().numerator;
+			else if((number instanceof Object) && (number.toBigInteger)) {
+				const x = number.toBigInteger();
 				this.element = x.element;
 				this._sign = x._sign;
 			}
 			else if(number instanceof Object) {
-				const x = IntegerTool.ToBigIntegerFromString(number.toString());
+				const x = IntegerTool.toBigIntegerFromString(number.toString());
 				this.element = x.element;
 				this._sign = x._sign;
 			}
@@ -493,59 +483,6 @@ export default class BigInteger {
 			y[y.length] = z;
 		}
 		return y.join("");
-	}
-
-	/**
-	 * Value at the specified position of the internally used array that composed of hexadecimal numbers.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} point - Array address.
-	 * @returns {number}
-	 */
-	getShort(point) {
-		const n = BigInteger._toInteger(point);
-		if((n < 0) || (this.element.length <= n)) {
-			return 0;
-		}
-		return this.element[n];
-	}
-
-	/**
-	 * 32-bit integer value.
-	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-	 * @returns {number}
-	 */
-	get intValue() {
-		let x = this.getShort(0) + (this.getShort(1) << 16);
-		x &= 0xFFFFFFFF;
-		if((x > 0)&&(this._sign < 0)) {
-			x = -x;
-		}
-		return x;
-	}
-
-	/**
-	 * 64-bit integer value.
-	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-	 * @returns {number}
-	 */
-	get longValue() {
-		let x = 0;
-		for(let i = 3; i >= 0; i--) {
-			x *= 65536;
-			x += this.getShort(i);
-		}
-		if(this._sign < 0) {
-			x = -x;
-		}
-		return x;
-	}
-
-	/**
-	 * 64-bit floating point.
-	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-	 * @returns {number}
-	 */
-	get doubleValue() {
-		return parseFloat(this.toString());
 	}
 
 	/**
@@ -1115,6 +1052,63 @@ export default class BigInteger {
 		return DEFAULT_RANDOM;
 	}
 
+	// ----------------------
+	// 他の型に変換用
+	// ----------------------
+	
+	/**
+	 * Value at the specified position of the internally used array that composed of hexadecimal numbers.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} point - Array address.
+	 * @returns {number}
+	 */
+	getShort(point) {
+		const n = BigInteger._toInteger(point);
+		if((n < 0) || (this.element.length <= n)) {
+			return 0;
+		}
+		return this.element[n];
+	}
+
+	/**
+	 * 32-bit integer value.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * @returns {number}
+	 */
+	get intValue() {
+		let x = this.getShort(0) + (this.getShort(1) << 16);
+		x &= 0xFFFFFFFF;
+		if((x > 0)&&(this._sign < 0)) {
+			x = -x;
+		}
+		return x;
+	}
+
+	/**
+	 * 64-bit integer value.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * @returns {number}
+	 */
+	get longValue() {
+		let x = 0;
+		for(let i = 3; i >= 0; i--) {
+			x *= 65536;
+			x += this.getShort(i);
+		}
+		if(this._sign < 0) {
+			x = -x;
+		}
+		return x;
+	}
+
+	/**
+	 * 64-bit floating point.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		return parseFloat(this.toString());
+	}
+	
 	// ----------------------
 	// gcd, lcm
 	// ----------------------

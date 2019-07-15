@@ -262,16 +262,26 @@ declare class _BigDecimal_ {
      */
     div(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, type?: BigDecimalDivideType): _BigDecimal_;
     /**
-     * Get as a _BigInteger_.
-     * @returns {_BigInteger_}
+     * Power function.
+     * - Supports only integers.
+     * - An exception occurs when doing a huge multiplication.
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} pow(A, B)
      */
-    toBigInteger(): _BigInteger_;
+    pow(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
     /**
-     * Get as a _BigInteger_.
-     * An error occurs if conversion fails.
-     * @returns {_BigInteger_}
+     * Set default the _MathContext_.
+     * This is used if you do not specify _MathContext_ when creating a new object.
+     * @param {_MathContext_} [context=_MathContext_.DECIMAL128]
      */
-    toBigIntegerExact(): _BigInteger_;
+    static setDefaultContext(context?: _MathContext_): void;
+    /**
+     * Return default _MathContext_ class.
+     * Used when _MathContext_ not specified explicitly.
+     * @returns {_MathContext_}
+     */
+    static getDefaultContext(): _MathContext_;
     /**
      * 32-bit integer value.
      * @returns {number}
@@ -294,26 +304,10 @@ declare class _BigDecimal_ {
      */
     doubleValue: number;
     /**
-     * Power function.
-     * - Supports only integers.
-     * - An exception occurs when doing a huge multiplication.
-     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
-     * @returns {_BigDecimal_} pow(A, B)
+     * Get as a _BigInteger_.
+     * @returns {_BigInteger_}
      */
-    pow(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
-    /**
-     * Set default the _MathContext_.
-     * This is used if you do not specify _MathContext_ when creating a new object.
-     * @param {_MathContext_} [context=_MathContext_.DECIMAL128]
-     */
-    static setDefaultContext(context?: _MathContext_): void;
-    /**
-     * Return default _MathContext_ class.
-     * Used when _MathContext_ not specified explicitly.
-     * @returns {_MathContext_}
-     */
-    static getDefaultContext(): _MathContext_;
+    toBigInteger(): _BigInteger_;
     /**
      * Equals.
      * - Attention : Test for equality, including the precision and the scale.
@@ -512,30 +506,6 @@ declare class _BigInteger_ {
      */
     toString(radix?: _BigInteger_ | number | string | (string | number)[] | any): string;
     /**
-     * Value at the specified position of the internally used array that composed of hexadecimal numbers.
-     * @param {_BigInteger_|number|string|Array<string|number>|Object} point - Array address.
-     * @returns {number}
-     */
-    getShort(point: _BigInteger_ | number | string | (string | number)[] | any): number;
-    /**
-     * 32-bit integer value.
-     * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-     * @returns {number}
-     */
-    intValue: number;
-    /**
-     * 64-bit integer value.
-     * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-     * @returns {number}
-     */
-    longValue: number;
-    /**
-     * 64-bit floating point.
-     * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-     * @returns {number}
-     */
-    doubleValue: number;
-    /**
      * Deep copy.
      * @returns {_BigInteger_}
      */
@@ -671,6 +641,30 @@ declare class _BigInteger_ {
      * @returns {_Random_}
      */
     static getDefaultRandom(): _Random_;
+    /**
+     * Value at the specified position of the internally used array that composed of hexadecimal numbers.
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} point - Array address.
+     * @returns {number}
+     */
+    getShort(point: _BigInteger_ | number | string | (string | number)[] | any): number;
+    /**
+     * 32-bit integer value.
+     * - If it is outside the range of JavaScript Number, it will not be an accurate number.
+     * @returns {number}
+     */
+    intValue: number;
+    /**
+     * 64-bit integer value.
+     * - If it is outside the range of JavaScript Number, it will not be an accurate number.
+     * @returns {number}
+     */
+    longValue: number;
+    /**
+     * 64-bit floating point.
+     * - If it is outside the range of JavaScript Number, it will not be an accurate number.
+     * @returns {number}
+     */
+    doubleValue: number;
     /**
      * Euclidean algorithm.
      * @param {_BigInteger_|number|string|Array<string|number>|Object} number
@@ -1674,16 +1668,6 @@ declare class _Fraction_ {
      */
     clone(): _Fraction_;
     /**
-     * integer value.
-     * @returns {number}
-     */
-    intValue: number;
-    /**
-     * floating point.
-     * @returns {number}
-     */
-    doubleValue: number;
-    /**
      * Absolute value.
      * @returns {_Fraction_} abs(A)
      */
@@ -1752,6 +1736,27 @@ declare class _Fraction_ {
      * @returns {_Fraction_} pow(A, B)
      */
     pow(num: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
+    /**
+     * integer value.
+     * @returns {number}
+     */
+    intValue: number;
+    /**
+     * floating point.
+     * @returns {number}
+     */
+    doubleValue: number;
+    /**
+     * return _BigInteger_.
+     * @returns {_BigInteger_}
+     */
+    toBigInteger(): _BigInteger_;
+    /**
+     * return _BigDecimal_.
+     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation.
+     * @returns {_BigDecimal_}
+     */
+    toBigDecimal(mc?: _MathContext_): _BigDecimal_;
     /**
      * Equals.
      * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num

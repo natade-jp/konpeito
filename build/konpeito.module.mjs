@@ -1103,7 +1103,7 @@ class IntegerTool {
 	 * @param {number} [radix=10] - Base number.
 	 * @returns {Object} Data for BigInteger.
 	 */
-	static ToBigIntegerFromString(text, radix) {
+	static toBigIntegerFromString(text, radix) {
 		let x = text.replace(/\s/g, "").toLowerCase();
 		const sign_text = x.match(/^[-+]+/);
 
@@ -1205,13 +1205,13 @@ class BigInteger {
 				this.element = IntegerTool.number_to_binary_number(x);
 			}
 			else if(typeof number === "string") {
-				const x = IntegerTool.ToBigIntegerFromString(number);
+				const x = IntegerTool.toBigIntegerFromString(number);
 				this.element = x.element;
 				this._sign = x._sign;
 			}
 			else if(number instanceof Array) {
 				if((number.length === 2) && (typeof number[0] === "string")) {
-					const x = IntegerTool.ToBigIntegerFromString(number[0], number[1]);
+					const x = IntegerTool.toBigIntegerFromString(number[0], number[1]);
 					this.element = x.element;
 					this._sign = x._sign;
 				}
@@ -1219,23 +1219,13 @@ class BigInteger {
 					throw "BigInteger Unsupported argument " + arguments;
 				}
 			}
-			else if((number instanceof Object) && (number.unscaledValue) && (number.scale)) {
-				// BigDecimal 型の場合を想定する
-				// ※初期化時のため「 instanceof BigDecimal 」は巡回するため使用できない。
-				const value = number.unscaledValue();
-				const x = value.scaleByPowerOfTen(-number.scale());
-				this.element = x.element;
-				this._sign = x._sign;
-			}
-			else if((number instanceof Object) && (number.numerator) && (number.denominator) && (number.fix)) {
-				// Fraction 型の場合を想定する
-				// ※初期化時のため「 instanceof Fraction 」は巡回するため使用できない。
-				const x = number.fix().numerator;
+			else if((number instanceof Object) && (number.toBigInteger)) {
+				const x = number.toBigInteger();
 				this.element = x.element;
 				this._sign = x._sign;
 			}
 			else if(number instanceof Object) {
-				const x = IntegerTool.ToBigIntegerFromString(number.toString());
+				const x = IntegerTool.toBigIntegerFromString(number.toString());
 				this.element = x.element;
 				this._sign = x._sign;
 			}
@@ -1400,59 +1390,6 @@ class BigInteger {
 			y[y.length] = z;
 		}
 		return y.join("");
-	}
-
-	/**
-	 * Value at the specified position of the internally used array that composed of hexadecimal numbers.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} point - Array address.
-	 * @returns {number}
-	 */
-	getShort(point) {
-		const n = BigInteger._toInteger(point);
-		if((n < 0) || (this.element.length <= n)) {
-			return 0;
-		}
-		return this.element[n];
-	}
-
-	/**
-	 * 32-bit integer value.
-	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-	 * @returns {number}
-	 */
-	get intValue() {
-		let x = this.getShort(0) + (this.getShort(1) << 16);
-		x &= 0xFFFFFFFF;
-		if((x > 0)&&(this._sign < 0)) {
-			x = -x;
-		}
-		return x;
-	}
-
-	/**
-	 * 64-bit integer value.
-	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-	 * @returns {number}
-	 */
-	get longValue() {
-		let x = 0;
-		for(let i = 3; i >= 0; i--) {
-			x *= 65536;
-			x += this.getShort(i);
-		}
-		if(this._sign < 0) {
-			x = -x;
-		}
-		return x;
-	}
-
-	/**
-	 * 64-bit floating point.
-	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-	 * @returns {number}
-	 */
-	get doubleValue() {
-		return parseFloat(this.toString());
 	}
 
 	/**
@@ -2022,6 +1959,63 @@ class BigInteger {
 		return DEFAULT_RANDOM;
 	}
 
+	// ----------------------
+	// 他の型に変換用
+	// ----------------------
+	
+	/**
+	 * Value at the specified position of the internally used array that composed of hexadecimal numbers.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} point - Array address.
+	 * @returns {number}
+	 */
+	getShort(point) {
+		const n = BigInteger._toInteger(point);
+		if((n < 0) || (this.element.length <= n)) {
+			return 0;
+		}
+		return this.element[n];
+	}
+
+	/**
+	 * 32-bit integer value.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * @returns {number}
+	 */
+	get intValue() {
+		let x = this.getShort(0) + (this.getShort(1) << 16);
+		x &= 0xFFFFFFFF;
+		if((x > 0)&&(this._sign < 0)) {
+			x = -x;
+		}
+		return x;
+	}
+
+	/**
+	 * 64-bit integer value.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * @returns {number}
+	 */
+	get longValue() {
+		let x = 0;
+		for(let i = 3; i >= 0; i--) {
+			x *= 65536;
+			x += this.getShort(i);
+		}
+		if(this._sign < 0) {
+			x = -x;
+		}
+		return x;
+	}
+
+	/**
+	 * 64-bit floating point.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		return parseFloat(this.toString());
+	}
+	
 	// ----------------------
 	// gcd, lcm
 	// ----------------------
@@ -3103,9 +3097,6 @@ class BigDecimal {
 			this.default_context	= number.default_context;
 
 		}
-		else if(number instanceof BigInteger) {
-			this.integer	= number.clone();
-		}
 		else if(typeof number === "number") {
 			const data = DecimalTool.ToBigDecimalFromNumber(number);
 			this.integer	= data.integer;
@@ -3148,6 +3139,15 @@ class BigDecimal {
 			const data = DecimalTool.ToBigDecimalFromString(number);
 			this.integer	= data.integer;
 			this._scale		= data.scale;
+		}
+		else if(number instanceof BigInteger) {
+			this.integer	= number.clone();
+		}
+		else if((number instanceof Object) && (number.toBigDecimal)) {
+			const data				= number.toBigDecimal();
+			this.integer			= data.integer;
+			this._scale				= data._scale;
+			this.default_context	= data.default_context;
 		}
 		else if((number instanceof Object) && (number.scale !== undefined && number.default_context !== undefined)) {
 			this.integer	= new BigInteger(number.integer);
@@ -3729,6 +3729,7 @@ class BigDecimal {
 			result = newsrc.divideAndRemainder(tgt, MathContext.UNLIMITED);
 			result_divide	= result[0];
 			result_remaind	= result[1];
+			// ここで default_context が MathContext.UNLIMITED に書き換わる
 			all_result = all_result.add(result_divide.scaleByPowerOfTen(-i), MathContext.UNLIMITED);
 			if(result_remaind.compareTo(BigDecimal.ZERO) !== 0) {
 				if(precision === 0) {	// 精度無限大の場合は、循環小数のチェックが必要
@@ -3743,6 +3744,15 @@ class BigDecimal {
 			}
 			else {
 				break;
+			}
+		}
+		// default_context の設定を元に戻す
+		{
+			if(type && type.context) {
+				all_result.default_context = type.context;
+			}
+			else {
+				all_result.default_context = this.default_context;
 			}
 		}
 		if(isPriorityScale) {
@@ -3769,73 +3779,6 @@ class BigDecimal {
 	 */
 	div(number, type) {
 		return this.divide(number, type);
-	}
-
-	/**
-	 * Get as a BigInteger.
-	 * @returns {BigInteger}
-	 */
-	toBigInteger() {
-		const x = this.toPlainString().replace(/\.\d*$/, "");
-		return new BigInteger(x);
-	}
-
-	/**
-	 * Get as a BigInteger.
-	 * An error occurs if conversion fails.
-	 * @returns {BigInteger}
-	 */
-	toBigIntegerExact() {
-		const x = this.setScale(0, RoundingMode.UNNECESSARY);
-		return new BigInteger(x.toPlainString());
-	}
-
-	/**
-	 * 32-bit integer value.
-	 * @returns {number}
-	 */
-	get intValue() {
-		const bigintdata = this.toBigInteger();
-		const x = bigintdata.intValue;
-		return x & 0xFFFFFFFF;
-	}
-
-	/**
-	 * 32-bit integer value.
-	 * An error occurs if conversion fails.
-	 * @returns {number}
-	 */
-	get intValueExact() {
-		const bigintdata = this.toBigIntegerExact();
-		const x = bigintdata.intValue;
-		if((x < -2147483648) || (2147483647 < x)) {
-			throw "ArithmeticException";
-		}
-		return x;
-	}
-
-	/**
-	 * 32-bit floating point.
-	 * @returns {number}
-	 */
-	get floatValue() {
-		const p = this.precision();
-		if(MathContext.DECIMAL32.getPrecision() < p) {
-			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
-		}
-		return parseFloat(this.toEngineeringString());
-	}
-
-	/**
-	 * 64-bit floating point.
-	 * @returns {number}
-	 */
-	get doubleValue() {
-		const p = this.precision();
-		if(MathContext.DECIMAL64.getPrecision() < p) {
-			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
-		}
-		return parseFloat(this.toEngineeringString());
 	}
 
 	/**
@@ -3887,6 +3830,66 @@ class BigDecimal {
 	 */
 	static getDefaultContext() {
 		return DEFAULT_CONTEXT;
+	}
+
+	// ----------------------
+	// 他の型に変換用
+	// ----------------------
+	
+	/**
+	 * 32-bit integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		const bigintdata = this.toBigInteger();
+		const x = bigintdata.intValue;
+		return x & 0xFFFFFFFF;
+	}
+
+	/**
+	 * 32-bit integer value.
+	 * An error occurs if conversion fails.
+	 * @returns {number}
+	 */
+	get intValueExact() {
+		const bigintdata = this.toBigInteger();
+		const x = bigintdata.intValue;
+		if((x < -2147483648) || (2147483647 < x)) {
+			throw "ArithmeticException";
+		}
+		return x;
+	}
+
+	/**
+	 * 32-bit floating point.
+	 * @returns {number}
+	 */
+	get floatValue() {
+		const p = this.precision();
+		if(MathContext.DECIMAL32.getPrecision() < p) {
+			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
+		}
+		return parseFloat(this.toEngineeringString());
+	}
+
+	/**
+	 * 64-bit floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		const p = this.precision();
+		if(MathContext.DECIMAL64.getPrecision() < p) {
+			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
+		}
+		return parseFloat(this.toEngineeringString());
+	}
+
+	/**
+	 * Get as a BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return this.integer.scaleByPowerOfTen(-this.scale());
 	}
 
 	// ----------------------
@@ -3962,7 +3965,7 @@ class BigDecimal {
 		else {
 			const tolerance_ = BigDecimal._toBigDecimal(tolerance);
 			const delta = src.sub(tgt, MathContext.UNLIMITED);
-			const delta_abs = delta.integer.abs();
+			const delta_abs = delta.abs();
 			if(delta_abs.compareTo(tolerance_) <= 0) {
 				return 0;
 			}
@@ -4824,30 +4827,6 @@ class Fraction {
 	}
 
 	/**
-	 * integer value.
-	 * @returns {number}
-	 */
-	get intValue() {
-		if(this.isInteger()) {
-			return Math.trunc(this.numerator.doubleValue);
-		}
-		return Math.trunc(this.doubleValue);
-	}
-
-	/**
-	 * floating point.
-	 * @returns {number}
-	 */
-	get doubleValue() {
-		if(this.isInteger()) {
-			return this.numerator.doubleValue;
-		}
-		const x = new BigDecimal([this.numerator, MathContext.UNLIMITED]);
-		const y = new BigDecimal([this.denominator, MathContext.UNLIMITED]);
-		return x.div(y, {context : MathContext.DECIMAL64}).doubleValue;
-	}
-
-	/**
 	 * Absolute value.
 	 * @returns {Fraction} abs(A)
 	 */
@@ -5013,6 +4992,61 @@ class Fraction {
 		const numerator = x.numerator.pow(y);
 		const denominator = x.denominator.pow(y);
 		return new Fraction([ numerator, denominator ]);
+	}
+
+	// ----------------------
+	// 他の型に変換用
+	// ----------------------
+	
+	/**
+	 * integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		if(this.isInteger()) {
+			return Math.trunc(this.numerator.doubleValue);
+		}
+		return Math.trunc(this.doubleValue);
+	}
+
+	/**
+	 * floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		if(this.isInteger()) {
+			return this.numerator.doubleValue;
+		}
+		const x = new BigDecimal([this.numerator, MathContext.UNLIMITED]);
+		const y = new BigDecimal([this.denominator, MathContext.UNLIMITED]);
+		return x.div(y, {context : MathContext.DECIMAL64}).doubleValue;
+	}
+
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return new BigInteger(this.fix().numerator);
+	}
+	
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		if(this.isInteger()) {
+			return new BigDecimal(this.numerator);
+		}
+		const x = new BigDecimal([this.numerator, MathContext.UNLIMITED]);
+		const y = new BigDecimal([this.denominator, MathContext.UNLIMITED]);
+		if(mc) {
+			return x.div(y, {context: mc});
+		}
+		else {
+			return x.div(y, {context: BigDecimal.getDefaultContext()});
+		}
 	}
 
 	// ----------------------

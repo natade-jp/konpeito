@@ -188,9 +188,6 @@ export default class BigDecimal {
 			this.default_context	= number.default_context;
 
 		}
-		else if(number instanceof BigInteger) {
-			this.integer	= number.clone();
-		}
 		else if(typeof number === "number") {
 			const data = DecimalTool.ToBigDecimalFromNumber(number);
 			this.integer	= data.integer;
@@ -233,6 +230,15 @@ export default class BigDecimal {
 			const data = DecimalTool.ToBigDecimalFromString(number);
 			this.integer	= data.integer;
 			this._scale		= data.scale;
+		}
+		else if(number instanceof BigInteger) {
+			this.integer	= number.clone();
+		}
+		else if((number instanceof Object) && (number.toBigDecimal)) {
+			const data				= number.toBigDecimal();
+			this.integer			= data.integer;
+			this._scale				= data._scale;
+			this.default_context	= data.default_context;
 		}
 		else if((number instanceof Object) && (number.scale !== undefined && number.default_context !== undefined)) {
 			this.integer	= new BigInteger(number.integer);
@@ -814,6 +820,7 @@ export default class BigDecimal {
 			result = newsrc.divideAndRemainder(tgt, MathContext.UNLIMITED);
 			result_divide	= result[0];
 			result_remaind	= result[1];
+			// ここで default_context が MathContext.UNLIMITED に書き換わる
 			all_result = all_result.add(result_divide.scaleByPowerOfTen(-i), MathContext.UNLIMITED);
 			if(result_remaind.compareTo(BigDecimal.ZERO) !== 0) {
 				if(precision === 0) {	// 精度無限大の場合は、循環小数のチェックが必要
@@ -828,6 +835,15 @@ export default class BigDecimal {
 			}
 			else {
 				break;
+			}
+		}
+		// default_context の設定を元に戻す
+		{
+			if(type && type.context) {
+				all_result.default_context = type.context;
+			}
+			else {
+				all_result.default_context = this.default_context;
 			}
 		}
 		if(isPriorityScale) {
@@ -854,73 +870,6 @@ export default class BigDecimal {
 	 */
 	div(number, type) {
 		return this.divide(number, type);
-	}
-
-	/**
-	 * Get as a BigInteger.
-	 * @returns {BigInteger}
-	 */
-	toBigInteger() {
-		const x = this.toPlainString().replace(/\.\d*$/, "");
-		return new BigInteger(x);
-	}
-
-	/**
-	 * Get as a BigInteger.
-	 * An error occurs if conversion fails.
-	 * @returns {BigInteger}
-	 */
-	toBigIntegerExact() {
-		const x = this.setScale(0, RoundingMode.UNNECESSARY);
-		return new BigInteger(x.toPlainString());
-	}
-
-	/**
-	 * 32-bit integer value.
-	 * @returns {number}
-	 */
-	get intValue() {
-		const bigintdata = this.toBigInteger();
-		const x = bigintdata.intValue;
-		return x & 0xFFFFFFFF;
-	}
-
-	/**
-	 * 32-bit integer value.
-	 * An error occurs if conversion fails.
-	 * @returns {number}
-	 */
-	get intValueExact() {
-		const bigintdata = this.toBigIntegerExact();
-		const x = bigintdata.intValue;
-		if((x < -2147483648) || (2147483647 < x)) {
-			throw "ArithmeticException";
-		}
-		return x;
-	}
-
-	/**
-	 * 32-bit floating point.
-	 * @returns {number}
-	 */
-	get floatValue() {
-		const p = this.precision();
-		if(MathContext.DECIMAL32.getPrecision() < p) {
-			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
-		}
-		return parseFloat(this.toEngineeringString());
-	}
-
-	/**
-	 * 64-bit floating point.
-	 * @returns {number}
-	 */
-	get doubleValue() {
-		const p = this.precision();
-		if(MathContext.DECIMAL64.getPrecision() < p) {
-			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
-		}
-		return parseFloat(this.toEngineeringString());
 	}
 
 	/**
@@ -972,6 +921,66 @@ export default class BigDecimal {
 	 */
 	static getDefaultContext() {
 		return DEFAULT_CONTEXT;
+	}
+
+	// ----------------------
+	// 他の型に変換用
+	// ----------------------
+	
+	/**
+	 * 32-bit integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		const bigintdata = this.toBigInteger();
+		const x = bigintdata.intValue;
+		return x & 0xFFFFFFFF;
+	}
+
+	/**
+	 * 32-bit integer value.
+	 * An error occurs if conversion fails.
+	 * @returns {number}
+	 */
+	get intValueExact() {
+		const bigintdata = this.toBigInteger();
+		const x = bigintdata.intValue;
+		if((x < -2147483648) || (2147483647 < x)) {
+			throw "ArithmeticException";
+		}
+		return x;
+	}
+
+	/**
+	 * 32-bit floating point.
+	 * @returns {number}
+	 */
+	get floatValue() {
+		const p = this.precision();
+		if(MathContext.DECIMAL32.getPrecision() < p) {
+			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
+		}
+		return parseFloat(this.toEngineeringString());
+	}
+
+	/**
+	 * 64-bit floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		const p = this.precision();
+		if(MathContext.DECIMAL64.getPrecision() < p) {
+			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
+		}
+		return parseFloat(this.toEngineeringString());
+	}
+
+	/**
+	 * Get as a BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return this.integer.scaleByPowerOfTen(-this.scale());
 	}
 
 	// ----------------------
@@ -1047,7 +1056,7 @@ export default class BigDecimal {
 		else {
 			const tolerance_ = BigDecimal._toBigDecimal(tolerance);
 			const delta = src.sub(tgt, MathContext.UNLIMITED);
-			const delta_abs = delta.integer.abs();
+			const delta_abs = delta.abs();
 			if(delta_abs.compareTo(tolerance_) <= 0) {
 				return 0;
 			}

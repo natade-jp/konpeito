@@ -398,30 +398,6 @@ export default class Fraction {
 	}
 
 	/**
-	 * integer value.
-	 * @returns {number}
-	 */
-	get intValue() {
-		if(this.isInteger()) {
-			return Math.trunc(this.numerator.doubleValue);
-		}
-		return Math.trunc(this.doubleValue);
-	}
-
-	/**
-	 * floating point.
-	 * @returns {number}
-	 */
-	get doubleValue() {
-		if(this.isInteger()) {
-			return this.numerator.doubleValue;
-		}
-		const x = new BigDecimal([this.numerator, MathContext.UNLIMITED]);
-		const y = new BigDecimal([this.denominator, MathContext.UNLIMITED]);
-		return x.div(y, {context : MathContext.DECIMAL64}).doubleValue;
-	}
-
-	/**
 	 * Absolute value.
 	 * @returns {Fraction} abs(A)
 	 */
@@ -587,6 +563,61 @@ export default class Fraction {
 		const numerator = x.numerator.pow(y);
 		const denominator = x.denominator.pow(y);
 		return new Fraction([ numerator, denominator ]);
+	}
+
+	// ----------------------
+	// 他の型に変換用
+	// ----------------------
+	
+	/**
+	 * integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		if(this.isInteger()) {
+			return Math.trunc(this.numerator.doubleValue);
+		}
+		return Math.trunc(this.doubleValue);
+	}
+
+	/**
+	 * floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		if(this.isInteger()) {
+			return this.numerator.doubleValue;
+		}
+		const x = new BigDecimal([this.numerator, MathContext.UNLIMITED]);
+		const y = new BigDecimal([this.denominator, MathContext.UNLIMITED]);
+		return x.div(y, {context : MathContext.DECIMAL64}).doubleValue;
+	}
+
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return new BigInteger(this.fix().numerator);
+	}
+	
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		if(this.isInteger()) {
+			return new BigDecimal(this.numerator);
+		}
+		const x = new BigDecimal([this.numerator, MathContext.UNLIMITED]);
+		const y = new BigDecimal([this.denominator, MathContext.UNLIMITED]);
+		if(mc) {
+			return x.div(y, {context: mc});
+		}
+		else {
+			return x.div(y, {context: BigDecimal.getDefaultContext()});
+		}
 	}
 
 	// ----------------------
