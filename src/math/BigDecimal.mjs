@@ -889,9 +889,6 @@ export default class BigDecimal {
 		if((mc.getPrecision() === 0) && (n < 0)) {
 			throw "ArithmeticException";
 		}
-		if((mc.getPrecision() > 0) && (n > mc.getPrecision())) {
-			throw "ArithmeticException";
-		}
 		let x, y;
 		x = this.clone();
 		y = BigDecimal.ONE;
@@ -1430,8 +1427,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} -1
 	 */
 	static get MINUS_ONE() {
-		const x = new BigDecimal(DEFINE.MINUS_ONE);
-		x.default_context = DEFAULT_CONTEXT;
+		const x = new BigDecimal(-1);
 		return x;
 	}
 
@@ -1440,8 +1436,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 0
 	 */
 	static get ZERO() {
-		const x = new BigDecimal(DEFINE.ZERO);
-		x.default_context = DEFAULT_CONTEXT;
+		const x = new BigDecimal(0);
 		return x;
 	}
 	
@@ -1450,8 +1445,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 0.5
 	 */
 	static get HALF() {
-		const x = new BigDecimal(DEFINE.HALF);
-		x.default_context = DEFAULT_CONTEXT;
+		const x = new BigDecimal(0.5);
 		return x;
 	}
 	
@@ -1460,8 +1454,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 1
 	 */
 	static get ONE() {
-		const x = new BigDecimal(DEFINE.ONE);
-		x.default_context = DEFAULT_CONTEXT;
+		const x = new BigDecimal(1);
 		return x;
 	}
 	
@@ -1470,8 +1463,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 2
 	 */
 	static get TWO() {
-		const x = new BigDecimal(DEFINE.TWO);
-		x.default_context = DEFAULT_CONTEXT;
+		const x = new BigDecimal(2);
 		return x;
 	}
 	
@@ -1480,50 +1472,11 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 10
 	 */
 	static get TEN() {
-		const x = new BigDecimal(DEFINE.TEN);
-		x.default_context = DEFAULT_CONTEXT;
+		const x = new BigDecimal(10);
 		return x;
 	}
 
 }
-
-/**
- * Collection of constant values used in the class.
- * @ignore
- */
-const DEFINE = {
-
-	/**
-	 * -1
-	 */
-	MINUS_ONE : new BigDecimal(-1),
-
-	/**
-	 * 0
-	 */
-	ZERO : new BigDecimal(0),
-
-	/**
-	 * 0.5
-	 */
-	HALF : new BigDecimal(0.5),
-
-	/**
-	 * 1
-	 */
-	ONE : new BigDecimal(1),
-
-	/**
-	 * 2
-	 */
-	TWO : new BigDecimal(2),
-
-	/**
-	 * 10
-	 */
-	TEN : new BigDecimal(10)
-
-};
 
 BigDecimal.RoundingMode = RoundingMode;
 BigDecimal.MathContext = MathContext;

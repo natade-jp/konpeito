@@ -102,6 +102,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/konpeito.mjs~konpeito.fraction",
+    "class/src/konpeito.mjs~konpeito.html#static-get-Fraction",
+    "src/konpeito.mjs~konpeito.Fraction",
+    "member"
+  ],
+  [
     "src/konpeito.mjs~konpeito.mathcontext",
     "class/src/konpeito.mjs~konpeito.html#static-get-MathContext",
     "src/konpeito.mjs~konpeito.MathContext",
@@ -153,6 +159,12 @@ window.esdocSearchIndex = [
     "src/math/bigdecimal.mjs~bigdecimal#add",
     "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-add",
     "src/math/BigDecimal.mjs~BigDecimal#add",
+    "method"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal#ceil",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-ceil",
+    "src/math/BigDecimal.mjs~BigDecimal#ceil",
     "method"
   ],
   [
@@ -222,10 +234,28 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/bigdecimal.mjs~bigdecimal#fix",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-fix",
+    "src/math/BigDecimal.mjs~BigDecimal#fix",
+    "method"
+  ],
+  [
     "src/math/bigdecimal.mjs~bigdecimal#floatvalue",
     "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-get-floatValue",
     "src/math/BigDecimal.mjs~BigDecimal#floatValue",
     "member"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal#floor",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-floor",
+    "src/math/BigDecimal.mjs~BigDecimal#floor",
+    "method"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal#fract",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-fract",
+    "src/math/BigDecimal.mjs~BigDecimal#fract",
+    "method"
   ],
   [
     "src/math/bigdecimal.mjs~bigdecimal#intvalue",
@@ -250,6 +280,36 @@ window.esdocSearchIndex = [
     "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-member-integer",
     "src/math/BigDecimal.mjs~BigDecimal#integer",
     "member"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal#isnegative",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-isNegative",
+    "src/math/BigDecimal.mjs~BigDecimal#isNegative",
+    "method"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal#isnotnegative",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-isNotNegative",
+    "src/math/BigDecimal.mjs~BigDecimal#isNotNegative",
+    "method"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal#isone",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-isOne",
+    "src/math/BigDecimal.mjs~BigDecimal#isOne",
+    "method"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal#ispositive",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-isPositive",
+    "src/math/BigDecimal.mjs~BigDecimal#isPositive",
+    "method"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal#iszero",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-isZero",
+    "src/math/BigDecimal.mjs~BigDecimal#isZero",
+    "method"
   ],
   [
     "src/math/bigdecimal.mjs~bigdecimal#max",
@@ -384,12 +444,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#tobigintegerexact",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-toBigIntegerExact",
-    "src/math/BigDecimal.mjs~BigDecimal#toBigIntegerExact",
-    "method"
-  ],
-  [
     "src/math/bigdecimal.mjs~bigdecimal#toengineeringstring",
     "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-toEngineeringString",
     "src/math/BigDecimal.mjs~BigDecimal#toEngineeringString",
@@ -424,6 +478,18 @@ window.esdocSearchIndex = [
     "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-unscaledValue",
     "src/math/BigDecimal.mjs~BigDecimal#unscaledValue",
     "method"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal.half",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-HALF",
+    "src/math/BigDecimal.mjs~BigDecimal.HALF",
+    "member"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal.minus_one",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-MINUS_ONE",
+    "src/math/BigDecimal.mjs~BigDecimal.MINUS_ONE",
+    "member"
   ],
   [
     "src/math/bigdecimal.mjs~bigdecimal.one",
@@ -496,6 +562,12 @@ window.esdocSearchIndex = [
     "class/src/math/BigDecimal.mjs~BigDecimal.html#static-method-valueOf",
     "src/math/BigDecimal.mjs~BigDecimal.valueOf",
     "method"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimaldividetype",
+    "typedef/index.html#static-typedef-BigDecimalDivideType",
+    "src/math/BigDecimal.mjs~BigDecimalDivideType",
+    "typedef"
   ],
   [
     "src/math/biginteger.mjs",
@@ -804,6 +876,18 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/biginteger.mjs~biginteger#isnotnegative",
+    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-isNotNegative",
+    "src/math/BigInteger.mjs~BigInteger#isNotNegative",
+    "method"
+  ],
+  [
+    "src/math/biginteger.mjs~biginteger#isone",
+    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-isOne",
+    "src/math/BigInteger.mjs~BigInteger#isOne",
+    "method"
+  ],
+  [
     "src/math/biginteger.mjs~biginteger#ispositive",
     "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-isPositive",
     "src/math/BigInteger.mjs~BigInteger#isPositive",
@@ -819,6 +903,12 @@ window.esdocSearchIndex = [
     "src/math/biginteger.mjs~biginteger#iszero",
     "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-isZero",
     "src/math/BigInteger.mjs~BigInteger#isZero",
+    "method"
+  ],
+  [
+    "src/math/biginteger.mjs~biginteger#lcm",
+    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-lcm",
+    "src/math/BigInteger.mjs~BigInteger#lcm",
     "method"
   ],
   [
@@ -930,6 +1020,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/biginteger.mjs~biginteger#scalebypoweroften",
+    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-scaleByPowerOfTen",
+    "src/math/BigInteger.mjs~BigInteger#scaleByPowerOfTen",
+    "method"
+  ],
+  [
     "src/math/biginteger.mjs~biginteger#setbit",
     "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-setBit",
     "src/math/BigInteger.mjs~BigInteger#setBit",
@@ -994,6 +1090,12 @@ window.esdocSearchIndex = [
     "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-xor",
     "src/math/BigInteger.mjs~BigInteger#xor",
     "method"
+  ],
+  [
+    "src/math/biginteger.mjs~biginteger.minus_one",
+    "class/src/math/BigInteger.mjs~BigInteger.html#static-get-MINUS_ONE",
+    "src/math/BigInteger.mjs~BigInteger.MINUS_ONE",
+    "member"
   ],
   [
     "src/math/biginteger.mjs~biginteger.one",
@@ -1572,6 +1674,42 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/math/fraction.mjs~fraction#abs",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-abs",
+    "src/math/Fraction.mjs~Fraction#abs",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#add",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-add",
+    "src/math/Fraction.mjs~Fraction#add",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#ceil",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-ceil",
+    "src/math/Fraction.mjs~Fraction#ceil",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#clip",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-clip",
+    "src/math/Fraction.mjs~Fraction#clip",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#clone",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-clone",
+    "src/math/Fraction.mjs~Fraction#clone",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#compareto",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-compareTo",
+    "src/math/Fraction.mjs~Fraction#compareTo",
+    "method"
+  ],
+  [
     "src/math/fraction.mjs~fraction#constructor",
     "class/src/math/Fraction.mjs~Fraction.html#instance-constructor-constructor",
     "src/math/Fraction.mjs~Fraction#constructor",
@@ -1584,10 +1722,238 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/math/fraction.mjs~fraction#div",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-div",
+    "src/math/Fraction.mjs~Fraction#div",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#doublevalue",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-get-doubleValue",
+    "src/math/Fraction.mjs~Fraction#doubleValue",
+    "member"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#equals",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-equals",
+    "src/math/Fraction.mjs~Fraction#equals",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#fix",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-fix",
+    "src/math/Fraction.mjs~Fraction#fix",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#floor",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-floor",
+    "src/math/Fraction.mjs~Fraction#floor",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#fract",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-fract",
+    "src/math/Fraction.mjs~Fraction#fract",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#intvalue",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-get-intValue",
+    "src/math/Fraction.mjs~Fraction#intValue",
+    "member"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#inv",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-inv",
+    "src/math/Fraction.mjs~Fraction#inv",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#isinteger",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-isInteger",
+    "src/math/Fraction.mjs~Fraction#isInteger",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#isnegative",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-isNegative",
+    "src/math/Fraction.mjs~Fraction#isNegative",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#isnotnegative",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-isNotNegative",
+    "src/math/Fraction.mjs~Fraction#isNotNegative",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#isone",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-isOne",
+    "src/math/Fraction.mjs~Fraction#isOne",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#ispositive",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-isPositive",
+    "src/math/Fraction.mjs~Fraction#isPositive",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#iszero",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-isZero",
+    "src/math/Fraction.mjs~Fraction#isZero",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#max",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-max",
+    "src/math/Fraction.mjs~Fraction#max",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#min",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-min",
+    "src/math/Fraction.mjs~Fraction#min",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#mod",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-mod",
+    "src/math/Fraction.mjs~Fraction#mod",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#mul",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-mul",
+    "src/math/Fraction.mjs~Fraction#mul",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#negate",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-negate",
+    "src/math/Fraction.mjs~Fraction#negate",
+    "method"
+  ],
+  [
     "src/math/fraction.mjs~fraction#numerator",
     "class/src/math/Fraction.mjs~Fraction.html#instance-member-numerator",
     "src/math/Fraction.mjs~Fraction#numerator",
     "member"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#pow",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-pow",
+    "src/math/Fraction.mjs~Fraction#pow",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#round",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-round",
+    "src/math/Fraction.mjs~Fraction#round",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#scalebypoweroften",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-scaleByPowerOfTen",
+    "src/math/Fraction.mjs~Fraction#scaleByPowerOfTen",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#sign",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-sign",
+    "src/math/Fraction.mjs~Fraction#sign",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#sub",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-sub",
+    "src/math/Fraction.mjs~Fraction#sub",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#tobigdecimal",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-toBigDecimal",
+    "src/math/Fraction.mjs~Fraction#toBigDecimal",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#tobiginteger",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-toBigInteger",
+    "src/math/Fraction.mjs~Fraction#toBigInteger",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#tostring",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-toString",
+    "src/math/Fraction.mjs~Fraction#toString",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction.half",
+    "class/src/math/Fraction.mjs~Fraction.html#static-get-HALF",
+    "src/math/Fraction.mjs~Fraction.HALF",
+    "member"
+  ],
+  [
+    "src/math/fraction.mjs~fraction.minus_one",
+    "class/src/math/Fraction.mjs~Fraction.html#static-get-MINUS_ONE",
+    "src/math/Fraction.mjs~Fraction.MINUS_ONE",
+    "member"
+  ],
+  [
+    "src/math/fraction.mjs~fraction.one",
+    "class/src/math/Fraction.mjs~Fraction.html#static-get-ONE",
+    "src/math/Fraction.mjs~Fraction.ONE",
+    "member"
+  ],
+  [
+    "src/math/fraction.mjs~fraction.ten",
+    "class/src/math/Fraction.mjs~Fraction.html#static-get-TEN",
+    "src/math/Fraction.mjs~Fraction.TEN",
+    "member"
+  ],
+  [
+    "src/math/fraction.mjs~fraction.two",
+    "class/src/math/Fraction.mjs~Fraction.html#static-get-TWO",
+    "src/math/Fraction.mjs~Fraction.TWO",
+    "member"
+  ],
+  [
+    "src/math/fraction.mjs~fraction.zero",
+    "class/src/math/Fraction.mjs~Fraction.html#static-get-ZERO",
+    "src/math/Fraction.mjs~Fraction.ZERO",
+    "member"
+  ],
+  [
+    "src/math/fraction.mjs~fraction._tofloat",
+    "class/src/math/Fraction.mjs~Fraction.html#static-method-_toFloat",
+    "src/math/Fraction.mjs~Fraction._toFloat",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction._tofraction",
+    "class/src/math/Fraction.mjs~Fraction.html#static-method-_toFraction",
+    "src/math/Fraction.mjs~Fraction._toFraction",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction._tointeger",
+    "class/src/math/Fraction.mjs~Fraction.html#static-method-_toInteger",
+    "src/math/Fraction.mjs~Fraction._toInteger",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction.create",
+    "class/src/math/Fraction.mjs~Fraction.html#static-method-create",
+    "src/math/Fraction.mjs~Fraction.create",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction.valueof",
+    "class/src/math/Fraction.mjs~Fraction.html#static-method-valueOf",
+    "src/math/Fraction.mjs~Fraction.valueOf",
+    "method"
   ],
   [
     "src/math/matrix.mjs",
@@ -2886,6 +3252,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/matrix.mjs~matrixsettings",
+    "typedef/index.html#static-typedef-MatrixSettings",
+    "src/math/Matrix.mjs~MatrixSettings",
+    "typedef"
+  ],
+  [
     "src/math/context/mathcontext.mjs",
     "file/src/math/context/MathContext.mjs.html",
     "src/math/context/MathContext.mjs",
@@ -3336,6 +3708,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/tools/signal.mjs~signalsettings",
+    "typedef/index.html#static-typedef-SignalSettings",
+    "src/math/tools/Signal.mjs~SignalSettings",
+    "typedef"
+  ],
+  [
     "src/math/tools/statistics.mjs",
     "file/src/math/tools/Statistics.mjs.html",
     "src/math/tools/Statistics.mjs",
@@ -3616,5 +3994,11 @@ window.esdocSearchIndex = [
     "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-var",
     "src/math/tools/Statistics.mjs~Statistics.var",
     "method"
+  ],
+  [
+    "src/math/tools/statistics.mjs~statisticssettings",
+    "typedef/index.html#static-typedef-StatisticsSettings",
+    "src/math/tools/Statistics.mjs~StatisticsSettings",
+    "typedef"
   ]
 ]

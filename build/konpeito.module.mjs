@@ -3798,9 +3798,6 @@ class BigDecimal {
 		if((mc.getPrecision() === 0) && (n < 0)) {
 			throw "ArithmeticException";
 		}
-		if((mc.getPrecision() > 0) && (n > mc.getPrecision())) {
-			throw "ArithmeticException";
-		}
 		let x, y;
 		x = this.clone();
 		y = BigDecimal.ONE;
@@ -4339,8 +4336,7 @@ class BigDecimal {
 	 * @returns {BigDecimal} -1
 	 */
 	static get MINUS_ONE() {
-		const x = new BigDecimal(DEFINE$2.MINUS_ONE);
-		x.default_context = DEFAULT_CONTEXT;
+		const x = new BigDecimal(-1);
 		return x;
 	}
 
@@ -4349,8 +4345,7 @@ class BigDecimal {
 	 * @returns {BigDecimal} 0
 	 */
 	static get ZERO() {
-		const x = new BigDecimal(DEFINE$2.ZERO);
-		x.default_context = DEFAULT_CONTEXT;
+		const x = new BigDecimal(0);
 		return x;
 	}
 	
@@ -4359,8 +4354,7 @@ class BigDecimal {
 	 * @returns {BigDecimal} 0.5
 	 */
 	static get HALF() {
-		const x = new BigDecimal(DEFINE$2.HALF);
-		x.default_context = DEFAULT_CONTEXT;
+		const x = new BigDecimal(0.5);
 		return x;
 	}
 	
@@ -4369,8 +4363,7 @@ class BigDecimal {
 	 * @returns {BigDecimal} 1
 	 */
 	static get ONE() {
-		const x = new BigDecimal(DEFINE$2.ONE);
-		x.default_context = DEFAULT_CONTEXT;
+		const x = new BigDecimal(1);
 		return x;
 	}
 	
@@ -4379,8 +4372,7 @@ class BigDecimal {
 	 * @returns {BigDecimal} 2
 	 */
 	static get TWO() {
-		const x = new BigDecimal(DEFINE$2.TWO);
-		x.default_context = DEFAULT_CONTEXT;
+		const x = new BigDecimal(2);
 		return x;
 	}
 	
@@ -4389,50 +4381,11 @@ class BigDecimal {
 	 * @returns {BigDecimal} 10
 	 */
 	static get TEN() {
-		const x = new BigDecimal(DEFINE$2.TEN);
-		x.default_context = DEFAULT_CONTEXT;
+		const x = new BigDecimal(10);
 		return x;
 	}
 
 }
-
-/**
- * Collection of constant values used in the class.
- * @ignore
- */
-const DEFINE$2 = {
-
-	/**
-	 * -1
-	 */
-	MINUS_ONE : new BigDecimal(-1),
-
-	/**
-	 * 0
-	 */
-	ZERO : new BigDecimal(0),
-
-	/**
-	 * 0.5
-	 */
-	HALF : new BigDecimal(0.5),
-
-	/**
-	 * 1
-	 */
-	ONE : new BigDecimal(1),
-
-	/**
-	 * 2
-	 */
-	TWO : new BigDecimal(2),
-
-	/**
-	 * 10
-	 */
-	TEN : new BigDecimal(10)
-
-};
 
 BigDecimal.RoundingMode = RoundingMode;
 BigDecimal.MathContext = MathContext;
@@ -5267,7 +5220,7 @@ class Fraction {
 	 * @returns {Fraction} -1
 	 */
 	static get MINUS_ONE() {
-		return DEFINE$3.MINUS_ONE;
+		return DEFINE$2.MINUS_ONE;
 	}
 
 	/**
@@ -5275,7 +5228,7 @@ class Fraction {
 	 * @returns {Fraction} 0
 	 */
 	static get ZERO() {
-		return DEFINE$3.ZERO;
+		return DEFINE$2.ZERO;
 	}
 
 	/**
@@ -5283,7 +5236,7 @@ class Fraction {
 	 * @returns {Fraction} 0.5
 	 */
 	static get HALF() {
-		return DEFINE$3.HALF;
+		return DEFINE$2.HALF;
 	}
 	
 	/**
@@ -5291,7 +5244,7 @@ class Fraction {
 	 * @returns {Fraction} 1
 	 */
 	static get ONE() {
-		return DEFINE$3.ONE;
+		return DEFINE$2.ONE;
 	}
 	
 	/**
@@ -5299,7 +5252,7 @@ class Fraction {
 	 * @returns {Fraction} 2
 	 */
 	static get TWO() {
-		return DEFINE$3.TWO;
+		return DEFINE$2.TWO;
 	}
 	
 	/**
@@ -5307,7 +5260,7 @@ class Fraction {
 	 * @returns {Fraction} 10
 	 */
 	static get TEN() {
-		return DEFINE$3.TEN;
+		return DEFINE$2.TEN;
 	}
 
 }
@@ -5316,7 +5269,7 @@ class Fraction {
  * Collection of constant values used in the class.
  * @ignore
  */
-const DEFINE$3 = {
+const DEFINE$2 = {
 
 	/**
 	 * -1
@@ -14345,7 +14298,7 @@ class Complex {
 	 * @returns {Complex} 1
 	 */
 	static get ONE() {
-		return DEFINE$4.ONE;
+		return DEFINE$3.ONE;
 	}
 	
 	/**
@@ -14353,7 +14306,7 @@ class Complex {
 	 * @returns {Complex} 2
 	 */
 	static get TWO() {
-		return DEFINE$4.TWO;
+		return DEFINE$3.TWO;
 	}
 	
 	/**
@@ -14361,7 +14314,7 @@ class Complex {
 	 * @returns {Complex} 10
 	 */
 	static get TEN() {
-		return DEFINE$4.TEN;
+		return DEFINE$3.TEN;
 	}
 	
 	/**
@@ -14369,7 +14322,7 @@ class Complex {
 	 * @returns {Complex} 0
 	 */
 	static get ZERO() {
-		return DEFINE$4.ZERO;
+		return DEFINE$3.ZERO;
 	}
 
 	/**
@@ -14377,7 +14330,7 @@ class Complex {
 	 * @returns {Complex} -1
 	 */
 	static get MINUS_ONE() {
-		return DEFINE$4.MINUS_ONE;
+		return DEFINE$3.MINUS_ONE;
 	}
 
 	/**
@@ -14385,7 +14338,7 @@ class Complex {
 	 * @returns {Complex} i
 	 */
 	static get I() {
-		return DEFINE$4.I;
+		return DEFINE$3.I;
 	}
 
 	/**
@@ -14393,7 +14346,7 @@ class Complex {
 	 * @returns {Complex} 3.14...
 	 */
 	static get PI() {
-		return DEFINE$4.PI;
+		return DEFINE$3.PI;
 	}
 
 	/**
@@ -14401,7 +14354,7 @@ class Complex {
 	 * @returns {Complex} 2.71...
 	 */
 	static get E() {
-		return DEFINE$4.E;
+		return DEFINE$3.E;
 	}
 
 	/**
@@ -14409,7 +14362,7 @@ class Complex {
 	 * @returns {Complex} ln(2)
 	 */
 	static get LN2() {
-		return DEFINE$4.LN2;
+		return DEFINE$3.LN2;
 	}
 
 	/**
@@ -14417,7 +14370,7 @@ class Complex {
 	 * @returns {Complex} ln(10)
 	 */
 	static get LN10() {
-		return DEFINE$4.LN10;
+		return DEFINE$3.LN10;
 	}
 
 	/**
@@ -14425,7 +14378,7 @@ class Complex {
 	 * @returns {Complex} log_2(e)
 	 */
 	static get LOG2E() {
-		return DEFINE$4.LOG2E;
+		return DEFINE$3.LOG2E;
 	}
 	
 	/**
@@ -14433,7 +14386,7 @@ class Complex {
 	 * @returns {Complex} log_10(e)
 	 */
 	static get LOG10E() {
-		return DEFINE$4.LOG10E;
+		return DEFINE$3.LOG10E;
 	}
 	
 	/**
@@ -14441,7 +14394,7 @@ class Complex {
 	 * @returns {Complex} sqrt(2)
 	 */
 	static get SQRT2() {
-		return DEFINE$4.SQRT2;
+		return DEFINE$3.SQRT2;
 	}
 	
 	/**
@@ -14449,7 +14402,7 @@ class Complex {
 	 * @returns {Complex} sqrt(0.5)
 	 */
 	static get SQRT1_2() {
-		return DEFINE$4.SQRT1_2;
+		return DEFINE$3.SQRT1_2;
 	}
 	
 	/**
@@ -14457,7 +14410,7 @@ class Complex {
 	 * @returns {Complex} 0.5
 	 */
 	static get HALF() {
-		return DEFINE$4.HALF;
+		return DEFINE$3.HALF;
 	}
 
 	/**
@@ -14465,7 +14418,7 @@ class Complex {
 	 * @returns {Complex} Infinity
 	 */
 	static get POSITIVE_INFINITY() {
-		return DEFINE$4.POSITIVE_INFINITY;
+		return DEFINE$3.POSITIVE_INFINITY;
 	}
 	
 	/**
@@ -14473,7 +14426,7 @@ class Complex {
 	 * @returns {Complex} -Infinity
 	 */
 	static get NEGATIVE_INFINITY() {
-		return DEFINE$4.NEGATIVE_INFINITY;
+		return DEFINE$3.NEGATIVE_INFINITY;
 	}
 
 	/**
@@ -14481,7 +14434,7 @@ class Complex {
 	 * @returns {Complex} NaN
 	 */
 	static get NaN() {
-		return DEFINE$4.NaN;
+		return DEFINE$3.NaN;
 	}
 
 }
@@ -14490,7 +14443,7 @@ class Complex {
  * Collection of constant values used in the class.
  * @ignore
  */
-const DEFINE$4 = {
+const DEFINE$3 = {
 
 	/**
 	 * 0

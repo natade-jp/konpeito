@@ -16,10 +16,12 @@
 - Matrix 引数でメンバーの省略が可能なオブジェクトの指定に typedef で独自型を定義するように修正
 - 引数に epsilon と記載されている変数名をより意味合いに近い tolerance に変更
 - d.ts ファイルの中のクラス名を他と被らないように修正
-### 不具合
 - 「x | 0」としている部分の多くを「Math.trunc」に置き換え
+- BigInteger, BigDecimal, Fraction 互換性用のテストケースを追加
+### 不具合
 - BigDecimal divid で1度計算した後の結果のデフォルト環境設定が UNLIMITED に設定されてしまうバグを修正
 - Matrix, Complex valueOf メソッドが正しく動作していない問題を修正
+- BigDecimal pow の引数の条件判定で計算できるのにエラーで返す場合があったのを修正
 - fract の動作が、 x - trunc(x) となっていたのを修正。ただしくは、 x - floor(x)
 
 ※現在、更新が多岐にわたるため、ドキュメントの更新、ビルドなどは行っていません。

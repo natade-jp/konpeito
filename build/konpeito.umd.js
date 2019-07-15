@@ -3772,9 +3772,6 @@
 		if((mc.getPrecision() === 0) && (n < 0)) {
 			throw "ArithmeticException";
 		}
-		if((mc.getPrecision() > 0) && (n > mc.getPrecision())) {
-			throw "ArithmeticException";
-		}
 		var x, y;
 		x = this.clone();
 		y = BigDecimal.ONE;
@@ -4313,8 +4310,7 @@
 		 * @returns {BigDecimal} -1
 		 */
 	staticAccessors$3.MINUS_ONE.get = function () {
-		var x = new BigDecimal(DEFINE$2.MINUS_ONE);
-		x.default_context = DEFAULT_CONTEXT;
+		var x = new BigDecimal(-1);
 		return x;
 	};
 
@@ -4323,8 +4319,7 @@
 		 * @returns {BigDecimal} 0
 		 */
 	staticAccessors$3.ZERO.get = function () {
-		var x = new BigDecimal(DEFINE$2.ZERO);
-		x.default_context = DEFAULT_CONTEXT;
+		var x = new BigDecimal(0);
 		return x;
 	};
 		
@@ -4333,8 +4328,7 @@
 		 * @returns {BigDecimal} 0.5
 		 */
 	staticAccessors$3.HALF.get = function () {
-		var x = new BigDecimal(DEFINE$2.HALF);
-		x.default_context = DEFAULT_CONTEXT;
+		var x = new BigDecimal(0.5);
 		return x;
 	};
 		
@@ -4343,8 +4337,7 @@
 		 * @returns {BigDecimal} 1
 		 */
 	staticAccessors$3.ONE.get = function () {
-		var x = new BigDecimal(DEFINE$2.ONE);
-		x.default_context = DEFAULT_CONTEXT;
+		var x = new BigDecimal(1);
 		return x;
 	};
 		
@@ -4353,8 +4346,7 @@
 		 * @returns {BigDecimal} 2
 		 */
 	staticAccessors$3.TWO.get = function () {
-		var x = new BigDecimal(DEFINE$2.TWO);
-		x.default_context = DEFAULT_CONTEXT;
+		var x = new BigDecimal(2);
 		return x;
 	};
 		
@@ -4363,51 +4355,12 @@
 		 * @returns {BigDecimal} 10
 		 */
 	staticAccessors$3.TEN.get = function () {
-		var x = new BigDecimal(DEFINE$2.TEN);
-		x.default_context = DEFAULT_CONTEXT;
+		var x = new BigDecimal(10);
 		return x;
 	};
 
 	Object.defineProperties( BigDecimal.prototype, prototypeAccessors$1 );
 	Object.defineProperties( BigDecimal, staticAccessors$3 );
-
-	/**
-	 * Collection of constant values used in the class.
-	 * @ignore
-	 */
-	var DEFINE$2 = {
-
-		/**
-		 * -1
-		 */
-		MINUS_ONE : new BigDecimal(-1),
-
-		/**
-		 * 0
-		 */
-		ZERO : new BigDecimal(0),
-
-		/**
-		 * 0.5
-		 */
-		HALF : new BigDecimal(0.5),
-
-		/**
-		 * 1
-		 */
-		ONE : new BigDecimal(1),
-
-		/**
-		 * 2
-		 */
-		TWO : new BigDecimal(2),
-
-		/**
-		 * 10
-		 */
-		TEN : new BigDecimal(10)
-
-	};
 
 	BigDecimal.RoundingMode = RoundingMode;
 	BigDecimal.MathContext = MathContext;
@@ -5226,7 +5179,7 @@
 		 * @returns {Fraction} -1
 		 */
 	staticAccessors$4.MINUS_ONE.get = function () {
-		return DEFINE$3.MINUS_ONE;
+		return DEFINE$2.MINUS_ONE;
 	};
 
 	/**
@@ -5234,7 +5187,7 @@
 		 * @returns {Fraction} 0
 		 */
 	staticAccessors$4.ZERO.get = function () {
-		return DEFINE$3.ZERO;
+		return DEFINE$2.ZERO;
 	};
 
 	/**
@@ -5242,7 +5195,7 @@
 		 * @returns {Fraction} 0.5
 		 */
 	staticAccessors$4.HALF.get = function () {
-		return DEFINE$3.HALF;
+		return DEFINE$2.HALF;
 	};
 		
 	/**
@@ -5250,7 +5203,7 @@
 		 * @returns {Fraction} 1
 		 */
 	staticAccessors$4.ONE.get = function () {
-		return DEFINE$3.ONE;
+		return DEFINE$2.ONE;
 	};
 		
 	/**
@@ -5258,7 +5211,7 @@
 		 * @returns {Fraction} 2
 		 */
 	staticAccessors$4.TWO.get = function () {
-		return DEFINE$3.TWO;
+		return DEFINE$2.TWO;
 	};
 		
 	/**
@@ -5266,7 +5219,7 @@
 		 * @returns {Fraction} 10
 		 */
 	staticAccessors$4.TEN.get = function () {
-		return DEFINE$3.TEN;
+		return DEFINE$2.TEN;
 	};
 
 	Object.defineProperties( Fraction.prototype, prototypeAccessors$2 );
@@ -5276,7 +5229,7 @@
 	 * Collection of constant values used in the class.
 	 * @ignore
 	 */
-	var DEFINE$3 = {
+	var DEFINE$2 = {
 
 		/**
 		 * -1
@@ -14201,7 +14154,7 @@
 		 * @returns {Complex} 1
 		 */
 	staticAccessors$5.ONE.get = function () {
-		return DEFINE$4.ONE;
+		return DEFINE$3.ONE;
 	};
 		
 	/**
@@ -14209,7 +14162,7 @@
 		 * @returns {Complex} 2
 		 */
 	staticAccessors$5.TWO.get = function () {
-		return DEFINE$4.TWO;
+		return DEFINE$3.TWO;
 	};
 		
 	/**
@@ -14217,7 +14170,7 @@
 		 * @returns {Complex} 10
 		 */
 	staticAccessors$5.TEN.get = function () {
-		return DEFINE$4.TEN;
+		return DEFINE$3.TEN;
 	};
 		
 	/**
@@ -14225,7 +14178,7 @@
 		 * @returns {Complex} 0
 		 */
 	staticAccessors$5.ZERO.get = function () {
-		return DEFINE$4.ZERO;
+		return DEFINE$3.ZERO;
 	};
 
 	/**
@@ -14233,7 +14186,7 @@
 		 * @returns {Complex} -1
 		 */
 	staticAccessors$5.MINUS_ONE.get = function () {
-		return DEFINE$4.MINUS_ONE;
+		return DEFINE$3.MINUS_ONE;
 	};
 
 	/**
@@ -14241,7 +14194,7 @@
 		 * @returns {Complex} i
 		 */
 	staticAccessors$5.I.get = function () {
-		return DEFINE$4.I;
+		return DEFINE$3.I;
 	};
 
 	/**
@@ -14249,7 +14202,7 @@
 		 * @returns {Complex} 3.14...
 		 */
 	staticAccessors$5.PI.get = function () {
-		return DEFINE$4.PI;
+		return DEFINE$3.PI;
 	};
 
 	/**
@@ -14257,7 +14210,7 @@
 		 * @returns {Complex} 2.71...
 		 */
 	staticAccessors$5.E.get = function () {
-		return DEFINE$4.E;
+		return DEFINE$3.E;
 	};
 
 	/**
@@ -14265,7 +14218,7 @@
 		 * @returns {Complex} ln(2)
 		 */
 	staticAccessors$5.LN2.get = function () {
-		return DEFINE$4.LN2;
+		return DEFINE$3.LN2;
 	};
 
 	/**
@@ -14273,7 +14226,7 @@
 		 * @returns {Complex} ln(10)
 		 */
 	staticAccessors$5.LN10.get = function () {
-		return DEFINE$4.LN10;
+		return DEFINE$3.LN10;
 	};
 
 	/**
@@ -14281,7 +14234,7 @@
 		 * @returns {Complex} log_2(e)
 		 */
 	staticAccessors$5.LOG2E.get = function () {
-		return DEFINE$4.LOG2E;
+		return DEFINE$3.LOG2E;
 	};
 		
 	/**
@@ -14289,7 +14242,7 @@
 		 * @returns {Complex} log_10(e)
 		 */
 	staticAccessors$5.LOG10E.get = function () {
-		return DEFINE$4.LOG10E;
+		return DEFINE$3.LOG10E;
 	};
 		
 	/**
@@ -14297,7 +14250,7 @@
 		 * @returns {Complex} sqrt(2)
 		 */
 	staticAccessors$5.SQRT2.get = function () {
-		return DEFINE$4.SQRT2;
+		return DEFINE$3.SQRT2;
 	};
 		
 	/**
@@ -14305,7 +14258,7 @@
 		 * @returns {Complex} sqrt(0.5)
 		 */
 	staticAccessors$5.SQRT1_2.get = function () {
-		return DEFINE$4.SQRT1_2;
+		return DEFINE$3.SQRT1_2;
 	};
 		
 	/**
@@ -14313,7 +14266,7 @@
 		 * @returns {Complex} 0.5
 		 */
 	staticAccessors$5.HALF.get = function () {
-		return DEFINE$4.HALF;
+		return DEFINE$3.HALF;
 	};
 
 	/**
@@ -14321,7 +14274,7 @@
 		 * @returns {Complex} Infinity
 		 */
 	staticAccessors$5.POSITIVE_INFINITY.get = function () {
-		return DEFINE$4.POSITIVE_INFINITY;
+		return DEFINE$3.POSITIVE_INFINITY;
 	};
 		
 	/**
@@ -14329,7 +14282,7 @@
 		 * @returns {Complex} -Infinity
 		 */
 	staticAccessors$5.NEGATIVE_INFINITY.get = function () {
-		return DEFINE$4.NEGATIVE_INFINITY;
+		return DEFINE$3.NEGATIVE_INFINITY;
 	};
 
 	/**
@@ -14337,7 +14290,7 @@
 		 * @returns {Complex} NaN
 		 */
 	staticAccessors$5.NaN.get = function () {
-		return DEFINE$4.NaN;
+		return DEFINE$3.NaN;
 	};
 
 	Object.defineProperties( Complex.prototype, prototypeAccessors$4 );
@@ -14347,7 +14300,7 @@
 	 * Collection of constant values used in the class.
 	 * @ignore
 	 */
-	var DEFINE$4 = {
+	var DEFINE$3 = {
 
 		/**
 		 * 0
