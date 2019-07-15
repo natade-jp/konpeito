@@ -24,7 +24,7 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
@@ -35,6 +35,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.mjs~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -42,18 +44,20 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Statistics from &apos;<span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1123">konpeito/src/math/tools/Statistics.mjs</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Statistics from &apos;<span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1131">konpeito/src/math/tools/Statistics.mjs</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1123">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1131">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -337,7 +341,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-corrcoef">corrcoef</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-corrcoef">corrcoef</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -366,7 +370,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-cov">cov</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-cov">cov</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -743,7 +747,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-geomean">geomean</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-geomean">geomean</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -772,7 +776,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-mad">mad</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, algorithm: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-mad">mad</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, algorithm: <span>string</span> | ?<span>number</span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -801,7 +805,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-max">max</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-max">max</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -830,7 +834,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-mean">mean</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-mean">mean</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -859,7 +863,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-median">median</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-median">median</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -888,7 +892,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-min">min</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-min">min</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -917,7 +921,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-mode">mode</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-mode">mode</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -946,7 +950,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-moment">moment</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>, nth_order: <span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-moment">moment</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, nth_order: <span>number</span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -1004,7 +1008,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-normalize">normalize</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-normalize">normalize</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -1120,7 +1124,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-prod">prod</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-prod">prod</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -1149,7 +1153,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-skewness">skewness</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-skewness">skewness</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -1178,7 +1182,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-sort">sort</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, order: ?<span>string</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-sort">sort</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, order: <span>string</span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -1207,7 +1211,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-std">std</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-std">std</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -1236,7 +1240,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-sum">sum</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-sum">sum</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -1410,7 +1414,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-var">var</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html#static-method-var">var</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -1449,7 +1453,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1219">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1227">source</a></span></span>
     </span>
   </h3>
 
@@ -1527,7 +1531,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1252">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1260">source</a></span></span>
     </span>
   </h3>
 
@@ -1611,7 +1615,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1235">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1243">source</a></span></span>
     </span>
   </h3>
 
@@ -1703,7 +1707,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1284">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1292">source</a></span></span>
     </span>
   </h3>
 
@@ -1787,7 +1791,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1268">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1276">source</a></span></span>
     </span>
   </h3>
 
@@ -1871,7 +1875,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1483">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1491">source</a></span></span>
     </span>
   </h3>
 
@@ -1950,7 +1954,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1497">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1505">source</a></span></span>
     </span>
   </h3>
 
@@ -2029,7 +2033,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1469">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1477">source</a></span></span>
     </span>
   </h3>
 
@@ -2104,11 +2108,11 @@
     
     
     
-    <span class="code" data-ice="name">corrcoef</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">corrcoef</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1941">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1952">source</a></span></span>
     </span>
   </h3>
 
@@ -2136,7 +2140,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -2182,11 +2186,11 @@
     
     
     
-    <span class="code" data-ice="name">cov</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">cov</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1889">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1900">source</a></span></span>
     </span>
   </h3>
 
@@ -2214,7 +2218,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -2264,7 +2268,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1324">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1332">source</a></span></span>
     </span>
   </h3>
 
@@ -2336,7 +2340,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1336">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1344">source</a></span></span>
     </span>
   </h3>
 
@@ -2408,7 +2412,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1298">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1306">source</a></span></span>
     </span>
   </h3>
 
@@ -2480,7 +2484,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1528">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1536">source</a></span></span>
     </span>
   </h3>
 
@@ -2566,7 +2570,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1544">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1552">source</a></span></span>
     </span>
   </h3>
 
@@ -2652,7 +2656,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1512">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1520">source</a></span></span>
     </span>
   </h3>
 
@@ -2738,7 +2742,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1188">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1196">source</a></span></span>
     </span>
   </h3>
 
@@ -2824,7 +2828,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1204">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1212">source</a></span></span>
     </span>
   </h3>
 
@@ -2910,7 +2914,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1142">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1150">source</a></span></span>
     </span>
   </h3>
 
@@ -2982,7 +2986,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1156">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1164">source</a></span></span>
     </span>
   </h3>
 
@@ -3068,7 +3072,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1130">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1138">source</a></span></span>
     </span>
   </h3>
 
@@ -3140,7 +3144,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1172">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1180">source</a></span></span>
     </span>
   </h3>
 
@@ -3222,11 +3226,11 @@
     
     
     
-    <span class="code" data-ice="name">geomean</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">geomean</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1668">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1676">source</a></span></span>
     </span>
   </h3>
 
@@ -3254,7 +3258,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -3300,11 +3304,11 @@
     
     
     
-    <span class="code" data-ice="name">mad</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, algorithm: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">mad</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, algorithm: <span>string</span> | ?<span>number</span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1847">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1858">source</a></span></span>
     </span>
   </h3>
 
@@ -3312,6 +3316,9 @@
   
   
   <div data-ice="description"><p>Mean absolute deviation.</p>
+<ul>
+<li>The &quot;algorithm&quot; can choose &quot;0/mean&quot;(default) and &quot;1/median&quot;.</li>
+</ul>
 </div>
 
   
@@ -3331,8 +3338,15 @@
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">algorithm</td>
+      <td data-ice="type" class="code"><span>string</span> | ?<span>number</span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>nullable: true</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>, algorithm: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -3378,11 +3392,11 @@
     
     
     
-    <span class="code" data-ice="name">max</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">max</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1559">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1567">source</a></span></span>
     </span>
   </h3>
 
@@ -3410,7 +3424,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -3457,11 +3471,11 @@
     
     
     
-    <span class="code" data-ice="name">mean</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">mean</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1625">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1633">source</a></span></span>
     </span>
   </h3>
 
@@ -3489,7 +3503,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -3535,11 +3549,11 @@
     
     
     
-    <span class="code" data-ice="name">median</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">median</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1687">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1695">source</a></span></span>
     </span>
   </h3>
 
@@ -3567,7 +3581,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -3613,11 +3627,11 @@
     
     
     
-    <span class="code" data-ice="name">min</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">min</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1580">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1588">source</a></span></span>
     </span>
   </h3>
 
@@ -3645,7 +3659,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -3692,11 +3706,11 @@
     
     
     
-    <span class="code" data-ice="name">mode</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">mode</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1715">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1723">source</a></span></span>
     </span>
   </h3>
 
@@ -3724,7 +3738,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -3770,11 +3784,11 @@
     
     
     
-    <span class="code" data-ice="name">moment</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>, nth_order: <span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">moment</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, nth_order: <span>number</span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1757">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1766">source</a></span></span>
     </span>
   </h3>
 
@@ -3804,8 +3818,14 @@
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">nth_order</td>
+      <td data-ice="type" class="code"><span>number</span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>, nth_order: <span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -3820,8 +3840,7 @@
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>n&#x6B21;&#x306E;&#x30E2;&#x30FC;&#x30E1;&#x30F3;&#x30C8;&#x3001;2&#x3067;&#x5206;&#x6563;&#x306E;&#x5B9A;&#x7FA9;&#x3068;&#x540C;&#x7B49;&#x3002;</p>
-</td>
+          
         </tr>
       </tbody>
     </table>
@@ -3856,7 +3875,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1311">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1319">source</a></span></span>
     </span>
   </h3>
 
@@ -3930,11 +3949,11 @@
     
     
     
-    <span class="code" data-ice="name">normalize</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">normalize</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1928">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1939">source</a></span></span>
     </span>
   </h3>
 
@@ -3962,7 +3981,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -4012,7 +4031,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1366">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1374">source</a></span></span>
     </span>
   </h3>
 
@@ -4100,7 +4119,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1382">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1390">source</a></span></span>
     </span>
   </h3>
 
@@ -4188,7 +4207,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1350">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1358">source</a></span></span>
     </span>
   </h3>
 
@@ -4272,11 +4291,11 @@
     
     
     
-    <span class="code" data-ice="name">prod</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">prod</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1649">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1657">source</a></span></span>
     </span>
   </h3>
 
@@ -4304,7 +4323,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -4350,11 +4369,11 @@
     
     
     
-    <span class="code" data-ice="name">skewness</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">skewness</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1868">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1879">source</a></span></span>
     </span>
   </h3>
 
@@ -4382,7 +4401,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -4428,11 +4447,11 @@
     
     
     
-    <span class="code" data-ice="name">sort</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, order: ?<span>string</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">sort</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, order: <span>string</span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1952">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1965">source</a></span></span>
     </span>
   </h3>
 
@@ -4440,6 +4459,9 @@
   
   
   <div data-ice="description"><p>Sort.</p>
+<ul>
+<li>The &quot;order&quot; can choose &quot;ascend&quot;(default) and &quot;descend&quot;.</li>
+</ul>
 </div>
 
   
@@ -4459,8 +4481,14 @@
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">order</td>
+      <td data-ice="type" class="code"><span>string</span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"></td>
+    </tr>
+<tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>, order: ?<span>string</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -4506,11 +4534,11 @@
     
     
     
-    <span class="code" data-ice="name">std</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">std</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1829">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1838">source</a></span></span>
     </span>
   </h3>
 
@@ -4538,7 +4566,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -4584,11 +4612,11 @@
     
     
     
-    <span class="code" data-ice="name">sum</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">sum</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1601">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1609">source</a></span></span>
     </span>
   </h3>
 
@@ -4616,7 +4644,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -4666,7 +4694,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1411">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1419">source</a></span></span>
     </span>
   </h3>
 
@@ -4745,7 +4773,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1440">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1448">source</a></span></span>
     </span>
   </h3>
 
@@ -4831,7 +4859,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1425">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1433">source</a></span></span>
     </span>
   </h3>
 
@@ -4910,7 +4938,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1455">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1463">source</a></span></span>
     </span>
   </h3>
 
@@ -4989,7 +5017,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1397">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1405">source</a></span></span>
     </span>
   </h3>
 
@@ -5064,11 +5092,11 @@
     
     
     
-    <span class="code" data-ice="name">var</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">var</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1799">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Statistics.mjs.html#lineNumber1808">source</a></span></span>
     </span>
   </h3>
 
@@ -5096,7 +5124,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>, correction: ?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>

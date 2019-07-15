@@ -24,7 +24,7 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
@@ -35,6 +35,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.mjs~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -42,6 +44,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -63,6 +67,13 @@ import Complex from &quot;../Complex.mjs&quot;;
 
 // @ts-ignore
 import Matrix from &quot;../Matrix.mjs&quot;;
+
+/**
+ * Collection of calculation settings for matrix.
+ * - Available options vary depending on the method.
+ * @typedef {Object} SignalSettings
+ * @property {?string|?number} [dimension=&quot;auto&quot;] Calculation direction. 0/&quot;auto&quot;, 1/&quot;row&quot;, 2/&quot;column&quot;, 3/&quot;both&quot;.
+ */
 
 /**
  * Fast Fourier Transform (FFT) Class.
@@ -948,7 +959,7 @@ export default class Signal {
 	/**
 	 * Discrete Fourier transform (DFT).
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} fft(x)
 	 */
 	static fft(x, type) {
@@ -974,7 +985,7 @@ export default class Signal {
 	/**
 	 * Inverse discrete Fourier transform (IDFT),
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} X
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} ifft(X)
 	 */
 	static ifft(X, type) {
@@ -1000,7 +1011,7 @@ export default class Signal {
 	/**
 	 * Power spectral density.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} abs(fft(x)).^2
 	 */
 	static powerfft(x, type) {
@@ -1026,7 +1037,7 @@ export default class Signal {
 	/**
 	 * Discrete cosine transform (DCT-II, DCT).
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} dct(x)
 	 */
 	static dct(x, type) {
@@ -1053,7 +1064,7 @@ export default class Signal {
 	/**
 	 * Inverse discrete cosine transform (DCT-III, IDCT),
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} X
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix} idct(x)
 	 */
 	static idct(X, type) {
@@ -1262,7 +1273,7 @@ export default class Signal {
 	 * FFT shift.
 	 * Circular shift beginning at the center of the signal.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x 
-	 * @param {{dimension : (?string|?number)}} [type]
+	 * @param {SignalSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static fftshift(x, type) {

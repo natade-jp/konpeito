@@ -24,7 +24,7 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
@@ -35,6 +35,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.mjs~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -42,6 +44,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -920,7 +924,7 @@
       <div>
         
         
-        <div data-ice="description"><p>64-bit floating point.</p>
+        <div data-ice="description"><p>floating point.</p>
 </div>
       </div>
     </td>
@@ -978,7 +982,7 @@
       <div>
         
         
-        <div data-ice="description"><p>32-bit integer value.</p>
+        <div data-ice="description"><p>integer value.</p>
 </div>
       </div>
     </td>
@@ -1333,7 +1337,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-compareTo">compareTo</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>, epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>number</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-compareTo">compareTo</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>, tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>number</span></span>
         </p>
       </div>
       <div>
@@ -1478,7 +1482,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-equals">equals</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>, epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-equals">equals</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>, tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
         </p>
       </div>
       <div>
@@ -1681,7 +1685,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-isComplex">isComplex</a></span></span><span class="code" data-ice="signature">(epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-isComplex">isComplex</a></span></span><span class="code" data-ice="signature">(tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
         </p>
       </div>
       <div>
@@ -1710,7 +1714,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-isComplexInteger">isComplexInteger</a></span></span><span class="code" data-ice="signature">(epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-isComplexInteger">isComplexInteger</a></span></span><span class="code" data-ice="signature">(tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
         </p>
       </div>
       <div>
@@ -1797,7 +1801,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-isInteger">isInteger</a></span></span><span class="code" data-ice="signature">(epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-isInteger">isInteger</a></span></span><span class="code" data-ice="signature">(tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
         </p>
       </div>
       <div>
@@ -1913,7 +1917,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-isOne">isOne</a></span></span><span class="code" data-ice="signature">(epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-isOne">isOne</a></span></span><span class="code" data-ice="signature">(tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
         </p>
       </div>
       <div>
@@ -1971,7 +1975,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-isReal">isReal</a></span></span><span class="code" data-ice="signature">(epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-isReal">isReal</a></span></span><span class="code" data-ice="signature">(tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
         </p>
       </div>
       <div>
@@ -2000,7 +2004,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-isZero">isZero</a></span></span><span class="code" data-ice="signature">(epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html#instance-method-isZero">isZero</a></span></span><span class="code" data-ice="signature">(tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
         </p>
       </div>
       <div>
@@ -2499,7 +2503,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1051">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1065">source</a></span></span>
     </span>
   </h3>
 
@@ -2556,7 +2560,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1107">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1121">source</a></span></span>
     </span>
   </h3>
 
@@ -2613,7 +2617,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1035">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1049">source</a></span></span>
     </span>
   </h3>
 
@@ -2670,7 +2674,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1067">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1081">source</a></span></span>
     </span>
   </h3>
 
@@ -2727,7 +2731,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1059">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1073">source</a></span></span>
     </span>
   </h3>
 
@@ -2784,7 +2788,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1083">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1097">source</a></span></span>
     </span>
   </h3>
 
@@ -2841,7 +2845,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1075">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1089">source</a></span></span>
     </span>
   </h3>
 
@@ -2898,7 +2902,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1027">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1041">source</a></span></span>
     </span>
   </h3>
 
@@ -2955,7 +2959,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1123">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1137">source</a></span></span>
     </span>
   </h3>
 
@@ -3012,7 +3016,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1131">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1145">source</a></span></span>
     </span>
   </h3>
 
@@ -3069,7 +3073,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber995">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1009">source</a></span></span>
     </span>
   </h3>
 
@@ -3126,7 +3130,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1043">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1057">source</a></span></span>
     </span>
   </h3>
 
@@ -3183,7 +3187,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1115">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1129">source</a></span></span>
     </span>
   </h3>
 
@@ -3240,7 +3244,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1099">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1113">source</a></span></span>
     </span>
   </h3>
 
@@ -3297,7 +3301,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1091">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1105">source</a></span></span>
     </span>
   </h3>
 
@@ -3354,7 +3358,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1011">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1025">source</a></span></span>
     </span>
   </h3>
 
@@ -3411,7 +3415,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1003">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1017">source</a></span></span>
     </span>
   </h3>
 
@@ -3468,7 +3472,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1019">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber1033">source</a></span></span>
     </span>
   </h3>
 
@@ -3528,7 +3532,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber148">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber154">source</a></span></span>
     </span>
   </h3>
 
@@ -3600,7 +3604,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber282">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber288">source</a></span></span>
     </span>
   </h3>
 
@@ -3656,7 +3660,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber290">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber296">source</a></span></span>
     </span>
   </h3>
 
@@ -3712,7 +3716,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber162">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber168">source</a></span></span>
     </span>
   </h3>
 
@@ -3786,7 +3790,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber173">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber179">source</a></span></span>
     </span>
   </h3>
 
@@ -3859,7 +3863,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber191">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber197">source</a></span></span>
     </span>
   </h3>
 
@@ -3931,7 +3935,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber210">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber216">source</a></span></span>
     </span>
   </h3>
 
@@ -4006,16 +4010,17 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber87">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber89">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Create a complex number.
-Initialization can be performed as follows.</p>
+  <div data-ice="description"><p>Create a complex number.</p>
+<p>Initialization can be performed as follows.</p>
 <ul>
+<li>1200, &quot;1200&quot;, &quot;12e2&quot;, &quot;1.2e3&quot;</li>
 <li>&quot;3 + 4i&quot;, &quot;4j + 3&quot;, [3, 4].</li>
 </ul>
 </div>
@@ -4074,7 +4079,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber347">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber336">source</a></span></span>
     </span>
   </h3>
 
@@ -4131,14 +4136,14 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber226">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber232">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>64-bit floating point.</p>
+  <div data-ice="description"><p>floating point.</p>
 </div>
 
   
@@ -4187,7 +4192,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber323">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber312">source</a></span></span>
     </span>
   </h3>
 
@@ -4244,14 +4249,14 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber218">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber224">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>32-bit integer value.</p>
+  <div data-ice="description"><p>integer value.</p>
 </div>
 
   
@@ -4300,7 +4305,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber331">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber320">source</a></span></span>
     </span>
   </h3>
 
@@ -4357,7 +4362,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber315">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber304">source</a></span></span>
     </span>
   </h3>
 
@@ -4416,7 +4421,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber105">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber107">source</a></span></span>
     </span>
   </h3>
 
@@ -4460,7 +4465,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber98">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber100">source</a></span></span>
     </span>
   </h3>
 
@@ -4507,7 +4512,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber732">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber746">source</a></span></span>
     </span>
   </h3>
 
@@ -4564,7 +4569,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber388">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber398">source</a></span></span>
     </span>
   </h3>
 
@@ -4637,7 +4642,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber894">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber908">source</a></span></span>
     </span>
   </h3>
 
@@ -4697,7 +4702,7 @@ Initialization can be performed as follows.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber909">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber923">source</a></span></span>
     </span>
   </h3>
 
@@ -4773,7 +4778,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber959">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber973">source</a></span></span>
     </span>
   </h3>
 
@@ -4830,7 +4835,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber586">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber600">source</a></span></span>
     </span>
   </h3>
 
@@ -4909,7 +4914,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber234">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber240">source</a></span></span>
     </span>
   </h3>
 
@@ -4961,11 +4966,11 @@ Supports only real numbers.</p>
     
     
     
-    <span class="code" data-ice="name">compareTo</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>, epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>number</span></span>
+    <span class="code" data-ice="name">compareTo</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>, tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>number</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber538">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber552">source</a></span></span>
     </span>
   </h3>
 
@@ -4992,7 +4997,7 @@ Supports only real numbers.</p>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">epsilon</td>
+      <td data-ice="name" class="code" data-depth="0">tolerance</td>
       <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: Number.EPSILON</li></ul></td>
@@ -5046,7 +5051,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber740">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber754">source</a></span></span>
     </span>
   </h3>
 
@@ -5103,7 +5108,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber866">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber880">source</a></span></span>
     </span>
   </h3>
 
@@ -5160,7 +5165,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber462">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber472">source</a></span></span>
     </span>
   </h3>
 
@@ -5233,7 +5238,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber437">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber447">source</a></span></span>
     </span>
   </h3>
 
@@ -5302,11 +5307,11 @@ Supports only real numbers.</p>
     
     
     
-    <span class="code" data-ice="name">equals</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>, epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
+    <span class="code" data-ice="name">equals</span><span class="code" data-ice="signature">(number: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>, tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber300">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber535">source</a></span></span>
     </span>
   </h3>
 
@@ -5333,7 +5338,7 @@ Supports only real numbers.</p>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">epsilon</td>
+      <td data-ice="name" class="code" data-depth="0">tolerance</td>
       <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: Number.EPSILON</li></ul></td>
@@ -5387,7 +5392,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber834">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber848">source</a></span></span>
     </span>
   </h3>
 
@@ -5444,7 +5449,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber975">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber989">source</a></span></span>
     </span>
   </h3>
 
@@ -5465,7 +5470,7 @@ Supports only real numbers.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>fix(A)</p>
+          <td class="return-desc" data-ice="returnDescription"><p>fix(A), trunc(A)</p>
 </td>
         </tr>
       </tbody>
@@ -5501,7 +5506,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber951">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber965">source</a></span></span>
     </span>
   </h3>
 
@@ -5558,7 +5563,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber983">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber997">source</a></span></span>
     </span>
   </h3>
 
@@ -5615,7 +5620,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber364">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber353">source</a></span></span>
     </span>
   </h3>
 
@@ -5675,7 +5680,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber505">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber515">source</a></span></span>
     </span>
   </h3>
 
@@ -5728,11 +5733,11 @@ Supports only real numbers.</p>
     
     
     
-    <span class="code" data-ice="name">isComplex</span><span class="code" data-ice="signature">(epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
+    <span class="code" data-ice="name">isComplex</span><span class="code" data-ice="signature">(tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber656">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber670">source</a></span></span>
     </span>
   </h3>
 
@@ -5753,7 +5758,7 @@ Supports only real numbers.</p>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">epsilon</td>
+      <td data-ice="name" class="code" data-depth="0">tolerance</td>
       <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: Number.EPSILON</li></ul></td>
@@ -5803,11 +5808,11 @@ Supports only real numbers.</p>
     
     
     
-    <span class="code" data-ice="name">isComplexInteger</span><span class="code" data-ice="signature">(epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
+    <span class="code" data-ice="name">isComplexInteger</span><span class="code" data-ice="signature">(tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber624">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber638">source</a></span></span>
     </span>
   </h3>
 
@@ -5828,7 +5833,7 @@ Supports only real numbers.</p>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">epsilon</td>
+      <td data-ice="name" class="code" data-depth="0">tolerance</td>
       <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: Number.EPSILON</li></ul></td>
@@ -5882,7 +5887,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber720">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber734">source</a></span></span>
     </span>
   </h3>
 
@@ -5939,7 +5944,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber709">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber723">source</a></span></span>
     </span>
   </h3>
 
@@ -5992,11 +5997,11 @@ Supports only real numbers.</p>
     
     
     
-    <span class="code" data-ice="name">isInteger</span><span class="code" data-ice="signature">(epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
+    <span class="code" data-ice="name">isInteger</span><span class="code" data-ice="signature">(tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber614">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber628">source</a></span></span>
     </span>
   </h3>
 
@@ -6017,7 +6022,7 @@ Supports only real numbers.</p>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">epsilon</td>
+      <td data-ice="name" class="code" data-depth="0">tolerance</td>
       <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: Number.EPSILON</li></ul></td>
@@ -6070,7 +6075,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber675">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber689">source</a></span></span>
     </span>
   </h3>
 
@@ -6127,7 +6132,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber693">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber707">source</a></span></span>
     </span>
   </h3>
 
@@ -6184,7 +6189,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber701">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber715">source</a></span></span>
     </span>
   </h3>
 
@@ -6237,11 +6242,11 @@ Supports only real numbers.</p>
     
     
     
-    <span class="code" data-ice="name">isOne</span><span class="code" data-ice="signature">(epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
+    <span class="code" data-ice="name">isOne</span><span class="code" data-ice="signature">(tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber646">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber660">source</a></span></span>
     </span>
   </h3>
 
@@ -6262,7 +6267,7 @@ Supports only real numbers.</p>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">epsilon</td>
+      <td data-ice="name" class="code" data-depth="0">tolerance</td>
       <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: Number.EPSILON</li></ul></td>
@@ -6316,7 +6321,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber683">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber697">source</a></span></span>
     </span>
   </h3>
 
@@ -6369,11 +6374,11 @@ Supports only real numbers.</p>
     
     
     
-    <span class="code" data-ice="name">isReal</span><span class="code" data-ice="signature">(epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
+    <span class="code" data-ice="name">isReal</span><span class="code" data-ice="signature">(tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber666">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber680">source</a></span></span>
     </span>
   </h3>
 
@@ -6394,7 +6399,7 @@ Supports only real numbers.</p>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">epsilon</td>
+      <td data-ice="name" class="code" data-depth="0">tolerance</td>
       <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: Number.EPSILON</li></ul></td>
@@ -6444,11 +6449,11 @@ Supports only real numbers.</p>
     
     
     
-    <span class="code" data-ice="name">isZero</span><span class="code" data-ice="signature">(epsilon: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
+    <span class="code" data-ice="name">isZero</span><span class="code" data-ice="signature">(tolerance: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span>): <span>boolean</span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber636">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber650">source</a></span></span>
     </span>
   </h3>
 
@@ -6469,7 +6474,7 @@ Supports only real numbers.</p>
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">epsilon</td>
+      <td data-ice="name" class="code" data-depth="0">tolerance</td>
       <td data-ice="type" class="code"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span> | <span>number</span> | <span>string</span> | <span>Array</span>&lt;<span>number</span>&gt; | {_re: <span>number</span>, _im: <span>number</span>} | <span>Object</span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: Number.EPSILON</li></ul></td>
@@ -6523,7 +6528,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber822">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber836">source</a></span></span>
     </span>
   </h3>
 
@@ -6580,7 +6585,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber555">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber569">source</a></span></span>
     </span>
   </h3>
 
@@ -6653,7 +6658,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber570">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber584">source</a></span></span>
     </span>
   </h3>
 
@@ -6726,7 +6731,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber488">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber498">source</a></span></span>
     </span>
   </h3>
 
@@ -6800,7 +6805,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber412">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber422">source</a></span></span>
     </span>
   </h3>
 
@@ -6873,7 +6878,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber752">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber766">source</a></span></span>
     </span>
   </h3>
 
@@ -6930,7 +6935,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber765">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber779">source</a></span></span>
     </span>
   </h3>
 
@@ -7003,7 +7008,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber967">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber981">source</a></span></span>
     </span>
   </h3>
 
@@ -7060,7 +7065,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber520">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber377">source</a></span></span>
     </span>
   </h3>
 
@@ -7084,8 +7089,7 @@ Supports only real numbers.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>[-1,1] &#x8907;&#x7D20;&#x6570;&#x306E;&#x5834;&#x5408;&#x306F;&#x30CE;&#x30EB;&#x30E0;&#x3092;1&#x306B;&#x3057;&#x305F;&#x5024;&#x3002;</p>
-</td>
+          
         </tr>
       </tbody>
     </table>
@@ -7120,7 +7124,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber851">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber865">source</a></span></span>
     </span>
   </h3>
 
@@ -7177,7 +7181,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber931">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber945">source</a></span></span>
     </span>
   </h3>
 
@@ -7234,7 +7238,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber804">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber818">source</a></span></span>
     </span>
   </h3>
 
@@ -7291,7 +7295,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber793">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber807">source</a></span></span>
     </span>
   </h3>
 
@@ -7348,7 +7352,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber400">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber410">source</a></span></span>
     </span>
   </h3>
 
@@ -7421,7 +7425,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber881">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber895">source</a></span></span>
     </span>
   </h3>
 
@@ -7478,7 +7482,7 @@ Supports only real numbers.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber242">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/Complex.mjs.html#lineNumber248">source</a></span></span>
     </span>
   </h3>
 

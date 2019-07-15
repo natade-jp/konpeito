@@ -1,21 +1,21 @@
 {
-  "coverage": "99.61%",
-  "expectCount": 770,
-  "actualCount": 767,
+  "coverage": "100%",
+  "expectCount": 832,
+  "actualCount": 832,
   "files": {
     "src/konpeito.mjs": {
-      "expectCount": 8,
-      "actualCount": 8,
+      "expectCount": 9,
+      "actualCount": 9,
       "undocumentLines": []
     },
     "src/math/BigDecimal.mjs": {
-      "expectCount": 67,
-      "actualCount": 67,
+      "expectCount": 77,
+      "actualCount": 77,
       "undocumentLines": []
     },
     "src/math/BigInteger.mjs": {
-      "expectCount": 104,
-      "actualCount": 104,
+      "expectCount": 109,
+      "actualCount": 109,
       "undocumentLines": []
     },
     "src/math/Complex.mjs": {
@@ -34,13 +34,9 @@
       "undocumentLines": []
     },
     "src/math/Fraction.mjs": {
-      "expectCount": 9,
-      "actualCount": 6,
-      "undocumentLines": [
-        16,
-        195,
-        197
-      ]
+      "expectCount": 55,
+      "actualCount": 55,
+      "undocumentLines": []
     },
     "src/math/Matrix.mjs": {
       "expectCount": 228,

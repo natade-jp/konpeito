@@ -24,7 +24,7 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
@@ -35,6 +35,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.mjs~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -42,6 +44,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -129,7 +133,9 @@ export default class Complex {
 
 	/**
 	 * Create a complex number.
+	 * 
 	 * Initialization can be performed as follows.
+	 * - 1200, &quot;1200&quot;, &quot;12e2&quot;, &quot;1.2e3&quot;
 	 * - &quot;3 + 4i&quot;, &quot;4j + 3&quot;, [3, 4].
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number - Complex number. See how to use the function.
 	 */
@@ -175,6 +181,10 @@ export default class Complex {
 				this._re = obj._re;
 				this._im = obj._im;
 			}
+			else if((number instanceof Object) &amp;&amp; (number.doubleValue)) {
+				this._re = number.doubleValue;
+				this._im = 0.0;
+			}
 			else if(obj instanceof Object) {
 				const x = ComplexTool.ToComplexFromString(obj.toString());
 				this._re = x.real;
@@ -209,7 +219,7 @@ export default class Complex {
 	 * @returns {Complex}
 	 */
 	static valueOf(number) {
-		return Complex.valueOf(number);
+		return Complex.create(number);
 	}
 	
 	/**
@@ -257,19 +267,19 @@ export default class Complex {
 	 * @private
 	 */
 	static _toInteger(number) {
-		return Complex._toDouble(number) | 0;
+		return Math.trunc(Complex._toDouble(number));
 	}
 
 	/**
-	 * 32-bit integer value.
+	 * integer value.
 	 * @returns {number}
 	 */
 	get intValue() {
-		return this.real | 0;
+		return Math.trunc(this.real);
 	}
 
 	/**
-	 * 64-bit floating point.
+	 * floating point.
 	 * @returns {number}
 	 */
 	get doubleValue() {
@@ -338,23 +348,6 @@ export default class Complex {
 	 */
 	static randn() {
 		return new Complex(random_class.nextGaussian());
-	}
-
-	/**
-	 * Equals.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
-	 * @returns {boolean} A === B
-	 */
-	equals(number, epsilon) {
-		const x = Complex._toComplex(number);
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		// &#x7121;&#x9650;&#x5927;&#x3001;&#x975E;&#x6570;&#x306E;&#x5024;&#x3082;&#x542B;&#x3081;&#x3066;&#x4E00;&#x5EA6;&#x78BA;&#x8A8D;
-		if((this._re === x._re) &amp;&amp; (this._im === x._im)) {
-			return true;
-		}
-		// &#x8AA4;&#x5DEE;&#x3092;&#x542B;&#x3093;&#x3060;&#x5024;&#x306E;&#x6BD4;&#x8F03;
-		return (Math.abs(this._re - x._re) &lt;  tolerance) &amp;&amp; (Math.abs(this._im - x._im) &lt; tolerance);
 	}
 
 	/**
@@ -429,6 +422,27 @@ export default class Complex {
 		return Math.max( getDecimal(this.real), getDecimal(this.imag) );
 	}
 
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {Complex} 
+	 */
+	sign() {
+		if(this._im === 0) {
+			if(this._re === 0) {
+				return new Complex(0);
+			}
+			else {
+				return new Complex(this._re &gt; 0 ? 1 : -1);
+			}
+		}
+		return this.div(this.norm);
+	}
+	
+	// ----------------------
+	// &#x56DB;&#x5247;&#x6F14;&#x7B97;
+	// ----------------------
+	
 	/**
 	 * Add.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number 
@@ -561,36 +575,40 @@ export default class Complex {
 		return Complex.ONE.div(this);
 	}
 
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {Complex} [-1,1] &#x8907;&#x7D20;&#x6570;&#x306E;&#x5834;&#x5408;&#x306F;&#x30CE;&#x30EB;&#x30E0;&#x3092;1&#x306B;&#x3057;&#x305F;&#x5024;&#x3002;
-	 */
-	sign() {
-		if(this._im === 0) {
-			if(this._re === 0) {
-				return new Complex(0);
-			}
-			else {
-				return new Complex(this._re &gt; 0 ? 1 : -1);
-			}
-		}
-		return this.div(this.norm);
-	}
+	// ----------------------
+	// &#x6BD4;&#x8F03;
+	// ----------------------
 	
+	/**
+	 * Equals.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @returns {boolean} A === B
+	 */
+	equals(number, tolerance) {
+		const x = Complex._toComplex(number);
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		// &#x7121;&#x9650;&#x5927;&#x3001;&#x975E;&#x6570;&#x306E;&#x5024;&#x3082;&#x542B;&#x3081;&#x3066;&#x4E00;&#x5EA6;&#x78BA;&#x8A8D;
+		if((this._re === x._re) &amp;&amp; (this._im === x._im)) {
+			return true;
+		}
+		// &#x8AA4;&#x5DEE;&#x3092;&#x542B;&#x3093;&#x3060;&#x5024;&#x306E;&#x6BD4;&#x8F03;
+		return (Math.abs(this._re - x._re) &lt;  tolerance_) &amp;&amp; (Math.abs(this._im - x._im) &lt; tolerance_);
+	}
+
 	/**
 	 * Compare values.
 	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {number} A &gt; B ? 1 : (A === B ? 0 : -1)
 	 */
-	compareTo(number, epsilon) {
+	compareTo(number, tolerance) {
 		const x1 = this;
 		const x2 = Complex._toComplex(number);
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
 		const a = x1.real + x1.imag;
 		const b = x2.real + x2.imag;
-		if((Math.abs(a - b) &lt; tolerance)) {
+		if((Math.abs(a - b) &lt;= tolerance_)) {
 			return 0;
 		}
 		return a &gt; b ? 1 : -1;
@@ -657,64 +675,64 @@ export default class Complex {
 	
 	/**
 	 * Return true if the value is integer.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isInteger(epsilon) {
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return this.isReal() &amp;&amp; (Math.abs(this._re - (this._re | 0)) &lt; tolerance);
+	isInteger(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return this.isReal() &amp;&amp; (Math.abs(this._re - Math.trunc(this._re)) &lt; tolerance_);
 	}
 
 	/**
 	 * Returns true if the vallue is complex integer (including normal integer).
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} real(A) === integer &amp;&amp; imag(A) === integer
 	 */
-	isComplexInteger(epsilon) {
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
+	isComplexInteger(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
 		// &#x8907;&#x7D20;&#x6574;&#x6570;
-		return (Math.abs(this._re - (this._re | 0)) &lt; tolerance) &amp;&amp;
-				(Math.abs(this._im - (this._im | 0)) &lt; tolerance);
+		return (Math.abs(this._re - Math.trunc(this._re)) &lt; tolerance_) &amp;&amp;
+				(Math.abs(this._im - Math.trunc(this._im)) &lt; tolerance_);
 	}
 
 	/**
 	 * this === 0
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === 0
 	 */
-	isZero(epsilon) {
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return (Math.abs(this._re) &lt; tolerance) &amp;&amp; (Math.abs(this._im) &lt; tolerance);
+	isZero(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._re) &lt; tolerance_) &amp;&amp; (Math.abs(this._im) &lt; tolerance_);
 	}
 
 	/**
 	 * this === 1
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === 1
 	 */
-	isOne(epsilon) {
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return (Math.abs(this._re - 1.0) &lt; tolerance) &amp;&amp; (Math.abs(this._im) &lt; tolerance);
+	isOne(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._re - 1.0) &lt; tolerance_) &amp;&amp; (Math.abs(this._im) &lt; tolerance_);
 	}
 
 	/**
 	 * Returns true if the vallue is complex number (imaginary part is not 0).
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} imag(A) !== 0
 	 */
-	isComplex(epsilon) {
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return (Math.abs(this._im) &gt;= tolerance);
+	isComplex(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._im) &gt;= tolerance_);
 	}
 	
 	/**
 	 * Return true if the value is real number.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [epsilon=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} imag(A) === 0
 	 */
-	isReal(epsilon) {
-		const tolerance = epsilon ? Complex._toDouble(epsilon) : Number.EPSILON;
-		return (Math.abs(this._im) &lt; tolerance);
+	isReal(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._im) &lt; tolerance_);
 	}
 
 	/**
@@ -1019,10 +1037,10 @@ export default class Complex {
 
 	/**
 	 * To integer rounded down to the nearest.
-	 * @returns {Complex} fix(A)
+	 * @returns {Complex} fix(A), trunc(A)
 	 */
 	fix() {
-		return new Complex([this._re | 0, this._im | 0]);
+		return new Complex([Math.trunc(this._re), Math.trunc(this._im)]);
 	}
 
 	/**
@@ -1030,7 +1048,7 @@ export default class Complex {
 	 * @returns {Complex} fract(A)
 	 */
 	fract() {
-		return new Complex([this._re - (this._re | 0), this._im - (this._im | 0)]);
+		return new Complex([this._re - Math.floor(this._re), this._im - Math.floor(this._im)]);
 	}
 
 	// ----------------------

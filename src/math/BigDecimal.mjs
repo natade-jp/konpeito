@@ -252,6 +252,11 @@ export default class BigDecimal {
 				context = number.context;
 			}
 		}
+		else if((number instanceof Object) && (number.doubleValue)) {
+			const data = DecimalTool.ToBigDecimalFromNumber(number.doubleValue);
+			this.integer	= data.integer;
+			this._scale		= data.scale;
+		}
 		else if(number instanceof Object) {
 			const data = DecimalTool.ToBigDecimalFromString(number.toString());
 			this.integer	= data.integer;
@@ -901,7 +906,7 @@ export default class BigDecimal {
 	 * Factorial function, x!.
 	 * - Supports only integers.
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-	 * @returns {BigInteger} n!
+	 * @returns {BigDecimal} n!
 	 */
 	factorial(context) {
 		const mc = context ? context : this.default_context;

@@ -367,27 +367,27 @@ export default class Matrix {
 		let matrix_array = null;
 		let is_check_string = false;
 		if(arguments.length === 1) {
-			const y = number;
+			const obj = number;
 			// 行列型なら中身をディープコピーする
-			if(y instanceof Matrix) {
-				matrix_array = new Array(y.row_length);
-				for(let i = 0; i < y.row_length; i++) {
-					matrix_array[i] = new Array(y.column_length);
-					for(let j = 0; j < y.column_length; j++) {
-						matrix_array[i][j] = y.matrix_array[i][j];
+			if(obj instanceof Matrix) {
+				matrix_array = new Array(obj.row_length);
+				for(let i = 0; i < obj.row_length; i++) {
+					matrix_array[i] = new Array(obj.column_length);
+					for(let j = 0; j < obj.column_length; j++) {
+						matrix_array[i][j] = obj.matrix_array[i][j];
 					}
 				}
 			}
 			// 複素数型なら1要素の行列
-			else if(y instanceof Complex) {
-				matrix_array = [[y]];
+			else if(obj instanceof Complex) {
+				matrix_array = [[obj]];
 			}
 			// 行列の場合は中身を解析していく
-			else if(y instanceof Array) {
+			else if(obj instanceof Array) {
 				matrix_array = [];
-				for(let row_count = 0; row_count < y.length; row_count++) {
+				for(let row_count = 0; row_count < obj.length; row_count++) {
 					// 毎行ごと調査
-					const row = y[row_count];
+					const row = obj[row_count];
 					// 各行の要素が配列の場合は、配列内配列のため再度for文で調べていく
 					if(row instanceof Array) {
 						const rows_array = new Array(row.length);
@@ -416,7 +416,7 @@ export default class Matrix {
 					else {
 						// 行ベクトルの初期化
 						if(row_count === 0) {
-							matrix_array[0] = new Array(y.length);
+							matrix_array[0] = new Array(obj.length);
 						}
 						// 1要素が複素数ならそのまま代入
 						if(row instanceof Complex) {
@@ -437,18 +437,22 @@ export default class Matrix {
 				}
 			}
 			// 文字列の場合は、文字列解析を行う
-			else if(typeof y === "string") {
+			else if(typeof obj === "string") {
 				is_check_string = true;
-				matrix_array = MatrixTool.toMatrixArrayFromString(y);
+				matrix_array = MatrixTool.toMatrixArrayFromString(obj);
+			}
+			// 数値化できる場合
+			else if((obj instanceof Object) && (obj.doubleValue)) {
+				matrix_array = [[new Complex(obj.doubleValue)]];
 			}
 			// 文字列変換できる場合は返還後に、文字列解析を行う
-			else if(y instanceof Object) {
+			else if(obj instanceof Object) {
 				is_check_string = true;
-				matrix_array = MatrixTool.toMatrixArrayFromString(y.toString());
+				matrix_array = MatrixTool.toMatrixArrayFromString(obj.toString());
 			}
 			// 単純なビルトインの数値など
 			else {
-				matrix_array = [[new Complex(y)]];
+				matrix_array = [[new Complex(obj)]];
 			}
 		}
 		else {

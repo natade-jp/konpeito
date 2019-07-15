@@ -24,7 +24,7 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
@@ -35,6 +35,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.mjs~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -42,6 +44,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -87,7 +91,7 @@ class LinearAlgebraTool {
 
 		const A = Matrix._toMatrix(mat);
 		const a = A.getNumberMatrixArray();
-		const tolerance = 1.0e-10;
+		const tolerance_ = 1.0e-10;
 
 		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;&#x6674;&#x5F66; (1991). C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;.
 		// 3&#x91CD;&#x5BFE;&#x89D2;&#x5316;&#x306E;&#x6210;&#x5206;&#x3092;&#x53D6;&#x5F97;&#x3059;&#x308B;
@@ -123,7 +127,7 @@ class LinearAlgebraTool {
 			// x&#x306E;&#x5185;&#x7A4D;&#x306E;&#x5E73;&#x65B9;&#x6839;&#xFF08;&#x30CE;&#x30EB;&#x30E0;&#xFF09;&#x3092;&#x8A08;&#x7B97;
 			let y1 = Math.sqrt(innerproduct(x, x, ioffset, imax));
 			const v = [];
-			if(Math.abs(y1) &gt;= tolerance) {
+			if(Math.abs(y1) &gt;= tolerance_) {
 				if(x[ioffset] &lt; 0) {
 					y1 = - y1;
 				}
@@ -159,7 +163,7 @@ class LinearAlgebraTool {
 						v[k + 1 + i] = H.v[i];
 					}
 				}
-				if(Math.abs(e[k]) &lt; tolerance) {
+				if(Math.abs(e[k]) &lt; tolerance_) {
 					continue;
 				}
 				for(let i = k + 1; i &lt; n; i++) {
@@ -216,7 +220,7 @@ class LinearAlgebraTool {
 				return new Complex(d[row]);
 			}
 			else if(Math.abs(row - col) === 1) {
-				return new Complex(e[((row + col) * 0.5) | 0]);
+				return new Complex(e[Math.trunc((row + col) * 0.5)]);
 			}
 			else {
 				return Complex.ZERO;
@@ -243,7 +247,7 @@ class LinearAlgebraTool {
 		
 		// QR&#x6CD5;&#x306B;&#x3088;&#x308A;&#x56FA;&#x6709;&#x5024;&#x3092;&#x6C42;&#x3081;&#x308B;
 		let is_error = false;
-		const tolerance = 1.0e-10;
+		const tolerance_ = 1.0e-10;
 		const PH = LinearAlgebraTool.tridiagonalize(A);
 		const a = PH.P.getNumberMatrixArray();
 		const h = PH.H.getNumberMatrixArray();
@@ -262,7 +266,7 @@ class LinearAlgebraTool {
 		for(let h = n - 1; h &gt; 0; h--) {
 			let j = h;
 			for(j = h;j &gt;= 1; j--) {
-				if(Math.abs(e[j]) &lt;= (tolerance * (Math.abs(d[j - 1]) + Math.abs(d[j])))) {
+				if(Math.abs(e[j]) &lt;= (tolerance_ * (Math.abs(d[j - 1]) + Math.abs(d[j])))) {
 					break;
 				}
 			}
@@ -316,7 +320,7 @@ class LinearAlgebraTool {
 						e[k + 2] *= c;
 					}
 				}
-				if(Math.abs(e[h]) &lt;= tolerance * (Math.abs(d[h - 1]) + Math.abs(d[h]))) {
+				if(Math.abs(e[h]) &lt;= tolerance_ * (Math.abs(d[h - 1]) + Math.abs(d[h]))) {
 					break;
 				}
 			}
@@ -430,16 +434,16 @@ class LinearAlgebraTool {
 	 * Create orthogonal vectors for all row vectors of the matrix.
 	 * - If the vector can not be found, it returns NULL.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
-	 * @param {number} [epsilon=1.0e-10] - Calculation tolerance of calculation.
+	 * @param {number} [tolerance=1.0e-10] - Calculation tolerance of calculation.
 	 * @returns {Matrix|null} An orthogonal vector.
 	 */
-	static createOrthogonalVector(mat, epsilon) {
+	static createOrthogonalVector(mat, tolerance) {
 		const M = new Matrix(mat);
 		const column_length = M.column_length;
 		const m = M.matrix_array;
-		const tolerance = epsilon ? epsilon : 1.0e-10;
+		const tolerance_ = tolerance ? tolerance : 1.0e-10;
 		// &#x6B63;&#x5247;&#x884C;&#x5217;&#x3092;&#x306A;&#x3059;&#x5834;&#x5408;&#x306B;&#x554F;&#x984C;&#x3068;&#x306A;&#x308B;&#x884C;&#x756A;&#x53F7;&#x3092;&#x53D6;&#x5F97;
-		const not_regular_rows = LinearAlgebraTool.getLinearDependenceVector(M, tolerance);
+		const not_regular_rows = LinearAlgebraTool.getLinearDependenceVector(M, tolerance_);
 		// &#x4E0D;&#x8981;&#x306A;&#x884C;&#x3092;&#x524A;&#x9664;&#x3059;&#x308B;
 		{
 			// not_regular_rows&#x306F;&#x6607;&#x9806;&#x30EA;&#x30B9;&#x30C8;&#x306A;&#x306E;&#x3067;&#x3001;&#x5F8C;&#x308D;&#x304B;&#x3089;&#x6D88;&#x3057;&#x3066;&#x3044;&#x304F;
@@ -522,14 +526,14 @@ class LinearAlgebraTool {
 	/**
 	 * Extract linearly dependent rows when each row of matrix is a vector.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
-	 * @param {number} [epsilon=1.0e-10] - Calculation tolerance of calculation.
+	 * @param {number} [tolerance=1.0e-10] - Calculation tolerance of calculation.
 	 * @returns {Array} Array of matrix row numbers in ascending order.
 	 * @private
 	 */
-	static getLinearDependenceVector(mat, epsilon) {
+	static getLinearDependenceVector(mat, tolerance) {
 		const M = new Matrix(mat);
 		const m = M.matrix_array;
-		const tolerance = epsilon ? Matrix._toDouble(epsilon) : 1.0e-10;
+		const tolerance_ = tolerance ? Matrix._toDouble(tolerance) : 1.0e-10;
 		// &#x78BA;&#x8A8D;&#x3059;&#x308B;&#x884C;&#x756A;&#x53F7;&#xFF08;&#x3053;&#x3053;&#x304B;&#x3089;&#x7D42;&#x308F;&#x3063;&#x305F;&#x884C;&#x306F;&#x524A;&#x9664;&#x3057;&#x3066;&#x3044;&#x304F;&#xFF09;
 		const row_index_array = new Array(mat.row_length);
 		for(let i = 0; i &lt; mat.row_length; i++) {
@@ -552,7 +556,7 @@ class LinearAlgebraTool {
 					}
 				}
 				// &#x5927;&#x304D;&#x3044;&#x306E;&#x304C;0&#x3067;&#x3042;&#x308B;&#xFF1D;&#x305D;&#x306E;&#x5217;&#x306F;&#x5168;&#x3066;0&#x3067;&#x3042;&#x308B;
-				if(row_max &lt;= tolerance) {
+				if(row_max &lt;= tolerance_) {
 					continue;
 				}
 				// &#x5927;&#x304D;&#x306A;&#x5024;&#x304C;&#x3042;&#x3063;&#x305F;&#x884C;&#x306F;&#x3001;&#x30EA;&#x30B9;&#x30C8;&#x304B;&#x3089;&#x9664;&#x53BB;&#x3059;&#x308B;
@@ -778,17 +782,17 @@ export default class LinearAlgebra {
 	/**
 	 * Rank.
 	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [epsilon] - Calculation tolerance of calculation.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {number} rank(A)
 	 */
-	static rank(mat, epsilon) {
+	static rank(mat, tolerance) {
 		const M = Matrix._toMatrix(mat);
 		// &#x6A2A;&#x304C;&#x9577;&#x3044;&#x884C;&#x5217;&#x306E;&#x5834;&#x5408;
 		if(M.row_length &lt;= M.column_length) {
-			return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
+			return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, tolerance)).length;
 		}
 		else {
-			return M.row_length - (LinearAlgebraTool.getLinearDependenceVector(M, epsilon)).length;
+			return M.row_length - (LinearAlgebraTool.getLinearDependenceVector(M, tolerance)).length;
 		}
 	}
 

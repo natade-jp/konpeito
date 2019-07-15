@@ -24,7 +24,7 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
@@ -35,6 +35,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.mjs~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -42,18 +44,20 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import BigInteger from &apos;<span><a href="file/src/math/BigInteger.mjs.html#lineNumber251">konpeito/src/math/BigInteger.mjs</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import BigInteger from &apos;<span><a href="file/src/math/BigInteger.mjs.html#lineNumber274">konpeito/src/math/BigInteger.mjs</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/math/BigInteger.mjs.html#lineNumber251">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/math/BigInteger.mjs.html#lineNumber274">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -91,6 +95,35 @@
   <tbody>
   
   <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html#static-get-MINUS_ONE">MINUS_ONE</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>-1</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
     <td>
       <span class="access" data-ice="access">public</span>
       <span data-ice="static">static</span>
@@ -1333,13 +1366,71 @@
           
           
           
+          <span class="code" data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html#instance-method-isNotNegative">isNotNegative</a></span></span><span class="code" data-ice="signature">(): <span>boolean</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this &gt;= 0</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html#instance-method-isOne">isOne</a></span></span><span class="code" data-ice="signature">(): <span>boolean</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this === 1</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
           <span class="code" data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html#instance-method-isPositive">isPositive</a></span></span><span class="code" data-ice="signature">(): <span>boolean</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Return true if the value is positive number.</p>
+        <div data-ice="description"><p>this &gt; 0</p>
 </div>
       </div>
     </td>
@@ -1398,6 +1489,35 @@
         
         
         <div data-ice="description"><p>this === 0</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html#instance-method-lcm">lcm</a></span></span><span class="code" data-ice="signature">(number: <span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Least common multiple.</p>
 </div>
       </div>
     </td>
@@ -1891,6 +2011,35 @@
         
         
         <div data-ice="description"><p>Remainder of division.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html#instance-method-scaleByPowerOfTen">scaleByPowerOfTen</a></span></span><span class="code" data-ice="signature">(n: <span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Multiply a multiple of ten.</p>
 </div>
       </div>
     </td>
@@ -2900,6 +3049,63 @@
 <div data-ice="staticMemberDetails"><h2 data-ice="title">Static Public Members</h2>
 
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-MINUS_ONE">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">MINUS_ONE</span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1975">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>-1</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>1</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="static-get-ONE">
     <span class="access" data-ice="access">public</span>
     <span data-ice="static">static</span>
@@ -2911,7 +3117,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1870">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1991">source</a></span></span>
     </span>
   </h3>
 
@@ -2968,7 +3174,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1886">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber2007">source</a></span></span>
     </span>
   </h3>
 
@@ -3025,7 +3231,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1878">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1999">source</a></span></span>
     </span>
   </h3>
 
@@ -3082,7 +3288,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1862">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1983">source</a></span></span>
     </span>
   </h3>
 
@@ -3142,7 +3348,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber331">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber361">source</a></span></span>
     </span>
   </h3>
 
@@ -3214,7 +3420,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber409">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber439">source</a></span></span>
     </span>
   </h3>
 
@@ -3294,7 +3500,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1847">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1084">source</a></span></span>
     </span>
   </h3>
 
@@ -3351,7 +3557,7 @@ Used when Random not specified explicitly.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber448">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1345">source</a></span></span>
     </span>
   </h3>
 
@@ -3447,7 +3653,7 @@ Used when Random not specified explicitly.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1838">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1075">source</a></span></span>
     </span>
   </h3>
 
@@ -3508,7 +3714,7 @@ This is used if you do not specify a random number.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber347">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber377">source</a></span></span>
     </span>
   </h3>
 
@@ -3586,7 +3792,7 @@ This is used if you do not specify a random number.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber358">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber388">source</a></span></span>
     </span>
   </h3>
 
@@ -3659,7 +3865,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber373">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber403">source</a></span></span>
     </span>
   </h3>
 
@@ -3731,7 +3937,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber391">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber421">source</a></span></span>
     </span>
   </h3>
 
@@ -3806,7 +4012,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber263">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber286">source</a></span></span>
     </span>
   </h3>
 
@@ -3877,7 +4083,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber570">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1141">source</a></span></span>
     </span>
   </h3>
 
@@ -3936,7 +4142,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber539">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1110">source</a></span></span>
     </span>
   </h3>
 
@@ -3995,7 +4201,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber553">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1124">source</a></span></span>
     </span>
   </h3>
 
@@ -4056,7 +4262,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber281">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber304">source</a></span></span>
     </span>
   </h3>
 
@@ -4104,7 +4310,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber272">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber295">source</a></span></span>
     </span>
   </h3>
 
@@ -4151,7 +4357,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1028">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber598">source</a></span></span>
     </span>
   </h3>
 
@@ -4208,7 +4414,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1355">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber711">source</a></span></span>
     </span>
   </h3>
 
@@ -4281,7 +4487,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber744">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1666">source</a></span></span>
     </span>
   </h3>
 
@@ -4354,7 +4560,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber867">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1789">source</a></span></span>
     </span>
   </h3>
 
@@ -4427,7 +4633,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber648">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1602">source</a></span></span>
     </span>
   </h3>
 
@@ -4483,7 +4689,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber630">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1584">source</a></span></span>
     </span>
   </h3>
 
@@ -4539,7 +4745,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1670">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1903">source</a></span></span>
     </span>
   </h3>
 
@@ -4611,7 +4817,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1150">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1314">source</a></span></span>
     </span>
   </h3>
 
@@ -4690,7 +4896,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber578">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber514">source</a></span></span>
     </span>
   </h3>
 
@@ -4746,7 +4952,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1098">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1262">source</a></span></span>
     </span>
   </h3>
 
@@ -4819,7 +5025,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1076">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1240">source</a></span></span>
     </span>
   </h3>
 
@@ -4892,7 +5098,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1555">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber911">source</a></span></span>
     </span>
   </h3>
 
@@ -4929,7 +5135,7 @@ If type conversion is unnecessary, return the value as it is.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>floor(A / B)</p>
+          <td class="return-desc" data-ice="returnDescription"><p>fix(A / B)</p>
 </td>
         </tr>
       </tbody>
@@ -4965,7 +5171,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1546">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber902">source</a></span></span>
     </span>
   </h3>
 
@@ -5002,7 +5208,7 @@ If type conversion is unnecessary, return the value as it is.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>floor(A / B)</p>
+          <td class="return-desc" data-ice="returnDescription"><p>fix(A / B)</p>
 </td>
         </tr>
       </tbody>
@@ -5038,7 +5244,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1527">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber883">source</a></span></span>
     </span>
   </h3>
 
@@ -5075,7 +5281,7 @@ If type conversion is unnecessary, return the value as it is.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>Array</span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</td>
-          <td class="return-desc" data-ice="returnDescription"><p>[C = floor(A / B), A - C * B]</p>
+          <td class="return-desc" data-ice="returnDescription"><p>[C = fix(A / B), A - C * B]</p>
 </td>
         </tr>
       </tbody>
@@ -5111,7 +5317,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber465">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1219">source</a></span></span>
     </span>
   </h3>
 
@@ -5184,7 +5390,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber986">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1173">source</a></span></span>
     </span>
   </h3>
 
@@ -5257,7 +5463,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1824">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1039">source</a></span></span>
     </span>
   </h3>
 
@@ -5314,7 +5520,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1660">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1893">source</a></span></span>
     </span>
   </h3>
 
@@ -5386,7 +5592,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber967">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1154">source</a></span></span>
     </span>
   </h3>
 
@@ -5459,7 +5665,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber612">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1566">source</a></span></span>
     </span>
   </h3>
 
@@ -5483,8 +5689,7 @@ If type conversion is unnecessary, return the value as it is.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>number</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F; -1</p>
-</td>
+          
         </tr>
       </tbody>
     </table>
@@ -5519,7 +5724,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber526">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1097">source</a></span></span>
     </span>
   </h3>
 
@@ -5592,7 +5797,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber586">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1955">source</a></span></span>
     </span>
   </h3>
 
@@ -5613,8 +5818,119 @@ If type conversion is unnecessary, return the value as it is.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>boolean</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>real(x) &lt; 0</p>
-</td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-isNotNegative">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">isNotNegative</span><span class="code" data-ice="signature">(): <span>boolean</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1963">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>this &gt;= 0</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>boolean</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-isOne">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">isOne</span><span class="code" data-ice="signature">(): <span>boolean</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1938">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>this === 1</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>boolean</span></td>
+          
         </tr>
       </tbody>
     </table>
@@ -5649,14 +5965,14 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber603">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1946">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Return true if the value is positive number.</p>
+  <div data-ice="description"><p>this &gt; 0</p>
 </div>
 
   
@@ -5670,8 +5986,7 @@ If type conversion is unnecessary, return the value as it is.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>boolean</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>real(x) &gt; 0</p>
-</td>
+          
         </tr>
       </tbody>
     </table>
@@ -5706,7 +6021,7 @@ If type conversion is unnecessary, return the value as it is.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1750">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1363">source</a></span></span>
     </span>
   </h3>
 
@@ -5781,7 +6096,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber594">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1929">source</a></span></span>
     </span>
   </h3>
 
@@ -5802,7 +6117,79 @@ Attention : it takes a very long time to process.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>boolean</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>A === 0</p>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-lcm">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">lcm</span><span class="code" data-ice="signature">(number: <span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1205">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Least common multiple.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>lcm(x, y)</p>
 </td>
         </tr>
       </tbody>
@@ -5838,7 +6225,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1119">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1283">source</a></span></span>
     </span>
   </h3>
 
@@ -5911,7 +6298,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1134">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1298">source</a></span></span>
     </span>
   </h3>
 
@@ -5984,7 +6371,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1615">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber971">source</a></span></span>
     </span>
   </h3>
 
@@ -6057,7 +6444,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1733">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1020">source</a></span></span>
     </span>
   </h3>
 
@@ -6130,7 +6517,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1713">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1000">source</a></span></span>
     </span>
   </h3>
 
@@ -6209,7 +6596,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1471">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber827">source</a></span></span>
     </span>
   </h3>
 
@@ -6282,7 +6669,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1409">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber765">source</a></span></span>
     </span>
   </h3>
 
@@ -6355,7 +6742,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber886">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1808">source</a></span></span>
     </span>
   </h3>
 
@@ -6428,7 +6815,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1046">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber616">source</a></span></span>
     </span>
   </h3>
 
@@ -6485,7 +6872,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1807">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1420">source</a></span></span>
     </span>
   </h3>
 
@@ -6567,7 +6954,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber925">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1847">source</a></span></span>
     </span>
   </h3>
 
@@ -6640,7 +7027,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber847">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1769">source</a></span></span>
     </span>
   </h3>
 
@@ -6697,7 +7084,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber786">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1708">source</a></span></span>
     </span>
   </h3>
 
@@ -6770,7 +7157,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber906">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1828">source</a></span></span>
     </span>
   </h3>
 
@@ -6843,7 +7230,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1693">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber980">source</a></span></span>
     </span>
   </h3>
 
@@ -6916,7 +7303,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1583">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber939">source</a></span></span>
     </span>
   </h3>
 
@@ -6989,7 +7376,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1574">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber930">source</a></span></span>
     </span>
   </h3>
 
@@ -7051,6 +7438,79 @@ Attention : it takes a very long time to process.</p>
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-scaleByPowerOfTen">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">scaleByPowerOfTen</span><span class="code" data-ice="signature">(n: <span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1053">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Multiply a multiple of ten.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">n</td>
+      <td data-ice="type" class="code"><span><a href="class/src/math/BigInteger.mjs~BigInteger.html">BigInteger</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>x * 10^n</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-setBit">
     <span class="access" data-ice="access">public</span>
     
@@ -7062,7 +7522,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1637">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1869">source</a></span></span>
     </span>
   </h3>
 
@@ -7134,7 +7594,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1267">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1535">source</a></span></span>
     </span>
   </h3>
 
@@ -7207,7 +7667,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1276">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1544">source</a></span></span>
     </span>
   </h3>
 
@@ -7280,7 +7740,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1285">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1553">source</a></span></span>
     </span>
   </h3>
 
@@ -7353,7 +7813,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1067">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber637">source</a></span></span>
     </span>
   </h3>
 
@@ -7377,8 +7837,7 @@ Attention : it takes a very long time to process.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>number</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>1, -1, 0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;</p>
-</td>
+          
         </tr>
       </tbody>
     </table>
@@ -7413,7 +7872,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1055">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber625">source</a></span></span>
     </span>
   </h3>
 
@@ -7437,8 +7896,7 @@ Attention : it takes a very long time to process.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>number</span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>1, -1, 0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;</p>
-</td>
+          
         </tr>
       </tbody>
     </table>
@@ -7473,7 +7931,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1387">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber743">source</a></span></span>
     </span>
   </h3>
 
@@ -7546,7 +8004,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1378">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber734">source</a></span></span>
     </span>
   </h3>
 
@@ -7619,7 +8077,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1683">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1916">source</a></span></span>
     </span>
   </h3>
 
@@ -7691,7 +8149,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber486">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber475">source</a></span></span>
     </span>
   </h3>
 
@@ -7765,7 +8223,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber830">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1752">source</a></span></span>
     </span>
   </h3>
 
@@ -7840,7 +8298,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1018">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber588">source</a></span></span>
     </span>
   </h3>
 
@@ -7897,7 +8355,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1295">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber651">source</a></span></span>
     </span>
   </h3>
 
@@ -7970,7 +8428,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber708">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1630">source</a></span></span>
     </span>
   </h3>
 
@@ -8043,7 +8501,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber857">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1779">source</a></span></span>
     </span>
   </h3>
 
@@ -8116,7 +8574,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1537">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber893">source</a></span></span>
     </span>
   </h3>
 
@@ -8153,7 +8611,7 @@ Attention : it takes a very long time to process.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span></td>
-          <td class="return-desc" data-ice="returnDescription"><p>floor(A / B)</p>
+          <td class="return-desc" data-ice="returnDescription"><p>fix(A / B)</p>
 </td>
         </tr>
       </tbody>
@@ -8189,7 +8647,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1481">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber837">source</a></span></span>
     </span>
   </h3>
 
@@ -8226,7 +8684,7 @@ Attention : it takes a very long time to process.</p>
       <tbody>
         <tr>
           <td class="return-type code" data-ice="returnType"><span>Array</span>&lt;<span><a href="class/src/konpeito.mjs~konpeito.html#static-get-BigInteger">BigInteger</a></span>&gt;</td>
-          <td class="return-desc" data-ice="returnDescription"><p>[C = floor(A / B), A - C * B]</p>
+          <td class="return-desc" data-ice="returnDescription"><p>[C = fix(A / B), A - C * B]</p>
 </td>
         </tr>
       </tbody>
@@ -8262,7 +8720,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1648">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1880">source</a></span></span>
     </span>
   </h3>
 
@@ -8334,7 +8792,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber934">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber555">source</a></span></span>
     </span>
   </h3>
 
@@ -8395,7 +8853,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber949">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber570">source</a></span></span>
     </span>
   </h3>
 
@@ -8439,7 +8897,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1593">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber949">source</a></span></span>
     </span>
   </h3>
 
@@ -8512,7 +8970,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1397">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber753">source</a></span></span>
     </span>
   </h3>
 
@@ -8585,7 +9043,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber877">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1799">source</a></span></span>
     </span>
   </h3>
 
@@ -8658,7 +9116,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1037">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber607">source</a></span></span>
     </span>
   </h3>
 
@@ -8715,7 +9173,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber916">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1838">source</a></span></span>
     </span>
   </h3>
 
@@ -8788,7 +9246,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber839">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1761">source</a></span></span>
     </span>
   </h3>
 
@@ -8845,7 +9303,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber754">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1676">source</a></span></span>
     </span>
   </h3>
 
@@ -8918,7 +9376,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber896">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1818">source</a></span></span>
     </span>
   </h3>
 
@@ -8991,7 +9449,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1565">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber921">source</a></span></span>
     </span>
   </h3>
 
@@ -9064,7 +9522,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1625">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1857">source</a></span></span>
     </span>
   </h3>
 
@@ -9136,7 +9594,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1175">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1443">source</a></span></span>
     </span>
   </h3>
 
@@ -9210,7 +9668,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1365">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber721">source</a></span></span>
     </span>
   </h3>
 
@@ -9283,7 +9741,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber796">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber1718">source</a></span></span>
     </span>
   </h3>
 
@@ -9356,7 +9814,7 @@ Attention : it takes a very long time to process.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber676">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/BigInteger.mjs.html#lineNumber524">source</a></span></span>
     </span>
   </h3>
 

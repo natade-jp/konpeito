@@ -24,7 +24,7 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
@@ -35,6 +35,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.mjs~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -42,18 +44,20 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Signal from &apos;<span><a href="file/src/math/tools/Signal.mjs.html#lineNumber897">konpeito/src/math/tools/Signal.mjs</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Signal from &apos;<span><a href="file/src/math/tools/Signal.mjs.html#lineNumber904">konpeito/src/math/tools/Signal.mjs</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/math/tools/Signal.mjs.html#lineNumber897">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/math/tools/Signal.mjs.html#lineNumber904">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -134,7 +138,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html#static-method-dct">dct</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html#static-method-dct">dct</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -192,7 +196,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html#static-method-fft">fft</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html#static-method-fft">fft</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -250,7 +254,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html#static-method-fftshift">fftshift</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html#static-method-fftshift">fftshift</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -337,7 +341,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html#static-method-idct">idct</a></span></span><span class="code" data-ice="signature">(X: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html#static-method-idct">idct</a></span></span><span class="code" data-ice="signature">(X: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -395,7 +399,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html#static-method-ifft">ifft</a></span></span><span class="code" data-ice="signature">(X: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html#static-method-ifft">ifft</a></span></span><span class="code" data-ice="signature">(X: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -453,7 +457,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html#static-method-powerfft">powerfft</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html#static-method-powerfft">powerfft</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -550,7 +554,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1073">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1080">source</a></span></span>
     </span>
   </h3>
 
@@ -624,11 +628,11 @@
     
     
     
-    <span class="code" data-ice="name">dct</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">dct</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber983">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber990">source</a></span></span>
     </span>
   </h3>
 
@@ -656,7 +660,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -707,7 +711,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1054">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1061">source</a></span></span>
     </span>
   </h3>
 
@@ -775,11 +779,11 @@
     
     
     
-    <span class="code" data-ice="name">fft</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">fft</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber905">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber912">source</a></span></span>
     </span>
   </h3>
 
@@ -807,7 +811,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -858,7 +862,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1036">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1043">source</a></span></span>
     </span>
   </h3>
 
@@ -926,11 +930,11 @@
     
     
     
-    <span class="code" data-ice="name">fftshift</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">fftshift</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1219">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1226">source</a></span></span>
     </span>
   </h3>
 
@@ -959,7 +963,7 @@ Circular shift beginning at the center of the signal.</p>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1009,7 +1013,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1208">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1215">source</a></span></span>
     </span>
   </h3>
 
@@ -1091,7 +1095,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1198">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1205">source</a></span></span>
     </span>
   </h3>
 
@@ -1169,11 +1173,11 @@ Circular shift beginning at the center of the signal.</p>
     
     
     
-    <span class="code" data-ice="name">idct</span><span class="code" data-ice="signature">(X: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">idct</span><span class="code" data-ice="signature">(X: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1010">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1017">source</a></span></span>
     </span>
   </h3>
 
@@ -1201,7 +1205,7 @@ Circular shift beginning at the center of the signal.</p>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1252,7 +1256,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1063">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1070">source</a></span></span>
     </span>
   </h3>
 
@@ -1320,11 +1324,11 @@ Circular shift beginning at the center of the signal.</p>
     
     
     
-    <span class="code" data-ice="name">ifft</span><span class="code" data-ice="signature">(X: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">ifft</span><span class="code" data-ice="signature">(X: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber931">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber938">source</a></span></span>
     </span>
   </h3>
 
@@ -1352,7 +1356,7 @@ Circular shift beginning at the center of the signal.</p>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1403,7 +1407,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1045">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1052">source</a></span></span>
     </span>
   </h3>
 
@@ -1471,11 +1475,11 @@ Circular shift beginning at the center of the signal.</p>
     
     
     
-    <span class="code" data-ice="name">powerfft</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: {dimension: ?<span>string</span>|?<span>number</span>}): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">powerfft</span><span class="code" data-ice="signature">(x: <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Complex">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span>): <span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber957">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber964">source</a></span></span>
     </span>
   </h3>
 
@@ -1503,7 +1507,7 @@ Circular shift beginning at the center of the signal.</p>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code">{dimension: ?<span>string</span>|?<span>number</span>}</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1554,7 +1558,7 @@ Circular shift beginning at the center of the signal.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1186">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1193">source</a></span></span>
     </span>
   </h3>
 
@@ -1655,7 +1659,7 @@ The following window functions are available.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1123">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/Signal.mjs.html#lineNumber1130">source</a></span></span>
     </span>
   </h3>
 

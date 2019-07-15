@@ -234,6 +234,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/bigdecimal.mjs~bigdecimal#factorial",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-factorial",
+    "src/math/BigDecimal.mjs~BigDecimal#factorial",
+    "method"
+  ],
+  [
     "src/math/bigdecimal.mjs~bigdecimal#fix",
     "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-fix",
     "src/math/BigDecimal.mjs~BigDecimal#fix",
@@ -1737,6 +1743,12 @@ window.esdocSearchIndex = [
     "src/math/fraction.mjs~fraction#equals",
     "class/src/math/Fraction.mjs~Fraction.html#instance-method-equals",
     "src/math/Fraction.mjs~Fraction#equals",
+    "method"
+  ],
+  [
+    "src/math/fraction.mjs~fraction#factorial",
+    "class/src/math/Fraction.mjs~Fraction.html#instance-method-factorial",
+    "src/math/Fraction.mjs~Fraction#factorial",
     "method"
   ],
   [

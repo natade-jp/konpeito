@@ -24,7 +24,7 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
@@ -35,6 +35,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.mjs~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -42,18 +44,20 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import konpeito from &apos;<span><a href="file/src/konpeito.mjs.html#lineNumber40">konpeito/src/konpeito.mjs</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import konpeito from &apos;<span><a href="file/src/konpeito.mjs.html#lineNumber44">konpeito/src/konpeito.mjs</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/konpeito.mjs.html#lineNumber40">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/konpeito.mjs.html#lineNumber44">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -74,10 +78,11 @@
   
   
   <div class="description" data-ice="description"><p>Class collection of numerical calculation processing.
-These classes are classified into a BigInteger and BigDecimal and Matrix.</p>
+These classes are classified into a BigInteger, BigDecimal, Fraction, Matrix.</p>
 <ul>
-<li>BigInteger is the calculation class for arbitrary-precision integer arithmetic.</li>
+<li>BigInteger is a calculation class for arbitrary-precision integer arithmetic.</li>
 <li>BigDecimal is a calculation class for arbitrary-precision floating point arithmetic.</li>
+<li>Fraction is a calculation class for fractions with infinite precision.</li>
 <li>Matrix is a general-purpose calculation class with signal processing and statistical processing.</li>
 </ul>
 </div>
@@ -175,6 +180,35 @@ These classes are classified into a BigInteger and BigDecimal and Matrix.</p>
         
         
         <div data-ice="description"><p>Return typedef Complex for complex number calculation.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/konpeito.mjs~konpeito.html#static-get-Fraction">Fraction</a></span></span><span class="code" data-ice="signature">: <span>typeof Fraction</span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Return typedef Fraction for infinite precision arithmetic.</p>
 </div>
       </div>
     </td>
@@ -323,7 +357,7 @@ These classes are classified into a BigInteger and BigDecimal and Matrix.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber54">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber58">source</a></span></span>
     </span>
   </h3>
 
@@ -379,7 +413,7 @@ These classes are classified into a BigInteger and BigDecimal and Matrix.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber46">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber50">source</a></span></span>
     </span>
   </h3>
 
@@ -435,7 +469,7 @@ These classes are classified into a BigInteger and BigDecimal and Matrix.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber78">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber90">source</a></span></span>
     </span>
   </h3>
 
@@ -480,6 +514,62 @@ These classes are classified into a BigInteger and BigDecimal and Matrix.</p>
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-Fraction">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">Fraction</span><span class="code" data-ice="signature">: <span>typeof Fraction</span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber82">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Return typedef Fraction for infinite precision arithmetic.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>typeof Fraction</span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="static-get-MathContext">
     <span class="access" data-ice="access">public</span>
     <span data-ice="static">static</span>
@@ -491,7 +581,7 @@ These classes are classified into a BigInteger and BigDecimal and Matrix.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber70">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber74">source</a></span></span>
     </span>
   </h3>
 
@@ -547,7 +637,7 @@ These classes are classified into a BigInteger and BigDecimal and Matrix.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber86">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber98">source</a></span></span>
     </span>
   </h3>
 
@@ -603,7 +693,7 @@ These classes are classified into a BigInteger and BigDecimal and Matrix.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber94">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber106">source</a></span></span>
     </span>
   </h3>
 
@@ -659,7 +749,7 @@ These classes are classified into a BigInteger and BigDecimal and Matrix.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber62">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/konpeito.mjs.html#lineNumber66">source</a></span></span>
     </span>
   </h3>
 

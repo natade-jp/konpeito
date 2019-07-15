@@ -34,7 +34,7 @@ class IntegerTool {
 	 * @param {number} radix - Base number.
 	 * @returns {Array<number>} Hex array.
 	 */
-	static string_to_binary_number(text, radix) {
+	static toHexadecimalArrayFromPlainString(text, radix) {
 		// 下の変換をすることで、2進数での変換時に内部のforの繰り返す回数が減る
 		// v0.03 出来る限りまとめてn進数変換する
 		const max_num = 0x3FFFFFFF;
@@ -84,7 +84,7 @@ class IntegerTool {
 	 * @param {string} ntext 
 	 * @returns {string}
 	 */
-	static string_to_string(ntext) {
+	static toPlainStringFromString(ntext) {
 		let scale = 0;
 		let buff;
 		// 正規化
@@ -133,24 +133,44 @@ class IntegerTool {
 
 	/**
 	 * Return a hexadecimal array from the number.
-	 * @param {number} x - Target number.
-	 * @returns {Array<number>} Hex array.
+	 * @param {number} num - Target number.
+	 * @returns {{element : Array<number>, _sign : number}} Data for BigInteger.
 	 */
-	static number_to_binary_number(x) {
-		if(x > 0xFFFFFFFF) {
-			return IntegerTool.string_to_binary_number(IntegerTool.string_to_string(x.toFixed()), 10);
+	static toBigIntegerFromNumber(num) {
+		let x;
+		let sign;
+		if(num === 0) {
+			sign = 0;
+			x = 0;
 		}
-		let num = x;
+		else if(num > 0) {
+			sign = 1;
+			x = num;
+		}
+		else {
+			sign = -1;
+			x = -num;
+		}
+		if(x > 0xFFFFFFFF) {
+			return {
+				element : IntegerTool.toHexadecimalArrayFromPlainString(IntegerTool.toPlainStringFromString(x.toFixed()), 10),
+				_sign : sign
+			};
+		}
 		const y = [];
-		while(num !==  0) {
-			y[y.length] = num & 1;
-			num >>>= 1;
+		while(x !==  0) {
+			y[y.length] = x & 1;
+			x >>>= 1;
 		}
 		const z = [];
 		for(let i = 0; i < y.length; i++) {
 			z[i >>> 4] |= y[i] << (i & 0xF);
 		}
-		return z;
+		
+		return {
+			element : z,
+			_sign : sign
+		};
 	}
 
 	/**
@@ -159,7 +179,7 @@ class IntegerTool {
 	 * @param {number} radix - Base number.
 	 * @returns {Array<number>} Numeric array for each digit in the specified base number.
 	 */
-	static binary_number_to_string(binary, radix) {
+	static toPlainStringFromHexadecimalArray(binary, radix) {
 		const add = function(x1, x2, y) {
 			const size = x1.length;
 			let carry = 0;
@@ -194,7 +214,7 @@ class IntegerTool {
 	 * Return data to represent multi-precision numbers from strings.
 	 * @param {string} text - String containing a number.
 	 * @param {number} [radix=10] - Base number.
-	 * @returns {Object} Data for BigInteger.
+	 * @returns {{element : Array<number>, _sign : number}} Data for BigInteger.
 	 */
 	static toBigIntegerFromString(text, radix) {
 		let x = text.replace(/\s/g, "").toLowerCase();
@@ -212,20 +232,20 @@ class IntegerTool {
 		}
 
 		if(radix) {
-			element = IntegerTool.string_to_binary_number(x, radix);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x, radix);
 		}
 		else if(/^0x/.test(x)) {
-			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 16);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 16);
 		}
 		else if(/^0b/.test(x)) {
-			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 2);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 2);
 		}
 		else if(/^0o/.test(x)) {
-			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 8);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 8);
 		}
 		else {
-			x = IntegerTool.string_to_string(x);
-			element = IntegerTool.string_to_binary_number(x, 10);
+			x = IntegerTool.toPlainStringFromString(x);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x, 10);
 		}
 		// "0"の場合がある為
 		if((element.length === 1)&&(element[0] === 0)) {
@@ -290,12 +310,9 @@ export default class BigInteger {
 				this._sign = number._sign;
 			}
 			else if(typeof number === "number") {
-				let x = number;
-				if(x < 0) {
-					this._sign = -1;
-					x = -x;
-				}
-				this.element = IntegerTool.number_to_binary_number(x);
+				const x = IntegerTool.toBigIntegerFromNumber(number);
+				this.element = x.element;
+				this._sign = x._sign;
 			}
 			else if(typeof number === "string") {
 				const x = IntegerTool.toBigIntegerFromString(number);
@@ -314,6 +331,11 @@ export default class BigInteger {
 			}
 			else if((number instanceof Object) && (number.toBigInteger)) {
 				const x = number.toBigInteger();
+				this.element = x.element;
+				this._sign = x._sign;
+			}
+			else if((number instanceof Object) && (number.intValue)) {
+				const x = IntegerTool.toBigIntegerFromNumber(number.intValue);
 				this.element = x.element;
 				this._sign = x._sign;
 			}
@@ -469,7 +491,7 @@ export default class BigInteger {
 		}
 		const zeros_string = zeros_array.join("");
 		// v0.03ここまで
-		const x = IntegerTool.binary_number_to_string(this.element, calcradix);
+		const x = IntegerTool.toPlainStringFromHexadecimalArray(this.element, calcradix);
 		const y = [];
 		let z = "";
 		if(this.signum() < 0) {

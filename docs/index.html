@@ -24,7 +24,7 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
@@ -35,6 +35,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.mjs~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -42,6 +44,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -60,22 +64,20 @@
 <ul>
 <li>BigInteger</li>
 <li>BigDecimal</li>
-<li>Complex</li>
+<li>Fraction</li>
 <li>Matrix</li>
 </ul>
 <p>Has the following features.</p>
 <ul>
-<li>BigDecimal is constructed by BigInteger.</li>
+<li>BigDecimal and Fraction are constructed by BigInteger.</li>
 <li>Matrix is constructed by array of Complex.</li>
-<li>Matrix and Complex can&apos;t use huge real numbers like BigInteger or BigDecimal, but they are powerful.</li>
-<li>Matrix initialization can be described as Scilab, Octave, MATLAB.</li>
+<li>Matrix can&apos;t use huge real numbers like BigInteger or BigDecimal, but they are powerful. Initialization can be described as Scilab, Octave, MATLAB.</li>
 </ul>
 <p>Please check the console and main.mjs.</p>
 <ul>
 <li><a href="https://natade-jp.github.io/konpeito/html/examples/demos/BigDecimal/">BigDecimal</a></li>
 <li><a href="https://natade-jp.github.io/konpeito/html/examples/demos/BigInteger/">BigInteger</a></li>
 <li><a href="https://natade-jp.github.io/konpeito/html/examples/demos/Matrix/">Matrix</a></li>
-<li><a href="https://natade-jp.github.io/konpeito/html/examples/demos/Random/">Random</a></li>
 <li><a href="https://natade-jp.github.io/konpeito/html/examples/demos/UMD/">UMD</a></li>
 </ul>
 <h2 id="install-for-node-js">Install for node.js</h2><ol>
@@ -102,7 +104,10 @@
 </code></pre><h2 id="repository">Repository</h2><ul>
 <li><a href="https://github.com/natade-jp/konpeito.git">https://github.com/natade-jp/konpeito.git</a></li>
 </ul>
-<h2 id="sample">Sample</h2><h3 id="biginteger">BigInteger</h3><p>arbitrary-precision integer class.</p>
+<h2 id="sample">Sample</h2><h3 id="biginteger">BigInteger</h3><ul>
+<li>A calculation class for arbitrary-precision integer arithmetic.</li>
+<li>BigInt of ES2019 is not used.</li>
+</ul>
 <pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.module.min.mjs&quot;;
 const BigInteger = konpeito.BigInteger;
 const $ = BigInteger.create;
@@ -111,7 +116,10 @@ console.log($(&quot;-1234567890&quot;).mul(&quot;987654321098765432109876543210&
 console.log($(&quot;7&quot;).pow(&quot;50&quot;).toString());</code>
 </code></pre><pre><code><code class="source-code prettyprint">&gt; -1219326311248285321124828532111263526900
 &gt; 1798465042647412146620280340569649349251249</code>
-</code></pre><h3 id="bigdecimal">BigDecimal</h3><p>floating-point math class.</p>
+</code></pre><h3 id="bigdecimal">BigDecimal</h3><ul>
+<li>A calculation class for arbitrary-precision floating point arithmetic.</li>
+<li>The calculation uses the BigInteger.</li>
+</ul>
 <pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.module.min.mjs&quot;;
 const BigDecimal = konpeito.BigDecimal;
 const MathContext = konpeito.MathContext;
@@ -120,19 +128,19 @@ const $ = BigDecimal.create;
 BigDecimal.setDefaultContext(MathContext.UNLIMITED);
 console.log($(&quot;-123456.7890&quot;).mul(&quot;987654321098765.432109876543210&quot;).toString());</code>
 </code></pre><pre><code><code class="source-code prettyprint">&gt; -121932631124828532112.4828532111263526900</code>
-</code></pre><h3 id="complex">Complex</h3><p>complex class.</p>
-<ul>
-<li>use the JavaScript standard number.</li>
+</code></pre><h3 id="fraction">Fraction</h3><ul>
+<li>A calculation class for fractions with infinite precision.</li>
+<li>The calculation uses the BigInteger.</li>
 </ul>
 <pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.module.min.mjs&quot;;
-const Complex = konpeito.Complex;
-const $ = Complex.create;
+const Fraction = konpeito.Fraction;
+const $ = Fraction.create;
 
-console.log($(&quot;3 + 4i&quot;).pow(&quot;2 + 8j&quot;).toString());</code>
-</code></pre><pre><code><code class="source-code prettyprint">&gt; -0.0083837 + 0.0124424i</code>
-</code></pre><h3 id="matrix">Matrix</h3><p>complex matrix class.</p>
-<ul>
-<li>use the JavaScript standard number.</li>
+console.log($(&quot;1/3&quot;).add(&quot;0.(3)&quot;).mul(10).toString());</code>
+</code></pre><pre><code><code class="source-code prettyprint">&gt; 20 / 3</code>
+</code></pre><h3 id="matrix">Matrix</h3><ul>
+<li>Matrix is a general-purpose calculation class with signal processing and statistical processing.</li>
+<li>The calculation uses the Complex.</li>
 <li>Some methods do not support complex arithmetic.</li>
 </ul>
 <pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.module.min.mjs&quot;;

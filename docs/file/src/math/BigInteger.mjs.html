@@ -24,7 +24,7 @@
   </span>
     <ul class="search-result"></ul>
   </div>
-<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito"><img width="20px" src="./image/github.png"></a></header>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
 
 <nav class="navigation" data-ice="nav"><div>
   <ul>
@@ -35,6 +35,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.mjs~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.mjs~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.mjs~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.mjs~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -42,6 +44,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.mjs~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.mjs~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.mjs~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -60,6 +64,9 @@
 
 // @ts-ignore
 import Random from &quot;./tools/Random.mjs&quot;;
+
+// @ts-ignore
+//import BigDecimal from &quot;./BigDecimal.mjs&quot;;
 
 /**
  * Random number class to be used when the random number class is not set.
@@ -80,7 +87,7 @@ class IntegerTool {
 	 * @param {number} radix - Base number.
 	 * @returns {Array&lt;number&gt;} Hex array.
 	 */
-	static string_to_binary_number(text, radix) {
+	static toHexadecimalArrayFromPlainString(text, radix) {
 		// &#x4E0B;&#x306E;&#x5909;&#x63DB;&#x3092;&#x3059;&#x308B;&#x3053;&#x3068;&#x3067;&#x3001;2&#x9032;&#x6570;&#x3067;&#x306E;&#x5909;&#x63DB;&#x6642;&#x306B;&#x5185;&#x90E8;&#x306E;for&#x306E;&#x7E70;&#x308A;&#x8FD4;&#x3059;&#x56DE;&#x6570;&#x304C;&#x6E1B;&#x308B;
 		// v0.03 &#x51FA;&#x6765;&#x308B;&#x9650;&#x308A;&#x307E;&#x3068;&#x3081;&#x3066;n&#x9032;&#x6570;&#x5909;&#x63DB;&#x3059;&#x308B;
 		const max_num = 0x3FFFFFFF;
@@ -130,7 +137,7 @@ class IntegerTool {
 	 * @param {string} ntext 
 	 * @returns {string}
 	 */
-	static string_to_string(ntext) {
+	static toPlainStringFromString(ntext) {
 		let scale = 0;
 		let buff;
 		// &#x6B63;&#x898F;&#x5316;
@@ -179,24 +186,44 @@ class IntegerTool {
 
 	/**
 	 * Return a hexadecimal array from the number.
-	 * @param {number} x - Target number.
-	 * @returns {Array&lt;number&gt;} Hex array.
+	 * @param {number} num - Target number.
+	 * @returns {{element : Array&lt;number&gt;, _sign : number}} Data for BigInteger.
 	 */
-	static number_to_binary_number(x) {
-		if(x &gt; 0xFFFFFFFF) {
-			return IntegerTool.string_to_binary_number(IntegerTool.string_to_string(x.toFixed()), 10);
+	static toBigIntegerFromNumber(num) {
+		let x;
+		let sign;
+		if(num === 0) {
+			sign = 0;
+			x = 0;
 		}
-		let num = x;
+		else if(num &gt; 0) {
+			sign = 1;
+			x = num;
+		}
+		else {
+			sign = -1;
+			x = -num;
+		}
+		if(x &gt; 0xFFFFFFFF) {
+			return {
+				element : IntegerTool.toHexadecimalArrayFromPlainString(IntegerTool.toPlainStringFromString(x.toFixed()), 10),
+				_sign : sign
+			};
+		}
 		const y = [];
-		while(num !==  0) {
-			y[y.length] = num &amp; 1;
-			num &gt;&gt;&gt;= 1;
+		while(x !==  0) {
+			y[y.length] = x &amp; 1;
+			x &gt;&gt;&gt;= 1;
 		}
 		const z = [];
 		for(let i = 0; i &lt; y.length; i++) {
 			z[i &gt;&gt;&gt; 4] |= y[i] &lt;&lt; (i &amp; 0xF);
 		}
-		return z;
+		
+		return {
+			element : z,
+			_sign : sign
+		};
 	}
 
 	/**
@@ -205,7 +232,7 @@ class IntegerTool {
 	 * @param {number} radix - Base number.
 	 * @returns {Array&lt;number&gt;} Numeric array for each digit in the specified base number.
 	 */
-	static binary_number_to_string(binary, radix) {
+	static toPlainStringFromHexadecimalArray(binary, radix) {
 		const add = function(x1, x2, y) {
 			const size = x1.length;
 			let carry = 0;
@@ -240,9 +267,9 @@ class IntegerTool {
 	 * Return data to represent multi-precision numbers from strings.
 	 * @param {string} text - String containing a number.
 	 * @param {number} [radix=10] - Base number.
-	 * @returns {Object} Data for BigInteger.
+	 * @returns {{element : Array&lt;number&gt;, _sign : number}} Data for BigInteger.
 	 */
-	static ToBigIntegerFromString(text, radix) {
+	static toBigIntegerFromString(text, radix) {
 		let x = text.replace(/\s/g, &quot;&quot;).toLowerCase();
 		const sign_text = x.match(/^[-+]+/);
 
@@ -258,20 +285,20 @@ class IntegerTool {
 		}
 
 		if(radix) {
-			element = IntegerTool.string_to_binary_number(x, radix);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x, radix);
 		}
 		else if(/^0x/.test(x)) {
-			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 16);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 16);
 		}
 		else if(/^0b/.test(x)) {
-			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 2);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 2);
 		}
 		else if(/^0o/.test(x)) {
-			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 8);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 8);
 		}
 		else {
-			x = IntegerTool.string_to_string(x);
-			element = IntegerTool.string_to_binary_number(x, 10);
+			x = IntegerTool.toPlainStringFromString(x);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x, 10);
 		}
 		// &quot;0&quot;&#x306E;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;&#x70BA;
 		if((element.length === 1)&amp;&amp;(element[0] === 0)) {
@@ -336,21 +363,18 @@ export default class BigInteger {
 				this._sign = number._sign;
 			}
 			else if(typeof number === &quot;number&quot;) {
-				let x = number;
-				if(x &lt; 0) {
-					this._sign = -1;
-					x = -x;
-				}
-				this.element = IntegerTool.number_to_binary_number(x);
+				const x = IntegerTool.toBigIntegerFromNumber(number);
+				this.element = x.element;
+				this._sign = x._sign;
 			}
 			else if(typeof number === &quot;string&quot;) {
-				const x = IntegerTool.ToBigIntegerFromString(number);
+				const x = IntegerTool.toBigIntegerFromString(number);
 				this.element = x.element;
 				this._sign = x._sign;
 			}
 			else if(number instanceof Array) {
-				if((number.length &gt;= 1) &amp;&amp; (typeof number[0] === &quot;string&quot;)) {
-					const x = IntegerTool.ToBigIntegerFromString(number[0], number[1]);
+				if((number.length === 2) &amp;&amp; (typeof number[0] === &quot;string&quot;)) {
+					const x = IntegerTool.toBigIntegerFromString(number[0], number[1]);
 					this.element = x.element;
 					this._sign = x._sign;
 				}
@@ -358,8 +382,18 @@ export default class BigInteger {
 					throw &quot;BigInteger Unsupported argument &quot; + arguments;
 				}
 			}
+			else if((number instanceof Object) &amp;&amp; (number.toBigInteger)) {
+				const x = number.toBigInteger();
+				this.element = x.element;
+				this._sign = x._sign;
+			}
+			else if((number instanceof Object) &amp;&amp; (number.intValue)) {
+				const x = IntegerTool.toBigIntegerFromNumber(number.intValue);
+				this.element = x.element;
+				this._sign = x._sign;
+			}
 			else if(number instanceof Object) {
-				const x = IntegerTool.ToBigIntegerFromString(number.toString());
+				const x = IntegerTool.toBigIntegerFromString(number.toString());
 				this.element = x.element;
 				this._sign = x._sign;
 			}
@@ -439,7 +473,7 @@ export default class BigInteger {
 	 */
 	static _toInteger(number) {
 		if(typeof number === &quot;number&quot;) {
-			return number | 0;
+			return Math.trunc(number);
 		}
 		else if(number instanceof BigInteger) {
 			return number.intValue;
@@ -487,47 +521,6 @@ export default class BigInteger {
 	}
 
 	/**
-	 * Prime represented within the specified bit length.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} bits - Bit length.
-	 * @param {Random} [random] - Class for creating random numbers.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} [certainty=100] - Repeat count (prime precision).
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} [create_count=500] - Number of times to retry if prime generation fails.
-	 * @returns {BigInteger}
-	 */
-	static probablePrime(bits, random, certainty, create_count ) {
-		const certainty_ = certainty ? BigInteger._toInteger(certainty) : 100;
-		const create_count_ = create_count ? BigInteger._toInteger(create_count) : 500;
-		for(let i = 0; i &lt; create_count_; i++) {
-			const x = BigInteger.createRandomBigInteger(bits, random);
-			if(x.isProbablePrime(certainty_)) {
-				return x;
-			}
-		}
-		throw &quot;probablePrime &quot; + create_count;
-	}
-
-	/**
-	 * Equals.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {boolean} A === B
-	 */
-	equals(number) {
-		const x = BigInteger._toBigInteger(number);
-		if(this.signum() !== x.signum()) {
-			return false;
-		}
-		if(this.element.length !== x.element.length) {
-			return false;
-		}
-		for(let i = 0; i &lt; x.element.length; i++) {
-			if(this.element[i] !==  x.element[i]) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
 	 * Convert to string.
 	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} [radix=10] - Base number.
 	 * @returns {string}
@@ -551,7 +544,7 @@ export default class BigInteger {
 		}
 		const zeros_string = zeros_array.join(&quot;&quot;);
 		// v0.03&#x3053;&#x3053;&#x307E;&#x3067;
-		const x = IntegerTool.binary_number_to_string(this.element, calcradix);
+		const x = IntegerTool.toPlainStringFromHexadecimalArray(this.element, calcradix);
 		const y = [];
 		let z = &quot;&quot;;
 		if(this.signum() &lt; 0) {
@@ -567,6 +560,588 @@ export default class BigInteger {
 		return y.join(&quot;&quot;);
 	}
 
+	/**
+	 * Deep copy.
+	 * @returns {BigInteger}
+	 */
+	clone() {
+		return new BigInteger(this);
+	}
+
+	/**
+	 * Create a numerical value for addition. If negative, two&apos;s complement.
+	 * @param {number} [bit_length] - Bit length. If not set, it will be calculated automatically.
+	 * @returns {BigInteger}
+	 * @private
+	 */
+	getTwosComplement(bit_length) {
+		const y = this.clone();
+		if(y._sign &gt;= 0) {
+			return y;
+		}
+		else {
+			// &#x6B63;&#x306B;&#x3059;&#x308B;
+			y._sign = 1;
+			// &#x30D3;&#x30C3;&#x30C8;&#x306E;&#x6570;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x6570;&#x3048;&#x308B;
+			const len = (bit_length !== undefined) ? bit_length : y.bitLength();
+			const e = y.element;
+			// &#x30D3;&#x30C3;&#x30C8;&#x53CD;&#x8EE2;&#x5F8C;
+			for(let i = 0; i &lt; e.length; i++) {
+				e[i] ^= 0xFFFF;
+			}
+			// 1&#xFF5E;15&#x30D3;&#x30C3;&#x30C8;&#x4F59;&#x308B;&#x5834;&#x5408;&#x306F;&#x3001;16&#x30D3;&#x30C3;&#x30C8;&#x305A;&#x3064;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x3044;&#x308B;&#x306E;&#x3067;&#x524A;&#x308B;
+			// n&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x30DE;&#x30B9;&#x30AF;&#xFF08;&#x306A;&#x304A;&#x8CA0;&#x306E;&#x5024;&#x3092;&#x8868;&#x3059;&#x6700;&#x4E0A;&#x4F4D;&#x30D3;&#x30C3;&#x30C8;&#x306F;&#x524A;&#x9664;&#x3059;&#x308B;&#xFF09;
+			if((len % 16) !== 0) {
+				e[e.length - 1] &amp;= (1 &lt;&lt; (len % 16)) - 1;
+			}
+			// 1&#x3092;&#x52A0;&#x7B97;
+			y._add(new BigInteger(1));
+			return y;
+		}
+	}
+
+	/**
+	 * Expand memory to specified bit length. (mutable)
+	 * @param {number} bit_length - Bit length.
+	 * @private
+	 */
+	_memory_allocation(bit_length) {
+		const n = BigInteger._toInteger(bit_length);
+		const elementsize = this.element.length &lt;&lt; 4;
+		if(elementsize &lt; n) {
+			const addsize = (((n - elementsize - 1) &amp; 0xFFFFFFF0) &gt;&gt;&gt; 4) + 1;
+			for(let i = 0;i &lt; addsize;i++) {
+				this.element[this.element.length] = 0;
+			}
+		}
+	}
+
+	/**
+	 * Normalization of the internal data. (mutable)
+	 * @private
+	 */
+	_memory_reduction() {
+		for(let i = this.element.length - 1;i &gt;= 0;i--) {
+			if(this.element[i] !==  0) {
+				if(i &lt; this.element.length - 1) {
+					this.element.splice(i + 1, this.element.length - i - 1);
+				}
+				return;
+			}
+		}
+		this._sign = 0;
+		this.element = [];
+	}
+
+	/**
+	 * Absolute value. (mutable)
+	 * @returns {BigInteger} A = abs(A)
+	 * @private
+	 */
+	_abs() {
+		// -1 -&gt; 1, 0 -&gt; 0, 1 -&gt; 1
+		this._sign *= this._sign;
+		return this;
+	}
+
+	/**
+	 * Absolute value.
+	 * @returns {BigInteger} abs(A)
+	 */
+	abs() {
+		return this.clone()._abs();
+	}
+
+	/**
+	 * this *= -1
+	 * @returns {BigInteger} A = -A
+	 * @private
+	 */
+	_negate() {
+		this._sign *= -1;
+		return this;
+	}
+
+	/**
+	 * this * -1
+	 * @returns {BigInteger} -A
+	 */
+	negate() {
+		return this.clone()._negate();
+	}
+
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	signum() {
+		if(this.element.length === 0) {
+			return 0;
+		}
+		return this._sign;
+	}
+
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	sign() {
+		return this.signum();
+	}
+
+	// ----------------------
+	// &#x56DB;&#x5247;&#x6F14;&#x7B97;
+	// ----------------------
+	
+	/**
+	 * Add. (mutable)
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} A += B
+	 * @private
+	 */
+	_add(number) {
+		const val = BigInteger._toBigInteger(number);
+		const o1 = this;
+		const o2 = val;
+		let x1 = o1.element;
+		let x2 = o2.element;
+		if(o1._sign === o2._sign) {
+			//&#x8DB3;&#x3057;&#x7B97;
+			this._memory_allocation(x2.length &lt;&lt; 4);
+			let carry = 0;
+			for(let i = 0; i &lt; x1.length; i++) {
+				x1[i] += ((x2.length &gt;= (i + 1)) ? x2[i] : 0) + carry;
+				if(x1[i] &gt; 0xFFFF) {
+					carry = 1;
+					x1[i] &amp;= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				x1[x1.length] = carry;
+			}
+		}
+		else {
+			// &#x5F15;&#x304D;&#x7B97;
+			const compare = o1.compareToAbs(o2);
+			if(compare === 0) {
+				this.element = [];
+				this._sign = 1;
+				return this;
+			}
+			else if(compare === -1) {
+				this._sign = o2._sign;
+				const swap = x1;
+				x1 = x2.slice(0);
+				x2 = swap;
+			}
+			let carry = 0;
+			for(let i = 0; i &lt; x1.length; i++) {
+				x1[i] -= ((x2.length &gt;= (i + 1)) ? x2[i] : 0) + carry;
+				if(x1[i] &lt; 0) {
+					x1[i] += 0x10000;
+					carry  = 1;
+				}
+				else {
+					carry  = 0;
+				}
+			}
+			this.element = x1;
+			this._memory_reduction();
+		}
+		return this;
+	}
+
+	/**
+	 * Add.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} A + B
+	 */
+	add(number) {
+		return this.clone()._add(number);
+	}
+
+	/**
+	 * Subtract. (mutable)
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} A -= B
+	 * @private
+	 */
+	_subtract(number) {
+		const val = BigInteger._toBigInteger(number);
+		const _sign = val._sign;
+		const out  = this._add(val._negate());
+		val._sign = _sign;
+		return out;
+	}
+
+	/**
+	 * Subtract.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} A - B
+	 */
+	subtract(number) {
+		return this.clone()._subtract(number);
+	}
+
+	/**
+	 * Subtract.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} A - B
+	 */
+	sub(number) {
+		return this.subtract(number);
+	}
+
+	/**
+	 * Multiply. (mutable)
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} A *= B
+	 * @private
+	 */
+	_multiply(number) {
+		const x = this.multiply(number);
+		this.element = x.element;
+		this._sign    = x._sign;
+		return this;
+	}
+
+	/**
+	 * Multiply.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} A * B
+	 */
+	multiply(number) {
+		const val = BigInteger._toBigInteger(number);
+		const out  = new BigInteger();
+		const buff = new BigInteger();
+		const o1 = this;
+		const o2 = val;
+		const x1 = o1.element;
+		const x2 = o2.element;
+		const y  = out.element;
+		for(let i = 0; i &lt; x1.length; i++) {
+			buff.element = [];
+			// x3 = x1[i] * x2
+			const x3 = buff.element;
+			let carry = 0;
+			for(let j = 0; j &lt; x2.length; j++) {
+				x3[j] = x1[i] * x2[j] + carry;
+				if(x3[j] &gt; 0xFFFF) {
+					carry = x3[j] &gt;&gt;&gt; 16;
+					x3[j] &amp;= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				x3[x3.length] = carry;
+			}
+			// x3 = x3 &lt;&lt; (i * 16)
+			//buff._shift(i &lt;&lt; 4);
+			for(let j = x3.length - 1; j &gt;= 0; j--) {
+				x3[j + i] = x3[j];
+			}
+			for(let j = i - 1; j &gt;= 0; j--) {
+				x3[j] = 0;
+			}
+			// y = y + x3 (out._add(buff))
+			//out._add(buff);
+			carry = 0;
+			out._memory_allocation(x3.length &lt;&lt; 4);
+			for(let j = i; j &lt; y.length; j++) {
+				y[j] += ((x3.length &gt;= (j + 1)) ? x3[j] : 0) + carry;
+				if(y[j] &gt; 0xFFFF) {
+					carry = 1;
+					y[j] &amp;= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				y[y.length] = carry;
+			}
+		}
+		out._sign = this._sign * val._sign;
+		return out;
+	}
+
+	/**
+	 * Multiply.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} A * B
+	 */
+	mul(number) {
+		return this.multiply(number);
+	}
+
+	/**
+	 * Divide and remainder. (mutable)
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {Array&lt;BigInteger&gt;} [C = fix(A / B), A - C * B]
+	 * @private
+	 */
+	_divideAndRemainder(number) {
+		const val = BigInteger._toBigInteger(number);
+		const out = [];
+		if(val.signum() === 0) {
+			throw &quot;BigInteger divideAndRemainder [&quot; + val.toString() +&quot;]&quot;;
+		}
+		const compare = this.compareToAbs(val);
+		if(compare &lt; 0) {
+			out[0] = new BigInteger(0);
+			out[1] = this.clone();
+			return out;
+		}
+		else if(compare === 0) {
+			out[0] = new BigInteger(1);
+			out[0]._sign = this._sign * val._sign;
+			out[1] = new BigInteger(0);
+			return out;
+		}
+		const ONE = new BigInteger(1);
+		const size = this.bitLength() - val.bitLength();
+		const x1 = this.clone()._abs();
+		const x2 = val.shift(size)._abs();
+		const y  = new BigInteger();
+		for(let i = 0; i &lt;= size; i++) {
+			if(x1.compareToAbs(x2) &gt;= 0) {
+				x1._subtract(x2);
+				y._add(ONE);
+			}
+			if(i === size) {
+				break;
+			}
+			x2._shift(-1);
+			y._shift(1);
+		}
+		out[0] = y;
+		out[0]._sign = this._sign * val._sign;
+		out[1] = x1;
+		out[1]._sign = this._sign;
+		return out;
+	}
+
+	/**
+	 * Divide and remainder.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {Array&lt;BigInteger&gt;} [C = fix(A / B), A - C * B]
+	 */
+	divideAndRemainder(number) {
+		return this.clone()._divideAndRemainder(number);
+	}
+
+	/**
+	 * Divide. (mutable)
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} fix(A / B)
+	 * @private
+	 */
+	_divide(number) {
+		return this._divideAndRemainder(number)[0];
+	}
+
+	/**
+	 * Divide.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} fix(A / B)
+	 */
+	divide(number) {
+		return this.clone()._divide(number);
+	}
+
+	/**
+	 * Divide.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} fix(A / B)
+	 */
+	div(number) {
+		return this.divide(number);
+	}
+
+	/**
+	 * Remainder of division. (mutable)
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} A %= B
+	 * @private
+	 */
+	_remainder(number) {
+		return this._divideAndRemainder(number)[1];
+	}
+
+	/**
+	 * Remainder of division.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} A % B
+	 */
+	remainder(number) {
+		return this.clone()._remainder(number);
+	}
+
+	/**
+	 * Remainder of division.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} A % B
+	 */
+	rem(number) {
+		return this.remainder(number);
+	}
+
+	/**
+	 * Modulo, positive remainder of division. (mutable)
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} A = A mod B
+	 * @private
+	 */
+	_mod(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(val.signum() &lt; 0) {
+			return null;
+		}
+		const y = this._divideAndRemainder(val);
+		if(y[1] instanceof BigInteger) {
+			if(y[1].signum() &gt;= 0) {
+				return y[1];
+			}
+			else {
+				return y[1]._add(val);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Modulo, positive remainder of division.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} A mod B
+	 */
+	mod(number) {
+		return this.clone()._mod(number);
+	}
+
+	/**
+	 * Power function.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} exponent
+	 * @returns {BigInteger} pow(A, B)
+	 */
+	pow(exponent) {
+		const e = new BigInteger(exponent);
+		let x = BigInteger._toBigInteger(this);
+		let y = BigInteger._toBigInteger(1);
+		while(e.element.length !== 0) {
+			if((e.element[0] &amp; 1) !== 0) {
+				y = y.multiply(x);
+			}
+			x = x.multiply(x);
+			e._shift(-1);
+		}
+		return y;
+	}
+
+	/**
+	 * Modular exponentiation.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} exponent
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} m 
+	 * @returns {BigInteger} A^B mod m
+	 */
+	modPow(exponent, m) {
+		const m_ = BigInteger._toBigInteger(m);
+		let x = new BigInteger(this);
+		let y = new BigInteger(1);
+		const e = new BigInteger(exponent);
+		while(e.element.length !== 0) {
+			if((e.element[0] &amp; 1) !== 0) {
+				y = y.multiply(x).mod(m_);
+			}
+			x = x.multiply(x).mod(m_);
+			e._shift(-1);
+		}
+		return y;
+	}
+
+	/**
+	 * Modular multiplicative inverse.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} m
+	 * @returns {BigInteger} A^(-1) mod m
+	 */
+	modInverse(m) {
+		const m_ = BigInteger._toBigInteger(m);
+		const y = this.extgcd(m);
+		const ONE  = new BigInteger(1);
+		if(y[2].compareTo(ONE) !== 0) {
+			return null;
+		}
+		// &#x6B63;&#x306B;&#x3059;&#x308B;&#x305F;&#x3081; remainder &#x3067;&#x306F;&#x306A;&#x304F; mod &#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
+		return y[0]._add(m_)._mod(m_);
+	}
+
+	// ----------------------
+	// &#x305D;&#x306E;&#x4ED6;&#x306E;&#x6F14;&#x7B97;
+	// ----------------------
+	
+	/**
+	 * Factorial function, x!.
+	 * @returns {BigInteger} n!
+	 */
+	factorial() {
+		const loop_max = BigInteger._toInteger(this);
+		let x = BigInteger.ONE;
+		for(let i = 2; i &lt;= loop_max; i++) {
+			x = x.multiply(i);
+		}
+		return x;
+	}
+
+	/**
+	 * Multiply a multiple of ten.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} n
+	 * @returns {BigInteger} x * 10^n
+	 */
+	scaleByPowerOfTen(n) {
+		const x = BigInteger._toInteger(n);
+		if(x === 0) {
+			return this;
+		}
+		if(x &gt; 0) {
+			return this.mul(BigInteger.TEN.pow(x));
+		}
+		else {
+			return this.div(BigInteger.TEN.pow(x));
+		}
+	}
+
+	// ----------------------
+	// &#x74B0;&#x5883;&#x8A2D;&#x5B9A;&#x7528;
+	// ----------------------
+	
+	/**
+	 * Set default class of random.
+	 * This is used if you do not specify a random number.
+	 * @param {Random} random
+	 */
+	static setDefaultRandom(random) {
+		DEFAULT_RANDOM = random;
+	}
+
+	/**
+	 * Return default Random class.
+	 * Used when Random not specified explicitly.
+	 * @returns {Random}
+	 */
+	static getDefaultRandom() {
+		return DEFAULT_RANDOM;
+	}
+
+	// ----------------------
+	// &#x4ED6;&#x306E;&#x578B;&#x306B;&#x5909;&#x63DB;&#x7528;
+	// ----------------------
+	
 	/**
 	 * Value at the specified position of the internally used array that composed of hexadecimal numbers.
 	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} point - Array address.
@@ -619,44 +1194,427 @@ export default class BigInteger {
 	get doubleValue() {
 		return parseFloat(this.toString());
 	}
-
-	/**
-	 * Deep copy.
-	 * @returns {BigInteger}
-	 */
-	clone() {
-		return new BigInteger(this);
-	}
-
-	/**
-	 * this &lt; 0
-	 * @returns {boolean} real(x) &lt; 0
-	 */
-	isNegative() {
-		return this._sign &lt; 0;
-	}
-
-	/**
-	 * this === 0
-	 * @returns {boolean} A === 0
-	 */
-	isZero() {
-		this._memory_reduction();
-		return this._sign === 0;
-	}
+	
+	// ----------------------
+	// gcd, lcm
+	// ----------------------
 	
 	/**
-	 * Return true if the value is positive number.
-	 * @returns {boolean} real(x) &gt; 0
+	 * Euclidean algorithm.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number 
+	 * @returns {BigInteger} gcd(x, y)
 	 */
-	isPositive() {
-		return this._sign &gt; 0;
+	gcd(number) {
+		const val = BigInteger._toBigInteger(number);
+		/**
+		 * @type {any}
+		 */
+		let x = this, y = val, z;
+		while(y.signum() !== 0) {
+			z = x.remainder(y);
+			x = y;
+			y = z;
+		}
+		return x;
 	}
 
+	/**
+	 * Extended Euclidean algorithm.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number 
+	 * @returns {Array&lt;BigInteger&gt;} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 */
+	extgcd(number) {
+		const val = BigInteger._toBigInteger(number);
+		// &#x975E;&#x518D;&#x5E30;
+		const ONE  = new BigInteger(1);
+		const ZERO = new BigInteger(0);
+		/**
+		 * @type {any}
+		 */
+		let r0 = this, r1 = val, r2, q1;
+		let a0 = ONE,  a1 = ZERO, a2;
+		let b0 = ZERO, b1 = ONE,  b2;
+		while(r1.signum() !== 0) {
+			const y = r0.divideAndRemainder(r1);
+			q1 = y[0];
+			r2 = y[1];
+			a2 = a0.subtract(q1.multiply(a1));
+			b2 = b0.subtract(q1.multiply(b1));
+			a0 = a1;
+			a1 = a2;
+			b0 = b1;
+			b1 = b2;
+			r0 = r1;
+			r1 = r2;
+		}
+		return [a0, b0, r0];
+	}
+
+	/**
+	 * Least common multiple.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number 
+	 * @returns {BigInteger} lcm(x, y)
+	 */
+	lcm(number) {
+		const val = BigInteger._toBigInteger(number);
+		return this.mul(val).div(this.gcd(val));
+	}
+
+	// ----------------------
+	// &#x6BD4;&#x8F03;
+	// ----------------------
+	
+	/**
+	 * Equals.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {boolean} A === B
+	 */
+	equals(number) {
+		const x = BigInteger._toBigInteger(number);
+		if(this.signum() !== x.signum()) {
+			return false;
+		}
+		if(this.element.length !== x.element.length) {
+			return false;
+		}
+		for(let i = 0; i &lt; x.element.length; i++) {
+			if(this.element[i] !==  x.element[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Compare values without sign.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number 
+	 * @returns {number} abs(A) &lt; abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
+	 */
+	compareToAbs(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(this.element.length &lt; val.element.length) {
+			return -1;
+		}
+		else if(this.element.length &gt; val.element.length) {
+			return 1;
+		}
+		for(let i = this.element.length - 1;i &gt;= 0;i--) {
+			if(this.element[i] !== val.element[i]) {
+				const x = this.element[i] - val.element[i];
+				return ( (x === 0) ? 0 : ((x &gt; 0) ? 1 : -1) );
+			}
+		}
+		return 0;
+	}
+
+	/**
+	 * Compare values.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number 
+	 * @returns {number} A &gt; B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(this.signum() !== val.signum()) {
+			if(this._sign &gt; val._sign) {
+				return 1;
+			}
+			else {
+				return -1;
+			}
+		}
+		else if(this.signum() === 0) {
+			return 0;
+		}
+		return this.compareToAbs(val) * this._sign;
+	}
+
+	/**
+	 * Maximum number.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} max([A, B])
+	 */
+	max(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(this.compareTo(val) &gt;= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * Minimum number.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
+	 * @returns {BigInteger} min([A, B])
+	 */
+	min(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(this.compareTo(val) &gt;= 0) {
+			return val.clone();
+		}
+		else {
+			return this.clone();
+		}
+	}
+
+	/**
+	 * Clip number within range.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} min 
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} max
+	 * @returns {BigInteger} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = BigInteger._toBigInteger(min);
+		const max_ = BigInteger._toBigInteger(max);
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw &quot;clip(min, max) error. (min &gt; max)-&gt;(&quot; + min_ + &quot; &gt; &quot; + max_ + &quot;)&quot;;
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	}
+
+	// ----------------------
+	// &#x7D20;&#x6570;&#x7CFB;
+	// ----------------------
+	
+	/**
+	 * Prime represented within the specified bit length.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} bits - Bit length.
+	 * @param {Random} [random] - Class for creating random numbers.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} [certainty=100] - Repeat count (prime precision).
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} [create_count=500] - Number of times to retry if prime generation fails.
+	 * @returns {BigInteger}
+	 */
+	static probablePrime(bits, random, certainty, create_count ) {
+		const certainty_ = certainty ? BigInteger._toInteger(certainty) : 100;
+		const create_count_ = create_count ? BigInteger._toInteger(create_count) : 500;
+		for(let i = 0; i &lt; create_count_; i++) {
+			const x = BigInteger.createRandomBigInteger(bits, random);
+			if(x.isProbablePrime(certainty_)) {
+				return x;
+			}
+		}
+		throw &quot;probablePrime &quot; + create_count;
+	}
+
+	/**
+	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * Attention : it takes a very long time to process.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} [certainty=100] - Repeat count (prime precision).
+	 * @returns {boolean}
+	 */
+	isProbablePrime(certainty) {
+		const e = this.element;
+		//0, 1, 2 -&gt; true
+		if( (e.length === 0) || ((e.length === 1)&amp;&amp;(e[0] &lt;= 2)) ) {
+			return true;
+		}
+		//even number -&gt; false
+		else if((e[0] &amp; 1) === 0) {
+			return false;
+		}
+		// &#x30DF;&#x30E9;&#x30FC;&#x30E9;&#x30D3;&#x30F3;&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;
+		// &#x304B;&#x306A;&#x308A;&#x51E6;&#x7406;&#x304C;&#x91CD;&#x305F;&#x3044;&#x3067;&#x3059;&#x3002;&#x307E;&#x3042;&#x304A;&#x904A;&#x3073;&#x7A0B;&#x5EA6;&#x306B;&#x4F7F;&#x7528;&#x3068;&#x3044;&#x3046;&#x611F;&#x3058;&#x3067;&#x3002;
+		const loop	= certainty !== undefined ? BigInteger._toInteger(certainty) : 100;
+		const ZERO	= new BigInteger(0);
+		const ONE	= new BigInteger(1);
+		const n		= this;
+		const LEN	= n.bitLength();
+		const n_1	= n.subtract(ONE);
+		const s 	= n_1.getLowestSetBit();
+		const d 	= n_1.shift(-s);
+
+		if(loop &lt;= 0) {
+			return false;
+		}
+
+		for(let i = 0; i &lt; loop; i++ ) {
+			//[ 1, n - 1] &#x306E;&#x7BC4;&#x56F2;&#x304B;&#x3089; a &#x3092;&#x9078;&#x629E;
+			let a;
+			do {
+				a = BigInteger.createRandomBigInteger(LEN);
+			} while(( a.compareTo(ZERO) === 0 )||( a.compareTo(n) !== -1 ));
+
+			let t = d;
+			// a^t != 1 mod n
+			let y = a.modPow(t, n);
+			
+			while(true) {
+				if((t.equals(n_1)) || (y.equals(ONE)) || (y.equals(n_1))) {
+					break;
+				}
+				y = y.mul(y)._mod(n);
+				t = t.shiftLeft(1);
+			}
+
+			if((!y.equals(n_1)) &amp;&amp; ((t.element[0] &amp; 1) === 0)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Next prime.
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} [certainty=100] - Repeat count (prime precision).
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} [search_max=100000] - Search range of next prime.
+	 * @returns {BigInteger}
+	 */
+	nextProbablePrime(certainty, search_max) {
+		const loop	= certainty !== undefined ? (BigInteger._toInteger(certainty) &gt;&gt; 1) : 100 / 2;
+		const search_max_ = search_max !== undefined ? BigInteger._toInteger(search_max) : 100000;
+		const x = this.clone();
+		for(let i = 0; i &lt; search_max_; i++) {
+			x._add(BigInteger.ONE);
+			if(x.isProbablePrime(loop)) {
+				return x;
+			}
+		}
+		throw &quot;nextProbablePrime [&quot; + search_max_ +&quot;]&quot;;
+	}
+
+	// ----------------------
+	// &#x30B7;&#x30D5;&#x30C8;&#x6F14;&#x7B97;&#x7CFB;
+	// ----------------------
+	
+	/**
+	 * this &lt;&lt;= n
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} shift_length - Bit shift size.
+	 * @returns {BigInteger} A &lt;&lt;= n
+	 * @private
+	 */
+	_shift(shift_length) {
+		let n = BigInteger._toInteger(shift_length);
+		if(n === 0) {
+			return this;
+		}
+		const x = this.element;
+		// 1&#x30D3;&#x30C3;&#x30C8;&#x306A;&#x3089;&#x5C02;&#x7528;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x9AD8;&#x901F;&#x8A08;&#x7B97;
+		if(n === 1) {
+			let i = x.length - 1;
+			if((x[i] &amp; 0x8000) !==  0) {
+				x[x.length] = 1;
+			}
+			for(;i &gt;= 0;i--) {
+				x[i] &lt;&lt;= 1;
+				x[i]  &amp;= 0xFFFF;
+				if((i &gt; 0) &amp;&amp; ((x[i - 1] &amp; 0x8000) !==  0)) {
+					x[i] += 1;
+				}
+			}
+		}
+		else if(n === -1) {
+			for(let i = 0;i &lt; x.length;i++) {
+				x[i] &gt;&gt;&gt;= 1;
+				if((i &lt; x.length - 1) &amp;&amp; ((x[i + 1] &amp; 1) !==  0)) {
+					x[i] |= 0x8000;
+				}
+			}
+			if(x[x.length - 1] === 0) {
+				x.pop();
+			}
+		}
+		else {
+			// 16&#x30D3;&#x30C3;&#x30C8;&#x5358;&#x4F4D;&#x306A;&#x3089;&#x914D;&#x5217;&#x3092;&#x8FFD;&#x52A0;&#x524A;&#x9664;&#x3059;&#x308B;&#x9AD8;&#x901F;&#x8A08;&#x7B97;
+			if(n &gt;= 16) {
+				const m = n &gt;&gt;&gt; 4;
+				for(let i = x.length - 1; i &gt;= 0; i--) {
+					x[i + m] = x[i];
+				}
+				for(let i = m - 1; i &gt;= 0; i--) {
+					x[i] = 0;
+				}
+				n &amp;= 0xF;
+			}
+			else if(n &lt;= -16){
+				const m = (-n) &gt;&gt;&gt; 4;
+				x.splice(0, m);
+				n += m &lt;&lt; 4;
+			}
+			if(n !== 0) {
+				// 15&#x30D3;&#x30C3;&#x30C8;&#x4EE5;&#x5185;&#x306A;&#x3089;&#x30D3;&#x30C3;&#x30C8;&#x6F14;&#x7B97;&#x3067;&#x307E;&#x3068;&#x3081;&#x3066;&#x64CD;&#x4F5C;
+				if(0 &lt; n) {
+					let carry = 0;
+					for(let i = 0; i &lt; x.length; i++) {
+						x[i] = (x[i] &lt;&lt; n) + carry;
+						if(x[i] &gt; 0xFFFF) {
+							carry = x[i] &gt;&gt;&gt; 16;
+							x[i] &amp;= 0xFFFF;
+						}
+						else {
+							carry = 0;
+						}
+					}
+					if(carry !== 0) {
+						x[x.length] = carry;
+					}
+				}
+				else {
+					n = -n;
+					for(let i = 0; i &lt; x.length; i++) {
+						if(i !== x.length - 1) {
+							x[i] += x[i + 1] &lt;&lt; 16;
+							x[i] &gt;&gt;&gt;= n;
+							x[i] &amp;= 0xFFFF;
+						}
+						else {
+							x[i] &gt;&gt;&gt;= n;
+						}
+					}
+					if(x[x.length - 1] === 0) {
+						x.pop();
+					}
+				}
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * this &lt;&lt; n
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} n
+	 * @returns {BigInteger} A &lt;&lt; n
+	 */
+	shift(n) {
+		return this.clone()._shift(n);
+	}
+
+	/**
+	 * this &lt;&lt; n
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} n
+	 * @returns {BigInteger} A &lt;&lt; n
+	 */
+	shiftLeft(n) {
+		return this.shift(n);
+	}
+
+	/**
+	 * this &gt;&gt; n
+	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} n
+	 * @returns {BigInteger} A &gt;&gt; n
+	 */
+	shiftRight(n) {
+		return this.shift(-n);
+	}
+
+	// ----------------------
+	// &#x30D3;&#x30C3;&#x30C8;&#x6F14;&#x7B97;&#x7CFB;
+	// ----------------------
+	
 	/**
 	 * Number of digits in which the number &quot;1&quot; appears first when expressed in binary.
 	 * - Return -1 If 1 is not found it.
-	 * @returns {number} &#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F; -1
+	 * @returns {number}
 	 */
 	getLowestSetBit() {
 		for(let i = 0; i &lt; this.element.length; i++) {
@@ -714,38 +1672,6 @@ export default class BigInteger {
 			}
 		}
 		return count;
-	}
-
-	/**
-	 * Create a numerical value for addition. If negative, two&apos;s complement.
-	 * @param {number} [bit_length] - Bit length. If not set, it will be calculated automatically.
-	 * @returns {BigInteger}
-	 * @private
-	 */
-	getTwosComplement(bit_length) {
-		const y = this.clone();
-		if(y._sign &gt;= 0) {
-			return y;
-		}
-		else {
-			// &#x6B63;&#x306B;&#x3059;&#x308B;
-			y._sign = 1;
-			// &#x30D3;&#x30C3;&#x30C8;&#x306E;&#x6570;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x6570;&#x3048;&#x308B;
-			const len = (bit_length !== undefined) ? bit_length : y.bitLength();
-			const e = y.element;
-			// &#x30D3;&#x30C3;&#x30C8;&#x53CD;&#x8EE2;&#x5F8C;
-			for(let i = 0; i &lt; e.length; i++) {
-				e[i] ^= 0xFFFF;
-			}
-			// 1&#xFF5E;15&#x30D3;&#x30C3;&#x30C8;&#x4F59;&#x308B;&#x5834;&#x5408;&#x306F;&#x3001;16&#x30D3;&#x30C3;&#x30C8;&#x305A;&#x3064;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x3044;&#x308B;&#x306E;&#x3067;&#x524A;&#x308B;
-			// n&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x30DE;&#x30B9;&#x30AF;&#xFF08;&#x306A;&#x304A;&#x8CA0;&#x306E;&#x5024;&#x3092;&#x8868;&#x3059;&#x6700;&#x4E0A;&#x4F4D;&#x30D3;&#x30C3;&#x30C8;&#x306F;&#x524A;&#x9664;&#x3059;&#x308B;&#xFF09;
-			if((len % 16) !== 0) {
-				e[e.length - 1] &amp;= (1 &lt;&lt; (len % 16)) - 1;
-			}
-			// 1&#x3092;&#x52A0;&#x7B97;
-			y._add(new BigInteger(1));
-			return y;
-		}
 	}
 
 	/**
@@ -976,696 +1902,6 @@ export default class BigInteger {
 	}
 
 	/**
-	 * Expand memory to specified bit length. (mutable)
-	 * @param {number} bit_length - Bit length.
-	 * @private
-	 */
-	_memory_allocation(bit_length) {
-		const n = BigInteger._toInteger(bit_length);
-		const elementsize = this.element.length &lt;&lt; 4;
-		if(elementsize &lt; n) {
-			const addsize = (((n - elementsize - 1) &amp; 0xFFFFFFF0) &gt;&gt;&gt; 4) + 1;
-			for(let i = 0;i &lt; addsize;i++) {
-				this.element[this.element.length] = 0;
-			}
-		}
-	}
-
-	/**
-	 * Normalization of the internal data. (mutable)
-	 * @private
-	 */
-	_memory_reduction() {
-		for(let i = this.element.length - 1;i &gt;= 0;i--) {
-			if(this.element[i] !==  0) {
-				if(i &lt; this.element.length - 1) {
-					this.element.splice(i + 1, this.element.length - i - 1);
-				}
-				return;
-			}
-		}
-		this._sign = 0;
-		this.element = [];
-	}
-
-	/**
-	 * Euclidean algorithm.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number 
-	 * @returns {BigInteger} gcd(x, y)
-	 */
-	gcd(number) {
-		const val = BigInteger._toBigInteger(number);
-		/**
-		 * @type {any}
-		 */
-		let x = this, y = val, z;
-		while(y.signum() !== 0) {
-			z = x.remainder(y);
-			x = y;
-			y = z;
-		}
-		return x;
-	}
-
-	/**
-	 * Extended Euclidean algorithm.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number 
-	 * @returns {Array&lt;BigInteger&gt;} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
-	 */
-	extgcd(number) {
-		const val = BigInteger._toBigInteger(number);
-		// &#x975E;&#x518D;&#x5E30;
-		const ONE  = new BigInteger(1);
-		const ZERO = new BigInteger(0);
-		/**
-		 * @type {any}
-		 */
-		let r0 = this, r1 = val, r2, q1;
-		let a0 = ONE,  a1 = ZERO, a2;
-		let b0 = ZERO, b1 = ONE,  b2;
-		while(r1.signum() !== 0) {
-			const y = r0.divideAndRemainder(r1);
-			q1 = y[0];
-			r2 = y[1];
-			a2 = a0.subtract(q1.multiply(a1));
-			b2 = b0.subtract(q1.multiply(b1));
-			a0 = a1;
-			a1 = a2;
-			b0 = b1;
-			b1 = b2;
-			r0 = r1;
-			r1 = r2;
-		}
-		return [a0, b0, r0];
-	}
-
-	/**
-	 * Absolute value. (mutable)
-	 * @returns {BigInteger} A = abs(A)
-	 * @private
-	 */
-	_abs() {
-		// -1 -&gt; 1, 0 -&gt; 0, 1 -&gt; 1
-		this._sign *= this._sign;
-		return this;
-	}
-
-	/**
-	 * Absolute value.
-	 * @returns {BigInteger} abs(A)
-	 */
-	abs() {
-		return this.clone()._abs();
-	}
-
-	/**
-	 * this *= -1
-	 * @returns {BigInteger} A = -A
-	 * @private
-	 */
-	_negate() {
-		this._sign *= -1;
-		return this;
-	}
-
-	/**
-	 * this * -1
-	 * @returns {BigInteger} -A
-	 */
-	negate() {
-		return this.clone()._negate();
-	}
-
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number} 1, -1, 0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;
-	 */
-	signum() {
-		if(this.element.length === 0) {
-			return 0;
-		}
-		return this._sign;
-	}
-
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number} 1, -1, 0&#x306E;&#x5834;&#x5408;&#x306F;0&#x3092;&#x8FD4;&#x3059;
-	 */
-	sign() {
-		return this.signum();
-	}
-
-	/**
-	 * Compare values without sign.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number 
-	 * @returns {number} abs(A) &lt; abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
-	 */
-	compareToAbs(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(this.element.length &lt; val.element.length) {
-			return -1;
-		}
-		else if(this.element.length &gt; val.element.length) {
-			return 1;
-		}
-		for(let i = this.element.length - 1;i &gt;= 0;i--) {
-			if(this.element[i] !== val.element[i]) {
-				const x = this.element[i] - val.element[i];
-				return ( (x === 0) ? 0 : ((x &gt; 0) ? 1 : -1) );
-			}
-		}
-		return 0;
-	}
-
-	/**
-	 * Compare values.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number 
-	 * @returns {number} A &gt; B ? 1 : (A === B ? 0 : -1)
-	 */
-	compareTo(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(this.signum() !== val.signum()) {
-			if(this._sign &gt; val._sign) {
-				return 1;
-			}
-			else {
-				return -1;
-			}
-		}
-		else if(this.signum() === 0) {
-			return 0;
-		}
-		return this.compareToAbs(val) * this._sign;
-	}
-
-	/**
-	 * Maximum number.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} max([A, B])
-	 */
-	max(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(this.compareTo(val) &gt;= 0) {
-			return this.clone();
-		}
-		else {
-			return val.clone();
-		}
-	}
-
-	/**
-	 * Minimum number.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} min([A, B])
-	 */
-	min(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(this.compareTo(val) &gt;= 0) {
-			return val.clone();
-		}
-		else {
-			return this.clone();
-		}
-	}
-
-	/**
-	 * Clip number within range.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} min 
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} max
-	 * @returns {BigInteger} min(max(x, min), max)
-	 */
-	clip(min, max) {
-		const min_ = BigInteger._toBigInteger(min);
-		const max_ = BigInteger._toBigInteger(max);
-		const arg_check = min_.compareTo(max_);
-		if(arg_check === 1) {
-			throw &quot;clip(min, max) error. (min &gt; max)-&gt;(&quot; + min_ + &quot; &gt; &quot; + max_ + &quot;)&quot;;
-		}
-		else if(arg_check === 0) {
-			return min_;
-		}
-		if(this.compareTo(max_) === 1) {
-			return max_;
-		}
-		else if(this.compareTo(min_) === -1) {
-			return min_;
-		}
-		return this;
-	}
-
-	/**
-	 * this &lt;&lt;= n
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} shift_length - Bit shift size.
-	 * @returns {BigInteger} A &lt;&lt;= n
-	 * @private
-	 */
-	_shift(shift_length) {
-		let n = BigInteger._toInteger(shift_length);
-		if(n === 0) {
-			return this;
-		}
-		const x = this.element;
-		// 1&#x30D3;&#x30C3;&#x30C8;&#x306A;&#x3089;&#x5C02;&#x7528;&#x30B3;&#x30FC;&#x30C9;&#x3067;&#x9AD8;&#x901F;&#x8A08;&#x7B97;
-		if(n === 1) {
-			let i = x.length - 1;
-			if((x[i] &amp; 0x8000) !==  0) {
-				x[x.length] = 1;
-			}
-			for(;i &gt;= 0;i--) {
-				x[i] &lt;&lt;= 1;
-				x[i]  &amp;= 0xFFFF;
-				if((i &gt; 0) &amp;&amp; ((x[i - 1] &amp; 0x8000) !==  0)) {
-					x[i] += 1;
-				}
-			}
-		}
-		else if(n === -1) {
-			for(let i = 0;i &lt; x.length;i++) {
-				x[i] &gt;&gt;&gt;= 1;
-				if((i &lt; x.length - 1) &amp;&amp; ((x[i + 1] &amp; 1) !==  0)) {
-					x[i] |= 0x8000;
-				}
-			}
-			if(x[x.length - 1] === 0) {
-				x.pop();
-			}
-		}
-		else {
-			// 16&#x30D3;&#x30C3;&#x30C8;&#x5358;&#x4F4D;&#x306A;&#x3089;&#x914D;&#x5217;&#x3092;&#x8FFD;&#x52A0;&#x524A;&#x9664;&#x3059;&#x308B;&#x9AD8;&#x901F;&#x8A08;&#x7B97;
-			if(n &gt;= 16) {
-				const m = n &gt;&gt;&gt; 4;
-				for(let i = x.length - 1; i &gt;= 0; i--) {
-					x[i + m] = x[i];
-				}
-				for(let i = m - 1; i &gt;= 0; i--) {
-					x[i] = 0;
-				}
-				n &amp;= 0xF;
-			}
-			else if(n &lt;= -16){
-				const m = (-n) &gt;&gt;&gt; 4;
-				x.splice(0, m);
-				n += m &lt;&lt; 4;
-			}
-			if(n !== 0) {
-				// 15&#x30D3;&#x30C3;&#x30C8;&#x4EE5;&#x5185;&#x306A;&#x3089;&#x30D3;&#x30C3;&#x30C8;&#x6F14;&#x7B97;&#x3067;&#x307E;&#x3068;&#x3081;&#x3066;&#x64CD;&#x4F5C;
-				if(0 &lt; n) {
-					let carry = 0;
-					for(let i = 0; i &lt; x.length; i++) {
-						x[i] = (x[i] &lt;&lt; n) + carry;
-						if(x[i] &gt; 0xFFFF) {
-							carry = x[i] &gt;&gt;&gt; 16;
-							x[i] &amp;= 0xFFFF;
-						}
-						else {
-							carry = 0;
-						}
-					}
-					if(carry !== 0) {
-						x[x.length] = carry;
-					}
-				}
-				else {
-					n = -n;
-					for(let i = 0; i &lt; x.length; i++) {
-						if(i !== x.length - 1) {
-							x[i] += x[i + 1] &lt;&lt; 16;
-							x[i] &gt;&gt;&gt;= n;
-							x[i] &amp;= 0xFFFF;
-						}
-						else {
-							x[i] &gt;&gt;&gt;= n;
-						}
-					}
-					if(x[x.length - 1] === 0) {
-						x.pop();
-					}
-				}
-			}
-		}
-		return this;
-	}
-
-	/**
-	 * this &lt;&lt; n
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} n
-	 * @returns {BigInteger} A &lt;&lt; n
-	 */
-	shift(n) {
-		return this.clone()._shift(n);
-	}
-
-	/**
-	 * this &lt;&lt; n
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} n
-	 * @returns {BigInteger} A &lt;&lt; n
-	 */
-	shiftLeft(n) {
-		return this.shift(n);
-	}
-
-	/**
-	 * this &gt;&gt; n
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} n
-	 * @returns {BigInteger} A &gt;&gt; n
-	 */
-	shiftRight(n) {
-		return this.shift(-n);
-	}
-
-	/**
-	 * Add. (mutable)
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} A += B
-	 * @private
-	 */
-	_add(number) {
-		const val = BigInteger._toBigInteger(number);
-		const o1 = this;
-		const o2 = val;
-		let x1 = o1.element;
-		let x2 = o2.element;
-		if(o1._sign === o2._sign) {
-			//&#x8DB3;&#x3057;&#x7B97;
-			this._memory_allocation(x2.length &lt;&lt; 4);
-			let carry = 0;
-			for(let i = 0; i &lt; x1.length; i++) {
-				x1[i] += ((x2.length &gt;= (i + 1)) ? x2[i] : 0) + carry;
-				if(x1[i] &gt; 0xFFFF) {
-					carry = 1;
-					x1[i] &amp;= 0xFFFF;
-				}
-				else {
-					carry = 0;
-				}
-			}
-			if(carry !== 0) {
-				x1[x1.length] = carry;
-			}
-		}
-		else {
-			// &#x5F15;&#x304D;&#x7B97;
-			const compare = o1.compareToAbs(o2);
-			if(compare === 0) {
-				this.element = [];
-				this._sign = 1;
-				return this;
-			}
-			else if(compare === -1) {
-				this._sign = o2._sign;
-				const swap = x1;
-				x1 = x2.slice(0);
-				x2 = swap;
-			}
-			let carry = 0;
-			for(let i = 0; i &lt; x1.length; i++) {
-				x1[i] -= ((x2.length &gt;= (i + 1)) ? x2[i] : 0) + carry;
-				if(x1[i] &lt; 0) {
-					x1[i] += 0x10000;
-					carry  = 1;
-				}
-				else {
-					carry  = 0;
-				}
-			}
-			this.element = x1;
-			this._memory_reduction();
-		}
-		return this;
-	}
-
-	/**
-	 * Add.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} A + B
-	 */
-	add(number) {
-		return this.clone()._add(number);
-	}
-
-	/**
-	 * Subtract. (mutable)
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} A -= B
-	 * @private
-	 */
-	_subtract(number) {
-		const val = BigInteger._toBigInteger(number);
-		const _sign = val._sign;
-		const out  = this._add(val._negate());
-		val._sign = _sign;
-		return out;
-	}
-
-	/**
-	 * Subtract.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} A - B
-	 */
-	subtract(number) {
-		return this.clone()._subtract(number);
-	}
-
-	/**
-	 * Subtract.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} A - B
-	 */
-	sub(number) {
-		return this.subtract(number);
-	}
-
-	/**
-	 * Multiply. (mutable)
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} A *= B
-	 * @private
-	 */
-	_multiply(number) {
-		const x = this.multiply(number);
-		this.element = x.element;
-		this._sign    = x._sign;
-		return this;
-	}
-
-	/**
-	 * Multiply.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} A * B
-	 */
-	multiply(number) {
-		const val = BigInteger._toBigInteger(number);
-		const out  = new BigInteger();
-		const buff = new BigInteger();
-		const o1 = this;
-		const o2 = val;
-		const x1 = o1.element;
-		const x2 = o2.element;
-		const y  = out.element;
-		for(let i = 0; i &lt; x1.length; i++) {
-			buff.element = [];
-			// x3 = x1[i] * x2
-			const x3 = buff.element;
-			let carry = 0;
-			for(let j = 0; j &lt; x2.length; j++) {
-				x3[j] = x1[i] * x2[j] + carry;
-				if(x3[j] &gt; 0xFFFF) {
-					carry = x3[j] &gt;&gt;&gt; 16;
-					x3[j] &amp;= 0xFFFF;
-				}
-				else {
-					carry = 0;
-				}
-			}
-			if(carry !== 0) {
-				x3[x3.length] = carry;
-			}
-			// x3 = x3 &lt;&lt; (i * 16)
-			//buff._shift(i &lt;&lt; 4);
-			for(let j = x3.length - 1; j &gt;= 0; j--) {
-				x3[j + i] = x3[j];
-			}
-			for(let j = i - 1; j &gt;= 0; j--) {
-				x3[j] = 0;
-			}
-			// y = y + x3 (out._add(buff))
-			//out._add(buff);
-			carry = 0;
-			out._memory_allocation(x3.length &lt;&lt; 4);
-			for(let j = i; j &lt; y.length; j++) {
-				y[j] += ((x3.length &gt;= (j + 1)) ? x3[j] : 0) + carry;
-				if(y[j] &gt; 0xFFFF) {
-					carry = 1;
-					y[j] &amp;= 0xFFFF;
-				}
-				else {
-					carry = 0;
-				}
-			}
-			if(carry !== 0) {
-				y[y.length] = carry;
-			}
-		}
-		out._sign = this._sign * val._sign;
-		return out;
-	}
-
-	/**
-	 * Multiply.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} A * B
-	 */
-	mul(number) {
-		return this.multiply(number);
-	}
-
-	/**
-	 * Divide and remainder. (mutable)
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {Array&lt;BigInteger&gt;} [C = floor(A / B), A - C * B]
-	 * @private
-	 */
-	_divideAndRemainder(number) {
-		const val = BigInteger._toBigInteger(number);
-		const out = [];
-		if(val.signum() === 0) {
-			throw &quot;BigInteger divideAndRemainder [&quot; + val.toString() +&quot;]&quot;;
-		}
-		const compare = this.compareToAbs(val);
-		if(compare &lt; 0) {
-			out[0] = new BigInteger(0);
-			out[1] = this.clone();
-			return out;
-		}
-		else if(compare === 0) {
-			out[0] = new BigInteger(1);
-			out[0]._sign = this._sign * val._sign;
-			out[1] = new BigInteger(0);
-			return out;
-		}
-		const ONE = new BigInteger(1);
-		const size = this.bitLength() - val.bitLength();
-		const x1 = this.clone()._abs();
-		const x2 = val.shift(size)._abs();
-		const y  = new BigInteger();
-		for(let i = 0; i &lt;= size; i++) {
-			if(x1.compareToAbs(x2) &gt;= 0) {
-				x1._subtract(x2);
-				y._add(ONE);
-			}
-			if(i === size) {
-				break;
-			}
-			x2._shift(-1);
-			y._shift(1);
-		}
-		out[0] = y;
-		out[0]._sign = this._sign * val._sign;
-		out[1] = x1;
-		out[1]._sign = this._sign;
-		return out;
-	}
-
-	/**
-	 * Divide and remainder.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {Array&lt;BigInteger&gt;} [C = floor(A / B), A - C * B]
-	 */
-	divideAndRemainder(number) {
-		return this.clone()._divideAndRemainder(number);
-	}
-
-	/**
-	 * Divide. (mutable)
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} floor(A / B)
-	 * @private
-	 */
-	_divide(number) {
-		return this._divideAndRemainder(number)[0];
-	}
-
-	/**
-	 * Divide.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} floor(A / B)
-	 */
-	divide(number) {
-		return this.clone()._divide(number);
-	}
-
-	/**
-	 * Divide.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} floor(A / B)
-	 */
-	div(number) {
-		return this.divide(number);
-	}
-
-	/**
-	 * Remainder of division. (mutable)
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} A %= B
-	 * @private
-	 */
-	_remainder(number) {
-		return this._divideAndRemainder(number)[1];
-	}
-
-	/**
-	 * Remainder of division.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} A % B
-	 */
-	remainder(number) {
-		return this.clone()._remainder(number);
-	}
-
-	/**
-	 * Remainder of division.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} A % B
-	 */
-	rem(number) {
-		return this.remainder(number);
-	}
-
-	/**
-	 * Modulo, positive remainder of division. (mutable)
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} A = A mod B
-	 * @private
-	 */
-	_mod(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(val.signum() &lt; 0) {
-			return null;
-		}
-		const y = this._divideAndRemainder(val);
-		if(y[1] instanceof BigInteger) {
-			if(y[1].signum() &gt;= 0) {
-				return y[1];
-			}
-			else {
-				return y[1]._add(val);
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Modulo, positive remainder of division.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} number
-	 * @returns {BigInteger} A mod B
-	 */
-	mod(number) {
-		return this.clone()._mod(number);
-	}
-
-	/**
 	 * this | (1 &lt;&lt; n) (mutable)
 	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} bit
 	 * @returns {BigInteger}
@@ -1698,6 +1934,7 @@ export default class BigInteger {
 		const n = BigInteger._toInteger(bit);
 		this._memory_allocation(n + 1);
 		this.element[n &gt;&gt;&gt; 4] ^= 1 &lt;&lt; (n &amp; 0xF);
+		this._memory_reduction();
 		return this;
 	}
 
@@ -1734,175 +1971,63 @@ export default class BigInteger {
 		return ((this.element[n &gt;&gt;&gt; 4] &gt;&gt;&gt; (n &amp; 0xF)) &amp; 1) !== 0;
 	}
 
+	// ----------------------
+	// &#x30C6;&#x30B9;&#x30C8;&#x7CFB;
+	// ----------------------
+	
 	/**
-	 * Power function.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} exponent
-	 * @returns {BigInteger} pow(A, B)
-	 */
-	pow(exponent) {
-		const e = new BigInteger(exponent);
-		let x = new BigInteger(this);
-		let y = new BigInteger(1);
-		while(e.element.length !== 0) {
-			if((e.element[0] &amp; 1) !== 0) {
-				y = y.multiply(x);
-			}
-			x = x.multiply(x);
-			e._shift(-1);
-		}
-		return y;
-	}
-
-	/**
-	 * Modular exponentiation.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} exponent
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} m 
-	 * @returns {BigInteger} A^B mod m
-	 */
-	modPow(exponent, m) {
-		const m_ = BigInteger._toBigInteger(m);
-		let x = new BigInteger(this);
-		let y = new BigInteger(1);
-		const e = new BigInteger(exponent);
-		while(e.element.length !== 0) {
-			if((e.element[0] &amp; 1) !== 0) {
-				y = y.multiply(x).mod(m_);
-			}
-			x = x.multiply(x).mod(m_);
-			e._shift(-1);
-		}
-		return y;
-	}
-
-	/**
-	 * Modular multiplicative inverse.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} m
-	 * @returns {BigInteger} A^(-1) mod m
-	 */
-	modInverse(m) {
-		const m_ = BigInteger._toBigInteger(m);
-		const y = this.extgcd(m);
-		const ONE  = new BigInteger(1);
-		if(y[2].compareTo(ONE) !== 0) {
-			return null;
-		}
-		// &#x6B63;&#x306B;&#x3059;&#x308B;&#x305F;&#x3081; remainder &#x3067;&#x306F;&#x306A;&#x304F; mod &#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
-		return y[0]._add(m_)._mod(m_);
-	}
-
-	/**
-	 * Return true if the value is prime number by Miller-Labin prime number determination method.
-	 * Attention : it takes a very long time to process.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} [certainty=100] - Repeat count (prime precision).
+	 * this === 0
 	 * @returns {boolean}
 	 */
-	isProbablePrime(certainty) {
-		const e = this.element;
-		//0, 1, 2 -&gt; true
-		if( (e.length === 0) || ((e.length === 1)&amp;&amp;(e[0] &lt;= 2)) ) {
-			return true;
-		}
-		//even number -&gt; false
-		else if((e[0] &amp; 1) === 0) {
-			return false;
-		}
-		// &#x30DF;&#x30E9;&#x30FC;&#x30E9;&#x30D3;&#x30F3;&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;
-		// &#x304B;&#x306A;&#x308A;&#x51E6;&#x7406;&#x304C;&#x91CD;&#x305F;&#x3044;&#x3067;&#x3059;&#x3002;&#x307E;&#x3042;&#x304A;&#x904A;&#x3073;&#x7A0B;&#x5EA6;&#x306B;&#x4F7F;&#x7528;&#x3068;&#x3044;&#x3046;&#x611F;&#x3058;&#x3067;&#x3002;
-		const loop	= certainty !== undefined ? BigInteger._toInteger(certainty) : 100;
-		const ZERO	= new BigInteger(0);
-		const ONE	= new BigInteger(1);
-		const n		= this;
-		const LEN	= n.bitLength();
-		const n_1	= n.subtract(ONE);
-		const s 	= n_1.getLowestSetBit();
-		const d 	= n_1.shift(-s);
-
-		if(loop &lt;= 0) {
-			return false;
-		}
-
-		for(let i = 0; i &lt; loop; i++ ) {
-			//[ 1, n - 1] &#x306E;&#x7BC4;&#x56F2;&#x304B;&#x3089; a &#x3092;&#x9078;&#x629E;
-			let a;
-			do {
-				a = BigInteger.createRandomBigInteger(LEN);
-			} while(( a.compareTo(ZERO) === 0 )||( a.compareTo(n) !== -1 ));
-
-			let t = d;
-			// a^t != 1 mod n
-			let y = a.modPow(t, n);
-			
-			while(true) {
-				if((t.equals(n_1)) || (y.equals(ONE)) || (y.equals(n_1))) {
-					break;
-				}
-				y = y.mul(y)._mod(n);
-				t = t.shiftLeft(1);
-			}
-
-			if((!y.equals(n_1)) &amp;&amp; ((t.element[0] &amp; 1) === 0)) {
-				return false;
-			}
-		}
-		return true;
+	isZero() {
+		this._memory_reduction();
+		return this._sign === 0;
+	}
+	
+	/**
+	 * this === 1
+	 * @returns {boolean}
+	 */
+	isOne() {
+		return this._sign === 1 &amp;&amp; this.element.length === 1 &amp;&amp; this.element[0] === 1;
+	}
+	
+	/**
+	 * this &gt; 0
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		this._memory_reduction();
+		return this._sign &gt; 0;
 	}
 
 	/**
-	 * Next prime.
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} [certainty=100] - Repeat count (prime precision).
-	 * @param {BigInteger|number|string|Array&lt;string|number&gt;|Object} [search_max=100000] - Search range of next prime.
-	 * @returns {BigInteger}
+	 * this &lt; 0
+	 * @returns {boolean}
 	 */
-	nextProbablePrime(certainty, search_max) {
-		const loop	= certainty !== undefined ? (BigInteger._toInteger(certainty) &gt;&gt; 1) : 100 / 2;
-		const search_max_ = search_max !== undefined ? BigInteger._toInteger(search_max) : 100000;
-		const x = this.clone();
-		for(let i = 0; i &lt; search_max_; i++) {
-			x._add(BigInteger.ONE);
-			if(x.isProbablePrime(loop)) {
-				return x;
-			}
-		}
-		throw &quot;nextProbablePrime [&quot; + search_max_ +&quot;]&quot;;
+	isNegative() {
+		return this._sign &lt; 0;
 	}
 
 	/**
-	 * Factorial function, x!.
-	 * @returns {BigInteger} n!
+	 * this &gt;= 0
+	 * @returns {boolean}
 	 */
-	factorial() {
-		const loop_max = BigInteger._toInteger(this);
-		let x = BigInteger.ONE;
-		for(let i = 2; i &lt;= loop_max; i++) {
-			x = x.multiply(i);
-		}
-		return x;
+	isNotNegative() {
+		return this._sign &gt;= 0;
 	}
-
-	/**
-	 * Set default class of random.
-	 * This is used if you do not specify a random number.
-	 * @param {Random} random
-	 */
-	static setDefaultRandom(random) {
-		DEFAULT_RANDOM = random;
-	}
-
-	/**
-	 * Return default Random class.
-	 * Used when Random not specified explicitly.
-	 * @returns {Random}
-	 */
-	static getDefaultRandom() {
-		return DEFAULT_RANDOM;
-	}
-
-
-
 
 	// ----------------------
 	// &#x5B9A;&#x6570;
 	// ----------------------
+	
+	/**
+	 * -1
+	 * @returns {BigInteger} -1
+	 */
+	static get MINUS_ONE() {
+		return DEFINE.MINUS_ONE;
+	}
 	
 	/**
 	 * 0
@@ -1945,6 +2070,16 @@ export default class BigInteger {
 const DEFINE = {
 
 	/**
+	 * -1
+	 */
+	MINUS_ONE : new BigInteger(-1),
+
+	/**
+	 * 0
+	 */
+	ZERO : new BigInteger(0),
+	
+	/**
 	 * 1
 	 */
 	ONE : new BigInteger(1),
@@ -1957,12 +2092,8 @@ const DEFINE = {
 	/**
 	 * 10
 	 */
-	TEN : new BigInteger(10),
+	TEN : new BigInteger(10)
 
-	/**
-	 * 0
-	 */
-	ZERO : new BigInteger(0)
 };
 </code></pre>
 

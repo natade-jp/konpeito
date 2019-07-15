@@ -1,8 +1,9 @@
 /**
  * Class collection of numerical calculation processing.
- * These classes are classified into a _BigInteger_ and _BigDecimal_ and _Matrix_.
- * - _BigInteger_ is the calculation class for arbitrary-precision integer arithmetic.
+ * These classes are classified into a _BigInteger_, _BigDecimal_, _Fraction_, _Matrix_.
+ * - _BigInteger_ is a calculation class for arbitrary-precision integer arithmetic.
  * - _BigDecimal_ is a calculation class for arbitrary-precision floating point arithmetic.
+ * - _Fraction_ is a calculation class for fractions with infinite precision.
  * - _Matrix_ is a general-purpose calculation class with signal processing and statistical processing.
  */
 declare class konpeito {
@@ -267,9 +268,9 @@ declare class _BigDecimal_ {
      * Factorial function, x!.
      * - Supports only integers.
      * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
-     * @returns {_BigInteger_} n!
+     * @returns {_BigDecimal_} n!
      */
-    factorial(context?: _MathContext_): _BigInteger_;
+    factorial(context?: _MathContext_): _BigDecimal_;
     /**
      * Multiply a multiple of ten.
      * - Supports only integers.

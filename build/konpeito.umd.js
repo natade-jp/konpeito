@@ -944,7 +944,7 @@
 	 */
 	var IntegerTool = function IntegerTool () {};
 
-	IntegerTool.string_to_binary_number = function string_to_binary_number (text, radix) {
+	IntegerTool.toHexadecimalArrayFromPlainString = function toHexadecimalArrayFromPlainString (text, radix) {
 		// 下の変換をすることで、2進数での変換時に内部のforの繰り返す回数が減る
 		// v0.03 出来る限りまとめてn進数変換する
 		var max_num = 0x3FFFFFFF;
@@ -994,7 +994,7 @@
 		 * @param {string} ntext 
 		 * @returns {string}
 		 */
-	IntegerTool.string_to_string = function string_to_string (ntext) {
+	IntegerTool.toPlainStringFromString = function toPlainStringFromString (ntext) {
 		var scale = 0;
 		var buff;
 		// 正規化
@@ -1043,24 +1043,44 @@
 
 	/**
 		 * Return a hexadecimal array from the number.
-		 * @param {number} x - Target number.
-		 * @returns {Array<number>} Hex array.
+		 * @param {number} num - Target number.
+		 * @returns {{element : Array<number>, _sign : number}} Data for BigInteger.
 		 */
-	IntegerTool.number_to_binary_number = function number_to_binary_number (x) {
-		if(x > 0xFFFFFFFF) {
-			return IntegerTool.string_to_binary_number(IntegerTool.string_to_string(x.toFixed()), 10);
+	IntegerTool.toBigIntegerFromNumber = function toBigIntegerFromNumber (num) {
+		var x;
+		var sign;
+		if(num === 0) {
+			sign = 0;
+			x = 0;
 		}
-		var num = x;
+		else if(num > 0) {
+			sign = 1;
+			x = num;
+		}
+		else {
+			sign = -1;
+			x = -num;
+		}
+		if(x > 0xFFFFFFFF) {
+			return {
+				element : IntegerTool.toHexadecimalArrayFromPlainString(IntegerTool.toPlainStringFromString(x.toFixed()), 10),
+				_sign : sign
+			};
+		}
 		var y = [];
-		while(num !==  0) {
-			y[y.length] = num & 1;
-			num >>>= 1;
+		while(x !==  0) {
+			y[y.length] = x & 1;
+			x >>>= 1;
 		}
 		var z = [];
 		for(var i = 0; i < y.length; i++) {
 			z[i >>> 4] |= y[i] << (i & 0xF);
 		}
-		return z;
+			
+		return {
+			element : z,
+			_sign : sign
+		};
 	};
 
 	/**
@@ -1069,7 +1089,7 @@
 		 * @param {number} radix - Base number.
 		 * @returns {Array<number>} Numeric array for each digit in the specified base number.
 		 */
-	IntegerTool.binary_number_to_string = function binary_number_to_string (binary, radix) {
+	IntegerTool.toPlainStringFromHexadecimalArray = function toPlainStringFromHexadecimalArray (binary, radix) {
 		var add = function(x1, x2, y) {
 			var size = x1.length;
 			var carry = 0;
@@ -1104,7 +1124,7 @@
 		 * Return data to represent multi-precision numbers from strings.
 		 * @param {string} text - String containing a number.
 		 * @param {number} [radix=10] - Base number.
-		 * @returns {Object} Data for BigInteger.
+		 * @returns {{element : Array<number>, _sign : number}} Data for BigInteger.
 		 */
 	IntegerTool.toBigIntegerFromString = function toBigIntegerFromString (text, radix) {
 		var x = text.replace(/\s/g, "").toLowerCase();
@@ -1122,20 +1142,20 @@
 		}
 
 		if(radix) {
-			element = IntegerTool.string_to_binary_number(x, radix);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x, radix);
 		}
 		else if(/^0x/.test(x)) {
-			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 16);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 16);
 		}
 		else if(/^0b/.test(x)) {
-			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 2);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 2);
 		}
 		else if(/^0o/.test(x)) {
-			element = IntegerTool.string_to_binary_number(x.substring(2, x.length), 8);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 8);
 		}
 		else {
-			x = IntegerTool.string_to_string(x);
-			element = IntegerTool.string_to_binary_number(x, 10);
+			x = IntegerTool.toPlainStringFromString(x);
+			element = IntegerTool.toHexadecimalArrayFromPlainString(x, 10);
 		}
 		// "0"の場合がある為
 		if((element.length === 1)&&(element[0] === 0)) {
@@ -1187,12 +1207,9 @@
 				this._sign = number._sign;
 			}
 			else if(typeof number === "number") {
-				var x = number;
-				if(x < 0) {
-					this._sign = -1;
-					x = -x;
-				}
-				this.element = IntegerTool.number_to_binary_number(x);
+				var x = IntegerTool.toBigIntegerFromNumber(number);
+				this.element = x.element;
+				this._sign = x._sign;
 			}
 			else if(typeof number === "string") {
 				var x$1 = IntegerTool.toBigIntegerFromString(number);
@@ -1214,10 +1231,15 @@
 				this.element = x$3.element;
 				this._sign = x$3._sign;
 			}
-			else if(number instanceof Object) {
-				var x$4 = IntegerTool.toBigIntegerFromString(number.toString());
+			else if((number instanceof Object) && (number.intValue)) {
+				var x$4 = IntegerTool.toBigIntegerFromNumber(number.intValue);
 				this.element = x$4.element;
 				this._sign = x$4._sign;
+			}
+			else if(number instanceof Object) {
+				var x$5 = IntegerTool.toBigIntegerFromString(number.toString());
+				this.element = x$5.element;
+				this._sign = x$5._sign;
 			}
 			else {
 				throw "BigInteger Unsupported argument " + number;
@@ -1369,7 +1391,7 @@
 		}
 		var zeros_string = zeros_array.join("");
 		// v0.03ここまで
-		var x = IntegerTool.binary_number_to_string(this.element, calcradix);
+		var x = IntegerTool.toPlainStringFromHexadecimalArray(this.element, calcradix);
 		var y = [];
 		var z = "";
 		if(this.signum() < 0) {
@@ -3143,10 +3165,15 @@
 				context = number.context;
 			}
 		}
-		else if(number instanceof Object) {
-			var data$4 = DecimalTool.ToBigDecimalFromString(number.toString());
+		else if((number instanceof Object) && (number.doubleValue)) {
+			var data$4 = DecimalTool.ToBigDecimalFromNumber(number.doubleValue);
 			this.integer= data$4.integer;
 			this._scale	= data$4.scale;
+		}
+		else if(number instanceof Object) {
+			var data$5 = DecimalTool.ToBigDecimalFromString(number.toString());
+			this.integer= data$5.integer;
+			this._scale	= data$5.scale;
 		}
 		else {
 			throw "BigDecimal Unsupported argument " + arguments;
@@ -3795,7 +3822,7 @@
 		 * Factorial function, x!.
 		 * - Supports only integers.
 		 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-		 * @returns {BigInteger} n!
+		 * @returns {BigDecimal} n!
 		 */
 	BigDecimal.prototype.factorial = function factorial (context) {
 		var mc = context ? context : this.default_context;
@@ -4673,6 +4700,11 @@
 				var x$2 = value.scaleByPowerOfTen(-number.scale());
 				this.numerator = x$2.numerator;
 				this.denominator = x$2.denominator;
+			}
+			else if((number instanceof Object) && (number.doubleValue)) {
+				var x$3 = FractionTool.to_fraction_data_from_number(number.doubleValue);
+				this.numerator = x$3.numerator;
+				this.denominator = x$3.denominator;
 			}
 			else if(number instanceof Object) {
 				var x1 = FractionTool.to_fraction_data_from_fraction_string(number.toString());
@@ -10007,27 +10039,27 @@
 		var matrix_array = null;
 		var is_check_string = false;
 		if(arguments.length === 1) {
-			var y = number;
+			var obj = number;
 			// 行列型なら中身をディープコピーする
-			if(y instanceof Matrix) {
-				matrix_array = new Array(y.row_length);
-				for(var i = 0; i < y.row_length; i++) {
-					matrix_array[i] = new Array(y.column_length);
-					for(var j = 0; j < y.column_length; j++) {
-						matrix_array[i][j] = y.matrix_array[i][j];
+			if(obj instanceof Matrix) {
+				matrix_array = new Array(obj.row_length);
+				for(var i = 0; i < obj.row_length; i++) {
+					matrix_array[i] = new Array(obj.column_length);
+					for(var j = 0; j < obj.column_length; j++) {
+						matrix_array[i][j] = obj.matrix_array[i][j];
 					}
 				}
 			}
 			// 複素数型なら1要素の行列
-			else if(y instanceof Complex) {
-				matrix_array = [[y]];
+			else if(obj instanceof Complex) {
+				matrix_array = [[obj]];
 			}
 			// 行列の場合は中身を解析していく
-			else if(y instanceof Array) {
+			else if(obj instanceof Array) {
 				matrix_array = [];
-				for(var row_count = 0; row_count < y.length; row_count++) {
+				for(var row_count = 0; row_count < obj.length; row_count++) {
 					// 毎行ごと調査
-					var row = y[row_count];
+					var row = obj[row_count];
 					// 各行の要素が配列の場合は、配列内配列のため再度for文で調べていく
 					if(row instanceof Array) {
 						var rows_array = new Array(row.length);
@@ -10056,7 +10088,7 @@
 					else {
 						// 行ベクトルの初期化
 						if(row_count === 0) {
-							matrix_array[0] = new Array(y.length);
+							matrix_array[0] = new Array(obj.length);
 						}
 						// 1要素が複素数ならそのまま代入
 						if(row instanceof Complex) {
@@ -10077,18 +10109,22 @@
 				}
 			}
 			// 文字列の場合は、文字列解析を行う
-			else if(typeof y === "string") {
+			else if(typeof obj === "string") {
 				is_check_string = true;
-				matrix_array = MatrixTool.toMatrixArrayFromString(y);
+				matrix_array = MatrixTool.toMatrixArrayFromString(obj);
+			}
+			// 数値化できる場合
+			else if((obj instanceof Object) && (obj.doubleValue)) {
+				matrix_array = [[new Complex(obj.doubleValue)]];
 			}
 			// 文字列変換できる場合は返還後に、文字列解析を行う
-			else if(y instanceof Object) {
+			else if(obj instanceof Object) {
 				is_check_string = true;
-				matrix_array = MatrixTool.toMatrixArrayFromString(y.toString());
+				matrix_array = MatrixTool.toMatrixArrayFromString(obj.toString());
 			}
 			// 単純なビルトインの数値など
 			else {
-				matrix_array = [[new Complex(y)]];
+				matrix_array = [[new Complex(obj)]];
 			}
 		}
 		else {
@@ -13334,6 +13370,10 @@
 				this._re = obj._re;
 				this._im = obj._im;
 			}
+			else if((number instanceof Object) && (number.doubleValue)) {
+				this._re = number.doubleValue;
+				this._im = 0.0;
+			}
 			else if(obj instanceof Object) {
 				var x$1 = ComplexTool.ToComplexFromString(obj.toString());
 				this._re = x$1.real;
@@ -14463,9 +14503,10 @@
 
 	/**
 	 * Class collection of numerical calculation processing.
-	 * These classes are classified into a BigInteger and BigDecimal and Matrix.
-	 * - BigInteger is the calculation class for arbitrary-precision integer arithmetic.
+	 * These classes are classified into a BigInteger, BigDecimal, Fraction, Matrix.
+	 * - BigInteger is a calculation class for arbitrary-precision integer arithmetic.
 	 * - BigDecimal is a calculation class for arbitrary-precision floating point arithmetic.
+	 * - Fraction is a calculation class for fractions with infinite precision.
 	 * - Matrix is a general-purpose calculation class with signal processing and statistical processing.
 	 */
 	var konpeito = function konpeito () {};

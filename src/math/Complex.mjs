@@ -128,6 +128,10 @@ export default class Complex {
 				this._re = obj._re;
 				this._im = obj._im;
 			}
+			else if((number instanceof Object) && (number.doubleValue)) {
+				this._re = number.doubleValue;
+				this._im = 0.0;
+			}
 			else if(obj instanceof Object) {
 				const x = ComplexTool.ToComplexFromString(obj.toString());
 				this._re = x.real;
