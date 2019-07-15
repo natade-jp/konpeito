@@ -1227,6 +1227,13 @@ class BigInteger {
 				this.element = x.element;
 				this._sign = x._sign;
 			}
+			else if((number instanceof Object) && (number.numerator) && (number.denominator) && (number.fix)) {
+				// Fraction 型の場合を想定する
+				// ※初期化時のため「 instanceof Fraction 」は巡回するため使用できない。
+				const x = number.fix().numerator;
+				this.element = x.element;
+				this._sign = x._sign;
+			}
 			else if(number instanceof Object) {
 				const x = IntegerTool.ToBigIntegerFromString(number.toString());
 				this.element = x.element;
@@ -8283,7 +8290,7 @@ class Statistics {
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {number} nth_order
 	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix} n次のモーメント、2で分散の定義と同等。
+	 * @returns {Matrix}
 	 */
 	static moment(x, nth_order, type) {
 		const X = Matrix._toMatrix(x);
@@ -11713,7 +11720,7 @@ class Matrix {
 	/**
 	 * The positive or negative signs of each element of the matrix.
 	 * - +1 if positive, -1 if negative, 0 if 0, norm if complex number.
-	 * @returns {Matrix} [-1,1] 複素数の場合はノルムを1にした値。
+	 * @returns {Matrix}
 	 */
 	sign() {
 		return this.cloneMatrixDoEachCalculation(function(num) {

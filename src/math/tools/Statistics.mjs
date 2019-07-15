@@ -1761,7 +1761,7 @@ export default class Statistics {
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 	 * @param {number} nth_order
 	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix} n次のモーメント、2で分散の定義と同等。
+	 * @returns {Matrix}
 	 */
 	static moment(x, nth_order, type) {
 		const X = Matrix._toMatrix(x);

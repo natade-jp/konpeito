@@ -1974,7 +1974,7 @@ export default class Matrix {
 	/**
 	 * The positive or negative signs of each element of the matrix.
 	 * - +1 if positive, -1 if negative, 0 if 0, norm if complex number.
-	 * @returns {Matrix} [-1,1] 複素数の場合はノルムを1にした値。
+	 * @returns {Matrix}
 	 */
 	sign() {
 		return this.cloneMatrixDoEachCalculation(function(num) {

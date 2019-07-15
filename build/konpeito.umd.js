@@ -1217,10 +1217,17 @@
 				this.element = x$3.element;
 				this._sign = x$3._sign;
 			}
-			else if(number instanceof Object) {
-				var x$4 = IntegerTool.ToBigIntegerFromString(number.toString());
+			else if((number instanceof Object) && (number.numerator) && (number.denominator) && (number.fix)) {
+				// Fraction 型の場合を想定する
+				// ※初期化時のため「 instanceof Fraction 」は巡回するため使用できない。
+				var x$4 = number.fix().numerator;
 				this.element = x$4.element;
 				this._sign = x$4._sign;
+			}
+			else if(number instanceof Object) {
+				var x$5 = IntegerTool.ToBigIntegerFromString(number.toString());
+				this.element = x$5.element;
+				this._sign = x$5._sign;
 			}
 			else {
 				throw "BigInteger Unsupported argument " + number;
@@ -8201,7 +8208,7 @@
 		 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
 		 * @param {number} nth_order
 		 * @param {StatisticsSettings} [type]
-		 * @returns {Matrix} n次のモーメント、2で分散の定義と同等。
+		 * @returns {Matrix}
 		 */
 	Statistics.moment = function moment (x, nth_order, type) {
 		var X = Matrix._toMatrix(x);
@@ -11572,7 +11579,7 @@
 	/**
 		 * The positive or negative signs of each element of the matrix.
 		 * - +1 if positive, -1 if negative, 0 if 0, norm if complex number.
-		 * @returns {Matrix} [-1,1] 複素数の場合はノルムを1にした値。
+		 * @returns {Matrix}
 		 */
 	Matrix.prototype.sign = function sign () {
 		return this.cloneMatrixDoEachCalculation(function(num) {

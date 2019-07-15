@@ -1,64 +1,64 @@
 /**
  * Class collection of numerical calculation processing.
- * These classes are classified into a BigInteger and BigDecimal and Matrix.
- * - BigInteger is the calculation class for arbitrary-precision integer arithmetic.
- * - BigDecimal is a calculation class for arbitrary-precision floating point arithmetic.
- * - Matrix is a general-purpose calculation class with signal processing and statistical processing.
+ * These classes are classified into a _BigInteger_ and _BigDecimal_ and _Matrix_.
+ * - _BigInteger_ is the calculation class for arbitrary-precision integer arithmetic.
+ * - _BigDecimal_ is a calculation class for arbitrary-precision floating point arithmetic.
+ * - _Matrix_ is a general-purpose calculation class with signal processing and statistical processing.
  */
 declare class konpeito {
     /**
-     * Return typedef BigInteger for arbitrary-precision integer calculation.
-     * @returns {typeof BigInteger}
+     * Return typedef _BigInteger_ for arbitrary-precision integer calculation.
+     * @returns {typeof _BigInteger_}
      */
-    static BigInteger: typeof BigInteger;
+    static BigInteger: typeof _BigInteger_;
     /**
-     * Return typedef BigDecimal for arbitrary-precision floating-point number.
-     * @returns {typeof BigDecimal}
+     * Return typedef _BigDecimal_ for arbitrary-precision floating-point number.
+     * @returns {typeof _BigDecimal_}
      */
-    static BigDecimal: typeof BigDecimal;
+    static BigDecimal: typeof _BigDecimal_;
     /**
-     * Return Rounding class for BigDecimal.
-     * @returns {typeof RoundingMode}
+     * Return Rounding class for _BigDecimal_.
+     * @returns {typeof _RoundingMode_}
      */
-    static RoundingMode: typeof RoundingMode;
+    static RoundingMode: typeof _RoundingMode_;
     /**
-     * Return Configuration class for BigDecimal.
-     * @returns {typeof MathContext}
+     * Return Configuration class for _BigDecimal_.
+     * @returns {typeof _MathContext_}
      */
-    static MathContext: typeof MathContext;
+    static MathContext: typeof _MathContext_;
     /**
-     * Return typedef Fraction for infinite precision arithmetic.
-     * @returns {typeof Fraction}
+     * Return typedef _Fraction_ for infinite precision arithmetic.
+     * @returns {typeof _Fraction_}
      */
-    static Fraction: typeof Fraction;
+    static Fraction: typeof _Fraction_;
     /**
-     * Return typedef Complex for complex number calculation.
-     * @returns {typeof Complex}
+     * Return typedef _Complex_ for complex number calculation.
+     * @returns {typeof _Complex_}
      */
-    static Complex: typeof Complex;
+    static Complex: typeof _Complex_;
     /**
-     * Return typedef Matrix for complex matrix calculation.
-     * @returns {typeof Matrix}
+     * Return typedef _Matrix_ for complex matrix calculation.
+     * @returns {typeof _Matrix_}
      */
-    static Matrix: typeof Matrix;
+    static Matrix: typeof _Matrix_;
     /**
-     * Return typedef Random.
-     * @returns {typeof Random}
+     * Return typedef _Random_.
+     * @returns {typeof _Random_}
      */
-    static Random: typeof Random;
+    static Random: typeof _Random_;
 }
 
 /**
  * Setting of calculation result of division.
  * @typedef {Object} BigDecimalDivideType
  * @property {number} [scale] Scale of rounding.
- * @property {RoundingModeEntity} [roundingMode] Rounding mode.
- * @property {MathContext} [context] Configuration.(scale and roundingMode are unnecessary.)
+ * @property {_RoundingModeEntity_} [roundingMode] Rounding mode.
+ * @property {_MathContext_} [context] Configuration.(scale and roundingMode are unnecessary.)
  */
 declare type BigDecimalDivideType = {
     scale?: number;
-    roundingMode?: RoundingModeEntity;
-    context?: MathContext;
+    roundingMode?: _RoundingModeEntity_;
+    context?: _MathContext_;
 };
 
 /**
@@ -73,10 +73,10 @@ declare type BigDecimalDivideType = {
  * - The "scale" is an integer scale factor.
  * - The "default_context" is the used when no environment settings are specified during calculation.
  * - The "context" is used to normalize the created floating point.
- * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
+ * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number - Real data.
  */
-declare class BigDecimal {
-    constructor(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any);
+declare class _BigDecimal_ {
+    constructor(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any);
     /**
      * Create an arbitrary-precision floating-point number.
      * - When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
@@ -88,17 +88,17 @@ declare class BigDecimal {
      * - The "context" is used to normalize the created floating point.
      *
      * These 3 settings can be omitted.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
-     * @returns {BigDecimal}
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number - Real data.
+     * @returns {_BigDecimal_}
      */
-    static create(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
+    static create(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): _BigDecimal_;
     /**
-     * Convert number to BigDecimal type.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} x
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [scale]
-     * @returns {BigDecimal}
+     * Convert number to _BigDecimal_ type.
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} x
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} [scale]
+     * @returns {_BigDecimal_}
      */
-    static valueOf(x: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, scale?: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
+    static valueOf(x: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, scale?: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): _BigDecimal_;
     /**
      * Return string of this number without sign.
      * If cache is already created, return cache.
@@ -107,11 +107,11 @@ declare class BigDecimal {
     _getUnsignedIntegerString(): string;
     /**
      * Deep copy.
-     * @returns {BigDecimal}
+     * @returns {_BigDecimal_}
      */
-    clone(): BigDecimal;
+    clone(): _BigDecimal_;
     /**
-     * The scale of this BigDecimal.
+     * The scale of this _BigDecimal_.
      * @returns {number}
      */
     scale(): number;
@@ -134,144 +134,144 @@ declare class BigDecimal {
     precision(): number;
     /**
      * An integer with the exponent part removed.
-     * @returns {BigInteger}
+     * @returns {_BigInteger_}
      */
-    unscaledValue(): BigInteger;
+    unscaledValue(): _BigInteger_;
     /**
      * The smallest value that can be represented with the set precision.
-     * @returns {BigDecimal}
+     * @returns {_BigDecimal_}
      */
-    ulp(): BigDecimal;
+    ulp(): _BigDecimal_;
     /**
      * Absolute value.
-     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-     * @returns {BigDecimal} abs(A)
+     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} abs(A)
      */
-    abs(mc?: MathContext): BigDecimal;
+    abs(mc?: _MathContext_): _BigDecimal_;
     /**
      * this * 1
-     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
-     * @returns {BigDecimal} +A
+     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object..
+     * @returns {_BigDecimal_} +A
      */
-    plus(mc?: MathContext): BigDecimal;
+    plus(mc?: _MathContext_): _BigDecimal_;
     /**
      * this * -1
-     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
-     * @returns {BigDecimal} -A
+     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object..
+     * @returns {_BigDecimal_} -A
      */
-    negate(mc?: MathContext): BigDecimal;
+    negate(mc?: _MathContext_): _BigDecimal_;
     /**
      * Multiply a multiple of ten.
      * Only the scale is changed without changing the precision.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n
-     * @returns {BigDecimal} A * 10^floor(n)
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} n
+     * @returns {_BigDecimal_} A * 10^floor(n)
      */
-    scaleByPowerOfTen(n: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
+    scaleByPowerOfTen(n: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): _BigDecimal_;
     /**
      * Move the decimal point to the left.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n
-     * @returns {BigDecimal}
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} n
+     * @returns {_BigDecimal_}
      */
-    movePointLeft(n: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
+    movePointLeft(n: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): _BigDecimal_;
     /**
      * Move the decimal point to the right.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n
-     * @returns {BigDecimal}
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} n
+     * @returns {_BigDecimal_}
      */
-    movePointRight(n: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
+    movePointRight(n: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): _BigDecimal_;
     /**
      * Remove the 0 to the right of the numbers and normalize the scale.
-     * @returns {BigDecimal}
+     * @returns {_BigDecimal_}
      */
-    stripTrailingZeros(): BigDecimal;
+    stripTrailingZeros(): _BigDecimal_;
     /**
      * Add.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-     * @returns {BigDecimal} A + B
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A + B
      */
-    add(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
+    add(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
     /**
      * Subtract.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-     * @returns {BigDecimal} A - B
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A - B
      */
-    subtract(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
+    subtract(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
     /**
      * Subtract.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-     * @returns {BigDecimal} A - B
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A - B
      */
-    sub(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
+    sub(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
     /**
      * Multiply.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-     * @returns {BigDecimal} A * B
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A * B
      */
-    multiply(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
+    multiply(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
     /**
      * Multiply.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-     * @returns {BigDecimal} A * B
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A * B
      */
-    mul(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
+    mul(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
     /**
      * Divide not calculated to the decimal point.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-     * @returns {BigDecimal} (int)(A / B)
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} (int)(A / B)
      */
-    divideToIntegralValue(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
+    divideToIntegralValue(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
     /**
      * Divide and remainder.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-     * @returns {Array<BigDecimal>} [C = (int)(A / B), A - C * B]
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {Array<_BigDecimal_>} [C = (int)(A / B), A - C * B]
      */
-    divideAndRemainder(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal[];
+    divideAndRemainder(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_[];
     /**
      * Remainder of division.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-     * @returns {BigDecimal} A % B
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A % B
      */
-    rem(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
+    rem(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
     /**
      * Modulo, positive remainder of division.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-     * @returns {BigDecimal} A mod B
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A mod B
      */
-    mod(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
+    mod(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
     /**
      * Divide.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
-     * @returns {BigDecimal}
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {BigDecimalDivideType} [type] - Scale, _MathContext_, _RoundingMode_ used for the calculation.
+     * @returns {_BigDecimal_}
      */
-    divide(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, type?: BigDecimalDivideType): BigDecimal;
+    divide(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, type?: BigDecimalDivideType): _BigDecimal_;
     /**
      * Divide.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
-     * @returns {BigDecimal} A / B
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {BigDecimalDivideType} [type] - Scale, _MathContext_, _RoundingMode_ used for the calculation.
+     * @returns {_BigDecimal_} A / B
      */
-    div(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, type?: BigDecimalDivideType): BigDecimal;
+    div(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, type?: BigDecimalDivideType): _BigDecimal_;
     /**
-     * Get as a BigInteger.
-     * @returns {BigInteger}
+     * Get as a _BigInteger_.
+     * @returns {_BigInteger_}
      */
-    toBigInteger(): BigInteger;
+    toBigInteger(): _BigInteger_;
     /**
-     * Get as a BigInteger.
+     * Get as a _BigInteger_.
      * An error occurs if conversion fails.
-     * @returns {BigInteger}
+     * @returns {_BigInteger_}
      */
-    toBigIntegerExact(): BigInteger;
+    toBigIntegerExact(): _BigInteger_;
     /**
      * 32-bit integer value.
      * @returns {number}
@@ -297,59 +297,59 @@ declare class BigDecimal {
      * Power function.
      * - Supports only integers.
      * - An exception occurs when doing a huge multiplication.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-     * @returns {BigDecimal} pow(A, B)
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} pow(A, B)
      */
-    pow(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, context?: MathContext): BigDecimal;
+    pow(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
     /**
-     * Set default the MathContext.
-     * This is used if you do not specify MathContext when creating a new object.
-     * @param {MathContext} [context=MathContext.DECIMAL128]
+     * Set default the _MathContext_.
+     * This is used if you do not specify _MathContext_ when creating a new object.
+     * @param {_MathContext_} [context=_MathContext_.DECIMAL128]
      */
-    static setDefaultContext(context?: MathContext): void;
+    static setDefaultContext(context?: _MathContext_): void;
     /**
-     * Return default MathContext class.
-     * Used when MathContext not specified explicitly.
-     * @returns {MathContext}
+     * Return default _MathContext_ class.
+     * Used when _MathContext_ not specified explicitly.
+     * @returns {_MathContext_}
      */
-    static getDefaultContext(): MathContext;
+    static getDefaultContext(): _MathContext_;
     /**
      * Equals.
      * - Attention : Test for equality, including the precision and the scale.
      * - Use the "compareTo" if you only want to find out whether they are also mathematically equal.
      * - If you specify a "tolerance", it is calculated by ignoring the test of the precision and the scale.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean} A === B
      */
-    equals(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, tolerance?: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): boolean;
+    equals(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, tolerance?: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): boolean;
     /**
      * Compare values.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} [tolerance=0] - Calculation tolerance of calculation.
      * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
      */
-    compareTo(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, tolerance?: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): number;
+    compareTo(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, tolerance?: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): number;
     /**
      * Maximum number.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @returns {BigDecimal} max([A, B])
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @returns {_BigDecimal_} max([A, B])
      */
-    max(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
+    max(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): _BigDecimal_;
     /**
      * Minimum number.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-     * @returns {BigDecimal} min([A, B])
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @returns {_BigDecimal_} min([A, B])
      */
-    min(number: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
+    min(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): _BigDecimal_;
     /**
      * Clip number within range.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
-     * @returns {BigDecimal} min(max(x, min), max)
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} min
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} max
+     * @returns {_BigDecimal_} min(max(x, min), max)
      */
-    clip(min: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, max: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): BigDecimal;
+    clip(min: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, max: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): _BigDecimal_;
     /**
      * Convert to string.
      * @returns {string}
@@ -357,10 +357,10 @@ declare class BigDecimal {
     toString(): string;
     /**
      * Convert to string using scientific notation.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - Number of digits in exponent part.
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} e_len - Number of digits in exponent part.
      * @returns {string}
      */
-    toScientificNotation(e_len: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any): string;
+    toScientificNotation(e_len: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): string;
     /**
      * Convert to string usding technical notation.
      * @returns {string}
@@ -373,48 +373,48 @@ declare class BigDecimal {
     toPlainString(): string;
     /**
      * Change the scale.
-     * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - New scale.
-     * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
-     * @param {MathContext} [mc] - Rounding setting after calculation. For rounding purposes, use the round method.
-     * @returns {BigDecimal}
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} new_scale - New scale.
+     * @param {_RoundingModeEntity_} [rounding_mode=_RoundingMode_.UNNECESSARY] - Rounding method when converting precision.
+     * @param {_MathContext_} [mc] - Rounding setting after calculation. For rounding purposes, use the round method.
+     * @returns {_BigDecimal_}
      */
-    setScale(new_scale: BigDecimal | number | string | (BigInteger | number | MathContext)[] | any | BigInteger | any, rounding_mode?: RoundingModeEntity, mc?: MathContext): BigDecimal;
+    setScale(new_scale: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, rounding_mode?: _RoundingModeEntity_, mc?: _MathContext_): _BigDecimal_;
     /**
      * Round with specified settings.
      *
      * This method is not a method round the decimal point.
      * This method converts numbers in the specified Context and rounds unconvertible digits.
      *
-     * Use this.setScale(0, RoundingMode.HALF_UP) if you want to round the decimal point.
+     * Use this.setScale(0, _RoundingMode_.HALF_UP) if you want to round the decimal point.
      * When the argument is omitted, such decimal point rounding operation is performed.
-     * @param {MathContext} [mc] - New setting.
-     * @returns {BigDecimal}
+     * @param {_MathContext_} [mc] - New setting.
+     * @returns {_BigDecimal_}
      */
-    round(mc?: MathContext): BigDecimal;
+    round(mc?: _MathContext_): _BigDecimal_;
     /**
      * Floor.
-     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-     * @returns {BigDecimal} floor(A)
+     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} floor(A)
      */
-    floor(mc?: MathContext): BigDecimal;
+    floor(mc?: _MathContext_): _BigDecimal_;
     /**
      * Ceil.
-     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-     * @returns {BigDecimal} ceil(A)
+     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} ceil(A)
      */
-    ceil(mc?: MathContext): BigDecimal;
+    ceil(mc?: _MathContext_): _BigDecimal_;
     /**
      * To integer rounded down to the nearest.
-     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-     * @returns {BigDecimal} fix(A), trunc(A)
+     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} fix(A), trunc(A)
      */
-    fix(mc?: MathContext): BigDecimal;
+    fix(mc?: _MathContext_): _BigDecimal_;
     /**
-     * Fraction.
-     * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-     * @returns {BigDecimal} fract(A)
+     * _Fraction_.
+     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} fract(A)
      */
-    fract(mc?: MathContext): BigDecimal;
+    fract(mc?: _MathContext_): _BigDecimal_;
     /**
      * this === 0
      * @returns {boolean}
@@ -442,34 +442,34 @@ declare class BigDecimal {
     isNotNegative(): boolean;
     /**
      * -1
-     * @returns {BigDecimal} -1
+     * @returns {_BigDecimal_} -1
      */
-    static MINUS_ONE: BigDecimal;
+    static MINUS_ONE: _BigDecimal_;
     /**
      * 0
-     * @returns {BigDecimal} 0
+     * @returns {_BigDecimal_} 0
      */
-    static ZERO: BigDecimal;
+    static ZERO: _BigDecimal_;
     /**
      * 0.5
-     * @returns {BigDecimal} 0.5
+     * @returns {_BigDecimal_} 0.5
      */
-    static HALF: BigDecimal;
+    static HALF: _BigDecimal_;
     /**
      * 1
-     * @returns {BigDecimal} 1
+     * @returns {_BigDecimal_} 1
      */
-    static ONE: BigDecimal;
+    static ONE: _BigDecimal_;
     /**
      * 2
-     * @returns {BigDecimal} 2
+     * @returns {_BigDecimal_} 2
      */
-    static TWO: BigDecimal;
+    static TWO: _BigDecimal_;
     /**
      * 10
-     * @returns {BigDecimal} 10
+     * @returns {_BigDecimal_} 10
      */
-    static TEN: BigDecimal;
+    static TEN: _BigDecimal_;
 }
 
 /**
@@ -480,43 +480,43 @@ declare class BigDecimal {
  * - "0xff", ["ff", 16]
  * - "0o01234567", ["01234567", 8]
  * - "0b0110101", ["0110101", 2]
- * @param {BigInteger|number|string|Array<string|number>|Object} [number] - Numeric data. See how to use the function.
+ * @param {_BigInteger_|number|string|Array<string|number>|Object} [number] - Numeric data. See how to use the function.
  */
-declare class BigInteger {
-    constructor(number?: BigInteger | number | string | (string | number)[] | any);
+declare class _BigInteger_ {
+    constructor(number?: _BigInteger_ | number | string | (string | number)[] | any);
     /**
      * Create an entity object of this class.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger}
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_}
      */
-    static create(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    static create(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Create an arbitrary-precision integer.
      * - Does not support strings using exponential notation.
      * - If you want to initialize with the specified base number, please set up with an array ["ff", 16].
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger}
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_}
      */
-    static valueOf(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    static valueOf(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
-     * Random number of specified bit length.
-     * @param {BigInteger|number|string|Array<string|number>|Object} bitsize - Bit length.
-     * @param {Random} [random] - Class for creating random numbers.
-     * @returns {BigInteger}
+     * _Random_ number of specified bit length.
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} bitsize - Bit length.
+     * @param {_Random_} [random] - Class for creating random numbers.
+     * @returns {_BigInteger_}
      */
-    static createRandomBigInteger(bitsize: BigInteger | number | string | (string | number)[] | any, random?: Random): BigInteger;
+    static createRandomBigInteger(bitsize: _BigInteger_ | number | string | (string | number)[] | any, random?: _Random_): _BigInteger_;
     /**
      * Convert to string.
-     * @param {BigInteger|number|string|Array<string|number>|Object} [radix=10] - Base number.
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} [radix=10] - Base number.
      * @returns {string}
      */
-    toString(radix?: BigInteger | number | string | (string | number)[] | any): string;
+    toString(radix?: _BigInteger_ | number | string | (string | number)[] | any): string;
     /**
      * Value at the specified position of the internally used array that composed of hexadecimal numbers.
-     * @param {BigInteger|number|string|Array<string|number>|Object} point - Array address.
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} point - Array address.
      * @returns {number}
      */
-    getShort(point: BigInteger | number | string | (string | number)[] | any): number;
+    getShort(point: _BigInteger_ | number | string | (string | number)[] | any): number;
     /**
      * 32-bit integer value.
      * - If it is outside the range of JavaScript Number, it will not be an accurate number.
@@ -537,19 +537,19 @@ declare class BigInteger {
     doubleValue: number;
     /**
      * Deep copy.
-     * @returns {BigInteger}
+     * @returns {_BigInteger_}
      */
-    clone(): BigInteger;
+    clone(): _BigInteger_;
     /**
      * Absolute value.
-     * @returns {BigInteger} abs(A)
+     * @returns {_BigInteger_} abs(A)
      */
-    abs(): BigInteger;
+    abs(): _BigInteger_;
     /**
      * this * -1
-     * @returns {BigInteger} -A
+     * @returns {_BigInteger_} -A
      */
-    negate(): BigInteger;
+    negate(): _BigInteger_;
     /**
      * The positive or negative sign of this number.
      * - +1 if positive, -1 if negative, 0 if 0.
@@ -564,209 +564,209 @@ declare class BigInteger {
     sign(): number;
     /**
      * Add.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A + B
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} A + B
      */
-    add(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    add(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Subtract.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A - B
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} A - B
      */
-    subtract(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    subtract(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Subtract.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A - B
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} A - B
      */
-    sub(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    sub(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Multiply.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A * B
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} A * B
      */
-    multiply(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    multiply(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Multiply.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A * B
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} A * B
      */
-    mul(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    mul(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Divide and remainder.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {Array<_BigInteger_>} [C = fix(A / B), A - C * B]
      */
-    divideAndRemainder(number: BigInteger | number | string | (string | number)[] | any): BigInteger[];
+    divideAndRemainder(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_[];
     /**
      * Divide.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} fix(A / B)
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} fix(A / B)
      */
-    divide(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    divide(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Divide.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} fix(A / B)
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} fix(A / B)
      */
-    div(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    div(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Remainder of division.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A % B
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} A % B
      */
-    remainder(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    remainder(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Remainder of division.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A % B
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} A % B
      */
-    rem(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    rem(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Modulo, positive remainder of division.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A mod B
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} A mod B
      */
-    mod(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    mod(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Power function.
      * - Supports only integers.
-     * @param {BigInteger|number|string|Array<string|number>|Object} exponent
-     * @returns {BigInteger} pow(A, B)
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} exponent
+     * @returns {_BigInteger_} pow(A, B)
      */
-    pow(exponent: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    pow(exponent: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Modular exponentiation.
-     * @param {BigInteger|number|string|Array<string|number>|Object} exponent
-     * @param {BigInteger|number|string|Array<string|number>|Object} m
-     * @returns {BigInteger} A^B mod m
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} exponent
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} m
+     * @returns {_BigInteger_} A^B mod m
      */
-    modPow(exponent: BigInteger | number | string | (string | number)[] | any, m: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    modPow(exponent: _BigInteger_ | number | string | (string | number)[] | any, m: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Modular multiplicative inverse.
-     * @param {BigInteger|number|string|Array<string|number>|Object} m
-     * @returns {BigInteger} A^(-1) mod m
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} m
+     * @returns {_BigInteger_} A^(-1) mod m
      */
-    modInverse(m: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    modInverse(m: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Factorial function, x!.
-     * @returns {BigInteger} n!
+     * @returns {_BigInteger_} n!
      */
-    factorial(): BigInteger;
+    factorial(): _BigInteger_;
     /**
      * Multiply a multiple of ten.
-     * @param {BigInteger|number|string|Array<string|number>|Object} n
-     * @returns {BigInteger} x * 10^n
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} n
+     * @returns {_BigInteger_} x * 10^n
      */
-    scaleByPowerOfTen(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    scaleByPowerOfTen(n: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Set default class of random.
      * This is used if you do not specify a random number.
-     * @param {Random} random
+     * @param {_Random_} random
      */
-    static setDefaultRandom(random: Random): void;
+    static setDefaultRandom(random: _Random_): void;
     /**
-     * Return default Random class.
-     * Used when Random not specified explicitly.
-     * @returns {Random}
+     * Return default _Random_ class.
+     * Used when _Random_ not specified explicitly.
+     * @returns {_Random_}
      */
-    static getDefaultRandom(): Random;
+    static getDefaultRandom(): _Random_;
     /**
      * Euclidean algorithm.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} gcd(x, y)
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} gcd(x, y)
      */
-    gcd(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    gcd(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Extended Euclidean algorithm.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {Array<_BigInteger_>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
      */
-    extgcd(number: BigInteger | number | string | (string | number)[] | any): BigInteger[];
+    extgcd(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_[];
     /**
      * Least common multiple.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} lcm(x, y)
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} lcm(x, y)
      */
-    lcm(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    lcm(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Equals.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
      * @returns {boolean} A === B
      */
-    equals(number: BigInteger | number | string | (string | number)[] | any): boolean;
+    equals(number: _BigInteger_ | number | string | (string | number)[] | any): boolean;
     /**
      * Compare values without sign.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
      * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
      */
-    compareToAbs(number: BigInteger | number | string | (string | number)[] | any): number;
+    compareToAbs(number: _BigInteger_ | number | string | (string | number)[] | any): number;
     /**
      * Compare values.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
      * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
      */
-    compareTo(number: BigInteger | number | string | (string | number)[] | any): number;
+    compareTo(number: _BigInteger_ | number | string | (string | number)[] | any): number;
     /**
      * Maximum number.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} max([A, B])
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} max([A, B])
      */
-    max(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    max(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Minimum number.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} min([A, B])
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} min([A, B])
      */
-    min(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    min(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Clip number within range.
-     * @param {BigInteger|number|string|Array<string|number>|Object} min
-     * @param {BigInteger|number|string|Array<string|number>|Object} max
-     * @returns {BigInteger} min(max(x, min), max)
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} min
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} max
+     * @returns {_BigInteger_} min(max(x, min), max)
      */
-    clip(min: BigInteger | number | string | (string | number)[] | any, max: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    clip(min: _BigInteger_ | number | string | (string | number)[] | any, max: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Prime represented within the specified bit length.
-     * @param {BigInteger|number|string|Array<string|number>|Object} bits - Bit length.
-     * @param {Random} [random] - Class for creating random numbers.
-     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
-     * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - Number of times to retry if prime generation fails.
-     * @returns {BigInteger}
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} bits - Bit length.
+     * @param {_Random_} [random] - Class for creating random numbers.
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} [create_count=500] - Number of times to retry if prime generation fails.
+     * @returns {_BigInteger_}
      */
-    static probablePrime(bits: BigInteger | number | string | (string | number)[] | any, random?: Random, certainty?: BigInteger | number | string | (string | number)[] | any, create_count?: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    static probablePrime(bits: _BigInteger_ | number | string | (string | number)[] | any, random?: _Random_, certainty?: _BigInteger_ | number | string | (string | number)[] | any, create_count?: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Return true if the value is prime number by Miller-Labin prime number determination method.
      * Attention : it takes a very long time to process.
-     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
      * @returns {boolean}
      */
-    isProbablePrime(certainty?: BigInteger | number | string | (string | number)[] | any): boolean;
+    isProbablePrime(certainty?: _BigInteger_ | number | string | (string | number)[] | any): boolean;
     /**
      * Next prime.
-     * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
-     * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - Search range of next prime.
-     * @returns {BigInteger}
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} [search_max=100000] - Search range of next prime.
+     * @returns {_BigInteger_}
      */
-    nextProbablePrime(certainty?: BigInteger | number | string | (string | number)[] | any, search_max?: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    nextProbablePrime(certainty?: _BigInteger_ | number | string | (string | number)[] | any, search_max?: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * this << n
-     * @param {BigInteger|number|string|Array<string|number>|Object} n
-     * @returns {BigInteger} A << n
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} n
+     * @returns {_BigInteger_} A << n
      */
-    shift(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    shift(n: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * this << n
-     * @param {BigInteger|number|string|Array<string|number>|Object} n
-     * @returns {BigInteger} A << n
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} n
+     * @returns {_BigInteger_} A << n
      */
-    shiftLeft(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    shiftLeft(n: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * this >> n
-     * @param {BigInteger|number|string|Array<string|number>|Object} n
-     * @returns {BigInteger} A >> n
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} n
+     * @returns {_BigInteger_} A >> n
      */
-    shiftRight(n: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    shiftRight(n: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Number of digits in which the number "1" appears first when expressed in binary.
      * - Return -1 If 1 is not found it.
@@ -785,75 +785,75 @@ declare class BigInteger {
     bitCount(): number;
     /**
      * Logical AND.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A & B
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} A & B
      */
-    and(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    and(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Logical OR.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A | B
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} A | B
      */
-    or(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    or(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Logical Exclusive-OR.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A ^ B
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} A ^ B
      */
-    xor(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    xor(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Logical Not. (mutable)
-     * @returns {BigInteger} !A
+     * @returns {_BigInteger_} !A
      */
-    not(): BigInteger;
+    not(): _BigInteger_;
     /**
      * Logical Not-AND.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A & (!B)
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} A & (!B)
      */
-    andNot(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    andNot(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Logical Not-AND.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} A & (!B)
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} A & (!B)
      */
-    nand(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    nand(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Logical Not-OR.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} !(A | B)
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} !(A | B)
      */
-    orNot(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    orNot(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Logical Not-OR.
-     * @param {BigInteger|number|string|Array<string|number>|Object} number
-     * @returns {BigInteger} !(A | B)
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} number
+     * @returns {_BigInteger_} !(A | B)
      */
-    nor(number: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    nor(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * this | (1 << n)
-     * @param {BigInteger|number|string|Array<string|number>|Object} bit
-     * @returns {BigInteger}
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} bit
+     * @returns {_BigInteger_}
      */
-    setBit(bit: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    setBit(bit: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Invert a specific bit.
-     * @param {BigInteger|number|string|Array<string|number>|Object} bit
-     * @returns {BigInteger}
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} bit
+     * @returns {_BigInteger_}
      */
-    flipBit(bit: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    flipBit(bit: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Lower a specific bit.
-     * @param {BigInteger|number|string|Array<string|number>|Object} bit
-     * @returns {BigInteger}
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} bit
+     * @returns {_BigInteger_}
      */
-    clearBit(bit: BigInteger | number | string | (string | number)[] | any): BigInteger;
+    clearBit(bit: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Test if a particular bit is on.
-     * @param {BigInteger|number|string|Array<string|number>|Object} bit
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} bit
      * @returns {boolean}
      */
-    testBit(bit: BigInteger | number | string | (string | number)[] | any): boolean;
+    testBit(bit: _BigInteger_ | number | string | (string | number)[] | any): boolean;
     /**
      * this === 0
      * @returns {boolean}
@@ -881,29 +881,29 @@ declare class BigInteger {
     isNotNegative(): boolean;
     /**
      * -1
-     * @returns {BigInteger} -1
+     * @returns {_BigInteger_} -1
      */
-    static MINUS_ONE: BigInteger;
+    static MINUS_ONE: _BigInteger_;
     /**
      * 0
-     * @returns {BigInteger} 0
+     * @returns {_BigInteger_} 0
      */
-    static ZERO: BigInteger;
+    static ZERO: _BigInteger_;
     /**
      * 1
-     * @returns {BigInteger} 1
+     * @returns {_BigInteger_} 1
      */
-    static ONE: BigInteger;
+    static ONE: _BigInteger_;
     /**
      * 2
-     * @returns {BigInteger} 2
+     * @returns {_BigInteger_} 2
      */
-    static TWO: BigInteger;
+    static TWO: _BigInteger_;
     /**
      * 10
-     * @returns {BigInteger} 10
+     * @returns {_BigInteger_} 10
      */
-    static TEN: BigInteger;
+    static TEN: _BigInteger_;
 }
 
 /**
@@ -912,22 +912,22 @@ declare class BigInteger {
  * Initialization can be performed as follows.
  * - 1200, "1200", "12e2", "1.2e3"
  * - "3 + 4i", "4j + 3", [3, 4].
- * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Complex number. See how to use the function.
+ * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number - _Complex_ number. See how to use the function.
  */
-declare class Complex {
-    constructor(number: Complex | number | string | number[] | any | any);
+declare class _Complex_ {
+    constructor(number: _Complex_ | number | string | number[] | any | any);
     /**
      * Create an entity object of this class.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @returns {Complex}
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @returns {_Complex_}
      */
-    static create(number: Complex | number | string | number[] | any | any): Complex;
+    static create(number: _Complex_ | number | string | number[] | any | any): _Complex_;
     /**
-     * Convert number to Complex type.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @returns {Complex}
+     * Convert number to _Complex_ type.
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @returns {_Complex_}
      */
-    static valueOf(number: Complex | number | string | number[] | any | any): Complex;
+    static valueOf(number: _Complex_ | number | string | number[] | any | any): _Complex_;
     /**
      * integer value.
      * @returns {number}
@@ -940,9 +940,9 @@ declare class Complex {
     doubleValue: number;
     /**
      * Deep copy.
-     * @returns {Complex}
+     * @returns {_Complex_}
      */
-    clone(): Complex;
+    clone(): _Complex_;
     /**
      * Convert to string.
      * @returns {string}
@@ -950,14 +950,14 @@ declare class Complex {
     toString(): string;
     /**
      * Create random values with uniform random numbers.
-     * @returns {Complex}
+     * @returns {_Complex_}
      */
-    static rand(): Complex;
+    static rand(): _Complex_;
     /**
      * Create random values with normal distribution.
-     * @returns {Complex}
+     * @returns {_Complex_}
      */
-    static randn(): Complex;
+    static randn(): _Complex_;
     /**
      * The real part of this Comlex.
      * @returns {number} real(A)
@@ -986,120 +986,120 @@ declare class Complex {
     getDecimalPosition(): number;
     /**
      * Add.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @returns {Complex} A + B
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @returns {_Complex_} A + B
      */
-    add(number: Complex | number | string | number[] | any | any): Complex;
+    add(number: _Complex_ | number | string | number[] | any | any): _Complex_;
     /**
      * Subtract.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @returns {Complex} A - B
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @returns {_Complex_} A - B
      */
-    sub(number: Complex | number | string | number[] | any | any): Complex;
+    sub(number: _Complex_ | number | string | number[] | any | any): _Complex_;
     /**
      * Multiply.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @returns {Complex} A * B
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @returns {_Complex_} A * B
      */
-    mul(number: Complex | number | string | number[] | any | any): Complex;
+    mul(number: _Complex_ | number | string | number[] | any | any): _Complex_;
     /**
      * Inner product/Dot product.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @returns {Complex} A * conj(B)
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @returns {_Complex_} A * conj(B)
      */
-    dot(number: Complex | number | string | number[] | any | any): Complex;
+    dot(number: _Complex_ | number | string | number[] | any | any): _Complex_;
     /**
      * Divide.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @returns {Complex} A / B
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @returns {_Complex_} A / B
      */
-    div(number: Complex | number | string | number[] | any | any): Complex;
+    div(number: _Complex_ | number | string | number[] | any | any): _Complex_;
     /**
      * Modulo, positive remainder of division.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Divided value (real number only).
-     * @returns {Complex} A mod B
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number - Divided value (real number only).
+     * @returns {_Complex_} A mod B
      */
-    mod(number: Complex | number | string | number[] | any | any): Complex;
+    mod(number: _Complex_ | number | string | number[] | any | any): _Complex_;
     /**
      * Inverse number of this value.
-     * @returns {Complex} 1 / A
+     * @returns {_Complex_} 1 / A
      */
-    inv(): Complex;
+    inv(): _Complex_;
     /**
      * The positive or negative sign of this number.
      * - +1 if positive, -1 if negative, 0 if 0.
-     * @returns {Complex}
+     * @returns {_Complex_}
      */
-    sign(): Complex;
+    sign(): _Complex_;
     /**
      * Equals.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} A === B
      */
-    equals(number: Complex | number | string | number[] | any | any, tolerance?: Complex | number | string | number[] | any | any): boolean;
+    equals(number: _Complex_ | number | string | number[] | any | any, tolerance?: _Complex_ | number | string | number[] | any | any): boolean;
     /**
      * Compare values.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
      */
-    compareTo(number: Complex | number | string | number[] | any | any, tolerance?: Complex | number | string | number[] | any | any): number;
+    compareTo(number: _Complex_ | number | string | number[] | any | any, tolerance?: _Complex_ | number | string | number[] | any | any): number;
     /**
      * Maximum number.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @returns {Complex} max([A, B])
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @returns {_Complex_} max([A, B])
      */
-    max(number: Complex | number | string | number[] | any | any): Complex;
+    max(number: _Complex_ | number | string | number[] | any | any): _Complex_;
     /**
      * Minimum number.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @returns {Complex} min([A, B])
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @returns {_Complex_} min([A, B])
      */
-    min(number: Complex | number | string | number[] | any | any): Complex;
+    min(number: _Complex_ | number | string | number[] | any | any): _Complex_;
     /**
      * Clip number within range.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} min
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} max
-     * @returns {Complex} min(max(x, min), max)
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} min
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} max
+     * @returns {_Complex_} min(max(x, min), max)
      */
-    clip(min: Complex | number | string | number[] | any | any, max: Complex | number | string | number[] | any | any): Complex;
+    clip(min: _Complex_ | number | string | number[] | any | any, max: _Complex_ | number | string | number[] | any | any): _Complex_;
     /**
      * Return true if the value is integer.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isInteger(tolerance?: Complex | number | string | number[] | any | any): boolean;
+    isInteger(tolerance?: _Complex_ | number | string | number[] | any | any): boolean;
     /**
      * Returns true if the vallue is complex integer (including normal integer).
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} real(A) === integer && imag(A) === integer
      */
-    isComplexInteger(tolerance?: Complex | number | string | number[] | any | any): boolean;
+    isComplexInteger(tolerance?: _Complex_ | number | string | number[] | any | any): boolean;
     /**
      * this === 0
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} A === 0
      */
-    isZero(tolerance?: Complex | number | string | number[] | any | any): boolean;
+    isZero(tolerance?: _Complex_ | number | string | number[] | any | any): boolean;
     /**
      * this === 1
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} A === 1
      */
-    isOne(tolerance?: Complex | number | string | number[] | any | any): boolean;
+    isOne(tolerance?: _Complex_ | number | string | number[] | any | any): boolean;
     /**
      * Returns true if the vallue is complex number (imaginary part is not 0).
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} imag(A) !== 0
      */
-    isComplex(tolerance?: Complex | number | string | number[] | any | any): boolean;
+    isComplex(tolerance?: _Complex_ | number | string | number[] | any | any): boolean;
     /**
      * Return true if the value is real number.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
      * @returns {boolean} imag(A) === 0
      */
-    isReal(tolerance?: Complex | number | string | number[] | any | any): boolean;
+    isReal(tolerance?: _Complex_ | number | string | number[] | any | any): boolean;
     /**
      * this === NaN
      * @returns {boolean} isNaN(A)
@@ -1132,219 +1132,219 @@ declare class Complex {
     isFinite(): boolean;
     /**
      * Absolute value.
-     * @returns {Complex} abs(A)
+     * @returns {_Complex_} abs(A)
      */
-    abs(): Complex;
+    abs(): _Complex_;
     /**
-     * Complex conjugate.
-     * @returns {Complex} real(A) - imag(A)j
+     * _Complex_ conjugate.
+     * @returns {_Complex_} real(A) - imag(A)j
      */
-    conj(): Complex;
+    conj(): _Complex_;
     /**
      * this * -1
-     * @returns {Complex} -A
+     * @returns {_Complex_} -A
      */
-    negate(): Complex;
+    negate(): _Complex_;
     /**
      * Power function.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-     * @returns {Complex} pow(A, B)
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number
+     * @returns {_Complex_} pow(A, B)
      */
-    pow(number: Complex | number | string | number[] | any | any): Complex;
+    pow(number: _Complex_ | number | string | number[] | any | any): _Complex_;
     /**
      * Square.
-     * @returns {Complex} pow(A, 2)
+     * @returns {_Complex_} pow(A, 2)
      */
-    square(): Complex;
+    square(): _Complex_;
     /**
      * Square root.
-     * @returns {Complex} sqrt(A)
+     * @returns {_Complex_} sqrt(A)
      */
-    sqrt(): Complex;
+    sqrt(): _Complex_;
     /**
      * Logarithmic function.
-     * @returns {Complex} log(A)
+     * @returns {_Complex_} log(A)
      */
-    log(): Complex;
+    log(): _Complex_;
     /**
      * Exponential function.
-     * @returns {Complex} exp(A)
+     * @returns {_Complex_} exp(A)
      */
-    exp(): Complex;
+    exp(): _Complex_;
     /**
      * Sine function.
-     * @returns {Complex} sin(A)
+     * @returns {_Complex_} sin(A)
      */
-    sin(): Complex;
+    sin(): _Complex_;
     /**
      * Cosine function.
-     * @returns {Complex} cos(A)
+     * @returns {_Complex_} cos(A)
      */
-    cos(): Complex;
+    cos(): _Complex_;
     /**
      * Tangent function.
-     * @returns {Complex} tan(A)
+     * @returns {_Complex_} tan(A)
      */
-    tan(): Complex;
+    tan(): _Complex_;
     /**
      * Atan (arc tangent) function.
      * - Return the values of [-PI/2, PI/2].
-     * @returns {Complex} atan(A)
+     * @returns {_Complex_} atan(A)
      */
-    atan(): Complex;
+    atan(): _Complex_;
     /**
      * Atan (arc tangent) function.
      * Return the values of [-PI, PI] .
      * Supports only real numbers.
-     * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [number] - X
-     * @returns {Complex} atan2(Y, X)
+     * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} [number] - X
+     * @returns {_Complex_} atan2(Y, X)
      */
-    atan2(number?: Complex | number | string | number[] | any | any): Complex;
+    atan2(number?: _Complex_ | number | string | number[] | any | any): _Complex_;
     /**
      * Normalized sinc function.
-     * @returns {Complex} sinc(A)
+     * @returns {_Complex_} sinc(A)
      */
-    sinc(): Complex;
+    sinc(): _Complex_;
     /**
      * Floor.
-     * @returns {Complex} floor(A)
+     * @returns {_Complex_} floor(A)
      */
-    floor(): Complex;
+    floor(): _Complex_;
     /**
      * Ceil.
-     * @returns {Complex} ceil(A)
+     * @returns {_Complex_} ceil(A)
      */
-    ceil(): Complex;
+    ceil(): _Complex_;
     /**
      * Rounding to the nearest integer.
-     * @returns {Complex} round(A)
+     * @returns {_Complex_} round(A)
      */
-    round(): Complex;
+    round(): _Complex_;
     /**
      * To integer rounded down to the nearest.
-     * @returns {Complex} fix(A), trunc(A)
+     * @returns {_Complex_} fix(A), trunc(A)
      */
-    fix(): Complex;
+    fix(): _Complex_;
     /**
-     * Fraction.
-     * @returns {Complex} fract(A)
+     * _Fraction_.
+     * @returns {_Complex_} fract(A)
      */
-    fract(): Complex;
+    fract(): _Complex_;
     /**
      * 1
-     * @returns {Complex} 1
+     * @returns {_Complex_} 1
      */
-    static ONE: Complex;
+    static ONE: _Complex_;
     /**
      * 2
-     * @returns {Complex} 2
+     * @returns {_Complex_} 2
      */
-    static TWO: Complex;
+    static TWO: _Complex_;
     /**
      * 10
-     * @returns {Complex} 10
+     * @returns {_Complex_} 10
      */
-    static TEN: Complex;
+    static TEN: _Complex_;
     /**
      * 0
-     * @returns {Complex} 0
+     * @returns {_Complex_} 0
      */
-    static ZERO: Complex;
+    static ZERO: _Complex_;
     /**
      * -1
-     * @returns {Complex} -1
+     * @returns {_Complex_} -1
      */
-    static MINUS_ONE: Complex;
+    static MINUS_ONE: _Complex_;
     /**
      * i, j
-     * @returns {Complex} i
+     * @returns {_Complex_} i
      */
-    static I: Complex;
+    static I: _Complex_;
     /**
      * Pi.
-     * @returns {Complex} 3.14...
+     * @returns {_Complex_} 3.14...
      */
-    static PI: Complex;
+    static PI: _Complex_;
     /**
      * E, Napier's constant.
-     * @returns {Complex} 2.71...
+     * @returns {_Complex_} 2.71...
      */
-    static E: Complex;
+    static E: _Complex_;
     /**
      * log_e(2)
-     * @returns {Complex} ln(2)
+     * @returns {_Complex_} ln(2)
      */
-    static LN2: Complex;
+    static LN2: _Complex_;
     /**
      * log_e(10)
-     * @returns {Complex} ln(10)
+     * @returns {_Complex_} ln(10)
      */
-    static LN10: Complex;
+    static LN10: _Complex_;
     /**
      * log_2(e)
-     * @returns {Complex} log_2(e)
+     * @returns {_Complex_} log_2(e)
      */
-    static LOG2E: Complex;
+    static LOG2E: _Complex_;
     /**
      * log_10(e)
-     * @returns {Complex} log_10(e)
+     * @returns {_Complex_} log_10(e)
      */
-    static LOG10E: Complex;
+    static LOG10E: _Complex_;
     /**
      * sqrt(2)
-     * @returns {Complex} sqrt(2)
+     * @returns {_Complex_} sqrt(2)
      */
-    static SQRT2: Complex;
+    static SQRT2: _Complex_;
     /**
      * sqrt(0.5)
-     * @returns {Complex} sqrt(0.5)
+     * @returns {_Complex_} sqrt(0.5)
      */
-    static SQRT1_2: Complex;
+    static SQRT1_2: _Complex_;
     /**
      * 0.5
-     * @returns {Complex} 0.5
+     * @returns {_Complex_} 0.5
      */
-    static HALF: Complex;
+    static HALF: _Complex_;
     /**
      * Positive infinity.
-     * @returns {Complex} Infinity
+     * @returns {_Complex_} Infinity
      */
-    static POSITIVE_INFINITY: Complex;
+    static POSITIVE_INFINITY: _Complex_;
     /**
      * Negative Infinity.
-     * @returns {Complex} -Infinity
+     * @returns {_Complex_} -Infinity
      */
-    static NEGATIVE_INFINITY: Complex;
+    static NEGATIVE_INFINITY: _Complex_;
     /**
      * Not a Number.
-     * @returns {Complex} NaN
+     * @returns {_Complex_} NaN
      */
-    static NaN: Complex;
+    static NaN: _Complex_;
 }
 
 /**
- * Create BigDecimal configuration.
- * @param {string|number} precision_or_name - Precision. Or String output by MathContext.toString.
- * @param {RoundingModeEntity} [roundingMode=RoundingMode.HALF_UP] - RoundingMode.
+ * Create _BigDecimal_ configuration.
+ * @param {string|number} precision_or_name - Precision. Or String output by _MathContext_.toString.
+ * @param {_RoundingModeEntity_} [roundingMode=_RoundingMode_.HALF_UP] - _RoundingMode_.
  */
-declare class MathContext {
-    constructor(precision_or_name: string | number, roundingMode?: RoundingModeEntity);
+declare class _MathContext_ {
+    constructor(precision_or_name: string | number, roundingMode?: _RoundingModeEntity_);
     /**
-     * The precision of this BigDecimal.
+     * The precision of this _BigDecimal_.
      * @returns {number}
      */
     getPrecision(): number;
     /**
      * Method of rounding.
-     * @returns {RoundingModeEntity}
+     * @returns {_RoundingModeEntity_}
      */
-    getRoundingMode(): RoundingModeEntity;
+    getRoundingMode(): _RoundingModeEntity_;
     /**
      * Equals.
-     * @param {MathContext} x - Number to compare.
+     * @param {_MathContext_} x - Number to compare.
      * @returns {boolean}
      */
-    equals(x: MathContext): boolean;
+    equals(x: _MathContext_): boolean;
     /**
      * Convert to string.
      * @returns {string}
@@ -1353,33 +1353,33 @@ declare class MathContext {
     /**
      * No decimal point limit.
      * However, an error occurs in the case of cyclic fraction in division.
-     * @returns {MathContext}
+     * @returns {_MathContext_}
      */
-    static UNLIMITED: MathContext;
+    static UNLIMITED: _MathContext_;
     /**
      * 32-bit floating point.
      * Equivalent of the C language float.
-     * @returns {MathContext}
+     * @returns {_MathContext_}
      */
-    static DECIMAL32: MathContext;
+    static DECIMAL32: _MathContext_;
     /**
      * 64-bit floating point.
      * Equivalent of the C language double.
-     * @returns {MathContext}
+     * @returns {_MathContext_}
      */
-    static DECIMAL64: MathContext;
+    static DECIMAL64: _MathContext_;
     /**
      * 128-bit floating point.
      * Equivalent of the C language long double.
-     * @returns {MathContext}
+     * @returns {_MathContext_}
      */
-    static DECIMAL128: MathContext;
+    static DECIMAL128: _MathContext_;
 }
 
 /**
- * Base class for rounding mode for BigDecimal.
+ * Base class for rounding mode for _BigDecimal_.
  */
-declare class RoundingModeEntity {
+declare class _RoundingModeEntity_ {
     /**
      * Get rounding mode name in upper case English.
      * @returns {string} Rounding method name.
@@ -1394,15 +1394,15 @@ declare class RoundingModeEntity {
     static getAddNumber(x: number): number;
 }
 
-declare interface RoundingMode_UP extends RoundingModeEntity {
+declare interface _RoundingMode_UP_ extends _RoundingModeEntity_ {
 }
 
 /**
  * Directed rounding to an integer.
  * Round towards positive infinity if positive, negative infinity if negative.
- * @implements {RoundingModeEntity}
+ * @implements {_RoundingModeEntity_}
  */
-declare class RoundingMode_UP implements RoundingModeEntity {
+declare class _RoundingMode_UP_ implements _RoundingModeEntity_ {
     /**
      * Get rounding mode name in upper case English.
      * @returns {string} Rounding method name.
@@ -1417,15 +1417,15 @@ declare class RoundingMode_UP implements RoundingModeEntity {
     static getAddNumber(x: number): number;
 }
 
-declare interface RoundingMode_DOWN extends RoundingModeEntity {
+declare interface _RoundingMode_DOWN_ extends _RoundingModeEntity_ {
 }
 
 /**
  * Directed rounding to an integer.
  * Round towards 0.
- * @implements {RoundingModeEntity}
+ * @implements {_RoundingModeEntity_}
  */
-declare class RoundingMode_DOWN implements RoundingModeEntity {
+declare class _RoundingMode_DOWN_ implements _RoundingModeEntity_ {
     /**
      * Get rounding mode name in upper case English.
      * @returns {string} Rounding method name.
@@ -1440,15 +1440,15 @@ declare class RoundingMode_DOWN implements RoundingModeEntity {
     static getAddNumber(x: number): number;
 }
 
-declare interface RoundingMode_CEILING extends RoundingModeEntity {
+declare interface _RoundingMode_CEILING_ extends _RoundingModeEntity_ {
 }
 
 /**
  * Directed rounding to an integer.
  * Round up to positive infinity.
- * @implements {RoundingModeEntity}
+ * @implements {_RoundingModeEntity_}
  */
-declare class RoundingMode_CEILING implements RoundingModeEntity {
+declare class _RoundingMode_CEILING_ implements _RoundingModeEntity_ {
     /**
      * Get rounding mode name in upper case English.
      * @returns {string} Rounding method name.
@@ -1463,15 +1463,15 @@ declare class RoundingMode_CEILING implements RoundingModeEntity {
     static getAddNumber(x: number): number;
 }
 
-declare interface RoundingMode_FLOOR extends RoundingModeEntity {
+declare interface _RoundingMode_FLOOR_ extends _RoundingModeEntity_ {
 }
 
 /**
  * Directed rounding to an integer.
  * Round down to negative infinity.
- * @implements {RoundingModeEntity}
+ * @implements {_RoundingModeEntity_}
  */
-declare class RoundingMode_FLOOR implements RoundingModeEntity {
+declare class _RoundingMode_FLOOR_ implements _RoundingModeEntity_ {
     /**
      * Get rounding mode name in upper case English.
      * @returns {string} Rounding method name.
@@ -1486,15 +1486,15 @@ declare class RoundingMode_FLOOR implements RoundingModeEntity {
     static getAddNumber(x: number): number;
 }
 
-declare interface RoundingMode_HALF_UP extends RoundingModeEntity {
+declare interface _RoundingMode_HALF_UP_ extends _RoundingModeEntity_ {
 }
 
 /**
  * Rounding to the nearest integer.
  * Round half towards positive infinity.
- * @implements {RoundingModeEntity}
+ * @implements {_RoundingModeEntity_}
  */
-declare class RoundingMode_HALF_UP implements RoundingModeEntity {
+declare class _RoundingMode_HALF_UP_ implements _RoundingModeEntity_ {
     /**
      * Get rounding mode name in upper case English.
      * @returns {string} Rounding method name.
@@ -1509,15 +1509,15 @@ declare class RoundingMode_HALF_UP implements RoundingModeEntity {
     static getAddNumber(x: number): number;
 }
 
-declare interface RoundingMode_HALF_DOWN extends RoundingModeEntity {
+declare interface _RoundingMode_HALF_DOWN_ extends _RoundingModeEntity_ {
 }
 
 /**
  * Rounding to the nearest integer.
  * Round half towards negative infinity.
- * @implements {RoundingModeEntity}
+ * @implements {_RoundingModeEntity_}
  */
-declare class RoundingMode_HALF_DOWN implements RoundingModeEntity {
+declare class _RoundingMode_HALF_DOWN_ implements _RoundingModeEntity_ {
     /**
      * Get rounding mode name in upper case English.
      * @returns {string} Rounding method name.
@@ -1532,15 +1532,15 @@ declare class RoundingMode_HALF_DOWN implements RoundingModeEntity {
     static getAddNumber(x: number): number;
 }
 
-declare interface RoundingMode_HALF_EVEN extends RoundingModeEntity {
+declare interface _RoundingMode_HALF_EVEN_ extends _RoundingModeEntity_ {
 }
 
 /**
  * Rounding to the nearest integer
  * Round to the nearest side. If the median, round to the even side.
- * @implements {RoundingModeEntity}
+ * @implements {_RoundingModeEntity_}
  */
-declare class RoundingMode_HALF_EVEN implements RoundingModeEntity {
+declare class _RoundingMode_HALF_EVEN_ implements _RoundingModeEntity_ {
     /**
      * Get rounding mode name in upper case English.
      * @returns {string} Rounding method name.
@@ -1555,15 +1555,15 @@ declare class RoundingMode_HALF_EVEN implements RoundingModeEntity {
     static getAddNumber(x: number): number;
 }
 
-declare interface RoundingMode_UNNECESSARY extends RoundingModeEntity {
+declare interface _RoundingMode_UNNECESSARY_ extends _RoundingModeEntity_ {
 }
 
 /**
  * Do not round.
  * Error if you need to round it.
- * @implements {RoundingModeEntity}
+ * @implements {_RoundingModeEntity_}
  */
-declare class RoundingMode_UNNECESSARY implements RoundingModeEntity {
+declare class _RoundingMode_UNNECESSARY_ implements _RoundingModeEntity_ {
     /**
      * Get rounding mode name in upper case English.
      * @returns {string} Rounding method name.
@@ -1579,63 +1579,63 @@ declare class RoundingMode_UNNECESSARY implements RoundingModeEntity {
 }
 
 /**
- * Rounding mode class for BigDecimal.
+ * Rounding mode class for _BigDecimal_.
  */
-declare class RoundingMode {
+declare class _RoundingMode_ {
     /**
      * Get rounding class represented by specified string.
-     * @param {string|RoundingModeEntity|Object} name - Mode name.
-     * @returns {typeof RoundingModeEntity}
+     * @param {string|_RoundingModeEntity_|Object} name - Mode name.
+     * @returns {typeof _RoundingModeEntity_}
      */
-    static valueOf(name: string | RoundingModeEntity | any): typeof RoundingModeEntity;
+    static valueOf(name: string | _RoundingModeEntity_ | any): typeof _RoundingModeEntity_;
     /**
      * Directed rounding to an integer.
      * Round towards positive infinity if positive, negative infinity if negative.
-     * @returns {typeof RoundingModeEntity}
+     * @returns {typeof _RoundingModeEntity_}
      */
-    static UP: typeof RoundingModeEntity;
+    static UP: typeof _RoundingModeEntity_;
     /**
      * Directed rounding to an integer.
      * Round towards 0.
-     * @returns {typeof RoundingModeEntity}
+     * @returns {typeof _RoundingModeEntity_}
      */
-    static DOWN: typeof RoundingModeEntity;
+    static DOWN: typeof _RoundingModeEntity_;
     /**
      * Directed rounding to an integer.
      * Round up to positive infinity.
-     * @returns {typeof RoundingModeEntity}
+     * @returns {typeof _RoundingModeEntity_}
      */
-    static CEILING: typeof RoundingModeEntity;
+    static CEILING: typeof _RoundingModeEntity_;
     /**
      * Directed rounding to an integer.
      * Round down to negative infinity.
-     * @returns {typeof RoundingModeEntity}
+     * @returns {typeof _RoundingModeEntity_}
      */
-    static FLOOR: typeof RoundingModeEntity;
+    static FLOOR: typeof _RoundingModeEntity_;
     /**
      * Rounding to the nearest integer.
      * Round half towards positive infinity.
-     * @returns {typeof RoundingModeEntity}
+     * @returns {typeof _RoundingModeEntity_}
      */
-    static HALF_UP: typeof RoundingModeEntity;
+    static HALF_UP: typeof _RoundingModeEntity_;
     /**
      * Rounding to the nearest integer.
      * Round half towards negative infinity.
-     * @returns {typeof RoundingModeEntity}
+     * @returns {typeof _RoundingModeEntity_}
      */
-    static HALF_DOWN: typeof RoundingModeEntity;
+    static HALF_DOWN: typeof _RoundingModeEntity_;
     /**
      * Rounding to the nearest integer
      * Round to the nearest side. If the median, round to the even side.
-     * @returns {typeof RoundingModeEntity}
+     * @returns {typeof _RoundingModeEntity_}
      */
-    static HALF_EVEN: typeof RoundingModeEntity;
+    static HALF_EVEN: typeof _RoundingModeEntity_;
     /**
      * Do not round.
      * Error if you need to round it.
-     * @returns {typeof RoundingModeEntity}
+     * @returns {typeof _RoundingModeEntity_}
      */
-    static UNNECESSARY: typeof RoundingModeEntity;
+    static UNNECESSARY: typeof _RoundingModeEntity_;
 }
 
 /**
@@ -1646,33 +1646,33 @@ declare class RoundingMode {
  * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
  * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
  * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
- * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} [number] - Fraction data. See how to use the function.
+ * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} [number] - _Fraction_ data. See how to use the function.
  */
-declare class Fraction {
-    constructor(number?: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any);
+declare class _Fraction_ {
+    constructor(number?: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any);
     /**
-     * @type {BigInteger}
+     * @type {_BigInteger_}
      */
-    numerator: BigInteger;
+    numerator: _BigInteger_;
     /**
-     * @type {BigInteger}
+     * @type {_BigInteger_}
      */
-    denominator: BigInteger;
+    denominator: _BigInteger_;
     /**
      * Create an entity object of this class.
-     * @returns {Fraction}
+     * @returns {_Fraction_}
      */
-    static create(): Fraction;
+    static create(): _Fraction_;
     /**
-     * Convert number to Fraction type.
-     * @returns {Fraction}
+     * Convert number to _Fraction_ type.
+     * @returns {_Fraction_}
      */
-    static valueOf(): Fraction;
+    static valueOf(): _Fraction_;
     /**
      * Deep copy.
-     * @returns {Fraction}
+     * @returns {_Fraction_}
      */
-    clone(): Fraction;
+    clone(): _Fraction_;
     /**
      * integer value.
      * @returns {number}
@@ -1685,14 +1685,14 @@ declare class Fraction {
     doubleValue: number;
     /**
      * Absolute value.
-     * @returns {Fraction} abs(A)
+     * @returns {_Fraction_} abs(A)
      */
-    abs(): Fraction;
+    abs(): _Fraction_;
     /**
      * this * -1
-     * @returns {Fraction} -A
+     * @returns {_Fraction_} -A
      */
-    negate(): Fraction;
+    negate(): _Fraction_;
     /**
      * The positive or negative sign of this number.
      * - +1 if positive, -1 if negative, 0 if 0.
@@ -1706,108 +1706,108 @@ declare class Fraction {
     toString(): string;
     /**
      * Add.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
-     * @return {Fraction}
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @return {_Fraction_}
      */
-    add(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    add(num: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
     /**
      * Subtract.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
-     * @return {Fraction}
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @return {_Fraction_}
      */
-    sub(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    sub(num: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
     /**
      * Multiply.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
-     * @return {Fraction}
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @return {_Fraction_}
      */
-    mul(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    mul(num: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
     /**
      * Divide.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
-     * @return {Fraction}
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @return {_Fraction_}
      */
-    div(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    div(num: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
     /**
      * Inverse number of this value.
-     * @return {Fraction}
+     * @return {_Fraction_}
      */
-    inv(): Fraction;
+    inv(): _Fraction_;
     /**
      * Modulo, positive remainder of division.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
-     * @return {Fraction}
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @return {_Fraction_}
      */
-    mod(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    mod(num: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
     /**
      * Multiply a multiple of ten.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} n
-     * @returns {Fraction}
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} n
+     * @returns {_Fraction_}
      */
-    scaleByPowerOfTen(n: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    scaleByPowerOfTen(n: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
     /**
      * Power function.
      * - Supports only integers.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
-     * @returns {Fraction} pow(A, B)
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @returns {_Fraction_} pow(A, B)
      */
-    pow(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    pow(num: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
     /**
      * Equals.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
      * @returns {boolean} A === B
      */
-    equals(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): boolean;
+    equals(num: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): boolean;
     /**
      * Compare values.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
      * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
      */
-    compareTo(num: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): number;
+    compareTo(num: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): number;
     /**
      * Maximum number.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
-     * @returns {Fraction} max([A, B])
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
+     * @returns {_Fraction_} max([A, B])
      */
-    max(number: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    max(number: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
     /**
      * Minimum number.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
-     * @returns {Fraction} min([A, B])
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
+     * @returns {_Fraction_} min([A, B])
      */
-    min(number: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    min(number: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
     /**
      * Clip number within range.
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} min
-     * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} max
-     * @returns {Fraction} min(max(x, min), max)
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} min
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} max
+     * @returns {_Fraction_} min(max(x, min), max)
      */
-    clip(min: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any, max: Fraction | BigInteger | BigDecimal | number | string | object[] | any | any): Fraction;
+    clip(min: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any, max: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
     /**
      * Floor.
-     * @returns {Fraction} floor(A)
+     * @returns {_Fraction_} floor(A)
      */
-    floor(): Fraction;
+    floor(): _Fraction_;
     /**
      * Ceil.
-     * @returns {Fraction} ceil(A)
+     * @returns {_Fraction_} ceil(A)
      */
-    ceil(): Fraction;
+    ceil(): _Fraction_;
     /**
      * Rounding to the nearest integer.
-     * @returns {Fraction} round(A)
+     * @returns {_Fraction_} round(A)
      */
-    round(): Fraction;
+    round(): _Fraction_;
     /**
      * To integer rounded down to the nearest.
-     * @returns {Fraction} fix(A), trunc(A)
+     * @returns {_Fraction_} fix(A), trunc(A)
      */
-    fix(): Fraction;
+    fix(): _Fraction_;
     /**
-     * Fraction.
-     * @returns {Fraction} fract(A)
+     * _Fraction_.
+     * @returns {_Fraction_} fract(A)
      */
-    fract(): Fraction;
+    fract(): _Fraction_;
     /**
      * Return true if the value is integer.
      * @return {boolean}
@@ -1840,34 +1840,34 @@ declare class Fraction {
     isNotNegative(): boolean;
     /**
      * -1
-     * @returns {Fraction} -1
+     * @returns {_Fraction_} -1
      */
-    static MINUS_ONE: Fraction;
+    static MINUS_ONE: _Fraction_;
     /**
      * 0
-     * @returns {Fraction} 0
+     * @returns {_Fraction_} 0
      */
-    static ZERO: Fraction;
+    static ZERO: _Fraction_;
     /**
      * 0.5
-     * @returns {Fraction} 0.5
+     * @returns {_Fraction_} 0.5
      */
-    static HALF: Fraction;
+    static HALF: _Fraction_;
     /**
      * 1
-     * @returns {Fraction} 1
+     * @returns {_Fraction_} 1
      */
-    static ONE: Fraction;
+    static ONE: _Fraction_;
     /**
      * 2
-     * @returns {Fraction} 2
+     * @returns {_Fraction_} 2
      */
-    static TWO: Fraction;
+    static TWO: _Fraction_;
     /**
      * 10
-     * @returns {Fraction} 10
+     * @returns {_Fraction_} 10
      */
-    static TEN: Fraction;
+    static TEN: _Fraction_;
 }
 
 /**
@@ -1888,31 +1888,31 @@ declare type MatrixSettings = {
  * - 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
  * - [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
  * - "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
- * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - Complex matrix. See how to use the function.
+ * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number - _Complex_ matrix. See how to use the function.
  */
-declare class Matrix {
-    constructor(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any);
+declare class _Matrix_ {
+    constructor(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any);
     /**
      * Create an entity object of this class.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @returns {_Matrix_}
      */
-    static create(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static create(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
-     * Convert number to Matrix type.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @returns {Matrix}
+     * Convert number to _Matrix_ type.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @returns {_Matrix_}
      */
-    static valueOf(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static valueOf(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Delete cache.
      */
     _clearCash(): void;
     /**
      * Deep copy.
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    clone(): Matrix;
+    clone(): _Matrix_;
     /**
      * Convert to string.
      * @returns {string}
@@ -1925,95 +1925,95 @@ declare class Matrix {
     toOneLineString(): string;
     /**
      * Equals.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean} A === B
      */
-    equals(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    equals(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Array of real parts of elements in matrix.
      * @returns {Array<Array<number>>}
      */
     getNumberMatrixArray(): number[][];
     /**
-     * Complex array of complex numbers of each element of the matrix.
-     * @returns {Array<Array<Complex>>}
+     * _Complex_ array of complex numbers of each element of the matrix.
+     * @returns {Array<Array<_Complex_>>}
      */
-    getComplexMatrixArray(): Complex[][];
+    getComplexMatrixArray(): _Complex_[][];
     /**
      * Perform the same process on all elements in the matrix.
-     * @param {function(Complex, number, number): ?Object } eachfunc - Function(num, row, col)
-     * @returns {Matrix} Matrix after function processing.
+     * @param {function(_Complex_, number, number): ?Object } eachfunc - Function(num, row, col)
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    cloneMatrixDoEachCalculation(eachfunc: (...params: any[]) => any): Matrix;
+    cloneMatrixDoEachCalculation(eachfunc: (...params: any[]) => any): _Matrix_;
     /**
-     * Create Matrix with specified initialization for each element in matrix.
+     * Create _Matrix_ with specified initialization for each element in matrix.
      * @param {function(number, number): ?Object } eachfunc - Function(row, col)
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length=dimension] - Number of columns.
-     * @returns {Matrix} Matrix after function processing.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} dimension - Number of dimensions or rows.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [column_length=dimension] - Number of columns.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    static createMatrixDoEachCalculation(eachfunc: (...params: any[]) => any, dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static createMatrixDoEachCalculation(eachfunc: (...params: any[]) => any, dimension: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, column_length?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Treat the columns of the matrix as vectors and execute the same process.
      * - If the matrix is a row vector, it performs the same processing for the row vector.
-     * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
-     * @returns {Matrix} Matrix after function processing.
+     * @param {function(Array<_Complex_>): Array<_Complex_>} array_function - Function(array)
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    eachVectorAuto(array_function: (...params: any[]) => any): Matrix;
+    eachVectorAuto(array_function: (...params: any[]) => any): _Matrix_;
     /**
      * Treat the rows and columns of the matrix as vectors and perform the same processing.
      * 1. First run the same process for the row.
      * 2. Finally perform the same processing for the column.
-     * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
-     * @returns {Matrix} Matrix after function processing.
+     * @param {function(Array<_Complex_>): Array<_Complex_>} array_function - Function(array)
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    eachVectorBoth(array_function: (...params: any[]) => any): Matrix;
+    eachVectorBoth(array_function: (...params: any[]) => any): _Matrix_;
     /**
      * Treat the rows of the matrix as vectors and execute the same process.
-     * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
-     * @returns {Matrix} Matrix after function processing.
+     * @param {function(Array<_Complex_>): Array<_Complex_>} array_function - Function(array)
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    eachVectorRow(array_function: (...params: any[]) => any): Matrix;
+    eachVectorRow(array_function: (...params: any[]) => any): _Matrix_;
     /**
      * Treat the columns of the matrix as vectors and execute the same process.
-     * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
-     * @returns {Matrix} Matrix after function processing.
+     * @param {function(Array<_Complex_>): Array<_Complex_>} array_function - Function(array)
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    eachVectorColumn(array_function: (...params: any[]) => any): Matrix;
+    eachVectorColumn(array_function: (...params: any[]) => any): _Matrix_;
     /**
      * Treat the rows and columns of the matrix as vectors and perform the same processing.
      * The arguments of the method can switch the direction of the matrix to be executed.
-     * @param {function(Array<Complex>): Array<Complex>} array_function - Function(array)
+     * @param {function(Array<_Complex_>): Array<_Complex_>} array_function - Function(array)
      * @param {string|number} [dimension="auto"] - 0/"auto", 1/"row", 2/"column", 3/"both"
-     * @returns {Matrix} Matrix after function processing.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    eachVector(array_function: (...params: any[]) => any, dimension?: string | number): Matrix;
+    eachVector(array_function: (...params: any[]) => any, dimension?: string | number): _Matrix_;
     /**
      * Extract the specified part of the matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row - A vector containing the row numbers to extract from this matrix. If you specify ":" select all rows.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} col - A vector containing the column numbers to extract from this matrix. If you specify ":" select all columns.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} row - A vector containing the row numbers to extract from this matrix. If you specify ":" select all rows.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} col - A vector containing the column numbers to extract from this matrix. If you specify ":" select all columns.
      * @param {boolean} [isUpOffset=false] - Set offset of matrix position to 1 with true.
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    getMatrix(row: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, col: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, isUpOffset?: boolean): Matrix;
+    getMatrix(row: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, col: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, isUpOffset?: boolean): _Matrix_;
     /**
      * Change specified element in matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row - A vector containing the row numbers to replace in this matrix. If you specify ":" select all rows.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} col - A vector containing the column numbers to replace in this matrix. If you specify ":" select all columns.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} replace - Matrix to be replaced.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} row - A vector containing the row numbers to replace in this matrix. If you specify ":" select all rows.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} col - A vector containing the column numbers to replace in this matrix. If you specify ":" select all columns.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} replace - _Matrix_ to be replaced.
      * @param {boolean} [isUpOffset=false] - Set offset of matrix position to 1 with true.
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    setMatrix(row: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, col: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, replace: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, isUpOffset?: boolean): Matrix;
+    setMatrix(row: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, col: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, replace: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, isUpOffset?: boolean): _Matrix_;
     /**
      * Returns the specified element in the matrix.
      * Each element of the matrix is composed of complex numbers.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_or_pos - If this is a matrix, the row number. If this is a vector, the address.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [col] - If this is a matrix, the column number.
-     * @returns {Complex}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} row_or_pos - If this is a matrix, the row number. If this is a vector, the address.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [col] - If this is a matrix, the column number.
+     * @returns {_Complex_}
      */
-    getComplex(row_or_pos: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, col?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Complex;
+    getComplex(row_or_pos: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, col?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Complex_;
     /**
      * Integer value of the first element of the matrix.
      * @returns {number}
@@ -2026,9 +2026,9 @@ declare class Matrix {
     doubleValue: number;
     /**
      * First element of this matrix.
-     * @returns {Complex}
+     * @returns {_Complex_}
      */
-    scalar: Complex;
+    scalar: _Complex_;
     /**
      * Maximum size of rows or columns in the matrix.
      * @returns {number}
@@ -2046,16 +2046,16 @@ declare class Matrix {
     norm2: number;
     /**
      * p-norm.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [p=2]
      * @returns {number}
      */
-    norm(p?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
+    norm(p?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): number;
     /**
      * Condition number of the matrix
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [p=2]
      * @returns {number}
      */
-    cond(p?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
+    cond(p?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): number;
     /**
      * Inverse condition number.
      * @returns {number}
@@ -2063,70 +2063,70 @@ declare class Matrix {
     rcond(): number;
     /**
      * Rank.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {number} rank(A)
      */
-    rank(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
+    rank(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): number;
     /**
      * Trace of a matrix.
      * Sum of diagonal elements.
-     * @returns {Complex} trace(A)
+     * @returns {_Complex_} trace(A)
      */
-    trace(): Complex;
+    trace(): _Complex_;
     /**
      * Determinant.
-     * @returns {Matrix} |A|
+     * @returns {_Matrix_} |A|
      */
-    det(): Matrix;
+    det(): _Matrix_;
     /**
      * Creates a matrix composed of the specified number.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - Value after initialization.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number - Value after initialization.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} dimension - Number of dimensions or rows.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [column_length] - Number of columns.
+     * @returns {_Matrix_}
      */
-    static memset(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static memset(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, dimension: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, column_length?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Return identity matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} dimension - Number of dimensions or rows.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [column_length] - Number of columns.
+     * @returns {_Matrix_}
      */
-    static eye(dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static eye(dimension: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, column_length?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Create zero matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} dimension - Number of dimensions or rows.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [column_length] - Number of columns.
+     * @returns {_Matrix_}
      */
-    static zeros(dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static zeros(dimension: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, column_length?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Create a matrix of all ones.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} dimension - Number of dimensions or rows.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [column_length] - Number of columns.
+     * @returns {_Matrix_}
      */
-    static ones(dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static ones(dimension: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, column_length?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Generate a matrix composed of random values with uniform random numbers.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} dimension - Number of dimensions or rows.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [column_length] - Number of columns.
+     * @returns {_Matrix_}
      */
-    static rand(dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static rand(dimension: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, column_length?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Generate a matrix composed of random values with normal distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} dimension - Number of dimensions or rows.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [column_length] - Number of columns.
+     * @returns {_Matrix_}
      */
-    static randn(dimension: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static randn(dimension: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, column_length?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * If matrix, generate diagonal column vector.
      * If vector, generate a matrix with diagonal elements.
-     * @returns {Matrix} Matrix or vector created. See how to use the function.
+     * @returns {_Matrix_} _Matrix_ or vector created. See how to use the function.
      */
-    diag(): Matrix;
+    diag(): _Matrix_;
     /**
      * Return true if the matrix is scalar.
      * @returns {boolean}
@@ -2159,537 +2159,537 @@ declare class Matrix {
     isSquare(): boolean;
     /**
      * Return true if the matrix is real matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isReal(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isReal(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Return true if the matrix is complex matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isComplex(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isComplex(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Return true if the matrix is zero matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isZeros(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isZeros(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Return true if the matrix is identity matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isIdentity(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isIdentity(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Return true if the matrix is diagonal matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isDiagonal(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isDiagonal(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Return true if the matrix is tridiagonal matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isTridiagonal(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isTridiagonal(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Return true if the matrix is regular matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isRegular(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isRegular(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Return true if the matrix is orthogonal matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isOrthogonal(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isOrthogonal(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Return true if the matrix is unitary matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isUnitary(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isUnitary(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Return true if the matrix is symmetric matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isSymmetric(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isSymmetric(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Return true if the matrix is hermitian matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isHermitian(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isHermitian(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Return true if the matrix is upper triangular matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isTriangleUpper(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isTriangleUpper(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Return true if the matrix is  lower triangular matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isTriangleLower(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isTriangleLower(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Return true if the matrix is permutation matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isPermutation(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): boolean;
+    isPermutation(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): boolean;
     /**
      * Number of rows and columns of matrix.
-     * @returns {Matrix} [row_length, column_length]
+     * @returns {_Matrix_} [row_length, column_length]
      */
-    size(): Matrix;
+    size(): _Matrix_;
     /**
      * Compare values.
      * - Return value between scalars is of type Number.
-     * - Return value between matrices is type Matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
-     * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
+     * - Return value between matrices is type _Matrix_.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @returns {number|_Matrix_} A > B ? 1 : (A === B ? 0 : -1)
      */
-    compareTo(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number | Matrix;
+    compareTo(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): number | _Matrix_;
     /**
      * Add.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @returns {Matrix} A + B
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @returns {_Matrix_} A + B
      */
-    add(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    add(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Subtract.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @returns {Matrix} A - B
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @returns {_Matrix_} A - B
      */
-    sub(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    sub(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Multiply.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @returns {Matrix} A * B
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @returns {_Matrix_} A * B
      */
-    mul(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    mul(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Divide.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @returns {Matrix} A / B
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @returns {_Matrix_} A / B
      */
-    div(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    div(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Power function.
      * - Supports only integers.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 整数
-     * @returns {Matrix} pow(A, B)
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number - 整数
+     * @returns {_Matrix_} pow(A, B)
      */
-    pow(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    pow(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Multiplication for each element of matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @returns {Matrix} A .* B
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @returns {_Matrix_} A .* B
      */
-    dotmul(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    dotmul(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Division for each element of matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @returns {Matrix} A ./ B
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @returns {_Matrix_} A ./ B
      */
-    dotdiv(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    dotdiv(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse of each element of matrix.
-     * @returns {Matrix} 1 ./ A
+     * @returns {_Matrix_} 1 ./ A
      */
-    dotinv(): Matrix;
+    dotinv(): _Matrix_;
     /**
      * Power function for each element of the matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @returns {Matrix} A .^ B
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @returns {_Matrix_} A .^ B
      */
-    dotpow(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    dotpow(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Multiplication for each element of matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @returns {Matrix} A .* B
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @returns {_Matrix_} A .* B
      * @deprecated use the dotmul.
      */
-    nmul(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    nmul(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Division for each element of matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @returns {Matrix} A ./ B
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @returns {_Matrix_} A ./ B
      * @deprecated use the dotdiv.
      */
-    ndiv(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    ndiv(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse of each element of matrix.
-     * @returns {Matrix} 1 ./ A
+     * @returns {_Matrix_} 1 ./ A
      * @deprecated use the dotinv.
      */
-    ninv(): Matrix;
+    ninv(): _Matrix_;
     /**
      * Power function for each element of the matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @returns {Matrix} A .^ B
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @returns {_Matrix_} A .^ B
      * @deprecated use the dotpow.
      */
-    npow(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    npow(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Real part of each element.
-     * @returns {Matrix} real(A)
+     * @returns {_Matrix_} real(A)
      */
-    real(): Matrix;
+    real(): _Matrix_;
     /**
      * Imaginary part of each element of the matrix.
-     * @returns {Matrix} imag(A)
+     * @returns {_Matrix_} imag(A)
      */
-    imag(): Matrix;
+    imag(): _Matrix_;
     /**
      * The argument of each element of matrix.
-     * @returns {Matrix} arg(A)
+     * @returns {_Matrix_} arg(A)
      */
-    arg(): Matrix;
+    arg(): _Matrix_;
     /**
      * The positive or negative signs of each element of the matrix.
      * - +1 if positive, -1 if negative, 0 if 0, norm if complex number.
-     * @returns {Matrix} [-1,1] 複素数の場合はノルムを1にした値。
+     * @returns {_Matrix_}
      */
-    sign(): Matrix;
+    sign(): _Matrix_;
     /**
      * Test if each element of the matrix is integer.
      * - 1 if true, 0 if false.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
-     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
-    testInteger(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    testInteger(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Test if each element of the matrix is complex integer.
      * - 1 if true, 0 if false.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
-     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
-    testComplexInteger(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    testComplexInteger(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * real(this) === 0
      * - 1 if true, 0 if false.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
-     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
-    testZero(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    testZero(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * real(this) === 1
      * - 1 if true, 0 if false.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
-     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
-    testOne(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    testOne(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Test if each element of the matrix is complex.
      * - 1 if true, 0 if false.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
-     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
-    testComplex(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    testComplex(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Test if each element of the matrix is real.
      * - 1 if true, 0 if false.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
-     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
-    testReal(tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    testReal(tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Test if each element of the matrix is NaN.
      * - 1 if true, 0 if false.
-     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
-    testNaN(): Matrix;
+    testNaN(): _Matrix_;
     /**
      * real(this) > 0
      * - 1 if true, 0 if false.
-     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
-    testPositive(): Matrix;
+    testPositive(): _Matrix_;
     /**
      * real(this) < 0
      * - 1 if true, 0 if false.
-     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
-    testNegative(): Matrix;
+    testNegative(): _Matrix_;
     /**
      * real(this) >= 0
      * - 1 if true, 0 if false.
-     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
-    testNotNegative(): Matrix;
+    testNotNegative(): _Matrix_;
     /**
      * Test if each element of the matrix is infinite.
      * - 1 if true, 0 if false.
-     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
-    testInfinite(): Matrix;
+    testInfinite(): _Matrix_;
     /**
      * Test if each element of the matrix is finite.
      * - 1 if true, 0 if false.
-     * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
-    testFinite(): Matrix;
+    testFinite(): _Matrix_;
     /**
      * Absolute value.
-     * @returns {Matrix} abs(A)
+     * @returns {_Matrix_} abs(A)
      */
-    abs(): Matrix;
+    abs(): _Matrix_;
     /**
-     * Complex conjugate matrix.
-     * @returns {Matrix} real(A) - imag(A)j
+     * _Complex_ conjugate matrix.
+     * @returns {_Matrix_} real(A) - imag(A)j
      */
-    conj(): Matrix;
+    conj(): _Matrix_;
     /**
      * this * -1
-     * @returns {Matrix} -A
+     * @returns {_Matrix_} -A
      */
-    negate(): Matrix;
+    negate(): _Matrix_;
     /**
      * Square root.
-     * @returns {Matrix} sqrt(A)
+     * @returns {_Matrix_} sqrt(A)
      */
-    sqrt(): Matrix;
+    sqrt(): _Matrix_;
     /**
      * Logarithmic function.
-     * @returns {Matrix} log(A)
+     * @returns {_Matrix_} log(A)
      */
-    log(): Matrix;
+    log(): _Matrix_;
     /**
      * Exponential function.
-     * @returns {Matrix} exp(A)
+     * @returns {_Matrix_} exp(A)
      */
-    exp(): Matrix;
+    exp(): _Matrix_;
     /**
      * Sine function.
-     * @returns {Matrix} sin(A)
+     * @returns {_Matrix_} sin(A)
      */
-    sin(): Matrix;
+    sin(): _Matrix_;
     /**
      * Cosine function.
-     * @returns {Matrix} cos(A)
+     * @returns {_Matrix_} cos(A)
      */
-    cos(): Matrix;
+    cos(): _Matrix_;
     /**
      * Tangent function.
-     * @returns {Matrix} tan(A)
+     * @returns {_Matrix_} tan(A)
      */
-    tan(): Matrix;
+    tan(): _Matrix_;
     /**
      * Atan (arc tangent) function.
      * - Return the values of [-PI/2, PI/2].
-     * @returns {Matrix} atan(A)
+     * @returns {_Matrix_} atan(A)
      */
-    atan(): Matrix;
+    atan(): _Matrix_;
     /**
      * Atan (arc tangent) function.
      * - Return the values of [-PI, PI].
      * - Supports only real numbers.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - X
-     * @returns {Matrix} atan2(Y, X)
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number - X
+     * @returns {_Matrix_} atan2(Y, X)
      */
-    atan2(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    atan2(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Floor.
-     * @returns {Matrix} floor(A)
+     * @returns {_Matrix_} floor(A)
      */
-    floor(): Matrix;
+    floor(): _Matrix_;
     /**
      * Ceil.
-     * @returns {Matrix} ceil(A)
+     * @returns {_Matrix_} ceil(A)
      */
-    ceil(): Matrix;
+    ceil(): _Matrix_;
     /**
      * Rounding to the nearest integer.
-     * @returns {Matrix} round(A)
+     * @returns {_Matrix_} round(A)
      */
-    round(): Matrix;
+    round(): _Matrix_;
     /**
      * To integer rounded down to the nearest.
-     * @returns {Matrix} fix(A), trunc(A)
+     * @returns {_Matrix_} fix(A), trunc(A)
      */
-    fix(): Matrix;
+    fix(): _Matrix_;
     /**
-     * Fraction.
-     * @returns {Matrix} fract(A)
+     * _Fraction_.
+     * @returns {_Matrix_} fract(A)
      */
-    fract(): Matrix;
+    fract(): _Matrix_;
     /**
      * Normalized sinc function.
-     * @returns {Matrix} sinc(A)
+     * @returns {_Matrix_} sinc(A)
      */
-    sinc(): Matrix;
+    sinc(): _Matrix_;
     /**
      * Rotate matrix 90 degrees clockwise.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} rot_90_count - Number of times rotated by 90 degrees.
-     * @returns {Matrix} Matrix after function processing.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} rot_90_count - Number of times rotated by 90 degrees.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    rot90(rot_90_count: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    rot90(rot_90_count: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Change the size of the matrix.
      * Initialized with 0 when expanding.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - Number of rows of matrix to resize.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - Number of columns of matrix to resize.
-     * @returns {Matrix} Matrix after function processing.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} row_length - Number of rows of matrix to resize.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} column_length - Number of columns of matrix to resize.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    resize(row_length: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    resize(row_length: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, column_length: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Remove the row in this matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_row_index - Number of row of matrix to delete.
-     * @returns {Matrix} Matrix after function processing.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} delete_row_index - Number of row of matrix to delete.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    deleteRow(delete_row_index: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    deleteRow(delete_row_index: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Remove the column in this matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_column_index - Number of column of matrix to delete.
-     * @returns {Matrix} Matrix after function processing.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} delete_column_index - Number of column of matrix to delete.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    deleteColumn(delete_column_index: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    deleteColumn(delete_column_index: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Swap rows in the matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index1 - Number 1 of row of matrix to exchange.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index2 - Number 2 of row of matrix to exchange.
-     * @returns {Matrix} Matrix after function processing.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} exchange_row_index1 - Number 1 of row of matrix to exchange.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} exchange_row_index2 - Number 2 of row of matrix to exchange.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    exchangeRow(exchange_row_index1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, exchange_row_index2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    exchangeRow(exchange_row_index1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, exchange_row_index2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Swap columns in the matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index1 - Number 1 of column of matrix to exchange.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index2 - Number 2 of column of matrix to exchange.
-     * @returns {Matrix} Matrix after function processing.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} exchange_column_index1 - Number 1 of column of matrix to exchange.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} exchange_column_index2 - Number 2 of column of matrix to exchange.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    exchangeColumn(exchange_column_index1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, exchange_column_index2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    exchangeColumn(exchange_column_index1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, exchange_column_index2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Combine matrix to the right of this matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} left_matrix - Matrix to combine.
-     * @returns {Matrix} Matrix after function processing.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} left_matrix - _Matrix_ to combine.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    concatRight(left_matrix: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    concatRight(left_matrix: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Combine matrix to the bottom of this matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} bottom_matrix - Matrix to combine.
-     * @returns {Matrix} Matrix after function processing.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} bottom_matrix - _Matrix_ to combine.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    concatBottom(bottom_matrix: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    concatBottom(bottom_matrix: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Clip each element of matrix to specified range.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} min
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} max
-     * @returns {Matrix} min(max(x, min), max)
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} min
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} max
+     * @returns {_Matrix_} min(max(x, min), max)
      */
-    clip(min: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, max: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    clip(min: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, max: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Create row vector with specified initial value, step value, end condition.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} start_or_stop
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [stop]
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [step=1]
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} start_or_stop
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [stop]
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [step=1]
+     * @returns {_Matrix_}
      */
-    static arange(start_or_stop: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, stop?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, step?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static arange(start_or_stop: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, stop?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, step?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Circular shift.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} shift_size
      * @param {MatrixSettings} [type]
-     * @returns {Matrix} Matrix after function processing.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    circshift(shift_size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: MatrixSettings): Matrix;
+    circshift(shift_size: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: MatrixSettings): _Matrix_;
     /**
      * Circular shift.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} shift_size
      * @param {MatrixSettings} [type]
-     * @returns {Matrix} Matrix after function processing.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    roll(shift_size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: MatrixSettings): Matrix;
+    roll(shift_size: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: MatrixSettings): _Matrix_;
     /**
      * Change the shape of the matrix.
      * The number of elements in the matrix doesn't increase or decrease.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - Number of rows of matrix to reshape.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - Number of columns of matrix to reshape.
-     * @returns {Matrix} Matrix after function processing.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} row_length - Number of rows of matrix to reshape.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} column_length - Number of columns of matrix to reshape.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    reshape(row_length: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, column_length: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    reshape(row_length: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, column_length: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Flip this matrix left and right.
-     * @returns {Matrix} Matrix after function processing.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    fliplr(): Matrix;
+    fliplr(): _Matrix_;
     /**
      * Flip this matrix up and down.
-     * @returns {Matrix} Matrix after function processing.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    flipud(): Matrix;
+    flipud(): _Matrix_;
     /**
      * Flip this matrix.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix} Matrix after function processing.
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    flip(type?: MatrixSettings): Matrix;
+    flip(type?: MatrixSettings): _Matrix_;
     /**
      * Index sort.
      * - Sorts by row when setting index by row vector to the argument.
      * - Sorts by column when setting index by column vector to the argument.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - Vector with index. (See the description of this function)
-     * @returns {Matrix} Matrix after function processing.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - Vector with index. (See the description of this function)
+     * @returns {_Matrix_} _Matrix_ after function processing.
      */
-    indexsort(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    indexsort(v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Transpose a matrix.
-     * @returns {Matrix} A^T
+     * @returns {_Matrix_} A^T
      */
-    transpose(): Matrix;
+    transpose(): _Matrix_;
     /**
      * Hermitian transpose.
-     * @returns {Matrix} A^T
+     * @returns {_Matrix_} A^T
      */
-    ctranspose(): Matrix;
+    ctranspose(): _Matrix_;
     /**
      * Hermitian transpose.
-     * @returns {Matrix} A^T
+     * @returns {_Matrix_} A^T
      */
-    T(): Matrix;
+    T(): _Matrix_;
     /**
      * Inner product/Dot product.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
-     * @returns {Matrix} A・B
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
+     * @returns {_Matrix_} A・B
      */
-    inner(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, dimension?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    inner(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, dimension?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * LUP decomposition.
      * - P'*L*U=A
      * - P is permutation matrix.
      * - L is lower triangular matrix.
      * - U is upper triangular matrix.
-     * @returns {{P: Matrix, L: Matrix, U: Matrix}} {L, U, P}
+     * @returns {{P: _Matrix_, L: _Matrix_, U: _Matrix_}} {L, U, P}
      */
-    lup(): {P: Matrix, L: Matrix, U: Matrix};
+    lup(): {P: _Matrix_, L: _Matrix_, U: _Matrix_};
     /**
      * LU decomposition.
      * - L*U=A
      * - L is lower triangular matrix.
      * - U is upper triangular matrix.
-     * @returns {{L: Matrix, U: Matrix}} {L, U}
+     * @returns {{L: _Matrix_, U: _Matrix_}} {L, U}
      */
-    lu(): {L: Matrix, U: Matrix};
+    lu(): {L: _Matrix_, U: _Matrix_};
     /**
      * Solving a system of linear equations to be Ax = B
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
-     * @returns {Matrix} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number - B
+     * @returns {_Matrix_} x
      */
-    linsolve(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    linsolve(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * QR decomposition.
      * - Q*R=A
      * - Q is orthonormal matrix.
      * - R is upper triangular matrix.
-     * @returns {{Q: Matrix, R: Matrix}} {Q, R}
+     * @returns {{Q: _Matrix_, R: _Matrix_}} {Q, R}
      */
-    qr(): {Q: Matrix, R: Matrix};
+    qr(): {Q: _Matrix_, R: _Matrix_};
     /**
      * Tridiagonalization of symmetric matrix.
      * - Don't support complex numbers.
@@ -2697,395 +2697,395 @@ declare class Matrix {
      * - P is orthonormal matrix.
      * - H is tridiagonal matrix.
      * - The eigenvalues of H match the eigenvalues of A.
-     * @returns {{P: Matrix, H: Matrix}} {P, H}
+     * @returns {{P: _Matrix_, H: _Matrix_}} {P, H}
      */
-    tridiagonalize(): {P: Matrix, H: Matrix};
+    tridiagonalize(): {P: _Matrix_, H: _Matrix_};
     /**
      * Eigendecomposition of symmetric matrix.
      * - Don't support complex numbers.
      * - V*D*V'=A.
      * - V is orthonormal matrix. and columns of V are the right eigenvectors.
      * - D is a matrix containing the eigenvalues on the diagonal component.
-     * @returns {{V: Matrix, D: Matrix}} {D, V}
+     * @returns {{V: _Matrix_, D: _Matrix_}} {D, V}
      */
-    eig(): {V: Matrix, D: Matrix};
+    eig(): {V: _Matrix_, D: _Matrix_};
     /**
      * Singular Value Decomposition (SVD).
      * - U*S*V'=A
      * - U and V are orthonormal matrices.
      * - S is a matrix with singular values in the diagonal.
-     * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
+     * @returns {{U: _Matrix_, S: _Matrix_, V: _Matrix_}} U*S*V'=A
      */
-    svd(): {U: Matrix, S: Matrix, V: Matrix};
+    svd(): {U: _Matrix_, S: _Matrix_, V: _Matrix_};
     /**
      * Inverse matrix of this matrix.
-     * @returns {Matrix} A^-1
+     * @returns {_Matrix_} A^-1
      */
-    inv(): Matrix;
+    inv(): _Matrix_;
     /**
      * Pseudo-inverse matrix.
-     * @returns {Matrix} A^+
+     * @returns {_Matrix_} A^+
      */
-    pinv(): Matrix;
+    pinv(): _Matrix_;
     /**
      * Log-gamma function.
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    gammaln(): Matrix;
+    gammaln(): _Matrix_;
     /**
      * Gamma function.
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    gamma(): Matrix;
+    gamma(): _Matrix_;
     /**
      * Incomplete gamma function.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
      * @param {string} [tail="lower"] - lower (default) , "upper"
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    gammainc(a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tail?: string): Matrix;
+    gammainc(a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tail?: string): _Matrix_;
     /**
      * Probability density function (PDF) of the gamma distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - Shape parameter.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} s - Scale parameter.
+     * @returns {_Matrix_}
      */
-    gampdf(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    gampdf(k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of gamma distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - Shape parameter.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} s - Scale parameter.
+     * @returns {_Matrix_}
      */
-    gamcdf(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    gamcdf(k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of gamma distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - Shape parameter.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} s - Scale parameter.
+     * @returns {_Matrix_}
      */
-    gaminv(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    gaminv(k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Beta function.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} y
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} y
+     * @returns {_Matrix_}
      */
-    beta(y: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    beta(y: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Incomplete beta function.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
      * @param {string} [tail="lower"] - lower (default) , "upper"
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    betainc(a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tail?: string): Matrix;
+    betainc(a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tail?: string): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of beta distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
+     * @returns {_Matrix_}
      */
-    betacdf(a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    betacdf(a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Probability density function (PDF) of beta distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
+     * @returns {_Matrix_}
      */
-    betapdf(a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    betapdf(a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of beta distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
+     * @returns {_Matrix_}
      */
-    betainv(a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    betainv(a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Factorial function, x!.
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    factorial(): Matrix;
+    factorial(): _Matrix_;
     /**
      * Binomial coefficient, number of all combinations, nCk.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k
+     * @returns {_Matrix_}
      */
-    nchoosek(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    nchoosek(k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Error function.
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    erf(): Matrix;
+    erf(): _Matrix_;
     /**
      * Complementary error function.
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    erfc(): Matrix;
+    erfc(): _Matrix_;
     /**
      * Probability density function (PDF) of normal distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [u=0.0] - Average value.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [s=1.0] - Variance value.
+     * @returns {_Matrix_}
      */
-    normpdf(u?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    normpdf(u?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of normal distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [u=0.0] - Average value.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [s=1.0] - Variance value.
+     * @returns {_Matrix_}
      */
-    normcdf(u?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    normcdf(u?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of normal distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [u=0.0] - Average value.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [s=1.0] - Variance value.
+     * @returns {_Matrix_}
      */
-    norminv(u?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    norminv(u?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Probability density function (PDF) of Student's t-distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
      */
-    tpdf(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    tpdf(v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of Student's t-distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
      */
-    tcdf(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    tcdf(v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
      */
-    tinv(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    tinv(v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
      * - If tails = 1, TDIST returns the one-tailed distribution.
      * - If tails = 2, TDIST returns the two-tailed distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
+     * @returns {_Matrix_}
      */
-    tdist(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tails: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    tdist(v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tails: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
      */
-    tinv2(v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    tinv2(v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Probability density function (PDF) of chi-square distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
      */
-    chi2pdf(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    chi2pdf(k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of chi-square distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
      */
-    chi2cdf(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    chi2cdf(k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
      */
-    chi2inv(k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    chi2inv(k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Probability density function (PDF) of F-distribution.
      * - In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d2 - The degree of freedom of the denominator
+     * @returns {_Matrix_}
      */
-    fpdf(d1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    fpdf(d1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of F-distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d2 - The degree of freedom of the denominator
+     * @returns {_Matrix_}
      */
-    fcdf(d1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    fcdf(d1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of F-distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d2 - The degree of freedom of the denominator
+     * @returns {_Matrix_}
      */
-    finv(d1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    finv(d1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Maximum number.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix} max([A, B])
+     * @returns {_Matrix_} max([A, B])
      */
-    max(type?: MatrixSettings): Matrix;
+    max(type?: MatrixSettings): _Matrix_;
     /**
      * Minimum number.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix} min([A, B])
+     * @returns {_Matrix_} min([A, B])
      */
-    min(type?: MatrixSettings): Matrix;
+    min(type?: MatrixSettings): _Matrix_;
     /**
      * Sum.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    sum(type?: MatrixSettings): Matrix;
+    sum(type?: MatrixSettings): _Matrix_;
     /**
      * Arithmetic average.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    mean(type?: MatrixSettings): Matrix;
+    mean(type?: MatrixSettings): _Matrix_;
     /**
      * Product of array elements.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    prod(type?: MatrixSettings): Matrix;
+    prod(type?: MatrixSettings): _Matrix_;
     /**
      * Geometric mean.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    geomean(type?: MatrixSettings): Matrix;
+    geomean(type?: MatrixSettings): _Matrix_;
     /**
      * Median.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    median(type?: MatrixSettings): Matrix;
+    median(type?: MatrixSettings): _Matrix_;
     /**
      * Mode.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    mode(type?: MatrixSettings): Matrix;
+    mode(type?: MatrixSettings): _Matrix_;
     /**
      * Moment.
      * - Moment of order n. Equivalent to the definition of variance at 2.
      * @param {number} nth_order
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    moment(nth_order: number, type?: MatrixSettings): Matrix;
+    moment(nth_order: number, type?: MatrixSettings): _Matrix_;
     /**
      * Variance.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    var(type?: MatrixSettings): Matrix;
+    var(type?: MatrixSettings): _Matrix_;
     /**
      * Standard deviation.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    std(type?: MatrixSettings): Matrix;
+    std(type?: MatrixSettings): _Matrix_;
     /**
      * Mean absolute deviation.
      * - The "algorithm" can choose "0/mean"(default) and "1/median".
      * @param {?string|?number} [algorithm]
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    mad(algorithm?: string | number, type?: MatrixSettings): Matrix;
+    mad(algorithm?: string | number, type?: MatrixSettings): _Matrix_;
     /**
      * Skewness.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    skewness(type?: MatrixSettings): Matrix;
+    skewness(type?: MatrixSettings): _Matrix_;
     /**
      * Covariance matrix.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    cov(type?: MatrixSettings): Matrix;
+    cov(type?: MatrixSettings): _Matrix_;
     /**
      * The samples are normalized to a mean value of 0, standard deviation of 1.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    normalize(type?: MatrixSettings): Matrix;
+    normalize(type?: MatrixSettings): _Matrix_;
     /**
      * Correlation matrix.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    corrcoef(type?: MatrixSettings): Matrix;
+    corrcoef(type?: MatrixSettings): _Matrix_;
     /**
      * Sort.
      * - The "order" can choose "ascend"(default) and "descend".
      * @param {string} [order]
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    sort(order?: string, type?: MatrixSettings): Matrix;
+    sort(order?: string, type?: MatrixSettings): _Matrix_;
     /**
      * Discrete Fourier transform (DFT).
      * @param {MatrixSettings} [type]
-     * @returns {Matrix} fft(x)
+     * @returns {_Matrix_} fft(x)
      */
-    fft(type?: MatrixSettings): Matrix;
+    fft(type?: MatrixSettings): _Matrix_;
     /**
      * Inverse discrete Fourier transform (IDFT).
      * @param {MatrixSettings} [type]
-     * @returns {Matrix} ifft(x)
+     * @returns {_Matrix_} ifft(x)
      */
-    ifft(type?: MatrixSettings): Matrix;
+    ifft(type?: MatrixSettings): _Matrix_;
     /**
      * Power spectral density.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix} abs(fft(x)).^2
+     * @returns {_Matrix_} abs(fft(x)).^2
      */
-    powerfft(type?: MatrixSettings): Matrix;
+    powerfft(type?: MatrixSettings): _Matrix_;
     /**
-     * Discrete cosine transform (DCT-II, DCT).
+     * Discrete cosine transform (_DCT_-II, _DCT_).
      * @param {MatrixSettings} [type]
-     * @returns {Matrix} dct(x)
+     * @returns {_Matrix_} dct(x)
      */
-    dct(type?: MatrixSettings): Matrix;
+    dct(type?: MatrixSettings): _Matrix_;
     /**
-     * Inverse discrete cosine transform (DCT-III, IDCT).
+     * Inverse discrete cosine transform (_DCT_-III, IDCT).
      * @param {MatrixSettings} [type]
-     * @returns {Matrix} idct(x)
+     * @returns {_Matrix_} idct(x)
      */
-    idct(type?: MatrixSettings): Matrix;
+    idct(type?: MatrixSettings): _Matrix_;
     /**
      * Discrete two-dimensional Fourier transform (2D DFT).
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    fft2(): Matrix;
+    fft2(): _Matrix_;
     /**
      * Inverse discrete two-dimensional Fourier transform (2D IDFT).
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    ifft2(): Matrix;
+    ifft2(): _Matrix_;
     /**
-     * Discrete two-dimensional cosine transform (2D DCT).
-     * @returns {Matrix}
+     * Discrete two-dimensional cosine transform (2D _DCT_).
+     * @returns {_Matrix_}
      */
-    dct2(): Matrix;
+    dct2(): _Matrix_;
     /**
      * Inverse discrete two-dimensional cosine transform (2D IDCT).
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    idct2(): Matrix;
+    idct2(): _Matrix_;
     /**
      * Convolution integral, Polynomial multiplication.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number
+     * @returns {_Matrix_}
      */
-    conv(number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    conv(number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * ACF(Autocorrelation function), cros-correlation function.
      * - If the argument is omitted, it is calculated by the autocorrelation function.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [number] - Matrix to calculate the correlation.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [number] - _Matrix_ to calculate the correlation.
+     * @returns {_Matrix_}
      */
-    xcorr(number?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    xcorr(number?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Create window function for signal processing.
      * The following window functions are available.
@@ -3099,122 +3099,122 @@ declare class Matrix {
      * - "sin", Half cycle sine window.
      * - "vorbis", Vorbis window.
      * @param {string} name - Window function name.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} size - Window length
      * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
-     * @returns {Matrix} Column vector.
+     * @returns {_Matrix_} Column vector.
      */
-    static window(name: string, size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
+    static window(name: string, size: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, periodic?: string | number): _Matrix_;
     /**
      * Hann (Hanning) window.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} size - Window length
      * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
-     * @returns {Matrix} Column vector.
+     * @returns {_Matrix_} Column vector.
      */
-    static hann(size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
+    static hann(size: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, periodic?: string | number): _Matrix_;
     /**
      * Hamming window.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} size - Window length
      * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
-     * @returns {Matrix} Column vector.
+     * @returns {_Matrix_} Column vector.
      */
-    static hamming(size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
+    static hamming(size: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, periodic?: string | number): _Matrix_;
     /**
-     * FFT shift.
+     * _FFT_ shift.
      * Circular shift beginning at the center of the signal.
      * @param {MatrixSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    fftshift(type?: MatrixSettings): Matrix;
+    fftshift(type?: MatrixSettings): _Matrix_;
 }
 
 /**
- * Class for linear algebra for Matrix class.
+ * Class for linear algebra for _Matrix_ class.
  */
-declare class LinearAlgebra {
+declare class _LinearAlgebra_ {
     /**
      * Inner product/Dot product.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} A
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} B
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
-     * @returns {Matrix} A・B
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} A
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} B
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
+     * @returns {_Matrix_} A・B
      */
-    static inner(A: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, B: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, dimension?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static inner(A: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, B: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, dimension?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * p-norm.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [p=2]
      * @returns {number}
      */
-    static norm(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, p?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
+    static norm(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, p?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): number;
     /**
      * Condition number of the matrix
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [p=2]
      * @returns {number}
      */
-    static cond(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, p?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
+    static cond(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, p?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): number;
     /**
      * Inverse condition number.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat
      * @returns {number}
      */
-    static rcond(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
+    static rcond(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): number;
     /**
      * Rank.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [tolerance] - Calculation tolerance of calculation.
      * @returns {number} rank(A)
      */
-    static rank(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tolerance?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): number;
+    static rank(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tolerance?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): number;
     /**
      * Trace of a matrix.
      * Sum of diagonal elements.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-     * @returns {Complex}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat
+     * @returns {_Complex_}
      */
-    static trace(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Complex;
+    static trace(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Complex_;
     /**
      * Determinant.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-     * @returns {Matrix} |A|
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat
+     * @returns {_Matrix_} |A|
      */
-    static det(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static det(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * LUP decomposition.
      * - P'*L*U=A
      * - P is permutation matrix.
      * - L is lower triangular matrix.
      * - U is upper triangular matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-     * @returns {{P: Matrix, L: Matrix, U: Matrix}} {L, U, P}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat - A
+     * @returns {{P: _Matrix_, L: _Matrix_, U: _Matrix_}} {L, U, P}
      */
-    static lup(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {P: Matrix, L: Matrix, U: Matrix};
+    static lup(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): {P: _Matrix_, L: _Matrix_, U: _Matrix_};
     /**
      * LU decomposition.
      * - L*U=A
      * - L is lower triangular matrix.
      * - U is upper triangular matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-     * @returns {{L: Matrix, U: Matrix}} {L, U}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat - A
+     * @returns {{L: _Matrix_, U: _Matrix_}} {L, U}
      */
-    static lu(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {L: Matrix, U: Matrix};
+    static lu(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): {L: _Matrix_, U: _Matrix_};
     /**
      * Solving a system of linear equations to be Ax = B
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
-     * @returns {Matrix} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat - A
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} number - B
+     * @returns {_Matrix_} x
      * @todo 安定化のためQR分解を用いた手法に切り替える。あるいはlup分解を使用した関数に作り替える。
      */
-    static linsolve(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, number: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static linsolve(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, number: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * QR decomposition.
      * - Q*R=A
      * - Q is orthonormal matrix.
      * - R is upper triangular matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-     * @returns {{Q: Matrix, R: Matrix}} {Q, R}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat - A
+     * @returns {{Q: _Matrix_, R: _Matrix_}} {Q, R}
      */
-    static qr(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {Q: Matrix, R: Matrix};
+    static qr(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): {Q: _Matrix_, R: _Matrix_};
     /**
      * Tridiagonalization of symmetric matrix.
      * - Don't support complex numbers.
@@ -3222,49 +3222,49 @@ declare class LinearAlgebra {
      * - P is orthonormal matrix.
      * - H is tridiagonal matrix.
      * - The eigenvalues of H match the eigenvalues of A.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-     * @returns {{P: Matrix, H: Matrix}} {P, H}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat - A
+     * @returns {{P: _Matrix_, H: _Matrix_}} {P, H}
      */
-    static tridiagonalize(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {P: Matrix, H: Matrix};
+    static tridiagonalize(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): {P: _Matrix_, H: _Matrix_};
     /**
      * Eigendecomposition of symmetric matrix.
      * - Don't support complex numbers.
      * - V*D*V'=A.
      * - V is orthonormal matrix. and columns of V are the right eigenvectors.
      * - D is a matrix containing the eigenvalues on the diagonal component.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-     * @returns {{V: Matrix, D: Matrix}} {D, V}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat - A
+     * @returns {{V: _Matrix_, D: _Matrix_}} {D, V}
      * @todo 対称行列しか対応できていないので、対称行列ではないものはQR分解を用いた手法に切り替える予定。
      */
-    static eig(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {V: Matrix, D: Matrix};
+    static eig(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): {V: _Matrix_, D: _Matrix_};
     /**
      * Singular Value Decomposition (SVD).
      * - U*S*V'=A
      * - U and V are orthonormal matrices.
      * - S is a matrix with singular values in the diagonal.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-     * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat - A
+     * @returns {{U: _Matrix_, S: _Matrix_, V: _Matrix_}} U*S*V'=A
      */
-    static svd(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): {U: Matrix, S: Matrix, V: Matrix};
+    static svd(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): {U: _Matrix_, S: _Matrix_, V: _Matrix_};
     /**
      * Inverse matrix of this matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-     * @returns {Matrix} A^-1
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat - A
+     * @returns {_Matrix_} A^-1
      */
-    static inv(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static inv(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Pseudo-inverse matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-     * @returns {Matrix} A^+
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} mat - A
+     * @returns {_Matrix_} A^+
      */
-    static pinv(mat: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static pinv(mat: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
 }
 
 /**
- * Create Random.
+ * Create _Random_.
  * @param {number} [seed] - Seed number for random number generation. If not specified, create from time.
  */
-declare class Random {
+declare class _Random_ {
     constructor(seed?: number);
     /**
      * 内部データをシャッフル
@@ -3281,7 +3281,7 @@ declare class Random {
      */
     genrand_int32(): number;
     /**
-     * Random number of specified bit length.
+     * _Random_ number of specified bit length.
      * @param {number} bits - Required number of bits (up to 64 possible).
      * @returns {number}
      */
@@ -3309,7 +3309,7 @@ declare class Random {
      */
     nextLong(): number;
     /**
-     * Random boolean.
+     * _Random_ boolean.
      * @returns {boolean}
      */
     nextBoolean(): boolean;
@@ -3324,7 +3324,7 @@ declare class Random {
      */
     nextDouble(): number;
     /**
-     * Random numbers from a Gaussian distribution.
+     * _Random_ numbers from a Gaussian distribution.
      * This random number is a distribution with an average value of 0 and a standard deviation of 1.
      * @returns {number}
      */
@@ -3342,83 +3342,83 @@ declare type SignalSettings = {
 };
 
 /**
- * Signal processing class for Matrix class.
+ * _Signal_ processing class for _Matrix_ class.
  */
-declare class Signal {
+declare class _Signal_ {
     /**
      * Discrete Fourier transform (DFT).
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {SignalSettings} [type]
-     * @returns {Matrix} fft(x)
+     * @returns {_Matrix_} fft(x)
      */
-    static fft(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: SignalSettings): Matrix;
+    static fft(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: SignalSettings): _Matrix_;
     /**
      * Inverse discrete Fourier transform (IDFT),
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} X
      * @param {SignalSettings} [type]
-     * @returns {Matrix} ifft(X)
+     * @returns {_Matrix_} ifft(X)
      */
-    static ifft(X: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: SignalSettings): Matrix;
+    static ifft(X: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: SignalSettings): _Matrix_;
     /**
      * Power spectral density.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {SignalSettings} [type]
-     * @returns {Matrix} abs(fft(x)).^2
+     * @returns {_Matrix_} abs(fft(x)).^2
      */
-    static powerfft(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: SignalSettings): Matrix;
+    static powerfft(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: SignalSettings): _Matrix_;
     /**
-     * Discrete cosine transform (DCT-II, DCT).
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * Discrete cosine transform (_DCT_-II, _DCT_).
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {SignalSettings} [type]
-     * @returns {Matrix} dct(x)
+     * @returns {_Matrix_} dct(x)
      */
-    static dct(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: SignalSettings): Matrix;
+    static dct(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: SignalSettings): _Matrix_;
     /**
-     * Inverse discrete cosine transform (DCT-III, IDCT),
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
+     * Inverse discrete cosine transform (_DCT_-III, IDCT),
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} X
      * @param {SignalSettings} [type]
-     * @returns {Matrix} idct(x)
+     * @returns {_Matrix_} idct(x)
      */
-    static idct(X: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: SignalSettings): Matrix;
+    static idct(X: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: SignalSettings): _Matrix_;
     /**
      * Discrete two-dimensional Fourier transform (2D DFT).
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @returns {_Matrix_}
      */
-    static fft2(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static fft2(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse discrete two-dimensional Fourier transform (2D IDFT),
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} X
+     * @returns {_Matrix_}
      */
-    static ifft2(X: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static ifft2(X: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
-     * Discrete two-dimensional cosine transform (2D DCT).
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @returns {Matrix}
+     * Discrete two-dimensional cosine transform (2D _DCT_).
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @returns {_Matrix_}
      */
-    static dct2(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static dct2(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse discrete two-dimensional cosine transform (2D IDCT),
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} X
+     * @returns {_Matrix_}
      */
-    static idct2(X: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static idct2(X: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Convolution integral, Polynomial multiplication.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x2
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x1
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x2
+     * @returns {_Matrix_}
      */
-    static conv(x1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, x2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static conv(x1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, x2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * ACF(Autocorrelation function), cros-correlation function.
      * - If the argument is omitted, it is calculated by the autocorrelation function.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [x2] - Matrix to calculate the correlation.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x1
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [x2] - _Matrix_ to calculate the correlation.
+     * @returns {_Matrix_}
      */
-    static xcorr(x1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, x2?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static xcorr(x1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, x2?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Create window function for signal processing.
      * The following window functions are available.
@@ -3432,33 +3432,33 @@ declare class Signal {
      * - "sin", Half cycle sine window.
      * - "vorbis", Vorbis window.
      * @param {string} name - Window function name.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} size - Window length
      * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
-     * @returns {Matrix} Column vector.
+     * @returns {_Matrix_} Column vector.
      */
-    static window(name: string, size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
+    static window(name: string, size: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, periodic?: string | number): _Matrix_;
     /**
      * Hann (Hanning) window.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} size - Window length
      * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
-     * @returns {Matrix} Column vector.
+     * @returns {_Matrix_} Column vector.
      */
-    static hann(size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
+    static hann(size: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, periodic?: string | number): _Matrix_;
     /**
      * Hamming window.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} size - Window length
      * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
-     * @returns {Matrix} Column vector.
+     * @returns {_Matrix_} Column vector.
      */
-    static hamming(size: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, periodic?: string | number): Matrix;
+    static hamming(size: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, periodic?: string | number): _Matrix_;
     /**
-     * FFT shift.
+     * _FFT_ shift.
      * Circular shift beginning at the center of the signal.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {SignalSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static fftshift(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: SignalSettings): Matrix;
+    static fftshift(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: SignalSettings): _Matrix_;
 }
 
 /**
@@ -3474,347 +3474,347 @@ declare type StatisticsSettings = {
 };
 
 /**
- * Class for statistical processing for Matrix class.
+ * Class for statistical processing for _Matrix_ class.
  */
-declare class Statistics {
+declare class _Statistics_ {
     /**
      * Log-gamma function.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @returns {_Matrix_}
      */
-    static gammaln(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static gammaln(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Gamma function.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @returns {_Matrix_}
      */
-    static gamma(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static gamma(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Incomplete gamma function.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
      * @param {string} [tail="lower"] - lower (default) , "upper"
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static gammainc(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tail?: string): Matrix;
+    static gammainc(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tail?: string): _Matrix_;
     /**
      * Probability density function (PDF) of the gamma distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - Shape parameter.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} s - Scale parameter.
+     * @returns {_Matrix_}
      */
-    static gampdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static gampdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of gamma distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - Shape parameter.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} s - Scale parameter.
+     * @returns {_Matrix_}
      */
-    static gamcdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static gamcdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of gamma distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - Shape parameter.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} s - Scale parameter.
+     * @returns {_Matrix_}
      */
-    static gaminv(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static gaminv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Beta function.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} y
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} y
+     * @returns {_Matrix_}
      */
-    static beta(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, y: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static beta(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, y: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Incomplete beta function.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
      * @param {string} [tail="lower"] - lower (default) , "upper"
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static betainc(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tail?: string): Matrix;
+    static betainc(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tail?: string): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of beta distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
+     * @returns {_Matrix_}
      */
-    static betacdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static betacdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Probability density function (PDF) of beta distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
+     * @returns {_Matrix_}
      */
-    static betapdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static betapdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of beta distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
+     * @returns {_Matrix_}
      */
-    static betainv(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, a: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, b: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static betainv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Factorial function, x!.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @returns {_Matrix_}
      */
-    static factorial(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static factorial(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Binomial coefficient, number of all combinations, nCk.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k
+     * @returns {_Matrix_}
      */
-    static nchoosek(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static nchoosek(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Error function.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @returns {_Matrix_}
      */
-    static erf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static erf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Complementary error function.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @returns {_Matrix_}
      */
-    static erfc(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static erfc(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Probability density function (PDF) of normal distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [u=0.0] - Average value.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [s=1.0] - Variance value.
+     * @returns {_Matrix_}
      */
-    static normpdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, u?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static normpdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, u?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of normal distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [u=0.0] - Average value.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [s=1.0] - Variance value.
+     * @returns {_Matrix_}
      */
-    static normcdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, u?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static normcdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, u?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of normal distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [u=0.0] - Average value.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [s=1.0] - Variance value.
+     * @returns {_Matrix_}
      */
-    static norminv(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, u?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, s?: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static norminv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, u?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Probability density function (PDF) of Student's t-distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
      */
-    static tpdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static tpdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of Student's t-distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
      */
-    static tcdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static tcdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
      */
-    static tinv(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static tinv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
+     * @returns {_Matrix_}
      */
-    static tdist(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, tails: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static tdist(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tails: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
      */
-    static tinv2(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, v: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static tinv2(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Probability density function (PDF) of chi-square distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
      */
-    static chi2pdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static chi2pdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of chi-square distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
      */
-    static chi2cdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static chi2cdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
      */
-    static chi2inv(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, k: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static chi2inv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Probability density function (PDF) of F-distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d2 - The degree of freedom of the denominator
+     * @returns {_Matrix_}
      */
-    static fpdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static fpdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of F-distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d2 - The degree of freedom of the denominator
+     * @returns {_Matrix_}
      */
-    static fcdf(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static fcdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of F-distribution.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
-     * @returns {Matrix}
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d2 - The degree of freedom of the denominator
+     * @returns {_Matrix_}
      */
-    static finv(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d1: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, d2: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any): Matrix;
+    static finv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Maximum number.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix} max([A, B])
+     * @returns {_Matrix_} max([A, B])
      */
-    static max(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: StatisticsSettings): Matrix;
+    static max(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: StatisticsSettings): _Matrix_;
     /**
      * Minimum number.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix} min([A, B])
+     * @returns {_Matrix_} min([A, B])
      */
-    static min(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: StatisticsSettings): Matrix;
+    static min(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: StatisticsSettings): _Matrix_;
     /**
      * Sum.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static sum(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: StatisticsSettings): Matrix;
+    static sum(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: StatisticsSettings): _Matrix_;
     /**
      * Arithmetic average.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static mean(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: StatisticsSettings): Matrix;
+    static mean(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: StatisticsSettings): _Matrix_;
     /**
      * Product of array elements.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static prod(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: StatisticsSettings): Matrix;
+    static prod(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: StatisticsSettings): _Matrix_;
     /**
      * Geometric mean.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static geomean(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: StatisticsSettings): Matrix;
+    static geomean(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: StatisticsSettings): _Matrix_;
     /**
      * Median.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static median(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: StatisticsSettings): Matrix;
+    static median(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: StatisticsSettings): _Matrix_;
     /**
      * Mode.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static mode(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: StatisticsSettings): Matrix;
+    static mode(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: StatisticsSettings): _Matrix_;
     /**
      * Moment.
      * - Moment of order n. Equivalent to the definition of variance at 2.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {number} nth_order
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix} n次のモーメント、2で分散の定義と同等。
+     * @returns {_Matrix_}
      */
-    static moment(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, nth_order: number, type?: StatisticsSettings): Matrix;
+    static moment(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, nth_order: number, type?: StatisticsSettings): _Matrix_;
     /**
      * Variance.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static var(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: StatisticsSettings): Matrix;
+    static var(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: StatisticsSettings): _Matrix_;
     /**
      * Standard deviation.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static std(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: StatisticsSettings): Matrix;
+    static std(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: StatisticsSettings): _Matrix_;
     /**
      * Mean absolute deviation.
      * - The "algorithm" can choose "0/mean"(default) and "1/median".
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {?string|?number} [algorithm]
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static mad(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, algorithm?: string | number, type?: StatisticsSettings): Matrix;
+    static mad(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, algorithm?: string | number, type?: StatisticsSettings): _Matrix_;
     /**
      * Skewness.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static skewness(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: StatisticsSettings): Matrix;
+    static skewness(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: StatisticsSettings): _Matrix_;
     /**
      * Covariance matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static cov(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: StatisticsSettings): Matrix;
+    static cov(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: StatisticsSettings): _Matrix_;
     /**
      * The samples are normalized to a mean value of 0, standard deviation of 1.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static normalize(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: StatisticsSettings): Matrix;
+    static normalize(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: StatisticsSettings): _Matrix_;
     /**
      * Correlation matrix.
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static corrcoef(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, type?: StatisticsSettings): Matrix;
+    static corrcoef(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, type?: StatisticsSettings): _Matrix_;
     /**
      * Sort.
      * - The "order" can choose "ascend"(default) and "descend".
-     * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
      * @param {string} [order]
      * @param {StatisticsSettings} [type]
-     * @returns {Matrix}
+     * @returns {_Matrix_}
      */
-    static sort(x: Matrix | Complex | number | string | (string | number | Complex)[] | (string | number | Complex)[][] | any, order?: string, type?: StatisticsSettings): Matrix;
+    static sort(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, order?: string, type?: StatisticsSettings): _Matrix_;
 }
 
