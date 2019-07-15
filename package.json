@@ -2,6 +2,12 @@
 	"name": "konpeito",
 	"version": "1.0.0",
 	"description": "The collection of javascirpt library such as numerical calculation.",
+	"author": "natade-jp <natade3@gmail.com> (https://github.com/natade-jp)",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/natade-jp/konpeito.git"
+	},
+	"license": "MIT",
 	"main": "./build/konpeito.umd.min.js",
 	"module": "./build/konpeito.module.min.mjs",
 	"keywords": [
@@ -17,12 +23,6 @@
 		"fft",
 		"svd"
 	],
-	"license": "MIT",
-	"author": "natade-jp <natade3@gmail.com>",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/natade-jp/konpeito.git"
-	},
 	"directories": {
 		"src": "./src",
 		"build": "./build",

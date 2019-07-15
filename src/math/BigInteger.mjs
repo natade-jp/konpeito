@@ -598,7 +598,7 @@ export default class BigInteger {
 	/**
 	 * The positive or negative sign of this number.
 	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number} 1, -1, 0の場合は0を返す
+	 * @returns {number}
 	 */
 	signum() {
 		if(this.element.length === 0) {
@@ -610,12 +610,16 @@ export default class BigInteger {
 	/**
 	 * The positive or negative sign of this number.
 	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number} 1, -1, 0の場合は0を返す
+	 * @returns {number}
 	 */
 	sign() {
 		return this.signum();
 	}
 
+	// ----------------------
+	// 四則演算
+	// ----------------------
+	
 	/**
 	 * Add. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
@@ -948,7 +952,6 @@ export default class BigInteger {
 
 	/**
 	 * Power function.
-	 * - Supports only integers.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
 	 * @returns {BigInteger} pow(A, B)
 	 */
@@ -1003,6 +1006,10 @@ export default class BigInteger {
 		return y[0]._add(m_)._mod(m_);
 	}
 
+	// ----------------------
+	// その他の演算
+	// ----------------------
+	
 	/**
 	 * Factorial function, x!.
 	 * @returns {BigInteger} n!
@@ -1034,6 +1041,10 @@ export default class BigInteger {
 		}
 	}
 
+	// ----------------------
+	// 環境設定用
+	// ----------------------
+	
 	/**
 	 * Set default class of random.
 	 * This is used if you do not specify a random number.

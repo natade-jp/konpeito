@@ -366,6 +366,27 @@ export default class Complex {
 	}
 
 	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {Complex} 
+	 */
+	sign() {
+		if(this._im === 0) {
+			if(this._re === 0) {
+				return new Complex(0);
+			}
+			else {
+				return new Complex(this._re > 0 ? 1 : -1);
+			}
+		}
+		return this.div(this.norm);
+	}
+	
+	// ----------------------
+	// 四則演算
+	// ----------------------
+	
+	/**
 	 * Add.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
 	 * @returns {Complex} A + B
@@ -497,23 +518,6 @@ export default class Complex {
 		return Complex.ONE.div(this);
 	}
 
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {Complex} 
-	 */
-	sign() {
-		if(this._im === 0) {
-			if(this._re === 0) {
-				return new Complex(0);
-			}
-			else {
-				return new Complex(this._re > 0 ? 1 : -1);
-			}
-		}
-		return this.div(this.norm);
-	}
-	
 	// ----------------------
 	// 比較
 	// ----------------------

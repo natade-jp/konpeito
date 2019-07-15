@@ -1505,7 +1505,7 @@ class BigInteger {
 	/**
 	 * The positive or negative sign of this number.
 	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number} 1, -1, 0の場合は0を返す
+	 * @returns {number}
 	 */
 	signum() {
 		if(this.element.length === 0) {
@@ -1517,12 +1517,16 @@ class BigInteger {
 	/**
 	 * The positive or negative sign of this number.
 	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number} 1, -1, 0の場合は0を返す
+	 * @returns {number}
 	 */
 	sign() {
 		return this.signum();
 	}
 
+	// ----------------------
+	// 四則演算
+	// ----------------------
+	
 	/**
 	 * Add. (mutable)
 	 * @param {BigInteger|number|string|Array<string|number>|Object} number
@@ -1855,7 +1859,6 @@ class BigInteger {
 
 	/**
 	 * Power function.
-	 * - Supports only integers.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
 	 * @returns {BigInteger} pow(A, B)
 	 */
@@ -1910,6 +1913,10 @@ class BigInteger {
 		return y[0]._add(m_)._mod(m_);
 	}
 
+	// ----------------------
+	// その他の演算
+	// ----------------------
+	
 	/**
 	 * Factorial function, x!.
 	 * @returns {BigInteger} n!
@@ -1941,6 +1948,10 @@ class BigInteger {
 		}
 	}
 
+	// ----------------------
+	// 環境設定用
+	// ----------------------
+	
 	/**
 	 * Set default class of random.
 	 * This is used if you do not specify a random number.
@@ -3396,19 +3407,6 @@ class BigDecimal {
 	}
 
 	/**
-	 * Multiply a multiple of ten.
-	 * Only the scale is changed without changing the precision.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
-	 * @returns {BigDecimal} A * 10^floor(n)
-	 */
-	scaleByPowerOfTen(n) {
-		const x = BigDecimal._toInteger(n);
-		const output = this.clone();
-		output._scale = this.scale() - x;
-		return output;
-	}
-
-	/**
 	 * Move the decimal point to the left.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
 	 * @returns {BigDecimal} 
@@ -3451,6 +3449,10 @@ class BigDecimal {
 		return new BigDecimal([new BigInteger(sign_text + text.substring(0, text.length - zero_length)), newScale, this.default_context]);
 	}
 
+	// ----------------------
+	// 四則演算
+	// ----------------------
+	
 	/**
 	 * Add.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
@@ -3810,6 +3812,40 @@ class BigDecimal {
 		}
 		return y.round(mc);
 	}
+	
+	// ----------------------
+	// その他の演算
+	// ----------------------
+	
+	/**
+	 * Factorial function, x!.
+	 * - Supports only integers.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigInteger} n!
+	 */
+	factorial(context) {
+		const mc = context ? context : this.default_context;
+		const y = new BigDecimal((new BigInteger(this)).factorial());
+		return y.round(mc);
+	}
+
+	/**
+	 * Multiply a multiple of ten.
+	 * - Supports only integers.
+	 * - Only the scale is changed without changing the precision.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @returns {BigDecimal} A * 10^floor(n)
+	 */
+	scaleByPowerOfTen(n) {
+		const x = BigDecimal._toInteger(n);
+		const output = this.clone();
+		output._scale = this.scale() - x;
+		return output;
+	}
+
+	// ----------------------
+	// 環境設定用
+	// ----------------------
 	
 	/**
 	 * Set default the MathContext.
@@ -4815,6 +4851,10 @@ class Fraction {
 		return this.numerator.toString() + " / " + this.denominator.toString();
 	}
 
+	// ----------------------
+	// 四則演算
+	// ----------------------
+	
 	/**
 	 * Add.
 	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
@@ -4914,7 +4954,35 @@ class Fraction {
 	}
 
 	/**
+	 * Power function.
+	 * - Supports only integers.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @returns {Fraction} pow(A, B)
+	 */
+	pow(num) {
+		const x = this;
+		const y = Fraction._toInteger(num);
+		const numerator = x.numerator.pow(y);
+		const denominator = x.denominator.pow(y);
+		return new Fraction([ numerator, denominator ]);
+	}
+
+	// ----------------------
+	// その他の演算
+	// ----------------------
+	
+	/**
+	 * Factorial function, x!.
+	 * - Supports only integers.
+	 * @returns {Fraction} n!
+	 */
+	factorial() {
+		return new Fraction([this.toBigInteger().factorial(), Fraction.ONE]);
+	}
+
+	/**
 	 * Multiply a multiple of ten.
+	 * - Supports only integers.
 	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} n
 	 * @returns {Fraction}
 	 */
@@ -4931,20 +4999,6 @@ class Fraction {
 			f = new Fraction([ this.numerator, this.denominator.scaleByPowerOfTen(-scale)]);
 		}
 		return f;
-	}
-
-	/**
-	 * Power function.
-	 * - Supports only integers.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
-	 * @returns {Fraction} pow(A, B)
-	 */
-	pow(num) {
-		const x = this;
-		const y = Fraction._toInteger(num);
-		const numerator = x.numerator.pow(y);
-		const denominator = x.denominator.pow(y);
-		return new Fraction([ numerator, denominator ]);
 	}
 
 	// ----------------------
@@ -13665,6 +13719,27 @@ class Complex {
 	}
 
 	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {Complex} 
+	 */
+	sign() {
+		if(this._im === 0) {
+			if(this._re === 0) {
+				return new Complex(0);
+			}
+			else {
+				return new Complex(this._re > 0 ? 1 : -1);
+			}
+		}
+		return this.div(this.norm);
+	}
+	
+	// ----------------------
+	// 四則演算
+	// ----------------------
+	
+	/**
 	 * Add.
 	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
 	 * @returns {Complex} A + B
@@ -13796,23 +13871,6 @@ class Complex {
 		return Complex.ONE.div(this);
 	}
 
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {Complex} 
-	 */
-	sign() {
-		if(this._im === 0) {
-			if(this._re === 0) {
-				return new Complex(0);
-			}
-			else {
-				return new Complex(this._re > 0 ? 1 : -1);
-			}
-		}
-		return this.div(this.norm);
-	}
-	
 	// ----------------------
 	// 比較
 	// ----------------------

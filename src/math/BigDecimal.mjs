@@ -487,19 +487,6 @@ export default class BigDecimal {
 	}
 
 	/**
-	 * Multiply a multiple of ten.
-	 * Only the scale is changed without changing the precision.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
-	 * @returns {BigDecimal} A * 10^floor(n)
-	 */
-	scaleByPowerOfTen(n) {
-		const x = BigDecimal._toInteger(n);
-		const output = this.clone();
-		output._scale = this.scale() - x;
-		return output;
-	}
-
-	/**
 	 * Move the decimal point to the left.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
 	 * @returns {BigDecimal} 
@@ -542,6 +529,10 @@ export default class BigDecimal {
 		return new BigDecimal([new BigInteger(sign_text + text.substring(0, text.length - zero_length)), newScale, this.default_context]);
 	}
 
+	// ----------------------
+	// 四則演算
+	// ----------------------
+	
 	/**
 	 * Add.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
@@ -901,6 +892,40 @@ export default class BigDecimal {
 		}
 		return y.round(mc);
 	}
+	
+	// ----------------------
+	// その他の演算
+	// ----------------------
+	
+	/**
+	 * Factorial function, x!.
+	 * - Supports only integers.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigInteger} n!
+	 */
+	factorial(context) {
+		const mc = context ? context : this.default_context;
+		const y = new BigDecimal((new BigInteger(this)).factorial());
+		return y.round(mc);
+	}
+
+	/**
+	 * Multiply a multiple of ten.
+	 * - Supports only integers.
+	 * - Only the scale is changed without changing the precision.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @returns {BigDecimal} A * 10^floor(n)
+	 */
+	scaleByPowerOfTen(n) {
+		const x = BigDecimal._toInteger(n);
+		const output = this.clone();
+		output._scale = this.scale() - x;
+		return output;
+	}
+
+	// ----------------------
+	// 環境設定用
+	// ----------------------
 	
 	/**
 	 * Set default the MathContext.

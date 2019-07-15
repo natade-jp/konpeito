@@ -433,6 +433,10 @@ export default class Fraction {
 		return this.numerator.toString() + " / " + this.denominator.toString();
 	}
 
+	// ----------------------
+	// 四則演算
+	// ----------------------
+	
 	/**
 	 * Add.
 	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
@@ -532,7 +536,35 @@ export default class Fraction {
 	}
 
 	/**
+	 * Power function.
+	 * - Supports only integers.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @returns {Fraction} pow(A, B)
+	 */
+	pow(num) {
+		const x = this;
+		const y = Fraction._toInteger(num);
+		const numerator = x.numerator.pow(y);
+		const denominator = x.denominator.pow(y);
+		return new Fraction([ numerator, denominator ]);
+	}
+
+	// ----------------------
+	// その他の演算
+	// ----------------------
+	
+	/**
+	 * Factorial function, x!.
+	 * - Supports only integers.
+	 * @returns {Fraction} n!
+	 */
+	factorial() {
+		return new Fraction([this.toBigInteger().factorial(), Fraction.ONE]);
+	}
+
+	/**
 	 * Multiply a multiple of ten.
+	 * - Supports only integers.
 	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} n
 	 * @returns {Fraction}
 	 */
@@ -549,20 +581,6 @@ export default class Fraction {
 			f = new Fraction([ this.numerator, this.denominator.scaleByPowerOfTen(-scale)]);
 		}
 		return f;
-	}
-
-	/**
-	 * Power function.
-	 * - Supports only integers.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
-	 * @returns {Fraction} pow(A, B)
-	 */
-	pow(num) {
-		const x = this;
-		const y = Fraction._toInteger(num);
-		const numerator = x.numerator.pow(y);
-		const denominator = x.denominator.pow(y);
-		return new Fraction([ numerator, denominator ]);
 	}
 
 	// ----------------------

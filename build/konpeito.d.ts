@@ -161,13 +161,6 @@ declare class _BigDecimal_ {
      */
     negate(mc?: _MathContext_): _BigDecimal_;
     /**
-     * Multiply a multiple of ten.
-     * Only the scale is changed without changing the precision.
-     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} n
-     * @returns {_BigDecimal_} A * 10^floor(n)
-     */
-    scaleByPowerOfTen(n: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): _BigDecimal_;
-    /**
      * Move the decimal point to the left.
      * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} n
      * @returns {_BigDecimal_}
@@ -270,6 +263,21 @@ declare class _BigDecimal_ {
      * @returns {_BigDecimal_} pow(A, B)
      */
     pow(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
+    /**
+     * Factorial function, x!.
+     * - Supports only integers.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigInteger_} n!
+     */
+    factorial(context?: _MathContext_): _BigInteger_;
+    /**
+     * Multiply a multiple of ten.
+     * - Supports only integers.
+     * - Only the scale is changed without changing the precision.
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} n
+     * @returns {_BigDecimal_} A * 10^floor(n)
+     */
+    scaleByPowerOfTen(n: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): _BigDecimal_;
     /**
      * Set default the _MathContext_.
      * This is used if you do not specify _MathContext_ when creating a new object.
@@ -523,13 +531,13 @@ declare class _BigInteger_ {
     /**
      * The positive or negative sign of this number.
      * - +1 if positive, -1 if negative, 0 if 0.
-     * @returns {number} 1, -1, 0の場合は0を返す
+     * @returns {number}
      */
     signum(): number;
     /**
      * The positive or negative sign of this number.
      * - +1 if positive, -1 if negative, 0 if 0.
-     * @returns {number} 1, -1, 0の場合は0を返す
+     * @returns {number}
      */
     sign(): number;
     /**
@@ -600,7 +608,6 @@ declare class _BigInteger_ {
     mod(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
      * Power function.
-     * - Supports only integers.
      * @param {_BigInteger_|number|string|Array<string|number>|Object} exponent
      * @returns {_BigInteger_} pow(A, B)
      */
@@ -979,6 +986,12 @@ declare class _Complex_ {
      */
     getDecimalPosition(): number;
     /**
+     * The positive or negative sign of this number.
+     * - +1 if positive, -1 if negative, 0 if 0.
+     * @returns {_Complex_}
+     */
+    sign(): _Complex_;
+    /**
      * Add.
      * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number
      * @returns {_Complex_} A + B
@@ -1019,12 +1032,6 @@ declare class _Complex_ {
      * @returns {_Complex_} 1 / A
      */
     inv(): _Complex_;
-    /**
-     * The positive or negative sign of this number.
-     * - +1 if positive, -1 if negative, 0 if 0.
-     * @returns {_Complex_}
-     */
-    sign(): _Complex_;
     /**
      * Equals.
      * @param {_Complex_|number|string|Array<number>|{_re:number,_im:number}|Object} number
@@ -1724,18 +1731,25 @@ declare class _Fraction_ {
      */
     mod(num: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
     /**
-     * Multiply a multiple of ten.
-     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} n
-     * @returns {_Fraction_}
-     */
-    scaleByPowerOfTen(n: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
-    /**
      * Power function.
      * - Supports only integers.
      * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
      * @returns {_Fraction_} pow(A, B)
      */
     pow(num: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
+    /**
+     * Factorial function, x!.
+     * - Supports only integers.
+     * @returns {_Fraction_} n!
+     */
+    factorial(): _Fraction_;
+    /**
+     * Multiply a multiple of ten.
+     * - Supports only integers.
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} n
+     * @returns {_Fraction_}
+     */
+    scaleByPowerOfTen(n: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
     /**
      * integer value.
      * @returns {number}

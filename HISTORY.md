@@ -4,7 +4,7 @@
 ### 機能追加
 - Fraction を追加
 - BigInteger lcm 最小公倍数を求める計算を追加
-- BigDecimal isNegative, isZero, isOne, isPositive, isNotNegative, floor, ceil, fix, fract を追加
+- BigDecimal isNegative, isZero, isOne, isPositive, isNotNegative, floor, ceil, fix, fract, factorial を追加
 - BigInteger isOne, isNotNegative, scaleByPowerOfTen を追加
 - BigDecimal の equals, compareTo に許容誤差を設定できる機能を追加
 - BigDecimal の round の引数を省略した場合は、一般的な小数点以下を四捨五入する動作とする機能を追加

@@ -220,7 +220,7 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	testOperator1("fract", -3.8, 0.2);
 }
 
-
-
-
-
+{
+	test_count = 0;
+	testOperator1("factorial", 20, "2432902008176640000");
+}
