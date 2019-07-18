@@ -1,5 +1,15 @@
 # History
 
+## v1.1.0b
+### 機能追加
+- BigInteger に sqrt, square を追加
+- BigDecimal に inv, sqrt, square, pi を追加
+### 改善
+- BigDecimal div 引数を強化及び、詳細なコメントを追加
+### 不具合
+- BigDecimal div 引数の設定が正しく反映されない場合がある問題を修正
+※テストケースはまだ未記載です。
+
 ## v1.0.0
 ### 機能追加
 - Fraction を追加

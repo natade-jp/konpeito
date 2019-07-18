@@ -221,7 +221,7 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	const x1 = $("4.36");
 	const x2 = $("3.4");
 	const y = x1.divide(x2, MathContext.DECIMAL128).toString();
-	test("divide 1 " + x1 + " / " + x2 + " = " + y, () => { expect(y).toBe("1.280000000000000000000000000000000"); });
+	test("divide 1 " + x1 + " / " + x2 + " = " + y, () => { expect(y).toBe("1.282352941176470588235294117647059"); });
 }
 
 {

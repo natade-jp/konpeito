@@ -195,12 +195,33 @@ export default class BigDecimal {
 		}
 		else if(number instanceof Array) {
 			if(number.length >= 1) {
-				if(!(typeof number[0] === "string" || number[0] instanceof String)) {
-					this.integer = new BigInteger(number[0]);
+				const prm1 = number[0];
+				if(typeof prm1 === "number") {
+					const data = DecimalTool.ToBigDecimalFromNumber(prm1);
+					this.integer	= data.integer;
+					this._scale		= data.scale;
+				}
+				else if(prm1 instanceof BigDecimal) {
+					this.integer			= prm1.integer.clone();
+					this._scale				= prm1._scale;
+					this.default_context	= prm1.default_context;
+				}
+				else if(prm1 instanceof BigInteger) {
+					this.integer			= prm1.clone();
+				}
+				else if((prm1 instanceof Object) && (prm1.toBigDecimal)) {
+					const data				= prm1.toBigDecimal();
+					this.integer			= data.integer;
+					this._scale				= data._scale;
+					this.default_context	= data.default_context;
+				}
+				else if((prm1 instanceof Object) && (prm1.doubleValue)) {
+					const data = DecimalTool.ToBigDecimalFromNumber(prm1.doubleValue);
+					this.integer	= data.integer;
+					this._scale		= data.scale;
 				}
 				else {
-					// 1番目が文字列の場合は、文字列用の設定初期化を行う
-					const data = DecimalTool.ToBigDecimalFromString(number[0]);
+					const data = DecimalTool.ToBigDecimalFromString(prm1.toString());
 					this.integer	= data.integer;
 					this._scale		= data.scale;
 				}
@@ -299,6 +320,21 @@ export default class BigDecimal {
 		}
 		else {
 			return new BigDecimal(number);
+		}
+	}
+
+	/**
+	 * Create a number using settings of this number.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
+	 * @param {MathContext} [mc] - Setting preferences when creating objects.
+	 * @returns {BigDecimal}
+	 */
+	createUsingThisSettings(number, mc) {
+		if(mc) {
+			return new BigDecimal([number, mc, mc]);
+		}
+		else {
+			return new BigDecimal([number, this.default_context]);
 		}
 	}
 
@@ -762,8 +798,12 @@ export default class BigDecimal {
 
 	/**
 	 * Divide.
+	 * - The argument can specify the scale after calculation.
+	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
+	 * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
+	 * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @param {MathContext|BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal}
 	 */
 	divide(number, type) {
@@ -774,32 +814,46 @@ export default class BigDecimal {
 		let mc				= null;
 		let newScale		= 0;
 		let isPriorityScale	= false;
-		if(type && type.scale) {
-			isPriorityScale	= false;
-			newScale = type.scale;
+
+		// 設定をロードする
+		if(!type) {
+			mc = number.default_context;
+			roundingMode = mc.getRoundingMode();
+			newScale = mc.getPrecision();
+		}
+		else if(type instanceof MathContext) {
+			mc = type;
+			roundingMode = mc.getRoundingMode();
+			newScale = mc.getPrecision();
 		}
 		else {
-			isPriorityScale	= true;
-			if(type && (type.roundingMode || type.context)) {
-				newScale = src.scale();
+			if(type && type.scale) {
+				isPriorityScale	= false;
+				newScale = type.scale;
 			}
 			else {
-				newScale = src.scale() - tgt.scale();
+				isPriorityScale	= true;
+				if(type && (type.roundingMode || type.context)) {
+					newScale = src.scale();
+				}
+				else {
+					newScale = src.scale() - tgt.scale();
+				}
 			}
-		}
-		if(type && type.context) {
-			roundingMode = type.context.getRoundingMode();
-			newScale = type.context.getPrecision();
-			mc = type.context;
-		}
-		else {
-			mc = this.default_context;
-		}
-		if(type && type.roundingMode) {
-			roundingMode = type.roundingMode;
-		}
-		else {
-			roundingMode = mc.getRoundingMode();
+			if(type && type.context) {
+				mc = type.context;
+				roundingMode = mc.getRoundingMode();
+				newScale = mc.getPrecision();
+			}
+			else {
+				mc = this.default_context;
+			}
+			if(type && type.roundingMode) {
+				roundingMode = type.roundingMode;
+			}
+			else {
+				roundingMode = mc.getRoundingMode();
+			}
 		}
 		
 		if(tgt.compareTo(BigDecimal.ZERO) === 0) {
@@ -860,12 +914,27 @@ export default class BigDecimal {
 
 	/**
 	 * Divide.
+	 * - The argument can specify the scale after calculation.
+	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
+	 * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
+	 * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @param {MathContext|BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal} A / B
 	 */
 	div(number, type) {
 		return this.divide(number, type);
+	}
+
+	/**
+	 * Inverse number of this value.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} 1 / A
+	 */
+	inv(context) {
+		const mc = context ? context : this.default_context;
+		const b1 = this.createUsingThisSettings(1, mc);
+		return b1.div(this, mc);
 	}
 
 	/**
@@ -1402,6 +1471,95 @@ export default class BigDecimal {
 	 */
 	fract(mc) {
 		return this.sub(this.floor(mc), mc);
+	}
+
+	// ----------------------
+	// 指数
+	// ----------------------
+	
+	/**
+	 * Square.
+	 * param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigInteger} A^2
+	 */
+	square(mc) {
+		return this.mul(this, mc);
+	}
+
+	/**
+	 * Square root.
+	 * param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} sqrt(A)
+	 */
+	sqrt(mc) {
+		// ニュートンラフソン法
+		// A^0.5  = x
+		//     A  = x^2
+		//     0  = x^2 - A
+		//   f(x) = x^2 - A
+		// ここで f(x) = 0 となるような x を知りたい
+		// なお f(x) は単調増加関数なのでニュートンラフソン法で求められる
+		// x_(n+1) = x_n - f(x_n)/f'(x_n)
+		// ここで f'(x) = 2x なので以下を求めればよい
+		// x_(n+1) = x_n - (x_n^2 - A) / (2 * x_n)
+		// 初期値の決め方は近い値のほうがよい
+		// 使用する固定値を列挙
+		const B1 = this.createUsingThisSettings(1, mc);
+		const B2 = this.createUsingThisSettings(2, mc);
+		// 初期値
+		const scale = - this.scale() + (this.precision() - 1);
+		const x0 = B1.scaleByPowerOfTen(scale);
+		let xn = x0;
+		for(let i = 0; i < 300; i++) {
+			const xn1 = xn.sub( (xn.mul(xn).sub(this)).div(xn.mul(B2)) );
+			const delta = xn1.sub(xn);
+			if(delta.isZero()) {
+				break;
+			}
+			xn = xn1;
+		}
+		return xn;
+	}
+
+	// ----------------------
+	// 三角関数
+	// ----------------------
+
+	/**
+	 * pi.
+	 * param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * returns {BigDecimal} pi()
+	 */
+	pi(mc) {
+		// ガウス＝ルジャンドルのアルゴリズム
+		// 使用する固定値を列挙
+		const B1		= this.createUsingThisSettings(1, mc);
+		const B2		= this.createUsingThisSettings(2, mc);
+		const B4		= this.createUsingThisSettings(4, mc);
+		// 初期値
+		let a = B1;
+		let b = B2.sqrt().inv();
+		let t = B4.inv();
+		let p = B1;
+		let pi = B1;
+		// 繰り返し求める
+		for(let i = 0; i < 300; i++) {
+			const a1 = a.add(b).div(B2);
+			const b1 = a.mul(b).sqrt();
+			const t1 = t.sub(p.mul(a.sub(a1).square()));
+			const p1 = p.mul(B2);
+			const pi1 = a1.add(b1).square().div(t1.mul(B4));
+			const delta = pi1.sub(pi);
+			pi = pi1;
+			if(delta.isZero()) {
+				break;
+			}
+			a = a1;
+			b = b1;
+			t = t1;
+			p = p1;
+		}
+		return pi;
 	}
 
 	// ----------------------

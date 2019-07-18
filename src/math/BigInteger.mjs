@@ -973,25 +973,6 @@ export default class BigInteger {
 	}
 
 	/**
-	 * Power function.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
-	 * @returns {BigInteger} pow(A, B)
-	 */
-	pow(exponent) {
-		const e = new BigInteger(exponent);
-		let x = BigInteger._toBigInteger(this);
-		let y = BigInteger._toBigInteger(1);
-		while(e.element.length !== 0) {
-			if((e.element[0] & 1) !== 0) {
-				y = y.multiply(x);
-			}
-			x = x.multiply(x);
-			e._shift(-1);
-		}
-		return y;
-	}
-
-	/**
 	 * Modular exponentiation.
 	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
 	 * @param {BigInteger|number|string|Array<string|number>|Object} m 
@@ -1061,6 +1042,56 @@ export default class BigInteger {
 		else {
 			return this.div(BigInteger.TEN.pow(x));
 		}
+	}
+
+	// ----------------------
+	// 指数
+	// ----------------------
+	
+	/**
+	 * Power function.
+	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
+	 * @returns {BigInteger} pow(A, B)
+	 */
+	pow(exponent) {
+		const e = new BigInteger(exponent);
+		let x = BigInteger._toBigInteger(this);
+		let y = BigInteger._toBigInteger(1);
+		while(e.element.length !== 0) {
+			if((e.element[0] & 1) !== 0) {
+				y = y.multiply(x);
+			}
+			x = x.multiply(x);
+			e._shift(-1);
+		}
+		return y;
+	}
+
+	/**
+	 * Square.
+	 * @returns {BigInteger} A^2
+	 */
+	square() {
+		return this.mul(this);
+	}
+
+	/**
+	 * Square root.
+	 * @returns {BigInteger} sqrt(A)
+	 */
+	sqrt() {
+		const precision = this.toString(10).replace(/^-/, "").length;
+		const x0 = BigInteger.ONE.scaleByPowerOfTen(precision);
+		let xn = x0;
+		for(let i = 0; i < 300; i++) {
+			const xn1 = xn.add(this.div(xn)).shiftRight(1);
+			const delta = xn1.sub(xn);
+			if(delta.isZero()) {
+				break;
+			}
+			xn = xn1;
+		}
+		return xn;
 	}
 
 	// ----------------------
