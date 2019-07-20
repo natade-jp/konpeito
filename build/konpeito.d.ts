@@ -458,6 +458,40 @@ declare class _BigDecimal_ {
      */
     rsqrt(): _BigDecimal_;
     /**
+     * Sine function.
+     * param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} sin(A)
+     */
+    sin(): _BigDecimal_;
+    /**
+     * Cosine function.
+     * param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} cos(A)
+     */
+    cos(): _BigDecimal_;
+    /**
+     * Tangent function.
+     * param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} tan(A)
+     */
+    tan(): _BigDecimal_;
+    /**
+     * Atan (arc tangent) function.
+     * - Return the values of [-PI/2, PI/2].
+     * param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} atan(A)
+     */
+    atan(): _BigDecimal_;
+    /**
+     * Atan (arc tangent) function.
+     * Return the values of [-PI, PI] .
+     * Supports only real numbers.
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} atan2(Y, X)
+     */
+    atan2(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
+    /**
      * this === 0
      * @returns {boolean}
      */
@@ -514,9 +548,24 @@ declare class _BigDecimal_ {
     static TEN: _BigDecimal_;
     /**
      * PI
-     * @returns {_BigDecimal_} PI
+     * @returns {_BigDecimal_} 3.14...
      */
     static PI: _BigDecimal_;
+    /**
+     * 0.25 * PI.
+     * @returns {_BigDecimal_} 0.78...
+     */
+    static QUARTER_PI: _BigDecimal_;
+    /**
+     * 0.5 * PI.
+     * @returns {_BigDecimal_} 1.57...
+     */
+    static HALF_PI: _BigDecimal_;
+    /**
+     * 2 * PI.
+     * @returns {_BigDecimal_} 6.28...
+     */
+    static TWO_PI: _BigDecimal_;
     /**
      * E, Napier's constant.
      * @returns {_BigDecimal_} E
@@ -1327,10 +1376,25 @@ declare class _Complex_ {
      */
     static I: _Complex_;
     /**
-     * Pi.
+     * PI.
      * @returns {_Complex_} 3.14...
      */
     static PI: _Complex_;
+    /**
+     * 0.25 * PI.
+     * @returns {_Complex_} 0.78...
+     */
+    static QUARTER_PI: _Complex_;
+    /**
+     * 0.5 * PI.
+     * @returns {_Complex_} 1.57...
+     */
+    static HALF_PI: _Complex_;
+    /**
+     * 2 * PI.
+     * @returns {_Complex_} 6.28...
+     */
+    static TWO_PI: _Complex_;
     /**
      * E, Napier's constant.
      * @returns {_Complex_} 2.71...

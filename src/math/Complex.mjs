@@ -1067,11 +1067,35 @@ export default class Complex {
 	}
 
 	/**
-	 * Pi.
+	 * PI.
 	 * @returns {Complex} 3.14...
 	 */
 	static get PI() {
 		return DEFINE.PI;
+	}
+
+	/**
+	 * 0.25 * PI.
+	 * @returns {Complex} 0.78...
+	 */
+	static get QUARTER_PI() {
+		return DEFINE.QUARTER_PI;
+	}
+
+	/**
+	 * 0.5 * PI.
+	 * @returns {Complex} 1.57...
+	 */
+	static get HALF_PI() {
+		return DEFINE.HALF_PI;
+	}
+
+	/**
+	 * 2 * PI.
+	 * @returns {Complex} 6.28...
+	 */
+	static get TWO_PI() {
+		return DEFINE.TWO_PI;
 	}
 
 	/**
@@ -1201,9 +1225,24 @@ const DEFINE = {
 	I : new Complex([0, 1]),
 
 	/**
-	 * Pi.
+	 * PI.
 	 */
 	PI : new Complex(Math.PI),
+
+	/**
+	 * 0.25 * PI.
+	 */
+	QUARTER_PI : new Complex(0.25 * Math.PI),
+
+	/**
+	 * 0.5 * PI.
+	 */
+	HALF_PI : new Complex(0.5 * Math.PI),
+
+	/**
+	 * 2 * PI.
+	 */
+	TWO_PI : new Complex(2.0 * Math.PI),
 
 	/**
 	 * E, Napier's constant.

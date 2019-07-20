@@ -3231,13 +3231,13 @@ class BigDecimal {
 					// 2つめが数値の場合は、2つ目をスケール値として使用する
 					this._scale	= number[1];
 					if(number.length >= 3) {
-						this.default_context = number[2];
+						this.default_context = number[2] !== undefined ? number[2] : DEFAULT_CONTEXT;
 						is_set_context = true;
 					}
 				}
 				else {
 					if(number.length >= 2) {
-						this.default_context = number[1];
+						this.default_context = number[1] !== undefined ? number[1] : DEFAULT_CONTEXT;
 						is_set_context = true;
 					}
 				}
@@ -3789,6 +3789,9 @@ class BigDecimal {
 		const x = this.rem(number, context);
 		if(x.compareTo(BigDecimal.ZERO) < 0) {
 			return x.add(number, context);
+		}
+		else {
+			return x;
 		}
 	}
 
@@ -4594,6 +4597,215 @@ class BigDecimal {
 	// 三角関数
 	// ----------------------
 
+	/**
+	 * Sine function.
+	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} sin(A)
+	 */
+	sin(context) {
+		const mc = context ? context : this.default_context;
+		const default_context = BigDecimal.getDefaultContext();
+		BigDecimal.setDefaultContext(mc);
+		const target = this.mod(BigDecimal.TWO_PI, mc);
+		// マクローリン展開で計算する
+		// 初期値
+		let x = target;
+		let n0 = target;
+		let k = BigDecimal.ONE;
+		let sign = -1;
+		// 繰り返し求める
+		for(let i = 2; i < 300; i++) {
+			k = k.mul(i);
+			x = x.mul(target);
+			if((i % 2) === 1) {
+				let n1;
+				if(sign < 0) {
+					n1 = n0.sub(x.div(k));
+					sign = 1;
+				}
+				else {
+					n1 = n0.add(x.div(k));
+					sign = -1;
+				}
+				const delta = n1.sub(n0);
+				n0 = n1;
+				if(delta.isZero()) {
+					break;
+				}
+			}
+		}
+		BigDecimal.setDefaultContext(default_context);
+		return n0;
+	}
+
+	/**
+	 * Cosine function.
+	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} cos(A)
+	 */
+	cos(context) {
+		const mc = context ? context : this.default_context;
+		const default_context = BigDecimal.getDefaultContext();
+		BigDecimal.setDefaultContext(mc);
+		const target = this.mod(BigDecimal.TWO_PI, mc);
+		// マクローリン展開で計算する
+		// 初期値
+		let x = target;
+		let n0 = BigDecimal.ONE;
+		let k = BigDecimal.ONE;
+		let sign = -1;
+		// 繰り返し求める
+		for(let i = 2; i < 300; i++) {
+			k = k.mul(i);
+			x = x.mul(target);
+			if((i % 2) === 0) {
+				let n1;
+				if(sign < 0) {
+					n1 = n0.sub(x.div(k));
+					sign = 1;
+				}
+				else {
+					n1 = n0.add(x.div(k));
+					sign = -1;
+				}
+				const delta = n1.sub(n0);
+				n0 = n1;
+				if(delta.isZero()) {
+					break;
+				}
+			}
+		}
+		BigDecimal.setDefaultContext(default_context);
+		return n0;
+	}
+
+	/**
+	 * Tangent function.
+	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} tan(A)
+	 */
+	tan(context) {
+		const mc = context ? context : this.default_context;
+		return this.sin(mc).div(this.cos(mc));
+	}
+
+	/**
+	 * Atan (arc tangent) function.
+	 * - Return the values of [-PI/2, PI/2].
+	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} atan(A)
+	 */
+	atan(context) {
+		const mc = context ? context : this.default_context;
+		const default_context = BigDecimal.getDefaultContext();
+		BigDecimal.setDefaultContext(mc);
+		if(this.isZero()) {
+			const y = BigDecimal.ZERO;
+			BigDecimal.setDefaultContext(default_context);
+			return y;
+		}
+		else if(this.compareTo(BigDecimal.ONE) === 0) {
+			const y = BigDecimal.QUARTER_PI;
+			BigDecimal.setDefaultContext(default_context);
+			return y;
+		}
+		else if(this.compareTo(BigDecimal.MINUS_ONE) === 0) {
+			const y = BigDecimal.QUARTER_PI.negate();
+			BigDecimal.setDefaultContext(default_context);
+			return y;
+		}
+		const target_sign = this.sign();
+		let target = this.abs(mc);
+		let type;
+		if(target.compareTo(BigDecimal.TWO) === 1) {
+			// atan(x) = pi/2-atan(1/x)
+			type = 1;
+			target = target.inv();
+		}
+		else if(target.compareTo(BigDecimal.HALF) === 1) {
+			// atan(x) = pi/4-atan((1-x)/(1+x))
+			type = 2;
+			target = BigDecimal.ONE.sub(target).div(BigDecimal.ONE.add(target));
+		}
+		else {
+			type = 3;
+		}
+		// グレゴリー級数
+		// 初期値
+		let x = target;
+		let n0 = target;
+		let k = BigDecimal.ONE;
+		let sign = -1;
+		// 繰り返し求める
+		for(let i = 2; i < 300; i++) {
+			x = x.mul(target);
+			if((i % 2) === 1) {
+				k = k.add(BigDecimal.TWO);
+				let n1;
+				if(sign < 0) {
+					n1 = n0.sub(x.div(k));
+					sign = 1;
+				}
+				else {
+					n1 = n0.add(x.div(k));
+					sign = -1;
+				}
+				const delta = n1.sub(n0);
+				n0 = n1;
+				if(delta.isZero()) {
+					break;
+				}
+			}
+		}
+		if(type === 1) {
+			n0 = BigDecimal.HALF_PI.sub(n0);
+		}
+		else if(type === 2) {
+			n0 = BigDecimal.QUARTER_PI.sub(n0);
+		}
+		if(target_sign < 0) {
+			n0 = n0.negate();
+		}
+		BigDecimal.setDefaultContext(default_context);
+		return n0;
+	}
+
+	/**
+	 * Atan (arc tangent) function.
+	 * Return the values of [-PI, PI] .
+	 * Supports only real numbers.
+	* @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	* @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} atan2(Y, X)
+	 */
+	atan2(number, context) {
+		const default_context = BigDecimal.getDefaultContext();
+		// y.atan2(x) とする。
+		const y = this.round(context);
+		const x = new BigDecimal([number, context]);
+		let ret;
+		if(x.isPositive()) {
+			ret = y.div(x).atan();
+		}
+		else if(y.isNotNegative() && x.isNegative()) {
+			ret = y.div(x).atan().add(BigDecimal.PI);
+		}
+		else if(y.isNegative() && x.isNegative()) {
+			ret = y.div(x).atan().sub(BigDecimal.PI);
+		}
+		else if(y.isPositive()) {
+			ret = BigDecimal.HALF_PI;
+		}
+		else if(y.isNegative()) {
+			ret = BigDecimal.HALF_PI.negate();
+		}
+		else {
+			throw "ArithmeticException";
+		}
+		BigDecimal.setDefaultContext(default_context);
+		return ret;
+	}
+
 	// ----------------------
 	// テスト系
 	// ----------------------
@@ -4692,10 +4904,34 @@ class BigDecimal {
 
 	/**
 	 * PI
-	 * @returns {BigDecimal} PI
+	 * @returns {BigDecimal} 3.14...
 	 */
 	static get PI() {
 		return CACHED_DATA.PI.get();
+	}
+
+	/**
+	 * 0.25 * PI.
+	 * @returns {BigDecimal} 0.78...
+	 */
+	static get QUARTER_PI() {
+		return CACHED_DATA.QUARTER_PI.get();
+	}
+
+	/**
+	 * 0.5 * PI.
+	 * @returns {BigDecimal} 1.57...
+	 */
+	static get HALF_PI() {
+		return CACHED_DATA.HALF_PI.get();
+	}
+
+	/**
+	 * 2 * PI.
+	 * @returns {BigDecimal} 6.28...
+	 */
+	static get TWO_PI() {
+		return CACHED_DATA.TWO_PI.get();
 	}
 
 	/**
@@ -4705,7 +4941,6 @@ class BigDecimal {
 	static get E() {
 		return CACHED_DATA.E.get();
 	}
-
 
 }
 
@@ -4723,8 +4958,7 @@ const DEFINE$2 = {
 	 * @returns {BigDecimal} -1
 	 */
 	MINUS_ONE : function() {
-		const x = new BigDecimal(-1);
-		return x;
+		return new BigDecimal(-1);
 	},
 
 	/**
@@ -4732,8 +4966,7 @@ const DEFINE$2 = {
 	 * @returns {BigDecimal} 0
 	 */
 	ZERO : function() {
-		const x = new BigDecimal(0);
-		return x;
+		return new BigDecimal(0);
 	},
 	
 	/**
@@ -4741,8 +4974,7 @@ const DEFINE$2 = {
 	 * @returns {BigDecimal} 0.5
 	 */
 	HALF : function() {
-		const x = new BigDecimal(0.5);
-		return x;
+		return new BigDecimal(0.5);
 	},
 	
 	/**
@@ -4750,8 +4982,7 @@ const DEFINE$2 = {
 	 * @returns {BigDecimal} 1
 	 */
 	ONE : function() {
-		const x = new BigDecimal(1);
-		return x;
+		return new BigDecimal(1);
 	},
 	
 	/**
@@ -4759,8 +4990,7 @@ const DEFINE$2 = {
 	 * @returns {BigDecimal} 2
 	 */
 	TWO : function() {
-		const x = new BigDecimal(2);
-		return x;
+		return new BigDecimal(2);
 	},
 	
 	/**
@@ -4768,13 +4998,12 @@ const DEFINE$2 = {
 	 * @returns {BigDecimal} 10
 	 */
 	TEN : function() {
-		const x = new BigDecimal(10);
-		return x;
+		return new BigDecimal(10);
 	},
 
 	/**
 	 * PI
-	 * @returns {BigDecimal} pi()
+	 * @returns {BigDecimal} 3.14...
 	 */
 	PI : function() {
 		// ガウス＝ルジャンドルのアルゴリズム
@@ -4806,6 +5035,30 @@ const DEFINE$2 = {
 			p = p1;
 		}
 		return pi;
+	},
+
+	/**
+	 * 0.25 * PI.
+	 * @returns {BigDecimal} 0.78...
+	 */
+	QUARTER_PI : function() {
+		return DEFINE$2.PI().div(4);
+	},
+
+	/**
+	 * 0.5 * PI.
+	 * @returns {BigDecimal} 1.57...
+	 */
+	HALF_PI : function() {
+		return DEFINE$2.PI().div(2);
+	},
+
+	/**
+	 * 2 * PI.
+	 * @returns {BigDecimal} 6.28...
+	 */
+	TWO_PI : function() {
+		return DEFINE$2.PI().mul(2);
 	},
 	
 	/**
@@ -4934,6 +5187,21 @@ class BigDecimalConst {
 		 * PI
 		 */
 		this.PI = new BigDecimalCache("PI", 10);
+
+		/**
+		 * QUARTER_PI
+		 */
+		this.QUARTER_PI = new BigDecimalCache("QUARTER_PI", 10);
+
+		/**
+		 * HALF_PI
+		 */
+		this.HALF_PI = new BigDecimalCache("HALF_PI", 10);
+
+		/**
+		 * TWO_PI
+		 */
+		this.TWO_PI = new BigDecimalCache("TWO_PI", 10);
 
 		/**
 		 * E
@@ -14969,11 +15237,35 @@ class Complex {
 	}
 
 	/**
-	 * Pi.
+	 * PI.
 	 * @returns {Complex} 3.14...
 	 */
 	static get PI() {
 		return DEFINE$4.PI;
+	}
+
+	/**
+	 * 0.25 * PI.
+	 * @returns {Complex} 0.78...
+	 */
+	static get QUARTER_PI() {
+		return DEFINE$4.QUARTER_PI;
+	}
+
+	/**
+	 * 0.5 * PI.
+	 * @returns {Complex} 1.57...
+	 */
+	static get HALF_PI() {
+		return DEFINE$4.HALF_PI;
+	}
+
+	/**
+	 * 2 * PI.
+	 * @returns {Complex} 6.28...
+	 */
+	static get TWO_PI() {
+		return DEFINE$4.TWO_PI;
 	}
 
 	/**
@@ -15103,9 +15395,24 @@ const DEFINE$4 = {
 	I : new Complex([0, 1]),
 
 	/**
-	 * Pi.
+	 * PI.
 	 */
 	PI : new Complex(Math.PI),
+
+	/**
+	 * 0.25 * PI.
+	 */
+	QUARTER_PI : new Complex(0.25 * Math.PI),
+
+	/**
+	 * 0.5 * PI.
+	 */
+	HALF_PI : new Complex(0.5 * Math.PI),
+
+	/**
+	 * 2 * PI.
+	 */
+	TWO_PI : new Complex(2.0 * Math.PI),
 
 	/**
 	 * E, Napier's constant.

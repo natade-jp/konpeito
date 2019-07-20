@@ -1,5 +1,12 @@
 # History
 
+## v1.2.0b
+### 機能追加
+- BigDecimal に三角関数を追加
+- Complex に QUARTER_PI, HALF_PI, TWO_PI を追加
+### 不具合
+- BigDecimal mod の計算時に undefined を返す場合があったのを修正
+
 ## v1.1.0
 ### 機能追加
 - BigInteger に sqrt, square を追加

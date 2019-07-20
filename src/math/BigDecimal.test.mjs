@@ -35,22 +35,24 @@ const testOperator1  = function(operator, x, y, tolerance) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator2  = function(operator, x1, x2, y) {
+const testOperator2  = function(operator, x1, x2, y, tolerance) {
 	test_count++;
+	const tolerance_ = tolerance ? tolerance : 0.0;
 	const X1 = $(x1);
 	const X2 = $(x2);
 	const Y = X1[operator](X2);
 	const testname = operator + " " + test_count + " (" + x1 + ")." + operator + "(" + x2 + ") = " + y;
-	const out = $(Y).compareTo(y) === 0;
+	const out = $(Y).compareTo(y, tolerance_) === 0;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator3  = function(operator, x, p1, p2, y) {
+const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	test_count++;
+	const tolerance_ = tolerance ? tolerance : 0.0;
 	const X = $(x);
 	const Y = X[operator](p1, p2);
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + y;
-	const out = $(Y).compareTo(y) === 0;
+	const out = $(Y).compareTo(y, tolerance_) === 0;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -168,6 +170,22 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	test("add " + x + " + " + y + " = " + add, () => { expect(add).toBe("3209.8833"); });
 	test("sub " + x + " + " + y + " = " + sub, () => { expect(sub).toBe("3456.7833"); });
 	test("mul " + x + " + " + y + " = " + mul, () => { expect(mul).toBe("-411499.995885"); });
+}
+
+{
+	test_count = 0;
+	testOperator2("rem", 110, 100, 10);
+	testOperator2("rem",  80, 100, 80);
+	testOperator2("rem",-110, 100,-10);
+	testOperator2("rem", -80, 100,-80);
+}
+
+{
+	test_count = 0;
+	testOperator2("mod", 110, 100, 10);
+	testOperator2("mod",  80, 100, 80);
+	testOperator2("mod", -110, 100, 90);
+	testOperator2("mod",  -80, 100, 20);
 }
 
 {
@@ -362,32 +380,92 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 }
 
 {
+	const EPS = 1e-5;
 	test_count = 0;
-	testOperator1("inv", "2", "0.5", 1e-5);
-	testOperator1("inv", "10", "0.1", 1e-5);
+	testOperator1("inv", "2", "0.5", EPS);
+	testOperator1("inv", "10", "0.1", EPS);
 }
 
 {
+	const EPS = 1e-5;
 	test_count = 0;
-	testOperator1("sqrt", "2", "1.41421356237", 1e-5);
-	testOperator1("sqrt", "4", "2", 1e-5);
-	testOperator1("sqrt", "1000000", "1000", 1e-5);
+	testOperator1("sqrt", "2", "1.41421356237", EPS);
+	testOperator1("sqrt", "4", "2", EPS);
+	testOperator1("sqrt", "1000000", "1000", EPS);
 }
 
 {
+	const EPS = 1e-5;
 	test_count = 0;
-	testOperator1("rsqrt", "2", 1.0 / Math.sqrt(2), 1e-5);
-	testOperator1("rsqrt", "4", 0.5, 1e-5);
-	testOperator1("rsqrt", "1000000", 0.001, 1e-5);
+	testOperator1("rsqrt", "2", 1.0 / Math.sqrt(2), EPS);
+	testOperator1("rsqrt", "4", 0.5, EPS);
+	testOperator1("rsqrt", "1000000", 0.001, EPS);
 }
 
 {
+	const EPS = 1e-5;
 	test_count = 0;
-	testCompareTo("PI", BigDecimal.PI, "3.14159265359", 0, 1e-5);
+	testCompareTo("PI", BigDecimal.PI, "3.14159265359", 0, EPS);
 }
 
 {
+	const EPS = 1e-5;
 	test_count = 0;
-	testCompareTo("E", BigDecimal.E, "2.71828182845904523536", 0, 1e-5);
+	testCompareTo("E", BigDecimal.E, "2.71828182845904523536", 0, EPS);
 }
 
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("sin", -10,  0.54402111088, EPS);
+	testOperator1("sin",  -1, -0.8414709848, EPS);
+	testOperator1("sin",   0,  0, EPS);
+	testOperator1("sin",   1,  0.8414709848, EPS);
+	testOperator1("sin",  10, -0.54402111088, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("cos", -10, -0.83907152907, EPS);
+	testOperator1("cos",  -1,  0.54030230586, EPS);
+	testOperator1("cos",   0,  1, EPS);
+	testOperator1("cos",   1,  0.54030230586, EPS);
+	testOperator1("cos",  10, -0.83907152907, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("tan", -10, -0.64836082745, EPS);
+	testOperator1("tan",  -1, -1.55740772465, EPS);
+	testOperator1("tan",   0,  0, EPS);
+	testOperator1("tan",   1,  1.55740772465, EPS);
+	testOperator1("tan",  10,  0.64836082745, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("atan",  -10, -1.47112767, EPS);
+	testOperator1("atan",   -1, -0.785398163, EPS);
+	testOperator1("atan", -0.2, -0.19739556, EPS);
+	testOperator1("atan",    0,  0, EPS);
+	testOperator1("atan",  0.2,  0.19739556, EPS);
+	testOperator1("atan",    1,  0.785398163, EPS);
+	testOperator1("atan",   10,  1.47112767, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator2("atan2",   1, 2, 0.4636476090008061, EPS);
+	testOperator2("atan2",   2, 1, 1.1071487177940904, EPS);
+	testOperator2("atan2",  -1, 2,-0.4636476090008061, EPS);
+	testOperator2("atan2",   2,-1, 2.0344439357957027, EPS);
+	testOperator2("atan2",  -2,-1,-2.0344439357957027, EPS);
+	testOperator2("atan2",   0, 1, 0, EPS);
+	testOperator2("atan2",   1, 0, 1.5707963267948966, EPS);
+	testOperator2("atan2",   0,-1, 3.141592653589793, EPS);
+	testOperator2("atan2",  -1, 0,-1.5707963267948966, EPS);
+}
