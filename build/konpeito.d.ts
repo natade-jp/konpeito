@@ -2838,7 +2838,7 @@ declare class _Matrix_ {
      */
     gammainc(a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tail?: string): _Matrix_;
     /**
-     * Probability density function (PDF) of the gamma distribution.
+     * _Probability_ density function (PDF) of the gamma distribution.
      * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - Shape parameter.
      * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} s - Scale parameter.
      * @returns {_Matrix_}
@@ -2880,7 +2880,7 @@ declare class _Matrix_ {
      */
     betacdf(a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
-     * Probability density function (PDF) of beta distribution.
+     * _Probability_ density function (PDF) of beta distribution.
      * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
      * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
      * @returns {_Matrix_}
@@ -2915,7 +2915,7 @@ declare class _Matrix_ {
      */
     erfc(): _Matrix_;
     /**
-     * Probability density function (PDF) of normal distribution.
+     * _Probability_ density function (PDF) of normal distribution.
      * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [u=0.0] - Average value.
      * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [s=1.0] - Variance value.
      * @returns {_Matrix_}
@@ -2936,7 +2936,7 @@ declare class _Matrix_ {
      */
     norminv(u?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
-     * Probability density function (PDF) of Student's t-distribution.
+     * _Probability_ density function (PDF) of Student's t-distribution.
      * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
      * @returns {_Matrix_}
      */
@@ -2969,7 +2969,7 @@ declare class _Matrix_ {
      */
     tinv2(v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
-     * Probability density function (PDF) of chi-square distribution.
+     * _Probability_ density function (PDF) of chi-square distribution.
      * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - The degrees of freedom. (DF)
      * @returns {_Matrix_}
      */
@@ -2987,7 +2987,7 @@ declare class _Matrix_ {
      */
     chi2inv(k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
-     * Probability density function (PDF) of F-distribution.
+     * _Probability_ density function (PDF) of F-distribution.
      * - In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution.
      * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d1 - The degree of freedom of the molecules.
      * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d2 - The degree of freedom of the denominator
@@ -3354,6 +3354,226 @@ declare class _LinearAlgebra_ {
 }
 
 /**
+ * Calculating probability class for _Matrix_ class.
+ */
+declare class _Probability_ {
+    /**
+     * Log-gamma function.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @returns {_Matrix_}
+     */
+    static gammaln(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Gamma function.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @returns {_Matrix_}
+     */
+    static gamma(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Incomplete gamma function.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
+     * @param {string} [tail="lower"] - lower (default) , "upper"
+     * @returns {_Matrix_}
+     */
+    static gammainc(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tail?: string): _Matrix_;
+    /**
+     * _Probability_ density function (PDF) of the gamma distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - Shape parameter.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} s - Scale parameter.
+     * @returns {_Matrix_}
+     */
+    static gampdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Cumulative distribution function (CDF) of gamma distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - Shape parameter.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} s - Scale parameter.
+     * @returns {_Matrix_}
+     */
+    static gamcdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of gamma distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - Shape parameter.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} s - Scale parameter.
+     * @returns {_Matrix_}
+     */
+    static gaminv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Beta function.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} y
+     * @returns {_Matrix_}
+     */
+    static beta(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, y: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Incomplete beta function.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
+     * @param {string} [tail="lower"] - lower (default) , "upper"
+     * @returns {_Matrix_}
+     */
+    static betainc(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tail?: string): _Matrix_;
+    /**
+     * Cumulative distribution function (CDF) of beta distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
+     * @returns {_Matrix_}
+     */
+    static betacdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * _Probability_ density function (PDF) of beta distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
+     * @returns {_Matrix_}
+     */
+    static betapdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of beta distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
+     * @returns {_Matrix_}
+     */
+    static betainv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Factorial function, x!.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @returns {_Matrix_}
+     */
+    static factorial(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Binomial coefficient, number of all combinations, nCk.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k
+     * @returns {_Matrix_}
+     */
+    static nchoosek(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Error function.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @returns {_Matrix_}
+     */
+    static erf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Complementary error function.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @returns {_Matrix_}
+     */
+    static erfc(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * _Probability_ density function (PDF) of normal distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [u=0.0] - Average value.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [s=1.0] - Variance value.
+     * @returns {_Matrix_}
+     */
+    static normpdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, u?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Cumulative distribution function (CDF) of normal distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [u=0.0] - Average value.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [s=1.0] - Variance value.
+     * @returns {_Matrix_}
+     */
+    static normcdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, u?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of normal distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [u=0.0] - Average value.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [s=1.0] - Variance value.
+     * @returns {_Matrix_}
+     */
+    static norminv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, u?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * _Probability_ density function (PDF) of Student's t-distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
+     */
+    static tpdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Cumulative distribution function (CDF) of Student's t-distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
+     */
+    static tcdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
+     */
+    static tinv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
+     * @returns {_Matrix_}
+     */
+    static tdist(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tails: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
+     */
+    static tinv2(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * _Probability_ density function (PDF) of chi-square distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
+     */
+    static chi2pdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Cumulative distribution function (CDF) of chi-square distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
+     */
+    static chi2cdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - The degrees of freedom. (DF)
+     * @returns {_Matrix_}
+     */
+    static chi2inv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * _Probability_ density function (PDF) of F-distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d2 - The degree of freedom of the denominator
+     * @returns {_Matrix_}
+     */
+    static fpdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Cumulative distribution function (CDF) of F-distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d2 - The degree of freedom of the denominator
+     * @returns {_Matrix_}
+     */
+    static fcdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of F-distribution.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d1 - The degree of freedom of the molecules.
+     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d2 - The degree of freedom of the denominator
+     * @returns {_Matrix_}
+     */
+    static finv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
+}
+
+/**
  * Create _Random_.
  * @param {number} [seed] - Seed number for random number generation. If not specified, create from time.
  */
@@ -3570,220 +3790,6 @@ declare type StatisticsSettings = {
  * Class for statistical processing for _Matrix_ class.
  */
 declare class _Statistics_ {
-    /**
-     * Log-gamma function.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @returns {_Matrix_}
-     */
-    static gammaln(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Gamma function.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @returns {_Matrix_}
-     */
-    static gamma(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Incomplete gamma function.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
-     * @param {string} [tail="lower"] - lower (default) , "upper"
-     * @returns {_Matrix_}
-     */
-    static gammainc(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tail?: string): _Matrix_;
-    /**
-     * Probability density function (PDF) of the gamma distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - Shape parameter.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} s - Scale parameter.
-     * @returns {_Matrix_}
-     */
-    static gampdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Cumulative distribution function (CDF) of gamma distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - Shape parameter.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} s - Scale parameter.
-     * @returns {_Matrix_}
-     */
-    static gamcdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Inverse function of cumulative distribution function (CDF) of gamma distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - Shape parameter.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} s - Scale parameter.
-     * @returns {_Matrix_}
-     */
-    static gaminv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Beta function.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} y
-     * @returns {_Matrix_}
-     */
-    static beta(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, y: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Incomplete beta function.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
-     * @param {string} [tail="lower"] - lower (default) , "upper"
-     * @returns {_Matrix_}
-     */
-    static betainc(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tail?: string): _Matrix_;
-    /**
-     * Cumulative distribution function (CDF) of beta distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
-     * @returns {_Matrix_}
-     */
-    static betacdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Probability density function (PDF) of beta distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
-     * @returns {_Matrix_}
-     */
-    static betapdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Inverse function of cumulative distribution function (CDF) of beta distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} a
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} b
-     * @returns {_Matrix_}
-     */
-    static betainv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, a: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, b: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Factorial function, x!.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @returns {_Matrix_}
-     */
-    static factorial(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Binomial coefficient, number of all combinations, nCk.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k
-     * @returns {_Matrix_}
-     */
-    static nchoosek(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Error function.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @returns {_Matrix_}
-     */
-    static erf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Complementary error function.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @returns {_Matrix_}
-     */
-    static erfc(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Probability density function (PDF) of normal distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [u=0.0] - Average value.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [s=1.0] - Variance value.
-     * @returns {_Matrix_}
-     */
-    static normpdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, u?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Cumulative distribution function (CDF) of normal distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [u=0.0] - Average value.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [s=1.0] - Variance value.
-     * @returns {_Matrix_}
-     */
-    static normcdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, u?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Inverse function of cumulative distribution function (CDF) of normal distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [u=0.0] - Average value.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} [s=1.0] - Variance value.
-     * @returns {_Matrix_}
-     */
-    static norminv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, u?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, s?: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Probability density function (PDF) of Student's t-distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
-     * @returns {_Matrix_}
-     */
-    static tpdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Cumulative distribution function (CDF) of Student's t-distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
-     * @returns {_Matrix_}
-     */
-    static tcdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
-     * @returns {_Matrix_}
-     */
-    static tinv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
-     * @returns {_Matrix_}
-     */
-    static tdist(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, tails: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} v - The degrees of freedom. (DF)
-     * @returns {_Matrix_}
-     */
-    static tinv2(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, v: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Probability density function (PDF) of chi-square distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - The degrees of freedom. (DF)
-     * @returns {_Matrix_}
-     */
-    static chi2pdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Cumulative distribution function (CDF) of chi-square distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - The degrees of freedom. (DF)
-     * @returns {_Matrix_}
-     */
-    static chi2cdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} k - The degrees of freedom. (DF)
-     * @returns {_Matrix_}
-     */
-    static chi2inv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, k: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Probability density function (PDF) of F-distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d1 - The degree of freedom of the molecules.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d2 - The degree of freedom of the denominator
-     * @returns {_Matrix_}
-     */
-    static fpdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Cumulative distribution function (CDF) of F-distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d1 - The degree of freedom of the molecules.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d2 - The degree of freedom of the denominator
-     * @returns {_Matrix_}
-     */
-    static fcdf(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
-    /**
-     * Inverse function of cumulative distribution function (CDF) of F-distribution.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d1 - The degree of freedom of the molecules.
-     * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} d2 - The degree of freedom of the denominator
-     * @returns {_Matrix_}
-     */
-    static finv(x: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d1: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any, d2: _Matrix_ | _Complex_ | number | string | (string | number | _Complex_)[] | (string | number | _Complex_)[][] | any): _Matrix_;
     /**
      * Maximum number.
      * @param {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_>|Array<Array<string|number|_Complex_>>|Object} x

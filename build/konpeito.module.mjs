@@ -955,7 +955,7 @@ let DEFAULT_RANDOM = new Random();
  * Collection of functions used in BigInteger.
  * @ignore
  */
-class IntegerTool {
+class BigIntegerTool {
 
 	/**
 	 * Return a hex array from a string containing numbers.
@@ -1082,7 +1082,7 @@ class IntegerTool {
 		}
 		if(x > 0xFFFFFFFF) {
 			return {
-				element : IntegerTool.toHexadecimalArrayFromPlainString(IntegerTool.toPlainStringFromString(x.toFixed()), 10),
+				element : BigIntegerTool.toHexadecimalArrayFromPlainString(BigIntegerTool.toPlainStringFromString(x.toFixed()), 10),
 				_sign : sign
 			};
 		}
@@ -1161,20 +1161,20 @@ class IntegerTool {
 		}
 
 		if(radix) {
-			element = IntegerTool.toHexadecimalArrayFromPlainString(x, radix);
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x, radix);
 		}
 		else if(/^0x/.test(x)) {
-			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 16);
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 16);
 		}
 		else if(/^0b/.test(x)) {
-			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 2);
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 2);
 		}
 		else if(/^0o/.test(x)) {
-			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 8);
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 8);
 		}
 		else {
-			x = IntegerTool.toPlainStringFromString(x);
-			element = IntegerTool.toHexadecimalArrayFromPlainString(x, 10);
+			x = BigIntegerTool.toPlainStringFromString(x);
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x, 10);
 		}
 		// "0"の場合がある為
 		if((element.length === 1)&&(element[0] === 0)) {
@@ -1239,18 +1239,18 @@ class BigInteger {
 				this._sign = number._sign;
 			}
 			else if(typeof number === "number") {
-				const x = IntegerTool.toBigIntegerFromNumber(number);
+				const x = BigIntegerTool.toBigIntegerFromNumber(number);
 				this.element = x.element;
 				this._sign = x._sign;
 			}
 			else if(typeof number === "string") {
-				const x = IntegerTool.toBigIntegerFromString(number);
+				const x = BigIntegerTool.toBigIntegerFromString(number);
 				this.element = x.element;
 				this._sign = x._sign;
 			}
 			else if(number instanceof Array) {
 				if((number.length === 2) && (typeof number[0] === "string")) {
-					const x = IntegerTool.toBigIntegerFromString(number[0], number[1]);
+					const x = BigIntegerTool.toBigIntegerFromString(number[0], number[1]);
 					this.element = x.element;
 					this._sign = x._sign;
 				}
@@ -1264,12 +1264,12 @@ class BigInteger {
 				this._sign = x._sign;
 			}
 			else if((number instanceof Object) && (number.intValue)) {
-				const x = IntegerTool.toBigIntegerFromNumber(number.intValue);
+				const x = BigIntegerTool.toBigIntegerFromNumber(number.intValue);
 				this.element = x.element;
 				this._sign = x._sign;
 			}
 			else if(number instanceof Object) {
-				const x = IntegerTool.toBigIntegerFromString(number.toString());
+				const x = BigIntegerTool.toBigIntegerFromString(number.toString());
 				this.element = x.element;
 				this._sign = x._sign;
 			}
@@ -1420,7 +1420,7 @@ class BigInteger {
 		}
 		const zeros_string = zeros_array.join("");
 		// v0.03ここまで
-		const x = IntegerTool.toPlainStringFromHexadecimalArray(this.element, calcradix);
+		const x = BigIntegerTool.toPlainStringFromHexadecimalArray(this.element, calcradix);
 		const y = [];
 		let z = "";
 		if(this.signum() < 0) {
@@ -3036,7 +3036,7 @@ let DEFAULT_CONTEXT = MathContext.DECIMAL128;
  * Collection of functions used in BigDecimal.
  * @ignore
  */
-class DecimalTool {
+class BigDecimalTool {
 
 	/**
 	 * Create data for BigDecimal from strings.
@@ -3190,7 +3190,7 @@ class BigDecimal {
 
 		}
 		else if(typeof number === "number") {
-			const data = DecimalTool.ToBigDecimalFromNumber(number);
+			const data = BigDecimalTool.ToBigDecimalFromNumber(number);
 			this.integer	= data.integer;
 			this._scale		= data.scale;
 		}
@@ -3198,7 +3198,7 @@ class BigDecimal {
 			if(number.length >= 1) {
 				const prm1 = number[0];
 				if(typeof prm1 === "number") {
-					const data = DecimalTool.ToBigDecimalFromNumber(prm1);
+					const data = BigDecimalTool.ToBigDecimalFromNumber(prm1);
 					this.integer	= data.integer;
 					this._scale		= data.scale;
 				}
@@ -3215,12 +3215,12 @@ class BigDecimal {
 					this._scale				= data._scale;
 				}
 				else if((prm1 instanceof Object) && (prm1.doubleValue)) {
-					const data = DecimalTool.ToBigDecimalFromNumber(prm1.doubleValue);
+					const data = BigDecimalTool.ToBigDecimalFromNumber(prm1.doubleValue);
 					this.integer	= data.integer;
 					this._scale		= data.scale;
 				}
 				else {
-					const data = DecimalTool.ToBigDecimalFromString(prm1.toString());
+					const data = BigDecimalTool.ToBigDecimalFromString(prm1.toString());
 					this.integer	= data.integer;
 					this._scale		= data.scale;
 				}
@@ -3244,7 +3244,7 @@ class BigDecimal {
 			}
 		}
 		else if(typeof number === "string") {
-			const data = DecimalTool.ToBigDecimalFromString(number);
+			const data = BigDecimalTool.ToBigDecimalFromString(number);
 			this.integer	= data.integer;
 			this._scale		= data.scale;
 		}
@@ -3268,12 +3268,12 @@ class BigDecimal {
 			}
 		}
 		else if((number instanceof Object) && (number.doubleValue)) {
-			const data = DecimalTool.ToBigDecimalFromNumber(number.doubleValue);
+			const data = BigDecimalTool.ToBigDecimalFromNumber(number.doubleValue);
 			this.integer	= data.integer;
 			this._scale		= data.scale;
 		}
 		else if(number instanceof Object) {
-			const data = DecimalTool.ToBigDecimalFromString(number.toString());
+			const data = BigDecimalTool.ToBigDecimalFromString(number.toString());
 			this.integer	= data.integer;
 			this._scale		= data.scale;
 		}
@@ -4835,7 +4835,7 @@ const DEFINE$2 = {
  * Simple cache class.
  * @ignore
  */
-class BigDecimalConstCache {
+class BigDecimalCache {
 	
 	/**
 	 * Create Cache.
@@ -4895,7 +4895,7 @@ class BigDecimalConstCache {
  * Simple cache class.
  * @ignore
  */
-class CachedDataClass {
+class BigDecimalConst {
 	/**
 	 * Constructor
 	 */
@@ -4903,42 +4903,42 @@ class CachedDataClass {
 		/**
 		 * -1
 		 */
-		this.MINUS_ONE = new BigDecimalConstCache("MINUS_ONE", 10);
+		this.MINUS_ONE = new BigDecimalCache("MINUS_ONE", 10);
 
 		/**
 		 * 0
 		 */
-		this.ZERO = new BigDecimalConstCache("ZERO", 10);
+		this.ZERO = new BigDecimalCache("ZERO", 10);
 
 		/**
 		 * 0.5
 		 */
-		this.HALF = new BigDecimalConstCache("HALF", 10);
+		this.HALF = new BigDecimalCache("HALF", 10);
 
 		/**
 		 * 1
 		 */
-		this.ONE = new BigDecimalConstCache("ONE", 10);
+		this.ONE = new BigDecimalCache("ONE", 10);
 
 		/**
 		 * 2
 		 */
-		this.TWO = new BigDecimalConstCache("TWO", 10);
+		this.TWO = new BigDecimalCache("TWO", 10);
 
 		/**
 		 * 10
 		 */
-		this.TEN = new BigDecimalConstCache("TEN", 10);
+		this.TEN = new BigDecimalCache("TEN", 10);
 
 		/**
 		 * PI
 		 */
-		this.PI = new BigDecimalConstCache("PI", 10);
+		this.PI = new BigDecimalCache("PI", 10);
 
 		/**
 		 * E
 		 */
-		this.E = new BigDecimalConstCache("E", 10);
+		this.E = new BigDecimalCache("E", 10);
 	}
 }
 
@@ -4946,7 +4946,7 @@ class CachedDataClass {
  * Cache of the constant.
  * @ignore
  */
-const CACHED_DATA = new CachedDataClass();
+const CACHED_DATA = new BigDecimalConst();
 
 /**
  * The script is part of konpeito.
@@ -7121,1540 +7121,10 @@ class LinearAlgebra {
  */
 
 /**
- * Collection of statistical functions using real numbers.
- * @ignore
- */
-class StatisticsTool {
-
-	/**
-	 * Log-gamma function.
-	 * @param {number} x
-	 * @returns {number}
-	 */
-	static gammaln(x) {
-		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
-		const LOG_2PI = Math.log(2.0 * Math.PI);
-		//ベルヌーイ数
-		//http://fr.wikipedia.org/wiki/Nombre_de_Bernoulli
-		const K2 = ( 1.0 / 6.0)					/ (2 * 1);
-		const K4 = (-1.0 / 30.0)				/ (4 * 3);
-		const K6 = ( 1.0 / 42.0)				/ (6 * 5);
-		const K8 = (-1.0 / 30.0)				/ (8 * 7);
-		const K10 = ( 5.0 / 66.0)				/ (10 * 9);
-		const K12 = (-691.0 / 2730.0)			/ (12 * 11);
-		const K14 = ( 7.0 / 6.0)				/ (14 * 13);
-		const K16 = (-3617.0 / 510.0)			/ (16 * 15);
-		const K18 = (43867.0 / 798.0)			/ (18 * 17);
-		const K20 = (-174611.0 / 330.0)			/ (20 * 19);
-		const K22 = (854513.0 / 138.0)			/ (22 * 21);
-		const K24 = (-236364091.0 / 2730.0)		/ (24 * 23);
-		const K26 = (8553103.0 / 6.0)			/ (26 * 25);
-		const K28 = (-23749461029.0 / 870.0)	/ (28 * 27);
-		const K30 = (8615841276005.0 / 14322.0)	/ (30 * 29);
-		const K32 = (-7709321041217.0 / 510.0)	/ (32 * 31);
-		const LIST = [
-			K32, K30, K28, K26, K24, K22, K20, K18,
-			K16, K14, K12, K10, K8, K6, K4, K2
-		];
-		let v = 1;
-		let lx = x;
-		while(lx < LIST.length) {
-			v *= lx;
-			lx++;
-		}
-		const w = 1 / (lx * lx);
-		let y = LIST[0];
-		for(let i = 1; i < LIST.length; i++) {
-			y *= w;
-			y += LIST[i];
-		}
-		y /= lx;
-		y += 0.5 * LOG_2PI;
-		y += - Math.log(v) - lx + (lx - 0.5) * Math.log(lx);
-		return(y);
-	}
-
-	/**
-	 * Incomplete gamma function upper side.
-	 * @param {number} x
-	 * @param {number} a
-	 * @param {number} gammaln_a
-	 * @returns {number}
-	 */
-	static q_gamma(x, a, gammaln_a) {
-		// 参考：奥村,"C言語による最新アルゴリズム事典",p227,技術評論社,1991
-		let k;
-		let result, w, temp, previous;
-		// Laguerreの多項式
-		let la = 1.0, lb = 1.0 + x - a;
-		if(x < 1.0 + a) {
-			return (1 - StatisticsTool.p_gamma(x, a, gammaln_a));
-		}
-		w = Math.exp(a * Math.log(x) - x - gammaln_a);
-		result = w / lb;
-		for(k = 2; k < 1000; k++) {
-			temp = ((k - 1.0 - a) * (lb - la) + (k + x) * lb) / k;
-			la = lb;
-			lb = temp;
-			w *= (k - 1.0 - a) / k;
-			temp = w / (la * lb);
-			previous = result;
-			result += temp;
-			if(result == previous) {
-				return(result);
-			}
-		}
-		return Number.NaN;
-	}
-
-	/**
-	 * Incomplete gamma function lower side.
-	 * @param {number} x
-	 * @param {number} a
-	 * @param {number} gammaln_a
-	 * @returns {number}
-	 */
-	static p_gamma(x, a, gammaln_a) {
-		// 参考：奥村,"C言語による最新アルゴリズム事典",p227,技術評論社,1991
-		let k;
-		let result, term, previous;
-		if(x >= 1.0 + a) {
-			return (1.0 - StatisticsTool.q_gamma(x, a, gammaln_a));
-		}
-		if(x === 0.0) {
-			return 0.0;
-		}
-		result = term = Math.exp(a * Math.log(x) - x - gammaln_a) / a;
-		for(k = 1; k < 1000; k++) {
-			term *= x / (a + k);
-			previous = result;
-			result += term;
-			if(result == previous) {
-				return result;
-			}
-		}
-		return Number.NaN;
-	}
-
-	/**
-	 * Gamma function.
-	 * @param {number} z
-	 * @returns {number}
-	 */
-	static gamma(z) {
-		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
-		if(z < 0) {
-			return (Math.PI / (Math.sin(Math.PI * z) * Math.exp(StatisticsTool.gammaln(1.0 - z))));
-		}
-		return Math.exp(StatisticsTool.gammaln(z));
-	}
-
-	/**
-	 * Incomplete gamma function.
-	 * @param {number} x
-	 * @param {number} a
-	 * @param {string} [tail="lower"] - lower (default) , "upper"
-	 * @returns {number}
-	 */
-	static gammainc(x, a, tail) {
-		if(tail === "lower") {
-			return StatisticsTool.p_gamma(x, a, StatisticsTool.gammaln(a));
-		}
-		else if(tail === "upper") {
-			return StatisticsTool.q_gamma(x, a, StatisticsTool.gammaln(a));
-		}
-		else if(arguments.length === 2) {
-			// 引数を省略した場合
-			return StatisticsTool.gammainc(x, a, "lower");
-		}
-		else {
-			throw "gammainc unsupported argument [" + tail + "]";
-		}
-	}
-	
-	/**
-	 * Probability density function (PDF) of the gamma distribution.
-	 * @param {number} x
-	 * @param {number} k - Shape parameter.
-	 * @param {number} s - Scale parameter.
-	 * @returns {number}
-	 */
-	static gampdf(x, k, s) {
-		let y = 1.0 / (StatisticsTool.gamma(k) * Math.pow(s, k));
-		y *= Math.pow( x, k - 1);
-		y *= Math.exp( - x / s );
-		return y;
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of gamma distribution.
-	 * @param {number} x
-	 * @param {number} k - Shape parameter.
-	 * @param {number} s - Scale parameter.
-	 * @returns {number}
-	 */
-	static gamcdf(x, k, s) {
-		return StatisticsTool.gammainc(x / s, k);
-	}
-	
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
-	 * @param {number} p
-	 * @param {number} k - Shape parameter.
-	 * @param {number} s - Scale parameter.
-	 * @returns {number}
-	 */
-	static gaminv(p, k, s) {
-		if((p < 0.0) || (p > 1.0)) {
-			return Number.NaN;
-		}
-		else if(p == 0.0) {
-			return 0.0;
-		}
-		else if(p == 1.0) {
-			return Number.POSITIVE_INFINITY;
-		}
-		const eps = 1.0e-12;
-		// 初期値を決める
-		let y = k * s;
-		// 単調増加関数なのでニュートン・ラフソン法で解く
-		// x_n+1 = x_n - f(x) / f'(x)
-		// ここで f(x) は累積分布関数、f'(x) は確率密度関数
-		// a = 累積分関数 → f(x)  = 累積分関数 - a と置く。
-		// aの微分は0なので無関係
-		let delta, y2;
-		for(let i = 0; i < 100; i++) {
-			y2 = y - ((StatisticsTool.gamcdf(y, k, s) - p) / StatisticsTool.gampdf(y, k, s));
-			delta = y2 - y;
-			if(Math.abs(delta) <= eps) {
-				break;
-			}
-			y = y2;
-			if(y < 0.0) {
-				y = eps;
-			}
-		}
-		return y;
-	}
-
-	/**
-	 * Beta function.
-	 * @param {number} x
-	 * @param {number} y
-	 * @returns {number}
-	 */
-	static beta(x, y) {
-		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
-		return (Math.exp(StatisticsTool.gammaln(x) + StatisticsTool.gammaln(y) - StatisticsTool.gammaln(x + y)));
-	}
-	
-	/**
-	 * Incomplete beta function lower side.
-	 * @param {number} x
-	 * @param {number} a
-	 * @param {number} b
-	 * @returns {number}
-	 */
-	static p_beta(x, a, b) {
-		// 参考：奥村,"C言語による最新アルゴリズム事典",p231,技術評論社,1991
-		let k;
-		let result, term, previous;
-		if(a <= 0.0) {
-			return Number.POSITIVE_INFINITY;
-		}
-		if(b <= 0.0) {
-			if(x < 1.0) {
-				return 0.0;
-			}
-			else if(x === 1.0) {
-				return 1.0;
-			}
-			else {
-				return Number.POSITIVE_INFINITY;
-			}
-		}
-		if(x > (a + 1.0) / (a + b + 2.0)) {
-			return (1.0 - StatisticsTool.p_beta(1.0 - x, b, a));
-		}
-		if(x <= 0.0) {
-			return 0.0;
-		}
-		term = a * Math.log(x);
-		term += b * Math.log(1.0 - x);
-		term += StatisticsTool.gammaln(a + b);
-		term -= StatisticsTool.gammaln(a) + StatisticsTool.gammaln(b);
-		term = Math.exp(term);
-		term /= a;
-		result = term;
-		for(k = 1; k < 1000; k++) {
-			term *= a + b + k - 1.0;
-			term *= x;
-			term /= a + k;
-			previous = result;
-			result += term;
-			if(result === previous) {
-				return result;
-			}
-		}
-		return Number.NaN;
-	}
-
-	/**
-	 * Incomplete beta function upper side.
-	 * @param {number} x
-	 * @param {number} a
-	 * @param {number} b
-	 * @returns {number}
-	 */
-	static q_beta(x, a, b) {
-		return (1.0 - StatisticsTool.p_beta(x, a, b));
-	}
-
-	/**
-	 * Incomplete beta function.
-	 * @param {number} x
-	 * @param {number} a
-	 * @param {number} b
-	 * @param {string} [tail="lower"] - lower (default) , "upper"
-	 * @returns {number}
-	 */
-	static betainc(x, a, b, tail) {
-		if(tail === "lower") {
-			return StatisticsTool.p_beta(x, a, b);
-		}
-		else if(tail === "upper") {
-			return StatisticsTool.q_beta(x, a, b);
-		}
-		else if(arguments.length === 3) {
-			// 引数を省略した場合
-			return StatisticsTool.betainc(x, a, b, "lower");
-		}
-		else {
-			throw "betainc unsupported argument [" + tail + "]";
-		}
-	}
-	
-	/**
-	 * Return true if the value is integer.
-	 * @param {number} x
-	 * @returns {boolean}
-	 */
-	static isInteger(x) {
-		return (x - Math.trunc(x) !== 0.0);
-	}
-	
-	/**
-	 * Probability density function (PDF) of beta distribution.
-	 * @param {number} x
-	 * @param {number} a
-	 * @param {number} b
-	 * @returns {number}
-	 */
-	static betapdf(x, a, b) {
-		// powの計算結果が複素数になる場合は計算を行わない
-		if	(
-			((x < 0) && (StatisticsTool.isInteger(b - 1))) ||
-			((1 - x < 0) && (StatisticsTool.isInteger(b - 1)))
-		) {
-			return 0.0;
-		}
-		// 以下の式でも求められるが betapdf(0, 1, 1)で、Log(0)の計算が発生しNaNを返してしまう。実際は1を返すべき。
-		//return(Math.exp((a - 1) * Math.log(x) + (b - 1) * Math.log(1 - x)) / StatisticsTool.beta(a,  b));
-		return (Math.pow(x, a - 1) * Math.pow(1 - x, b - 1) / StatisticsTool.beta(a,  b));
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of beta distribution.
-	 * @param {number} x
-	 * @param {number} a
-	 * @param {number} b
-	 * @returns {number}
-	 */
-	static betacdf(x, a, b) {
-		return StatisticsTool.betainc(x, a, b);
-	}
-	
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
-	 * @param {number} p
-	 * @param {number} a
-	 * @param {number} b
-	 * @returns {number}
-	 */
-	static betainv(p, a, b) {
-		if((p < 0.0) || (p > 1.0)) {
-			return Number.NaN;
-		}
-		else if((p == 0.0) && (a > 0.0) && (b > 0.0)) {
-			return 0.0;
-		}
-		else if((p == 1.0) && (a > 0.0) && (b > 0.0)) {
-			return 1.0;
-		}
-		const eps = 1.0e-14;
-		// 初期値を決める
-		let y;
-		if(b == 0) {
-			y = 1.0 - eps;
-		}
-		else if(a == 0) {
-			y = eps;
-		}
-		else {
-			y = a / (a + b);
-		}
-		// 単調増加関数なのでニュートン・ラフソン法で解く
-		// x_n+1 = x_n - f(x) / f'(x)
-		// ここで f(x) は累積分布関数、f'(x) は確率密度関数
-		// a = 累積分関数 → f(x)  = 累積分関数 - a と置く。
-		// aの微分は0なので無関係
-		let delta, y2;
-		for(let i = 0; i < 100; i++) {
-			y2 = y - ((StatisticsTool.betacdf(y, a, b) - p) / StatisticsTool.betapdf(y, a, b));
-			delta = y2 - y;
-			if(Math.abs(delta) <= eps) {
-				break;
-			}
-			y = y2;
-			if(y > 1.0) {
-				y = 1.0 - eps;
-			}
-			else if(y < 0.0) {
-				y = eps;
-			}
-		}
-		return y;
-	}
-
-	/**
-	 * Factorial function, x!.
-	 * @param {number} n
-	 * @returns {number}
-	 */
-	static factorial(n) {
-		const y = StatisticsTool.gamma(n + 1.0);
-		if(Math.trunc(n) === n) {
-			return Math.round(y);
-		}
-		else {
-			return y;
-		}
-	}
-
-	/**
-	 * Binomial coefficient, number of all combinations, nCk.
-	 * @param {number} n
-	 * @param {number} k
-	 * @returns {number} nCk
-	 */
-	static nchoosek(n, k) {
-		return (Math.round(StatisticsTool.factorial(n) / (StatisticsTool.factorial(n - k) * StatisticsTool.factorial(k))));
-	}
-
-	/**
-	 * Error function.
-	 * @param {number} x
-	 * @returns {number}
-	 */
-	static erf(x) {
-		return (StatisticsTool.p_gamma(x * x, 0.5, Math.log(Math.PI) * 0.5) * (x >= 0 ? 1.0 : -1.0));
-	}
-
-	/**
-	 * Complementary error function.
-	 * @param {number} x
-	 * @returns {number}
-	 */
-	static erfc(x) {
-		return 1.0 - StatisticsTool.erf(x);
-	}
-
-	/**
-		 erfinv(p) 誤差逆関数
-		 @param_ {number} p
-		 @returns_ {number}
-		
-		static erfinv(p) {
-			if((p < 0.0) || (p > 1.0)) {
-				return Number.NaN;
-			}
-			else if(p == 0.0) {
-				return Number.NEGATIVE_INFINITY;
-			}
-			else if(p == 1.0) {
-				return Number.POSITIVE_INFINITY;
-			}
-			let y = 0;
-			const c = [];
-			for(let k = 0; k < 100; k++) {
-				let ck = 0;
-				if(0 === k) {
-					ck = 1;
-				}
-				else {
-					for(let m = 0; m < k; m++) {
-						ck += c[m] * c[k - 1 - m] / ((m + 1) * (2 * m + 1));
-					}
-				}
-				c.push(ck);
-				console.log(y + "\t" + ck / (2 * k + 1) + "\t" + Math.pow(Math.sqrt(Math.PI) * 0.5 * p, 2 * k + 1))
-				y += ck / (2 * k + 1) * Math.pow(Math.sqrt(Math.PI) * 0.5 * p, 2 * k + 1);
-			}
-			return y;
-			// 0.5 * Math.sqrt(Math.PI) = 0.8862269254527579
-			// Math.PI / 12 = 0.2617993877991494
-			// 7 * Math.pow(Math.PI, 2) / 480 = 0.14393173084921979
-			// 127 * Math.pow(Math.PI, 3) / 40320 = 0.09766361950392055
-			// 4369 * Math.pow(Math.PI, 4) / 5806080 = 0.07329907936638086
-			// 34807 * Math.pow(Math.PI, 5) / 182476800 = 0.05837250087858452
-			return (p
-				+ 0.2617993877991494 * Math.pow(p, 3)
-				+ 0.14393173084921979 * Math.pow(p, 5)
-				+ 0.09766361950392055 * Math.pow(p, 7)
-				+ 0.07329907936638086 * Math.pow(p, 9)
-				+ 0.05837250087858452 * Math.pow(p, 11)
-			) * 0.8862269254527579;
-		}
-	*/
-
-	/**
-	 * Probability density function (PDF) of normal distribution.
-	 * @param {number} x
-	 * @param {number} [u=0.0] - Average value.
-	 * @param {number} [s=1.0] - Variance value.
-	 * @returns {number}
-	 */
-	static normpdf(x, u, s) {
-		const u_ = typeof u === "number" ? u : 0.0;
-		const s_ = typeof s === "number" ? s : 1.0;
-		let y = 1.0 / Math.sqrt( 2.0 * Math.PI * s_ * s_ );
-		y *= Math.exp( - (x - u_) * (x - u_) / (2.0 * s_ * s_));
-		return y;
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of normal distribution.
-	 * @param {number} x
-	 * @param {number} [u=0.0] - Average value.
-	 * @param {number} [s=1.0] - Variance value.
-	 * @returns {number}
-	 */
-	static normcdf(x, u, s) {
-		const u_ = typeof u === "number" ? u : 0.0;
-		const s_ = typeof s === "number" ? s : 1.0;
-		return (1.0 + StatisticsTool.erf( (x - u_) / (s_ * Math.sqrt(2.0)) )) / 2.0;
-	}
-
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
-	 * @param {number} p - Probability.
-	 * @param {number} [u=0.0] - Average value.
-	 * @param {number} [s=1.0] - Variance value.
-	 * @returns {number}
-	 */
-	static norminv(p, u, s) {
-		if((p < 0.0) || (p > 1.0)) {
-			return Number.NaN;
-		}
-		else if(p == 0.0) {
-			return Number.NEGATIVE_INFINITY;
-		}
-		else if(p == 1.0) {
-			return Number.POSITIVE_INFINITY;
-		}
-		const u_ = typeof u === "number" ? u : 0.0;
-		const s_ = typeof s === "number" ? s : 1.0;
-		const eps = 1.0e-12;
-		// 初期値を決める
-		let y = u_;
-		// 単調増加関数なのでニュートン・ラフソン法で解く
-		// x_n+1 = x_n - f(x) / f'(x)
-		// ここで f(x) は累積分布関数、f'(x) は確率密度関数
-		// a = 累積分関数 → f(x)  = 累積分関数 - a と置く。
-		// aの微分は0なので無関係
-		let delta, y2;
-		for(let i = 0; i < 200; i++) {
-			y2 = y - ((StatisticsTool.normcdf(y, u_, s_) - p) / StatisticsTool.normpdf(y, u_, s_));
-			delta = y2 - y;
-			if(Math.abs(delta) <= eps) {
-				break;
-			}
-			y = y2;
-		}
-		return y;
-	}
-
-	/**
-	 * Probability density function (PDF) of Student's t-distribution.
-	 * @param {number} t - T-value.
-	 * @param {number} v - The degrees of freedom. (DF)
-	 * @returns {number}
-	 */
-	static tpdf(t, v) {
-		let y = 1.0 / (Math.sqrt(v) * StatisticsTool.beta(0.5, v * 0.5));
-		y *= Math.pow( 1 + t * t / v, - (v + 1) * 0.5);
-		return y;
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of Student's t-distribution.
-	 * @param {number} t - T-value.
-	 * @param {number} v - The degrees of freedom. (DF)
-	 * @returns {number}
-	 */
-	static tcdf(t, v) {
-		const y = (t * t) / (v + t * t) ;
-		const p = StatisticsTool.betainc( y, 0.5, v * 0.5 ) * (t < 0 ? -1 : 1);
-		return 0.5 * (1 + p);
-	}
-
-	/**
-	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
-	 * @param {number} p - Probability.
-	 * @param {number} v - The degrees of freedom. (DF)
-	 * @returns {number}
-	 */
-	static tinv(p, v) {
-		if((p < 0) || (p > 1)) {
-			return Number.NaN;
-		}
-		if(p == 0) {
-			return Number.NEGATIVE_INFINITY;
-		}
-		else if(p == 1) {
-			return Number.POSITIVE_INFINITY;
-		}
-		else if(p < 0.5) {
-			const y = StatisticsTool.betainv(2.0 * p, 0.5 * v, 0.5);
-			return - Math.sqrt(v / y - v);
-		}
-		else {
-			const y = StatisticsTool.betainv(2.0 * (1.0 - p), 0.5 * v, 0.5);
-			return Math.sqrt(v / y - v);
-		}
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-	 * @param {number} t - T-value.
-	 * @param {number} v - The degrees of freedom. (DF)
-	 * @param {number} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
-	 * @returns {number}
-	 */
-	static tdist(t, v, tails) {
-		return (1.0 - StatisticsTool.tcdf(t, v)) * tails;
-	}
-
-	/**
-	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
-	 * @param {number} p - Probability.
-	 * @param {number} v - The degrees of freedom. (DF)
-	 * @returns {number}
-	 */
-	static tinv2(p, v) {
-		return - StatisticsTool.tinv( p * 0.5, v);
-	}
-
-	/**
-	 * Probability density function (PDF) of chi-square distribution.
-	 * @param {number} x 
-	 * @param {number} k - The degrees of freedom. (DF)
-	 * @returns {number}
-	 */
-	static chi2pdf(x, k) {
-		if(x < 0.0) {
-			return 0;
-		}
-		else if(x === 0.0) {
-			return 0.5;
-		}
-		let y = Math.pow(x, k / 2.0 - 1.0) * Math.exp( - x / 2.0 );
-		y /= Math.pow(2, k / 2.0) * StatisticsTool.gamma( k / 2.0);
-		return y;
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {number} x 
-	 * @param {number} k - The degrees of freedom. (DF)
-	 * @returns {number}
-	 */
-	static chi2cdf(x, k) {
-		return StatisticsTool.gammainc(x / 2.0, k / 2.0);
-	}
-
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {number} p - Probability.
-	 * @param {number} k - The degrees of freedom. (DF)
-	 * @returns {number}
-	 */
-	static chi2inv(p, k) {
-		return StatisticsTool.gaminv(p, k / 2.0, 2);
-	}
-
-	/**
-	 * Probability density function (PDF) of F-distribution.
-	 * @param {number} x
-	 * @param {number} d1 - The degree of freedom of the molecules.
-	 * @param {number} d2 - The degree of freedom of the denominator
-	 * @returns {number}
-	 */
-	static fpdf(x, d1, d2) {
-		if((d1 < 0) || (d2 < 0)) {
-			return Number.NaN;
-		}
-		else if(x <= 0) {
-			return 0.0;
-		}
-		let y = 1.0;
-		y *= Math.pow( (d1 * x) / (d1 * x + d2) , d1 / 2.0);
-		y *= Math.pow( 1.0 - ((d1 * x) / (d1 * x + d2)), d2 / 2.0);
-		y /= x * StatisticsTool.beta(d1 / 2.0, d2 / 2.0);
-		return y;
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of F-distribution.
-	 * @param {number} x
-	 * @param {number} d1 - The degree of freedom of the molecules.
-	 * @param {number} d2 - The degree of freedom of the denominator
-	 * @returns {number}
-	 */
-	static fcdf(x, d1, d2) {
-		return StatisticsTool.betacdf( d1 * x / (d1 * x + d2), d1 / 2.0, d2 / 2.0 );
-	}
-
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
-	 * @param {number} p - Probability.
-	 * @param {number} d1 - The degree of freedom of the molecules.
-	 * @param {number} d2 - The degree of freedom of the denominator
-	 * @returns {number}
-	 */
-	static finv(p, d1, d2) {
-		return (1.0 / StatisticsTool.betainv( 1.0 - p, d2 / 2.0, d1 / 2.0 ) - 1.0) * d2 / d1;
-	}
-
-}
-
-/**
- * typeof this === string
- * @param text 
- * @ignore
- */
-const isStr = function(text) {
-	return (text && (typeof text === "string" || text instanceof String));
-};
-
-/**
- * Collection of statistical functions used from the Complex class.
- * @ignore
- */
-class StatisticsComplex {
-
-	/**
-	 * Log-gamma function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @returns {Complex}
-	 */
-	static gammaln(x) {
-		return new Complex(StatisticsTool.gammaln(Complex._toDouble(x)));
-	}
-	
-	/**
-	 * Gamma function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} z
-	 * @returns {Complex}
-	 */
-	static gamma(z) {
-		return new Complex(StatisticsTool.gamma(Complex._toDouble(z)));
-	}
-	
-	/**
-	 * Incomplete gamma function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
-	 * @param {string} [tail="lower"] - lower (default) , "upper"
-	 * @returns {Complex}
-	 */
-	static gammainc(x, a, tail) {
-		const X = Complex._toDouble(x);
-		const a_ = Complex._toDouble(a);
-		const tail_ = isStr(tail) ? tail : "lower";
-		return new Complex(StatisticsTool.gammainc(X, a_, tail_));
-	}
-
-	/**
-	 * Probability density function (PDF) of the gamma distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - Shape parameter.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - Scale parameter.
-	 * @returns {Complex}
-	 */
-	static gampdf(x, k, s) {
-		const X = Complex._toDouble(x);
-		const k_ = Complex._toDouble(k);
-		const s_ = Complex._toDouble(s);
-		return new Complex(StatisticsTool.gampdf(X, k_, s_));
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of gamma distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - Shape parameter.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - Scale parameter.
-	 * @returns {Complex}
-	 */
-	static gamcdf(x, k, s) {
-		const X = Complex._toDouble(x);
-		const k_ = Complex._toDouble(k);
-		const s_ = Complex._toDouble(s);
-		return new Complex(StatisticsTool.gamcdf(X, k_, s_));
-	}
-
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - Shape parameter.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - Scale parameter.
-	 * @returns {Complex}
-	 */
-	static gaminv(p, k, s) {
-		const p_ = Complex._toDouble(p);
-		const k_ = Complex._toDouble(k);
-		const s_ = Complex._toDouble(s);
-		return new Complex(StatisticsTool.gaminv(p_, k_, s_));
-	}
-
-	/**
-	 * Beta function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} y
-	 * @returns {Complex}
-	 */
-	static beta(x, y) {
-		const X = Complex._toDouble(x);
-		const y_ = Complex._toDouble(y);
-		return new Complex(StatisticsTool.beta(X, y_));
-	}
-
-	/**
-	 * Incomplete beta function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
-	 * @param {string} [tail="lower"] - lower (default) , "upper"
-	 * @returns {Complex}
-	 */
-	static betainc(x, a, b, tail) {
-		const X = Complex._toDouble(x);
-		const a_ = Complex._toDouble(a);
-		const b_ = Complex._toDouble(b);
-		const tail_ = isStr(tail) ? tail : "lower";
-		return new Complex(StatisticsTool.betainc(X, a_, b_, tail_));
-	}
-
-	/**
-	 * Probability density function (PDF) of beta distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
-	 * @returns {Complex}
-	 */
-	static betapdf(x, a, b) {
-		const X = Complex._toDouble(x);
-		const a_ = Complex._toDouble(a);
-		const b_ = Complex._toDouble(b);
-		return new Complex(StatisticsTool.betapdf(X, a_, b_));
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of beta distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
-	 * @returns {Complex}
-	 */
-	static betacdf(x, a, b) {
-		const X = Complex._toDouble(x);
-		const a_ = Complex._toDouble(a);
-		const b_ = Complex._toDouble(b);
-		return new Complex(StatisticsTool.betacdf(X, a_, b_));
-	}
-
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
-	 * @returns {Complex}
-	 */
-	static betainv(p, a, b) {
-		const p_ = Complex._toDouble(p);
-		const a_ = Complex._toDouble(a);
-		const b_ = Complex._toDouble(b);
-		return new Complex(StatisticsTool.betainv(p_, a_, b_));
-	}
-
-	/**
-	 * Factorial function, x!.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} n
-	 * @returns {Complex}
-	 */
-	static factorial(n) {
-		return new Complex(StatisticsTool.factorial(Complex._toDouble(n)));
-	}
-
-	/**
-	 * Binomial coefficient, number of all combinations, nCk.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} n
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k
-	 * @returns {Complex}
-	 */
-	static nchoosek(n, k) {
-		const n_ = Complex._toDouble(n);
-		const k_ = Complex._toDouble(k);
-		return new Complex(StatisticsTool.nchoosek(n_, k_));
-	}
-	
-	/**
-	 * Error function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @returns {Complex}
-	 */
-	static erf(x) {
-		const X = Complex._toDouble(x);
-		return new Complex(StatisticsTool.erf(X));
-	}
-
-	/**
-	 * Complementary error function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @returns {Complex}
-	 */
-	static erfc(x) {
-		const X = Complex._toDouble(x);
-		return new Complex(StatisticsTool.erfc(X));
-	}
-
-	/**
-	 * Probability density function (PDF) of normal distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - Average value.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
-	 * @returns {Complex}
-	 */
-	static normpdf(x, u, s) {
-		const X = Complex._toDouble(x);
-		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
-		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
-		return new Complex(StatisticsTool.normpdf(X, u_, s_));
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of normal distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - Average value.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
-	 * @returns {Complex}
-	 */
-	static normcdf(x, u, s) {
-		const X = Complex._toDouble(x);
-		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
-		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
-		return new Complex(StatisticsTool.normcdf(X, u_, s_));
-	}
-
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - Average value.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
-	 * @returns {Complex}
-	 */
-	static norminv(x, u, s) {
-		const X = Complex._toDouble(x);
-		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
-		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
-		return new Complex(StatisticsTool.norminv(X, u_, s_));
-	}
-	
-	/**
-	 * Probability density function (PDF) of Student's t-distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
-	 * @returns {Complex}
-	 */
-	static tpdf(x, v) {
-		const X = Complex._toDouble(x);
-		const v_ = Complex._toDouble(v);
-		return new Complex(StatisticsTool.tpdf(X, v_));
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of Student's t-distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} t
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
-	 * @returns {Complex}
-	 */
-	static tcdf(t, v) {
-		const t_ = Complex._toDouble(t);
-		const v_ = Complex._toDouble(v);
-		return new Complex(StatisticsTool.tcdf(t_, v_));
-	}
-
-	/**
-	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
-	 * @returns {Complex}
-	 */
-	static tinv(p, v) {
-		const p_ = Complex._toDouble(p);
-		const v_ = Complex._toDouble(v);
-		return new Complex(StatisticsTool.tinv(p_, v_));
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} t
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
-	 * @returns {Complex}
-	 */
-	static tdist(t, v, tails) {
-		const t_ = Complex._toDouble(t);
-		const v_ = Complex._toDouble(v);
-		const tails_ = Complex._toInteger(tails);
-		return new Complex(StatisticsTool.tdist(t_, v_, tails_));
-	}
-
-	/**
-	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
-	 * @returns {Complex}
-	 */
-	static tinv2(p, v) {
-		const p_ = Complex._toDouble(p);
-		const v_ = Complex._toDouble(v);
-		return new Complex(StatisticsTool.tinv2(p_, v_));
-	}
-
-	/**
-	 * Probability density function (PDF) of chi-square distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
-	 * @returns {Complex}
-	 */
-	static chi2pdf(x, k) {
-		const X = Complex._toDouble(x);
-		const k_ = Complex._toDouble(k);
-		return new Complex(StatisticsTool.chi2pdf(X, k_));
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
-	 * @returns {Complex}
-	 */
-	static chi2cdf(x, k) {
-		const X = Complex._toDouble(x);
-		const k_ = Complex._toDouble(k);
-		return new Complex(StatisticsTool.chi2cdf(X, k_));
-	}
-
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
-	 * @returns {Complex}
-	 */
-	static chi2inv(p, k) {
-		const p_ = Complex._toDouble(p);
-		const k_ = Complex._toDouble(k);
-		return new Complex(StatisticsTool.chi2inv(p_, k_));
-	}
-
-	/**
-	 * Probability density function (PDF) of F-distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
-	 * @returns {Complex}
-	 */
-	static fpdf(x, d1, d2) {
-		const X = Complex._toDouble(x);
-		const d1_ = Complex._toDouble(d1);
-		const d2_ = Complex._toDouble(d2);
-		return new Complex(StatisticsTool.fpdf(X, d1_, d2_));
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of F-distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
-	 * @returns {Complex}
-	 */
-	static fcdf(x, d1, d2) {
-		const X = Complex._toDouble(x);
-		const d1_ = Complex._toDouble(d1);
-		const d2_ = Complex._toDouble(d2);
-		return new Complex(StatisticsTool.fcdf(X, d1_, d2_));
-	}
-
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
-	 * @returns {Complex}
-	 */
-	static finv(p, d1, d2) {
-		const p_ = Complex._toDouble(p);
-		const d1_ = Complex._toDouble(d1);
-		const d2_ = Complex._toDouble(d2);
-		return new Complex(StatisticsTool.finv(p_, d1_, d2_));
-	}
-
-}
-
-/**
  * Class for statistical processing for Matrix class.
  */
 class Statistics {
 
-	/**
-	 * Log-gamma function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @returns {Matrix}
-	 */
-	static gammaln(x) {
-		const X = Matrix._toMatrix(x);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.gammaln(num);
-		});
-	}
-
-	/**
-	 * Gamma function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @returns {Matrix}
-	 */
-	static gamma(x) {
-		const X = Matrix._toMatrix(x);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.gamma(num);
-		});
-	}
-
-	/**
-	 * Incomplete gamma function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {string} [tail="lower"] - lower (default) , "upper"
-	 * @returns {Matrix}
-	 */
-	static gammainc(x, a, tail) {
-		const X = Matrix._toMatrix(x);
-		const a_ = Matrix._toDouble(a);
-		const tail_ = isStr(tail) ? tail : "lower";
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.gammainc(num, a_, tail_);
-		});
-	}
-
-	/**
-	 * Probability density function (PDF) of the gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
-	 * @returns {Matrix}
-	 */
-	static gampdf(x, k, s) {
-		const X = Matrix._toMatrix(x);
-		const k_ = Matrix._toDouble(k);
-		const s_ = Matrix._toDouble(s);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.gampdf(num, k_, s_);
-		});
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
-	 * @returns {Matrix}
-	 */
-	static gamcdf(x, k, s) {
-		const X = Matrix._toMatrix(x);
-		const k_ = Matrix._toDouble(k);
-		const s_ = Matrix._toDouble(s);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.gamcdf(num, k_, s_);
-		});
-	}
-
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
-	 * @returns {Matrix}
-	 */
-	static gaminv(x, k, s) {
-		const X = Matrix._toMatrix(x);
-		const k_ = Matrix._toDouble(k);
-		const s_ = Matrix._toDouble(s);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.gaminv(num, k_, s_);
-		});
-	}
-
-	/**
-	 * Beta function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} y
-	 * @returns {Matrix}
-	 */
-	static beta(x, y) {
-		const X = Matrix._toMatrix(x);
-		const y_ = Matrix._toDouble(y);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.beta(num, y_);
-		});
-	}
-	
-	/**
-	 * Incomplete beta function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-	 * @param {string} [tail="lower"] - lower (default) , "upper"
-	 * @returns {Matrix}
-	 */
-	static betainc(x, a, b, tail) {
-		const X = Matrix._toMatrix(x);
-		const a_ = Matrix._toDouble(a);
-		const b_ = Matrix._toDouble(b);
-		const tail_ = isStr(tail) ? tail : "lower";
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.betainc(num, a_, b_, tail_);
-		});
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-	 * @returns {Matrix}
-	 */
-	static betacdf(x, a, b) {
-		const X = Matrix._toMatrix(x);
-		const a_ = Matrix._toDouble(a);
-		const b_ = Matrix._toDouble(b);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.betacdf(num, a_, b_);
-		});
-	}
-
-	/**
-	 * Probability density function (PDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-	 * @returns {Matrix}
-	 */
-	static betapdf(x, a, b) {
-		const X = Matrix._toMatrix(x);
-		const a_ = Matrix._toDouble(a);
-		const b_ = Matrix._toDouble(b);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.betapdf(num, a_, b_);
-		});
-	}
-
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
-	 * @returns {Matrix}
-	 */
-	static betainv(x, a, b) {
-		const X = Matrix._toMatrix(x);
-		const a_ = Matrix._toDouble(a);
-		const b_ = Matrix._toDouble(b);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.betainv(num, a_, b_);
-		});
-	}
-
-	/**
-	 * Factorial function, x!.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @returns {Matrix}
-	 */
-	static factorial(x) {
-		const X = Matrix._toMatrix(x);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.factorial(num);
-		});
-	}
-	
-	/**
-	 * Binomial coefficient, number of all combinations, nCk.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k
-	 * @returns {Matrix}
-	 */
-	static nchoosek(x, k) {
-		const X = Matrix._toMatrix(x);
-		const k_ = Matrix._toDouble(k);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.nchoosek(num, k_);
-		});
-	}
-	
-	/**
-	 * Error function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @returns {Matrix}
-	 */
-	static erf(x) {
-		const X = Matrix._toMatrix(x);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.erf(num);
-		});
-	}
-
-	/**
-	 * Complementary error function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @returns {Matrix}
-	 */
-	static erfc(x) {
-		const X = Matrix._toMatrix(x);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.erfc(num);
-		});
-	}
-	
-	/**
-	 * Probability density function (PDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
-	 * @returns {Matrix}
-	 */
-	static normpdf(x, u, s) {
-		const X = Matrix._toMatrix(x);
-		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
-		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.normpdf(num, u_, s_);
-		});
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
-	 * @returns {Matrix}
-	 */
-	static normcdf(x, u, s) {
-		const X = Matrix._toMatrix(x);
-		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
-		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.normcdf(num, u_, s_);
-		});
-	}
-
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
-	 * @returns {Matrix}
-	 */
-	static norminv(x, u, s) {
-		const X = Matrix._toMatrix(x);
-		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
-		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.norminv(num, u_, s_);
-		});
-	}
-
-	/**
-	 * Probability density function (PDF) of Student's t-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-	 * @returns {Matrix}
-	 */
-	static tpdf(x, v) {
-		const X = Matrix._toMatrix(x);
-		const v_ = Matrix._toDouble(v);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.tpdf(num, v_);
-		});
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of Student's t-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-	 * @returns {Matrix}
-	 */
-	static tcdf(x, v) {
-		const X = Matrix._toMatrix(x);
-		const v_ = Matrix._toDouble(v);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.tcdf(num, v_);
-		});
-	}
-
-	/**
-	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-	 * @returns {Matrix}
-	 */
-	static tinv(x, v) {
-		const X = Matrix._toMatrix(x);
-		const v_ = Matrix._toDouble(v);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.tinv(num, v_);
-		});
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
-	 * @returns {Matrix}
-	 */
-	static tdist(x, v, tails) {
-		const X = Matrix._toMatrix(x);
-		const v_ = Matrix._toDouble(v);
-		const tails_ = Matrix._toDouble(tails);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.tdist(num, v_, tails_);
-		});
-	}
-
-	/**
-	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-	 * @returns {Matrix}
-	 */
-	static tinv2(x, v) {
-		const X = Matrix._toMatrix(x);
-		const v_ = Matrix._toDouble(v);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.tinv2(num, v_);
-		});
-	}
-
-	/**
-	 * Probability density function (PDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
-	 * @returns {Matrix}
-	 */
-	static chi2pdf(x, k) {
-		const X = Matrix._toMatrix(x);
-		const k_ = Matrix._toDouble(k);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.chi2pdf(num, k_);
-		});
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
-	 * @returns {Matrix}
-	 */
-	static chi2cdf(x, k) {
-		const X = Matrix._toMatrix(x);
-		const k_ = Matrix._toDouble(k);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.chi2cdf(num, k_);
-		});
-	}
-	
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
-	 * @returns {Matrix}
-	 */
-	static chi2inv(x, k) {
-		const X = Matrix._toMatrix(x);
-		const k_ = Matrix._toDouble(k);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.chi2inv(num, k_);
-		});
-	}
-
-	/**
-	 * Probability density function (PDF) of F-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
-	 * @returns {Matrix}
-	 */
-	static fpdf(x, d1, d2) {
-		const X = Matrix._toMatrix(x);
-		const d1_ = Matrix._toDouble(d1);
-		const d2_ = Matrix._toDouble(d2);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.fpdf(num, d1_, d2_);
-		});
-	}
-
-	/**
-	 * Cumulative distribution function (CDF) of F-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
-	 * @returns {Matrix}
-	 */
-	static fcdf(x, d1, d2) {
-		const X = Matrix._toMatrix(x);
-		const d1_ = Matrix._toDouble(d1);
-		const d2_ = Matrix._toDouble(d2);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.fcdf(num, d1_, d2_);
-		});
-	}
-
-	/**
-	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
-	 * @returns {Matrix}
-	 */
-	static finv(x, d1, d2) {
-		const X = Matrix._toMatrix(x);
-		const d1_ = Matrix._toDouble(d1);
-		const d2_ = Matrix._toDouble(d2);
-		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.finv(num, d1_, d2_);
-		});
-	}
-	
 	/**
 	 * Maximum number.
 	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
@@ -9082,6 +7552,1553 @@ class Statistics {
 	}
 
 
+}
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Collection for calculating probability using real numbers.
+ * @ignore
+ */
+class ProbabilityTool {
+
+	/**
+	 * Log-gamma function.
+	 * @param {number} x
+	 * @returns {number}
+	 */
+	static gammaln(x) {
+		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
+		const LOG_2PI = Math.log(2.0 * Math.PI);
+		//ベルヌーイ数
+		//http://fr.wikipedia.org/wiki/Nombre_de_Bernoulli
+		const K2 = ( 1.0 / 6.0)					/ (2 * 1);
+		const K4 = (-1.0 / 30.0)				/ (4 * 3);
+		const K6 = ( 1.0 / 42.0)				/ (6 * 5);
+		const K8 = (-1.0 / 30.0)				/ (8 * 7);
+		const K10 = ( 5.0 / 66.0)				/ (10 * 9);
+		const K12 = (-691.0 / 2730.0)			/ (12 * 11);
+		const K14 = ( 7.0 / 6.0)				/ (14 * 13);
+		const K16 = (-3617.0 / 510.0)			/ (16 * 15);
+		const K18 = (43867.0 / 798.0)			/ (18 * 17);
+		const K20 = (-174611.0 / 330.0)			/ (20 * 19);
+		const K22 = (854513.0 / 138.0)			/ (22 * 21);
+		const K24 = (-236364091.0 / 2730.0)		/ (24 * 23);
+		const K26 = (8553103.0 / 6.0)			/ (26 * 25);
+		const K28 = (-23749461029.0 / 870.0)	/ (28 * 27);
+		const K30 = (8615841276005.0 / 14322.0)	/ (30 * 29);
+		const K32 = (-7709321041217.0 / 510.0)	/ (32 * 31);
+		const LIST = [
+			K32, K30, K28, K26, K24, K22, K20, K18,
+			K16, K14, K12, K10, K8, K6, K4, K2
+		];
+		let v = 1;
+		let lx = x;
+		while(lx < LIST.length) {
+			v *= lx;
+			lx++;
+		}
+		const w = 1 / (lx * lx);
+		let y = LIST[0];
+		for(let i = 1; i < LIST.length; i++) {
+			y *= w;
+			y += LIST[i];
+		}
+		y /= lx;
+		y += 0.5 * LOG_2PI;
+		y += - Math.log(v) - lx + (lx - 0.5) * Math.log(lx);
+		return(y);
+	}
+
+	/**
+	 * Incomplete gamma function upper side.
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} gammaln_a
+	 * @returns {number}
+	 */
+	static q_gamma(x, a, gammaln_a) {
+		// 参考：奥村,"C言語による最新アルゴリズム事典",p227,技術評論社,1991
+		let k;
+		let result, w, temp, previous;
+		// Laguerreの多項式
+		let la = 1.0, lb = 1.0 + x - a;
+		if(x < 1.0 + a) {
+			return (1 - ProbabilityTool.p_gamma(x, a, gammaln_a));
+		}
+		w = Math.exp(a * Math.log(x) - x - gammaln_a);
+		result = w / lb;
+		for(k = 2; k < 1000; k++) {
+			temp = ((k - 1.0 - a) * (lb - la) + (k + x) * lb) / k;
+			la = lb;
+			lb = temp;
+			w *= (k - 1.0 - a) / k;
+			temp = w / (la * lb);
+			previous = result;
+			result += temp;
+			if(result == previous) {
+				return(result);
+			}
+		}
+		return Number.NaN;
+	}
+
+	/**
+	 * Incomplete gamma function lower side.
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} gammaln_a
+	 * @returns {number}
+	 */
+	static p_gamma(x, a, gammaln_a) {
+		// 参考：奥村,"C言語による最新アルゴリズム事典",p227,技術評論社,1991
+		let k;
+		let result, term, previous;
+		if(x >= 1.0 + a) {
+			return (1.0 - ProbabilityTool.q_gamma(x, a, gammaln_a));
+		}
+		if(x === 0.0) {
+			return 0.0;
+		}
+		result = term = Math.exp(a * Math.log(x) - x - gammaln_a) / a;
+		for(k = 1; k < 1000; k++) {
+			term *= x / (a + k);
+			previous = result;
+			result += term;
+			if(result == previous) {
+				return result;
+			}
+		}
+		return Number.NaN;
+	}
+
+	/**
+	 * Gamma function.
+	 * @param {number} z
+	 * @returns {number}
+	 */
+	static gamma(z) {
+		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
+		if(z < 0) {
+			return (Math.PI / (Math.sin(Math.PI * z) * Math.exp(ProbabilityTool.gammaln(1.0 - z))));
+		}
+		return Math.exp(ProbabilityTool.gammaln(z));
+	}
+
+	/**
+	 * Incomplete gamma function.
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
+	 * @returns {number}
+	 */
+	static gammainc(x, a, tail) {
+		if(tail === "lower") {
+			return ProbabilityTool.p_gamma(x, a, ProbabilityTool.gammaln(a));
+		}
+		else if(tail === "upper") {
+			return ProbabilityTool.q_gamma(x, a, ProbabilityTool.gammaln(a));
+		}
+		else if(arguments.length === 2) {
+			// 引数を省略した場合
+			return ProbabilityTool.gammainc(x, a, "lower");
+		}
+		else {
+			throw "gammainc unsupported argument [" + tail + "]";
+		}
+	}
+	
+	/**
+	 * Probability density function (PDF) of the gamma distribution.
+	 * @param {number} x
+	 * @param {number} k - Shape parameter.
+	 * @param {number} s - Scale parameter.
+	 * @returns {number}
+	 */
+	static gampdf(x, k, s) {
+		let y = 1.0 / (ProbabilityTool.gamma(k) * Math.pow(s, k));
+		y *= Math.pow( x, k - 1);
+		y *= Math.exp( - x / s );
+		return y;
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of gamma distribution.
+	 * @param {number} x
+	 * @param {number} k - Shape parameter.
+	 * @param {number} s - Scale parameter.
+	 * @returns {number}
+	 */
+	static gamcdf(x, k, s) {
+		return ProbabilityTool.gammainc(x / s, k);
+	}
+	
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
+	 * @param {number} p
+	 * @param {number} k - Shape parameter.
+	 * @param {number} s - Scale parameter.
+	 * @returns {number}
+	 */
+	static gaminv(p, k, s) {
+		if((p < 0.0) || (p > 1.0)) {
+			return Number.NaN;
+		}
+		else if(p == 0.0) {
+			return 0.0;
+		}
+		else if(p == 1.0) {
+			return Number.POSITIVE_INFINITY;
+		}
+		const eps = 1.0e-12;
+		// 初期値を決める
+		let y = k * s;
+		// 単調増加関数なのでニュートン・ラフソン法で解く
+		// x_n+1 = x_n - f(x) / f'(x)
+		// ここで f(x) は累積分布関数、f'(x) は確率密度関数
+		// a = 累積分関数 → f(x)  = 累積分関数 - a と置く。
+		// aの微分は0なので無関係
+		let delta, y2;
+		for(let i = 0; i < 100; i++) {
+			y2 = y - ((ProbabilityTool.gamcdf(y, k, s) - p) / ProbabilityTool.gampdf(y, k, s));
+			delta = y2 - y;
+			if(Math.abs(delta) <= eps) {
+				break;
+			}
+			y = y2;
+			if(y < 0.0) {
+				y = eps;
+			}
+		}
+		return y;
+	}
+
+	/**
+	 * Beta function.
+	 * @param {number} x
+	 * @param {number} y
+	 * @returns {number}
+	 */
+	static beta(x, y) {
+		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
+		return (Math.exp(ProbabilityTool.gammaln(x) + ProbabilityTool.gammaln(y) - ProbabilityTool.gammaln(x + y)));
+	}
+	
+	/**
+	 * Incomplete beta function lower side.
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static p_beta(x, a, b) {
+		// 参考：奥村,"C言語による最新アルゴリズム事典",p231,技術評論社,1991
+		let k;
+		let result, term, previous;
+		if(a <= 0.0) {
+			return Number.POSITIVE_INFINITY;
+		}
+		if(b <= 0.0) {
+			if(x < 1.0) {
+				return 0.0;
+			}
+			else if(x === 1.0) {
+				return 1.0;
+			}
+			else {
+				return Number.POSITIVE_INFINITY;
+			}
+		}
+		if(x > (a + 1.0) / (a + b + 2.0)) {
+			return (1.0 - ProbabilityTool.p_beta(1.0 - x, b, a));
+		}
+		if(x <= 0.0) {
+			return 0.0;
+		}
+		term = a * Math.log(x);
+		term += b * Math.log(1.0 - x);
+		term += ProbabilityTool.gammaln(a + b);
+		term -= ProbabilityTool.gammaln(a) + ProbabilityTool.gammaln(b);
+		term = Math.exp(term);
+		term /= a;
+		result = term;
+		for(k = 1; k < 1000; k++) {
+			term *= a + b + k - 1.0;
+			term *= x;
+			term /= a + k;
+			previous = result;
+			result += term;
+			if(result === previous) {
+				return result;
+			}
+		}
+		return Number.NaN;
+	}
+
+	/**
+	 * Incomplete beta function upper side.
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static q_beta(x, a, b) {
+		return (1.0 - ProbabilityTool.p_beta(x, a, b));
+	}
+
+	/**
+	 * Incomplete beta function.
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
+	 * @returns {number}
+	 */
+	static betainc(x, a, b, tail) {
+		if(tail === "lower") {
+			return ProbabilityTool.p_beta(x, a, b);
+		}
+		else if(tail === "upper") {
+			return ProbabilityTool.q_beta(x, a, b);
+		}
+		else if(arguments.length === 3) {
+			// 引数を省略した場合
+			return ProbabilityTool.betainc(x, a, b, "lower");
+		}
+		else {
+			throw "betainc unsupported argument [" + tail + "]";
+		}
+	}
+	
+	/**
+	 * Return true if the value is integer.
+	 * @param {number} x
+	 * @returns {boolean}
+	 */
+	static isInteger(x) {
+		return (x - Math.trunc(x) !== 0.0);
+	}
+	
+	/**
+	 * Probability density function (PDF) of beta distribution.
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static betapdf(x, a, b) {
+		// powの計算結果が複素数になる場合は計算を行わない
+		if	(
+			((x < 0) && (ProbabilityTool.isInteger(b - 1))) ||
+			((1 - x < 0) && (ProbabilityTool.isInteger(b - 1)))
+		) {
+			return 0.0;
+		}
+		// 以下の式でも求められるが betapdf(0, 1, 1)で、Log(0)の計算が発生しNaNを返してしまう。実際は1を返すべき。
+		//return(Math.exp((a - 1) * Math.log(x) + (b - 1) * Math.log(1 - x)) / ProbabilityTool.beta(a,  b));
+		return (Math.pow(x, a - 1) * Math.pow(1 - x, b - 1) / ProbabilityTool.beta(a,  b));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of beta distribution.
+	 * @param {number} x
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static betacdf(x, a, b) {
+		return ProbabilityTool.betainc(x, a, b);
+	}
+	
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
+	 * @param {number} p
+	 * @param {number} a
+	 * @param {number} b
+	 * @returns {number}
+	 */
+	static betainv(p, a, b) {
+		if((p < 0.0) || (p > 1.0)) {
+			return Number.NaN;
+		}
+		else if((p == 0.0) && (a > 0.0) && (b > 0.0)) {
+			return 0.0;
+		}
+		else if((p == 1.0) && (a > 0.0) && (b > 0.0)) {
+			return 1.0;
+		}
+		const eps = 1.0e-14;
+		// 初期値を決める
+		let y;
+		if(b == 0) {
+			y = 1.0 - eps;
+		}
+		else if(a == 0) {
+			y = eps;
+		}
+		else {
+			y = a / (a + b);
+		}
+		// 単調増加関数なのでニュートン・ラフソン法で解く
+		// x_n+1 = x_n - f(x) / f'(x)
+		// ここで f(x) は累積分布関数、f'(x) は確率密度関数
+		// a = 累積分関数 → f(x)  = 累積分関数 - a と置く。
+		// aの微分は0なので無関係
+		let delta, y2;
+		for(let i = 0; i < 100; i++) {
+			y2 = y - ((ProbabilityTool.betacdf(y, a, b) - p) / ProbabilityTool.betapdf(y, a, b));
+			delta = y2 - y;
+			if(Math.abs(delta) <= eps) {
+				break;
+			}
+			y = y2;
+			if(y > 1.0) {
+				y = 1.0 - eps;
+			}
+			else if(y < 0.0) {
+				y = eps;
+			}
+		}
+		return y;
+	}
+
+	/**
+	 * Factorial function, x!.
+	 * @param {number} n
+	 * @returns {number}
+	 */
+	static factorial(n) {
+		const y = ProbabilityTool.gamma(n + 1.0);
+		if(Math.trunc(n) === n) {
+			return Math.round(y);
+		}
+		else {
+			return y;
+		}
+	}
+
+	/**
+	 * Binomial coefficient, number of all combinations, nCk.
+	 * @param {number} n
+	 * @param {number} k
+	 * @returns {number} nCk
+	 */
+	static nchoosek(n, k) {
+		return (Math.round(ProbabilityTool.factorial(n) / (ProbabilityTool.factorial(n - k) * ProbabilityTool.factorial(k))));
+	}
+
+	/**
+	 * Error function.
+	 * @param {number} x
+	 * @returns {number}
+	 */
+	static erf(x) {
+		return (ProbabilityTool.p_gamma(x * x, 0.5, Math.log(Math.PI) * 0.5) * (x >= 0 ? 1.0 : -1.0));
+	}
+
+	/**
+	 * Complementary error function.
+	 * @param {number} x
+	 * @returns {number}
+	 */
+	static erfc(x) {
+		return 1.0 - ProbabilityTool.erf(x);
+	}
+
+	/**
+		 erfinv(p) 誤差逆関数
+		 @param_ {number} p
+		 @returns_ {number}
+		
+		static erfinv(p) {
+			if((p < 0.0) || (p > 1.0)) {
+				return Number.NaN;
+			}
+			else if(p == 0.0) {
+				return Number.NEGATIVE_INFINITY;
+			}
+			else if(p == 1.0) {
+				return Number.POSITIVE_INFINITY;
+			}
+			let y = 0;
+			const c = [];
+			for(let k = 0; k < 100; k++) {
+				let ck = 0;
+				if(0 === k) {
+					ck = 1;
+				}
+				else {
+					for(let m = 0; m < k; m++) {
+						ck += c[m] * c[k - 1 - m] / ((m + 1) * (2 * m + 1));
+					}
+				}
+				c.push(ck);
+				console.log(y + "\t" + ck / (2 * k + 1) + "\t" + Math.pow(Math.sqrt(Math.PI) * 0.5 * p, 2 * k + 1))
+				y += ck / (2 * k + 1) * Math.pow(Math.sqrt(Math.PI) * 0.5 * p, 2 * k + 1);
+			}
+			return y;
+			// 0.5 * Math.sqrt(Math.PI) = 0.8862269254527579
+			// Math.PI / 12 = 0.2617993877991494
+			// 7 * Math.pow(Math.PI, 2) / 480 = 0.14393173084921979
+			// 127 * Math.pow(Math.PI, 3) / 40320 = 0.09766361950392055
+			// 4369 * Math.pow(Math.PI, 4) / 5806080 = 0.07329907936638086
+			// 34807 * Math.pow(Math.PI, 5) / 182476800 = 0.05837250087858452
+			return (p
+				+ 0.2617993877991494 * Math.pow(p, 3)
+				+ 0.14393173084921979 * Math.pow(p, 5)
+				+ 0.09766361950392055 * Math.pow(p, 7)
+				+ 0.07329907936638086 * Math.pow(p, 9)
+				+ 0.05837250087858452 * Math.pow(p, 11)
+			) * 0.8862269254527579;
+		}
+	*/
+
+	/**
+	 * Probability density function (PDF) of normal distribution.
+	 * @param {number} x
+	 * @param {number} [u=0.0] - Average value.
+	 * @param {number} [s=1.0] - Variance value.
+	 * @returns {number}
+	 */
+	static normpdf(x, u, s) {
+		const u_ = typeof u === "number" ? u : 0.0;
+		const s_ = typeof s === "number" ? s : 1.0;
+		let y = 1.0 / Math.sqrt( 2.0 * Math.PI * s_ * s_ );
+		y *= Math.exp( - (x - u_) * (x - u_) / (2.0 * s_ * s_));
+		return y;
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of normal distribution.
+	 * @param {number} x
+	 * @param {number} [u=0.0] - Average value.
+	 * @param {number} [s=1.0] - Variance value.
+	 * @returns {number}
+	 */
+	static normcdf(x, u, s) {
+		const u_ = typeof u === "number" ? u : 0.0;
+		const s_ = typeof s === "number" ? s : 1.0;
+		return (1.0 + ProbabilityTool.erf( (x - u_) / (s_ * Math.sqrt(2.0)) )) / 2.0;
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
+	 * @param {number} p - Probability.
+	 * @param {number} [u=0.0] - Average value.
+	 * @param {number} [s=1.0] - Variance value.
+	 * @returns {number}
+	 */
+	static norminv(p, u, s) {
+		if((p < 0.0) || (p > 1.0)) {
+			return Number.NaN;
+		}
+		else if(p == 0.0) {
+			return Number.NEGATIVE_INFINITY;
+		}
+		else if(p == 1.0) {
+			return Number.POSITIVE_INFINITY;
+		}
+		const u_ = typeof u === "number" ? u : 0.0;
+		const s_ = typeof s === "number" ? s : 1.0;
+		const eps = 1.0e-12;
+		// 初期値を決める
+		let y = u_;
+		// 単調増加関数なのでニュートン・ラフソン法で解く
+		// x_n+1 = x_n - f(x) / f'(x)
+		// ここで f(x) は累積分布関数、f'(x) は確率密度関数
+		// a = 累積分関数 → f(x)  = 累積分関数 - a と置く。
+		// aの微分は0なので無関係
+		let delta, y2;
+		for(let i = 0; i < 200; i++) {
+			y2 = y - ((ProbabilityTool.normcdf(y, u_, s_) - p) / ProbabilityTool.normpdf(y, u_, s_));
+			delta = y2 - y;
+			if(Math.abs(delta) <= eps) {
+				break;
+			}
+			y = y2;
+		}
+		return y;
+	}
+
+	/**
+	 * Probability density function (PDF) of Student's t-distribution.
+	 * @param {number} t - T-value.
+	 * @param {number} v - The degrees of freedom. (DF)
+	 * @returns {number}
+	 */
+	static tpdf(t, v) {
+		let y = 1.0 / (Math.sqrt(v) * ProbabilityTool.beta(0.5, v * 0.5));
+		y *= Math.pow( 1 + t * t / v, - (v + 1) * 0.5);
+		return y;
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of Student's t-distribution.
+	 * @param {number} t - T-value.
+	 * @param {number} v - The degrees of freedom. (DF)
+	 * @returns {number}
+	 */
+	static tcdf(t, v) {
+		const y = (t * t) / (v + t * t) ;
+		const p = ProbabilityTool.betainc( y, 0.5, v * 0.5 ) * (t < 0 ? -1 : 1);
+		return 0.5 * (1 + p);
+	}
+
+	/**
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
+	 * @param {number} p - Probability.
+	 * @param {number} v - The degrees of freedom. (DF)
+	 * @returns {number}
+	 */
+	static tinv(p, v) {
+		if((p < 0) || (p > 1)) {
+			return Number.NaN;
+		}
+		if(p == 0) {
+			return Number.NEGATIVE_INFINITY;
+		}
+		else if(p == 1) {
+			return Number.POSITIVE_INFINITY;
+		}
+		else if(p < 0.5) {
+			const y = ProbabilityTool.betainv(2.0 * p, 0.5 * v, 0.5);
+			return - Math.sqrt(v / y - v);
+		}
+		else {
+			const y = ProbabilityTool.betainv(2.0 * (1.0 - p), 0.5 * v, 0.5);
+			return Math.sqrt(v / y - v);
+		}
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
+	 * @param {number} t - T-value.
+	 * @param {number} v - The degrees of freedom. (DF)
+	 * @param {number} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
+	 * @returns {number}
+	 */
+	static tdist(t, v, tails) {
+		return (1.0 - ProbabilityTool.tcdf(t, v)) * tails;
+	}
+
+	/**
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+	 * @param {number} p - Probability.
+	 * @param {number} v - The degrees of freedom. (DF)
+	 * @returns {number}
+	 */
+	static tinv2(p, v) {
+		return - ProbabilityTool.tinv( p * 0.5, v);
+	}
+
+	/**
+	 * Probability density function (PDF) of chi-square distribution.
+	 * @param {number} x 
+	 * @param {number} k - The degrees of freedom. (DF)
+	 * @returns {number}
+	 */
+	static chi2pdf(x, k) {
+		if(x < 0.0) {
+			return 0;
+		}
+		else if(x === 0.0) {
+			return 0.5;
+		}
+		let y = Math.pow(x, k / 2.0 - 1.0) * Math.exp( - x / 2.0 );
+		y /= Math.pow(2, k / 2.0) * ProbabilityTool.gamma( k / 2.0);
+		return y;
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of chi-square distribution.
+	 * @param {number} x 
+	 * @param {number} k - The degrees of freedom. (DF)
+	 * @returns {number}
+	 */
+	static chi2cdf(x, k) {
+		return ProbabilityTool.gammainc(x / 2.0, k / 2.0);
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
+	 * @param {number} p - Probability.
+	 * @param {number} k - The degrees of freedom. (DF)
+	 * @returns {number}
+	 */
+	static chi2inv(p, k) {
+		return ProbabilityTool.gaminv(p, k / 2.0, 2);
+	}
+
+	/**
+	 * Probability density function (PDF) of F-distribution.
+	 * @param {number} x
+	 * @param {number} d1 - The degree of freedom of the molecules.
+	 * @param {number} d2 - The degree of freedom of the denominator
+	 * @returns {number}
+	 */
+	static fpdf(x, d1, d2) {
+		if((d1 < 0) || (d2 < 0)) {
+			return Number.NaN;
+		}
+		else if(x <= 0) {
+			return 0.0;
+		}
+		let y = 1.0;
+		y *= Math.pow( (d1 * x) / (d1 * x + d2) , d1 / 2.0);
+		y *= Math.pow( 1.0 - ((d1 * x) / (d1 * x + d2)), d2 / 2.0);
+		y /= x * ProbabilityTool.beta(d1 / 2.0, d2 / 2.0);
+		return y;
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of F-distribution.
+	 * @param {number} x
+	 * @param {number} d1 - The degree of freedom of the molecules.
+	 * @param {number} d2 - The degree of freedom of the denominator
+	 * @returns {number}
+	 */
+	static fcdf(x, d1, d2) {
+		return ProbabilityTool.betacdf( d1 * x / (d1 * x + d2), d1 / 2.0, d2 / 2.0 );
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
+	 * @param {number} p - Probability.
+	 * @param {number} d1 - The degree of freedom of the molecules.
+	 * @param {number} d2 - The degree of freedom of the denominator
+	 * @returns {number}
+	 */
+	static finv(p, d1, d2) {
+		return (1.0 / ProbabilityTool.betainv( 1.0 - p, d2 / 2.0, d1 / 2.0 ) - 1.0) * d2 / d1;
+	}
+
+}
+
+/**
+ * typeof this === string
+ * @param text 
+ * @ignore
+ */
+const isStr = function(text) {
+	return (text && (typeof text === "string" || text instanceof String));
+};
+
+/**
+ * Collection for calculating probability used from the Complex class.
+ * @ignore
+ */
+class ProbabilityComplex {
+
+	/**
+	 * Log-gamma function.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @returns {Complex}
+	 */
+	static gammaln(x) {
+		return new Complex(ProbabilityTool.gammaln(Complex._toDouble(x)));
+	}
+	
+	/**
+	 * Gamma function.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} z
+	 * @returns {Complex}
+	 */
+	static gamma(z) {
+		return new Complex(ProbabilityTool.gamma(Complex._toDouble(z)));
+	}
+	
+	/**
+	 * Incomplete gamma function.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
+	 * @returns {Complex}
+	 */
+	static gammainc(x, a, tail) {
+		const X = Complex._toDouble(x);
+		const a_ = Complex._toDouble(a);
+		const tail_ = isStr(tail) ? tail : "lower";
+		return new Complex(ProbabilityTool.gammainc(X, a_, tail_));
+	}
+
+	/**
+	 * Probability density function (PDF) of the gamma distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - Shape parameter.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - Scale parameter.
+	 * @returns {Complex}
+	 */
+	static gampdf(x, k, s) {
+		const X = Complex._toDouble(x);
+		const k_ = Complex._toDouble(k);
+		const s_ = Complex._toDouble(s);
+		return new Complex(ProbabilityTool.gampdf(X, k_, s_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of gamma distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - Shape parameter.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - Scale parameter.
+	 * @returns {Complex}
+	 */
+	static gamcdf(x, k, s) {
+		const X = Complex._toDouble(x);
+		const k_ = Complex._toDouble(k);
+		const s_ = Complex._toDouble(s);
+		return new Complex(ProbabilityTool.gamcdf(X, k_, s_));
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - Shape parameter.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - Scale parameter.
+	 * @returns {Complex}
+	 */
+	static gaminv(p, k, s) {
+		const p_ = Complex._toDouble(p);
+		const k_ = Complex._toDouble(k);
+		const s_ = Complex._toDouble(s);
+		return new Complex(ProbabilityTool.gaminv(p_, k_, s_));
+	}
+
+	/**
+	 * Beta function.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} y
+	 * @returns {Complex}
+	 */
+	static beta(x, y) {
+		const X = Complex._toDouble(x);
+		const y_ = Complex._toDouble(y);
+		return new Complex(ProbabilityTool.beta(X, y_));
+	}
+
+	/**
+	 * Incomplete beta function.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
+	 * @returns {Complex}
+	 */
+	static betainc(x, a, b, tail) {
+		const X = Complex._toDouble(x);
+		const a_ = Complex._toDouble(a);
+		const b_ = Complex._toDouble(b);
+		const tail_ = isStr(tail) ? tail : "lower";
+		return new Complex(ProbabilityTool.betainc(X, a_, b_, tail_));
+	}
+
+	/**
+	 * Probability density function (PDF) of beta distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
+	 * @returns {Complex}
+	 */
+	static betapdf(x, a, b) {
+		const X = Complex._toDouble(x);
+		const a_ = Complex._toDouble(a);
+		const b_ = Complex._toDouble(b);
+		return new Complex(ProbabilityTool.betapdf(X, a_, b_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of beta distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
+	 * @returns {Complex}
+	 */
+	static betacdf(x, a, b) {
+		const X = Complex._toDouble(x);
+		const a_ = Complex._toDouble(a);
+		const b_ = Complex._toDouble(b);
+		return new Complex(ProbabilityTool.betacdf(X, a_, b_));
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
+	 * @returns {Complex}
+	 */
+	static betainv(p, a, b) {
+		const p_ = Complex._toDouble(p);
+		const a_ = Complex._toDouble(a);
+		const b_ = Complex._toDouble(b);
+		return new Complex(ProbabilityTool.betainv(p_, a_, b_));
+	}
+
+	/**
+	 * Factorial function, x!.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} n
+	 * @returns {Complex}
+	 */
+	static factorial(n) {
+		return new Complex(ProbabilityTool.factorial(Complex._toDouble(n)));
+	}
+
+	/**
+	 * Binomial coefficient, number of all combinations, nCk.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} n
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k
+	 * @returns {Complex}
+	 */
+	static nchoosek(n, k) {
+		const n_ = Complex._toDouble(n);
+		const k_ = Complex._toDouble(k);
+		return new Complex(ProbabilityTool.nchoosek(n_, k_));
+	}
+	
+	/**
+	 * Error function.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @returns {Complex}
+	 */
+	static erf(x) {
+		const X = Complex._toDouble(x);
+		return new Complex(ProbabilityTool.erf(X));
+	}
+
+	/**
+	 * Complementary error function.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @returns {Complex}
+	 */
+	static erfc(x) {
+		const X = Complex._toDouble(x);
+		return new Complex(ProbabilityTool.erfc(X));
+	}
+
+	/**
+	 * Probability density function (PDF) of normal distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - Average value.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
+	 * @returns {Complex}
+	 */
+	static normpdf(x, u, s) {
+		const X = Complex._toDouble(x);
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
+		return new Complex(ProbabilityTool.normpdf(X, u_, s_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of normal distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - Average value.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
+	 * @returns {Complex}
+	 */
+	static normcdf(x, u, s) {
+		const X = Complex._toDouble(x);
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
+		return new Complex(ProbabilityTool.normcdf(X, u_, s_));
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - Average value.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
+	 * @returns {Complex}
+	 */
+	static norminv(x, u, s) {
+		const X = Complex._toDouble(x);
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
+		return new Complex(ProbabilityTool.norminv(X, u_, s_));
+	}
+	
+	/**
+	 * Probability density function (PDF) of Student's t-distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
+	 * @returns {Complex}
+	 */
+	static tpdf(x, v) {
+		const X = Complex._toDouble(x);
+		const v_ = Complex._toDouble(v);
+		return new Complex(ProbabilityTool.tpdf(X, v_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of Student's t-distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} t
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
+	 * @returns {Complex}
+	 */
+	static tcdf(t, v) {
+		const t_ = Complex._toDouble(t);
+		const v_ = Complex._toDouble(v);
+		return new Complex(ProbabilityTool.tcdf(t_, v_));
+	}
+
+	/**
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
+	 * @returns {Complex}
+	 */
+	static tinv(p, v) {
+		const p_ = Complex._toDouble(p);
+		const v_ = Complex._toDouble(v);
+		return new Complex(ProbabilityTool.tinv(p_, v_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} t
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
+	 * @returns {Complex}
+	 */
+	static tdist(t, v, tails) {
+		const t_ = Complex._toDouble(t);
+		const v_ = Complex._toDouble(v);
+		const tails_ = Complex._toInteger(tails);
+		return new Complex(ProbabilityTool.tdist(t_, v_, tails_));
+	}
+
+	/**
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
+	 * @returns {Complex}
+	 */
+	static tinv2(p, v) {
+		const p_ = Complex._toDouble(p);
+		const v_ = Complex._toDouble(v);
+		return new Complex(ProbabilityTool.tinv2(p_, v_));
+	}
+
+	/**
+	 * Probability density function (PDF) of chi-square distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
+	 * @returns {Complex}
+	 */
+	static chi2pdf(x, k) {
+		const X = Complex._toDouble(x);
+		const k_ = Complex._toDouble(k);
+		return new Complex(ProbabilityTool.chi2pdf(X, k_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of chi-square distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
+	 * @returns {Complex}
+	 */
+	static chi2cdf(x, k) {
+		const X = Complex._toDouble(x);
+		const k_ = Complex._toDouble(k);
+		return new Complex(ProbabilityTool.chi2cdf(X, k_));
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
+	 * @returns {Complex}
+	 */
+	static chi2inv(p, k) {
+		const p_ = Complex._toDouble(p);
+		const k_ = Complex._toDouble(k);
+		return new Complex(ProbabilityTool.chi2inv(p_, k_));
+	}
+
+	/**
+	 * Probability density function (PDF) of F-distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
+	 * @returns {Complex}
+	 */
+	static fpdf(x, d1, d2) {
+		const X = Complex._toDouble(x);
+		const d1_ = Complex._toDouble(d1);
+		const d2_ = Complex._toDouble(d2);
+		return new Complex(ProbabilityTool.fpdf(X, d1_, d2_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of F-distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
+	 * @returns {Complex}
+	 */
+	static fcdf(x, d1, d2) {
+		const X = Complex._toDouble(x);
+		const d1_ = Complex._toDouble(d1);
+		const d2_ = Complex._toDouble(d2);
+		return new Complex(ProbabilityTool.fcdf(X, d1_, d2_));
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
+	 * @returns {Complex}
+	 */
+	static finv(p, d1, d2) {
+		const p_ = Complex._toDouble(p);
+		const d1_ = Complex._toDouble(d1);
+		const d2_ = Complex._toDouble(d2);
+		return new Complex(ProbabilityTool.finv(p_, d1_, d2_));
+	}
+
+}
+
+/**
+ * Calculating probability class for Matrix class.
+ */
+class Probability {
+
+	/**
+	 * Log-gamma function.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @returns {Matrix}
+	 */
+	static gammaln(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.gammaln(num);
+		});
+	}
+
+	/**
+	 * Gamma function.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @returns {Matrix}
+	 */
+	static gamma(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.gamma(num);
+		});
+	}
+
+	/**
+	 * Incomplete gamma function.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
+	 * @returns {Matrix}
+	 */
+	static gammainc(x, a, tail) {
+		const X = Matrix._toMatrix(x);
+		const a_ = Matrix._toDouble(a);
+		const tail_ = isStr(tail) ? tail : "lower";
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.gammainc(num, a_, tail_);
+		});
+	}
+
+	/**
+	 * Probability density function (PDF) of the gamma distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
+	 * @returns {Matrix}
+	 */
+	static gampdf(x, k, s) {
+		const X = Matrix._toMatrix(x);
+		const k_ = Matrix._toDouble(k);
+		const s_ = Matrix._toDouble(s);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.gampdf(num, k_, s_);
+		});
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of gamma distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
+	 * @returns {Matrix}
+	 */
+	static gamcdf(x, k, s) {
+		const X = Matrix._toMatrix(x);
+		const k_ = Matrix._toDouble(k);
+		const s_ = Matrix._toDouble(s);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.gamcdf(num, k_, s_);
+		});
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
+	 * @returns {Matrix}
+	 */
+	static gaminv(x, k, s) {
+		const X = Matrix._toMatrix(x);
+		const k_ = Matrix._toDouble(k);
+		const s_ = Matrix._toDouble(s);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.gaminv(num, k_, s_);
+		});
+	}
+
+	/**
+	 * Beta function.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} y
+	 * @returns {Matrix}
+	 */
+	static beta(x, y) {
+		const X = Matrix._toMatrix(x);
+		const y_ = Matrix._toDouble(y);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.beta(num, y_);
+		});
+	}
+	
+	/**
+	 * Incomplete beta function.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
+	 * @returns {Matrix}
+	 */
+	static betainc(x, a, b, tail) {
+		const X = Matrix._toMatrix(x);
+		const a_ = Matrix._toDouble(a);
+		const b_ = Matrix._toDouble(b);
+		const tail_ = isStr(tail) ? tail : "lower";
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.betainc(num, a_, b_, tail_);
+		});
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of beta distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @returns {Matrix}
+	 */
+	static betacdf(x, a, b) {
+		const X = Matrix._toMatrix(x);
+		const a_ = Matrix._toDouble(a);
+		const b_ = Matrix._toDouble(b);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.betacdf(num, a_, b_);
+		});
+	}
+
+	/**
+	 * Probability density function (PDF) of beta distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @returns {Matrix}
+	 */
+	static betapdf(x, a, b) {
+		const X = Matrix._toMatrix(x);
+		const a_ = Matrix._toDouble(a);
+		const b_ = Matrix._toDouble(b);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.betapdf(num, a_, b_);
+		});
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @returns {Matrix}
+	 */
+	static betainv(x, a, b) {
+		const X = Matrix._toMatrix(x);
+		const a_ = Matrix._toDouble(a);
+		const b_ = Matrix._toDouble(b);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.betainv(num, a_, b_);
+		});
+	}
+
+	/**
+	 * Factorial function, x!.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @returns {Matrix}
+	 */
+	static factorial(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.factorial(num);
+		});
+	}
+	
+	/**
+	 * Binomial coefficient, number of all combinations, nCk.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k
+	 * @returns {Matrix}
+	 */
+	static nchoosek(x, k) {
+		const X = Matrix._toMatrix(x);
+		const k_ = Matrix._toDouble(k);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.nchoosek(num, k_);
+		});
+	}
+	
+	/**
+	 * Error function.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @returns {Matrix}
+	 */
+	static erf(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.erf(num);
+		});
+	}
+
+	/**
+	 * Complementary error function.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @returns {Matrix}
+	 */
+	static erfc(x) {
+		const X = Matrix._toMatrix(x);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.erfc(num);
+		});
+	}
+	
+	/**
+	 * Probability density function (PDF) of normal distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
+	 * @returns {Matrix}
+	 */
+	static normpdf(x, u, s) {
+		const X = Matrix._toMatrix(x);
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.normpdf(num, u_, s_);
+		});
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of normal distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
+	 * @returns {Matrix}
+	 */
+	static normcdf(x, u, s) {
+		const X = Matrix._toMatrix(x);
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.normcdf(num, u_, s_);
+		});
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
+	 * @returns {Matrix}
+	 */
+	static norminv(x, u, s) {
+		const X = Matrix._toMatrix(x);
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.norminv(num, u_, s_);
+		});
+	}
+
+	/**
+	 * Probability density function (PDF) of Student's t-distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @returns {Matrix}
+	 */
+	static tpdf(x, v) {
+		const X = Matrix._toMatrix(x);
+		const v_ = Matrix._toDouble(v);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.tpdf(num, v_);
+		});
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of Student's t-distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @returns {Matrix}
+	 */
+	static tcdf(x, v) {
+		const X = Matrix._toMatrix(x);
+		const v_ = Matrix._toDouble(v);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.tcdf(num, v_);
+		});
+	}
+
+	/**
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @returns {Matrix}
+	 */
+	static tinv(x, v) {
+		const X = Matrix._toMatrix(x);
+		const v_ = Matrix._toDouble(v);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.tinv(num, v_);
+		});
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
+	 * @returns {Matrix}
+	 */
+	static tdist(x, v, tails) {
+		const X = Matrix._toMatrix(x);
+		const v_ = Matrix._toDouble(v);
+		const tails_ = Matrix._toDouble(tails);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.tdist(num, v_, tails_);
+		});
+	}
+
+	/**
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @returns {Matrix}
+	 */
+	static tinv2(x, v) {
+		const X = Matrix._toMatrix(x);
+		const v_ = Matrix._toDouble(v);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.tinv2(num, v_);
+		});
+	}
+
+	/**
+	 * Probability density function (PDF) of chi-square distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
+	 * @returns {Matrix}
+	 */
+	static chi2pdf(x, k) {
+		const X = Matrix._toMatrix(x);
+		const k_ = Matrix._toDouble(k);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.chi2pdf(num, k_);
+		});
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of chi-square distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
+	 * @returns {Matrix}
+	 */
+	static chi2cdf(x, k) {
+		const X = Matrix._toMatrix(x);
+		const k_ = Matrix._toDouble(k);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.chi2cdf(num, k_);
+		});
+	}
+	
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
+	 * @returns {Matrix}
+	 */
+	static chi2inv(x, k) {
+		const X = Matrix._toMatrix(x);
+		const k_ = Matrix._toDouble(k);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.chi2inv(num, k_);
+		});
+	}
+
+	/**
+	 * Probability density function (PDF) of F-distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
+	 * @returns {Matrix}
+	 */
+	static fpdf(x, d1, d2) {
+		const X = Matrix._toMatrix(x);
+		const d1_ = Matrix._toDouble(d1);
+		const d2_ = Matrix._toDouble(d2);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.fpdf(num, d1_, d2_);
+		});
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of F-distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
+	 * @returns {Matrix}
+	 */
+	static fcdf(x, d1, d2) {
+		const X = Matrix._toMatrix(x);
+		const d1_ = Matrix._toDouble(d1);
+		const d2_ = Matrix._toDouble(d2);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.fcdf(num, d1_, d2_);
+		});
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
+	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
+	 * @returns {Matrix}
+	 */
+	static finv(x, d1, d2) {
+		const X = Matrix._toMatrix(x);
+		const d1_ = Matrix._toDouble(d1);
+		const d2_ = Matrix._toDouble(d2);
+		return X.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.finv(num, d1_, d2_);
+		});
+	}
+	
 }
 
 /**
@@ -13296,7 +13313,7 @@ class Matrix {
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
-	// statistics 統計計算用
+	// probability 確率計算用
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 
 	/**
@@ -13304,7 +13321,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	gammaln() {
-		return Statistics.gammaln(this);
+		return Probability.gammaln(this);
 	}
 
 	/**
@@ -13312,7 +13329,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	gamma() {
-		return Statistics.gamma(this);
+		return Probability.gamma(this);
 	}
 
 	/**
@@ -13322,7 +13339,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	gammainc(a, tail) {
-		return Statistics.gammainc(this, a, tail);
+		return Probability.gammainc(this, a, tail);
 	}
 
 	/**
@@ -13332,7 +13349,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	gampdf(k, s) {
-		return Statistics.gampdf(this, k, s);
+		return Probability.gampdf(this, k, s);
 	}
 
 	/**
@@ -13342,7 +13359,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	gamcdf(k, s) {
-		return Statistics.gampdf(this, k, s);
+		return Probability.gampdf(this, k, s);
 	}
 
 	/**
@@ -13352,7 +13369,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	gaminv(k, s) {
-		return Statistics.gaminv(this, k, s);
+		return Probability.gaminv(this, k, s);
 	}
 
 	/**
@@ -13361,7 +13378,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	beta(y) {
-		return Statistics.beta(this, y);
+		return Probability.beta(this, y);
 	}
 	
 	/**
@@ -13372,7 +13389,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	betainc(a, b, tail) {
-		return Statistics.betainc(this, a, b, tail);
+		return Probability.betainc(this, a, b, tail);
 	}
 
 	/**
@@ -13382,7 +13399,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	betacdf(a, b) {
-		return Statistics.betacdf(this, a, b);
+		return Probability.betacdf(this, a, b);
 	}
 
 	/**
@@ -13392,7 +13409,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	betapdf(a, b) {
-		return Statistics.betapdf(this, a, b);
+		return Probability.betapdf(this, a, b);
 	}
 
 	/**
@@ -13402,7 +13419,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	betainv(a, b) {
-		return Statistics.betainv(this, a, b);
+		return Probability.betainv(this, a, b);
 	}
 
 	/**
@@ -13410,7 +13427,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	factorial() {
-		return Statistics.factorial(this);
+		return Probability.factorial(this);
 	}
 	
 	/**
@@ -13419,7 +13436,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	nchoosek(k) {
-		return Statistics.nchoosek(this, k);
+		return Probability.nchoosek(this, k);
 	}
 	
 	/**
@@ -13427,7 +13444,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	erf() {
-		return Statistics.erf(this);
+		return Probability.erf(this);
 	}
 
 	/**
@@ -13435,7 +13452,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	erfc() {
-		return Statistics.erfc(this);
+		return Probability.erfc(this);
 	}
 	
 	/**
@@ -13445,7 +13462,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	normpdf(u=0.0, s=1.0) {
-		return Statistics.normpdf(this, u, s);
+		return Probability.normpdf(this, u, s);
 	}
 
 	/**
@@ -13455,7 +13472,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	normcdf(u=0.0, s=1.0) {
-		return Statistics.normcdf(this, u, s);
+		return Probability.normcdf(this, u, s);
 	}
 
 	/**
@@ -13465,7 +13482,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	norminv(u=0.0, s=1.0) {
-		return Statistics.norminv(this, u, s);
+		return Probability.norminv(this, u, s);
 	}
 
 	/**
@@ -13474,7 +13491,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	tpdf(v) {
-		return Statistics.tpdf(this, v);
+		return Probability.tpdf(this, v);
 	}
 
 	/**
@@ -13483,7 +13500,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	tcdf(v) {
-		return Statistics.tcdf(this, v);
+		return Probability.tcdf(this, v);
 	}
 
 	/**
@@ -13492,7 +13509,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	tinv(v) {
-		return Statistics.tinv(this, v);
+		return Probability.tinv(this, v);
 	}
 
 	/**
@@ -13504,7 +13521,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	tdist(v, tails) {
-		return Statistics.tdist(this, v, tails);
+		return Probability.tdist(this, v, tails);
 	}
 
 	/**
@@ -13513,7 +13530,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	tinv2(v) {
-		return Statistics.tinv2(this, v);
+		return Probability.tinv2(this, v);
 	}
 
 	/**
@@ -13522,7 +13539,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	chi2pdf(k) {
-		return Statistics.chi2pdf(this, k);
+		return Probability.chi2pdf(this, k);
 	}
 
 	/**
@@ -13531,7 +13548,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	chi2cdf(k) {
-		return Statistics.chi2cdf(this, k);
+		return Probability.chi2cdf(this, k);
 	}
 	
 	/**
@@ -13540,7 +13557,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	chi2inv(k) {
-		return Statistics.chi2inv(this, k);
+		return Probability.chi2inv(this, k);
 	}
 
 	/**
@@ -13551,7 +13568,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	fpdf(d1, d2) {
-		return Statistics.fpdf(this, d1, d2);
+		return Probability.fpdf(this, d1, d2);
 	}
 
 	/**
@@ -13561,7 +13578,7 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	fcdf(d1, d2) {
-		return Statistics.fcdf(this, d1, d2);
+		return Probability.fcdf(this, d1, d2);
 	}
 
 	/**
@@ -13571,9 +13588,13 @@ class Matrix {
 	 * @returns {Matrix}
 	 */
 	finv(d1, d2) {
-		return Statistics.finv(this, d1, d2);
+		return Probability.finv(this, d1, d2);
 	}
 	
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// statistics 統計計算用
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+
 	/**
 	 * Maximum number.
 	 * @param {MatrixSettings} [type]

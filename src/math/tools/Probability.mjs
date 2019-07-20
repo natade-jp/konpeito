@@ -16,18 +16,10 @@ import Complex from "../Complex.mjs";
 import Matrix from "../Matrix.mjs";
 
 /**
- * Collection of calculation settings for matrix.
- * - Available options vary depending on the method.
- * @typedef {Object} StatisticsSettings
- * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
- * @property {Object} [correction] Correction value. For statistics. 0(unbiased), 1(sample).
- */
-
-/**
- * Collection of statistical functions using real numbers.
+ * Collection for calculating probability using real numbers.
  * @ignore
  */
-class StatisticsTool {
+class ProbabilityTool {
 
 	/**
 	 * Log-gamma function.
@@ -91,7 +83,7 @@ class StatisticsTool {
 		// Laguerreの多項式
 		let la = 1.0, lb = 1.0 + x - a;
 		if(x < 1.0 + a) {
-			return (1 - StatisticsTool.p_gamma(x, a, gammaln_a));
+			return (1 - ProbabilityTool.p_gamma(x, a, gammaln_a));
 		}
 		w = Math.exp(a * Math.log(x) - x - gammaln_a);
 		result = w / lb;
@@ -122,7 +114,7 @@ class StatisticsTool {
 		let k;
 		let result, term, previous;
 		if(x >= 1.0 + a) {
-			return (1.0 - StatisticsTool.q_gamma(x, a, gammaln_a));
+			return (1.0 - ProbabilityTool.q_gamma(x, a, gammaln_a));
 		}
 		if(x === 0.0) {
 			return 0.0;
@@ -147,9 +139,9 @@ class StatisticsTool {
 	static gamma(z) {
 		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
 		if(z < 0) {
-			return (Math.PI / (Math.sin(Math.PI * z) * Math.exp(StatisticsTool.gammaln(1.0 - z))));
+			return (Math.PI / (Math.sin(Math.PI * z) * Math.exp(ProbabilityTool.gammaln(1.0 - z))));
 		}
-		return Math.exp(StatisticsTool.gammaln(z));
+		return Math.exp(ProbabilityTool.gammaln(z));
 	}
 
 	/**
@@ -161,14 +153,14 @@ class StatisticsTool {
 	 */
 	static gammainc(x, a, tail) {
 		if(tail === "lower") {
-			return StatisticsTool.p_gamma(x, a, StatisticsTool.gammaln(a));
+			return ProbabilityTool.p_gamma(x, a, ProbabilityTool.gammaln(a));
 		}
 		else if(tail === "upper") {
-			return StatisticsTool.q_gamma(x, a, StatisticsTool.gammaln(a));
+			return ProbabilityTool.q_gamma(x, a, ProbabilityTool.gammaln(a));
 		}
 		else if(arguments.length === 2) {
 			// 引数を省略した場合
-			return StatisticsTool.gammainc(x, a, "lower");
+			return ProbabilityTool.gammainc(x, a, "lower");
 		}
 		else {
 			throw "gammainc unsupported argument [" + tail + "]";
@@ -183,7 +175,7 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static gampdf(x, k, s) {
-		let y = 1.0 / (StatisticsTool.gamma(k) * Math.pow(s, k));
+		let y = 1.0 / (ProbabilityTool.gamma(k) * Math.pow(s, k));
 		y *= Math.pow( x, k - 1);
 		y *= Math.exp( - x / s );
 		return y;
@@ -197,7 +189,7 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static gamcdf(x, k, s) {
-		return StatisticsTool.gammainc(x / s, k);
+		return ProbabilityTool.gammainc(x / s, k);
 	}
 	
 	/**
@@ -227,7 +219,7 @@ class StatisticsTool {
 		// aの微分は0なので無関係
 		let delta, y2;
 		for(let i = 0; i < 100; i++) {
-			y2 = y - ((StatisticsTool.gamcdf(y, k, s) - p) / StatisticsTool.gampdf(y, k, s));
+			y2 = y - ((ProbabilityTool.gamcdf(y, k, s) - p) / ProbabilityTool.gampdf(y, k, s));
 			delta = y2 - y;
 			if(Math.abs(delta) <= eps) {
 				break;
@@ -248,7 +240,7 @@ class StatisticsTool {
 	 */
 	static beta(x, y) {
 		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
-		return (Math.exp(StatisticsTool.gammaln(x) + StatisticsTool.gammaln(y) - StatisticsTool.gammaln(x + y)));
+		return (Math.exp(ProbabilityTool.gammaln(x) + ProbabilityTool.gammaln(y) - ProbabilityTool.gammaln(x + y)));
 	}
 	
 	/**
@@ -277,15 +269,15 @@ class StatisticsTool {
 			}
 		}
 		if(x > (a + 1.0) / (a + b + 2.0)) {
-			return (1.0 - StatisticsTool.p_beta(1.0 - x, b, a));
+			return (1.0 - ProbabilityTool.p_beta(1.0 - x, b, a));
 		}
 		if(x <= 0.0) {
 			return 0.0;
 		}
 		term = a * Math.log(x);
 		term += b * Math.log(1.0 - x);
-		term += StatisticsTool.gammaln(a + b);
-		term -= StatisticsTool.gammaln(a) + StatisticsTool.gammaln(b);
+		term += ProbabilityTool.gammaln(a + b);
+		term -= ProbabilityTool.gammaln(a) + ProbabilityTool.gammaln(b);
 		term = Math.exp(term);
 		term /= a;
 		result = term;
@@ -310,7 +302,7 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static q_beta(x, a, b) {
-		return (1.0 - StatisticsTool.p_beta(x, a, b));
+		return (1.0 - ProbabilityTool.p_beta(x, a, b));
 	}
 
 	/**
@@ -323,14 +315,14 @@ class StatisticsTool {
 	 */
 	static betainc(x, a, b, tail) {
 		if(tail === "lower") {
-			return StatisticsTool.p_beta(x, a, b);
+			return ProbabilityTool.p_beta(x, a, b);
 		}
 		else if(tail === "upper") {
-			return StatisticsTool.q_beta(x, a, b);
+			return ProbabilityTool.q_beta(x, a, b);
 		}
 		else if(arguments.length === 3) {
 			// 引数を省略した場合
-			return StatisticsTool.betainc(x, a, b, "lower");
+			return ProbabilityTool.betainc(x, a, b, "lower");
 		}
 		else {
 			throw "betainc unsupported argument [" + tail + "]";
@@ -356,14 +348,14 @@ class StatisticsTool {
 	static betapdf(x, a, b) {
 		// powの計算結果が複素数になる場合は計算を行わない
 		if	(
-			((x < 0) && (StatisticsTool.isInteger(b - 1))) ||
-			((1 - x < 0) && (StatisticsTool.isInteger(b - 1)))
+			((x < 0) && (ProbabilityTool.isInteger(b - 1))) ||
+			((1 - x < 0) && (ProbabilityTool.isInteger(b - 1)))
 		) {
 			return 0.0;
 		}
 		// 以下の式でも求められるが betapdf(0, 1, 1)で、Log(0)の計算が発生しNaNを返してしまう。実際は1を返すべき。
-		//return(Math.exp((a - 1) * Math.log(x) + (b - 1) * Math.log(1 - x)) / StatisticsTool.beta(a,  b));
-		return (Math.pow(x, a - 1) * Math.pow(1 - x, b - 1) / StatisticsTool.beta(a,  b));
+		//return(Math.exp((a - 1) * Math.log(x) + (b - 1) * Math.log(1 - x)) / ProbabilityTool.beta(a,  b));
+		return (Math.pow(x, a - 1) * Math.pow(1 - x, b - 1) / ProbabilityTool.beta(a,  b));
 	}
 
 	/**
@@ -374,7 +366,7 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static betacdf(x, a, b) {
-		return StatisticsTool.betainc(x, a, b);
+		return ProbabilityTool.betainc(x, a, b);
 	}
 	
 	/**
@@ -413,7 +405,7 @@ class StatisticsTool {
 		// aの微分は0なので無関係
 		let delta, y2;
 		for(let i = 0; i < 100; i++) {
-			y2 = y - ((StatisticsTool.betacdf(y, a, b) - p) / StatisticsTool.betapdf(y, a, b));
+			y2 = y - ((ProbabilityTool.betacdf(y, a, b) - p) / ProbabilityTool.betapdf(y, a, b));
 			delta = y2 - y;
 			if(Math.abs(delta) <= eps) {
 				break;
@@ -435,7 +427,7 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static factorial(n) {
-		const y = StatisticsTool.gamma(n + 1.0);
+		const y = ProbabilityTool.gamma(n + 1.0);
 		if(Math.trunc(n) === n) {
 			return Math.round(y);
 		}
@@ -451,7 +443,7 @@ class StatisticsTool {
 	 * @returns {number} nCk
 	 */
 	static nchoosek(n, k) {
-		return (Math.round(StatisticsTool.factorial(n) / (StatisticsTool.factorial(n - k) * StatisticsTool.factorial(k))));
+		return (Math.round(ProbabilityTool.factorial(n) / (ProbabilityTool.factorial(n - k) * ProbabilityTool.factorial(k))));
 	}
 
 	/**
@@ -460,7 +452,7 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static erf(x) {
-		return (StatisticsTool.p_gamma(x * x, 0.5, Math.log(Math.PI) * 0.5) * (x >= 0 ? 1.0 : -1.0));
+		return (ProbabilityTool.p_gamma(x * x, 0.5, Math.log(Math.PI) * 0.5) * (x >= 0 ? 1.0 : -1.0));
 	}
 
 	/**
@@ -469,7 +461,7 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static erfc(x) {
-		return 1.0 - StatisticsTool.erf(x);
+		return 1.0 - ProbabilityTool.erf(x);
 	}
 
 	/**
@@ -545,7 +537,7 @@ class StatisticsTool {
 	static normcdf(x, u, s) {
 		const u_ = typeof u === "number" ? u : 0.0;
 		const s_ = typeof s === "number" ? s : 1.0;
-		return (1.0 + StatisticsTool.erf( (x - u_) / (s_ * Math.sqrt(2.0)) )) / 2.0;
+		return (1.0 + ProbabilityTool.erf( (x - u_) / (s_ * Math.sqrt(2.0)) )) / 2.0;
 	}
 
 	/**
@@ -577,7 +569,7 @@ class StatisticsTool {
 		// aの微分は0なので無関係
 		let delta, y2;
 		for(let i = 0; i < 200; i++) {
-			y2 = y - ((StatisticsTool.normcdf(y, u_, s_) - p) / StatisticsTool.normpdf(y, u_, s_));
+			y2 = y - ((ProbabilityTool.normcdf(y, u_, s_) - p) / ProbabilityTool.normpdf(y, u_, s_));
 			delta = y2 - y;
 			if(Math.abs(delta) <= eps) {
 				break;
@@ -594,7 +586,7 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static tpdf(t, v) {
-		let y = 1.0 / (Math.sqrt(v) * StatisticsTool.beta(0.5, v * 0.5));
+		let y = 1.0 / (Math.sqrt(v) * ProbabilityTool.beta(0.5, v * 0.5));
 		y *= Math.pow( 1 + t * t / v, - (v + 1) * 0.5);
 		return y;
 	}
@@ -607,7 +599,7 @@ class StatisticsTool {
 	 */
 	static tcdf(t, v) {
 		const y = (t * t) / (v + t * t) ;
-		const p = StatisticsTool.betainc( y, 0.5, v * 0.5 ) * (t < 0 ? -1 : 1);
+		const p = ProbabilityTool.betainc( y, 0.5, v * 0.5 ) * (t < 0 ? -1 : 1);
 		return 0.5 * (1 + p);
 	}
 
@@ -628,11 +620,11 @@ class StatisticsTool {
 			return Number.POSITIVE_INFINITY;
 		}
 		else if(p < 0.5) {
-			const y = StatisticsTool.betainv(2.0 * p, 0.5 * v, 0.5);
+			const y = ProbabilityTool.betainv(2.0 * p, 0.5 * v, 0.5);
 			return - Math.sqrt(v / y - v);
 		}
 		else {
-			const y = StatisticsTool.betainv(2.0 * (1.0 - p), 0.5 * v, 0.5);
+			const y = ProbabilityTool.betainv(2.0 * (1.0 - p), 0.5 * v, 0.5);
 			return Math.sqrt(v / y - v);
 		}
 	}
@@ -645,7 +637,7 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static tdist(t, v, tails) {
-		return (1.0 - StatisticsTool.tcdf(t, v)) * tails;
+		return (1.0 - ProbabilityTool.tcdf(t, v)) * tails;
 	}
 
 	/**
@@ -655,7 +647,7 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static tinv2(p, v) {
-		return - StatisticsTool.tinv( p * 0.5, v);
+		return - ProbabilityTool.tinv( p * 0.5, v);
 	}
 
 	/**
@@ -672,7 +664,7 @@ class StatisticsTool {
 			return 0.5;
 		}
 		let y = Math.pow(x, k / 2.0 - 1.0) * Math.exp( - x / 2.0 );
-		y /= Math.pow(2, k / 2.0) * StatisticsTool.gamma( k / 2.0);
+		y /= Math.pow(2, k / 2.0) * ProbabilityTool.gamma( k / 2.0);
 		return y;
 	}
 
@@ -683,7 +675,7 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static chi2cdf(x, k) {
-		return StatisticsTool.gammainc(x / 2.0, k / 2.0);
+		return ProbabilityTool.gammainc(x / 2.0, k / 2.0);
 	}
 
 	/**
@@ -693,7 +685,7 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static chi2inv(p, k) {
-		return StatisticsTool.gaminv(p, k / 2.0, 2);
+		return ProbabilityTool.gaminv(p, k / 2.0, 2);
 	}
 
 	/**
@@ -713,7 +705,7 @@ class StatisticsTool {
 		let y = 1.0;
 		y *= Math.pow( (d1 * x) / (d1 * x + d2) , d1 / 2.0);
 		y *= Math.pow( 1.0 - ((d1 * x) / (d1 * x + d2)), d2 / 2.0);
-		y /= x * StatisticsTool.beta(d1 / 2.0, d2 / 2.0);
+		y /= x * ProbabilityTool.beta(d1 / 2.0, d2 / 2.0);
 		return y;
 	}
 
@@ -725,7 +717,7 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static fcdf(x, d1, d2) {
-		return StatisticsTool.betacdf( d1 * x / (d1 * x + d2), d1 / 2.0, d2 / 2.0 );
+		return ProbabilityTool.betacdf( d1 * x / (d1 * x + d2), d1 / 2.0, d2 / 2.0 );
 	}
 
 	/**
@@ -736,7 +728,7 @@ class StatisticsTool {
 	 * @returns {number}
 	 */
 	static finv(p, d1, d2) {
-		return (1.0 / StatisticsTool.betainv( 1.0 - p, d2 / 2.0, d1 / 2.0 ) - 1.0) * d2 / d1;
+		return (1.0 / ProbabilityTool.betainv( 1.0 - p, d2 / 2.0, d1 / 2.0 ) - 1.0) * d2 / d1;
 	}
 
 }
@@ -751,10 +743,10 @@ const isStr = function(text) {
 };
 
 /**
- * Collection of statistical functions used from the Complex class.
+ * Collection for calculating probability used from the Complex class.
  * @ignore
  */
-class StatisticsComplex {
+class ProbabilityComplex {
 
 	/**
 	 * Log-gamma function.
@@ -762,7 +754,7 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static gammaln(x) {
-		return new Complex(StatisticsTool.gammaln(Complex._toDouble(x)));
+		return new Complex(ProbabilityTool.gammaln(Complex._toDouble(x)));
 	}
 	
 	/**
@@ -771,7 +763,7 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static gamma(z) {
-		return new Complex(StatisticsTool.gamma(Complex._toDouble(z)));
+		return new Complex(ProbabilityTool.gamma(Complex._toDouble(z)));
 	}
 	
 	/**
@@ -785,7 +777,7 @@ class StatisticsComplex {
 		const X = Complex._toDouble(x);
 		const a_ = Complex._toDouble(a);
 		const tail_ = isStr(tail) ? tail : "lower";
-		return new Complex(StatisticsTool.gammainc(X, a_, tail_));
+		return new Complex(ProbabilityTool.gammainc(X, a_, tail_));
 	}
 
 	/**
@@ -799,7 +791,7 @@ class StatisticsComplex {
 		const X = Complex._toDouble(x);
 		const k_ = Complex._toDouble(k);
 		const s_ = Complex._toDouble(s);
-		return new Complex(StatisticsTool.gampdf(X, k_, s_));
+		return new Complex(ProbabilityTool.gampdf(X, k_, s_));
 	}
 
 	/**
@@ -813,7 +805,7 @@ class StatisticsComplex {
 		const X = Complex._toDouble(x);
 		const k_ = Complex._toDouble(k);
 		const s_ = Complex._toDouble(s);
-		return new Complex(StatisticsTool.gamcdf(X, k_, s_));
+		return new Complex(ProbabilityTool.gamcdf(X, k_, s_));
 	}
 
 	/**
@@ -827,7 +819,7 @@ class StatisticsComplex {
 		const p_ = Complex._toDouble(p);
 		const k_ = Complex._toDouble(k);
 		const s_ = Complex._toDouble(s);
-		return new Complex(StatisticsTool.gaminv(p_, k_, s_));
+		return new Complex(ProbabilityTool.gaminv(p_, k_, s_));
 	}
 
 	/**
@@ -839,7 +831,7 @@ class StatisticsComplex {
 	static beta(x, y) {
 		const X = Complex._toDouble(x);
 		const y_ = Complex._toDouble(y);
-		return new Complex(StatisticsTool.beta(X, y_));
+		return new Complex(ProbabilityTool.beta(X, y_));
 	}
 
 	/**
@@ -855,7 +847,7 @@ class StatisticsComplex {
 		const a_ = Complex._toDouble(a);
 		const b_ = Complex._toDouble(b);
 		const tail_ = isStr(tail) ? tail : "lower";
-		return new Complex(StatisticsTool.betainc(X, a_, b_, tail_));
+		return new Complex(ProbabilityTool.betainc(X, a_, b_, tail_));
 	}
 
 	/**
@@ -869,7 +861,7 @@ class StatisticsComplex {
 		const X = Complex._toDouble(x);
 		const a_ = Complex._toDouble(a);
 		const b_ = Complex._toDouble(b);
-		return new Complex(StatisticsTool.betapdf(X, a_, b_));
+		return new Complex(ProbabilityTool.betapdf(X, a_, b_));
 	}
 
 	/**
@@ -883,7 +875,7 @@ class StatisticsComplex {
 		const X = Complex._toDouble(x);
 		const a_ = Complex._toDouble(a);
 		const b_ = Complex._toDouble(b);
-		return new Complex(StatisticsTool.betacdf(X, a_, b_));
+		return new Complex(ProbabilityTool.betacdf(X, a_, b_));
 	}
 
 	/**
@@ -897,7 +889,7 @@ class StatisticsComplex {
 		const p_ = Complex._toDouble(p);
 		const a_ = Complex._toDouble(a);
 		const b_ = Complex._toDouble(b);
-		return new Complex(StatisticsTool.betainv(p_, a_, b_));
+		return new Complex(ProbabilityTool.betainv(p_, a_, b_));
 	}
 
 	/**
@@ -906,7 +898,7 @@ class StatisticsComplex {
 	 * @returns {Complex}
 	 */
 	static factorial(n) {
-		return new Complex(StatisticsTool.factorial(Complex._toDouble(n)));
+		return new Complex(ProbabilityTool.factorial(Complex._toDouble(n)));
 	}
 
 	/**
@@ -918,7 +910,7 @@ class StatisticsComplex {
 	static nchoosek(n, k) {
 		const n_ = Complex._toDouble(n);
 		const k_ = Complex._toDouble(k);
-		return new Complex(StatisticsTool.nchoosek(n_, k_));
+		return new Complex(ProbabilityTool.nchoosek(n_, k_));
 	}
 	
 	/**
@@ -928,7 +920,7 @@ class StatisticsComplex {
 	 */
 	static erf(x) {
 		const X = Complex._toDouble(x);
-		return new Complex(StatisticsTool.erf(X));
+		return new Complex(ProbabilityTool.erf(X));
 	}
 
 	/**
@@ -938,7 +930,7 @@ class StatisticsComplex {
 	 */
 	static erfc(x) {
 		const X = Complex._toDouble(x);
-		return new Complex(StatisticsTool.erfc(X));
+		return new Complex(ProbabilityTool.erfc(X));
 	}
 
 	/**
@@ -952,7 +944,7 @@ class StatisticsComplex {
 		const X = Complex._toDouble(x);
 		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
 		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
-		return new Complex(StatisticsTool.normpdf(X, u_, s_));
+		return new Complex(ProbabilityTool.normpdf(X, u_, s_));
 	}
 
 	/**
@@ -966,7 +958,7 @@ class StatisticsComplex {
 		const X = Complex._toDouble(x);
 		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
 		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
-		return new Complex(StatisticsTool.normcdf(X, u_, s_));
+		return new Complex(ProbabilityTool.normcdf(X, u_, s_));
 	}
 
 	/**
@@ -980,7 +972,7 @@ class StatisticsComplex {
 		const X = Complex._toDouble(x);
 		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
 		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
-		return new Complex(StatisticsTool.norminv(X, u_, s_));
+		return new Complex(ProbabilityTool.norminv(X, u_, s_));
 	}
 	
 	/**
@@ -992,7 +984,7 @@ class StatisticsComplex {
 	static tpdf(x, v) {
 		const X = Complex._toDouble(x);
 		const v_ = Complex._toDouble(v);
-		return new Complex(StatisticsTool.tpdf(X, v_));
+		return new Complex(ProbabilityTool.tpdf(X, v_));
 	}
 
 	/**
@@ -1004,7 +996,7 @@ class StatisticsComplex {
 	static tcdf(t, v) {
 		const t_ = Complex._toDouble(t);
 		const v_ = Complex._toDouble(v);
-		return new Complex(StatisticsTool.tcdf(t_, v_));
+		return new Complex(ProbabilityTool.tcdf(t_, v_));
 	}
 
 	/**
@@ -1016,7 +1008,7 @@ class StatisticsComplex {
 	static tinv(p, v) {
 		const p_ = Complex._toDouble(p);
 		const v_ = Complex._toDouble(v);
-		return new Complex(StatisticsTool.tinv(p_, v_));
+		return new Complex(ProbabilityTool.tinv(p_, v_));
 	}
 
 	/**
@@ -1030,7 +1022,7 @@ class StatisticsComplex {
 		const t_ = Complex._toDouble(t);
 		const v_ = Complex._toDouble(v);
 		const tails_ = Complex._toInteger(tails);
-		return new Complex(StatisticsTool.tdist(t_, v_, tails_));
+		return new Complex(ProbabilityTool.tdist(t_, v_, tails_));
 	}
 
 	/**
@@ -1042,7 +1034,7 @@ class StatisticsComplex {
 	static tinv2(p, v) {
 		const p_ = Complex._toDouble(p);
 		const v_ = Complex._toDouble(v);
-		return new Complex(StatisticsTool.tinv2(p_, v_));
+		return new Complex(ProbabilityTool.tinv2(p_, v_));
 	}
 
 	/**
@@ -1054,7 +1046,7 @@ class StatisticsComplex {
 	static chi2pdf(x, k) {
 		const X = Complex._toDouble(x);
 		const k_ = Complex._toDouble(k);
-		return new Complex(StatisticsTool.chi2pdf(X, k_));
+		return new Complex(ProbabilityTool.chi2pdf(X, k_));
 	}
 
 	/**
@@ -1066,7 +1058,7 @@ class StatisticsComplex {
 	static chi2cdf(x, k) {
 		const X = Complex._toDouble(x);
 		const k_ = Complex._toDouble(k);
-		return new Complex(StatisticsTool.chi2cdf(X, k_));
+		return new Complex(ProbabilityTool.chi2cdf(X, k_));
 	}
 
 	/**
@@ -1078,7 +1070,7 @@ class StatisticsComplex {
 	static chi2inv(p, k) {
 		const p_ = Complex._toDouble(p);
 		const k_ = Complex._toDouble(k);
-		return new Complex(StatisticsTool.chi2inv(p_, k_));
+		return new Complex(ProbabilityTool.chi2inv(p_, k_));
 	}
 
 	/**
@@ -1092,7 +1084,7 @@ class StatisticsComplex {
 		const X = Complex._toDouble(x);
 		const d1_ = Complex._toDouble(d1);
 		const d2_ = Complex._toDouble(d2);
-		return new Complex(StatisticsTool.fpdf(X, d1_, d2_));
+		return new Complex(ProbabilityTool.fpdf(X, d1_, d2_));
 	}
 
 	/**
@@ -1106,7 +1098,7 @@ class StatisticsComplex {
 		const X = Complex._toDouble(x);
 		const d1_ = Complex._toDouble(d1);
 		const d2_ = Complex._toDouble(d2);
-		return new Complex(StatisticsTool.fcdf(X, d1_, d2_));
+		return new Complex(ProbabilityTool.fcdf(X, d1_, d2_));
 	}
 
 	/**
@@ -1120,15 +1112,15 @@ class StatisticsComplex {
 		const p_ = Complex._toDouble(p);
 		const d1_ = Complex._toDouble(d1);
 		const d2_ = Complex._toDouble(d2);
-		return new Complex(StatisticsTool.finv(p_, d1_, d2_));
+		return new Complex(ProbabilityTool.finv(p_, d1_, d2_));
 	}
 
 }
 
 /**
- * Class for statistical processing for Matrix class.
+ * Calculating probability class for Matrix class.
  */
-export default class Statistics {
+export default class Probability {
 
 	/**
 	 * Log-gamma function.
@@ -1138,7 +1130,7 @@ export default class Statistics {
 	static gammaln(x) {
 		const X = Matrix._toMatrix(x);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.gammaln(num);
+			return ProbabilityComplex.gammaln(num);
 		});
 	}
 
@@ -1150,7 +1142,7 @@ export default class Statistics {
 	static gamma(x) {
 		const X = Matrix._toMatrix(x);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.gamma(num);
+			return ProbabilityComplex.gamma(num);
 		});
 	}
 
@@ -1166,7 +1158,7 @@ export default class Statistics {
 		const a_ = Matrix._toDouble(a);
 		const tail_ = isStr(tail) ? tail : "lower";
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.gammainc(num, a_, tail_);
+			return ProbabilityComplex.gammainc(num, a_, tail_);
 		});
 	}
 
@@ -1182,7 +1174,7 @@ export default class Statistics {
 		const k_ = Matrix._toDouble(k);
 		const s_ = Matrix._toDouble(s);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.gampdf(num, k_, s_);
+			return ProbabilityComplex.gampdf(num, k_, s_);
 		});
 	}
 
@@ -1198,7 +1190,7 @@ export default class Statistics {
 		const k_ = Matrix._toDouble(k);
 		const s_ = Matrix._toDouble(s);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.gamcdf(num, k_, s_);
+			return ProbabilityComplex.gamcdf(num, k_, s_);
 		});
 	}
 
@@ -1214,7 +1206,7 @@ export default class Statistics {
 		const k_ = Matrix._toDouble(k);
 		const s_ = Matrix._toDouble(s);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.gaminv(num, k_, s_);
+			return ProbabilityComplex.gaminv(num, k_, s_);
 		});
 	}
 
@@ -1228,7 +1220,7 @@ export default class Statistics {
 		const X = Matrix._toMatrix(x);
 		const y_ = Matrix._toDouble(y);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.beta(num, y_);
+			return ProbabilityComplex.beta(num, y_);
 		});
 	}
 	
@@ -1246,7 +1238,7 @@ export default class Statistics {
 		const b_ = Matrix._toDouble(b);
 		const tail_ = isStr(tail) ? tail : "lower";
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.betainc(num, a_, b_, tail_);
+			return ProbabilityComplex.betainc(num, a_, b_, tail_);
 		});
 	}
 
@@ -1262,7 +1254,7 @@ export default class Statistics {
 		const a_ = Matrix._toDouble(a);
 		const b_ = Matrix._toDouble(b);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.betacdf(num, a_, b_);
+			return ProbabilityComplex.betacdf(num, a_, b_);
 		});
 	}
 
@@ -1278,7 +1270,7 @@ export default class Statistics {
 		const a_ = Matrix._toDouble(a);
 		const b_ = Matrix._toDouble(b);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.betapdf(num, a_, b_);
+			return ProbabilityComplex.betapdf(num, a_, b_);
 		});
 	}
 
@@ -1294,7 +1286,7 @@ export default class Statistics {
 		const a_ = Matrix._toDouble(a);
 		const b_ = Matrix._toDouble(b);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.betainv(num, a_, b_);
+			return ProbabilityComplex.betainv(num, a_, b_);
 		});
 	}
 
@@ -1306,7 +1298,7 @@ export default class Statistics {
 	static factorial(x) {
 		const X = Matrix._toMatrix(x);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.factorial(num);
+			return ProbabilityComplex.factorial(num);
 		});
 	}
 	
@@ -1320,7 +1312,7 @@ export default class Statistics {
 		const X = Matrix._toMatrix(x);
 		const k_ = Matrix._toDouble(k);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.nchoosek(num, k_);
+			return ProbabilityComplex.nchoosek(num, k_);
 		});
 	}
 	
@@ -1332,7 +1324,7 @@ export default class Statistics {
 	static erf(x) {
 		const X = Matrix._toMatrix(x);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.erf(num);
+			return ProbabilityComplex.erf(num);
 		});
 	}
 
@@ -1344,7 +1336,7 @@ export default class Statistics {
 	static erfc(x) {
 		const X = Matrix._toMatrix(x);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.erfc(num);
+			return ProbabilityComplex.erfc(num);
 		});
 	}
 	
@@ -1360,7 +1352,7 @@ export default class Statistics {
 		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
 		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.normpdf(num, u_, s_);
+			return ProbabilityComplex.normpdf(num, u_, s_);
 		});
 	}
 
@@ -1376,7 +1368,7 @@ export default class Statistics {
 		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
 		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.normcdf(num, u_, s_);
+			return ProbabilityComplex.normcdf(num, u_, s_);
 		});
 	}
 
@@ -1392,7 +1384,7 @@ export default class Statistics {
 		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
 		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.norminv(num, u_, s_);
+			return ProbabilityComplex.norminv(num, u_, s_);
 		});
 	}
 
@@ -1406,7 +1398,7 @@ export default class Statistics {
 		const X = Matrix._toMatrix(x);
 		const v_ = Matrix._toDouble(v);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.tpdf(num, v_);
+			return ProbabilityComplex.tpdf(num, v_);
 		});
 	}
 
@@ -1420,7 +1412,7 @@ export default class Statistics {
 		const X = Matrix._toMatrix(x);
 		const v_ = Matrix._toDouble(v);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.tcdf(num, v_);
+			return ProbabilityComplex.tcdf(num, v_);
 		});
 	}
 
@@ -1434,7 +1426,7 @@ export default class Statistics {
 		const X = Matrix._toMatrix(x);
 		const v_ = Matrix._toDouble(v);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.tinv(num, v_);
+			return ProbabilityComplex.tinv(num, v_);
 		});
 	}
 
@@ -1450,7 +1442,7 @@ export default class Statistics {
 		const v_ = Matrix._toDouble(v);
 		const tails_ = Matrix._toDouble(tails);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.tdist(num, v_, tails_);
+			return ProbabilityComplex.tdist(num, v_, tails_);
 		});
 	}
 
@@ -1464,7 +1456,7 @@ export default class Statistics {
 		const X = Matrix._toMatrix(x);
 		const v_ = Matrix._toDouble(v);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.tinv2(num, v_);
+			return ProbabilityComplex.tinv2(num, v_);
 		});
 	}
 
@@ -1478,7 +1470,7 @@ export default class Statistics {
 		const X = Matrix._toMatrix(x);
 		const k_ = Matrix._toDouble(k);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.chi2pdf(num, k_);
+			return ProbabilityComplex.chi2pdf(num, k_);
 		});
 	}
 
@@ -1492,7 +1484,7 @@ export default class Statistics {
 		const X = Matrix._toMatrix(x);
 		const k_ = Matrix._toDouble(k);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.chi2cdf(num, k_);
+			return ProbabilityComplex.chi2cdf(num, k_);
 		});
 	}
 	
@@ -1506,7 +1498,7 @@ export default class Statistics {
 		const X = Matrix._toMatrix(x);
 		const k_ = Matrix._toDouble(k);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.chi2inv(num, k_);
+			return ProbabilityComplex.chi2inv(num, k_);
 		});
 	}
 
@@ -1522,7 +1514,7 @@ export default class Statistics {
 		const d1_ = Matrix._toDouble(d1);
 		const d2_ = Matrix._toDouble(d2);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.fpdf(num, d1_, d2_);
+			return ProbabilityComplex.fpdf(num, d1_, d2_);
 		});
 	}
 
@@ -1538,7 +1530,7 @@ export default class Statistics {
 		const d1_ = Matrix._toDouble(d1);
 		const d2_ = Matrix._toDouble(d2);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.fcdf(num, d1_, d2_);
+			return ProbabilityComplex.fcdf(num, d1_, d2_);
 		});
 	}
 
@@ -1554,435 +1546,8 @@ export default class Statistics {
 		const d1_ = Matrix._toDouble(d1);
 		const d2_ = Matrix._toDouble(d2);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return StatisticsComplex.finv(num, d1_, d2_);
+			return ProbabilityComplex.finv(num, d1_, d2_);
 		});
 	}
 	
-	/**
-	 * Maximum number.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix} max([A, B])
-	 */
-	static max(x, type) {
-		const X = Matrix._toMatrix(x);
-		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
-		const main = function(data) {
-			let x = data[0];
-			for(let i = 1; i < data.length; i++) {
-				if(x.compareTo(data[i]) < 0) {
-					x = data[i];
-				}
-			}
-			return [x];
-		};
-		return X.eachVector(main, dim);
-	}
-	
-	/**
-	 * Minimum number.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix} min([A, B])
-	 */
-	static min(x, type) {
-		const X = Matrix._toMatrix(x);
-		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
-		const main = function(data) {
-			let x = data[0];
-			for(let i = 1; i < data.length; i++) {
-				if(x.compareTo(data[i]) > 0) {
-					x = data[i];
-				}
-			}
-			return [x];
-		};
-		return X.eachVector(main, dim);
-	}
-
-	/**
-	 * Sum.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static sum(x, type) {
-		const X = Matrix._toMatrix(x);
-		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
-		const main = function(data) {
-			// カハンの加算アルゴリズム
-			let sum = Complex.ZERO;
-			let delta = Complex.ZERO;
-			for(let i = 0; i < data.length; i++) {
-				const new_number = data[i].add(delta);
-				const new_sum = sum.add(new_number);
-				delta = new_sum.sub(sum).sub(new_number);
-				sum = new_sum;
-			}
-			return [sum];
-		};
-		return X.eachVector(main, dim);
-	}
-
-	/**
-	 * Arithmetic average.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static mean(x, type) {
-		const X = Matrix._toMatrix(x);
-		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
-		const main = function(data) {
-			// カハンの加算アルゴリズム
-			let sum = Complex.ZERO;
-			let delta = Complex.ZERO;
-			for(let i = 0; i < data.length; i++) {
-				const new_number = data[i].add(delta);
-				const new_sum = sum.add(new_number);
-				delta = new_sum.sub(sum).sub(new_number);
-				sum = new_sum;
-			}
-			return [sum.div(data.length)];
-		};
-		return X.eachVector(main, dim);
-	}
-
-	/**
-	 * Product of array elements.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static prod(x, type) {
-		const X = Matrix._toMatrix(x);
-		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
-		const main = function(data) {
-			let x = Complex.ONE;
-			for(let i = 0; i < data.length; i++) {
-				x = x.mul(data[i]);
-			}
-			return [x];
-		};
-		return X.eachVector(main, dim);
-	}
-
-	/**
-	 * Geometric mean.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static geomean(x, type) {
-		const X = Matrix._toMatrix(x);
-		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
-		const main = function(data) {
-			let x = Complex.ONE;
-			for(let i = 0; i < data.length; i++) {
-				x = x.mul(data[i]);
-			}
-			return [x.pow(Complex.create(data.length).inv())];
-		};
-		return X.eachVector(main, dim);
-	}
-	
-	/**
-	 * Median.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static median(x, type) {
-		const X = Matrix._toMatrix(x);
-		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
-		const compare = function(a, b){
-			return a.compareTo(b);
-		};
-		const main = function(data) {
-			data.sort(compare);
-			let y;
-			if((data.length % 2) === 1) {
-				y = data[Math.floor(data.length / 2)];
-			}
-			else {
-				const x1 = data[Math.floor(data.length / 2) - 1];
-				const x2 = data[Math.floor(data.length / 2)];
-				y = x1.add(x2).div(Complex.TWO);
-			}
-			return [y];
-		};
-		return X.eachVector(main, dim);
-	}
-
-	/**
-	 * Mode.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static mode(x, type) {
-		const X = Matrix._toMatrix(x);
-		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
-		const compare = function(a, b){
-			return a.compareTo(b);
-		};
-		const main = function(data) {
-			data.sort(compare);
-			const map = {};
-			for(let i = 0; i < data.length; i++) {
-				const str = data[i].real + " " + data[i].imag;
-				if(!map[str]) {
-					map[str] = {
-						complex : data[i],
-						value : 1
-					};
-				}
-				else {
-					map[str].value++;
-				}
-			}
-			let max_complex = Complex.ZERO;
-			let max_number = Number.NEGATIVE_INFINITY;
-			for(const key in map) {
-				const tgt = map[key];
-				if(tgt.value > max_number) {
-					max_number	= tgt.value;
-					max_complex	= tgt.complex;
-				}
-			}
-			return [max_complex];
-		};
-		return X.eachVector(main, dim);
-	}
-
-	/**
-	 * Moment.
-	 * - Moment of order n. Equivalent to the definition of variance at 2.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {number} nth_order
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static moment(x, nth_order, type) {
-		const X = Matrix._toMatrix(x);
-		const M = Statistics.mean(X);
-		// 補正値 0(不偏分散), 1(標本分散)。規定値は、標本分散とする
-		const cor = !(type && typeof type.correction === "number") ? 1: Matrix._toDouble(type.correction);
-		const dim = !(type && type.dimension) ? "auto" : type.dimension;
-		const order = Matrix._toComplex(nth_order);
-		let col = 0;
-		const main = function(data) {
-			let mean;
-			if(M.isScalar()) {
-				mean = M.scalar;
-			}
-			else {
-				mean = M.getComplex(col++);
-			}
-			let x = Complex.ZERO;
-			for(let i = 0; i < data.length; i++) {
-				// 計算方法について
-				// ・複素数は、ノルムをとらずに複素数用のpowを使用したほうがいいのか
-				// ・分散と同様にnormで計算したほうがいいのか
-				// 複素数でのモーメントの定義がないため不明であるが、
-				// 分散を拡張した考えであれば、normをとった累乗のほうが良いと思われる。
-				const a = data[i].sub(mean);
-				x = x.add(a.pow(order));
-			}
-			if(data.length === 1) {
-				return [x.div(data.length)];
-			}
-			else {
-				return [x.div(data.length - 1 + cor)];
-			}
-		};
-		return X.eachVector(main, dim);
-	}
-
-	/**
-	 * Variance.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static var(x, type) {
-		const X = Matrix._toMatrix(x);
-		const M = Statistics.mean(X);
-		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
-		const cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
-		const dim = !(type && type.dimension) ? "auto" : type.dimension;
-		let col = 0;
-		const main = function(data) {
-			if(data.length === 1) {
-				// 要素が1であれば、分散は0固定
-				return [Complex.ZERO];
-			}
-			const mean = M.getComplex(col++);
-			// 分散は、ノルムの2乗で計算するため必ず実数になる。
-			let x = 0;
-			for(let i = 0; i < data.length; i++) {
-				const a = data[i].sub(mean).norm;
-				x += a * a;
-			}
-			return [Complex.create(x / (data.length - 1 + cor))];
-		};
-		return X.eachVector(main, dim);
-	}
-
-	/**
-	 * Standard deviation.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static std(x, type) {
-		const X = Matrix._toMatrix(x);
-		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
-		const cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
-		const dim = !(type && type.dimension) ? "auto" : type.dimension;
-		const M = Statistics.var(X, { correction : cor, dimension : dim });
-		M._each(function(num) {
-			return num.sqrt();
-		});
-		return M;
-	}
-
-	/**
-	 * Mean absolute deviation.
-	 * - The "algorithm" can choose "0/mean"(default) and "1/median".
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {?string|?number} [algorithm]
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static mad(x, algorithm, type) {
-		const X = Matrix._toMatrix(x);
-		const alg = !algorithm ? "mean" : (typeof algorithm === "string" ? algorithm : Matrix._toInteger(algorithm));
-		const dim = !(type && type.dimension) ? "auto" : type.dimension;
-		if((alg === "mean") || (alg === 0)) {
-			return Statistics.mean(X.sub(Statistics.mean(X, {dimension : dim} )).abs(), {dimension : dim});
-		}
-		else if((alg === "median") || (alg === 1)) {
-			return Statistics.median(X.sub(Statistics.median(X, {dimension : dim} )).abs(), {dimension : dim});
-		}
-		else {
-			throw "mad unsupported argument " + alg;
-		}
-	}
-
-	/**
-	 * Skewness.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static skewness(x, type) {
-		const X = Matrix._toMatrix(x);
-		// 補正値 0(不偏), 1(標本)。規定値は、標本とする
-		const cor = !(type && typeof type.correction === "number") ? 1: Matrix._toDouble(type.correction);
-		const dim = !(type && type.dimension) ? "auto" : type.dimension;
-		const order = Statistics.moment(X, 3, { correction : cor, dimension : dim });
-		const std = Statistics.std(X, { correction : cor, dimension : dim });
-		if(cor === 1) {
-			return order.dotdiv(std.dotpow(3));
-		}
-		else {
-			return order.dotdiv(std.dotpow(3)).dotmul(2);
-		}
-	}
-
-	/**
-	 * Covariance matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static cov(x, type) {
-		const X = Matrix._toMatrix(x);
-		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
-		const cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
-		if(X.isVector()) {
-			return Statistics.var(X, type);
-		}
-		const correction = X.row_length === 1 ? 1 : cor;
-		const arr = X.matrix_array;
-		const mean = Statistics.mean(X).matrix_array[0];
-		// 上三角行列、対角行列
-		const y = new Array(X.column_length);
-		for(let a = 0; a < X.column_length; a++) {
-			const a_mean = mean[a];
-			y[a] = new Array(X.column_length);
-			for(let b = a; b < X.column_length; b++) {
-				const b_mean = mean[b];
-				let sum = Complex.ZERO;
-				for(let row = 0; row < X.row_length; row++) {
-					sum = sum.add((arr[row][a].sub(a_mean)).dot(arr[row][b].sub(b_mean)));
-				}
-				y[a][b] = sum.div(X.row_length - 1 + correction);
-			}
-		}
-		// 下三角行列を作る
-		for(let row = 1; row < y[0].length; row++) {
-			for(let col = 0; col < row; col++) {
-				y[row][col] = y[col][row];
-			}
-		}
-		return new Matrix(y);
-	}
-
-	/**
-	 * The samples are normalized to a mean value of 0, standard deviation of 1.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static normalize(x, type) {
-		const X = Matrix._toMatrix(x);
-		const mean_zero = X.sub(Statistics.mean(X, type));
-		const std_one = mean_zero.dotdiv(Statistics.std(mean_zero, type));
-		return std_one;
-	}
-
-	/**
-	 * Correlation matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static corrcoef(x, type) {
-		const X = Matrix._toMatrix(x);
-		return Statistics.cov(Statistics.normalize(X, type), type);
-	}
-
-	/**
-	 * Sort.
-	 * - The "order" can choose "ascend"(default) and "descend".
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {string} [order]
-	 * @param {StatisticsSettings} [type]
-	 * @returns {Matrix}
-	 */
-	static sort(x, order, type) {
-		const X = Matrix._toMatrix(x);
-		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
-		const order_type = !order ? "ascend" : order;
-		let compare;
-		if(order_type === "ascend") {
-			compare = function(a, b){
-				return a.compareTo(b);
-			};
-		}
-		else {
-			compare = function(a, b){
-				return b.compareTo(a);
-			};
-		}
-		const main = function(data) {
-			data.sort(compare);
-			return data;
-		};
-		return X.eachVector(main, dim);
-	}
-
-
 }

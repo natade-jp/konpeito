@@ -38,7 +38,7 @@ let DEFAULT_CONTEXT = MathContext.DECIMAL128;
  * Collection of functions used in BigDecimal.
  * @ignore
  */
-class DecimalTool {
+class BigDecimalTool {
 
 	/**
 	 * Create data for BigDecimal from strings.
@@ -192,7 +192,7 @@ export default class BigDecimal {
 
 		}
 		else if(typeof number === "number") {
-			const data = DecimalTool.ToBigDecimalFromNumber(number);
+			const data = BigDecimalTool.ToBigDecimalFromNumber(number);
 			this.integer	= data.integer;
 			this._scale		= data.scale;
 		}
@@ -200,7 +200,7 @@ export default class BigDecimal {
 			if(number.length >= 1) {
 				const prm1 = number[0];
 				if(typeof prm1 === "number") {
-					const data = DecimalTool.ToBigDecimalFromNumber(prm1);
+					const data = BigDecimalTool.ToBigDecimalFromNumber(prm1);
 					this.integer	= data.integer;
 					this._scale		= data.scale;
 				}
@@ -217,12 +217,12 @@ export default class BigDecimal {
 					this._scale				= data._scale;
 				}
 				else if((prm1 instanceof Object) && (prm1.doubleValue)) {
-					const data = DecimalTool.ToBigDecimalFromNumber(prm1.doubleValue);
+					const data = BigDecimalTool.ToBigDecimalFromNumber(prm1.doubleValue);
 					this.integer	= data.integer;
 					this._scale		= data.scale;
 				}
 				else {
-					const data = DecimalTool.ToBigDecimalFromString(prm1.toString());
+					const data = BigDecimalTool.ToBigDecimalFromString(prm1.toString());
 					this.integer	= data.integer;
 					this._scale		= data.scale;
 				}
@@ -246,7 +246,7 @@ export default class BigDecimal {
 			}
 		}
 		else if(typeof number === "string") {
-			const data = DecimalTool.ToBigDecimalFromString(number);
+			const data = BigDecimalTool.ToBigDecimalFromString(number);
 			this.integer	= data.integer;
 			this._scale		= data.scale;
 		}
@@ -270,12 +270,12 @@ export default class BigDecimal {
 			}
 		}
 		else if((number instanceof Object) && (number.doubleValue)) {
-			const data = DecimalTool.ToBigDecimalFromNumber(number.doubleValue);
+			const data = BigDecimalTool.ToBigDecimalFromNumber(number.doubleValue);
 			this.integer	= data.integer;
 			this._scale		= data.scale;
 		}
 		else if(number instanceof Object) {
-			const data = DecimalTool.ToBigDecimalFromString(number.toString());
+			const data = BigDecimalTool.ToBigDecimalFromString(number.toString());
 			this.integer	= data.integer;
 			this._scale		= data.scale;
 		}
@@ -1837,7 +1837,7 @@ const DEFINE = {
  * Simple cache class.
  * @ignore
  */
-class BigDecimalConstCache {
+class BigDecimalCache {
 	
 	/**
 	 * Create Cache.
@@ -1897,7 +1897,7 @@ class BigDecimalConstCache {
  * Simple cache class.
  * @ignore
  */
-class CachedDataClass {
+class BigDecimalConst {
 	/**
 	 * Constructor
 	 */
@@ -1905,42 +1905,42 @@ class CachedDataClass {
 		/**
 		 * -1
 		 */
-		this.MINUS_ONE = new BigDecimalConstCache("MINUS_ONE", 10);
+		this.MINUS_ONE = new BigDecimalCache("MINUS_ONE", 10);
 
 		/**
 		 * 0
 		 */
-		this.ZERO = new BigDecimalConstCache("ZERO", 10);
+		this.ZERO = new BigDecimalCache("ZERO", 10);
 
 		/**
 		 * 0.5
 		 */
-		this.HALF = new BigDecimalConstCache("HALF", 10);
+		this.HALF = new BigDecimalCache("HALF", 10);
 
 		/**
 		 * 1
 		 */
-		this.ONE = new BigDecimalConstCache("ONE", 10);
+		this.ONE = new BigDecimalCache("ONE", 10);
 
 		/**
 		 * 2
 		 */
-		this.TWO = new BigDecimalConstCache("TWO", 10);
+		this.TWO = new BigDecimalCache("TWO", 10);
 
 		/**
 		 * 10
 		 */
-		this.TEN = new BigDecimalConstCache("TEN", 10);
+		this.TEN = new BigDecimalCache("TEN", 10);
 
 		/**
 		 * PI
 		 */
-		this.PI = new BigDecimalConstCache("PI", 10);
+		this.PI = new BigDecimalCache("PI", 10);
 
 		/**
 		 * E
 		 */
-		this.E = new BigDecimalConstCache("E", 10);
+		this.E = new BigDecimalCache("E", 10);
 	}
 }
 
@@ -1948,5 +1948,5 @@ class CachedDataClass {
  * Cache of the constant.
  * @ignore
  */
-const CACHED_DATA = new CachedDataClass();
+const CACHED_DATA = new BigDecimalConst();
 

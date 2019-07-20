@@ -51,21 +51,26 @@ let dts_text = File.loadTextFile("./out/types.d.ts");
 {
 	const types = [
 		"BigDecimal",
+		"BigDecimalCache",
+		"BigDecimalConst",
+		"BigDecimalTool",
 		"BigInteger",
-		"Cache",
+		"BigIntegerTool",
 		"Complex",
 		"ComplexTool",
 		"DCT",
-		"DecimalTool",
 		"FFT",
-		"FractionTool",
+		"FFTCache",
 		"Fraction",
-		"IntegerTool",
+		"FractionTool",
 		"LinearAlgebra",
 		"LinearAlgebraTool",
 		"MathContext",
 		"Matrix",
 		"MatrixTool",
+		"Probability",
+		"ProbabilityComplex",
+		"ProbabilityTool",
 		"Random",
 		"RandomTool",
 		"RoundingMode",
@@ -80,9 +85,7 @@ let dts_text = File.loadTextFile("./out/types.d.ts");
 		"RoundingModeEntity",
 		"Signal",
 		"SignalTool",
-		"Statistics",
-		"StatisticsComplex",
-		"StatisticsTool"
+		"Statistics"
 	];
 	for(let i = 0; i < types.length; i++) {
 		const word = types[i];

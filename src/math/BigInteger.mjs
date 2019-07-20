@@ -26,7 +26,7 @@ let DEFAULT_RANDOM = new Random();
  * Collection of functions used in BigInteger.
  * @ignore
  */
-class IntegerTool {
+class BigIntegerTool {
 
 	/**
 	 * Return a hex array from a string containing numbers.
@@ -153,7 +153,7 @@ class IntegerTool {
 		}
 		if(x > 0xFFFFFFFF) {
 			return {
-				element : IntegerTool.toHexadecimalArrayFromPlainString(IntegerTool.toPlainStringFromString(x.toFixed()), 10),
+				element : BigIntegerTool.toHexadecimalArrayFromPlainString(BigIntegerTool.toPlainStringFromString(x.toFixed()), 10),
 				_sign : sign
 			};
 		}
@@ -232,20 +232,20 @@ class IntegerTool {
 		}
 
 		if(radix) {
-			element = IntegerTool.toHexadecimalArrayFromPlainString(x, radix);
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x, radix);
 		}
 		else if(/^0x/.test(x)) {
-			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 16);
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 16);
 		}
 		else if(/^0b/.test(x)) {
-			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 2);
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 2);
 		}
 		else if(/^0o/.test(x)) {
-			element = IntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 8);
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 8);
 		}
 		else {
-			x = IntegerTool.toPlainStringFromString(x);
-			element = IntegerTool.toHexadecimalArrayFromPlainString(x, 10);
+			x = BigIntegerTool.toPlainStringFromString(x);
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x, 10);
 		}
 		// "0"の場合がある為
 		if((element.length === 1)&&(element[0] === 0)) {
@@ -310,18 +310,18 @@ export default class BigInteger {
 				this._sign = number._sign;
 			}
 			else if(typeof number === "number") {
-				const x = IntegerTool.toBigIntegerFromNumber(number);
+				const x = BigIntegerTool.toBigIntegerFromNumber(number);
 				this.element = x.element;
 				this._sign = x._sign;
 			}
 			else if(typeof number === "string") {
-				const x = IntegerTool.toBigIntegerFromString(number);
+				const x = BigIntegerTool.toBigIntegerFromString(number);
 				this.element = x.element;
 				this._sign = x._sign;
 			}
 			else if(number instanceof Array) {
 				if((number.length === 2) && (typeof number[0] === "string")) {
-					const x = IntegerTool.toBigIntegerFromString(number[0], number[1]);
+					const x = BigIntegerTool.toBigIntegerFromString(number[0], number[1]);
 					this.element = x.element;
 					this._sign = x._sign;
 				}
@@ -335,12 +335,12 @@ export default class BigInteger {
 				this._sign = x._sign;
 			}
 			else if((number instanceof Object) && (number.intValue)) {
-				const x = IntegerTool.toBigIntegerFromNumber(number.intValue);
+				const x = BigIntegerTool.toBigIntegerFromNumber(number.intValue);
 				this.element = x.element;
 				this._sign = x._sign;
 			}
 			else if(number instanceof Object) {
-				const x = IntegerTool.toBigIntegerFromString(number.toString());
+				const x = BigIntegerTool.toBigIntegerFromString(number.toString());
 				this.element = x.element;
 				this._sign = x._sign;
 			}
@@ -491,7 +491,7 @@ export default class BigInteger {
 		}
 		const zeros_string = zeros_array.join("");
 		// v0.03ここまで
-		const x = IntegerTool.toPlainStringFromHexadecimalArray(this.element, calcradix);
+		const x = BigIntegerTool.toPlainStringFromHexadecimalArray(this.element, calcradix);
 		const y = [];
 		let z = "";
 		if(this.signum() < 0) {

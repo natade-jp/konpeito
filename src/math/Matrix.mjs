@@ -16,6 +16,9 @@ import LinearAlgebra from "./tools/LinearAlgebra.mjs";
 import Statistics from "./tools/Statistics.mjs";
 
 // @ts-ignore
+import Probability from "./tools/Probability.mjs";
+
+// @ts-ignore
 import Signal from "./tools/Signal.mjs";
 
 // @ts-ignore
@@ -2985,7 +2988,7 @@ export default class Matrix {
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
-	// statistics 統計計算用
+	// probability 確率計算用
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 
 	/**
@@ -2993,7 +2996,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	gammaln() {
-		return Statistics.gammaln(this);
+		return Probability.gammaln(this);
 	}
 
 	/**
@@ -3001,7 +3004,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	gamma() {
-		return Statistics.gamma(this);
+		return Probability.gamma(this);
 	}
 
 	/**
@@ -3011,7 +3014,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	gammainc(a, tail) {
-		return Statistics.gammainc(this, a, tail);
+		return Probability.gammainc(this, a, tail);
 	}
 
 	/**
@@ -3021,7 +3024,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	gampdf(k, s) {
-		return Statistics.gampdf(this, k, s);
+		return Probability.gampdf(this, k, s);
 	}
 
 	/**
@@ -3031,7 +3034,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	gamcdf(k, s) {
-		return Statistics.gampdf(this, k, s);
+		return Probability.gampdf(this, k, s);
 	}
 
 	/**
@@ -3041,7 +3044,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	gaminv(k, s) {
-		return Statistics.gaminv(this, k, s);
+		return Probability.gaminv(this, k, s);
 	}
 
 	/**
@@ -3050,7 +3053,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	beta(y) {
-		return Statistics.beta(this, y);
+		return Probability.beta(this, y);
 	}
 	
 	/**
@@ -3061,7 +3064,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	betainc(a, b, tail) {
-		return Statistics.betainc(this, a, b, tail);
+		return Probability.betainc(this, a, b, tail);
 	}
 
 	/**
@@ -3071,7 +3074,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	betacdf(a, b) {
-		return Statistics.betacdf(this, a, b);
+		return Probability.betacdf(this, a, b);
 	}
 
 	/**
@@ -3081,7 +3084,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	betapdf(a, b) {
-		return Statistics.betapdf(this, a, b);
+		return Probability.betapdf(this, a, b);
 	}
 
 	/**
@@ -3091,7 +3094,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	betainv(a, b) {
-		return Statistics.betainv(this, a, b);
+		return Probability.betainv(this, a, b);
 	}
 
 	/**
@@ -3099,7 +3102,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	factorial() {
-		return Statistics.factorial(this);
+		return Probability.factorial(this);
 	}
 	
 	/**
@@ -3108,7 +3111,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	nchoosek(k) {
-		return Statistics.nchoosek(this, k);
+		return Probability.nchoosek(this, k);
 	}
 	
 	/**
@@ -3116,7 +3119,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	erf() {
-		return Statistics.erf(this);
+		return Probability.erf(this);
 	}
 
 	/**
@@ -3124,7 +3127,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	erfc() {
-		return Statistics.erfc(this);
+		return Probability.erfc(this);
 	}
 	
 	/**
@@ -3134,7 +3137,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	normpdf(u=0.0, s=1.0) {
-		return Statistics.normpdf(this, u, s);
+		return Probability.normpdf(this, u, s);
 	}
 
 	/**
@@ -3144,7 +3147,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	normcdf(u=0.0, s=1.0) {
-		return Statistics.normcdf(this, u, s);
+		return Probability.normcdf(this, u, s);
 	}
 
 	/**
@@ -3154,7 +3157,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	norminv(u=0.0, s=1.0) {
-		return Statistics.norminv(this, u, s);
+		return Probability.norminv(this, u, s);
 	}
 
 	/**
@@ -3163,7 +3166,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	tpdf(v) {
-		return Statistics.tpdf(this, v);
+		return Probability.tpdf(this, v);
 	}
 
 	/**
@@ -3172,7 +3175,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	tcdf(v) {
-		return Statistics.tcdf(this, v);
+		return Probability.tcdf(this, v);
 	}
 
 	/**
@@ -3181,7 +3184,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	tinv(v) {
-		return Statistics.tinv(this, v);
+		return Probability.tinv(this, v);
 	}
 
 	/**
@@ -3193,7 +3196,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	tdist(v, tails) {
-		return Statistics.tdist(this, v, tails);
+		return Probability.tdist(this, v, tails);
 	}
 
 	/**
@@ -3202,7 +3205,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	tinv2(v) {
-		return Statistics.tinv2(this, v);
+		return Probability.tinv2(this, v);
 	}
 
 	/**
@@ -3211,7 +3214,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	chi2pdf(k) {
-		return Statistics.chi2pdf(this, k);
+		return Probability.chi2pdf(this, k);
 	}
 
 	/**
@@ -3220,7 +3223,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	chi2cdf(k) {
-		return Statistics.chi2cdf(this, k);
+		return Probability.chi2cdf(this, k);
 	}
 	
 	/**
@@ -3229,7 +3232,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	chi2inv(k) {
-		return Statistics.chi2inv(this, k);
+		return Probability.chi2inv(this, k);
 	}
 
 	/**
@@ -3240,7 +3243,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	fpdf(d1, d2) {
-		return Statistics.fpdf(this, d1, d2);
+		return Probability.fpdf(this, d1, d2);
 	}
 
 	/**
@@ -3250,7 +3253,7 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	fcdf(d1, d2) {
-		return Statistics.fcdf(this, d1, d2);
+		return Probability.fcdf(this, d1, d2);
 	}
 
 	/**
@@ -3260,9 +3263,13 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	finv(d1, d2) {
-		return Statistics.finv(this, d1, d2);
+		return Probability.finv(this, d1, d2);
 	}
 	
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// statistics 統計計算用
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+
 	/**
 	 * Maximum number.
 	 * @param {MatrixSettings} [type]
