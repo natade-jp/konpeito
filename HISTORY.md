@@ -3,12 +3,16 @@
 ## v1.1.0b
 ### 機能追加
 - BigInteger に sqrt, square を追加
-- BigDecimal に inv, sqrt, square, pi を追加
+- BigDecimal に inv, sqrt, rsqrt, square, pi, e を追加
+- Complex に rsqrt を追加
+### 仕様変更
+- BigDecimal の作成時に default_context の設定を行えないようにしました。代わりに新規作成時のcontextの設定がデフォルトとなります。
 ### 改善
 - BigDecimal div 引数を強化及び、詳細なコメントを追加
+- MathContext DECIMAL256 の定義を追加
 ### 不具合
 - BigDecimal div 引数の設定が正しく反映されない場合がある問題を修正
-※テストケースはまだ未記載です。
+- Signal FFTの計算キャッシュが効いていない問題を修正
 
 ## v1.0.0
 ### 機能追加

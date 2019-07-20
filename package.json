@@ -16,6 +16,7 @@
 		"biginteger",
 		"bigdecimal",
 		"bignumber",
+		"fraction",
 		"complex",
 		"matrix",
 		"algebra",

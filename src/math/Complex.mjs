@@ -830,6 +830,22 @@ export default class Complex {
 	}
 
 	/**
+	 * Reciprocal square root.
+	 * @returns {Complex} rsqrt(A)
+	 */
+	rsqrt() {
+		if(this.isReal()) {
+			if(this.isNotNegative()) {
+				return new Complex(1.0 / Math.sqrt(this._re));
+			}
+			else {
+				return new Complex([0, - 1.0 / Math.sqrt(-this._re)]);
+			}
+		}
+		return this.sqrt().inv();
+	}
+
+	/**
 	 * Logarithmic function.
 	 * @returns {Complex} log(A)
 	 */

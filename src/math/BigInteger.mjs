@@ -1077,9 +1077,12 @@ export default class BigInteger {
 
 	/**
 	 * Square root.
-	 * @returns {BigInteger} sqrt(A)
+	 * @returns {BigInteger} floor(sqrt(A))
 	 */
 	sqrt() {
+		if(this.sign() <= 0) {
+			throw "ArithmeticException";
+		}
 		const precision = this.toString(10).replace(/^-/, "").length;
 		const x0 = BigInteger.ONE.scaleByPowerOfTen(precision);
 		let xn = x0;

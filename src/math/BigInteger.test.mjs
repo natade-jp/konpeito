@@ -467,5 +467,18 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	testBool("isNotNegative", -1, false);
 }
 
+{
+	test_count = 0;
+	testOperator1("square", 2, 4);
+	testOperator1("square", 1000, 1000000);
+}
+
+{
+	test_count = 0;
+	testOperator1("sqrt", 1000, 31);
+	testOperator1("sqrt", 1000000, 1000);
+}
+
+
 
 

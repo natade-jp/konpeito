@@ -280,10 +280,10 @@ class Cache {
 	
 	/**
 	 * Create Cache.
-	 * @param {number} cache_size - Maximum number of caches.
 	 * @param {*} object - Target class you want to build a cache.
+	 * @param {number} cache_size - Maximum number of caches.
 	 */
-	constructor(cache_size, object) {
+	constructor(object, cache_size) {
 
 		/**
 		 * Class for cache.
@@ -291,19 +291,16 @@ class Cache {
 		this.object = object;
 
 		/**
+		 * Cache table.
+		 * @type {Array<*>}
+		 */
+		this.table = [];
+
+		/**
 		 * Maximum number of caches.
 		 */
 		this.table_max = cache_size;
 
-		/**
-		 * Number of caches currently.
-		 */
-		this.table_size = 0;
-
-		/**
-		 * Cache table.
-		 */
-		this.table = [];
 	}
 
 	/**
@@ -313,16 +310,16 @@ class Cache {
 	 * @returns {*}
 	 */
 	get(size) {
-		for(let index = 0; index < this.table_size; index++) {
+		for(let index = 0; index < this.table.length; index++) {
 			if(this.table[index].size === size) {
 				// 先頭にもってくる
-				const object = this.table.splice(index, 1);
+				const object = this.table.splice(index, 1)[0];
 				this.table.unshift(object);
 				return object;
 			}
 		}
 		const new_object = new this.object(size);
-		if(this.table_size === this.table_max) {
+		if(this.table.length === this.table_max) {
 			// 後ろのデータを消去
 			const delete_object = this.table.pop();
 			delete_object.delete();
@@ -339,7 +336,7 @@ class Cache {
  * @type {Cache}
  * @ignore
  */
-const fft_cache = new Cache(4, FFT);
+const fft_cache = new Cache(FFT, 4);
 
 /**
  * Discrete cosine transform (DCT) class.
@@ -438,7 +435,7 @@ class DCT {
  * Cache for discrete cosine transform.
  * @ignore
  */
-const dct_cache = new Cache(4, DCT);
+const dct_cache = new Cache(DCT, 4);
 
 /**
  * Collection of functions used inside Signal class.

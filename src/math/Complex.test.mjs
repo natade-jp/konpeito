@@ -382,3 +382,11 @@ const testOperator1Bool  = function(operator, x, y) {
 	testOperator3("clip", "2.0j", "1.5j", "2.5j", "2.0j");
 	testOperator3("clip", "3.0j", "1.5j", "2.5j", "2.5j");
 }
+
+{
+	test_count = 0;
+	testOperator1("rsqrt", "2", 1.0 / Math.sqrt(2));
+	testOperator1("rsqrt", "-2", "-0.70711i");
+	testOperator1("rsqrt", "2i", "0.5 - 0.5i");
+}
+

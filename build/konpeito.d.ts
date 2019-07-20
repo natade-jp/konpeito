@@ -67,32 +67,44 @@ declare type BigDecimalDivideType = {
  *
  * Initialization can be performed as follows.
  * - 1200, "1200", "12e2", "1.2e3"
- * - When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
- * - When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
+ * - When initializing with array. [ integer, [scale = 0], [context=default]].
+ * - When initializing with object. { integer, [scale = 0], [context=default]}.
  *
  * Description of the settings are as follows, you can also omitted.
  * - The "scale" is an integer scale factor.
- * - The "default_context" is the used when no environment settings are specified during calculation.
  * - The "context" is used to normalize the created floating point.
- * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number - Real data.
+ *
+ * If "context" is not specified, the "default_context" set for the class is used.
+ * The "context" is the used when no environment settings are specified during calculation.
+ * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,context:?_MathContext_}|_BigInteger_|Object} number - Real data.
  */
 declare class _BigDecimal_ {
     constructor(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any);
     /**
      * Create an arbitrary-precision floating-point number.
-     * - When initializing with array. [ integer, [scale = 0], [default_context=default], [context=default] ].
-     * - When initializing with object. { integer, [scale = 0], [default_context=default], [context=default] }.
      *
-     * default_context
+     * Initialization can be performed as follows.
+     * - 1200, "1200", "12e2", "1.2e3"
+     * - When initializing with array. [ integer, [scale = 0], [context=default]].
+     * - When initializing with object. { integer, [scale = 0], [context=default]}.
+     *
+     * Description of the settings are as follows, you can also omitted.
      * - The "scale" is an integer scale factor.
-     * - The "default_context" is the used when no environment settings are specified during calculation.
      * - The "context" is used to normalize the created floating point.
      *
-     * These 3 settings can be omitted.
+     * If "context" is not specified, the "default_context" set for the class is used.
+     * The "context" is the used when no environment settings are specified during calculation.
      * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number - Real data.
      * @returns {_BigDecimal_}
      */
     static create(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): _BigDecimal_;
+    /**
+     * Create a number using settings of this number.
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number - Real data.
+     * @param {_MathContext_} [mc] - Setting preferences when creating objects.
+     * @returns {_BigDecimal_}
+     */
+    createUsingThisSettings(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, mc?: _MathContext_): _BigDecimal_;
     /**
      * Convert number to _BigDecimal_ type.
      * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} x
@@ -243,18 +255,32 @@ declare class _BigDecimal_ {
     mod(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
     /**
      * Divide.
+     * - The argument can specify the scale after calculation.
+     * - In the case of precision infinity, it may generate an error by a repeating decimal.
+     * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
+     * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
      * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
-     * @param {BigDecimalDivideType} [type] - Scale, _MathContext_, _RoundingMode_ used for the calculation.
+     * @param {_MathContext_|BigDecimalDivideType} [type] - Scale, _MathContext_, _RoundingMode_ used for the calculation.
      * @returns {_BigDecimal_}
      */
-    divide(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, type?: BigDecimalDivideType): _BigDecimal_;
+    divide(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, type?: _MathContext_ | BigDecimalDivideType): _BigDecimal_;
     /**
      * Divide.
+     * - The argument can specify the scale after calculation.
+     * - In the case of precision infinity, it may generate an error by a repeating decimal.
+     * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
+     * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
      * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
-     * @param {BigDecimalDivideType} [type] - Scale, _MathContext_, _RoundingMode_ used for the calculation.
+     * @param {_MathContext_|BigDecimalDivideType} [type] - Scale, _MathContext_, _RoundingMode_ used for the calculation.
      * @returns {_BigDecimal_} A / B
      */
-    div(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, type?: BigDecimalDivideType): _BigDecimal_;
+    div(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, type?: _MathContext_ | BigDecimalDivideType): _BigDecimal_;
+    /**
+     * Inverse number of this value.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} 1 / A
+     */
+    inv(context?: _MathContext_): _BigDecimal_;
     /**
      * Power function.
      * - Supports only integers.
@@ -378,10 +404,9 @@ declare class _BigDecimal_ {
      * Change the scale.
      * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} new_scale - New scale.
      * @param {_RoundingModeEntity_} [rounding_mode=_RoundingMode_.UNNECESSARY] - Rounding method when converting precision.
-     * @param {_MathContext_} [mc] - Rounding setting after calculation. For rounding purposes, use the round method.
      * @returns {_BigDecimal_}
      */
-    setScale(new_scale: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, rounding_mode?: _RoundingModeEntity_, mc?: _MathContext_): _BigDecimal_;
+    setScale(new_scale: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, rounding_mode?: _RoundingModeEntity_): _BigDecimal_;
     /**
      * Round with specified settings.
      *
@@ -396,28 +421,42 @@ declare class _BigDecimal_ {
     round(mc?: _MathContext_): _BigDecimal_;
     /**
      * Floor.
-     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} floor(A)
      */
-    floor(mc?: _MathContext_): _BigDecimal_;
+    floor(): _BigDecimal_;
     /**
      * Ceil.
-     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} ceil(A)
      */
-    ceil(mc?: _MathContext_): _BigDecimal_;
+    ceil(): _BigDecimal_;
     /**
      * To integer rounded down to the nearest.
-     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} fix(A), trunc(A)
      */
-    fix(mc?: _MathContext_): _BigDecimal_;
+    fix(): _BigDecimal_;
     /**
      * _Fraction_.
-     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} fract(A)
      */
-    fract(mc?: _MathContext_): _BigDecimal_;
+    fract(): _BigDecimal_;
+    /**
+     * Square.
+     * param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigInteger_} A^2
+     */
+    square(): _BigInteger_;
+    /**
+     * Square root.
+     * param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} sqrt(A)
+     */
+    sqrt(): _BigDecimal_;
+    /**
+     * Reciprocal square root.
+     * param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} rsqrt(A)
+     */
+    rsqrt(): _BigDecimal_;
     /**
      * this === 0
      * @returns {boolean}
@@ -473,6 +512,16 @@ declare class _BigDecimal_ {
      * @returns {_BigDecimal_} 10
      */
     static TEN: _BigDecimal_;
+    /**
+     * PI
+     * @returns {_BigDecimal_} PI
+     */
+    static PI: _BigDecimal_;
+    /**
+     * E, Napier's constant.
+     * @returns {_BigDecimal_} E
+     */
+    static E: _BigDecimal_;
 }
 
 /**
@@ -608,12 +657,6 @@ declare class _BigInteger_ {
      */
     mod(number: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
     /**
-     * Power function.
-     * @param {_BigInteger_|number|string|Array<string|number>|Object} exponent
-     * @returns {_BigInteger_} pow(A, B)
-     */
-    pow(exponent: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
-    /**
      * Modular exponentiation.
      * @param {_BigInteger_|number|string|Array<string|number>|Object} exponent
      * @param {_BigInteger_|number|string|Array<string|number>|Object} m
@@ -637,6 +680,22 @@ declare class _BigInteger_ {
      * @returns {_BigInteger_} x * 10^n
      */
     scaleByPowerOfTen(n: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
+    /**
+     * Power function.
+     * @param {_BigInteger_|number|string|Array<string|number>|Object} exponent
+     * @returns {_BigInteger_} pow(A, B)
+     */
+    pow(exponent: _BigInteger_ | number | string | (string | number)[] | any): _BigInteger_;
+    /**
+     * Square.
+     * @returns {_BigInteger_} A^2
+     */
+    square(): _BigInteger_;
+    /**
+     * Square root.
+     * @returns {_BigInteger_} floor(sqrt(A))
+     */
+    sqrt(): _BigInteger_;
     /**
      * Set default class of random.
      * This is used if you do not specify a random number.
@@ -1164,6 +1223,11 @@ declare class _Complex_ {
      */
     sqrt(): _Complex_;
     /**
+     * Reciprocal square root.
+     * @returns {_Complex_} rsqrt(A)
+     */
+    rsqrt(): _Complex_;
+    /**
      * Logarithmic function.
      * @returns {_Complex_} log(A)
      */
@@ -1360,22 +1424,31 @@ declare class _MathContext_ {
     static UNLIMITED: _MathContext_;
     /**
      * 32-bit floating point.
-     * Equivalent of the C language float.
+     * - Significand precision: 23 bits
+     * - Equivalent of the C language float.
      * @returns {_MathContext_}
      */
     static DECIMAL32: _MathContext_;
     /**
      * 64-bit floating point.
-     * Equivalent of the C language double.
+     * - Significand precision: 52 bits
+     * - Equivalent of the C language double.
      * @returns {_MathContext_}
      */
     static DECIMAL64: _MathContext_;
     /**
      * 128-bit floating point.
-     * Equivalent of the C language long double.
+     * - Significand precision: 112 bits
+     * - Equivalent of the C language long double.
      * @returns {_MathContext_}
      */
     static DECIMAL128: _MathContext_;
+    /**
+     * 256-bit floating point.
+     * - Significand precision: 237 bits
+     * @type {_MathContext_}
+     */
+    static DECIMAL256: _MathContext_;
 }
 
 /**

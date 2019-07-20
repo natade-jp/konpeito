@@ -112,7 +112,8 @@ export default class MathContext {
 
 	/**
 	 * 32-bit floating point.
-	 * Equivalent of the C language float.
+	 * - Significand precision: 23 bits
+	 * - Equivalent of the C language float.
 	 * @returns {MathContext}
 	 */
 	static get DECIMAL32() {
@@ -122,7 +123,8 @@ export default class MathContext {
 
 	/**
 	 * 64-bit floating point.
-	 * Equivalent of the C language double.
+	 * - Significand precision: 52 bits
+	 * - Equivalent of the C language double.
 	 * @returns {MathContext}
 	 */
 	static get DECIMAL64() {
@@ -131,11 +133,21 @@ export default class MathContext {
 
 	/**
 	 * 128-bit floating point.
-	 * Equivalent of the C language long double.
+	 * - Significand precision: 112 bits
+	 * - Equivalent of the C language long double.
 	 * @returns {MathContext}
 	 */
 	static get DECIMAL128() {
 		return DEFINE.DECIMAL128;
+	}
+
+	/**
+	 * 256-bit floating point.
+	 * - Significand precision: 237 bits
+	 * @type {MathContext}
+	 */
+	static get DECIMAL256() {
+		return DEFINE.DECIMAL256;
 	}
 
 }
@@ -155,22 +167,32 @@ const DEFINE = {
 
 	/**
 	 * 32-bit floating point.
-	 * Equivalent of the C language float.
+	 * - Significand precision: 23 bits
+	 * - Equivalent of the C language float.
 	 * @type {MathContext}
 	 */
 	DECIMAL32	: new MathContext(7,	RoundingMode.HALF_EVEN),
 
 	/**
 	 * 64-bit floating point.
-	 * Equivalent of the C language double.
+	 * - Significand precision: 52 bits
+	 * - Equivalent of the C language double.
 	 * @type {MathContext}
 	 */
 	DECIMAL64	: new MathContext(16,	RoundingMode.HALF_EVEN),
 
 	/**
 	 * 128-bit floating point.
-	 * Equivalent of the C language long double.
+	 * - Significand precision: 112 bits
+	 * - Equivalent of the C language long double.
 	 * @type {MathContext}
 	 */
-	DECIMAL128	: new MathContext(34,	RoundingMode.HALF_EVEN)
+	DECIMAL128	: new MathContext(34,	RoundingMode.HALF_EVEN),
+
+	/**
+	 * 256-bit floating point.
+	 * - Significand precision: 237 bits
+	 * @type {MathContext}
+	 */
+	DECIMAL256	: new MathContext(72,	RoundingMode.HALF_EVEN)
 };

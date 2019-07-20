@@ -25,12 +25,13 @@ const testBool = function(operator, x, y) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
-const testOperator1  = function(operator, x, y) {
+const testOperator1  = function(operator, x, y, tolerance) {
 	test_count++;
+	const tolerance_ = tolerance ? tolerance : 0.0;
 	const X = $(x);
 	const Y = X[operator]();
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y;
-	const out = $(Y).compareTo(y) === 0;
+	const out = $(Y).compareTo(y, tolerance_) === 0;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -134,21 +135,28 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 }
 
 {
-	const x = $("0.5925");
+	const x = $(0.5925);
 	test("setScale 1", () => { expect(x.setScale(0, RoundingMode.HALF_UP).toString()).toBe("0"); });
 	test("setScale 2", () => { expect(x.setScale(1, RoundingMode.HALF_UP).toString()).toBe("0.6"); });
 	test("setScale 3", () => { expect(x.setScale(2, RoundingMode.HALF_UP).toString()).toBe("0.59"); });
 	test("setScale 4", () => { expect(x.setScale(3, RoundingMode.HALF_UP).toString()).toBe("0.593"); });
+	test("setScale 5", () => { expect(x.setScale(4, RoundingMode.HALF_UP).toString()).toBe("0.5925"); });
+	test("setScale 6", () => { expect(x.setScale(5, RoundingMode.HALF_UP).toString()).toBe("0.59250"); });
 }
 
 {
 	const x = $("999");
-	const mc = new BigDecimal.MathContext(2, RoundingMode.UP);
-	const y = x.round(mc);
+	const y1 = x.round(new BigDecimal.MathContext(2, RoundingMode.UP));
+	const y2 = x.round(new BigDecimal.MathContext(3, RoundingMode.UP));
+	const y3 = x.round(new BigDecimal.MathContext(4, RoundingMode.UP));
 	test("round 1", () => { expect(x.toString()).toBe("999"); });
 	test("round 2", () => { expect(x.precision()).toBe(3); });
-	test("round 3", () => { expect(y.toString()).toBe("1.0E+3"); });
-	test("round 4", () => { expect(y.precision()).toBe(2); });
+	test("round 3", () => { expect(y1.toString()).toBe("1.0E+3"); });
+	test("round 4", () => { expect(y1.precision()).toBe(2); });
+	test("round 5", () => { expect(y2.toString()).toBe("999"); });
+	test("round 6", () => { expect(y2.precision()).toBe(3); });
+	test("round 7", () => { expect(y3.toString()).toBe("999.0"); });
+	test("round 8", () => { expect(y3.precision()).toBe(4); });
 }
 
 {
@@ -352,3 +360,34 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	test_count = 0;
 	testOperator1("factorial", 20, "2432902008176640000");
 }
+
+{
+	test_count = 0;
+	testOperator1("inv", "2", "0.5", 1e-5);
+	testOperator1("inv", "10", "0.1", 1e-5);
+}
+
+{
+	test_count = 0;
+	testOperator1("sqrt", "2", "1.41421356237", 1e-5);
+	testOperator1("sqrt", "4", "2", 1e-5);
+	testOperator1("sqrt", "1000000", "1000", 1e-5);
+}
+
+{
+	test_count = 0;
+	testOperator1("rsqrt", "2", 1.0 / Math.sqrt(2), 1e-5);
+	testOperator1("rsqrt", "4", 0.5, 1e-5);
+	testOperator1("rsqrt", "1000000", 0.001, 1e-5);
+}
+
+{
+	test_count = 0;
+	testCompareTo("PI", BigDecimal.PI, "3.14159265359", 0, 1e-5);
+}
+
+{
+	test_count = 0;
+	testCompareTo("E", BigDecimal.E, "2.71828182845904523536", 0, 1e-5);
+}
+
