@@ -970,36 +970,6 @@ export default class BigDecimal {
 		return xn;
 	}
 
-	/**
-	 * Power function.
-	 * - Supports only integers.
-	 * - An exception occurs when doing a huge multiplication.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-	 * @returns {BigDecimal} pow(A, B)
-	 */
-	pow(number, context) {
-		let n = BigDecimal._toInteger(number);
-		const mc = context ? context : this.default_context;
-		if(Math.abs(n) > 999999999) {
-			throw "ArithmeticException";
-		}
-		if((mc.getPrecision() === 0) && (n < 0)) {
-			throw "ArithmeticException";
-		}
-		let x, y;
-		x = this.clone();
-		y = BigDecimal.ONE;
-		while(n !== 0) {
-			if((n & 1) !== 0) {
-				y = y.multiply(x, MathContext.UNLIMITED);
-			}
-			x = x.multiply(x, MathContext.UNLIMITED);
-			n >>>= 1;
-		}
-		return y.round(mc);
-	}
-	
 	// ----------------------
 	// その他の演算
 	// ----------------------
@@ -1505,6 +1475,49 @@ export default class BigDecimal {
 	// ----------------------
 	
 	/**
+	 * Power function.
+	 * - Supports only integers.
+	 * - An exception occurs when doing a huge multiplication.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} pow(A, B)
+	 */
+	pow(number, context) {
+		const num = BigDecimal._toBigDecimal(number);
+		const integer = num.intValue;
+		const mc = context ? context : this.default_context;
+		if(Math.abs(integer) > 1000) {
+			throw "ArithmeticException";
+		}
+		else if(this.isZero()) {
+			return context ? BigDecimal.ONE.round(context) : BigDecimal.ONE;
+		}
+		else if(this.isOne()) {
+			return context ? this.round(context) : this;
+		}
+		else if((mc.getPrecision() === 0) && (num.isNegative())) {
+			throw "ArithmeticException";
+		}
+		if(num.isInteger()) {
+			let n = integer;
+			let x, y;
+			x = this.clone();
+			y = BigDecimal.ONE;
+			while(n !== 0) {
+				if((n & 1) !== 0) {
+					y = y.multiply(x, MathContext.UNLIMITED);
+				}
+				x = x.multiply(x, MathContext.UNLIMITED);
+				n >>>= 1;
+			}
+			return y.round(mc);
+		}
+		else {
+			throw "ArithmeticException";
+		}
+	}
+	
+	/**
 	 * Square.
 	 * param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} A^2
@@ -1593,6 +1606,51 @@ export default class BigDecimal {
 		// Lyuka - 逆数と平方根を求める高次収束アルゴリズム
 		// http://www.finetune.co.jp/~lyuka/technote/fract/sqrt.html
 		return xn;
+	}
+	
+	/**
+	 * Exponential function.
+	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} exp(A)
+	 */
+	exp(context) {
+		const mc = context ? context : this.default_context;
+		const default_context = BigDecimal.getDefaultContext();
+		const new_mc = new MathContext(mc.getPrecision(), RoundingMode.HALF_UP);
+		BigDecimal.setDefaultContext(new_mc);
+		// X = exp(x) とすると X = exp(x/A)^A である。
+		// そのため、収束を早くするためにexpの中を小さくしておき、最後にpowを行う。
+		// scale > (10^a) = b ≒ this
+		// この行をコメントアウトすると、速度が上げるが精度が落ちる
+		const a = Math.floor(Math.log(this.floatValue) / Math.log(10));
+		const b = Math.pow(10, a);
+		// ここでターゲットの数値を割ってしまう
+		const target = this.div(b, mc);
+		// 小さくなった値に対してexpを計算する
+		let y;
+		{
+			// マクローリン展開で計算する
+			// 初期値
+			let x = target;
+			let n0 = BigDecimal.ONE.add(target);
+			let k = BigDecimal.ONE;
+			// 繰り返し求める
+			for(let i = 2; i < 300; i++) {
+				k = k.mul(i);
+				x = x.mul(target);
+				const n1 = n0.add(x.div(k));
+				const delta = n1.sub(n0);
+				n0 = n1;
+				if(delta.isZero()) {
+					break;
+				}
+			}
+			y = n0;
+		}
+		// exp(x) = pow(y, b)である。
+		y = y.pow(b);
+		BigDecimal.setDefaultContext(default_context);
+		return y.round(mc);
 	}
 
 	// ----------------------
@@ -1813,19 +1871,35 @@ export default class BigDecimal {
 	// ----------------------
 	
 	/**
-	 * this === 0
+	 * Return true if the value is integer.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isZero() {
-		return this.integer.isZero();
+	isInteger(tolerance) {
+		return this.sub(this.fix()).isZero(tolerance);
+	}
+
+	/**
+	 * this === 0
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+	 * @returns {boolean}
+	 */
+	isZero(tolerance) {
+		if(tolerance) {
+			return this.equals(BigDecimal.ZERO, tolerance);
+		}
+		else {
+			return this.integer.isZero();
+		}
 	}
 	
 	/**
 	 * this === 1
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
-	isOne() {
-		return this.compareTo(BigDecimal.ONE) === 0;
+	isOne(tolerance) {
+		return this.compareTo(BigDecimal.ONE, tolerance) === 0;
 	}
 	
 	/**
