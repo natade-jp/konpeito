@@ -4474,7 +4474,7 @@
 	/**
 		 * Square.
 		 * param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-		 * @returns {BigInteger} A^2
+		 * @returns {BigDecimal} A^2
 		 */
 	BigDecimal.prototype.square = function square (mc) {
 		return this.mul(this, mc);
@@ -4807,7 +4807,7 @@
 	 * Simple cache class.
 	 * @ignore
 	 */
-	var Cache = function Cache(method_name, cache_size) {
+	var BigDecimalConstCache = function BigDecimalConstCache(method_name, cache_size) {
 
 		/**
 			 * Method name in the DEFINE.
@@ -4830,7 +4830,7 @@
 		 * Use from cache if it exists in cache.
 		 * @returns {BigDecimal}
 		 */
-	Cache.prototype.get = function get () {
+	BigDecimalConstCache.prototype.get = function get () {
 		var name = BigDecimal.getDefaultContext().toString();
 
 		for(var index = 0; index < this.table.length; index++) {
@@ -4862,42 +4862,42 @@
 		/**
 			 * -1
 			 */
-		this.MINUS_ONE = new Cache("MINUS_ONE", 10);
+		this.MINUS_ONE = new BigDecimalConstCache("MINUS_ONE", 10);
 
 		/**
 			 * 0
 			 */
-		this.ZERO = new Cache("ZERO", 10);
+		this.ZERO = new BigDecimalConstCache("ZERO", 10);
 
 		/**
 			 * 0.5
 			 */
-		this.HALF = new Cache("HALF", 10);
+		this.HALF = new BigDecimalConstCache("HALF", 10);
 
 		/**
 			 * 1
 			 */
-		this.ONE = new Cache("ONE", 10);
+		this.ONE = new BigDecimalConstCache("ONE", 10);
 
 		/**
 			 * 2
 			 */
-		this.TWO = new Cache("TWO", 10);
+		this.TWO = new BigDecimalConstCache("TWO", 10);
 
 		/**
 			 * 10
 			 */
-		this.TEN = new Cache("TEN", 10);
+		this.TEN = new BigDecimalConstCache("TEN", 10);
 
 		/**
 			 * PI
 			 */
-		this.PI = new Cache("PI", 10);
+		this.PI = new BigDecimalConstCache("PI", 10);
 
 		/**
 			 * E
 			 */
-		this.E = new Cache("E", 10);
+		this.E = new BigDecimalConstCache("E", 10);
 	};
 
 	/**
@@ -9241,7 +9241,7 @@
 	 * Cache tables used in FFT.
 	 * @ignore
 	 */
-	var Cache$1 = function Cache(object, cache_size) {
+	var FFTCache = function FFTCache(object, cache_size) {
 
 		/**
 			 * Class for cache.
@@ -9267,7 +9267,7 @@
 		 * @param {number} size - Data length.
 		 * @returns {*}
 		 */
-	Cache$1.prototype.get = function get (size) {
+	FFTCache.prototype.get = function get (size) {
 		for(var index = 0; index < this.table.length; index++) {
 			if(this.table[index].size === size) {
 				// 先頭にもってくる
@@ -9289,10 +9289,10 @@
 
 	/**
 	 * Cache for FFT.
-	 * @type {Cache}
+	 * @type {FFTCache}
 	 * @ignore
 	 */
-	var fft_cache = new Cache$1(FFT, 4);
+	var fft_cache = new FFTCache(FFT, 4);
 
 	/**
 	 * Discrete cosine transform (DCT) class.
@@ -9383,7 +9383,7 @@
 	 * Cache for discrete cosine transform.
 	 * @ignore
 	 */
-	var dct_cache = new Cache$1(DCT, 4);
+	var dct_cache = new FFTCache(DCT, 4);
 
 	/**
 	 * Collection of functions used inside Signal class.

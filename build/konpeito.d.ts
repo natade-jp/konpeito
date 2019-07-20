@@ -442,9 +442,9 @@ declare class _BigDecimal_ {
     /**
      * Square.
      * param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
-     * @returns {_BigInteger_} A^2
+     * @returns {_BigDecimal_} A^2
      */
-    square(): _BigInteger_;
+    square(): _BigDecimal_;
     /**
      * Square root.
      * param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.

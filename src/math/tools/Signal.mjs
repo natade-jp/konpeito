@@ -276,7 +276,7 @@ class FFT {
  * Cache tables used in FFT.
  * @ignore
  */
-class Cache {
+class FFTCache {
 	
 	/**
 	 * Create Cache.
@@ -333,10 +333,10 @@ class Cache {
 
 /**
  * Cache for FFT.
- * @type {Cache}
+ * @type {FFTCache}
  * @ignore
  */
-const fft_cache = new Cache(FFT, 4);
+const fft_cache = new FFTCache(FFT, 4);
 
 /**
  * Discrete cosine transform (DCT) class.
@@ -435,7 +435,7 @@ class DCT {
  * Cache for discrete cosine transform.
  * @ignore
  */
-const dct_cache = new Cache(DCT, 4);
+const dct_cache = new FFTCache(DCT, 4);
 
 /**
  * Collection of functions used inside Signal class.

@@ -1557,7 +1557,7 @@ export default class BigDecimal {
 	/**
 	 * Square.
 	 * param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-	 * @returns {BigInteger} A^2
+	 * @returns {BigDecimal} A^2
 	 */
 	square(mc) {
 		return this.mul(this, mc);
@@ -1890,7 +1890,7 @@ const DEFINE = {
  * Simple cache class.
  * @ignore
  */
-class Cache {
+class BigDecimalConstCache {
 	
 	/**
 	 * Create Cache.
@@ -1958,42 +1958,42 @@ class CachedDataClass {
 		/**
 		 * -1
 		 */
-		this.MINUS_ONE = new Cache(&quot;MINUS_ONE&quot;, 10);
+		this.MINUS_ONE = new BigDecimalConstCache(&quot;MINUS_ONE&quot;, 10);
 
 		/**
 		 * 0
 		 */
-		this.ZERO = new Cache(&quot;ZERO&quot;, 10);
+		this.ZERO = new BigDecimalConstCache(&quot;ZERO&quot;, 10);
 
 		/**
 		 * 0.5
 		 */
-		this.HALF = new Cache(&quot;HALF&quot;, 10);
+		this.HALF = new BigDecimalConstCache(&quot;HALF&quot;, 10);
 
 		/**
 		 * 1
 		 */
-		this.ONE = new Cache(&quot;ONE&quot;, 10);
+		this.ONE = new BigDecimalConstCache(&quot;ONE&quot;, 10);
 
 		/**
 		 * 2
 		 */
-		this.TWO = new Cache(&quot;TWO&quot;, 10);
+		this.TWO = new BigDecimalConstCache(&quot;TWO&quot;, 10);
 
 		/**
 		 * 10
 		 */
-		this.TEN = new Cache(&quot;TEN&quot;, 10);
+		this.TEN = new BigDecimalConstCache(&quot;TEN&quot;, 10);
 
 		/**
 		 * PI
 		 */
-		this.PI = new Cache(&quot;PI&quot;, 10);
+		this.PI = new BigDecimalConstCache(&quot;PI&quot;, 10);
 
 		/**
 		 * E
 		 */
-		this.E = new Cache(&quot;E&quot;, 10);
+		this.E = new BigDecimalConstCache(&quot;E&quot;, 10);
 	}
 }
 
