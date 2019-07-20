@@ -1,6 +1,6 @@
 # History
 
-## v1.1.0b
+## v1.1.0
 ### 機能追加
 - BigInteger に sqrt, square を追加
 - BigDecimal に inv, sqrt, rsqrt, square, pi, e を追加

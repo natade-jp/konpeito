@@ -192,6 +192,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/bigdecimal.mjs~bigdecimal#createusingthissettings",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-createUsingThisSettings",
+    "src/math/BigDecimal.mjs~BigDecimal#createUsingThisSettings",
+    "method"
+  ],
+  [
     "src/math/bigdecimal.mjs~bigdecimal#default_context",
     "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-member-default_context",
     "src/math/BigDecimal.mjs~BigDecimal#default_context",
@@ -286,6 +292,12 @@ window.esdocSearchIndex = [
     "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-member-integer",
     "src/math/BigDecimal.mjs~BigDecimal#integer",
     "member"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal#inv",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-inv",
+    "src/math/BigDecimal.mjs~BigDecimal#inv",
+    "method"
   ],
   [
     "src/math/bigdecimal.mjs~bigdecimal#isnegative",
@@ -396,6 +408,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/bigdecimal.mjs~bigdecimal#rsqrt",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-rsqrt",
+    "src/math/BigDecimal.mjs~BigDecimal#rsqrt",
+    "method"
+  ],
+  [
     "src/math/bigdecimal.mjs~bigdecimal#scale",
     "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-scale",
     "src/math/BigDecimal.mjs~BigDecimal#scale",
@@ -423,6 +441,18 @@ window.esdocSearchIndex = [
     "src/math/bigdecimal.mjs~bigdecimal#signum",
     "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-signum",
     "src/math/BigDecimal.mjs~BigDecimal#signum",
+    "method"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal#sqrt",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-sqrt",
+    "src/math/BigDecimal.mjs~BigDecimal#sqrt",
+    "method"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal#square",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-square",
+    "src/math/BigDecimal.mjs~BigDecimal#square",
     "method"
   ],
   [
@@ -486,6 +516,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/bigdecimal.mjs~bigdecimal.e",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-E",
+    "src/math/BigDecimal.mjs~BigDecimal.E",
+    "member"
+  ],
+  [
     "src/math/bigdecimal.mjs~bigdecimal.half",
     "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-HALF",
     "src/math/BigDecimal.mjs~BigDecimal.HALF",
@@ -501,6 +537,12 @@ window.esdocSearchIndex = [
     "src/math/bigdecimal.mjs~bigdecimal.one",
     "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-ONE",
     "src/math/BigDecimal.mjs~BigDecimal.ONE",
+    "member"
+  ],
+  [
+    "src/math/bigdecimal.mjs~bigdecimal.pi",
+    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-PI",
+    "src/math/BigDecimal.mjs~BigDecimal.PI",
     "member"
   ],
   [
@@ -1068,6 +1110,18 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/biginteger.mjs~biginteger#sqrt",
+    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-sqrt",
+    "src/math/BigInteger.mjs~BigInteger#sqrt",
+    "method"
+  ],
+  [
+    "src/math/biginteger.mjs~biginteger#square",
+    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-square",
+    "src/math/BigInteger.mjs~BigInteger#square",
+    "method"
+  ],
+  [
     "src/math/biginteger.mjs~biginteger#sub",
     "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-sub",
     "src/math/BigInteger.mjs~BigInteger#sub",
@@ -1473,6 +1527,12 @@ window.esdocSearchIndex = [
     "src/math/complex.mjs~complex#round",
     "class/src/math/Complex.mjs~Complex.html#instance-method-round",
     "src/math/Complex.mjs~Complex#round",
+    "method"
+  ],
+  [
+    "src/math/complex.mjs~complex#rsqrt",
+    "class/src/math/Complex.mjs~Complex.html#instance-method-rsqrt",
+    "src/math/Complex.mjs~Complex#rsqrt",
     "method"
   ],
   [
@@ -3321,6 +3381,12 @@ window.esdocSearchIndex = [
     "src/math/context/mathcontext.mjs~mathcontext.decimal128",
     "class/src/math/context/MathContext.mjs~MathContext.html#static-get-DECIMAL128",
     "src/math/context/MathContext.mjs~MathContext.DECIMAL128",
+    "member"
+  ],
+  [
+    "src/math/context/mathcontext.mjs~mathcontext.decimal256",
+    "class/src/math/context/MathContext.mjs~MathContext.html#static-get-DECIMAL256",
+    "src/math/context/MathContext.mjs~MathContext.DECIMAL256",
     "member"
   ],
   [
