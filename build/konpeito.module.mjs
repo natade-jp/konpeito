@@ -4525,7 +4525,7 @@ class BigDecimal {
 	
 	/**
 	 * Square.
-	 * param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} A^2
 	 */
 	square(mc) {
@@ -4534,7 +4534,7 @@ class BigDecimal {
 
 	/**
 	 * Square root.
-	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} sqrt(A)
 	 */
 	sqrt(context) {
@@ -4574,7 +4574,7 @@ class BigDecimal {
 
 	/**
 	 * Reciprocal square root.
-	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} rsqrt(A)
 	 */
 	rsqrt(context) {
@@ -4616,7 +4616,7 @@ class BigDecimal {
 	
 	/**
 	 * Logarithmic function.
-	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} log(A)
 	 */
 	log(context) {
@@ -4700,7 +4700,7 @@ class BigDecimal {
 
 	/**
 	 * Exponential function.
-	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} exp(A)
 	 */
 	exp(context) {
@@ -4775,7 +4775,7 @@ class BigDecimal {
 
 	/**
 	 * Sine function.
-	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} sin(A)
 	 */
 	sin(context) {
@@ -4824,7 +4824,7 @@ class BigDecimal {
 
 	/**
 	 * Cosine function.
-	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} cos(A)
 	 */
 	cos(context) {
@@ -4873,7 +4873,7 @@ class BigDecimal {
 
 	/**
 	 * Tangent function.
-	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} tan(A)
 	 */
 	tan(context) {
@@ -4884,7 +4884,7 @@ class BigDecimal {
 	/**
 	 * Atan (arc tangent) function.
 	 * - Return the values of [-PI/2, PI/2].
-	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} atan(A)
 	 */
 	atan(context) {
@@ -4968,8 +4968,8 @@ class BigDecimal {
 	 * Atan (arc tangent) function.
 	 * Return the values of [-PI, PI] .
 	 * Supports only real numbers.
-	* @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
-	* @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} atan2(Y, X)
 	 */
 	atan2(number, context) {

@@ -4498,7 +4498,7 @@
 		
 	/**
 		 * Square.
-		 * param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+		 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 		 * @returns {BigDecimal} A^2
 		 */
 	BigDecimal.prototype.square = function square (mc) {
@@ -4507,7 +4507,7 @@
 
 	/**
 		 * Square root.
-		 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+		 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 		 * @returns {BigDecimal} sqrt(A)
 		 */
 	BigDecimal.prototype.sqrt = function sqrt (context) {
@@ -4547,7 +4547,7 @@
 
 	/**
 		 * Reciprocal square root.
-		 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+		 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 		 * @returns {BigDecimal} rsqrt(A)
 		 */
 	BigDecimal.prototype.rsqrt = function rsqrt (context) {
@@ -4589,7 +4589,7 @@
 		
 	/**
 		 * Logarithmic function.
-		 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+		 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 		 * @returns {BigDecimal} log(A)
 		 */
 	BigDecimal.prototype.log = function log (context) {
@@ -4673,7 +4673,7 @@
 
 	/**
 		 * Exponential function.
-		 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+		 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 		 * @returns {BigDecimal} exp(A)
 		 */
 	BigDecimal.prototype.exp = function exp (context) {
@@ -4748,7 +4748,7 @@
 
 	/**
 		 * Sine function.
-		 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+		 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 		 * @returns {BigDecimal} sin(A)
 		 */
 	BigDecimal.prototype.sin = function sin (context) {
@@ -4797,7 +4797,7 @@
 
 	/**
 		 * Cosine function.
-		 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+		 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 		 * @returns {BigDecimal} cos(A)
 		 */
 	BigDecimal.prototype.cos = function cos (context) {
@@ -4846,7 +4846,7 @@
 
 	/**
 		 * Tangent function.
-		 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+		 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 		 * @returns {BigDecimal} tan(A)
 		 */
 	BigDecimal.prototype.tan = function tan (context) {
@@ -4857,7 +4857,7 @@
 	/**
 		 * Atan (arc tangent) function.
 		 * - Return the values of [-PI/2, PI/2].
-		 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+		 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 		 * @returns {BigDecimal} atan(A)
 		 */
 	BigDecimal.prototype.atan = function atan (context) {
@@ -4941,8 +4941,8 @@
 		 * Atan (arc tangent) function.
 		 * Return the values of [-PI, PI] .
 		 * Supports only real numbers.
-	* @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
-	* @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+		 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+		 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 		 * @returns {BigDecimal} atan2(Y, X)
 		 */
 	BigDecimal.prototype.atan2 = function atan2 (number, context) {
