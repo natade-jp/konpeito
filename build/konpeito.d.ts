@@ -282,15 +282,6 @@ declare class _BigDecimal_ {
      */
     inv(context?: _MathContext_): _BigDecimal_;
     /**
-     * Power function.
-     * - Supports only integers.
-     * - An exception occurs when doing a huge multiplication.
-     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
-     * @returns {_BigDecimal_} pow(A, B)
-     */
-    pow(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
-    /**
      * Factorial function, x!.
      * - Supports only integers.
      * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
@@ -440,6 +431,14 @@ declare class _BigDecimal_ {
      */
     fract(): _BigDecimal_;
     /**
+     * Power function.
+     * - An exception occurs when doing a huge multiplication.
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} pow(A, B)
+     */
+    pow(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
+    /**
      * Square.
      * param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} A^2
@@ -457,6 +456,18 @@ declare class _BigDecimal_ {
      * @returns {_BigDecimal_} rsqrt(A)
      */
     rsqrt(): _BigDecimal_;
+    /**
+     * Logarithmic function.
+     * param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} log(A)
+     */
+    log(): _BigDecimal_;
+    /**
+     * Exponential function.
+     * param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} exp(A)
+     */
+    exp(): _BigDecimal_;
     /**
      * Sine function.
      * param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
@@ -492,15 +503,23 @@ declare class _BigDecimal_ {
      */
     atan2(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any, context?: _MathContext_): _BigDecimal_;
     /**
-     * this === 0
+     * Return true if the value is integer.
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} [tolerance=0] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isZero(): boolean;
+    isInteger(tolerance?: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): boolean;
+    /**
+     * this === 0
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} [tolerance=0] - Calculation tolerance of calculation.
+     * @returns {boolean}
+     */
+    isZero(tolerance?: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): boolean;
     /**
      * this === 1
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,default_context:?_MathContext_,context:?_MathContext_}|_BigInteger_|Object} [tolerance=0] - Calculation tolerance of calculation.
      * @returns {boolean}
      */
-    isOne(): boolean;
+    isOne(tolerance?: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any): boolean;
     /**
      * this > 0
      * @returns {boolean}

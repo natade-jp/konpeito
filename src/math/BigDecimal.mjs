@@ -1067,10 +1067,6 @@ export default class BigDecimal {
 	 * @returns {number}
 	 */
 	get doubleValue() {
-		const p = this.precision();
-		if(MathContext.DECIMAL64.getPrecision() < p) {
-			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
-		}
 		return parseFloat(this.toEngineeringString());
 	}
 
@@ -1476,7 +1472,6 @@ export default class BigDecimal {
 	
 	/**
 	 * Power function.
-	 * - Supports only integers.
 	 * - An exception occurs when doing a huge multiplication.
 	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
@@ -1513,7 +1508,7 @@ export default class BigDecimal {
 			return y.round(mc);
 		}
 		else {
-			throw "ArithmeticException";
+			return this.log(mc).mul(number, mc).exp(mc);
 		}
 	}
 	
@@ -1609,23 +1604,88 @@ export default class BigDecimal {
 	}
 	
 	/**
+	 * Logarithmic function.
+	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} log(A)
+	 */
+	log(context) {
+		if(this.isZero() || this.isNegative()) {
+			throw "ArithmeticException";
+		}
+		const mc = context ? context : this.default_context;
+		const default_context = BigDecimal.getDefaultContext();
+		// log(x) -> x = E * a -> log(E * a) = log(E) + log(a) を繰り返していき、logの中の値を小さくしていく
+		// 小さな値で計算するため精度をあげる
+		const scale = - this.scale() + (this.precision() - 1) + 1;
+		const new_mc = new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP);
+		BigDecimal.setDefaultContext(new_mc);
+		let a = this.round(new_mc);
+		let b = 0;
+		for(; b < 300; b++) {
+			if(a.compareTo(BigDecimal.E) <= 0) {
+				break;
+			}
+			a = a.divide(BigDecimal.E, mc);
+		}
+		BigDecimal.setDefaultContext(mc);
+		a = a.round(mc);
+		// この時点で a < 2.71828 となる
+		// log((1+u)/(1-u)) = 2 * (u + u^3/3 + u^5/5 + ...) の式を使用する
+		// solve((1+u)/(1-u)-x=0,[u]);->u=(x-1)/(x+1)
+		const u = a.sub(BigDecimal.ONE).div(a.add(BigDecimal.ONE));
+		const u_x2 = u.mul(u);
+		{
+			// 初期値
+			let x = u;
+			let n0 = u;
+			let k = BigDecimal.ONE;
+			// 繰り返し求める
+			for(let i = 0; i < 300; i++) {
+				k = k.add(BigDecimal.TWO);
+				x = x.mul(u_x2);
+				const n1 = n0.add(x.div(k));
+				const delta = n1.sub(n0);
+				n0 = n1;
+				if(delta.isZero()) {
+					break;
+				}
+			}
+			a = n0.mul(BigDecimal.TWO);
+		}
+		// 最終結果
+		const y = a.add(b);
+		BigDecimal.setDefaultContext(default_context);
+		return y;
+	}
+
+	/**
 	 * Exponential function.
 	 * param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} exp(A)
 	 */
 	exp(context) {
+		const is_negative = this.isNegative();
 		const mc = context ? context : this.default_context;
 		const default_context = BigDecimal.getDefaultContext();
-		const new_mc = new MathContext(mc.getPrecision(), RoundingMode.HALF_UP);
-		BigDecimal.setDefaultContext(new_mc);
+		/**
+		 * @type {BigDecimal}
+		 */
+		let number = this;
+		// 負の値でマクローリン展開すると振動して桁落ちする可能性があるため正の値にしておく
+		if(is_negative) {
+			number = number.negate();
+		}
 		// X = exp(x) とすると X = exp(x/A)^A である。
 		// そのため、収束を早くするためにexpの中を小さくしておき、最後にpowを行う。
 		// scale > (10^a) = b ≒ this
-		// この行をコメントアウトすると、速度が上げるが精度が落ちる
-		const a = Math.floor(Math.log(this.floatValue) / Math.log(10));
+		// 小さな値で計算するため精度をあげる
+		const scale = - number.scale() + (number.precision() - 1) + 1;
+		const new_mc = new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP);
+		BigDecimal.setDefaultContext(new_mc);
+		const a = Math.floor(Math.log(number.doubleValue) / Math.log(10));
 		const b = Math.pow(10, a);
 		// ここでターゲットの数値を割ってしまう
-		const target = this.div(b, mc);
+		const target = number.div(b, mc);
 		// 小さくなった値に対してexpを計算する
 		let y;
 		{
@@ -1650,7 +1710,13 @@ export default class BigDecimal {
 		// exp(x) = pow(y, b)である。
 		y = y.pow(b);
 		BigDecimal.setDefaultContext(default_context);
-		return y.round(mc);
+		// 負の値だったら 1/(x^2) にして戻す
+		if(is_negative) {
+			return y.round(mc).inv();
+		}
+		else {
+			return y.round(mc);
+		}
 	}
 
 	// ----------------------
@@ -1665,32 +1731,40 @@ export default class BigDecimal {
 	sin(context) {
 		const mc = context ? context : this.default_context;
 		const default_context = BigDecimal.getDefaultContext();
+		// 2PIの余りを実際の計算で使用する。
+		const scale = - this.scale() + (this.precision() - 1) + 1;
+		const new_mc = new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP);
+		BigDecimal.setDefaultContext(new_mc);
+		let target = this.mod(BigDecimal.TWO_PI, mc);
 		BigDecimal.setDefaultContext(mc);
-		const target = this.mod(BigDecimal.TWO_PI, mc);
+		target = target.round(mc);
 		// マクローリン展開で計算する
 		// 初期値
-		let x = target;
 		let n0 = target;
-		let k = BigDecimal.ONE;
-		let sign = -1;
-		// 繰り返し求める
-		for(let i = 2; i < 300; i++) {
-			k = k.mul(i);
-			x = x.mul(target);
-			if((i % 2) === 1) {
-				let n1;
-				if(sign < 0) {
-					n1 = n0.sub(x.div(k));
-					sign = 1;
-				}
-				else {
-					n1 = n0.add(x.div(k));
-					sign = -1;
-				}
-				const delta = n1.sub(n0);
-				n0 = n1;
-				if(delta.isZero()) {
-					break;
+		{
+			const t_x2 = target.mul(target);
+			let x = target;
+			let k = BigDecimal.ONE;
+			let sign = -1;
+			// 繰り返し求める
+			for(let i = 2; i < 300; i++) {
+				k = k.mul(i);
+				if((i % 2) === 1) {
+					x = x.mul(t_x2);
+					let n1;
+					if(sign < 0) {
+						n1 = n0.sub(x.div(k));
+						sign = 1;
+					}
+					else {
+						n1 = n0.add(x.div(k));
+						sign = -1;
+					}
+					const delta = n1.sub(n0);
+					n0 = n1;
+					if(delta.isZero()) {
+						break;
+					}
 				}
 			}
 		}
@@ -1706,32 +1780,40 @@ export default class BigDecimal {
 	cos(context) {
 		const mc = context ? context : this.default_context;
 		const default_context = BigDecimal.getDefaultContext();
+		// 2PIの余りを実際の計算で使用する。
+		const scale = - this.scale() + (this.precision() - 1) + 1;
+		const new_mc = new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP);
+		BigDecimal.setDefaultContext(new_mc);
+		let target = this.mod(BigDecimal.TWO_PI, mc);
 		BigDecimal.setDefaultContext(mc);
-		const target = this.mod(BigDecimal.TWO_PI, mc);
+		target = target.round(mc);
 		// マクローリン展開で計算する
 		// 初期値
-		let x = target;
 		let n0 = BigDecimal.ONE;
-		let k = BigDecimal.ONE;
-		let sign = -1;
-		// 繰り返し求める
-		for(let i = 2; i < 300; i++) {
-			k = k.mul(i);
-			x = x.mul(target);
-			if((i % 2) === 0) {
-				let n1;
-				if(sign < 0) {
-					n1 = n0.sub(x.div(k));
-					sign = 1;
-				}
-				else {
-					n1 = n0.add(x.div(k));
-					sign = -1;
-				}
-				const delta = n1.sub(n0);
-				n0 = n1;
-				if(delta.isZero()) {
-					break;
+		{
+			let x = BigDecimal.ONE;
+			const t_x2 = target.mul(target);
+			let k = BigDecimal.ONE;
+			let sign = -1;
+			// 繰り返し求める
+			for(let i = 2; i < 300; i++) {
+				k = k.mul(i);
+				if((i % 2) === 0) {
+					x = x.mul(t_x2);
+					let n1;
+					if(sign < 0) {
+						n1 = n0.sub(x.div(k));
+						sign = 1;
+					}
+					else {
+						n1 = n0.add(x.div(k));
+						sign = -1;
+					}
+					const delta = n1.sub(n0);
+					n0 = n1;
+					if(delta.isZero()) {
+						break;
+					}
 				}
 			}
 		}
@@ -1774,6 +1856,7 @@ export default class BigDecimal {
 			BigDecimal.setDefaultContext(default_context);
 			return y;
 		}
+		// x を 0 <= x <= 0.5 に収める
 		const target_sign = this.sign();
 		let target = this.abs(mc);
 		let type;
@@ -1792,14 +1875,15 @@ export default class BigDecimal {
 		}
 		// グレゴリー級数
 		// 初期値
-		let x = target;
 		let n0 = target;
-		let k = BigDecimal.ONE;
-		let sign = -1;
-		// 繰り返し求める
-		for(let i = 2; i < 300; i++) {
-			x = x.mul(target);
-			if((i % 2) === 1) {
+		{
+			const t_x2 = target.mul(target);
+			let x = target;
+			let k = BigDecimal.ONE;
+			let sign = -1;
+			// 繰り返し求める
+			for(let i = 0; i < 300; i++) {
+				x = x.mul(t_x2);
 				k = k.add(BigDecimal.TWO);
 				let n1;
 				if(sign < 0) {
@@ -1843,6 +1927,7 @@ export default class BigDecimal {
 		// y.atan2(x) とする。
 		const y = this.round(context);
 		const x = new BigDecimal([number, context]);
+		// 参考: https://en.wikipedia.org/wiki/Inverse_trigonometric_functions
 		let ret;
 		if(x.isPositive()) {
 			ret = y.div(x).atan();

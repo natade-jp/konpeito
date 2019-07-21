@@ -2,7 +2,7 @@
 
 ## v1.2.0b
 ### 機能追加
-- BigDecimal に三角関数, isInteger を追加
+- BigDecimal に三角関数, 指数関数, isInteger を追加
 - Complex に QUARTER_PI, HALF_PI, TWO_PI を追加
 ### 改善
 - BigDecimal isZero, isOne に許容誤差を設定できるようにした
