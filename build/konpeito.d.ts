@@ -63,23 +63,10 @@ declare type BigDecimalDivideType = {
 };
 
 /**
- * Create an arbitrary-precision floating-point number.
- *
- * Initialization can be performed as follows.
- * - 1200, "1200", "12e2", "1.2e3"
- * - When initializing with array. [ integer, [scale = 0], [context=default]].
- * - When initializing with object. { integer, [scale = 0], [context=default]}.
- *
- * Description of the settings are as follows, you can also omitted.
- * - The "scale" is an integer scale factor.
- * - The "context" is used to normalize the created floating point.
- *
- * If "context" is not specified, the "default_context" set for the class is used.
- * The "context" is the used when no environment settings are specified during calculation.
- * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,context:?_MathContext_}|_BigInteger_|Object} number - Real data.
+ * Arbitrary-precision floating-point number class (immutable).
+ * - Sorry. Infinity and NaN do not correspond yet.
  */
 declare class _BigDecimal_ {
-    constructor(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any);
     /**
      * Create an arbitrary-precision floating-point number.
      *
@@ -590,6 +577,58 @@ declare class _BigDecimal_ {
      * @returns {_BigDecimal_} E
      */
     static E: _BigDecimal_;
+    /**
+     * log_e(2)
+     * @returns {_BigDecimal_} ln(2)
+     */
+    static LN2: _BigDecimal_;
+    /**
+     * log_e(10)
+     * @returns {_BigDecimal_} ln(10)
+     */
+    static LN10: _BigDecimal_;
+    /**
+     * log_2(e)
+     * @returns {_BigDecimal_} log_2(e)
+     */
+    static LOG2E: _BigDecimal_;
+    /**
+     * log_10(e)
+     * @returns {_BigDecimal_} log_10(e)
+     */
+    static LOG10E: _BigDecimal_;
+    /**
+     * sqrt(2)
+     * @returns {_BigDecimal_} sqrt(2)
+     */
+    static SQRT2: _BigDecimal_;
+    /**
+     * sqrt(0.5)
+     * @returns {_BigDecimal_} sqrt(0.5)
+     */
+    static SQRT1_2: _BigDecimal_;
+}
+
+declare namespace _BigDecimal_ {
+    /**
+     * Create an arbitrary-precision floating-point number.
+     *
+     * Initialization can be performed as follows.
+     * - 1200, "1200", "12e2", "1.2e3"
+     * - When initializing with array. [ integer, [scale = 0], [context=default]].
+     * - When initializing with object. { integer, [scale = 0], [context=default]}.
+     *
+     * Description of the settings are as follows, you can also omitted.
+     * - The "scale" is an integer scale factor.
+     * - The "context" is used to normalize the created floating point.
+     *
+     * If "context" is not specified, the "default_context" set for the class is used.
+     * The "context" is the used when no environment settings are specified during calculation.
+     * @param {_BigDecimal_|number|string|Array<_BigInteger_|number|_MathContext_>|{integer:_BigInteger_,scale:?number,context:?_MathContext_}|_BigInteger_|Object} number - Real data.
+     */
+    class _BigDecimal_ {
+        constructor(number: _BigDecimal_ | number | string | (_BigInteger_ | number | _MathContext_)[] | any | _BigInteger_ | any);
+    }
 }
 
 /**

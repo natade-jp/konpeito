@@ -469,3 +469,38 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator2("atan2",   0,-1, 3.141592653589793, EPS);
 	testOperator2("atan2",  -1, 0,-1.5707963267948966, EPS);
 }
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("log", 0.001,	-6.907755279, EPS);
+	testOperator1("log", 0.5,	-0.693147181, EPS);
+	testOperator1("log", 1,		 0.0, EPS);
+	testOperator1("log", 10,	 2.302585093, EPS);
+	testOperator1("log", 10000,	 9.210340372, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("exp", -100,	3.720076e-44, EPS);
+	testOperator1("exp", -10,	0.00004539992, EPS);
+	testOperator1("exp", 0,		1, EPS);
+	testOperator1("exp", 0.001,	1.00100050017, EPS);
+	testOperator1("exp", 0.5,	1.6487212707, EPS);
+	testOperator1("exp", 1,		2.71828182846, EPS);
+	testOperator1("exp", 50,	5.1847055e+21, 0.0001e+21);
+	testOperator1("exp", 100,	2.6881171e+43, 0.0001e+43);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator2("pow",   10, -1.5,	0.03162277660168379, EPS);
+	testOperator2("pow",   10, -1,		0.1, EPS);
+	testOperator2("pow",   10, 0,		1, EPS);
+	testOperator2("pow",   10, 1,		10, EPS);
+	testOperator2("pow",   10, 1.5,		31.622776601683793, EPS);
+}
+
+

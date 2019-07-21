@@ -3114,6 +3114,7 @@
 
 	/**
 	 * Arbitrary-precision floating-point number class (immutable).
+	 * - Sorry. Infinity and NaN do not correspond yet.
 	 */
 	var BigDecimal = function BigDecimal(number) {
 
@@ -3263,7 +3264,7 @@
 	};
 
 	var prototypeAccessors$1 = { intValue: { configurable: true },intValueExact: { configurable: true },floatValue: { configurable: true },doubleValue: { configurable: true } };
-	var staticAccessors$3 = { MINUS_ONE: { configurable: true },ZERO: { configurable: true },HALF: { configurable: true },ONE: { configurable: true },TWO: { configurable: true },TEN: { configurable: true },PI: { configurable: true },QUARTER_PI: { configurable: true },HALF_PI: { configurable: true },TWO_PI: { configurable: true },E: { configurable: true } };
+	var staticAccessors$3 = { MINUS_ONE: { configurable: true },ZERO: { configurable: true },HALF: { configurable: true },ONE: { configurable: true },TWO: { configurable: true },TEN: { configurable: true },PI: { configurable: true },QUARTER_PI: { configurable: true },HALF_PI: { configurable: true },TWO_PI: { configurable: true },E: { configurable: true },LN2: { configurable: true },LN10: { configurable: true },LOG2E: { configurable: true },LOG10E: { configurable: true },SQRT2: { configurable: true },SQRT1_2: { configurable: true } };
 
 	/**
 		 * Create an arbitrary-precision floating-point number.
@@ -3914,17 +3915,23 @@
 		// return b1.div(this, mc);
 		var mc = context ? context : this.default_context;
 		var default_context = BigDecimal.getDefaultContext();
-		var A = this.round(mc);
+		// 計算は絶対値を用いて行う
+		var is_negative = this.isNegative();
+		/**
+			 * @type {BigDecimal}
+			 */
+		var A = !is_negative ? this: this.negate();
 		BigDecimal.setDefaultContext(mc);
 		// 3次のニュートン・ラフソン法で求める
 		var B1 = BigDecimal.create(1);
 		// 初期値は、指数部の情報を使用する
-		var scale = - this.scale() + (this.precision() - 1);
+		var scale = - A.scale() + (A.precision() - 1);
 		var x0 = new BigDecimal([1, scale + 1]);
 		if(x0.isZero()) {
 			BigDecimal.setDefaultContext(default_context);
 			return null;
 		}
+		A = A.round(mc);
 		var xn = x0;
 		for(var i = 0; i < 20; i++) {
 			var h = B1.sub(A.mul(xn));
@@ -3937,7 +3944,7 @@
 		// 参考
 		// Lyuka - 逆数と平方根を求める高次収束アルゴリズム
 		// http://www.finetune.co.jp/~lyuka/technote/fract/sqrt.html
-		return xn;
+		return !is_negative ? xn : xn.negate();
 	};
 
 	// ----------------------
@@ -4464,7 +4471,8 @@
 			throw "ArithmeticException";
 		}
 		if(num.isInteger()) {
-			var n = integer;
+			var is_negative = num.isNegative();
+			var n = Math.round(Math.abs(integer));
 			var x, y;
 			x = this.clone();
 			y = BigDecimal.ONE;
@@ -4472,10 +4480,16 @@
 				if((n & 1) !== 0) {
 					y = y.multiply(x, MathContext.UNLIMITED);
 				}
-				x = x.multiply(x, MathContext.UNLIMITED);
+				x = x.multiply(x.clone(), MathContext.UNLIMITED);
 				n >>>= 1;
 			}
-			return y.round(mc);
+			if(!is_negative) {
+				y = y.round(mc);
+			}
+			else {
+				y = y.inv(mc);
+			}
+			return y;
 		}
 		else {
 			return this.log(mc).mul(number, mc).exp(mc);
@@ -4583,23 +4597,52 @@
 			throw "ArithmeticException";
 		}
 		var mc = context ? context : this.default_context;
+		if(this.isOne()) {
+			return new BigDecimal([0, mc]);
+		}
 		var default_context = BigDecimal.getDefaultContext();
-		// log(x) -> x = E * a -> log(E * a) = log(E) + log(a) を繰り返していき、logの中の値を小さくしていく
-		// 小さな値で計算するため精度をあげる
+		// log(x)
+		// -> x = a * E -> log(a * E) = log(a) + log(E)
+		// -> x = a / E -> log(a / E) = log(E) - log(a)
+		// 上記の式を使用して、適切な値の範囲で計算できるように調整する
 		var scale = - this.scale() + (this.precision() - 1) + 1;
 		var new_mc = new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP);
 		BigDecimal.setDefaultContext(new_mc);
 		var a = this.round(new_mc);
 		var b = 0;
-		for(; b < 300; b++) {
-			if(a.compareTo(BigDecimal.E) <= 0) {
-				break;
+		{
+			// 範囲を 1 < x <= e の間に収める
+			var e = BigDecimal.E;
+			var compare_to_e = a.compareTo(e);
+			if(compare_to_e === 0) {
+				BigDecimal.setDefaultContext(mc);
+				return new BigDecimal([1, mc]);
 			}
-			a = a.divide(BigDecimal.E, mc);
+			// 内部の値が大きすぎるので小さくする
+			else if(compare_to_e > 0) {
+				for(; b < 300; b++) {
+					if(a.compareTo(e) <= 0) {
+						break;
+					}
+					a = a.divide(e, mc);
+				}
+			}
+			// 内部の値が小さすぎるので大きくする
+			else {
+				var B1 = new BigDecimal(1);
+				if(a.compareTo(B1) < 0) {
+					for(; b > -300; b--) {
+						if(a.compareTo(B1) > 0) {
+							break;
+						}
+						a = a.mul(e, mc);
+					}
+				}
+			}
 		}
 		BigDecimal.setDefaultContext(mc);
 		a = a.round(mc);
-		// この時点で a < 2.71828 となる
+		// この時点で 1 < x <= e となる
 		// log((1+u)/(1-u)) = 2 * (u + u^3/3 + u^5/5 + ...) の式を使用する
 		// solve((1+u)/(1-u)-x=0,[u]);->u=(x-1)/(x+1)
 		var u = a.sub(BigDecimal.ONE).div(a.add(BigDecimal.ONE));
@@ -4634,6 +4677,9 @@
 		 * @returns {BigDecimal} exp(A)
 		 */
 	BigDecimal.prototype.exp = function exp (context) {
+		if(this.isZero()) {
+			return new BigDecimal([1, context]);
+		}
 		var is_negative = this.isNegative();
 		var mc = context ? context : this.default_context;
 		var default_context = BigDecimal.getDefaultContext();
@@ -4652,8 +4698,15 @@
 		var scale = - number.scale() + (number.precision() - 1) + 1;
 		var new_mc = new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP);
 		BigDecimal.setDefaultContext(new_mc);
-		var a = Math.floor(Math.log(number.doubleValue) / Math.log(10));
-		var b = Math.pow(10, a);
+		var a = 0;
+		var b = 1;
+		{
+			var val = number.doubleValue;
+			if(val >= 10) {
+				a = Math.floor(Math.log(Math.floor(val)) / Math.log(10));
+				b = Math.pow(10, a);
+			}
+		}
 		// ここでターゲットの数値を割ってしまう
 		var target = number.div(b, mc);
 		// 小さくなった値に対してexpを計算する
@@ -5073,6 +5126,54 @@
 		return CACHED_DATA.E.get();
 	};
 
+	/**
+		 * log_e(2)
+		 * @returns {BigDecimal} ln(2)
+		 */
+	staticAccessors$3.LN2.get = function () {
+		return CACHED_DATA.LN2.get();
+	};
+
+	/**
+		 * log_e(10)
+		 * @returns {BigDecimal} ln(10)
+		 */
+	staticAccessors$3.LN10.get = function () {
+		return CACHED_DATA.LN10.get();
+	};
+
+	/**
+		 * log_2(e)
+		 * @returns {BigDecimal} log_2(e)
+		 */
+	staticAccessors$3.LOG2E.get = function () {
+		return CACHED_DATA.LOG2E.get();
+	};
+		
+	/**
+		 * log_10(e)
+		 * @returns {BigDecimal} log_10(e)
+		 */
+	staticAccessors$3.LOG10E.get = function () {
+		return CACHED_DATA.LOG10E.get();
+	};
+		
+	/**
+		 * sqrt(2)
+		 * @returns {BigDecimal} sqrt(2)
+		 */
+	staticAccessors$3.SQRT2.get = function () {
+		return CACHED_DATA.SQRT2.get();
+	};
+		
+	/**
+		 * sqrt(0.5)
+		 * @returns {BigDecimal} sqrt(0.5)
+		 */
+	staticAccessors$3.SQRT1_2.get = function () {
+		return CACHED_DATA.SQRT1_2.get();
+	};
+
 	Object.defineProperties( BigDecimal.prototype, prototypeAccessors$1 );
 	Object.defineProperties( BigDecimal, staticAccessors$3 );
 
@@ -5212,8 +5313,56 @@
 				}
 			}
 			return n0;
-		}
+		},
 
+		/**
+		 * log_e(2)
+		 * @returns {BigDecimal} ln(2)
+		 */
+		LN2 : function() {
+			return (new BigDecimal(2)).log();
+		},
+
+		/**
+		 * log_e(10)
+		 * @returns {BigDecimal} ln(10)
+		 */
+		LN10 : function() {
+			return (new BigDecimal(10)).log();
+		},
+
+		/**
+		 * log_2(e)
+		 * @returns {BigDecimal} log_2(e)
+		 */
+		LOG2E : function() {
+			return (new BigDecimal(2)).log().inv();
+		},
+		
+		/**
+		 * log_10(e)
+		 * @returns {BigDecimal} log_10(e)
+		 */
+		LOG10E : function() {
+			return (new BigDecimal(10)).log().inv();
+		},
+		
+		/**
+		 * sqrt(2)
+		 * @returns {BigDecimal} sqrt(2)
+		 */
+		SQRT2 : function() {
+			return (new BigDecimal(2)).sqrt();
+		},
+		
+		/**
+		 * sqrt(0.5)
+		 * @returns {BigDecimal} sqrt(0.5)
+		 */
+		SQRT1_2 : function() {
+			return (new BigDecimal(0.5)).sqrt();
+		}
+		
 	};
 
 	/**
@@ -5326,6 +5475,36 @@
 			 * E
 			 */
 		this.E = new BigDecimalCache("E", 10);
+
+		/**
+			 * LN2
+			 */
+		this.LN2 = new BigDecimalCache("LN2", 10);
+
+		/**
+			 * LN10
+			 */
+		this.LN10 = new BigDecimalCache("LN10", 10);
+
+		/**
+			 * LOG2E
+			 */
+		this.LOG2E = new BigDecimalCache("LOG2E", 10);
+			
+		/**
+			 * LOG10E
+			 */
+		this.LOG10E = new BigDecimalCache("LOG10E", 10);
+			
+		/**
+			 * SQRT2
+			 */
+		this.SQRT2 = new BigDecimalCache("SQRT2", 10);
+			
+		/**
+			 * SQRT1_2
+			 */
+		this.SQRT1_2 = new BigDecimalCache("SQRT1_2", 10);
 	};
 
 	/**

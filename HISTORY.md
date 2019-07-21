@@ -1,13 +1,15 @@
 # History
 
-## v1.2.0b
+## v1.2.0
 ### 機能追加
 - BigDecimal に三角関数, 指数関数, isInteger を追加
 - Complex に QUARTER_PI, HALF_PI, TWO_PI を追加
 ### 改善
 - BigDecimal isZero, isOne に許容誤差を設定できるようにした
+- 統計用のクラスを確率と統計に切り分けしました。
 ### 不具合
 - BigDecimal mod の計算時に undefined を返す場合があったのを修正
+- BigDecimal inv の計算時に負の値を入れると計算が終わらない問題を修正
 
 ## v1.1.0
 ### 機能追加
