@@ -1,5 +1,3 @@
-/* global test, expect */
-
 import Signal from "./Signal.mjs";
 import Matrix from "../Matrix.mjs";
 const $ = Matrix.create;

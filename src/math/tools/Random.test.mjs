@@ -1,5 +1,3 @@
-/* global test, expect */
-
 import Random from "./Random.mjs";
 
 test("nextInt", () => {

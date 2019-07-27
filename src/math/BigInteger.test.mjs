@@ -1,5 +1,3 @@
-/* global test, expect */
-
 import Random from "./tools/Random.mjs";
 import BigInteger from "./BigInteger.mjs";
 const $ = BigInteger.create;

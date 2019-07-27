@@ -1,5 +1,3 @@
-/* global test, expect */
-
 import Fraction from "./Fraction.mjs";
 const $ = Fraction.create;
 

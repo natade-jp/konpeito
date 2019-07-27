@@ -1,5 +1,3 @@
-/* global test, expect */
-
 import Statistics from "./Statistics.mjs";
 import Matrix from "../Matrix.mjs";
 const $ = Matrix.create;

@@ -2,7 +2,8 @@
 	"env": {
 		"browser": true,
 		"es6": true,
-		"node": true
+		"node": true,
+		"jest" : true
 	},
 	"extends": "eslint:recommended",
 	"parserOptions": {
@@ -29,7 +30,7 @@
 			"error",
 			"always"
 		],
-		"no-constant-condition": 1,
+		"no-constant-condition": 2,
 		"no-unused-vars": 1,
 		"no-console": 1,
 		"no-var": 2,

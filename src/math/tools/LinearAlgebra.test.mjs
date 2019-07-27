@@ -1,5 +1,3 @@
-/* global test, expect */
-
 import LinearAlgebra from "./LinearAlgebra.mjs";
 import Matrix from "../Matrix.mjs";
 const $ = Matrix.create;

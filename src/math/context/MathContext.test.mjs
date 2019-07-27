@@ -1,5 +1,3 @@
-/* global test, expect */
-
 import MathContext from "./MathContext.mjs";
 
 test("test 1", () => {

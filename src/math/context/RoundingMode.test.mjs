@@ -1,5 +1,3 @@
-/* global test, expect */
-
 import RoundingMode from "./RoundingMode.mjs";
 
 test("UP 1", () => {

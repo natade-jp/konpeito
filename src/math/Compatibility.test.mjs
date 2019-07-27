@@ -1,5 +1,3 @@
-/* global test, expect */
-
 import BigInteger from "./BigInteger.mjs";
 import BigDecimal from "./BigDecimal.mjs";
 import Fraction from "./Fraction.mjs";

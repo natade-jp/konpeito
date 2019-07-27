@@ -1,5 +1,3 @@
-/* global test, expect */
-
 import Probability from "./Probability.mjs";
 import Matrix from "../Matrix.mjs";
 const $ = Matrix.create;

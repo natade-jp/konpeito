@@ -1,5 +1,3 @@
-/* global test, expect */
-
 import RoundingMode from "./context/RoundingMode.mjs";
 import MathContext from "./context/MathContext.mjs";
 import BigDecimal from "./BigDecimal.mjs";

@@ -1,5 +1,3 @@
-/* global test, expect */
-
 import Complex from "./Complex.mjs";
 import Matrix from "./Matrix.mjs";
 const $ = Matrix.create;
