@@ -1,11 +1,10 @@
 /node_modules/
 /npm-debug.log
-
+/src/
 /out/
 /html/
 /docs/
 /scripts/
-
 /.vscode/
 jest.config.js
 .npmrc
@@ -14,7 +13,7 @@ jest.config.js
 .esdoc.json
 .eslintrc.json
 .gitignore
-
 .DS_Store
 Thumbs.db
 *.bak
+tsconfig.json
