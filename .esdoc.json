@@ -5,6 +5,7 @@
 	"includes": ["\\.mjs$"],
 	"excludes": ["\\.test\\.mjs$"],
 	"index": "./README.md",
+	"outputAST": false,
 	"plugins": [
 		{
 			"name": "esdoc-standard-plugin",
