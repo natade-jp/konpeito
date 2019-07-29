@@ -2,8 +2,8 @@
 {
 	"source": "./src/",
 	"destination": "./docs/",
-	"includes": ["\\.mjs$"],
-	"excludes": ["\\.test\\.mjs$"],
+	"includes": ["\\.m?js$"],
+	"excludes": ["\\.test\\.m?js$"],
 	"index": "./README.md",
 	"outputAST": false,
 	"plugins": [

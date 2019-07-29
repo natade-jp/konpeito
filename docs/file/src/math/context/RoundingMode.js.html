@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/math/context/RoundingMode.js | konpeito</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.js~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigDecimal.js~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigInteger.js~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.js~Fraction.html">Fraction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.js~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Probability.js~Probability.html">Probability</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.js~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.js~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/math/context/RoundingMode.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Base class for rounding mode for BigDecimal.
+ */
+export class RoundingModeEntity {
+	
+	/**
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
+	 */
+	static toString() {
+		return &quot;NONE&quot;;
+	}
+
+	/**
+	 * Numeric value to add.
+	 * It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
+	 */
+	static getAddNumber(x) {
+		return 0;
+	}
+
+}
+
+/**
+ * Directed rounding to an integer.
+ * Round towards positive infinity if positive, negative infinity if negative.
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_UP extends RoundingModeEntity {
+
+	/**
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
+	 */
+	static toString() {
+		return &quot;UP&quot;;
+	}
+
+	/**
+	 * Numeric value to add.
+	 * It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		if(y === 0) {
+			return 0;
+		}
+		else if(y &gt; 0) {
+			return 10 - y;
+		}
+		else {
+			return (-(10 + y));
+		}
+	}
+
+}
+
+/**
+ * Directed rounding to an integer.
+ * Round towards 0.
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_DOWN extends RoundingModeEntity {
+
+	/**
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
+	 */
+	static toString() {
+		return &quot;DOWN&quot;;
+	}
+
+	/**
+	 * Numeric value to add.
+	 * It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
+	 */
+	static getAddNumber(x) {
+		return -(x % 10);
+	}
+
+}
+
+/**
+ * Directed rounding to an integer.
+ * Round up to positive infinity.
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_CEILING extends RoundingModeEntity {
+
+	/**
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
+	 */
+	static toString() {
+		return &quot;CEILING&quot;;
+	}
+
+	/**
+	 * Numeric value to add.
+	 * It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		if(y === 0) {
+			return 0;
+		}
+		else if(y &gt; 0) {
+			return 10 - y;
+		}
+		else {
+			return -y;
+		}
+	}
+
+}
+
+/**
+ * Directed rounding to an integer.
+ * Round down to negative infinity.
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_FLOOR extends RoundingModeEntity {
+
+	/**
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
+	 */
+	static toString() {
+		return &quot;FLOOR&quot;;
+	}
+
+	/**
+	 * Numeric value to add.
+	 * It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		if(y === 0) {
+			return 0;
+		}
+		else if(y &gt; 0) {
+			return -y;
+		}
+		else {
+			return(-(10 + y));
+		}
+	}
+
+}
+
+/**
+ * Rounding to the nearest integer.
+ * Round half towards positive infinity.
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_HALF_UP extends RoundingModeEntity {
+
+	/**
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
+	 */
+	static toString() {
+		return &quot;HALF_UP&quot;;
+	}
+
+	/**
+	 * Numeric value to add.
+	 * It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		const sign = y &gt;= 0 ? 1 : -1;
+		if(Math.abs(y) &lt; 5) {
+			return (y * -1);
+		}
+		else {
+			return (sign * (10 - Math.abs(y)));
+		}
+	}
+
+}
+
+/**
+ * Rounding to the nearest integer.
+ * Round half towards negative infinity.
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_HALF_DOWN extends RoundingModeEntity {
+
+	/**
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
+	 */
+	static toString() {
+		return &quot;HALF_DOWN&quot;;
+	}
+
+	/**
+	 * Numeric value to add.
+	 * It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		const sign = y &gt;= 0 ? 1 : -1;
+		if(Math.abs(y) &lt; 6) {
+			return (y * -1);
+		}
+		else {
+			return (sign * (10 - Math.abs(y)));
+		}
+	}
+
+}
+
+/**
+ * Rounding to the nearest integer
+ * Round to the nearest side. If the median, round to the even side.
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_HALF_EVEN extends RoundingModeEntity {
+
+	/**
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
+	 */
+	static toString() {
+		return &quot;HALF_EVEN&quot;;
+	}
+
+	/**
+	 * Numeric value to add.
+	 * It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
+	 */
+	static getAddNumber(x) {
+		let y = x % 100;
+		let sign, even;
+		if(y &lt; 0) {
+			sign = -1;
+			even = Math.ceil(y / 10) &amp; 1;
+		}
+		else {
+			sign = 1;
+			even = Math.floor(y / 10) &amp; 1;
+		}
+		let center;
+		if(even === 1) {
+			center = 5;
+		}
+		else {
+			center = 6;
+		}
+		y = y % 10;
+		if(Math.abs(y) &lt; center) {
+			return (y * -1);
+		}
+		else {
+			return (sign * (10 - Math.abs(y)));
+		}
+	}
+
+}
+
+/**
+ * Do not round.
+ * Error if you need to round it.
+ * @implements {RoundingModeEntity}
+ */
+class RoundingMode_UNNECESSARY extends RoundingModeEntity {
+
+	/**
+	 * Get rounding mode name in upper case English.
+	 * @returns {string} Rounding method name.
+	 */
+	static toString() {
+		return &quot;UNNECESSARY&quot;;
+	}
+
+	/**
+	 * Numeric value to add.
+	 * It is rounded when this value is added.
+	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
+	 * @returns {number} Numeric value to add.
+	 */
+	static getAddNumber(x) {
+		const y = x % 10;
+		if(y === 0) {
+			return 0;
+		}
+		else {
+			throw &quot;ArithmeticException&quot;;
+		}
+	}
+
+}
+
+/**
+ * Rounding mode class for BigDecimal.
+ */
+export default class RoundingMode {
+
+	/**
+	 * Get rounding class represented by specified string.
+	 * @param {string|RoundingModeEntity|Object} name - Mode name.
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static valueOf(name) {
+		let check_string;
+		if(typeof name === &quot;string&quot;) {
+			check_string = name;
+		}
+		else if(name instanceof Object) {
+			check_string = name.toString();
+		}
+		else {
+			throw &quot;Unsupported argument &quot; + name;
+		}
+		const modetype = [
+			RoundingMode_UP,
+			RoundingMode_DOWN,
+			RoundingMode_FLOOR,
+			RoundingMode_CEILING,
+			RoundingMode_HALF_UP,
+			RoundingMode_HALF_DOWN,
+			RoundingMode_HALF_EVEN,
+			RoundingMode_UNNECESSARY
+		];
+		const upper_name = check_string.toUpperCase();
+		for(let i = 0; i &lt; modetype.length; i++) {
+			if(modetype[i].toString() === upper_name) {
+				return modetype[i];
+			}
+		}
+		throw &quot;IllegalArgumentException : &quot; + check_string;
+	}
+
+	// ----------------------
+	// &#x5B9A;&#x6570;
+	// ----------------------
+	
+	/**
+	 * Directed rounding to an integer.
+	 * Round towards positive infinity if positive, negative infinity if negative.
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get UP() {
+		return RoundingMode_UP;
+	}
+
+	/**
+	 * Directed rounding to an integer.
+	 * Round towards 0.
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get DOWN() {
+		return RoundingMode_DOWN;
+	}
+
+	/**
+	 * Directed rounding to an integer.
+	 * Round up to positive infinity.
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get CEILING() {
+		return RoundingMode_CEILING;
+	}
+
+	/**
+	 * Directed rounding to an integer.
+	 * Round down to negative infinity.
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get FLOOR() {
+		return RoundingMode_FLOOR;
+	}
+
+	/**
+	 * Rounding to the nearest integer.
+	 * Round half towards positive infinity.
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get HALF_UP() {
+		return RoundingMode_HALF_UP;
+	}
+
+	/**
+	 * Rounding to the nearest integer.
+	 * Round half towards negative infinity.
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get HALF_DOWN() {
+		return RoundingMode_HALF_DOWN;
+	}
+
+	/**
+	 * Rounding to the nearest integer
+	 * Round to the nearest side. If the median, round to the even side.
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get HALF_EVEN() {
+		return RoundingMode_HALF_EVEN;
+	}
+
+	/**
+	 * Do not round.
+	 * Error if you need to round it.
+	 * @returns {typeof RoundingModeEntity}
+	 */
+	static get UNNECESSARY() {
+		return RoundingMode_UNNECESSARY;
+	}
+
+}
+
+
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

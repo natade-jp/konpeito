@@ -1857,14 +1857,16 @@ declare class _Fraction_ {
     denominator: _BigInteger_;
     /**
      * Create an entity object of this class.
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
      * @returns {_Fraction_}
      */
-    static create(): _Fraction_;
+    static create(number: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
     /**
      * Convert number to _Fraction_ type.
+     * @param {_Fraction_|_BigInteger_|_BigDecimal_|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
      * @returns {_Fraction_}
      */
-    static valueOf(): _Fraction_;
+    static valueOf(number: _Fraction_ | _BigInteger_ | _BigDecimal_ | number | string | object[] | any | any): _Fraction_;
     /**
      * Deep copy.
      * @returns {_Fraction_}

@@ -82,6 +82,7 @@ npm install --save-dev esdoc-standard-plugin
 
 # For unit test of ES6.
 npm install --save-dev jest
+npm install --save-dev @types/jest
 npm install --save-dev babel-jest
 npm install --save-dev babel-plugin-transform-es2015-modules-commonjs
 

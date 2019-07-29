@@ -15,7 +15,6 @@
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
  */
-// @ts-check
 
 /**
  * Collection of tools used in the Random.
@@ -305,7 +304,6 @@ Random.seedUniquifier = 0x87654321;
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
  */
-// @ts-check
 
 /**
  * Base class for rounding mode for BigDecimal.
@@ -941,9 +939,6 @@ const DEFINE = {
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-// @ts-ignore
-//import BigDecimal from "./BigDecimal.mjs";
-
 /**
  * Random number class to be used when the random number class is not set.
  * @type {Random}
@@ -968,7 +963,15 @@ class BigIntegerTool {
 		// v0.03 出来る限りまとめてn進数変換する
 		const max_num = 0x3FFFFFFF;
 		const keta = Math.floor( Math.log(max_num) / Math.log(radix) );
+
+		/**
+		 * @type {Array<number>}
+		 */
 		let x = [];
+		
+		/**
+		 * @type {Array<number>}
+		 */
 		const y = [];
 		const len = Math.ceil(text.length / keta);
 		let offset = text.length;
@@ -1018,6 +1021,10 @@ class BigIntegerTool {
 		let buff;
 		// 正規化
 		let text = ntext.replace(/\s/g, "").toLowerCase();
+
+		/**
+		 * @type {Array<string>}
+		 */
 		const number_text = [];
 		// 整数部を抽出
 		buff = text.match(/^[0-9]+/);
@@ -1086,11 +1093,17 @@ class BigIntegerTool {
 				_sign : sign
 			};
 		}
+		/**
+		 * @type {Array<number>}
+		 */
 		const y = [];
 		while(x !==  0) {
 			y[y.length] = x & 1;
 			x >>>= 1;
 		}
+		/**
+		 * @type {Array<number>}
+		 */
 		const z = [];
 		for(let i = 0; i < y.length; i++) {
 			z[i >>> 4] |= y[i] << (i & 0xF);
@@ -1109,6 +1122,12 @@ class BigIntegerTool {
 	 * @returns {Array<number>} Numeric array for each digit in the specified base number.
 	 */
 	static toPlainStringFromHexadecimalArray(binary, radix) {
+
+		/**
+		 * @param {Array<number>} x1 
+		 * @param {Array<number>} x2 
+		 * @param {Array<number>} y 
+		 */
 		const add = function(x1, x2, y) {
 			const size = x1.length;
 			let carry = 0;
@@ -1149,6 +1168,9 @@ class BigIntegerTool {
 		let x = text.replace(/\s/g, "").toLowerCase();
 		const sign_text = x.match(/^[-+]+/);
 
+		/**
+		 * @type {Array<number>}
+		 */
 		let element     = [];
 		let _sign        = 1;
 
@@ -3671,6 +3693,10 @@ class BigDecimal {
 	divideToIntegralValue(number, context) {
 		const divisor = BigDecimal._toBigDecimal(number);
 		const mc = context ? context : divisor.default_context;
+		/**
+		 * @param {number} num 
+		 * @returns {BigInteger}
+		 */
 		const getDigit  = function( num ) {
 			let i;
 			let text = "1";
@@ -3864,7 +3890,10 @@ class BigDecimal {
 		// 無限精度か、精度が小さい場合は厳密に求める
 		if((precision === 0) || (precision <= 100)) {
 			let newsrc;
-			const result_map = [];
+			/**
+			 * @type {any}
+			 */
+			const result_map = {};
 			let result, result_divide, result_remaind;
 			all_result = BigDecimal.ZERO;
 			const check_max = precision !== 0 ? (precision + 8) : 0x3FFFF;
@@ -5406,6 +5435,7 @@ class BigDecimalCache {
 
 		/**
 		 * Method name in the DEFINE.
+		 * @type {string}
 		 */
 		this.method_name = method_name;
 		
@@ -5416,6 +5446,7 @@ class BigDecimalCache {
 
 		/**
 		 * Maximum number of caches.
+		 * @type {number}
 		 */
 		this.table_max = cache_size;
 
@@ -5436,6 +5467,7 @@ class BigDecimalCache {
 				return object.number;
 			}
 		}
+		// @ts-ignore
 		const new_number = DEFINE$2[this.method_name]();
 		if(this.table.length === this.table_max) {
 			// 後ろのデータを消去
@@ -5869,6 +5901,7 @@ class Fraction {
 
 	/**
 	 * Create an entity object of this class.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
 	 * @returns {Fraction}
 	 */
 	static create(number) {
@@ -5882,6 +5915,7 @@ class Fraction {
 
 	/**
 	 * Convert number to Fraction type.
+	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
 	 * @returns {Fraction}
 	 */
 	static valueOf(number) {
@@ -6578,7 +6612,15 @@ class LinearAlgebraTool {
 		};
 
 		const n = a.length;
+
+		/**
+		 * @type {Array<number>}
+		 */
 		const d = []; // 対角成分
+		
+		/**
+		 * @type {Array<number>}
+		 */
 		const e = []; // 隣の成分
 		{
 			for(let k = 0; k < n - 2; k++) {
@@ -6709,12 +6751,20 @@ class LinearAlgebraTool {
 					break;
 				}
 				let w = (d[h - 1] - d[h]) / 2.0;
+
+				/**
+				 * @type {number}
+				 */
 				let t = e[h] * e[h];
 				let s = Math.sqrt(w * w + t);
 				if(w < 0) {
 					s = - s;
 				}
 				let x = d[j] - d[h] + (t / (w + s));
+				
+				/**
+				 * @type {number}
+				 */
 				let y = e[j + 1];
 				for(let k = j; k < h; k++) {
 					let c, s;
@@ -6758,6 +6808,10 @@ class LinearAlgebraTool {
 		}
 
 		// 固有値が大きいものから並べるソート
+		/**
+		 * @param {Matrix} V 
+		 * @param {Array<number>} d 
+		 */
 		const vd_sort = function(V, d) {
 			const len = d.length;
 			const sortdata = [];
@@ -6767,6 +6821,10 @@ class LinearAlgebraTool {
 					index : i
 				};
 			}
+			/**
+			 * @param {{sigma : number}} a 
+			 * @param {{sigma : number}} b 
+			 */
 			const compare = function(a, b){
 				if(a.sigma === b.sigma) {
 					return 0;
@@ -7252,6 +7310,9 @@ class LinearAlgebra {
 		}
 		const len = M.length;
 		if(len < 5) {
+			/**
+			 * @param {Array<Array<Complex>>} x 
+			 */
 			const calcDet = function(x) {
 				if(x.length === 2) {
 					// 2次元の行列式になったら、たすき掛け計算する
@@ -7260,6 +7321,10 @@ class LinearAlgebra {
 				let y = Complex.ZERO;
 				for(let i = 0; i < x.length; i++) {
 					// N次元の行列式を、N-1次元の行列式に分解していく
+
+					/**
+					 * @type {Array<Array<Complex>>}
+					 */
 					const D = [];
 					const a = x[i][0];
 					for(let row = 0, D_low = 0; row < x.length; row++) {
@@ -7472,6 +7537,9 @@ class LinearAlgebra {
 		}
 		else if(non_orthogonalized.length !== 0) {
 			// 一部、直行化できていない列があるため直行化できてない列以外を抽出
+			/**
+			 * @type {any}
+			 */
 			const map = {};
 			for(let i = 0; i < non_orthogonalized.length; i++) {
 				map[non_orthogonalized[i]] = 1;
@@ -7739,6 +7807,10 @@ class Statistics {
 	static max(x, type) {
 		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			let x = data[0];
 			for(let i = 1; i < data.length; i++) {
@@ -7760,6 +7832,10 @@ class Statistics {
 	static min(x, type) {
 		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			let x = data[0];
 			for(let i = 1; i < data.length; i++) {
@@ -7781,6 +7857,10 @@ class Statistics {
 	static sum(x, type) {
 		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			// カハンの加算アルゴリズム
 			let sum = Complex.ZERO;
@@ -7805,6 +7885,10 @@ class Statistics {
 	static mean(x, type) {
 		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			// カハンの加算アルゴリズム
 			let sum = Complex.ZERO;
@@ -7829,6 +7913,10 @@ class Statistics {
 	static prod(x, type) {
 		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			let x = Complex.ONE;
 			for(let i = 0; i < data.length; i++) {
@@ -7848,6 +7936,10 @@ class Statistics {
 	static geomean(x, type) {
 		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			let x = Complex.ONE;
 			for(let i = 0; i < data.length; i++) {
@@ -7867,9 +7959,18 @@ class Statistics {
 	static median(x, type) {
 		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+		 * @param {Complex} a
+		 * @param {Complex} b
+		 * @returns {number}
+		 */
 		const compare = function(a, b){
 			return a.compareTo(b);
 		};
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			data.sort(compare);
 			let y;
@@ -7895,11 +7996,23 @@ class Statistics {
 	static mode(x, type) {
 		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+		 * @param {Complex} a
+		 * @param {Complex} b
+		 * @returns {number}
+		 */
 		const compare = function(a, b){
 			return a.compareTo(b);
 		};
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			data.sort(compare);
+			/**
+			 * @type {any}
+			 */
 			const map = {};
 			for(let i = 0; i < data.length; i++) {
 				const str = data[i].real + " " + data[i].imag;
@@ -7943,6 +8056,10 @@ class Statistics {
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
 		const order = Matrix._toComplex(nth_order);
 		let col = 0;
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			let mean;
 			if(M.isScalar()) {
@@ -7984,6 +8101,10 @@ class Statistics {
 		const cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
 		let col = 0;
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			if(data.length === 1) {
 				// 要素が1であれば、分散は0固定
@@ -8138,6 +8259,9 @@ class Statistics {
 		const X = Matrix._toMatrix(x);
 		const dim   = !(type && type.dimension) ? "auto" : type.dimension;
 		const order_type = !order ? "ascend" : order;
+		/**
+		 * @type {function(Complex, Complex): number }
+		 */
 		let compare;
 		if(order_type === "ascend") {
 			compare = function(a, b){
@@ -8149,6 +8273,10 @@ class Statistics {
 				return b.compareTo(a);
 			};
 		}
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			data.sort(compare);
 			return data;
@@ -8889,7 +9017,7 @@ class ProbabilityTool {
 
 /**
  * typeof this === string
- * @param text 
+ * @param text {any}
  * @ignore
  */
 const isStr = function(text) {
@@ -10497,6 +10625,9 @@ class SignalTool {
 		const size_ = size;
 		const window = new Array(size_);
 		
+		/**
+		 * @type {function(number): number }
+		 */
 		let normalzie;
 		if((periodic_ === "symmetric") || (periodic_ === 0)) {
 			normalzie = function(y) {
@@ -10509,6 +10640,14 @@ class SignalTool {
 			};
 		}
 
+		/**
+		 * 
+		 * @param {number} alpha0 
+		 * @param {number} alpha1 
+		 * @param {number} alpha2 
+		 * @param {number} alpha3 
+		 * @param {number} alpha4 
+		 */
 		const setBlackmanWindow = function( alpha0, alpha1, alpha2, alpha3, alpha4) {
 			for(let i = 0; i < size_; i++) {
 				window[i]  = alpha0;
@@ -10610,6 +10749,10 @@ class Signal {
 	static fft(x, type) {
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
 		const M = Matrix._toMatrix(x);
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			const real = new Array(data.length);
 			const imag = new Array(data.length);
@@ -10636,6 +10779,10 @@ class Signal {
 	static ifft(X, type) {
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
 		const M = Matrix._toMatrix(X);
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			const real = new Array(data.length);
 			const imag = new Array(data.length);
@@ -10662,6 +10809,10 @@ class Signal {
 	static powerfft(x, type) {
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
 		const M = Matrix._toMatrix(x);
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			const real = new Array(data.length);
 			const imag = new Array(data.length);
@@ -10691,6 +10842,10 @@ class Signal {
 		if(M.isComplex()) {
 			throw "dct don't support complex numbers.";
 		}
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			const real = new Array(data.length);
 			for(let i = 0; i < data.length; i++) {
@@ -10718,6 +10873,10 @@ class Signal {
 		if(M.isComplex()) {
 			throw "idct don't support complex numbers.";
 		}
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			const real = new Array(data.length);
 			for(let i = 0; i < data.length; i++) {
@@ -11580,8 +11739,16 @@ class Matrix {
 
 		// 文字列データを作成とともに、最大の長さを記録する
 		let str_max = 0;
+
+		/**
+		 * @type {Array<{re_sign : string, re_str : string, im_sign : string, im_str : string}>}
+		 */
 		const draw_buff = [];
+
 		// 数値データを文字列にする関数（eの桁がある場合は中身は3桁にする）
+		/**
+		 * @type {function(number): string }
+		 */
 		const toStrFromFloat = function(number) {
 			const str = !isDrawExp ? number.toFixed(draw_decimal_position) : number.toExponential(exp_point);
 			if(/inf/i.test(str)) {
@@ -11628,11 +11795,18 @@ class Matrix {
 		);
 
 		// 右寄せ用関数
+		/**
+		 * @type {function(string, number): string }
+		 */
 		const right = function(text, length) {
 			const space = "                                        ";
 			return space.substr(0, length - text.length) + text;
 		};
+
 		// 出力用文字列を作成する
+		/**
+		 * @type {Array<string>}
+		 */
 		const output = [];
 		const that = this;
 		this._each(
@@ -13597,6 +13771,10 @@ class Matrix {
 	circshift(shift_size, type) {
 		const shift = Matrix._toInteger(shift_size);
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			const y = new Array(data.length);
 			let from = ((- shift % data.length) + data.length) % data.length;
@@ -13677,6 +13855,10 @@ class Matrix {
 	 */
 	flip(type) {
 		const dim = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+		 * @param {Array<Complex>} data 
+		 * @returns {Array<Complex>}
+		 */
 		const main = function(data) {
 			const y = new Array(data.length);
 			for(let i = 0, j = data.length - 1; i < data.length; i++, j--) {
@@ -13727,13 +13909,26 @@ class Matrix {
 				data : target_array[i]
 			};
 		}
-		// 比較関数を作成
+		/**
+		 * 比較関数を作成
+		 * @type {function({index : Complex}, {index : Complex}): number }
+		 */
 		const compare = function(a, b) {
 			return a.index.compareTo(b.index);
 		};
 		{
+			/**
+			 * @type {Array<{index : Complex}>}
+			 */
 			const temp = [];
-			// ソート関数（安定マージソート）
+			/**
+			 * ソート関数（安定マージソート）
+			 * @param {Array<{index : Complex}>} elements 
+			 * @param {number} first 
+			 * @param {number} last 
+			 * @param {function({index : Complex}, {index : Complex}): number} cmp_function 
+			 * @returns {boolean}
+			 */
 			const sort = function(elements, first, last, cmp_function) { 
 				if(first < last) {
 					const middle = Math.floor((first + last) / 2);
@@ -14753,6 +14948,9 @@ class Complex {
 	 * @returns {string} 
 	 */
 	toString() {
+		/**
+		 * @type {function(number): string }
+		 */
 		const formatG = function(x) {
 			let numstr = x.toPrecision(6);
 			if(numstr.indexOf(".") !== -1) {
@@ -14858,6 +15056,9 @@ class Complex {
 	 * @returns {number} Number of decimal places.
 	 */
 	getDecimalPosition() {
+		/**
+		 * @type {function(number): number }
+		 */
 		const getDecimal = function(x) {
 			if(!Number.isFinite(x)) {
 				return 0;

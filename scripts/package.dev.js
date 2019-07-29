@@ -3,5 +3,5 @@
 // サンプルファイルは直接関連付ける
 File.saveTextFile(
 	"./html/examples/libs/konpeito.mjs",
-	"import konpeito from \"../../../src/konpeito.mjs\";export default konpeito;"
+	"import konpeito from \"../../../src/konpeito.js\";export default konpeito;"
 );

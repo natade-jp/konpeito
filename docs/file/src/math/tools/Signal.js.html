@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/math/tools/Signal.js | konpeito</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.js~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigDecimal.js~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigInteger.js~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.js~Fraction.html">Fraction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.js~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Probability.js~Probability.html">Probability</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.js~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.js~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/math/tools/Signal.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+import Complex from &quot;../Complex.js&quot;;
+import Matrix from &quot;../Matrix.js&quot;;
+
+/**
+ * Collection of calculation settings for matrix.
+ * - Available options vary depending on the method.
+ * @typedef {Object} SignalSettings
+ * @property {?string|?number} [dimension=&quot;auto&quot;] Calculation direction. 0/&quot;auto&quot;, 1/&quot;row&quot;, 2/&quot;column&quot;, 3/&quot;both&quot;.
+ */
+
+/**
+ * Fast Fourier Transform (FFT) Class.
+ * @ignore
+ */
+class FFT {
+
+	/**
+	 * Return the number with reversed bits.
+	 * @param {number} x - Bit-reversed value. (32-bit integer)
+	 * @returns {number} &#x30D3;&#x30C3;&#x30C8;&#x53CD;&#x8EE2;&#x3057;&#x305F;&#x5024;
+	 */
+	static bit_reverse_32(x) {
+		let y = x &amp; 0xffffffff;
+		// 1,2,4,8,16&#x30D3;&#x30C3;&#x30C8;&#x5358;&#x4F4D;&#x3067;&#x4EA4;&#x63DB;
+		y = ((y &amp; 0x55555555) &lt;&lt; 1) | ((y &gt;&gt; 1) &amp; 0x55555555);
+		y = ((y &amp; 0x33333333) &lt;&lt; 2) | ((y &gt;&gt; 2) &amp; 0x33333333);
+		y = ((y &amp; 0x0f0f0f0f) &lt;&lt; 4) | ((y &gt;&gt; 4) &amp; 0x0f0f0f0f);
+		y = ((y &amp; 0x00ff00ff) &lt;&lt; 8) | ((y &gt;&gt; 8) &amp; 0x00ff00ff);
+		y = ((y &amp; 0x0000ffff) &lt;&lt; 16) | ((y &gt;&gt; 16) &amp; 0x0000ffff);
+		return y;
+	}
+	
+	/**
+	 * Create a bit reversal lookup table.
+	 * @param {number} bit - &#x30D3;&#x30C3;&#x30C8;&#x6570;
+	 * @returns {Array&lt;number&gt;} &#x30D3;&#x30C3;&#x30C8;&#x53CD;&#x8EE2;&#x3057;&#x305F;&#x5024;&#x306E;&#x914D;&#x5217;
+	 */
+	static create_bit_reverse_table(bit) {
+		const size = 1 &lt;&lt; bit;
+		const bitrv = [];
+		for(let i = 0; i &lt; size; i++) {
+			bitrv[i] = FFT.bit_reverse_32(i) &gt;&gt;&gt; (32 - bit);
+		}
+		return bitrv;
+	}
+
+	/**
+	 * Create FFT.
+	 * @param {number} size - Signal length.
+	 */
+	constructor(size) {
+		
+		/**
+		 * Signal length.
+		 */
+		this.size = size;
+
+		/**
+		 * Inverse of signal length.
+		 */
+		this.inv_size = 1.0 / this.size;
+
+		/**
+		 * Number of bits when the signal length is expressed in binary number.
+		 */
+		this.bit_size = Math.round(Math.log(this.size)/Math.log(2));
+
+		/**
+		 * FFT algorithm available.
+		 */
+		this.is_fast = (1 &lt;&lt; this.bit_size) === this.size;
+
+		/**
+		 * Bit reverse table for butterfly operation.
+		 */
+		this.bitrv = null;
+
+		/**
+		 * Real part table used for multiplication of complex numbers.
+		 */
+		this.fft_re = new Array(this.size);
+		
+		/**
+		 * Imaginary table used for multiplication of complex numbers.
+		 */
+		this.fft_im = new Array(this.size);
+		{
+			const delta = - 2.0 * Math.PI / this.size;
+			let err = 0.0;
+			for(let n = 0, x = 0; n &lt; this.size; n++) {
+				this.fft_re[n] = Math.cos(x);
+				this.fft_im[n] = Math.sin(x);
+				// &#x30AB;&#x30CF;&#x30F3;&#x306E;&#x52A0;&#x7B97;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;
+				const y = delta + err;
+				const t = x + y;
+				err = t - x - y;
+				x = t;
+			}
+		}
+		if(this.is_fast) {
+			this.bitrv = FFT.create_bit_reverse_table(this.bit_size);
+		}
+	}
+
+	/**
+	 * Frees the memory reserved.
+	 */
+	delete() {
+		delete this.size;
+		delete this.inv_size;
+		delete this.bit_size;
+		delete this.is_fast;
+		delete this.bitrv;
+		delete this.fft_re;
+		delete this.fft_im;
+	}
+	
+	/**
+	 * Discrete Fourier transform (DFT).
+	 * @param {Array&lt;number&gt;} real - Array of real parts of vector.
+	 * @param {Array&lt;number&gt;} imag - Array of imaginary parts of vector.
+	 * @returns {Object&lt;string, Array&lt;number&gt;&gt;}
+	 */
+	fft(real, imag) {
+		const f_re = new Array(this.size);
+		const f_im = new Array(this.size);
+		if(this.is_fast) {
+			for(let i = 0; i &lt; this.size; i++) {
+				f_re[i] = real[this.bitrv[i]];
+				f_im[i] = imag[this.bitrv[i]];
+			}
+			{
+				// Fast Fourier Transform &#x6642;&#x9593;&#x9593;&#x5F15;&#x304D;(&#x524D;&#x51E6;&#x7406;&#x306B;&#x30D3;&#x30C3;&#x30C8;&#x30EA;&#x30D0;&#x30FC;&#x30B9;)
+				// &#x6BB5;&#x3005;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x304C;&#x5927;&#x304D;&#x304F;&#x306A;&#x3063;&#x3066;&#x3044;&#x304F;&#x30BF;&#x30A4;&#x30D7;&#x3002;
+				let center = 1;
+				let blocklength = this.size / 2;
+				let pointlength = 2;
+				for(let delta = 1 &lt;&lt; (this.bit_size - 1); delta &gt; 0; delta &gt;&gt;= 1) {
+					for(let blocks = 0; blocks &lt; blocklength; blocks++) {
+						let i = blocks * pointlength;
+						for(let point = 0, n = 0; point &lt; center; point++, i++, n += delta) {
+							const re = f_re[i + center] * this.fft_re[n] - f_im[i + center] * this.fft_im[n];
+							const im = f_im[i + center] * this.fft_re[n] + f_re[i + center] * this.fft_im[n];
+							f_re[i + center] = f_re[i] - re;
+							f_im[i + center] = f_im[i] - im;
+							f_re[i] += re;
+							f_im[i] += im;
+						}
+					}
+					blocklength /= 2;
+					pointlength *= 2;
+					center *= 2;
+				}
+			}
+		}
+		else {
+			if(!SignalTool.isContainsZero(imag)) {
+				// &#x5B9F;&#x6570;&#x90E8;&#x5206;&#x306E;&#x307F;&#x306E;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+				for(let t = 0; t &lt; this.size; t++) {
+					f_re[t] = 0.0;
+					f_im[t] = 0.0;
+					for(let x = 0, n = 0; x &lt; this.size; x++, n = (x * t) % this.size) {
+						f_re[t] += real[x] * this.fft_re[n];
+						f_im[t] += real[x] * this.fft_im[n];
+					}
+				}
+			}
+			else {
+				// &#x5B9F;&#x6570;&#x90E8;&#x5206;&#x3068;&#x8907;&#x7D20;&#x6570;&#x90E8;&#x5206;&#x306E;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+				for(let t = 0; t &lt; this.size; t++) {
+					f_re[t] = 0.0;
+					f_im[t] = 0.0;
+					for(let x = 0, n = 0; x &lt; this.size; x++, n = (x * t) % this.size) {
+						f_re[t] += real[x] * this.fft_re[n] - imag[x] * this.fft_im[n];
+						f_im[t] += real[x] * this.fft_im[n] + imag[x] * this.fft_re[n];
+					}
+				}
+			}
+		}
+		return {
+			real : f_re,
+			imag : f_im
+		};
+	}
+
+	/**
+	 * Inverse discrete Fourier transform (IDFT),
+	 * @param {Array} real - Array of real parts of vector.
+	 * @param {Array} imag - Array of imaginary parts of vector.
+	 * @returns {Object&lt;string, Array&lt;number&gt;&gt;}
+	 */
+	ifft(real, imag) {
+		const f_re = new Array(this.size);
+		const f_im = new Array(this.size);
+		if(this.is_fast) {
+			for(let i = 0; i &lt; this.size; i++) {
+				f_re[i] = real[this.bitrv[i]];
+				f_im[i] = imag[this.bitrv[i]];
+			}
+			{
+				// Inverse Fast Fourier Transform &#x6642;&#x9593;&#x9593;&#x5F15;&#x304D;(&#x524D;&#x51E6;&#x7406;&#x306B;&#x30D3;&#x30C3;&#x30C8;&#x30EA;&#x30D0;&#x30FC;&#x30B9;)
+				// &#x6BB5;&#x3005;&#x30D6;&#x30ED;&#x30C3;&#x30AF;&#x304C;&#x5927;&#x304D;&#x304F;&#x306A;&#x3063;&#x3066;&#x3044;&#x304F;&#x30BF;&#x30A4;&#x30D7;&#x3002;
+				let center = 1;
+				let blocklength = this.size / 2;
+				let pointlength = 2;
+				let re, im;
+				for(let delta = 1 &lt;&lt; (this.bit_size - 1); delta &gt; 0; delta &gt;&gt;= 1) {
+					for(let blocks = 0; blocks &lt; blocklength; blocks++) {
+						let i = blocks * pointlength;
+						for(let point = 0, n = 0; point &lt; center; point++, i++, n += delta) {
+							re = f_re[i + center] * this.fft_re[n] + f_im[i + center] * this.fft_im[n];
+							im = f_im[i + center] * this.fft_re[n] - f_re[i + center] * this.fft_im[n];
+							f_re[i + center] = f_re[i] - re;
+							f_im[i + center] = f_im[i] - im;
+							f_re[i] += re;
+							f_im[i] += im;
+						}
+					}
+					blocklength /= 2;
+					pointlength *= 2;
+					center *= 2;
+				}
+			}
+		}
+		else {
+			if(!SignalTool.isContainsZero(imag)) {
+				// &#x5B9F;&#x6570;&#x90E8;&#x5206;&#x306E;&#x307F;&#x306E;&#x9006;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+				for(let x = 0; x &lt; this.size; x++) {
+					f_re[x] = 0.0;
+					f_im[x] = 0.0;
+					for(let t = 0, n = 0; t &lt; this.size; t++, n = (x * t) % this.size) {
+						f_re[x] +=   real[t] * this.fft_re[n];
+						f_im[x] += - real[t] * this.fft_im[n];
+					}
+				}
+			}
+			else {
+				// &#x5B9F;&#x6570;&#x90E8;&#x5206;&#x3068;&#x8907;&#x7D20;&#x6570;&#x90E8;&#x5206;&#x306E;&#x9006;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;
+				for(let x = 0; x &lt; this.size; x++) {
+					f_re[x] = 0.0;
+					f_im[x] = 0.0;
+					for(let t = 0, n = 0; t &lt; this.size; t++, n = (x * t) % this.size) {
+						f_re[x] +=   real[t] * this.fft_re[n] + imag[t] * this.fft_im[n];
+						f_im[x] += - real[t] * this.fft_im[n] + imag[t] * this.fft_re[n];
+					}
+				}
+			}
+		}
+		for(let i = 0; i &lt; this.size; i++) {
+			f_re[i] *= this.inv_size;
+			f_im[i] *= this.inv_size;
+		}
+		return {
+			real : f_re,
+			imag : f_im
+		};
+	}
+}
+
+/**
+ * Simple cache class.
+ * Cache tables used in FFT.
+ * @ignore
+ */
+class FFTCache {
+	
+	/**
+	 * Create Cache.
+	 * @param {*} object - Target class you want to build a cache.
+	 * @param {number} cache_size - Maximum number of caches.
+	 */
+	constructor(object, cache_size) {
+
+		/**
+		 * Class for cache.
+		 */
+		this.object = object;
+
+		/**
+		 * Cache table.
+		 * @type {Array&lt;*&gt;}
+		 */
+		this.table = [];
+
+		/**
+		 * Maximum number of caches.
+		 */
+		this.table_max = cache_size;
+
+	}
+
+	/**
+	 * Create a class initialized with the specified data length.
+	 * Use from cache if it exists in cache.
+	 * @param {number} size - Data length.
+	 * @returns {*}
+	 */
+	get(size) {
+		for(let index = 0; index &lt; this.table.length; index++) {
+			if(this.table[index].size === size) {
+				// &#x5148;&#x982D;&#x306B;&#x3082;&#x3063;&#x3066;&#x304F;&#x308B;
+				const object = this.table.splice(index, 1)[0];
+				this.table.unshift(object);
+				return object;
+			}
+		}
+		const new_object = new this.object(size);
+		if(this.table.length === this.table_max) {
+			// &#x5F8C;&#x308D;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6D88;&#x53BB;
+			const delete_object = this.table.pop();
+			delete_object.delete();
+		}
+		// &#x524D;&#x65B9;&#x306B;&#x8FFD;&#x52A0;
+		this.table.unshift(new_object);
+		return new_object;
+	}
+
+}
+
+/**
+ * Cache for FFT.
+ * @type {FFTCache}
+ * @ignore
+ */
+const fft_cache = new FFTCache(FFT, 4);
+
+/**
+ * Discrete cosine transform (DCT) class.
+ * @ignore
+ */
+class DCT {
+	
+	/**
+	 * Create DCT.
+	 * @param {number} size - Signal length.
+	 */
+	constructor(size) {
+
+		/**
+		 * Signal length.
+		 */
+		this.size = size;
+
+		/**
+		 * Twice the signal length.
+		 * In the DCT conversion, an actual signal is zero-filled with a doubled signal length, and an FFT is performed on it.
+		 */
+		this.dct_size = size * 2;
+
+		/**
+		 * Calculation table used for DCT conversion.
+		 */
+		this.dct_re = new Array(this.size);
+
+		/**
+		 * Calculation table used for DCT conversion.
+		 */
+		this.dct_im = new Array(this.size);
+		{
+			const x_0 = 1.0 / Math.sqrt(this.size);
+			const x_n = x_0 * Math.sqrt(2);
+			for(let i = 0; i &lt; this.size; i++) {
+				const x = - Math.PI * i / this.dct_size;
+				this.dct_re[i] = Math.cos(x) * (i === 0 ? x_0 : x_n);
+				this.dct_im[i] = Math.sin(x) * (i === 0 ? x_0 : x_n);
+			}
+		}
+	}
+	
+	/**
+	 * Frees the memory reserved.
+	 */
+	delete() {
+		delete this.size;
+		delete this.dct_size;
+		delete this.dct_re;
+		delete this.dct_im;
+	}
+
+	/**
+	 * Discrete cosine transform (DCT-II, DCT).
+	 * @param {Array&lt;number&gt;} real - Array of real parts of vector.
+	 * @returns {Array&lt;number&gt;}
+	 */
+	dct(real) {
+		const re = new Array(this.dct_size);
+		const im = new Array(this.dct_size);
+		for(let i = 0; i &lt; this.dct_size; i++) {
+			re[i] = i &lt; this.size ? real[i] : 0.0;
+			im[i] = 0.0;
+		}
+		const fft = fft_cache.get(this.dct_size).fft(re, im);
+		for(let i = 0; i &lt; this.size; i++) {
+			re[i] = fft.real[i] * this.dct_re[i] - fft.imag[i] * this.dct_im[i];
+		}
+		re.splice(this.size);
+		return re;
+	}
+
+	/**
+	 * Inverse discrete cosine transform (DCT-III, IDCT),
+	 * @param {Array&lt;number&gt;} real - Array of real parts of vector.
+	 * @returns {Array&lt;number&gt;}
+	 */
+	idct(real) {
+		const re = new Array(this.dct_size);
+		const im = new Array(this.dct_size);
+		const denormlize = this.size * 2.0;
+		for(let i = 0; i &lt; this.dct_size; i++) {
+			re[i] = i &lt; this.size ? (denormlize * real[i] *    this.dct_re[i])  : 0.0;
+			im[i] = i &lt; this.size ? (denormlize * real[i] * (- this.dct_im[i])) : 0.0;
+		}
+		const ifft = fft_cache.get(this.dct_size).ifft(re, im);
+		ifft.real.splice(this.size);
+		return ifft.real;
+	}
+	
+}
+
+/**
+ * Cache for discrete cosine transform.
+ * @ignore
+ */
+const dct_cache = new FFTCache(DCT, 4);
+
+/**
+ * Collection of functions used inside Signal class.
+ * @ignore
+ */
+class SignalTool {
+	
+	/**
+	 * Returns true if the array contains 0.
+	 * @param {Array&lt;number&gt;} x - &#x8ABF;&#x3079;&#x305F;&#x3044;&#x914D;&#x5217;
+	 * @returns {boolean}
+	 */
+	static isContainsZero(x) {
+		for(let i = 0; i &lt; x.length; i++) {
+			if(x[i] !== 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Discrete Fourier transform (DFT).
+	 * @param {Array&lt;number&gt;} real - Array of real parts of vector.
+	 * @param {Array&lt;number&gt;} imag - Array of imaginary parts of vector.
+	 * @returns {Object&lt;string, Array&lt;number&gt;&gt;}
+	 */
+	static fft(real, imag) {
+		const obj = fft_cache.get(real.length);
+		return obj.fft(real, imag);
+	}
+
+	/**
+	 * Inverse discrete Fourier transform (IDFT),
+	 * @param {Array&lt;number&gt;} real - Array of real parts of vector.
+	 * @param {Array&lt;number&gt;} imag - Array of imaginary parts of vector.
+	 * @returns {Object&lt;string, Array&lt;number&gt;&gt;}
+	 */
+	static ifft(real, imag) {
+		const obj = fft_cache.get(real.length);
+		return obj.ifft(real, imag);
+	}
+
+	/**
+	 * Discrete cosine transform (DCT-II, DCT).
+	 * @param {Array&lt;number&gt;} real - Array of real parts of vector.
+	 * @returns {Array&lt;number&gt;}
+	 */
+	static dct(real) {
+		const obj = dct_cache.get(real.length);
+		return obj.dct(real);
+	}
+
+	/**
+	 * Inverse discrete cosine transform (DCT-III, IDCT),
+	 * @param {Array&lt;number&gt;} real - Array of real parts of vector.
+	 * @returns {Array&lt;number&gt;}
+	 */
+	static idct(real) {
+		const obj = dct_cache.get(real.length);
+		return obj.idct(real);
+	}
+
+	/**
+	 * Power spectral density.
+	 * @param {Array&lt;number&gt;} real - Array of real parts of vector.
+	 * @param {Array&lt;number&gt;} imag - Array of imaginary parts of vector.
+	 * @returns {Array&lt;number&gt;}
+	 */
+	static powerfft(real, imag) {
+		const size = real.length;
+		const X = SignalTool.fft(real, imag);
+		const power = new Array(size);
+		for(let i = 0; i &lt; size; i++) {
+			power[i] = X.real[i] * X.real[i] + X.imag[i] * X.imag[i];
+		}
+		return power;
+	}
+
+	/**
+	 * Convolution integral, Polynomial multiplication.
+	 * @param {Array} x1_real - Array of real parts of vector.
+	 * @param {Array} x1_imag - Array of imaginary parts of vector.
+	 * @param {Array} x2_real - Array of real parts of vector.
+	 * @param {Array} x2_imag - Array of imaginary parts of vector.
+	 * @returns {Object&lt;string, Array&lt;number&gt;&gt;}
+	 */
+	static conv(x1_real, x1_imag, x2_real, x2_imag) {
+		let is_self = false;
+		if(x1_real.length === x2_real.length) {
+			is_self = true;
+			for(let i = 0; i &lt; x1_real.length;i++) {
+				if((x1_real[i] !== x2_real[i]) || (x1_imag[i] !== x2_imag[i])) {
+					is_self = false;
+					break;
+				}
+			}
+		}
+		const size = x1_real.length;
+		const N2 = size * 2;
+		const bit_size = Math.round(Math.log(size)/Math.log(2));
+		const is_fast = (1 &lt;&lt; bit_size) === size;
+		if(is_fast) {
+			// FFT&#x3092;&#x7528;&#x3044;&#x305F;&#x624B;&#x6CD5;&#x3078;&#x5207;&#x308A;&#x66FF;&#x3048;
+			// &#x5468;&#x6CE2;&#x6570;&#x7A7A;&#x9593;&#x4E0A;&#x3067;&#x306F;&#x639B;&#x3051;&#x7B97;&#x306B;&#x306A;&#x308B;
+			if(is_self) {
+				const size = x1_real.length;
+				const real = new Array(N2);
+				const imag = new Array(N2);
+				for(let i = 0; i &lt; N2; i++) {
+					real[i] = i &lt; size ? x1_real[i] : 0.0;
+					imag[i] = i &lt; size ? x1_imag[i] : 0.0;
+				}
+				const X = SignalTool.fft(real, imag);
+				for(let i = 0; i &lt; N2; i++) {
+					real[i] = X.real[i] * X.real[i] - X.imag[i] * X.imag[i];
+					imag[i] = X.real[i] * X.imag[i] + X.imag[i] * X.real[i];
+				}
+				const x = SignalTool.ifft(real, imag);
+				x.real.splice(N2 - 1);
+				x.imag.splice(N2 - 1);
+				return x;
+			}
+			else if(x1_real.length === x2_real.length) {
+				const size = x1_real.length;
+				const real1 = new Array(N2);
+				const imag1 = new Array(N2);
+				const real2 = new Array(N2);
+				const imag2 = new Array(N2);
+				for(let i = 0; i &lt; N2; i++) {
+					real1[i] = i &lt; size ? x1_real[i] : 0.0;
+					imag1[i] = i &lt; size ? x1_imag[i] : 0.0;
+					real2[i] = i &lt; size ? x2_real[i] : 0.0;
+					imag2[i] = i &lt; size ? x2_imag[i] : 0.0;
+				}
+				const F = SignalTool.fft(real1, imag1);
+				const G = SignalTool.fft(real2, imag2);
+				const real = new Array(N2);
+				const imag = new Array(N2);
+				for(let i = 0; i &lt; N2; i++) {
+					real[i] = F.real[i] * G.real[i] - F.imag[i] * G.imag[i];
+					imag[i] = F.real[i] * G.imag[i] + F.imag[i] * G.real[i];
+				}
+				const fg = SignalTool.ifft(real, imag);
+				fg.real.splice(N2 - 1);
+				fg.imag.splice(N2 - 1);
+				return fg;
+			}
+		}
+		let is_real_number = !SignalTool.isContainsZero(x1_imag);
+		if(is_real_number) {
+			is_real_number = !SignalTool.isContainsZero(x2_imag);
+		}
+		{
+			// &#x307E;&#x3058;&#x3081;&#x306B;&#x8A08;&#x7B97;&#x3059;&#x308B;
+			const real = new Array(x1_real.length + x2_real.length - 1);
+			const imag = new Array(x1_real.length + x2_real.length - 1);
+			for(let i = 0; i &lt; real.length; i++) {
+				real[i] = 0;
+				imag[i] = 0;
+			}
+			if(is_real_number) {
+				// &#x5B9F;&#x6570;&#x90E8;&#x5206;&#x306E;&#x307F;&#x306E;&#x7573;&#x307F;&#x8FBC;&#x307F;&#x7A4D;&#x5206;
+				// &#x30B9;&#x30E9;&#x30A4;&#x30C9;&#x3055;&#x305B;&#x3066;&#x3044;&#x304F;
+				// AAAA
+				//  BBBB
+				//   CCCC
+				for(let y = 0; y &lt; x2_real.length; y++) {
+					for(let x = 0; x &lt; x1_real.length; x++) {
+						real[y + x] += x1_real[x] * x2_real[y];
+					}
+				}
+			}
+			else {
+				// &#x5B9F;&#x6570;&#x90E8;&#x5206;&#x3068;&#x8907;&#x7D20;&#x6570;&#x90E8;&#x5206;&#x306E;&#x7573;&#x307F;&#x8FBC;&#x307F;&#x7A4D;&#x5206;
+				for(let y = 0; y &lt; x2_real.length; y++) {
+					for(let x = 0; x &lt; x1_real.length; x++) {
+						real[y + x] += x1_real[x] * x2_real[y] - x1_imag[x] * x2_imag[y];
+						imag[y + x] += x1_real[x] * x2_imag[y] + x1_imag[x] * x2_real[y];
+					}
+				}
+			}
+			return {
+				real : real,
+				imag : imag
+			};
+		}
+	}
+
+	/**
+	 * ACF(Autocorrelation function), Cros-correlation function.
+	 * @param {Array} x1_real - Array of real parts of vector.
+	 * @param {Array} x1_imag - Array of imaginary parts of vector.
+	 * @param {Array} x2_real - Array of real parts of vector.
+	 * @param {Array} x2_imag - Array of imaginary parts of vector.
+	 * @returns {Object&lt;string, Array&lt;number&gt;&gt;}
+	 */
+	static xcorr(x1_real, x1_imag, x2_real, x2_imag) {
+		let is_self = false;
+		if(x1_real.length === x2_real.length) {
+			is_self = true;
+			for(let i = 0; i &lt; x1_real.length;i++) {
+				if((x1_real[i] !== x2_real[i]) || (x1_imag[i] !== x2_imag[i])) {
+					is_self = false;
+					break;
+				}
+			}
+		}
+		if(x1_real.length === x2_real.length) {
+			const size = x1_real.length;
+			const N2 = size * 2;
+			const bit_size = Math.round(Math.log(size)/Math.log(2));
+			const is_fast = (1 &lt;&lt; bit_size) === size;
+			if(is_fast) {
+				let fg = null;
+				if(is_self) {
+					const real = new Array(N2);
+					const imag = new Array(N2);
+					for(let i = 0; i &lt; N2; i++) {
+						real[i] = i &lt; size ? x1_real[i] : 0.0;
+						imag[i] = i &lt; size ? x1_imag[i] : 0.0;
+					}
+					// &#x30D1;&#x30EF;&#x30FC;&#x30B9;&#x30DA;&#x30AF;&#x30C8;&#x30EB;&#x5BC6;&#x5EA6;&#x306F;&#x3001;&#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x306E;&#x30D5;&#x30FC;&#x30EA;&#x30A8;&#x5909;&#x63DB;&#x306E;&#x305F;&#x3081;&#x3001;
+					// &#x30D1;&#x30EF;&#x30FC;&#x30B9;&#x30DA;&#x30AF;&#x30C8;&#x30EB;&#x5BC6;&#x5EA6;&#x306E;&#x9006;&#x5909;&#x63DB;&#x3067;&#x6C42;&#x3081;&#x3089;&#x308C;&#x308B;&#x3002;
+					const power = SignalTool.powerfft(real, imag);
+					fg = SignalTool.ifft(power, imag);
+					// &#x30B7;&#x30D5;&#x30C8;
+					real.pop();
+					imag.pop();
+					for(let i = 0, j = size + 1 ; i &lt; real.length; i++, j++) {
+						if(N2 &lt;= j) {
+							j = 0;
+						}
+						real[i] = fg.real[j];
+						imag[i] = fg.imag[j];
+					}
+					return {
+						real : real,
+						imag : imag
+					};
+				}
+				else {
+					const f_real = new Array(N2);
+					const f_imag = new Array(N2);
+					const g_real = new Array(N2);
+					const g_imag = new Array(N2);
+					// g&#x306E;&#x9806;&#x5E8F;&#x3092;&#x53CD;&#x8EE2;&#x304B;&#x3064;&#x5171;&#x5F79;&#x8907;&#x7D20;&#x6570;&#x306B;&#x3059;&#x308B;
+					for(let i = 0; i &lt; N2; i++) {
+						f_real[i] = i &lt; size ?   x1_real[i] : 0.0;
+						f_imag[i] = i &lt; size ?   x1_imag[i] : 0.0;
+						g_real[i] = i &lt; size ?   x2_real[size - i - 1] : 0.0;
+						g_imag[i] = i &lt; size ? - x2_imag[size - i - 1] : 0.0;
+					}
+					// &#x7573;&#x307F;&#x8FBC;&#x307F;&#x639B;&#x3051;&#x7B97;
+					const F = SignalTool.fft(f_real, f_imag);
+					const G = SignalTool.fft(g_real, g_imag);
+					const real = new Array(N2);
+					const imag = new Array(N2);
+					for(let i = 0; i &lt; N2; i++) {
+						real[i] = F.real[i] * G.real[i] - F.imag[i] * G.imag[i];
+						imag[i] = F.real[i] * G.imag[i] + F.imag[i] * G.real[i];
+					}
+					fg = SignalTool.ifft(real, imag);
+					fg.real.splice(N2 - 1);
+					fg.imag.splice(N2 - 1);
+					return fg;
+				}
+			}
+		}
+		let is_real_number = !SignalTool.isContainsZero(x1_imag);
+		if(is_real_number) {
+			is_real_number = !SignalTool.isContainsZero(x2_imag);
+		}
+		if(is_self) {
+			const size = x1_real.length;
+			const N2 = size * 2;
+			// &#x5B9F;&#x6570;&#x306E;&#x81EA;&#x5DF1;&#x76F8;&#x95A2;&#x95A2;&#x6570;
+			if(is_real_number) {
+				const fg = new Array(size);
+				for(let m = 0; m &lt; size; m++) {
+					fg[m] = 0;
+					const tmax = size - m;
+					for(let t = 0; t &lt; tmax; t++) {
+						fg[m] += x1_real[t] * x2_real[t + m];
+					}
+				}
+				// &#x534A;&#x5206;&#x306E;&#x5024;&#x306F;&#x540C;&#x4E00;&#x306A;&#x306E;&#x3067;&#x6298;&#x308A;&#x8FD4;&#x3057;&#x3066;&#x8A08;&#x7B97;&#x3092;&#x7701;&#x304F;
+				const real = new Array(N2 - 1);
+				const imag = new Array(N2 - 1);
+				for(let i = 0, j = size - 1 ; i &lt; size; i++, j--) {
+					real[i] = fg[j];
+					real[size + i - 1] = fg[i];
+				}
+				for(let i = 0; i &lt; imag.length; i++) {
+					imag[i] = 0.0;
+				}
+				return {
+					real : real,
+					imag : imag
+				};
+			}
+		}
+		// 2&#x3064;&#x306E;&#x4FE1;&#x53F7;&#x306E;&#x9577;&#x3055;&#x304C;&#x9055;&#x3046;&#x3001;&#x53C8;&#x306F;2&#x306E;&#x7D2F;&#x4E57;&#x306E;&#x9577;&#x3055;&#x3067;&#x306F;&#x306A;&#x3044;&#x5225;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x5834;&#x5408;&#x306F;&#x901A;&#x5E38;&#x8A08;&#x7B97;
+		{
+			const g_real = new Array(x2_real.length);
+			const g_imag = new Array(x2_real.length);
+			// g&#x306E;&#x9806;&#x5E8F;&#x3092;&#x53CD;&#x8EE2;&#x304B;&#x3064;&#x5171;&#x5F79;&#x8907;&#x7D20;&#x6570;&#x306B;&#x3059;&#x308B;
+			for(let i = 0; i &lt; x2_real.length; i++) {
+				g_real[i] =   x2_real[x2_real.length - i - 1];
+				g_imag[i] = - x2_imag[x2_real.length - i - 1];
+			}
+			const y = SignalTool.conv(x1_real, x1_imag, g_real, g_imag);
+			if(x1_real.length === x2_real.length) {
+				return y;
+			}
+			const delta = Math.abs(x1_real.length - x2_real.length);
+			const zeros = new Array(delta);
+			for(let i = 0; i &lt; delta; i++) {
+				zeros[i] = 0;
+			}
+			if(x1_real.length &gt; x2_real.length) {
+				// &#x30C7;&#x30FC;&#x30BF;&#x306E;&#x6700;&#x521D;&#x306B;&#x300C;0&#x300D;&#x3092;&#x52A0;&#x3048;&#x308B;
+				return {
+					real : zeros.concat(y.real),
+					imag : zeros.concat(y.imag)
+				};
+			}
+			else {
+				// &#x30C7;&#x30FC;&#x30BF;&#x306E;&#x6700;&#x5F8C;&#x306B;&#x300C;0&#x300D;&#x3092;&#x52A0;&#x3048;&#x308B;
+				return {
+					real : y.real.concat(zeros),
+					imag : y.imag.concat(zeros)
+				};
+			}
+		}
+	}
+
+	/**
+	 * Create window function for signal processing.
+	 * The following window functions are available.
+	 * - &quot;rectangle&quot;: Rectangular window
+	 * - &quot;hann&quot;: Hann/Hanning window.
+	 * - &quot;hamming&quot;: Hamming window.
+	 * - &quot;blackman&quot;: Blackman window.
+	 * - &quot;blackmanharris&quot;: Blackman-Harris window.
+	 * - &quot;blackmannuttall&quot;: Blackman-Nuttall window.
+	 * - &quot;flattop&quot;: Flat top window.
+	 * - &quot;sin&quot;, Half cycle sine window.
+	 * - &quot;vorbis&quot;, Vorbis window.
+	 * @param {string} name - Window function name.
+	 * @param {number} size - Window length.
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;
+	 * @returns {Array&lt;number&gt;}
+	 */
+	static window(name, size, periodic) {
+		const periodic_ = periodic !== undefined ? periodic : &quot;symmetric&quot;;
+		const name_ = name.toLocaleLowerCase();
+		const size_ = size;
+		const window = new Array(size_);
+		
+		/**
+		 * @type {function(number): number }
+		 */
+		let normalzie;
+		if((periodic_ === &quot;symmetric&quot;) || (periodic_ === 0)) {
+			normalzie = function(y) {
+				return (y / (size_ - 1) * (Math.PI * 2.0));
+			};
+		}
+		else if((periodic_ === &quot;periodic&quot;) || (periodic_ !== 0)) {
+			normalzie = function(y) {
+				return (y / size_ * (Math.PI * 2.0));
+			};
+		}
+
+		/**
+		 * 
+		 * @param {number} alpha0 
+		 * @param {number} alpha1 
+		 * @param {number} alpha2 
+		 * @param {number} alpha3 
+		 * @param {number} alpha4 
+		 */
+		const setBlackmanWindow = function( alpha0, alpha1, alpha2, alpha3, alpha4) {
+			for(let i = 0; i &lt; size_; i++) {
+				window[i]  = alpha0;
+				window[i] -= alpha1 * Math.cos(1.0 * normalzie(i));
+				window[i] += alpha2 * Math.cos(2.0 * normalzie(i));
+				window[i] -= alpha3 * Math.cos(3.0 * normalzie(i));
+				window[i] += alpha4 * Math.cos(4.0 * normalzie(i));
+			}
+		};
+
+		switch(name_) {
+			// rect &#x77E9;&#x5F62;&#x7A93;(rectangular window)
+			case &quot;rectangle&quot;:
+				setBlackmanWindow(1.0, 0.0, 0.0, 0.0, 0.0);
+				break;
+
+			// hann &#x30CF;&#x30F3;&#x7A93;&#x30FB;&#x30CF;&#x30CB;&#x30F3;&#x30B0;&#x7A93;(hann/hanning window)
+			case &quot;hann&quot;:
+				setBlackmanWindow(0.5, 0.5, 0.0, 0.0, 0.0);
+				break;
+
+			// hamming &#x30CF;&#x30DF;&#x30F3;&#x30B0;&#x7A93;(hamming window)
+			case &quot;hamming&quot;:
+				setBlackmanWindow(0.54, 0.46, 0.0, 0.0, 0.0);
+				break;
+
+			// blackman &#x30D6;&#x30E9;&#x30C3;&#x30AF;&#x30DE;&#x30F3;&#x7A93;(Blackman window)
+			case &quot;blackman&quot;:
+				setBlackmanWindow(0.42, 0.50, 0.08, 0.0, 0.0);
+				break;
+
+			// blackmanharris Blackman-Harris window
+			case &quot;blackmanharris&quot;:
+				setBlackmanWindow(0.35875, 0.48829, 0.14128, 0.01168, 0);
+				break;
+
+			// blackmannuttall Blackman-Nuttall window
+			case &quot;blackmannuttall&quot;:
+				setBlackmanWindow(0.3635819, 0.4891775, 0.1365995, 0.0106411, 0.0);
+				break;
+
+			// flattop Flat top window
+			case &quot;flattop&quot;:
+				setBlackmanWindow(1.0, 1.93, 1.29, 0.388, 0.032);
+				break;
+
+			// Half cycle sine window(MDCT&#x7A93;)
+			case &quot;sin&quot;:
+				for(let i = 0; i &lt; size_; i++) {
+					window[i]  = Math.sin(normalzie(i) * 0.5);
+				}
+				break;
+
+			// Vorbis window(MDCT&#x7A93;)
+			case &quot;vorbis&quot;:
+				for(let i = 0; i &lt; size_; i++) {
+					const x = Math.sin(normalzie(i) * 0.5);
+					window[i]  = Math.sin(Math.PI * 0.5 * x * x);
+				}
+				break;
+		}
+
+		return window;
+	}
+
+	/**
+	 * Hann (Hanning) window.
+	 * @param {number} size - Window length.
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;
+	 * @returns {Array&lt;number&gt;}
+	 */
+	static hann(size, periodic) {
+		return SignalTool.window(&quot;hann&quot;, size, periodic);
+	}
+	
+	/**
+	 * Hamming window.
+	 * @param {number} size - Window length.
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;
+	 * @returns {Array&lt;number&gt;}
+	 */
+	static hamming(size, periodic) {
+		return SignalTool.window(&quot;hamming&quot;, size, periodic);
+	}
+	
+}
+
+/**
+ * Signal processing class for Matrix class.
+ */
+export default class Signal {
+	
+	/**
+	 * Discrete Fourier transform (DFT).
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {SignalSettings} [type]
+	 * @returns {Matrix} fft(x)
+	 */
+	static fft(x, type) {
+		const dim = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const M = Matrix._toMatrix(x);
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = SignalTool.fft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex([result.real[i], result.imag[i]]);
+			}
+			return y;
+		};
+		return M.eachVector(main, dim);
+	}
+
+	/**
+	 * Inverse discrete Fourier transform (IDFT),
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} X
+	 * @param {SignalSettings} [type]
+	 * @returns {Matrix} ifft(X)
+	 */
+	static ifft(X, type) {
+		const dim = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const M = Matrix._toMatrix(X);
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = SignalTool.ifft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex([result.real[i], result.imag[i]]);
+			}
+			return y;
+		};
+		return M.eachVector(main, dim);
+	}
+
+	/**
+	 * Power spectral density.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {SignalSettings} [type]
+	 * @returns {Matrix} abs(fft(x)).^2
+	 */
+	static powerfft(x, type) {
+		const dim = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const M = Matrix._toMatrix(x);
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			const real = new Array(data.length);
+			const imag = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+				imag[i] = data[i].imag;
+			}
+			const result = SignalTool.powerfft(real, imag);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex(result[i]);
+			}
+			return y;
+		};
+		return M.eachVector(main, dim);
+	}
+
+	/**
+	 * Discrete cosine transform (DCT-II, DCT).
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {SignalSettings} [type]
+	 * @returns {Matrix} dct(x)
+	 */
+	static dct(x, type) {
+		const dim = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const M = Matrix._toMatrix(x);
+		if(M.isComplex()) {
+			throw &quot;dct don&apos;t support complex numbers.&quot;;
+		}
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			const real = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+			}
+			const result = SignalTool.dct(real);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex(result[i]);
+			}
+			return y;
+		};
+		return M.eachVector(main, dim);
+	}
+
+	/**
+	 * Inverse discrete cosine transform (DCT-III, IDCT),
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} X
+	 * @param {SignalSettings} [type]
+	 * @returns {Matrix} idct(x)
+	 */
+	static idct(X, type) {
+		const dim = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const M = Matrix._toMatrix(X);
+		if(M.isComplex()) {
+			throw &quot;idct don&apos;t support complex numbers.&quot;;
+		}
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			const real = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				real[i] = data[i].real;
+			}
+			const result = SignalTool.idct(real);
+			const y = new Array(data.length);
+			for(let i = 0; i &lt; data.length; i++) {
+				y[i] = new Complex(result[i]);
+			}
+			return y;
+		};
+		return M.eachVector(main, dim);
+	}
+
+	/**
+	 * Discrete two-dimensional Fourier transform (2D DFT).
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @returns {Matrix}
+	 */
+	static fft2(x) {
+		return Signal.fft(x, {dimension : &quot;both&quot;});
+	}
+
+	/**
+	 * Inverse discrete two-dimensional Fourier transform (2D IDFT),
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} X
+	 * @returns {Matrix}
+	 */
+	static ifft2(X) {
+		return Signal.ifft(X, {dimension : &quot;both&quot;});
+	}
+
+	/**
+	 * Discrete two-dimensional cosine transform (2D DCT).
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @returns {Matrix}
+	 */
+	static dct2(x) {
+		return Signal.dct(x, {dimension : &quot;both&quot;});
+	}
+
+	/**
+	 * Inverse discrete two-dimensional cosine transform (2D IDCT),
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} X
+	 * @returns {Matrix}
+	 */
+	static idct2(X) {
+		return Signal.idct(X, {dimension : &quot;both&quot;});
+	}
+
+	/**
+	 * Convolution integral, Polynomial multiplication.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x1
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x2
+	 * @returns {Matrix}
+	 */
+	static conv(x1, x2) {
+		const M1 = Matrix._toMatrix(x1);
+		const M2 = Matrix._toMatrix(x2);
+		if(M1.isMatrix() || M2.isMatrix()) {
+			throw &quot;conv don&apos;t support matrix numbers.&quot;;
+		}
+		const M1_real = new Array(M1.length);
+		const M1_imag = new Array(M1.length);
+		const M2_real = new Array(M2.length);
+		const M2_imag = new Array(M2.length);
+		if(M1.isRow()) {
+			for(let i = 0; i &lt; M1.column_length; i++) {
+				M1_real[i] = M1.matrix_array[0][i].real;
+				M1_imag[i] = M1.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i &lt; M1.row_length; i++) {
+				M1_real[i] = M1.matrix_array[i][0].real;
+				M1_imag[i] = M1.matrix_array[i][0].imag;
+			}
+		}
+		if(M2.isRow()) {
+			for(let i = 0; i &lt; M2.column_length; i++) {
+				M2_real[i] = M2.matrix_array[0][i].real;
+				M2_imag[i] = M2.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i &lt; M2.row_length; i++) {
+				M2_real[i] = M2.matrix_array[i][0].real;
+				M2_imag[i] = M2.matrix_array[i][0].imag;
+			}
+		}
+		const y = SignalTool.conv(M1_real, M1_imag, M2_real, M2_imag);
+		const m = new Array(y.real.length);
+		for(let i = 0; i &lt; y.real.length; i++) {
+			m[i] = new Complex([y.real[i], y.imag[i]]);
+		}
+		const M = new Matrix([m]);
+		return M2.isRow() ? M : M.transpose();
+	}
+
+	/**
+	 * ACF(Autocorrelation function), cros-correlation function.
+	 * - If the argument is omitted, it is calculated by the autocorrelation function.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x1
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [x2] - Matrix to calculate the correlation.
+	 * @returns {Matrix}
+	 */
+	static xcorr(x1, x2) {
+		const M1 = Matrix._toMatrix(x1);
+		if(!x2) {
+			return M1.xcorr(M1);
+		}
+		const M2 = Matrix._toMatrix(x2);
+		if(M1.isMatrix() || M2.isMatrix()) {
+			throw &quot;conv don&apos;t support matrix numbers.&quot;;
+		}
+		const M1_real = new Array(M1.length);
+		const M1_imag = new Array(M1.length);
+		const M2_real = new Array(M2.length);
+		const M2_imag = new Array(M2.length);
+		if(M1.isRow()) {
+			for(let i = 0; i &lt; M1.column_length; i++) {
+				M1_real[i] = M1.matrix_array[0][i].real;
+				M1_imag[i] = M1.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i &lt; M1.row_length; i++) {
+				M1_real[i] = M1.matrix_array[i][0].real;
+				M1_imag[i] = M1.matrix_array[i][0].imag;
+			}
+		}
+		if(M2.isRow()) {
+			for(let i = 0; i &lt; M2.column_length; i++) {
+				M2_real[i] = M2.matrix_array[0][i].real;
+				M2_imag[i] = M2.matrix_array[0][i].imag;
+			}
+		}
+		else {
+			for(let i = 0; i &lt; M2.row_length; i++) {
+				M2_real[i] = M2.matrix_array[i][0].real;
+				M2_imag[i] = M2.matrix_array[i][0].imag;
+			}
+		}
+		const y = SignalTool.xcorr(M1_real, M1_imag, M2_real, M2_imag);
+		const m = new Array(y.real.length);
+		for(let i = 0; i &lt; y.real.length; i++) {
+			m[i] = new Complex([y.real[i], y.imag[i]]);
+		}
+		const M = new Matrix([m]);
+		return M1.isRow() ? M : M.transpose();
+	}
+
+	/**
+	 * Create window function for signal processing.
+	 * The following window functions are available.
+	 * - &quot;rectangle&quot;: Rectangular window
+	 * - &quot;hann&quot;: Hann/Hanning window.
+	 * - &quot;hamming&quot;: Hamming window.
+	 * - &quot;blackman&quot;: Blackman window.
+	 * - &quot;blackmanharris&quot;: Blackman-Harris window.
+	 * - &quot;blackmannuttall&quot;: Blackman-Nuttall window.
+	 * - &quot;flattop&quot;: Flat top window.
+	 * - &quot;sin&quot;, Half cycle sine window.
+	 * - &quot;vorbis&quot;, Vorbis window.
+	 * @param {string} name - Window function name.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - Window length
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;
+	 * @returns {Matrix} Column vector.
+	 */
+	static window(name, size, periodic) {
+		const size_ = Matrix._toInteger(size);
+		const y = SignalTool.window(name, size_, periodic);
+		return (new Matrix(y)).transpose();
+	}
+
+	/**
+	 * Hann (Hanning) window.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - Window length
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;
+	 * @returns {Matrix} Column vector.
+	 */
+	static hann(size, periodic) {
+		return Signal.window(&quot;hann&quot;, size, periodic);
+	}
+	
+	/**
+	 * Hamming window.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} size - Window length
+	 * @param {string|number} [periodic=&quot;symmetric&quot;] - 0/&quot;symmetric&quot; (default) , 1/&quot;periodic&quot;
+	 * @returns {Matrix} Column vector.
+	 */
+	static hamming(size, periodic) {
+		return Signal.window(&quot;hamming&quot;, size, periodic);
+	}
+	
+	/**
+	 * FFT shift.
+	 * Circular shift beginning at the center of the signal.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x 
+	 * @param {SignalSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static fftshift(x, type) {
+		const X = Matrix._toMatrix(x);
+		if(X.isVector()) {
+			const shift_size = Math.floor(X.length / 2);
+			return X.circshift(shift_size, type);
+		}
+		const shift_size_col = Math.floor(X.column_length / 2);
+		const shift_size_row = Math.floor(X.row_length / 2);
+		if(type !== undefined) {
+			const target = type.dimension;
+			if((target === &quot;row&quot;) || (target === 1)) {
+				return X.circshift(shift_size_col, type);
+			}
+			else if((target === &quot;column&quot;) || (target === 2)) {
+				return X.circshift(shift_size_row, type);
+			}
+		}
+		const Y = X.circshift(shift_size_col, {dimension : &quot;row&quot;});
+		return Y.circshift(shift_size_row, {dimension : &quot;column&quot;});
+	}
+	
+}
+
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

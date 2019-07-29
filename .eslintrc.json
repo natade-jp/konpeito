@@ -30,7 +30,7 @@
 			"error",
 			"always"
 		],
-		"no-constant-condition": 2,
+		"no-constant-condition": 1,
 		"no-unused-vars": 1,
 		"no-console": 1,
 		"no-var": 2,

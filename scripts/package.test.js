@@ -17,7 +17,7 @@ const jest_config_js = {
 
 if(process.argv[2]) {
 	const test_file_name = process.argv[2];
-	jest_config_js["testMatch"].push("**/?(*.)" + test_file_name + ".test.mjs");
+	jest_config_js["testMatch"].push("**/?(*.)" + test_file_name + ".test.?(m)js");
 }
 else {
 	jest_config_js["testMatch"].push("**/__tests__/**/*.?(m)js?(x)");

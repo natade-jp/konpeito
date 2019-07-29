@@ -1,0 +1,2632 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../">
+  <title data-ice="title">src/math/BigDecimal.js | konpeito</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.js~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigDecimal.js~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigInteger.js~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.js~Fraction.html">Fraction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.js~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Probability.js~Probability.html">Probability</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.js~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.js~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/math/BigDecimal.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+import BigInteger from &quot;./BigInteger.js&quot;;
+import RoundingMode, {RoundingModeEntity} from &quot;./context/RoundingMode.js&quot;;
+import MathContext from &quot;./context/MathContext.js&quot;;
+
+/**
+ * Setting of calculation result of division.
+ * @typedef {Object} BigDecimalDivideType
+ * @property {number} [scale] Scale of rounding.
+ * @property {RoundingModeEntity} [roundingMode] Rounding mode.
+ * @property {MathContext} [context] Configuration.(scale and roundingMode are unnecessary.)
+ */
+
+/**
+ * Default MathContext class.
+ * Used when MathContext not specified explicitly.
+ * @type {MathContext}
+ * @ignore
+ */
+let DEFAULT_CONTEXT = MathContext.DECIMAL128;
+
+/**
+ * Collection of functions used in BigDecimal.
+ * @ignore
+ */
+class BigDecimalTool {
+
+	/**
+	 * Create data for BigDecimal from strings.
+	 * @param {string} ntext 
+	 * @returns {{scale : number, integer : BigInteger}}
+	 */
+	static ToBigDecimalFromString(ntext) {
+		let scale = 0;
+		let buff;
+		// &#x6B63;&#x898F;&#x5316;
+		let text = ntext.replace(/\s/g, &quot;&quot;).toLowerCase();
+		// +-&#x306E;&#x7B26;&#x53F7;&#x304C;&#x3042;&#x308B;&#x304B;
+		let number_text = &quot;&quot;;
+		buff = text.match(/^[+-]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			if(buff.indexOf(&quot;-&quot;) !== -1) {
+				number_text += &quot;-&quot;;
+			}
+		}
+		// &#x6574;&#x6570;&#x90E8;&#x304C;&#x3042;&#x308B;&#x304B;
+		buff = text.match(/^[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			number_text += buff;
+		}
+		// &#x5C0F;&#x6570;&#x90E8;&#x304C;&#x3042;&#x308B;&#x304B;
+		buff = text.match(/^\.[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			buff = buff.substr(1);
+			scale = scale + buff.length;
+			number_text += buff;
+		}
+		// &#x6307;&#x6570;&#x8868;&#x8A18;&#x304C;&#x3042;&#x308B;&#x304B;
+		buff = text.match(/^e[+-]?[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0].substr(1);
+			scale   = scale - parseInt(buff, 10);
+		}
+		return {
+			scale : scale,
+			integer : new BigInteger([number_text, 10])
+		};
+	}
+
+	/**
+	 * Create data for BigDecimal from number.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} value 
+	 * @returns {{scale : number, integer : BigInteger}}
+	 */
+	static ToBigDecimalFromNumber(value) {
+		// &#x6574;&#x6570;
+		if(value === Math.floor(value)) {
+			return {
+				scale : 0,
+				integer : new BigInteger(Math.round(value))
+			};
+		}
+		// &#x6D6E;&#x52D5;&#x5C0F;&#x6570;
+		else {
+			let scale = Math.trunc(Math.log(Math.abs(value)) / Math.log(10));
+			let x = value / Math.pow(10, scale);
+			// &#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x3092;&#x9006;&#x306B;&#x3059;&#x308B;
+			scale = - scale;
+			for(let i = 0; i &lt; 14; i++) {
+				x = x * 10;
+				scale = scale + 1;
+				if(Math.abs(x - Math.round(x)) &lt;= Number.EPSILON) {
+					break;
+				}
+			}
+			// &#x6700;&#x3082;&#x4E0B;&#x306E;&#x6841;&#x306F;&#x56DB;&#x6368;&#x4E94;&#x5165;&#x3059;&#x308B;
+			x = Math.round(x * 1e14) / 1e14;
+			return {
+				scale : scale,
+				integer : new BigInteger(x)
+			};
+			// 64&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x5B9F;&#x6570;&#x578B;&#x306F;15&#x6841;&#x7A0B;&#x5EA6;&#x307E;&#x3067;&#x6B63;&#x3057;&#x3044;
+			// &#x4F59;&#x88D5;&#x3092;&#x3082;&#x3063;&#x3066;12&#x6841;&#x7A0B;&#x5EA6;&#x307E;&#x3067;&#x3092;&#x629C;&#x304D;&#x51FA;&#x3059;&#x306E;&#x304C;&#x826F;&#x3044;&#x304B;&#x3068;&#x601D;&#x308F;&#x308C;&#x308B;&#x3002;
+		}
+	}
+}
+
+/**
+ * Arbitrary-precision floating-point number class (immutable).
+ * - Sorry. Infinity and NaN do not correspond yet.
+ */
+export default class BigDecimal {
+	
+	/**
+	 * Create an arbitrary-precision floating-point number.
+	 * 
+	 * Initialization can be performed as follows.
+	 * - 1200, &quot;1200&quot;, &quot;12e2&quot;, &quot;1.2e3&quot;
+	 * - When initializing with array. [ integer, [scale = 0], [context=default]].
+	 * - When initializing with object. { integer, [scale = 0], [context=default]}.
+	 * 
+	 * Description of the settings are as follows, you can also omitted.
+	 * - The &quot;scale&quot; is an integer scale factor.
+	 * - The &quot;context&quot; is used to normalize the created floating point.
+	 * 
+	 * If &quot;context&quot; is not specified, the &quot;default_context&quot; set for the class is used.
+	 * The &quot;context&quot; is the used when no environment settings are specified during calculation.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,context:?MathContext}|BigInteger|Object} number - Real data.
+	 */
+	constructor(number) {
+
+		/**
+		 * The scale of this BigDecimal.
+		 * @private
+		 * @type {number}
+		 */
+		this._scale	= 0;
+		
+		/**
+		 * Context used during initialization.
+		 * @private
+		 * @type {MathContext}
+		 */
+		this.default_context = DEFAULT_CONTEXT;
+
+		// &#x3053;&#x306E;&#x5024;&#x304C;true&#x306E;&#x5834;&#x5408;&#x306F;&#x6700;&#x5F8C;&#x306B;&#x6B63;&#x898F;&#x5316;&#x3092;&#x5B9F;&#x884C;&#x3059;&#x308B;
+		let is_set_context = false;
+
+		if(arguments.length &gt; 1) {
+			throw &quot;BigDecimal Unsupported argument[&quot; + arguments.length + &quot;]&quot;;
+		}
+		if(number instanceof BigDecimal) {
+
+			/**
+			 * Integer part.
+			 * @private
+			 * @type {BigInteger}
+			 */
+			this.integer			= number.integer.clone();
+
+			this._scale				= number._scale;
+			
+			/**
+			 * Integer part of string (for cache).
+			 * @private
+			 * @type {string}
+			 */
+			this.int_string			= number.int_string;
+
+			this.default_context	= number.default_context;
+
+		}
+		else if(typeof number === &quot;number&quot;) {
+			const data = BigDecimalTool.ToBigDecimalFromNumber(number);
+			this.integer	= data.integer;
+			this._scale		= data.scale;
+		}
+		else if(number instanceof Array) {
+			if(number.length &gt;= 1) {
+				const prm1 = number[0];
+				if(typeof prm1 === &quot;number&quot;) {
+					const data = BigDecimalTool.ToBigDecimalFromNumber(prm1);
+					this.integer	= data.integer;
+					this._scale		= data.scale;
+				}
+				else if(prm1 instanceof BigDecimal) {
+					this.integer			= prm1.integer.clone();
+					this._scale				= prm1._scale;
+				}
+				else if(prm1 instanceof BigInteger) {
+					this.integer			= prm1.clone();
+				}
+				else if((prm1 instanceof Object) &amp;&amp; (prm1.toBigDecimal)) {
+					const data				= prm1.toBigDecimal();
+					this.integer			= data.integer;
+					this._scale				= data._scale;
+				}
+				else if((prm1 instanceof Object) &amp;&amp; (prm1.doubleValue)) {
+					const data = BigDecimalTool.ToBigDecimalFromNumber(prm1.doubleValue);
+					this.integer	= data.integer;
+					this._scale		= data.scale;
+				}
+				else {
+					const data = BigDecimalTool.ToBigDecimalFromString(prm1.toString());
+					this.integer	= data.integer;
+					this._scale		= data.scale;
+				}
+			}
+			if(number.length &gt;= 2) {
+				// &#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x5024;&#x3092;&#x7701;&#x7565;&#x3057;&#x3066;&#x3044;&#x308B;&#x304B;&#x3069;&#x3046;&#x304B;&#x3092;&#x3001;&#x6570;&#x5024;&#x304B;&#x3069;&#x3046;&#x304B;&#x3067;&#x5224;&#x5B9A;&#x3057;&#x3066;&#x3044;&#x308B;&#x3002;
+				if(typeof number[1] === &quot;number&quot; || number[1] instanceof Number) {
+					// 2&#x3064;&#x3081;&#x304C;&#x6570;&#x5024;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x3064;&#x76EE;&#x3092;&#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x5024;&#x3068;&#x3057;&#x3066;&#x4F7F;&#x7528;&#x3059;&#x308B;
+					this._scale	= number[1];
+					if(number.length &gt;= 3) {
+						this.default_context = number[2] !== undefined ? number[2] : DEFAULT_CONTEXT;
+						is_set_context = true;
+					}
+				}
+				else {
+					if(number.length &gt;= 2) {
+						this.default_context = number[1] !== undefined ? number[1] : DEFAULT_CONTEXT;
+						is_set_context = true;
+					}
+				}
+			}
+		}
+		else if(typeof number === &quot;string&quot;) {
+			const data = BigDecimalTool.ToBigDecimalFromString(number);
+			this.integer	= data.integer;
+			this._scale		= data.scale;
+		}
+		else if(number instanceof BigInteger) {
+			this.integer	= number.clone();
+		}
+		else if((number instanceof Object) &amp;&amp; (number.toBigDecimal)) {
+			const data				= number.toBigDecimal();
+			this.integer			= data.integer;
+			this._scale				= data._scale;
+			this.default_context	= data.default_context;
+		}
+		else if((number instanceof Object) &amp;&amp; (number.scale !== undefined &amp;&amp; number.default_context !== undefined)) {
+			this.integer	= new BigInteger(number.integer);
+			if(number.scale) {
+				this._scale = number.scale;
+			}
+			if(number.context) {
+				this.default_context = number.context;
+				is_set_context = true;
+			}
+		}
+		else if((number instanceof Object) &amp;&amp; (number.doubleValue)) {
+			const data = BigDecimalTool.ToBigDecimalFromNumber(number.doubleValue);
+			this.integer	= data.integer;
+			this._scale		= data.scale;
+		}
+		else if(number instanceof Object) {
+			const data = BigDecimalTool.ToBigDecimalFromString(number.toString());
+			this.integer	= data.integer;
+			this._scale		= data.scale;
+		}
+		else {
+			throw &quot;BigDecimal Unsupported argument &quot; + arguments;
+		}
+		// &#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6B63;&#x898F;&#x5316;
+		if(is_set_context) {
+			const newbigdecimal = this.round(this.default_context);
+			this.integer	= newbigdecimal.integer;
+			this._scale		= newbigdecimal._scale;
+			delete this.int_string;
+		}
+		// &#x30C7;&#x30FC;&#x30BF;&#x304C;&#x6B63;&#x3057;&#x3044;&#x304B;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x3059;&#x308B;
+		if((!(this.integer instanceof BigInteger)) || (!(this.default_context instanceof MathContext))) {
+			throw &quot;BigDecimal Unsupported argument &quot; + arguments;
+		}
+	}
+
+	/**
+	 * Create an arbitrary-precision floating-point number.
+	 * 
+	 * Initialization can be performed as follows.
+	 * - 1200, &quot;1200&quot;, &quot;12e2&quot;, &quot;1.2e3&quot;
+	 * - When initializing with array. [ integer, [scale = 0], [context=default]].
+	 * - When initializing with object. { integer, [scale = 0], [context=default]}.
+	 * 
+	 * Description of the settings are as follows, you can also omitted.
+	 * - The &quot;scale&quot; is an integer scale factor.
+	 * - The &quot;context&quot; is used to normalize the created floating point.
+	 * 
+	 * If &quot;context&quot; is not specified, the &quot;default_context&quot; set for the class is used.
+	 * The &quot;context&quot; is the used when no environment settings are specified during calculation.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
+	 * @returns {BigDecimal}
+	 */
+	static create(number) {
+		if(number instanceof BigDecimal) {
+			return number;
+		}
+		else {
+			return new BigDecimal(number);
+		}
+	}
+
+	/**
+	 * Create a number using settings of this number.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
+	 * @param {MathContext} [mc] - Setting preferences when creating objects.
+	 * @returns {BigDecimal}
+	 */
+	createUsingThisSettings(number, mc) {
+		if(mc) {
+			return new BigDecimal([number, mc]);
+		}
+		else {
+			return new BigDecimal([number, this.default_context]);
+		}
+	}
+
+	/**
+	 * Convert number to BigDecimal type.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} x 
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [scale] 
+	 * @returns {BigDecimal}
+	 */
+	static valueOf(x, scale) {
+		if(arguments.length === 1) {
+			return new BigDecimal(x);
+		}
+		else {
+			return new BigDecimal([x, scale]);
+		}
+	}
+
+	/**
+	 * Convert to BigDecimal.
+	 * If type conversion is unnecessary, return the value as it is.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @returns {BigDecimal}
+	 * @private
+	 */
+	static _toBigDecimal(number) {
+		if(number instanceof BigDecimal) {
+			return number;
+		}
+		else {
+			return new BigDecimal(number);
+		}
+	}
+
+	/**
+	 * Convert to BigInteger.
+	 * If type conversion is unnecessary, return the value as it is.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @returns {BigInteger}
+	 * @private
+	 */
+	static _toBigInteger(number) {
+		if(number instanceof BigInteger) {
+			return number;
+		}
+		else if(number instanceof BigDecimal) {
+			return number.toBigInteger();
+		}
+		else {
+			return new BigInteger(number);
+		}
+	}
+
+	/**
+	 * Convert to real number.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toFloat(number) {
+		if(typeof number === &quot;number&quot;) {
+			return number;
+		}
+		else if(number instanceof BigDecimal) {
+			return number.doubleValue;
+		}
+		else {
+			return (new BigDecimal(number)).doubleValue;
+		}
+	}
+
+	/**
+	 * Convert to integer.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		if(typeof number === &quot;number&quot;) {
+			return Math.trunc(number);
+		}
+		else if(number instanceof BigInteger) {
+			return number.intValue;
+		}
+		else {
+			return (new BigInteger(number)).intValue;
+		}
+	}
+
+	/**
+	 * Return string of this number without sign.
+	 * If cache is already created, return cache.
+	 * @returns {string} 
+	 */
+	_getUnsignedIntegerString() {
+		// &#x30AD;&#x30E3;&#x30C3;&#x30B7;&#x30E5;&#x3059;&#x308B;
+		if(typeof this.int_string === &quot;undefined&quot;) {
+			this.int_string = this.integer.toString(10).replace(/^-/, &quot;&quot;);
+		}
+		return this.int_string;
+	}
+
+	/**
+	 * Deep copy.
+	 * @returns {BigDecimal} 
+	 */
+	clone() {
+		return new BigDecimal(this);
+	}
+	
+	/**
+	 * The scale of this BigDecimal.
+	 * @returns {number} 
+	 */
+	scale() {
+		return this._scale;
+	}
+
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	signum() {
+		return this.integer.signum();
+	}
+
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	sign() {
+		return this.signum();
+	}
+
+	/**
+	 * Precision.
+	 * @returns {number} 
+	 */
+	precision() {
+		return this._getUnsignedIntegerString().length;
+	}
+
+	/**
+	 * An integer with the exponent part removed.
+	 * @returns {BigInteger} 
+	 */
+	unscaledValue() {
+		return new BigInteger(this.integer);
+	}
+
+	/**
+	 * The smallest value that can be represented with the set precision.
+	 * @returns {BigDecimal} 
+	 */
+	ulp() {
+		return new BigDecimal([BigInteger.ONE, this.scale()]);
+	}
+
+	/**
+	 * Absolute value.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} abs(A)
+	 */
+	abs(mc) {
+		const output = this.clone();
+		output.integer = output.integer.abs();
+		return (mc === undefined) ? output : output.round(mc);
+	}
+
+	/**
+	 * this * 1
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
+	 * @returns {BigDecimal} +A
+	 */
+	plus(mc) {
+		const output = this.clone();
+		return (mc === undefined) ? output : output.round(mc);
+	}
+
+	/**
+	 * this * -1
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
+	 * @returns {BigDecimal} -A
+	 */
+	negate(mc) {
+		const output = this.clone();
+		output.integer = output.integer.negate();
+		return (mc === undefined) ? output : output.round(mc);
+	}
+
+	/**
+	 * Move the decimal point to the left.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @returns {BigDecimal} 
+	 */
+	movePointLeft(n) {
+		const x = BigDecimal._toInteger(n);
+		let output = this.scaleByPowerOfTen( -x );
+		output = output.setScale(Math.max(this.scale() + x, 0));
+		return output;
+	}
+
+	/**
+	 * Move the decimal point to the right.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @returns {BigDecimal} 
+	 */
+	movePointRight(n) {
+		const x = BigDecimal._toInteger(n);
+		let output = this.scaleByPowerOfTen( x );
+		output = output.setScale(Math.max(this.scale() - x, 0));
+		return output;
+	}
+
+	/**
+	 * Remove the 0 to the right of the numbers and normalize the scale.
+	 * @returns {BigDecimal} 
+	 */
+	stripTrailingZeros() {
+		// 0&#x3092;&#x3067;&#x304D;&#x308B;&#x9650;&#x308A;&#x53D6;&#x308A;&#x9664;&#x304F;
+		const sign		= this.signum();
+		const sign_text	= sign &gt;= 0 ? &quot;&quot; : &quot;-&quot;;
+		const text		= this.integer.toString(10).replace(/^-/, &quot;&quot;);
+		const zeros		= text.match(/0+$/);
+		let zero_length	= (zeros !== null) ? zeros[0].length : 0;
+		if(zero_length === text.length) {
+			// &#x5168;&#x3066; 0 &#x306A;&#x3089; 1 &#x30B1;&#x30BF;&#x6B8B;&#x3059;
+			zero_length = text.length - 1;
+		}
+		const newScale	= this.scale() - zero_length;
+		return new BigDecimal([new BigInteger(sign_text + text.substring(0, text.length - zero_length)), newScale]);
+	}
+
+	// ----------------------
+	// &#x56DB;&#x5247;&#x6F14;&#x7B97;
+	// ----------------------
+	
+	/**
+	 * Add.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A + B
+	 */
+	add(number, context) {
+		const augend = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : augend.default_context;
+		const src			= this;
+		const tgt			= augend;
+		const newscale	= Math.max(src._scale, tgt._scale);
+		if(src._scale === tgt._scale) {
+			// 1 e1 + 1 e1 = 1
+			return new BigDecimal([src.integer.add(tgt.integer), newscale, mc]);
+		}
+		else if(src._scale &gt; tgt._scale) {
+			// 1 e-2 + 1 e-1
+			const newdst = tgt.setScale(src._scale);
+			// 0.01 + 0.10 = 0.11 = 11 e-2
+			return new BigDecimal([src.integer.add(newdst.integer), newscale, mc]);
+		}
+		else {
+			// 1 e-1 + 1 e-2
+			const newsrc = src.setScale(tgt._scale);
+			// 0.1 + 0.01 = 0.11 = 11 e-2
+			return new BigDecimal([newsrc.integer.add(tgt.integer), newscale, mc]);
+		}
+	}
+
+	/**
+	 * Subtract.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A - B
+	 */
+	subtract(number, context) {
+		const subtrahend = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : subtrahend.default_context;
+		const src			= this;
+		const tgt			= subtrahend;
+		const newscale	= Math.max(src._scale, tgt._scale);
+		if(src._scale === tgt._scale) {
+			return new BigDecimal([src.integer.subtract(tgt.integer), newscale, mc]);
+		}
+		else if(src._scale &gt; tgt._scale) {
+			const newdst = tgt.setScale(src._scale);
+			return new BigDecimal([src.integer.subtract(newdst.integer), newscale, mc]);
+		}
+		else {
+			const newsrc = src.setScale(tgt._scale);
+			return new BigDecimal([newsrc.integer.subtract(tgt.integer), newscale, mc]);
+		}
+	}
+
+	/**
+	 * Subtract.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A - B
+	 */
+	sub(number, context) {
+		return this.subtract(number, context);
+	}
+
+	/**
+	 * Multiply.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A * B
+	 */
+	multiply(number, context) {
+		const multiplicand = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : multiplicand.default_context;
+		const src			= this;
+		const tgt			= multiplicand;
+		const newinteger	= src.integer.multiply(tgt.integer);
+		// 0.1 * 0.01 = 0.001
+		const newscale	= src._scale + tgt._scale;
+		return new BigDecimal([newinteger, newscale, mc]);
+	}
+
+	/**
+	 * Multiply.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A * B
+	 */
+	mul(number, context) {
+		return this.multiply(number, context);
+	}
+
+	/**
+	 * Divide not calculated to the decimal point.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} (int)(A / B)
+	 */
+	divideToIntegralValue(number, context) {
+		const divisor = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : divisor.default_context;
+		/**
+		 * @param {number} num 
+		 * @returns {BigInteger}
+		 */
+		const getDigit  = function( num ) {
+			let i;
+			let text = &quot;1&quot;;
+			for(i = 0; i &lt; num; i++) {
+				text = text + &quot;0&quot;;
+			}
+			return new BigInteger(text);
+		};
+		if(divisor.compareTo(BigDecimal.ZERO) === 0) {
+			throw &quot;ArithmeticException&quot;;
+		}
+
+		// 1000e0		/	1e2				=	1000e-2
+		// 1000e0		/	10e1			=	100e-1
+		// 1000e0		/	100e0			=	10e0
+		// 1000e0		/	1000e-1			=	1e1
+		// 1000e0		/	10000e-2		=	1e1
+		// 1000e0		/	100000e-3		=	1e1
+
+		// 10e2			/	100e0			=	1e1
+		// 100e1		/	100e0			=	1e1
+		// 1000e0		/	100e0			=	10e0
+		// 10000e-1		/	100e0			=	100e-1	
+		// 100000e-2	/	100e0			=	1000e-2
+
+		const src		= this;
+		const tgt		= divisor;
+		let src_integer	= src.integer;
+		let tgt_integer	= tgt.integer;
+		const newScale	= src._scale - tgt._scale;
+
+		// 100e-2 / 3e-1 = 1 / 0.3 -&gt; 100 / 30
+		if(src._scale &gt; tgt._scale) {
+			// src._scale &#x306B;&#x5408;&#x308F;&#x305B;&#x308B;
+			tgt_integer = tgt_integer.multiply(getDigit(  newScale ));
+		}
+		// 1e-1 / 3e-2 = 0.1 / 0.03 -&gt; 10 / 3
+		else if(src._scale &lt; tgt._scale) {
+			// tgt._scale &#x306B;&#x5408;&#x308F;&#x305B;&#x308B;
+			src_integer = src_integer.multiply(getDigit( -newScale ));
+		}
+
+		// &#x3068;&#x308A;&#x3042;&#x3048;&#x305A;&#x8A08;&#x7B97;&#x7D50;&#x679C;&#x3060;&#x3051;&#x4F5C;&#x3063;&#x3066;&#x3057;&#x307E;&#x3046;
+		const new_integer	= src_integer.divide(tgt_integer);
+		const sign			= new_integer.signum();
+		if(sign !== 0) {
+			const text	= new_integer.toString(10).replace(/^-/, &quot;&quot;);
+			// &#x6307;&#x5B9A;&#x3057;&#x305F;&#x6841;&#x3067;&#x306F;&#x8868;&#x3059;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x306A;&#x3044;
+			if((mc.getPrecision() !== 0) &amp;&amp; (text.length &gt; mc.getPrecision())) {
+				throw &quot;ArithmeticException&quot;;
+			}
+			// &#x7D50;&#x679C;&#x306E;&#x512A;&#x5148;&#x30B9;&#x30B1;&#x30FC;&#x30EB; &#x306B;&#x5408;&#x308F;&#x305B;&#x308B; (this.scale() - divisor.scale())
+			if(text.length &lt;= (-newScale)) {
+				// &#x5408;&#x308F;&#x305B;&#x308B;&#x3053;&#x3068;&#x304C;&#x3067;&#x304D;&#x306A;&#x3044;&#x306E;&#x3067;&#x3001;0&#x3092;&#x3067;&#x304D;&#x308B;&#x9650;&#x308A;&#x524A;&#x308B; = stripTrailingZeros&#x30E1;&#x30BD;&#x30C3;&#x30C9;
+				const zeros			= text.match(/0+$/);
+				const zero_length	= (zeros !== null) ? zeros[0].length : 0;
+				const sign_text		= sign &gt;= 0 ? &quot;&quot; : &quot;-&quot;;
+				return new BigDecimal([new BigInteger(sign_text + text.substring(0, text.length - zero_length)), -zero_length, mc]);
+			}
+		}
+
+		let output = new BigDecimal(new_integer);
+		output = output.setScale(newScale, RoundingMode.UP);
+		output = output.round(mc);
+		output.default_context = mc;
+		return output;
+	}
+
+	/**
+	 * Divide and remainder.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {Array&lt;BigDecimal&gt;} [C = (int)(A / B), A - C * B]
+	 */
+	divideAndRemainder(number, context) {
+		const divisor = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : divisor.default_context;
+
+		// 1000e0		/	1e2				=	1000e-2	... 0e0
+		// 1000e0		/	10e1			=	100e-1	... 0e0
+		// 1000e0		/	100e0			=	10e0	... 0e0
+		// 1000e0		/	1000e-1			=	1e1		... 0e0
+		// 1000e0		/	10000e-2		=	1e1		... 0e-1
+		// 1000e0		/	100000e-3		=	1e1		... 0e-2
+
+		// 10e2			/	100e0			=	1e1		... 0e1
+		// 100e1		/	100e0			=	1e1		... 0e1
+		// 1000e0		/	100e0			=	10e0	... 0e0
+		// 10000e-1		/	100e0			=	100e-1	... 0e-1
+		// 100000e-2	/	100e0			=	1000e-2	... 0e-2
+
+		const result_divide	= this.divideToIntegralValue(divisor, mc);
+		const result_remaind	= this.subtract(result_divide.multiply(divisor, mc), mc);
+
+		const output = [result_divide, result_remaind];
+		return output;
+	}
+
+	/**
+	 * Remainder of division.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A % B
+	 */
+	rem(number, context) {
+		return this.divideAndRemainder(number, context)[1];
+	}
+
+	/**
+	 * Modulo, positive remainder of division.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A mod B
+	 */
+	mod(number, context) {
+		const x = this.rem(number, context);
+		if(x.compareTo(BigDecimal.ZERO) &lt; 0) {
+			return x.add(number, context);
+		}
+		else {
+			return x;
+		}
+	}
+
+	/**
+	 * Divide.
+	 * - The argument can specify the scale after calculation.
+	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
+	 * - When &quot;{}&quot; is specified for the argument, it is calculated on the scale of &quot;this.scale() - divisor.scale()&quot;.
+	 * - When null is specified for the argument, it is calculated on the scale of &quot;divisor.default_context&quot;.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext|BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @returns {BigDecimal}
+	 */
+	divide(number, type) {
+		const divisor = BigDecimal._toBigDecimal(number);
+		const src			= this;
+		const tgt			= divisor;
+		let roundingMode	= null;
+		let mc				= null;
+		let newScale		= 0;
+		let isPriorityScale	= false;
+
+		// &#x8A2D;&#x5B9A;&#x3092;&#x30ED;&#x30FC;&#x30C9;&#x3059;&#x308B;
+		if(!type) {
+			mc = tgt.default_context;
+			roundingMode = mc.getRoundingMode();
+			newScale = mc.getPrecision();
+		}
+		else if(type instanceof MathContext) {
+			mc = type;
+			roundingMode = mc.getRoundingMode();
+			newScale = mc.getPrecision();
+		}
+		else {
+			if(type &amp;&amp; type.scale) {
+				newScale = type.scale;
+			}
+			else {
+				isPriorityScale	= true;
+				if(type &amp;&amp; (type.roundingMode || type.context)) {
+					newScale = src.scale();
+				}
+				else {
+					newScale = src.scale() - tgt.scale();
+				}
+			}
+			if(type &amp;&amp; type.context) {
+				mc = type.context;
+				roundingMode = mc.getRoundingMode();
+				newScale = mc.getPrecision();
+			}
+			else {
+				mc = this.default_context;
+			}
+			if(type &amp;&amp; type.roundingMode) {
+				roundingMode = type.roundingMode;
+			}
+			else {
+				roundingMode = mc.getRoundingMode();
+			}
+		}
+		
+		if(tgt.compareTo(BigDecimal.ZERO) === 0) {
+			throw &quot;ArithmeticException&quot;;
+		}
+
+		const precision = mc.getPrecision();
+
+		let all_result;
+		// &#x7121;&#x9650;&#x7CBE;&#x5EA6;&#x304B;&#x3001;&#x7CBE;&#x5EA6;&#x304C;&#x5C0F;&#x3055;&#x3044;&#x5834;&#x5408;&#x306F;&#x53B3;&#x5BC6;&#x306B;&#x6C42;&#x3081;&#x308B;
+		if((precision === 0) || (precision &lt;= 100)) {
+			let newsrc;
+			/**
+			 * @type {any}
+			 */
+			const result_map = {};
+			let result, result_divide, result_remaind;
+			all_result = BigDecimal.ZERO;
+			const check_max = precision !== 0 ? (precision + 8) : 0x3FFFF;
+			newsrc = src;
+			for(let i = 0; i &lt; check_max; i++) {
+				result = newsrc.divideAndRemainder(tgt, MathContext.UNLIMITED);
+				result_divide	= result[0];
+				result_remaind	= result[1];
+				// &#x3053;&#x3053;&#x3067; default_context &#x304C; MathContext.UNLIMITED &#x306B;&#x66F8;&#x304D;&#x63DB;&#x308F;&#x308B;
+				all_result = all_result.add(result_divide.scaleByPowerOfTen(-i), MathContext.UNLIMITED);
+				if(result_remaind.compareTo(BigDecimal.ZERO) !== 0) {
+					if(precision === 0) {	// &#x7CBE;&#x5EA6;&#x7121;&#x9650;&#x5927;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x5FAA;&#x74B0;&#x5C0F;&#x6570;&#x306E;&#x30C1;&#x30A7;&#x30C3;&#x30AF;&#x304C;&#x5FC5;&#x8981;
+						if(result_map[result_remaind._getUnsignedIntegerString()]) {
+							throw &quot;ArithmeticException &quot; + all_result + &quot;[&quot; + result_remaind._getUnsignedIntegerString() + &quot;]&quot;;
+						}
+						else {
+							result_map[result_remaind._getUnsignedIntegerString()] = true;
+						}
+					}
+					newsrc = result_remaind.scaleByPowerOfTen(1);
+				}
+				else {
+					break;
+				}
+			}
+			// default_context &#x306E;&#x8A2D;&#x5B9A;&#x3092;&#x5143;&#x306B;&#x623B;&#x3059;
+		}
+		else {
+			// &#x5DE8;&#x5927;&#x306A;&#x5024;&#x306F;&#x7E70;&#x308A;&#x8FD4;&#x3057;&#x3067;&#x6C42;&#x3081;&#x308B;
+			const new_mc = new MathContext(precision + 4,	RoundingMode.HALF_UP);
+			all_result = this.mul(tgt.inv(new_mc), new_mc);
+		}
+	
+		all_result.default_context = mc;
+		if(isPriorityScale) {
+			// &#x512A;&#x5148;&#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;&#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x306E;&#x5909;&#x66F4;&#x306B;&#x5931;&#x6557;&#x3059;&#x308B;&#x53EF;&#x80FD;&#x6027;&#x3042;&#x308A;
+			try {
+				all_result = all_result.setScale(newScale, roundingMode);
+			}
+			catch(e) {
+				// falls through
+			}
+		}
+		else {
+			all_result = all_result.setScale(newScale, roundingMode);
+		}
+		all_result = all_result.round(mc);
+		return all_result;
+	}
+
+	/**
+	 * Divide.
+	 * - The argument can specify the scale after calculation.
+	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
+	 * - When &quot;{}&quot; is specified for the argument, it is calculated on the scale of &quot;this.scale() - divisor.scale()&quot;.
+	 * - When null is specified for the argument, it is calculated on the scale of &quot;divisor.default_context&quot;.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {MathContext|BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @returns {BigDecimal} A / B
+	 */
+	div(number, type) {
+		return this.divide(number, type);
+	}
+
+	/**
+	 * Inverse number of this value.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} 1 / A
+	 */
+	inv(context) {
+		// &#x901A;&#x5E38;&#x306E;&#x5272;&#x308A;&#x7B97;&#x3092;&#x884C;&#x3046;&#x3068;&#x3001;&#x300C;1&#x300D;&#xF7;&#x5DE8;&#x5927;&#x306A;&#x6570;&#x3092;&#x8A08;&#x7B97;&#x3057;&#x305F;&#x3068;&#x304D;&#x306B;&#x3001;
+		// 1 &#x306E;&#x4EEE;&#x6570;&#x90E8;&#x306E;&#x7CBE;&#x5EA6;&#x306B;&#x3088;&#x3063;&#x3066;&#x3057;&#x307E;&#x3044;&#x3001;&#x7D50;&#x679C;&#x304C;0&#x306B;&#x306A;&#x3063;&#x3066;&#x3057;&#x307E;&#x3046;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;
+		// const mc = context ? context : this.default_context;
+		// const b1 = this.createUsingThisSettings(1, mc);
+		// return b1.div(this, mc);
+		const mc = context ? context : this.default_context;
+		const default_context = BigDecimal.getDefaultContext();
+		// &#x8A08;&#x7B97;&#x306F;&#x7D76;&#x5BFE;&#x5024;&#x3092;&#x7528;&#x3044;&#x3066;&#x884C;&#x3046;
+		const is_negative = this.isNegative();
+		/**
+		 * @type {BigDecimal}
+		 */
+		let A = !is_negative ? this: this.negate();
+		BigDecimal.setDefaultContext(mc);
+		// 3&#x6B21;&#x306E;&#x30CB;&#x30E5;&#x30FC;&#x30C8;&#x30F3;&#x30FB;&#x30E9;&#x30D5;&#x30BD;&#x30F3;&#x6CD5;&#x3067;&#x6C42;&#x3081;&#x308B;
+		const B1 = BigDecimal.create(1);
+		// &#x521D;&#x671F;&#x5024;&#x306F;&#x3001;&#x6307;&#x6570;&#x90E8;&#x306E;&#x60C5;&#x5831;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
+		const scale = - A.scale() + (A.precision() - 1);
+		const x0 = new BigDecimal([1, scale + 1]);
+		if(x0.isZero()) {
+			BigDecimal.setDefaultContext(default_context);
+			return null;
+		}
+		A = A.round(mc);
+		let xn = x0;
+		for(let i = 0; i &lt; 20; i++) {
+			const h = B1.sub(A.mul(xn));
+			if(h.isZero()) {
+				break;
+			}
+			xn = xn.mul(B1.add(h).add(h.square()));
+		}
+		BigDecimal.setDefaultContext(default_context);
+		// &#x53C2;&#x8003;
+		// Lyuka - &#x9006;&#x6570;&#x3068;&#x5E73;&#x65B9;&#x6839;&#x3092;&#x6C42;&#x3081;&#x308B;&#x9AD8;&#x6B21;&#x53CE;&#x675F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;
+		// http://www.finetune.co.jp/~lyuka/technote/fract/sqrt.html
+		return !is_negative ? xn : xn.negate();
+	}
+
+	// ----------------------
+	// &#x305D;&#x306E;&#x4ED6;&#x306E;&#x6F14;&#x7B97;
+	// ----------------------
+	
+	/**
+	 * Factorial function, x!.
+	 * - Supports only integers.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} n!
+	 */
+	factorial(context) {
+		const mc = context ? context : this.default_context;
+		const y = new BigDecimal((new BigInteger(this)).factorial());
+		return y.round(mc);
+	}
+
+	/**
+	 * Multiply a multiple of ten.
+	 * - Supports only integers.
+	 * - Only the scale is changed without changing the precision.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @returns {BigDecimal} A * 10^floor(n)
+	 */
+	scaleByPowerOfTen(n) {
+		const x = BigDecimal._toInteger(n);
+		const output = this.clone();
+		output._scale = this.scale() - x;
+		return output;
+	}
+
+	// ----------------------
+	// &#x74B0;&#x5883;&#x8A2D;&#x5B9A;&#x7528;
+	// ----------------------
+	
+	/**
+	 * Set default the MathContext.
+	 * This is used if you do not specify MathContext when creating a new object.
+	 * @param {MathContext} [context=MathContext.DECIMAL128]
+	 */
+	static setDefaultContext(context) {
+		DEFAULT_CONTEXT = context ? context : MathContext.DECIMAL128;
+	}
+
+	/**
+	 * Return default MathContext class.
+	 * Used when MathContext not specified explicitly.
+	 * @returns {MathContext}
+	 */
+	static getDefaultContext() {
+		return DEFAULT_CONTEXT;
+	}
+
+	// ----------------------
+	// &#x4ED6;&#x306E;&#x578B;&#x306B;&#x5909;&#x63DB;&#x7528;
+	// ----------------------
+	
+	/**
+	 * 32-bit integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		const bigintdata = this.toBigInteger();
+		const x = bigintdata.intValue;
+		return x &amp; 0xFFFFFFFF;
+	}
+
+	/**
+	 * 32-bit integer value.
+	 * An error occurs if conversion fails.
+	 * @returns {number}
+	 */
+	get intValueExact() {
+		const bigintdata = this.toBigInteger();
+		const x = bigintdata.intValue;
+		if((x &lt; -2147483648) || (2147483647 &lt; x)) {
+			throw &quot;ArithmeticException&quot;;
+		}
+		return x;
+	}
+
+	/**
+	 * 32-bit floating point.
+	 * @returns {number}
+	 */
+	get floatValue() {
+		const p = this.precision();
+		if(MathContext.DECIMAL32.getPrecision() &lt; p) {
+			return(this.signum() &gt;= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
+		}
+		return parseFloat(this.toEngineeringString());
+	}
+
+	/**
+	 * 64-bit floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		return parseFloat(this.toEngineeringString());
+	}
+
+	/**
+	 * Get as a BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return this.integer.scaleByPowerOfTen(-this.scale());
+	}
+
+	// ----------------------
+	// &#x6BD4;&#x8F03;
+	// ----------------------
+	
+	/**
+	 * Equals.
+	 * - Attention : Test for equality, including the precision and the scale. 
+	 * - Use the &quot;compareTo&quot; if you only want to find out whether they are also mathematically equal.
+	 * - If you specify a &quot;tolerance&quot;, it is calculated by ignoring the test of the precision and the scale.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {boolean} A === B
+	 */
+	equals(number, tolerance) {
+		// &#x8AA4;&#x5DEE;&#x3092;&#x6307;&#x5B9A;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x3001;&#x53B3;&#x5BC6;&#x306B;&#x8ABF;&#x67FB;
+		if(!tolerance) {
+			if(number instanceof BigDecimal) {
+				return ((this._scale === number._scale) &amp;&amp; (this.integer.equals(number.integer)));
+			}
+			else if((typeof number === &quot;string&quot;) || (number instanceof String)) {
+				const val = BigDecimal._toBigDecimal(number);
+				return ((this._scale === val._scale) &amp;&amp; (this.integer.equals(val.integer)));
+			}
+			else {
+				return this.compareTo(number) === 0;
+			}
+		}
+		else {
+			return this.compareTo(number, tolerance) === 0;
+		}
+	}
+
+	/**
+	 * Compare values.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+	 * @returns {number} A &gt; B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number, tolerance) {
+		const src = this;
+		const tgt = BigDecimal._toBigDecimal(number);
+		if(!tolerance) {
+			// &#x8AA4;&#x5DEE;&#x306E;&#x6307;&#x5B9A;&#x304C;&#x306A;&#x3044;&#x5834;&#x5408;
+			// &#x7C21;&#x6613;&#x8A08;&#x7B97;
+			{
+				const src_sign	= src.signum();
+				const tgt_sign	= tgt.signum();
+				if((src_sign === 0) &amp;&amp; (src_sign === tgt_sign)) {
+					return 0;
+				}
+				else if(src_sign === 0) {
+					return - tgt_sign;
+				}
+				else if(tgt_sign === 0) {
+					return src_sign;
+				}
+			}
+			// &#x5B9F;&#x969B;&#x306B;&#x8A08;&#x7B97;&#x3059;&#x308B;
+			if(src._scale === tgt._scale) {
+				return src.integer.compareTo(tgt.integer);
+			}
+			else if(src._scale &gt; tgt._scale) {
+				const newdst = tgt.setScale(src._scale);
+				return src.integer.compareTo(newdst.integer);
+			}
+			else {
+				const newsrc = src.setScale(tgt._scale);
+				return newsrc.integer.compareTo(tgt.integer);
+			}
+		}
+		else {
+			const tolerance_ = BigDecimal._toBigDecimal(tolerance);
+			const delta = src.sub(tgt, MathContext.UNLIMITED);
+			const delta_abs = delta.abs();
+			if(delta_abs.compareTo(tolerance_) &lt;= 0) {
+				return 0;
+			}
+			else {
+				return delta.sign();
+			}
+		}
+	}
+
+	/**
+	 * Maximum number.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @returns {BigDecimal} max([A, B])
+	 */
+	max(number) {
+		const val = BigDecimal._toBigDecimal(number);
+		if(this.compareTo(val) &gt;= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * Minimum number.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @returns {BigDecimal} min([A, B])
+	 */
+	min(number) {
+		const val = BigDecimal._toBigDecimal(number);
+		if(this.compareTo(val) &lt;= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * Clip number within range.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
+	 * @returns {BigDecimal} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = BigDecimal._toBigDecimal(min);
+		const max_ = BigDecimal._toBigDecimal(max);
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw &quot;clip(min, max) error. (min &gt; max)-&gt;(&quot; + min_ + &quot; &gt; &quot; + max_ + &quot;)&quot;;
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	}
+
+	// ----------------------
+	// &#x6587;&#x5B57;&#x5217;&#x5316;
+	// ----------------------
+	
+	/**
+	 * Convert to string.
+	 * @returns {string} 
+	 */
+	toString() {
+		// &#x300C;&#x8ABF;&#x6574;&#x3055;&#x308C;&#x305F;&#x6307;&#x6570;&#x300D;
+		const x = - this.scale() + (this.precision() - 1);
+		// &#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x304C; 0 &#x4EE5;&#x4E0A;&#x3067;&#x3001;&#x300C;&#x8ABF;&#x6574;&#x3055;&#x308C;&#x305F;&#x6307;&#x6570;&#x300D;&#x304C; -6 &#x4EE5;&#x4E0A;
+		if((this.scale() &gt;= 0) &amp;&amp; (x &gt;= -6)) {
+			return this.toPlainString();
+		}
+		else {
+			return this.toScientificNotation(x);
+		}
+	}
+
+	/**
+	 * Convert to string using scientific notation.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - Number of digits in exponent part.
+	 * @returns {string} 
+	 */
+	toScientificNotation(e_len) {
+		const e		= BigDecimal._toInteger(e_len);
+		const text	= this._getUnsignedIntegerString();
+		let s		= this.scale();
+		const x		= [];
+		let i, k;
+		// -
+		if(this.signum() === -1) {
+			x[x.length] = &quot;-&quot;;
+		}
+		// &#x8868;&#x793A;&#x4E0A;&#x306E;&#x6841;&#x6570;
+		s = - e - s;
+		// &#x5C0F;&#x6570;&#x70B9;&#x304C;&#x4ED8;&#x304B;&#x306A;&#x3044;
+		if(s &gt;= 0) {
+			x[x.length] = text;
+			for(i = 0; i &lt; s; i++) {
+				x[x.length] = &quot;0&quot;;
+			}
+		}
+		// &#x5C0F;&#x6570;&#x70B9;&#x304C;&#x4ED8;&#x304F;
+		else {
+			k = this.precision() + s;
+			if(0 &lt; k) {
+				x[x.length] = text.substring(0, k);
+				x[x.length] = &quot;.&quot;;
+				x[x.length] = text.substring(k, text.length);
+			}
+			else {
+				k = - k;
+				x[x.length] = &quot;0.&quot;;
+				for(i = 0; i &lt; k; i++) {
+					x[x.length] = &quot;0&quot;;
+				}
+				x[x.length] = text;
+			}
+		}
+		x[x.length] = &quot;E&quot;;
+		if(e &gt;= 0) {
+			x[x.length] = &quot;+&quot;;
+		}
+		x[x.length] = e;
+		return x.join(&quot;&quot;);
+	}
+
+	/**
+	 * Convert to string usding technical notation.
+	 * @returns {string} 
+	 */
+	toEngineeringString() {
+		// &#x300C;&#x8ABF;&#x6574;&#x3055;&#x308C;&#x305F;&#x6307;&#x6570;&#x300D;
+		const x = - this.scale() + (this.precision() - 1);
+		// &#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x304C; 0 &#x4EE5;&#x4E0A;&#x3067;&#x3001;&#x300C;&#x8ABF;&#x6574;&#x3055;&#x308C;&#x305F;&#x6307;&#x6570;&#x300D;&#x304C; -6 &#x4EE5;&#x4E0A;
+		if((this.scale() &gt;= 0) &amp;&amp; (x &gt;= -6)) {
+			return this.toPlainString();
+		}
+		else {
+			// 0 &#x3067;&#x306A;&#x3044;&#x5024;&#x306E;&#x6574;&#x6570;&#x90E8;&#x304C; 1 &#x301C; 999 &#x306E;&#x7BC4;&#x56F2;&#x306B;&#x53CE;&#x307E;&#x308B;&#x3088;&#x3046;&#x306B;&#x8ABF;&#x6574;
+			return this.toScientificNotation(Math.floor(x / 3) * 3);
+		}
+	}
+
+	/**
+	 * Convert to string without exponential notation.
+	 * @returns {string} 
+	 */
+	toPlainString() {
+		// &#x30B9;&#x30B1;&#x30FC;&#x30EB;&#x306E;&#x5909;&#x63DB;&#x306A;&#x3057;
+		if(this.scale() === 0) {
+			if(this.signum() &lt; 0) {
+				return &quot;-&quot; + this._getUnsignedIntegerString();
+			}
+			else {
+				return this._getUnsignedIntegerString();
+			}
+		}
+		// &#x6307;&#x6570;0&#x3067;&#x6587;&#x5B57;&#x5217;&#x3092;&#x4F5C;&#x6210;&#x5F8C;&#x3001;E&#x306E;&#x5F8C;&#x308D;&#x306E;&#x90E8;&#x5206;&#x3092;&#x3068;&#x3063;&#x3071;&#x3089;&#x3046;
+		const text = this.toScientificNotation(0);
+		return text.match(/^[^E]*/)[0];
+	}
+
+	// ----------------------
+	// &#x4E38;&#x3081;
+	// ----------------------
+	
+	/**
+	 * Change the scale.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - New scale.
+	 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
+	 * @returns {BigDecimal} 
+	 */
+	setScale(new_scale, rounding_mode) {
+		const newScale = BigDecimal._toInteger(new_scale);
+		if(this.scale() === newScale) {
+			// scale&#x304C;&#x540C;&#x4E00;&#x306A;&#x306E;&#x3067;&#x51E6;&#x7406;&#x306E;&#x5FC5;&#x8981;&#x306A;&#x3057;
+			return(this.clone());
+		}
+		const roundingMode = (rounding_mode !== undefined) ? RoundingMode.valueOf(rounding_mode) : RoundingMode.UNNECESSARY;
+		// &#x6587;&#x5B57;&#x5217;&#x3092;&#x6271;&#x3046;&#x3046;&#x3048;&#x3067;&#x3001;&#x7B26;&#x53F7;&#x304C;&#x3042;&#x308B;&#x3068;&#x3084;&#x308A;&#x306B;&#x304F;&#x3044;&#x306E;&#x3067;&#x5916;&#x3057;&#x3066;&#x304A;&#x304F;
+		let text		= this._getUnsignedIntegerString();
+		const sign		= this.signum();
+		const sign_text	= sign &gt;= 0 ? &quot;&quot; : &quot;-&quot;;
+		// scale &#x306E;&#x8AA4;&#x5DEE;
+		// 0 &#x4EE5;&#x4E0A;&#x306A;&#x3089; 0 &#x3092;&#x52A0;&#x3048;&#x308C;&#x3070;&#x3044;&#x3044;&#x3002;0&#x672A;&#x6E80;&#x306A;&#x3089;0&#x3092;&#x524A;&#x308B;&#x304B;&#x3001;&#x56DB;&#x6368;&#x4E94;&#x5165;&#x306A;&#x3069;&#x4E38;&#x3081;&#x3092;&#x884C;&#x3046;
+		const delta		= newScale - this.scale();	// &#x3053;&#x306E;&#x6841;&#x5206;&#x5897;&#x3084;&#x3059;&#x3068;&#x3044;&#x3044;
+		if(0 &lt;= delta) {
+			// 0&#x3092;&#x52A0;&#x3048;&#x308B;
+			let i;
+			for(i = 0; i &lt; delta; i++) {
+				text = text + &quot;0&quot;;
+			}
+			return new BigDecimal([new BigInteger(sign_text + text), newScale]);
+		}
+		const keta = text.length + delta;		// &#x6700;&#x7D42;&#x7684;&#x306A;&#x6841;&#x6570;
+		const keta_marume = keta + 1;
+		if(keta &lt;= 0) {
+			// &#x6307;&#x5B9A;&#x3057;&#x305F; scale &#x3067;&#x306F;&#x8A2D;&#x5B9A;&#x3067;&#x304D;&#x306A;&#x3044;&#x5834;&#x5408;
+			// &#x4F8B;&#x3048;&#x3070; &quot;0.1&quot;.setScale(-2), &quot;10&quot;.setScale(-3) &#x3068;&#x3057;&#x3066;&#x3082;&#x8868;&#x3059;&#x3053;&#x3068;&#x306F;&#x4E0D;&#x53EF;&#x80FD;&#x3067;&#x3042;&#x308B;&#x305F;&#x3081;&#x3001;
+			// sign&#xFF08;-1, 0, +1&#xFF09;&#x306E;&#x3069;&#x308C;&#x304B;&#x306E;&#x6570;&#x5024;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x4E38;&#x3081;&#x308B;
+			const outdata = (sign + roundingMode.getAddNumber(sign)) / 10;
+			// &#x4E0A;&#x8A18;&#x306E;&#x5F0F;&#x306F;&#x3001;CEILING&#x306A;&#x3089;&#x5FC5;&#x305A;1&#x3001;&#x6B63;&#x3067;CEILING&#x306A;&#x3089;1&#x3001;&#x8CA0;&#x3067;FLOOR&#x306A;&#x3089;1&#x3001;&#x305D;&#x308C;&#x4EE5;&#x5916;&#x306F;0&#x3068;&#x306A;&#x308A;&#x3001;
+			// &#x3055;&#x3089;&#x306B;&#x5143;&#x3005;&#x306E;&#x6570;&#x5024;&#x304C; 0 &#x306A;&#x3089; 0&#x3001;&#x5207;&#x308A;&#x6368;&#x3066;&#x4E0D;&#x80FD;&#x306A;&#x3089;&#x4F8B;&#x5916;&#x304C;&#x8FD4;&#x308B;&#x8A08;&#x7B97;&#x5F0F;&#x3067;&#x3042;&#x308B;&#x3002;
+			// &#x3053;&#x308C;&#x306F; Java &#x306E;&#x52D5;&#x4F5C;&#x3092;&#x307E;&#x306D;&#x3066;&#x3044;&#x307E;&#x3059;&#x3002;
+			return new BigDecimal([new BigInteger(outdata), newScale]);
+		}
+		{
+			// 0&#x3092;&#x524A;&#x308B;&#x3060;&#x3051;&#x3067;&#x89E3;&#x6C7A;&#x3059;&#x308B;&#x5834;&#x5408;
+			// &#x5358;&#x7D14;&#x306A;&#x5207;&#x6368;&#x3066;(0&#x3092;&#x524A;&#x308B;&#x306E;&#x307F;)
+			const zeros			= text.match(/0+$/);
+			const zero_length		= (zeros !== null) ? zeros[0].length : 0;
+			if(( (zero_length + delta) &gt;= 0 ) || (roundingMode === RoundingMode.DOWN)) {
+				return new BigDecimal([new BigInteger(sign_text + text.substring(0, keta)), newScale]);
+			}
+		}
+		{
+			// &#x4E38;&#x3081;&#x8A08;&#x7B97;&#x3067;&#x89E3;&#x6C7A;&#x3059;&#x308B;&#x5834;&#x5408;
+			// 12345 -&gt; &apos;123&apos;45
+			text = text.substring(0, keta_marume);
+			// &#x4E38;&#x3081;&#x8A08;&#x7B97;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x5207;&#x308A;&#x53D6;&#x308B;&#x6841;&#x6570;(&#x5F8C;&#x308D;&#x306E;1&#xFF5E;2&#x6841;&#x3092;&#x53D6;&#x5F97;)
+			const cutsize = text.length &gt; 1 ? 2 : 1;
+			// &apos;123&apos;45 -&gt; 1&apos;23&apos;4
+			const number = parseInt(text.substring(text.length - cutsize, text.length)) * sign;
+			// &#x300C;&#x5143;&#x306E;&#x6570;&#x300D;&#x3068;&#x300C;&#x4E38;&#x3081;&#x306B;&#x5FC5;&#x8981;&#x306A;&#x6570;&#x300D;&#x3092;&#x8DB3;&#x3059;
+			const x1 = new BigInteger(sign_text + text);
+			const x2 = new BigInteger(roundingMode.getAddNumber(number));
+			text = x1.add(x2).toString();
+			// &#x4E38;&#x3081;&#x5F8C;&#x306E;&#x6841;&#x6570;&#x306B;&#x623B;&#x3057;&#x3066;
+			return new BigDecimal([new BigInteger(text.substring(0, text.length - 1)), newScale]);
+		}
+	}
+
+	/**
+	 * Round with specified settings.
+	 * 
+	 * This method is not a method round the decimal point.
+	 * This method converts numbers in the specified Context and rounds unconvertible digits.
+	 * 
+	 * Use this.setScale(0, RoundingMode.HALF_UP) if you want to round the decimal point.
+	 * When the argument is omitted, such decimal point rounding operation is performed.
+	 * @param {MathContext} [mc] - New setting.
+	 * @returns {BigDecimal} 
+	 */
+	round(mc) {
+		if(mc) {
+			// MathContext &#x3092;&#x8A2D;&#x5B9A;&#x3057;&#x305F;&#x5834;&#x5408;
+			if(!(mc instanceof MathContext)) {
+				throw &quot;not MathContext&quot;;
+			}
+			const newPrecision	= mc.getPrecision();
+			const delta			= newPrecision - this.precision();
+			if((delta === 0)||(newPrecision === 0)) {
+				return this.clone();
+			}
+			const newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode());
+			/* &#x7CBE;&#x5EA6;&#x3092;&#x4E0A;&#x3052;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308B;&#x305F;&#x3081;&#x3001;0&#x3092;&#x52A0;&#x3048;&#x305F;&#x5834;&#x5408; */
+			if(delta &gt; 0) {
+				return newBigDecimal;
+			}
+			/* &#x7CBE;&#x5EA6;&#x3092;&#x4E0B;&#x3052;&#x308B;&#x5FC5;&#x8981;&#x304C;&#x3042;&#x308B;&#x305F;&#x3081;&#x3001;&#x4E38;&#x3081;&#x305F;&#x5834;&#x5408;&#x306F;&#x3001;&#x6841;&#x306E;&#x6570;&#x304C;&#x6B63;&#x3057;&#x3044;&#x304B;&#x8ABF;&#x3079;&#x308B; */
+			if(newBigDecimal.precision() === mc.getPrecision()) {
+				return newBigDecimal;
+			}
+			/* &#x5207;&#x308A;&#x4E0A;&#x3052;&#x306A;&#x3069;&#x3067;&#x6841;&#x6570;&#x304C;&#xFF11;&#x3064;&#x5897;&#x3048;&#x305F;&#x5834;&#x5408; */
+			const sign_text	= newBigDecimal.integer.signum() &gt;= 0 ? &quot;&quot; : &quot;-&quot;;
+			const abs_text	= newBigDecimal._getUnsignedIntegerString();
+			const inte_text	= sign_text + abs_text.substring(0, abs_text.length - 1);
+			return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1]);
+		}
+		else {
+			// &#x5C0F;&#x6570;&#x70B9;&#x4EE5;&#x4E0B;&#x3092;&#x56DB;&#x6368;&#x4E94;&#x5165;&#x3059;&#x308B;
+			return this.setScale(0, RoundingMode.HALF_UP);
+		}
+	}
+
+	/**
+	 * Floor.
+	 * @returns {BigDecimal} floor(A)
+	 */
+	floor() {
+		return this.setScale(0, RoundingMode.FLOOR);
+	}
+
+	/**
+	 * Ceil.
+	 * @returns {BigDecimal} ceil(A)
+	 */
+	ceil() {
+		return this.setScale(0, RoundingMode.CEILING);
+	}
+	
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {BigDecimal} fix(A), trunc(A)
+	 */
+	fix() {
+		return this.setScale(0, RoundingMode.DOWN);
+	}
+
+	/**
+	 * Fraction.
+	 * @returns {BigDecimal} fract(A)
+	 */
+	fract() {
+		return this.sub(this.floor());
+	}
+
+	// ----------------------
+	// &#x6307;&#x6570;
+	// ----------------------
+	
+	/**
+	 * Power function.
+	 * - An exception occurs when doing a huge multiplication.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} pow(A, B)
+	 */
+	pow(number, context) {
+		const num = BigDecimal._toBigDecimal(number);
+		const integer = num.intValue;
+		const mc = context ? context : this.default_context;
+		if(Math.abs(integer) &gt; 1000) {
+			throw &quot;ArithmeticException&quot;;
+		}
+		else if(this.isZero()) {
+			return context ? BigDecimal.ONE.round(context) : BigDecimal.ONE;
+		}
+		else if(this.isOne()) {
+			return context ? this.round(context) : this;
+		}
+		else if((mc.getPrecision() === 0) &amp;&amp; (num.isNegative())) {
+			throw &quot;ArithmeticException&quot;;
+		}
+		if(num.isInteger()) {
+			const is_negative = num.isNegative();
+			let n = Math.round(Math.abs(integer));
+			let x, y;
+			x = this.clone();
+			y = BigDecimal.ONE;
+			while(n !== 0) {
+				if((n &amp; 1) !== 0) {
+					y = y.multiply(x, MathContext.UNLIMITED);
+				}
+				x = x.multiply(x.clone(), MathContext.UNLIMITED);
+				n &gt;&gt;&gt;= 1;
+			}
+			if(!is_negative) {
+				y = y.round(mc);
+			}
+			else {
+				y = y.inv(mc);
+			}
+			return y;
+		}
+		else {
+			return this.log(mc).mul(number, mc).exp(mc);
+		}
+	}
+	
+	/**
+	 * Square.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} A^2
+	 */
+	square(mc) {
+		return this.mul(this, mc);
+	}
+
+	/**
+	 * Square root.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} sqrt(A)
+	 */
+	sqrt(context) {
+		/*
+		// &#x3010;&#x4EE5;&#x4E0B;&#x306F;&#x76F4;&#x63A5;&#x6C42;&#x3081;&#x308B;&#x65B9;&#x6CD5;&#x3011;
+		// &#x30CB;&#x30E5;&#x30FC;&#x30C8;&#x30F3;&#x30E9;&#x30D5;&#x30BD;&#x30F3;&#x6CD5;
+		// A^0.5  = x
+		//     A  = x^2
+		//     0  = x^2 - A
+		//   f(x) = x^2 - A
+		// &#x3053;&#x3053;&#x3067; f(x) = 0 &#x3068;&#x306A;&#x308B;&#x3088;&#x3046;&#x306A; x &#x3092;&#x77E5;&#x308A;&#x305F;&#x3044;
+		// &#x306A;&#x304A; f(x) &#x306F;&#x5358;&#x8ABF;&#x5897;&#x52A0;&#x95A2;&#x6570;&#x306A;&#x306E;&#x3067;&#x30CB;&#x30E5;&#x30FC;&#x30C8;&#x30F3;&#x30E9;&#x30D5;&#x30BD;&#x30F3;&#x6CD5;&#x3067;&#x6C42;&#x3081;&#x3089;&#x308C;&#x308B;
+		// x_(n+1) = x_n - f(x_n)/f&apos;(x_n)
+		// &#x3053;&#x3053;&#x3067; f&apos;(x) = 2x &#x306A;&#x306E;&#x3067;&#x4EE5;&#x4E0B;&#x3092;&#x6C42;&#x3081;&#x308C;&#x3070;&#x3088;&#x3044;
+		// x_(n+1) = x_n - (x_n^2 - A) / (2 * x_n)
+		// &#x521D;&#x671F;&#x5024;&#x306E;&#x6C7A;&#x3081;&#x65B9;&#x306F;&#x8FD1;&#x3044;&#x5024;&#x306E;&#x307B;&#x3046;&#x304C;&#x3088;&#x3044;
+		// &#x4F7F;&#x7528;&#x3059;&#x308B;&#x56FA;&#x5B9A;&#x5024;&#x3092;&#x5217;&#x6319;
+		const B1 = this.createUsingThisSettings(1, context);
+		const B2 = this.createUsingThisSettings(2, context);
+		// &#x521D;&#x671F;&#x5024;
+		const scale = - this.scale() + (this.precision() - 1);
+		const x0 = B1.scaleByPowerOfTen(scale);
+		let xn = x0;
+		for(let i = 0; i &lt; 300; i++) {
+			const xn1 = xn.sub( (xn.mul(xn).sub(this)).div(xn.mul(B2)) );
+			const delta = xn1.sub(xn);
+			if(delta.isZero()) {
+				break;
+			}
+			xn = xn1;
+		}
+		*/
+		//return xn;
+		// &#x4E0A;&#x8A18;&#x306F;&#x5272;&#x308A;&#x7B97;&#x304C;&#x3042;&#x308A;&#x901F;&#x5EA6;&#x304C;&#x9045;&#x3044;&#x306E;&#x3067;&#x3001;&#x4EE5;&#x4E0B;&#x306E;&#x8A08;&#x7B97;&#x3067;&#x6C42;&#x3081;&#x308B;&#x3002;
+		return this.rsqrt(context).inv(context);
+	}
+
+	/**
+	 * Reciprocal square root.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} rsqrt(A)
+	 */
+	rsqrt(context) {
+		const mc = context ? context : this.default_context;
+		const default_context = BigDecimal.getDefaultContext();
+		/**
+		 * @type {BigDecimal}
+		 */
+		const A = this.round(mc);
+		BigDecimal.setDefaultContext(mc);
+		// 4&#x6B21;&#x53CE;&#x675F;&#x306E;&#x30CB;&#x30E5;&#x30FC;&#x30C8;&#x30F3;&#x30FB;&#x30E9;&#x30D5;&#x30BD;&#x30F3;&#x6CD5;&#x3067;&#x6C42;&#x3081;&#x308B;
+		// &#x4F7F;&#x7528;&#x3059;&#x308B;&#x56FA;&#x5B9A;&#x5024;&#x3092;&#x5217;&#x6319;
+		const B1 = BigDecimal.create(1);
+		const B5 = BigDecimal.create(5);
+		const B6 = BigDecimal.create(6);
+		const B8 = BigDecimal.create(8);
+		const B16 = BigDecimal.create(16);
+		const B16r = B16.inv();
+		// &#x521D;&#x671F;&#x5024;
+		const x0 = A.inv();
+		if(x0.isZero()) {
+			BigDecimal.setDefaultContext(default_context);
+			return null;
+		}
+		let xn = x0;
+		for(let i = 0; i &lt; 50; i++) {
+			const h = B1.sub(A.mul(xn.square())).round(mc);
+			if(h.isZero()) {
+				break;
+			}
+			xn = xn.mul(B1.add(h.mul(B8.add(h.mul(B6.add(B5.mul(h))))).mul(B16r)));
+		}
+		BigDecimal.setDefaultContext(default_context);
+		// &#x53C2;&#x8003;
+		// Lyuka - &#x9006;&#x6570;&#x3068;&#x5E73;&#x65B9;&#x6839;&#x3092;&#x6C42;&#x3081;&#x308B;&#x9AD8;&#x6B21;&#x53CE;&#x675F;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;
+		// http://www.finetune.co.jp/~lyuka/technote/fract/sqrt.html
+		return xn;
+	}
+	
+	/**
+	 * Logarithmic function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} log(A)
+	 */
+	log(context) {
+		if(this.isZero() || this.isNegative()) {
+			throw &quot;ArithmeticException&quot;;
+		}
+		const mc = context ? context : this.default_context;
+		if(this.isOne()) {
+			return new BigDecimal([0, mc]);
+		}
+		const default_context = BigDecimal.getDefaultContext();
+		// log(x)
+		// -&gt; x = a * E -&gt; log(a * E) = log(a) + log(E)
+		// -&gt; x = a / E -&gt; log(a / E) = log(E) - log(a)
+		// &#x4E0A;&#x8A18;&#x306E;&#x5F0F;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3001;&#x9069;&#x5207;&#x306A;&#x5024;&#x306E;&#x7BC4;&#x56F2;&#x3067;&#x8A08;&#x7B97;&#x3067;&#x304D;&#x308B;&#x3088;&#x3046;&#x306B;&#x8ABF;&#x6574;&#x3059;&#x308B;
+		const scale = - this.scale() + (this.precision() - 1) + 1;
+		const new_mc = new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP);
+		BigDecimal.setDefaultContext(new_mc);
+		let a = this.round(new_mc);
+		let b = 0;
+		{
+			// &#x7BC4;&#x56F2;&#x3092; 1 &lt; x &lt;= e &#x306E;&#x9593;&#x306B;&#x53CE;&#x3081;&#x308B;
+			const e = BigDecimal.E;
+			const compare_to_e = a.compareTo(e);
+			if(compare_to_e === 0) {
+				BigDecimal.setDefaultContext(mc);
+				return new BigDecimal([1, mc]);
+			}
+			// &#x5185;&#x90E8;&#x306E;&#x5024;&#x304C;&#x5927;&#x304D;&#x3059;&#x304E;&#x308B;&#x306E;&#x3067;&#x5C0F;&#x3055;&#x304F;&#x3059;&#x308B;
+			else if(compare_to_e &gt; 0) {
+				for(; b &lt; 300; b++) {
+					if(a.compareTo(e) &lt;= 0) {
+						break;
+					}
+					a = a.divide(e, mc);
+				}
+			}
+			// &#x5185;&#x90E8;&#x306E;&#x5024;&#x304C;&#x5C0F;&#x3055;&#x3059;&#x304E;&#x308B;&#x306E;&#x3067;&#x5927;&#x304D;&#x304F;&#x3059;&#x308B;
+			else {
+				const B1 = new BigDecimal(1);
+				if(a.compareTo(B1) &lt; 0) {
+					for(; b &gt; -300; b--) {
+						if(a.compareTo(B1) &gt; 0) {
+							break;
+						}
+						a = a.mul(e, mc);
+					}
+				}
+			}
+		}
+		BigDecimal.setDefaultContext(mc);
+		a = a.round(mc);
+		// &#x3053;&#x306E;&#x6642;&#x70B9;&#x3067; 1 &lt; x &lt;= e &#x3068;&#x306A;&#x308B;
+		// log((1+u)/(1-u)) = 2 * (u + u^3/3 + u^5/5 + ...) &#x306E;&#x5F0F;&#x3092;&#x4F7F;&#x7528;&#x3059;&#x308B;
+		// solve((1+u)/(1-u)-x=0,[u]);-&gt;u=(x-1)/(x+1)
+		const u = a.sub(BigDecimal.ONE).div(a.add(BigDecimal.ONE));
+		const u_x2 = u.mul(u);
+		{
+			// &#x521D;&#x671F;&#x5024;
+			let x = u;
+			let n0 = u;
+			let k = BigDecimal.ONE;
+			// &#x7E70;&#x308A;&#x8FD4;&#x3057;&#x6C42;&#x3081;&#x308B;
+			for(let i = 0; i &lt; 300; i++) {
+				k = k.add(BigDecimal.TWO);
+				x = x.mul(u_x2);
+				const n1 = n0.add(x.div(k));
+				const delta = n1.sub(n0);
+				n0 = n1;
+				if(delta.isZero()) {
+					break;
+				}
+			}
+			a = n0.mul(BigDecimal.TWO);
+		}
+		// &#x6700;&#x7D42;&#x7D50;&#x679C;
+		const y = a.add(b);
+		BigDecimal.setDefaultContext(default_context);
+		return y;
+	}
+
+	/**
+	 * Exponential function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} exp(A)
+	 */
+	exp(context) {
+		if(this.isZero()) {
+			return new BigDecimal([1, context]);
+		}
+		const is_negative = this.isNegative();
+		const mc = context ? context : this.default_context;
+		const default_context = BigDecimal.getDefaultContext();
+		/**
+		 * @type {BigDecimal}
+		 */
+		let number = this;
+		// &#x8CA0;&#x306E;&#x5024;&#x3067;&#x30DE;&#x30AF;&#x30ED;&#x30FC;&#x30EA;&#x30F3;&#x5C55;&#x958B;&#x3059;&#x308B;&#x3068;&#x632F;&#x52D5;&#x3057;&#x3066;&#x6841;&#x843D;&#x3061;&#x3059;&#x308B;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#x305F;&#x3081;&#x6B63;&#x306E;&#x5024;&#x306B;&#x3057;&#x3066;&#x304A;&#x304F;
+		if(is_negative) {
+			number = number.negate();
+		}
+		// X = exp(x) &#x3068;&#x3059;&#x308B;&#x3068; X = exp(x/A)^A &#x3067;&#x3042;&#x308B;&#x3002;
+		// &#x305D;&#x306E;&#x305F;&#x3081;&#x3001;&#x53CE;&#x675F;&#x3092;&#x65E9;&#x304F;&#x3059;&#x308B;&#x305F;&#x3081;&#x306B;exp&#x306E;&#x4E2D;&#x3092;&#x5C0F;&#x3055;&#x304F;&#x3057;&#x3066;&#x304A;&#x304D;&#x3001;&#x6700;&#x5F8C;&#x306B;pow&#x3092;&#x884C;&#x3046;&#x3002;
+		// scale &gt; (10^a) = b &#x2252; this
+		// &#x5C0F;&#x3055;&#x306A;&#x5024;&#x3067;&#x8A08;&#x7B97;&#x3059;&#x308B;&#x305F;&#x3081;&#x7CBE;&#x5EA6;&#x3092;&#x3042;&#x3052;&#x308B;
+		const scale = - number.scale() + (number.precision() - 1) + 1;
+		const new_mc = new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP);
+		BigDecimal.setDefaultContext(new_mc);
+		let a = 0;
+		let b = 1;
+		{
+			const val = number.doubleValue;
+			if(val &gt;= 10) {
+				a = Math.floor(Math.log(Math.floor(val)) / Math.log(10));
+				b = Math.pow(10, a);
+			}
+		}
+		// &#x3053;&#x3053;&#x3067;&#x30BF;&#x30FC;&#x30B2;&#x30C3;&#x30C8;&#x306E;&#x6570;&#x5024;&#x3092;&#x5272;&#x3063;&#x3066;&#x3057;&#x307E;&#x3046;
+		const target = number.div(b, mc);
+		// &#x5C0F;&#x3055;&#x304F;&#x306A;&#x3063;&#x305F;&#x5024;&#x306B;&#x5BFE;&#x3057;&#x3066;exp&#x3092;&#x8A08;&#x7B97;&#x3059;&#x308B;
+		let y;
+		{
+			// &#x30DE;&#x30AF;&#x30ED;&#x30FC;&#x30EA;&#x30F3;&#x5C55;&#x958B;&#x3067;&#x8A08;&#x7B97;&#x3059;&#x308B;
+			// &#x521D;&#x671F;&#x5024;
+			let x = target;
+			let n0 = BigDecimal.ONE.add(target);
+			let k = BigDecimal.ONE;
+			// &#x7E70;&#x308A;&#x8FD4;&#x3057;&#x6C42;&#x3081;&#x308B;
+			for(let i = 2; i &lt; 300; i++) {
+				k = k.mul(i);
+				x = x.mul(target);
+				const n1 = n0.add(x.div(k));
+				const delta = n1.sub(n0);
+				n0 = n1;
+				if(delta.isZero()) {
+					break;
+				}
+			}
+			y = n0;
+		}
+		// exp(x) = pow(y, b)&#x3067;&#x3042;&#x308B;&#x3002;
+		y = y.pow(b);
+		BigDecimal.setDefaultContext(default_context);
+		// &#x8CA0;&#x306E;&#x5024;&#x3060;&#x3063;&#x305F;&#x3089; 1/(x^2) &#x306B;&#x3057;&#x3066;&#x623B;&#x3059;
+		if(is_negative) {
+			return y.round(mc).inv();
+		}
+		else {
+			return y.round(mc);
+		}
+	}
+
+	// ----------------------
+	// &#x4E09;&#x89D2;&#x95A2;&#x6570;
+	// ----------------------
+
+	/**
+	 * Sine function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} sin(A)
+	 */
+	sin(context) {
+		const mc = context ? context : this.default_context;
+		const default_context = BigDecimal.getDefaultContext();
+		// 2PI&#x306E;&#x4F59;&#x308A;&#x3092;&#x5B9F;&#x969B;&#x306E;&#x8A08;&#x7B97;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x3002;
+		const scale = - this.scale() + (this.precision() - 1) + 1;
+		const new_mc = new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP);
+		BigDecimal.setDefaultContext(new_mc);
+		let target = this.mod(BigDecimal.TWO_PI, mc);
+		BigDecimal.setDefaultContext(mc);
+		target = target.round(mc);
+		// &#x30DE;&#x30AF;&#x30ED;&#x30FC;&#x30EA;&#x30F3;&#x5C55;&#x958B;&#x3067;&#x8A08;&#x7B97;&#x3059;&#x308B;
+		// &#x521D;&#x671F;&#x5024;
+		let n0 = target;
+		{
+			const t_x2 = target.mul(target);
+			let x = target;
+			let k = BigDecimal.ONE;
+			let sign = -1;
+			// &#x7E70;&#x308A;&#x8FD4;&#x3057;&#x6C42;&#x3081;&#x308B;
+			for(let i = 2; i &lt; 300; i++) {
+				k = k.mul(i);
+				if((i % 2) === 1) {
+					x = x.mul(t_x2);
+					let n1;
+					if(sign &lt; 0) {
+						n1 = n0.sub(x.div(k));
+						sign = 1;
+					}
+					else {
+						n1 = n0.add(x.div(k));
+						sign = -1;
+					}
+					const delta = n1.sub(n0);
+					n0 = n1;
+					if(delta.isZero()) {
+						break;
+					}
+				}
+			}
+		}
+		BigDecimal.setDefaultContext(default_context);
+		return n0;
+	}
+
+	/**
+	 * Cosine function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} cos(A)
+	 */
+	cos(context) {
+		const mc = context ? context : this.default_context;
+		const default_context = BigDecimal.getDefaultContext();
+		// 2PI&#x306E;&#x4F59;&#x308A;&#x3092;&#x5B9F;&#x969B;&#x306E;&#x8A08;&#x7B97;&#x3067;&#x4F7F;&#x7528;&#x3059;&#x308B;&#x3002;
+		const scale = - this.scale() + (this.precision() - 1) + 1;
+		const new_mc = new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP);
+		BigDecimal.setDefaultContext(new_mc);
+		let target = this.mod(BigDecimal.TWO_PI, mc);
+		BigDecimal.setDefaultContext(mc);
+		target = target.round(mc);
+		// &#x30DE;&#x30AF;&#x30ED;&#x30FC;&#x30EA;&#x30F3;&#x5C55;&#x958B;&#x3067;&#x8A08;&#x7B97;&#x3059;&#x308B;
+		// &#x521D;&#x671F;&#x5024;
+		let n0 = BigDecimal.ONE;
+		{
+			let x = BigDecimal.ONE;
+			const t_x2 = target.mul(target);
+			let k = BigDecimal.ONE;
+			let sign = -1;
+			// &#x7E70;&#x308A;&#x8FD4;&#x3057;&#x6C42;&#x3081;&#x308B;
+			for(let i = 2; i &lt; 300; i++) {
+				k = k.mul(i);
+				if((i % 2) === 0) {
+					x = x.mul(t_x2);
+					let n1;
+					if(sign &lt; 0) {
+						n1 = n0.sub(x.div(k));
+						sign = 1;
+					}
+					else {
+						n1 = n0.add(x.div(k));
+						sign = -1;
+					}
+					const delta = n1.sub(n0);
+					n0 = n1;
+					if(delta.isZero()) {
+						break;
+					}
+				}
+			}
+		}
+		BigDecimal.setDefaultContext(default_context);
+		return n0;
+	}
+
+	/**
+	 * Tangent function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} tan(A)
+	 */
+	tan(context) {
+		const mc = context ? context : this.default_context;
+		return this.sin(mc).div(this.cos(mc));
+	}
+
+	/**
+	 * Atan (arc tangent) function.
+	 * - Return the values of [-PI/2, PI/2].
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} atan(A)
+	 */
+	atan(context) {
+		const mc = context ? context : this.default_context;
+		const default_context = BigDecimal.getDefaultContext();
+		BigDecimal.setDefaultContext(mc);
+		if(this.isZero()) {
+			const y = BigDecimal.ZERO;
+			BigDecimal.setDefaultContext(default_context);
+			return y;
+		}
+		else if(this.compareTo(BigDecimal.ONE) === 0) {
+			const y = BigDecimal.QUARTER_PI;
+			BigDecimal.setDefaultContext(default_context);
+			return y;
+		}
+		else if(this.compareTo(BigDecimal.MINUS_ONE) === 0) {
+			const y = BigDecimal.QUARTER_PI.negate();
+			BigDecimal.setDefaultContext(default_context);
+			return y;
+		}
+		// x &#x3092; 0 &lt;= x &lt;= 0.5 &#x306B;&#x53CE;&#x3081;&#x308B;
+		const target_sign = this.sign();
+		let target = this.abs(mc);
+		let type;
+		if(target.compareTo(BigDecimal.TWO) === 1) {
+			// atan(x) = pi/2-atan(1/x)
+			type = 1;
+			target = target.inv();
+		}
+		else if(target.compareTo(BigDecimal.HALF) === 1) {
+			// atan(x) = pi/4-atan((1-x)/(1+x))
+			type = 2;
+			target = BigDecimal.ONE.sub(target).div(BigDecimal.ONE.add(target));
+		}
+		else {
+			type = 3;
+		}
+		// &#x30B0;&#x30EC;&#x30B4;&#x30EA;&#x30FC;&#x7D1A;&#x6570;
+		// &#x521D;&#x671F;&#x5024;
+		let n0 = target;
+		{
+			const t_x2 = target.mul(target);
+			let x = target;
+			let k = BigDecimal.ONE;
+			let sign = -1;
+			// &#x7E70;&#x308A;&#x8FD4;&#x3057;&#x6C42;&#x3081;&#x308B;
+			for(let i = 0; i &lt; 300; i++) {
+				x = x.mul(t_x2);
+				k = k.add(BigDecimal.TWO);
+				let n1;
+				if(sign &lt; 0) {
+					n1 = n0.sub(x.div(k));
+					sign = 1;
+				}
+				else {
+					n1 = n0.add(x.div(k));
+					sign = -1;
+				}
+				const delta = n1.sub(n0);
+				n0 = n1;
+				if(delta.isZero()) {
+					break;
+				}
+			}
+		}
+		if(type === 1) {
+			n0 = BigDecimal.HALF_PI.sub(n0);
+		}
+		else if(type === 2) {
+			n0 = BigDecimal.QUARTER_PI.sub(n0);
+		}
+		if(target_sign &lt; 0) {
+			n0 = n0.negate();
+		}
+		BigDecimal.setDefaultContext(default_context);
+		return n0;
+	}
+
+	/**
+	 * Atan (arc tangent) function.
+	 * Return the values of [-PI, PI] .
+	 * Supports only real numbers.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} atan2(Y, X)
+	 */
+	atan2(number, context) {
+		const default_context = BigDecimal.getDefaultContext();
+		// y.atan2(x) &#x3068;&#x3059;&#x308B;&#x3002;
+		const y = this.round(context);
+		const x = new BigDecimal([number, context]);
+		// &#x53C2;&#x8003;: https://en.wikipedia.org/wiki/Inverse_trigonometric_functions
+		let ret;
+		if(x.isPositive()) {
+			ret = y.div(x).atan();
+		}
+		else if(y.isNotNegative() &amp;&amp; x.isNegative()) {
+			ret = y.div(x).atan().add(BigDecimal.PI);
+		}
+		else if(y.isNegative() &amp;&amp; x.isNegative()) {
+			ret = y.div(x).atan().sub(BigDecimal.PI);
+		}
+		else if(y.isPositive()) {
+			ret = BigDecimal.HALF_PI;
+		}
+		else if(y.isNegative()) {
+			ret = BigDecimal.HALF_PI.negate();
+		}
+		else {
+			throw &quot;ArithmeticException&quot;;
+		}
+		BigDecimal.setDefaultContext(default_context);
+		return ret;
+	}
+
+	// ----------------------
+	// &#x30C6;&#x30B9;&#x30C8;&#x7CFB;
+	// ----------------------
+	
+	/**
+	 * Return true if the value is integer.
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+	 * @returns {boolean}
+	 */
+	isInteger(tolerance) {
+		return this.sub(this.fix()).isZero(tolerance);
+	}
+
+	/**
+	 * this === 0
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+	 * @returns {boolean}
+	 */
+	isZero(tolerance) {
+		if(tolerance) {
+			return this.equals(BigDecimal.ZERO, tolerance);
+		}
+		else {
+			return this.integer.isZero();
+		}
+	}
+	
+	/**
+	 * this === 1
+	 * @param {BigDecimal|number|string|Array&lt;BigInteger|number|MathContext&gt;|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+	 * @returns {boolean}
+	 */
+	isOne(tolerance) {
+		return this.compareTo(BigDecimal.ONE, tolerance) === 0;
+	}
+	
+	/**
+	 * this &gt; 0
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		return this.integer.isPositive();
+	}
+
+	/**
+	 * this &lt; 0
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return this.integer.isNegative();
+	}
+
+	/**
+	 * this &gt;= 0
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return this.integer.isNotNegative();
+	}
+
+	// ----------------------
+	// &#x5B9A;&#x6570;
+	// ----------------------
+	
+	/**
+	 * -1
+	 * @returns {BigDecimal} -1
+	 */
+	static get MINUS_ONE() {
+		return CACHED_DATA.MINUS_ONE.get();
+	}
+
+	/**
+	 * 0
+	 * @returns {BigDecimal} 0
+	 */
+	static get ZERO() {
+		return CACHED_DATA.ZERO.get();
+	}
+	
+	/**
+	 * 0.5
+	 * @returns {BigDecimal} 0.5
+	 */
+	static get HALF() {
+		return CACHED_DATA.HALF.get();
+	}
+	
+	/**
+	 * 1
+	 * @returns {BigDecimal} 1
+	 */
+	static get ONE() {
+		return CACHED_DATA.ONE.get();
+	}
+	
+	/**
+	 * 2
+	 * @returns {BigDecimal} 2
+	 */
+	static get TWO() {
+		return CACHED_DATA.TWO.get();
+	}
+	
+	/**
+	 * 10
+	 * @returns {BigDecimal} 10
+	 */
+	static get TEN() {
+		return CACHED_DATA.TEN.get();
+	}
+
+	/**
+	 * PI
+	 * @returns {BigDecimal} 3.14...
+	 */
+	static get PI() {
+		return CACHED_DATA.PI.get();
+	}
+
+	/**
+	 * 0.25 * PI.
+	 * @returns {BigDecimal} 0.78...
+	 */
+	static get QUARTER_PI() {
+		return CACHED_DATA.QUARTER_PI.get();
+	}
+
+	/**
+	 * 0.5 * PI.
+	 * @returns {BigDecimal} 1.57...
+	 */
+	static get HALF_PI() {
+		return CACHED_DATA.HALF_PI.get();
+	}
+
+	/**
+	 * 2 * PI.
+	 * @returns {BigDecimal} 6.28...
+	 */
+	static get TWO_PI() {
+		return CACHED_DATA.TWO_PI.get();
+	}
+
+	/**
+	 * E, Napier&apos;s constant.
+	 * @returns {BigDecimal} E
+	 */
+	static get E() {
+		return CACHED_DATA.E.get();
+	}
+
+	/**
+	 * log_e(2)
+	 * @returns {BigDecimal} ln(2)
+	 */
+	static get LN2() {
+		return CACHED_DATA.LN2.get();
+	}
+
+	/**
+	 * log_e(10)
+	 * @returns {BigDecimal} ln(10)
+	 */
+	static get LN10() {
+		return CACHED_DATA.LN10.get();
+	}
+
+	/**
+	 * log_2(e)
+	 * @returns {BigDecimal} log_2(e)
+	 */
+	static get LOG2E() {
+		return CACHED_DATA.LOG2E.get();
+	}
+	
+	/**
+	 * log_10(e)
+	 * @returns {BigDecimal} log_10(e)
+	 */
+	static get LOG10E() {
+		return CACHED_DATA.LOG10E.get();
+	}
+	
+	/**
+	 * sqrt(2)
+	 * @returns {BigDecimal} sqrt(2)
+	 */
+	static get SQRT2() {
+		return CACHED_DATA.SQRT2.get();
+	}
+	
+	/**
+	 * sqrt(0.5)
+	 * @returns {BigDecimal} sqrt(0.5)
+	 */
+	static get SQRT1_2() {
+		return CACHED_DATA.SQRT1_2.get();
+	}
+	
+}
+
+BigDecimal.RoundingMode = RoundingMode;
+BigDecimal.MathContext = MathContext;
+
+/**
+ * Collection of constant values used in the class.
+ * @ignore
+ */
+const DEFINE = {
+
+	/**
+	 * -1
+	 * @returns {BigDecimal} -1
+	 */
+	MINUS_ONE : function() {
+		return new BigDecimal(-1);
+	},
+
+	/**
+	 * 0
+	 * @returns {BigDecimal} 0
+	 */
+	ZERO : function() {
+		return new BigDecimal(0);
+	},
+	
+	/**
+	 * 0.5
+	 * @returns {BigDecimal} 0.5
+	 */
+	HALF : function() {
+		return new BigDecimal(0.5);
+	},
+	
+	/**
+	 * 1
+	 * @returns {BigDecimal} 1
+	 */
+	ONE : function() {
+		return new BigDecimal(1);
+	},
+	
+	/**
+	 * 2
+	 * @returns {BigDecimal} 2
+	 */
+	TWO : function() {
+		return new BigDecimal(2);
+	},
+	
+	/**
+	 * 10
+	 * @returns {BigDecimal} 10
+	 */
+	TEN : function() {
+		return new BigDecimal(10);
+	},
+
+	/**
+	 * PI
+	 * @returns {BigDecimal} 3.14...
+	 */
+	PI : function() {
+		// &#x30AC;&#x30A6;&#x30B9;&#xFF1D;&#x30EB;&#x30B8;&#x30E3;&#x30F3;&#x30C9;&#x30EB;&#x306E;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;
+		// &#x4F7F;&#x7528;&#x3059;&#x308B;&#x56FA;&#x5B9A;&#x5024;&#x3092;&#x5217;&#x6319;
+		const B1		= BigDecimal.create(1);
+		const B2		= BigDecimal.create(2);
+		const B4		= BigDecimal.create(4);
+		// &#x521D;&#x671F;&#x5024;
+		let a = B1;
+		let b = B2.sqrt().inv();
+		let t = B4.inv();
+		let p = B1;
+		let pi = B1;
+		// &#x7E70;&#x308A;&#x8FD4;&#x3057;&#x6C42;&#x3081;&#x308B;
+		for(let i = 0; i &lt; 300; i++) {
+			const a1 = a.add(b).div(B2);
+			const b1 = a.mul(b).sqrt();
+			const t1 = t.sub(p.mul(a.sub(a1).square()));
+			const p1 = p.mul(B2);
+			const pi1 = a1.add(b1).square().div(t1.mul(B4));
+			const delta = pi1.sub(pi);
+			pi = pi1;
+			if(delta.isZero()) {
+				break;
+			}
+			a = a1;
+			b = b1;
+			t = t1;
+			p = p1;
+		}
+		return pi;
+	},
+
+	/**
+	 * 0.25 * PI.
+	 * @returns {BigDecimal} 0.78...
+	 */
+	QUARTER_PI : function() {
+		return DEFINE.PI().div(4);
+	},
+
+	/**
+	 * 0.5 * PI.
+	 * @returns {BigDecimal} 1.57...
+	 */
+	HALF_PI : function() {
+		return DEFINE.PI().div(2);
+	},
+
+	/**
+	 * 2 * PI.
+	 * @returns {BigDecimal} 6.28...
+	 */
+	TWO_PI : function() {
+		return DEFINE.PI().mul(2);
+	},
+	
+	/**
+	 * E, Napier&apos;s constant.
+	 * @returns {BigDecimal} E
+	 */
+	E : function() {
+		// &#x521D;&#x671F;&#x5024;
+		let n0 = BigDecimal.create(2);
+		let k = BigDecimal.create(1);
+		// &#x7E70;&#x308A;&#x8FD4;&#x3057;&#x6C42;&#x3081;&#x308B;
+		for(let i = 2; i &lt; 300; i++) {
+			k = k.mul(i);
+			const n1 = n0.add(k.inv());
+			const delta = n1.sub(n0);
+			n0 = n1;
+			if(delta.isZero()) {
+				break;
+			}
+		}
+		return n0;
+	},
+
+	/**
+	 * log_e(2)
+	 * @returns {BigDecimal} ln(2)
+	 */
+	LN2 : function() {
+		return (new BigDecimal(2)).log();
+	},
+
+	/**
+	 * log_e(10)
+	 * @returns {BigDecimal} ln(10)
+	 */
+	LN10 : function() {
+		return (new BigDecimal(10)).log();
+	},
+
+	/**
+	 * log_2(e)
+	 * @returns {BigDecimal} log_2(e)
+	 */
+	LOG2E : function() {
+		return (new BigDecimal(2)).log().inv();
+	},
+	
+	/**
+	 * log_10(e)
+	 * @returns {BigDecimal} log_10(e)
+	 */
+	LOG10E : function() {
+		return (new BigDecimal(10)).log().inv();
+	},
+	
+	/**
+	 * sqrt(2)
+	 * @returns {BigDecimal} sqrt(2)
+	 */
+	SQRT2 : function() {
+		return (new BigDecimal(2)).sqrt();
+	},
+	
+	/**
+	 * sqrt(0.5)
+	 * @returns {BigDecimal} sqrt(0.5)
+	 */
+	SQRT1_2 : function() {
+		return (new BigDecimal(0.5)).sqrt();
+	}
+	
+};
+
+/**
+ * Simple cache class.
+ * @ignore
+ */
+class BigDecimalCache {
+	
+	/**
+	 * Create Cache.
+	 * @param {string} method_name - Method name in the DEFINE.
+	 * @param {number} cache_size - Maximum number of caches.
+	 */
+	constructor(method_name, cache_size) {
+
+		/**
+		 * Method name in the DEFINE.
+		 * @type {string}
+		 */
+		this.method_name = method_name;
+		
+		/**
+		 * @type {Array&lt;{name:string, number:BigDecimal}&gt;}
+		 */
+		this.table = [];
+
+		/**
+		 * Maximum number of caches.
+		 * @type {number}
+		 */
+		this.table_max = cache_size;
+
+	}
+
+	/**
+	 * Use from cache if it exists in cache.
+	 * @returns {BigDecimal}
+	 */
+	get() {
+		const name = BigDecimal.getDefaultContext().toString();
+
+		for(let index = 0; index &lt; this.table.length; index++) {
+			if(this.table[index].name === name) {
+				// &#x5148;&#x982D;&#x306B;&#x3082;&#x3063;&#x3066;&#x304F;&#x308B;
+				const object = this.table.splice(index, 1)[0];
+				this.table.unshift(object);
+				return object.number;
+			}
+		}
+		// @ts-ignore
+		const new_number = DEFINE[this.method_name]();
+		if(this.table.length === this.table_max) {
+			// &#x5F8C;&#x308D;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x6D88;&#x53BB;
+			this.table.pop();
+		}
+		// &#x524D;&#x65B9;&#x306B;&#x8FFD;&#x52A0;
+		this.table.unshift({
+			name : name,
+			number : new_number
+		});
+		return new_number;
+	}
+
+}
+
+/**
+ * Simple cache class.
+ * @ignore
+ */
+class BigDecimalConst {
+	/**
+	 * Constructor
+	 */
+	constructor() {
+		/**
+		 * -1
+		 */
+		this.MINUS_ONE = new BigDecimalCache(&quot;MINUS_ONE&quot;, 10);
+
+		/**
+		 * 0
+		 */
+		this.ZERO = new BigDecimalCache(&quot;ZERO&quot;, 10);
+
+		/**
+		 * 0.5
+		 */
+		this.HALF = new BigDecimalCache(&quot;HALF&quot;, 10);
+
+		/**
+		 * 1
+		 */
+		this.ONE = new BigDecimalCache(&quot;ONE&quot;, 10);
+
+		/**
+		 * 2
+		 */
+		this.TWO = new BigDecimalCache(&quot;TWO&quot;, 10);
+
+		/**
+		 * 10
+		 */
+		this.TEN = new BigDecimalCache(&quot;TEN&quot;, 10);
+
+		/**
+		 * PI
+		 */
+		this.PI = new BigDecimalCache(&quot;PI&quot;, 10);
+
+		/**
+		 * QUARTER_PI
+		 */
+		this.QUARTER_PI = new BigDecimalCache(&quot;QUARTER_PI&quot;, 10);
+
+		/**
+		 * HALF_PI
+		 */
+		this.HALF_PI = new BigDecimalCache(&quot;HALF_PI&quot;, 10);
+
+		/**
+		 * TWO_PI
+		 */
+		this.TWO_PI = new BigDecimalCache(&quot;TWO_PI&quot;, 10);
+
+		/**
+		 * E
+		 */
+		this.E = new BigDecimalCache(&quot;E&quot;, 10);
+
+		/**
+		 * LN2
+		 */
+		this.LN2 = new BigDecimalCache(&quot;LN2&quot;, 10);
+
+		/**
+		 * LN10
+		 */
+		this.LN10 = new BigDecimalCache(&quot;LN10&quot;, 10);
+
+		/**
+		 * LOG2E
+		 */
+		this.LOG2E = new BigDecimalCache(&quot;LOG2E&quot;, 10);
+		
+		/**
+		 * LOG10E
+		 */
+		this.LOG10E = new BigDecimalCache(&quot;LOG10E&quot;, 10);
+		
+		/**
+		 * SQRT2
+		 */
+		this.SQRT2 = new BigDecimalCache(&quot;SQRT2&quot;, 10);
+		
+		/**
+		 * SQRT1_2
+		 */
+		this.SQRT1_2 = new BigDecimalCache(&quot;SQRT1_2&quot;, 10);
+	}
+}
+
+/**
+ * Cache of the constant.
+ * @ignore
+ */
+const CACHED_DATA = new BigDecimalConst();
+
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

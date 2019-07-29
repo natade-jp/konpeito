@@ -3,67 +3,67 @@
   "expectCount": 890,
   "actualCount": 890,
   "files": {
-    "src/konpeito.mjs": {
+    "src/konpeito.js": {
       "expectCount": 9,
       "actualCount": 9,
       "undocumentLines": []
     },
-    "src/math/BigDecimal.mjs": {
+    "src/math/BigDecimal.js": {
       "expectCount": 128,
       "actualCount": 128,
       "undocumentLines": []
     },
-    "src/math/BigInteger.mjs": {
+    "src/math/BigInteger.js": {
       "expectCount": 111,
       "actualCount": 111,
       "undocumentLines": []
     },
-    "src/math/Complex.mjs": {
+    "src/math/Complex.js": {
       "expectCount": 90,
       "actualCount": 90,
       "undocumentLines": []
     },
-    "src/math/context/MathContext.mjs": {
+    "src/math/context/MathContext.js": {
       "expectCount": 14,
       "actualCount": 14,
       "undocumentLines": []
     },
-    "src/math/context/RoundingMode.mjs": {
+    "src/math/context/RoundingMode.js": {
       "expectCount": 37,
       "actualCount": 37,
       "undocumentLines": []
     },
-    "src/math/Fraction.mjs": {
+    "src/math/Fraction.js": {
       "expectCount": 55,
       "actualCount": 55,
       "undocumentLines": []
     },
-    "src/math/Matrix.mjs": {
+    "src/math/Matrix.js": {
       "expectCount": 228,
       "actualCount": 228,
       "undocumentLines": []
     },
-    "src/math/tools/LinearAlgebra.mjs": {
+    "src/math/tools/LinearAlgebra.js": {
       "expectCount": 24,
       "actualCount": 24,
       "undocumentLines": []
     },
-    "src/math/tools/Probability.mjs": {
+    "src/math/tools/Probability.js": {
       "expectCount": 96,
       "actualCount": 96,
       "undocumentLines": []
     },
-    "src/math/tools/Random.mjs": {
+    "src/math/tools/Random.js": {
       "expectCount": 21,
       "actualCount": 21,
       "undocumentLines": []
     },
-    "src/math/tools/Signal.mjs": {
+    "src/math/tools/Signal.js": {
       "expectCount": 59,
       "actualCount": 59,
       "undocumentLines": []
     },
-    "src/math/tools/Statistics.mjs": {
+    "src/math/tools/Statistics.js": {
       "expectCount": 18,
       "actualCount": 18,
       "undocumentLines": []

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/math/tools/Statistics.js | konpeito</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.js~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigDecimal.js~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigInteger.js~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.js~Fraction.html">Fraction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.js~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Probability.js~Probability.html">Probability</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.js~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.js~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">src/math/tools/Statistics.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+import Complex from &quot;../Complex.js&quot;;
+import Matrix from &quot;../Matrix.js&quot;;
+
+/**
+ * Collection of calculation settings for matrix.
+ * - Available options vary depending on the method.
+ * @typedef {Object} StatisticsSettings
+ * @property {?string|?number} [dimension=&quot;auto&quot;] Calculation direction. 0/&quot;auto&quot;, 1/&quot;row&quot;, 2/&quot;column&quot;, 3/&quot;both&quot;.
+ * @property {Object} [correction] Correction value. For statistics. 0(unbiased), 1(sample).
+ */
+
+/**
+ * Class for statistical processing for Matrix class.
+ */
+export default class Statistics {
+
+	/**
+	 * Maximum number.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix} max([A, B])
+	 */
+	static max(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			let x = data[0];
+			for(let i = 1; i &lt; data.length; i++) {
+				if(x.compareTo(data[i]) &lt; 0) {
+					x = data[i];
+				}
+			}
+			return [x];
+		};
+		return X.eachVector(main, dim);
+	}
+	
+	/**
+	 * Minimum number.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix} min([A, B])
+	 */
+	static min(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			let x = data[0];
+			for(let i = 1; i &lt; data.length; i++) {
+				if(x.compareTo(data[i]) &gt; 0) {
+					x = data[i];
+				}
+			}
+			return [x];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * Sum.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static sum(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			// &#x30AB;&#x30CF;&#x30F3;&#x306E;&#x52A0;&#x7B97;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;
+			let sum = Complex.ZERO;
+			let delta = Complex.ZERO;
+			for(let i = 0; i &lt; data.length; i++) {
+				const new_number = data[i].add(delta);
+				const new_sum = sum.add(new_number);
+				delta = new_sum.sub(sum).sub(new_number);
+				sum = new_sum;
+			}
+			return [sum];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * Arithmetic average.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static mean(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			// &#x30AB;&#x30CF;&#x30F3;&#x306E;&#x52A0;&#x7B97;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;
+			let sum = Complex.ZERO;
+			let delta = Complex.ZERO;
+			for(let i = 0; i &lt; data.length; i++) {
+				const new_number = data[i].add(delta);
+				const new_sum = sum.add(new_number);
+				delta = new_sum.sub(sum).sub(new_number);
+				sum = new_sum;
+			}
+			return [sum.div(data.length)];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * Product of array elements.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static prod(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			let x = Complex.ONE;
+			for(let i = 0; i &lt; data.length; i++) {
+				x = x.mul(data[i]);
+			}
+			return [x];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * Geometric mean.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static geomean(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			let x = Complex.ONE;
+			for(let i = 0; i &lt; data.length; i++) {
+				x = x.mul(data[i]);
+			}
+			return [x.pow(Complex.create(data.length).inv())];
+		};
+		return X.eachVector(main, dim);
+	}
+	
+	/**
+	 * Median.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static median(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		/**
+		 * @param {Complex} a
+		 * @param {Complex} b
+		 * @returns {number}
+		 */
+		const compare = function(a, b){
+			return a.compareTo(b);
+		};
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			data.sort(compare);
+			let y;
+			if((data.length % 2) === 1) {
+				y = data[Math.floor(data.length / 2)];
+			}
+			else {
+				const x1 = data[Math.floor(data.length / 2) - 1];
+				const x2 = data[Math.floor(data.length / 2)];
+				y = x1.add(x2).div(Complex.TWO);
+			}
+			return [y];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * Mode.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static mode(x, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		/**
+		 * @param {Complex} a
+		 * @param {Complex} b
+		 * @returns {number}
+		 */
+		const compare = function(a, b){
+			return a.compareTo(b);
+		};
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			data.sort(compare);
+			/**
+			 * @type {any}
+			 */
+			const map = {};
+			for(let i = 0; i &lt; data.length; i++) {
+				const str = data[i].real + &quot; &quot; + data[i].imag;
+				if(!map[str]) {
+					map[str] = {
+						complex : data[i],
+						value : 1
+					};
+				}
+				else {
+					map[str].value++;
+				}
+			}
+			let max_complex = Complex.ZERO;
+			let max_number = Number.NEGATIVE_INFINITY;
+			for(const key in map) {
+				const tgt = map[key];
+				if(tgt.value &gt; max_number) {
+					max_number	= tgt.value;
+					max_complex	= tgt.complex;
+				}
+			}
+			return [max_complex];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * Moment.
+	 * - Moment of order n. Equivalent to the definition of variance at 2.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {number} nth_order
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static moment(x, nth_order, type) {
+		const X = Matrix._toMatrix(x);
+		const M = Statistics.mean(X);
+		// &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;&#x5206;&#x6563;), 1(&#x6A19;&#x672C;&#x5206;&#x6563;)&#x3002;&#x898F;&#x5B9A;&#x5024;&#x306F;&#x3001;&#x6A19;&#x672C;&#x5206;&#x6563;&#x3068;&#x3059;&#x308B;
+		const cor = !(type &amp;&amp; typeof type.correction === &quot;number&quot;) ? 1: Matrix._toDouble(type.correction);
+		const dim = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const order = Matrix._toComplex(nth_order);
+		let col = 0;
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			let mean;
+			if(M.isScalar()) {
+				mean = M.scalar;
+			}
+			else {
+				mean = M.getComplex(col++);
+			}
+			let x = Complex.ZERO;
+			for(let i = 0; i &lt; data.length; i++) {
+				// &#x8A08;&#x7B97;&#x65B9;&#x6CD5;&#x306B;&#x3064;&#x3044;&#x3066;
+				// &#x30FB;&#x8907;&#x7D20;&#x6570;&#x306F;&#x3001;&#x30CE;&#x30EB;&#x30E0;&#x3092;&#x3068;&#x3089;&#x305A;&#x306B;&#x8907;&#x7D20;&#x6570;&#x7528;&#x306E;pow&#x3092;&#x4F7F;&#x7528;&#x3057;&#x305F;&#x307B;&#x3046;&#x304C;&#x3044;&#x3044;&#x306E;&#x304B;
+				// &#x30FB;&#x5206;&#x6563;&#x3068;&#x540C;&#x69D8;&#x306B;norm&#x3067;&#x8A08;&#x7B97;&#x3057;&#x305F;&#x307B;&#x3046;&#x304C;&#x3044;&#x3044;&#x306E;&#x304B;
+				// &#x8907;&#x7D20;&#x6570;&#x3067;&#x306E;&#x30E2;&#x30FC;&#x30E1;&#x30F3;&#x30C8;&#x306E;&#x5B9A;&#x7FA9;&#x304C;&#x306A;&#x3044;&#x305F;&#x3081;&#x4E0D;&#x660E;&#x3067;&#x3042;&#x308B;&#x304C;&#x3001;
+				// &#x5206;&#x6563;&#x3092;&#x62E1;&#x5F35;&#x3057;&#x305F;&#x8003;&#x3048;&#x3067;&#x3042;&#x308C;&#x3070;&#x3001;norm&#x3092;&#x3068;&#x3063;&#x305F;&#x7D2F;&#x4E57;&#x306E;&#x307B;&#x3046;&#x304C;&#x826F;&#x3044;&#x3068;&#x601D;&#x308F;&#x308C;&#x308B;&#x3002;
+				const a = data[i].sub(mean);
+				x = x.add(a.pow(order));
+			}
+			if(data.length === 1) {
+				return [x.div(data.length)];
+			}
+			else {
+				return [x.div(data.length - 1 + cor)];
+			}
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * Variance.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static var(x, type) {
+		const X = Matrix._toMatrix(x);
+		const M = Statistics.mean(X);
+		// &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;&#x5206;&#x6563;), 1(&#x6A19;&#x672C;&#x5206;&#x6563;)&#x3002;&#x898F;&#x5B9A;&#x5024;&#x306F;&#x3001;&#x4E0D;&#x504F;&#x5206;&#x6563;&#x3068;&#x3059;&#x308B;
+		const cor = !(type &amp;&amp; typeof type.correction === &quot;number&quot;) ? 0: Matrix._toDouble(type.correction);
+		const dim = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		let col = 0;
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			if(data.length === 1) {
+				// &#x8981;&#x7D20;&#x304C;1&#x3067;&#x3042;&#x308C;&#x3070;&#x3001;&#x5206;&#x6563;&#x306F;0&#x56FA;&#x5B9A;
+				return [Complex.ZERO];
+			}
+			const mean = M.getComplex(col++);
+			// &#x5206;&#x6563;&#x306F;&#x3001;&#x30CE;&#x30EB;&#x30E0;&#x306E;2&#x4E57;&#x3067;&#x8A08;&#x7B97;&#x3059;&#x308B;&#x305F;&#x3081;&#x5FC5;&#x305A;&#x5B9F;&#x6570;&#x306B;&#x306A;&#x308B;&#x3002;
+			let x = 0;
+			for(let i = 0; i &lt; data.length; i++) {
+				const a = data[i].sub(mean).norm;
+				x += a * a;
+			}
+			return [Complex.create(x / (data.length - 1 + cor))];
+		};
+		return X.eachVector(main, dim);
+	}
+
+	/**
+	 * Standard deviation.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static std(x, type) {
+		const X = Matrix._toMatrix(x);
+		// &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;&#x5206;&#x6563;), 1(&#x6A19;&#x672C;&#x5206;&#x6563;)&#x3002;&#x898F;&#x5B9A;&#x5024;&#x306F;&#x3001;&#x4E0D;&#x504F;&#x5206;&#x6563;&#x3068;&#x3059;&#x308B;
+		const cor = !(type &amp;&amp; typeof type.correction === &quot;number&quot;) ? 0: Matrix._toDouble(type.correction);
+		const dim = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const M = Statistics.var(X, { correction : cor, dimension : dim });
+		M._each(function(num) {
+			return num.sqrt();
+		});
+		return M;
+	}
+
+	/**
+	 * Mean absolute deviation.
+	 * - The &quot;algorithm&quot; can choose &quot;0/mean&quot;(default) and &quot;1/median&quot;.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {?string|?number} [algorithm]
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static mad(x, algorithm, type) {
+		const X = Matrix._toMatrix(x);
+		const alg = !algorithm ? &quot;mean&quot; : (typeof algorithm === &quot;string&quot; ? algorithm : Matrix._toInteger(algorithm));
+		const dim = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		if((alg === &quot;mean&quot;) || (alg === 0)) {
+			return Statistics.mean(X.sub(Statistics.mean(X, {dimension : dim} )).abs(), {dimension : dim});
+		}
+		else if((alg === &quot;median&quot;) || (alg === 1)) {
+			return Statistics.median(X.sub(Statistics.median(X, {dimension : dim} )).abs(), {dimension : dim});
+		}
+		else {
+			throw &quot;mad unsupported argument &quot; + alg;
+		}
+	}
+
+	/**
+	 * Skewness.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static skewness(x, type) {
+		const X = Matrix._toMatrix(x);
+		// &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;), 1(&#x6A19;&#x672C;)&#x3002;&#x898F;&#x5B9A;&#x5024;&#x306F;&#x3001;&#x6A19;&#x672C;&#x3068;&#x3059;&#x308B;
+		const cor = !(type &amp;&amp; typeof type.correction === &quot;number&quot;) ? 1: Matrix._toDouble(type.correction);
+		const dim = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const order = Statistics.moment(X, 3, { correction : cor, dimension : dim });
+		const std = Statistics.std(X, { correction : cor, dimension : dim });
+		if(cor === 1) {
+			return order.dotdiv(std.dotpow(3));
+		}
+		else {
+			return order.dotdiv(std.dotpow(3)).dotmul(2);
+		}
+	}
+
+	/**
+	 * Covariance matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static cov(x, type) {
+		const X = Matrix._toMatrix(x);
+		// &#x88DC;&#x6B63;&#x5024; 0(&#x4E0D;&#x504F;&#x5206;&#x6563;), 1(&#x6A19;&#x672C;&#x5206;&#x6563;)&#x3002;&#x898F;&#x5B9A;&#x5024;&#x306F;&#x3001;&#x4E0D;&#x504F;&#x5206;&#x6563;&#x3068;&#x3059;&#x308B;
+		const cor = !(type &amp;&amp; typeof type.correction === &quot;number&quot;) ? 0: Matrix._toDouble(type.correction);
+		if(X.isVector()) {
+			return Statistics.var(X, type);
+		}
+		const correction = X.row_length === 1 ? 1 : cor;
+		const arr = X.matrix_array;
+		const mean = Statistics.mean(X).matrix_array[0];
+		// &#x4E0A;&#x4E09;&#x89D2;&#x884C;&#x5217;&#x3001;&#x5BFE;&#x89D2;&#x884C;&#x5217;
+		const y = new Array(X.column_length);
+		for(let a = 0; a &lt; X.column_length; a++) {
+			const a_mean = mean[a];
+			y[a] = new Array(X.column_length);
+			for(let b = a; b &lt; X.column_length; b++) {
+				const b_mean = mean[b];
+				let sum = Complex.ZERO;
+				for(let row = 0; row &lt; X.row_length; row++) {
+					sum = sum.add((arr[row][a].sub(a_mean)).dot(arr[row][b].sub(b_mean)));
+				}
+				y[a][b] = sum.div(X.row_length - 1 + correction);
+			}
+		}
+		// &#x4E0B;&#x4E09;&#x89D2;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x308B;
+		for(let row = 1; row &lt; y[0].length; row++) {
+			for(let col = 0; col &lt; row; col++) {
+				y[row][col] = y[col][row];
+			}
+		}
+		return new Matrix(y);
+	}
+
+	/**
+	 * The samples are normalized to a mean value of 0, standard deviation of 1.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static normalize(x, type) {
+		const X = Matrix._toMatrix(x);
+		const mean_zero = X.sub(Statistics.mean(X, type));
+		const std_one = mean_zero.dotdiv(Statistics.std(mean_zero, type));
+		return std_one;
+	}
+
+	/**
+	 * Correlation matrix.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static corrcoef(x, type) {
+		const X = Matrix._toMatrix(x);
+		return Statistics.cov(Statistics.normalize(X, type), type);
+	}
+
+	/**
+	 * Sort.
+	 * - The &quot;order&quot; can choose &quot;ascend&quot;(default) and &quot;descend&quot;.
+	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {string} [order]
+	 * @param {StatisticsSettings} [type]
+	 * @returns {Matrix}
+	 */
+	static sort(x, order, type) {
+		const X = Matrix._toMatrix(x);
+		const dim   = !(type &amp;&amp; type.dimension) ? &quot;auto&quot; : type.dimension;
+		const order_type = !order ? &quot;ascend&quot; : order;
+		/**
+		 * @type {function(Complex, Complex): number }
+		 */
+		let compare;
+		if(order_type === &quot;ascend&quot;) {
+			compare = function(a, b){
+				return a.compareTo(b);
+			};
+		}
+		else {
+			compare = function(a, b){
+				return b.compareTo(a);
+			};
+		}
+		/**
+		 * @param {Array&lt;Complex&gt;} data 
+		 * @returns {Array&lt;Complex&gt;}
+		 */
+		const main = function(data) {
+			data.sort(compare);
+			return data;
+		};
+		return X.eachVector(main, dim);
+	}
+
+
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

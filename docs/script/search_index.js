@@ -1,4214 +1,4496 @@
 window.esdocSearchIndex = [
   [
-    "konpeito/src/math/bigdecimal.mjs~bigdecimal",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html",
-    "<span>BigDecimal</span> <span class=\"search-result-import-path\">konpeito/src/math/BigDecimal.mjs</span>",
+    "konpeito/src/math/bigdecimal.js~bigdecimal",
+    "class/src/math/BigDecimal.js~BigDecimal.html",
+    "<span>BigDecimal</span> <span class=\"search-result-import-path\">konpeito/src/math/BigDecimal.js</span>",
     "class"
   ],
   [
-    "konpeito/src/math/biginteger.mjs~biginteger",
-    "class/src/math/BigInteger.mjs~BigInteger.html",
-    "<span>BigInteger</span> <span class=\"search-result-import-path\">konpeito/src/math/BigInteger.mjs</span>",
+    "konpeito/src/math/biginteger.js~biginteger",
+    "class/src/math/BigInteger.js~BigInteger.html",
+    "<span>BigInteger</span> <span class=\"search-result-import-path\">konpeito/src/math/BigInteger.js</span>",
     "class"
   ],
   [
-    "konpeito/src/math/complex.mjs~complex",
-    "class/src/math/Complex.mjs~Complex.html",
-    "<span>Complex</span> <span class=\"search-result-import-path\">konpeito/src/math/Complex.mjs</span>",
+    "konpeito/src/math/complex.js~complex",
+    "class/src/math/Complex.js~Complex.html",
+    "<span>Complex</span> <span class=\"search-result-import-path\">konpeito/src/math/Complex.js</span>",
     "class"
   ],
   [
-    "konpeito/src/math/fraction.mjs~fraction",
-    "class/src/math/Fraction.mjs~Fraction.html",
-    "<span>Fraction</span> <span class=\"search-result-import-path\">konpeito/src/math/Fraction.mjs</span>",
+    "konpeito/src/math/fraction.js~fraction",
+    "class/src/math/Fraction.js~Fraction.html",
+    "<span>Fraction</span> <span class=\"search-result-import-path\">konpeito/src/math/Fraction.js</span>",
     "class"
   ],
   [
-    "konpeito/src/math/tools/linearalgebra.mjs~linearalgebra",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html",
-    "<span>LinearAlgebra</span> <span class=\"search-result-import-path\">konpeito/src/math/tools/LinearAlgebra.mjs</span>",
+    "konpeito/src/math/tools/linearalgebra.js~linearalgebra",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html",
+    "<span>LinearAlgebra</span> <span class=\"search-result-import-path\">konpeito/src/math/tools/LinearAlgebra.js</span>",
     "class"
   ],
   [
-    "konpeito/src/math/context/mathcontext.mjs~mathcontext",
-    "class/src/math/context/MathContext.mjs~MathContext.html",
-    "<span>MathContext</span> <span class=\"search-result-import-path\">konpeito/src/math/context/MathContext.mjs</span>",
+    "konpeito/src/math/context/mathcontext.js~mathcontext",
+    "class/src/math/context/MathContext.js~MathContext.html",
+    "<span>MathContext</span> <span class=\"search-result-import-path\">konpeito/src/math/context/MathContext.js</span>",
     "class"
   ],
   [
-    "konpeito/src/math/matrix.mjs~matrix",
-    "class/src/math/Matrix.mjs~Matrix.html",
-    "<span>Matrix</span> <span class=\"search-result-import-path\">konpeito/src/math/Matrix.mjs</span>",
+    "konpeito/src/math/matrix.js~matrix",
+    "class/src/math/Matrix.js~Matrix.html",
+    "<span>Matrix</span> <span class=\"search-result-import-path\">konpeito/src/math/Matrix.js</span>",
     "class"
   ],
   [
-    "konpeito/src/math/tools/probability.mjs~probability",
-    "class/src/math/tools/Probability.mjs~Probability.html",
-    "<span>Probability</span> <span class=\"search-result-import-path\">konpeito/src/math/tools/Probability.mjs</span>",
+    "konpeito/src/math/tools/probability.js~probability",
+    "class/src/math/tools/Probability.js~Probability.html",
+    "<span>Probability</span> <span class=\"search-result-import-path\">konpeito/src/math/tools/Probability.js</span>",
     "class"
   ],
   [
-    "konpeito/src/math/tools/random.mjs~random",
-    "class/src/math/tools/Random.mjs~Random.html",
-    "<span>Random</span> <span class=\"search-result-import-path\">konpeito/src/math/tools/Random.mjs</span>",
+    "konpeito/src/math/tools/random.js~random",
+    "class/src/math/tools/Random.js~Random.html",
+    "<span>Random</span> <span class=\"search-result-import-path\">konpeito/src/math/tools/Random.js</span>",
     "class"
   ],
   [
-    "konpeito/src/math/context/roundingmode.mjs~roundingmode",
-    "class/src/math/context/RoundingMode.mjs~RoundingMode.html",
-    "<span>RoundingMode</span> <span class=\"search-result-import-path\">konpeito/src/math/context/RoundingMode.mjs</span>",
+    "konpeito/src/math/context/roundingmode.js~roundingmode",
+    "class/src/math/context/RoundingMode.js~RoundingMode.html",
+    "<span>RoundingMode</span> <span class=\"search-result-import-path\">konpeito/src/math/context/RoundingMode.js</span>",
     "class"
   ],
   [
-    "konpeito/src/math/context/roundingmode.mjs~roundingmodeentity",
-    "class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html",
-    "<span>RoundingModeEntity</span> <span class=\"search-result-import-path\">konpeito/src/math/context/RoundingMode.mjs</span>",
+    "konpeito/src/math/context/roundingmode.js~roundingmodeentity",
+    "class/src/math/context/RoundingMode.js~RoundingModeEntity.html",
+    "<span>RoundingModeEntity</span> <span class=\"search-result-import-path\">konpeito/src/math/context/RoundingMode.js</span>",
     "class"
   ],
   [
-    "konpeito/src/math/tools/signal.mjs~signal",
-    "class/src/math/tools/Signal.mjs~Signal.html",
-    "<span>Signal</span> <span class=\"search-result-import-path\">konpeito/src/math/tools/Signal.mjs</span>",
+    "konpeito/src/math/tools/signal.js~signal",
+    "class/src/math/tools/Signal.js~Signal.html",
+    "<span>Signal</span> <span class=\"search-result-import-path\">konpeito/src/math/tools/Signal.js</span>",
     "class"
   ],
   [
-    "konpeito/src/math/tools/statistics.mjs~statistics",
-    "class/src/math/tools/Statistics.mjs~Statistics.html",
-    "<span>Statistics</span> <span class=\"search-result-import-path\">konpeito/src/math/tools/Statistics.mjs</span>",
+    "konpeito/src/math/tools/statistics.js~statistics",
+    "class/src/math/tools/Statistics.js~Statistics.html",
+    "<span>Statistics</span> <span class=\"search-result-import-path\">konpeito/src/math/tools/Statistics.js</span>",
     "class"
   ],
   [
-    "konpeito/src/konpeito.mjs~konpeito",
-    "class/src/konpeito.mjs~konpeito.html",
-    "<span>konpeito</span> <span class=\"search-result-import-path\">konpeito/src/konpeito.mjs</span>",
+    "konpeito/src/konpeito.js~konpeito",
+    "class/src/konpeito.js~konpeito.html",
+    "<span>konpeito</span> <span class=\"search-result-import-path\">konpeito/src/konpeito.js</span>",
     "class"
   ],
   [
-    "src/konpeito.mjs",
-    "file/src/konpeito.mjs.html",
-    "src/konpeito.mjs",
+    "src/.external-ecmascript.js~array",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "src/.external-ecmascript.js~Array",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~arraybuffer",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "src/.external-ecmascript.js~ArrayBuffer",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~boolean",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "src/.external-ecmascript.js~Boolean",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~dataview",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "src/.external-ecmascript.js~DataView",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~date",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "src/.external-ecmascript.js~Date",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~error",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "src/.external-ecmascript.js~Error",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~evalerror",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "src/.external-ecmascript.js~EvalError",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~float32array",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "src/.external-ecmascript.js~Float32Array",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~float64array",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "src/.external-ecmascript.js~Float64Array",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~function",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "src/.external-ecmascript.js~Function",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~generator",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "src/.external-ecmascript.js~Generator",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~generatorfunction",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "src/.external-ecmascript.js~GeneratorFunction",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~infinity",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "src/.external-ecmascript.js~Infinity",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~int16array",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "src/.external-ecmascript.js~Int16Array",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~int32array",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "src/.external-ecmascript.js~Int32Array",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~int8array",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "src/.external-ecmascript.js~Int8Array",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~internalerror",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "src/.external-ecmascript.js~InternalError",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~json",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "src/.external-ecmascript.js~JSON",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~map",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "src/.external-ecmascript.js~Map",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~nan",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "src/.external-ecmascript.js~NaN",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~number",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "src/.external-ecmascript.js~Number",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~object",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "src/.external-ecmascript.js~Object",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~promise",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "src/.external-ecmascript.js~Promise",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~proxy",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "src/.external-ecmascript.js~Proxy",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~rangeerror",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "src/.external-ecmascript.js~RangeError",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~referenceerror",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "src/.external-ecmascript.js~ReferenceError",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~reflect",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "src/.external-ecmascript.js~Reflect",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~regexp",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "src/.external-ecmascript.js~RegExp",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~set",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "src/.external-ecmascript.js~Set",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~string",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "src/.external-ecmascript.js~String",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~symbol",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "src/.external-ecmascript.js~Symbol",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~syntaxerror",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "src/.external-ecmascript.js~SyntaxError",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~typeerror",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "src/.external-ecmascript.js~TypeError",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~urierror",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "src/.external-ecmascript.js~URIError",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~uint16array",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "src/.external-ecmascript.js~Uint16Array",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~uint32array",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "src/.external-ecmascript.js~Uint32Array",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~uint8array",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "src/.external-ecmascript.js~Uint8Array",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~uint8clampedarray",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "src/.external-ecmascript.js~Uint8ClampedArray",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~weakmap",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "src/.external-ecmascript.js~WeakMap",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~weakset",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "src/.external-ecmascript.js~WeakSet",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~boolean",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "src/.external-ecmascript.js~boolean",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~function",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "src/.external-ecmascript.js~function",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~null",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "src/.external-ecmascript.js~null",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~number",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "src/.external-ecmascript.js~number",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~object",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "src/.external-ecmascript.js~object",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~string",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "src/.external-ecmascript.js~string",
+    "external"
+  ],
+  [
+    "src/.external-ecmascript.js~undefined",
+    "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "src/.external-ecmascript.js~undefined",
+    "external"
+  ],
+  [
+    "src/konpeito.js",
+    "file/src/konpeito.js.html",
+    "src/konpeito.js",
     "file"
   ],
   [
-    "src/konpeito.mjs~konpeito.bigdecimal",
-    "class/src/konpeito.mjs~konpeito.html#static-get-BigDecimal",
-    "src/konpeito.mjs~konpeito.BigDecimal",
+    "src/konpeito.js~konpeito.bigdecimal",
+    "class/src/konpeito.js~konpeito.html#static-get-BigDecimal",
+    "src/konpeito.js~konpeito.BigDecimal",
     "member"
   ],
   [
-    "src/konpeito.mjs~konpeito.biginteger",
-    "class/src/konpeito.mjs~konpeito.html#static-get-BigInteger",
-    "src/konpeito.mjs~konpeito.BigInteger",
+    "src/konpeito.js~konpeito.biginteger",
+    "class/src/konpeito.js~konpeito.html#static-get-BigInteger",
+    "src/konpeito.js~konpeito.BigInteger",
     "member"
   ],
   [
-    "src/konpeito.mjs~konpeito.complex",
-    "class/src/konpeito.mjs~konpeito.html#static-get-Complex",
-    "src/konpeito.mjs~konpeito.Complex",
+    "src/konpeito.js~konpeito.complex",
+    "class/src/konpeito.js~konpeito.html#static-get-Complex",
+    "src/konpeito.js~konpeito.Complex",
     "member"
   ],
   [
-    "src/konpeito.mjs~konpeito.fraction",
-    "class/src/konpeito.mjs~konpeito.html#static-get-Fraction",
-    "src/konpeito.mjs~konpeito.Fraction",
+    "src/konpeito.js~konpeito.fraction",
+    "class/src/konpeito.js~konpeito.html#static-get-Fraction",
+    "src/konpeito.js~konpeito.Fraction",
     "member"
   ],
   [
-    "src/konpeito.mjs~konpeito.mathcontext",
-    "class/src/konpeito.mjs~konpeito.html#static-get-MathContext",
-    "src/konpeito.mjs~konpeito.MathContext",
+    "src/konpeito.js~konpeito.mathcontext",
+    "class/src/konpeito.js~konpeito.html#static-get-MathContext",
+    "src/konpeito.js~konpeito.MathContext",
     "member"
   ],
   [
-    "src/konpeito.mjs~konpeito.matrix",
-    "class/src/konpeito.mjs~konpeito.html#static-get-Matrix",
-    "src/konpeito.mjs~konpeito.Matrix",
+    "src/konpeito.js~konpeito.matrix",
+    "class/src/konpeito.js~konpeito.html#static-get-Matrix",
+    "src/konpeito.js~konpeito.Matrix",
     "member"
   ],
   [
-    "src/konpeito.mjs~konpeito.random",
-    "class/src/konpeito.mjs~konpeito.html#static-get-Random",
-    "src/konpeito.mjs~konpeito.Random",
+    "src/konpeito.js~konpeito.random",
+    "class/src/konpeito.js~konpeito.html#static-get-Random",
+    "src/konpeito.js~konpeito.Random",
     "member"
   ],
   [
-    "src/konpeito.mjs~konpeito.roundingmode",
-    "class/src/konpeito.mjs~konpeito.html#static-get-RoundingMode",
-    "src/konpeito.mjs~konpeito.RoundingMode",
+    "src/konpeito.js~konpeito.roundingmode",
+    "class/src/konpeito.js~konpeito.html#static-get-RoundingMode",
+    "src/konpeito.js~konpeito.RoundingMode",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs",
-    "file/src/math/BigDecimal.mjs.html",
-    "src/math/BigDecimal.mjs",
+    "src/math/bigdecimal.js",
+    "file/src/math/BigDecimal.js.html",
+    "src/math/BigDecimal.js",
     "file"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#_getunsignedintegerstring",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-_getUnsignedIntegerString",
-    "src/math/BigDecimal.mjs~BigDecimal#_getUnsignedIntegerString",
+    "src/math/bigdecimal.js~bigdecimal#_getunsignedintegerstring",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-_getUnsignedIntegerString",
+    "src/math/BigDecimal.js~BigDecimal#_getUnsignedIntegerString",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#_scale",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-member-_scale",
-    "src/math/BigDecimal.mjs~BigDecimal#_scale",
+    "src/math/bigdecimal.js~bigdecimal#_scale",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-member-_scale",
+    "src/math/BigDecimal.js~BigDecimal#_scale",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#abs",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-abs",
-    "src/math/BigDecimal.mjs~BigDecimal#abs",
+    "src/math/bigdecimal.js~bigdecimal#abs",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-abs",
+    "src/math/BigDecimal.js~BigDecimal#abs",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#add",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-add",
-    "src/math/BigDecimal.mjs~BigDecimal#add",
+    "src/math/bigdecimal.js~bigdecimal#add",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-add",
+    "src/math/BigDecimal.js~BigDecimal#add",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#atan",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-atan",
-    "src/math/BigDecimal.mjs~BigDecimal#atan",
+    "src/math/bigdecimal.js~bigdecimal#atan",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-atan",
+    "src/math/BigDecimal.js~BigDecimal#atan",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#atan2",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-atan2",
-    "src/math/BigDecimal.mjs~BigDecimal#atan2",
+    "src/math/bigdecimal.js~bigdecimal#atan2",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-atan2",
+    "src/math/BigDecimal.js~BigDecimal#atan2",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#ceil",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-ceil",
-    "src/math/BigDecimal.mjs~BigDecimal#ceil",
+    "src/math/bigdecimal.js~bigdecimal#ceil",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-ceil",
+    "src/math/BigDecimal.js~BigDecimal#ceil",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#clip",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-clip",
-    "src/math/BigDecimal.mjs~BigDecimal#clip",
+    "src/math/bigdecimal.js~bigdecimal#clip",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-clip",
+    "src/math/BigDecimal.js~BigDecimal#clip",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#clone",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-clone",
-    "src/math/BigDecimal.mjs~BigDecimal#clone",
+    "src/math/bigdecimal.js~bigdecimal#clone",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-clone",
+    "src/math/BigDecimal.js~BigDecimal#clone",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#compareto",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-compareTo",
-    "src/math/BigDecimal.mjs~BigDecimal#compareTo",
+    "src/math/bigdecimal.js~bigdecimal#compareto",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-compareTo",
+    "src/math/BigDecimal.js~BigDecimal#compareTo",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#constructor",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-constructor-constructor",
-    "src/math/BigDecimal.mjs~BigDecimal#constructor",
+    "src/math/bigdecimal.js~bigdecimal#constructor",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-constructor-constructor",
+    "src/math/BigDecimal.js~BigDecimal#constructor",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#cos",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-cos",
-    "src/math/BigDecimal.mjs~BigDecimal#cos",
+    "src/math/bigdecimal.js~bigdecimal#cos",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-cos",
+    "src/math/BigDecimal.js~BigDecimal#cos",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#createusingthissettings",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-createUsingThisSettings",
-    "src/math/BigDecimal.mjs~BigDecimal#createUsingThisSettings",
+    "src/math/bigdecimal.js~bigdecimal#createusingthissettings",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-createUsingThisSettings",
+    "src/math/BigDecimal.js~BigDecimal#createUsingThisSettings",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#default_context",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-member-default_context",
-    "src/math/BigDecimal.mjs~BigDecimal#default_context",
+    "src/math/bigdecimal.js~bigdecimal#default_context",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-member-default_context",
+    "src/math/BigDecimal.js~BigDecimal#default_context",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#div",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-div",
-    "src/math/BigDecimal.mjs~BigDecimal#div",
+    "src/math/bigdecimal.js~bigdecimal#div",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-div",
+    "src/math/BigDecimal.js~BigDecimal#div",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#divide",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-divide",
-    "src/math/BigDecimal.mjs~BigDecimal#divide",
+    "src/math/bigdecimal.js~bigdecimal#divide",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-divide",
+    "src/math/BigDecimal.js~BigDecimal#divide",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#divideandremainder",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-divideAndRemainder",
-    "src/math/BigDecimal.mjs~BigDecimal#divideAndRemainder",
+    "src/math/bigdecimal.js~bigdecimal#divideandremainder",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-divideAndRemainder",
+    "src/math/BigDecimal.js~BigDecimal#divideAndRemainder",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#dividetointegralvalue",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-divideToIntegralValue",
-    "src/math/BigDecimal.mjs~BigDecimal#divideToIntegralValue",
+    "src/math/bigdecimal.js~bigdecimal#dividetointegralvalue",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-divideToIntegralValue",
+    "src/math/BigDecimal.js~BigDecimal#divideToIntegralValue",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#doublevalue",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-get-doubleValue",
-    "src/math/BigDecimal.mjs~BigDecimal#doubleValue",
+    "src/math/bigdecimal.js~bigdecimal#doublevalue",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-get-doubleValue",
+    "src/math/BigDecimal.js~BigDecimal#doubleValue",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#equals",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-equals",
-    "src/math/BigDecimal.mjs~BigDecimal#equals",
+    "src/math/bigdecimal.js~bigdecimal#equals",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-equals",
+    "src/math/BigDecimal.js~BigDecimal#equals",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#exp",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-exp",
-    "src/math/BigDecimal.mjs~BigDecimal#exp",
+    "src/math/bigdecimal.js~bigdecimal#exp",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-exp",
+    "src/math/BigDecimal.js~BigDecimal#exp",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#factorial",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-factorial",
-    "src/math/BigDecimal.mjs~BigDecimal#factorial",
+    "src/math/bigdecimal.js~bigdecimal#factorial",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-factorial",
+    "src/math/BigDecimal.js~BigDecimal#factorial",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#fix",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-fix",
-    "src/math/BigDecimal.mjs~BigDecimal#fix",
+    "src/math/bigdecimal.js~bigdecimal#fix",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-fix",
+    "src/math/BigDecimal.js~BigDecimal#fix",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#floatvalue",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-get-floatValue",
-    "src/math/BigDecimal.mjs~BigDecimal#floatValue",
+    "src/math/bigdecimal.js~bigdecimal#floatvalue",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-get-floatValue",
+    "src/math/BigDecimal.js~BigDecimal#floatValue",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#floor",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-floor",
-    "src/math/BigDecimal.mjs~BigDecimal#floor",
+    "src/math/bigdecimal.js~bigdecimal#floor",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-floor",
+    "src/math/BigDecimal.js~BigDecimal#floor",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#fract",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-fract",
-    "src/math/BigDecimal.mjs~BigDecimal#fract",
+    "src/math/bigdecimal.js~bigdecimal#fract",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-fract",
+    "src/math/BigDecimal.js~BigDecimal#fract",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#intvalue",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-get-intValue",
-    "src/math/BigDecimal.mjs~BigDecimal#intValue",
+    "src/math/bigdecimal.js~bigdecimal#intvalue",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-get-intValue",
+    "src/math/BigDecimal.js~BigDecimal#intValue",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#intvalueexact",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-get-intValueExact",
-    "src/math/BigDecimal.mjs~BigDecimal#intValueExact",
+    "src/math/bigdecimal.js~bigdecimal#intvalueexact",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-get-intValueExact",
+    "src/math/BigDecimal.js~BigDecimal#intValueExact",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#int_string",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-member-int_string",
-    "src/math/BigDecimal.mjs~BigDecimal#int_string",
+    "src/math/bigdecimal.js~bigdecimal#int_string",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-member-int_string",
+    "src/math/BigDecimal.js~BigDecimal#int_string",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#integer",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-member-integer",
-    "src/math/BigDecimal.mjs~BigDecimal#integer",
+    "src/math/bigdecimal.js~bigdecimal#integer",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-member-integer",
+    "src/math/BigDecimal.js~BigDecimal#integer",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#inv",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-inv",
-    "src/math/BigDecimal.mjs~BigDecimal#inv",
+    "src/math/bigdecimal.js~bigdecimal#inv",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-inv",
+    "src/math/BigDecimal.js~BigDecimal#inv",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#isinteger",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-isInteger",
-    "src/math/BigDecimal.mjs~BigDecimal#isInteger",
+    "src/math/bigdecimal.js~bigdecimal#isinteger",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-isInteger",
+    "src/math/BigDecimal.js~BigDecimal#isInteger",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#isnegative",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-isNegative",
-    "src/math/BigDecimal.mjs~BigDecimal#isNegative",
+    "src/math/bigdecimal.js~bigdecimal#isnegative",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-isNegative",
+    "src/math/BigDecimal.js~BigDecimal#isNegative",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#isnotnegative",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-isNotNegative",
-    "src/math/BigDecimal.mjs~BigDecimal#isNotNegative",
+    "src/math/bigdecimal.js~bigdecimal#isnotnegative",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-isNotNegative",
+    "src/math/BigDecimal.js~BigDecimal#isNotNegative",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#isone",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-isOne",
-    "src/math/BigDecimal.mjs~BigDecimal#isOne",
+    "src/math/bigdecimal.js~bigdecimal#isone",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-isOne",
+    "src/math/BigDecimal.js~BigDecimal#isOne",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#ispositive",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-isPositive",
-    "src/math/BigDecimal.mjs~BigDecimal#isPositive",
+    "src/math/bigdecimal.js~bigdecimal#ispositive",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-isPositive",
+    "src/math/BigDecimal.js~BigDecimal#isPositive",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#iszero",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-isZero",
-    "src/math/BigDecimal.mjs~BigDecimal#isZero",
+    "src/math/bigdecimal.js~bigdecimal#iszero",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-isZero",
+    "src/math/BigDecimal.js~BigDecimal#isZero",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#log",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-log",
-    "src/math/BigDecimal.mjs~BigDecimal#log",
+    "src/math/bigdecimal.js~bigdecimal#log",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-log",
+    "src/math/BigDecimal.js~BigDecimal#log",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#max",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-max",
-    "src/math/BigDecimal.mjs~BigDecimal#max",
+    "src/math/bigdecimal.js~bigdecimal#max",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-max",
+    "src/math/BigDecimal.js~BigDecimal#max",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#min",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-min",
-    "src/math/BigDecimal.mjs~BigDecimal#min",
+    "src/math/bigdecimal.js~bigdecimal#min",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-min",
+    "src/math/BigDecimal.js~BigDecimal#min",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#mod",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-mod",
-    "src/math/BigDecimal.mjs~BigDecimal#mod",
+    "src/math/bigdecimal.js~bigdecimal#mod",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-mod",
+    "src/math/BigDecimal.js~BigDecimal#mod",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#movepointleft",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-movePointLeft",
-    "src/math/BigDecimal.mjs~BigDecimal#movePointLeft",
+    "src/math/bigdecimal.js~bigdecimal#movepointleft",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-movePointLeft",
+    "src/math/BigDecimal.js~BigDecimal#movePointLeft",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#movepointright",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-movePointRight",
-    "src/math/BigDecimal.mjs~BigDecimal#movePointRight",
+    "src/math/bigdecimal.js~bigdecimal#movepointright",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-movePointRight",
+    "src/math/BigDecimal.js~BigDecimal#movePointRight",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#mul",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-mul",
-    "src/math/BigDecimal.mjs~BigDecimal#mul",
+    "src/math/bigdecimal.js~bigdecimal#mul",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-mul",
+    "src/math/BigDecimal.js~BigDecimal#mul",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#multiply",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-multiply",
-    "src/math/BigDecimal.mjs~BigDecimal#multiply",
+    "src/math/bigdecimal.js~bigdecimal#multiply",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-multiply",
+    "src/math/BigDecimal.js~BigDecimal#multiply",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#negate",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-negate",
-    "src/math/BigDecimal.mjs~BigDecimal#negate",
+    "src/math/bigdecimal.js~bigdecimal#negate",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-negate",
+    "src/math/BigDecimal.js~BigDecimal#negate",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#plus",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-plus",
-    "src/math/BigDecimal.mjs~BigDecimal#plus",
+    "src/math/bigdecimal.js~bigdecimal#plus",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-plus",
+    "src/math/BigDecimal.js~BigDecimal#plus",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#pow",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-pow",
-    "src/math/BigDecimal.mjs~BigDecimal#pow",
+    "src/math/bigdecimal.js~bigdecimal#pow",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-pow",
+    "src/math/BigDecimal.js~BigDecimal#pow",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#precision",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-precision",
-    "src/math/BigDecimal.mjs~BigDecimal#precision",
+    "src/math/bigdecimal.js~bigdecimal#precision",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-precision",
+    "src/math/BigDecimal.js~BigDecimal#precision",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#rem",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-rem",
-    "src/math/BigDecimal.mjs~BigDecimal#rem",
+    "src/math/bigdecimal.js~bigdecimal#rem",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-rem",
+    "src/math/BigDecimal.js~BigDecimal#rem",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#round",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-round",
-    "src/math/BigDecimal.mjs~BigDecimal#round",
+    "src/math/bigdecimal.js~bigdecimal#round",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-round",
+    "src/math/BigDecimal.js~BigDecimal#round",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#rsqrt",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-rsqrt",
-    "src/math/BigDecimal.mjs~BigDecimal#rsqrt",
+    "src/math/bigdecimal.js~bigdecimal#rsqrt",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-rsqrt",
+    "src/math/BigDecimal.js~BigDecimal#rsqrt",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#scale",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-scale",
-    "src/math/BigDecimal.mjs~BigDecimal#scale",
+    "src/math/bigdecimal.js~bigdecimal#scale",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-scale",
+    "src/math/BigDecimal.js~BigDecimal#scale",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#scalebypoweroften",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-scaleByPowerOfTen",
-    "src/math/BigDecimal.mjs~BigDecimal#scaleByPowerOfTen",
+    "src/math/bigdecimal.js~bigdecimal#scalebypoweroften",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-scaleByPowerOfTen",
+    "src/math/BigDecimal.js~BigDecimal#scaleByPowerOfTen",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#setscale",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-setScale",
-    "src/math/BigDecimal.mjs~BigDecimal#setScale",
+    "src/math/bigdecimal.js~bigdecimal#setscale",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-setScale",
+    "src/math/BigDecimal.js~BigDecimal#setScale",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#sign",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-sign",
-    "src/math/BigDecimal.mjs~BigDecimal#sign",
+    "src/math/bigdecimal.js~bigdecimal#sign",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-sign",
+    "src/math/BigDecimal.js~BigDecimal#sign",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#signum",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-signum",
-    "src/math/BigDecimal.mjs~BigDecimal#signum",
+    "src/math/bigdecimal.js~bigdecimal#signum",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-signum",
+    "src/math/BigDecimal.js~BigDecimal#signum",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#sin",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-sin",
-    "src/math/BigDecimal.mjs~BigDecimal#sin",
+    "src/math/bigdecimal.js~bigdecimal#sin",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-sin",
+    "src/math/BigDecimal.js~BigDecimal#sin",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#sqrt",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-sqrt",
-    "src/math/BigDecimal.mjs~BigDecimal#sqrt",
+    "src/math/bigdecimal.js~bigdecimal#sqrt",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-sqrt",
+    "src/math/BigDecimal.js~BigDecimal#sqrt",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#square",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-square",
-    "src/math/BigDecimal.mjs~BigDecimal#square",
+    "src/math/bigdecimal.js~bigdecimal#square",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-square",
+    "src/math/BigDecimal.js~BigDecimal#square",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#striptrailingzeros",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-stripTrailingZeros",
-    "src/math/BigDecimal.mjs~BigDecimal#stripTrailingZeros",
+    "src/math/bigdecimal.js~bigdecimal#striptrailingzeros",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-stripTrailingZeros",
+    "src/math/BigDecimal.js~BigDecimal#stripTrailingZeros",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#sub",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-sub",
-    "src/math/BigDecimal.mjs~BigDecimal#sub",
+    "src/math/bigdecimal.js~bigdecimal#sub",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-sub",
+    "src/math/BigDecimal.js~BigDecimal#sub",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#subtract",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-subtract",
-    "src/math/BigDecimal.mjs~BigDecimal#subtract",
+    "src/math/bigdecimal.js~bigdecimal#subtract",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-subtract",
+    "src/math/BigDecimal.js~BigDecimal#subtract",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#tan",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-tan",
-    "src/math/BigDecimal.mjs~BigDecimal#tan",
+    "src/math/bigdecimal.js~bigdecimal#tan",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-tan",
+    "src/math/BigDecimal.js~BigDecimal#tan",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#tobiginteger",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-toBigInteger",
-    "src/math/BigDecimal.mjs~BigDecimal#toBigInteger",
+    "src/math/bigdecimal.js~bigdecimal#tobiginteger",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-toBigInteger",
+    "src/math/BigDecimal.js~BigDecimal#toBigInteger",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#toengineeringstring",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-toEngineeringString",
-    "src/math/BigDecimal.mjs~BigDecimal#toEngineeringString",
+    "src/math/bigdecimal.js~bigdecimal#toengineeringstring",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-toEngineeringString",
+    "src/math/BigDecimal.js~BigDecimal#toEngineeringString",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#toplainstring",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-toPlainString",
-    "src/math/BigDecimal.mjs~BigDecimal#toPlainString",
+    "src/math/bigdecimal.js~bigdecimal#toplainstring",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-toPlainString",
+    "src/math/BigDecimal.js~BigDecimal#toPlainString",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#toscientificnotation",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-toScientificNotation",
-    "src/math/BigDecimal.mjs~BigDecimal#toScientificNotation",
+    "src/math/bigdecimal.js~bigdecimal#toscientificnotation",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-toScientificNotation",
+    "src/math/BigDecimal.js~BigDecimal#toScientificNotation",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#tostring",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-toString",
-    "src/math/BigDecimal.mjs~BigDecimal#toString",
+    "src/math/bigdecimal.js~bigdecimal#tostring",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-toString",
+    "src/math/BigDecimal.js~BigDecimal#toString",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#ulp",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-ulp",
-    "src/math/BigDecimal.mjs~BigDecimal#ulp",
+    "src/math/bigdecimal.js~bigdecimal#ulp",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-ulp",
+    "src/math/BigDecimal.js~BigDecimal#ulp",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal#unscaledvalue",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#instance-method-unscaledValue",
-    "src/math/BigDecimal.mjs~BigDecimal#unscaledValue",
+    "src/math/bigdecimal.js~bigdecimal#unscaledvalue",
+    "class/src/math/BigDecimal.js~BigDecimal.html#instance-method-unscaledValue",
+    "src/math/BigDecimal.js~BigDecimal#unscaledValue",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.e",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-E",
-    "src/math/BigDecimal.mjs~BigDecimal.E",
+    "src/math/bigdecimal.js~bigdecimal.e",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-E",
+    "src/math/BigDecimal.js~BigDecimal.E",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.half",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-HALF",
-    "src/math/BigDecimal.mjs~BigDecimal.HALF",
+    "src/math/bigdecimal.js~bigdecimal.half",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-HALF",
+    "src/math/BigDecimal.js~BigDecimal.HALF",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.half_pi",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-HALF_PI",
-    "src/math/BigDecimal.mjs~BigDecimal.HALF_PI",
+    "src/math/bigdecimal.js~bigdecimal.half_pi",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-HALF_PI",
+    "src/math/BigDecimal.js~BigDecimal.HALF_PI",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.ln10",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-LN10",
-    "src/math/BigDecimal.mjs~BigDecimal.LN10",
+    "src/math/bigdecimal.js~bigdecimal.ln10",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-LN10",
+    "src/math/BigDecimal.js~BigDecimal.LN10",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.ln2",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-LN2",
-    "src/math/BigDecimal.mjs~BigDecimal.LN2",
+    "src/math/bigdecimal.js~bigdecimal.ln2",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-LN2",
+    "src/math/BigDecimal.js~BigDecimal.LN2",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.log10e",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-LOG10E",
-    "src/math/BigDecimal.mjs~BigDecimal.LOG10E",
+    "src/math/bigdecimal.js~bigdecimal.log10e",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-LOG10E",
+    "src/math/BigDecimal.js~BigDecimal.LOG10E",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.log2e",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-LOG2E",
-    "src/math/BigDecimal.mjs~BigDecimal.LOG2E",
+    "src/math/bigdecimal.js~bigdecimal.log2e",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-LOG2E",
+    "src/math/BigDecimal.js~BigDecimal.LOG2E",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.minus_one",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-MINUS_ONE",
-    "src/math/BigDecimal.mjs~BigDecimal.MINUS_ONE",
+    "src/math/bigdecimal.js~bigdecimal.minus_one",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-MINUS_ONE",
+    "src/math/BigDecimal.js~BigDecimal.MINUS_ONE",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.one",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-ONE",
-    "src/math/BigDecimal.mjs~BigDecimal.ONE",
+    "src/math/bigdecimal.js~bigdecimal.one",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-ONE",
+    "src/math/BigDecimal.js~BigDecimal.ONE",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.pi",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-PI",
-    "src/math/BigDecimal.mjs~BigDecimal.PI",
+    "src/math/bigdecimal.js~bigdecimal.pi",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-PI",
+    "src/math/BigDecimal.js~BigDecimal.PI",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.quarter_pi",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-QUARTER_PI",
-    "src/math/BigDecimal.mjs~BigDecimal.QUARTER_PI",
+    "src/math/bigdecimal.js~bigdecimal.quarter_pi",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-QUARTER_PI",
+    "src/math/BigDecimal.js~BigDecimal.QUARTER_PI",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.sqrt1_2",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-SQRT1_2",
-    "src/math/BigDecimal.mjs~BigDecimal.SQRT1_2",
+    "src/math/bigdecimal.js~bigdecimal.sqrt1_2",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-SQRT1_2",
+    "src/math/BigDecimal.js~BigDecimal.SQRT1_2",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.sqrt2",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-SQRT2",
-    "src/math/BigDecimal.mjs~BigDecimal.SQRT2",
+    "src/math/bigdecimal.js~bigdecimal.sqrt2",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-SQRT2",
+    "src/math/BigDecimal.js~BigDecimal.SQRT2",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.ten",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-TEN",
-    "src/math/BigDecimal.mjs~BigDecimal.TEN",
+    "src/math/bigdecimal.js~bigdecimal.ten",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-TEN",
+    "src/math/BigDecimal.js~BigDecimal.TEN",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.two",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-TWO",
-    "src/math/BigDecimal.mjs~BigDecimal.TWO",
+    "src/math/bigdecimal.js~bigdecimal.two",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-TWO",
+    "src/math/BigDecimal.js~BigDecimal.TWO",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.two_pi",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-TWO_PI",
-    "src/math/BigDecimal.mjs~BigDecimal.TWO_PI",
+    "src/math/bigdecimal.js~bigdecimal.two_pi",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-TWO_PI",
+    "src/math/BigDecimal.js~BigDecimal.TWO_PI",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.zero",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-get-ZERO",
-    "src/math/BigDecimal.mjs~BigDecimal.ZERO",
+    "src/math/bigdecimal.js~bigdecimal.zero",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-get-ZERO",
+    "src/math/BigDecimal.js~BigDecimal.ZERO",
     "member"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal._tobigdecimal",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-method-_toBigDecimal",
-    "src/math/BigDecimal.mjs~BigDecimal._toBigDecimal",
+    "src/math/bigdecimal.js~bigdecimal._tobigdecimal",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-method-_toBigDecimal",
+    "src/math/BigDecimal.js~BigDecimal._toBigDecimal",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal._tobiginteger",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-method-_toBigInteger",
-    "src/math/BigDecimal.mjs~BigDecimal._toBigInteger",
+    "src/math/bigdecimal.js~bigdecimal._tobiginteger",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-method-_toBigInteger",
+    "src/math/BigDecimal.js~BigDecimal._toBigInteger",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal._tofloat",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-method-_toFloat",
-    "src/math/BigDecimal.mjs~BigDecimal._toFloat",
+    "src/math/bigdecimal.js~bigdecimal._tofloat",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-method-_toFloat",
+    "src/math/BigDecimal.js~BigDecimal._toFloat",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal._tointeger",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-method-_toInteger",
-    "src/math/BigDecimal.mjs~BigDecimal._toInteger",
+    "src/math/bigdecimal.js~bigdecimal._tointeger",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-method-_toInteger",
+    "src/math/BigDecimal.js~BigDecimal._toInteger",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.create",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-method-create",
-    "src/math/BigDecimal.mjs~BigDecimal.create",
+    "src/math/bigdecimal.js~bigdecimal.create",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-method-create",
+    "src/math/BigDecimal.js~BigDecimal.create",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.getdefaultcontext",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-method-getDefaultContext",
-    "src/math/BigDecimal.mjs~BigDecimal.getDefaultContext",
+    "src/math/bigdecimal.js~bigdecimal.getdefaultcontext",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-method-getDefaultContext",
+    "src/math/BigDecimal.js~BigDecimal.getDefaultContext",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.setdefaultcontext",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-method-setDefaultContext",
-    "src/math/BigDecimal.mjs~BigDecimal.setDefaultContext",
+    "src/math/bigdecimal.js~bigdecimal.setdefaultcontext",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-method-setDefaultContext",
+    "src/math/BigDecimal.js~BigDecimal.setDefaultContext",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimal.valueof",
-    "class/src/math/BigDecimal.mjs~BigDecimal.html#static-method-valueOf",
-    "src/math/BigDecimal.mjs~BigDecimal.valueOf",
+    "src/math/bigdecimal.js~bigdecimal.valueof",
+    "class/src/math/BigDecimal.js~BigDecimal.html#static-method-valueOf",
+    "src/math/BigDecimal.js~BigDecimal.valueOf",
     "method"
   ],
   [
-    "src/math/bigdecimal.mjs~bigdecimaldividetype",
+    "src/math/bigdecimal.js~bigdecimaldividetype",
     "typedef/index.html#static-typedef-BigDecimalDivideType",
-    "src/math/BigDecimal.mjs~BigDecimalDivideType",
+    "src/math/BigDecimal.js~BigDecimalDivideType",
     "typedef"
   ],
   [
-    "src/math/biginteger.mjs",
-    "file/src/math/BigInteger.mjs.html",
-    "src/math/BigInteger.mjs",
+    "src/math/biginteger.js",
+    "file/src/math/BigInteger.js.html",
+    "src/math/BigInteger.js",
     "file"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_abs",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_abs",
-    "src/math/BigInteger.mjs~BigInteger#_abs",
+    "src/math/biginteger.js~biginteger#_abs",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_abs",
+    "src/math/BigInteger.js~BigInteger#_abs",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_add",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_add",
-    "src/math/BigInteger.mjs~BigInteger#_add",
+    "src/math/biginteger.js~biginteger#_add",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_add",
+    "src/math/BigInteger.js~BigInteger#_add",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_and",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_and",
-    "src/math/BigInteger.mjs~BigInteger#_and",
+    "src/math/biginteger.js~biginteger#_and",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_and",
+    "src/math/BigInteger.js~BigInteger#_and",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_andnot",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_andNot",
-    "src/math/BigInteger.mjs~BigInteger#_andNot",
+    "src/math/biginteger.js~biginteger#_andnot",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_andNot",
+    "src/math/BigInteger.js~BigInteger#_andNot",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_divide",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_divide",
-    "src/math/BigInteger.mjs~BigInteger#_divide",
+    "src/math/biginteger.js~biginteger#_divide",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_divide",
+    "src/math/BigInteger.js~BigInteger#_divide",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_divideandremainder",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_divideAndRemainder",
-    "src/math/BigInteger.mjs~BigInteger#_divideAndRemainder",
+    "src/math/biginteger.js~biginteger#_divideandremainder",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_divideAndRemainder",
+    "src/math/BigInteger.js~BigInteger#_divideAndRemainder",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_flipbit",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_flipBit",
-    "src/math/BigInteger.mjs~BigInteger#_flipBit",
+    "src/math/biginteger.js~biginteger#_flipbit",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_flipBit",
+    "src/math/BigInteger.js~BigInteger#_flipBit",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_memory_allocation",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_memory_allocation",
-    "src/math/BigInteger.mjs~BigInteger#_memory_allocation",
+    "src/math/biginteger.js~biginteger#_memory_allocation",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_memory_allocation",
+    "src/math/BigInteger.js~BigInteger#_memory_allocation",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_memory_reduction",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_memory_reduction",
-    "src/math/BigInteger.mjs~BigInteger#_memory_reduction",
+    "src/math/biginteger.js~biginteger#_memory_reduction",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_memory_reduction",
+    "src/math/BigInteger.js~BigInteger#_memory_reduction",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_mod",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_mod",
-    "src/math/BigInteger.mjs~BigInteger#_mod",
+    "src/math/biginteger.js~biginteger#_mod",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_mod",
+    "src/math/BigInteger.js~BigInteger#_mod",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_multiply",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_multiply",
-    "src/math/BigInteger.mjs~BigInteger#_multiply",
+    "src/math/biginteger.js~biginteger#_multiply",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_multiply",
+    "src/math/BigInteger.js~BigInteger#_multiply",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_nand",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_nand",
-    "src/math/BigInteger.mjs~BigInteger#_nand",
+    "src/math/biginteger.js~biginteger#_nand",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_nand",
+    "src/math/BigInteger.js~BigInteger#_nand",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_negate",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_negate",
-    "src/math/BigInteger.mjs~BigInteger#_negate",
+    "src/math/biginteger.js~biginteger#_negate",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_negate",
+    "src/math/BigInteger.js~BigInteger#_negate",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_nor",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_nor",
-    "src/math/BigInteger.mjs~BigInteger#_nor",
+    "src/math/biginteger.js~biginteger#_nor",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_nor",
+    "src/math/BigInteger.js~BigInteger#_nor",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_not",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_not",
-    "src/math/BigInteger.mjs~BigInteger#_not",
+    "src/math/biginteger.js~biginteger#_not",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_not",
+    "src/math/BigInteger.js~BigInteger#_not",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_or",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_or",
-    "src/math/BigInteger.mjs~BigInteger#_or",
+    "src/math/biginteger.js~biginteger#_or",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_or",
+    "src/math/BigInteger.js~BigInteger#_or",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_ornot",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_orNot",
-    "src/math/BigInteger.mjs~BigInteger#_orNot",
+    "src/math/biginteger.js~biginteger#_ornot",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_orNot",
+    "src/math/BigInteger.js~BigInteger#_orNot",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_remainder",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_remainder",
-    "src/math/BigInteger.mjs~BigInteger#_remainder",
+    "src/math/biginteger.js~biginteger#_remainder",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_remainder",
+    "src/math/BigInteger.js~BigInteger#_remainder",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_setbit",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_setBit",
-    "src/math/BigInteger.mjs~BigInteger#_setBit",
+    "src/math/biginteger.js~biginteger#_setbit",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_setBit",
+    "src/math/BigInteger.js~BigInteger#_setBit",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_shift",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_shift",
-    "src/math/BigInteger.mjs~BigInteger#_shift",
+    "src/math/biginteger.js~biginteger#_shift",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_shift",
+    "src/math/BigInteger.js~BigInteger#_shift",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_sign",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-member-_sign",
-    "src/math/BigInteger.mjs~BigInteger#_sign",
+    "src/math/biginteger.js~biginteger#_sign",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-member-_sign",
+    "src/math/BigInteger.js~BigInteger#_sign",
     "member"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_subtract",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_subtract",
-    "src/math/BigInteger.mjs~BigInteger#_subtract",
+    "src/math/biginteger.js~biginteger#_subtract",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_subtract",
+    "src/math/BigInteger.js~BigInteger#_subtract",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#_xor",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-_xor",
-    "src/math/BigInteger.mjs~BigInteger#_xor",
+    "src/math/biginteger.js~biginteger#_xor",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-_xor",
+    "src/math/BigInteger.js~BigInteger#_xor",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#abs",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-abs",
-    "src/math/BigInteger.mjs~BigInteger#abs",
+    "src/math/biginteger.js~biginteger#abs",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-abs",
+    "src/math/BigInteger.js~BigInteger#abs",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#add",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-add",
-    "src/math/BigInteger.mjs~BigInteger#add",
+    "src/math/biginteger.js~biginteger#add",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-add",
+    "src/math/BigInteger.js~BigInteger#add",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#and",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-and",
-    "src/math/BigInteger.mjs~BigInteger#and",
+    "src/math/biginteger.js~biginteger#and",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-and",
+    "src/math/BigInteger.js~BigInteger#and",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#andnot",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-andNot",
-    "src/math/BigInteger.mjs~BigInteger#andNot",
+    "src/math/biginteger.js~biginteger#andnot",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-andNot",
+    "src/math/BigInteger.js~BigInteger#andNot",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#bitcount",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-bitCount",
-    "src/math/BigInteger.mjs~BigInteger#bitCount",
+    "src/math/biginteger.js~biginteger#bitcount",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-bitCount",
+    "src/math/BigInteger.js~BigInteger#bitCount",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#bitlength",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-bitLength",
-    "src/math/BigInteger.mjs~BigInteger#bitLength",
+    "src/math/biginteger.js~biginteger#bitlength",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-bitLength",
+    "src/math/BigInteger.js~BigInteger#bitLength",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#clearbit",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-clearBit",
-    "src/math/BigInteger.mjs~BigInteger#clearBit",
+    "src/math/biginteger.js~biginteger#clearbit",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-clearBit",
+    "src/math/BigInteger.js~BigInteger#clearBit",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#clip",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-clip",
-    "src/math/BigInteger.mjs~BigInteger#clip",
+    "src/math/biginteger.js~biginteger#clip",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-clip",
+    "src/math/BigInteger.js~BigInteger#clip",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#clone",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-clone",
-    "src/math/BigInteger.mjs~BigInteger#clone",
+    "src/math/biginteger.js~biginteger#clone",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-clone",
+    "src/math/BigInteger.js~BigInteger#clone",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#compareto",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-compareTo",
-    "src/math/BigInteger.mjs~BigInteger#compareTo",
+    "src/math/biginteger.js~biginteger#compareto",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-compareTo",
+    "src/math/BigInteger.js~BigInteger#compareTo",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#comparetoabs",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-compareToAbs",
-    "src/math/BigInteger.mjs~BigInteger#compareToAbs",
+    "src/math/biginteger.js~biginteger#comparetoabs",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-compareToAbs",
+    "src/math/BigInteger.js~BigInteger#compareToAbs",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#constructor",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-constructor-constructor",
-    "src/math/BigInteger.mjs~BigInteger#constructor",
+    "src/math/biginteger.js~biginteger#constructor",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-constructor-constructor",
+    "src/math/BigInteger.js~BigInteger#constructor",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#div",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-div",
-    "src/math/BigInteger.mjs~BigInteger#div",
+    "src/math/biginteger.js~biginteger#div",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-div",
+    "src/math/BigInteger.js~BigInteger#div",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#divide",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-divide",
-    "src/math/BigInteger.mjs~BigInteger#divide",
+    "src/math/biginteger.js~biginteger#divide",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-divide",
+    "src/math/BigInteger.js~BigInteger#divide",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#divideandremainder",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-divideAndRemainder",
-    "src/math/BigInteger.mjs~BigInteger#divideAndRemainder",
+    "src/math/biginteger.js~biginteger#divideandremainder",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-divideAndRemainder",
+    "src/math/BigInteger.js~BigInteger#divideAndRemainder",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#doublevalue",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-get-doubleValue",
-    "src/math/BigInteger.mjs~BigInteger#doubleValue",
+    "src/math/biginteger.js~biginteger#doublevalue",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-get-doubleValue",
+    "src/math/BigInteger.js~BigInteger#doubleValue",
     "member"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#element",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-member-element",
-    "src/math/BigInteger.mjs~BigInteger#element",
+    "src/math/biginteger.js~biginteger#element",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-member-element",
+    "src/math/BigInteger.js~BigInteger#element",
     "member"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#equals",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-equals",
-    "src/math/BigInteger.mjs~BigInteger#equals",
+    "src/math/biginteger.js~biginteger#equals",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-equals",
+    "src/math/BigInteger.js~BigInteger#equals",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#extgcd",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-extgcd",
-    "src/math/BigInteger.mjs~BigInteger#extgcd",
+    "src/math/biginteger.js~biginteger#extgcd",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-extgcd",
+    "src/math/BigInteger.js~BigInteger#extgcd",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#factorial",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-factorial",
-    "src/math/BigInteger.mjs~BigInteger#factorial",
+    "src/math/biginteger.js~biginteger#factorial",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-factorial",
+    "src/math/BigInteger.js~BigInteger#factorial",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#flipbit",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-flipBit",
-    "src/math/BigInteger.mjs~BigInteger#flipBit",
+    "src/math/biginteger.js~biginteger#flipbit",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-flipBit",
+    "src/math/BigInteger.js~BigInteger#flipBit",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#gcd",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-gcd",
-    "src/math/BigInteger.mjs~BigInteger#gcd",
+    "src/math/biginteger.js~biginteger#gcd",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-gcd",
+    "src/math/BigInteger.js~BigInteger#gcd",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#getlowestsetbit",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-getLowestSetBit",
-    "src/math/BigInteger.mjs~BigInteger#getLowestSetBit",
+    "src/math/biginteger.js~biginteger#getlowestsetbit",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-getLowestSetBit",
+    "src/math/BigInteger.js~BigInteger#getLowestSetBit",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#getshort",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-getShort",
-    "src/math/BigInteger.mjs~BigInteger#getShort",
+    "src/math/biginteger.js~biginteger#getshort",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-getShort",
+    "src/math/BigInteger.js~BigInteger#getShort",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#gettwoscomplement",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-getTwosComplement",
-    "src/math/BigInteger.mjs~BigInteger#getTwosComplement",
+    "src/math/biginteger.js~biginteger#gettwoscomplement",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-getTwosComplement",
+    "src/math/BigInteger.js~BigInteger#getTwosComplement",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#intvalue",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-get-intValue",
-    "src/math/BigInteger.mjs~BigInteger#intValue",
+    "src/math/biginteger.js~biginteger#intvalue",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-get-intValue",
+    "src/math/BigInteger.js~BigInteger#intValue",
     "member"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#isnegative",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-isNegative",
-    "src/math/BigInteger.mjs~BigInteger#isNegative",
+    "src/math/biginteger.js~biginteger#isnegative",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-isNegative",
+    "src/math/BigInteger.js~BigInteger#isNegative",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#isnotnegative",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-isNotNegative",
-    "src/math/BigInteger.mjs~BigInteger#isNotNegative",
+    "src/math/biginteger.js~biginteger#isnotnegative",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-isNotNegative",
+    "src/math/BigInteger.js~BigInteger#isNotNegative",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#isone",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-isOne",
-    "src/math/BigInteger.mjs~BigInteger#isOne",
+    "src/math/biginteger.js~biginteger#isone",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-isOne",
+    "src/math/BigInteger.js~BigInteger#isOne",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#ispositive",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-isPositive",
-    "src/math/BigInteger.mjs~BigInteger#isPositive",
+    "src/math/biginteger.js~biginteger#ispositive",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-isPositive",
+    "src/math/BigInteger.js~BigInteger#isPositive",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#isprobableprime",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-isProbablePrime",
-    "src/math/BigInteger.mjs~BigInteger#isProbablePrime",
+    "src/math/biginteger.js~biginteger#isprobableprime",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-isProbablePrime",
+    "src/math/BigInteger.js~BigInteger#isProbablePrime",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#iszero",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-isZero",
-    "src/math/BigInteger.mjs~BigInteger#isZero",
+    "src/math/biginteger.js~biginteger#iszero",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-isZero",
+    "src/math/BigInteger.js~BigInteger#isZero",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#lcm",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-lcm",
-    "src/math/BigInteger.mjs~BigInteger#lcm",
+    "src/math/biginteger.js~biginteger#lcm",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-lcm",
+    "src/math/BigInteger.js~BigInteger#lcm",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#longvalue",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-get-longValue",
-    "src/math/BigInteger.mjs~BigInteger#longValue",
+    "src/math/biginteger.js~biginteger#longvalue",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-get-longValue",
+    "src/math/BigInteger.js~BigInteger#longValue",
     "member"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#max",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-max",
-    "src/math/BigInteger.mjs~BigInteger#max",
+    "src/math/biginteger.js~biginteger#max",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-max",
+    "src/math/BigInteger.js~BigInteger#max",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#min",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-min",
-    "src/math/BigInteger.mjs~BigInteger#min",
+    "src/math/biginteger.js~biginteger#min",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-min",
+    "src/math/BigInteger.js~BigInteger#min",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#mod",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-mod",
-    "src/math/BigInteger.mjs~BigInteger#mod",
+    "src/math/biginteger.js~biginteger#mod",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-mod",
+    "src/math/BigInteger.js~BigInteger#mod",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#modinverse",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-modInverse",
-    "src/math/BigInteger.mjs~BigInteger#modInverse",
+    "src/math/biginteger.js~biginteger#modinverse",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-modInverse",
+    "src/math/BigInteger.js~BigInteger#modInverse",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#modpow",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-modPow",
-    "src/math/BigInteger.mjs~BigInteger#modPow",
+    "src/math/biginteger.js~biginteger#modpow",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-modPow",
+    "src/math/BigInteger.js~BigInteger#modPow",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#mul",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-mul",
-    "src/math/BigInteger.mjs~BigInteger#mul",
+    "src/math/biginteger.js~biginteger#mul",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-mul",
+    "src/math/BigInteger.js~BigInteger#mul",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#multiply",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-multiply",
-    "src/math/BigInteger.mjs~BigInteger#multiply",
+    "src/math/biginteger.js~biginteger#multiply",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-multiply",
+    "src/math/BigInteger.js~BigInteger#multiply",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#nand",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-nand",
-    "src/math/BigInteger.mjs~BigInteger#nand",
+    "src/math/biginteger.js~biginteger#nand",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-nand",
+    "src/math/BigInteger.js~BigInteger#nand",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#negate",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-negate",
-    "src/math/BigInteger.mjs~BigInteger#negate",
+    "src/math/biginteger.js~biginteger#negate",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-negate",
+    "src/math/BigInteger.js~BigInteger#negate",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#nextprobableprime",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-nextProbablePrime",
-    "src/math/BigInteger.mjs~BigInteger#nextProbablePrime",
+    "src/math/biginteger.js~biginteger#nextprobableprime",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-nextProbablePrime",
+    "src/math/BigInteger.js~BigInteger#nextProbablePrime",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#nor",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-nor",
-    "src/math/BigInteger.mjs~BigInteger#nor",
+    "src/math/biginteger.js~biginteger#nor",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-nor",
+    "src/math/BigInteger.js~BigInteger#nor",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#not",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-not",
-    "src/math/BigInteger.mjs~BigInteger#not",
+    "src/math/biginteger.js~biginteger#not",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-not",
+    "src/math/BigInteger.js~BigInteger#not",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#or",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-or",
-    "src/math/BigInteger.mjs~BigInteger#or",
+    "src/math/biginteger.js~biginteger#or",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-or",
+    "src/math/BigInteger.js~BigInteger#or",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#ornot",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-orNot",
-    "src/math/BigInteger.mjs~BigInteger#orNot",
+    "src/math/biginteger.js~biginteger#ornot",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-orNot",
+    "src/math/BigInteger.js~BigInteger#orNot",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#pow",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-pow",
-    "src/math/BigInteger.mjs~BigInteger#pow",
+    "src/math/biginteger.js~biginteger#pow",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-pow",
+    "src/math/BigInteger.js~BigInteger#pow",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#rem",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-rem",
-    "src/math/BigInteger.mjs~BigInteger#rem",
+    "src/math/biginteger.js~biginteger#rem",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-rem",
+    "src/math/BigInteger.js~BigInteger#rem",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#remainder",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-remainder",
-    "src/math/BigInteger.mjs~BigInteger#remainder",
+    "src/math/biginteger.js~biginteger#remainder",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-remainder",
+    "src/math/BigInteger.js~BigInteger#remainder",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#scalebypoweroften",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-scaleByPowerOfTen",
-    "src/math/BigInteger.mjs~BigInteger#scaleByPowerOfTen",
+    "src/math/biginteger.js~biginteger#scalebypoweroften",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-scaleByPowerOfTen",
+    "src/math/BigInteger.js~BigInteger#scaleByPowerOfTen",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#setbit",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-setBit",
-    "src/math/BigInteger.mjs~BigInteger#setBit",
+    "src/math/biginteger.js~biginteger#setbit",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-setBit",
+    "src/math/BigInteger.js~BigInteger#setBit",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#shift",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-shift",
-    "src/math/BigInteger.mjs~BigInteger#shift",
+    "src/math/biginteger.js~biginteger#shift",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-shift",
+    "src/math/BigInteger.js~BigInteger#shift",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#shiftleft",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-shiftLeft",
-    "src/math/BigInteger.mjs~BigInteger#shiftLeft",
+    "src/math/biginteger.js~biginteger#shiftleft",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-shiftLeft",
+    "src/math/BigInteger.js~BigInteger#shiftLeft",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#shiftright",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-shiftRight",
-    "src/math/BigInteger.mjs~BigInteger#shiftRight",
+    "src/math/biginteger.js~biginteger#shiftright",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-shiftRight",
+    "src/math/BigInteger.js~BigInteger#shiftRight",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#sign",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-sign",
-    "src/math/BigInteger.mjs~BigInteger#sign",
+    "src/math/biginteger.js~biginteger#sign",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-sign",
+    "src/math/BigInteger.js~BigInteger#sign",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#signum",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-signum",
-    "src/math/BigInteger.mjs~BigInteger#signum",
+    "src/math/biginteger.js~biginteger#signum",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-signum",
+    "src/math/BigInteger.js~BigInteger#signum",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#sqrt",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-sqrt",
-    "src/math/BigInteger.mjs~BigInteger#sqrt",
+    "src/math/biginteger.js~biginteger#sqrt",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-sqrt",
+    "src/math/BigInteger.js~BigInteger#sqrt",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#square",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-square",
-    "src/math/BigInteger.mjs~BigInteger#square",
+    "src/math/biginteger.js~biginteger#square",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-square",
+    "src/math/BigInteger.js~BigInteger#square",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#sub",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-sub",
-    "src/math/BigInteger.mjs~BigInteger#sub",
+    "src/math/biginteger.js~biginteger#sub",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-sub",
+    "src/math/BigInteger.js~BigInteger#sub",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#subtract",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-subtract",
-    "src/math/BigInteger.mjs~BigInteger#subtract",
+    "src/math/biginteger.js~biginteger#subtract",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-subtract",
+    "src/math/BigInteger.js~BigInteger#subtract",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#testbit",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-testBit",
-    "src/math/BigInteger.mjs~BigInteger#testBit",
+    "src/math/biginteger.js~biginteger#testbit",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-testBit",
+    "src/math/BigInteger.js~BigInteger#testBit",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#tostring",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-toString",
-    "src/math/BigInteger.mjs~BigInteger#toString",
+    "src/math/biginteger.js~biginteger#tostring",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-toString",
+    "src/math/BigInteger.js~BigInteger#toString",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger#xor",
-    "class/src/math/BigInteger.mjs~BigInteger.html#instance-method-xor",
-    "src/math/BigInteger.mjs~BigInteger#xor",
+    "src/math/biginteger.js~biginteger#xor",
+    "class/src/math/BigInteger.js~BigInteger.html#instance-method-xor",
+    "src/math/BigInteger.js~BigInteger#xor",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger.minus_one",
-    "class/src/math/BigInteger.mjs~BigInteger.html#static-get-MINUS_ONE",
-    "src/math/BigInteger.mjs~BigInteger.MINUS_ONE",
+    "src/math/biginteger.js~biginteger.minus_one",
+    "class/src/math/BigInteger.js~BigInteger.html#static-get-MINUS_ONE",
+    "src/math/BigInteger.js~BigInteger.MINUS_ONE",
     "member"
   ],
   [
-    "src/math/biginteger.mjs~biginteger.one",
-    "class/src/math/BigInteger.mjs~BigInteger.html#static-get-ONE",
-    "src/math/BigInteger.mjs~BigInteger.ONE",
+    "src/math/biginteger.js~biginteger.one",
+    "class/src/math/BigInteger.js~BigInteger.html#static-get-ONE",
+    "src/math/BigInteger.js~BigInteger.ONE",
     "member"
   ],
   [
-    "src/math/biginteger.mjs~biginteger.ten",
-    "class/src/math/BigInteger.mjs~BigInteger.html#static-get-TEN",
-    "src/math/BigInteger.mjs~BigInteger.TEN",
+    "src/math/biginteger.js~biginteger.ten",
+    "class/src/math/BigInteger.js~BigInteger.html#static-get-TEN",
+    "src/math/BigInteger.js~BigInteger.TEN",
     "member"
   ],
   [
-    "src/math/biginteger.mjs~biginteger.two",
-    "class/src/math/BigInteger.mjs~BigInteger.html#static-get-TWO",
-    "src/math/BigInteger.mjs~BigInteger.TWO",
+    "src/math/biginteger.js~biginteger.two",
+    "class/src/math/BigInteger.js~BigInteger.html#static-get-TWO",
+    "src/math/BigInteger.js~BigInteger.TWO",
     "member"
   ],
   [
-    "src/math/biginteger.mjs~biginteger.zero",
-    "class/src/math/BigInteger.mjs~BigInteger.html#static-get-ZERO",
-    "src/math/BigInteger.mjs~BigInteger.ZERO",
+    "src/math/biginteger.js~biginteger.zero",
+    "class/src/math/BigInteger.js~BigInteger.html#static-get-ZERO",
+    "src/math/BigInteger.js~BigInteger.ZERO",
     "member"
   ],
   [
-    "src/math/biginteger.mjs~biginteger._tobiginteger",
-    "class/src/math/BigInteger.mjs~BigInteger.html#static-method-_toBigInteger",
-    "src/math/BigInteger.mjs~BigInteger._toBigInteger",
+    "src/math/biginteger.js~biginteger._tobiginteger",
+    "class/src/math/BigInteger.js~BigInteger.html#static-method-_toBigInteger",
+    "src/math/BigInteger.js~BigInteger._toBigInteger",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger._tofloat",
-    "class/src/math/BigInteger.mjs~BigInteger.html#static-method-_toFloat",
-    "src/math/BigInteger.mjs~BigInteger._toFloat",
+    "src/math/biginteger.js~biginteger._tofloat",
+    "class/src/math/BigInteger.js~BigInteger.html#static-method-_toFloat",
+    "src/math/BigInteger.js~BigInteger._toFloat",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger._tointeger",
-    "class/src/math/BigInteger.mjs~BigInteger.html#static-method-_toInteger",
-    "src/math/BigInteger.mjs~BigInteger._toInteger",
+    "src/math/biginteger.js~biginteger._tointeger",
+    "class/src/math/BigInteger.js~BigInteger.html#static-method-_toInteger",
+    "src/math/BigInteger.js~BigInteger._toInteger",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger.create",
-    "class/src/math/BigInteger.mjs~BigInteger.html#static-method-create",
-    "src/math/BigInteger.mjs~BigInteger.create",
+    "src/math/biginteger.js~biginteger.create",
+    "class/src/math/BigInteger.js~BigInteger.html#static-method-create",
+    "src/math/BigInteger.js~BigInteger.create",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger.createrandombiginteger",
-    "class/src/math/BigInteger.mjs~BigInteger.html#static-method-createRandomBigInteger",
-    "src/math/BigInteger.mjs~BigInteger.createRandomBigInteger",
+    "src/math/biginteger.js~biginteger.createrandombiginteger",
+    "class/src/math/BigInteger.js~BigInteger.html#static-method-createRandomBigInteger",
+    "src/math/BigInteger.js~BigInteger.createRandomBigInteger",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger.getdefaultrandom",
-    "class/src/math/BigInteger.mjs~BigInteger.html#static-method-getDefaultRandom",
-    "src/math/BigInteger.mjs~BigInteger.getDefaultRandom",
+    "src/math/biginteger.js~biginteger.getdefaultrandom",
+    "class/src/math/BigInteger.js~BigInteger.html#static-method-getDefaultRandom",
+    "src/math/BigInteger.js~BigInteger.getDefaultRandom",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger.probableprime",
-    "class/src/math/BigInteger.mjs~BigInteger.html#static-method-probablePrime",
-    "src/math/BigInteger.mjs~BigInteger.probablePrime",
+    "src/math/biginteger.js~biginteger.probableprime",
+    "class/src/math/BigInteger.js~BigInteger.html#static-method-probablePrime",
+    "src/math/BigInteger.js~BigInteger.probablePrime",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger.setdefaultrandom",
-    "class/src/math/BigInteger.mjs~BigInteger.html#static-method-setDefaultRandom",
-    "src/math/BigInteger.mjs~BigInteger.setDefaultRandom",
+    "src/math/biginteger.js~biginteger.setdefaultrandom",
+    "class/src/math/BigInteger.js~BigInteger.html#static-method-setDefaultRandom",
+    "src/math/BigInteger.js~BigInteger.setDefaultRandom",
     "method"
   ],
   [
-    "src/math/biginteger.mjs~biginteger.valueof",
-    "class/src/math/BigInteger.mjs~BigInteger.html#static-method-valueOf",
-    "src/math/BigInteger.mjs~BigInteger.valueOf",
+    "src/math/biginteger.js~biginteger.valueof",
+    "class/src/math/BigInteger.js~BigInteger.html#static-method-valueOf",
+    "src/math/BigInteger.js~BigInteger.valueOf",
     "method"
   ],
   [
-    "src/math/complex.mjs",
-    "file/src/math/Complex.mjs.html",
-    "src/math/Complex.mjs",
+    "src/math/complex.js",
+    "file/src/math/Complex.js.html",
+    "src/math/Complex.js",
     "file"
   ],
   [
-    "src/math/complex.mjs~complex#_im",
-    "class/src/math/Complex.mjs~Complex.html#instance-member-_im",
-    "src/math/Complex.mjs~Complex#_im",
+    "src/math/complex.js~complex#_im",
+    "class/src/math/Complex.js~Complex.html#instance-member-_im",
+    "src/math/Complex.js~Complex#_im",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex#_re",
-    "class/src/math/Complex.mjs~Complex.html#instance-member-_re",
-    "src/math/Complex.mjs~Complex#_re",
+    "src/math/complex.js~complex#_re",
+    "class/src/math/Complex.js~Complex.html#instance-member-_re",
+    "src/math/Complex.js~Complex#_re",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex#abs",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-abs",
-    "src/math/Complex.mjs~Complex#abs",
+    "src/math/complex.js~complex#abs",
+    "class/src/math/Complex.js~Complex.html#instance-method-abs",
+    "src/math/Complex.js~Complex#abs",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#add",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-add",
-    "src/math/Complex.mjs~Complex#add",
+    "src/math/complex.js~complex#add",
+    "class/src/math/Complex.js~Complex.html#instance-method-add",
+    "src/math/Complex.js~Complex#add",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#arg",
-    "class/src/math/Complex.mjs~Complex.html#instance-get-arg",
-    "src/math/Complex.mjs~Complex#arg",
+    "src/math/complex.js~complex#arg",
+    "class/src/math/Complex.js~Complex.html#instance-get-arg",
+    "src/math/Complex.js~Complex#arg",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex#atan",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-atan",
-    "src/math/Complex.mjs~Complex#atan",
+    "src/math/complex.js~complex#atan",
+    "class/src/math/Complex.js~Complex.html#instance-method-atan",
+    "src/math/Complex.js~Complex#atan",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#atan2",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-atan2",
-    "src/math/Complex.mjs~Complex#atan2",
+    "src/math/complex.js~complex#atan2",
+    "class/src/math/Complex.js~Complex.html#instance-method-atan2",
+    "src/math/Complex.js~Complex#atan2",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#ceil",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-ceil",
-    "src/math/Complex.mjs~Complex#ceil",
+    "src/math/complex.js~complex#ceil",
+    "class/src/math/Complex.js~Complex.html#instance-method-ceil",
+    "src/math/Complex.js~Complex#ceil",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#clip",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-clip",
-    "src/math/Complex.mjs~Complex#clip",
+    "src/math/complex.js~complex#clip",
+    "class/src/math/Complex.js~Complex.html#instance-method-clip",
+    "src/math/Complex.js~Complex#clip",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#clone",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-clone",
-    "src/math/Complex.mjs~Complex#clone",
+    "src/math/complex.js~complex#clone",
+    "class/src/math/Complex.js~Complex.html#instance-method-clone",
+    "src/math/Complex.js~Complex#clone",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#compareto",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-compareTo",
-    "src/math/Complex.mjs~Complex#compareTo",
+    "src/math/complex.js~complex#compareto",
+    "class/src/math/Complex.js~Complex.html#instance-method-compareTo",
+    "src/math/Complex.js~Complex#compareTo",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#conj",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-conj",
-    "src/math/Complex.mjs~Complex#conj",
+    "src/math/complex.js~complex#conj",
+    "class/src/math/Complex.js~Complex.html#instance-method-conj",
+    "src/math/Complex.js~Complex#conj",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#constructor",
-    "class/src/math/Complex.mjs~Complex.html#instance-constructor-constructor",
-    "src/math/Complex.mjs~Complex#constructor",
+    "src/math/complex.js~complex#constructor",
+    "class/src/math/Complex.js~Complex.html#instance-constructor-constructor",
+    "src/math/Complex.js~Complex#constructor",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#cos",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-cos",
-    "src/math/Complex.mjs~Complex#cos",
+    "src/math/complex.js~complex#cos",
+    "class/src/math/Complex.js~Complex.html#instance-method-cos",
+    "src/math/Complex.js~Complex#cos",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#div",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-div",
-    "src/math/Complex.mjs~Complex#div",
+    "src/math/complex.js~complex#div",
+    "class/src/math/Complex.js~Complex.html#instance-method-div",
+    "src/math/Complex.js~Complex#div",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#dot",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-dot",
-    "src/math/Complex.mjs~Complex#dot",
+    "src/math/complex.js~complex#dot",
+    "class/src/math/Complex.js~Complex.html#instance-method-dot",
+    "src/math/Complex.js~Complex#dot",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#doublevalue",
-    "class/src/math/Complex.mjs~Complex.html#instance-get-doubleValue",
-    "src/math/Complex.mjs~Complex#doubleValue",
+    "src/math/complex.js~complex#doublevalue",
+    "class/src/math/Complex.js~Complex.html#instance-get-doubleValue",
+    "src/math/Complex.js~Complex#doubleValue",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex#equals",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-equals",
-    "src/math/Complex.mjs~Complex#equals",
+    "src/math/complex.js~complex#equals",
+    "class/src/math/Complex.js~Complex.html#instance-method-equals",
+    "src/math/Complex.js~Complex#equals",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#exp",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-exp",
-    "src/math/Complex.mjs~Complex#exp",
+    "src/math/complex.js~complex#exp",
+    "class/src/math/Complex.js~Complex.html#instance-method-exp",
+    "src/math/Complex.js~Complex#exp",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#fix",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-fix",
-    "src/math/Complex.mjs~Complex#fix",
+    "src/math/complex.js~complex#fix",
+    "class/src/math/Complex.js~Complex.html#instance-method-fix",
+    "src/math/Complex.js~Complex#fix",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#floor",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-floor",
-    "src/math/Complex.mjs~Complex#floor",
+    "src/math/complex.js~complex#floor",
+    "class/src/math/Complex.js~Complex.html#instance-method-floor",
+    "src/math/Complex.js~Complex#floor",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#fract",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-fract",
-    "src/math/Complex.mjs~Complex#fract",
+    "src/math/complex.js~complex#fract",
+    "class/src/math/Complex.js~Complex.html#instance-method-fract",
+    "src/math/Complex.js~Complex#fract",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#getdecimalposition",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-getDecimalPosition",
-    "src/math/Complex.mjs~Complex#getDecimalPosition",
+    "src/math/complex.js~complex#getdecimalposition",
+    "class/src/math/Complex.js~Complex.html#instance-method-getDecimalPosition",
+    "src/math/Complex.js~Complex#getDecimalPosition",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#imag",
-    "class/src/math/Complex.mjs~Complex.html#instance-get-imag",
-    "src/math/Complex.mjs~Complex#imag",
+    "src/math/complex.js~complex#imag",
+    "class/src/math/Complex.js~Complex.html#instance-get-imag",
+    "src/math/Complex.js~Complex#imag",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex#intvalue",
-    "class/src/math/Complex.mjs~Complex.html#instance-get-intValue",
-    "src/math/Complex.mjs~Complex#intValue",
+    "src/math/complex.js~complex#intvalue",
+    "class/src/math/Complex.js~Complex.html#instance-get-intValue",
+    "src/math/Complex.js~Complex#intValue",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex#inv",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-inv",
-    "src/math/Complex.mjs~Complex#inv",
+    "src/math/complex.js~complex#inv",
+    "class/src/math/Complex.js~Complex.html#instance-method-inv",
+    "src/math/Complex.js~Complex#inv",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#iscomplex",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-isComplex",
-    "src/math/Complex.mjs~Complex#isComplex",
+    "src/math/complex.js~complex#iscomplex",
+    "class/src/math/Complex.js~Complex.html#instance-method-isComplex",
+    "src/math/Complex.js~Complex#isComplex",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#iscomplexinteger",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-isComplexInteger",
-    "src/math/Complex.mjs~Complex#isComplexInteger",
+    "src/math/complex.js~complex#iscomplexinteger",
+    "class/src/math/Complex.js~Complex.html#instance-method-isComplexInteger",
+    "src/math/Complex.js~Complex#isComplexInteger",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#isfinite",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-isFinite",
-    "src/math/Complex.mjs~Complex#isFinite",
+    "src/math/complex.js~complex#isfinite",
+    "class/src/math/Complex.js~Complex.html#instance-method-isFinite",
+    "src/math/Complex.js~Complex#isFinite",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#isinfinite",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-isInfinite",
-    "src/math/Complex.mjs~Complex#isInfinite",
+    "src/math/complex.js~complex#isinfinite",
+    "class/src/math/Complex.js~Complex.html#instance-method-isInfinite",
+    "src/math/Complex.js~Complex#isInfinite",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#isinteger",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-isInteger",
-    "src/math/Complex.mjs~Complex#isInteger",
+    "src/math/complex.js~complex#isinteger",
+    "class/src/math/Complex.js~Complex.html#instance-method-isInteger",
+    "src/math/Complex.js~Complex#isInteger",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#isnan",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-isNaN",
-    "src/math/Complex.mjs~Complex#isNaN",
+    "src/math/complex.js~complex#isnan",
+    "class/src/math/Complex.js~Complex.html#instance-method-isNaN",
+    "src/math/Complex.js~Complex#isNaN",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#isnegative",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-isNegative",
-    "src/math/Complex.mjs~Complex#isNegative",
+    "src/math/complex.js~complex#isnegative",
+    "class/src/math/Complex.js~Complex.html#instance-method-isNegative",
+    "src/math/Complex.js~Complex#isNegative",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#isnotnegative",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-isNotNegative",
-    "src/math/Complex.mjs~Complex#isNotNegative",
+    "src/math/complex.js~complex#isnotnegative",
+    "class/src/math/Complex.js~Complex.html#instance-method-isNotNegative",
+    "src/math/Complex.js~Complex#isNotNegative",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#isone",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-isOne",
-    "src/math/Complex.mjs~Complex#isOne",
+    "src/math/complex.js~complex#isone",
+    "class/src/math/Complex.js~Complex.html#instance-method-isOne",
+    "src/math/Complex.js~Complex#isOne",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#ispositive",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-isPositive",
-    "src/math/Complex.mjs~Complex#isPositive",
+    "src/math/complex.js~complex#ispositive",
+    "class/src/math/Complex.js~Complex.html#instance-method-isPositive",
+    "src/math/Complex.js~Complex#isPositive",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#isreal",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-isReal",
-    "src/math/Complex.mjs~Complex#isReal",
+    "src/math/complex.js~complex#isreal",
+    "class/src/math/Complex.js~Complex.html#instance-method-isReal",
+    "src/math/Complex.js~Complex#isReal",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#iszero",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-isZero",
-    "src/math/Complex.mjs~Complex#isZero",
+    "src/math/complex.js~complex#iszero",
+    "class/src/math/Complex.js~Complex.html#instance-method-isZero",
+    "src/math/Complex.js~Complex#isZero",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#log",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-log",
-    "src/math/Complex.mjs~Complex#log",
+    "src/math/complex.js~complex#log",
+    "class/src/math/Complex.js~Complex.html#instance-method-log",
+    "src/math/Complex.js~Complex#log",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#max",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-max",
-    "src/math/Complex.mjs~Complex#max",
+    "src/math/complex.js~complex#max",
+    "class/src/math/Complex.js~Complex.html#instance-method-max",
+    "src/math/Complex.js~Complex#max",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#min",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-min",
-    "src/math/Complex.mjs~Complex#min",
+    "src/math/complex.js~complex#min",
+    "class/src/math/Complex.js~Complex.html#instance-method-min",
+    "src/math/Complex.js~Complex#min",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#mod",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-mod",
-    "src/math/Complex.mjs~Complex#mod",
+    "src/math/complex.js~complex#mod",
+    "class/src/math/Complex.js~Complex.html#instance-method-mod",
+    "src/math/Complex.js~Complex#mod",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#mul",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-mul",
-    "src/math/Complex.mjs~Complex#mul",
+    "src/math/complex.js~complex#mul",
+    "class/src/math/Complex.js~Complex.html#instance-method-mul",
+    "src/math/Complex.js~Complex#mul",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#negate",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-negate",
-    "src/math/Complex.mjs~Complex#negate",
+    "src/math/complex.js~complex#negate",
+    "class/src/math/Complex.js~Complex.html#instance-method-negate",
+    "src/math/Complex.js~Complex#negate",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#norm",
-    "class/src/math/Complex.mjs~Complex.html#instance-get-norm",
-    "src/math/Complex.mjs~Complex#norm",
+    "src/math/complex.js~complex#norm",
+    "class/src/math/Complex.js~Complex.html#instance-get-norm",
+    "src/math/Complex.js~Complex#norm",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex#pow",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-pow",
-    "src/math/Complex.mjs~Complex#pow",
+    "src/math/complex.js~complex#pow",
+    "class/src/math/Complex.js~Complex.html#instance-method-pow",
+    "src/math/Complex.js~Complex#pow",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#real",
-    "class/src/math/Complex.mjs~Complex.html#instance-get-real",
-    "src/math/Complex.mjs~Complex#real",
+    "src/math/complex.js~complex#real",
+    "class/src/math/Complex.js~Complex.html#instance-get-real",
+    "src/math/Complex.js~Complex#real",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex#round",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-round",
-    "src/math/Complex.mjs~Complex#round",
+    "src/math/complex.js~complex#round",
+    "class/src/math/Complex.js~Complex.html#instance-method-round",
+    "src/math/Complex.js~Complex#round",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#rsqrt",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-rsqrt",
-    "src/math/Complex.mjs~Complex#rsqrt",
+    "src/math/complex.js~complex#rsqrt",
+    "class/src/math/Complex.js~Complex.html#instance-method-rsqrt",
+    "src/math/Complex.js~Complex#rsqrt",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#sign",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-sign",
-    "src/math/Complex.mjs~Complex#sign",
+    "src/math/complex.js~complex#sign",
+    "class/src/math/Complex.js~Complex.html#instance-method-sign",
+    "src/math/Complex.js~Complex#sign",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#sin",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-sin",
-    "src/math/Complex.mjs~Complex#sin",
+    "src/math/complex.js~complex#sin",
+    "class/src/math/Complex.js~Complex.html#instance-method-sin",
+    "src/math/Complex.js~Complex#sin",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#sinc",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-sinc",
-    "src/math/Complex.mjs~Complex#sinc",
+    "src/math/complex.js~complex#sinc",
+    "class/src/math/Complex.js~Complex.html#instance-method-sinc",
+    "src/math/Complex.js~Complex#sinc",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#sqrt",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-sqrt",
-    "src/math/Complex.mjs~Complex#sqrt",
+    "src/math/complex.js~complex#sqrt",
+    "class/src/math/Complex.js~Complex.html#instance-method-sqrt",
+    "src/math/Complex.js~Complex#sqrt",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#square",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-square",
-    "src/math/Complex.mjs~Complex#square",
+    "src/math/complex.js~complex#square",
+    "class/src/math/Complex.js~Complex.html#instance-method-square",
+    "src/math/Complex.js~Complex#square",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#sub",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-sub",
-    "src/math/Complex.mjs~Complex#sub",
+    "src/math/complex.js~complex#sub",
+    "class/src/math/Complex.js~Complex.html#instance-method-sub",
+    "src/math/Complex.js~Complex#sub",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#tan",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-tan",
-    "src/math/Complex.mjs~Complex#tan",
+    "src/math/complex.js~complex#tan",
+    "class/src/math/Complex.js~Complex.html#instance-method-tan",
+    "src/math/Complex.js~Complex#tan",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex#tostring",
-    "class/src/math/Complex.mjs~Complex.html#instance-method-toString",
-    "src/math/Complex.mjs~Complex#toString",
+    "src/math/complex.js~complex#tostring",
+    "class/src/math/Complex.js~Complex.html#instance-method-toString",
+    "src/math/Complex.js~Complex#toString",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex.e",
-    "class/src/math/Complex.mjs~Complex.html#static-get-E",
-    "src/math/Complex.mjs~Complex.E",
+    "src/math/complex.js~complex.e",
+    "class/src/math/Complex.js~Complex.html#static-get-E",
+    "src/math/Complex.js~Complex.E",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.half",
-    "class/src/math/Complex.mjs~Complex.html#static-get-HALF",
-    "src/math/Complex.mjs~Complex.HALF",
+    "src/math/complex.js~complex.half",
+    "class/src/math/Complex.js~Complex.html#static-get-HALF",
+    "src/math/Complex.js~Complex.HALF",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.half_pi",
-    "class/src/math/Complex.mjs~Complex.html#static-get-HALF_PI",
-    "src/math/Complex.mjs~Complex.HALF_PI",
+    "src/math/complex.js~complex.half_pi",
+    "class/src/math/Complex.js~Complex.html#static-get-HALF_PI",
+    "src/math/Complex.js~Complex.HALF_PI",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.i",
-    "class/src/math/Complex.mjs~Complex.html#static-get-I",
-    "src/math/Complex.mjs~Complex.I",
+    "src/math/complex.js~complex.i",
+    "class/src/math/Complex.js~Complex.html#static-get-I",
+    "src/math/Complex.js~Complex.I",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.ln10",
-    "class/src/math/Complex.mjs~Complex.html#static-get-LN10",
-    "src/math/Complex.mjs~Complex.LN10",
+    "src/math/complex.js~complex.ln10",
+    "class/src/math/Complex.js~Complex.html#static-get-LN10",
+    "src/math/Complex.js~Complex.LN10",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.ln2",
-    "class/src/math/Complex.mjs~Complex.html#static-get-LN2",
-    "src/math/Complex.mjs~Complex.LN2",
+    "src/math/complex.js~complex.ln2",
+    "class/src/math/Complex.js~Complex.html#static-get-LN2",
+    "src/math/Complex.js~Complex.LN2",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.log10e",
-    "class/src/math/Complex.mjs~Complex.html#static-get-LOG10E",
-    "src/math/Complex.mjs~Complex.LOG10E",
+    "src/math/complex.js~complex.log10e",
+    "class/src/math/Complex.js~Complex.html#static-get-LOG10E",
+    "src/math/Complex.js~Complex.LOG10E",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.log2e",
-    "class/src/math/Complex.mjs~Complex.html#static-get-LOG2E",
-    "src/math/Complex.mjs~Complex.LOG2E",
+    "src/math/complex.js~complex.log2e",
+    "class/src/math/Complex.js~Complex.html#static-get-LOG2E",
+    "src/math/Complex.js~Complex.LOG2E",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.minus_one",
-    "class/src/math/Complex.mjs~Complex.html#static-get-MINUS_ONE",
-    "src/math/Complex.mjs~Complex.MINUS_ONE",
+    "src/math/complex.js~complex.minus_one",
+    "class/src/math/Complex.js~Complex.html#static-get-MINUS_ONE",
+    "src/math/Complex.js~Complex.MINUS_ONE",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.negative_infinity",
-    "class/src/math/Complex.mjs~Complex.html#static-get-NEGATIVE_INFINITY",
-    "src/math/Complex.mjs~Complex.NEGATIVE_INFINITY",
+    "src/math/complex.js~complex.negative_infinity",
+    "class/src/math/Complex.js~Complex.html#static-get-NEGATIVE_INFINITY",
+    "src/math/Complex.js~Complex.NEGATIVE_INFINITY",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.nan",
-    "class/src/math/Complex.mjs~Complex.html#static-get-NaN",
-    "src/math/Complex.mjs~Complex.NaN",
+    "src/math/complex.js~complex.nan",
+    "class/src/math/Complex.js~Complex.html#static-get-NaN",
+    "src/math/Complex.js~Complex.NaN",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.one",
-    "class/src/math/Complex.mjs~Complex.html#static-get-ONE",
-    "src/math/Complex.mjs~Complex.ONE",
+    "src/math/complex.js~complex.one",
+    "class/src/math/Complex.js~Complex.html#static-get-ONE",
+    "src/math/Complex.js~Complex.ONE",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.pi",
-    "class/src/math/Complex.mjs~Complex.html#static-get-PI",
-    "src/math/Complex.mjs~Complex.PI",
+    "src/math/complex.js~complex.pi",
+    "class/src/math/Complex.js~Complex.html#static-get-PI",
+    "src/math/Complex.js~Complex.PI",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.positive_infinity",
-    "class/src/math/Complex.mjs~Complex.html#static-get-POSITIVE_INFINITY",
-    "src/math/Complex.mjs~Complex.POSITIVE_INFINITY",
+    "src/math/complex.js~complex.positive_infinity",
+    "class/src/math/Complex.js~Complex.html#static-get-POSITIVE_INFINITY",
+    "src/math/Complex.js~Complex.POSITIVE_INFINITY",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.quarter_pi",
-    "class/src/math/Complex.mjs~Complex.html#static-get-QUARTER_PI",
-    "src/math/Complex.mjs~Complex.QUARTER_PI",
+    "src/math/complex.js~complex.quarter_pi",
+    "class/src/math/Complex.js~Complex.html#static-get-QUARTER_PI",
+    "src/math/Complex.js~Complex.QUARTER_PI",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.sqrt1_2",
-    "class/src/math/Complex.mjs~Complex.html#static-get-SQRT1_2",
-    "src/math/Complex.mjs~Complex.SQRT1_2",
+    "src/math/complex.js~complex.sqrt1_2",
+    "class/src/math/Complex.js~Complex.html#static-get-SQRT1_2",
+    "src/math/Complex.js~Complex.SQRT1_2",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.sqrt2",
-    "class/src/math/Complex.mjs~Complex.html#static-get-SQRT2",
-    "src/math/Complex.mjs~Complex.SQRT2",
+    "src/math/complex.js~complex.sqrt2",
+    "class/src/math/Complex.js~Complex.html#static-get-SQRT2",
+    "src/math/Complex.js~Complex.SQRT2",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.ten",
-    "class/src/math/Complex.mjs~Complex.html#static-get-TEN",
-    "src/math/Complex.mjs~Complex.TEN",
+    "src/math/complex.js~complex.ten",
+    "class/src/math/Complex.js~Complex.html#static-get-TEN",
+    "src/math/Complex.js~Complex.TEN",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.two",
-    "class/src/math/Complex.mjs~Complex.html#static-get-TWO",
-    "src/math/Complex.mjs~Complex.TWO",
+    "src/math/complex.js~complex.two",
+    "class/src/math/Complex.js~Complex.html#static-get-TWO",
+    "src/math/Complex.js~Complex.TWO",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.two_pi",
-    "class/src/math/Complex.mjs~Complex.html#static-get-TWO_PI",
-    "src/math/Complex.mjs~Complex.TWO_PI",
+    "src/math/complex.js~complex.two_pi",
+    "class/src/math/Complex.js~Complex.html#static-get-TWO_PI",
+    "src/math/Complex.js~Complex.TWO_PI",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex.zero",
-    "class/src/math/Complex.mjs~Complex.html#static-get-ZERO",
-    "src/math/Complex.mjs~Complex.ZERO",
+    "src/math/complex.js~complex.zero",
+    "class/src/math/Complex.js~Complex.html#static-get-ZERO",
+    "src/math/Complex.js~Complex.ZERO",
     "member"
   ],
   [
-    "src/math/complex.mjs~complex._tocomplex",
-    "class/src/math/Complex.mjs~Complex.html#static-method-_toComplex",
-    "src/math/Complex.mjs~Complex._toComplex",
+    "src/math/complex.js~complex._tocomplex",
+    "class/src/math/Complex.js~Complex.html#static-method-_toComplex",
+    "src/math/Complex.js~Complex._toComplex",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex._todouble",
-    "class/src/math/Complex.mjs~Complex.html#static-method-_toDouble",
-    "src/math/Complex.mjs~Complex._toDouble",
+    "src/math/complex.js~complex._todouble",
+    "class/src/math/Complex.js~Complex.html#static-method-_toDouble",
+    "src/math/Complex.js~Complex._toDouble",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex._tointeger",
-    "class/src/math/Complex.mjs~Complex.html#static-method-_toInteger",
-    "src/math/Complex.mjs~Complex._toInteger",
+    "src/math/complex.js~complex._tointeger",
+    "class/src/math/Complex.js~Complex.html#static-method-_toInteger",
+    "src/math/Complex.js~Complex._toInteger",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex.create",
-    "class/src/math/Complex.mjs~Complex.html#static-method-create",
-    "src/math/Complex.mjs~Complex.create",
+    "src/math/complex.js~complex.create",
+    "class/src/math/Complex.js~Complex.html#static-method-create",
+    "src/math/Complex.js~Complex.create",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex.rand",
-    "class/src/math/Complex.mjs~Complex.html#static-method-rand",
-    "src/math/Complex.mjs~Complex.rand",
+    "src/math/complex.js~complex.rand",
+    "class/src/math/Complex.js~Complex.html#static-method-rand",
+    "src/math/Complex.js~Complex.rand",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex.randn",
-    "class/src/math/Complex.mjs~Complex.html#static-method-randn",
-    "src/math/Complex.mjs~Complex.randn",
+    "src/math/complex.js~complex.randn",
+    "class/src/math/Complex.js~Complex.html#static-method-randn",
+    "src/math/Complex.js~Complex.randn",
     "method"
   ],
   [
-    "src/math/complex.mjs~complex.valueof",
-    "class/src/math/Complex.mjs~Complex.html#static-method-valueOf",
-    "src/math/Complex.mjs~Complex.valueOf",
+    "src/math/complex.js~complex.valueof",
+    "class/src/math/Complex.js~Complex.html#static-method-valueOf",
+    "src/math/Complex.js~Complex.valueOf",
     "method"
   ],
   [
-    "src/math/fraction.mjs",
-    "file/src/math/Fraction.mjs.html",
-    "src/math/Fraction.mjs",
+    "src/math/fraction.js",
+    "file/src/math/Fraction.js.html",
+    "src/math/Fraction.js",
     "file"
   ],
   [
-    "src/math/fraction.mjs~fraction#abs",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-abs",
-    "src/math/Fraction.mjs~Fraction#abs",
+    "src/math/fraction.js~fraction#abs",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-abs",
+    "src/math/Fraction.js~Fraction#abs",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#add",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-add",
-    "src/math/Fraction.mjs~Fraction#add",
+    "src/math/fraction.js~fraction#add",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-add",
+    "src/math/Fraction.js~Fraction#add",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#ceil",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-ceil",
-    "src/math/Fraction.mjs~Fraction#ceil",
+    "src/math/fraction.js~fraction#ceil",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-ceil",
+    "src/math/Fraction.js~Fraction#ceil",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#clip",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-clip",
-    "src/math/Fraction.mjs~Fraction#clip",
+    "src/math/fraction.js~fraction#clip",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-clip",
+    "src/math/Fraction.js~Fraction#clip",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#clone",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-clone",
-    "src/math/Fraction.mjs~Fraction#clone",
+    "src/math/fraction.js~fraction#clone",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-clone",
+    "src/math/Fraction.js~Fraction#clone",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#compareto",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-compareTo",
-    "src/math/Fraction.mjs~Fraction#compareTo",
+    "src/math/fraction.js~fraction#compareto",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-compareTo",
+    "src/math/Fraction.js~Fraction#compareTo",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#constructor",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-constructor-constructor",
-    "src/math/Fraction.mjs~Fraction#constructor",
+    "src/math/fraction.js~fraction#constructor",
+    "class/src/math/Fraction.js~Fraction.html#instance-constructor-constructor",
+    "src/math/Fraction.js~Fraction#constructor",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#denominator",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-member-denominator",
-    "src/math/Fraction.mjs~Fraction#denominator",
+    "src/math/fraction.js~fraction#denominator",
+    "class/src/math/Fraction.js~Fraction.html#instance-member-denominator",
+    "src/math/Fraction.js~Fraction#denominator",
     "member"
   ],
   [
-    "src/math/fraction.mjs~fraction#div",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-div",
-    "src/math/Fraction.mjs~Fraction#div",
+    "src/math/fraction.js~fraction#div",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-div",
+    "src/math/Fraction.js~Fraction#div",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#doublevalue",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-get-doubleValue",
-    "src/math/Fraction.mjs~Fraction#doubleValue",
+    "src/math/fraction.js~fraction#doublevalue",
+    "class/src/math/Fraction.js~Fraction.html#instance-get-doubleValue",
+    "src/math/Fraction.js~Fraction#doubleValue",
     "member"
   ],
   [
-    "src/math/fraction.mjs~fraction#equals",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-equals",
-    "src/math/Fraction.mjs~Fraction#equals",
+    "src/math/fraction.js~fraction#equals",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-equals",
+    "src/math/Fraction.js~Fraction#equals",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#factorial",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-factorial",
-    "src/math/Fraction.mjs~Fraction#factorial",
+    "src/math/fraction.js~fraction#factorial",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-factorial",
+    "src/math/Fraction.js~Fraction#factorial",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#fix",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-fix",
-    "src/math/Fraction.mjs~Fraction#fix",
+    "src/math/fraction.js~fraction#fix",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-fix",
+    "src/math/Fraction.js~Fraction#fix",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#floor",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-floor",
-    "src/math/Fraction.mjs~Fraction#floor",
+    "src/math/fraction.js~fraction#floor",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-floor",
+    "src/math/Fraction.js~Fraction#floor",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#fract",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-fract",
-    "src/math/Fraction.mjs~Fraction#fract",
+    "src/math/fraction.js~fraction#fract",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-fract",
+    "src/math/Fraction.js~Fraction#fract",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#intvalue",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-get-intValue",
-    "src/math/Fraction.mjs~Fraction#intValue",
+    "src/math/fraction.js~fraction#intvalue",
+    "class/src/math/Fraction.js~Fraction.html#instance-get-intValue",
+    "src/math/Fraction.js~Fraction#intValue",
     "member"
   ],
   [
-    "src/math/fraction.mjs~fraction#inv",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-inv",
-    "src/math/Fraction.mjs~Fraction#inv",
+    "src/math/fraction.js~fraction#inv",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-inv",
+    "src/math/Fraction.js~Fraction#inv",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#isinteger",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-isInteger",
-    "src/math/Fraction.mjs~Fraction#isInteger",
+    "src/math/fraction.js~fraction#isinteger",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-isInteger",
+    "src/math/Fraction.js~Fraction#isInteger",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#isnegative",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-isNegative",
-    "src/math/Fraction.mjs~Fraction#isNegative",
+    "src/math/fraction.js~fraction#isnegative",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-isNegative",
+    "src/math/Fraction.js~Fraction#isNegative",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#isnotnegative",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-isNotNegative",
-    "src/math/Fraction.mjs~Fraction#isNotNegative",
+    "src/math/fraction.js~fraction#isnotnegative",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-isNotNegative",
+    "src/math/Fraction.js~Fraction#isNotNegative",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#isone",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-isOne",
-    "src/math/Fraction.mjs~Fraction#isOne",
+    "src/math/fraction.js~fraction#isone",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-isOne",
+    "src/math/Fraction.js~Fraction#isOne",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#ispositive",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-isPositive",
-    "src/math/Fraction.mjs~Fraction#isPositive",
+    "src/math/fraction.js~fraction#ispositive",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-isPositive",
+    "src/math/Fraction.js~Fraction#isPositive",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#iszero",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-isZero",
-    "src/math/Fraction.mjs~Fraction#isZero",
+    "src/math/fraction.js~fraction#iszero",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-isZero",
+    "src/math/Fraction.js~Fraction#isZero",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#max",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-max",
-    "src/math/Fraction.mjs~Fraction#max",
+    "src/math/fraction.js~fraction#max",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-max",
+    "src/math/Fraction.js~Fraction#max",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#min",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-min",
-    "src/math/Fraction.mjs~Fraction#min",
+    "src/math/fraction.js~fraction#min",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-min",
+    "src/math/Fraction.js~Fraction#min",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#mod",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-mod",
-    "src/math/Fraction.mjs~Fraction#mod",
+    "src/math/fraction.js~fraction#mod",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-mod",
+    "src/math/Fraction.js~Fraction#mod",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#mul",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-mul",
-    "src/math/Fraction.mjs~Fraction#mul",
+    "src/math/fraction.js~fraction#mul",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-mul",
+    "src/math/Fraction.js~Fraction#mul",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#negate",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-negate",
-    "src/math/Fraction.mjs~Fraction#negate",
+    "src/math/fraction.js~fraction#negate",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-negate",
+    "src/math/Fraction.js~Fraction#negate",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#numerator",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-member-numerator",
-    "src/math/Fraction.mjs~Fraction#numerator",
+    "src/math/fraction.js~fraction#numerator",
+    "class/src/math/Fraction.js~Fraction.html#instance-member-numerator",
+    "src/math/Fraction.js~Fraction#numerator",
     "member"
   ],
   [
-    "src/math/fraction.mjs~fraction#pow",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-pow",
-    "src/math/Fraction.mjs~Fraction#pow",
+    "src/math/fraction.js~fraction#pow",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-pow",
+    "src/math/Fraction.js~Fraction#pow",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#round",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-round",
-    "src/math/Fraction.mjs~Fraction#round",
+    "src/math/fraction.js~fraction#round",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-round",
+    "src/math/Fraction.js~Fraction#round",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#scalebypoweroften",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-scaleByPowerOfTen",
-    "src/math/Fraction.mjs~Fraction#scaleByPowerOfTen",
+    "src/math/fraction.js~fraction#scalebypoweroften",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-scaleByPowerOfTen",
+    "src/math/Fraction.js~Fraction#scaleByPowerOfTen",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#sign",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-sign",
-    "src/math/Fraction.mjs~Fraction#sign",
+    "src/math/fraction.js~fraction#sign",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-sign",
+    "src/math/Fraction.js~Fraction#sign",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#sub",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-sub",
-    "src/math/Fraction.mjs~Fraction#sub",
+    "src/math/fraction.js~fraction#sub",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-sub",
+    "src/math/Fraction.js~Fraction#sub",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#tobigdecimal",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-toBigDecimal",
-    "src/math/Fraction.mjs~Fraction#toBigDecimal",
+    "src/math/fraction.js~fraction#tobigdecimal",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-toBigDecimal",
+    "src/math/Fraction.js~Fraction#toBigDecimal",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#tobiginteger",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-toBigInteger",
-    "src/math/Fraction.mjs~Fraction#toBigInteger",
+    "src/math/fraction.js~fraction#tobiginteger",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-toBigInteger",
+    "src/math/Fraction.js~Fraction#toBigInteger",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction#tostring",
-    "class/src/math/Fraction.mjs~Fraction.html#instance-method-toString",
-    "src/math/Fraction.mjs~Fraction#toString",
+    "src/math/fraction.js~fraction#tostring",
+    "class/src/math/Fraction.js~Fraction.html#instance-method-toString",
+    "src/math/Fraction.js~Fraction#toString",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction.half",
-    "class/src/math/Fraction.mjs~Fraction.html#static-get-HALF",
-    "src/math/Fraction.mjs~Fraction.HALF",
+    "src/math/fraction.js~fraction.half",
+    "class/src/math/Fraction.js~Fraction.html#static-get-HALF",
+    "src/math/Fraction.js~Fraction.HALF",
     "member"
   ],
   [
-    "src/math/fraction.mjs~fraction.minus_one",
-    "class/src/math/Fraction.mjs~Fraction.html#static-get-MINUS_ONE",
-    "src/math/Fraction.mjs~Fraction.MINUS_ONE",
+    "src/math/fraction.js~fraction.minus_one",
+    "class/src/math/Fraction.js~Fraction.html#static-get-MINUS_ONE",
+    "src/math/Fraction.js~Fraction.MINUS_ONE",
     "member"
   ],
   [
-    "src/math/fraction.mjs~fraction.one",
-    "class/src/math/Fraction.mjs~Fraction.html#static-get-ONE",
-    "src/math/Fraction.mjs~Fraction.ONE",
+    "src/math/fraction.js~fraction.one",
+    "class/src/math/Fraction.js~Fraction.html#static-get-ONE",
+    "src/math/Fraction.js~Fraction.ONE",
     "member"
   ],
   [
-    "src/math/fraction.mjs~fraction.ten",
-    "class/src/math/Fraction.mjs~Fraction.html#static-get-TEN",
-    "src/math/Fraction.mjs~Fraction.TEN",
+    "src/math/fraction.js~fraction.ten",
+    "class/src/math/Fraction.js~Fraction.html#static-get-TEN",
+    "src/math/Fraction.js~Fraction.TEN",
     "member"
   ],
   [
-    "src/math/fraction.mjs~fraction.two",
-    "class/src/math/Fraction.mjs~Fraction.html#static-get-TWO",
-    "src/math/Fraction.mjs~Fraction.TWO",
+    "src/math/fraction.js~fraction.two",
+    "class/src/math/Fraction.js~Fraction.html#static-get-TWO",
+    "src/math/Fraction.js~Fraction.TWO",
     "member"
   ],
   [
-    "src/math/fraction.mjs~fraction.zero",
-    "class/src/math/Fraction.mjs~Fraction.html#static-get-ZERO",
-    "src/math/Fraction.mjs~Fraction.ZERO",
+    "src/math/fraction.js~fraction.zero",
+    "class/src/math/Fraction.js~Fraction.html#static-get-ZERO",
+    "src/math/Fraction.js~Fraction.ZERO",
     "member"
   ],
   [
-    "src/math/fraction.mjs~fraction._tofloat",
-    "class/src/math/Fraction.mjs~Fraction.html#static-method-_toFloat",
-    "src/math/Fraction.mjs~Fraction._toFloat",
+    "src/math/fraction.js~fraction._tofloat",
+    "class/src/math/Fraction.js~Fraction.html#static-method-_toFloat",
+    "src/math/Fraction.js~Fraction._toFloat",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction._tofraction",
-    "class/src/math/Fraction.mjs~Fraction.html#static-method-_toFraction",
-    "src/math/Fraction.mjs~Fraction._toFraction",
+    "src/math/fraction.js~fraction._tofraction",
+    "class/src/math/Fraction.js~Fraction.html#static-method-_toFraction",
+    "src/math/Fraction.js~Fraction._toFraction",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction._tointeger",
-    "class/src/math/Fraction.mjs~Fraction.html#static-method-_toInteger",
-    "src/math/Fraction.mjs~Fraction._toInteger",
+    "src/math/fraction.js~fraction._tointeger",
+    "class/src/math/Fraction.js~Fraction.html#static-method-_toInteger",
+    "src/math/Fraction.js~Fraction._toInteger",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction.create",
-    "class/src/math/Fraction.mjs~Fraction.html#static-method-create",
-    "src/math/Fraction.mjs~Fraction.create",
+    "src/math/fraction.js~fraction.create",
+    "class/src/math/Fraction.js~Fraction.html#static-method-create",
+    "src/math/Fraction.js~Fraction.create",
     "method"
   ],
   [
-    "src/math/fraction.mjs~fraction.valueof",
-    "class/src/math/Fraction.mjs~Fraction.html#static-method-valueOf",
-    "src/math/Fraction.mjs~Fraction.valueOf",
+    "src/math/fraction.js~fraction.valueof",
+    "class/src/math/Fraction.js~Fraction.html#static-method-valueOf",
+    "src/math/Fraction.js~Fraction.valueOf",
     "method"
   ],
   [
-    "src/math/matrix.mjs",
-    "file/src/math/Matrix.mjs.html",
-    "src/math/Matrix.mjs",
+    "src/math/matrix.js",
+    "file/src/math/Matrix.js.html",
+    "src/math/Matrix.js",
     "file"
   ],
   [
-    "src/math/matrix.mjs~matrix#t",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-T",
-    "src/math/Matrix.mjs~Matrix#T",
+    "src/math/matrix.js~matrix#t",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-T",
+    "src/math/Matrix.js~Matrix#T",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#_clearcash",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-_clearCash",
-    "src/math/Matrix.mjs~Matrix#_clearCash",
+    "src/math/matrix.js~matrix#_clearcash",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-_clearCash",
+    "src/math/Matrix.js~Matrix#_clearCash",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#_concatbottom",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-_concatBottom",
-    "src/math/Matrix.mjs~Matrix#_concatBottom",
+    "src/math/matrix.js~matrix#_concatbottom",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-_concatBottom",
+    "src/math/Matrix.js~Matrix#_concatBottom",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#_concatright",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-_concatRight",
-    "src/math/Matrix.mjs~Matrix#_concatRight",
+    "src/math/matrix.js~matrix#_concatright",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-_concatRight",
+    "src/math/Matrix.js~Matrix#_concatRight",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#_deletecolumn",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-_deleteColumn",
-    "src/math/Matrix.mjs~Matrix#_deleteColumn",
+    "src/math/matrix.js~matrix#_deletecolumn",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-_deleteColumn",
+    "src/math/Matrix.js~Matrix#_deleteColumn",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#_deleterow",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-_deleteRow",
-    "src/math/Matrix.mjs~Matrix#_deleteRow",
+    "src/math/matrix.js~matrix#_deleterow",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-_deleteRow",
+    "src/math/Matrix.js~Matrix#_deleteRow",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#_each",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-_each",
-    "src/math/Matrix.mjs~Matrix#_each",
+    "src/math/matrix.js~matrix#_each",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-_each",
+    "src/math/Matrix.js~Matrix#_each",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#_exchangecolumn",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-_exchangeColumn",
-    "src/math/Matrix.mjs~Matrix#_exchangeColumn",
+    "src/math/matrix.js~matrix#_exchangecolumn",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-_exchangeColumn",
+    "src/math/Matrix.js~Matrix#_exchangeColumn",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#_exchangerow",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-_exchangeRow",
-    "src/math/Matrix.mjs~Matrix#_exchangeRow",
+    "src/math/matrix.js~matrix#_exchangerow",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-_exchangeRow",
+    "src/math/Matrix.js~Matrix#_exchangeRow",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#_resize",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-_resize",
-    "src/math/Matrix.mjs~Matrix#_resize",
+    "src/math/matrix.js~matrix#_resize",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-_resize",
+    "src/math/Matrix.js~Matrix#_resize",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#_rot90",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-_rot90",
-    "src/math/Matrix.mjs~Matrix#_rot90",
+    "src/math/matrix.js~matrix#_rot90",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-_rot90",
+    "src/math/Matrix.js~Matrix#_rot90",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#abs",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-abs",
-    "src/math/Matrix.mjs~Matrix#abs",
+    "src/math/matrix.js~matrix#abs",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-abs",
+    "src/math/Matrix.js~Matrix#abs",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#add",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-add",
-    "src/math/Matrix.mjs~Matrix#add",
+    "src/math/matrix.js~matrix#add",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-add",
+    "src/math/Matrix.js~Matrix#add",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#arg",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-arg",
-    "src/math/Matrix.mjs~Matrix#arg",
+    "src/math/matrix.js~matrix#arg",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-arg",
+    "src/math/Matrix.js~Matrix#arg",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#atan",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-atan",
-    "src/math/Matrix.mjs~Matrix#atan",
+    "src/math/matrix.js~matrix#atan",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-atan",
+    "src/math/Matrix.js~Matrix#atan",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#atan2",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-atan2",
-    "src/math/Matrix.mjs~Matrix#atan2",
+    "src/math/matrix.js~matrix#atan2",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-atan2",
+    "src/math/Matrix.js~Matrix#atan2",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#beta",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-beta",
-    "src/math/Matrix.mjs~Matrix#beta",
+    "src/math/matrix.js~matrix#beta",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-beta",
+    "src/math/Matrix.js~Matrix#beta",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#betacdf",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-betacdf",
-    "src/math/Matrix.mjs~Matrix#betacdf",
+    "src/math/matrix.js~matrix#betacdf",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-betacdf",
+    "src/math/Matrix.js~Matrix#betacdf",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#betainc",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-betainc",
-    "src/math/Matrix.mjs~Matrix#betainc",
+    "src/math/matrix.js~matrix#betainc",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-betainc",
+    "src/math/Matrix.js~Matrix#betainc",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#betainv",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-betainv",
-    "src/math/Matrix.mjs~Matrix#betainv",
+    "src/math/matrix.js~matrix#betainv",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-betainv",
+    "src/math/Matrix.js~Matrix#betainv",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#betapdf",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-betapdf",
-    "src/math/Matrix.mjs~Matrix#betapdf",
+    "src/math/matrix.js~matrix#betapdf",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-betapdf",
+    "src/math/Matrix.js~Matrix#betapdf",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#ceil",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-ceil",
-    "src/math/Matrix.mjs~Matrix#ceil",
+    "src/math/matrix.js~matrix#ceil",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-ceil",
+    "src/math/Matrix.js~Matrix#ceil",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#chi2cdf",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-chi2cdf",
-    "src/math/Matrix.mjs~Matrix#chi2cdf",
+    "src/math/matrix.js~matrix#chi2cdf",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-chi2cdf",
+    "src/math/Matrix.js~Matrix#chi2cdf",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#chi2inv",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-chi2inv",
-    "src/math/Matrix.mjs~Matrix#chi2inv",
+    "src/math/matrix.js~matrix#chi2inv",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-chi2inv",
+    "src/math/Matrix.js~Matrix#chi2inv",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#chi2pdf",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-chi2pdf",
-    "src/math/Matrix.mjs~Matrix#chi2pdf",
+    "src/math/matrix.js~matrix#chi2pdf",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-chi2pdf",
+    "src/math/Matrix.js~Matrix#chi2pdf",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#circshift",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-circshift",
-    "src/math/Matrix.mjs~Matrix#circshift",
+    "src/math/matrix.js~matrix#circshift",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-circshift",
+    "src/math/Matrix.js~Matrix#circshift",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#clip",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-clip",
-    "src/math/Matrix.mjs~Matrix#clip",
+    "src/math/matrix.js~matrix#clip",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-clip",
+    "src/math/Matrix.js~Matrix#clip",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#clone",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-clone",
-    "src/math/Matrix.mjs~Matrix#clone",
+    "src/math/matrix.js~matrix#clone",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-clone",
+    "src/math/Matrix.js~Matrix#clone",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#clonematrixdoeachcalculation",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-cloneMatrixDoEachCalculation",
-    "src/math/Matrix.mjs~Matrix#cloneMatrixDoEachCalculation",
+    "src/math/matrix.js~matrix#clonematrixdoeachcalculation",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-cloneMatrixDoEachCalculation",
+    "src/math/Matrix.js~Matrix#cloneMatrixDoEachCalculation",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#column_length",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-member-column_length",
-    "src/math/Matrix.mjs~Matrix#column_length",
+    "src/math/matrix.js~matrix#column_length",
+    "class/src/math/Matrix.js~Matrix.html#instance-member-column_length",
+    "src/math/Matrix.js~Matrix#column_length",
     "member"
   ],
   [
-    "src/math/matrix.mjs~matrix#compareto",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-compareTo",
-    "src/math/Matrix.mjs~Matrix#compareTo",
+    "src/math/matrix.js~matrix#compareto",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-compareTo",
+    "src/math/Matrix.js~Matrix#compareTo",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#concatbottom",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-concatBottom",
-    "src/math/Matrix.mjs~Matrix#concatBottom",
+    "src/math/matrix.js~matrix#concatbottom",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-concatBottom",
+    "src/math/Matrix.js~Matrix#concatBottom",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#concatright",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-concatRight",
-    "src/math/Matrix.mjs~Matrix#concatRight",
+    "src/math/matrix.js~matrix#concatright",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-concatRight",
+    "src/math/Matrix.js~Matrix#concatRight",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#cond",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-cond",
-    "src/math/Matrix.mjs~Matrix#cond",
+    "src/math/matrix.js~matrix#cond",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-cond",
+    "src/math/Matrix.js~Matrix#cond",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#conj",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-conj",
-    "src/math/Matrix.mjs~Matrix#conj",
+    "src/math/matrix.js~matrix#conj",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-conj",
+    "src/math/Matrix.js~Matrix#conj",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#constructor",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-constructor-constructor",
-    "src/math/Matrix.mjs~Matrix#constructor",
+    "src/math/matrix.js~matrix#constructor",
+    "class/src/math/Matrix.js~Matrix.html#instance-constructor-constructor",
+    "src/math/Matrix.js~Matrix#constructor",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#conv",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-conv",
-    "src/math/Matrix.mjs~Matrix#conv",
+    "src/math/matrix.js~matrix#conv",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-conv",
+    "src/math/Matrix.js~Matrix#conv",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#corrcoef",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-corrcoef",
-    "src/math/Matrix.mjs~Matrix#corrcoef",
+    "src/math/matrix.js~matrix#corrcoef",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-corrcoef",
+    "src/math/Matrix.js~Matrix#corrcoef",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#cos",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-cos",
-    "src/math/Matrix.mjs~Matrix#cos",
+    "src/math/matrix.js~matrix#cos",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-cos",
+    "src/math/Matrix.js~Matrix#cos",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#cov",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-cov",
-    "src/math/Matrix.mjs~Matrix#cov",
+    "src/math/matrix.js~matrix#cov",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-cov",
+    "src/math/Matrix.js~Matrix#cov",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#ctranspose",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-ctranspose",
-    "src/math/Matrix.mjs~Matrix#ctranspose",
+    "src/math/matrix.js~matrix#ctranspose",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-ctranspose",
+    "src/math/Matrix.js~Matrix#ctranspose",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#dct",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-dct",
-    "src/math/Matrix.mjs~Matrix#dct",
+    "src/math/matrix.js~matrix#dct",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-dct",
+    "src/math/Matrix.js~Matrix#dct",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#dct2",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-dct2",
-    "src/math/Matrix.mjs~Matrix#dct2",
+    "src/math/matrix.js~matrix#dct2",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-dct2",
+    "src/math/Matrix.js~Matrix#dct2",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#deletecolumn",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-deleteColumn",
-    "src/math/Matrix.mjs~Matrix#deleteColumn",
+    "src/math/matrix.js~matrix#deletecolumn",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-deleteColumn",
+    "src/math/Matrix.js~Matrix#deleteColumn",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#deleterow",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-deleteRow",
-    "src/math/Matrix.mjs~Matrix#deleteRow",
+    "src/math/matrix.js~matrix#deleterow",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-deleteRow",
+    "src/math/Matrix.js~Matrix#deleteRow",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#det",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-det",
-    "src/math/Matrix.mjs~Matrix#det",
+    "src/math/matrix.js~matrix#det",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-det",
+    "src/math/Matrix.js~Matrix#det",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#diag",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-diag",
-    "src/math/Matrix.mjs~Matrix#diag",
+    "src/math/matrix.js~matrix#diag",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-diag",
+    "src/math/Matrix.js~Matrix#diag",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#div",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-div",
-    "src/math/Matrix.mjs~Matrix#div",
+    "src/math/matrix.js~matrix#div",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-div",
+    "src/math/Matrix.js~Matrix#div",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#dotdiv",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-dotdiv",
-    "src/math/Matrix.mjs~Matrix#dotdiv",
+    "src/math/matrix.js~matrix#dotdiv",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-dotdiv",
+    "src/math/Matrix.js~Matrix#dotdiv",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#dotinv",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-dotinv",
-    "src/math/Matrix.mjs~Matrix#dotinv",
+    "src/math/matrix.js~matrix#dotinv",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-dotinv",
+    "src/math/Matrix.js~Matrix#dotinv",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#dotmul",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-dotmul",
-    "src/math/Matrix.mjs~Matrix#dotmul",
+    "src/math/matrix.js~matrix#dotmul",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-dotmul",
+    "src/math/Matrix.js~Matrix#dotmul",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#dotpow",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-dotpow",
-    "src/math/Matrix.mjs~Matrix#dotpow",
+    "src/math/matrix.js~matrix#dotpow",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-dotpow",
+    "src/math/Matrix.js~Matrix#dotpow",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#doublevalue",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-get-doubleValue",
-    "src/math/Matrix.mjs~Matrix#doubleValue",
+    "src/math/matrix.js~matrix#doublevalue",
+    "class/src/math/Matrix.js~Matrix.html#instance-get-doubleValue",
+    "src/math/Matrix.js~Matrix#doubleValue",
     "member"
   ],
   [
-    "src/math/matrix.mjs~matrix#eachvector",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-eachVector",
-    "src/math/Matrix.mjs~Matrix#eachVector",
+    "src/math/matrix.js~matrix#eachvector",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-eachVector",
+    "src/math/Matrix.js~Matrix#eachVector",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#eachvectorauto",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-eachVectorAuto",
-    "src/math/Matrix.mjs~Matrix#eachVectorAuto",
+    "src/math/matrix.js~matrix#eachvectorauto",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-eachVectorAuto",
+    "src/math/Matrix.js~Matrix#eachVectorAuto",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#eachvectorboth",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-eachVectorBoth",
-    "src/math/Matrix.mjs~Matrix#eachVectorBoth",
+    "src/math/matrix.js~matrix#eachvectorboth",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-eachVectorBoth",
+    "src/math/Matrix.js~Matrix#eachVectorBoth",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#eachvectorcolumn",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-eachVectorColumn",
-    "src/math/Matrix.mjs~Matrix#eachVectorColumn",
+    "src/math/matrix.js~matrix#eachvectorcolumn",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-eachVectorColumn",
+    "src/math/Matrix.js~Matrix#eachVectorColumn",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#eachvectorrow",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-eachVectorRow",
-    "src/math/Matrix.mjs~Matrix#eachVectorRow",
+    "src/math/matrix.js~matrix#eachvectorrow",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-eachVectorRow",
+    "src/math/Matrix.js~Matrix#eachVectorRow",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#eig",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-eig",
-    "src/math/Matrix.mjs~Matrix#eig",
+    "src/math/matrix.js~matrix#eig",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-eig",
+    "src/math/Matrix.js~Matrix#eig",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#equals",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-equals",
-    "src/math/Matrix.mjs~Matrix#equals",
+    "src/math/matrix.js~matrix#equals",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-equals",
+    "src/math/Matrix.js~Matrix#equals",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#erf",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-erf",
-    "src/math/Matrix.mjs~Matrix#erf",
+    "src/math/matrix.js~matrix#erf",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-erf",
+    "src/math/Matrix.js~Matrix#erf",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#erfc",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-erfc",
-    "src/math/Matrix.mjs~Matrix#erfc",
+    "src/math/matrix.js~matrix#erfc",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-erfc",
+    "src/math/Matrix.js~Matrix#erfc",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#exchangecolumn",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-exchangeColumn",
-    "src/math/Matrix.mjs~Matrix#exchangeColumn",
+    "src/math/matrix.js~matrix#exchangecolumn",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-exchangeColumn",
+    "src/math/Matrix.js~Matrix#exchangeColumn",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#exchangerow",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-exchangeRow",
-    "src/math/Matrix.mjs~Matrix#exchangeRow",
+    "src/math/matrix.js~matrix#exchangerow",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-exchangeRow",
+    "src/math/Matrix.js~Matrix#exchangeRow",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#exp",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-exp",
-    "src/math/Matrix.mjs~Matrix#exp",
+    "src/math/matrix.js~matrix#exp",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-exp",
+    "src/math/Matrix.js~Matrix#exp",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#factorial",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-factorial",
-    "src/math/Matrix.mjs~Matrix#factorial",
+    "src/math/matrix.js~matrix#factorial",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-factorial",
+    "src/math/Matrix.js~Matrix#factorial",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#fcdf",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-fcdf",
-    "src/math/Matrix.mjs~Matrix#fcdf",
+    "src/math/matrix.js~matrix#fcdf",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-fcdf",
+    "src/math/Matrix.js~Matrix#fcdf",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#fft",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-fft",
-    "src/math/Matrix.mjs~Matrix#fft",
+    "src/math/matrix.js~matrix#fft",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-fft",
+    "src/math/Matrix.js~Matrix#fft",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#fft2",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-fft2",
-    "src/math/Matrix.mjs~Matrix#fft2",
+    "src/math/matrix.js~matrix#fft2",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-fft2",
+    "src/math/Matrix.js~Matrix#fft2",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#fftshift",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-fftshift",
-    "src/math/Matrix.mjs~Matrix#fftshift",
+    "src/math/matrix.js~matrix#fftshift",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-fftshift",
+    "src/math/Matrix.js~Matrix#fftshift",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#finv",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-finv",
-    "src/math/Matrix.mjs~Matrix#finv",
+    "src/math/matrix.js~matrix#finv",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-finv",
+    "src/math/Matrix.js~Matrix#finv",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#fix",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-fix",
-    "src/math/Matrix.mjs~Matrix#fix",
+    "src/math/matrix.js~matrix#fix",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-fix",
+    "src/math/Matrix.js~Matrix#fix",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#flip",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-flip",
-    "src/math/Matrix.mjs~Matrix#flip",
+    "src/math/matrix.js~matrix#flip",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-flip",
+    "src/math/Matrix.js~Matrix#flip",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#fliplr",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-fliplr",
-    "src/math/Matrix.mjs~Matrix#fliplr",
+    "src/math/matrix.js~matrix#fliplr",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-fliplr",
+    "src/math/Matrix.js~Matrix#fliplr",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#flipud",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-flipud",
-    "src/math/Matrix.mjs~Matrix#flipud",
+    "src/math/matrix.js~matrix#flipud",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-flipud",
+    "src/math/Matrix.js~Matrix#flipud",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#floor",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-floor",
-    "src/math/Matrix.mjs~Matrix#floor",
+    "src/math/matrix.js~matrix#floor",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-floor",
+    "src/math/Matrix.js~Matrix#floor",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#fpdf",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-fpdf",
-    "src/math/Matrix.mjs~Matrix#fpdf",
+    "src/math/matrix.js~matrix#fpdf",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-fpdf",
+    "src/math/Matrix.js~Matrix#fpdf",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#fract",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-fract",
-    "src/math/Matrix.mjs~Matrix#fract",
+    "src/math/matrix.js~matrix#fract",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-fract",
+    "src/math/Matrix.js~Matrix#fract",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#gamcdf",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-gamcdf",
-    "src/math/Matrix.mjs~Matrix#gamcdf",
+    "src/math/matrix.js~matrix#gamcdf",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-gamcdf",
+    "src/math/Matrix.js~Matrix#gamcdf",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#gaminv",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-gaminv",
-    "src/math/Matrix.mjs~Matrix#gaminv",
+    "src/math/matrix.js~matrix#gaminv",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-gaminv",
+    "src/math/Matrix.js~Matrix#gaminv",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#gamma",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-gamma",
-    "src/math/Matrix.mjs~Matrix#gamma",
+    "src/math/matrix.js~matrix#gamma",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-gamma",
+    "src/math/Matrix.js~Matrix#gamma",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#gammainc",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-gammainc",
-    "src/math/Matrix.mjs~Matrix#gammainc",
+    "src/math/matrix.js~matrix#gammainc",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-gammainc",
+    "src/math/Matrix.js~Matrix#gammainc",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#gammaln",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-gammaln",
-    "src/math/Matrix.mjs~Matrix#gammaln",
+    "src/math/matrix.js~matrix#gammaln",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-gammaln",
+    "src/math/Matrix.js~Matrix#gammaln",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#gampdf",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-gampdf",
-    "src/math/Matrix.mjs~Matrix#gampdf",
+    "src/math/matrix.js~matrix#gampdf",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-gampdf",
+    "src/math/Matrix.js~Matrix#gampdf",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#geomean",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-geomean",
-    "src/math/Matrix.mjs~Matrix#geomean",
+    "src/math/matrix.js~matrix#geomean",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-geomean",
+    "src/math/Matrix.js~Matrix#geomean",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#getcomplex",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-getComplex",
-    "src/math/Matrix.mjs~Matrix#getComplex",
+    "src/math/matrix.js~matrix#getcomplex",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-getComplex",
+    "src/math/Matrix.js~Matrix#getComplex",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#getcomplexmatrixarray",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-getComplexMatrixArray",
-    "src/math/Matrix.mjs~Matrix#getComplexMatrixArray",
+    "src/math/matrix.js~matrix#getcomplexmatrixarray",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-getComplexMatrixArray",
+    "src/math/Matrix.js~Matrix#getComplexMatrixArray",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#getmatrix",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-getMatrix",
-    "src/math/Matrix.mjs~Matrix#getMatrix",
+    "src/math/matrix.js~matrix#getmatrix",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-getMatrix",
+    "src/math/Matrix.js~Matrix#getMatrix",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#getnumbermatrixarray",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-getNumberMatrixArray",
-    "src/math/Matrix.mjs~Matrix#getNumberMatrixArray",
+    "src/math/matrix.js~matrix#getnumbermatrixarray",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-getNumberMatrixArray",
+    "src/math/Matrix.js~Matrix#getNumberMatrixArray",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#idct",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-idct",
-    "src/math/Matrix.mjs~Matrix#idct",
+    "src/math/matrix.js~matrix#idct",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-idct",
+    "src/math/Matrix.js~Matrix#idct",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#idct2",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-idct2",
-    "src/math/Matrix.mjs~Matrix#idct2",
+    "src/math/matrix.js~matrix#idct2",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-idct2",
+    "src/math/Matrix.js~Matrix#idct2",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#ifft",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-ifft",
-    "src/math/Matrix.mjs~Matrix#ifft",
+    "src/math/matrix.js~matrix#ifft",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-ifft",
+    "src/math/Matrix.js~Matrix#ifft",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#ifft2",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-ifft2",
-    "src/math/Matrix.mjs~Matrix#ifft2",
+    "src/math/matrix.js~matrix#ifft2",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-ifft2",
+    "src/math/Matrix.js~Matrix#ifft2",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#imag",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-imag",
-    "src/math/Matrix.mjs~Matrix#imag",
+    "src/math/matrix.js~matrix#imag",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-imag",
+    "src/math/Matrix.js~Matrix#imag",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#indexsort",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-indexsort",
-    "src/math/Matrix.mjs~Matrix#indexsort",
+    "src/math/matrix.js~matrix#indexsort",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-indexsort",
+    "src/math/Matrix.js~Matrix#indexsort",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#inner",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-inner",
-    "src/math/Matrix.mjs~Matrix#inner",
+    "src/math/matrix.js~matrix#inner",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-inner",
+    "src/math/Matrix.js~Matrix#inner",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#intvalue",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-get-intValue",
-    "src/math/Matrix.mjs~Matrix#intValue",
+    "src/math/matrix.js~matrix#intvalue",
+    "class/src/math/Matrix.js~Matrix.html#instance-get-intValue",
+    "src/math/Matrix.js~Matrix#intValue",
     "member"
   ],
   [
-    "src/math/matrix.mjs~matrix#inv",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-inv",
-    "src/math/Matrix.mjs~Matrix#inv",
+    "src/math/matrix.js~matrix#inv",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-inv",
+    "src/math/Matrix.js~Matrix#inv",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#iscolumn",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isColumn",
-    "src/math/Matrix.mjs~Matrix#isColumn",
+    "src/math/matrix.js~matrix#iscolumn",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isColumn",
+    "src/math/Matrix.js~Matrix#isColumn",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#iscomplex",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isComplex",
-    "src/math/Matrix.mjs~Matrix#isComplex",
+    "src/math/matrix.js~matrix#iscomplex",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isComplex",
+    "src/math/Matrix.js~Matrix#isComplex",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#isdiagonal",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isDiagonal",
-    "src/math/Matrix.mjs~Matrix#isDiagonal",
+    "src/math/matrix.js~matrix#isdiagonal",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isDiagonal",
+    "src/math/Matrix.js~Matrix#isDiagonal",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#ishermitian",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isHermitian",
-    "src/math/Matrix.mjs~Matrix#isHermitian",
+    "src/math/matrix.js~matrix#ishermitian",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isHermitian",
+    "src/math/Matrix.js~Matrix#isHermitian",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#isidentity",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isIdentity",
-    "src/math/Matrix.mjs~Matrix#isIdentity",
+    "src/math/matrix.js~matrix#isidentity",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isIdentity",
+    "src/math/Matrix.js~Matrix#isIdentity",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#ismatrix",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isMatrix",
-    "src/math/Matrix.mjs~Matrix#isMatrix",
+    "src/math/matrix.js~matrix#ismatrix",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isMatrix",
+    "src/math/Matrix.js~Matrix#isMatrix",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#isorthogonal",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isOrthogonal",
-    "src/math/Matrix.mjs~Matrix#isOrthogonal",
+    "src/math/matrix.js~matrix#isorthogonal",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isOrthogonal",
+    "src/math/Matrix.js~Matrix#isOrthogonal",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#ispermutation",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isPermutation",
-    "src/math/Matrix.mjs~Matrix#isPermutation",
+    "src/math/matrix.js~matrix#ispermutation",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isPermutation",
+    "src/math/Matrix.js~Matrix#isPermutation",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#isreal",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isReal",
-    "src/math/Matrix.mjs~Matrix#isReal",
+    "src/math/matrix.js~matrix#isreal",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isReal",
+    "src/math/Matrix.js~Matrix#isReal",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#isregular",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isRegular",
-    "src/math/Matrix.mjs~Matrix#isRegular",
+    "src/math/matrix.js~matrix#isregular",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isRegular",
+    "src/math/Matrix.js~Matrix#isRegular",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#isrow",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isRow",
-    "src/math/Matrix.mjs~Matrix#isRow",
+    "src/math/matrix.js~matrix#isrow",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isRow",
+    "src/math/Matrix.js~Matrix#isRow",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#isscalar",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isScalar",
-    "src/math/Matrix.mjs~Matrix#isScalar",
+    "src/math/matrix.js~matrix#isscalar",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isScalar",
+    "src/math/Matrix.js~Matrix#isScalar",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#issquare",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isSquare",
-    "src/math/Matrix.mjs~Matrix#isSquare",
+    "src/math/matrix.js~matrix#issquare",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isSquare",
+    "src/math/Matrix.js~Matrix#isSquare",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#issymmetric",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isSymmetric",
-    "src/math/Matrix.mjs~Matrix#isSymmetric",
+    "src/math/matrix.js~matrix#issymmetric",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isSymmetric",
+    "src/math/Matrix.js~Matrix#isSymmetric",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#istrianglelower",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isTriangleLower",
-    "src/math/Matrix.mjs~Matrix#isTriangleLower",
+    "src/math/matrix.js~matrix#istrianglelower",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isTriangleLower",
+    "src/math/Matrix.js~Matrix#isTriangleLower",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#istriangleupper",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isTriangleUpper",
-    "src/math/Matrix.mjs~Matrix#isTriangleUpper",
+    "src/math/matrix.js~matrix#istriangleupper",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isTriangleUpper",
+    "src/math/Matrix.js~Matrix#isTriangleUpper",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#istridiagonal",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isTridiagonal",
-    "src/math/Matrix.mjs~Matrix#isTridiagonal",
+    "src/math/matrix.js~matrix#istridiagonal",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isTridiagonal",
+    "src/math/Matrix.js~Matrix#isTridiagonal",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#isunitary",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isUnitary",
-    "src/math/Matrix.mjs~Matrix#isUnitary",
+    "src/math/matrix.js~matrix#isunitary",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isUnitary",
+    "src/math/Matrix.js~Matrix#isUnitary",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#isvector",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isVector",
-    "src/math/Matrix.mjs~Matrix#isVector",
+    "src/math/matrix.js~matrix#isvector",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isVector",
+    "src/math/Matrix.js~Matrix#isVector",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#iszeros",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-isZeros",
-    "src/math/Matrix.mjs~Matrix#isZeros",
+    "src/math/matrix.js~matrix#iszeros",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-isZeros",
+    "src/math/Matrix.js~Matrix#isZeros",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#length",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-get-length",
-    "src/math/Matrix.mjs~Matrix#length",
+    "src/math/matrix.js~matrix#length",
+    "class/src/math/Matrix.js~Matrix.html#instance-get-length",
+    "src/math/Matrix.js~Matrix#length",
     "member"
   ],
   [
-    "src/math/matrix.mjs~matrix#linsolve",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-linsolve",
-    "src/math/Matrix.mjs~Matrix#linsolve",
+    "src/math/matrix.js~matrix#linsolve",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-linsolve",
+    "src/math/Matrix.js~Matrix#linsolve",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#log",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-log",
-    "src/math/Matrix.mjs~Matrix#log",
+    "src/math/matrix.js~matrix#log",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-log",
+    "src/math/Matrix.js~Matrix#log",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#lu",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-lu",
-    "src/math/Matrix.mjs~Matrix#lu",
+    "src/math/matrix.js~matrix#lu",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-lu",
+    "src/math/Matrix.js~Matrix#lu",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#lup",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-lup",
-    "src/math/Matrix.mjs~Matrix#lup",
+    "src/math/matrix.js~matrix#lup",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-lup",
+    "src/math/Matrix.js~Matrix#lup",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#mad",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-mad",
-    "src/math/Matrix.mjs~Matrix#mad",
+    "src/math/matrix.js~matrix#mad",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-mad",
+    "src/math/Matrix.js~Matrix#mad",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#matrix_array",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-member-matrix_array",
-    "src/math/Matrix.mjs~Matrix#matrix_array",
+    "src/math/matrix.js~matrix#matrix_array",
+    "class/src/math/Matrix.js~Matrix.html#instance-member-matrix_array",
+    "src/math/Matrix.js~Matrix#matrix_array",
     "member"
   ],
   [
-    "src/math/matrix.mjs~matrix#max",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-max",
-    "src/math/Matrix.mjs~Matrix#max",
+    "src/math/matrix.js~matrix#max",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-max",
+    "src/math/Matrix.js~Matrix#max",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#mean",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-mean",
-    "src/math/Matrix.mjs~Matrix#mean",
+    "src/math/matrix.js~matrix#mean",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-mean",
+    "src/math/Matrix.js~Matrix#mean",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#median",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-median",
-    "src/math/Matrix.mjs~Matrix#median",
+    "src/math/matrix.js~matrix#median",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-median",
+    "src/math/Matrix.js~Matrix#median",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#min",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-min",
-    "src/math/Matrix.mjs~Matrix#min",
+    "src/math/matrix.js~matrix#min",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-min",
+    "src/math/Matrix.js~Matrix#min",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#mode",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-mode",
-    "src/math/Matrix.mjs~Matrix#mode",
+    "src/math/matrix.js~matrix#mode",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-mode",
+    "src/math/Matrix.js~Matrix#mode",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#moment",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-moment",
-    "src/math/Matrix.mjs~Matrix#moment",
+    "src/math/matrix.js~matrix#moment",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-moment",
+    "src/math/Matrix.js~Matrix#moment",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#mul",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-mul",
-    "src/math/Matrix.mjs~Matrix#mul",
+    "src/math/matrix.js~matrix#mul",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-mul",
+    "src/math/Matrix.js~Matrix#mul",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#nchoosek",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-nchoosek",
-    "src/math/Matrix.mjs~Matrix#nchoosek",
+    "src/math/matrix.js~matrix#nchoosek",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-nchoosek",
+    "src/math/Matrix.js~Matrix#nchoosek",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#ndiv",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-ndiv",
-    "src/math/Matrix.mjs~Matrix#ndiv",
+    "src/math/matrix.js~matrix#ndiv",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-ndiv",
+    "src/math/Matrix.js~Matrix#ndiv",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#negate",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-negate",
-    "src/math/Matrix.mjs~Matrix#negate",
+    "src/math/matrix.js~matrix#negate",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-negate",
+    "src/math/Matrix.js~Matrix#negate",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#ninv",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-ninv",
-    "src/math/Matrix.mjs~Matrix#ninv",
+    "src/math/matrix.js~matrix#ninv",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-ninv",
+    "src/math/Matrix.js~Matrix#ninv",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#nmul",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-nmul",
-    "src/math/Matrix.mjs~Matrix#nmul",
+    "src/math/matrix.js~matrix#nmul",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-nmul",
+    "src/math/Matrix.js~Matrix#nmul",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#norm",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-norm",
-    "src/math/Matrix.mjs~Matrix#norm",
+    "src/math/matrix.js~matrix#norm",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-norm",
+    "src/math/Matrix.js~Matrix#norm",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#norm1",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-get-norm1",
-    "src/math/Matrix.mjs~Matrix#norm1",
+    "src/math/matrix.js~matrix#norm1",
+    "class/src/math/Matrix.js~Matrix.html#instance-get-norm1",
+    "src/math/Matrix.js~Matrix#norm1",
     "member"
   ],
   [
-    "src/math/matrix.mjs~matrix#norm2",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-get-norm2",
-    "src/math/Matrix.mjs~Matrix#norm2",
+    "src/math/matrix.js~matrix#norm2",
+    "class/src/math/Matrix.js~Matrix.html#instance-get-norm2",
+    "src/math/Matrix.js~Matrix#norm2",
     "member"
   ],
   [
-    "src/math/matrix.mjs~matrix#normalize",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-normalize",
-    "src/math/Matrix.mjs~Matrix#normalize",
+    "src/math/matrix.js~matrix#normalize",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-normalize",
+    "src/math/Matrix.js~Matrix#normalize",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#normcdf",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-normcdf",
-    "src/math/Matrix.mjs~Matrix#normcdf",
+    "src/math/matrix.js~matrix#normcdf",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-normcdf",
+    "src/math/Matrix.js~Matrix#normcdf",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#norminv",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-norminv",
-    "src/math/Matrix.mjs~Matrix#norminv",
+    "src/math/matrix.js~matrix#norminv",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-norminv",
+    "src/math/Matrix.js~Matrix#norminv",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#normpdf",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-normpdf",
-    "src/math/Matrix.mjs~Matrix#normpdf",
+    "src/math/matrix.js~matrix#normpdf",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-normpdf",
+    "src/math/Matrix.js~Matrix#normpdf",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#npow",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-npow",
-    "src/math/Matrix.mjs~Matrix#npow",
+    "src/math/matrix.js~matrix#npow",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-npow",
+    "src/math/Matrix.js~Matrix#npow",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#pinv",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-pinv",
-    "src/math/Matrix.mjs~Matrix#pinv",
+    "src/math/matrix.js~matrix#pinv",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-pinv",
+    "src/math/Matrix.js~Matrix#pinv",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#pow",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-pow",
-    "src/math/Matrix.mjs~Matrix#pow",
+    "src/math/matrix.js~matrix#pow",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-pow",
+    "src/math/Matrix.js~Matrix#pow",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#powerfft",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-powerfft",
-    "src/math/Matrix.mjs~Matrix#powerfft",
+    "src/math/matrix.js~matrix#powerfft",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-powerfft",
+    "src/math/Matrix.js~Matrix#powerfft",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#prod",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-prod",
-    "src/math/Matrix.mjs~Matrix#prod",
+    "src/math/matrix.js~matrix#prod",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-prod",
+    "src/math/Matrix.js~Matrix#prod",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#qr",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-qr",
-    "src/math/Matrix.mjs~Matrix#qr",
+    "src/math/matrix.js~matrix#qr",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-qr",
+    "src/math/Matrix.js~Matrix#qr",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#rank",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-rank",
-    "src/math/Matrix.mjs~Matrix#rank",
+    "src/math/matrix.js~matrix#rank",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-rank",
+    "src/math/Matrix.js~Matrix#rank",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#rcond",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-rcond",
-    "src/math/Matrix.mjs~Matrix#rcond",
+    "src/math/matrix.js~matrix#rcond",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-rcond",
+    "src/math/Matrix.js~Matrix#rcond",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#real",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-real",
-    "src/math/Matrix.mjs~Matrix#real",
+    "src/math/matrix.js~matrix#real",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-real",
+    "src/math/Matrix.js~Matrix#real",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#reshape",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-reshape",
-    "src/math/Matrix.mjs~Matrix#reshape",
+    "src/math/matrix.js~matrix#reshape",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-reshape",
+    "src/math/Matrix.js~Matrix#reshape",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#resize",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-resize",
-    "src/math/Matrix.mjs~Matrix#resize",
+    "src/math/matrix.js~matrix#resize",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-resize",
+    "src/math/Matrix.js~Matrix#resize",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#roll",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-roll",
-    "src/math/Matrix.mjs~Matrix#roll",
+    "src/math/matrix.js~matrix#roll",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-roll",
+    "src/math/Matrix.js~Matrix#roll",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#rot90",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-rot90",
-    "src/math/Matrix.mjs~Matrix#rot90",
+    "src/math/matrix.js~matrix#rot90",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-rot90",
+    "src/math/Matrix.js~Matrix#rot90",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#round",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-round",
-    "src/math/Matrix.mjs~Matrix#round",
+    "src/math/matrix.js~matrix#round",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-round",
+    "src/math/Matrix.js~Matrix#round",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#row_length",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-member-row_length",
-    "src/math/Matrix.mjs~Matrix#row_length",
+    "src/math/matrix.js~matrix#row_length",
+    "class/src/math/Matrix.js~Matrix.html#instance-member-row_length",
+    "src/math/Matrix.js~Matrix#row_length",
     "member"
   ],
   [
-    "src/math/matrix.mjs~matrix#scalar",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-get-scalar",
-    "src/math/Matrix.mjs~Matrix#scalar",
+    "src/math/matrix.js~matrix#scalar",
+    "class/src/math/Matrix.js~Matrix.html#instance-get-scalar",
+    "src/math/Matrix.js~Matrix#scalar",
     "member"
   ],
   [
-    "src/math/matrix.mjs~matrix#setmatrix",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-setMatrix",
-    "src/math/Matrix.mjs~Matrix#setMatrix",
+    "src/math/matrix.js~matrix#setmatrix",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-setMatrix",
+    "src/math/Matrix.js~Matrix#setMatrix",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#sign",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-sign",
-    "src/math/Matrix.mjs~Matrix#sign",
+    "src/math/matrix.js~matrix#sign",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-sign",
+    "src/math/Matrix.js~Matrix#sign",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#sin",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-sin",
-    "src/math/Matrix.mjs~Matrix#sin",
+    "src/math/matrix.js~matrix#sin",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-sin",
+    "src/math/Matrix.js~Matrix#sin",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#sinc",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-sinc",
-    "src/math/Matrix.mjs~Matrix#sinc",
+    "src/math/matrix.js~matrix#sinc",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-sinc",
+    "src/math/Matrix.js~Matrix#sinc",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#size",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-size",
-    "src/math/Matrix.mjs~Matrix#size",
+    "src/math/matrix.js~matrix#size",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-size",
+    "src/math/Matrix.js~Matrix#size",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#skewness",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-skewness",
-    "src/math/Matrix.mjs~Matrix#skewness",
+    "src/math/matrix.js~matrix#skewness",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-skewness",
+    "src/math/Matrix.js~Matrix#skewness",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#sort",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-sort",
-    "src/math/Matrix.mjs~Matrix#sort",
+    "src/math/matrix.js~matrix#sort",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-sort",
+    "src/math/Matrix.js~Matrix#sort",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#sqrt",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-sqrt",
-    "src/math/Matrix.mjs~Matrix#sqrt",
+    "src/math/matrix.js~matrix#sqrt",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-sqrt",
+    "src/math/Matrix.js~Matrix#sqrt",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#std",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-std",
-    "src/math/Matrix.mjs~Matrix#std",
+    "src/math/matrix.js~matrix#std",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-std",
+    "src/math/Matrix.js~Matrix#std",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#string_cash",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-member-string_cash",
-    "src/math/Matrix.mjs~Matrix#string_cash",
+    "src/math/matrix.js~matrix#string_cash",
+    "class/src/math/Matrix.js~Matrix.html#instance-member-string_cash",
+    "src/math/Matrix.js~Matrix#string_cash",
     "member"
   ],
   [
-    "src/math/matrix.mjs~matrix#sub",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-sub",
-    "src/math/Matrix.mjs~Matrix#sub",
+    "src/math/matrix.js~matrix#sub",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-sub",
+    "src/math/Matrix.js~Matrix#sub",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#sum",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-sum",
-    "src/math/Matrix.mjs~Matrix#sum",
+    "src/math/matrix.js~matrix#sum",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-sum",
+    "src/math/Matrix.js~Matrix#sum",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#svd",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-svd",
-    "src/math/Matrix.mjs~Matrix#svd",
+    "src/math/matrix.js~matrix#svd",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-svd",
+    "src/math/Matrix.js~Matrix#svd",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#tan",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-tan",
-    "src/math/Matrix.mjs~Matrix#tan",
+    "src/math/matrix.js~matrix#tan",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-tan",
+    "src/math/Matrix.js~Matrix#tan",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#tcdf",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-tcdf",
-    "src/math/Matrix.mjs~Matrix#tcdf",
+    "src/math/matrix.js~matrix#tcdf",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-tcdf",
+    "src/math/Matrix.js~Matrix#tcdf",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#tdist",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-tdist",
-    "src/math/Matrix.mjs~Matrix#tdist",
+    "src/math/matrix.js~matrix#tdist",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-tdist",
+    "src/math/Matrix.js~Matrix#tdist",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#testcomplex",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-testComplex",
-    "src/math/Matrix.mjs~Matrix#testComplex",
+    "src/math/matrix.js~matrix#testcomplex",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-testComplex",
+    "src/math/Matrix.js~Matrix#testComplex",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#testcomplexinteger",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-testComplexInteger",
-    "src/math/Matrix.mjs~Matrix#testComplexInteger",
+    "src/math/matrix.js~matrix#testcomplexinteger",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-testComplexInteger",
+    "src/math/Matrix.js~Matrix#testComplexInteger",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#testfinite",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-testFinite",
-    "src/math/Matrix.mjs~Matrix#testFinite",
+    "src/math/matrix.js~matrix#testfinite",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-testFinite",
+    "src/math/Matrix.js~Matrix#testFinite",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#testinfinite",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-testInfinite",
-    "src/math/Matrix.mjs~Matrix#testInfinite",
+    "src/math/matrix.js~matrix#testinfinite",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-testInfinite",
+    "src/math/Matrix.js~Matrix#testInfinite",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#testinteger",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-testInteger",
-    "src/math/Matrix.mjs~Matrix#testInteger",
+    "src/math/matrix.js~matrix#testinteger",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-testInteger",
+    "src/math/Matrix.js~Matrix#testInteger",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#testnan",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-testNaN",
-    "src/math/Matrix.mjs~Matrix#testNaN",
+    "src/math/matrix.js~matrix#testnan",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-testNaN",
+    "src/math/Matrix.js~Matrix#testNaN",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#testnegative",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-testNegative",
-    "src/math/Matrix.mjs~Matrix#testNegative",
+    "src/math/matrix.js~matrix#testnegative",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-testNegative",
+    "src/math/Matrix.js~Matrix#testNegative",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#testnotnegative",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-testNotNegative",
-    "src/math/Matrix.mjs~Matrix#testNotNegative",
+    "src/math/matrix.js~matrix#testnotnegative",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-testNotNegative",
+    "src/math/Matrix.js~Matrix#testNotNegative",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#testone",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-testOne",
-    "src/math/Matrix.mjs~Matrix#testOne",
+    "src/math/matrix.js~matrix#testone",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-testOne",
+    "src/math/Matrix.js~Matrix#testOne",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#testpositive",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-testPositive",
-    "src/math/Matrix.mjs~Matrix#testPositive",
+    "src/math/matrix.js~matrix#testpositive",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-testPositive",
+    "src/math/Matrix.js~Matrix#testPositive",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#testreal",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-testReal",
-    "src/math/Matrix.mjs~Matrix#testReal",
+    "src/math/matrix.js~matrix#testreal",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-testReal",
+    "src/math/Matrix.js~Matrix#testReal",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#testzero",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-testZero",
-    "src/math/Matrix.mjs~Matrix#testZero",
+    "src/math/matrix.js~matrix#testzero",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-testZero",
+    "src/math/Matrix.js~Matrix#testZero",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#tinv",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-tinv",
-    "src/math/Matrix.mjs~Matrix#tinv",
+    "src/math/matrix.js~matrix#tinv",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-tinv",
+    "src/math/Matrix.js~Matrix#tinv",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#tinv2",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-tinv2",
-    "src/math/Matrix.mjs~Matrix#tinv2",
+    "src/math/matrix.js~matrix#tinv2",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-tinv2",
+    "src/math/Matrix.js~Matrix#tinv2",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#toonelinestring",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-toOneLineString",
-    "src/math/Matrix.mjs~Matrix#toOneLineString",
+    "src/math/matrix.js~matrix#toonelinestring",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-toOneLineString",
+    "src/math/Matrix.js~Matrix#toOneLineString",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#tostring",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-toString",
-    "src/math/Matrix.mjs~Matrix#toString",
+    "src/math/matrix.js~matrix#tostring",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-toString",
+    "src/math/Matrix.js~Matrix#toString",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#tpdf",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-tpdf",
-    "src/math/Matrix.mjs~Matrix#tpdf",
+    "src/math/matrix.js~matrix#tpdf",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-tpdf",
+    "src/math/Matrix.js~Matrix#tpdf",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#trace",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-trace",
-    "src/math/Matrix.mjs~Matrix#trace",
+    "src/math/matrix.js~matrix#trace",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-trace",
+    "src/math/Matrix.js~Matrix#trace",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#transpose",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-transpose",
-    "src/math/Matrix.mjs~Matrix#transpose",
+    "src/math/matrix.js~matrix#transpose",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-transpose",
+    "src/math/Matrix.js~Matrix#transpose",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#tridiagonalize",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-tridiagonalize",
-    "src/math/Matrix.mjs~Matrix#tridiagonalize",
+    "src/math/matrix.js~matrix#tridiagonalize",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-tridiagonalize",
+    "src/math/Matrix.js~Matrix#tridiagonalize",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#var",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-var",
-    "src/math/Matrix.mjs~Matrix#var",
+    "src/math/matrix.js~matrix#var",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-var",
+    "src/math/Matrix.js~Matrix#var",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix#xcorr",
-    "class/src/math/Matrix.mjs~Matrix.html#instance-method-xcorr",
-    "src/math/Matrix.mjs~Matrix#xcorr",
+    "src/math/matrix.js~matrix#xcorr",
+    "class/src/math/Matrix.js~Matrix.html#instance-method-xcorr",
+    "src/math/Matrix.js~Matrix#xcorr",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix._tocomplex",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-_toComplex",
-    "src/math/Matrix.mjs~Matrix._toComplex",
+    "src/math/matrix.js~matrix._tocomplex",
+    "class/src/math/Matrix.js~Matrix.html#static-method-_toComplex",
+    "src/math/Matrix.js~Matrix._toComplex",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix._todouble",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-_toDouble",
-    "src/math/Matrix.mjs~Matrix._toDouble",
+    "src/math/matrix.js~matrix._todouble",
+    "class/src/math/Matrix.js~Matrix.html#static-method-_toDouble",
+    "src/math/Matrix.js~Matrix._toDouble",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix._tointeger",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-_toInteger",
-    "src/math/Matrix.mjs~Matrix._toInteger",
+    "src/math/matrix.js~matrix._tointeger",
+    "class/src/math/Matrix.js~Matrix.html#static-method-_toInteger",
+    "src/math/Matrix.js~Matrix._toInteger",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix._tomatrix",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-_toMatrix",
-    "src/math/Matrix.mjs~Matrix._toMatrix",
+    "src/math/matrix.js~matrix._tomatrix",
+    "class/src/math/Matrix.js~Matrix.html#static-method-_toMatrix",
+    "src/math/Matrix.js~Matrix._toMatrix",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix.arange",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-arange",
-    "src/math/Matrix.mjs~Matrix.arange",
+    "src/math/matrix.js~matrix.arange",
+    "class/src/math/Matrix.js~Matrix.html#static-method-arange",
+    "src/math/Matrix.js~Matrix.arange",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix.create",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-create",
-    "src/math/Matrix.mjs~Matrix.create",
+    "src/math/matrix.js~matrix.create",
+    "class/src/math/Matrix.js~Matrix.html#static-method-create",
+    "src/math/Matrix.js~Matrix.create",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix.creatematrixdoeachcalculation",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-createMatrixDoEachCalculation",
-    "src/math/Matrix.mjs~Matrix.createMatrixDoEachCalculation",
+    "src/math/matrix.js~matrix.creatematrixdoeachcalculation",
+    "class/src/math/Matrix.js~Matrix.html#static-method-createMatrixDoEachCalculation",
+    "src/math/Matrix.js~Matrix.createMatrixDoEachCalculation",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix.eye",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-eye",
-    "src/math/Matrix.mjs~Matrix.eye",
+    "src/math/matrix.js~matrix.eye",
+    "class/src/math/Matrix.js~Matrix.html#static-method-eye",
+    "src/math/Matrix.js~Matrix.eye",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix.hamming",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-hamming",
-    "src/math/Matrix.mjs~Matrix.hamming",
+    "src/math/matrix.js~matrix.hamming",
+    "class/src/math/Matrix.js~Matrix.html#static-method-hamming",
+    "src/math/Matrix.js~Matrix.hamming",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix.hann",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-hann",
-    "src/math/Matrix.mjs~Matrix.hann",
+    "src/math/matrix.js~matrix.hann",
+    "class/src/math/Matrix.js~Matrix.html#static-method-hann",
+    "src/math/Matrix.js~Matrix.hann",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix.memset",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-memset",
-    "src/math/Matrix.mjs~Matrix.memset",
+    "src/math/matrix.js~matrix.memset",
+    "class/src/math/Matrix.js~Matrix.html#static-method-memset",
+    "src/math/Matrix.js~Matrix.memset",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix.ones",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-ones",
-    "src/math/Matrix.mjs~Matrix.ones",
+    "src/math/matrix.js~matrix.ones",
+    "class/src/math/Matrix.js~Matrix.html#static-method-ones",
+    "src/math/Matrix.js~Matrix.ones",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix.rand",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-rand",
-    "src/math/Matrix.mjs~Matrix.rand",
+    "src/math/matrix.js~matrix.rand",
+    "class/src/math/Matrix.js~Matrix.html#static-method-rand",
+    "src/math/Matrix.js~Matrix.rand",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix.randn",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-randn",
-    "src/math/Matrix.mjs~Matrix.randn",
+    "src/math/matrix.js~matrix.randn",
+    "class/src/math/Matrix.js~Matrix.html#static-method-randn",
+    "src/math/Matrix.js~Matrix.randn",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix.valueof",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-valueOf",
-    "src/math/Matrix.mjs~Matrix.valueOf",
+    "src/math/matrix.js~matrix.valueof",
+    "class/src/math/Matrix.js~Matrix.html#static-method-valueOf",
+    "src/math/Matrix.js~Matrix.valueOf",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix.window",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-window",
-    "src/math/Matrix.mjs~Matrix.window",
+    "src/math/matrix.js~matrix.window",
+    "class/src/math/Matrix.js~Matrix.html#static-method-window",
+    "src/math/Matrix.js~Matrix.window",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrix.zeros",
-    "class/src/math/Matrix.mjs~Matrix.html#static-method-zeros",
-    "src/math/Matrix.mjs~Matrix.zeros",
+    "src/math/matrix.js~matrix.zeros",
+    "class/src/math/Matrix.js~Matrix.html#static-method-zeros",
+    "src/math/Matrix.js~Matrix.zeros",
     "method"
   ],
   [
-    "src/math/matrix.mjs~matrixsettings",
+    "src/math/matrix.js~matrixsettings",
     "typedef/index.html#static-typedef-MatrixSettings",
-    "src/math/Matrix.mjs~MatrixSettings",
+    "src/math/Matrix.js~MatrixSettings",
     "typedef"
   ],
   [
-    "src/math/context/mathcontext.mjs",
-    "file/src/math/context/MathContext.mjs.html",
-    "src/math/context/MathContext.mjs",
+    "src/math/context/mathcontext.js",
+    "file/src/math/context/MathContext.js.html",
+    "src/math/context/MathContext.js",
     "file"
   ],
   [
-    "src/math/context/mathcontext.mjs~mathcontext#constructor",
-    "class/src/math/context/MathContext.mjs~MathContext.html#instance-constructor-constructor",
-    "src/math/context/MathContext.mjs~MathContext#constructor",
+    "src/math/context/mathcontext.js~mathcontext#constructor",
+    "class/src/math/context/MathContext.js~MathContext.html#instance-constructor-constructor",
+    "src/math/context/MathContext.js~MathContext#constructor",
     "method"
   ],
   [
-    "src/math/context/mathcontext.mjs~mathcontext#equals",
-    "class/src/math/context/MathContext.mjs~MathContext.html#instance-method-equals",
-    "src/math/context/MathContext.mjs~MathContext#equals",
+    "src/math/context/mathcontext.js~mathcontext#equals",
+    "class/src/math/context/MathContext.js~MathContext.html#instance-method-equals",
+    "src/math/context/MathContext.js~MathContext#equals",
     "method"
   ],
   [
-    "src/math/context/mathcontext.mjs~mathcontext#getprecision",
-    "class/src/math/context/MathContext.mjs~MathContext.html#instance-method-getPrecision",
-    "src/math/context/MathContext.mjs~MathContext#getPrecision",
+    "src/math/context/mathcontext.js~mathcontext#getprecision",
+    "class/src/math/context/MathContext.js~MathContext.html#instance-method-getPrecision",
+    "src/math/context/MathContext.js~MathContext#getPrecision",
     "method"
   ],
   [
-    "src/math/context/mathcontext.mjs~mathcontext#getroundingmode",
-    "class/src/math/context/MathContext.mjs~MathContext.html#instance-method-getRoundingMode",
-    "src/math/context/MathContext.mjs~MathContext#getRoundingMode",
+    "src/math/context/mathcontext.js~mathcontext#getroundingmode",
+    "class/src/math/context/MathContext.js~MathContext.html#instance-method-getRoundingMode",
+    "src/math/context/MathContext.js~MathContext#getRoundingMode",
     "method"
   ],
   [
-    "src/math/context/mathcontext.mjs~mathcontext#precision",
-    "class/src/math/context/MathContext.mjs~MathContext.html#instance-member-precision",
-    "src/math/context/MathContext.mjs~MathContext#precision",
+    "src/math/context/mathcontext.js~mathcontext#precision",
+    "class/src/math/context/MathContext.js~MathContext.html#instance-member-precision",
+    "src/math/context/MathContext.js~MathContext#precision",
     "member"
   ],
   [
-    "src/math/context/mathcontext.mjs~mathcontext#roundingmode",
-    "class/src/math/context/MathContext.mjs~MathContext.html#instance-member-roundingMode",
-    "src/math/context/MathContext.mjs~MathContext#roundingMode",
+    "src/math/context/mathcontext.js~mathcontext#roundingmode",
+    "class/src/math/context/MathContext.js~MathContext.html#instance-member-roundingMode",
+    "src/math/context/MathContext.js~MathContext#roundingMode",
     "member"
   ],
   [
-    "src/math/context/mathcontext.mjs~mathcontext#tostring",
-    "class/src/math/context/MathContext.mjs~MathContext.html#instance-method-toString",
-    "src/math/context/MathContext.mjs~MathContext#toString",
+    "src/math/context/mathcontext.js~mathcontext#tostring",
+    "class/src/math/context/MathContext.js~MathContext.html#instance-method-toString",
+    "src/math/context/MathContext.js~MathContext#toString",
     "method"
   ],
   [
-    "src/math/context/mathcontext.mjs~mathcontext.decimal128",
-    "class/src/math/context/MathContext.mjs~MathContext.html#static-get-DECIMAL128",
-    "src/math/context/MathContext.mjs~MathContext.DECIMAL128",
+    "src/math/context/mathcontext.js~mathcontext.decimal128",
+    "class/src/math/context/MathContext.js~MathContext.html#static-get-DECIMAL128",
+    "src/math/context/MathContext.js~MathContext.DECIMAL128",
     "member"
   ],
   [
-    "src/math/context/mathcontext.mjs~mathcontext.decimal256",
-    "class/src/math/context/MathContext.mjs~MathContext.html#static-get-DECIMAL256",
-    "src/math/context/MathContext.mjs~MathContext.DECIMAL256",
+    "src/math/context/mathcontext.js~mathcontext.decimal256",
+    "class/src/math/context/MathContext.js~MathContext.html#static-get-DECIMAL256",
+    "src/math/context/MathContext.js~MathContext.DECIMAL256",
     "member"
   ],
   [
-    "src/math/context/mathcontext.mjs~mathcontext.decimal32",
-    "class/src/math/context/MathContext.mjs~MathContext.html#static-get-DECIMAL32",
-    "src/math/context/MathContext.mjs~MathContext.DECIMAL32",
+    "src/math/context/mathcontext.js~mathcontext.decimal32",
+    "class/src/math/context/MathContext.js~MathContext.html#static-get-DECIMAL32",
+    "src/math/context/MathContext.js~MathContext.DECIMAL32",
     "member"
   ],
   [
-    "src/math/context/mathcontext.mjs~mathcontext.decimal64",
-    "class/src/math/context/MathContext.mjs~MathContext.html#static-get-DECIMAL64",
-    "src/math/context/MathContext.mjs~MathContext.DECIMAL64",
+    "src/math/context/mathcontext.js~mathcontext.decimal64",
+    "class/src/math/context/MathContext.js~MathContext.html#static-get-DECIMAL64",
+    "src/math/context/MathContext.js~MathContext.DECIMAL64",
     "member"
   ],
   [
-    "src/math/context/mathcontext.mjs~mathcontext.unlimited",
-    "class/src/math/context/MathContext.mjs~MathContext.html#static-get-UNLIMITED",
-    "src/math/context/MathContext.mjs~MathContext.UNLIMITED",
+    "src/math/context/mathcontext.js~mathcontext.unlimited",
+    "class/src/math/context/MathContext.js~MathContext.html#static-get-UNLIMITED",
+    "src/math/context/MathContext.js~MathContext.UNLIMITED",
     "member"
   ],
   [
-    "src/math/context/roundingmode.mjs",
-    "file/src/math/context/RoundingMode.mjs.html",
-    "src/math/context/RoundingMode.mjs",
+    "src/math/context/roundingmode.js",
+    "file/src/math/context/RoundingMode.js.html",
+    "src/math/context/RoundingMode.js",
     "file"
   ],
   [
-    "src/math/context/roundingmode.mjs~roundingmode.ceiling",
-    "class/src/math/context/RoundingMode.mjs~RoundingMode.html#static-get-CEILING",
-    "src/math/context/RoundingMode.mjs~RoundingMode.CEILING",
+    "src/math/context/roundingmode.js~roundingmode.ceiling",
+    "class/src/math/context/RoundingMode.js~RoundingMode.html#static-get-CEILING",
+    "src/math/context/RoundingMode.js~RoundingMode.CEILING",
     "member"
   ],
   [
-    "src/math/context/roundingmode.mjs~roundingmode.down",
-    "class/src/math/context/RoundingMode.mjs~RoundingMode.html#static-get-DOWN",
-    "src/math/context/RoundingMode.mjs~RoundingMode.DOWN",
+    "src/math/context/roundingmode.js~roundingmode.down",
+    "class/src/math/context/RoundingMode.js~RoundingMode.html#static-get-DOWN",
+    "src/math/context/RoundingMode.js~RoundingMode.DOWN",
     "member"
   ],
   [
-    "src/math/context/roundingmode.mjs~roundingmode.floor",
-    "class/src/math/context/RoundingMode.mjs~RoundingMode.html#static-get-FLOOR",
-    "src/math/context/RoundingMode.mjs~RoundingMode.FLOOR",
+    "src/math/context/roundingmode.js~roundingmode.floor",
+    "class/src/math/context/RoundingMode.js~RoundingMode.html#static-get-FLOOR",
+    "src/math/context/RoundingMode.js~RoundingMode.FLOOR",
     "member"
   ],
   [
-    "src/math/context/roundingmode.mjs~roundingmode.half_down",
-    "class/src/math/context/RoundingMode.mjs~RoundingMode.html#static-get-HALF_DOWN",
-    "src/math/context/RoundingMode.mjs~RoundingMode.HALF_DOWN",
+    "src/math/context/roundingmode.js~roundingmode.half_down",
+    "class/src/math/context/RoundingMode.js~RoundingMode.html#static-get-HALF_DOWN",
+    "src/math/context/RoundingMode.js~RoundingMode.HALF_DOWN",
     "member"
   ],
   [
-    "src/math/context/roundingmode.mjs~roundingmode.half_even",
-    "class/src/math/context/RoundingMode.mjs~RoundingMode.html#static-get-HALF_EVEN",
-    "src/math/context/RoundingMode.mjs~RoundingMode.HALF_EVEN",
+    "src/math/context/roundingmode.js~roundingmode.half_even",
+    "class/src/math/context/RoundingMode.js~RoundingMode.html#static-get-HALF_EVEN",
+    "src/math/context/RoundingMode.js~RoundingMode.HALF_EVEN",
     "member"
   ],
   [
-    "src/math/context/roundingmode.mjs~roundingmode.half_up",
-    "class/src/math/context/RoundingMode.mjs~RoundingMode.html#static-get-HALF_UP",
-    "src/math/context/RoundingMode.mjs~RoundingMode.HALF_UP",
+    "src/math/context/roundingmode.js~roundingmode.half_up",
+    "class/src/math/context/RoundingMode.js~RoundingMode.html#static-get-HALF_UP",
+    "src/math/context/RoundingMode.js~RoundingMode.HALF_UP",
     "member"
   ],
   [
-    "src/math/context/roundingmode.mjs~roundingmode.unnecessary",
-    "class/src/math/context/RoundingMode.mjs~RoundingMode.html#static-get-UNNECESSARY",
-    "src/math/context/RoundingMode.mjs~RoundingMode.UNNECESSARY",
+    "src/math/context/roundingmode.js~roundingmode.unnecessary",
+    "class/src/math/context/RoundingMode.js~RoundingMode.html#static-get-UNNECESSARY",
+    "src/math/context/RoundingMode.js~RoundingMode.UNNECESSARY",
     "member"
   ],
   [
-    "src/math/context/roundingmode.mjs~roundingmode.up",
-    "class/src/math/context/RoundingMode.mjs~RoundingMode.html#static-get-UP",
-    "src/math/context/RoundingMode.mjs~RoundingMode.UP",
+    "src/math/context/roundingmode.js~roundingmode.up",
+    "class/src/math/context/RoundingMode.js~RoundingMode.html#static-get-UP",
+    "src/math/context/RoundingMode.js~RoundingMode.UP",
     "member"
   ],
   [
-    "src/math/context/roundingmode.mjs~roundingmode.valueof",
-    "class/src/math/context/RoundingMode.mjs~RoundingMode.html#static-method-valueOf",
-    "src/math/context/RoundingMode.mjs~RoundingMode.valueOf",
+    "src/math/context/roundingmode.js~roundingmode.valueof",
+    "class/src/math/context/RoundingMode.js~RoundingMode.html#static-method-valueOf",
+    "src/math/context/RoundingMode.js~RoundingMode.valueOf",
     "method"
   ],
   [
-    "src/math/context/roundingmode.mjs~roundingmodeentity.getaddnumber",
-    "class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html#static-method-getAddNumber",
-    "src/math/context/RoundingMode.mjs~RoundingModeEntity.getAddNumber",
+    "src/math/context/roundingmode.js~roundingmodeentity.getaddnumber",
+    "class/src/math/context/RoundingMode.js~RoundingModeEntity.html#static-method-getAddNumber",
+    "src/math/context/RoundingMode.js~RoundingModeEntity.getAddNumber",
     "method"
   ],
   [
-    "src/math/context/roundingmode.mjs~roundingmodeentity.tostring",
-    "class/src/math/context/RoundingMode.mjs~RoundingModeEntity.html#static-method-toString",
-    "src/math/context/RoundingMode.mjs~RoundingModeEntity.toString",
+    "src/math/context/roundingmode.js~roundingmodeentity.tostring",
+    "class/src/math/context/RoundingMode.js~RoundingModeEntity.html#static-method-toString",
+    "src/math/context/RoundingMode.js~RoundingModeEntity.toString",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs",
-    "file/src/math/tools/LinearAlgebra.mjs.html",
-    "src/math/tools/LinearAlgebra.mjs",
+    "src/math/tools/linearalgebra.js",
+    "file/src/math/tools/LinearAlgebra.js.html",
+    "src/math/tools/LinearAlgebra.js",
     "file"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.cond",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-cond",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.cond",
+    "src/math/tools/linearalgebra.js~linearalgebra.cond",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-cond",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.cond",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.det",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-det",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.det",
+    "src/math/tools/linearalgebra.js~linearalgebra.det",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-det",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.det",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.eig",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-eig",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.eig",
+    "src/math/tools/linearalgebra.js~linearalgebra.eig",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-eig",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.eig",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.inner",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-inner",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.inner",
+    "src/math/tools/linearalgebra.js~linearalgebra.inner",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-inner",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.inner",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.inv",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-inv",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.inv",
+    "src/math/tools/linearalgebra.js~linearalgebra.inv",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-inv",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.inv",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.linsolve",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-linsolve",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.linsolve",
+    "src/math/tools/linearalgebra.js~linearalgebra.linsolve",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-linsolve",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.linsolve",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.lu",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-lu",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.lu",
+    "src/math/tools/linearalgebra.js~linearalgebra.lu",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-lu",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.lu",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.lup",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-lup",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.lup",
+    "src/math/tools/linearalgebra.js~linearalgebra.lup",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-lup",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.lup",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.norm",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-norm",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.norm",
+    "src/math/tools/linearalgebra.js~linearalgebra.norm",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-norm",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.norm",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.pinv",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-pinv",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.pinv",
+    "src/math/tools/linearalgebra.js~linearalgebra.pinv",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-pinv",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.pinv",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.qr",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-qr",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.qr",
+    "src/math/tools/linearalgebra.js~linearalgebra.qr",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-qr",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.qr",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.rank",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-rank",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.rank",
+    "src/math/tools/linearalgebra.js~linearalgebra.rank",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-rank",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.rank",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.rcond",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-rcond",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.rcond",
+    "src/math/tools/linearalgebra.js~linearalgebra.rcond",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-rcond",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.rcond",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.svd",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-svd",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.svd",
+    "src/math/tools/linearalgebra.js~linearalgebra.svd",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-svd",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.svd",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.trace",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-trace",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.trace",
+    "src/math/tools/linearalgebra.js~linearalgebra.trace",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-trace",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.trace",
     "method"
   ],
   [
-    "src/math/tools/linearalgebra.mjs~linearalgebra.tridiagonalize",
-    "class/src/math/tools/LinearAlgebra.mjs~LinearAlgebra.html#static-method-tridiagonalize",
-    "src/math/tools/LinearAlgebra.mjs~LinearAlgebra.tridiagonalize",
+    "src/math/tools/linearalgebra.js~linearalgebra.tridiagonalize",
+    "class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-tridiagonalize",
+    "src/math/tools/LinearAlgebra.js~LinearAlgebra.tridiagonalize",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs",
-    "file/src/math/tools/Probability.mjs.html",
-    "src/math/tools/Probability.mjs",
+    "src/math/tools/probability.js",
+    "file/src/math/tools/Probability.js.html",
+    "src/math/tools/Probability.js",
     "file"
   ],
   [
-    "src/math/tools/probability.mjs~probability.beta",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-beta",
-    "src/math/tools/Probability.mjs~Probability.beta",
+    "src/math/tools/probability.js~probability.beta",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-beta",
+    "src/math/tools/Probability.js~Probability.beta",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.betacdf",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-betacdf",
-    "src/math/tools/Probability.mjs~Probability.betacdf",
+    "src/math/tools/probability.js~probability.betacdf",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-betacdf",
+    "src/math/tools/Probability.js~Probability.betacdf",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.betainc",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-betainc",
-    "src/math/tools/Probability.mjs~Probability.betainc",
+    "src/math/tools/probability.js~probability.betainc",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-betainc",
+    "src/math/tools/Probability.js~Probability.betainc",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.betainv",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-betainv",
-    "src/math/tools/Probability.mjs~Probability.betainv",
+    "src/math/tools/probability.js~probability.betainv",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-betainv",
+    "src/math/tools/Probability.js~Probability.betainv",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.betapdf",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-betapdf",
-    "src/math/tools/Probability.mjs~Probability.betapdf",
+    "src/math/tools/probability.js~probability.betapdf",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-betapdf",
+    "src/math/tools/Probability.js~Probability.betapdf",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.chi2cdf",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-chi2cdf",
-    "src/math/tools/Probability.mjs~Probability.chi2cdf",
+    "src/math/tools/probability.js~probability.chi2cdf",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-chi2cdf",
+    "src/math/tools/Probability.js~Probability.chi2cdf",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.chi2inv",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-chi2inv",
-    "src/math/tools/Probability.mjs~Probability.chi2inv",
+    "src/math/tools/probability.js~probability.chi2inv",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-chi2inv",
+    "src/math/tools/Probability.js~Probability.chi2inv",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.chi2pdf",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-chi2pdf",
-    "src/math/tools/Probability.mjs~Probability.chi2pdf",
+    "src/math/tools/probability.js~probability.chi2pdf",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-chi2pdf",
+    "src/math/tools/Probability.js~Probability.chi2pdf",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.erf",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-erf",
-    "src/math/tools/Probability.mjs~Probability.erf",
+    "src/math/tools/probability.js~probability.erf",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-erf",
+    "src/math/tools/Probability.js~Probability.erf",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.erfc",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-erfc",
-    "src/math/tools/Probability.mjs~Probability.erfc",
+    "src/math/tools/probability.js~probability.erfc",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-erfc",
+    "src/math/tools/Probability.js~Probability.erfc",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.factorial",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-factorial",
-    "src/math/tools/Probability.mjs~Probability.factorial",
+    "src/math/tools/probability.js~probability.factorial",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-factorial",
+    "src/math/tools/Probability.js~Probability.factorial",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.fcdf",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-fcdf",
-    "src/math/tools/Probability.mjs~Probability.fcdf",
+    "src/math/tools/probability.js~probability.fcdf",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-fcdf",
+    "src/math/tools/Probability.js~Probability.fcdf",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.finv",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-finv",
-    "src/math/tools/Probability.mjs~Probability.finv",
+    "src/math/tools/probability.js~probability.finv",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-finv",
+    "src/math/tools/Probability.js~Probability.finv",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.fpdf",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-fpdf",
-    "src/math/tools/Probability.mjs~Probability.fpdf",
+    "src/math/tools/probability.js~probability.fpdf",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-fpdf",
+    "src/math/tools/Probability.js~Probability.fpdf",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.gamcdf",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-gamcdf",
-    "src/math/tools/Probability.mjs~Probability.gamcdf",
+    "src/math/tools/probability.js~probability.gamcdf",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-gamcdf",
+    "src/math/tools/Probability.js~Probability.gamcdf",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.gaminv",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-gaminv",
-    "src/math/tools/Probability.mjs~Probability.gaminv",
+    "src/math/tools/probability.js~probability.gaminv",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-gaminv",
+    "src/math/tools/Probability.js~Probability.gaminv",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.gamma",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-gamma",
-    "src/math/tools/Probability.mjs~Probability.gamma",
+    "src/math/tools/probability.js~probability.gamma",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-gamma",
+    "src/math/tools/Probability.js~Probability.gamma",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.gammainc",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-gammainc",
-    "src/math/tools/Probability.mjs~Probability.gammainc",
+    "src/math/tools/probability.js~probability.gammainc",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-gammainc",
+    "src/math/tools/Probability.js~Probability.gammainc",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.gammaln",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-gammaln",
-    "src/math/tools/Probability.mjs~Probability.gammaln",
+    "src/math/tools/probability.js~probability.gammaln",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-gammaln",
+    "src/math/tools/Probability.js~Probability.gammaln",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.gampdf",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-gampdf",
-    "src/math/tools/Probability.mjs~Probability.gampdf",
+    "src/math/tools/probability.js~probability.gampdf",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-gampdf",
+    "src/math/tools/Probability.js~Probability.gampdf",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.nchoosek",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-nchoosek",
-    "src/math/tools/Probability.mjs~Probability.nchoosek",
+    "src/math/tools/probability.js~probability.nchoosek",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-nchoosek",
+    "src/math/tools/Probability.js~Probability.nchoosek",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.normcdf",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-normcdf",
-    "src/math/tools/Probability.mjs~Probability.normcdf",
+    "src/math/tools/probability.js~probability.normcdf",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-normcdf",
+    "src/math/tools/Probability.js~Probability.normcdf",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.norminv",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-norminv",
-    "src/math/tools/Probability.mjs~Probability.norminv",
+    "src/math/tools/probability.js~probability.norminv",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-norminv",
+    "src/math/tools/Probability.js~Probability.norminv",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.normpdf",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-normpdf",
-    "src/math/tools/Probability.mjs~Probability.normpdf",
+    "src/math/tools/probability.js~probability.normpdf",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-normpdf",
+    "src/math/tools/Probability.js~Probability.normpdf",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.tcdf",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-tcdf",
-    "src/math/tools/Probability.mjs~Probability.tcdf",
+    "src/math/tools/probability.js~probability.tcdf",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-tcdf",
+    "src/math/tools/Probability.js~Probability.tcdf",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.tdist",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-tdist",
-    "src/math/tools/Probability.mjs~Probability.tdist",
+    "src/math/tools/probability.js~probability.tdist",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-tdist",
+    "src/math/tools/Probability.js~Probability.tdist",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.tinv",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-tinv",
-    "src/math/tools/Probability.mjs~Probability.tinv",
+    "src/math/tools/probability.js~probability.tinv",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-tinv",
+    "src/math/tools/Probability.js~Probability.tinv",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.tinv2",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-tinv2",
-    "src/math/tools/Probability.mjs~Probability.tinv2",
+    "src/math/tools/probability.js~probability.tinv2",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-tinv2",
+    "src/math/tools/Probability.js~Probability.tinv2",
     "method"
   ],
   [
-    "src/math/tools/probability.mjs~probability.tpdf",
-    "class/src/math/tools/Probability.mjs~Probability.html#static-method-tpdf",
-    "src/math/tools/Probability.mjs~Probability.tpdf",
+    "src/math/tools/probability.js~probability.tpdf",
+    "class/src/math/tools/Probability.js~Probability.html#static-method-tpdf",
+    "src/math/tools/Probability.js~Probability.tpdf",
     "method"
   ],
   [
-    "src/math/tools/random.mjs",
-    "file/src/math/tools/Random.mjs.html",
-    "src/math/tools/Random.mjs",
+    "src/math/tools/random.js",
+    "file/src/math/tools/Random.js.html",
+    "src/math/tools/Random.js",
     "file"
   ],
   [
-    "src/math/tools/random.mjs~random#_rnd521",
-    "class/src/math/tools/Random.mjs~Random.html#instance-method-_rnd521",
-    "src/math/tools/Random.mjs~Random#_rnd521",
+    "src/math/tools/random.js~random#_rnd521",
+    "class/src/math/tools/Random.js~Random.html#instance-method-_rnd521",
+    "src/math/tools/Random.js~Random#_rnd521",
     "method"
   ],
   [
-    "src/math/tools/random.mjs~random#constructor",
-    "class/src/math/tools/Random.mjs~Random.html#instance-constructor-constructor",
-    "src/math/tools/Random.mjs~Random#constructor",
+    "src/math/tools/random.js~random#constructor",
+    "class/src/math/tools/Random.js~Random.html#instance-constructor-constructor",
+    "src/math/tools/Random.js~Random#constructor",
     "method"
   ],
   [
-    "src/math/tools/random.mjs~random#genrand_int32",
-    "class/src/math/tools/Random.mjs~Random.html#instance-method-genrand_int32",
-    "src/math/tools/Random.mjs~Random#genrand_int32",
+    "src/math/tools/random.js~random#genrand_int32",
+    "class/src/math/tools/Random.js~Random.html#instance-method-genrand_int32",
+    "src/math/tools/Random.js~Random#genrand_int32",
     "method"
   ],
   [
-    "src/math/tools/random.mjs~random#havenextnextgaussian",
-    "class/src/math/tools/Random.mjs~Random.html#instance-member-haveNextNextGaussian",
-    "src/math/tools/Random.mjs~Random#haveNextNextGaussian",
+    "src/math/tools/random.js~random#havenextnextgaussian",
+    "class/src/math/tools/Random.js~Random.html#instance-member-haveNextNextGaussian",
+    "src/math/tools/Random.js~Random#haveNextNextGaussian",
     "member"
   ],
   [
-    "src/math/tools/random.mjs~random#next",
-    "class/src/math/tools/Random.mjs~Random.html#instance-method-next",
-    "src/math/tools/Random.mjs~Random#next",
+    "src/math/tools/random.js~random#next",
+    "class/src/math/tools/Random.js~Random.html#instance-method-next",
+    "src/math/tools/Random.js~Random#next",
     "method"
   ],
   [
-    "src/math/tools/random.mjs~random#nextboolean",
-    "class/src/math/tools/Random.mjs~Random.html#instance-method-nextBoolean",
-    "src/math/tools/Random.mjs~Random#nextBoolean",
+    "src/math/tools/random.js~random#nextboolean",
+    "class/src/math/tools/Random.js~Random.html#instance-method-nextBoolean",
+    "src/math/tools/Random.js~Random#nextBoolean",
     "method"
   ],
   [
-    "src/math/tools/random.mjs~random#nextbytes",
-    "class/src/math/tools/Random.mjs~Random.html#instance-method-nextBytes",
-    "src/math/tools/Random.mjs~Random#nextBytes",
+    "src/math/tools/random.js~random#nextbytes",
+    "class/src/math/tools/Random.js~Random.html#instance-method-nextBytes",
+    "src/math/tools/Random.js~Random#nextBytes",
     "method"
   ],
   [
-    "src/math/tools/random.mjs~random#nextdouble",
-    "class/src/math/tools/Random.mjs~Random.html#instance-method-nextDouble",
-    "src/math/tools/Random.mjs~Random#nextDouble",
+    "src/math/tools/random.js~random#nextdouble",
+    "class/src/math/tools/Random.js~Random.html#instance-method-nextDouble",
+    "src/math/tools/Random.js~Random#nextDouble",
     "method"
   ],
   [
-    "src/math/tools/random.mjs~random#nextfloat",
-    "class/src/math/tools/Random.mjs~Random.html#instance-method-nextFloat",
-    "src/math/tools/Random.mjs~Random#nextFloat",
+    "src/math/tools/random.js~random#nextfloat",
+    "class/src/math/tools/Random.js~Random.html#instance-method-nextFloat",
+    "src/math/tools/Random.js~Random#nextFloat",
     "method"
   ],
   [
-    "src/math/tools/random.mjs~random#nextgaussian",
-    "class/src/math/tools/Random.mjs~Random.html#instance-method-nextGaussian",
-    "src/math/tools/Random.mjs~Random#nextGaussian",
+    "src/math/tools/random.js~random#nextgaussian",
+    "class/src/math/tools/Random.js~Random.html#instance-method-nextGaussian",
+    "src/math/tools/Random.js~Random#nextGaussian",
     "method"
   ],
   [
-    "src/math/tools/random.mjs~random#nextint",
-    "class/src/math/tools/Random.mjs~Random.html#instance-method-nextInt",
-    "src/math/tools/Random.mjs~Random#nextInt",
+    "src/math/tools/random.js~random#nextint",
+    "class/src/math/tools/Random.js~Random.html#instance-method-nextInt",
+    "src/math/tools/Random.js~Random#nextInt",
     "method"
   ],
   [
-    "src/math/tools/random.mjs~random#nextlong",
-    "class/src/math/tools/Random.mjs~Random.html#instance-method-nextLong",
-    "src/math/tools/Random.mjs~Random#nextLong",
+    "src/math/tools/random.js~random#nextlong",
+    "class/src/math/tools/Random.js~Random.html#instance-method-nextLong",
+    "src/math/tools/Random.js~Random#nextLong",
     "method"
   ],
   [
-    "src/math/tools/random.mjs~random#nextnextgaussian",
-    "class/src/math/tools/Random.mjs~Random.html#instance-member-nextNextGaussian",
-    "src/math/tools/Random.mjs~Random#nextNextGaussian",
+    "src/math/tools/random.js~random#nextnextgaussian",
+    "class/src/math/tools/Random.js~Random.html#instance-member-nextNextGaussian",
+    "src/math/tools/Random.js~Random#nextNextGaussian",
     "member"
   ],
   [
-    "src/math/tools/random.mjs~random#nextshort",
-    "class/src/math/tools/Random.mjs~Random.html#instance-method-nextShort",
-    "src/math/tools/Random.mjs~Random#nextShort",
+    "src/math/tools/random.js~random#nextshort",
+    "class/src/math/tools/Random.js~Random.html#instance-method-nextShort",
+    "src/math/tools/Random.js~Random#nextShort",
     "method"
   ],
   [
-    "src/math/tools/random.mjs~random#setseed",
-    "class/src/math/tools/Random.mjs~Random.html#instance-method-setSeed",
-    "src/math/tools/Random.mjs~Random#setSeed",
+    "src/math/tools/random.js~random#setseed",
+    "class/src/math/tools/Random.js~Random.html#instance-method-setSeed",
+    "src/math/tools/Random.js~Random#setSeed",
     "method"
   ],
   [
-    "src/math/tools/random.mjs~random#x",
-    "class/src/math/tools/Random.mjs~Random.html#instance-member-x",
-    "src/math/tools/Random.mjs~Random#x",
+    "src/math/tools/random.js~random#x",
+    "class/src/math/tools/Random.js~Random.html#instance-member-x",
+    "src/math/tools/Random.js~Random#x",
     "member"
   ],
   [
-    "src/math/tools/random.mjs~random#xi",
-    "class/src/math/tools/Random.mjs~Random.html#instance-member-xi",
-    "src/math/tools/Random.mjs~Random#xi",
+    "src/math/tools/random.js~random#xi",
+    "class/src/math/tools/Random.js~Random.html#instance-member-xi",
+    "src/math/tools/Random.js~Random#xi",
     "member"
   ],
   [
-    "src/math/tools/signal.mjs",
-    "file/src/math/tools/Signal.mjs.html",
-    "src/math/tools/Signal.mjs",
+    "src/math/tools/signal.js",
+    "file/src/math/tools/Signal.js.html",
+    "src/math/tools/Signal.js",
     "file"
   ],
   [
-    "src/math/tools/signal.mjs~signal.conv",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-conv",
-    "src/math/tools/Signal.mjs~Signal.conv",
+    "src/math/tools/signal.js~signal.conv",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-conv",
+    "src/math/tools/Signal.js~Signal.conv",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signal.dct",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-dct",
-    "src/math/tools/Signal.mjs~Signal.dct",
+    "src/math/tools/signal.js~signal.dct",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-dct",
+    "src/math/tools/Signal.js~Signal.dct",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signal.dct2",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-dct2",
-    "src/math/tools/Signal.mjs~Signal.dct2",
+    "src/math/tools/signal.js~signal.dct2",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-dct2",
+    "src/math/tools/Signal.js~Signal.dct2",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signal.fft",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-fft",
-    "src/math/tools/Signal.mjs~Signal.fft",
+    "src/math/tools/signal.js~signal.fft",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-fft",
+    "src/math/tools/Signal.js~Signal.fft",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signal.fft2",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-fft2",
-    "src/math/tools/Signal.mjs~Signal.fft2",
+    "src/math/tools/signal.js~signal.fft2",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-fft2",
+    "src/math/tools/Signal.js~Signal.fft2",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signal.fftshift",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-fftshift",
-    "src/math/tools/Signal.mjs~Signal.fftshift",
+    "src/math/tools/signal.js~signal.fftshift",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-fftshift",
+    "src/math/tools/Signal.js~Signal.fftshift",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signal.hamming",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-hamming",
-    "src/math/tools/Signal.mjs~Signal.hamming",
+    "src/math/tools/signal.js~signal.hamming",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-hamming",
+    "src/math/tools/Signal.js~Signal.hamming",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signal.hann",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-hann",
-    "src/math/tools/Signal.mjs~Signal.hann",
+    "src/math/tools/signal.js~signal.hann",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-hann",
+    "src/math/tools/Signal.js~Signal.hann",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signal.idct",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-idct",
-    "src/math/tools/Signal.mjs~Signal.idct",
+    "src/math/tools/signal.js~signal.idct",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-idct",
+    "src/math/tools/Signal.js~Signal.idct",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signal.idct2",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-idct2",
-    "src/math/tools/Signal.mjs~Signal.idct2",
+    "src/math/tools/signal.js~signal.idct2",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-idct2",
+    "src/math/tools/Signal.js~Signal.idct2",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signal.ifft",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-ifft",
-    "src/math/tools/Signal.mjs~Signal.ifft",
+    "src/math/tools/signal.js~signal.ifft",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-ifft",
+    "src/math/tools/Signal.js~Signal.ifft",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signal.ifft2",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-ifft2",
-    "src/math/tools/Signal.mjs~Signal.ifft2",
+    "src/math/tools/signal.js~signal.ifft2",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-ifft2",
+    "src/math/tools/Signal.js~Signal.ifft2",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signal.powerfft",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-powerfft",
-    "src/math/tools/Signal.mjs~Signal.powerfft",
+    "src/math/tools/signal.js~signal.powerfft",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-powerfft",
+    "src/math/tools/Signal.js~Signal.powerfft",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signal.window",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-window",
-    "src/math/tools/Signal.mjs~Signal.window",
+    "src/math/tools/signal.js~signal.window",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-window",
+    "src/math/tools/Signal.js~Signal.window",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signal.xcorr",
-    "class/src/math/tools/Signal.mjs~Signal.html#static-method-xcorr",
-    "src/math/tools/Signal.mjs~Signal.xcorr",
+    "src/math/tools/signal.js~signal.xcorr",
+    "class/src/math/tools/Signal.js~Signal.html#static-method-xcorr",
+    "src/math/tools/Signal.js~Signal.xcorr",
     "method"
   ],
   [
-    "src/math/tools/signal.mjs~signalsettings",
+    "src/math/tools/signal.js~signalsettings",
     "typedef/index.html#static-typedef-SignalSettings",
-    "src/math/tools/Signal.mjs~SignalSettings",
+    "src/math/tools/Signal.js~SignalSettings",
     "typedef"
   ],
   [
-    "src/math/tools/statistics.mjs",
-    "file/src/math/tools/Statistics.mjs.html",
-    "src/math/tools/Statistics.mjs",
+    "src/math/tools/statistics.js",
+    "file/src/math/tools/Statistics.js.html",
+    "src/math/tools/Statistics.js",
     "file"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.corrcoef",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-corrcoef",
-    "src/math/tools/Statistics.mjs~Statistics.corrcoef",
+    "src/math/tools/statistics.js~statistics.corrcoef",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-corrcoef",
+    "src/math/tools/Statistics.js~Statistics.corrcoef",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.cov",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-cov",
-    "src/math/tools/Statistics.mjs~Statistics.cov",
+    "src/math/tools/statistics.js~statistics.cov",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-cov",
+    "src/math/tools/Statistics.js~Statistics.cov",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.geomean",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-geomean",
-    "src/math/tools/Statistics.mjs~Statistics.geomean",
+    "src/math/tools/statistics.js~statistics.geomean",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-geomean",
+    "src/math/tools/Statistics.js~Statistics.geomean",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.mad",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-mad",
-    "src/math/tools/Statistics.mjs~Statistics.mad",
+    "src/math/tools/statistics.js~statistics.mad",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-mad",
+    "src/math/tools/Statistics.js~Statistics.mad",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.max",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-max",
-    "src/math/tools/Statistics.mjs~Statistics.max",
+    "src/math/tools/statistics.js~statistics.max",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-max",
+    "src/math/tools/Statistics.js~Statistics.max",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.mean",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-mean",
-    "src/math/tools/Statistics.mjs~Statistics.mean",
+    "src/math/tools/statistics.js~statistics.mean",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-mean",
+    "src/math/tools/Statistics.js~Statistics.mean",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.median",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-median",
-    "src/math/tools/Statistics.mjs~Statistics.median",
+    "src/math/tools/statistics.js~statistics.median",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-median",
+    "src/math/tools/Statistics.js~Statistics.median",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.min",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-min",
-    "src/math/tools/Statistics.mjs~Statistics.min",
+    "src/math/tools/statistics.js~statistics.min",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-min",
+    "src/math/tools/Statistics.js~Statistics.min",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.mode",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-mode",
-    "src/math/tools/Statistics.mjs~Statistics.mode",
+    "src/math/tools/statistics.js~statistics.mode",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-mode",
+    "src/math/tools/Statistics.js~Statistics.mode",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.moment",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-moment",
-    "src/math/tools/Statistics.mjs~Statistics.moment",
+    "src/math/tools/statistics.js~statistics.moment",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-moment",
+    "src/math/tools/Statistics.js~Statistics.moment",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.normalize",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-normalize",
-    "src/math/tools/Statistics.mjs~Statistics.normalize",
+    "src/math/tools/statistics.js~statistics.normalize",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-normalize",
+    "src/math/tools/Statistics.js~Statistics.normalize",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.prod",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-prod",
-    "src/math/tools/Statistics.mjs~Statistics.prod",
+    "src/math/tools/statistics.js~statistics.prod",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-prod",
+    "src/math/tools/Statistics.js~Statistics.prod",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.skewness",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-skewness",
-    "src/math/tools/Statistics.mjs~Statistics.skewness",
+    "src/math/tools/statistics.js~statistics.skewness",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-skewness",
+    "src/math/tools/Statistics.js~Statistics.skewness",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.sort",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-sort",
-    "src/math/tools/Statistics.mjs~Statistics.sort",
+    "src/math/tools/statistics.js~statistics.sort",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-sort",
+    "src/math/tools/Statistics.js~Statistics.sort",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.std",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-std",
-    "src/math/tools/Statistics.mjs~Statistics.std",
+    "src/math/tools/statistics.js~statistics.std",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-std",
+    "src/math/tools/Statistics.js~Statistics.std",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.sum",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-sum",
-    "src/math/tools/Statistics.mjs~Statistics.sum",
+    "src/math/tools/statistics.js~statistics.sum",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-sum",
+    "src/math/tools/Statistics.js~Statistics.sum",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statistics.var",
-    "class/src/math/tools/Statistics.mjs~Statistics.html#static-method-var",
-    "src/math/tools/Statistics.mjs~Statistics.var",
+    "src/math/tools/statistics.js~statistics.var",
+    "class/src/math/tools/Statistics.js~Statistics.html#static-method-var",
+    "src/math/tools/Statistics.js~Statistics.var",
     "method"
   ],
   [
-    "src/math/tools/statistics.mjs~statisticssettings",
+    "src/math/tools/statistics.js~statisticssettings",
     "typedef/index.html#static-typedef-StatisticsSettings",
-    "src/math/tools/Statistics.mjs~StatisticsSettings",
+    "src/math/tools/Statistics.js~StatisticsSettings",
     "typedef"
   ]
 ]

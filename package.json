@@ -1,6 +1,6 @@
 {
 	"name": "konpeito",
-	"version": "1.2.1",
+	"version": "1.3.0",
 	"description": "The collection of javascirpt library such as numerical calculation.",
 	"author": "natade-jp <natade3@gmail.com> (https://github.com/natade-jp)",
 	"repository": {
@@ -8,8 +8,8 @@
 		"url": "https://github.com/natade-jp/konpeito.git"
 	},
 	"license": "MIT",
-	"main": "./build/konpeito.umd.min.js",
-	"module": "./build/konpeito.module.min.mjs",
+	"main": "./build/konpeito.umd.js",
+	"module": "./build/konpeito.module.mjs",
 	"keywords": [
 		"math",
 		"mathematics",
@@ -53,6 +53,7 @@
 		}
 	},
 	"devDependencies": {
+		"@types/jest": "^24.0.15",
 		"acorn": "^6.0.0",
 		"babel-jest": "^24.8.0",
 		"babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",

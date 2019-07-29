@@ -21,7 +21,6 @@
 	 * LICENSE:
 	 *  The MIT license https://opensource.org/licenses/MIT
 	 */
-	// @ts-check
 
 	/**
 	 * Collection of tools used in the Random.
@@ -296,7 +295,6 @@
 	 * LICENSE:
 	 *  The MIT license https://opensource.org/licenses/MIT
 	 */
-	// @ts-check
 
 	/**
 	 * Base class for rounding mode for BigDecimal.
@@ -950,9 +948,6 @@
 	 *  The MIT license https://opensource.org/licenses/MIT
 	 */
 
-	// @ts-ignore
-	//import BigDecimal from "./BigDecimal.mjs";
-
 	/**
 	 * Random number class to be used when the random number class is not set.
 	 * @type {Random}
@@ -971,7 +966,15 @@
 		// v0.03 出来る限りまとめてn進数変換する
 		var max_num = 0x3FFFFFFF;
 		var keta = Math.floor( Math.log(max_num) / Math.log(radix) );
+
+		/**
+			 * @type {Array<number>}
+			 */
 		var x = [];
+			
+		/**
+			 * @type {Array<number>}
+			 */
 		var y = [];
 		var len = Math.ceil(text.length / keta);
 		var offset = text.length;
@@ -1021,6 +1024,10 @@
 		var buff;
 		// 正規化
 		var text = ntext.replace(/\s/g, "").toLowerCase();
+
+		/**
+			 * @type {Array<string>}
+			 */
 		var number_text = [];
 		// 整数部を抽出
 		buff = text.match(/^[0-9]+/);
@@ -1089,11 +1096,17 @@
 				_sign : sign
 			};
 		}
+		/**
+			 * @type {Array<number>}
+			 */
 		var y = [];
 		while(x !==  0) {
 			y[y.length] = x & 1;
 			x >>>= 1;
 		}
+		/**
+			 * @type {Array<number>}
+			 */
 		var z = [];
 		for(var i = 0; i < y.length; i++) {
 			z[i >>> 4] |= y[i] << (i & 0xF);
@@ -1112,6 +1125,12 @@
 		 * @returns {Array<number>} Numeric array for each digit in the specified base number.
 		 */
 	BigIntegerTool.toPlainStringFromHexadecimalArray = function toPlainStringFromHexadecimalArray (binary, radix) {
+
+		/**
+			 * @param {Array<number>} x1 
+			 * @param {Array<number>} x2 
+			 * @param {Array<number>} y 
+			 */
 		var add = function(x1, x2, y) {
 			var size = x1.length;
 			var carry = 0;
@@ -1152,6 +1171,9 @@
 		var x = text.replace(/\s/g, "").toLowerCase();
 		var sign_text = x.match(/^[-+]+/);
 
+		/**
+			 * @type {Array<number>}
+			 */
 		var element     = [];
 		var _sign        = 1;
 
@@ -3644,6 +3666,10 @@
 	BigDecimal.prototype.divideToIntegralValue = function divideToIntegralValue (number, context) {
 		var divisor = BigDecimal._toBigDecimal(number);
 		var mc = context ? context : divisor.default_context;
+		/**
+			 * @param {number} num 
+			 * @returns {BigInteger}
+			 */
 		var getDigit  = function( num ) {
 			var i;
 			var text = "1";
@@ -3837,7 +3863,10 @@
 		// 無限精度か、精度が小さい場合は厳密に求める
 		if((precision === 0) || (precision <= 100)) {
 			var newsrc;
-			var result_map = [];
+			/**
+				 * @type {any}
+				 */
+			var result_map = {};
 			var result, result_divide, result_remaind;
 			all_result = BigDecimal.ZERO;
 			var check_max = precision !== 0 ? (precision + 8) : 0x3FFFF;
@@ -5373,6 +5402,7 @@
 
 		/**
 			 * Method name in the DEFINE.
+			 * @type {string}
 			 */
 		this.method_name = method_name;
 			
@@ -5383,6 +5413,7 @@
 
 		/**
 			 * Maximum number of caches.
+			 * @type {number}
 			 */
 		this.table_max = cache_size;
 
@@ -5403,6 +5434,7 @@
 				return object.number;
 			}
 		}
+		// @ts-ignore
 		var new_number = DEFINE$2[this.method_name]();
 		if(this.table.length === this.table_max) {
 			// 後ろのデータを消去
@@ -5813,6 +5845,7 @@
 
 	/**
 		 * Create an entity object of this class.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
 		 * @returns {Fraction}
 		 */
 	Fraction.create = function create (number) {
@@ -5826,6 +5859,7 @@
 
 	/**
 		 * Convert number to Fraction type.
+		 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
 		 * @returns {Fraction}
 		 */
 	Fraction.valueOf = function valueOf (number) {
@@ -6513,7 +6547,15 @@
 		};
 
 		var n = a.length;
+
+		/**
+			 * @type {Array<number>}
+			 */
 		var d = []; // 対角成分
+			
+		/**
+			 * @type {Array<number>}
+			 */
 		var e = []; // 隣の成分
 		{
 			for(var k = 0; k < n - 2; k++) {
@@ -6644,12 +6686,20 @@
 					break;
 				}
 				var w = (d[h$1 - 1] - d[h$1]) / 2.0;
+
+				/**
+					 * @type {number}
+					 */
 				var t = e[h$1] * e[h$1];
 				var s = Math.sqrt(w * w + t);
 				if(w < 0) {
 					s = - s;
 				}
 				var x = d[j] - d[h$1] + (t / (w + s));
+					
+				/**
+					 * @type {number}
+					 */
 				var y = e[j + 1];
 				for(var k = j; k < h$1; k++) {
 					var c = (void 0), s$1 = (void 0);
@@ -6693,6 +6743,10 @@
 		}
 
 		// 固有値が大きいものから並べるソート
+		/**
+			 * @param {Matrix} V 
+			 * @param {Array<number>} d 
+			 */
 		var vd_sort = function(V, d) {
 			var len = d.length;
 			var sortdata = [];
@@ -6702,6 +6756,10 @@
 					index : i
 				};
 			}
+			/**
+				 * @param {{sigma : number}} a 
+				 * @param {{sigma : number}} b 
+				 */
 			var compare = function(a, b){
 				if(a.sigma === b.sigma) {
 					return 0;
@@ -7178,6 +7236,9 @@
 		}
 		var len = M.length;
 		if(len < 5) {
+			/**
+				 * @param {Array<Array<Complex>>} x 
+				 */
 			var calcDet = function(x) {
 				if(x.length === 2) {
 					// 2次元の行列式になったら、たすき掛け計算する
@@ -7186,6 +7247,10 @@
 				var y = Complex.ZERO;
 				for(var i = 0; i < x.length; i++) {
 					// N次元の行列式を、N-1次元の行列式に分解していく
+
+					/**
+						 * @type {Array<Array<Complex>>}
+						 */
 					var D = [];
 					var a = x[i][0];
 					for(var row = 0, D_low = 0; row < x.length; row++) {
@@ -7398,6 +7463,9 @@
 		}
 		else if(non_orthogonalized.length !== 0) {
 			// 一部、直行化できていない列があるため直行化できてない列以外を抽出
+			/**
+				 * @type {any}
+				 */
 			var map = {};
 			for(var i = 0; i < non_orthogonalized.length; i++) {
 				map[non_orthogonalized[i]] = 1;
@@ -7655,6 +7723,10 @@
 	Statistics.max = function max (x, type) {
 		var X = Matrix._toMatrix(x);
 		var dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			var x = data[0];
 			for(var i = 1; i < data.length; i++) {
@@ -7676,6 +7748,10 @@
 	Statistics.min = function min (x, type) {
 		var X = Matrix._toMatrix(x);
 		var dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			var x = data[0];
 			for(var i = 1; i < data.length; i++) {
@@ -7697,6 +7773,10 @@
 	Statistics.sum = function sum (x, type) {
 		var X = Matrix._toMatrix(x);
 		var dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			// カハンの加算アルゴリズム
 			var sum = Complex.ZERO;
@@ -7721,6 +7801,10 @@
 	Statistics.mean = function mean (x, type) {
 		var X = Matrix._toMatrix(x);
 		var dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			// カハンの加算アルゴリズム
 			var sum = Complex.ZERO;
@@ -7745,6 +7829,10 @@
 	Statistics.prod = function prod (x, type) {
 		var X = Matrix._toMatrix(x);
 		var dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			var x = Complex.ONE;
 			for(var i = 0; i < data.length; i++) {
@@ -7764,6 +7852,10 @@
 	Statistics.geomean = function geomean (x, type) {
 		var X = Matrix._toMatrix(x);
 		var dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			var x = Complex.ONE;
 			for(var i = 0; i < data.length; i++) {
@@ -7783,9 +7875,18 @@
 	Statistics.median = function median (x, type) {
 		var X = Matrix._toMatrix(x);
 		var dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+			 * @param {Complex} a
+			 * @param {Complex} b
+			 * @returns {number}
+			 */
 		var compare = function(a, b){
 			return a.compareTo(b);
 		};
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			data.sort(compare);
 			var y;
@@ -7811,11 +7912,23 @@
 	Statistics.mode = function mode (x, type) {
 		var X = Matrix._toMatrix(x);
 		var dim   = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+			 * @param {Complex} a
+			 * @param {Complex} b
+			 * @returns {number}
+			 */
 		var compare = function(a, b){
 			return a.compareTo(b);
 		};
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			data.sort(compare);
+			/**
+				 * @type {any}
+				 */
 			var map = {};
 			for(var i = 0; i < data.length; i++) {
 				var str = data[i].real + " " + data[i].imag;
@@ -7859,6 +7972,10 @@
 		var dim = !(type && type.dimension) ? "auto" : type.dimension;
 		var order = Matrix._toComplex(nth_order);
 		var col = 0;
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			var mean;
 			if(M.isScalar()) {
@@ -7900,6 +8017,10 @@
 		var cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
 		var dim = !(type && type.dimension) ? "auto" : type.dimension;
 		var col = 0;
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			if(data.length === 1) {
 				// 要素が1であれば、分散は0固定
@@ -8054,6 +8175,9 @@
 		var X = Matrix._toMatrix(x);
 		var dim   = !(type && type.dimension) ? "auto" : type.dimension;
 		var order_type = !order ? "ascend" : order;
+		/**
+			 * @type {function(Complex, Complex): number }
+			 */
 		var compare;
 		if(order_type === "ascend") {
 			compare = function(a, b){
@@ -8065,6 +8189,10 @@
 				return b.compareTo(a);
 			};
 		}
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			data.sort(compare);
 			return data;
@@ -8795,7 +8923,7 @@
 
 	/**
 	 * typeof this === string
-	 * @param text 
+	 * @param text {any}
 	 * @ignore
 	 */
 	var isStr = function(text) {
@@ -10355,6 +10483,9 @@
 		var size_ = size;
 		var window = new Array(size_);
 			
+		/**
+			 * @type {function(number): number }
+			 */
 		var normalzie;
 		if((periodic_ === "symmetric") || (periodic_ === 0)) {
 			normalzie = function(y) {
@@ -10367,6 +10498,14 @@
 			};
 		}
 
+		/**
+			 * 
+			 * @param {number} alpha0 
+			 * @param {number} alpha1 
+			 * @param {number} alpha2 
+			 * @param {number} alpha3 
+			 * @param {number} alpha4 
+			 */
 		var setBlackmanWindow = function( alpha0, alpha1, alpha2, alpha3, alpha4) {
 			for(var i = 0; i < size_; i++) {
 				window[i]  = alpha0;
@@ -10460,6 +10599,10 @@
 	Signal.fft = function fft (x, type) {
 		var dim = !(type && type.dimension) ? "auto" : type.dimension;
 		var M = Matrix._toMatrix(x);
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			var real = new Array(data.length);
 			var imag = new Array(data.length);
@@ -10486,6 +10629,10 @@
 	Signal.ifft = function ifft (X, type) {
 		var dim = !(type && type.dimension) ? "auto" : type.dimension;
 		var M = Matrix._toMatrix(X);
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			var real = new Array(data.length);
 			var imag = new Array(data.length);
@@ -10512,6 +10659,10 @@
 	Signal.powerfft = function powerfft (x, type) {
 		var dim = !(type && type.dimension) ? "auto" : type.dimension;
 		var M = Matrix._toMatrix(x);
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			var real = new Array(data.length);
 			var imag = new Array(data.length);
@@ -10541,6 +10692,10 @@
 		if(M.isComplex()) {
 			throw "dct don't support complex numbers.";
 		}
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			var real = new Array(data.length);
 			for(var i = 0; i < data.length; i++) {
@@ -10568,6 +10723,10 @@
 		if(M.isComplex()) {
 			throw "idct don't support complex numbers.";
 		}
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			var real = new Array(data.length);
 			for(var i = 0; i < data.length; i++) {
@@ -11412,8 +11571,16 @@
 
 		// 文字列データを作成とともに、最大の長さを記録する
 		var str_max = 0;
+
+		/**
+			 * @type {Array<{re_sign : string, re_str : string, im_sign : string, im_str : string}>}
+			 */
 		var draw_buff = [];
+
 		// 数値データを文字列にする関数（eの桁がある場合は中身は3桁にする）
+		/**
+			 * @type {function(number): string }
+			 */
 		var toStrFromFloat = function(number) {
 			var str = !isDrawExp ? number.toFixed(draw_decimal_position) : number.toExponential(exp_point);
 			if(/inf/i.test(str)) {
@@ -11460,11 +11627,18 @@
 		);
 
 		// 右寄せ用関数
+		/**
+			 * @type {function(string, number): string }
+			 */
 		var right = function(text, length) {
 			var space = "                                        ";
 			return space.substr(0, length - text.length) + text;
 		};
+
 		// 出力用文字列を作成する
+		/**
+			 * @type {Array<string>}
+			 */
 		var output = [];
 		var that = this;
 		this._each(
@@ -13433,6 +13607,10 @@
 	Matrix.prototype.circshift = function circshift (shift_size, type) {
 		var shift = Matrix._toInteger(shift_size);
 		var dim = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			var y = new Array(data.length);
 			var from = ((- shift % data.length) + data.length) % data.length;
@@ -13513,6 +13691,10 @@
 		 */
 	Matrix.prototype.flip = function flip (type) {
 		var dim = !(type && type.dimension) ? "auto" : type.dimension;
+		/**
+			 * @param {Array<Complex>} data 
+			 * @returns {Array<Complex>}
+			 */
 		var main = function(data) {
 			var y = new Array(data.length);
 			for(var i = 0, j = data.length - 1; i < data.length; i++, j--) {
@@ -13563,13 +13745,26 @@
 				data : target_array[i]
 			};
 		}
-		// 比較関数を作成
+		/**
+			 * 比較関数を作成
+			 * @type {function({index : Complex}, {index : Complex}): number }
+			 */
 		var compare = function(a, b) {
 			return a.index.compareTo(b.index);
 		};
 		{
+			/**
+				 * @type {Array<{index : Complex}>}
+				 */
 			var temp = [];
-			// ソート関数（安定マージソート）
+			/**
+				 * ソート関数（安定マージソート）
+				 * @param {Array<{index : Complex}>} elements 
+				 * @param {number} first 
+				 * @param {number} last 
+				 * @param {function({index : Complex}, {index : Complex}): number} cmp_function 
+				 * @returns {boolean}
+				 */
 			var sort = function(elements, first, last, cmp_function) { 
 				if(first < last) {
 					var middle = Math.floor((first + last) / 2);
@@ -14586,6 +14781,9 @@
 		 * @returns {string} 
 		 */
 	Complex.prototype.toString = function toString () {
+		/**
+			 * @type {function(number): string }
+			 */
 		var formatG = function(x) {
 			var numstr = x.toPrecision(6);
 			if(numstr.indexOf(".") !== -1) {
@@ -14691,6 +14889,9 @@
 		 * @returns {number} Number of decimal places.
 		 */
 	Complex.prototype.getDecimalPosition = function getDecimalPosition () {
+		/**
+			 * @type {function(number): number }
+			 */
 		var getDecimal = function(x) {
 			if(!Number.isFinite(x)) {
 				return 0;
