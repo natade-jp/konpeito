@@ -1,5 +1,7 @@
-﻿import Log from "../../libs/Log.module.mjs";
-import konpeito from "../../libs/konpeito.mjs";
+﻿//@ts-check
+
+import Log from "../../libs/Log.module.js";
+import konpeito from "../../libs/konpeito.js";
 
 const BigDecimal = konpeito.BigDecimal;
 const RoundingMode = konpeito.RoundingMode;
