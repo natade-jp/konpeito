@@ -27,7 +27,9 @@ File.exec("npx rollup -c \"./scripts/rollup.config.js\"");
 // 先頭に著作権表記をするターゲット
 const target_file = [
 	"./build/konpeito.umd.js",
-	"./build/konpeito.module.mjs"
+	"./build/konpeito.module.mjs",
+	"./build/konpeito.umd.min.js",
+	"./build/konpeito.module.min.mjs"
 ];
 
 // ヘッダ追加
