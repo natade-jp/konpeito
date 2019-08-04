@@ -87,11 +87,12 @@ const batch = function() {
 	const text = File.loadTextFile(target_file).split(/[\r\n]/);
 	for(let i = 0; i < text.length; i++) {
 		const line = text[i];
-		// {test : (?number|?string)} だけではなく {abd : ?(number|string)} といった書き方も許すバッチ
-		// 未作成
-		// "function(a: number, b: string)" を "function(number, string)" の書き方に変更するバッチ
+		// バッチ
 		if(line.startsWith("    // e.g. function(a: number, b: string): boolean")) {
 			const push_text = [
+				// @type {import("./aaa/bbb.js").XXX} といった書き方を許可
+				"typeName = typeName.replace(/import\\([^)]*\\)\\./g, \"\");",
+				// {test : (?number|?string)} だけではなく {abd : ?(number|string)} といった書き方を許可
 				"const is_function = typeName.match(/function *\\((.*?)\\)(.*)/);",
 				"let typeName2 = \"\";",
 				"if(is_function) {",
@@ -111,4 +112,4 @@ const batch = function() {
 batch();
 
 // esdoc
-File.exec("npx esdoc");
+File.exec("npx esdoc -c \"./scripts/.esdoc.json\"");
