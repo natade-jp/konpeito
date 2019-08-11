@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import Complex from "./Complex.js";
 const $ = Complex.create;
 
@@ -36,19 +34,32 @@ let test_count = 0;
 	test("equals 3", () => { expect($("3+j").equals("3+2j", 2)).toBe(true); });
 }
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} y 
+ */
 const testGet  = function(operator, x, y) {
 	test_count++;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator];
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "= " + Y;
 	const out = $(Y).equals(y, 0.001);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} y 
+ * @param {*} [tolerance]
+ */
 const testOperator1  = function(operator, x, y, tolerance) {
 	test_count++;
 	const tolerance_ = tolerance ? tolerance : 0.1;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator]();
 	const Y_str = Y;
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + Y_str;
@@ -56,10 +67,18 @@ const testOperator1  = function(operator, x, y, tolerance) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} p 
+ * @param {*} y 
+ * @param {*} [tolerance]
+ */
 const testOperator2  = function(operator, x, p, y, tolerance) {
 	test_count++;
 	const tolerance_ = tolerance ? tolerance : 0.1;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator](p);
 	const Y_str = Y;
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p + ") = " + Y_str;
@@ -67,10 +86,19 @@ const testOperator2  = function(operator, x, p, y, tolerance) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} p1 
+ * @param {*} p2 
+ * @param {*} y 
+ * @param {*} [tolerance]
+ */
 const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	test_count++;
 	const tolerance_ = tolerance ? tolerance : 0.1;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator](p1, p2);
 	const Y_str = Y;
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + Y_str;
@@ -78,9 +106,15 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} y 
+ */
 const testOperator1Bool  = function(operator, x, y) {
 	test_count++;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator]();
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + Y;
 	const out = y === Y;

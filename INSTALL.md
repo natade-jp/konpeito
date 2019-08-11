@@ -48,12 +48,14 @@ npm run test_target -- Compatibility
 # list
 ```
 > npm list --depth=0
-konpeito@1.3.1
+konpeito@1.3.2 konpeito
 +-- @types/jest@24.0.16
 +-- babel-jest@24.8.0
 +-- babel-plugin-transform-es2015-modules-commonjs@6.26.2
 +-- esdoc@1.1.0
 +-- esdoc-standard-plugin@1.0.0
++-- eslint@6.1.0
++-- eslint-plugin-jest@22.15.0
 +-- jest@24.8.0
 +-- jsdoc@3.6.3
 +-- jsdoc-export-default-interop@0.3.1
@@ -74,6 +76,7 @@ npm install --save-dev rollup-plugin-uglify-es
 
 # For error check of ES6.
 npm install --save-dev eslint
+npm install --save-dev eslint-plugin-jest
 
 # For document creation of ES6.
 npm install --save-dev esdoc

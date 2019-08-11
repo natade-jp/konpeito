@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import BigInteger from "./BigInteger.js";
 import BigDecimal from "./BigDecimal.js";
 import Fraction from "./Fraction.js";
@@ -13,6 +11,13 @@ const M = Matrix.create;
 
 let test_count = 0;
 
+/**
+ * @param {*} testtype 
+ * @param {*} x 
+ * @param {*} y 
+ * @param {*} z 
+ * @param {*} [tolerance]
+ */
 const testCompareTo = function(testtype, x, y, z, tolerance) {
 	test_count++;
 	const X = x.toOneLineString ? x.toOneLineString() : x;

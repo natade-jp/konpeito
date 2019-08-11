@@ -1,14 +1,19 @@
-// @ts-nocheck
-
 import Statistics from "./Statistics.js";
 import Matrix from "../Matrix.js";
 const $ = Matrix.create;
 
 let test_count = 0;
 
+/**
+ * @param {*} operator 
+ * @param {*} x1 
+ * @param {*} y 
+ * @param {*} [tolerance]
+ */
 const testOperator1  = function(operator, x1, y, tolerance) {
 	test_count++;
 	const tolerance_ = tolerance ? tolerance : 0.001;
+	// @ts-ignore
 	const cy = Statistics[operator](x1);
 	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
 	const testname = operator + " " + test_count + " " + operator + "(" + x1 + ") = " + cy_str;
@@ -16,10 +21,18 @@ const testOperator1  = function(operator, x1, y, tolerance) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x1 
+ * @param {*} x2 
+ * @param {*} y 
+ * @param {*} [tolerance]
+ */
 const testOperator2  = function(operator, x1, x2, y, tolerance) {
 	test_count++;
 	const tolerance_ = tolerance ? tolerance : 0.001;
 	const x2_str = (typeof x2 === "object") ? JSON.stringify(x2) : x2.toString();
+	// @ts-ignore
 	const cy = Statistics[operator](x1, x2);
 	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
 	const testname = operator + " " + test_count + " " + operator + "(" + x1 + "," + x2_str + ") = " + cy_str;
@@ -27,9 +40,18 @@ const testOperator2  = function(operator, x1, x2, y, tolerance) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x1 
+ * @param {*} x2 
+ * @param {*} x3 
+ * @param {*} y 
+ * @param {*} [tolerance]
+ */
 const testOperator3  = function(operator, x1, x2, x3, y, tolerance) {
 	test_count++;
 	const tolerance_ = tolerance ? tolerance : 0.001;
+	// @ts-ignore
 	const cy = Statistics[operator](x1, x2, x3);
 	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
 	const testname = operator + " " + test_count + " " + operator + "(" + x1 + "," + x2 + "," + x3 + ") = " + cy_str;
@@ -134,6 +156,11 @@ const testOperator3  = function(operator, x1, x2, x3, y, tolerance) {
 
 {
 	test_count = 0;
+	/**
+	 * @param {*} x 
+	 * @param {*} type 
+	 * @param {*} [tolerance]
+	 */
 	const testNormalize = function(x, type, tolerance) {
 		test_count++;
 		const tolerance_ = tolerance ? tolerance : 0.1;

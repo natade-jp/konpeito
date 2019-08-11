@@ -1,11 +1,14 @@
-// @ts-nocheck
-
 import Random from "./tools/Random.js";
 import BigInteger from "./BigInteger.js";
 const $ = BigInteger.create;
 
 let test_count = 0;
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} y 
+ */
 const testEQ = function(operator, x, y) {
 	test_count++;
 	const X = $(x);
@@ -15,37 +18,64 @@ const testEQ = function(operator, x, y) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} y 
+ */
 const testBool = function(operator, x, y) {
 	test_count++;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator]();
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y;
 	const out = Y === y;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} y 
+ */
 const testOperator1  = function(operator, x, y) {
 	test_count++;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator]();
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y;
 	const out = $(Y).equals(y);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x1 
+ * @param {*} x2 
+ * @param {*} y 
+ */
 const testOperator2  = function(operator, x1, x2, y) {
 	test_count++;
 	const X1 = $(x1);
 	const X2 = $(x2);
+	// @ts-ignore
 	const Y = X1[operator](X2);
 	const testname = operator + " " + test_count + " (" + x1 + ")." + operator + "(" + x2 + ") = " + y;
 	const out = $(Y).equals(y);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} p1 
+ * @param {*} p2 
+ * @param {*} y 
+ */
 const testOperator3  = function(operator, x, p1, p2, y) {
 	test_count++;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator](p1, p2);
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + y;
 	const out = $(Y).equals(y);
@@ -247,6 +277,9 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	});
 
 	test("flipBit", () => {
+		/**
+		 * @param {string} text 
+		 */
 		const flip = function(text) {
 			let s1 = $(text);
 			const s2 = s1.bitLength();

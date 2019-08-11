@@ -3,7 +3,7 @@
 		"browser": true,
 		"es6": true,
 		"node": true,
-		"jest" : true
+        "jest/globals": true
 	},
 	"extends": "eslint:recommended",
 	"parserOptions": {
@@ -36,5 +36,8 @@
 		"no-var": 2,
 		"prefer-const": 2,
 		"no-param-reassign": 2
-	}
+	},
+    "plugins": [
+      "jest"
+    ]
 }

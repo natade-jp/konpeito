@@ -1,14 +1,19 @@
-// @ts-nocheck
-
 import LinearAlgebra from "./LinearAlgebra.js";
 import Matrix from "../Matrix.js";
 const $ = Matrix.create;
 
 let test_count = 0;
 
+/**
+ * @param {*} operator 
+ * @param {*} x1 
+ * @param {*} y 
+ * @param {*} [tolerance]
+ */
 const testOperator1  = function(operator, x1, y, tolerance) {
 	test_count++;
 	const tolerance_ = tolerance ? tolerance : 0.1;
+	// @ts-ignore
 	const cy = LinearAlgebra[operator](x1);
 	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
 	const testname = operator + " " + test_count + " " + operator + "(" + x1 + ") = " + cy_str;
@@ -16,9 +21,17 @@ const testOperator1  = function(operator, x1, y, tolerance) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x1 
+ * @param {*} x2 
+ * @param {*} y 
+ * @param {*} [tolerance]
+ */
 const testOperator2  = function(operator, x1, x2, y, tolerance) {
 	test_count++;
 	const tolerance_ = tolerance ? tolerance : 0.1;
+	// @ts-ignore
 	const cy = LinearAlgebra[operator](x1, x2);
 	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
 	const testname = operator + " " + test_count + " " + operator + "(" + x1 + "," + x2 + ") = " + cy_str;
@@ -57,6 +70,10 @@ const testOperator2  = function(operator, x1, x2, y, tolerance) {
 }
 {
 	test_count = 0;
+	/**
+	 * @param {*} x 
+	 * @param {*} [tolerance]
+	 */
 	const testLUP = function(x, tolerance) {
 		test_count++;
 		const tolerance_ = tolerance ? tolerance : 0.1;
@@ -89,6 +106,10 @@ const testOperator2  = function(operator, x1, x2, y, tolerance) {
 
 {
 	test_count = 0;
+	/**
+	 * @param {*} x 
+	 * @param {*} [tolerance]
+	 */
 	const testQR = function(x, tolerance) {
 		test_count++;
 		const tolerance_ = tolerance ? tolerance : 0.1;
@@ -114,6 +135,10 @@ const testOperator2  = function(operator, x1, x2, y, tolerance) {
 
 {
 	test_count = 0;
+	/**
+	 * @param {*} x 
+	 * @param {*} [tolerance]
+	 */
 	const testTRI = function(x, tolerance) {
 		test_count++;
 		const tolerance_ = tolerance ? tolerance : 0.1;
@@ -136,6 +161,10 @@ const testOperator2  = function(operator, x1, x2, y, tolerance) {
 
 {
 	test_count = 0;
+	/**
+	 * @param {*} x 
+	 * @param {*} [tolerance]
+	 */
 	const testEIG = function(x, tolerance) {
 		test_count++;
 		const tolerance_ = tolerance ? tolerance : 0.1;
@@ -158,6 +187,10 @@ const testOperator2  = function(operator, x1, x2, y, tolerance) {
 
 {
 	test_count = 0;
+	/**
+	 * @param {*} x 
+	 * @param {*} [tolerance]
+	 */
 	const testSVD = function(x, tolerance) {
 		test_count++;
 		const tolerance_ = tolerance ? tolerance : 0.1;
@@ -184,6 +217,10 @@ const testOperator2  = function(operator, x1, x2, y, tolerance) {
 
 {
 	test_count = 0;
+	/**
+	 * @param {*} x 
+	 * @param {*} [tolerance]
+	 */
 	const testINV = function(x, tolerance) {
 		test_count++;
 		const tolerance_ = tolerance ? tolerance : 0.1;
@@ -199,6 +236,10 @@ const testOperator2  = function(operator, x1, x2, y, tolerance) {
 
 {
 	test_count = 0;
+	/**
+	 * @param {*} x 
+	 * @param {*} [tolerance]
+	 */
 	const testPINV = function(x, tolerance) {
 		test_count++;
 		const tolerance_ = tolerance ? tolerance : 0.1;

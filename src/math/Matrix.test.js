@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import Complex from "./Complex.js";
 import Matrix from "./Matrix.js";
 const $ = Matrix.create;
@@ -10,19 +8,32 @@ test("Statistics test", () => {
 
 let test_count = 0;
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} y 
+ */
 const testGet  = function(operator, x, y) {
 	test_count++;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator];
 	const testname = operator + " " + test_count + " " + x + "." + operator + "= " + Y;
 	const out = $(Y).equals(y, 0.001);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} y 
+ * @param {*} [tolerance]
+ */
 const testOperator1  = function(operator, x, y, tolerance) {
 	test_count++;
 	const tolerance_ = tolerance ? tolerance : 0.1;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator]();
 	const Y_str = Y.toOneLineString();
 	const testname = operator + " " + test_count + " " + x + "." + operator + "() = " + Y_str;
@@ -30,10 +41,18 @@ const testOperator1  = function(operator, x, y, tolerance) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} p 
+ * @param {*} y 
+ * @param {*} [tolerance]
+ */
 const testOperator2  = function(operator, x, p, y, tolerance) {
 	test_count++;
 	const tolerance_ = tolerance ? tolerance : 0.1;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator](p);
 	const Y_str = Y.toOneLineString();
 	const testname = operator + " " + test_count + " " + x + "." + operator + "(" + p + ") = " + Y_str;
@@ -41,10 +60,19 @@ const testOperator2  = function(operator, x, p, y, tolerance) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} p1 
+ * @param {*} p2 
+ * @param {*} y 
+ * @param {*} [tolerance]
+ */
 const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	test_count++;
 	const tolerance_ = tolerance ? tolerance : 0.1;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator](p1, p2);
 	const Y_str = Y.toOneLineString();
 	const testname = operator + " " + test_count + " " + x + "." + operator + "(" + p1 + "," + p2 + ") = " + Y_str;
@@ -52,17 +80,29 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} y 
+ */
 const testOperator1Bool  = function(operator, x, y) {
 	test_count++;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator]();
 	const testname = operator + " " + test_count + " " + x + "." + operator + "() = " + Y;
 	const out = y === Y;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} p1 
+ * @param {*} y 
+ */
 const testInitialize1  = function(operator, p1, y) {
 	test_count++;
+	// @ts-ignore
 	const Y = Matrix[operator](p1);
 	const Y_str = Y.toOneLineString();
 	const testname = operator + " " + test_count + " Matrix." + operator + "(" + p1 + ") = " + Y_str;
@@ -70,8 +110,15 @@ const testInitialize1  = function(operator, p1, y) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} p1 
+ * @param {*} p2 
+ * @param {*} y 
+ */
 const testInitialize2  = function(operator, p1, p2, y) {
 	test_count++;
+	// @ts-ignore
 	const Y = Matrix[operator](p1, p2);
 	const Y_str = Y.toOneLineString();
 	const testname = operator + " " + test_count + " Matrix." + operator + "(" + p1 + ", " + p2 + ") = " + Y_str;
@@ -79,8 +126,16 @@ const testInitialize2  = function(operator, p1, p2, y) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} p1 
+ * @param {*} p2 
+ * @param {*} p3 
+ * @param {*} y 
+ */
 const testInitialize3  = function(operator, p1, p2, p3, y) {
 	test_count++;
+	// @ts-ignore
 	const Y = Matrix[operator](p1, p2, p3);
 	const Y_str = Y.toOneLineString();
 	const testname = operator + " " + test_count + " Matrix." + operator + "(" + p1 + ", " + p2 + ", " + p3 + ") = " + Y_str;
@@ -90,6 +145,11 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 
 {
 	test_count = 0;
+	/**
+	 * @param {*} x 
+	 * @param {*} p 
+	 * @param {*} y 
+	 */
 	const testEquals = function(x, p, y) {
 		test_count++;
 		const X = $(x);
@@ -114,6 +174,13 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 
 {
 	test_count = 0;
+	/**
+	 * @param {*} x 
+	 * @param {*} p1 
+	 * @param {*} p2 
+	 * @param {*} y 
+	 * @param {*} [tolerance]
+	 */
 	const testGetMatrix  = function(x, p1, p2, y, tolerance) {
 		test_count++;
 		const tolerance_ = tolerance ? tolerance : 0.1;
@@ -142,6 +209,14 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 
 {
 	test_count = 0;
+	/**
+	 * @param {*} x 
+	 * @param {*} p1 
+	 * @param {*} p2 
+	 * @param {*} p3 
+	 * @param {*} y 
+	 * @param {*} [tolerance]
+	 */
 	const testSetMatrix  = function(x, p1, p2, p3, y, tolerance) {
 		test_count++;
 		const tolerance_ = tolerance ? tolerance : 0.1;
@@ -423,6 +498,13 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 
 {
 	test_count = 0;
+	/**
+	 * @param {*} x 
+	 * @param {*} p1 
+	 * @param {*} p2 
+	 * @param {*} y 
+	 * @param {*} [tolerance]
+	 */
 	const testEachVector  = function(x, p1, p2, y, tolerance) {
 		test_count++;
 		const tolerance_ = tolerance ? tolerance : 0.1;
@@ -434,6 +516,9 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 		test(testname, () => { expect(out).toBe(true); });
 	};
 
+	/**
+	 * @param {*} data 
+	 */
 	const sum = function(data) {
 		let sum = Complex.ZERO;
 		for(let i = 0; i < data.length; i++) {

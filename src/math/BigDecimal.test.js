@@ -1,4 +1,3 @@
-// @ts-nocheck
 
 import RoundingMode from "./context/RoundingMode.js";
 import MathContext from "./context/MathContext.js";
@@ -7,6 +6,13 @@ const $ = BigDecimal.create;
 
 let test_count = 0;
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} y 
+ * @param {*} z 
+ * @param {*} tolerance 
+ */
 const testCompareTo = function(operator, x, y, z, tolerance) {
 	test_count++;
 	const X = $(x);
@@ -16,40 +22,70 @@ const testCompareTo = function(operator, x, y, z, tolerance) {
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} y 
+ */
 const testBool = function(operator, x, y) {
 	test_count++;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator]();
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y;
 	const out = Y === y;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} y 
+ * @param {*} [tolerance] 
+ */
 const testOperator1  = function(operator, x, y, tolerance) {
 	test_count++;
 	const tolerance_ = tolerance ? tolerance : 0.0;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator]();
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y;
 	const out = $(Y).compareTo(y, tolerance_) === 0;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x1 
+ * @param {*} x2 
+ * @param {*} y 
+ * @param {*} [tolerance] 
+ */
 const testOperator2  = function(operator, x1, x2, y, tolerance) {
 	test_count++;
 	const tolerance_ = tolerance ? tolerance : 0.0;
 	const X1 = $(x1);
 	const X2 = $(x2);
+	// @ts-ignore
 	const Y = X1[operator](X2);
 	const testname = operator + " " + test_count + " (" + x1 + ")." + operator + "(" + x2 + ") = " + y;
 	const out = $(Y).compareTo(y, tolerance_) === 0;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} p1 
+ * @param {*} p2 
+ * @param {*} y 
+ * @param {*} [tolerance]
+ */
 const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	test_count++;
 	const tolerance_ = tolerance ? tolerance : 0.0;
 	const X = $(x);
+	// @ts-ignore
 	const Y = X[operator](p1, p2);
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + y;
 	const out = $(Y).compareTo(y, tolerance_) === 0;

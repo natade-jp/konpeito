@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import Random from "./Random.js";
 
 test("nextInt", () => {
