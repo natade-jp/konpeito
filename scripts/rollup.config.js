@@ -43,9 +43,9 @@ const createData = function(moduleName, input_name, output_name, isES6, isUglify
 
 const data = [];
 
-data.push(createData("konpeito", "./src/konpeito.js", "./build/konpeito.module.mjs", true, false));
-data.push(createData("konpeito", "./src/konpeito.js", "./build/konpeito.umd.js", false, false));
-data.push(createData("konpeito", "./src/konpeito.js", "./build/konpeito.module.min.mjs", true, true));
+data.push(createData("konpeito", "./src/konpeito.js", "./build/esm/index.js", true, false));
+data.push(createData("konpeito", "./src/konpeito.js", "./build/umd/index.js", false, false));
+data.push(createData("konpeito", "./src/konpeito.js", "./build/konpeito.esm.min.js", true, true));
 data.push(createData("konpeito", "./src/konpeito.js", "./build/konpeito.umd.min.js", false, true));
 
 export default data;

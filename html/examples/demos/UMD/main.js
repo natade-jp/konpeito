@@ -1,7 +1,7 @@
 ﻿/* global konpeito, Log */
 
 // @ts-check
-/// <reference path="../../../../build/konpeito.d.ts" />
+/// <reference path="../../../../build/index.d.ts" />
 
 const Matrix = konpeito.Matrix;
 const $ = Matrix.create;

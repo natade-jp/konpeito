@@ -96,89 +96,97 @@
 </li>
 <li><p>Please use mjs file when using ES6 modules. And use js file when using UMD.</p>
 </li>
-<li><code>./build/konpeito.module.min.mjs</code></li>
+<li><code>./build/konpeito.esm.min.js</code></li>
 <li><code>./build/konpeito.umd.min.js</code></li>
 </ol>
-<h3 id="with-es6-module-">with ES6 module.</h3><pre><code><code class="source-code prettyprint">&lt;script type=&quot;module&quot; src=&quot;./main.mjs&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;</code>
-</code></pre><h3 id="with-umd">with UMD</h3><pre><code><code class="source-code prettyprint">&lt;script src=&quot;./konpeito.umd.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
+<h3 id="with-es6-module-">with ES6 module.</h3><pre><code class="lang-html"><code class="source-code prettyprint">&lt;script type=&quot;module&quot; src=&quot;./main.mjs&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;</code>
+</code></pre>
+<h3 id="with-umd">with UMD</h3><pre><code class="lang-html"><code class="source-code prettyprint">&lt;script src=&quot;./konpeito.umd.min.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
 &lt;script src=&quot;./main.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;</code>
-</code></pre><h2 id="repository">Repository</h2><ul>
+</code></pre>
+<h2 id="repository">Repository</h2><ul>
 <li><a href="https://github.com/natade-jp/konpeito.git">https://github.com/natade-jp/konpeito.git</a></li>
 </ul>
 <h2 id="sample">Sample</h2><h3 id="biginteger">BigInteger</h3><ul>
 <li>A calculation class for arbitrary-precision integer arithmetic.</li>
 <li>BigInt of ES2019 is not used.</li>
 </ul>
-<pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.module.min.mjs&quot;;
+<pre><code class="lang-javascript"><code class="source-code prettyprint">const konpeito = require(&quot;konpeito&quot;);
 const BigInteger = konpeito.BigInteger;
 const $ = BigInteger.create;
 
 console.log($(&quot;-1234567890&quot;).mul(&quot;987654321098765432109876543210&quot;).toString());
-console.log($(&quot;7&quot;).pow(&quot;50&quot;).toString());</code>
-</code></pre><pre><code><code class="source-code prettyprint">&gt; -1219326311248285321124828532111263526900
+&gt; -1219326311248285321124828532111263526900
+
+console.log($(&quot;7&quot;).pow(&quot;50&quot;).toString());
 &gt; 1798465042647412146620280340569649349251249</code>
-</code></pre><h3 id="bigdecimal">BigDecimal</h3><ul>
+</code></pre>
+<h3 id="bigdecimal">BigDecimal</h3><ul>
 <li>A calculation class for arbitrary-precision floating point arithmetic.</li>
 <li>The calculation uses the BigInteger.</li>
 </ul>
-<pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.module.min.mjs&quot;;
+<pre><code class="lang-javascript"><code class="source-code prettyprint">const konpeito = require(&quot;konpeito&quot;);
 const BigDecimal = konpeito.BigDecimal;
 const MathContext = konpeito.MathContext;
 const $ = BigDecimal.create;
 
 BigDecimal.setDefaultContext(MathContext.UNLIMITED);
-console.log($(&quot;-123456.7890&quot;).mul(&quot;987654321098765.432109876543210&quot;).toString());</code>
-</code></pre><pre><code><code class="source-code prettyprint">&gt; -121932631124828532112.4828532111263526900</code>
-</code></pre><h3 id="fraction">Fraction</h3><ul>
+console.log($(&quot;-123456.7890&quot;).mul(&quot;987654321098765.432109876543210&quot;).toString());
+&gt; -121932631124828532112.4828532111263526900</code>
+</code></pre>
+<h3 id="fraction">Fraction</h3><ul>
 <li>A calculation class for fractions with infinite precision.</li>
 <li>The calculation uses the BigInteger.</li>
 </ul>
-<pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.module.min.mjs&quot;;
+<pre><code class="lang-javascript"><code class="source-code prettyprint">const konpeito = require(&quot;konpeito&quot;);
 const Fraction = konpeito.Fraction;
 const $ = Fraction.create;
 
-console.log($(&quot;1/3&quot;).add(&quot;0.(3)&quot;).mul(10).toString());</code>
-</code></pre><pre><code><code class="source-code prettyprint">&gt; 20 / 3</code>
-</code></pre><h3 id="matrix">Matrix</h3><ul>
+console.log($(&quot;1/3&quot;).add(&quot;0.(3)&quot;).mul(10).toString());
+&gt; 20 / 3</code>
+</code></pre>
+<h3 id="matrix">Matrix</h3><ul>
 <li>Matrix is a general-purpose calculation class with signal processing and statistical processing.</li>
 <li>The calculation uses the Complex.</li>
 <li>Some methods do not support complex arithmetic.</li>
 </ul>
-<pre><code><code class="source-code prettyprint">import konpeito from &quot;konpeito.module.min.mjs&quot;;
+<pre><code class="lang-javascript"><code class="source-code prettyprint">const konpeito = require(&quot;konpeito&quot;);
 const Matrix = konpeito.Matrix;
 const $ = Matrix.create;
 
 console.log($(&quot;[1 2;3 4;5 6]&quot;).toString());
-const USV = $(&quot;[1 2;3 4;5 6]&quot;).svd();
-console.log(USV.U.toString());
-console.log(USV.S.toString());
-console.log(USV.V.toString());
-console.log(USV.U.mul(USV.S).mul(USV.V.T()).toString());
-
-console.log($(&quot;[1+j 2-3j -3 -4]&quot;).fft().toString());
-console.log($(&quot;[1 2 30]&quot;).dct().toString());</code>
-</code></pre><pre><code><code class="source-code prettyprint">&gt;
+&gt;
  1  2
  3  4
  5  6
+const USV = $(&quot;[1 2;3 4;5 6]&quot;).svd();
+console.log(USV.U.toString());
 &gt; 
  0.2298 -0.8835  0.4082
  0.5247 -0.2408 -0.8165
  0.8196  0.4019  0.4082
+console.log(USV.S.toString());
 &gt; 
  9.5255  0.0000
  0.0000  0.5143
  0.0000  0.0000
+console.log(USV.V.toString());
 &gt; 
  0.7849  0.6196
 -0.6196  0.7849
+console.log(USV.U.mul(USV.S).mul(USV.V.T()).toString());
 &gt; 
  1.0000  2.0000
  3.0000  4.0000
  5.0000  6.0000
+
+console.log($(&quot;[1+j 2-3j -3 -4]&quot;).fft().toString());
 &gt; -4.0000 - 2.0000i  1.0000 - 5.0000i  0.0000 + 4.0000i  7.0000 + 7.0000i
+
+console.log($(&quot;[1 2 30]&quot;).dct().toString());
 &gt; 19.0526 -20.5061  11.0227</code>
-</code></pre></div>
+</code></pre>
+</div>
 </div>
 
 <footer class="footer">

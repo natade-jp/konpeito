@@ -51,17 +51,17 @@ node --experimental-modules main.mjs
 1. Download the [zip](https://github.com/natade-jp/konpeito/archive/master.zip) by [GitHub](https://github.com/natade-jp/konpeito).
 
 2. Please use mjs file when using ES6 modules. And use js file when using UMD.
-- `./build/konpeito.module.min.mjs`
+- `./build/konpeito.esm.min.js`
 - `./build/konpeito.umd.min.js`
 
 ### with ES6 module.
-```
+```html
 <script type="module" src="./main.mjs" charset="utf-8"></script>
 ```
 
 ### with UMD
-```
-<script src="./konpeito.umd.js" charset="utf-8"></script>
+```html
+<script src="./konpeito.umd.min.js" charset="utf-8"></script>
 <script src="./main.js" charset="utf-8"></script>
 ```
 
@@ -74,16 +74,15 @@ node --experimental-modules main.mjs
 - A calculation class for arbitrary-precision integer arithmetic.
 - BigInt of ES2019 is not used.
 
-```
-import konpeito from "konpeito.module.min.mjs";
+```javascript
+const konpeito = require("konpeito");
 const BigInteger = konpeito.BigInteger;
 const $ = BigInteger.create;
 
 console.log($("-1234567890").mul("987654321098765432109876543210").toString());
-console.log($("7").pow("50").toString());
-```
-```
 > -1219326311248285321124828532111263526900
+
+console.log($("7").pow("50").toString());
 > 1798465042647412146620280340569649349251249
 ```
 
@@ -91,16 +90,14 @@ console.log($("7").pow("50").toString());
 - A calculation class for arbitrary-precision floating point arithmetic.
 - The calculation uses the BigInteger.
 
-```
-import konpeito from "konpeito.module.min.mjs";
+```javascript
+const konpeito = require("konpeito");
 const BigDecimal = konpeito.BigDecimal;
 const MathContext = konpeito.MathContext;
 const $ = BigDecimal.create;
 
 BigDecimal.setDefaultContext(MathContext.UNLIMITED);
 console.log($("-123456.7890").mul("987654321098765.432109876543210").toString());
-```
-```
 > -121932631124828532112.4828532111263526900
 ```
 
@@ -108,14 +105,12 @@ console.log($("-123456.7890").mul("987654321098765.432109876543210").toString())
 - A calculation class for fractions with infinite precision.
 - The calculation uses the BigInteger.
 
-```
-import konpeito from "konpeito.module.min.mjs";
+```javascript
+const konpeito = require("konpeito");
 const Fraction = konpeito.Fraction;
 const $ = Fraction.create;
 
 console.log($("1/3").add("0.(3)").mul(10).toString());
-```
-```
 > 20 / 3
 ```
 
@@ -124,41 +119,40 @@ console.log($("1/3").add("0.(3)").mul(10).toString());
 - The calculation uses the Complex.
 - Some methods do not support complex arithmetic.
 
-```
-import konpeito from "konpeito.module.min.mjs";
+```javascript
+const konpeito = require("konpeito");
 const Matrix = konpeito.Matrix;
 const $ = Matrix.create;
 
 console.log($("[1 2;3 4;5 6]").toString());
-const USV = $("[1 2;3 4;5 6]").svd();
-console.log(USV.U.toString());
-console.log(USV.S.toString());
-console.log(USV.V.toString());
-console.log(USV.U.mul(USV.S).mul(USV.V.T()).toString());
-
-console.log($("[1+j 2-3j -3 -4]").fft().toString());
-console.log($("[1 2 30]").dct().toString());
-```
-```
 >
  1  2
  3  4
  5  6
+const USV = $("[1 2;3 4;5 6]").svd();
+console.log(USV.U.toString());
 > 
  0.2298 -0.8835  0.4082
  0.5247 -0.2408 -0.8165
  0.8196  0.4019  0.4082
+console.log(USV.S.toString());
 > 
  9.5255  0.0000
  0.0000  0.5143
  0.0000  0.0000
+console.log(USV.V.toString());
 > 
  0.7849  0.6196
 -0.6196  0.7849
+console.log(USV.U.mul(USV.S).mul(USV.V.T()).toString());
 > 
  1.0000  2.0000
  3.0000  4.0000
  5.0000  6.0000
+
+console.log($("[1+j 2-3j -3 -4]").fft().toString());
 > -4.0000 - 2.0000i  1.0000 - 5.0000i  0.0000 + 4.0000i  7.0000 + 7.0000i
+
+console.log($("[1 2 30]").dct().toString());
 > 19.0526 -20.5061  11.0227
 ```

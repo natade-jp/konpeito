@@ -26,10 +26,10 @@ File.exec("npx rollup -c \"./scripts/rollup.config.js\"");
 
 // 先頭に著作権表記をするターゲット
 const target_file = [
-	"./build/konpeito.umd.js",
-	"./build/konpeito.module.mjs",
-	"./build/konpeito.umd.min.js",
-	"./build/konpeito.module.min.mjs"
+	"./build/esm/index.js",
+	"./build/umd/index.js",
+	"./build/konpeito.esm.min.js",
+	"./build/konpeito.umd.min.js"
 ];
 
 // ヘッダ追加
@@ -40,5 +40,5 @@ for(const key in target_file) {
 // サンプルファイルはbuild内のデータと関連付ける
 File.saveTextFile(
 	"./html/examples/libs/konpeito.js",
-	"import konpeito from \"../../../build/konpeito.module.min.mjs\";export default konpeito;"
+	"import konpeito from \"../../../build/konpeito.esm.min.js\";export default konpeito;"
 );
