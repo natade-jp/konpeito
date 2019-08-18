@@ -27,7 +27,7 @@ File.exec("npx rollup -c \"./scripts/rollup.config.js\"");
 // 先頭に著作権表記をするターゲット
 const target_file = [
 	"./build/esm/index.js",
-	"./build/umd/index.js",
+	"./build/CommonJS/index.js",
 	"./build/konpeito.esm.min.js",
 	"./build/konpeito.umd.min.js"
 ];
@@ -35,6 +35,13 @@ const target_file = [
 // ヘッダ追加
 for(const key in target_file) {
 	addHeader(target_file[key]);
+}
+
+// ES6用のモジュールをnode.jsで利用できるように修正する
+{
+	let text = File.loadTextFile("./build/CommonJS/index.js");
+	text = text.replace("export default konpeito;", "module.exports = konpeito;");
+	File.saveTextFile("./build/CommonJS/index.js", text);
 }
 
 // サンプルファイルはbuild内のデータと関連付ける

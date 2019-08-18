@@ -1,6 +1,6 @@
 {
 	"name": "konpeito",
-	"version": "1.3.3",
+	"version": "1.3.4",
 	"description": "The collection of javascirpt library such as numerical calculation.",
 	"author": "natade-jp <natade3@gmail.com> (https://github.com/natade-jp)",
 	"repository": {
@@ -8,7 +8,7 @@
 		"url": "https://github.com/natade-jp/konpeito.git"
 	},
 	"license": "MIT",
-	"main": "./build/umd",
+	"main": "./build/CommonJS",
 	"module": "./build/esm",
 	"keywords": [
 		"math",

@@ -1,5 +1,9 @@
 # History
 
+## v1.3.4
+### 変更
+- "package.json" の "main" で指定しているファイルを、UMD形式からCommonJS形式に変更
+
 ## v1.3.3
 ### 変更
 - buildフォルダ内のファイル名を変更
