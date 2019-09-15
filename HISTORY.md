@@ -1,5 +1,9 @@
 # History
 
+## v1.3.5
+### 変更
+- "dependencies" に入っていた "eslint" を "devDependencies" に移動
+
 ## v1.3.4
 ### 変更
 - "package.json" の "main" で指定しているファイルを、UMD形式からCommonJS形式に変更
