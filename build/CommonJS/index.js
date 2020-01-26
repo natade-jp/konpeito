@@ -1,5 +1,5 @@
 /*!
- * konpeito.js (version 2.0.0, 2020/1/26)
+ * konpeito.js (version 2.1.0, 2020/1/26)
  * https://github.com/natade-jp/konpeito
  * Copyright 2013-2020 natade < https://github.com/natade-jp >
  *
@@ -9002,52 +9002,22 @@ class ProbabilityTool {
 	}
 
 	/**
-		erfinv(p) 誤差逆関数
-		@param_ {number} p
-		@returns_ {number}
-		
-		static erfinv(p) {
-			if((p < 0.0) || (p > 1.0)) {
-				return Number.NaN;
-			}
-			else if(p == 0.0) {
-				return Number.NEGATIVE_INFINITY;
-			}
-			else if(p == 1.0) {
-				return Number.POSITIVE_INFINITY;
-			}
-			let y = 0;
-			const c = [];
-			for(let k = 0; k < 100; k++) {
-				let ck = 0;
-				if(0 === k) {
-					ck = 1;
-				}
-				else {
-					for(let m = 0; m < k; m++) {
-						ck += c[m] * c[k - 1 - m] / ((m + 1) * (2 * m + 1));
-					}
-				}
-				c.push(ck);
-				console.log(y + "\t" + ck / (2 * k + 1) + "\t" + Math.pow(Math.sqrt(Math.PI) * 0.5 * p, 2 * k + 1))
-				y += ck / (2 * k + 1) * Math.pow(Math.sqrt(Math.PI) * 0.5 * p, 2 * k + 1);
-			}
-			return y;
-			// 0.5 * Math.sqrt(Math.PI) = 0.8862269254527579
-			// Math.PI / 12 = 0.2617993877991494
-			// 7 * Math.pow(Math.PI, 2) / 480 = 0.14393173084921979
-			// 127 * Math.pow(Math.PI, 3) / 40320 = 0.09766361950392055
-			// 4369 * Math.pow(Math.PI, 4) / 5806080 = 0.07329907936638086
-			// 34807 * Math.pow(Math.PI, 5) / 182476800 = 0.05837250087858452
-			return (p
-				+ 0.2617993877991494 * Math.pow(p, 3)
-				+ 0.14393173084921979 * Math.pow(p, 5)
-				+ 0.09766361950392055 * Math.pow(p, 7)
-				+ 0.07329907936638086 * Math.pow(p, 9)
-				+ 0.05837250087858452 * Math.pow(p, 11)
-			) * 0.8862269254527579;
-		}
-	*/
+	 * Inverse function of Error function.
+	 * @param {number} p
+	 * @returns {number}
+	 */
+	static erfinv(p) {
+		return ProbabilityTool.erfcinv(1.0 - p);
+	}
+
+	/**
+	 * Inverse function of Complementary error function.
+	 * @param {number} p
+	 * @returns {number}
+	 */
+	static erfcinv(p) {
+		return - ProbabilityTool.norminv(p * 0.5) / Math.sqrt(2);
+	}
 
 	/**
 	 * Probability density function (PDF) of normal distribution.
@@ -9287,7 +9257,7 @@ class ProbabilityComplex {
 
 	/**
 	 * Log-gamma function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {import("../Complex.js").KComplexInputData} x
 	 * @returns {Complex}
 	 */
 	static gammaln(x) {
@@ -9296,7 +9266,7 @@ class ProbabilityComplex {
 	
 	/**
 	 * Gamma function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} z
+	 * @param {import("../Complex.js").KComplexInputData} z
 	 * @returns {Complex}
 	 */
 	static gamma(z) {
@@ -9305,8 +9275,8 @@ class ProbabilityComplex {
 	
 	/**
 	 * Incomplete gamma function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} a
 	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Complex}
 	 */
@@ -9319,9 +9289,9 @@ class ProbabilityComplex {
 
 	/**
 	 * Probability density function (PDF) of the gamma distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - Shape parameter.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - Scale parameter.
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} k - Shape parameter.
+	 * @param {import("../Complex.js").KComplexInputData} s - Scale parameter.
 	 * @returns {Complex}
 	 */
 	static gampdf(x, k, s) {
@@ -9333,9 +9303,9 @@ class ProbabilityComplex {
 
 	/**
 	 * Cumulative distribution function (CDF) of gamma distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - Shape parameter.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - Scale parameter.
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} k - Shape parameter.
+	 * @param {import("../Complex.js").KComplexInputData} s - Scale parameter.
 	 * @returns {Complex}
 	 */
 	static gamcdf(x, k, s) {
@@ -9347,9 +9317,9 @@ class ProbabilityComplex {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - Shape parameter.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} s - Scale parameter.
+	 * @param {import("../Complex.js").KComplexInputData} p
+	 * @param {import("../Complex.js").KComplexInputData} k - Shape parameter.
+	 * @param {import("../Complex.js").KComplexInputData} s - Scale parameter.
 	 * @returns {Complex}
 	 */
 	static gaminv(p, k, s) {
@@ -9361,8 +9331,8 @@ class ProbabilityComplex {
 
 	/**
 	 * Beta function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} y
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} y
 	 * @returns {Complex}
 	 */
 	static beta(x, y) {
@@ -9373,9 +9343,9 @@ class ProbabilityComplex {
 
 	/**
 	 * Incomplete beta function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} a
+	 * @param {import("../Complex.js").KComplexInputData} b
 	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Complex}
 	 */
@@ -9389,9 +9359,9 @@ class ProbabilityComplex {
 
 	/**
 	 * Probability density function (PDF) of beta distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} a
+	 * @param {import("../Complex.js").KComplexInputData} b
 	 * @returns {Complex}
 	 */
 	static betapdf(x, a, b) {
@@ -9403,9 +9373,9 @@ class ProbabilityComplex {
 
 	/**
 	 * Cumulative distribution function (CDF) of beta distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} a
+	 * @param {import("../Complex.js").KComplexInputData} b
 	 * @returns {Complex}
 	 */
 	static betacdf(x, a, b) {
@@ -9417,9 +9387,9 @@ class ProbabilityComplex {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} a
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} b
+	 * @param {import("../Complex.js").KComplexInputData} p
+	 * @param {import("../Complex.js").KComplexInputData} a
+	 * @param {import("../Complex.js").KComplexInputData} b
 	 * @returns {Complex}
 	 */
 	static betainv(p, a, b) {
@@ -9431,7 +9401,7 @@ class ProbabilityComplex {
 
 	/**
 	 * Factorial function, x!.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} n
+	 * @param {import("../Complex.js").KComplexInputData} n
 	 * @returns {Complex}
 	 */
 	static factorial(n) {
@@ -9440,8 +9410,8 @@ class ProbabilityComplex {
 
 	/**
 	 * Binomial coefficient, number of all combinations, nCk.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} n
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k
+	 * @param {import("../Complex.js").KComplexInputData} n
+	 * @param {import("../Complex.js").KComplexInputData} k
 	 * @returns {Complex}
 	 */
 	static nchoosek(n, k) {
@@ -9452,7 +9422,7 @@ class ProbabilityComplex {
 	
 	/**
 	 * Error function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {import("../Complex.js").KComplexInputData} x
 	 * @returns {Complex}
 	 */
 	static erf(x) {
@@ -9462,7 +9432,7 @@ class ProbabilityComplex {
 
 	/**
 	 * Complementary error function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
+	 * @param {import("../Complex.js").KComplexInputData} x
 	 * @returns {Complex}
 	 */
 	static erfc(x) {
@@ -9471,10 +9441,30 @@ class ProbabilityComplex {
 	}
 
 	/**
+	 * Inverse function of Error function.
+	 * @param {import("../Complex.js").KComplexInputData} p
+	 * @returns {Complex}
+	 */
+	static erfinv(p) {
+		const P = Complex._toDouble(p);
+		return new Complex(ProbabilityTool.erfinv(P));
+	}
+
+	/**
+	 * Inverse function of Complementary error function.
+	 * @param {import("../Complex.js").KComplexInputData} p
+	 * @returns {Complex}
+	 */
+	static erfcinv(p) {
+		const P = Complex._toDouble(p);
+		return new Complex(ProbabilityTool.erfcinv(P));
+	}
+
+	/**
 	 * Probability density function (PDF) of normal distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - Average value.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} [u=0.0] - Average value.
+	 * @param {import("../Complex.js").KComplexInputData} [s=1.0] - Variance value.
 	 * @returns {Complex}
 	 */
 	static normpdf(x, u, s) {
@@ -9486,9 +9476,9 @@ class ProbabilityComplex {
 
 	/**
 	 * Cumulative distribution function (CDF) of normal distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - Average value.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} [u=0.0] - Average value.
+	 * @param {import("../Complex.js").KComplexInputData} [s=1.0] - Variance value.
 	 * @returns {Complex}
 	 */
 	static normcdf(x, u, s) {
@@ -9500,9 +9490,9 @@ class ProbabilityComplex {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [u=0.0] - Average value.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [s=1.0] - Variance value.
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} [u=0.0] - Average value.
+	 * @param {import("../Complex.js").KComplexInputData} [s=1.0] - Variance value.
 	 * @returns {Complex}
 	 */
 	static norminv(x, u, s) {
@@ -9514,8 +9504,8 @@ class ProbabilityComplex {
 	
 	/**
 	 * Probability density function (PDF) of Student's t-distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} v - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static tpdf(x, v) {
@@ -9526,8 +9516,8 @@ class ProbabilityComplex {
 
 	/**
 	 * Cumulative distribution function (CDF) of Student's t-distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} t
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
+	 * @param {import("../Complex.js").KComplexInputData} t
+	 * @param {import("../Complex.js").KComplexInputData} v - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static tcdf(t, v) {
@@ -9538,8 +9528,8 @@ class ProbabilityComplex {
 
 	/**
 	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
+	 * @param {import("../Complex.js").KComplexInputData} p
+	 * @param {import("../Complex.js").KComplexInputData} v - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static tinv(p, v) {
@@ -9550,9 +9540,9 @@ class ProbabilityComplex {
 
 	/**
 	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} t
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
+	 * @param {import("../Complex.js").KComplexInputData} t
+	 * @param {import("../Complex.js").KComplexInputData} v - The degrees of freedom. (DF)
+	 * @param {import("../Complex.js").KComplexInputData} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {Complex}
 	 */
 	static tdist(t, v, tails) {
@@ -9564,8 +9554,8 @@ class ProbabilityComplex {
 
 	/**
 	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} v - The degrees of freedom. (DF)
+	 * @param {import("../Complex.js").KComplexInputData} p
+	 * @param {import("../Complex.js").KComplexInputData} v - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static tinv2(p, v) {
@@ -9576,8 +9566,8 @@ class ProbabilityComplex {
 
 	/**
 	 * Probability density function (PDF) of chi-square distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} k - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static chi2pdf(x, k) {
@@ -9588,8 +9578,8 @@ class ProbabilityComplex {
 
 	/**
 	 * Cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} k - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static chi2cdf(x, k) {
@@ -9600,8 +9590,8 @@ class ProbabilityComplex {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} k - The degrees of freedom. (DF)
+	 * @param {import("../Complex.js").KComplexInputData} p
+	 * @param {import("../Complex.js").KComplexInputData} k - The degrees of freedom. (DF)
 	 * @returns {Complex}
 	 */
 	static chi2inv(p, k) {
@@ -9612,9 +9602,9 @@ class ProbabilityComplex {
 
 	/**
 	 * Probability density function (PDF) of F-distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} d1 - The degree of freedom of the molecules.
+	 * @param {import("../Complex.js").KComplexInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Complex}
 	 */
 	static fpdf(x, d1, d2) {
@@ -9626,9 +9616,9 @@ class ProbabilityComplex {
 
 	/**
 	 * Cumulative distribution function (CDF) of F-distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} x
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
+	 * @param {import("../Complex.js").KComplexInputData} x
+	 * @param {import("../Complex.js").KComplexInputData} d1 - The degree of freedom of the molecules.
+	 * @param {import("../Complex.js").KComplexInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Complex}
 	 */
 	static fcdf(x, d1, d2) {
@@ -9640,9 +9630,9 @@ class ProbabilityComplex {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} p
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} d2 - The degree of freedom of the denominator
+	 * @param {import("../Complex.js").KComplexInputData} p
+	 * @param {import("../Complex.js").KComplexInputData} d1 - The degree of freedom of the molecules.
+	 * @param {import("../Complex.js").KComplexInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Complex}
 	 */
 	static finv(p, d1, d2) {
@@ -9877,6 +9867,30 @@ class Probability {
 		});
 	}
 	
+	/**
+	 * Inverse function of Error function.
+	 * @param {import("../Matrix.js").KMatrixInputData} p
+	 * @returns {Matrix}
+	 */
+	static erfinv(p) {
+		const P = Matrix._toMatrix(p);
+		return P.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.erfinv(num);
+		});
+	}
+	
+	/**
+	 * Inverse function of Complementary error function.
+	 * @param {import("../Matrix.js").KMatrixInputData} p
+	 * @returns {Matrix}
+	 */
+	static erfcinv(p) {
+		const P = Matrix._toMatrix(p);
+		return P.cloneMatrixDoEachCalculation(function(num) {
+			return ProbabilityComplex.erfcinv(num);
+		});
+	}
+
 	/**
 	 * Probability density function (PDF) of normal distribution.
 	 * @param {import("../Matrix.js").KMatrixInputData} x
@@ -14521,6 +14535,22 @@ class Matrix {
 	 */
 	erfc() {
 		return Probability.erfc(this);
+	}
+	
+	/**
+	 * Inverse function of Error function.
+	 * @returns {Matrix}
+	 */
+	erfinv() {
+		return Probability.erfinv(this);
+	}
+	
+	/**
+	 * Inverse function of Complementary error function.
+	 * @returns {Matrix}
+	 */
+	erfcinv() {
+		return Probability.erfcinv(this);
 	}
 	
 	/**

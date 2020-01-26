@@ -174,6 +174,22 @@ const testOperator3  = function(operator, x1, x2, x3, y, tolerance) {
 
 {
 	test_count = 0;
+	testOperator1("erfinv", 0.0, 0);
+	testOperator1("erfinv", 0.5, 0.47694);
+	testOperator1("erfinv",-0.9, -1.1631);
+	testOperator1("erfinv", 0.95, 1.3859);
+	testOperator1("erfinv", 0.99, 1.8214);
+}
+
+{
+	test_count = 0;
+	testOperator1("erfcinv", 0.2, 0.90619);
+	testOperator1("erfcinv", 0.5, 0.47694);
+	testOperator1("erfcinv", 0.8, 0.17914);
+}
+
+{
+	test_count = 0;
 	testOperator3("normpdf", 1.0, 0.0, 1.0, 0.24197);
 	testOperator3("normpdf", 1.5, 0.5, 1.5, 0.21297);
 	testOperator3("normpdf", 0.5, 1.0, 2.0, 0.19333);

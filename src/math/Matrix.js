@@ -3170,6 +3170,22 @@ export default class Matrix {
 	}
 	
 	/**
+	 * Inverse function of Error function.
+	 * @returns {Matrix}
+	 */
+	erfinv() {
+		return Probability.erfinv(this);
+	}
+	
+	/**
+	 * Inverse function of Complementary error function.
+	 * @returns {Matrix}
+	 */
+	erfcinv() {
+		return Probability.erfcinv(this);
+	}
+	
+	/**
 	 * Probability density function (PDF) of normal distribution.
 	 * @param {KMatrixInputData} [u=0.0] - Average value.
 	 * @param {KMatrixInputData} [s=1.0] - Variance value.

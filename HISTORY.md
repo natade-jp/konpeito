@@ -1,5 +1,9 @@
 # History
 
+## v2.0.1
+### 機能追加
+- `Statistics` に `erfinv`, `erfcinv` を追加
+
 ## v2.0.0
 ### 機能追加
 - `Random`に、Xorshiftを追加しアルゴリズムを選択できるように変更。
@@ -83,7 +87,7 @@
 - `Matrix` 引数でメンバーの省略が可能なオブジェクトの指定に `typedef` で独自型を定義するように修正
 - 引数に `epsilon` と記載されている変数名をより意味合いに近い `tolerance` に変更
 - `d.ts` ファイルの中のクラス名を他と被らないように修正
-- 「x | 0」としている部分の多くを「Math.trunc」に置き換え
+- 「`x | 0`」としている部分の多くを「`Math.trunc`」に置き換え
 - `BigInteger` , `BigDecimal`, `Fraction`, `Complex`, `Matrix` 互換性用のテストケースを追加
 ### 不具合
 - `BigDecimal` `divid` で1度計算した後の結果のデフォルト環境設定が `UNLIMITED`.に設定されてしまうバグを修正
@@ -101,24 +105,24 @@
 - `BigInteger`  テストケース見直し
 
 ## v0.1.13
-- `BigInteger`  の引数で「12300e-1」の文字列でも初期化ができるように修正。
+- `BigInteger`  の引数で「`12300e-1`」の文字列でも初期化ができるように修正。
 - ドキュメント（jsdoc）をリファクタリング。記載誤りの修正。
 
 ## v0.1.12
 - `BigInteger`  の引数に指数表記の文字列を対応
-- `BigInteger`  の引数にNumber型で、1e20より大きな数値で初期化した際に、正しく取得できなかった問題を修正
-- `BigInteger`  の引数で文字列を入れた場合に、「0」から始めると8進数とみなす仕様を「0o」に変更
+- `BigInteger`  の引数にNumber型で、`1e20`より大きな数値で初期化した際に、正しく取得できなかった問題を修正
+- `BigInteger`  の引数で文字列を入れた場合に、「`0`」から始めると8進数とみなす仕様を「`0o`」に変更
 - `BigDecimal` の引数にNumber型の浮動小数点で初期化すると、誤差が大きくなってしまう場合がある問題を修正
 
 ## v0.1.11
 - `BigDecimal` `clip` の戻り値のコメントが誤っていたのを修正
-- 型定義ファイルで戻り値が「any」となっていた部分を修正
-- デバッグ用のクラス `Log`.を削除
+- 型定義ファイルで戻り値が「`any`」となっていた部分を修正
+- デバッグ用のクラス `Log` を削除
 - ドキュメント（jsdoc）を英語に翻訳
 
 ## v0.1.10
 - `arange`, `crip`, `circshift`, `roll`, `fftshift`, `reshape`, `indexsort` 追加
-- `concatRight`.のメソッド名が `concatLeft`.になっていたのを修正
+- `concatRight`.のメソッド名が `concatLeft` になっていたのを修正
 
 ## v0.1.9
 - 型定義ファイルを自動作成するように設定
@@ -150,8 +154,8 @@
 ## v0.1.5
 - Travis CI での自動テスト実行を設定
 - `README.md` にバッチ追加
-- `Matrix` `eachVectorRow`.関数が正しく機能していなかった問題を修正
-- `Matrix` `eachVectorBoth`.入力と出力の行列のサイズが等しくない場合にエラーが発生する問題を修正
+- `Matrix` `eachVectorRow` 関数が正しく機能していなかった問題を修正
+- `Matrix` `eachVectorBoth` 入力と出力の行列のサイズが等しくない場合にエラーが発生する問題を修正
 - `Matrix` にあった `max` と `min` を `Statistics` へ移動。引数で方向を設定できるように変更
 - `Complex` `_toInteger` 戻り値を `return` ではなく `throw` にしていた不具合を修正
 - `Statistics` `gaminv` 引数によって正しく計算できない場合がある問題を修正
@@ -166,7 +170,7 @@
 - `Matrix` `equals` ベクトル（スカラ・行列除く）同士の比較方法が誤っていたのを修正
 - `Matrix` `isPermutation` `[0 0 1;1 0 0;0 0 0]`を置換行列と誤判定する問題を修正
 - `Complex` `create` 文字列の非数、無限大の入力に対応
-- `Complex` `getDecimalPosition`.非数、無限大に対応
+- `Complex` `getDecimalPosition` 非数、無限大に対応
 
 ## v0.1.3
 - バッチ用スクリプトのフォルダ構成を整理
@@ -195,14 +199,14 @@
 - `Statistics` 歪度を追加
 - `Statistics` 中心積率を追加
 - `Statistics` 平均偏差を追加
-- `Statistics` prodを追加
-- `Statistics` geomeanの計算方法の誤りを修正
+- `Statistics` `prod` を追加
+- `Statistics` `geomean` の計算方法の誤りを修正
 - `BigInteger`  デフォルトの乱数を設定できる機能を追加
 - `BigInteger`  素数判定のアルゴリズムを変更
 - `Complex` `compareTo` 見直し
 - `Complex` `log(-1)`の計算結果が誤っていたのを修正
 - `Complex` `arg(-1)`の計算結果が誤っていたのを修正
-- `Complex` `isComplex`, `isComplexInteger`.関数の説明が分かりにくい部分を修正
+- `Complex` `isComplex`, `isComplexInteger` 関数の説明が分かりにくい部分を修正
 - `Complex` squareの複素数を入力したときの値が誤っていたのを修正
 - `Complex` sinc関数を非正規化 `sinc` 関数から、正規化 `sinc` 関数に変更
 

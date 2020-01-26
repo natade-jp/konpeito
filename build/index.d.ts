@@ -3114,6 +3114,16 @@ declare class _Matrix_ {
      */
     erfc(): _Matrix_;
     /**
+     * Inverse function of Error function.
+     * @returns {_Matrix_}
+     */
+    erfinv(): _Matrix_;
+    /**
+     * Inverse function of Complementary error function.
+     * @returns {_Matrix_}
+     */
+    erfcinv(): _Matrix_;
+    /**
      * _Probability_ density function (PDF) of normal distribution.
      * @param {KMatrixInputData} [u=0.0] - Average value.
      * @param {KMatrixInputData} [s=1.0] - Variance value.
@@ -3665,6 +3675,18 @@ declare class _Probability_ {
      * @returns {_Matrix_}
      */
     static erfc(x: any): _Matrix_;
+    /**
+     * Inverse function of Error function.
+     * @param {KMatrixInputData} p
+     * @returns {_Matrix_}
+     */
+    static erfinv(p: any): _Matrix_;
+    /**
+     * Inverse function of Complementary error function.
+     * @param {KMatrixInputData} p
+     * @returns {_Matrix_}
+     */
+    static erfcinv(p: any): _Matrix_;
     /**
      * _Probability_ density function (PDF) of normal distribution.
      * @param {KMatrixInputData} x
