@@ -25,7 +25,7 @@ class LinearAlgebraTool {
 	 * - P is orthonormal matrix.
 	 * - H is tridiagonal matrix.
 	 * - The eigenvalues of H match the eigenvalues of A.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @returns {{P: Matrix, H: Matrix}}
 	 */
 	static tridiagonalize(mat) {
@@ -188,7 +188,7 @@ class LinearAlgebraTool {
 	 * - V*D*V'=A.
 	 * - V is orthonormal matrix. and columns of V are the right eigenvectors.
 	 * - D is a matrix containing the eigenvalues on the diagonal component.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - Symmetric matrix.
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - Symmetric matrix.
 	 * @returns {{V: Matrix, D: Matrix}}
 	 */
 	static eig(mat) {
@@ -398,7 +398,7 @@ class LinearAlgebraTool {
 	/**
 	 * Create orthogonal vectors for all row vectors of the matrix.
 	 * - If the vector can not be found, it returns NULL.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @param {number} [tolerance=1.0e-10] - Calculation tolerance of calculation.
 	 * @returns {Matrix|null} An orthogonal vector.
 	 */
@@ -461,7 +461,7 @@ class LinearAlgebraTool {
 
 	/**
 	 * Row number with the largest norm value in the specified column of the matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @param {number} column_index - Number of column of matrix.
 	 * @param {number} [row_index_offset=0] - Offset of the position of the vector to be calculated.
 	 * @param {number} [row_index_max] - Maximum value of position of vector to be calculated (do not include this value).
@@ -490,9 +490,9 @@ class LinearAlgebraTool {
 
 	/**
 	 * Extract linearly dependent rows when each row of matrix is a vector.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @param {number} [tolerance=1.0e-10] - Calculation tolerance of calculation.
-	 * @returns {Array} Array of matrix row numbers in ascending order.
+	 * @returns {Array<number>} Array of matrix row numbers in ascending order.
 	 * @private
 	 */
 	static getLinearDependenceVector(mat, tolerance) {
@@ -500,8 +500,8 @@ class LinearAlgebraTool {
 		const m = M.matrix_array;
 		const tolerance_ = tolerance ? Matrix._toDouble(tolerance) : 1.0e-10;
 		// 確認する行番号（ここから終わった行は削除していく）
-		const row_index_array = new Array(mat.row_length);
-		for(let i = 0; i < mat.row_length; i++) {
+		const row_index_array = new Array(M.row_length);
+		for(let i = 0; i < M.row_length; i++) {
 			row_index_array[i] = i;
 		}
 		// ガウスの消去法を使用して、行ベクトルを抽出していく
@@ -551,9 +551,9 @@ export default class LinearAlgebra {
 
 	/**
 	 * Inner product/Dot product.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} A
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} B
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
+	 * @param {import("../Matrix.js").KMatrixInputData} A
+	 * @param {import("../Matrix.js").KMatrixInputData} B
+	 * @param {import("../Matrix.js").KMatrixInputData} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
 	 * @returns {Matrix} A・B
 	 */
 	static inner(A, B, dimension) {
@@ -605,8 +605,8 @@ export default class LinearAlgebra {
 
 	/**
 	 * p-norm.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} [p=2]
 	 * @returns {number}
 	 */
 	static norm(mat, p) {
@@ -709,8 +709,8 @@ export default class LinearAlgebra {
 	
 	/**
 	 * Condition number of the matrix
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} [p=2]
 	 * @returns {number}
 	 */
 	static cond(mat, p) {
@@ -737,7 +737,7 @@ export default class LinearAlgebra {
 
 	/**
 	 * Inverse condition number.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @returns {number}
 	 */
 	static rcond(mat) {
@@ -746,25 +746,26 @@ export default class LinearAlgebra {
 
 	/**
 	 * Rank.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {number} rank(A)
 	 */
 	static rank(mat, tolerance) {
 		const M = Matrix._toMatrix(mat);
+		const t = tolerance !== undefined ? Matrix._toDouble(tolerance) : undefined;
 		// 横が長い行列の場合
 		if(M.row_length <= M.column_length) {
-			return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, tolerance)).length;
+			return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, t)).length;
 		}
 		else {
-			return M.row_length - (LinearAlgebraTool.getLinearDependenceVector(M, tolerance)).length;
+			return M.row_length - (LinearAlgebraTool.getLinearDependenceVector(M, t)).length;
 		}
 	}
 
 	/**
 	 * Trace of a matrix.
 	 * Sum of diagonal elements.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @returns {Complex}
 	 */
 	static trace(mat) {
@@ -779,7 +780,7 @@ export default class LinearAlgebra {
 
 	/**
 	 * Determinant.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @returns {Matrix} |A|
 	 */
 	static det(mat) {
@@ -846,7 +847,7 @@ export default class LinearAlgebra {
 	 * - P is permutation matrix.
 	 * - L is lower triangular matrix.
 	 * - U is upper triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} {L, U, P}
 	 */
 	static lup(mat) {
@@ -903,7 +904,7 @@ export default class LinearAlgebra {
 	 * - L*U=A
 	 * - L is lower triangular matrix.
 	 * - U is upper triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {{L: Matrix, U: Matrix}} {L, U}
 	 */
 	static lu(mat) {
@@ -917,8 +918,8 @@ export default class LinearAlgebra {
 
 	/**
 	 * Solving a system of linear equations to be Ax = B
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} number - B
 	 * @returns {Matrix} x
 	 * @todo 安定化のためQR分解を用いた手法に切り替える。あるいはlup分解を使用した関数に作り替える。
 	 */
@@ -987,7 +988,7 @@ export default class LinearAlgebra {
 	 * - Q*R=A
 	 * - Q is orthonormal matrix.
 	 * - R is upper triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {{Q: Matrix, R: Matrix}} {Q, R}
 	 */
 	static qr(mat) {
@@ -1060,7 +1061,7 @@ export default class LinearAlgebra {
 	 * - P is orthonormal matrix.
 	 * - H is tridiagonal matrix.
 	 * - The eigenvalues of H match the eigenvalues of A.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {{P: Matrix, H: Matrix}} {P, H}
 	 */
 	static tridiagonalize(mat) {
@@ -1083,7 +1084,7 @@ export default class LinearAlgebra {
 	 * - V*D*V'=A.
 	 * - V is orthonormal matrix. and columns of V are the right eigenvectors.
 	 * - D is a matrix containing the eigenvalues on the diagonal component.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {{V: Matrix, D: Matrix}} {D, V}
 	 * @todo 対称行列しか対応できていないので、対称行列ではないものはQR分解を用いた手法に切り替える予定。
 	 */
@@ -1106,7 +1107,7 @@ export default class LinearAlgebra {
 	 * - U*S*V'=A
 	 * - U and V are orthonormal matrices.
 	 * - S is a matrix with singular values in the diagonal.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
 	 */
 	static svd(mat) {
@@ -1152,7 +1153,7 @@ export default class LinearAlgebra {
 
 	/**
 	 * Inverse matrix of this matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {Matrix} A^-1
 	 */
 	static inv(mat) {
@@ -1224,7 +1225,7 @@ export default class LinearAlgebra {
 
 	/**
 	 * Pseudo-inverse matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {Matrix} A^+
 	 */
 	static pinv(mat) {

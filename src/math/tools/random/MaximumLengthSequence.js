@@ -9,43 +9,28 @@
  */
 
 /**
- * Collection of tools used in the Random.
+ * Multiply two 32-bit integers and output a 32-bit integer.
+ * @param {number} x1 
+ * @param {number} x2 
+ * @returns {number}
+ * @private
  * @ignore
  */
-class RandomTool {
-
-	/**
-	 * Create a 32-bit nonnegative integer.
-	 * @param {number} x 
-	 * @returns {number}
-	 */
-	static unsigned32(x) {
-		return ((x < 0) ? ((x & 0x7FFFFFFF) + 0x80000000) : x);
-	}
-
-	/**
-	 * Multiply two 32-bit integers and output a 32-bit integer.
-	 * @param {number} x1 
-	 * @param {number} x2 
-	 * @returns {number}
-	 */
-	static multiplication32(x1, x2) {
-		let b = (x1 & 0xFFFF) * (x2 & 0xFFFF);
-		let y = RandomTool.unsigned32(b);
-		b = (x1 & 0xFFFF) * (x2 >>> 16);
-		y = RandomTool.unsigned32(y + ((b & 0xFFFF) << 16));
-		b = (x1 >>> 16) * (x2 & 0xFFFF);
-		y = RandomTool.unsigned32(y + ((b & 0xFFFF) << 16));
-		return (y & 0xFFFFFFFF);
-	}
-
-
-}
+const multiplication32 = function(x1, x2) {
+	let y = ((x1 & 0xFFFF) * (x2 & 0xFFFF)) >>> 0;
+	let b = (x1 & 0xFFFF) * (x2 >>> 16);
+	y = (y + ((b & 0xFFFF) << 16)) >>> 0;
+	b = (x1 >>> 16) * (x2 & 0xFFFF);
+	y = (y + ((b & 0xFFFF) << 16));
+	return (y & 0xFFFFFFFF);
+};
 
 /**
  * Random number class.
+ * @private
+ * @ignore
  */
-export default class Random {
+export default class MaximumLengthSequence {
 	
 	/**
 	 * Create Random.
@@ -66,13 +51,13 @@ export default class Random {
 		for(let i = 0;i < 521;i++) {
 			this.x[i] = 0;
 		}
-		if(arguments.length >= 1) {
+		if(seed !== undefined) {
 			this.setSeed(seed);
 		}
 		else {
 			// 線形合同法で適当に乱数を作成する
-			const seed = ((new Date()).getTime() + Random.seedUniquifier) & 0xFFFFFFFF;
-			Random.seedUniquifier = (Random.seedUniquifier + 1) & 0xFFFFFFFF;
+			const seed = ((new Date()).getTime() + MaximumLengthSequence.seedUniquifier) & 0xFFFFFFFF;
+			MaximumLengthSequence.seedUniquifier = (MaximumLengthSequence.seedUniquifier + 1) & 0xFFFFFFFF;
 			this.setSeed(seed);
 		}
 	}
@@ -102,7 +87,7 @@ export default class Random {
 		let random_seed = seed;
 		for(let i = 0; i <= 16; i++) {
 			for(let j = 0; j < 32; j++) {
-				random_seed = RandomTool.multiplication32(random_seed, 0x5D588B65) + 1;
+				random_seed = multiplication32(random_seed, 0x5D588B65) + 1;
 				u = (u >>> 1) + ((random_seed < 0) ? 0x80000000 : 0);
 			}
 			x[i] = u;
@@ -149,135 +134,11 @@ export default class Random {
 			this._rnd521();
 			this.xi = 0;
 		}
-		const y = RandomTool.unsigned32(this.x[this.xi]);
+		const y = this.x[this.xi] >>> 0; // Create a 32-bit nonnegative integer.
 		this.xi = this.xi + 1;
 		return y;
 	}
 
-	/**
-	 * Random number of specified bit length.
-	 * @param {number} bits - Required number of bits (up to 64 possible).
-	 * @returns {number}
-	 */
-	next(bits) {
-		if(bits === 0) {
-			return 0;
-		}
-		else if(bits === 32) {
-			return this.genrand_int32();
-		}
-		else if(bits < 32) {
-			// 線形合同法ではないため
-
-			// 上位のビットを使用しなくてもいいがJavaっぽく。
-			return (this.genrand_int32() >>> (32 - bits));
-		}
-		// double型のため、52ビットまでは、整数として出力可能
-		else if(bits === 63) {
-			// 正の値を出力するように調節
-			return (this.next(32) * 0x80000000 + this.next(32));
-		}
-		else if(bits === 64) {
-			return (this.next(32) * 0x100000000 + this.next(32));
-		}
-		else if(bits < 64) {
-			return (this.genrand_int32() * (1 << (bits - 32)) + (this.genrand_int32()  >>> (64 - bits)));
-		}
-	}
-
-	/**
-	 * 8-bit random number array of specified length.
-	 * @param {number} size - 必要な長さ
-	 * @returns {Array<number>}
-	 */
-	nextBytes(size) {
-		const y = new Array(size);
-		// 配列yに乱数を入れる
-		// 8ビットのために、32ビット乱数を1回回すのはもったいない
-		for(let i = 0;i < y.length; i++) {
-			y[i] = this.next(8);
-		}
-		return y;
-	}
-
-	/**
-	 * 16-bit random number.
-	 * @returns {number}
-	 */
-	nextShort() {
-		return (this.next(16));
-	}
-
-	/**
-	 * 32-bit random number.
-	 * @param {number} [x] - 指定した値未満の数値を作る
-	 * @returns {number}
-	 */
-	nextInt(x) {
-		if((x !== undefined) && (typeof x === "number")) {
-			let r, y;
-			do {
-				r = RandomTool.unsigned32(this.genrand_int32());
-				y = r % x;
-			} while((r - y + x) > 0x100000000 );
-			return y;
-		}
-		return (this.next(32) & 0xFFFFFFFF);
-	}
-
-	/**
-	 * 64-bit random number.
-	 * @returns {number}
-	 */
-	nextLong() {
-		return this.next(64);
-	}
-
-	/**
-	 * Random boolean.
-	 * @returns {boolean}
-	 */
-	nextBoolean() {
-		// 1ビットのために、32ビット乱数を1回回すのはもったいない
-		return (this.next(1) !== 0);
-	}
-
-	/**
-	 * Float type random number in the range of [0, 1).
-	 * @returns {number}
-	 */
-	nextFloat() {
-		return (this.next(24) / 0x1000000);
-	}
-
-	/**
-	 * Double type random number in the range of [0, 1).
-	 * @returns {number}
-	 */
-	nextDouble() {
-		const a1 = this.next(26) * 0x8000000 + this.next(27);
-		const a2 = 0x8000000 * 0x4000000;
-		return (a1 / a2);
-	}
-
-	/**
-	 * Random numbers from a Gaussian distribution.
-	 * This random number is a distribution with an average value of 0 and a standard deviation of 1.
-	 * @returns {number}
-	 */
-	nextGaussian() {
-		if(this.haveNextNextGaussian) {
-			this.haveNextNextGaussian = false;
-			return this.nextNextGaussian;
-		}
-		// Box-Muller法
-		const a = Math.sqrt( -2 * Math.log( this.nextDouble() ) );
-		const b = 2 * Math.PI * this.nextDouble();
-		const y = a * Math.sin(b);
-		this.nextNextGaussian = a * Math.cos(b);
-		this.haveNextNextGaussian = true;
-		return y;
-	}
 }
 
 /**
@@ -285,5 +146,5 @@ export default class Random {
  * @type {number}
  * @ignore
  */
-Random.seedUniquifier = 0x87654321;
+MaximumLengthSequence.seedUniquifier = 0x87654321;
 

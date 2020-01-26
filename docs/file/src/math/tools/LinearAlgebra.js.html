@@ -35,8 +35,15 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.js~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.js~Matrix.html">Matrix</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalDivideType">KBigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalInputData">KBigDecimalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalLocalInputData">KBigDecimalLocalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalScaleData">KBigDecimalScaleData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KComplexInputData">KComplexInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixSettings">KMatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -45,8 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.js~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.js~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KRandomSettings">KRandomSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -79,7 +87,7 @@ class LinearAlgebraTool {
 	 * - P is orthonormal matrix.
 	 * - H is tridiagonal matrix.
 	 * - The eigenvalues of H match the eigenvalues of A.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat
 	 * @returns {{P: Matrix, H: Matrix}}
 	 */
 	static tridiagonalize(mat) {
@@ -242,7 +250,7 @@ class LinearAlgebraTool {
 	 * - V*D*V&apos;=A.
 	 * - V is orthonormal matrix. and columns of V are the right eigenvectors.
 	 * - D is a matrix containing the eigenvalues on the diagonal component.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - Symmetric matrix.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat - Symmetric matrix.
 	 * @returns {{V: Matrix, D: Matrix}}
 	 */
 	static eig(mat) {
@@ -452,7 +460,7 @@ class LinearAlgebraTool {
 	/**
 	 * Create orthogonal vectors for all row vectors of the matrix.
 	 * - If the vector can not be found, it returns NULL.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat
 	 * @param {number} [tolerance=1.0e-10] - Calculation tolerance of calculation.
 	 * @returns {Matrix|null} An orthogonal vector.
 	 */
@@ -515,7 +523,7 @@ class LinearAlgebraTool {
 
 	/**
 	 * Row number with the largest norm value in the specified column of the matrix.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat
 	 * @param {number} column_index - Number of column of matrix.
 	 * @param {number} [row_index_offset=0] - Offset of the position of the vector to be calculated.
 	 * @param {number} [row_index_max] - Maximum value of position of vector to be calculated (do not include this value).
@@ -544,9 +552,9 @@ class LinearAlgebraTool {
 
 	/**
 	 * Extract linearly dependent rows when each row of matrix is a vector.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat
 	 * @param {number} [tolerance=1.0e-10] - Calculation tolerance of calculation.
-	 * @returns {Array} Array of matrix row numbers in ascending order.
+	 * @returns {Array&lt;number&gt;} Array of matrix row numbers in ascending order.
 	 * @private
 	 */
 	static getLinearDependenceVector(mat, tolerance) {
@@ -554,8 +562,8 @@ class LinearAlgebraTool {
 		const m = M.matrix_array;
 		const tolerance_ = tolerance ? Matrix._toDouble(tolerance) : 1.0e-10;
 		// &#x78BA;&#x8A8D;&#x3059;&#x308B;&#x884C;&#x756A;&#x53F7;&#xFF08;&#x3053;&#x3053;&#x304B;&#x3089;&#x7D42;&#x308F;&#x3063;&#x305F;&#x884C;&#x306F;&#x524A;&#x9664;&#x3057;&#x3066;&#x3044;&#x304F;&#xFF09;
-		const row_index_array = new Array(mat.row_length);
-		for(let i = 0; i &lt; mat.row_length; i++) {
+		const row_index_array = new Array(M.row_length);
+		for(let i = 0; i &lt; M.row_length; i++) {
 			row_index_array[i] = i;
 		}
 		// &#x30AC;&#x30A6;&#x30B9;&#x306E;&#x6D88;&#x53BB;&#x6CD5;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x3001;&#x884C;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x62BD;&#x51FA;&#x3057;&#x3066;&#x3044;&#x304F;
@@ -605,9 +613,9 @@ export default class LinearAlgebra {
 
 	/**
 	 * Inner product/Dot product.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} A
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} B
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} A
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} B
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
 	 * @returns {Matrix} A&#x30FB;B
 	 */
 	static inner(A, B, dimension) {
@@ -659,8 +667,8 @@ export default class LinearAlgebra {
 
 	/**
 	 * p-norm.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [p=2]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} [p=2]
 	 * @returns {number}
 	 */
 	static norm(mat, p) {
@@ -763,8 +771,8 @@ export default class LinearAlgebra {
 	
 	/**
 	 * Condition number of the matrix
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [p=2]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} [p=2]
 	 * @returns {number}
 	 */
 	static cond(mat, p) {
@@ -791,7 +799,7 @@ export default class LinearAlgebra {
 
 	/**
 	 * Inverse condition number.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat
 	 * @returns {number}
 	 */
 	static rcond(mat) {
@@ -800,25 +808,26 @@ export default class LinearAlgebra {
 
 	/**
 	 * Rank.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {number} rank(A)
 	 */
 	static rank(mat, tolerance) {
 		const M = Matrix._toMatrix(mat);
+		const t = tolerance !== undefined ? Matrix._toDouble(tolerance) : undefined;
 		// &#x6A2A;&#x304C;&#x9577;&#x3044;&#x884C;&#x5217;&#x306E;&#x5834;&#x5408;
 		if(M.row_length &lt;= M.column_length) {
-			return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, tolerance)).length;
+			return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, t)).length;
 		}
 		else {
-			return M.row_length - (LinearAlgebraTool.getLinearDependenceVector(M, tolerance)).length;
+			return M.row_length - (LinearAlgebraTool.getLinearDependenceVector(M, t)).length;
 		}
 	}
 
 	/**
 	 * Trace of a matrix.
 	 * Sum of diagonal elements.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat
 	 * @returns {Complex}
 	 */
 	static trace(mat) {
@@ -833,7 +842,7 @@ export default class LinearAlgebra {
 
 	/**
 	 * Determinant.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat
 	 * @returns {Matrix} |A|
 	 */
 	static det(mat) {
@@ -900,7 +909,7 @@ export default class LinearAlgebra {
 	 * - P is permutation matrix.
 	 * - L is lower triangular matrix.
 	 * - U is upper triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat - A
 	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} {L, U, P}
 	 */
 	static lup(mat) {
@@ -957,7 +966,7 @@ export default class LinearAlgebra {
 	 * - L*U=A
 	 * - L is lower triangular matrix.
 	 * - U is upper triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat - A
 	 * @returns {{L: Matrix, U: Matrix}} {L, U}
 	 */
 	static lu(mat) {
@@ -971,8 +980,8 @@ export default class LinearAlgebra {
 
 	/**
 	 * Solving a system of linear equations to be Ax = B
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} number - B
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat - A
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} number - B
 	 * @returns {Matrix} x
 	 * @todo &#x5B89;&#x5B9A;&#x5316;&#x306E;&#x305F;&#x3081;QR&#x5206;&#x89E3;&#x3092;&#x7528;&#x3044;&#x305F;&#x624B;&#x6CD5;&#x306B;&#x5207;&#x308A;&#x66FF;&#x3048;&#x308B;&#x3002;&#x3042;&#x308B;&#x3044;&#x306F;lup&#x5206;&#x89E3;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x305F;&#x95A2;&#x6570;&#x306B;&#x4F5C;&#x308A;&#x66FF;&#x3048;&#x308B;&#x3002;
 	 */
@@ -1041,7 +1050,7 @@ export default class LinearAlgebra {
 	 * - Q*R=A
 	 * - Q is orthonormal matrix.
 	 * - R is upper triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat - A
 	 * @returns {{Q: Matrix, R: Matrix}} {Q, R}
 	 */
 	static qr(mat) {
@@ -1114,7 +1123,7 @@ export default class LinearAlgebra {
 	 * - P is orthonormal matrix.
 	 * - H is tridiagonal matrix.
 	 * - The eigenvalues of H match the eigenvalues of A.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat - A
 	 * @returns {{P: Matrix, H: Matrix}} {P, H}
 	 */
 	static tridiagonalize(mat) {
@@ -1137,7 +1146,7 @@ export default class LinearAlgebra {
 	 * - V*D*V&apos;=A.
 	 * - V is orthonormal matrix. and columns of V are the right eigenvectors.
 	 * - D is a matrix containing the eigenvalues on the diagonal component.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat - A
 	 * @returns {{V: Matrix, D: Matrix}} {D, V}
 	 * @todo &#x5BFE;&#x79F0;&#x884C;&#x5217;&#x3057;&#x304B;&#x5BFE;&#x5FDC;&#x3067;&#x304D;&#x3066;&#x3044;&#x306A;&#x3044;&#x306E;&#x3067;&#x3001;&#x5BFE;&#x79F0;&#x884C;&#x5217;&#x3067;&#x306F;&#x306A;&#x3044;&#x3082;&#x306E;&#x306F;QR&#x5206;&#x89E3;&#x3092;&#x7528;&#x3044;&#x305F;&#x624B;&#x6CD5;&#x306B;&#x5207;&#x308A;&#x66FF;&#x3048;&#x308B;&#x4E88;&#x5B9A;&#x3002;
 	 */
@@ -1160,7 +1169,7 @@ export default class LinearAlgebra {
 	 * - U*S*V&apos;=A
 	 * - U and V are orthonormal matrices.
 	 * - S is a matrix with singular values in the diagonal.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat - A
 	 * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V&apos;=A
 	 */
 	static svd(mat) {
@@ -1206,7 +1215,7 @@ export default class LinearAlgebra {
 
 	/**
 	 * Inverse matrix of this matrix.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat - A
 	 * @returns {Matrix} A^-1
 	 */
 	static inv(mat) {
@@ -1278,7 +1287,7 @@ export default class LinearAlgebra {
 
 	/**
 	 * Pseudo-inverse matrix.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} mat - A
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} mat - A
 	 * @returns {Matrix} A^+
 	 */
 	static pinv(mat) {

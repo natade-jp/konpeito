@@ -35,8 +35,15 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.js~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.js~Matrix.html">Matrix</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalDivideType">KBigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalInputData">KBigDecimalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalLocalInputData">KBigDecimalLocalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalScaleData">KBigDecimalScaleData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KComplexInputData">KComplexInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixSettings">KMatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -45,8 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.js~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.js~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KRandomSettings">KRandomSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -62,39 +70,15 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+import MaximumLengthSequence from &quot;./random/MaximumLengthSequence.js&quot;;
+import Xorshift from &quot;./random/Xorshift.js&quot;;
+
 /**
- * Collection of tools used in the Random.
- * @ignore
+ * Setting random numbers
+ * @typedef {Object} KRandomSettings
+ * @property {number} [seed] Seed number for random number generation. If not specified, create from time.
+ * @property {string} [algorithm=&quot;FAST&quot;] Algorithm type : &quot;XORSHIFT&quot; / &quot;MLS&quot; / &quot;FAST&quot;
  */
-class RandomTool {
-
-	/**
-	 * Create a 32-bit nonnegative integer.
-	 * @param {number} x 
-	 * @returns {number}
-	 */
-	static unsigned32(x) {
-		return ((x &lt; 0) ? ((x &amp; 0x7FFFFFFF) + 0x80000000) : x);
-	}
-
-	/**
-	 * Multiply two 32-bit integers and output a 32-bit integer.
-	 * @param {number} x1 
-	 * @param {number} x2 
-	 * @returns {number}
-	 */
-	static multiplication32(x1, x2) {
-		let b = (x1 &amp; 0xFFFF) * (x2 &amp; 0xFFFF);
-		let y = RandomTool.unsigned32(b);
-		b = (x1 &amp; 0xFFFF) * (x2 &gt;&gt;&gt; 16);
-		y = RandomTool.unsigned32(y + ((b &amp; 0xFFFF) &lt;&lt; 16));
-		b = (x1 &gt;&gt;&gt; 16) * (x2 &amp; 0xFFFF);
-		y = RandomTool.unsigned32(y + ((b &amp; 0xFFFF) &lt;&lt; 16));
-		return (y &amp; 0xFFFFFFFF);
-	}
-
-
-}
 
 /**
  * Random number class.
@@ -103,44 +87,31 @@ export default class Random {
 	
 	/**
 	 * Create Random.
-	 * @param {number} [seed] - Seed number for random number generation. If not specified, create from time.
+	 * - algorithm : &quot;XORSHIFT&quot; / &quot;MLS&quot; / &quot;FAST&quot;
+	 * @param {number|KRandomSettings} [init_data] - Seed number for random number generation. If not specified, create from time.
 	 */
-	constructor(seed) {
-		// &#x300C;M&#x7CFB;&#x5217;&#x4E71;&#x6570;&#x300D;&#x3067;&#x4E71;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
-		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;&#x6674;&#x5F66; (1991). C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;.
-		// &#x6BD4;&#x8F03;&#x7684;&#x9577;&#x3044; 2^521 - 1&#x901A;&#x308A;&#x3092;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;
-		// &#x4E71;&#x6570;&#x306F;C&#x3067;&#x306E;&#x52D5;&#x4F5C;&#x3068;&#x540C;&#x3058;&#x5024;&#x304C;&#x51FA;&#x308B;&#x3053;&#x3068;&#x3092;&#x78BA;&#x8A8D;&#x3002;(seed = 1&#x3068;&#x3057;&#x3066;1000&#x756A;&#x76EE;&#x306E;&#x5024;&#x304C;&#x7B49;&#x3057;&#x3044;&#x3053;&#x3068;&#x3092;&#x78BA;&#x8A8D;)
-
-		/**
-		 * Random number array.
-		 * @private
-		 * @type {Array&lt;number&gt;}
-		 */
-		this.x = [];
-		for(let i = 0;i &lt; 521;i++) {
-			this.x[i] = 0;
+	constructor(init_data) {
+		let seed_number = undefined;
+		let algorithm = &quot;fast&quot;;
+		this.rand = null;
+		if(typeof init_data === &quot;number&quot;) {
+			seed_number = init_data;
 		}
-		if(arguments.length &gt;= 1) {
-			this.setSeed(seed);
+		else if(typeof init_data === &quot;object&quot;) {
+			if(init_data.seed !== undefined) {
+				seed_number = init_data.seed;
+			}
+			if(init_data.algorithm !== undefined) {
+				algorithm = init_data.algorithm;
+			}
+		}
+		if(/fast|xorshift/i.test(algorithm)) {
+			// XORSHIFT
+			this.rand = new Xorshift(seed_number);
 		}
 		else {
-			// &#x7DDA;&#x5F62;&#x5408;&#x540C;&#x6CD5;&#x3067;&#x9069;&#x5F53;&#x306B;&#x4E71;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-			const seed = ((new Date()).getTime() + Random.seedUniquifier) &amp; 0xFFFFFFFF;
-			Random.seedUniquifier = (Random.seedUniquifier + 1) &amp; 0xFFFFFFFF;
-			this.setSeed(seed);
-		}
-	}
-
-	/**
-	 * &#x5185;&#x90E8;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x30B7;&#x30E3;&#x30C3;&#x30D5;&#x30EB;
-	 */
-	_rnd521() {
-		const x = this.x;
-		for(let i = 0; i &lt; 32; i++) {
-			x[i] ^= x[i + 489];
-		}
-		for(let i = 32; i &lt; 521; i++) {
-			x[i] ^= x[i - 32];
+			// MLS
+			this.rand = new MaximumLengthSequence(seed_number);
 		}
 	}
 
@@ -149,63 +120,15 @@ export default class Random {
 	 * @param {number} seed
 	 */
 	setSeed(seed) {
-		// &#x4F0F;&#x898B;&#x300C;&#x4E71;&#x6570;&#x300D;&#x6771;&#x4EAC;&#x5927;&#x5B66;&#x51FA;&#x7248;&#x4F1A;,1989 &#x306E;&#x65B9;&#x6CD5;&#x306B;&#x3088;&#x308A;&#x521D;&#x671F;&#x5024;&#x3092;&#x8A2D;&#x5B9A;
-		let u = 0;
-		const x = this.x;
-		// seed&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x7DDA;&#x5F62;&#x5408;&#x540C;&#x6CD5;&#x3067;x[0-16]&#x307E;&#x3067;&#x521D;&#x671F;&#x5024;&#x3092;&#x8A2D;&#x5B9A;
-		let random_seed = seed;
-		for(let i = 0; i &lt;= 16; i++) {
-			for(let j = 0; j &lt; 32; j++) {
-				random_seed = RandomTool.multiplication32(random_seed, 0x5D588B65) + 1;
-				u = (u &gt;&gt;&gt; 1) + ((random_seed &lt; 0) ? 0x80000000 : 0);
-			}
-			x[i] = u;
-		}
-		// &#x6B8B;&#x308A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x306F;x[i] = x[i-32] ^ x[i-521]&#x3067;&#x751F;&#x6210;
-		for(let i = 16; i &lt; 521; i++) {
-			u = (i === 16) ? i : (i - 17);
-			x[i] = ((x[u] &lt;&lt; 23) &amp; 0xFFFFFFFF) ^ (x[i - 16] &gt;&gt;&gt; 9) ^ x[i - 1];
-		}
-		// &#x30D3;&#x30C3;&#x30C8;&#x3092;&#x30B7;&#x30E3;&#x30C3;&#x30D5;&#x30EB;
-		for(let i = 0; i &lt; 4; i++) {
-			this._rnd521();
-		}
-		
-		/**
-		 * Number of random number array to use.
-		 * @private
-		 * @type {number}
-		 */
-		this.xi = 0;
-		
-		/**
-		 * Is keep random numbers based on Gaussian distribution.
-		 * @private
-		 * @type {boolean}
-		 */
-		this.haveNextNextGaussian = false;
-		
-		/**
-		 * Next random number based on Gaussian distribution.
-		 * @private
-		 * @type {number}
-		 */
-		this.nextNextGaussian = 0;
+		this.rand.setSeed(seed);
 	}
 
 	/**
 	 * 32-bit random number.
-	 * @returns {number} - 32&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x4E71;&#x6570;
+	 * @returns {number} - 32-bit random number
 	 */
 	genrand_int32() {
-		// &#x5168;&#x3066;&#x4F7F;&#x7528;&#x3057;&#x305F;&#x3089;&#x3001;&#x518D;&#x3073;&#x6DF7;&#x305C;&#x308B;
-		if(this.xi === 521) {
-			this._rnd521();
-			this.xi = 0;
-		}
-		const y = RandomTool.unsigned32(this.x[this.xi]);
-		this.xi = this.xi + 1;
-		return y;
+		return this.rand.genrand_int32();
 	}
 
 	/**
@@ -229,12 +152,12 @@ export default class Random {
 		// double&#x578B;&#x306E;&#x305F;&#x3081;&#x3001;52&#x30D3;&#x30C3;&#x30C8;&#x307E;&#x3067;&#x306F;&#x3001;&#x6574;&#x6570;&#x3068;&#x3057;&#x3066;&#x51FA;&#x529B;&#x53EF;&#x80FD;
 		else if(bits === 63) {
 			// &#x6B63;&#x306E;&#x5024;&#x3092;&#x51FA;&#x529B;&#x3059;&#x308B;&#x3088;&#x3046;&#x306B;&#x8ABF;&#x7BC0;
-			return (this.next(32) * 0x80000000 + this.next(32));
+			return (this.genrand_int32() * 0x80000000 + this.genrand_int32());
 		}
 		else if(bits === 64) {
-			return (this.next(32) * 0x100000000 + this.next(32));
+			return (this.genrand_int32() * 0x100000000 + this.genrand_int32());
 		}
-		else if(bits &lt; 64) {
+		else if(bits &lt; 63) {
 			return (this.genrand_int32() * (1 &lt;&lt; (bits - 32)) + (this.genrand_int32()  &gt;&gt;&gt; (64 - bits)));
 		}
 	}
@@ -271,7 +194,7 @@ export default class Random {
 		if((x !== undefined) &amp;&amp; (typeof x === &quot;number&quot;)) {
 			let r, y;
 			do {
-				r = RandomTool.unsigned32(this.genrand_int32());
+				r = this.genrand_int32() &gt;&gt;&gt; 0;
 				y = r % x;
 			} while((r - y + x) &gt; 0x100000000 );
 			return y;
@@ -333,14 +256,6 @@ export default class Random {
 		return y;
 	}
 }
-
-/**
- * Random number creation integer when no seed is set.
- * @type {number}
- * @ignore
- */
-Random.seedUniquifier = 0x87654321;
-
 </code></pre>
 
 </div>

@@ -13,6 +13,20 @@ import BigDecimal from "./BigDecimal.js";
 import MathContext from "./context/MathContext.js";
 
 /**
+ * Fraction type argument.
+ * - Fraction
+ * - BigInteger
+ * - BigDecimal
+ * - number
+ * - string
+ * - Array<KBigIntegerInputData>
+ * - {numerator:KBigIntegerInputData,denominator:KBigIntegerInputData}
+ * - {doubleValue:number}
+ * - {toString:function}
+ * @typedef {Fraction|BigInteger|BigDecimal|number|string|Array<import("./BigInteger.js").KBigIntegerInputData>|{numerator:import("./BigInteger.js").KBigIntegerInputData,denominator:import("./BigInteger.js").KBigIntegerInputData}|{doubleValue:number}|{toString:function}} KFractionInputData
+ */
+
+/**
  * Collection of functions used in Fraction.
  * @ignore
  */
@@ -238,7 +252,7 @@ export default class Fraction {
 	 * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
 	 * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
 	 * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} [number] - Fraction data. See how to use the function.
+	 * @param {KFractionInputData} [number] - Fraction data. See how to use the function.
 	 */
 	constructor(number) {
 		
@@ -283,26 +297,28 @@ export default class Fraction {
 				this.denominator = (number[1] instanceof BigInteger) ? number[1] : new BigInteger(number[1]);
 				is_normalization = true;
 			}
-			else if((number instanceof Object) && number.numerator && number.denominator) {
-				this.numerator = (number.numerator instanceof BigInteger) ? number.numerator : new BigInteger(number.numerator);
-				this.denominator = (number.denominator instanceof BigInteger) ? number.denominator : new BigInteger(number.denominator);
-				is_normalization = true;
-			}
 			else if(number instanceof BigDecimal) {
 				const value = new Fraction(number.unscaledValue());
 				const x = value.scaleByPowerOfTen(-number.scale());
 				this.numerator = x.numerator;
 				this.denominator = x.denominator;
 			}
-			else if((number instanceof Object) && (number.doubleValue)) {
-				const x = FractionTool.to_fraction_data_from_number(number.doubleValue);
-				this.numerator = x.numerator;
-				this.denominator = x.denominator;
-			}
-			else if(number instanceof Object) {
-				const x1 = FractionTool.to_fraction_data_from_fraction_string(number.toString());
-				this.numerator = x1.numerator;
-				this.denominator = x1.denominator;
+			else if(typeof number === "object") {
+				if("doubleValue" in number) {
+					const x = FractionTool.to_fraction_data_from_number(number.doubleValue);
+					this.numerator = x.numerator;
+					this.denominator = x.denominator;
+				}
+				else if(("numerator" in number) && ("denominator" in number)) {
+					this.numerator = (number.numerator instanceof BigInteger) ? number.numerator : new BigInteger(number.numerator);
+					this.denominator = (number.denominator instanceof BigInteger) ? number.denominator : new BigInteger(number.denominator);
+					is_normalization = true;
+				}
+				else {
+					const x1 = FractionTool.to_fraction_data_from_fraction_string(number.toString());
+					this.numerator = x1.numerator;
+					this.denominator = x1.denominator;
+				}
 			}
 			else {
 				throw "Fraction Unsupported argument " + number;
@@ -318,7 +334,7 @@ export default class Fraction {
 
 	/**
 	 * Create an entity object of this class.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {Fraction}
 	 */
 	static create(number) {
@@ -332,7 +348,7 @@ export default class Fraction {
 
 	/**
 	 * Convert number to Fraction type.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {Fraction}
 	 */
 	static valueOf(number) {
@@ -341,7 +357,7 @@ export default class Fraction {
 
 	/**
 	 * Convert to Fraction.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {Fraction}
 	 * @private
 	 */
@@ -356,7 +372,7 @@ export default class Fraction {
 
 	/**
 	 * Convert to real number.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -374,7 +390,7 @@ export default class Fraction {
 
 	/**
 	 * Convert to integer.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -440,7 +456,7 @@ export default class Fraction {
 	
 	/**
 	 * Add.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	add(num) {
@@ -461,7 +477,7 @@ export default class Fraction {
 
 	/**
 	 * Subtract.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	sub(num) {
@@ -482,7 +498,7 @@ export default class Fraction {
 
 	/**
 	 * Multiply.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	mul(num) {
@@ -500,7 +516,7 @@ export default class Fraction {
 
 	/**
 	 * Divide.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	div(num) {
@@ -526,7 +542,7 @@ export default class Fraction {
 
 	/**
 	 * Modulo, positive remainder of division.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	mod(num) {
@@ -539,7 +555,7 @@ export default class Fraction {
 	/**
 	 * Power function.
 	 * - Supports only integers.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @returns {Fraction} pow(A, B)
 	 */
 	pow(num) {
@@ -566,7 +582,7 @@ export default class Fraction {
 	/**
 	 * Multiply a multiple of ten.
 	 * - Supports only integers.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} n
+	 * @param {KFractionInputData} n
 	 * @returns {Fraction}
 	 */
 	scaleByPowerOfTen(n) {
@@ -645,7 +661,7 @@ export default class Fraction {
 	
 	/**
 	 * Equals.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @returns {boolean} A === B
 	 */
 	equals(num) {
@@ -656,7 +672,7 @@ export default class Fraction {
 
 	/**
 	 * Compare values.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(num) {
@@ -665,7 +681,7 @@ export default class Fraction {
 
 	/**
 	 * Maximum number.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
+	 * @param {KFractionInputData} number
 	 * @returns {Fraction} max([A, B])
 	 */
 	max(number) {
@@ -680,7 +696,7 @@ export default class Fraction {
 
 	/**
 	 * Minimum number.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
+	 * @param {KFractionInputData} number
 	 * @returns {Fraction} min([A, B])
 	 */
 	min(number) {
@@ -695,8 +711,8 @@ export default class Fraction {
 
 	/**
 	 * Clip number within range.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} min 
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} max
+	 * @param {KFractionInputData} min 
+	 * @param {KFractionInputData} max
 	 * @returns {Fraction} min(max(x, min), max)
 	 */
 	clip(min, max) {

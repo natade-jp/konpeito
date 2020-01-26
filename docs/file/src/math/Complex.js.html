@@ -35,8 +35,15 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.js~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.js~Matrix.html">Matrix</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalDivideType">KBigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalInputData">KBigDecimalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalLocalInputData">KBigDecimalLocalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalScaleData">KBigDecimalScaleData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KComplexInputData">KComplexInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixSettings">KMatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -45,8 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.js~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.js~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KRandomSettings">KRandomSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -64,6 +72,18 @@
 
 import Random from &quot;./tools/Random.js&quot;;
 import Matrix from &quot;./Matrix.js&quot;;
+
+/**
+ * Complex type argument.
+ * - Complex
+ * - number
+ * - string
+ * - Array&lt;number&gt;
+ * - {_re:number,_im:number}
+ * - {doubleValue:number}
+ * - {toString:function}
+ * @typedef {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|{doubleValue:number}|{toString:function}} KComplexInputData
+ */
 
 /**
  * Random number generation class used within Complex.
@@ -134,7 +154,7 @@ export default class Complex {
 	 * Initialization can be performed as follows.
 	 * - 1200, &quot;1200&quot;, &quot;12e2&quot;, &quot;1.2e3&quot;
 	 * - &quot;3 + 4i&quot;, &quot;4j + 3&quot;, [3, 4].
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number - Complex number. See how to use the function.
+	 * @param {KComplexInputData} number - Complex number. See how to use the function.
 	 */
 	constructor(number) {
 		// &#x884C;&#x5217;&#x3067;&#x4F7F;&#x3046;&#x305F;&#x3081;&#x30A4;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x306F;&#x5FC5;&#x305A;&#x5B88;&#x308B;&#x3053;&#x3068;&#x3002;
@@ -160,6 +180,11 @@ export default class Complex {
 				this._re = obj;
 				this._im = 0.0;
 			}
+			else if(typeof obj === &quot;string&quot;) {
+				const x = ComplexTool.ToComplexFromString(obj);
+				this._re = x.real;
+				this._im = x.imag;
+			}
 			else if(obj instanceof Array) {
 				if(obj.length === 2) {
 					this._re = obj[0];
@@ -169,18 +194,13 @@ export default class Complex {
 					throw &quot;Complex Unsupported argument &quot; + arguments;
 				}
 			}
-			else if(typeof obj === &quot;string&quot;) {
-				const x = ComplexTool.ToComplexFromString(obj);
-				this._re = x.real;
-				this._im = x.imag;
+			else if(&quot;doubleValue&quot; in obj) {
+				this._re = obj.doubleValue;
+				this._im = 0.0;
 			}
-			else if((obj instanceof Object) &amp;&amp; (typeof obj._re === &quot;number&quot;) &amp;&amp; (typeof obj._im === &quot;number&quot;)) {
+			else if((&quot;_re&quot; in obj) &amp;&amp; (&quot;_im&quot; in obj)) {
 				this._re = obj._re;
 				this._im = obj._im;
-			}
-			else if((number instanceof Object) &amp;&amp; (number.doubleValue)) {
-				this._re = number.doubleValue;
-				this._im = 0.0;
 			}
 			else if(obj instanceof Object) {
 				const x = ComplexTool.ToComplexFromString(obj.toString());
@@ -198,7 +218,7 @@ export default class Complex {
 
 	/**
 	 * Create an entity object of this class.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex}
 	 */
 	static create(number) {
@@ -212,7 +232,7 @@ export default class Complex {
 	
 	/**
 	 * Convert number to Complex type.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex}
 	 */
 	static valueOf(number) {
@@ -222,7 +242,7 @@ export default class Complex {
 	/**
 	 * Convert to Complex.
 	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number 
+	 * @param {KComplexInputData} number 
 	 * @returns {Complex}
 	 * @private
 	 */
@@ -240,7 +260,7 @@ export default class Complex {
 
 	/**
 	 * Convert to real number.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number 
+	 * @param {KComplexInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -259,7 +279,7 @@ export default class Complex {
 
 	/**
 	 * Convert to integer.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number 
+	 * @param {KComplexInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -448,7 +468,7 @@ export default class Complex {
 	
 	/**
 	 * Add.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number 
+	 * @param {KComplexInputData} number 
 	 * @returns {Complex} A + B
 	 */
 	add(number) {
@@ -460,7 +480,7 @@ export default class Complex {
 
 	/**
 	 * Subtract.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} A - B
 	 */
 	sub(number) {
@@ -472,7 +492,7 @@ export default class Complex {
 
 	/**
 	 * Multiply.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} A * B
 	 */
 	mul(number) {
@@ -497,7 +517,7 @@ export default class Complex {
 	
 	/**
 	 * Inner product/Dot product.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} A * conj(B)
 	 */
 	dot(number) {
@@ -522,7 +542,7 @@ export default class Complex {
 	
 	/**
 	 * Divide.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} A / B
 	 */
 	div(number) {
@@ -548,7 +568,7 @@ export default class Complex {
 
 	/**
 	 * Modulo, positive remainder of division.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number - Divided value (real number only).
+	 * @param {KComplexInputData} number - Divided value (real number only).
 	 * @returns {Complex} A mod B
 	 */
 	mod(number) {
@@ -584,8 +604,8 @@ export default class Complex {
 	
 	/**
 	 * Equals.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} number
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === B
 	 */
 	equals(number, tolerance) {
@@ -601,8 +621,8 @@ export default class Complex {
 
 	/**
 	 * Compare values.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} number
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {number} A &gt; B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, tolerance) {
@@ -619,7 +639,7 @@ export default class Complex {
 	
 	/**
 	 * Maximum number.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} max([A, B])
 	 */
 	max(number) {
@@ -634,7 +654,7 @@ export default class Complex {
 
 	/**
 	 * Minimum number.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} min([A, B])
 	 */
 	min(number) {
@@ -649,8 +669,8 @@ export default class Complex {
 
 	/**
 	 * Clip number within range.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} min 
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} max
+	 * @param {KComplexInputData} min 
+	 * @param {KComplexInputData} max
 	 * @returns {Complex} min(max(x, min), max)
 	 */
 	clip(min, max) {
@@ -678,7 +698,7 @@ export default class Complex {
 	
 	/**
 	 * Return true if the value is integer.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isInteger(tolerance) {
@@ -688,7 +708,7 @@ export default class Complex {
 
 	/**
 	 * Returns true if the vallue is complex integer (including normal integer).
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} real(A) === integer &amp;&amp; imag(A) === integer
 	 */
 	isComplexInteger(tolerance) {
@@ -700,7 +720,7 @@ export default class Complex {
 
 	/**
 	 * this === 0
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === 0
 	 */
 	isZero(tolerance) {
@@ -710,7 +730,7 @@ export default class Complex {
 
 	/**
 	 * this === 1
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === 1
 	 */
 	isOne(tolerance) {
@@ -720,7 +740,7 @@ export default class Complex {
 
 	/**
 	 * Returns true if the vallue is complex number (imaginary part is not 0).
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} imag(A) !== 0
 	 */
 	isComplex(tolerance) {
@@ -730,7 +750,7 @@ export default class Complex {
 	
 	/**
 	 * Return true if the value is real number.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} imag(A) === 0
 	 */
 	isReal(tolerance) {
@@ -829,7 +849,7 @@ export default class Complex {
 	
 	/**
 	 * Power function.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} pow(A, B)
 	 */
 	pow(number) {
@@ -989,7 +1009,7 @@ export default class Complex {
 	 * Atan (arc tangent) function.
 	 * Return the values of [-PI, PI] .
 	 * Supports only real numbers.
-	 * @param {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|Object} [number] - X
+	 * @param {KComplexInputData} [number] - X
 	 * @returns {Complex} atan2(Y, X)
 	 */
 	atan2(number) {

@@ -11,6 +11,18 @@
 import Random from "./tools/Random.js";
 
 /**
+ * BigInteger type argument.
+ * - BigInteger
+ * - number
+ * - string
+ * - Array<string|number>
+ * - {toBigInteger:function}
+ * - {intValue:number}
+ * - {toString:function}
+ * @typedef {BigInteger|number|string|Array<string|number>|{toBigInteger:function}|{intValue:number}|{toString:function}} KBigIntegerInputData
+ */
+
+/**
  * Random number class to be used when the random number class is not set.
  * @type {Random}
  * @ignore
@@ -303,7 +315,7 @@ export default class BigInteger {
 	 * - "0xff", ["ff", 16]
 	 * - "0o01234567", ["01234567", 8]
 	 * - "0b0110101", ["0110101", 2]
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [number] - Numeric data. See how to use the function.
+	 * @param {KBigIntegerInputData} [number] - Numeric data. See how to use the function.
 	 */
 	constructor(number) {
 		
@@ -342,7 +354,7 @@ export default class BigInteger {
 				this._sign = x._sign;
 			}
 			else if(number instanceof Array) {
-				if((number.length === 2) && (typeof number[0] === "string")) {
+				if((number.length === 2) && (typeof number[0] === "string" && (typeof number[1] === "number"))) {
 					const x = BigIntegerTool.toBigIntegerFromString(number[0], number[1]);
 					this.element = x.element;
 					this._sign = x._sign;
@@ -351,20 +363,22 @@ export default class BigInteger {
 					throw "BigInteger Unsupported argument " + arguments;
 				}
 			}
-			else if((number instanceof Object) && (number.toBigInteger)) {
-				const x = number.toBigInteger();
-				this.element = x.element;
-				this._sign = x._sign;
-			}
-			else if((number instanceof Object) && (number.intValue)) {
-				const x = BigIntegerTool.toBigIntegerFromNumber(number.intValue);
-				this.element = x.element;
-				this._sign = x._sign;
-			}
-			else if(number instanceof Object) {
-				const x = BigIntegerTool.toBigIntegerFromString(number.toString());
-				this.element = x.element;
-				this._sign = x._sign;
+			else if(typeof number === "object") {
+				if("toBigInteger" in number) {
+					const x = number.toBigInteger();
+					this.element = x.element;
+					this._sign = x._sign;
+				}
+				else if("intValue" in number) {
+					const x = BigIntegerTool.toBigIntegerFromNumber(number.intValue);
+					this.element = x.element;
+					this._sign = x._sign;
+				}
+				else {
+					const x = BigIntegerTool.toBigIntegerFromString(number.toString());
+					this.element = x.element;
+					this._sign = x._sign;
+				}
 			}
 			else {
 				throw "BigInteger Unsupported argument " + number;
@@ -377,7 +391,7 @@ export default class BigInteger {
 
 	/**
 	 * Create an entity object of this class.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger}
 	 */
 	static create(number) {
@@ -393,7 +407,7 @@ export default class BigInteger {
 	 * Create an arbitrary-precision integer.
 	 * - Does not support strings using exponential notation.
 	 * - If you want to initialize with the specified base number, please set up with an array ["ff", 16].
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger}
 	 */
 	static valueOf(number) {
@@ -403,7 +417,7 @@ export default class BigInteger {
 	/**
 	 * Convert to BigInteger.
 	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger}
 	 * @private
 	 */
@@ -418,7 +432,7 @@ export default class BigInteger {
 
 	/**
 	 * Convert to real number.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -436,7 +450,7 @@ export default class BigInteger {
 
 	/**
 	 * Convert to integer.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -454,7 +468,7 @@ export default class BigInteger {
 
 	/**
 	 * Random number of specified bit length.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bitsize - Bit length.
+	 * @param {KBigIntegerInputData} bitsize - Bit length.
 	 * @param {Random} [random] - Class for creating random numbers.
 	 * @returns {BigInteger}
 	 */
@@ -491,7 +505,7 @@ export default class BigInteger {
 
 	/**
 	 * Convert to string.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [radix=10] - Base number.
+	 * @param {KBigIntegerInputData} [radix=10] - Base number.
 	 * @returns {string}
 	 */
 	toString(radix) {
@@ -666,7 +680,7 @@ export default class BigInteger {
 	
 	/**
 	 * Add. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A += B
 	 * @private
 	 */
@@ -727,7 +741,7 @@ export default class BigInteger {
 
 	/**
 	 * Add.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A + B
 	 */
 	add(number) {
@@ -736,7 +750,7 @@ export default class BigInteger {
 
 	/**
 	 * Subtract. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A -= B
 	 * @private
 	 */
@@ -750,7 +764,7 @@ export default class BigInteger {
 
 	/**
 	 * Subtract.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A - B
 	 */
 	subtract(number) {
@@ -759,7 +773,7 @@ export default class BigInteger {
 
 	/**
 	 * Subtract.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A - B
 	 */
 	sub(number) {
@@ -768,7 +782,7 @@ export default class BigInteger {
 
 	/**
 	 * Multiply. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A *= B
 	 * @private
 	 */
@@ -781,7 +795,7 @@ export default class BigInteger {
 
 	/**
 	 * Multiply.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A * B
 	 */
 	multiply(number) {
@@ -843,7 +857,7 @@ export default class BigInteger {
 
 	/**
 	 * Multiply.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A * B
 	 */
 	mul(number) {
@@ -852,7 +866,7 @@ export default class BigInteger {
 
 	/**
 	 * Divide and remainder. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
 	 * @private
 	 */
@@ -899,7 +913,7 @@ export default class BigInteger {
 
 	/**
 	 * Divide and remainder.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
 	 */
 	divideAndRemainder(number) {
@@ -908,7 +922,7 @@ export default class BigInteger {
 
 	/**
 	 * Divide. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} fix(A / B)
 	 * @private
 	 */
@@ -918,7 +932,7 @@ export default class BigInteger {
 
 	/**
 	 * Divide.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} fix(A / B)
 	 */
 	divide(number) {
@@ -927,7 +941,7 @@ export default class BigInteger {
 
 	/**
 	 * Divide.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} fix(A / B)
 	 */
 	div(number) {
@@ -936,7 +950,7 @@ export default class BigInteger {
 
 	/**
 	 * Remainder of division. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A %= B
 	 * @private
 	 */
@@ -946,7 +960,7 @@ export default class BigInteger {
 
 	/**
 	 * Remainder of division.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A % B
 	 */
 	remainder(number) {
@@ -955,7 +969,7 @@ export default class BigInteger {
 
 	/**
 	 * Remainder of division.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A % B
 	 */
 	rem(number) {
@@ -964,7 +978,7 @@ export default class BigInteger {
 
 	/**
 	 * Modulo, positive remainder of division. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A = A mod B
 	 * @private
 	 */
@@ -987,7 +1001,7 @@ export default class BigInteger {
 
 	/**
 	 * Modulo, positive remainder of division.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A mod B
 	 */
 	mod(number) {
@@ -996,8 +1010,8 @@ export default class BigInteger {
 
 	/**
 	 * Modular exponentiation.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
-	 * @param {BigInteger|number|string|Array<string|number>|Object} m 
+	 * @param {KBigIntegerInputData} exponent
+	 * @param {KBigIntegerInputData} m 
 	 * @returns {BigInteger} A^B mod m
 	 */
 	modPow(exponent, m) {
@@ -1017,7 +1031,7 @@ export default class BigInteger {
 
 	/**
 	 * Modular multiplicative inverse.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} m
+	 * @param {KBigIntegerInputData} m
 	 * @returns {BigInteger} A^(-1) mod m
 	 */
 	modInverse(m) {
@@ -1050,7 +1064,7 @@ export default class BigInteger {
 
 	/**
 	 * Multiply a multiple of ten.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @param {KBigIntegerInputData} n
 	 * @returns {BigInteger} x * 10^n
 	 */
 	scaleByPowerOfTen(n) {
@@ -1072,7 +1086,7 @@ export default class BigInteger {
 	
 	/**
 	 * Power function.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
+	 * @param {KBigIntegerInputData} exponent
 	 * @returns {BigInteger} pow(A, B)
 	 */
 	pow(exponent) {
@@ -1147,7 +1161,7 @@ export default class BigInteger {
 	
 	/**
 	 * Value at the specified position of the internally used array that composed of hexadecimal numbers.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} point - Array address.
+	 * @param {KBigIntegerInputData} point - Array address.
 	 * @returns {number}
 	 */
 	getShort(point) {
@@ -1204,7 +1218,7 @@ export default class BigInteger {
 	
 	/**
 	 * Euclidean algorithm.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} gcd(x, y)
 	 */
 	gcd(number) {
@@ -1223,7 +1237,7 @@ export default class BigInteger {
 
 	/**
 	 * Extended Euclidean algorithm.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
 	 */
 	extgcd(number) {
@@ -1255,7 +1269,7 @@ export default class BigInteger {
 
 	/**
 	 * Least common multiple.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} lcm(x, y)
 	 */
 	lcm(number) {
@@ -1269,7 +1283,7 @@ export default class BigInteger {
 	
 	/**
 	 * Equals.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {boolean} A === B
 	 */
 	equals(number) {
@@ -1290,7 +1304,7 @@ export default class BigInteger {
 
 	/**
 	 * Compare values without sign.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
 	 */
 	compareToAbs(number) {
@@ -1312,7 +1326,7 @@ export default class BigInteger {
 
 	/**
 	 * Compare values.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number) {
@@ -1333,7 +1347,7 @@ export default class BigInteger {
 
 	/**
 	 * Maximum number.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} max([A, B])
 	 */
 	max(number) {
@@ -1348,7 +1362,7 @@ export default class BigInteger {
 
 	/**
 	 * Minimum number.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} min([A, B])
 	 */
 	min(number) {
@@ -1363,8 +1377,8 @@ export default class BigInteger {
 
 	/**
 	 * Clip number within range.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} min 
-	 * @param {BigInteger|number|string|Array<string|number>|Object} max
+	 * @param {KBigIntegerInputData} min 
+	 * @param {KBigIntegerInputData} max
 	 * @returns {BigInteger} min(max(x, min), max)
 	 */
 	clip(min, max) {
@@ -1392,10 +1406,10 @@ export default class BigInteger {
 	
 	/**
 	 * Prime represented within the specified bit length.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bits - Bit length.
+	 * @param {KBigIntegerInputData} bits - Bit length.
 	 * @param {Random} [random] - Class for creating random numbers.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - Number of times to retry if prime generation fails.
+	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
+	 * @param {KBigIntegerInputData} [create_count=500] - Number of times to retry if prime generation fails.
 	 * @returns {BigInteger}
 	 */
 	static probablePrime(bits, random, certainty, create_count ) {
@@ -1413,7 +1427,7 @@ export default class BigInteger {
 	/**
 	 * Return true if the value is prime number by Miller-Labin prime number determination method.
 	 * Attention : it takes a very long time to process.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
 	 * @returns {boolean}
 	 */
 	isProbablePrime(certainty) {
@@ -1469,8 +1483,8 @@ export default class BigInteger {
 
 	/**
 	 * Next prime.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - Search range of next prime.
+	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
+	 * @param {KBigIntegerInputData} [search_max=100000] - Search range of next prime.
 	 * @returns {BigInteger}
 	 */
 	nextProbablePrime(certainty, search_max) {
@@ -1492,7 +1506,7 @@ export default class BigInteger {
 	
 	/**
 	 * this <<= n
-	 * @param {BigInteger|number|string|Array<string|number>|Object} shift_length - Bit shift size.
+	 * @param {KBigIntegerInputData} shift_length - Bit shift size.
 	 * @returns {BigInteger} A <<= n
 	 * @private
 	 */
@@ -1585,7 +1599,7 @@ export default class BigInteger {
 
 	/**
 	 * this << n
-	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @param {KBigIntegerInputData} n
 	 * @returns {BigInteger} A << n
 	 */
 	shift(n) {
@@ -1594,7 +1608,7 @@ export default class BigInteger {
 
 	/**
 	 * this << n
-	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @param {KBigIntegerInputData} n
 	 * @returns {BigInteger} A << n
 	 */
 	shiftLeft(n) {
@@ -1603,7 +1617,7 @@ export default class BigInteger {
 
 	/**
 	 * this >> n
-	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @param {KBigIntegerInputData} n
 	 * @returns {BigInteger} A >> n
 	 */
 	shiftRight(n) {
@@ -1679,7 +1693,7 @@ export default class BigInteger {
 
 	/**
 	 * Logical AND. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A &= B
 	 * @private
 	 */
@@ -1716,7 +1730,7 @@ export default class BigInteger {
 
 	/**
 	 * Logical AND.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A & B
 	 */
 	and(number) {
@@ -1725,7 +1739,7 @@ export default class BigInteger {
 
 	/**
 	 * Logical OR. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A |= B
 	 * @private
 	 */
@@ -1758,7 +1772,7 @@ export default class BigInteger {
 
 	/**
 	 * Logical OR.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A | B
 	 */
 	or(number) {
@@ -1767,7 +1781,7 @@ export default class BigInteger {
 
 	/**
 	 * Logical Exclusive-OR. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A ^= B
 	 * @private
 	 */
@@ -1802,7 +1816,7 @@ export default class BigInteger {
 
 	/**
 	 * Logical Exclusive-OR.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A ^ B
 	 */
 	xor(number) {
@@ -1828,7 +1842,7 @@ export default class BigInteger {
 
 	/**
 	 * Logical Not-AND. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A &= (!B)
 	 * @private
 	 */
@@ -1839,7 +1853,7 @@ export default class BigInteger {
 
 	/**
 	 * Logical Not-AND.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A & (!B)
 	 */
 	andNot(number) {
@@ -1848,7 +1862,7 @@ export default class BigInteger {
 
 	/**
 	 * Logical Not-AND. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A &= (!B)
 	 * @private
 	 */
@@ -1858,7 +1872,7 @@ export default class BigInteger {
 
 	/**
 	 * Logical Not-AND.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A & (!B)
 	 */
 	nand(number) {
@@ -1867,7 +1881,7 @@ export default class BigInteger {
 
 	/**
 	 * Logical Not-OR. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A = !(A | B)
 	 * @private
 	 */
@@ -1878,7 +1892,7 @@ export default class BigInteger {
 
 	/**
 	 * Logical Not-OR.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} !(A | B)
 	 */
 	orNot(number) {
@@ -1887,7 +1901,7 @@ export default class BigInteger {
 
 	/**
 	 * Logical Not-OR. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A = !(A | B)
 	 * @private
 	 */
@@ -1897,7 +1911,7 @@ export default class BigInteger {
 
 	/**
 	 * Logical Not-OR.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} !(A | B)
 	 */
 	nor(number) {
@@ -1906,7 +1920,7 @@ export default class BigInteger {
 
 	/**
 	 * this | (1 << n) (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
 	 * @private
 	 */
@@ -1919,7 +1933,7 @@ export default class BigInteger {
 
 	/**
 	 * this | (1 << n)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
 	 */
 	setBit(bit) {
@@ -1929,7 +1943,7 @@ export default class BigInteger {
 
 	/**
 	 * Invert a specific bit.) (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
 	 * @private
 	 */
@@ -1943,7 +1957,7 @@ export default class BigInteger {
 
 	/**
 	 * Invert a specific bit.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
 	 */
 	flipBit(bit) {
@@ -1953,7 +1967,7 @@ export default class BigInteger {
 
 	/**
 	 * Lower a specific bit.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bit 
+	 * @param {KBigIntegerInputData} bit 
 	 * @returns {BigInteger}
 	 */
 	clearBit(bit) {
@@ -1966,7 +1980,7 @@ export default class BigInteger {
 
 	/**
 	 * Test if a particular bit is on.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @param {KBigIntegerInputData} bit
 	 * @returns {boolean}
 	 */
 	testBit(bit) {

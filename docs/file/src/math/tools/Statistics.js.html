@@ -35,8 +35,15 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.js~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.js~Matrix.html">Matrix</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalDivideType">KBigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalInputData">KBigDecimalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalLocalInputData">KBigDecimalLocalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalScaleData">KBigDecimalScaleData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KComplexInputData">KComplexInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixSettings">KMatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -45,8 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.js~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.js~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KRandomSettings">KRandomSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -68,7 +76,7 @@ import Matrix from &quot;../Matrix.js&quot;;
 /**
  * Collection of calculation settings for matrix.
  * - Available options vary depending on the method.
- * @typedef {Object} StatisticsSettings
+ * @typedef {Object} KStatisticsSettings
  * @property {?string|?number} [dimension=&quot;auto&quot;] Calculation direction. 0/&quot;auto&quot;, 1/&quot;row&quot;, 2/&quot;column&quot;, 3/&quot;both&quot;.
  * @property {Object} [correction] Correction value. For statistics. 0(unbiased), 1(sample).
  */
@@ -80,8 +88,8 @@ export default class Statistics {
 
 	/**
 	 * Maximum number.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix} max([A, B])
 	 */
 	static max(x, type) {
@@ -105,8 +113,8 @@ export default class Statistics {
 	
 	/**
 	 * Minimum number.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix} min([A, B])
 	 */
 	static min(x, type) {
@@ -130,8 +138,8 @@ export default class Statistics {
 
 	/**
 	 * Sum.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static sum(x, type) {
@@ -158,8 +166,8 @@ export default class Statistics {
 
 	/**
 	 * Arithmetic average.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static mean(x, type) {
@@ -186,8 +194,8 @@ export default class Statistics {
 
 	/**
 	 * Product of array elements.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static prod(x, type) {
@@ -209,8 +217,8 @@ export default class Statistics {
 
 	/**
 	 * Geometric mean.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static geomean(x, type) {
@@ -232,8 +240,8 @@ export default class Statistics {
 	
 	/**
 	 * Median.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static median(x, type) {
@@ -269,8 +277,8 @@ export default class Statistics {
 
 	/**
 	 * Mode.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static mode(x, type) {
@@ -323,9 +331,9 @@ export default class Statistics {
 	/**
 	 * Moment.
 	 * - Moment of order n. Equivalent to the definition of variance at 2.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
 	 * @param {number} nth_order
-	 * @param {StatisticsSettings} [type]
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static moment(x, nth_order, type) {
@@ -370,8 +378,8 @@ export default class Statistics {
 
 	/**
 	 * Variance.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static var(x, type) {
@@ -404,8 +412,8 @@ export default class Statistics {
 
 	/**
 	 * Standard deviation.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static std(x, type) {
@@ -423,9 +431,9 @@ export default class Statistics {
 	/**
 	 * Mean absolute deviation.
 	 * - The &quot;algorithm&quot; can choose &quot;0/mean&quot;(default) and &quot;1/median&quot;.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
 	 * @param {?string|?number} [algorithm]
-	 * @param {StatisticsSettings} [type]
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static mad(x, algorithm, type) {
@@ -445,8 +453,8 @@ export default class Statistics {
 
 	/**
 	 * Skewness.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static skewness(x, type) {
@@ -466,8 +474,8 @@ export default class Statistics {
 
 	/**
 	 * Covariance matrix.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static cov(x, type) {
@@ -505,8 +513,8 @@ export default class Statistics {
 
 	/**
 	 * The samples are normalized to a mean value of 0, standard deviation of 1.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static normalize(x, type) {
@@ -518,8 +526,8 @@ export default class Statistics {
 
 	/**
 	 * Correlation matrix.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static corrcoef(x, type) {
@@ -530,9 +538,9 @@ export default class Statistics {
 	/**
 	 * Sort.
 	 * - The &quot;order&quot; can choose &quot;ascend&quot;(default) and &quot;descend&quot;.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
 	 * @param {string} [order]
-	 * @param {StatisticsSettings} [type]
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static sort(x, order, type) {

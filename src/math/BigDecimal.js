@@ -13,8 +13,34 @@ import RoundingMode, {RoundingModeEntity} from "./context/RoundingMode.js";
 import MathContext from "./context/MathContext.js";
 
 /**
+ * BigDecimal type argument.(local)
+ * - number
+ * - string
+ * - BigDecimal
+ * - BigInteger
+ * - {toBigDecimal:function}
+ * - {doubleValue:number}
+ * - {toString:function}
+ * @typedef {number|string|BigDecimal|BigInteger|{toBigDecimal:function}|{doubleValue:number}|{toString:function}} KBigDecimalLocalInputData
+ */
+
+/**
+ * ScaleData for argument of BigDecimal.
+ * - {integer:BigInteger,scale:?number,context:?MathContext}
+ * @typedef {{integer:BigInteger,scale:?number,context:?MathContext}} KBigDecimalScaleData
+ */
+
+/**
+ * BigDecimal type argument.
+ * - KBigDecimalLocalInputData
+ * - Array<KBigDecimalLocalInputData|MathContext>
+ * - KBigDecimalScaleData
+ * @typedef {KBigDecimalLocalInputData|Array<KBigDecimalLocalInputData|MathContext>|KBigDecimalScaleData} KBigDecimalInputData
+ */
+
+/**
  * Setting of calculation result of division.
- * @typedef {Object} BigDecimalDivideType
+ * @typedef {Object} KBigDecimalDivideType
  * @property {number} [scale] Scale of rounding.
  * @property {RoundingModeEntity} [roundingMode] Rounding mode.
  * @property {MathContext} [context] Configuration.(scale and roundingMode are unnecessary.)
@@ -84,7 +110,7 @@ class BigDecimalTool {
 
 	/**
 	 * Create data for BigDecimal from number.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} value 
+	 * @param {number} value 
 	 * @returns {{scale : number, integer : BigInteger}}
 	 */
 	static ToBigDecimalFromNumber(value) {
@@ -140,7 +166,7 @@ export default class BigDecimal {
 	 * 
 	 * If "context" is not specified, the "default_context" set for the class is used.
 	 * The "context" is the used when no environment settings are specified during calculation.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,context:?MathContext}|BigInteger|Object} number - Real data.
+	 * @param {KBigDecimalInputData} number - Real data.
 	 */
 	constructor(number) {
 
@@ -190,11 +216,21 @@ export default class BigDecimal {
 			this.integer	= data.integer;
 			this._scale		= data.scale;
 		}
+		else if(typeof number === "string") {
+			const data = BigDecimalTool.ToBigDecimalFromString(number);
+			this.integer	= data.integer;
+			this._scale		= data.scale;
+		}
 		else if(number instanceof Array) {
 			if(number.length >= 1) {
 				const prm1 = number[0];
 				if(typeof prm1 === "number") {
-					const data = BigDecimalTool.ToBigDecimalFromNumber(prm1);
+					const data		= BigDecimalTool.ToBigDecimalFromNumber(prm1);
+					this.integer	= data.integer;
+					this._scale		= data.scale;
+				}
+				else if(typeof prm1 === "string") {
+					const data		= BigDecimalTool.ToBigDecimalFromString(prm1);
 					this.integer	= data.integer;
 					this._scale		= data.scale;
 				}
@@ -205,73 +241,75 @@ export default class BigDecimal {
 				else if(prm1 instanceof BigInteger) {
 					this.integer			= prm1.clone();
 				}
-				else if((prm1 instanceof Object) && (prm1.toBigDecimal)) {
-					const data				= prm1.toBigDecimal();
-					this.integer			= data.integer;
-					this._scale				= data._scale;
-				}
-				else if((prm1 instanceof Object) && (prm1.doubleValue)) {
-					const data = BigDecimalTool.ToBigDecimalFromNumber(prm1.doubleValue);
-					this.integer	= data.integer;
-					this._scale		= data.scale;
+				else if(typeof prm1 === "object") {
+					if("toBigDecimal" in prm1) {
+						const data		= prm1.toBigDecimal();
+						this.integer	= data.integer;
+						this._scale		= data._scale;
+					}
+					else if("doubleValue" in prm1) {
+						const data = BigDecimalTool.ToBigDecimalFromNumber(prm1.doubleValue);
+						this.integer	= data.integer;
+						this._scale		= data.scale;
+					}
+					else {
+						const data = BigDecimalTool.ToBigDecimalFromString(prm1.toString());
+						this.integer	= data.integer;
+						this._scale		= data.scale;
+					}
 				}
 				else {
-					const data = BigDecimalTool.ToBigDecimalFromString(prm1.toString());
-					this.integer	= data.integer;
-					this._scale		= data.scale;
+					throw "BigDecimal Unsupported argument " + prm1 + "(" + (typeof prm1) + ")";
 				}
 			}
 			if(number.length >= 2) {
 				// スケール値を省略しているかどうかを、数値かどうかで判定している。
-				if(typeof number[1] === "number" || number[1] instanceof Number) {
+				if(typeof number[1] === "number") {
 					// 2つめが数値の場合は、2つ目をスケール値として使用する
 					this._scale	= number[1];
 					if(number.length >= 3) {
-						this.default_context = number[2] !== undefined ? number[2] : DEFAULT_CONTEXT;
+						this.default_context = ((number[2] !== undefined) && (number[2] instanceof MathContext)) ? number[2] : DEFAULT_CONTEXT;
 						is_set_context = true;
 					}
 				}
 				else {
 					if(number.length >= 2) {
-						this.default_context = number[1] !== undefined ? number[1] : DEFAULT_CONTEXT;
+						this.default_context = ((number[1] !== undefined) && (number[1] instanceof MathContext)) ? number[1] : DEFAULT_CONTEXT;
 						is_set_context = true;
 					}
 				}
 			}
 		}
-		else if(typeof number === "string") {
-			const data = BigDecimalTool.ToBigDecimalFromString(number);
-			this.integer	= data.integer;
-			this._scale		= data.scale;
-		}
 		else if(number instanceof BigInteger) {
 			this.integer	= number.clone();
 		}
-		else if((number instanceof Object) && (number.toBigDecimal)) {
-			const data				= number.toBigDecimal();
-			this.integer			= data.integer;
-			this._scale				= data._scale;
-			this.default_context	= data.default_context;
-		}
-		else if((number instanceof Object) && (number.scale !== undefined && number.default_context !== undefined)) {
-			this.integer	= new BigInteger(number.integer);
-			if(number.scale) {
-				this._scale = number.scale;
+		else if(typeof number === "object") {
+			if("toBigDecimal" in number) {
+				const data				= number.toBigDecimal();
+				this.integer			= data.integer;
+				this._scale				= data._scale;
+				this.default_context	= data.default_context;
 			}
-			if(number.context) {
-				this.default_context = number.context;
-				is_set_context = true;
+			else if("doubleValue" in number) {
+				const data = BigDecimalTool.ToBigDecimalFromNumber(number.doubleValue);
+				this.integer	= data.integer;
+				this._scale		= data.scale;
 			}
-		}
-		else if((number instanceof Object) && (number.doubleValue)) {
-			const data = BigDecimalTool.ToBigDecimalFromNumber(number.doubleValue);
-			this.integer	= data.integer;
-			this._scale		= data.scale;
-		}
-		else if(number instanceof Object) {
-			const data = BigDecimalTool.ToBigDecimalFromString(number.toString());
-			this.integer	= data.integer;
-			this._scale		= data.scale;
+			else if(("integer" in number) && ("scale" in number) && ("context" in number)) {
+				this.integer	= new BigInteger(number.integer);
+				if(number.scale) {
+					this._scale = number.scale;
+				}
+				if(number.context) {
+					this.default_context = number.context;
+					is_set_context = true;
+				}
+			}
+			else if(number instanceof Object) {
+				const data = BigDecimalTool.ToBigDecimalFromString(number.toString());
+				this.integer	= data.integer;
+				this._scale		= data.scale;
+			}
 		}
 		else {
 			throw "BigDecimal Unsupported argument " + arguments;
@@ -303,7 +341,7 @@ export default class BigDecimal {
 	 * 
 	 * If "context" is not specified, the "default_context" set for the class is used.
 	 * The "context" is the used when no environment settings are specified during calculation.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
+	 * @param {KBigDecimalInputData} number - Real data.
 	 * @returns {BigDecimal}
 	 */
 	static create(number) {
@@ -317,7 +355,7 @@ export default class BigDecimal {
 
 	/**
 	 * Create a number using settings of this number.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
+	 * @param {KBigDecimalLocalInputData} number - Real data.
 	 * @param {MathContext} [mc] - Setting preferences when creating objects.
 	 * @returns {BigDecimal}
 	 */
@@ -332,8 +370,8 @@ export default class BigDecimal {
 
 	/**
 	 * Convert number to BigDecimal type.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} x 
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [scale] 
+	 * @param {KBigDecimalLocalInputData} x 
+	 * @param {MathContext} [scale] 
 	 * @returns {BigDecimal}
 	 */
 	static valueOf(x, scale) {
@@ -348,7 +386,7 @@ export default class BigDecimal {
 	/**
 	 * Convert to BigDecimal.
 	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @returns {BigDecimal}
 	 * @private
 	 */
@@ -364,7 +402,7 @@ export default class BigDecimal {
 	/**
 	 * Convert to BigInteger.
 	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @returns {BigInteger}
 	 * @private
 	 */
@@ -376,13 +414,14 @@ export default class BigDecimal {
 			return number.toBigInteger();
 		}
 		else {
+			// @ts-ignore
 			return new BigInteger(number);
 		}
 	}
 
 	/**
 	 * Convert to real number.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -400,7 +439,7 @@ export default class BigDecimal {
 
 	/**
 	 * Convert to integer.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -412,6 +451,7 @@ export default class BigDecimal {
 			return number.intValue;
 		}
 		else {
+			// @ts-ignore
 			return (new BigInteger(number)).intValue;
 		}
 	}
@@ -521,7 +561,7 @@ export default class BigDecimal {
 
 	/**
 	 * Move the decimal point to the left.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @param {KBigDecimalInputData} n 
 	 * @returns {BigDecimal} 
 	 */
 	movePointLeft(n) {
@@ -533,7 +573,7 @@ export default class BigDecimal {
 
 	/**
 	 * Move the decimal point to the right.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @param {KBigDecimalInputData} n 
 	 * @returns {BigDecimal} 
 	 */
 	movePointRight(n) {
@@ -568,7 +608,7 @@ export default class BigDecimal {
 	
 	/**
 	 * Add.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A + B
 	 */
@@ -598,7 +638,7 @@ export default class BigDecimal {
 
 	/**
 	 * Subtract.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A - B
 	 */
@@ -623,7 +663,7 @@ export default class BigDecimal {
 
 	/**
 	 * Subtract.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A - B
 	 */
@@ -633,7 +673,7 @@ export default class BigDecimal {
 
 	/**
 	 * Multiply.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A * B
 	 */
@@ -650,7 +690,7 @@ export default class BigDecimal {
 
 	/**
 	 * Multiply.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A * B
 	 */
@@ -660,7 +700,7 @@ export default class BigDecimal {
 
 	/**
 	 * Divide not calculated to the decimal point.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} (int)(A / B)
 	 */
@@ -741,7 +781,7 @@ export default class BigDecimal {
 
 	/**
 	 * Divide and remainder.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {Array<BigDecimal>} [C = (int)(A / B), A - C * B]
 	 */
@@ -771,7 +811,7 @@ export default class BigDecimal {
 
 	/**
 	 * Remainder of division.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A % B
 	 */
@@ -781,7 +821,7 @@ export default class BigDecimal {
 
 	/**
 	 * Modulo, positive remainder of division.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A mod B
 	 */
@@ -801,8 +841,8 @@ export default class BigDecimal {
 	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
 	 * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
 	 * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {MathContext|BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @param {KBigDecimalInputData} number
+	 * @param {MathContext|KBigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal}
 	 */
 	divide(number, type) {
@@ -924,8 +964,8 @@ export default class BigDecimal {
 	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
 	 * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
 	 * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {MathContext|BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @param {KBigDecimalInputData} number
+	 * @param {MathContext|KBigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal} A / B
 	 */
 	div(number, type) {
@@ -997,7 +1037,7 @@ export default class BigDecimal {
 	 * Multiply a multiple of ten.
 	 * - Supports only integers.
 	 * - Only the scale is changed without changing the precision.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @param {KBigDecimalInputData} n 
 	 * @returns {BigDecimal} A * 10^floor(n)
 	 */
 	scaleByPowerOfTen(n) {
@@ -1094,8 +1134,8 @@ export default class BigDecimal {
 	 * - Attention : Test for equality, including the precision and the scale. 
 	 * - Use the "compareTo" if you only want to find out whether they are also mathematically equal.
 	 * - If you specify a "tolerance", it is calculated by ignoring the test of the precision and the scale.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {KBigDecimalInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === B
 	 */
 	equals(number, tolerance) {
@@ -1119,8 +1159,8 @@ export default class BigDecimal {
 
 	/**
 	 * Compare values.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+	 * @param {KBigDecimalInputData} number
+	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, tolerance) {
@@ -1170,7 +1210,7 @@ export default class BigDecimal {
 
 	/**
 	 * Maximum number.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {KBigDecimalInputData} number
 	 * @returns {BigDecimal} max([A, B])
 	 */
 	max(number) {
@@ -1185,7 +1225,7 @@ export default class BigDecimal {
 
 	/**
 	 * Minimum number.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @returns {BigDecimal} min([A, B])
 	 */
 	min(number) {
@@ -1200,8 +1240,8 @@ export default class BigDecimal {
 
 	/**
 	 * Clip number within range.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
+	 * @param {KBigDecimalInputData} min
+	 * @param {KBigDecimalInputData} max
 	 * @returns {BigDecimal} min(max(x, min), max)
 	 */
 	clip(min, max) {
@@ -1245,7 +1285,7 @@ export default class BigDecimal {
 
 	/**
 	 * Convert to string using scientific notation.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - Number of digits in exponent part.
+	 * @param {KBigDecimalInputData} e_len - Number of digits in exponent part.
 	 * @returns {string} 
 	 */
 	toScientificNotation(e_len) {
@@ -1334,7 +1374,7 @@ export default class BigDecimal {
 	
 	/**
 	 * Change the scale.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - New scale.
+	 * @param {KBigDecimalInputData} new_scale - New scale.
 	 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
 	 * @returns {BigDecimal} 
 	 */
@@ -1480,7 +1520,7 @@ export default class BigDecimal {
 	/**
 	 * Power function.
 	 * - An exception occurs when doing a huge multiplication.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} pow(A, B)
 	 */
@@ -1971,7 +2011,7 @@ export default class BigDecimal {
 	 * Atan (arc tangent) function.
 	 * Return the values of [-PI, PI] .
 	 * Supports only real numbers.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} atan2(Y, X)
 	 */
@@ -2010,7 +2050,7 @@ export default class BigDecimal {
 	
 	/**
 	 * Return true if the value is integer.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isInteger(tolerance) {
@@ -2019,7 +2059,7 @@ export default class BigDecimal {
 
 	/**
 	 * this === 0
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isZero(tolerance) {
@@ -2033,7 +2073,7 @@ export default class BigDecimal {
 	
 	/**
 	 * this === 1
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isOne(tolerance) {

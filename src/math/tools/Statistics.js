@@ -14,7 +14,7 @@ import Matrix from "../Matrix.js";
 /**
  * Collection of calculation settings for matrix.
  * - Available options vary depending on the method.
- * @typedef {Object} StatisticsSettings
+ * @typedef {Object} KStatisticsSettings
  * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
  * @property {Object} [correction] Correction value. For statistics. 0(unbiased), 1(sample).
  */
@@ -26,8 +26,8 @@ export default class Statistics {
 
 	/**
 	 * Maximum number.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix} max([A, B])
 	 */
 	static max(x, type) {
@@ -51,8 +51,8 @@ export default class Statistics {
 	
 	/**
 	 * Minimum number.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix} min([A, B])
 	 */
 	static min(x, type) {
@@ -76,8 +76,8 @@ export default class Statistics {
 
 	/**
 	 * Sum.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static sum(x, type) {
@@ -104,8 +104,8 @@ export default class Statistics {
 
 	/**
 	 * Arithmetic average.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static mean(x, type) {
@@ -132,8 +132,8 @@ export default class Statistics {
 
 	/**
 	 * Product of array elements.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static prod(x, type) {
@@ -155,8 +155,8 @@ export default class Statistics {
 
 	/**
 	 * Geometric mean.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static geomean(x, type) {
@@ -178,8 +178,8 @@ export default class Statistics {
 	
 	/**
 	 * Median.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static median(x, type) {
@@ -215,8 +215,8 @@ export default class Statistics {
 
 	/**
 	 * Mode.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static mode(x, type) {
@@ -269,9 +269,9 @@ export default class Statistics {
 	/**
 	 * Moment.
 	 * - Moment of order n. Equivalent to the definition of variance at 2.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @param {number} nth_order
-	 * @param {StatisticsSettings} [type]
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static moment(x, nth_order, type) {
@@ -316,8 +316,8 @@ export default class Statistics {
 
 	/**
 	 * Variance.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static var(x, type) {
@@ -350,8 +350,8 @@ export default class Statistics {
 
 	/**
 	 * Standard deviation.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static std(x, type) {
@@ -369,9 +369,9 @@ export default class Statistics {
 	/**
 	 * Mean absolute deviation.
 	 * - The "algorithm" can choose "0/mean"(default) and "1/median".
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @param {?string|?number} [algorithm]
-	 * @param {StatisticsSettings} [type]
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static mad(x, algorithm, type) {
@@ -391,8 +391,8 @@ export default class Statistics {
 
 	/**
 	 * Skewness.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static skewness(x, type) {
@@ -412,8 +412,8 @@ export default class Statistics {
 
 	/**
 	 * Covariance matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static cov(x, type) {
@@ -451,8 +451,8 @@ export default class Statistics {
 
 	/**
 	 * The samples are normalized to a mean value of 0, standard deviation of 1.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static normalize(x, type) {
@@ -464,8 +464,8 @@ export default class Statistics {
 
 	/**
 	 * Correlation matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static corrcoef(x, type) {
@@ -476,9 +476,9 @@ export default class Statistics {
 	/**
 	 * Sort.
 	 * - The "order" can choose "ascend"(default) and "descend".
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @param {string} [order]
-	 * @param {StatisticsSettings} [type]
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static sort(x, order, type) {

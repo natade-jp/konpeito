@@ -12,6 +12,18 @@ import Random from "./tools/Random.js";
 import Matrix from "./Matrix.js";
 
 /**
+ * Complex type argument.
+ * - Complex
+ * - number
+ * - string
+ * - Array<number>
+ * - {_re:number,_im:number}
+ * - {doubleValue:number}
+ * - {toString:function}
+ * @typedef {Complex|number|string|Array<number>|{_re:number,_im:number}|{doubleValue:number}|{toString:function}} KComplexInputData
+ */
+
+/**
  * Random number generation class used within Complex.
  * @type {Random}
  * @ignore
@@ -80,7 +92,7 @@ export default class Complex {
 	 * Initialization can be performed as follows.
 	 * - 1200, "1200", "12e2", "1.2e3"
 	 * - "3 + 4i", "4j + 3", [3, 4].
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Complex number. See how to use the function.
+	 * @param {KComplexInputData} number - Complex number. See how to use the function.
 	 */
 	constructor(number) {
 		// 行列で使うためイミュータブルは必ず守ること。
@@ -106,6 +118,11 @@ export default class Complex {
 				this._re = obj;
 				this._im = 0.0;
 			}
+			else if(typeof obj === "string") {
+				const x = ComplexTool.ToComplexFromString(obj);
+				this._re = x.real;
+				this._im = x.imag;
+			}
 			else if(obj instanceof Array) {
 				if(obj.length === 2) {
 					this._re = obj[0];
@@ -115,18 +132,13 @@ export default class Complex {
 					throw "Complex Unsupported argument " + arguments;
 				}
 			}
-			else if(typeof obj === "string") {
-				const x = ComplexTool.ToComplexFromString(obj);
-				this._re = x.real;
-				this._im = x.imag;
+			else if("doubleValue" in obj) {
+				this._re = obj.doubleValue;
+				this._im = 0.0;
 			}
-			else if((obj instanceof Object) && (typeof obj._re === "number") && (typeof obj._im === "number")) {
+			else if(("_re" in obj) && ("_im" in obj)) {
 				this._re = obj._re;
 				this._im = obj._im;
-			}
-			else if((number instanceof Object) && (number.doubleValue)) {
-				this._re = number.doubleValue;
-				this._im = 0.0;
 			}
 			else if(obj instanceof Object) {
 				const x = ComplexTool.ToComplexFromString(obj.toString());
@@ -144,7 +156,7 @@ export default class Complex {
 
 	/**
 	 * Create an entity object of this class.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex}
 	 */
 	static create(number) {
@@ -158,7 +170,7 @@ export default class Complex {
 	
 	/**
 	 * Convert number to Complex type.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex}
 	 */
 	static valueOf(number) {
@@ -168,7 +180,7 @@ export default class Complex {
 	/**
 	 * Convert to Complex.
 	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
+	 * @param {KComplexInputData} number 
 	 * @returns {Complex}
 	 * @private
 	 */
@@ -186,7 +198,7 @@ export default class Complex {
 
 	/**
 	 * Convert to real number.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
+	 * @param {KComplexInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -205,7 +217,7 @@ export default class Complex {
 
 	/**
 	 * Convert to integer.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
+	 * @param {KComplexInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -394,7 +406,7 @@ export default class Complex {
 	
 	/**
 	 * Add.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
+	 * @param {KComplexInputData} number 
 	 * @returns {Complex} A + B
 	 */
 	add(number) {
@@ -406,7 +418,7 @@ export default class Complex {
 
 	/**
 	 * Subtract.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} A - B
 	 */
 	sub(number) {
@@ -418,7 +430,7 @@ export default class Complex {
 
 	/**
 	 * Multiply.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} A * B
 	 */
 	mul(number) {
@@ -443,7 +455,7 @@ export default class Complex {
 	
 	/**
 	 * Inner product/Dot product.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} A * conj(B)
 	 */
 	dot(number) {
@@ -468,7 +480,7 @@ export default class Complex {
 	
 	/**
 	 * Divide.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} A / B
 	 */
 	div(number) {
@@ -494,7 +506,7 @@ export default class Complex {
 
 	/**
 	 * Modulo, positive remainder of division.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Divided value (real number only).
+	 * @param {KComplexInputData} number - Divided value (real number only).
 	 * @returns {Complex} A mod B
 	 */
 	mod(number) {
@@ -530,8 +542,8 @@ export default class Complex {
 	
 	/**
 	 * Equals.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} number
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === B
 	 */
 	equals(number, tolerance) {
@@ -547,8 +559,8 @@ export default class Complex {
 
 	/**
 	 * Compare values.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} number
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, tolerance) {
@@ -565,7 +577,7 @@ export default class Complex {
 	
 	/**
 	 * Maximum number.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} max([A, B])
 	 */
 	max(number) {
@@ -580,7 +592,7 @@ export default class Complex {
 
 	/**
 	 * Minimum number.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} min([A, B])
 	 */
 	min(number) {
@@ -595,8 +607,8 @@ export default class Complex {
 
 	/**
 	 * Clip number within range.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} min 
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} max
+	 * @param {KComplexInputData} min 
+	 * @param {KComplexInputData} max
 	 * @returns {Complex} min(max(x, min), max)
 	 */
 	clip(min, max) {
@@ -624,7 +636,7 @@ export default class Complex {
 	
 	/**
 	 * Return true if the value is integer.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isInteger(tolerance) {
@@ -634,7 +646,7 @@ export default class Complex {
 
 	/**
 	 * Returns true if the vallue is complex integer (including normal integer).
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} real(A) === integer && imag(A) === integer
 	 */
 	isComplexInteger(tolerance) {
@@ -646,7 +658,7 @@ export default class Complex {
 
 	/**
 	 * this === 0
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === 0
 	 */
 	isZero(tolerance) {
@@ -656,7 +668,7 @@ export default class Complex {
 
 	/**
 	 * this === 1
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === 1
 	 */
 	isOne(tolerance) {
@@ -666,7 +678,7 @@ export default class Complex {
 
 	/**
 	 * Returns true if the vallue is complex number (imaginary part is not 0).
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} imag(A) !== 0
 	 */
 	isComplex(tolerance) {
@@ -676,7 +688,7 @@ export default class Complex {
 	
 	/**
 	 * Return true if the value is real number.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} imag(A) === 0
 	 */
 	isReal(tolerance) {
@@ -775,7 +787,7 @@ export default class Complex {
 	
 	/**
 	 * Power function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} pow(A, B)
 	 */
 	pow(number) {
@@ -935,7 +947,7 @@ export default class Complex {
 	 * Atan (arc tangent) function.
 	 * Return the values of [-PI, PI] .
 	 * Supports only real numbers.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [number] - X
+	 * @param {KComplexInputData} [number] - X
 	 * @returns {Complex} atan2(Y, X)
 	 */
 	atan2(number) {

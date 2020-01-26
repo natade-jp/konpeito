@@ -1,7 +1,7 @@
 /*!
- * konpeito.js
+ * konpeito.js (version 2.0.0, 2020/1/26)
  * https://github.com/natade-jp/konpeito
- * Copyright 2013-2019 natade < https://github.com/natade-jp >
+ * Copyright 2013-2020 natade < https://github.com/natade-jp >
  *
  * The MIT license.
  * https://opensource.org/licenses/MIT
@@ -17,43 +17,28 @@
  */
 
 /**
- * Collection of tools used in the Random.
+ * Multiply two 32-bit integers and output a 32-bit integer.
+ * @param {number} x1 
+ * @param {number} x2 
+ * @returns {number}
+ * @private
  * @ignore
  */
-class RandomTool {
-
-	/**
-	 * Create a 32-bit nonnegative integer.
-	 * @param {number} x 
-	 * @returns {number}
-	 */
-	static unsigned32(x) {
-		return ((x < 0) ? ((x & 0x7FFFFFFF) + 0x80000000) : x);
-	}
-
-	/**
-	 * Multiply two 32-bit integers and output a 32-bit integer.
-	 * @param {number} x1 
-	 * @param {number} x2 
-	 * @returns {number}
-	 */
-	static multiplication32(x1, x2) {
-		let b = (x1 & 0xFFFF) * (x2 & 0xFFFF);
-		let y = RandomTool.unsigned32(b);
-		b = (x1 & 0xFFFF) * (x2 >>> 16);
-		y = RandomTool.unsigned32(y + ((b & 0xFFFF) << 16));
-		b = (x1 >>> 16) * (x2 & 0xFFFF);
-		y = RandomTool.unsigned32(y + ((b & 0xFFFF) << 16));
-		return (y & 0xFFFFFFFF);
-	}
-
-
-}
+const multiplication32 = function(x1, x2) {
+	let y = ((x1 & 0xFFFF) * (x2 & 0xFFFF)) >>> 0;
+	let b = (x1 & 0xFFFF) * (x2 >>> 16);
+	y = (y + ((b & 0xFFFF) << 16)) >>> 0;
+	b = (x1 >>> 16) * (x2 & 0xFFFF);
+	y = (y + ((b & 0xFFFF) << 16));
+	return (y & 0xFFFFFFFF);
+};
 
 /**
  * Random number class.
+ * @private
+ * @ignore
  */
-class Random {
+class MaximumLengthSequence {
 	
 	/**
 	 * Create Random.
@@ -74,13 +59,13 @@ class Random {
 		for(let i = 0;i < 521;i++) {
 			this.x[i] = 0;
 		}
-		if(arguments.length >= 1) {
+		if(seed !== undefined) {
 			this.setSeed(seed);
 		}
 		else {
 			// 線形合同法で適当に乱数を作成する
-			const seed = ((new Date()).getTime() + Random.seedUniquifier) & 0xFFFFFFFF;
-			Random.seedUniquifier = (Random.seedUniquifier + 1) & 0xFFFFFFFF;
+			const seed = ((new Date()).getTime() + MaximumLengthSequence.seedUniquifier) & 0xFFFFFFFF;
+			MaximumLengthSequence.seedUniquifier = (MaximumLengthSequence.seedUniquifier + 1) & 0xFFFFFFFF;
 			this.setSeed(seed);
 		}
 	}
@@ -110,7 +95,7 @@ class Random {
 		let random_seed = seed;
 		for(let i = 0; i <= 16; i++) {
 			for(let j = 0; j < 32; j++) {
-				random_seed = RandomTool.multiplication32(random_seed, 0x5D588B65) + 1;
+				random_seed = multiplication32(random_seed, 0x5D588B65) + 1;
 				u = (u >>> 1) + ((random_seed < 0) ? 0x80000000 : 0);
 			}
 			x[i] = u;
@@ -157,9 +142,215 @@ class Random {
 			this._rnd521();
 			this.xi = 0;
 		}
-		const y = RandomTool.unsigned32(this.x[this.xi]);
+		const y = this.x[this.xi] >>> 0; // Create a 32-bit nonnegative integer.
 		this.xi = this.xi + 1;
 		return y;
+	}
+
+}
+
+/**
+ * Random number creation integer when no seed is set.
+ * @type {number}
+ * @ignore
+ */
+MaximumLengthSequence.seedUniquifier = 0x87654321;
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Multiply two 32-bit integers and output a 32-bit integer.
+ * @param {number} x1 
+ * @param {number} x2 
+ * @returns {number}
+ * @private
+ * @ignore
+ */
+const multiplication32$1 = function(x1, x2) {
+	let y = ((x1 & 0xFFFF) * (x2 & 0xFFFF)) >>> 0;
+	let b = (x1 & 0xFFFF) * (x2 >>> 16);
+	y = (y + ((b & 0xFFFF) << 16)) >>> 0;
+	b = (x1 >>> 16) * (x2 & 0xFFFF);
+	y = (y + ((b & 0xFFFF) << 16));
+	return (y & 0xFFFFFFFF);
+};
+
+/**
+ * Random number class.
+ * @private
+ * @ignore
+ */
+class Xorshift {
+	
+	/**
+	 * Create Random.
+	 * @param {number} [seed] - Seed number for random number generation. If not specified, create from time.
+	 */
+	constructor(seed) {
+
+		/**
+		 * @type {number}
+		 * @private
+		 * @ignore
+		 */
+		this.x = 123456789;
+		
+		/**
+		 * @type {number}
+		 * @private
+		 * @ignore
+		 */
+		this.y = 362436069;
+		
+		/**
+		 * @type {number}
+		 * @private
+		 * @ignore
+		 */
+		this.z = 521288629;
+		
+		/**
+		 * @type {number}
+		 * @private
+		 * @ignore
+		 */
+		this.w = 88675123;
+
+		if(seed !== undefined) {
+			this.setSeed(seed);
+		}
+		else {
+			// 線形合同法で適当に乱数を作成する
+			const new_seed = ((new Date()).getTime() + Xorshift.seedUniquifier) & 0xFFFFFFFF;
+			Xorshift.seedUniquifier = (Xorshift.seedUniquifier + 1) & 0xFFFFFFFF;
+			this.setSeed(new_seed);
+		}
+	}
+
+	/**
+	 * シード値の初期化
+	 * @param {number} seed
+	 */
+	setSeed(seed) {
+		// seedを使用して線形合同法で初期値を設定
+		let random_seed = seed;
+		random_seed = (multiplication32$1(random_seed, 214013) + 2531011) >>> 0;
+		this.z = random_seed;
+		random_seed = (multiplication32$1(random_seed, 214013) + 2531011) >>> 0;
+		this.w = random_seed;
+
+		/**
+		 * Is keep random numbers based on Gaussian distribution.
+		 * @private
+		 * @type {boolean}
+		 */
+		this.haveNextNextGaussian = false;
+		
+		/**
+		 * Next random number based on Gaussian distribution.
+		 * @private
+		 * @type {number}
+		 */
+		this.nextNextGaussian = 0;
+	}
+
+	/**
+	 * 32-bit random number.
+	 * @returns {number} - 32ビットの乱数
+	 * @private
+	 */
+	genrand_int32() {
+		const t = this.x ^ (this.x << 11);
+		this.x = this.y;
+		this.y = this.z;
+		this.z = this.w;
+		this.w = (this.w ^ (this.w >>> 19)) ^ (t ^ (t >>> 8));
+		return this.w;
+	}
+
+}
+
+/**
+ * Random number creation integer when no seed is set.
+ * @type {number}
+ * @ignore
+ */
+Xorshift.seedUniquifier = 0x87654321;
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Setting random numbers
+ * @typedef {Object} KRandomSettings
+ * @property {number} [seed] Seed number for random number generation. If not specified, create from time.
+ * @property {string} [algorithm="FAST"] Algorithm type : "XORSHIFT" / "MLS" / "FAST"
+ */
+
+/**
+ * Random number class.
+ */
+class Random {
+	
+	/**
+	 * Create Random.
+	 * - algorithm : "XORSHIFT" / "MLS" / "FAST"
+	 * @param {number|KRandomSettings} [init_data] - Seed number for random number generation. If not specified, create from time.
+	 */
+	constructor(init_data) {
+		let seed_number = undefined;
+		let algorithm = "fast";
+		this.rand = null;
+		if(typeof init_data === "number") {
+			seed_number = init_data;
+		}
+		else if(typeof init_data === "object") {
+			if(init_data.seed !== undefined) {
+				seed_number = init_data.seed;
+			}
+			if(init_data.algorithm !== undefined) {
+				algorithm = init_data.algorithm;
+			}
+		}
+		if(/fast|xorshift/i.test(algorithm)) {
+			// XORSHIFT
+			this.rand = new Xorshift(seed_number);
+		}
+		else {
+			// MLS
+			this.rand = new MaximumLengthSequence(seed_number);
+		}
+	}
+
+	/**
+	 * Initialize random seed.
+	 * @param {number} seed
+	 */
+	setSeed(seed) {
+		this.rand.setSeed(seed);
+	}
+
+	/**
+	 * 32-bit random number.
+	 * @returns {number} - 32-bit random number
+	 */
+	genrand_int32() {
+		return this.rand.genrand_int32();
 	}
 
 	/**
@@ -183,12 +374,12 @@ class Random {
 		// double型のため、52ビットまでは、整数として出力可能
 		else if(bits === 63) {
 			// 正の値を出力するように調節
-			return (this.next(32) * 0x80000000 + this.next(32));
+			return (this.genrand_int32() * 0x80000000 + this.genrand_int32());
 		}
 		else if(bits === 64) {
-			return (this.next(32) * 0x100000000 + this.next(32));
+			return (this.genrand_int32() * 0x100000000 + this.genrand_int32());
 		}
-		else if(bits < 64) {
+		else if(bits < 63) {
 			return (this.genrand_int32() * (1 << (bits - 32)) + (this.genrand_int32()  >>> (64 - bits)));
 		}
 	}
@@ -225,7 +416,7 @@ class Random {
 		if((x !== undefined) && (typeof x === "number")) {
 			let r, y;
 			do {
-				r = RandomTool.unsigned32(this.genrand_int32());
+				r = this.genrand_int32() >>> 0;
 				y = r % x;
 			} while((r - y + x) > 0x100000000 );
 			return y;
@@ -287,13 +478,6 @@ class Random {
 		return y;
 	}
 }
-
-/**
- * Random number creation integer when no seed is set.
- * @type {number}
- * @ignore
- */
-Random.seedUniquifier = 0x87654321;
 
 /**
  * The script is part of konpeito.
@@ -940,6 +1124,18 @@ const DEFINE = {
  */
 
 /**
+ * BigInteger type argument.
+ * - BigInteger
+ * - number
+ * - string
+ * - Array<string|number>
+ * - {toBigInteger:function}
+ * - {intValue:number}
+ * - {toString:function}
+ * @typedef {BigInteger|number|string|Array<string|number>|{toBigInteger:function}|{intValue:number}|{toString:function}} KBigIntegerInputData
+ */
+
+/**
  * Random number class to be used when the random number class is not set.
  * @type {Random}
  * @ignore
@@ -1232,7 +1428,7 @@ class BigInteger {
 	 * - "0xff", ["ff", 16]
 	 * - "0o01234567", ["01234567", 8]
 	 * - "0b0110101", ["0110101", 2]
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [number] - Numeric data. See how to use the function.
+	 * @param {KBigIntegerInputData} [number] - Numeric data. See how to use the function.
 	 */
 	constructor(number) {
 		
@@ -1271,7 +1467,7 @@ class BigInteger {
 				this._sign = x._sign;
 			}
 			else if(number instanceof Array) {
-				if((number.length === 2) && (typeof number[0] === "string")) {
+				if((number.length === 2) && (typeof number[0] === "string" && (typeof number[1] === "number"))) {
 					const x = BigIntegerTool.toBigIntegerFromString(number[0], number[1]);
 					this.element = x.element;
 					this._sign = x._sign;
@@ -1280,20 +1476,22 @@ class BigInteger {
 					throw "BigInteger Unsupported argument " + arguments;
 				}
 			}
-			else if((number instanceof Object) && (number.toBigInteger)) {
-				const x = number.toBigInteger();
-				this.element = x.element;
-				this._sign = x._sign;
-			}
-			else if((number instanceof Object) && (number.intValue)) {
-				const x = BigIntegerTool.toBigIntegerFromNumber(number.intValue);
-				this.element = x.element;
-				this._sign = x._sign;
-			}
-			else if(number instanceof Object) {
-				const x = BigIntegerTool.toBigIntegerFromString(number.toString());
-				this.element = x.element;
-				this._sign = x._sign;
+			else if(typeof number === "object") {
+				if("toBigInteger" in number) {
+					const x = number.toBigInteger();
+					this.element = x.element;
+					this._sign = x._sign;
+				}
+				else if("intValue" in number) {
+					const x = BigIntegerTool.toBigIntegerFromNumber(number.intValue);
+					this.element = x.element;
+					this._sign = x._sign;
+				}
+				else {
+					const x = BigIntegerTool.toBigIntegerFromString(number.toString());
+					this.element = x.element;
+					this._sign = x._sign;
+				}
 			}
 			else {
 				throw "BigInteger Unsupported argument " + number;
@@ -1306,7 +1504,7 @@ class BigInteger {
 
 	/**
 	 * Create an entity object of this class.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger}
 	 */
 	static create(number) {
@@ -1322,7 +1520,7 @@ class BigInteger {
 	 * Create an arbitrary-precision integer.
 	 * - Does not support strings using exponential notation.
 	 * - If you want to initialize with the specified base number, please set up with an array ["ff", 16].
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger}
 	 */
 	static valueOf(number) {
@@ -1332,7 +1530,7 @@ class BigInteger {
 	/**
 	 * Convert to BigInteger.
 	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger}
 	 * @private
 	 */
@@ -1347,7 +1545,7 @@ class BigInteger {
 
 	/**
 	 * Convert to real number.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -1365,7 +1563,7 @@ class BigInteger {
 
 	/**
 	 * Convert to integer.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -1383,7 +1581,7 @@ class BigInteger {
 
 	/**
 	 * Random number of specified bit length.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bitsize - Bit length.
+	 * @param {KBigIntegerInputData} bitsize - Bit length.
 	 * @param {Random} [random] - Class for creating random numbers.
 	 * @returns {BigInteger}
 	 */
@@ -1420,7 +1618,7 @@ class BigInteger {
 
 	/**
 	 * Convert to string.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [radix=10] - Base number.
+	 * @param {KBigIntegerInputData} [radix=10] - Base number.
 	 * @returns {string}
 	 */
 	toString(radix) {
@@ -1595,7 +1793,7 @@ class BigInteger {
 	
 	/**
 	 * Add. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A += B
 	 * @private
 	 */
@@ -1656,7 +1854,7 @@ class BigInteger {
 
 	/**
 	 * Add.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A + B
 	 */
 	add(number) {
@@ -1665,7 +1863,7 @@ class BigInteger {
 
 	/**
 	 * Subtract. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A -= B
 	 * @private
 	 */
@@ -1679,7 +1877,7 @@ class BigInteger {
 
 	/**
 	 * Subtract.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A - B
 	 */
 	subtract(number) {
@@ -1688,7 +1886,7 @@ class BigInteger {
 
 	/**
 	 * Subtract.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A - B
 	 */
 	sub(number) {
@@ -1697,7 +1895,7 @@ class BigInteger {
 
 	/**
 	 * Multiply. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A *= B
 	 * @private
 	 */
@@ -1710,7 +1908,7 @@ class BigInteger {
 
 	/**
 	 * Multiply.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A * B
 	 */
 	multiply(number) {
@@ -1772,7 +1970,7 @@ class BigInteger {
 
 	/**
 	 * Multiply.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A * B
 	 */
 	mul(number) {
@@ -1781,7 +1979,7 @@ class BigInteger {
 
 	/**
 	 * Divide and remainder. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
 	 * @private
 	 */
@@ -1828,7 +2026,7 @@ class BigInteger {
 
 	/**
 	 * Divide and remainder.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
 	 */
 	divideAndRemainder(number) {
@@ -1837,7 +2035,7 @@ class BigInteger {
 
 	/**
 	 * Divide. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} fix(A / B)
 	 * @private
 	 */
@@ -1847,7 +2045,7 @@ class BigInteger {
 
 	/**
 	 * Divide.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} fix(A / B)
 	 */
 	divide(number) {
@@ -1856,7 +2054,7 @@ class BigInteger {
 
 	/**
 	 * Divide.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} fix(A / B)
 	 */
 	div(number) {
@@ -1865,7 +2063,7 @@ class BigInteger {
 
 	/**
 	 * Remainder of division. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A %= B
 	 * @private
 	 */
@@ -1875,7 +2073,7 @@ class BigInteger {
 
 	/**
 	 * Remainder of division.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A % B
 	 */
 	remainder(number) {
@@ -1884,7 +2082,7 @@ class BigInteger {
 
 	/**
 	 * Remainder of division.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A % B
 	 */
 	rem(number) {
@@ -1893,7 +2091,7 @@ class BigInteger {
 
 	/**
 	 * Modulo, positive remainder of division. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A = A mod B
 	 * @private
 	 */
@@ -1916,7 +2114,7 @@ class BigInteger {
 
 	/**
 	 * Modulo, positive remainder of division.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A mod B
 	 */
 	mod(number) {
@@ -1925,8 +2123,8 @@ class BigInteger {
 
 	/**
 	 * Modular exponentiation.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
-	 * @param {BigInteger|number|string|Array<string|number>|Object} m 
+	 * @param {KBigIntegerInputData} exponent
+	 * @param {KBigIntegerInputData} m 
 	 * @returns {BigInteger} A^B mod m
 	 */
 	modPow(exponent, m) {
@@ -1946,7 +2144,7 @@ class BigInteger {
 
 	/**
 	 * Modular multiplicative inverse.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} m
+	 * @param {KBigIntegerInputData} m
 	 * @returns {BigInteger} A^(-1) mod m
 	 */
 	modInverse(m) {
@@ -1979,7 +2177,7 @@ class BigInteger {
 
 	/**
 	 * Multiply a multiple of ten.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @param {KBigIntegerInputData} n
 	 * @returns {BigInteger} x * 10^n
 	 */
 	scaleByPowerOfTen(n) {
@@ -2001,7 +2199,7 @@ class BigInteger {
 	
 	/**
 	 * Power function.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} exponent
+	 * @param {KBigIntegerInputData} exponent
 	 * @returns {BigInteger} pow(A, B)
 	 */
 	pow(exponent) {
@@ -2076,7 +2274,7 @@ class BigInteger {
 	
 	/**
 	 * Value at the specified position of the internally used array that composed of hexadecimal numbers.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} point - Array address.
+	 * @param {KBigIntegerInputData} point - Array address.
 	 * @returns {number}
 	 */
 	getShort(point) {
@@ -2133,7 +2331,7 @@ class BigInteger {
 	
 	/**
 	 * Euclidean algorithm.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} gcd(x, y)
 	 */
 	gcd(number) {
@@ -2152,7 +2350,7 @@ class BigInteger {
 
 	/**
 	 * Extended Euclidean algorithm.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
 	 */
 	extgcd(number) {
@@ -2184,7 +2382,7 @@ class BigInteger {
 
 	/**
 	 * Least common multiple.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} lcm(x, y)
 	 */
 	lcm(number) {
@@ -2198,7 +2396,7 @@ class BigInteger {
 	
 	/**
 	 * Equals.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {boolean} A === B
 	 */
 	equals(number) {
@@ -2219,7 +2417,7 @@ class BigInteger {
 
 	/**
 	 * Compare values without sign.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
 	 */
 	compareToAbs(number) {
@@ -2241,7 +2439,7 @@ class BigInteger {
 
 	/**
 	 * Compare values.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number) {
@@ -2262,7 +2460,7 @@ class BigInteger {
 
 	/**
 	 * Maximum number.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} max([A, B])
 	 */
 	max(number) {
@@ -2277,7 +2475,7 @@ class BigInteger {
 
 	/**
 	 * Minimum number.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number
+	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} min([A, B])
 	 */
 	min(number) {
@@ -2292,8 +2490,8 @@ class BigInteger {
 
 	/**
 	 * Clip number within range.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} min 
-	 * @param {BigInteger|number|string|Array<string|number>|Object} max
+	 * @param {KBigIntegerInputData} min 
+	 * @param {KBigIntegerInputData} max
 	 * @returns {BigInteger} min(max(x, min), max)
 	 */
 	clip(min, max) {
@@ -2321,10 +2519,10 @@ class BigInteger {
 	
 	/**
 	 * Prime represented within the specified bit length.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bits - Bit length.
+	 * @param {KBigIntegerInputData} bits - Bit length.
 	 * @param {Random} [random] - Class for creating random numbers.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [create_count=500] - Number of times to retry if prime generation fails.
+	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
+	 * @param {KBigIntegerInputData} [create_count=500] - Number of times to retry if prime generation fails.
 	 * @returns {BigInteger}
 	 */
 	static probablePrime(bits, random, certainty, create_count ) {
@@ -2342,7 +2540,7 @@ class BigInteger {
 	/**
 	 * Return true if the value is prime number by Miller-Labin prime number determination method.
 	 * Attention : it takes a very long time to process.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
+	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
 	 * @returns {boolean}
 	 */
 	isProbablePrime(certainty) {
@@ -2398,8 +2596,8 @@ class BigInteger {
 
 	/**
 	 * Next prime.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [certainty=100] - Repeat count (prime precision).
-	 * @param {BigInteger|number|string|Array<string|number>|Object} [search_max=100000] - Search range of next prime.
+	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
+	 * @param {KBigIntegerInputData} [search_max=100000] - Search range of next prime.
 	 * @returns {BigInteger}
 	 */
 	nextProbablePrime(certainty, search_max) {
@@ -2421,7 +2619,7 @@ class BigInteger {
 	
 	/**
 	 * this <<= n
-	 * @param {BigInteger|number|string|Array<string|number>|Object} shift_length - Bit shift size.
+	 * @param {KBigIntegerInputData} shift_length - Bit shift size.
 	 * @returns {BigInteger} A <<= n
 	 * @private
 	 */
@@ -2514,7 +2712,7 @@ class BigInteger {
 
 	/**
 	 * this << n
-	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @param {KBigIntegerInputData} n
 	 * @returns {BigInteger} A << n
 	 */
 	shift(n) {
@@ -2523,7 +2721,7 @@ class BigInteger {
 
 	/**
 	 * this << n
-	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @param {KBigIntegerInputData} n
 	 * @returns {BigInteger} A << n
 	 */
 	shiftLeft(n) {
@@ -2532,7 +2730,7 @@ class BigInteger {
 
 	/**
 	 * this >> n
-	 * @param {BigInteger|number|string|Array<string|number>|Object} n
+	 * @param {KBigIntegerInputData} n
 	 * @returns {BigInteger} A >> n
 	 */
 	shiftRight(n) {
@@ -2608,7 +2806,7 @@ class BigInteger {
 
 	/**
 	 * Logical AND. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A &= B
 	 * @private
 	 */
@@ -2645,7 +2843,7 @@ class BigInteger {
 
 	/**
 	 * Logical AND.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A & B
 	 */
 	and(number) {
@@ -2654,7 +2852,7 @@ class BigInteger {
 
 	/**
 	 * Logical OR. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A |= B
 	 * @private
 	 */
@@ -2687,7 +2885,7 @@ class BigInteger {
 
 	/**
 	 * Logical OR.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A | B
 	 */
 	or(number) {
@@ -2696,7 +2894,7 @@ class BigInteger {
 
 	/**
 	 * Logical Exclusive-OR. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A ^= B
 	 * @private
 	 */
@@ -2731,7 +2929,7 @@ class BigInteger {
 
 	/**
 	 * Logical Exclusive-OR.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A ^ B
 	 */
 	xor(number) {
@@ -2757,7 +2955,7 @@ class BigInteger {
 
 	/**
 	 * Logical Not-AND. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A &= (!B)
 	 * @private
 	 */
@@ -2768,7 +2966,7 @@ class BigInteger {
 
 	/**
 	 * Logical Not-AND.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A & (!B)
 	 */
 	andNot(number) {
@@ -2777,7 +2975,7 @@ class BigInteger {
 
 	/**
 	 * Logical Not-AND. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A &= (!B)
 	 * @private
 	 */
@@ -2787,7 +2985,7 @@ class BigInteger {
 
 	/**
 	 * Logical Not-AND.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A & (!B)
 	 */
 	nand(number) {
@@ -2796,7 +2994,7 @@ class BigInteger {
 
 	/**
 	 * Logical Not-OR. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A = !(A | B)
 	 * @private
 	 */
@@ -2807,7 +3005,7 @@ class BigInteger {
 
 	/**
 	 * Logical Not-OR.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} !(A | B)
 	 */
 	orNot(number) {
@@ -2816,7 +3014,7 @@ class BigInteger {
 
 	/**
 	 * Logical Not-OR. (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A = !(A | B)
 	 * @private
 	 */
@@ -2826,7 +3024,7 @@ class BigInteger {
 
 	/**
 	 * Logical Not-OR.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} number 
+	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} !(A | B)
 	 */
 	nor(number) {
@@ -2835,7 +3033,7 @@ class BigInteger {
 
 	/**
 	 * this | (1 << n) (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
 	 * @private
 	 */
@@ -2848,7 +3046,7 @@ class BigInteger {
 
 	/**
 	 * this | (1 << n)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
 	 */
 	setBit(bit) {
@@ -2858,7 +3056,7 @@ class BigInteger {
 
 	/**
 	 * Invert a specific bit.) (mutable)
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
 	 * @private
 	 */
@@ -2872,7 +3070,7 @@ class BigInteger {
 
 	/**
 	 * Invert a specific bit.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
 	 */
 	flipBit(bit) {
@@ -2882,7 +3080,7 @@ class BigInteger {
 
 	/**
 	 * Lower a specific bit.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bit 
+	 * @param {KBigIntegerInputData} bit 
 	 * @returns {BigInteger}
 	 */
 	clearBit(bit) {
@@ -2895,7 +3093,7 @@ class BigInteger {
 
 	/**
 	 * Test if a particular bit is on.
-	 * @param {BigInteger|number|string|Array<string|number>|Object} bit
+	 * @param {KBigIntegerInputData} bit
 	 * @returns {boolean}
 	 */
 	testBit(bit) {
@@ -3039,8 +3237,34 @@ const DEFINE$1 = {
  */
 
 /**
+ * BigDecimal type argument.(local)
+ * - number
+ * - string
+ * - BigDecimal
+ * - BigInteger
+ * - {toBigDecimal:function}
+ * - {doubleValue:number}
+ * - {toString:function}
+ * @typedef {number|string|BigDecimal|BigInteger|{toBigDecimal:function}|{doubleValue:number}|{toString:function}} KBigDecimalLocalInputData
+ */
+
+/**
+ * ScaleData for argument of BigDecimal.
+ * - {integer:BigInteger,scale:?number,context:?MathContext}
+ * @typedef {{integer:BigInteger,scale:?number,context:?MathContext}} KBigDecimalScaleData
+ */
+
+/**
+ * BigDecimal type argument.
+ * - KBigDecimalLocalInputData
+ * - Array<KBigDecimalLocalInputData|MathContext>
+ * - KBigDecimalScaleData
+ * @typedef {KBigDecimalLocalInputData|Array<KBigDecimalLocalInputData|MathContext>|KBigDecimalScaleData} KBigDecimalInputData
+ */
+
+/**
  * Setting of calculation result of division.
- * @typedef {Object} BigDecimalDivideType
+ * @typedef {Object} KBigDecimalDivideType
  * @property {number} [scale] Scale of rounding.
  * @property {RoundingModeEntity} [roundingMode] Rounding mode.
  * @property {MathContext} [context] Configuration.(scale and roundingMode are unnecessary.)
@@ -3110,7 +3334,7 @@ class BigDecimalTool {
 
 	/**
 	 * Create data for BigDecimal from number.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} value 
+	 * @param {number} value 
 	 * @returns {{scale : number, integer : BigInteger}}
 	 */
 	static ToBigDecimalFromNumber(value) {
@@ -3166,7 +3390,7 @@ class BigDecimal {
 	 * 
 	 * If "context" is not specified, the "default_context" set for the class is used.
 	 * The "context" is the used when no environment settings are specified during calculation.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,context:?MathContext}|BigInteger|Object} number - Real data.
+	 * @param {KBigDecimalInputData} number - Real data.
 	 */
 	constructor(number) {
 
@@ -3216,11 +3440,21 @@ class BigDecimal {
 			this.integer	= data.integer;
 			this._scale		= data.scale;
 		}
+		else if(typeof number === "string") {
+			const data = BigDecimalTool.ToBigDecimalFromString(number);
+			this.integer	= data.integer;
+			this._scale		= data.scale;
+		}
 		else if(number instanceof Array) {
 			if(number.length >= 1) {
 				const prm1 = number[0];
 				if(typeof prm1 === "number") {
-					const data = BigDecimalTool.ToBigDecimalFromNumber(prm1);
+					const data		= BigDecimalTool.ToBigDecimalFromNumber(prm1);
+					this.integer	= data.integer;
+					this._scale		= data.scale;
+				}
+				else if(typeof prm1 === "string") {
+					const data		= BigDecimalTool.ToBigDecimalFromString(prm1);
 					this.integer	= data.integer;
 					this._scale		= data.scale;
 				}
@@ -3231,73 +3465,75 @@ class BigDecimal {
 				else if(prm1 instanceof BigInteger) {
 					this.integer			= prm1.clone();
 				}
-				else if((prm1 instanceof Object) && (prm1.toBigDecimal)) {
-					const data				= prm1.toBigDecimal();
-					this.integer			= data.integer;
-					this._scale				= data._scale;
-				}
-				else if((prm1 instanceof Object) && (prm1.doubleValue)) {
-					const data = BigDecimalTool.ToBigDecimalFromNumber(prm1.doubleValue);
-					this.integer	= data.integer;
-					this._scale		= data.scale;
+				else if(typeof prm1 === "object") {
+					if("toBigDecimal" in prm1) {
+						const data		= prm1.toBigDecimal();
+						this.integer	= data.integer;
+						this._scale		= data._scale;
+					}
+					else if("doubleValue" in prm1) {
+						const data = BigDecimalTool.ToBigDecimalFromNumber(prm1.doubleValue);
+						this.integer	= data.integer;
+						this._scale		= data.scale;
+					}
+					else {
+						const data = BigDecimalTool.ToBigDecimalFromString(prm1.toString());
+						this.integer	= data.integer;
+						this._scale		= data.scale;
+					}
 				}
 				else {
-					const data = BigDecimalTool.ToBigDecimalFromString(prm1.toString());
-					this.integer	= data.integer;
-					this._scale		= data.scale;
+					throw "BigDecimal Unsupported argument " + prm1 + "(" + (typeof prm1) + ")";
 				}
 			}
 			if(number.length >= 2) {
 				// スケール値を省略しているかどうかを、数値かどうかで判定している。
-				if(typeof number[1] === "number" || number[1] instanceof Number) {
+				if(typeof number[1] === "number") {
 					// 2つめが数値の場合は、2つ目をスケール値として使用する
 					this._scale	= number[1];
 					if(number.length >= 3) {
-						this.default_context = number[2] !== undefined ? number[2] : DEFAULT_CONTEXT;
+						this.default_context = ((number[2] !== undefined) && (number[2] instanceof MathContext)) ? number[2] : DEFAULT_CONTEXT;
 						is_set_context = true;
 					}
 				}
 				else {
 					if(number.length >= 2) {
-						this.default_context = number[1] !== undefined ? number[1] : DEFAULT_CONTEXT;
+						this.default_context = ((number[1] !== undefined) && (number[1] instanceof MathContext)) ? number[1] : DEFAULT_CONTEXT;
 						is_set_context = true;
 					}
 				}
 			}
 		}
-		else if(typeof number === "string") {
-			const data = BigDecimalTool.ToBigDecimalFromString(number);
-			this.integer	= data.integer;
-			this._scale		= data.scale;
-		}
 		else if(number instanceof BigInteger) {
 			this.integer	= number.clone();
 		}
-		else if((number instanceof Object) && (number.toBigDecimal)) {
-			const data				= number.toBigDecimal();
-			this.integer			= data.integer;
-			this._scale				= data._scale;
-			this.default_context	= data.default_context;
-		}
-		else if((number instanceof Object) && (number.scale !== undefined && number.default_context !== undefined)) {
-			this.integer	= new BigInteger(number.integer);
-			if(number.scale) {
-				this._scale = number.scale;
+		else if(typeof number === "object") {
+			if("toBigDecimal" in number) {
+				const data				= number.toBigDecimal();
+				this.integer			= data.integer;
+				this._scale				= data._scale;
+				this.default_context	= data.default_context;
 			}
-			if(number.context) {
-				this.default_context = number.context;
-				is_set_context = true;
+			else if("doubleValue" in number) {
+				const data = BigDecimalTool.ToBigDecimalFromNumber(number.doubleValue);
+				this.integer	= data.integer;
+				this._scale		= data.scale;
 			}
-		}
-		else if((number instanceof Object) && (number.doubleValue)) {
-			const data = BigDecimalTool.ToBigDecimalFromNumber(number.doubleValue);
-			this.integer	= data.integer;
-			this._scale		= data.scale;
-		}
-		else if(number instanceof Object) {
-			const data = BigDecimalTool.ToBigDecimalFromString(number.toString());
-			this.integer	= data.integer;
-			this._scale		= data.scale;
+			else if(("integer" in number) && ("scale" in number) && ("context" in number)) {
+				this.integer	= new BigInteger(number.integer);
+				if(number.scale) {
+					this._scale = number.scale;
+				}
+				if(number.context) {
+					this.default_context = number.context;
+					is_set_context = true;
+				}
+			}
+			else if(number instanceof Object) {
+				const data = BigDecimalTool.ToBigDecimalFromString(number.toString());
+				this.integer	= data.integer;
+				this._scale		= data.scale;
+			}
 		}
 		else {
 			throw "BigDecimal Unsupported argument " + arguments;
@@ -3329,7 +3565,7 @@ class BigDecimal {
 	 * 
 	 * If "context" is not specified, the "default_context" set for the class is used.
 	 * The "context" is the used when no environment settings are specified during calculation.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
+	 * @param {KBigDecimalInputData} number - Real data.
 	 * @returns {BigDecimal}
 	 */
 	static create(number) {
@@ -3343,7 +3579,7 @@ class BigDecimal {
 
 	/**
 	 * Create a number using settings of this number.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number - Real data.
+	 * @param {KBigDecimalLocalInputData} number - Real data.
 	 * @param {MathContext} [mc] - Setting preferences when creating objects.
 	 * @returns {BigDecimal}
 	 */
@@ -3358,8 +3594,8 @@ class BigDecimal {
 
 	/**
 	 * Convert number to BigDecimal type.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} x 
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [scale] 
+	 * @param {KBigDecimalLocalInputData} x 
+	 * @param {MathContext} [scale] 
 	 * @returns {BigDecimal}
 	 */
 	static valueOf(x, scale) {
@@ -3374,7 +3610,7 @@ class BigDecimal {
 	/**
 	 * Convert to BigDecimal.
 	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @returns {BigDecimal}
 	 * @private
 	 */
@@ -3390,7 +3626,7 @@ class BigDecimal {
 	/**
 	 * Convert to BigInteger.
 	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @returns {BigInteger}
 	 * @private
 	 */
@@ -3402,13 +3638,14 @@ class BigDecimal {
 			return number.toBigInteger();
 		}
 		else {
+			// @ts-ignore
 			return new BigInteger(number);
 		}
 	}
 
 	/**
 	 * Convert to real number.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -3426,7 +3663,7 @@ class BigDecimal {
 
 	/**
 	 * Convert to integer.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -3438,6 +3675,7 @@ class BigDecimal {
 			return number.intValue;
 		}
 		else {
+			// @ts-ignore
 			return (new BigInteger(number)).intValue;
 		}
 	}
@@ -3547,7 +3785,7 @@ class BigDecimal {
 
 	/**
 	 * Move the decimal point to the left.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @param {KBigDecimalInputData} n 
 	 * @returns {BigDecimal} 
 	 */
 	movePointLeft(n) {
@@ -3559,7 +3797,7 @@ class BigDecimal {
 
 	/**
 	 * Move the decimal point to the right.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @param {KBigDecimalInputData} n 
 	 * @returns {BigDecimal} 
 	 */
 	movePointRight(n) {
@@ -3594,7 +3832,7 @@ class BigDecimal {
 	
 	/**
 	 * Add.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A + B
 	 */
@@ -3624,7 +3862,7 @@ class BigDecimal {
 
 	/**
 	 * Subtract.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A - B
 	 */
@@ -3649,7 +3887,7 @@ class BigDecimal {
 
 	/**
 	 * Subtract.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A - B
 	 */
@@ -3659,7 +3897,7 @@ class BigDecimal {
 
 	/**
 	 * Multiply.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A * B
 	 */
@@ -3676,7 +3914,7 @@ class BigDecimal {
 
 	/**
 	 * Multiply.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A * B
 	 */
@@ -3686,7 +3924,7 @@ class BigDecimal {
 
 	/**
 	 * Divide not calculated to the decimal point.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} (int)(A / B)
 	 */
@@ -3767,7 +4005,7 @@ class BigDecimal {
 
 	/**
 	 * Divide and remainder.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {Array<BigDecimal>} [C = (int)(A / B), A - C * B]
 	 */
@@ -3797,7 +4035,7 @@ class BigDecimal {
 
 	/**
 	 * Remainder of division.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A % B
 	 */
@@ -3807,7 +4045,7 @@ class BigDecimal {
 
 	/**
 	 * Modulo, positive remainder of division.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A mod B
 	 */
@@ -3827,8 +4065,8 @@ class BigDecimal {
 	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
 	 * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
 	 * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {MathContext|BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @param {KBigDecimalInputData} number
+	 * @param {MathContext|KBigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal}
 	 */
 	divide(number, type) {
@@ -3950,8 +4188,8 @@ class BigDecimal {
 	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
 	 * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
 	 * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {MathContext|BigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @param {KBigDecimalInputData} number
+	 * @param {MathContext|KBigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal} A / B
 	 */
 	div(number, type) {
@@ -4023,7 +4261,7 @@ class BigDecimal {
 	 * Multiply a multiple of ten.
 	 * - Supports only integers.
 	 * - Only the scale is changed without changing the precision.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} n 
+	 * @param {KBigDecimalInputData} n 
 	 * @returns {BigDecimal} A * 10^floor(n)
 	 */
 	scaleByPowerOfTen(n) {
@@ -4120,8 +4358,8 @@ class BigDecimal {
 	 * - Attention : Test for equality, including the precision and the scale. 
 	 * - Use the "compareTo" if you only want to find out whether they are also mathematically equal.
 	 * - If you specify a "tolerance", it is calculated by ignoring the test of the precision and the scale.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {KBigDecimalInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === B
 	 */
 	equals(number, tolerance) {
@@ -4145,8 +4383,8 @@ class BigDecimal {
 
 	/**
 	 * Compare values.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+	 * @param {KBigDecimalInputData} number
+	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, tolerance) {
@@ -4196,7 +4434,7 @@ class BigDecimal {
 
 	/**
 	 * Maximum number.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number
+	 * @param {KBigDecimalInputData} number
 	 * @returns {BigDecimal} max([A, B])
 	 */
 	max(number) {
@@ -4211,7 +4449,7 @@ class BigDecimal {
 
 	/**
 	 * Minimum number.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @returns {BigDecimal} min([A, B])
 	 */
 	min(number) {
@@ -4226,8 +4464,8 @@ class BigDecimal {
 
 	/**
 	 * Clip number within range.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} min
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} max
+	 * @param {KBigDecimalInputData} min
+	 * @param {KBigDecimalInputData} max
 	 * @returns {BigDecimal} min(max(x, min), max)
 	 */
 	clip(min, max) {
@@ -4271,7 +4509,7 @@ class BigDecimal {
 
 	/**
 	 * Convert to string using scientific notation.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} e_len - Number of digits in exponent part.
+	 * @param {KBigDecimalInputData} e_len - Number of digits in exponent part.
 	 * @returns {string} 
 	 */
 	toScientificNotation(e_len) {
@@ -4360,7 +4598,7 @@ class BigDecimal {
 	
 	/**
 	 * Change the scale.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} new_scale - New scale.
+	 * @param {KBigDecimalInputData} new_scale - New scale.
 	 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
 	 * @returns {BigDecimal} 
 	 */
@@ -4506,7 +4744,7 @@ class BigDecimal {
 	/**
 	 * Power function.
 	 * - An exception occurs when doing a huge multiplication.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} pow(A, B)
 	 */
@@ -4997,7 +5235,7 @@ class BigDecimal {
 	 * Atan (arc tangent) function.
 	 * Return the values of [-PI, PI] .
 	 * Supports only real numbers.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} number 
+	 * @param {KBigDecimalInputData} number 
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} atan2(Y, X)
 	 */
@@ -5036,7 +5274,7 @@ class BigDecimal {
 	
 	/**
 	 * Return true if the value is integer.
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isInteger(tolerance) {
@@ -5045,7 +5283,7 @@ class BigDecimal {
 
 	/**
 	 * this === 0
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isZero(tolerance) {
@@ -5059,7 +5297,7 @@ class BigDecimal {
 	
 	/**
 	 * this === 1
-	 * @param {BigDecimal|number|string|Array<BigInteger|number|MathContext>|{integer:BigInteger,scale:?number,default_context:?MathContext,context:?MathContext}|BigInteger|Object} [tolerance=0] - Calculation tolerance of calculation.
+	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isOne(tolerance) {
@@ -5596,6 +5834,20 @@ const CACHED_DATA = new BigDecimalConst();
  */
 
 /**
+ * Fraction type argument.
+ * - Fraction
+ * - BigInteger
+ * - BigDecimal
+ * - number
+ * - string
+ * - Array<KBigIntegerInputData>
+ * - {numerator:KBigIntegerInputData,denominator:KBigIntegerInputData}
+ * - {doubleValue:number}
+ * - {toString:function}
+ * @typedef {Fraction|BigInteger|BigDecimal|number|string|Array<import("./BigInteger.js").KBigIntegerInputData>|{numerator:import("./BigInteger.js").KBigIntegerInputData,denominator:import("./BigInteger.js").KBigIntegerInputData}|{doubleValue:number}|{toString:function}} KFractionInputData
+ */
+
+/**
  * Collection of functions used in Fraction.
  * @ignore
  */
@@ -5821,7 +6073,7 @@ class Fraction {
 	 * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
 	 * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
 	 * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} [number] - Fraction data. See how to use the function.
+	 * @param {KFractionInputData} [number] - Fraction data. See how to use the function.
 	 */
 	constructor(number) {
 		
@@ -5866,26 +6118,28 @@ class Fraction {
 				this.denominator = (number[1] instanceof BigInteger) ? number[1] : new BigInteger(number[1]);
 				is_normalization = true;
 			}
-			else if((number instanceof Object) && number.numerator && number.denominator) {
-				this.numerator = (number.numerator instanceof BigInteger) ? number.numerator : new BigInteger(number.numerator);
-				this.denominator = (number.denominator instanceof BigInteger) ? number.denominator : new BigInteger(number.denominator);
-				is_normalization = true;
-			}
 			else if(number instanceof BigDecimal) {
 				const value = new Fraction(number.unscaledValue());
 				const x = value.scaleByPowerOfTen(-number.scale());
 				this.numerator = x.numerator;
 				this.denominator = x.denominator;
 			}
-			else if((number instanceof Object) && (number.doubleValue)) {
-				const x = FractionTool.to_fraction_data_from_number(number.doubleValue);
-				this.numerator = x.numerator;
-				this.denominator = x.denominator;
-			}
-			else if(number instanceof Object) {
-				const x1 = FractionTool.to_fraction_data_from_fraction_string(number.toString());
-				this.numerator = x1.numerator;
-				this.denominator = x1.denominator;
+			else if(typeof number === "object") {
+				if("doubleValue" in number) {
+					const x = FractionTool.to_fraction_data_from_number(number.doubleValue);
+					this.numerator = x.numerator;
+					this.denominator = x.denominator;
+				}
+				else if(("numerator" in number) && ("denominator" in number)) {
+					this.numerator = (number.numerator instanceof BigInteger) ? number.numerator : new BigInteger(number.numerator);
+					this.denominator = (number.denominator instanceof BigInteger) ? number.denominator : new BigInteger(number.denominator);
+					is_normalization = true;
+				}
+				else {
+					const x1 = FractionTool.to_fraction_data_from_fraction_string(number.toString());
+					this.numerator = x1.numerator;
+					this.denominator = x1.denominator;
+				}
 			}
 			else {
 				throw "Fraction Unsupported argument " + number;
@@ -5901,7 +6155,7 @@ class Fraction {
 
 	/**
 	 * Create an entity object of this class.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {Fraction}
 	 */
 	static create(number) {
@@ -5915,7 +6169,7 @@ class Fraction {
 
 	/**
 	 * Convert number to Fraction type.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {Fraction}
 	 */
 	static valueOf(number) {
@@ -5924,7 +6178,7 @@ class Fraction {
 
 	/**
 	 * Convert to Fraction.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {Fraction}
 	 * @private
 	 */
@@ -5939,7 +6193,7 @@ class Fraction {
 
 	/**
 	 * Convert to real number.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -5957,7 +6211,7 @@ class Fraction {
 
 	/**
 	 * Convert to integer.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -6023,7 +6277,7 @@ class Fraction {
 	
 	/**
 	 * Add.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	add(num) {
@@ -6044,7 +6298,7 @@ class Fraction {
 
 	/**
 	 * Subtract.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	sub(num) {
@@ -6065,7 +6319,7 @@ class Fraction {
 
 	/**
 	 * Multiply.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	mul(num) {
@@ -6083,7 +6337,7 @@ class Fraction {
 
 	/**
 	 * Divide.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	div(num) {
@@ -6109,7 +6363,7 @@ class Fraction {
 
 	/**
 	 * Modulo, positive remainder of division.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	mod(num) {
@@ -6122,7 +6376,7 @@ class Fraction {
 	/**
 	 * Power function.
 	 * - Supports only integers.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @returns {Fraction} pow(A, B)
 	 */
 	pow(num) {
@@ -6149,7 +6403,7 @@ class Fraction {
 	/**
 	 * Multiply a multiple of ten.
 	 * - Supports only integers.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} n
+	 * @param {KFractionInputData} n
 	 * @returns {Fraction}
 	 */
 	scaleByPowerOfTen(n) {
@@ -6228,7 +6482,7 @@ class Fraction {
 	
 	/**
 	 * Equals.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @returns {boolean} A === B
 	 */
 	equals(num) {
@@ -6239,7 +6493,7 @@ class Fraction {
 
 	/**
 	 * Compare values.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(num) {
@@ -6248,7 +6502,7 @@ class Fraction {
 
 	/**
 	 * Maximum number.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
+	 * @param {KFractionInputData} number
 	 * @returns {Fraction} max([A, B])
 	 */
 	max(number) {
@@ -6263,7 +6517,7 @@ class Fraction {
 
 	/**
 	 * Minimum number.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} number
+	 * @param {KFractionInputData} number
 	 * @returns {Fraction} min([A, B])
 	 */
 	min(number) {
@@ -6278,8 +6532,8 @@ class Fraction {
 
 	/**
 	 * Clip number within range.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} min 
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array<Object>|{numerator:Object,denominator:Object}|Object} max
+	 * @param {KFractionInputData} min 
+	 * @param {KFractionInputData} max
 	 * @returns {Fraction} min(max(x, min), max)
 	 */
 	clip(min, max) {
@@ -6546,7 +6800,7 @@ class LinearAlgebraTool {
 	 * - P is orthonormal matrix.
 	 * - H is tridiagonal matrix.
 	 * - The eigenvalues of H match the eigenvalues of A.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @returns {{P: Matrix, H: Matrix}}
 	 */
 	static tridiagonalize(mat) {
@@ -6709,7 +6963,7 @@ class LinearAlgebraTool {
 	 * - V*D*V'=A.
 	 * - V is orthonormal matrix. and columns of V are the right eigenvectors.
 	 * - D is a matrix containing the eigenvalues on the diagonal component.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - Symmetric matrix.
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - Symmetric matrix.
 	 * @returns {{V: Matrix, D: Matrix}}
 	 */
 	static eig(mat) {
@@ -6919,7 +7173,7 @@ class LinearAlgebraTool {
 	/**
 	 * Create orthogonal vectors for all row vectors of the matrix.
 	 * - If the vector can not be found, it returns NULL.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @param {number} [tolerance=1.0e-10] - Calculation tolerance of calculation.
 	 * @returns {Matrix|null} An orthogonal vector.
 	 */
@@ -6982,7 +7236,7 @@ class LinearAlgebraTool {
 
 	/**
 	 * Row number with the largest norm value in the specified column of the matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @param {number} column_index - Number of column of matrix.
 	 * @param {number} [row_index_offset=0] - Offset of the position of the vector to be calculated.
 	 * @param {number} [row_index_max] - Maximum value of position of vector to be calculated (do not include this value).
@@ -7011,9 +7265,9 @@ class LinearAlgebraTool {
 
 	/**
 	 * Extract linearly dependent rows when each row of matrix is a vector.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @param {number} [tolerance=1.0e-10] - Calculation tolerance of calculation.
-	 * @returns {Array} Array of matrix row numbers in ascending order.
+	 * @returns {Array<number>} Array of matrix row numbers in ascending order.
 	 * @private
 	 */
 	static getLinearDependenceVector(mat, tolerance) {
@@ -7021,8 +7275,8 @@ class LinearAlgebraTool {
 		const m = M.matrix_array;
 		const tolerance_ = tolerance ? Matrix._toDouble(tolerance) : 1.0e-10;
 		// 確認する行番号（ここから終わった行は削除していく）
-		const row_index_array = new Array(mat.row_length);
-		for(let i = 0; i < mat.row_length; i++) {
+		const row_index_array = new Array(M.row_length);
+		for(let i = 0; i < M.row_length; i++) {
 			row_index_array[i] = i;
 		}
 		// ガウスの消去法を使用して、行ベクトルを抽出していく
@@ -7072,9 +7326,9 @@ class LinearAlgebra {
 
 	/**
 	 * Inner product/Dot product.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} A
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} B
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
+	 * @param {import("../Matrix.js").KMatrixInputData} A
+	 * @param {import("../Matrix.js").KMatrixInputData} B
+	 * @param {import("../Matrix.js").KMatrixInputData} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
 	 * @returns {Matrix} A・B
 	 */
 	static inner(A, B, dimension) {
@@ -7126,8 +7380,8 @@ class LinearAlgebra {
 
 	/**
 	 * p-norm.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} [p=2]
 	 * @returns {number}
 	 */
 	static norm(mat, p) {
@@ -7230,8 +7484,8 @@ class LinearAlgebra {
 	
 	/**
 	 * Condition number of the matrix
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} [p=2]
 	 * @returns {number}
 	 */
 	static cond(mat, p) {
@@ -7258,7 +7512,7 @@ class LinearAlgebra {
 
 	/**
 	 * Inverse condition number.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @returns {number}
 	 */
 	static rcond(mat) {
@@ -7267,25 +7521,26 @@ class LinearAlgebra {
 
 	/**
 	 * Rank.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {number} rank(A)
 	 */
 	static rank(mat, tolerance) {
 		const M = Matrix._toMatrix(mat);
+		const t = tolerance !== undefined ? Matrix._toDouble(tolerance) : undefined;
 		// 横が長い行列の場合
 		if(M.row_length <= M.column_length) {
-			return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, tolerance)).length;
+			return Math.min(M.row_length, M.column_length) - (LinearAlgebraTool.getLinearDependenceVector(M, t)).length;
 		}
 		else {
-			return M.row_length - (LinearAlgebraTool.getLinearDependenceVector(M, tolerance)).length;
+			return M.row_length - (LinearAlgebraTool.getLinearDependenceVector(M, t)).length;
 		}
 	}
 
 	/**
 	 * Trace of a matrix.
 	 * Sum of diagonal elements.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @returns {Complex}
 	 */
 	static trace(mat) {
@@ -7300,7 +7555,7 @@ class LinearAlgebra {
 
 	/**
 	 * Determinant.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat
+	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @returns {Matrix} |A|
 	 */
 	static det(mat) {
@@ -7367,7 +7622,7 @@ class LinearAlgebra {
 	 * - P is permutation matrix.
 	 * - L is lower triangular matrix.
 	 * - U is upper triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {{P: Matrix, L: Matrix, U: Matrix}} {L, U, P}
 	 */
 	static lup(mat) {
@@ -7424,7 +7679,7 @@ class LinearAlgebra {
 	 * - L*U=A
 	 * - L is lower triangular matrix.
 	 * - U is upper triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {{L: Matrix, U: Matrix}} {L, U}
 	 */
 	static lu(mat) {
@@ -7438,8 +7693,8 @@ class LinearAlgebra {
 
 	/**
 	 * Solving a system of linear equations to be Ax = B
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} number - B
 	 * @returns {Matrix} x
 	 * @todo 安定化のためQR分解を用いた手法に切り替える。あるいはlup分解を使用した関数に作り替える。
 	 */
@@ -7508,7 +7763,7 @@ class LinearAlgebra {
 	 * - Q*R=A
 	 * - Q is orthonormal matrix.
 	 * - R is upper triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {{Q: Matrix, R: Matrix}} {Q, R}
 	 */
 	static qr(mat) {
@@ -7581,7 +7836,7 @@ class LinearAlgebra {
 	 * - P is orthonormal matrix.
 	 * - H is tridiagonal matrix.
 	 * - The eigenvalues of H match the eigenvalues of A.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {{P: Matrix, H: Matrix}} {P, H}
 	 */
 	static tridiagonalize(mat) {
@@ -7604,7 +7859,7 @@ class LinearAlgebra {
 	 * - V*D*V'=A.
 	 * - V is orthonormal matrix. and columns of V are the right eigenvectors.
 	 * - D is a matrix containing the eigenvalues on the diagonal component.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {{V: Matrix, D: Matrix}} {D, V}
 	 * @todo 対称行列しか対応できていないので、対称行列ではないものはQR分解を用いた手法に切り替える予定。
 	 */
@@ -7627,7 +7882,7 @@ class LinearAlgebra {
 	 * - U*S*V'=A
 	 * - U and V are orthonormal matrices.
 	 * - S is a matrix with singular values in the diagonal.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {{U: Matrix, S: Matrix, V: Matrix}} U*S*V'=A
 	 */
 	static svd(mat) {
@@ -7673,7 +7928,7 @@ class LinearAlgebra {
 
 	/**
 	 * Inverse matrix of this matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {Matrix} A^-1
 	 */
 	static inv(mat) {
@@ -7745,7 +8000,7 @@ class LinearAlgebra {
 
 	/**
 	 * Pseudo-inverse matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} mat - A
+	 * @param {import("../Matrix.js").KMatrixInputData} mat - A
 	 * @returns {Matrix} A^+
 	 */
 	static pinv(mat) {
@@ -7788,7 +8043,7 @@ class LinearAlgebra {
 /**
  * Collection of calculation settings for matrix.
  * - Available options vary depending on the method.
- * @typedef {Object} StatisticsSettings
+ * @typedef {Object} KStatisticsSettings
  * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
  * @property {Object} [correction] Correction value. For statistics. 0(unbiased), 1(sample).
  */
@@ -7800,8 +8055,8 @@ class Statistics {
 
 	/**
 	 * Maximum number.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix} max([A, B])
 	 */
 	static max(x, type) {
@@ -7825,8 +8080,8 @@ class Statistics {
 	
 	/**
 	 * Minimum number.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix} min([A, B])
 	 */
 	static min(x, type) {
@@ -7850,8 +8105,8 @@ class Statistics {
 
 	/**
 	 * Sum.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static sum(x, type) {
@@ -7878,8 +8133,8 @@ class Statistics {
 
 	/**
 	 * Arithmetic average.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static mean(x, type) {
@@ -7906,8 +8161,8 @@ class Statistics {
 
 	/**
 	 * Product of array elements.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static prod(x, type) {
@@ -7929,8 +8184,8 @@ class Statistics {
 
 	/**
 	 * Geometric mean.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static geomean(x, type) {
@@ -7952,8 +8207,8 @@ class Statistics {
 	
 	/**
 	 * Median.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static median(x, type) {
@@ -7989,8 +8244,8 @@ class Statistics {
 
 	/**
 	 * Mode.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static mode(x, type) {
@@ -8043,9 +8298,9 @@ class Statistics {
 	/**
 	 * Moment.
 	 * - Moment of order n. Equivalent to the definition of variance at 2.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @param {number} nth_order
-	 * @param {StatisticsSettings} [type]
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static moment(x, nth_order, type) {
@@ -8090,8 +8345,8 @@ class Statistics {
 
 	/**
 	 * Variance.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static var(x, type) {
@@ -8124,8 +8379,8 @@ class Statistics {
 
 	/**
 	 * Standard deviation.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static std(x, type) {
@@ -8143,9 +8398,9 @@ class Statistics {
 	/**
 	 * Mean absolute deviation.
 	 * - The "algorithm" can choose "0/mean"(default) and "1/median".
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @param {?string|?number} [algorithm]
-	 * @param {StatisticsSettings} [type]
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static mad(x, algorithm, type) {
@@ -8165,8 +8420,8 @@ class Statistics {
 
 	/**
 	 * Skewness.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static skewness(x, type) {
@@ -8186,8 +8441,8 @@ class Statistics {
 
 	/**
 	 * Covariance matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static cov(x, type) {
@@ -8225,8 +8480,8 @@ class Statistics {
 
 	/**
 	 * The samples are normalized to a mean value of 0, standard deviation of 1.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static normalize(x, type) {
@@ -8238,8 +8493,8 @@ class Statistics {
 
 	/**
 	 * Correlation matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {StatisticsSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static corrcoef(x, type) {
@@ -8250,9 +8505,9 @@ class Statistics {
 	/**
 	 * Sort.
 	 * - The "order" can choose "ascend"(default) and "descend".
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @param {string} [order]
-	 * @param {StatisticsSettings} [type]
+	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static sort(x, order, type) {
@@ -8747,9 +9002,9 @@ class ProbabilityTool {
 	}
 
 	/**
-		 erfinv(p) 誤差逆関数
-		 @param_ {number} p
-		 @returns_ {number}
+		erfinv(p) 誤差逆関数
+		@param_ {number} p
+		@returns_ {number}
 		
 		static erfinv(p) {
 			if((p < 0.0) || (p > 1.0)) {
@@ -9406,7 +9661,7 @@ class Probability {
 
 	/**
 	 * Log-gamma function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @returns {Matrix}
 	 */
 	static gammaln(x) {
@@ -9418,7 +9673,7 @@ class Probability {
 
 	/**
 	 * Gamma function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @returns {Matrix}
 	 */
 	static gamma(x) {
@@ -9430,8 +9685,8 @@ class Probability {
 
 	/**
 	 * Incomplete gamma function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} a
 	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
@@ -9446,9 +9701,9 @@ class Probability {
 
 	/**
 	 * Probability density function (PDF) of the gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} k - Shape parameter.
+	 * @param {import("../Matrix.js").KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	static gampdf(x, k, s) {
@@ -9462,9 +9717,9 @@ class Probability {
 
 	/**
 	 * Cumulative distribution function (CDF) of gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} k - Shape parameter.
+	 * @param {import("../Matrix.js").KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	static gamcdf(x, k, s) {
@@ -9478,9 +9733,9 @@ class Probability {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} k - Shape parameter.
+	 * @param {import("../Matrix.js").KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	static gaminv(x, k, s) {
@@ -9494,8 +9749,8 @@ class Probability {
 
 	/**
 	 * Beta function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} y
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} y
 	 * @returns {Matrix}
 	 */
 	static beta(x, y) {
@@ -9508,9 +9763,9 @@ class Probability {
 	
 	/**
 	 * Incomplete beta function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} a
+	 * @param {import("../Matrix.js").KMatrixInputData} b
 	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
@@ -9526,9 +9781,9 @@ class Probability {
 
 	/**
 	 * Cumulative distribution function (CDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} a
+	 * @param {import("../Matrix.js").KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	static betacdf(x, a, b) {
@@ -9542,9 +9797,9 @@ class Probability {
 
 	/**
 	 * Probability density function (PDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} a
+	 * @param {import("../Matrix.js").KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	static betapdf(x, a, b) {
@@ -9558,9 +9813,9 @@ class Probability {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} a
+	 * @param {import("../Matrix.js").KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	static betainv(x, a, b) {
@@ -9574,7 +9829,7 @@ class Probability {
 
 	/**
 	 * Factorial function, x!.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @returns {Matrix}
 	 */
 	static factorial(x) {
@@ -9586,8 +9841,8 @@ class Probability {
 	
 	/**
 	 * Binomial coefficient, number of all combinations, nCk.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} k
 	 * @returns {Matrix}
 	 */
 	static nchoosek(x, k) {
@@ -9600,7 +9855,7 @@ class Probability {
 	
 	/**
 	 * Error function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @returns {Matrix}
 	 */
 	static erf(x) {
@@ -9612,7 +9867,7 @@ class Probability {
 
 	/**
 	 * Complementary error function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @returns {Matrix}
 	 */
 	static erfc(x) {
@@ -9624,9 +9879,9 @@ class Probability {
 	
 	/**
 	 * Probability density function (PDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} [u=0.0] - Average value.
+	 * @param {import("../Matrix.js").KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	static normpdf(x, u, s) {
@@ -9640,9 +9895,9 @@ class Probability {
 
 	/**
 	 * Cumulative distribution function (CDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} [u=0.0] - Average value.
+	 * @param {import("../Matrix.js").KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	static normcdf(x, u, s) {
@@ -9656,9 +9911,9 @@ class Probability {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} [u=0.0] - Average value.
+	 * @param {import("../Matrix.js").KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	static norminv(x, u, s) {
@@ -9672,8 +9927,8 @@ class Probability {
 
 	/**
 	 * Probability density function (PDF) of Student's t-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tpdf(x, v) {
@@ -9686,8 +9941,8 @@ class Probability {
 
 	/**
 	 * Cumulative distribution function (CDF) of Student's t-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tcdf(x, v) {
@@ -9700,8 +9955,8 @@ class Probability {
 
 	/**
 	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tinv(x, v) {
@@ -9714,9 +9969,9 @@ class Probability {
 
 	/**
 	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} v - The degrees of freedom. (DF)
+	 * @param {import("../Matrix.js").KMatrixInputData} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {Matrix}
 	 */
 	static tdist(x, v, tails) {
@@ -9730,8 +9985,8 @@ class Probability {
 
 	/**
 	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tinv2(x, v) {
@@ -9744,8 +9999,8 @@ class Probability {
 
 	/**
 	 * Probability density function (PDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static chi2pdf(x, k) {
@@ -9758,8 +10013,8 @@ class Probability {
 
 	/**
 	 * Cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static chi2cdf(x, k) {
@@ -9772,8 +10027,8 @@ class Probability {
 	
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static chi2inv(x, k) {
@@ -9786,9 +10041,9 @@ class Probability {
 
 	/**
 	 * Probability density function (PDF) of F-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} d1 - The degree of freedom of the molecules.
+	 * @param {import("../Matrix.js").KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	static fpdf(x, d1, d2) {
@@ -9802,9 +10057,9 @@ class Probability {
 
 	/**
 	 * Cumulative distribution function (CDF) of F-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} d1 - The degree of freedom of the molecules.
+	 * @param {import("../Matrix.js").KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	static fcdf(x, d1, d2) {
@@ -9818,9 +10073,9 @@ class Probability {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {import("../Matrix.js").KMatrixInputData} d1 - The degree of freedom of the molecules.
+	 * @param {import("../Matrix.js").KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	static finv(x, d1, d2) {
@@ -9847,7 +10102,7 @@ class Probability {
 /**
  * Collection of calculation settings for matrix.
  * - Available options vary depending on the method.
- * @typedef {Object} SignalSettings
+ * @typedef {Object} KSignalSettings
  * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
  */
 
@@ -10028,8 +10283,8 @@ class FFT {
 
 	/**
 	 * Inverse discrete Fourier transform (IDFT),
-	 * @param {Array} real - Array of real parts of vector.
-	 * @param {Array} imag - Array of imaginary parts of vector.
+	 * @param {Array<number>} real - Array of real parts of vector.
+	 * @param {Array<number>} imag - Array of imaginary parts of vector.
 	 * @returns {Object<string, Array<number>>}
 	 */
 	ifft(real, imag) {
@@ -10346,10 +10601,10 @@ class SignalTool {
 
 	/**
 	 * Convolution integral, Polynomial multiplication.
-	 * @param {Array} x1_real - Array of real parts of vector.
-	 * @param {Array} x1_imag - Array of imaginary parts of vector.
-	 * @param {Array} x2_real - Array of real parts of vector.
-	 * @param {Array} x2_imag - Array of imaginary parts of vector.
+	 * @param {Array<number>} x1_real - Array of real parts of vector.
+	 * @param {Array<number>} x1_imag - Array of imaginary parts of vector.
+	 * @param {Array<number>} x2_real - Array of real parts of vector.
+	 * @param {Array<number>} x2_imag - Array of imaginary parts of vector.
 	 * @returns {Object<string, Array<number>>}
 	 */
 	static conv(x1_real, x1_imag, x2_real, x2_imag) {
@@ -10456,10 +10711,10 @@ class SignalTool {
 
 	/**
 	 * ACF(Autocorrelation function), Cros-correlation function.
-	 * @param {Array} x1_real - Array of real parts of vector.
-	 * @param {Array} x1_imag - Array of imaginary parts of vector.
-	 * @param {Array} x2_real - Array of real parts of vector.
-	 * @param {Array} x2_imag - Array of imaginary parts of vector.
+	 * @param {Array<number>} x1_real - Array of real parts of vector.
+	 * @param {Array<number>} x1_imag - Array of imaginary parts of vector.
+	 * @param {Array<number>} x2_real - Array of real parts of vector.
+	 * @param {Array<number>} x2_imag - Array of imaginary parts of vector.
 	 * @returns {Object<string, Array<number>>}
 	 */
 	static xcorr(x1_real, x1_imag, x2_real, x2_imag) {
@@ -10742,8 +10997,8 @@ class Signal {
 	
 	/**
 	 * Discrete Fourier transform (DFT).
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {SignalSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KSignalSettings} [type]
 	 * @returns {Matrix} fft(x)
 	 */
 	static fft(x, type) {
@@ -10772,8 +11027,8 @@ class Signal {
 
 	/**
 	 * Inverse discrete Fourier transform (IDFT),
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
-	 * @param {SignalSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} X
+	 * @param {KSignalSettings} [type]
 	 * @returns {Matrix} ifft(X)
 	 */
 	static ifft(X, type) {
@@ -10802,8 +11057,8 @@ class Signal {
 
 	/**
 	 * Power spectral density.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {SignalSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KSignalSettings} [type]
 	 * @returns {Matrix} abs(fft(x)).^2
 	 */
 	static powerfft(x, type) {
@@ -10832,8 +11087,8 @@ class Signal {
 
 	/**
 	 * Discrete cosine transform (DCT-II, DCT).
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {SignalSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KSignalSettings} [type]
 	 * @returns {Matrix} dct(x)
 	 */
 	static dct(x, type) {
@@ -10863,8 +11118,8 @@ class Signal {
 
 	/**
 	 * Inverse discrete cosine transform (DCT-III, IDCT),
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
-	 * @param {SignalSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} X
+	 * @param {KSignalSettings} [type]
 	 * @returns {Matrix} idct(x)
 	 */
 	static idct(X, type) {
@@ -10894,7 +11149,7 @@ class Signal {
 
 	/**
 	 * Discrete two-dimensional Fourier transform (2D DFT).
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @returns {Matrix}
 	 */
 	static fft2(x) {
@@ -10903,7 +11158,7 @@ class Signal {
 
 	/**
 	 * Inverse discrete two-dimensional Fourier transform (2D IDFT),
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
+	 * @param {import("../Matrix.js").KMatrixInputData} X
 	 * @returns {Matrix}
 	 */
 	static ifft2(X) {
@@ -10912,7 +11167,7 @@ class Signal {
 
 	/**
 	 * Discrete two-dimensional cosine transform (2D DCT).
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @returns {Matrix}
 	 */
 	static dct2(x) {
@@ -10921,7 +11176,7 @@ class Signal {
 
 	/**
 	 * Inverse discrete two-dimensional cosine transform (2D IDCT),
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
+	 * @param {import("../Matrix.js").KMatrixInputData} X
 	 * @returns {Matrix}
 	 */
 	static idct2(X) {
@@ -10930,8 +11185,8 @@ class Signal {
 
 	/**
 	 * Convolution integral, Polynomial multiplication.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x2
+	 * @param {import("../Matrix.js").KMatrixInputData} x1
+	 * @param {import("../Matrix.js").KMatrixInputData} x2
 	 * @returns {Matrix}
 	 */
 	static conv(x1, x2) {
@@ -10980,8 +11235,8 @@ class Signal {
 	/**
 	 * ACF(Autocorrelation function), cros-correlation function.
 	 * - If the argument is omitted, it is calculated by the autocorrelation function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [x2] - Matrix to calculate the correlation.
+	 * @param {import("../Matrix.js").KMatrixInputData} x1
+	 * @param {import("../Matrix.js").KMatrixInputData} [x2] - Matrix to calculate the correlation.
 	 * @returns {Matrix}
 	 */
 	static xcorr(x1, x2) {
@@ -11043,7 +11298,7 @@ class Signal {
 	 * - "sin", Half cycle sine window.
 	 * - "vorbis", Vorbis window.
 	 * @param {string} name - Window function name.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+	 * @param {import("../Matrix.js").KMatrixInputData} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
@@ -11055,7 +11310,7 @@ class Signal {
 
 	/**
 	 * Hann (Hanning) window.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+	 * @param {import("../Matrix.js").KMatrixInputData} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
@@ -11065,7 +11320,7 @@ class Signal {
 	
 	/**
 	 * Hamming window.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+	 * @param {import("../Matrix.js").KMatrixInputData} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
@@ -11076,8 +11331,8 @@ class Signal {
 	/**
 	 * FFT shift.
 	 * Circular shift beginning at the center of the signal.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x 
-	 * @param {SignalSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x 
+	 * @param {KSignalSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static fftshift(x, type) {
@@ -11114,9 +11369,22 @@ class Signal {
  */
 
 /**
+ * Matrix type argument.
+ * - Matrix
+ * - Complex
+ * - number
+ * - string
+ * - Array<string|number|Complex|Matrix>
+ * - Array<Array<string|number|Complex|Matrix>>
+ * - {doubleValue:number}
+ * - {toString:function}
+ * @typedef {Matrix|Complex|number|string|Array<string|number|Complex|Matrix>|Array<Array<string|number|Complex|Matrix>>|{doubleValue:number}|{toString:function}} KMatrixInputData
+ */
+
+/**
  * Collection of calculation settings for matrix.
  * - Available options vary depending on the method.
- * @typedef {Object} MatrixSettings
+ * @typedef {Object} KMatrixSettings
  * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
  * @property {Object} [correction] Correction value. For statistics. 0(unbiased), 1(sample).
  */
@@ -11129,7 +11397,7 @@ class MatrixTool {
 
 	/**
 	 * Create actual values from data specifying matrix position.
-	 * @param {string|number|Matrix|Complex} data - A value indicating the position in a matrix.
+	 * @param {any} data - A value indicating the position in a matrix.
 	 * @param {number} max - Length to initialize. (Used when ":" is specified at matrix creation.)
 	 * @param {number} geta - Offset at initialization. (Used when ":" is specified at matrix creation.)
 	 * @returns {Array<number>}
@@ -11453,7 +11721,7 @@ class Matrix {
 	 * - 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
 	 * - [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
 	 * - "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - Complex matrix. See how to use the function.
+	 * @param {KMatrixInputData} number - Complex matrix. See how to use the function.
 	 */
 	constructor(number) {
 		let matrix_array = null;
@@ -11534,7 +11802,7 @@ class Matrix {
 				matrix_array = MatrixTool.toMatrixArrayFromString(obj);
 			}
 			// 数値化できる場合
-			else if((obj instanceof Object) && (obj.doubleValue)) {
+			else if((obj instanceof Object) && ("doubleValue" in obj)) {
 				matrix_array = [[new Complex(obj.doubleValue)]];
 			}
 			// 文字列変換できる場合は返還後に、文字列解析を行う
@@ -11595,7 +11863,7 @@ class Matrix {
 
 	/**
 	 * Create an entity object of this class.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+	 * @param {KMatrixInputData} number
 	 * @returns {Matrix}
 	 */
 	static create(number) {
@@ -11609,7 +11877,7 @@ class Matrix {
 	
 	/**
 	 * Convert number to Matrix type.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+	 * @param {KMatrixInputData} number
 	 * @returns {Matrix}
 	 */
 	static valueOf(number) {
@@ -11619,7 +11887,7 @@ class Matrix {
 	/**
 	 * Convert to Matrix.
 	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix}
 	 * @private
 	 */
@@ -11635,7 +11903,7 @@ class Matrix {
 	/**
 	 * Convert to Complex.
 	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Complex}
 	 * @private
 	 */
@@ -11654,7 +11922,7 @@ class Matrix {
 
 	/**
 	 * Convert to real number.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -11673,7 +11941,7 @@ class Matrix {
 
 	/**
 	 * Convert to integer.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -11715,7 +11983,7 @@ class Matrix {
 
 		// 行列を確認して表示するための表示方法の確認する
 		this._each(
-			function(num) {
+			function(num, row, col) {
 				if(!num.isReal()) {
 					isDrawImag = true;
 				}
@@ -11854,8 +12122,8 @@ class Matrix {
 
 	/**
 	 * Equals.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} number
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === B
 	 */
 	equals(number, tolerance) {
@@ -11911,7 +12179,7 @@ class Matrix {
 	
 	/**
 	 * Perform the same process on all elements in the matrix. (mutable)
-	 * @param {function(Complex, number, number): ?Object } eachfunc - Function(num, row, col)
+	 * @param {function(Complex, number, number): any } eachfunc - Function(num, row, col)
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -11954,8 +12222,8 @@ class Matrix {
 	/**
 	 * Create Matrix with specified initialization for each element in matrix.
 	 * @param {function(number, number): ?Object } eachfunc - Function(row, col)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length=dimension] - Number of columns.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length=dimension] - Number of columns.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	static createMatrixDoEachCalculation(eachfunc, dimension, column_length) {
@@ -12133,8 +12401,8 @@ class Matrix {
 
 	/**
 	 * Extract the specified part of the matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row - A vector containing the row numbers to extract from this matrix. If you specify ":" select all rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} col - A vector containing the column numbers to extract from this matrix. If you specify ":" select all columns.
+	 * @param {KMatrixInputData} row - A vector containing the row numbers to extract from this matrix. If you specify ":" select all rows.
+	 * @param {KMatrixInputData} col - A vector containing the column numbers to extract from this matrix. If you specify ":" select all columns.
 	 * @param {boolean} [isUpOffset=false] - Set offset of matrix position to 1 with true.
 	 * @returns {Matrix} 
 	 */
@@ -12156,9 +12424,9 @@ class Matrix {
 
 	/**
 	 * Change specified element in matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row - A vector containing the row numbers to replace in this matrix. If you specify ":" select all rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} col - A vector containing the column numbers to replace in this matrix. If you specify ":" select all columns.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} replace - Matrix to be replaced.
+	 * @param {KMatrixInputData} row - A vector containing the row numbers to replace in this matrix. If you specify ":" select all rows.
+	 * @param {KMatrixInputData} col - A vector containing the column numbers to replace in this matrix. If you specify ":" select all columns.
+	 * @param {KMatrixInputData} replace - Matrix to be replaced.
 	 * @param {boolean} [isUpOffset=false] - Set offset of matrix position to 1 with true.
 	 * @returns {Matrix} 
 	 */
@@ -12181,8 +12449,8 @@ class Matrix {
 	/**
 	 * Returns the specified element in the matrix.
 	 * Each element of the matrix is composed of complex numbers.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_or_pos - If this is a matrix, the row number. If this is a vector, the address.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [col] - If this is a matrix, the column number.
+	 * @param {KMatrixInputData} row_or_pos - If this is a matrix, the row number. If this is a vector, the address.
+	 * @param {KMatrixInputData} [col] - If this is a matrix, the column number.
 	 * @returns {Complex} 
 	 */
 	getComplex(row_or_pos, col) {
@@ -12260,7 +12528,7 @@ class Matrix {
 
 	/**
 	 * p-norm.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+	 * @param {KMatrixInputData} [p=2]
 	 * @returns {number}
 	 */
 	norm(p) {
@@ -12269,7 +12537,7 @@ class Matrix {
 
 	/**
 	 * Condition number of the matrix
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+	 * @param {KMatrixInputData} [p=2]
 	 * @returns {number}
 	 */
 	cond(p) {
@@ -12286,7 +12554,7 @@ class Matrix {
 
 	/**
 	 * Rank.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {number} rank(A)
 	 */
 	rank(tolerance) {
@@ -12316,9 +12584,9 @@ class Matrix {
 	
 	/**
 	 * Creates a matrix composed of the specified number.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - Value after initialization.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
+	 * @param {KMatrixInputData} number - Value after initialization.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static memset(number, dimension, column_length) {
@@ -12344,8 +12612,8 @@ class Matrix {
 
 	/**
 	 * Return identity matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static eye(dimension, column_length) {
@@ -12356,8 +12624,8 @@ class Matrix {
 	
 	/**
 	 * Create zero matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static zeros(dimension, column_length) {
@@ -12369,8 +12637,8 @@ class Matrix {
 
 	/**
 	 * Create a matrix of all ones.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static ones(dimension, column_length) {
@@ -12382,8 +12650,8 @@ class Matrix {
 
 	/**
 	 * Generate a matrix composed of random values with uniform random numbers.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static rand(dimension, column_length) {
@@ -12394,8 +12662,8 @@ class Matrix {
 
 	/**
 	 * Generate a matrix composed of random values with normal distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static randn(dimension, column_length) {
@@ -12490,7 +12758,7 @@ class Matrix {
 
 	/**
 	 * Return true if the matrix is real matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isReal(tolerance) {
@@ -12505,7 +12773,7 @@ class Matrix {
 
 	/**
 	 * Return true if the matrix is complex matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isComplex(tolerance) {
@@ -12514,7 +12782,7 @@ class Matrix {
 
 	/**
 	 * Return true if the matrix is zero matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isZeros(tolerance) {
@@ -12530,7 +12798,7 @@ class Matrix {
 
 	/**
 	 * Return true if the matrix is identity matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isIdentity(tolerance) {
@@ -12555,7 +12823,7 @@ class Matrix {
 
 	/**
 	 * Return true if the matrix is diagonal matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isDiagonal(tolerance) {
@@ -12571,7 +12839,7 @@ class Matrix {
 	
 	/**
 	 * Return true if the matrix is tridiagonal matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isTridiagonal(tolerance) {
@@ -12587,7 +12855,7 @@ class Matrix {
 
 	/**
 	 * Return true if the matrix is regular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isRegular(tolerance) {
@@ -12603,7 +12871,7 @@ class Matrix {
 
 	/**
 	 * Return true if the matrix is orthogonal matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isOrthogonal(tolerance) {
@@ -12616,7 +12884,7 @@ class Matrix {
 
 	/**
 	 * Return true if the matrix is unitary matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isUnitary(tolerance) {
@@ -12629,7 +12897,7 @@ class Matrix {
 
 	/**
 	 * Return true if the matrix is symmetric matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isSymmetric(tolerance) {
@@ -12649,7 +12917,7 @@ class Matrix {
 
 	/**
 	 * Return true if the matrix is hermitian matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isHermitian(tolerance) {
@@ -12674,7 +12942,7 @@ class Matrix {
 	
 	/**
 	 * Return true if the matrix is upper triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isTriangleUpper(tolerance) {
@@ -12690,7 +12958,7 @@ class Matrix {
 
 	/**
 	 * Return true if the matrix is  lower triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isTriangleLower(tolerance) {
@@ -12706,7 +12974,7 @@ class Matrix {
 
 	/**
 	 * Return true if the matrix is permutation matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isPermutation(tolerance) {
@@ -12754,8 +13022,8 @@ class Matrix {
 	 * Compare values.
 	 * - Return value between scalars is of type Number.
 	 * - Return value between matrices is type Matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} number 
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, tolerance) {
@@ -12780,7 +13048,7 @@ class Matrix {
 	
 	/**
 	 * Add.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A + B
 	 */
 	add(number) {
@@ -12800,7 +13068,7 @@ class Matrix {
 
 	/**
 	 * Subtract.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A - B
 	 */
 	sub(number) {
@@ -12820,7 +13088,7 @@ class Matrix {
 
 	/**
 	 * Multiply.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A * B
 	 */
 	mul(number) {
@@ -12872,7 +13140,7 @@ class Matrix {
 
 	/**
 	 * Divide.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A / B
 	 */
 	div(number) {
@@ -12913,7 +13181,7 @@ class Matrix {
 	/**
 	 * Power function.
 	 * - Supports only integers.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 整数
+	 * @param {KMatrixInputData} number - 整数
 	 * @returns {Matrix} pow(A, B)
 	 */
 	pow(number) {
@@ -12939,7 +13207,7 @@ class Matrix {
 
 	/**
 	 * Multiplication for each element of matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A .* B
 	 */
 	dotmul(number) {
@@ -12959,7 +13227,7 @@ class Matrix {
 
 	/**
 	 * Division for each element of matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A ./ B
 	 */
 	dotdiv(number) {
@@ -12991,7 +13259,7 @@ class Matrix {
 
 	/**
 	 * Power function for each element of the matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A .^ B
 	 */
 	dotpow(number) {
@@ -13011,7 +13279,7 @@ class Matrix {
 
 	/**
 	 * Multiplication for each element of matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A .* B
 	 * @deprecated use the dotmul.
 	 */
@@ -13021,7 +13289,7 @@ class Matrix {
 
 	/**
 	 * Division for each element of matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A ./ B
 	 * @deprecated use the dotdiv.
 	 */
@@ -13040,7 +13308,7 @@ class Matrix {
 
 	/**
 	 * Power function for each element of the matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A .^ B
 	 * @deprecated use the dotpow.
 	 */
@@ -13096,7 +13364,7 @@ class Matrix {
 	/**
 	 * Test if each element of the matrix is integer.
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testInteger(tolerance) {
@@ -13108,7 +13376,7 @@ class Matrix {
 	/**
 	 * Test if each element of the matrix is complex integer.
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testComplexInteger(tolerance) {
@@ -13120,7 +13388,7 @@ class Matrix {
 	/**
 	 * real(this) === 0
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testZero(tolerance) {
@@ -13132,7 +13400,7 @@ class Matrix {
 	/**
 	 * real(this) === 1
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testOne(tolerance) {
@@ -13144,7 +13412,7 @@ class Matrix {
 	/**
 	 * Test if each element of the matrix is complex.
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testComplex(tolerance) {
@@ -13156,7 +13424,7 @@ class Matrix {
 	/**
 	 * Test if each element of the matrix is real.
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testReal(tolerance) {
@@ -13337,7 +13605,7 @@ class Matrix {
 	 * Atan (arc tangent) function.
 	 * - Return the values of [-PI, PI].
 	 * - Supports only real numbers.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - X
+	 * @param {KMatrixInputData} number - X
 	 * @returns {Matrix} atan2(Y, X)
 	 */
 	atan2(number) {
@@ -13416,7 +13684,7 @@ class Matrix {
 
 	/**
 	 * Rotate matrix 90 degrees clockwise. (mutable)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} rot_90_count - Number of times rotated by 90 degrees.
+	 * @param {KMatrixInputData} rot_90_count - Number of times rotated by 90 degrees.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -13484,7 +13752,7 @@ class Matrix {
 
 	/**
 	 * Rotate matrix 90 degrees clockwise.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} rot_90_count - Number of times rotated by 90 degrees.
+	 * @param {KMatrixInputData} rot_90_count - Number of times rotated by 90 degrees.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	rot90(rot_90_count) {
@@ -13494,8 +13762,8 @@ class Matrix {
 	/**
 	 * Change the size of the matrix. (mutable)
 	 * Initialized with 0 when expanding.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} new_row_length - Number of rows of matrix to resize.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} new_column_length - Number of columns of matrix to resize.
+	 * @param {KMatrixInputData} new_row_length - Number of rows of matrix to resize.
+	 * @param {KMatrixInputData} new_column_length - Number of columns of matrix to resize.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -13540,8 +13808,8 @@ class Matrix {
 	/**
 	 * Change the size of the matrix.
 	 * Initialized with 0 when expanding.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - Number of rows of matrix to resize.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - Number of columns of matrix to resize.
+	 * @param {KMatrixInputData} row_length - Number of rows of matrix to resize.
+	 * @param {KMatrixInputData} column_length - Number of columns of matrix to resize.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	resize(row_length, column_length) {
@@ -13550,7 +13818,7 @@ class Matrix {
 
 	/**
 	 * Remove the row in this matrix. (mutable)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_row_index - Number of row of matrix to delete.
+	 * @param {KMatrixInputData} delete_row_index - Number of row of matrix to delete.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -13567,7 +13835,7 @@ class Matrix {
 	
 	/**
 	 * Remove the column in this matrix. (mutable)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_column_index - Number of column of matrix to delete.
+	 * @param {KMatrixInputData} delete_column_index - Number of column of matrix to delete.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -13586,7 +13854,7 @@ class Matrix {
 
 	/**
 	 * Remove the row in this matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_row_index - Number of row of matrix to delete.
+	 * @param {KMatrixInputData} delete_row_index - Number of row of matrix to delete.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	deleteRow(delete_row_index) {
@@ -13595,7 +13863,7 @@ class Matrix {
 
 	/**
 	 * Remove the column in this matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_column_index - Number of column of matrix to delete.
+	 * @param {KMatrixInputData} delete_column_index - Number of column of matrix to delete.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	deleteColumn(delete_column_index) {
@@ -13604,8 +13872,8 @@ class Matrix {
 
 	/**
 	 * Swap rows in the matrix. (mutable)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index1 - Number 1 of row of matrix to exchange.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index2 - Number 2 of row of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_row_index1 - Number 1 of row of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_row_index2 - Number 2 of row of matrix to exchange.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -13627,8 +13895,8 @@ class Matrix {
 
 	/**
 	 * Swap columns in the matrix. (mutable)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index1 - Number 1 of column of matrix to exchange.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index2 - Number 2 of column of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_column_index1 - Number 1 of column of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_column_index2 - Number 2 of column of matrix to exchange.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -13652,8 +13920,8 @@ class Matrix {
 
 	/**
 	 * Swap rows in the matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index1 - Number 1 of row of matrix to exchange.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index2 - Number 2 of row of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_row_index1 - Number 1 of row of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_row_index2 - Number 2 of row of matrix to exchange.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	exchangeRow(exchange_row_index1, exchange_row_index2) {
@@ -13662,8 +13930,8 @@ class Matrix {
 
 	/**
 	 * Swap columns in the matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index1 - Number 1 of column of matrix to exchange.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index2 - Number 2 of column of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_column_index1 - Number 1 of column of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_column_index2 - Number 2 of column of matrix to exchange.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	exchangeColumn(exchange_column_index1, exchange_column_index2) {
@@ -13672,7 +13940,7 @@ class Matrix {
 
 	/**
 	 * Combine matrix to the right of this matrix. (mutable)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} left_matrix - Matrix to combine.
+	 * @param {KMatrixInputData} left_matrix - Matrix to combine.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -13693,7 +13961,7 @@ class Matrix {
 
 	/**
 	 * Combine matrix to the bottom of this matrix. (mutable)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} bottom_matrix - Matrix to combine.
+	 * @param {KMatrixInputData} bottom_matrix - Matrix to combine.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -13712,7 +13980,7 @@ class Matrix {
 
 	/**
 	 * Combine matrix to the right of this matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} left_matrix - Matrix to combine.
+	 * @param {KMatrixInputData} left_matrix - Matrix to combine.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	concatRight(left_matrix) {
@@ -13721,7 +13989,7 @@ class Matrix {
 
 	/**
 	 * Combine matrix to the bottom of this matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} bottom_matrix - Matrix to combine.
+	 * @param {KMatrixInputData} bottom_matrix - Matrix to combine.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	concatBottom(bottom_matrix) {
@@ -13730,8 +13998,8 @@ class Matrix {
 
 	/**
 	 * Clip each element of matrix to specified range.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} min 
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} max 
+	 * @param {KMatrixInputData} min 
+	 * @param {KMatrixInputData} max 
 	 * @returns {Matrix} min(max(x, min), max)
 	 */
 	clip(min, max) {
@@ -13750,9 +14018,9 @@ class Matrix {
 
 	/**
 	 * Create row vector with specified initial value, step value, end condition.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} start_or_stop 
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [stop]
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [step=1] 
+	 * @param {KMatrixInputData} start_or_stop 
+	 * @param {KMatrixInputData} [stop]
+	 * @param {KMatrixInputData} [step=1] 
 	 * @returns {Matrix}
 	 */
 	static arange(start_or_stop, stop, step) {
@@ -13764,8 +14032,8 @@ class Matrix {
 
 	/**
 	 * Circular shift.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size 
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixInputData} shift_size 
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	circshift(shift_size, type) {
@@ -13791,8 +14059,8 @@ class Matrix {
 
 	/**
 	 * Circular shift.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size 
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixInputData} shift_size 
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	roll(shift_size, type) {
@@ -13802,8 +14070,8 @@ class Matrix {
 	/**
 	 * Change the shape of the matrix.
 	 * The number of elements in the matrix doesn't increase or decrease.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - Number of rows of matrix to reshape.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - Number of columns of matrix to reshape.
+	 * @param {KMatrixInputData} row_length - Number of rows of matrix to reshape.
+	 * @param {KMatrixInputData} column_length - Number of columns of matrix to reshape.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	reshape(row_length, column_length) {
@@ -13850,7 +14118,7 @@ class Matrix {
 
 	/**
 	 * Flip this matrix.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	flip(type) {
@@ -13873,7 +14141,7 @@ class Matrix {
 	 * Index sort.
 	 * - Sorts by row when setting index by row vector to the argument.
 	 * - Sorts by column when setting index by column vector to the argument.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - Vector with index. (See the description of this function)
+	 * @param {KMatrixInputData} v - Vector with index. (See the description of this function)
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	indexsort(v) {
@@ -14009,8 +14277,8 @@ class Matrix {
 
 	/**
 	 * Inner product/Dot product.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
+	 * @param {KMatrixInputData} number 
+	 * @param {KMatrixInputData} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
 	 * @returns {Matrix} A・B
 	 */
 	inner(number, dimension=1) {
@@ -14042,7 +14310,7 @@ class Matrix {
 
 	/**
 	 * Solving a system of linear equations to be Ax = B
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
+	 * @param {KMatrixInputData} number - B
 	 * @returns {Matrix} x
 	 */
 	linsolve(number) {
@@ -14134,7 +14402,7 @@ class Matrix {
 
 	/**
 	 * Incomplete gamma function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {KMatrixInputData} a
 	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
@@ -14144,8 +14412,8 @@ class Matrix {
 
 	/**
 	 * Probability density function (PDF) of the gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
+	 * @param {KMatrixInputData} k - Shape parameter.
+	 * @param {KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	gampdf(k, s) {
@@ -14154,8 +14422,8 @@ class Matrix {
 
 	/**
 	 * Cumulative distribution function (CDF) of gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
+	 * @param {KMatrixInputData} k - Shape parameter.
+	 * @param {KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	gamcdf(k, s) {
@@ -14164,8 +14432,8 @@ class Matrix {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
+	 * @param {KMatrixInputData} k - Shape parameter.
+	 * @param {KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	gaminv(k, s) {
@@ -14174,7 +14442,7 @@ class Matrix {
 
 	/**
 	 * Beta function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} y
+	 * @param {KMatrixInputData} y
 	 * @returns {Matrix}
 	 */
 	beta(y) {
@@ -14183,8 +14451,8 @@ class Matrix {
 	
 	/**
 	 * Incomplete beta function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {KMatrixInputData} a
+	 * @param {KMatrixInputData} b
 	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
@@ -14194,8 +14462,8 @@ class Matrix {
 
 	/**
 	 * Cumulative distribution function (CDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {KMatrixInputData} a
+	 * @param {KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	betacdf(a, b) {
@@ -14204,8 +14472,8 @@ class Matrix {
 
 	/**
 	 * Probability density function (PDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {KMatrixInputData} a
+	 * @param {KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	betapdf(a, b) {
@@ -14214,8 +14482,8 @@ class Matrix {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {KMatrixInputData} a
+	 * @param {KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	betainv(a, b) {
@@ -14232,7 +14500,7 @@ class Matrix {
 	
 	/**
 	 * Binomial coefficient, number of all combinations, nCk.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k
+	 * @param {KMatrixInputData} k
 	 * @returns {Matrix}
 	 */
 	nchoosek(k) {
@@ -14257,8 +14525,8 @@ class Matrix {
 	
 	/**
 	 * Probability density function (PDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
+	 * @param {KMatrixInputData} [u=0.0] - Average value.
+	 * @param {KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	normpdf(u=0.0, s=1.0) {
@@ -14267,8 +14535,8 @@ class Matrix {
 
 	/**
 	 * Cumulative distribution function (CDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
+	 * @param {KMatrixInputData} [u=0.0] - Average value.
+	 * @param {KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	normcdf(u=0.0, s=1.0) {
@@ -14277,8 +14545,8 @@ class Matrix {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
+	 * @param {KMatrixInputData} [u=0.0] - Average value.
+	 * @param {KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	norminv(u=0.0, s=1.0) {
@@ -14287,7 +14555,7 @@ class Matrix {
 
 	/**
 	 * Probability density function (PDF) of Student's t-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tpdf(v) {
@@ -14296,7 +14564,7 @@ class Matrix {
 
 	/**
 	 * Cumulative distribution function (CDF) of Student's t-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tcdf(v) {
@@ -14305,7 +14573,7 @@ class Matrix {
 
 	/**
 	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tinv(v) {
@@ -14316,8 +14584,8 @@ class Matrix {
 	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
 	 * - If tails = 1, TDIST returns the one-tailed distribution.
 	 * - If tails = 2, TDIST returns the two-tailed distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
+	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {Matrix}
 	 */
 	tdist(v, tails) {
@@ -14326,7 +14594,7 @@ class Matrix {
 
 	/**
 	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tinv2(v) {
@@ -14335,7 +14603,7 @@ class Matrix {
 
 	/**
 	 * Probability density function (PDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	chi2pdf(k) {
@@ -14344,7 +14612,7 @@ class Matrix {
 
 	/**
 	 * Cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	chi2cdf(k) {
@@ -14353,7 +14621,7 @@ class Matrix {
 	
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	chi2inv(k) {
@@ -14363,8 +14631,8 @@ class Matrix {
 	/**
 	 * Probability density function (PDF) of F-distribution.
 	 * - In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
+	 * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
+	 * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	fpdf(d1, d2) {
@@ -14373,8 +14641,8 @@ class Matrix {
 
 	/**
 	 * Cumulative distribution function (CDF) of F-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
+	 * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
+	 * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	fcdf(d1, d2) {
@@ -14383,8 +14651,8 @@ class Matrix {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
+	 * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
+	 * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	finv(d1, d2) {
@@ -14397,7 +14665,7 @@ class Matrix {
 
 	/**
 	 * Maximum number.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} max([A, B])
 	 */
 	max(type) {
@@ -14406,7 +14674,7 @@ class Matrix {
 	
 	/**
 	 * Minimum number.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} min([A, B])
 	 */
 	min(type) {
@@ -14415,7 +14683,7 @@ class Matrix {
 	
 	/**
 	 * Sum.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	sum(type) {
@@ -14424,7 +14692,7 @@ class Matrix {
 
 	/**
 	 * Arithmetic average.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	mean(type) {
@@ -14433,7 +14701,7 @@ class Matrix {
 
 	/**
 	 * Product of array elements.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	prod(type) {
@@ -14442,7 +14710,7 @@ class Matrix {
 
 	/**
 	 * Geometric mean.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	geomean(type) {
@@ -14451,7 +14719,7 @@ class Matrix {
 
 	/**
 	 * Median.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	median(type) {
@@ -14460,7 +14728,7 @@ class Matrix {
 
 	/**
 	 * Mode.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	mode(type) {
@@ -14471,7 +14739,7 @@ class Matrix {
 	 * Moment.
 	 * - Moment of order n. Equivalent to the definition of variance at 2.
 	 * @param {number} nth_order
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	moment(nth_order, type) {
@@ -14480,7 +14748,7 @@ class Matrix {
 
 	/**
 	 * Variance.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	var(type) {
@@ -14489,7 +14757,7 @@ class Matrix {
 
 	/**
 	 * Standard deviation.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	std(type) {
@@ -14500,7 +14768,7 @@ class Matrix {
 	 * Mean absolute deviation.
 	 * - The "algorithm" can choose "0/mean"(default) and "1/median".
 	 * @param {?string|?number} [algorithm]
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	mad(algorithm, type) {
@@ -14509,7 +14777,7 @@ class Matrix {
 
 	/**
 	 * Skewness.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	skewness(type) {
@@ -14518,7 +14786,7 @@ class Matrix {
 
 	/**
 	 * Covariance matrix.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	cov(type) {
@@ -14527,7 +14795,7 @@ class Matrix {
 
 	/**
 	 * The samples are normalized to a mean value of 0, standard deviation of 1.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	normalize(type) {
@@ -14536,7 +14804,7 @@ class Matrix {
 
 	/**
 	 * Correlation matrix.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	corrcoef(type) {
@@ -14547,7 +14815,7 @@ class Matrix {
 	 * Sort.
 	 * - The "order" can choose "ascend"(default) and "descend".
 	 * @param {string} [order]
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	sort(order, type) {
@@ -14560,7 +14828,7 @@ class Matrix {
 
 	/**
 	 * Discrete Fourier transform (DFT).
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} fft(x)
 	 */
 	fft(type) {
@@ -14569,7 +14837,7 @@ class Matrix {
 
 	/**
 	 * Inverse discrete Fourier transform (IDFT).
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} ifft(x)
 	 */
 	ifft(type) {
@@ -14578,7 +14846,7 @@ class Matrix {
 
 	/**
 	 * Power spectral density.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} abs(fft(x)).^2
 	 */
 	powerfft(type) {
@@ -14587,7 +14855,7 @@ class Matrix {
 
 	/**
 	 * Discrete cosine transform (DCT-II, DCT).
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} dct(x)
 	 */
 	dct(type) {
@@ -14596,7 +14864,7 @@ class Matrix {
 
 	/**
 	 * Inverse discrete cosine transform (DCT-III, IDCT).
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} idct(x)
 	 */
 	idct(type) {
@@ -14637,7 +14905,7 @@ class Matrix {
 
 	/**
 	 * Convolution integral, Polynomial multiplication.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+	 * @param {KMatrixInputData} number
 	 * @returns {Matrix}
 	 */
 	conv(number) {
@@ -14647,7 +14915,7 @@ class Matrix {
 	/**
 	 * ACF(Autocorrelation function), cros-correlation function.
 	 * - If the argument is omitted, it is calculated by the autocorrelation function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [number] - Matrix to calculate the correlation.
+	 * @param {KMatrixInputData} [number] - Matrix to calculate the correlation.
 	 * @returns {Matrix}
 	 */
 	xcorr(number) {
@@ -14667,7 +14935,7 @@ class Matrix {
 	 * - "sin", Half cycle sine window.
 	 * - "vorbis", Vorbis window.
 	 * @param {string} name - Window function name.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+	 * @param {KMatrixInputData} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
@@ -14677,7 +14945,7 @@ class Matrix {
 
 	/**
 	 * Hann (Hanning) window.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+	 * @param {KMatrixInputData} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
@@ -14687,7 +14955,7 @@ class Matrix {
 	
 	/**
 	 * Hamming window.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+	 * @param {KMatrixInputData} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
@@ -14698,7 +14966,7 @@ class Matrix {
 	/**
 	 * FFT shift.
 	 * Circular shift beginning at the center of the signal.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	fftshift(type) {
@@ -14715,6 +14983,18 @@ class Matrix {
  * 
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Complex type argument.
+ * - Complex
+ * - number
+ * - string
+ * - Array<number>
+ * - {_re:number,_im:number}
+ * - {doubleValue:number}
+ * - {toString:function}
+ * @typedef {Complex|number|string|Array<number>|{_re:number,_im:number}|{doubleValue:number}|{toString:function}} KComplexInputData
  */
 
 /**
@@ -14786,7 +15066,7 @@ class Complex {
 	 * Initialization can be performed as follows.
 	 * - 1200, "1200", "12e2", "1.2e3"
 	 * - "3 + 4i", "4j + 3", [3, 4].
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Complex number. See how to use the function.
+	 * @param {KComplexInputData} number - Complex number. See how to use the function.
 	 */
 	constructor(number) {
 		// 行列で使うためイミュータブルは必ず守ること。
@@ -14812,6 +15092,11 @@ class Complex {
 				this._re = obj;
 				this._im = 0.0;
 			}
+			else if(typeof obj === "string") {
+				const x = ComplexTool.ToComplexFromString(obj);
+				this._re = x.real;
+				this._im = x.imag;
+			}
 			else if(obj instanceof Array) {
 				if(obj.length === 2) {
 					this._re = obj[0];
@@ -14821,18 +15106,13 @@ class Complex {
 					throw "Complex Unsupported argument " + arguments;
 				}
 			}
-			else if(typeof obj === "string") {
-				const x = ComplexTool.ToComplexFromString(obj);
-				this._re = x.real;
-				this._im = x.imag;
+			else if("doubleValue" in obj) {
+				this._re = obj.doubleValue;
+				this._im = 0.0;
 			}
-			else if((obj instanceof Object) && (typeof obj._re === "number") && (typeof obj._im === "number")) {
+			else if(("_re" in obj) && ("_im" in obj)) {
 				this._re = obj._re;
 				this._im = obj._im;
-			}
-			else if((number instanceof Object) && (number.doubleValue)) {
-				this._re = number.doubleValue;
-				this._im = 0.0;
 			}
 			else if(obj instanceof Object) {
 				const x = ComplexTool.ToComplexFromString(obj.toString());
@@ -14850,7 +15130,7 @@ class Complex {
 
 	/**
 	 * Create an entity object of this class.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex}
 	 */
 	static create(number) {
@@ -14864,7 +15144,7 @@ class Complex {
 	
 	/**
 	 * Convert number to Complex type.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex}
 	 */
 	static valueOf(number) {
@@ -14874,7 +15154,7 @@ class Complex {
 	/**
 	 * Convert to Complex.
 	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
+	 * @param {KComplexInputData} number 
 	 * @returns {Complex}
 	 * @private
 	 */
@@ -14892,7 +15172,7 @@ class Complex {
 
 	/**
 	 * Convert to real number.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
+	 * @param {KComplexInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -14911,7 +15191,7 @@ class Complex {
 
 	/**
 	 * Convert to integer.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
+	 * @param {KComplexInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -15100,7 +15380,7 @@ class Complex {
 	
 	/**
 	 * Add.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number 
+	 * @param {KComplexInputData} number 
 	 * @returns {Complex} A + B
 	 */
 	add(number) {
@@ -15112,7 +15392,7 @@ class Complex {
 
 	/**
 	 * Subtract.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} A - B
 	 */
 	sub(number) {
@@ -15124,7 +15404,7 @@ class Complex {
 
 	/**
 	 * Multiply.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} A * B
 	 */
 	mul(number) {
@@ -15149,7 +15429,7 @@ class Complex {
 	
 	/**
 	 * Inner product/Dot product.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} A * conj(B)
 	 */
 	dot(number) {
@@ -15174,7 +15454,7 @@ class Complex {
 	
 	/**
 	 * Divide.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} A / B
 	 */
 	div(number) {
@@ -15200,7 +15480,7 @@ class Complex {
 
 	/**
 	 * Modulo, positive remainder of division.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number - Divided value (real number only).
+	 * @param {KComplexInputData} number - Divided value (real number only).
 	 * @returns {Complex} A mod B
 	 */
 	mod(number) {
@@ -15236,8 +15516,8 @@ class Complex {
 	
 	/**
 	 * Equals.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} number
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === B
 	 */
 	equals(number, tolerance) {
@@ -15253,8 +15533,8 @@ class Complex {
 
 	/**
 	 * Compare values.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} number
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, tolerance) {
@@ -15271,7 +15551,7 @@ class Complex {
 	
 	/**
 	 * Maximum number.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} max([A, B])
 	 */
 	max(number) {
@@ -15286,7 +15566,7 @@ class Complex {
 
 	/**
 	 * Minimum number.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} min([A, B])
 	 */
 	min(number) {
@@ -15301,8 +15581,8 @@ class Complex {
 
 	/**
 	 * Clip number within range.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} min 
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} max
+	 * @param {KComplexInputData} min 
+	 * @param {KComplexInputData} max
 	 * @returns {Complex} min(max(x, min), max)
 	 */
 	clip(min, max) {
@@ -15330,7 +15610,7 @@ class Complex {
 	
 	/**
 	 * Return true if the value is integer.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isInteger(tolerance) {
@@ -15340,7 +15620,7 @@ class Complex {
 
 	/**
 	 * Returns true if the vallue is complex integer (including normal integer).
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} real(A) === integer && imag(A) === integer
 	 */
 	isComplexInteger(tolerance) {
@@ -15352,7 +15632,7 @@ class Complex {
 
 	/**
 	 * this === 0
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === 0
 	 */
 	isZero(tolerance) {
@@ -15362,7 +15642,7 @@ class Complex {
 
 	/**
 	 * this === 1
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === 1
 	 */
 	isOne(tolerance) {
@@ -15372,7 +15652,7 @@ class Complex {
 
 	/**
 	 * Returns true if the vallue is complex number (imaginary part is not 0).
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} imag(A) !== 0
 	 */
 	isComplex(tolerance) {
@@ -15382,7 +15662,7 @@ class Complex {
 	
 	/**
 	 * Return true if the value is real number.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
 	 * @returns {boolean} imag(A) === 0
 	 */
 	isReal(tolerance) {
@@ -15481,7 +15761,7 @@ class Complex {
 	
 	/**
 	 * Power function.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} number
+	 * @param {KComplexInputData} number
 	 * @returns {Complex} pow(A, B)
 	 */
 	pow(number) {
@@ -15641,7 +15921,7 @@ class Complex {
 	 * Atan (arc tangent) function.
 	 * Return the values of [-PI, PI] .
 	 * Supports only real numbers.
-	 * @param {Complex|number|string|Array<number>|{_re:number,_im:number}|Object} [number] - X
+	 * @param {KComplexInputData} [number] - X
 	 * @returns {Complex} atan2(Y, X)
 	 */
 	atan2(number) {

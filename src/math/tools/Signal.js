@@ -14,7 +14,7 @@ import Matrix from "../Matrix.js";
 /**
  * Collection of calculation settings for matrix.
  * - Available options vary depending on the method.
- * @typedef {Object} SignalSettings
+ * @typedef {Object} KSignalSettings
  * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
  */
 
@@ -195,8 +195,8 @@ class FFT {
 
 	/**
 	 * Inverse discrete Fourier transform (IDFT),
-	 * @param {Array} real - Array of real parts of vector.
-	 * @param {Array} imag - Array of imaginary parts of vector.
+	 * @param {Array<number>} real - Array of real parts of vector.
+	 * @param {Array<number>} imag - Array of imaginary parts of vector.
 	 * @returns {Object<string, Array<number>>}
 	 */
 	ifft(real, imag) {
@@ -513,10 +513,10 @@ class SignalTool {
 
 	/**
 	 * Convolution integral, Polynomial multiplication.
-	 * @param {Array} x1_real - Array of real parts of vector.
-	 * @param {Array} x1_imag - Array of imaginary parts of vector.
-	 * @param {Array} x2_real - Array of real parts of vector.
-	 * @param {Array} x2_imag - Array of imaginary parts of vector.
+	 * @param {Array<number>} x1_real - Array of real parts of vector.
+	 * @param {Array<number>} x1_imag - Array of imaginary parts of vector.
+	 * @param {Array<number>} x2_real - Array of real parts of vector.
+	 * @param {Array<number>} x2_imag - Array of imaginary parts of vector.
 	 * @returns {Object<string, Array<number>>}
 	 */
 	static conv(x1_real, x1_imag, x2_real, x2_imag) {
@@ -623,10 +623,10 @@ class SignalTool {
 
 	/**
 	 * ACF(Autocorrelation function), Cros-correlation function.
-	 * @param {Array} x1_real - Array of real parts of vector.
-	 * @param {Array} x1_imag - Array of imaginary parts of vector.
-	 * @param {Array} x2_real - Array of real parts of vector.
-	 * @param {Array} x2_imag - Array of imaginary parts of vector.
+	 * @param {Array<number>} x1_real - Array of real parts of vector.
+	 * @param {Array<number>} x1_imag - Array of imaginary parts of vector.
+	 * @param {Array<number>} x2_real - Array of real parts of vector.
+	 * @param {Array<number>} x2_imag - Array of imaginary parts of vector.
 	 * @returns {Object<string, Array<number>>}
 	 */
 	static xcorr(x1_real, x1_imag, x2_real, x2_imag) {
@@ -909,8 +909,8 @@ export default class Signal {
 	
 	/**
 	 * Discrete Fourier transform (DFT).
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {SignalSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KSignalSettings} [type]
 	 * @returns {Matrix} fft(x)
 	 */
 	static fft(x, type) {
@@ -939,8 +939,8 @@ export default class Signal {
 
 	/**
 	 * Inverse discrete Fourier transform (IDFT),
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
-	 * @param {SignalSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} X
+	 * @param {KSignalSettings} [type]
 	 * @returns {Matrix} ifft(X)
 	 */
 	static ifft(X, type) {
@@ -969,8 +969,8 @@ export default class Signal {
 
 	/**
 	 * Power spectral density.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {SignalSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KSignalSettings} [type]
 	 * @returns {Matrix} abs(fft(x)).^2
 	 */
 	static powerfft(x, type) {
@@ -999,8 +999,8 @@ export default class Signal {
 
 	/**
 	 * Discrete cosine transform (DCT-II, DCT).
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
-	 * @param {SignalSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KSignalSettings} [type]
 	 * @returns {Matrix} dct(x)
 	 */
 	static dct(x, type) {
@@ -1030,8 +1030,8 @@ export default class Signal {
 
 	/**
 	 * Inverse discrete cosine transform (DCT-III, IDCT),
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
-	 * @param {SignalSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} X
+	 * @param {KSignalSettings} [type]
 	 * @returns {Matrix} idct(x)
 	 */
 	static idct(X, type) {
@@ -1061,7 +1061,7 @@ export default class Signal {
 
 	/**
 	 * Discrete two-dimensional Fourier transform (2D DFT).
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @returns {Matrix}
 	 */
 	static fft2(x) {
@@ -1070,7 +1070,7 @@ export default class Signal {
 
 	/**
 	 * Inverse discrete two-dimensional Fourier transform (2D IDFT),
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
+	 * @param {import("../Matrix.js").KMatrixInputData} X
 	 * @returns {Matrix}
 	 */
 	static ifft2(X) {
@@ -1079,7 +1079,7 @@ export default class Signal {
 
 	/**
 	 * Discrete two-dimensional cosine transform (2D DCT).
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x
+	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @returns {Matrix}
 	 */
 	static dct2(x) {
@@ -1088,7 +1088,7 @@ export default class Signal {
 
 	/**
 	 * Inverse discrete two-dimensional cosine transform (2D IDCT),
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} X
+	 * @param {import("../Matrix.js").KMatrixInputData} X
 	 * @returns {Matrix}
 	 */
 	static idct2(X) {
@@ -1097,8 +1097,8 @@ export default class Signal {
 
 	/**
 	 * Convolution integral, Polynomial multiplication.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x2
+	 * @param {import("../Matrix.js").KMatrixInputData} x1
+	 * @param {import("../Matrix.js").KMatrixInputData} x2
 	 * @returns {Matrix}
 	 */
 	static conv(x1, x2) {
@@ -1147,8 +1147,8 @@ export default class Signal {
 	/**
 	 * ACF(Autocorrelation function), cros-correlation function.
 	 * - If the argument is omitted, it is calculated by the autocorrelation function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x1
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [x2] - Matrix to calculate the correlation.
+	 * @param {import("../Matrix.js").KMatrixInputData} x1
+	 * @param {import("../Matrix.js").KMatrixInputData} [x2] - Matrix to calculate the correlation.
 	 * @returns {Matrix}
 	 */
 	static xcorr(x1, x2) {
@@ -1210,7 +1210,7 @@ export default class Signal {
 	 * - "sin", Half cycle sine window.
 	 * - "vorbis", Vorbis window.
 	 * @param {string} name - Window function name.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+	 * @param {import("../Matrix.js").KMatrixInputData} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
@@ -1222,7 +1222,7 @@ export default class Signal {
 
 	/**
 	 * Hann (Hanning) window.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+	 * @param {import("../Matrix.js").KMatrixInputData} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
@@ -1232,7 +1232,7 @@ export default class Signal {
 	
 	/**
 	 * Hamming window.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+	 * @param {import("../Matrix.js").KMatrixInputData} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
@@ -1243,8 +1243,8 @@ export default class Signal {
 	/**
 	 * FFT shift.
 	 * Circular shift beginning at the center of the signal.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} x 
-	 * @param {SignalSettings} [type]
+	 * @param {import("../Matrix.js").KMatrixInputData} x 
+	 * @param {KSignalSettings} [type]
 	 * @returns {Matrix}
 	 */
 	static fftshift(x, type) {

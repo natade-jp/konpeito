@@ -35,8 +35,15 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.js~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.js~Matrix.html">Matrix</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalDivideType">KBigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalInputData">KBigDecimalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalLocalInputData">KBigDecimalLocalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalScaleData">KBigDecimalScaleData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KComplexInputData">KComplexInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixSettings">KMatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -45,8 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.js~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.js~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KRandomSettings">KRandomSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -110,7 +118,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-cond">cond</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, p: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-cond">cond</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, p: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
         </p>
       </div>
       <div>
@@ -139,7 +147,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-det">det</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-det">det</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -168,7 +176,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-eig">eig</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): {V: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, D: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-eig">eig</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): {V: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, D: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
         </p>
       </div>
       <div>
@@ -197,7 +205,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-inner">inner</a></span></span><span class="code" data-ice="signature">(A: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, B: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, dimension: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-inner">inner</a></span></span><span class="code" data-ice="signature">(A: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, B: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, dimension: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -226,7 +234,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-inv">inv</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-inv">inv</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -255,7 +263,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-linsolve">linsolve</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, number: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-linsolve">linsolve</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, number: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -284,7 +292,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-lu">lu</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): {L: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, U: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-lu">lu</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): {L: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, U: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
         </p>
       </div>
       <div>
@@ -313,7 +321,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-lup">lup</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): {P: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, L: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, U: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-lup">lup</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): {P: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, L: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, U: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
         </p>
       </div>
       <div>
@@ -342,7 +350,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-norm">norm</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, p: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-norm">norm</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, p: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
         </p>
       </div>
       <div>
@@ -371,7 +379,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-pinv">pinv</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-pinv">pinv</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -400,7 +408,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-qr">qr</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): {Q: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, R: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-qr">qr</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): {Q: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, R: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
         </p>
       </div>
       <div>
@@ -429,7 +437,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-rank">rank</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, tolerance: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-rank">rank</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, tolerance: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
         </p>
       </div>
       <div>
@@ -458,7 +466,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-rcond">rcond</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-rcond">rcond</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
         </p>
       </div>
       <div>
@@ -487,7 +495,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-svd">svd</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): {U: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, S: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, V: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-svd">svd</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): {U: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, S: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, V: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
         </p>
       </div>
       <div>
@@ -516,7 +524,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-trace">trace</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Complex">Complex</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-trace">trace</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Complex">Complex</a></span></span>
         </p>
       </div>
       <div>
@@ -545,7 +553,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-tridiagonalize">tridiagonalize</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): {P: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, H: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html#static-method-tridiagonalize">tridiagonalize</a></span></span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): {P: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, H: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
         </p>
       </div>
       <div>
@@ -580,7 +588,7 @@
     
     
     
-    <span class="code" data-ice="name">cond</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, p: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="code" data-ice="name">cond</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, p: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
     <span class="right-info">
       
       
@@ -606,13 +614,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">p</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: 2</li></ul></td>
       <td data-ice="description"></td>
@@ -659,11 +667,11 @@
     
     
     
-    <span class="code" data-ice="name">det</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">det</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber785">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber786">source</a></span></span>
     </span>
   </h3>
 
@@ -685,7 +693,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -732,11 +740,11 @@
     
     
     
-    <span class="code" data-ice="name">eig</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): {V: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, D: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
+    <span class="code" data-ice="name">eig</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): {V: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, D: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber1090">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber1091">source</a></span></span>
     </span>
   </h3>
 
@@ -764,7 +772,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>A</p>
 </td>
@@ -812,7 +820,7 @@
     
     
     
-    <span class="code" data-ice="name">inner</span><span class="code" data-ice="signature">(A: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, B: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, dimension: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">inner</span><span class="code" data-ice="signature">(A: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, B: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, dimension: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -838,19 +846,19 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">A</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">B</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">dimension</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: 1</li></ul></td>
       <td data-ice="description"><p>Dimension of matrix used for calculation. (1 or 2)</p>
@@ -899,11 +907,11 @@
     
     
     
-    <span class="code" data-ice="name">inv</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">inv</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber1158">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber1159">source</a></span></span>
     </span>
   </h3>
 
@@ -925,7 +933,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>A</p>
 </td>
@@ -973,11 +981,11 @@
     
     
     
-    <span class="code" data-ice="name">linsolve</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, number: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">linsolve</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, number: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber925">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber926">source</a></span></span>
     </span>
   </h3>
 
@@ -999,14 +1007,14 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>A</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">number</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>B</p>
 </td>
@@ -1054,11 +1062,11 @@
     
     
     
-    <span class="code" data-ice="name">lu</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): {L: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, U: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
+    <span class="code" data-ice="name">lu</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): {L: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, U: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber909">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber910">source</a></span></span>
     </span>
   </h3>
 
@@ -1085,7 +1093,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>A</p>
 </td>
@@ -1133,11 +1141,11 @@
     
     
     
-    <span class="code" data-ice="name">lup</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): {P: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, L: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, U: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
+    <span class="code" data-ice="name">lup</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): {P: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, L: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, U: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber852">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber853">source</a></span></span>
     </span>
   </h3>
 
@@ -1165,7 +1173,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>A</p>
 </td>
@@ -1213,7 +1221,7 @@
     
     
     
-    <span class="code" data-ice="name">norm</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, p: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="code" data-ice="name">norm</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, p: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
     <span class="right-info">
       
       
@@ -1239,13 +1247,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">p</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: 2</li></ul></td>
       <td data-ice="description"></td>
@@ -1292,11 +1300,11 @@
     
     
     
-    <span class="code" data-ice="name">pinv</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">pinv</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber1230">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber1231">source</a></span></span>
     </span>
   </h3>
 
@@ -1318,7 +1326,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>A</p>
 </td>
@@ -1366,11 +1374,11 @@
     
     
     
-    <span class="code" data-ice="name">qr</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): {Q: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, R: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
+    <span class="code" data-ice="name">qr</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): {Q: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, R: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber993">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber994">source</a></span></span>
     </span>
   </h3>
 
@@ -1397,7 +1405,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>A</p>
 </td>
@@ -1445,7 +1453,7 @@
     
     
     
-    <span class="code" data-ice="name">rank</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, tolerance: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="code" data-ice="name">rank</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, tolerance: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
     <span class="right-info">
       
       
@@ -1471,13 +1479,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">tolerance</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"><p>Calculation tolerance of calculation.</p>
 </td>
@@ -1525,7 +1533,7 @@
     
     
     
-    <span class="code" data-ice="name">rcond</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+    <span class="code" data-ice="name">rcond</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
     <span class="right-info">
       
       
@@ -1551,7 +1559,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -1597,11 +1605,11 @@
     
     
     
-    <span class="code" data-ice="name">svd</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): {U: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, S: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, V: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
+    <span class="code" data-ice="name">svd</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): {U: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, S: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, V: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber1112">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber1113">source</a></span></span>
     </span>
   </h3>
 
@@ -1628,7 +1636,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>A</p>
 </td>
@@ -1676,11 +1684,11 @@
     
     
     
-    <span class="code" data-ice="name">trace</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Complex">Complex</a></span></span>
+    <span class="code" data-ice="name">trace</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Complex">Complex</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber770">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber771">source</a></span></span>
     </span>
   </h3>
 
@@ -1703,7 +1711,7 @@ Sum of diagonal elements.</p>
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -1749,11 +1757,11 @@ Sum of diagonal elements.</p>
     
     
     
-    <span class="code" data-ice="name">tridiagonalize</span><span class="code" data-ice="signature">(mat: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>): {P: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, H: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
+    <span class="code" data-ice="name">tridiagonalize</span><span class="code" data-ice="signature">(mat: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>): {P: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>, H: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span>}</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber1066">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/LinearAlgebra.js.html#lineNumber1067">source</a></span></span>
     </span>
   </h3>
 
@@ -1782,7 +1790,7 @@ Sum of diagonal elements.</p>
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">mat</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"><p>A</p>
 </td>

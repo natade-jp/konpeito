@@ -1002,9 +1002,27 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/bigdecimal.js~bigdecimaldividetype",
-    "typedef/index.html#static-typedef-BigDecimalDivideType",
-    "src/math/BigDecimal.js~BigDecimalDivideType",
+    "src/math/bigdecimal.js~kbigdecimaldividetype",
+    "typedef/index.html#static-typedef-KBigDecimalDivideType",
+    "src/math/BigDecimal.js~KBigDecimalDivideType",
+    "typedef"
+  ],
+  [
+    "src/math/bigdecimal.js~kbigdecimalinputdata",
+    "typedef/index.html#static-typedef-KBigDecimalInputData",
+    "src/math/BigDecimal.js~KBigDecimalInputData",
+    "typedef"
+  ],
+  [
+    "src/math/bigdecimal.js~kbigdecimallocalinputdata",
+    "typedef/index.html#static-typedef-KBigDecimalLocalInputData",
+    "src/math/BigDecimal.js~KBigDecimalLocalInputData",
+    "typedef"
+  ],
+  [
+    "src/math/bigdecimal.js~kbigdecimalscaledata",
+    "typedef/index.html#static-typedef-KBigDecimalScaleData",
+    "src/math/BigDecimal.js~KBigDecimalScaleData",
     "typedef"
   ],
   [
@@ -1626,6 +1644,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/biginteger.js~kbigintegerinputdata",
+    "typedef/index.html#static-typedef-KBigIntegerInputData",
+    "src/math/BigInteger.js~KBigIntegerInputData",
+    "typedef"
+  ],
+  [
     "src/math/complex.js",
     "file/src/math/Complex.js.html",
     "src/math/Complex.js",
@@ -2142,6 +2166,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/complex.js~kcomplexinputdata",
+    "typedef/index.html#static-typedef-KComplexInputData",
+    "src/math/Complex.js~KComplexInputData",
+    "typedef"
+  ],
+  [
     "src/math/fraction.js",
     "file/src/math/Fraction.js.html",
     "src/math/Fraction.js",
@@ -2436,10 +2466,28 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/fraction.js~kfractioninputdata",
+    "typedef/index.html#static-typedef-KFractionInputData",
+    "src/math/Fraction.js~KFractionInputData",
+    "typedef"
+  ],
+  [
     "src/math/matrix.js",
     "file/src/math/Matrix.js.html",
     "src/math/Matrix.js",
     "file"
+  ],
+  [
+    "src/math/matrix.js~kmatrixinputdata",
+    "typedef/index.html#static-typedef-KMatrixInputData",
+    "src/math/Matrix.js~KMatrixInputData",
+    "typedef"
+  ],
+  [
+    "src/math/matrix.js~kmatrixsettings",
+    "typedef/index.html#static-typedef-KMatrixSettings",
+    "src/math/Matrix.js~KMatrixSettings",
+    "typedef"
   ],
   [
     "src/math/matrix.js~matrix#t",
@@ -3732,12 +3780,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/matrix.js~matrixsettings",
-    "typedef/index.html#static-typedef-MatrixSettings",
-    "src/math/Matrix.js~MatrixSettings",
-    "typedef"
-  ],
-  [
     "src/math/context/mathcontext.js",
     "file/src/math/context/MathContext.js.html",
     "src/math/context/MathContext.js",
@@ -4176,10 +4218,10 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/math/tools/random.js~random#_rnd521",
-    "class/src/math/tools/Random.js~Random.html#instance-method-_rnd521",
-    "src/math/tools/Random.js~Random#_rnd521",
-    "method"
+    "src/math/tools/random.js~krandomsettings",
+    "typedef/index.html#static-typedef-KRandomSettings",
+    "src/math/tools/Random.js~KRandomSettings",
+    "typedef"
   ],
   [
     "src/math/tools/random.js~random#constructor",
@@ -4260,28 +4302,28 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/tools/random.js~random#rand",
+    "class/src/math/tools/Random.js~Random.html#instance-member-rand",
+    "src/math/tools/Random.js~Random#rand",
+    "member"
+  ],
+  [
     "src/math/tools/random.js~random#setseed",
     "class/src/math/tools/Random.js~Random.html#instance-method-setSeed",
     "src/math/tools/Random.js~Random#setSeed",
     "method"
   ],
   [
-    "src/math/tools/random.js~random#x",
-    "class/src/math/tools/Random.js~Random.html#instance-member-x",
-    "src/math/tools/Random.js~Random#x",
-    "member"
-  ],
-  [
-    "src/math/tools/random.js~random#xi",
-    "class/src/math/tools/Random.js~Random.html#instance-member-xi",
-    "src/math/tools/Random.js~Random#xi",
-    "member"
-  ],
-  [
     "src/math/tools/signal.js",
     "file/src/math/tools/Signal.js.html",
     "src/math/tools/Signal.js",
     "file"
+  ],
+  [
+    "src/math/tools/signal.js~ksignalsettings",
+    "typedef/index.html#static-typedef-KSignalSettings",
+    "src/math/tools/Signal.js~KSignalSettings",
+    "typedef"
   ],
   [
     "src/math/tools/signal.js~signal.conv",
@@ -4374,16 +4416,16 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/tools/signal.js~signalsettings",
-    "typedef/index.html#static-typedef-SignalSettings",
-    "src/math/tools/Signal.js~SignalSettings",
-    "typedef"
-  ],
-  [
     "src/math/tools/statistics.js",
     "file/src/math/tools/Statistics.js.html",
     "src/math/tools/Statistics.js",
     "file"
+  ],
+  [
+    "src/math/tools/statistics.js~kstatisticssettings",
+    "typedef/index.html#static-typedef-KStatisticsSettings",
+    "src/math/tools/Statistics.js~KStatisticsSettings",
+    "typedef"
   ],
   [
     "src/math/tools/statistics.js~statistics.corrcoef",
@@ -4488,9 +4530,15 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/tools/statistics.js~statisticssettings",
-    "typedef/index.html#static-typedef-StatisticsSettings",
-    "src/math/tools/Statistics.js~StatisticsSettings",
-    "typedef"
+    "src/math/tools/random/maximumlengthsequence.js",
+    "file/src/math/tools/random/MaximumLengthSequence.js.html",
+    "src/math/tools/random/MaximumLengthSequence.js",
+    "file"
+  ],
+  [
+    "src/math/tools/random/xorshift.js",
+    "file/src/math/tools/random/Xorshift.js.html",
+    "src/math/tools/random/Xorshift.js",
+    "file"
   ]
 ]

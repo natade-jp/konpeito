@@ -9,7 +9,13 @@
 <body>
 <script type="module">
 import konpeito from "../../libs/konpeito.js";
-Math.konpeito = konpeito;
+globalThis.konpeito		= konpeito;
+globalThis.Matrix		= konpeito.Matrix;
+globalThis.Complex 		= konpeito.Complex;
+globalThis.BigDecimal	= konpeito.BigDecimal;
+globalThis.BigInteger 	= konpeito.BigInteger;
+globalThis.Fraction		= konpeito.Fraction;
+globalThis.Random		= konpeito.Random;
 </script>
 </body>
 </html>

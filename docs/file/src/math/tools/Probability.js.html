@@ -35,8 +35,15 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.js~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.js~Matrix.html">Matrix</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalDivideType">KBigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalInputData">KBigDecimalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalLocalInputData">KBigDecimalLocalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalScaleData">KBigDecimalScaleData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KComplexInputData">KComplexInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixSettings">KMatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -45,8 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.js~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.js~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KRandomSettings">KRandomSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -515,9 +523,9 @@ class ProbabilityTool {
 	}
 
 	/**
-		 erfinv(p) &#x8AA4;&#x5DEE;&#x9006;&#x95A2;&#x6570;
-		 @param_ {number} p
-		 @returns_ {number}
+		erfinv(p) &#x8AA4;&#x5DEE;&#x9006;&#x95A2;&#x6570;
+		@param_ {number} p
+		@returns_ {number}
 		
 		static erfinv(p) {
 			if((p &lt; 0.0) || (p &gt; 1.0)) {
@@ -1174,7 +1182,7 @@ export default class Probability {
 
 	/**
 	 * Log-gamma function.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
 	 * @returns {Matrix}
 	 */
 	static gammaln(x) {
@@ -1186,7 +1194,7 @@ export default class Probability {
 
 	/**
 	 * Gamma function.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
 	 * @returns {Matrix}
 	 */
 	static gamma(x) {
@@ -1198,8 +1206,8 @@ export default class Probability {
 
 	/**
 	 * Incomplete gamma function.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} a
 	 * @param {string} [tail=&quot;lower&quot;] - lower (default) , &quot;upper&quot;
 	 * @returns {Matrix}
 	 */
@@ -1214,9 +1222,9 @@ export default class Probability {
 
 	/**
 	 * Probability density function (PDF) of the gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - Scale parameter.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} k - Shape parameter.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	static gampdf(x, k, s) {
@@ -1230,9 +1238,9 @@ export default class Probability {
 
 	/**
 	 * Cumulative distribution function (CDF) of gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - Scale parameter.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} k - Shape parameter.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	static gamcdf(x, k, s) {
@@ -1246,9 +1254,9 @@ export default class Probability {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} s - Scale parameter.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} k - Shape parameter.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	static gaminv(x, k, s) {
@@ -1262,8 +1270,8 @@ export default class Probability {
 
 	/**
 	 * Beta function.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} y
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} y
 	 * @returns {Matrix}
 	 */
 	static beta(x, y) {
@@ -1276,9 +1284,9 @@ export default class Probability {
 	
 	/**
 	 * Incomplete beta function.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} b
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} a
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} b
 	 * @param {string} [tail=&quot;lower&quot;] - lower (default) , &quot;upper&quot;
 	 * @returns {Matrix}
 	 */
@@ -1294,9 +1302,9 @@ export default class Probability {
 
 	/**
 	 * Cumulative distribution function (CDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} b
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} a
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	static betacdf(x, a, b) {
@@ -1310,9 +1318,9 @@ export default class Probability {
 
 	/**
 	 * Probability density function (PDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} b
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} a
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	static betapdf(x, a, b) {
@@ -1326,9 +1334,9 @@ export default class Probability {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} a
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} b
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} a
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	static betainv(x, a, b) {
@@ -1342,7 +1350,7 @@ export default class Probability {
 
 	/**
 	 * Factorial function, x!.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
 	 * @returns {Matrix}
 	 */
 	static factorial(x) {
@@ -1354,8 +1362,8 @@ export default class Probability {
 	
 	/**
 	 * Binomial coefficient, number of all combinations, nCk.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} k
 	 * @returns {Matrix}
 	 */
 	static nchoosek(x, k) {
@@ -1368,7 +1376,7 @@ export default class Probability {
 	
 	/**
 	 * Error function.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
 	 * @returns {Matrix}
 	 */
 	static erf(x) {
@@ -1380,7 +1388,7 @@ export default class Probability {
 
 	/**
 	 * Complementary error function.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
 	 * @returns {Matrix}
 	 */
 	static erfc(x) {
@@ -1392,9 +1400,9 @@ export default class Probability {
 	
 	/**
 	 * Probability density function (PDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - Variance value.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} [u=0.0] - Average value.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	static normpdf(x, u, s) {
@@ -1408,9 +1416,9 @@ export default class Probability {
 
 	/**
 	 * Cumulative distribution function (CDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - Variance value.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} [u=0.0] - Average value.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	static normcdf(x, u, s) {
@@ -1424,9 +1432,9 @@ export default class Probability {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} [s=1.0] - Variance value.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} [u=0.0] - Average value.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	static norminv(x, u, s) {
@@ -1440,8 +1448,8 @@ export default class Probability {
 
 	/**
 	 * Probability density function (PDF) of Student&apos;s t-distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tpdf(x, v) {
@@ -1454,8 +1462,8 @@ export default class Probability {
 
 	/**
 	 * Cumulative distribution function (CDF) of Student&apos;s t-distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tcdf(x, v) {
@@ -1468,8 +1476,8 @@ export default class Probability {
 
 	/**
 	 * Inverse of cumulative distribution function (CDF) of Student&apos;s t-distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tinv(x, v) {
@@ -1482,9 +1490,9 @@ export default class Probability {
 
 	/**
 	 * Cumulative distribution function (CDF) of Student&apos;s t-distribution that can specify tail.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} v - The degrees of freedom. (DF)
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {Matrix}
 	 */
 	static tdist(x, v, tails) {
@@ -1498,8 +1506,8 @@ export default class Probability {
 
 	/**
 	 * Inverse of cumulative distribution function (CDF) of Student&apos;s t-distribution in two-sided test.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} v - The degrees of freedom. (DF)
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static tinv2(x, v) {
@@ -1512,8 +1520,8 @@ export default class Probability {
 
 	/**
 	 * Probability density function (PDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - The degrees of freedom. (DF)
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static chi2pdf(x, k) {
@@ -1526,8 +1534,8 @@ export default class Probability {
 
 	/**
 	 * Cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - The degrees of freedom. (DF)
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static chi2cdf(x, k) {
@@ -1540,8 +1548,8 @@ export default class Probability {
 	
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} k - The degrees of freedom. (DF)
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	static chi2inv(x, k) {
@@ -1554,9 +1562,9 @@ export default class Probability {
 
 	/**
 	 * Probability density function (PDF) of F-distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - The degree of freedom of the denominator
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} d1 - The degree of freedom of the molecules.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	static fpdf(x, d1, d2) {
@@ -1570,9 +1578,9 @@ export default class Probability {
 
 	/**
 	 * Cumulative distribution function (CDF) of F-distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - The degree of freedom of the denominator
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} d1 - The degree of freedom of the molecules.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	static fcdf(x, d1, d2) {
@@ -1586,9 +1594,9 @@ export default class Probability {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} x
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array&lt;string|number|Complex&gt;|Array&lt;Array&lt;string|number|Complex&gt;&gt;|Object} d2 - The degree of freedom of the denominator
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} x
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} d1 - The degree of freedom of the molecules.
+	 * @param {import(&quot;../Matrix.js&quot;).KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	static finv(x, d1, d2) {

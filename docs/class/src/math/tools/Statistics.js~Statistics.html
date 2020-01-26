@@ -35,8 +35,15 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.js~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.js~Matrix.html">Matrix</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalDivideType">KBigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalInputData">KBigDecimalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalLocalInputData">KBigDecimalLocalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalScaleData">KBigDecimalScaleData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KComplexInputData">KComplexInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixSettings">KMatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -45,8 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.js~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.js~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KRandomSettings">KRandomSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -110,7 +118,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-corrcoef">corrcoef</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-corrcoef">corrcoef</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -139,7 +147,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-cov">cov</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-cov">cov</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -168,7 +176,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-geomean">geomean</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-geomean">geomean</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -197,7 +205,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-mad">mad</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, algorithm: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | ?<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-mad">mad</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, algorithm: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | ?<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -226,7 +234,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-max">max</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-max">max</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -255,7 +263,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-mean">mean</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-mean">mean</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -284,7 +292,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-median">median</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-median">median</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -313,7 +321,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-min">min</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-min">min</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -342,7 +350,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-mode">mode</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-mode">mode</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -371,7 +379,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-moment">moment</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, nth_order: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-moment">moment</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, nth_order: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -400,7 +408,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-normalize">normalize</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-normalize">normalize</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -429,7 +437,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-prod">prod</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-prod">prod</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -458,7 +466,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-skewness">skewness</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-skewness">skewness</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -487,7 +495,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-sort">sort</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, order: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-sort">sort</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, order: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -516,7 +524,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-std">std</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-std">std</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -545,7 +553,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-sum">sum</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-sum">sum</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -574,7 +582,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-var">var</a></span></span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html#static-method-var">var</a></span></span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
         </p>
       </div>
       <div>
@@ -609,7 +617,7 @@
     
     
     
-    <span class="code" data-ice="name">corrcoef</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">corrcoef</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -635,13 +643,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -687,7 +695,7 @@
     
     
     
-    <span class="code" data-ice="name">cov</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">cov</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -713,13 +721,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -765,7 +773,7 @@
     
     
     
-    <span class="code" data-ice="name">geomean</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">geomean</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -791,13 +799,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -843,7 +851,7 @@
     
     
     
-    <span class="code" data-ice="name">mad</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, algorithm: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | ?<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">mad</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, algorithm: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | ?<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -872,7 +880,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -885,7 +893,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -931,7 +939,7 @@
     
     
     
-    <span class="code" data-ice="name">max</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">max</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -957,13 +965,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1010,7 +1018,7 @@
     
     
     
-    <span class="code" data-ice="name">mean</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">mean</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -1036,13 +1044,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1088,7 +1096,7 @@
     
     
     
-    <span class="code" data-ice="name">median</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">median</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -1114,13 +1122,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1166,7 +1174,7 @@
     
     
     
-    <span class="code" data-ice="name">min</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">min</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -1192,13 +1200,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1245,7 +1253,7 @@
     
     
     
-    <span class="code" data-ice="name">mode</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">mode</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -1271,13 +1279,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1323,7 +1331,7 @@
     
     
     
-    <span class="code" data-ice="name">moment</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, nth_order: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">moment</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, nth_order: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -1352,7 +1360,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -1364,7 +1372,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1410,7 +1418,7 @@
     
     
     
-    <span class="code" data-ice="name">normalize</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">normalize</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -1436,13 +1444,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1488,7 +1496,7 @@
     
     
     
-    <span class="code" data-ice="name">prod</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">prod</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -1514,13 +1522,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1566,7 +1574,7 @@
     
     
     
-    <span class="code" data-ice="name">skewness</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">skewness</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -1592,13 +1600,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1644,7 +1652,7 @@
     
     
     
-    <span class="code" data-ice="name">sort</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, order: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">sort</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, order: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -1673,7 +1681,7 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
@@ -1685,7 +1693,7 @@
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1731,7 +1739,7 @@
     
     
     
-    <span class="code" data-ice="name">std</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">std</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -1757,13 +1765,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1809,7 +1817,7 @@
     
     
     
-    <span class="code" data-ice="name">sum</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">sum</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -1835,13 +1843,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>
@@ -1887,7 +1895,7 @@
     
     
     
-    <span class="code" data-ice="name">var</span><span class="code" data-ice="signature">(x: <span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span>, type: <span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+    <span class="code" data-ice="name">var</span><span class="code" data-ice="signature">(x: <span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span>, type: <span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
     <span class="right-info">
       
       
@@ -1913,13 +1921,13 @@
     
     <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">x</td>
-      <td data-ice="type" class="code"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></td>
       <td data-ice="appendix"></td>
       <td data-ice="description"></td>
     </tr>
 <tr data-ice="property" data-depth="0">
       <td data-ice="name" class="code" data-depth="0">type</td>
-      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li></ul></td>
       <td data-ice="description"></td>
     </tr>

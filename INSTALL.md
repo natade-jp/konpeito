@@ -48,22 +48,22 @@ npm run test_target -- Compatibility
 # list
 ```
 > npm list --depth=0
-konpeito@1.3.2 konpeito
-+-- @types/jest@24.0.16
-+-- babel-jest@24.8.0
+konpeito@2.0.0
++-- @types/jest@24.9.1
++-- babel-jest@24.9.0
 +-- babel-plugin-transform-es2015-modules-commonjs@6.26.2
 +-- esdoc@1.1.0
 +-- esdoc-standard-plugin@1.0.0
-+-- eslint@6.1.0
-+-- eslint-plugin-jest@22.15.0
-+-- jest@24.8.0
++-- eslint@6.8.0
++-- eslint-plugin-jest@22.21.0
++-- jest@24.9.0
 +-- jsdoc@3.6.3
 +-- jsdoc-export-default-interop@0.3.1
-+-- rollup@1.18.0
++-- rollup@1.29.1
 +-- rollup-plugin-buble@0.19.8
-+-- rollup-plugin-uglify@6.0.2
++-- rollup-plugin-uglify@6.0.4
 +-- rollup-plugin-uglify-es@0.0.1
-`-- tsd-jsdoc@2.3.1
+`-- tsd-jsdoc@2.4.0
 ```
 
 # purpose
@@ -92,4 +92,13 @@ npm install --save-dev babel-plugin-transform-es2015-modules-commonjs
 npm install --save-dev jsdoc
 npm install --save-dev jsdoc-export-default-interop
 npm install --save-dev tsd-jsdoc
+```
+
+# update
+```
+npm update rollup rollup-plugin-buble rollup-plugin-uglify rollup-plugin-uglify-es
+npm update eslint eslint-plugin-jest
+npm update esdoc esdoc-standard-plugin
+npm update jest @types/jest babel-jest babel-plugin-transform-es2015-modules-commonjs
+npm update jsdoc jsdoc-export-default-interop tsd-jsdoc
 ```

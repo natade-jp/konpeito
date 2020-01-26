@@ -15,9 +15,22 @@ import Signal from "./tools/Signal.js";
 import Complex from "./Complex.js";
 
 /**
+ * Matrix type argument.
+ * - Matrix
+ * - Complex
+ * - number
+ * - string
+ * - Array<string|number|Complex|Matrix>
+ * - Array<Array<string|number|Complex|Matrix>>
+ * - {doubleValue:number}
+ * - {toString:function}
+ * @typedef {Matrix|Complex|number|string|Array<string|number|Complex|Matrix>|Array<Array<string|number|Complex|Matrix>>|{doubleValue:number}|{toString:function}} KMatrixInputData
+ */
+
+/**
  * Collection of calculation settings for matrix.
  * - Available options vary depending on the method.
- * @typedef {Object} MatrixSettings
+ * @typedef {Object} KMatrixSettings
  * @property {?string|?number} [dimension="auto"] Calculation direction. 0/"auto", 1/"row", 2/"column", 3/"both".
  * @property {Object} [correction] Correction value. For statistics. 0(unbiased), 1(sample).
  */
@@ -30,7 +43,7 @@ class MatrixTool {
 
 	/**
 	 * Create actual values from data specifying matrix position.
-	 * @param {string|number|Matrix|Complex} data - A value indicating the position in a matrix.
+	 * @param {any} data - A value indicating the position in a matrix.
 	 * @param {number} max - Length to initialize. (Used when ":" is specified at matrix creation.)
 	 * @param {number} geta - Offset at initialization. (Used when ":" is specified at matrix creation.)
 	 * @returns {Array<number>}
@@ -354,7 +367,7 @@ export default class Matrix {
 	 * - 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
 	 * - [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
 	 * - "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - Complex matrix. See how to use the function.
+	 * @param {KMatrixInputData} number - Complex matrix. See how to use the function.
 	 */
 	constructor(number) {
 		let matrix_array = null;
@@ -435,7 +448,7 @@ export default class Matrix {
 				matrix_array = MatrixTool.toMatrixArrayFromString(obj);
 			}
 			// 数値化できる場合
-			else if((obj instanceof Object) && (obj.doubleValue)) {
+			else if((obj instanceof Object) && ("doubleValue" in obj)) {
 				matrix_array = [[new Complex(obj.doubleValue)]];
 			}
 			// 文字列変換できる場合は返還後に、文字列解析を行う
@@ -496,7 +509,7 @@ export default class Matrix {
 
 	/**
 	 * Create an entity object of this class.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+	 * @param {KMatrixInputData} number
 	 * @returns {Matrix}
 	 */
 	static create(number) {
@@ -510,7 +523,7 @@ export default class Matrix {
 	
 	/**
 	 * Convert number to Matrix type.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+	 * @param {KMatrixInputData} number
 	 * @returns {Matrix}
 	 */
 	static valueOf(number) {
@@ -520,7 +533,7 @@ export default class Matrix {
 	/**
 	 * Convert to Matrix.
 	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix}
 	 * @private
 	 */
@@ -536,7 +549,7 @@ export default class Matrix {
 	/**
 	 * Convert to Complex.
 	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Complex}
 	 * @private
 	 */
@@ -555,7 +568,7 @@ export default class Matrix {
 
 	/**
 	 * Convert to real number.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -574,7 +587,7 @@ export default class Matrix {
 
 	/**
 	 * Convert to integer.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -616,7 +629,7 @@ export default class Matrix {
 
 		// 行列を確認して表示するための表示方法の確認する
 		this._each(
-			function(num) {
+			function(num, row, col) {
 				if(!num.isReal()) {
 					isDrawImag = true;
 				}
@@ -755,8 +768,8 @@ export default class Matrix {
 
 	/**
 	 * Equals.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} number
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean} A === B
 	 */
 	equals(number, tolerance) {
@@ -812,7 +825,7 @@ export default class Matrix {
 	
 	/**
 	 * Perform the same process on all elements in the matrix. (mutable)
-	 * @param {function(Complex, number, number): ?Object } eachfunc - Function(num, row, col)
+	 * @param {function(Complex, number, number): any } eachfunc - Function(num, row, col)
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -855,8 +868,8 @@ export default class Matrix {
 	/**
 	 * Create Matrix with specified initialization for each element in matrix.
 	 * @param {function(number, number): ?Object } eachfunc - Function(row, col)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length=dimension] - Number of columns.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length=dimension] - Number of columns.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	static createMatrixDoEachCalculation(eachfunc, dimension, column_length) {
@@ -1034,8 +1047,8 @@ export default class Matrix {
 
 	/**
 	 * Extract the specified part of the matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row - A vector containing the row numbers to extract from this matrix. If you specify ":" select all rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} col - A vector containing the column numbers to extract from this matrix. If you specify ":" select all columns.
+	 * @param {KMatrixInputData} row - A vector containing the row numbers to extract from this matrix. If you specify ":" select all rows.
+	 * @param {KMatrixInputData} col - A vector containing the column numbers to extract from this matrix. If you specify ":" select all columns.
 	 * @param {boolean} [isUpOffset=false] - Set offset of matrix position to 1 with true.
 	 * @returns {Matrix} 
 	 */
@@ -1057,9 +1070,9 @@ export default class Matrix {
 
 	/**
 	 * Change specified element in matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row - A vector containing the row numbers to replace in this matrix. If you specify ":" select all rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} col - A vector containing the column numbers to replace in this matrix. If you specify ":" select all columns.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} replace - Matrix to be replaced.
+	 * @param {KMatrixInputData} row - A vector containing the row numbers to replace in this matrix. If you specify ":" select all rows.
+	 * @param {KMatrixInputData} col - A vector containing the column numbers to replace in this matrix. If you specify ":" select all columns.
+	 * @param {KMatrixInputData} replace - Matrix to be replaced.
 	 * @param {boolean} [isUpOffset=false] - Set offset of matrix position to 1 with true.
 	 * @returns {Matrix} 
 	 */
@@ -1082,8 +1095,8 @@ export default class Matrix {
 	/**
 	 * Returns the specified element in the matrix.
 	 * Each element of the matrix is composed of complex numbers.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_or_pos - If this is a matrix, the row number. If this is a vector, the address.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [col] - If this is a matrix, the column number.
+	 * @param {KMatrixInputData} row_or_pos - If this is a matrix, the row number. If this is a vector, the address.
+	 * @param {KMatrixInputData} [col] - If this is a matrix, the column number.
 	 * @returns {Complex} 
 	 */
 	getComplex(row_or_pos, col) {
@@ -1161,7 +1174,7 @@ export default class Matrix {
 
 	/**
 	 * p-norm.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+	 * @param {KMatrixInputData} [p=2]
 	 * @returns {number}
 	 */
 	norm(p) {
@@ -1170,7 +1183,7 @@ export default class Matrix {
 
 	/**
 	 * Condition number of the matrix
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [p=2]
+	 * @param {KMatrixInputData} [p=2]
 	 * @returns {number}
 	 */
 	cond(p) {
@@ -1187,7 +1200,7 @@ export default class Matrix {
 
 	/**
 	 * Rank.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {number} rank(A)
 	 */
 	rank(tolerance) {
@@ -1217,9 +1230,9 @@ export default class Matrix {
 	
 	/**
 	 * Creates a matrix composed of the specified number.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - Value after initialization.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
+	 * @param {KMatrixInputData} number - Value after initialization.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static memset(number, dimension, column_length) {
@@ -1245,8 +1258,8 @@ export default class Matrix {
 
 	/**
 	 * Return identity matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static eye(dimension, column_length) {
@@ -1257,8 +1270,8 @@ export default class Matrix {
 	
 	/**
 	 * Create zero matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static zeros(dimension, column_length) {
@@ -1270,8 +1283,8 @@ export default class Matrix {
 
 	/**
 	 * Create a matrix of all ones.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static ones(dimension, column_length) {
@@ -1283,8 +1296,8 @@ export default class Matrix {
 
 	/**
 	 * Generate a matrix composed of random values with uniform random numbers.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static rand(dimension, column_length) {
@@ -1295,8 +1308,8 @@ export default class Matrix {
 
 	/**
 	 * Generate a matrix composed of random values with normal distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} dimension - Number of dimensions or rows.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [column_length] - Number of columns.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length] - Number of columns.
 	 * @returns {Matrix}
 	 */
 	static randn(dimension, column_length) {
@@ -1391,7 +1404,7 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is real matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isReal(tolerance) {
@@ -1406,7 +1419,7 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is complex matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isComplex(tolerance) {
@@ -1415,7 +1428,7 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is zero matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isZeros(tolerance) {
@@ -1431,7 +1444,7 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is identity matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isIdentity(tolerance) {
@@ -1456,7 +1469,7 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is diagonal matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isDiagonal(tolerance) {
@@ -1472,7 +1485,7 @@ export default class Matrix {
 	
 	/**
 	 * Return true if the matrix is tridiagonal matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isTridiagonal(tolerance) {
@@ -1488,7 +1501,7 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is regular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isRegular(tolerance) {
@@ -1504,7 +1517,7 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is orthogonal matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isOrthogonal(tolerance) {
@@ -1517,7 +1530,7 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is unitary matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isUnitary(tolerance) {
@@ -1530,7 +1543,7 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is symmetric matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isSymmetric(tolerance) {
@@ -1550,7 +1563,7 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is hermitian matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isHermitian(tolerance) {
@@ -1575,7 +1588,7 @@ export default class Matrix {
 	
 	/**
 	 * Return true if the matrix is upper triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isTriangleUpper(tolerance) {
@@ -1591,7 +1604,7 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is  lower triangular matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isTriangleLower(tolerance) {
@@ -1607,7 +1620,7 @@ export default class Matrix {
 
 	/**
 	 * Return true if the matrix is permutation matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {boolean}
 	 */
 	isPermutation(tolerance) {
@@ -1655,8 +1668,8 @@ export default class Matrix {
 	 * Compare values.
 	 * - Return value between scalars is of type Number.
 	 * - Return value between matrices is type Matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} number 
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, tolerance) {
@@ -1681,7 +1694,7 @@ export default class Matrix {
 	
 	/**
 	 * Add.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A + B
 	 */
 	add(number) {
@@ -1701,7 +1714,7 @@ export default class Matrix {
 
 	/**
 	 * Subtract.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A - B
 	 */
 	sub(number) {
@@ -1721,7 +1734,7 @@ export default class Matrix {
 
 	/**
 	 * Multiply.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A * B
 	 */
 	mul(number) {
@@ -1773,7 +1786,7 @@ export default class Matrix {
 
 	/**
 	 * Divide.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A / B
 	 */
 	div(number) {
@@ -1814,7 +1827,7 @@ export default class Matrix {
 	/**
 	 * Power function.
 	 * - Supports only integers.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - 整数
+	 * @param {KMatrixInputData} number - 整数
 	 * @returns {Matrix} pow(A, B)
 	 */
 	pow(number) {
@@ -1840,7 +1853,7 @@ export default class Matrix {
 
 	/**
 	 * Multiplication for each element of matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A .* B
 	 */
 	dotmul(number) {
@@ -1860,7 +1873,7 @@ export default class Matrix {
 
 	/**
 	 * Division for each element of matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A ./ B
 	 */
 	dotdiv(number) {
@@ -1892,7 +1905,7 @@ export default class Matrix {
 
 	/**
 	 * Power function for each element of the matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A .^ B
 	 */
 	dotpow(number) {
@@ -1912,7 +1925,7 @@ export default class Matrix {
 
 	/**
 	 * Multiplication for each element of matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A .* B
 	 * @deprecated use the dotmul.
 	 */
@@ -1922,7 +1935,7 @@ export default class Matrix {
 
 	/**
 	 * Division for each element of matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A ./ B
 	 * @deprecated use the dotdiv.
 	 */
@@ -1941,7 +1954,7 @@ export default class Matrix {
 
 	/**
 	 * Power function for each element of the matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
+	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A .^ B
 	 * @deprecated use the dotpow.
 	 */
@@ -1997,7 +2010,7 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is integer.
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testInteger(tolerance) {
@@ -2009,7 +2022,7 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is complex integer.
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testComplexInteger(tolerance) {
@@ -2021,7 +2034,7 @@ export default class Matrix {
 	/**
 	 * real(this) === 0
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testZero(tolerance) {
@@ -2033,7 +2046,7 @@ export default class Matrix {
 	/**
 	 * real(this) === 1
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testOne(tolerance) {
@@ -2045,7 +2058,7 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is complex.
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testComplex(tolerance) {
@@ -2057,7 +2070,7 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is real.
 	 * - 1 if true, 0 if false.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [tolerance] - Calculation tolerance of calculation.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testReal(tolerance) {
@@ -2238,7 +2251,7 @@ export default class Matrix {
 	 * Atan (arc tangent) function.
 	 * - Return the values of [-PI, PI].
 	 * - Supports only real numbers.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - X
+	 * @param {KMatrixInputData} number - X
 	 * @returns {Matrix} atan2(Y, X)
 	 */
 	atan2(number) {
@@ -2317,7 +2330,7 @@ export default class Matrix {
 
 	/**
 	 * Rotate matrix 90 degrees clockwise. (mutable)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} rot_90_count - Number of times rotated by 90 degrees.
+	 * @param {KMatrixInputData} rot_90_count - Number of times rotated by 90 degrees.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -2385,7 +2398,7 @@ export default class Matrix {
 
 	/**
 	 * Rotate matrix 90 degrees clockwise.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} rot_90_count - Number of times rotated by 90 degrees.
+	 * @param {KMatrixInputData} rot_90_count - Number of times rotated by 90 degrees.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	rot90(rot_90_count) {
@@ -2395,8 +2408,8 @@ export default class Matrix {
 	/**
 	 * Change the size of the matrix. (mutable)
 	 * Initialized with 0 when expanding.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} new_row_length - Number of rows of matrix to resize.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} new_column_length - Number of columns of matrix to resize.
+	 * @param {KMatrixInputData} new_row_length - Number of rows of matrix to resize.
+	 * @param {KMatrixInputData} new_column_length - Number of columns of matrix to resize.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -2441,8 +2454,8 @@ export default class Matrix {
 	/**
 	 * Change the size of the matrix.
 	 * Initialized with 0 when expanding.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - Number of rows of matrix to resize.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - Number of columns of matrix to resize.
+	 * @param {KMatrixInputData} row_length - Number of rows of matrix to resize.
+	 * @param {KMatrixInputData} column_length - Number of columns of matrix to resize.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	resize(row_length, column_length) {
@@ -2451,7 +2464,7 @@ export default class Matrix {
 
 	/**
 	 * Remove the row in this matrix. (mutable)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_row_index - Number of row of matrix to delete.
+	 * @param {KMatrixInputData} delete_row_index - Number of row of matrix to delete.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -2468,7 +2481,7 @@ export default class Matrix {
 	
 	/**
 	 * Remove the column in this matrix. (mutable)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_column_index - Number of column of matrix to delete.
+	 * @param {KMatrixInputData} delete_column_index - Number of column of matrix to delete.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -2487,7 +2500,7 @@ export default class Matrix {
 
 	/**
 	 * Remove the row in this matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_row_index - Number of row of matrix to delete.
+	 * @param {KMatrixInputData} delete_row_index - Number of row of matrix to delete.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	deleteRow(delete_row_index) {
@@ -2496,7 +2509,7 @@ export default class Matrix {
 
 	/**
 	 * Remove the column in this matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} delete_column_index - Number of column of matrix to delete.
+	 * @param {KMatrixInputData} delete_column_index - Number of column of matrix to delete.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	deleteColumn(delete_column_index) {
@@ -2505,8 +2518,8 @@ export default class Matrix {
 
 	/**
 	 * Swap rows in the matrix. (mutable)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index1 - Number 1 of row of matrix to exchange.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index2 - Number 2 of row of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_row_index1 - Number 1 of row of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_row_index2 - Number 2 of row of matrix to exchange.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -2528,8 +2541,8 @@ export default class Matrix {
 
 	/**
 	 * Swap columns in the matrix. (mutable)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index1 - Number 1 of column of matrix to exchange.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index2 - Number 2 of column of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_column_index1 - Number 1 of column of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_column_index2 - Number 2 of column of matrix to exchange.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -2553,8 +2566,8 @@ export default class Matrix {
 
 	/**
 	 * Swap rows in the matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index1 - Number 1 of row of matrix to exchange.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_row_index2 - Number 2 of row of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_row_index1 - Number 1 of row of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_row_index2 - Number 2 of row of matrix to exchange.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	exchangeRow(exchange_row_index1, exchange_row_index2) {
@@ -2563,8 +2576,8 @@ export default class Matrix {
 
 	/**
 	 * Swap columns in the matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index1 - Number 1 of column of matrix to exchange.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} exchange_column_index2 - Number 2 of column of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_column_index1 - Number 1 of column of matrix to exchange.
+	 * @param {KMatrixInputData} exchange_column_index2 - Number 2 of column of matrix to exchange.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	exchangeColumn(exchange_column_index1, exchange_column_index2) {
@@ -2573,7 +2586,7 @@ export default class Matrix {
 
 	/**
 	 * Combine matrix to the right of this matrix. (mutable)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} left_matrix - Matrix to combine.
+	 * @param {KMatrixInputData} left_matrix - Matrix to combine.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -2594,7 +2607,7 @@ export default class Matrix {
 
 	/**
 	 * Combine matrix to the bottom of this matrix. (mutable)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} bottom_matrix - Matrix to combine.
+	 * @param {KMatrixInputData} bottom_matrix - Matrix to combine.
 	 * @returns {Matrix} Matrix after function processing. (this)
 	 * @private
 	 */
@@ -2613,7 +2626,7 @@ export default class Matrix {
 
 	/**
 	 * Combine matrix to the right of this matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} left_matrix - Matrix to combine.
+	 * @param {KMatrixInputData} left_matrix - Matrix to combine.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	concatRight(left_matrix) {
@@ -2622,7 +2635,7 @@ export default class Matrix {
 
 	/**
 	 * Combine matrix to the bottom of this matrix.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} bottom_matrix - Matrix to combine.
+	 * @param {KMatrixInputData} bottom_matrix - Matrix to combine.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	concatBottom(bottom_matrix) {
@@ -2631,8 +2644,8 @@ export default class Matrix {
 
 	/**
 	 * Clip each element of matrix to specified range.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} min 
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} max 
+	 * @param {KMatrixInputData} min 
+	 * @param {KMatrixInputData} max 
 	 * @returns {Matrix} min(max(x, min), max)
 	 */
 	clip(min, max) {
@@ -2651,9 +2664,9 @@ export default class Matrix {
 
 	/**
 	 * Create row vector with specified initial value, step value, end condition.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} start_or_stop 
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [stop]
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [step=1] 
+	 * @param {KMatrixInputData} start_or_stop 
+	 * @param {KMatrixInputData} [stop]
+	 * @param {KMatrixInputData} [step=1] 
 	 * @returns {Matrix}
 	 */
 	static arange(start_or_stop, stop, step) {
@@ -2665,8 +2678,8 @@ export default class Matrix {
 
 	/**
 	 * Circular shift.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size 
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixInputData} shift_size 
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	circshift(shift_size, type) {
@@ -2692,8 +2705,8 @@ export default class Matrix {
 
 	/**
 	 * Circular shift.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} shift_size 
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixInputData} shift_size 
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	roll(shift_size, type) {
@@ -2703,8 +2716,8 @@ export default class Matrix {
 	/**
 	 * Change the shape of the matrix.
 	 * The number of elements in the matrix doesn't increase or decrease.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} row_length - Number of rows of matrix to reshape.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} column_length - Number of columns of matrix to reshape.
+	 * @param {KMatrixInputData} row_length - Number of rows of matrix to reshape.
+	 * @param {KMatrixInputData} column_length - Number of columns of matrix to reshape.
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	reshape(row_length, column_length) {
@@ -2751,7 +2764,7 @@ export default class Matrix {
 
 	/**
 	 * Flip this matrix.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	flip(type) {
@@ -2774,7 +2787,7 @@ export default class Matrix {
 	 * Index sort.
 	 * - Sorts by row when setting index by row vector to the argument.
 	 * - Sorts by column when setting index by column vector to the argument.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - Vector with index. (See the description of this function)
+	 * @param {KMatrixInputData} v - Vector with index. (See the description of this function)
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	indexsort(v) {
@@ -2910,8 +2923,8 @@ export default class Matrix {
 
 	/**
 	 * Inner product/Dot product.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number 
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
+	 * @param {KMatrixInputData} number 
+	 * @param {KMatrixInputData} [dimension=1] - Dimension of matrix used for calculation. (1 or 2)
 	 * @returns {Matrix} A・B
 	 */
 	inner(number, dimension=1) {
@@ -2943,7 +2956,7 @@ export default class Matrix {
 
 	/**
 	 * Solving a system of linear equations to be Ax = B
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number - B
+	 * @param {KMatrixInputData} number - B
 	 * @returns {Matrix} x
 	 */
 	linsolve(number) {
@@ -3035,7 +3048,7 @@ export default class Matrix {
 
 	/**
 	 * Incomplete gamma function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
+	 * @param {KMatrixInputData} a
 	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
@@ -3045,8 +3058,8 @@ export default class Matrix {
 
 	/**
 	 * Probability density function (PDF) of the gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
+	 * @param {KMatrixInputData} k - Shape parameter.
+	 * @param {KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	gampdf(k, s) {
@@ -3055,8 +3068,8 @@ export default class Matrix {
 
 	/**
 	 * Cumulative distribution function (CDF) of gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
+	 * @param {KMatrixInputData} k - Shape parameter.
+	 * @param {KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	gamcdf(k, s) {
@@ -3065,8 +3078,8 @@ export default class Matrix {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - Shape parameter.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} s - Scale parameter.
+	 * @param {KMatrixInputData} k - Shape parameter.
+	 * @param {KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	gaminv(k, s) {
@@ -3075,7 +3088,7 @@ export default class Matrix {
 
 	/**
 	 * Beta function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} y
+	 * @param {KMatrixInputData} y
 	 * @returns {Matrix}
 	 */
 	beta(y) {
@@ -3084,8 +3097,8 @@ export default class Matrix {
 	
 	/**
 	 * Incomplete beta function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {KMatrixInputData} a
+	 * @param {KMatrixInputData} b
 	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
@@ -3095,8 +3108,8 @@ export default class Matrix {
 
 	/**
 	 * Cumulative distribution function (CDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {KMatrixInputData} a
+	 * @param {KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	betacdf(a, b) {
@@ -3105,8 +3118,8 @@ export default class Matrix {
 
 	/**
 	 * Probability density function (PDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {KMatrixInputData} a
+	 * @param {KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	betapdf(a, b) {
@@ -3115,8 +3128,8 @@ export default class Matrix {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} a
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} b
+	 * @param {KMatrixInputData} a
+	 * @param {KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	betainv(a, b) {
@@ -3133,7 +3146,7 @@ export default class Matrix {
 	
 	/**
 	 * Binomial coefficient, number of all combinations, nCk.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k
+	 * @param {KMatrixInputData} k
 	 * @returns {Matrix}
 	 */
 	nchoosek(k) {
@@ -3158,8 +3171,8 @@ export default class Matrix {
 	
 	/**
 	 * Probability density function (PDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
+	 * @param {KMatrixInputData} [u=0.0] - Average value.
+	 * @param {KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	normpdf(u=0.0, s=1.0) {
@@ -3168,8 +3181,8 @@ export default class Matrix {
 
 	/**
 	 * Cumulative distribution function (CDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
+	 * @param {KMatrixInputData} [u=0.0] - Average value.
+	 * @param {KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	normcdf(u=0.0, s=1.0) {
@@ -3178,8 +3191,8 @@ export default class Matrix {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [u=0.0] - Average value.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [s=1.0] - Variance value.
+	 * @param {KMatrixInputData} [u=0.0] - Average value.
+	 * @param {KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
 	norminv(u=0.0, s=1.0) {
@@ -3188,7 +3201,7 @@ export default class Matrix {
 
 	/**
 	 * Probability density function (PDF) of Student's t-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tpdf(v) {
@@ -3197,7 +3210,7 @@ export default class Matrix {
 
 	/**
 	 * Cumulative distribution function (CDF) of Student's t-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tcdf(v) {
@@ -3206,7 +3219,7 @@ export default class Matrix {
 
 	/**
 	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tinv(v) {
@@ -3217,8 +3230,8 @@ export default class Matrix {
 	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
 	 * - If tails = 1, TDIST returns the one-tailed distribution.
 	 * - If tails = 2, TDIST returns the two-tailed distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
+	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {Matrix}
 	 */
 	tdist(v, tails) {
@@ -3227,7 +3240,7 @@ export default class Matrix {
 
 	/**
 	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} v - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tinv2(v) {
@@ -3236,7 +3249,7 @@ export default class Matrix {
 
 	/**
 	 * Probability density function (PDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	chi2pdf(k) {
@@ -3245,7 +3258,7 @@ export default class Matrix {
 
 	/**
 	 * Cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	chi2cdf(k) {
@@ -3254,7 +3267,7 @@ export default class Matrix {
 	
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} k - The degrees of freedom. (DF)
+	 * @param {KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	chi2inv(k) {
@@ -3264,8 +3277,8 @@ export default class Matrix {
 	/**
 	 * Probability density function (PDF) of F-distribution.
 	 * - In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
+	 * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
+	 * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	fpdf(d1, d2) {
@@ -3274,8 +3287,8 @@ export default class Matrix {
 
 	/**
 	 * Cumulative distribution function (CDF) of F-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
+	 * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
+	 * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	fcdf(d1, d2) {
@@ -3284,8 +3297,8 @@ export default class Matrix {
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d1 - The degree of freedom of the molecules.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} d2 - The degree of freedom of the denominator
+	 * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
+	 * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	finv(d1, d2) {
@@ -3298,7 +3311,7 @@ export default class Matrix {
 
 	/**
 	 * Maximum number.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} max([A, B])
 	 */
 	max(type) {
@@ -3307,7 +3320,7 @@ export default class Matrix {
 	
 	/**
 	 * Minimum number.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} min([A, B])
 	 */
 	min(type) {
@@ -3316,7 +3329,7 @@ export default class Matrix {
 	
 	/**
 	 * Sum.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	sum(type) {
@@ -3325,7 +3338,7 @@ export default class Matrix {
 
 	/**
 	 * Arithmetic average.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	mean(type) {
@@ -3334,7 +3347,7 @@ export default class Matrix {
 
 	/**
 	 * Product of array elements.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	prod(type) {
@@ -3343,7 +3356,7 @@ export default class Matrix {
 
 	/**
 	 * Geometric mean.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	geomean(type) {
@@ -3352,7 +3365,7 @@ export default class Matrix {
 
 	/**
 	 * Median.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	median(type) {
@@ -3361,7 +3374,7 @@ export default class Matrix {
 
 	/**
 	 * Mode.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	mode(type) {
@@ -3372,7 +3385,7 @@ export default class Matrix {
 	 * Moment.
 	 * - Moment of order n. Equivalent to the definition of variance at 2.
 	 * @param {number} nth_order
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	moment(nth_order, type) {
@@ -3381,7 +3394,7 @@ export default class Matrix {
 
 	/**
 	 * Variance.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	var(type) {
@@ -3390,7 +3403,7 @@ export default class Matrix {
 
 	/**
 	 * Standard deviation.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	std(type) {
@@ -3401,7 +3414,7 @@ export default class Matrix {
 	 * Mean absolute deviation.
 	 * - The "algorithm" can choose "0/mean"(default) and "1/median".
 	 * @param {?string|?number} [algorithm]
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	mad(algorithm, type) {
@@ -3410,7 +3423,7 @@ export default class Matrix {
 
 	/**
 	 * Skewness.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	skewness(type) {
@@ -3419,7 +3432,7 @@ export default class Matrix {
 
 	/**
 	 * Covariance matrix.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	cov(type) {
@@ -3428,7 +3441,7 @@ export default class Matrix {
 
 	/**
 	 * The samples are normalized to a mean value of 0, standard deviation of 1.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	normalize(type) {
@@ -3437,7 +3450,7 @@ export default class Matrix {
 
 	/**
 	 * Correlation matrix.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	corrcoef(type) {
@@ -3448,7 +3461,7 @@ export default class Matrix {
 	 * Sort.
 	 * - The "order" can choose "ascend"(default) and "descend".
 	 * @param {string} [order]
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	sort(order, type) {
@@ -3461,7 +3474,7 @@ export default class Matrix {
 
 	/**
 	 * Discrete Fourier transform (DFT).
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} fft(x)
 	 */
 	fft(type) {
@@ -3470,7 +3483,7 @@ export default class Matrix {
 
 	/**
 	 * Inverse discrete Fourier transform (IDFT).
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} ifft(x)
 	 */
 	ifft(type) {
@@ -3479,7 +3492,7 @@ export default class Matrix {
 
 	/**
 	 * Power spectral density.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} abs(fft(x)).^2
 	 */
 	powerfft(type) {
@@ -3488,7 +3501,7 @@ export default class Matrix {
 
 	/**
 	 * Discrete cosine transform (DCT-II, DCT).
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} dct(x)
 	 */
 	dct(type) {
@@ -3497,7 +3510,7 @@ export default class Matrix {
 
 	/**
 	 * Inverse discrete cosine transform (DCT-III, IDCT).
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix} idct(x)
 	 */
 	idct(type) {
@@ -3538,7 +3551,7 @@ export default class Matrix {
 
 	/**
 	 * Convolution integral, Polynomial multiplication.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} number
+	 * @param {KMatrixInputData} number
 	 * @returns {Matrix}
 	 */
 	conv(number) {
@@ -3548,7 +3561,7 @@ export default class Matrix {
 	/**
 	 * ACF(Autocorrelation function), cros-correlation function.
 	 * - If the argument is omitted, it is calculated by the autocorrelation function.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} [number] - Matrix to calculate the correlation.
+	 * @param {KMatrixInputData} [number] - Matrix to calculate the correlation.
 	 * @returns {Matrix}
 	 */
 	xcorr(number) {
@@ -3568,7 +3581,7 @@ export default class Matrix {
 	 * - "sin", Half cycle sine window.
 	 * - "vorbis", Vorbis window.
 	 * @param {string} name - Window function name.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+	 * @param {KMatrixInputData} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
@@ -3578,7 +3591,7 @@ export default class Matrix {
 
 	/**
 	 * Hann (Hanning) window.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+	 * @param {KMatrixInputData} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
@@ -3588,7 +3601,7 @@ export default class Matrix {
 	
 	/**
 	 * Hamming window.
-	 * @param {Matrix|Complex|number|string|Array<string|number|Complex>|Array<Array<string|number|Complex>>|Object} size - Window length
+	 * @param {KMatrixInputData} size - Window length
 	 * @param {string|number} [periodic="symmetric"] - 0/"symmetric" (default) , 1/"periodic"
 	 * @returns {Matrix} Column vector.
 	 */
@@ -3599,7 +3612,7 @@ export default class Matrix {
 	/**
 	 * FFT shift.
 	 * Circular shift beginning at the center of the signal.
-	 * @param {MatrixSettings} [type]
+	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
 	fftshift(type) {

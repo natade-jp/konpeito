@@ -45,6 +45,107 @@ let dts_text = File.loadTextFile("./out/types.d.ts");
 	dts_text = dts_text_line.join("\n");
 }
 
+{
+	// なぜか追加されない行があるので追加する。
+	dts_text += "\n" +
+	"/**" + "\n" +
+	" * Fraction type argument." + "\n" +
+	" * - Fraction" + "\n" +
+	" * - BigInteger" + "\n" +
+	" * - BigDecimal" + "\n" +
+	" * - number" + "\n" +
+	" * - string" + "\n" +
+	" * - Array<KBigIntegerInputData>" + "\n" +
+	" * - {numerator:KBigIntegerInputData,denominator:KBigIntegerInputData}" + "\n" +
+	" * - {doubleValue:number}" + "\n" +
+	" * - {toString:function}" + "\n" +
+	" * @typedef {Fraction|BigInteger|BigDecimal|number|string|Array<KBigIntegerInputData>|{numerator:KBigIntegerInputData,denominator:KBigIntegerInputData}|{doubleValue:number}|{toString:function}} KFractionInputData" + "\n" +
+	" */" + "\n" +
+	"declare type KFractionInputData = Fraction|BigInteger|BigDecimal|number|string|Array<KBigIntegerInputData>|{numerator:KBigIntegerInputData,denominator:KBigIntegerInputData}|{doubleValue:number}|{toString:any};";
+}
+
+{
+	// "import("./*/*.js")." などのimport文の除去
+	dts_text = dts_text.replace(/import\([^)]*\)\./g, "");
+}
+
+{
+	// 型定義ファイルで無名関数を戻り値として返す場合の記述方法が不明なので、 any にしておく。
+	// static COMPARE_DEFAULT: function(string, string): number;
+	dts_text = dts_text.replace(/: function\([^;]+;/g, ": any;");
+}
+
+{
+	// 以下のようなコードが原因不明で入り込む場合があるので削除する
+	// declare var default: any;
+	dts_text = dts_text.replace(/\ndeclare var default: any;\n/g, "\n");
+}
+
+
+{
+	// @typedef しかない行の後に作成された、「declare type」が不正なので修正する。
+	// /**
+	//  * @typedef {number|string|BigDecimal|BigInteger|{toBigDecimal:function}|{doubleValue:number}|{toString:function}} KBigDecimalLocalInputData
+	//  * @typedef {{integer:BigInteger,scale:?number,context:?MathContext}} KBigDecimalScaleData
+	//  * @typedef {KBigDecimalLocalInputData|Array<KBigDecimalLocalInputData|MathContext>|KBigDecimalScaleData} KBigDecimalInputData
+	//  */
+	// declare type ~~
+	const dts_text_line = dts_text.split("\n");
+	for(let i = 0; i < dts_text_line.length; i++) {
+		const line = dts_text_line[i];
+		if(!line.startsWith("declare type ")) {
+			continue;
+		}
+		// 見つけた行の上を探索する。
+		let output = "";
+		let is_hit = false;
+		let last_line = 0;
+		let is_first = true;
+		for(let j = i - 1; j >= 0; j--) {
+			const up_line = dts_text_line[j];
+			// */
+			if(/\s*\*\/\s*/.test(up_line)) {
+				continue;
+			}
+			// * @typedef 
+			if(!(/\s*\*\s+@typedef\s+/.test(up_line))) {
+				break;
+			}
+			// {{integer:BigInteger,scale:?number,context:?MathContext}} KBigDecimalScaleData
+			const match_data = up_line.trim().replace(/\s*\*\s+@typedef\s+/, "").match(/^\{([^\t ]*)\}\s+([\w]+)$/);
+			if(match_data === null) {
+				break;
+			}
+			is_hit = true;
+			last_line = j;
+			// function が戻り値の場合の定義が不明なので、 any にしておく
+			// ?がついた値は利用できないので消す
+			const objtype = match_data[1].replace(/function/g, "any").replace(/\?/g, "");
+			const name = match_data[2];
+			let add_data;
+			if(is_first) {
+				add_data = up_line + "\n" + " */\n" + "declare type " + name + " = " + objtype + ";\n";
+				is_first = false;
+			}
+			else {
+				add_data = "/**\n" + up_line + "\n" + " */\n" + "declare type " + name + " = " + objtype + ";\n";
+			}
+			output = add_data + output;
+		}
+		if(is_hit) {
+			// last_line ~ i 行までを削除する
+			const delete_line_start = last_line;
+			const delete_line_length = i - last_line + 1;
+			dts_text_line.splice(delete_line_start, delete_line_length);
+			i = last_line;
+			// 修正した行を追記
+			dts_text_line.splice(i, 0, output);
+			i++;	
+		}
+	}
+	dts_text = dts_text_line.join("\n");
+}
+
 // 型の補正
 // 内部で使用する、Matrix型などは konpeito で閉じた世界の型なので、
 // 外部に見せる必要がなく、見せると衝突してしまう可能性が高いため、装飾する。
@@ -99,6 +200,7 @@ let dts_text = File.loadTextFile("./out/types.d.ts");
 		dts_text = dts_text.replace(reg, "$1" + word + "$3$4");
 	}
 }
+
 
 File.saveTextFile("./build/index.d.ts", dts_text);
 File.deleteDirectory("./out");

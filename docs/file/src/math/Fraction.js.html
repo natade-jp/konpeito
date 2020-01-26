@@ -35,8 +35,15 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.js~Fraction.html">Fraction</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.js~Matrix.html">Matrix</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-BigDecimalDivideType">BigDecimalDivideType</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-MatrixSettings">MatrixSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalDivideType">KBigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalInputData">KBigDecimalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalLocalInputData">KBigDecimalLocalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalScaleData">KBigDecimalScaleData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KComplexInputData">KComplexInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixSettings">KMatrixSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -45,8 +52,9 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.js~Random.html">Random</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.js~Signal.html">Signal</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-SignalSettings">SignalSettings</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-StatisticsSettings">StatisticsSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KRandomSettings">KRandomSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -65,6 +73,20 @@
 import BigInteger from &quot;./BigInteger.js&quot;;
 import BigDecimal from &quot;./BigDecimal.js&quot;;
 import MathContext from &quot;./context/MathContext.js&quot;;
+
+/**
+ * Fraction type argument.
+ * - Fraction
+ * - BigInteger
+ * - BigDecimal
+ * - number
+ * - string
+ * - Array&lt;KBigIntegerInputData&gt;
+ * - {numerator:KBigIntegerInputData,denominator:KBigIntegerInputData}
+ * - {doubleValue:number}
+ * - {toString:function}
+ * @typedef {Fraction|BigInteger|BigDecimal|number|string|Array&lt;import(&quot;./BigInteger.js&quot;).KBigIntegerInputData&gt;|{numerator:import(&quot;./BigInteger.js&quot;).KBigIntegerInputData,denominator:import(&quot;./BigInteger.js&quot;).KBigIntegerInputData}|{doubleValue:number}|{toString:function}} KFractionInputData
+ */
 
 /**
  * Collection of functions used in Fraction.
@@ -292,7 +314,7 @@ export default class Fraction {
 	 * - 0.01, &quot;0.01&quot;, &quot;0.1e-1&quot;, &quot;1/100&quot;, [1, 100], [2, 200], [&quot;2&quot;, &quot;200&quot;]
 	 * - &quot;1/3&quot;, &quot;0.[3]&quot;, &quot;0.(3)&quot;, &quot;0.&apos;3&apos;&quot;, &quot;0.&quot;3&quot;&quot;, [1, 3], [2, 6]
 	 * - &quot;3.555(123)&quot; = 3.555123123123..., &quot;147982 / 41625&quot;
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} [number] - Fraction data. See how to use the function.
+	 * @param {KFractionInputData} [number] - Fraction data. See how to use the function.
 	 */
 	constructor(number) {
 		
@@ -337,26 +359,28 @@ export default class Fraction {
 				this.denominator = (number[1] instanceof BigInteger) ? number[1] : new BigInteger(number[1]);
 				is_normalization = true;
 			}
-			else if((number instanceof Object) &amp;&amp; number.numerator &amp;&amp; number.denominator) {
-				this.numerator = (number.numerator instanceof BigInteger) ? number.numerator : new BigInteger(number.numerator);
-				this.denominator = (number.denominator instanceof BigInteger) ? number.denominator : new BigInteger(number.denominator);
-				is_normalization = true;
-			}
 			else if(number instanceof BigDecimal) {
 				const value = new Fraction(number.unscaledValue());
 				const x = value.scaleByPowerOfTen(-number.scale());
 				this.numerator = x.numerator;
 				this.denominator = x.denominator;
 			}
-			else if((number instanceof Object) &amp;&amp; (number.doubleValue)) {
-				const x = FractionTool.to_fraction_data_from_number(number.doubleValue);
-				this.numerator = x.numerator;
-				this.denominator = x.denominator;
-			}
-			else if(number instanceof Object) {
-				const x1 = FractionTool.to_fraction_data_from_fraction_string(number.toString());
-				this.numerator = x1.numerator;
-				this.denominator = x1.denominator;
+			else if(typeof number === &quot;object&quot;) {
+				if(&quot;doubleValue&quot; in number) {
+					const x = FractionTool.to_fraction_data_from_number(number.doubleValue);
+					this.numerator = x.numerator;
+					this.denominator = x.denominator;
+				}
+				else if((&quot;numerator&quot; in number) &amp;&amp; (&quot;denominator&quot; in number)) {
+					this.numerator = (number.numerator instanceof BigInteger) ? number.numerator : new BigInteger(number.numerator);
+					this.denominator = (number.denominator instanceof BigInteger) ? number.denominator : new BigInteger(number.denominator);
+					is_normalization = true;
+				}
+				else {
+					const x1 = FractionTool.to_fraction_data_from_fraction_string(number.toString());
+					this.numerator = x1.numerator;
+					this.denominator = x1.denominator;
+				}
 			}
 			else {
 				throw &quot;Fraction Unsupported argument &quot; + number;
@@ -372,7 +396,7 @@ export default class Fraction {
 
 	/**
 	 * Create an entity object of this class.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {Fraction}
 	 */
 	static create(number) {
@@ -386,7 +410,7 @@ export default class Fraction {
 
 	/**
 	 * Convert number to Fraction type.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {Fraction}
 	 */
 	static valueOf(number) {
@@ -395,7 +419,7 @@ export default class Fraction {
 
 	/**
 	 * Convert to Fraction.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {Fraction}
 	 * @private
 	 */
@@ -410,7 +434,7 @@ export default class Fraction {
 
 	/**
 	 * Convert to real number.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -428,7 +452,7 @@ export default class Fraction {
 
 	/**
 	 * Convert to integer.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} number 
+	 * @param {KFractionInputData} number 
 	 * @returns {number}
 	 * @private
 	 */
@@ -494,7 +518,7 @@ export default class Fraction {
 	
 	/**
 	 * Add.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	add(num) {
@@ -515,7 +539,7 @@ export default class Fraction {
 
 	/**
 	 * Subtract.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	sub(num) {
@@ -536,7 +560,7 @@ export default class Fraction {
 
 	/**
 	 * Multiply.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	mul(num) {
@@ -554,7 +578,7 @@ export default class Fraction {
 
 	/**
 	 * Divide.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	div(num) {
@@ -580,7 +604,7 @@ export default class Fraction {
 
 	/**
 	 * Modulo, positive remainder of division.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @return {Fraction}
 	 */
 	mod(num) {
@@ -593,7 +617,7 @@ export default class Fraction {
 	/**
 	 * Power function.
 	 * - Supports only integers.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @returns {Fraction} pow(A, B)
 	 */
 	pow(num) {
@@ -620,7 +644,7 @@ export default class Fraction {
 	/**
 	 * Multiply a multiple of ten.
 	 * - Supports only integers.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} n
+	 * @param {KFractionInputData} n
 	 * @returns {Fraction}
 	 */
 	scaleByPowerOfTen(n) {
@@ -699,7 +723,7 @@ export default class Fraction {
 	
 	/**
 	 * Equals.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @returns {boolean} A === B
 	 */
 	equals(num) {
@@ -710,7 +734,7 @@ export default class Fraction {
 
 	/**
 	 * Compare values.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} num
+	 * @param {KFractionInputData} num
 	 * @returns {number} A &gt; B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(num) {
@@ -719,7 +743,7 @@ export default class Fraction {
 
 	/**
 	 * Maximum number.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} number
+	 * @param {KFractionInputData} number
 	 * @returns {Fraction} max([A, B])
 	 */
 	max(number) {
@@ -734,7 +758,7 @@ export default class Fraction {
 
 	/**
 	 * Minimum number.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} number
+	 * @param {KFractionInputData} number
 	 * @returns {Fraction} min([A, B])
 	 */
 	min(number) {
@@ -749,8 +773,8 @@ export default class Fraction {
 
 	/**
 	 * Clip number within range.
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} min 
-	 * @param {Fraction|BigInteger|BigDecimal|number|string|Array&lt;Object&gt;|{numerator:Object,denominator:Object}|Object} max
+	 * @param {KFractionInputData} min 
+	 * @param {KFractionInputData} max
 	 * @returns {Fraction} min(max(x, min), max)
 	 */
 	clip(min, max) {
