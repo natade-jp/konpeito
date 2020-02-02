@@ -441,7 +441,7 @@ export default class Statistics {
 		// 1つの行列から分散共分散行列を作成する
 		if(Y === null) {
 			if(X.isVector()) {
-				return Statistics.var(X, type);
+				return Statistics.var(X, {correction : cor});
 			}
 			const correction = X.row_length === 1 ? 1 : cor;
 			const arr = X.matrix_array;

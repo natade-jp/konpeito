@@ -13,40 +13,63 @@ import Matrix from "../Matrix.js";
 /**
  * Settings for multiple regression analysis
  * @typedef {Object} KMultipleRegressionAnalysisSettings
- * @property {import("../Matrix.js").KMatrixInputData} samples explanatory variable (Each column is a parameters and each row is a samples.)
- * @property {import("../Matrix.js").KMatrixInputData} target response variable / actual values (column vector)
+ * @property {import("../Matrix.js").KMatrixInputData} samples explanatory variable. (Each column is a parameters and each row is a samples.)
+ * @property {import("../Matrix.js").KMatrixInputData} target response variable. / actual values. (column vector)
  * @property {boolean} [is_standardised=false] Use standardized partial regression coefficients.
  */
 
 /**
  * Vector state
  * @typedef {Object} KMultipleRegressionAnalysisVectorState
- * @property {Matrix} df degree of freedom
- * @property {Matrix} SS sum of squares
- * @property {Matrix} MS unbiased_variance
+ * @property {number} df degree of freedom
+ * @property {number} SS sum of squares
+ * @property {number} MS unbiased_variance
+ */
+
+/**
+ * Analysis of variance. ANOVA.
+ * @typedef {Object} KMultipleRegressionAnalysisAnova
+ * @property {KMultipleRegressionAnalysisVectorState} regression regression.
+ * @property {KMultipleRegressionAnalysisVectorState} residual residual error.
+ * @property {KMultipleRegressionAnalysisVectorState} total total.
+ * @property {number} F F value. Dispersion ratio (F0)
+ * @property {number} significance_F Significance F. Test with F distribution with q, n-q-1 degrees of freedom.(Probability of error.)
+ */
+
+/**
+ * @typedef {Object} KMultipleRegressionAnalysisPartialRegressionData
+ * @property {number} coefficient coefficient.
+ * @property {number} standard_error Standard error.
+ * @property {number} t_stat t-statistic.
+ * @property {number} p_value P-value. Risk factor.
+ * @property {number} lower_95 Lower limit of a 95% confidence interval.
+ * @property {number} upper_95 Upper limit of a 95% confidence interval.
+ */
+
+/**
+ * @typedef {Object} KMultipleRegressionAnalysisPartialRegression
+ * @property {KMultipleRegressionAnalysisPartialRegressionData} intercept
+ * @property {KMultipleRegressionAnalysisPartialRegressionData[]} parameters
  */
 
 /**
  * Output for multiple regression analysis
  * @typedef {Object} KMultipleRegressionAnalysisOutput
- * @property {Matrix} q number of explanatory variables
- * @property {Matrix} n number of samples
- * @property {Matrix} partial_regression_coefficient partial regression coefficient (column vector)
- * @property {Matrix} bias bias
- * @property {Matrix} predicted_values predicted values (column vector)
- * @property {Matrix} sY Variance of predicted values of target variable
- * @property {Matrix} sy Variance of measured values of target variable
- * @property {Matrix} multiple_R Multiple R. Multiple correlation coefficient.
- * @property {Matrix} R_square R Square. Coefficient of determination.
- * @property {Matrix} adjusted_R_square Adjusted R Square. Adjusted coefficient of determination.
- * @property {KMultipleRegressionAnalysisVectorState} regression state of regression
- * @property {KMultipleRegressionAnalysisVectorState} residual state of residual error
- * @property {KMultipleRegressionAnalysisVectorState} total state of total
- * @property {Matrix} Ve Unbiased variance of residuals (Ve)
- * @property {Matrix} standard_error Standard error (SE)
- * @property {Matrix} regression_F F value. Dispersion ratio (F0)
- * @property {Matrix} regression_significance_F Significance F. Test with F distribution with q, n-q-1 degrees of freedom.(Probability of error.)
- * @property {Matrix} AIC Akaike's Information Criterion (AIC)
+ * @property {number} q number of explanatory variables.
+ * @property {number} n number of samples.
+ * @property {number[][]} partial_regression_coefficient partial regression coefficient. (column vector)
+ * @property {number} bias bias
+ * @property {number[][]} predicted_values predicted values. (column vector)
+ * @property {number} sY Variance of predicted values of target variable.
+ * @property {number} sy Variance of measured values of target variable.
+ * @property {number} multiple_R Multiple R. Multiple correlation coefficient.
+ * @property {number} R_square R Square. Coefficient of determination.
+ * @property {number} adjusted_R_square Adjusted R Square. Adjusted coefficient of determination.
+ * @property {KMultipleRegressionAnalysisAnova} ANOVA analysis of variance.
+ * @property {number} Ve Unbiased variance of residuals. (Ve)
+ * @property {number} standard_error Standard error. (SE)
+ * @property {number} AIC Akaike's Information Criterion. (AIC)
+ * @property {KMultipleRegressionAnalysisPartialRegression} regression_table
  */
 
 export default class DataAnalysis {
@@ -88,7 +111,7 @@ export default class DataAnalysis {
 		const number_of_samples = Matrix.create(samples.height);
 
 		// 共分散行列
-		const S = samples.cov(set_sample);
+		const S = samples.cov(set_unbiased);
 		const S_rcond = S.rcond();
 		// どこかの値に相関が非常に高いものがあり計算できない。
 		if(S_rcond <= 1e-10) {
@@ -98,9 +121,9 @@ export default class DataAnalysis {
 
 		// 目的変量との共分散(縦ベクトル)
 		const y_array = [];
-		const max = number_of_explanatory_variables.intValue;
-		for(let i = 0; i < max; i++) {
-			y_array[i] = samples.getMatrix(":", i).cov(target, set_sample);
+		const max_var = number_of_explanatory_variables.intValue;
+		for(let i = 0; i < max_var; i++) {
+			y_array[i] = samples.getMatrix(":", i).cov(target, set_unbiased);
 		}
 		const Y = Matrix.create(y_array);
 
@@ -160,40 +183,168 @@ export default class DataAnalysis {
 			residual_SS.div(number_of_samples).mul(2.0 * Math.PI).log().add(1)
 		).add(number_of_explanatory_variables.add(2).mul(2));
 
+		// ここからは偏回帰の値を計算していく
+
+		// 偏差平方和・積和行列の逆行列を作る
+		// つまり、共分散行列の各共分散で(サンプル数N)を割らない値を求めればいい。
+		// 不偏の場合は、 偏差平方和 * ( N * (N-1) ) を求めれば良い。
+		const IS = S.dotmul(number_of_samples).inv();
+
+		// 初期化
+		const intercept = {
+			coefficient : Matrix.ZERO,
+			standard_error : Matrix.ZERO,
+			t_stat : Matrix.ZERO,
+			p_value : Matrix.ZERO,
+			lower_95 : Matrix.ZERO,
+			upper_95 : Matrix.ZERO
+		};
+		const parameters = [];
+		for(let i = 0; i < max_var; i++) {
+			parameters[i] = {
+				coefficient : Matrix.ZERO,
+				standard_error : Matrix.ZERO,
+				t_stat : Matrix.ZERO,
+				p_value : Matrix.ZERO,
+				lower_95 : Matrix.ZERO,
+				upper_95 : Matrix.ZERO
+			};
+		}
+		// 係数
+		{
+			// 切片の係数
+			intercept.coefficient = bias;
+			// 偏回帰の係数
+			for(let i = 0; i < max_var; i++) {
+				parameters[i].coefficient = new Matrix(partial_regression_coefficient.getComplex(i));
+			}
+		}
+		// 標準誤差
+		{
+			// 切片の標準誤差
+			const q = number_of_explanatory_variables.intValue;
+			let s = number_of_samples.inv();
+			for(let j = 0; j < q; j++) {
+				for(let k = 0; k < q; k++) {
+					s = s.add(samples.getMatrix(":", j).mean().mul(samples.getMatrix(":", k).mean()).mul(IS.getMatrix(j, k)));
+				}
+			}
+			intercept.standard_error = s.mul(Ve).sqrt();
+			// 偏回帰の標準誤差
+			for(let i = 0; i < max_var; i++) {
+				parameters[i].standard_error = IS.getMatrix(i, i).mul(Ve).sqrt();
+			}
+		}
+		{
+			/**
+			 * t*値, P値, 信頼区間
+			 * @param {any} data 
+			 * @ignore
+			 */
+			const calcTPI = function(data) {
+
+				// t*値, 影響度, 統計量t, t-statistic.
+				// 大きいほど目的変数との関連性が強い
+				/**
+				 * @type {Matrix}
+				 */
+				data.t_stat = data.coefficient.div(data.standard_error);
+				
+				// P値, 危険率, P-value. Risk factor.
+				// 切片と偏回帰係数が誤っている確率
+				// スチューデントの t 分布の確率密度関数を利用
+				/**
+				 * @type {Matrix}
+				 */
+				data.p_value = data.t_stat.tdist(residual_df, 2);
+				
+				// 信頼区間の計算
+				// 下限 95%, 上限 95%
+				const percent = new Matrix(1.0 - 0.95);
+				data.lower_95 = data.coefficient.sub(percent.tinv2(residual_df).mul(data.standard_error));
+				data.upper_95 = data.coefficient.add(percent.tinv2(residual_df).mul(data.standard_error));
+			};
+			calcTPI(intercept);
+			for(let i = 0; i < max_var; i++) {
+				calcTPI(parameters[i]);
+			}
+		}
+
+		/**
+		 * @type {KMultipleRegressionAnalysisPartialRegression}
+		 */
+		let regression_table = null;
+		{
+			/**
+			 * @type {KMultipleRegressionAnalysisPartialRegressionData}
+			 */
+			const intercept_data = {
+				coefficient : intercept.coefficient.doubleValue,
+				standard_error : intercept.standard_error.doubleValue,
+				t_stat : intercept.t_stat.doubleValue,
+				p_value : intercept.p_value.doubleValue,
+				lower_95 : intercept.lower_95.doubleValue,
+				upper_95 : intercept.upper_95.doubleValue
+			};
+			
+			/**
+			 * @type {KMultipleRegressionAnalysisPartialRegressionData[]}
+			 */
+			const parameters_data = [];
+			for(let i = 0; i < max_var; i++) {
+				parameters_data.push({
+					coefficient : parameters[i].coefficient.doubleValue,
+					standard_error : parameters[i].standard_error.doubleValue,
+					t_stat : parameters[i].t_stat.doubleValue,
+					p_value : parameters[i].p_value.doubleValue,
+					lower_95 : parameters[i].lower_95.doubleValue,
+					upper_95 : parameters[i].upper_95.doubleValue
+				});
+			}
+
+			regression_table = {
+				intercept : intercept_data,
+				parameters : parameters_data
+			};
+		}
+
 		/**
 		 * @type {KMultipleRegressionAnalysisOutput}
 		 */
 		const output = {
 			q : number_of_explanatory_variables.doubleValue,
 			n : number_of_samples.doubleValue,
-			partial_regression_coefficient : partial_regression_coefficient,
+			partial_regression_coefficient : partial_regression_coefficient.getNumberMatrixArray(),
 			bias : bias.doubleValue,
-			predicted_values : predicted_values,
+			predicted_values : predicted_values.getNumberMatrixArray(),
 			sY : sY.doubleValue,
 			sy : sy.doubleValue,
 			multiple_R : multiple_R.doubleValue,
 			R_square : R_square.doubleValue,
 			adjusted_R_square : adjusted_R_square.doubleValue,
-			regression : {
-				df : regression_df.doubleValue,
-				SS : regression_SS.doubleValue,
-				MS : regression_MS.doubleValue
-			},
-			residual : {
-				df : residual_df.doubleValue,
-				SS : residual_SS.doubleValue,
-				MS : residual_MS.doubleValue
-			},
-			total : {
-				df : total_df.doubleValue,
-				SS : total_SS.doubleValue,
-				MS : total_MS.doubleValue
+			ANOVA : {
+				regression : {
+					df : regression_df.doubleValue,
+					SS : regression_SS.doubleValue,
+					MS : regression_MS.doubleValue
+				},
+				residual : {
+					df : residual_df.doubleValue,
+					SS : residual_SS.doubleValue,
+					MS : residual_MS.doubleValue
+				},
+				total : {
+					df : total_df.doubleValue,
+					SS : total_SS.doubleValue,
+					MS : total_MS.doubleValue
+				},
+				F : regression_F.doubleValue,
+				significance_F : regression_significance_F.doubleValue,
 			},
 			Ve : Ve.doubleValue,
 			standard_error : standard_error.doubleValue,
-			regression_F : regression_F.doubleValue,
-			regression_significance_F : regression_significance_F.doubleValue,
-			AIC : AIC.doubleValue
+			AIC : AIC.doubleValue,
+			regression_table : regression_table
 		};
 
 		return output;
