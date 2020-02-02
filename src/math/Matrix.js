@@ -13,6 +13,7 @@ import Statistics from "./tools/Statistics.js";
 import Probability from "./tools/Probability.js";
 import Signal from "./tools/Signal.js";
 import Complex from "./Complex.js";
+import DataAnalysis from "./tools/DataAnalysis.js";
 
 /**
  * Matrix type argument.
@@ -135,15 +136,27 @@ class MatrixTool {
 	 * Removed front and back brackets when enclosed by brackets.
 	 * - Return null if the string has no brackets.
 	 * @param {string} text - String to be processed.
-	 * @returns {string|null} String after brackets removal or null.
+	 * @returns {{text : string, is_transpose : boolean}|null} String after brackets removal or null.
 	 */
 	static trimBracket(text) {
+		let input_text = text;
+		let is_transpose = false;
+		// 後ろに'が付いているかどうか検知(転置行列用)
+		if(/'$/.test(input_text)) {
+			const dash_text = input_text.match(/(\s*')*$/g)[0];
+			const dash_count = (dash_text.split("'").length - 1);
+			is_transpose = (dash_count % 2) === 1;
+			input_text = input_text.substring(0, input_text.length - dash_text.length);
+		}
 		// 前後に[]があるか確認
-		if( !(/^\[/).test(text) || !(/\]$/).test(text)) {
+		if( !(/^\[/).test(input_text) || !(/\]$/).test(input_text)) {
 			return null;
 		}
 		// 前後の[]を除去
-		return text.substring(1, text.length - 1);
+		return {
+			text : input_text.substring(1, input_text.length - 1),
+			is_transpose : is_transpose
+		};
 	}
 
 	/**
@@ -326,7 +339,12 @@ class MatrixTool {
 		const withoutBracket = MatrixTool.trimBracket(trimtext);
 		if(withoutBracket) {
 			// 配列用の初期化
-			return MatrixTool.toMatrixArrayFromStringInBracket(withoutBracket);
+			let array_data = MatrixTool.toMatrixArrayFromStringInBracket(withoutBracket.text);
+			// 転置が必要なら転置させる
+			if(withoutBracket.is_transpose) {
+				array_data = (new Matrix(array_data)).T().matrix_array;
+			}
+			return array_data;
 		}
 		else {
 			// スカラー用の初期化
@@ -910,7 +928,7 @@ export default class Matrix {
 			return new Matrix(array_function(row_array));
 		}
 		else {
-			const y = new Matrix(0);
+			const y = Matrix.ZERO;
 			y._resize(1, this.column_length);
 			// 1列、行列であれば、列ごとに処理を行う
 			for(let col = 0; col < this.column_length; col++) {
@@ -936,7 +954,7 @@ export default class Matrix {
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	eachVectorBoth(array_function) {
-		const y1 = new Matrix(0);
+		const y1 = Matrix.ZERO;
 		// 行ごとに処理を行う
 		y1._resize(this.row_length, 1);
 		for(let row = 0; row < this.row_length; row++) {
@@ -950,7 +968,7 @@ export default class Matrix {
 				y1.matrix_array[row][col] = row_output[col];
 			}
 		}
-		const y2 = new Matrix(0);
+		const y2 = Matrix.ZERO;
 		// 列ごとに処理を行う
 		y2._resize(1, y1.column_length);
 		for(let col = 0; col < y1.column_length; col++) {
@@ -973,7 +991,7 @@ export default class Matrix {
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	eachVectorRow(array_function) {
-		const y = new Matrix(0);
+		const y = Matrix.ZERO;
 		// 行ごとに処理を行う
 		y._resize(this.row_length, 1);
 		for(let row = 0; row < this.row_length; row++) {
@@ -996,7 +1014,7 @@ export default class Matrix {
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	eachVectorColumn(array_function) {
-		const y = new Matrix(0);
+		const y = Matrix.ZERO;
 		// 列ごとに処理を行う
 		y._resize(1, this.column_length);
 		for(let col = 0; col < this.column_length; col++) {
@@ -1139,7 +1157,7 @@ export default class Matrix {
 	get doubleValue() {
 		return this.matrix_array[0][0].real;
 	}
-
+	
 	/**
 	 * First element of this matrix.
 	 * @returns {Complex}
@@ -1154,6 +1172,22 @@ export default class Matrix {
 	 */
 	get length() {
 		return this.row_length > this.column_length ? this.row_length : this.column_length;
+	}
+
+	/**
+	 * Number of columns in the matrix.
+	 * @returns {number}
+	 */
+	get width() {
+		return this.column_length;
+	}
+
+	/**
+	 * Number of rows in matrix.
+	 * @returns {number}
+	 */
+	get height() {
+		return this.row_length;
 	}
 
 	/**
@@ -1657,9 +1691,25 @@ export default class Matrix {
 
 	/**
 	 * Number of rows and columns of matrix.
+	 * @param {?string|?number} [dimension] direction. 1/"row", 2/"column"
 	 * @returns {Matrix} [row_length, column_length]
 	 */
-	size() {
+	size(dimension) {
+		if(dimension !== undefined) {
+			let target = dimension;
+			if(typeof target === "string") {
+				target = target.toLocaleLowerCase();
+			}
+			else if(typeof target !== "number") {
+				target = Matrix._toInteger(target);
+			}
+			if((target === "row") || (target === 1)) {
+				return new Matrix(this.row_length);
+			}
+			else if((target === "column") || (target === 2)) {
+				return new Matrix(this.column_length);
+			}
+		}
 		// 行列のサイズを取得
 		return new Matrix([[this.row_length, this.column_length]]);
 	}
@@ -3447,30 +3497,36 @@ export default class Matrix {
 	}
 
 	/**
-	 * Covariance matrix.
+	 * Covariance matrix or Covariance value.
+	 * - Get a variance-covariance matrix from 1 matrix.
+	 * - Get a covariance from 2 vectors.
+	 * @param {KMatrixSettings|KMatrixInputData} [y_or_type]
 	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
-	cov(type) {
-		return Statistics.cov(this, type);
+	cov(y_or_type, type) {
+		return Statistics.cov(this, y_or_type, type);
 	}
 
 	/**
-	 * The samples are normalized to a mean value of 0, standard deviation of 1.
+	 * The samples are standardize to a mean value of 0, standard deviation of 1.
 	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
-	normalize(type) {
-		return Statistics.normalize(this, type);
+	standardization(type) {
+		return Statistics.standardization(this, type);
 	}
 
 	/**
-	 * Correlation matrix.
+	 * Correlation matrix or Correlation coefficient.
+	 * - Get a correlation matrix from 1 matrix.
+	 * - Get a correlation coefficient from 2 vectors.
+	 * @param {KMatrixSettings|KMatrixInputData} [y_or_type]
 	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
-	corrcoef(type) {
-		return Statistics.corrcoef(this, type);
+	corrcoef(y_or_type, type) {
+		return Statistics.corrcoef(this, y_or_type, type);
 	}
 
 	/**
@@ -3635,5 +3691,189 @@ export default class Matrix {
 		return Signal.fftshift(this, type);
 	}
 
-}
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// データ分析
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 
+	/**
+	 * Multiple regression analysis
+	 * @param {import("./tools/DataAnalysis.js").KMultipleRegressionAnalysisSettings} settings
+	 * @returns {import("./tools/DataAnalysis.js").KMultipleRegressionAnalysisOutput}
+	 */
+	static MultipleRegressionAnalysis(settings) {
+		return DataAnalysis.MultipleRegressionAnalysis(settings);
+	}
+	
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// 定数
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	
+	/**
+	 * 1
+	 * @returns {Matrix} 1
+	 */
+	static get ONE() {
+		return new Matrix(1);
+	}
+	
+	/**
+	 * 2
+	 * @returns {Matrix} 2
+	 */
+	static get TWO() {
+		return new Matrix(2);
+	}
+	
+	/**
+	 * 10
+	 * @returns {Matrix} 10
+	 */
+	static get TEN() {
+		return new Matrix(10);
+	}
+	
+	/**
+	 * 0
+	 * @returns {Matrix} 0
+	 */
+	static get ZERO() {
+		return new Matrix(0);
+	}
+
+	/**
+	 * -1
+	 * @returns {Matrix} -1
+	 */
+	static get MINUS_ONE() {
+		return new Matrix(-1);
+	}
+
+	/**
+	 * i, j
+	 * @returns {Matrix} i
+	 */
+	static get I() {
+		return new Matrix(Complex.I);
+	}
+
+	/**
+	 * PI.
+	 * @returns {Matrix} 3.14...
+	 */
+	static get PI() {
+		return new Matrix(Math.PI);
+	}
+
+	/**
+	 * 0.25 * PI.
+	 * @returns {Matrix} 0.78...
+	 */
+	static get QUARTER_PI() {
+		return new Matrix(0.25 * Math.PI);
+	}
+
+	/**
+	 * 0.5 * PI.
+	 * @returns {Matrix} 1.57...
+	 */
+	static get HALF_PI() {
+		return new Matrix(0.5 * Math.PI);
+	}
+
+	/**
+	 * 2 * PI.
+	 * @returns {Matrix} 6.28...
+	 */
+	static get TWO_PI() {
+		return new Matrix(2.0 * Math.PI);
+	}
+
+	/**
+	 * E, Napier's constant.
+	 * @returns {Matrix} 2.71...
+	 */
+	static get E() {
+		return new Matrix(Math.E);
+	}
+
+	/**
+	 * log_e(2)
+	 * @returns {Matrix} ln(2)
+	 */
+	static get LN2() {
+		return new Matrix(Math.LN2);
+	}
+
+	/**
+	 * log_e(10)
+	 * @returns {Matrix} ln(10)
+	 */
+	static get LN10() {
+		return new Matrix(Math.LN10);
+	}
+
+	/**
+	 * log_2(e)
+	 * @returns {Matrix} log_2(e)
+	 */
+	static get LOG2E() {
+		return new Matrix(Math.LOG2E);
+	}
+	
+	/**
+	 * log_10(e)
+	 * @returns {Matrix} log_10(e)
+	 */
+	static get LOG10E() {
+		return new Matrix(Math.LOG10E);
+	}
+	
+	/**
+	 * sqrt(2)
+	 * @returns {Matrix} sqrt(2)
+	 */
+	static get SQRT2() {
+		return new Matrix(Math.SQRT2);
+	}
+	
+	/**
+	 * sqrt(0.5)
+	 * @returns {Matrix} sqrt(0.5)
+	 */
+	static get SQRT1_2() {
+		return new Matrix(Math.SQRT1_2);
+	}
+	
+	/**
+	 * 0.5
+	 * @returns {Matrix} 0.5
+	 */
+	static get HALF() {
+		return new Matrix(0.5);
+	}
+
+	/**
+	 * Positive infinity.
+	 * @returns {Matrix} Infinity
+	 */
+	static get POSITIVE_INFINITY() {
+		return new Matrix(Number.POSITIVE_INFINITY);
+	}
+	
+	/**
+	 * Negative Infinity.
+	 * @returns {Matrix} -Infinity
+	 */
+	static get NEGATIVE_INFINITY() {
+		return new Matrix(Number.NEGATIVE_INFINITY);
+	}
+
+	/**
+	 * Not a Number.
+	 * @returns {Matrix} NaN
+	 */
+	static get NaN() {
+		return new Matrix(Number.NaN);
+	}
+
+}

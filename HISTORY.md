@@ -1,8 +1,17 @@
 # History
 
-## v2.0.1
+## v3.0.0b
 ### 機能追加
 - `Statistics` に `erfinv`, `erfcinv` を追加
+- `Statistics` の `cov` に共分散を求める機能を追加
+- `Statistics` の `corrcoef ` に相関係数を求める機能を追加
+- `Matrix` の文字列での初期化時に`'`をつけて転置行列として初期化できる機能を追加
+- `Matrix` の `size` に引数を追加して行か、列を直接取得できるように変更
+- `Matrix` に `height` と `width` を追加
+- `Matrix` に `Complex` と同様の定数を追加
+
+### 変更
+- 翻訳を正しい翻訳に変更 正規化`normalize`から標準化を示す`standardization`に変更
 
 ## v2.0.0
 ### 機能追加

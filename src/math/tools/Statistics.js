@@ -411,51 +411,90 @@ export default class Statistics {
 	}
 
 	/**
-	 * Covariance matrix.
+	 * Covariance matrix or Covariance value.
+	 * - Get a variance-covariance matrix from 1 matrix.
+	 * - Get a covariance from 2 vectors.
 	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings|import("../Matrix.js").KMatrixInputData} [y_or_type]
 	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
-	static cov(x, type) {
+	static cov(x, y_or_type, type) {
 		const X = Matrix._toMatrix(x);
 		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
-		const cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
-		if(X.isVector()) {
-			return Statistics.var(X, type);
-		}
-		const correction = X.row_length === 1 ? 1 : cor;
-		const arr = X.matrix_array;
-		const mean = Statistics.mean(X).matrix_array[0];
-		// 上三角行列、対角行列
-		const y = new Array(X.column_length);
-		for(let a = 0; a < X.column_length; a++) {
-			const a_mean = mean[a];
-			y[a] = new Array(X.column_length);
-			for(let b = a; b < X.column_length; b++) {
-				const b_mean = mean[b];
-				let sum = Complex.ZERO;
-				for(let row = 0; row < X.row_length; row++) {
-					sum = sum.add((arr[row][a].sub(a_mean)).dot(arr[row][b].sub(b_mean)));
+		let cor = 0;
+		let Y = null;
+		if(y_or_type !== undefined) {
+			if(type !== undefined) {
+				cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
+				Y = Matrix._toMatrix(y_or_type);
+			}
+			else {
+				if(typeof y_or_type === "object" && ("correction" in y_or_type)){
+					cor = Matrix._toDouble(y_or_type.correction);
 				}
-				y[a][b] = sum.div(X.row_length - 1 + correction);
+				else {
+					Y = Matrix._toMatrix(y_or_type);
+				}
 			}
 		}
-		// 下三角行列を作る
-		for(let row = 1; row < y[0].length; row++) {
-			for(let col = 0; col < row; col++) {
-				y[row][col] = y[col][row];
+		// 1つの行列から分散共分散行列を作成する
+		if(Y === null) {
+			if(X.isVector()) {
+				return Statistics.var(X, type);
 			}
+			const correction = X.row_length === 1 ? 1 : cor;
+			const arr = X.matrix_array;
+			const mean = Statistics.mean(X).matrix_array[0];
+			// 上三角行列、対角行列
+			const y = new Array(X.column_length);
+			for(let a = 0; a < X.column_length; a++) {
+				const a_mean = mean[a];
+				y[a] = new Array(X.column_length);
+				for(let b = a; b < X.column_length; b++) {
+					const b_mean = mean[b];
+					let sum = Complex.ZERO;
+					for(let row = 0; row < X.row_length; row++) {
+						sum = sum.add((arr[row][a].sub(a_mean)).dot(arr[row][b].sub(b_mean)));
+					}
+					y[a][b] = sum.div(X.row_length - 1 + correction);
+				}
+			}
+			// 下三角行列を作る
+			for(let row = 1; row < y[0].length; row++) {
+				for(let col = 0; col < row; col++) {
+					y[row][col] = y[col][row];
+				}
+			}
+			return new Matrix(y);
 		}
-		return new Matrix(y);
+		// 2つのベクトルから共分散を求める
+		else {
+			if(!X.isVector() && !Y.isVector()) {
+				throw "vector not specified";
+			}
+			if(X.length !== Y.length) {
+				throw "X.length !== Y.length";
+			}
+			const x_mean = Statistics.mean(X).scalar;
+			const y_mean = Statistics.mean(Y).scalar;
+			const length = X.length;
+			const correction = length === 1 ? 1 : cor;
+			let sum = Complex.ZERO;
+			for(let i = 0; i < length; i++) {
+				sum = sum.add((X.getComplex(i).sub(x_mean)).dot(Y.getComplex(i).sub(y_mean)));
+			}
+			return new Matrix(sum.div(length - 1 + correction));
+		}
 	}
 
 	/**
-	 * The samples are normalized to a mean value of 0, standard deviation of 1.
+	 * The samples are standardize to a mean value of 0, standard deviation of 1.
 	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
-	static normalize(x, type) {
+	static standardization(x, type) {
 		const X = Matrix._toMatrix(x);
 		const mean_zero = X.sub(Statistics.mean(X, type));
 		const std_one = mean_zero.dotdiv(Statistics.std(mean_zero, type));
@@ -463,14 +502,45 @@ export default class Statistics {
 	}
 
 	/**
-	 * Correlation matrix.
+	 * Correlation matrix or Correlation coefficient.
+	 * - Get a correlation matrix from 1 matrix.
+	 * - Get a correlation coefficient from 2 vectors.
 	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings|import("../Matrix.js").KMatrixInputData} [y_or_type]
 	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
-	static corrcoef(x, type) {
+	static corrcoef(x, y_or_type, type) {
 		const X = Matrix._toMatrix(x);
-		return Statistics.cov(Statistics.normalize(X, type), type);
+		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
+		let Y = null;
+		if(y_or_type !== undefined) {
+			if(type !== undefined) {
+				Y = Matrix._toMatrix(y_or_type);
+			}
+			else {
+				if(!(typeof y_or_type === "object" && ("correction" in y_or_type))){
+					Y = Matrix._toMatrix(y_or_type);
+				}
+			}
+		}
+		// 1つの行列から相関行列を作成する
+		if(Y === null) {
+			return Statistics.cov(Statistics.standardization(X, type), type);
+		}
+		// 2つのベクトルから相関係数を求める
+		else {
+			if(!X.isVector() && !Y.isVector()) {
+				throw "vector not specified";
+			}
+			if(X.length !== Y.length) {
+				throw "X.length !== Y.length";
+			}
+			const covariance = Statistics.cov(X, Y, type);
+			const Xsd = X.std(type);
+			const Ysd = Y.std(type);
+			return covariance.div(Xsd.mul(Ysd));
+		}
 	}
 
 	/**
