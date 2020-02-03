@@ -2,7 +2,7 @@
 
 ## v3.0.0b
 ### 機能追加
-- `Statistics` に `erfinv`, `erfcinv` を追加
+- `Probability` に `erfinv`, `erfcinv` を追加
 - `Matrix` に重回帰分析 `MultipleRegressionAnalysis` を追加
 - `Matrix` に `height` と `width` を追加
 - `Matrix` に `Complex` と同様の定数を追加

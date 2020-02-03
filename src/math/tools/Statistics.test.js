@@ -165,10 +165,10 @@ const testOperator3  = function(operator, x1, x2, x3, y, tolerance) {
 		test_count++;
 		const tolerance_ = tolerance ? tolerance : 0.1;
 		const X = $(x);
-		const Y = X.normalize(type).std(type);
+		const Y = X.standardization(type).std(type);
 		const Y_str = Y.toOneLineString();
-		const name = "normalize " + test_count + " ";
-		test(name + "std(normalize(" + x + "," + JSON.stringify(type) + ")) = " + Y_str, () => { expect(Y.equals(1.0, tolerance_)).toBe(true); });
+		const name = "standardization " + test_count + " ";
+		test(name + "std(standardization(" + x + "," + JSON.stringify(type) + ")) = " + Y_str, () => { expect(Y.equals(1.0, tolerance_)).toBe(true); });
 	};
 	testNormalize("[1.0, 1.2, 1.3]", {correction : 0});
 	testNormalize("[1.0, 1.2, 1.3]", {correction : 1});

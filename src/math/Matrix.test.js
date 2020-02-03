@@ -54,7 +54,7 @@ const testOperator2  = function(operator, x, p, y, tolerance) {
 	const X = $(x);
 	// @ts-ignore
 	const Y = X[operator](p);
-	const Y_str = Y.toOneLineString();
+	const Y_str = $(Y).toOneLineString();
 	const testname = operator + " " + test_count + " " + x + "." + operator + "(" + p + ") = " + Y_str;
 	const out = $(Y).equals(y, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
@@ -170,6 +170,11 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 	testEquals("[1;2;3]", "[1;2;3;4]", false);
 	testEquals("[1;2;3]", "[1 2 3]", false);
 	testEquals("[1 2 3]", "[1;2;3]", false);
+	testEquals("[1;2;3]'", "[1 2 3]", true);
+	testEquals("[1 2 3]'", "[1;2;3]", true);
+	testEquals("[1 2 3]''", "[1 2 3]", true);
+	testEquals("[1 2 3]'''", "[1 2 3]", false);
+	testEquals("[1 2 3;4 5 6;7 8 9]'", "[1 4 7;2 5 8;3 6 9]", true);
 }
 
 {
@@ -263,6 +268,26 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 	testGet("length", "[1 2;3 4;5 6]", 3);
 	testGet("length", "[1 2 3;4 5 6]", 3);
 	testGet("length", "[1 2 3;54 5 6;7 8 9]", 3);
+}
+
+{
+	test_count = 0;
+	testGet("width", "[3]", 1);
+	testGet("width", "[1 2]", 2);
+	testGet("width", "[1;2]", 1);
+	testGet("width", "[1 2;3 4;5 6]", 2);
+	testGet("width", "[1 2 3;4 5 6]", 3);
+	testGet("width", "[1 2 3;54 5 6;7 8 9]", 3);
+}
+
+{
+	test_count = 0;
+	testGet("height", "[3]", 1);
+	testGet("height", "[1 2]", 1);
+	testGet("height", "[1;2]", 2);
+	testGet("height", "[1 2;3 4;5 6]", 3);
+	testGet("height", "[1 2 3;4 5 6]", 2);
+	testGet("height", "[1 2 3;54 5 6;7 8 9]", 3);
 }
 
 {
@@ -495,6 +520,21 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 	testOperator2("dotdiv", "[1 2;3 4]", "[1;2]", "[1 2;1.5 2]");
 }
 
+{
+	test_count = 0;
+	testOperator2("compareTo", "10", "5", "1");
+	testOperator2("compareTo", "5", "5", "0");
+	testOperator2("compareTo", "0", "5", "-1");
+	testOperator2("compareTo", "[4 0 -4]", "0", "[1 0 -1]");
+	testOperator2("compareTo", "[1 2 3;4 5 6;7 8 9]", "5", "[-1 -1 -1; -1 0 1; 1 1 1]");
+}
+
+{
+	test_count = 0;
+	testOperator1("size", "4", "[1 1]");
+	testOperator1("size", "[1 2 3]", "[1 3]");
+	testOperator1("size", "[1;2;3]", "[3 1]");
+}
 
 {
 	test_count = 0;
