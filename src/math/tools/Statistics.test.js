@@ -122,6 +122,7 @@ const testOperator3  = function(operator, x1, x2, x3, y, tolerance) {
 	test_count = 0;
 	testOperator2("var", "[3]", {correction : 0}, 0);
 	testOperator2("var", "[3]", {correction : 1}, 0);
+	testOperator1("var", "[3 29 12 32]", 191.3333, 0.1);
 	testOperator2("var", "[3 29 12 32]", {correction : 0}, 191.3333, 0.1);
 	testOperator2("var", "[3 29 12 32]", {correction : 1}, 143.50, 0.1);
 }
@@ -130,6 +131,7 @@ const testOperator3  = function(operator, x1, x2, x3, y, tolerance) {
 	test_count = 0;
 	testOperator2("std", "[3]", {correction : 0}, 0);
 	testOperator2("std", "[3]", {correction : 1}, 0);
+	testOperator1("std", "[3 29 12 32]", 13.832, 0.1);
 	testOperator2("std", "[3 29 12 32]", {correction : 0}, 13.832, 0.1);
 	testOperator2("std", "[3 29 12 32]", {correction : 1}, 11.979, 0.1);
 }
@@ -150,8 +152,12 @@ const testOperator3  = function(operator, x1, x2, x3, y, tolerance) {
 
 {
 	test_count = 0;
+	testOperator1("cov", "[2 1 -1 2;0 4 -2 0;1 1 2 1]", "[1 -1.5 0.5 1;-1.50 3 -2.5 -1.5;0.50 -2.5 4.33 0.5;1 -1.5 0.5 1]", 0.1);
 	testOperator2("cov", "[2 1 -1 2;0 4 -2 0;1 1 2 1]", {correction : 0}, "[1 -1.5 0.5 1;-1.50 3 -2.5 -1.5;0.50 -2.5 4.33 0.5;1 -1.5 0.5 1]", 0.1);
 	testOperator2("cov", "[2 1 -1 2;0 4 -2 0;1 1 2 1]", {correction : 1}, "[0.66 -1 0.33 0.66;-1 2 -1.66 -1;0.33 -1.66 2.88 0.33;0.66 -1 0.33 0.66]", 0.1);
+	testOperator2("cov", "[1 2 -3 4]", "[2 3 1 -2]", -2.3333, 0.1);
+	testOperator3("cov", "[1 2 -3 4]", "[2 3 1 -2]", {correction : 0}, -2.3333, 0.1);
+	testOperator3("cov", "[1 2 -3 4]", "[2 3 1 -2]", {correction : 1}, -1.7500, 0.1);
 }
 
 {
@@ -172,6 +178,14 @@ const testOperator3  = function(operator, x1, x2, x3, y, tolerance) {
 	};
 	testNormalize("[1.0, 1.2, 1.3]", {correction : 0});
 	testNormalize("[1.0, 1.2, 1.3]", {correction : 1});
+}
+
+{
+	test_count = 0;
+	testOperator1("corrcoef", "[1 2;2 2;0 3;4 2]", "[1  -0.68313;-0.68313 1]");
+	testOperator1("corrcoef", "[1 2 4;1 2 2;0 3 2]", "[1 -1 0.5;-1 1 -0.5;0.5 -0.5 1]");
+	testOperator2("corrcoef", "[1 2 2]", "[3 2 1]", -0.86603);
+	testOperator2("corrcoef", "[3 -1 0]", "[2 -2 -5]", 0.77513);
 }
 
 {

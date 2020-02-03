@@ -480,6 +480,22 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 
 {
 	test_count = 0;
+	testOperator1("size", "4", "[1 1]");
+	testOperator1("size", "[1 2 3]", "[1 3]");
+	testOperator1("size", "[1;2;3]", "[3 1]");
+}
+
+{
+	test_count = 0;
+	testOperator2("compareTo", "10", "5", "1");
+	testOperator2("compareTo", "5", "5", "0");
+	testOperator2("compareTo", "0", "5", "-1");
+	testOperator2("compareTo", "[4 0 -4]", "0", "[1 0 -1]");
+	testOperator2("compareTo", "[1 2 3;4 5 6;7 8 9]", "5", "[-1 -1 -1; -1 0 1; 1 1 1]");
+}
+
+{
+	test_count = 0;
 	testOperator2("add", "1", "2", "3");
 	testOperator2("add", "[1 2]", "1", "[2 3]");
 	testOperator2("add", "[1 2]", "[3 4]", "[4 6]");
@@ -522,18 +538,16 @@ const testInitialize3  = function(operator, p1, p2, p3, y) {
 
 {
 	test_count = 0;
-	testOperator2("compareTo", "10", "5", "1");
-	testOperator2("compareTo", "5", "5", "0");
-	testOperator2("compareTo", "0", "5", "-1");
-	testOperator2("compareTo", "[4 0 -4]", "0", "[1 0 -1]");
-	testOperator2("compareTo", "[1 2 3;4 5 6;7 8 9]", "5", "[-1 -1 -1; -1 0 1; 1 1 1]");
+	testOperator1("dotinv", "[4]", "[0.25]");
+	testOperator1("dotinv", "[1 2]", "[1 0.5]");
+	testOperator1("dotinv", "[1;2]", "[1;0.5]");
+	testOperator1("dotinv", "[1 2;3 4]", "[1 0.5;0.333333 0.25]");
 }
 
 {
 	test_count = 0;
-	testOperator1("size", "4", "[1 1]");
-	testOperator1("size", "[1 2 3]", "[1 3]");
-	testOperator1("size", "[1;2;3]", "[3 1]");
+	testOperator2("dotpow", "[1 2;3 4]", "[1 2]", "[1 4;3 16]");
+	testOperator2("dotpow", "[1 2;3 4]", "[1;2]", "[1 2;9 16]");
 }
 
 {

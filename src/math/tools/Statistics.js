@@ -534,7 +534,7 @@ export default class Statistics {
 				throw "vector not specified";
 			}
 			if(X.length !== Y.length) {
-				throw "X.length !== Y.length";
+				throw "X.length[" + X.length + "] !== Y.length[" + Y.length + "]";
 			}
 			const covariance = Statistics.cov(X, Y, type);
 			const Xsd = X.std(type);

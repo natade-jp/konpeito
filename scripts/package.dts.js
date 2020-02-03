@@ -159,6 +159,7 @@ let dts_text = File.loadTextFile("./out/types.d.ts");
 		"BigIntegerTool",
 		"Complex",
 		"ComplexTool",
+		"DataAnalysis",
 		"DCT",
 		"FFT",
 		"FFTCache",
