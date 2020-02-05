@@ -19,6 +19,12 @@ import Random from "./tools/Random.js";
  * - {toBigInteger:function}
  * - {intValue:number}
  * - {toString:function}
+ * 
+ * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3", ["1200", 10]
+ * - "0xff", ["ff", 16]
+ * - "0o01234567", ["01234567", 8]
+ * - "0b0110101", ["0110101", 2]
  * @typedef {BigInteger|number|string|Array<string|number>|{toBigInteger:function}|{intValue:number}|{toString:function}} KBigIntegerInputData
  */
 

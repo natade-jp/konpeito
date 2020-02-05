@@ -8,15 +8,15 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
  
-import Random from "./math/tools/Random.js";
-import RoundingMode from "./math/context/RoundingMode.js";
-import MathContext from "./math/context/MathContext.js";
-import BigDecimal from "./math/BigDecimal.js";
-import BigInteger from "./math/BigInteger.js";
-import Fraction from "./math/Fraction.js";
-import Complex from "./math/Complex.js";
-import Matrix from "./math/Matrix.js";
-import DataAnalysis from "./tools/DataAnalysis.js";
+import Random from "./math/core/tools/Random.js";
+import RoundingMode from "./math/core/context/RoundingMode.js";
+import MathContext from "./math/core/context/MathContext.js";
+import BigDecimal from "./math/core/BigDecimal.js";
+import BigInteger from "./math/core/BigInteger.js";
+import Fraction from "./math/core/Fraction.js";
+import Complex from "./math/core/Complex.js";
+import Matrix from "./math/core/Matrix.js";
+import DataAnalysis from "./math/tools/DataAnalysis.js";
 
 /**
  * Class collection of numerical calculation processing.

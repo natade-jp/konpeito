@@ -1,5 +1,5 @@
 /*!
- * konpeito.js (version 2.1.0, 2020/1/26)
+ * konpeito.js (version 3.0.0, 2020/2/6)
  * https://github.com/natade-jp/konpeito
  * Copyright 2013-2020 natade < https://github.com/natade-jp >
  *
@@ -315,7 +315,28 @@ class Random {
 	constructor(init_data) {
 		let seed_number = undefined;
 		let algorithm = "fast";
+
+		/**
+		 * Random Number Generator.
+		 * @private
+		 * @type {Xorshift|MaximumLengthSequence}
+		 */
 		this.rand = null;
+		
+		/**
+		 * have `NextNextGaussian`
+		 * @private
+		 * @type {boolean}
+		 */
+		this.haveNextNextGaussian = false;
+
+		/**
+		 * Normally distributed random numbers.
+		 * @private
+		 * @type {number}
+		 */
+		this.nextNextGaussian = 0.0;
+
 		if(typeof init_data === "number") {
 			seed_number = init_data;
 		}
@@ -1132,6 +1153,12 @@ const DEFINE = {
  * - {toBigInteger:function}
  * - {intValue:number}
  * - {toString:function}
+ * 
+ * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3", ["1200", 10]
+ * - "0xff", ["ff", 16]
+ * - "0o01234567", ["01234567", 8]
+ * - "0b0110101", ["0110101", 2]
  * @typedef {BigInteger|number|string|Array<string|number>|{toBigInteger:function}|{intValue:number}|{toString:function}} KBigIntegerInputData
  */
 
@@ -3259,6 +3286,18 @@ const DEFINE$1 = {
  * - KBigDecimalLocalInputData
  * - Array<KBigDecimalLocalInputData|MathContext>
  * - KBigDecimalScaleData
+ * 
+ * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3"
+ * - When initializing with array. [ integer, [scale = 0], [context=default]].
+ * - When initializing with object. { integer, [scale = 0], [context=default]}.
+ * 
+ * Description of the settings are as follows, you can also omitted.
+ * - The "scale" is an integer scale factor.
+ * - The "context" is used to normalize the created floating point.
+ * 
+ * If "context" is not specified, the "default_context" set for the class is used.
+ * The "context" is the used when no environment settings are specified during calculation.
  * @typedef {KBigDecimalLocalInputData|Array<KBigDecimalLocalInputData|MathContext>|KBigDecimalScaleData} KBigDecimalInputData
  */
 
@@ -5844,6 +5883,12 @@ const CACHED_DATA = new BigDecimalConst();
  * - {numerator:KBigIntegerInputData,denominator:KBigIntegerInputData}
  * - {doubleValue:number}
  * - {toString:function}
+ * 
+ * Initialization can be performed as follows.
+ * - 10, "10", "10/1", "10.0/1.0", ["10", "1"], [10, 1]
+ * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
+ * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
+ * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
  * @typedef {Fraction|BigInteger|BigDecimal|number|string|Array<import("./BigInteger.js").KBigIntegerInputData>|{numerator:import("./BigInteger.js").KBigIntegerInputData,denominator:import("./BigInteger.js").KBigIntegerInputData}|{doubleValue:number}|{toString:function}} KFractionInputData
  */
 
@@ -8440,51 +8485,90 @@ class Statistics {
 	}
 
 	/**
-	 * Covariance matrix.
+	 * Covariance matrix or Covariance value.
+	 * - Get a variance-covariance matrix from 1 matrix.
+	 * - Get a covariance from 2 vectors.
 	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings|import("../Matrix.js").KMatrixInputData} [y_or_type]
 	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
-	static cov(x, type) {
+	static cov(x, y_or_type, type) {
 		const X = Matrix._toMatrix(x);
 		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
-		const cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
-		if(X.isVector()) {
-			return Statistics.var(X, type);
-		}
-		const correction = X.row_length === 1 ? 1 : cor;
-		const arr = X.matrix_array;
-		const mean = Statistics.mean(X).matrix_array[0];
-		// 上三角行列、対角行列
-		const y = new Array(X.column_length);
-		for(let a = 0; a < X.column_length; a++) {
-			const a_mean = mean[a];
-			y[a] = new Array(X.column_length);
-			for(let b = a; b < X.column_length; b++) {
-				const b_mean = mean[b];
-				let sum = Complex.ZERO;
-				for(let row = 0; row < X.row_length; row++) {
-					sum = sum.add((arr[row][a].sub(a_mean)).dot(arr[row][b].sub(b_mean)));
+		let cor = 0;
+		let Y = null;
+		if(y_or_type !== undefined) {
+			if(type !== undefined) {
+				cor = !(type && typeof type.correction === "number") ? 0: Matrix._toDouble(type.correction);
+				Y = Matrix._toMatrix(y_or_type);
+			}
+			else {
+				if(typeof y_or_type === "object" && ("correction" in y_or_type)){
+					cor = Matrix._toDouble(y_or_type.correction);
 				}
-				y[a][b] = sum.div(X.row_length - 1 + correction);
+				else {
+					Y = Matrix._toMatrix(y_or_type);
+				}
 			}
 		}
-		// 下三角行列を作る
-		for(let row = 1; row < y[0].length; row++) {
-			for(let col = 0; col < row; col++) {
-				y[row][col] = y[col][row];
+		// 1つの行列から分散共分散行列を作成する
+		if(Y === null) {
+			if(X.isVector()) {
+				return Statistics.var(X, {correction : cor});
 			}
+			const correction = X.row_length === 1 ? 1 : cor;
+			const arr = X.matrix_array;
+			const mean = Statistics.mean(X).matrix_array[0];
+			// 上三角行列、対角行列
+			const y = new Array(X.column_length);
+			for(let a = 0; a < X.column_length; a++) {
+				const a_mean = mean[a];
+				y[a] = new Array(X.column_length);
+				for(let b = a; b < X.column_length; b++) {
+					const b_mean = mean[b];
+					let sum = Complex.ZERO;
+					for(let row = 0; row < X.row_length; row++) {
+						sum = sum.add((arr[row][a].sub(a_mean)).dot(arr[row][b].sub(b_mean)));
+					}
+					y[a][b] = sum.div(X.row_length - 1 + correction);
+				}
+			}
+			// 下三角行列を作る
+			for(let row = 1; row < y[0].length; row++) {
+				for(let col = 0; col < row; col++) {
+					y[row][col] = y[col][row];
+				}
+			}
+			return new Matrix(y);
 		}
-		return new Matrix(y);
+		// 2つのベクトルから共分散を求める
+		else {
+			if(!X.isVector() && !Y.isVector()) {
+				throw "vector not specified";
+			}
+			if(X.length !== Y.length) {
+				throw "X.length !== Y.length";
+			}
+			const x_mean = Statistics.mean(X).scalar;
+			const y_mean = Statistics.mean(Y).scalar;
+			const length = X.length;
+			const correction = length === 1 ? 1 : cor;
+			let sum = Complex.ZERO;
+			for(let i = 0; i < length; i++) {
+				sum = sum.add((X.getComplex(i).sub(x_mean)).dot(Y.getComplex(i).sub(y_mean)));
+			}
+			return new Matrix(sum.div(length - 1 + correction));
+		}
 	}
 
 	/**
-	 * The samples are normalized to a mean value of 0, standard deviation of 1.
+	 * The samples are standardize to a mean value of 0, standard deviation of 1.
 	 * @param {import("../Matrix.js").KMatrixInputData} x
 	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
-	static normalize(x, type) {
+	static standardization(x, type) {
 		const X = Matrix._toMatrix(x);
 		const mean_zero = X.sub(Statistics.mean(X, type));
 		const std_one = mean_zero.dotdiv(Statistics.std(mean_zero, type));
@@ -8492,14 +8576,45 @@ class Statistics {
 	}
 
 	/**
-	 * Correlation matrix.
+	 * Correlation matrix or Correlation coefficient.
+	 * - Get a correlation matrix from 1 matrix.
+	 * - Get a correlation coefficient from 2 vectors.
 	 * @param {import("../Matrix.js").KMatrixInputData} x
+	 * @param {KStatisticsSettings|import("../Matrix.js").KMatrixInputData} [y_or_type]
 	 * @param {KStatisticsSettings} [type]
 	 * @returns {Matrix}
 	 */
-	static corrcoef(x, type) {
+	static corrcoef(x, y_or_type, type) {
 		const X = Matrix._toMatrix(x);
-		return Statistics.cov(Statistics.normalize(X, type), type);
+		// 補正値 0(不偏分散), 1(標本分散)。規定値は、不偏分散とする
+		let Y = null;
+		if(y_or_type !== undefined) {
+			if(type !== undefined) {
+				Y = Matrix._toMatrix(y_or_type);
+			}
+			else {
+				if(!(typeof y_or_type === "object" && ("correction" in y_or_type))){
+					Y = Matrix._toMatrix(y_or_type);
+				}
+			}
+		}
+		// 1つの行列から相関行列を作成する
+		if(Y === null) {
+			return Statistics.cov(Statistics.standardization(X, type), type);
+		}
+		// 2つのベクトルから相関係数を求める
+		else {
+			if(!X.isVector() && !Y.isVector()) {
+				throw "vector not specified";
+			}
+			if(X.length !== Y.length) {
+				throw "X.length[" + X.length + "] !== Y.length[" + Y.length + "]";
+			}
+			const covariance = Statistics.cov(X, Y, type);
+			const Xsd = X.std(type);
+			const Ysd = Y.std(type);
+			return covariance.div(Xsd.mul(Ysd));
+		}
 	}
 
 	/**
@@ -9993,7 +10108,7 @@ class Probability {
 		const v_ = Matrix._toDouble(v);
 		const tails_ = Matrix._toDouble(tails);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return ProbabilityComplex.tdist(num, v_, tails_);
+			return ProbabilityComplex.tdist(num.abs(), v_, tails_);
 		});
 	}
 
@@ -11392,6 +11507,11 @@ class Signal {
  * - Array<Array<string|number|Complex|Matrix>>
  * - {doubleValue:number}
  * - {toString:function}
+ * 
+ * Initialization can be performed as follows.
+ * - 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
+ * - [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
+ * - "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
  * @typedef {Matrix|Complex|number|string|Array<string|number|Complex|Matrix>|Array<Array<string|number|Complex|Matrix>>|{doubleValue:number}|{toString:function}} KMatrixInputData
  */
 
@@ -11503,15 +11623,27 @@ class MatrixTool {
 	 * Removed front and back brackets when enclosed by brackets.
 	 * - Return null if the string has no brackets.
 	 * @param {string} text - String to be processed.
-	 * @returns {string|null} String after brackets removal or null.
+	 * @returns {{text : string, is_transpose : boolean}|null} String after brackets removal or null.
 	 */
 	static trimBracket(text) {
+		let input_text = text;
+		let is_transpose = false;
+		// 後ろに'が付いているかどうか検知(転置行列用)
+		if(/'$/.test(input_text)) {
+			const dash_text = input_text.match(/(\s*')*$/g)[0];
+			const dash_count = (dash_text.split("'").length - 1);
+			is_transpose = (dash_count % 2) === 1;
+			input_text = input_text.substring(0, input_text.length - dash_text.length);
+		}
 		// 前後に[]があるか確認
-		if( !(/^\[/).test(text) || !(/\]$/).test(text)) {
+		if( !(/^\[/).test(input_text) || !(/\]$/).test(input_text)) {
 			return null;
 		}
 		// 前後の[]を除去
-		return text.substring(1, text.length - 1);
+		return {
+			text : input_text.substring(1, input_text.length - 1),
+			is_transpose : is_transpose
+		};
 	}
 
 	/**
@@ -11694,7 +11826,12 @@ class MatrixTool {
 		const withoutBracket = MatrixTool.trimBracket(trimtext);
 		if(withoutBracket) {
 			// 配列用の初期化
-			return MatrixTool.toMatrixArrayFromStringInBracket(withoutBracket);
+			let array_data = MatrixTool.toMatrixArrayFromStringInBracket(withoutBracket.text);
+			// 転置が必要なら転置させる
+			if(withoutBracket.is_transpose) {
+				array_data = (new Matrix(array_data)).T().matrix_array;
+			}
+			return array_data;
 		}
 		else {
 			// スカラー用の初期化
@@ -12278,7 +12415,7 @@ class Matrix {
 			return new Matrix(array_function(row_array));
 		}
 		else {
-			const y = new Matrix(0);
+			const y = Matrix.ZERO;
 			y._resize(1, this.column_length);
 			// 1列、行列であれば、列ごとに処理を行う
 			for(let col = 0; col < this.column_length; col++) {
@@ -12304,7 +12441,7 @@ class Matrix {
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	eachVectorBoth(array_function) {
-		const y1 = new Matrix(0);
+		const y1 = Matrix.ZERO;
 		// 行ごとに処理を行う
 		y1._resize(this.row_length, 1);
 		for(let row = 0; row < this.row_length; row++) {
@@ -12318,7 +12455,7 @@ class Matrix {
 				y1.matrix_array[row][col] = row_output[col];
 			}
 		}
-		const y2 = new Matrix(0);
+		const y2 = Matrix.ZERO;
 		// 列ごとに処理を行う
 		y2._resize(1, y1.column_length);
 		for(let col = 0; col < y1.column_length; col++) {
@@ -12341,7 +12478,7 @@ class Matrix {
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	eachVectorRow(array_function) {
-		const y = new Matrix(0);
+		const y = Matrix.ZERO;
 		// 行ごとに処理を行う
 		y._resize(this.row_length, 1);
 		for(let row = 0; row < this.row_length; row++) {
@@ -12364,7 +12501,7 @@ class Matrix {
 	 * @returns {Matrix} Matrix after function processing.
 	 */
 	eachVectorColumn(array_function) {
-		const y = new Matrix(0);
+		const y = Matrix.ZERO;
 		// 列ごとに処理を行う
 		y._resize(1, this.column_length);
 		for(let col = 0; col < this.column_length; col++) {
@@ -12507,7 +12644,7 @@ class Matrix {
 	get doubleValue() {
 		return this.matrix_array[0][0].real;
 	}
-
+	
 	/**
 	 * First element of this matrix.
 	 * @returns {Complex}
@@ -12522,6 +12659,22 @@ class Matrix {
 	 */
 	get length() {
 		return this.row_length > this.column_length ? this.row_length : this.column_length;
+	}
+
+	/**
+	 * Number of columns in the matrix.
+	 * @returns {number}
+	 */
+	get width() {
+		return this.column_length;
+	}
+
+	/**
+	 * Number of rows in matrix.
+	 * @returns {number}
+	 */
+	get height() {
+		return this.row_length;
 	}
 
 	/**
@@ -13025,9 +13178,25 @@ class Matrix {
 
 	/**
 	 * Number of rows and columns of matrix.
+	 * @param {?string|?number} [dimension] direction. 1/"row", 2/"column"
 	 * @returns {Matrix} [row_length, column_length]
 	 */
-	size() {
+	size(dimension) {
+		if(dimension !== undefined) {
+			let target = dimension;
+			if(typeof target === "string") {
+				target = target.toLocaleLowerCase();
+			}
+			else if(typeof target !== "number") {
+				target = Matrix._toInteger(target);
+			}
+			if((target === "row") || (target === 1)) {
+				return new Matrix(this.row_length);
+			}
+			else if((target === "column") || (target === 2)) {
+				return new Matrix(this.column_length);
+			}
+		}
 		// 行列のサイズを取得
 		return new Matrix([[this.row_length, this.column_length]]);
 	}
@@ -14815,30 +14984,36 @@ class Matrix {
 	}
 
 	/**
-	 * Covariance matrix.
+	 * Covariance matrix or Covariance value.
+	 * - Get a variance-covariance matrix from 1 matrix.
+	 * - Get a covariance from 2 vectors.
+	 * @param {KMatrixSettings|KMatrixInputData} [y_or_type]
 	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
-	cov(type) {
-		return Statistics.cov(this, type);
+	cov(y_or_type, type) {
+		return Statistics.cov(this, y_or_type, type);
 	}
 
 	/**
-	 * The samples are normalized to a mean value of 0, standard deviation of 1.
+	 * The samples are standardize to a mean value of 0, standard deviation of 1.
 	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
-	normalize(type) {
-		return Statistics.normalize(this, type);
+	standardization(type) {
+		return Statistics.standardization(this, type);
 	}
 
 	/**
-	 * Correlation matrix.
+	 * Correlation matrix or Correlation coefficient.
+	 * - Get a correlation matrix from 1 matrix.
+	 * - Get a correlation coefficient from 2 vectors.
+	 * @param {KMatrixSettings|KMatrixInputData} [y_or_type]
 	 * @param {KMatrixSettings} [type]
 	 * @returns {Matrix}
 	 */
-	corrcoef(type) {
-		return Statistics.corrcoef(this, type);
+	corrcoef(y_or_type, type) {
+		return Statistics.corrcoef(this, y_or_type, type);
 	}
 
 	/**
@@ -15003,6 +15178,178 @@ class Matrix {
 		return Signal.fftshift(this, type);
 	}
 
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// 定数
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	
+	/**
+	 * 1
+	 * @returns {Matrix} 1
+	 */
+	static get ONE() {
+		return new Matrix(1);
+	}
+	
+	/**
+	 * 2
+	 * @returns {Matrix} 2
+	 */
+	static get TWO() {
+		return new Matrix(2);
+	}
+	
+	/**
+	 * 10
+	 * @returns {Matrix} 10
+	 */
+	static get TEN() {
+		return new Matrix(10);
+	}
+	
+	/**
+	 * 0
+	 * @returns {Matrix} 0
+	 */
+	static get ZERO() {
+		return new Matrix(0);
+	}
+
+	/**
+	 * -1
+	 * @returns {Matrix} -1
+	 */
+	static get MINUS_ONE() {
+		return new Matrix(-1);
+	}
+
+	/**
+	 * i, j
+	 * @returns {Matrix} i
+	 */
+	static get I() {
+		return new Matrix(Complex.I);
+	}
+
+	/**
+	 * PI.
+	 * @returns {Matrix} 3.14...
+	 */
+	static get PI() {
+		return new Matrix(Math.PI);
+	}
+
+	/**
+	 * 0.25 * PI.
+	 * @returns {Matrix} 0.78...
+	 */
+	static get QUARTER_PI() {
+		return new Matrix(0.25 * Math.PI);
+	}
+
+	/**
+	 * 0.5 * PI.
+	 * @returns {Matrix} 1.57...
+	 */
+	static get HALF_PI() {
+		return new Matrix(0.5 * Math.PI);
+	}
+
+	/**
+	 * 2 * PI.
+	 * @returns {Matrix} 6.28...
+	 */
+	static get TWO_PI() {
+		return new Matrix(2.0 * Math.PI);
+	}
+
+	/**
+	 * E, Napier's constant.
+	 * @returns {Matrix} 2.71...
+	 */
+	static get E() {
+		return new Matrix(Math.E);
+	}
+
+	/**
+	 * log_e(2)
+	 * @returns {Matrix} ln(2)
+	 */
+	static get LN2() {
+		return new Matrix(Math.LN2);
+	}
+
+	/**
+	 * log_e(10)
+	 * @returns {Matrix} ln(10)
+	 */
+	static get LN10() {
+		return new Matrix(Math.LN10);
+	}
+
+	/**
+	 * log_2(e)
+	 * @returns {Matrix} log_2(e)
+	 */
+	static get LOG2E() {
+		return new Matrix(Math.LOG2E);
+	}
+	
+	/**
+	 * log_10(e)
+	 * @returns {Matrix} log_10(e)
+	 */
+	static get LOG10E() {
+		return new Matrix(Math.LOG10E);
+	}
+	
+	/**
+	 * sqrt(2)
+	 * @returns {Matrix} sqrt(2)
+	 */
+	static get SQRT2() {
+		return new Matrix(Math.SQRT2);
+	}
+	
+	/**
+	 * sqrt(0.5)
+	 * @returns {Matrix} sqrt(0.5)
+	 */
+	static get SQRT1_2() {
+		return new Matrix(Math.SQRT1_2);
+	}
+	
+	/**
+	 * 0.5
+	 * @returns {Matrix} 0.5
+	 */
+	static get HALF() {
+		return new Matrix(0.5);
+	}
+
+	/**
+	 * Positive infinity.
+	 * @returns {Matrix} Infinity
+	 */
+	static get POSITIVE_INFINITY() {
+		return new Matrix(Number.POSITIVE_INFINITY);
+	}
+	
+	/**
+	 * Negative Infinity.
+	 * @returns {Matrix} -Infinity
+	 */
+	static get NEGATIVE_INFINITY() {
+		return new Matrix(Number.NEGATIVE_INFINITY);
+	}
+
+	/**
+	 * Not a Number.
+	 * @returns {Matrix} NaN
+	 */
+	static get NaN() {
+		return new Matrix(Number.NaN);
+	}
+
 }
 
 /**
@@ -15024,6 +15371,10 @@ class Matrix {
  * - {_re:number,_im:number}
  * - {doubleValue:number}
  * - {toString:function}
+ * 
+ * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3"
+ * - "3 + 4i", "4j + 3", [3, 4].
  * @typedef {Complex|number|string|Array<number>|{_re:number,_im:number}|{doubleValue:number}|{toString:function}} KComplexInputData
  */
 
@@ -16329,6 +16680,358 @@ const DEFINE$4 = {
  */
 
 /**
+ * Settings for multiple regression analysis
+ * @typedef {Object} KMultipleRegressionAnalysisSettings
+ * @property {import("../core/Matrix.js").KMatrixInputData} samples explanatory variable. (Each column is a parameters and each row is a samples.)
+ * @property {import("../core/Matrix.js").KMatrixInputData} target response variable. / actual values. (column vector)
+ * @property {boolean} [is_standardised=false] Use standardized partial regression coefficients.
+ */
+
+/**
+ * Vector state
+ * @typedef {Object} KMultipleRegressionAnalysisVectorState
+ * @property {number} df degree of freedom
+ * @property {number} SS sum of squares
+ * @property {number} MS unbiased_variance
+ */
+
+/**
+ * Analysis of variance. ANOVA.
+ * @typedef {Object} KMultipleRegressionAnalysisAnova
+ * @property {KMultipleRegressionAnalysisVectorState} regression regression.
+ * @property {KMultipleRegressionAnalysisVectorState} residual residual error.
+ * @property {KMultipleRegressionAnalysisVectorState} total total.
+ * @property {number} F F value. Dispersion ratio (F0)
+ * @property {number} significance_F Significance F. Test with F distribution with q, n-q-1 degrees of freedom.(Probability of error.)
+ */
+
+/**
+ * Regression table data.
+ * @typedef {Object} KMultipleRegressionAnalysisPartialRegressionData
+ * @property {number} coefficient Coefficient.
+ * @property {number} standard_error Standard error.
+ * @property {number} t_stat t-statistic.
+ * @property {number} p_value P-value. Risk factor.
+ * @property {number} lower_95 Lower limit of a 95% confidence interval.
+ * @property {number} upper_95 Upper limit of a 95% confidence interval.
+ */
+
+/**
+ * Regression table.
+ * @typedef {Object} KMultipleRegressionAnalysisPartialRegression
+ * @property {KMultipleRegressionAnalysisPartialRegressionData} intercept Intercept.
+ * @property {KMultipleRegressionAnalysisPartialRegressionData[]} parameters Parameters.
+ */
+
+/**
+ * Output for multiple regression analysis
+ * @typedef {Object} KMultipleRegressionAnalysisOutput
+ * @property {number} q number of explanatory variables.
+ * @property {number} n number of samples.
+ * @property {number[][]} predicted_values predicted values. (column vector)
+ * @property {number} sY Variance of predicted values of target variable.
+ * @property {number} sy Variance of measured values of target variable.
+ * @property {number} multiple_R Multiple R. Multiple correlation coefficient.
+ * @property {number} R_square R Square. Coefficient of determination.
+ * @property {number} adjusted_R_square Adjusted R Square. Adjusted coefficient of determination.
+ * @property {KMultipleRegressionAnalysisAnova} ANOVA analysis of variance.
+ * @property {number} Ve Unbiased variance of residuals. (Ve)
+ * @property {number} standard_error Standard error. (SE)
+ * @property {number} AIC Akaike's Information Criterion. (AIC)
+ * @property {KMultipleRegressionAnalysisPartialRegression} regression_table Regression table.
+ */
+
+/**
+ * Tools for analyzing data.
+ */
+class DataAnalysis {
+
+	/**
+	 * Multiple regression analysis
+	 * @param {KMultipleRegressionAnalysisSettings} settings - input data
+	 * @returns {KMultipleRegressionAnalysisOutput} analyzed data
+	 */
+	static MultipleRegressionAnalysis(settings) {
+		//最小二乗法により重回帰分析する。
+		//参考文献
+		//[1] 図解でわかる多変量解析―データの山から本質を見抜く科学的分析ツール
+		//    涌井 良幸, 涌井 貞美, 日本実業出版社 (2001/01)
+		//[2] これならわかる Excelで楽に学ぶ多変量解析
+		//    長谷川 勝也, 技術評論社 (2002/07)
+		//[3] ど素人の「Excel 回帰分析」表の見方 (単回帰分析)
+		//   http://atiboh.sub.jp/t07kaikibunseki.html
+		//[4] 赤池の情報量基準（AIC）の計算方法
+		//   http://software.ssri.co.jp/statweb2/tips/tips_10.html
+
+		// samples 説明変量。行がサンプル。列が各値。
+		// target  目的変量・実測値。縦ベクトル。
+		// is_standardised trueで標準化偏回帰係数
+		let samples = Matrix.create(settings.samples);
+		let target = Matrix.create(settings.target);
+		const set_unbiased = {correction : 1};
+
+		// 標準化偏回帰係数を調べるために平均0 分散1に正規化する
+		if(settings.is_standardised) {
+			samples = samples.standardization();
+			target = target.standardization();
+		}
+
+		// 説明変量・説明変数の数 q
+		const number_of_explanatory_variables = Matrix.create(samples.width);
+		// 標本数(観測数) n
+		const number_of_samples = Matrix.create(samples.height);
+
+		// 共分散行列
+		const S = samples.cov(set_unbiased);
+		const S_rcond = S.rcond();
+		// どこかの値に相関が非常に高いものがあり計算できない。
+		if(S_rcond <= 1e-10) {
+			console.log("Analysis failed due to highly correlated explanatory variables.(rcond : " + S_rcond + ")");
+			return null;
+		}
+
+		// 目的変量との共分散(縦ベクトル)
+		const y_array = [];
+		const max_var = number_of_explanatory_variables.intValue;
+		for(let i = 0; i < max_var; i++) {
+			y_array[i] = [ samples.getMatrix(":", i).cov(target, set_unbiased) ];
+		}
+		const Y = Matrix.create(y_array);
+
+		// 偏回帰係数(縦ベクトル) partial regression coefficient. (column vector)
+		const partial_regression_coefficient =  S.inv().mul(Y);
+		// バイアス・定数項・切片 bias
+		const bias = target.mean().sub(samples.mean().mul(partial_regression_coefficient));
+		// 予測値(縦ベクトル) predicted values. (column vector)
+		const predicted_values = samples.mul(partial_regression_coefficient).add(bias);
+		// 目的変量の予測値の分散
+		const sY = predicted_values.var(set_unbiased);
+		// 目的変量の実測値の分散
+		const sy = target.var(set_unbiased);
+		// 重相関係数
+		const multiple_R = predicted_values.corrcoef(target, set_unbiased);
+		// 決定係数・寄与率
+		const R_square = sY.div(sy);
+
+		// 回帰
+		const regression_df = number_of_explanatory_variables;					// 自由度
+		const regression_SS = predicted_values.sub(target.mean()).dotpow(2).sum();	// 平方和(変動)・MSr
+		const regression_MS = regression_SS.div(regression_df);	// 不偏分散(分散)
+		
+		// 残差 residual error
+		const residual_df = number_of_samples.sub(number_of_explanatory_variables).sub(1);	// 自由度
+		const residual_SS = predicted_values.sub(target).dotpow(2).sum();	// 平方和(変動)・MSe
+		const residual_MS = residual_SS.div(residual_df);	// 不偏分散(分散)
+
+		// 全体
+		const total_df = number_of_samples.sub(1);	// 自由度
+		const total_SS = target.sub(target.mean()).dotpow(2).sum();	// 平方和(変動)・MSt・VE
+		const total_MS = total_SS.div(total_df);	// 不偏分散(分散)
+
+		// Ve(残差の不偏分散)
+		const Ve = residual_MS;
+		
+		// SE(標準誤差, SE, standard error)
+		const standard_error = Ve.sqrt();
+
+		// 回帰の分散比(F値)(観測された分散比)・F0
+		const regression_F = regression_MS.div(residual_MS);
+
+		// 回帰の有意 F significance F
+		// 自由度 q, n-q-1 のF分布による検定
+		// 誤りが発生する確率(1 - cdf('F',X,A,B))
+		// F分布を用いて、誤りが発生する確率を調べる (有意 F)
+		const regression_significance_F = Matrix.ONE.sub(regression_F.fcdf(regression_df, residual_df));
+		
+		// 自由度修正済決定係数・補正R2 adjusted R2, 自由度修正済決定係数 / 自由度調整済寄与率
+		// 1 - (残差による変動 / 残差の自由度) / (全変動 / 全体の自由度)
+		const adjusted_R_square = Matrix.ONE.sub(residual_MS.div(total_MS));
+		
+		// 赤池情報量規準(Akaike's Information Criterion, AIC)
+		// 回帰式に定数項を含む場合の式
+		// out.n * (log(2 * pi * (table(2, 2)/out.n)) + 1) + 2 * (out.q + 2);
+		const AIC = number_of_samples.mul(
+			residual_SS.div(number_of_samples).mul(2.0 * Math.PI).log().add(1)
+		).add(number_of_explanatory_variables.add(2).mul(2));
+
+		// ここからは偏回帰の値を計算していく
+
+		// 偏差平方和・積和行列の逆行列を作る
+		// つまり、共分散行列の各共分散で(サンプル数N)を割らない値を求めればいい。
+		// 不偏の場合は、 偏差平方和 * ( N * (N-1) ) を求めれば良い。
+		const IS = S.dotmul(number_of_samples).inv();
+
+		// 初期化
+		const intercept = {
+			coefficient : Matrix.ZERO,
+			standard_error : Matrix.ZERO,
+			t_stat : Matrix.ZERO,
+			p_value : Matrix.ZERO,
+			lower_95 : Matrix.ZERO,
+			upper_95 : Matrix.ZERO
+		};
+		const parameters = [];
+		for(let i = 0; i < max_var; i++) {
+			parameters[i] = {
+				coefficient : Matrix.ZERO,
+				standard_error : Matrix.ZERO,
+				t_stat : Matrix.ZERO,
+				p_value : Matrix.ZERO,
+				lower_95 : Matrix.ZERO,
+				upper_95 : Matrix.ZERO
+			};
+		}
+		// 係数
+		{
+			// 切片の係数
+			intercept.coefficient = bias;
+			// 偏回帰の係数
+			for(let i = 0; i < max_var; i++) {
+				parameters[i].coefficient = new Matrix(partial_regression_coefficient.getComplex(i));
+			}
+		}
+		// 標準誤差
+		{
+			// 切片の標準誤差
+			const q = number_of_explanatory_variables.intValue;
+			let s = number_of_samples.inv();
+			for(let j = 0; j < q; j++) {
+				for(let k = 0; k < q; k++) {
+					s = s.add(samples.getMatrix(":", j).mean().mul(samples.getMatrix(":", k).mean()).mul(IS.getMatrix(j, k)));
+				}
+			}
+			intercept.standard_error = s.mul(Ve).sqrt();
+			// 偏回帰の標準誤差
+			for(let i = 0; i < max_var; i++) {
+				parameters[i].standard_error = IS.getMatrix(i, i).mul(Ve).sqrt();
+			}
+		}
+		{
+			/**
+			 * t*値, P値, 信頼区間
+			 * @param {any} data 
+			 * @ignore
+			 */
+			const calcTPI = function(data) {
+
+				// t*値, 影響度, 統計量t, t-statistic.
+				// 大きいほど目的変数との関連性が強い
+				/**
+				 * @type {Matrix}
+				 */
+				data.t_stat = data.coefficient.div(data.standard_error);
+				
+				// P値, 危険率, P-value. Risk factor.
+				// 切片と偏回帰係数が誤っている確率
+				// スチューデントの t 分布の確率密度関数を利用
+				/**
+				 * @type {Matrix}
+				 */
+				data.p_value = data.t_stat.tdist(residual_df, 2);
+				
+				// 信頼区間の計算
+				// 下限 95%, 上限 95%
+				const percent = new Matrix(1.0 - 0.95);
+				data.lower_95 = data.coefficient.sub(percent.tinv2(residual_df).mul(data.standard_error));
+				data.upper_95 = data.coefficient.add(percent.tinv2(residual_df).mul(data.standard_error));
+			};
+			calcTPI(intercept);
+			for(let i = 0; i < max_var; i++) {
+				calcTPI(parameters[i]);
+			}
+		}
+
+		/**
+		 * @type {KMultipleRegressionAnalysisPartialRegression}
+		 */
+		let regression_table = null;
+		{
+			/**
+			 * @type {KMultipleRegressionAnalysisPartialRegressionData}
+			 */
+			const intercept_data = {
+				coefficient : intercept.coefficient.doubleValue,
+				standard_error : intercept.standard_error.doubleValue,
+				t_stat : intercept.t_stat.doubleValue,
+				p_value : intercept.p_value.doubleValue,
+				lower_95 : intercept.lower_95.doubleValue,
+				upper_95 : intercept.upper_95.doubleValue
+			};
+			
+			/**
+			 * @type {KMultipleRegressionAnalysisPartialRegressionData[]}
+			 */
+			const parameters_data = [];
+			for(let i = 0; i < max_var; i++) {
+				parameters_data.push({
+					coefficient : parameters[i].coefficient.doubleValue,
+					standard_error : parameters[i].standard_error.doubleValue,
+					t_stat : parameters[i].t_stat.doubleValue,
+					p_value : parameters[i].p_value.doubleValue,
+					lower_95 : parameters[i].lower_95.doubleValue,
+					upper_95 : parameters[i].upper_95.doubleValue
+				});
+			}
+
+			regression_table = {
+				intercept : intercept_data,
+				parameters : parameters_data
+			};
+		}
+
+		/**
+		 * @type {KMultipleRegressionAnalysisOutput}
+		 */
+		const output = {
+			q : number_of_explanatory_variables.doubleValue,
+			n : number_of_samples.doubleValue,
+			predicted_values : predicted_values.getNumberMatrixArray(),
+			sY : sY.doubleValue,
+			sy : sy.doubleValue,
+			multiple_R : multiple_R.doubleValue,
+			R_square : R_square.doubleValue,
+			adjusted_R_square : adjusted_R_square.doubleValue,
+			ANOVA : {
+				regression : {
+					df : regression_df.doubleValue,
+					SS : regression_SS.doubleValue,
+					MS : regression_MS.doubleValue
+				},
+				residual : {
+					df : residual_df.doubleValue,
+					SS : residual_SS.doubleValue,
+					MS : residual_MS.doubleValue
+				},
+				total : {
+					df : total_df.doubleValue,
+					SS : total_SS.doubleValue,
+					MS : total_MS.doubleValue
+				},
+				F : regression_F.doubleValue,
+				significance_F : regression_significance_F.doubleValue,
+			},
+			Ve : Ve.doubleValue,
+			standard_error : standard_error.doubleValue,
+			AIC : AIC.doubleValue,
+			regression_table : regression_table
+		};
+
+		return output;
+	}
+
+}
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
  * Class collection of numerical calculation processing.
  * These classes are classified into a BigInteger, BigDecimal, Fraction, Matrix.
  * - BigInteger is a calculation class for arbitrary-precision integer arithmetic.
@@ -16400,6 +17103,14 @@ class konpeito {
 	 */
 	static get Random() {
 		return Random;
+	}
+	
+	/**
+	 * Return typedef DataAnalysis.
+	 * @returns {typeof DataAnalysis}
+	 */
+	static get DataAnalysis() {
+		return DataAnalysis;
 	}
 	
 }

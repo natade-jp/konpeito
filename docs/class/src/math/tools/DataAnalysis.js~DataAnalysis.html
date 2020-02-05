@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl">
-  <title data-ice="title">Home | konpeito</title>
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">DataAnalysis | konpeito</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -66,142 +66,170 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="konpeito">konpeito</h1><p><a href="https://travis-ci.org/natade-jp/konpeito"><img src="https://travis-ci.org/natade-jp/konpeito.svg?branch=master" alt="Build Status"></a>
-<a href="https://natade-jp.github.io/konpeito/docs/"><img src="https://natade-jp.github.io/konpeito/docs/badge.svg" alt="ESDoc coverage badge"></a>
-<img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="MIT License"></p>
-<p>&quot;konpeito&quot; is a library to &quot;compute&quot;. :)</p>
-<h2 id="what">What</h2><ul>
-<li>The library for math calculations.</li>
-<li>When calculating, use method chain.</li>
-<li>Coding in ES6, and published ES6 modules and UMD.</li>
-<li><a href="https://natade-jp.github.io/konpeito/docs/">API reference is complete</a>.</li>
-</ul>
-<h2 id="features">Features</h2><p>This library has 4 functions.</p>
-<ul>
-<li>BigInteger</li>
-<li>BigDecimal</li>
-<li>Fraction</li>
-<li>Matrix</li>
-</ul>
-<p>Has the following features.</p>
-<ul>
-<li>BigDecimal and Fraction are constructed by BigInteger.</li>
-<li>Matrix is constructed by array of Complex.</li>
-<li>Matrix can&apos;t use huge real numbers like BigInteger or BigDecimal, but they are powerful. Initialization can be described as Scilab, Octave, MATLAB.</li>
-</ul>
-<p>Please check the console and main.mjs.</p>
-<ul>
-<li><a href="https://natade-jp.github.io/konpeito/html/examples/demos/BigDecimal/">BigDecimal</a></li>
-<li><a href="https://natade-jp.github.io/konpeito/html/examples/demos/BigInteger/">BigInteger</a></li>
-<li><a href="https://natade-jp.github.io/konpeito/html/examples/demos/Matrix/">Matrix</a></li>
-<li><a href="https://natade-jp.github.io/konpeito/html/examples/demos/UMD/">UMD</a></li>
-</ul>
-<h2 id="install-for-node-js">Install for node.js</h2><ol>
-<li><p>This library can be installed using <a href="https://www.npmjs.com/package/konpeito">npm</a>.</p>
-<pre><code><code class="source-code prettyprint">npm install konpeito</code>
-</code></pre></li>
-<li><p>Then you can include it in your code:</p>
-<pre><code><code class="source-code prettyprint">var konpeito = require(&quot;konpeito&quot;);</code>
-</code></pre></li>
-</ol>
-<p>If you want to use in the ES6 module, please execute with the following command.</p>
-<pre><code><code class="source-code prettyprint">node --experimental-modules main.mjs</code>
-</code></pre><h2 id="install-for-browser">Install for browser</h2><ol>
-<li><p>Download the <a href="https://github.com/natade-jp/konpeito/archive/master.zip">zip</a> by <a href="https://github.com/natade-jp/konpeito">GitHub</a>.</p>
-</li>
-<li><p>Please use mjs file when using ES6 modules. And use js file when using UMD.</p>
-</li>
-<li><code>./build/konpeito.esm.min.js</code></li>
-<li><code>./build/konpeito.umd.min.js</code></li>
-</ol>
-<h3 id="with-es6-module-">with ES6 module.</h3><pre><code class="lang-html"><code class="source-code prettyprint">&lt;script type=&quot;module&quot; src=&quot;./main.mjs&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;</code>
-</code></pre>
-<h3 id="with-umd">with UMD</h3><pre><code class="lang-html"><code class="source-code prettyprint">&lt;script src=&quot;./konpeito.umd.min.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
-&lt;script src=&quot;./main.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;</code>
-</code></pre>
-<h2 id="repository">Repository</h2><ul>
-<li><a href="https://github.com/natade-jp/konpeito.git">https://github.com/natade-jp/konpeito.git</a></li>
-</ul>
-<h2 id="sample">Sample</h2><h3 id="biginteger">BigInteger</h3><ul>
-<li>A calculation class for arbitrary-precision integer arithmetic.</li>
-<li>BigInt of ES2019 is not used.</li>
-</ul>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">const konpeito = require(&quot;konpeito&quot;);
-const BigInteger = konpeito.BigInteger;
-const $ = BigInteger.create;
-
-console.log($(&quot;-1234567890&quot;).mul(&quot;987654321098765432109876543210&quot;).toString());
-&gt; -1219326311248285321124828532111263526900
-
-console.log($(&quot;7&quot;).pow(&quot;50&quot;).toString());
-&gt; 1798465042647412146620280340569649349251249</code>
-</code></pre>
-<h3 id="bigdecimal">BigDecimal</h3><ul>
-<li>A calculation class for arbitrary-precision floating point arithmetic.</li>
-<li>The calculation uses the BigInteger.</li>
-</ul>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">const konpeito = require(&quot;konpeito&quot;);
-const BigDecimal = konpeito.BigDecimal;
-const MathContext = konpeito.MathContext;
-const $ = BigDecimal.create;
-
-BigDecimal.setDefaultContext(MathContext.UNLIMITED);
-console.log($(&quot;-123456.7890&quot;).mul(&quot;987654321098765.432109876543210&quot;).toString());
-&gt; -121932631124828532112.4828532111263526900</code>
-</code></pre>
-<h3 id="fraction">Fraction</h3><ul>
-<li>A calculation class for fractions with infinite precision.</li>
-<li>The calculation uses the BigInteger.</li>
-</ul>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">const konpeito = require(&quot;konpeito&quot;);
-const Fraction = konpeito.Fraction;
-const $ = Fraction.create;
-
-console.log($(&quot;1/3&quot;).add(&quot;0.(3)&quot;).mul(10).toString());
-&gt; 20 / 3</code>
-</code></pre>
-<h3 id="matrix">Matrix</h3><ul>
-<li>Matrix is a general-purpose calculation class with signal processing and statistical processing.</li>
-<li>The calculation uses the Complex.</li>
-<li>Some methods do not support complex arithmetic.</li>
-</ul>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">const konpeito = require(&quot;konpeito&quot;);
-const Matrix = konpeito.Matrix;
-const $ = Matrix.create;
-
-console.log($(&quot;[1 2;3 4;5 6]&quot;).toString());
-&gt;
- 1  2
- 3  4
- 5  6
-const USV = $(&quot;[1 2;3 4;5 6]&quot;).svd();
-console.log(USV.U.toString());
-&gt; 
- 0.2298 -0.8835  0.4082
- 0.5247 -0.2408 -0.8165
- 0.8196  0.4019  0.4082
-console.log(USV.S.toString());
-&gt; 
- 9.5255  0.0000
- 0.0000  0.5143
- 0.0000  0.0000
-console.log(USV.V.toString());
-&gt; 
- 0.7849  0.6196
--0.6196  0.7849
-console.log(USV.U.mul(USV.S).mul(USV.V.T()).toString());
-&gt; 
- 1.0000  2.0000
- 3.0000  4.0000
- 5.0000  6.0000
-
-console.log($(&quot;[1+j 2-3j -3 -4]&quot;).fft().toString());
-&gt; -4.0000 - 2.0000i  1.0000 - 5.0000i  0.0000 + 4.0000i  7.0000 + 7.0000i
-
-console.log($(&quot;[1 2 30]&quot;).dct().toString());
-&gt; 19.0526 -20.5061  11.0227</code>
-</code></pre>
+<div class="content" data-ice="content"><div class="header-notice">
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import DataAnalysis from &apos;<span><a href="file/src/math/tools/DataAnalysis.js.html#lineNumber78">konpeito/src/math/tools/DataAnalysis.js</a></span>&apos;</code></pre></div>
+  <span data-ice="access">public</span>
+  <span data-ice="kind">class</span>
+  
+  
+  
+  <span data-ice="source">| <span><a href="file/src/math/tools/DataAnalysis.js.html#lineNumber78">source</a></span></span>
 </div>
+
+<div class="self-detail detail">
+  <h1 data-ice="name">DataAnalysis</h1>
+
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  <div class="description" data-ice="description"><p>Tools for analyzing data.</p>
+</div>
+  
+
+  
+
+  
+
+  
+
+  
+</div>
+
+
+<div data-ice="staticMethodSummary"><h2>Static Method Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Static Public Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/tools/DataAnalysis.js~DataAnalysis.html#static-method-MultipleRegressionAnalysis">MultipleRegressionAnalysis</a></span></span><span class="code" data-ice="signature">(settings: <span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisSettings">KMultipleRegressionAnalysisSettings</a></span>): <span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisOutput">KMultipleRegressionAnalysisOutput</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Multiple regression analysis</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+
+
+
+
+
+
+<div data-ice="staticMethodDetails"><h2 data-ice="title">Static Public Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-method-MultipleRegressionAnalysis">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    
+    
+    
+    
+    <span class="code" data-ice="name">MultipleRegressionAnalysis</span><span class="code" data-ice="signature">(settings: <span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisSettings">KMultipleRegressionAnalysisSettings</a></span>): <span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisOutput">KMultipleRegressionAnalysisOutput</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/tools/DataAnalysis.js.html#lineNumber85">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Multiple regression analysis</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">settings</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisSettings">KMultipleRegressionAnalysisSettings</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>input data</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisOutput">KMultipleRegressionAnalysisOutput</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>analyzed data</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+
+
+
 </div>
 
 <footer class="footer">

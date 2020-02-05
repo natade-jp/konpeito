@@ -24,6 +24,11 @@ import Complex from "./Complex.js";
  * - Array<Array<string|number|Complex|Matrix>>
  * - {doubleValue:number}
  * - {toString:function}
+ * 
+ * Initialization can be performed as follows.
+ * - 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
+ * - [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
+ * - "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
  * @typedef {Matrix|Complex|number|string|Array<string|number|Complex|Matrix>|Array<Array<string|number|Complex|Matrix>>|{doubleValue:number}|{toString:function}} KMatrixInputData
  */
 

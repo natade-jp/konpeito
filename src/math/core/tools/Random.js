@@ -31,7 +31,28 @@ export default class Random {
 	constructor(init_data) {
 		let seed_number = undefined;
 		let algorithm = "fast";
+
+		/**
+		 * Random Number Generator.
+		 * @private
+		 * @type {Xorshift|MaximumLengthSequence}
+		 */
 		this.rand = null;
+		
+		/**
+		 * have `NextNextGaussian`
+		 * @private
+		 * @type {boolean}
+		 */
+		this.haveNextNextGaussian = false;
+
+		/**
+		 * Normally distributed random numbers.
+		 * @private
+		 * @type {number}
+		 */
+		this.nextNextGaussian = 0.0;
+
 		if(typeof init_data === "number") {
 			seed_number = init_data;
 		}

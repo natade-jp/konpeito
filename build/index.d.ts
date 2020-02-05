@@ -47,6 +47,11 @@ declare class konpeito {
      * @returns {typeof _Random_}
      */
     static Random: typeof _Random_;
+    /**
+     * Return typedef _DataAnalysis_.
+     * @returns {typeof _DataAnalysis_}
+     */
+    static DataAnalysis: typeof _DataAnalysis_;
 }
 
 /**
@@ -76,6 +81,18 @@ declare type KBigDecimalScaleData = {integer:_BigInteger_,scale:number,context:_
  * - KBigDecimalLocalInputData
  * - Array<KBigDecimalLocalInputData|_MathContext_>
  * - KBigDecimalScaleData
+ *
+ * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3"
+ * - When initializing with array. [ integer, [scale = 0], [context=default]].
+ * - When initializing with object. { integer, [scale = 0], [context=default]}.
+ *
+ * Description of the settings are as follows, you can also omitted.
+ * - The "scale" is an integer scale factor.
+ * - The "context" is used to normalize the created floating point.
+ *
+ * If "context" is not specified, the "default_context" set for the class is used.
+ * The "context" is the used when no environment settings are specified during calculation.
  * @typedef {KBigDecimalLocalInputData|Array<KBigDecimalLocalInputData|_MathContext_>|KBigDecimalScaleData} KBigDecimalInputData
  */
 declare type KBigDecimalInputData = KBigDecimalLocalInputData|Array<KBigDecimalLocalInputData|_MathContext_>|KBigDecimalScaleData;
@@ -672,6 +689,12 @@ declare namespace _BigDecimal_ {
  * - {toBigInteger:function}
  * - {intValue:number}
  * - {toString:function}
+ *
+ * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3", ["1200", 10]
+ * - "0xff", ["ff", 16]
+ * - "0o01234567", ["01234567", 8]
+ * - "0b0110101", ["0110101", 2]
  * @typedef {_BigInteger_|number|string|Array<string|number>|{toBigInteger:function}|{intValue:number}|{toString:function}} KBigIntegerInputData
  */
 declare type KBigIntegerInputData = _BigInteger_|number|string|Array<string|number>|{toBigInteger:any}|{intValue:number}|{toString:any};
@@ -1129,6 +1152,10 @@ declare class _BigInteger_ {
  * - {_re:number,_im:number}
  * - {doubleValue:number}
  * - {toString:function}
+ *
+ * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3"
+ * - "3 + 4i", "4j + 3", [3, 4].
  * @typedef {_Complex_|number|string|Array<number>|{_re:number,_im:number}|{doubleValue:number}|{toString:function}} KComplexInputData
  */
 declare type KComplexInputData = _Complex_|number|string|Array<number>|{_re:number,_im:number}|{doubleValue:number}|{toString:any};
@@ -2157,6 +2184,11 @@ declare class _Fraction_ {
  * - Array<Array<string|number|_Complex_|_Matrix_>>
  * - {doubleValue:number}
  * - {toString:function}
+ *
+ * Initialization can be performed as follows.
+ * - 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
+ * - [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
+ * - "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
  * @typedef {_Matrix_|_Complex_|number|string|Array<string|number|_Complex_|_Matrix_>|Array<Array<string|number|_Complex_|_Matrix_>>|{doubleValue:number}|{toString:function}} KMatrixInputData
  */
 declare type KMatrixInputData = _Matrix_|_Complex_|number|string|Array<string|number|_Complex_|_Matrix_>|Array<Array<string|number|_Complex_|_Matrix_>>|{doubleValue:number}|{toString:any};
@@ -2326,6 +2358,16 @@ declare class _Matrix_ {
      * @returns {number}
      */
     length: number;
+    /**
+     * Number of columns in the matrix.
+     * @returns {number}
+     */
+    width: number;
+    /**
+     * Number of rows in matrix.
+     * @returns {number}
+     */
+    height: number;
     /**
      * 1-norm.
      * @returns {number}
@@ -2535,9 +2577,10 @@ declare class _Matrix_ {
     isPermutation(tolerance?: KMatrixInputData): boolean;
     /**
      * Number of rows and columns of matrix.
+     * @param {?string|?number} [dimension] direction. 1/"row", 2/"column"
      * @returns {_Matrix_} [row_length, column_length]
      */
-    size(): _Matrix_;
+    size(dimension?: string | number): _Matrix_;
     /**
      * Compare values.
      * - Return value between scalars is of type Number.
@@ -3300,23 +3343,29 @@ declare class _Matrix_ {
      */
     skewness(type?: KMatrixSettings): _Matrix_;
     /**
-     * Covariance matrix.
+     * Covariance matrix or Covariance value.
+     * - Get a variance-covariance matrix from 1 matrix.
+     * - Get a covariance from 2 vectors.
+     * @param {KMatrixSettings|KMatrixInputData} [y_or_type]
      * @param {KMatrixSettings} [type]
      * @returns {_Matrix_}
      */
-    cov(type?: KMatrixSettings): _Matrix_;
+    cov(y_or_type?: KMatrixSettings | KMatrixInputData, type?: KMatrixSettings): _Matrix_;
     /**
-     * The samples are normalized to a mean value of 0, standard deviation of 1.
+     * The samples are standardize to a mean value of 0, standard deviation of 1.
      * @param {KMatrixSettings} [type]
      * @returns {_Matrix_}
      */
-    normalize(type?: KMatrixSettings): _Matrix_;
+    standardization(type?: KMatrixSettings): _Matrix_;
     /**
-     * Correlation matrix.
+     * Correlation matrix or Correlation coefficient.
+     * - Get a correlation matrix from 1 matrix.
+     * - Get a correlation coefficient from 2 vectors.
+     * @param {KMatrixSettings|KMatrixInputData} [y_or_type]
      * @param {KMatrixSettings} [type]
      * @returns {_Matrix_}
      */
-    corrcoef(type?: KMatrixSettings): _Matrix_;
+    corrcoef(y_or_type?: KMatrixSettings | KMatrixInputData, type?: KMatrixSettings): _Matrix_;
     /**
      * Sort.
      * - The "order" can choose "ascend"(default) and "descend".
@@ -3427,6 +3476,111 @@ declare class _Matrix_ {
      * @returns {_Matrix_}
      */
     fftshift(type?: KMatrixSettings): _Matrix_;
+    /**
+     * 1
+     * @returns {_Matrix_} 1
+     */
+    static ONE: _Matrix_;
+    /**
+     * 2
+     * @returns {_Matrix_} 2
+     */
+    static TWO: _Matrix_;
+    /**
+     * 10
+     * @returns {_Matrix_} 10
+     */
+    static TEN: _Matrix_;
+    /**
+     * 0
+     * @returns {_Matrix_} 0
+     */
+    static ZERO: _Matrix_;
+    /**
+     * -1
+     * @returns {_Matrix_} -1
+     */
+    static MINUS_ONE: _Matrix_;
+    /**
+     * i, j
+     * @returns {_Matrix_} i
+     */
+    static I: _Matrix_;
+    /**
+     * PI.
+     * @returns {_Matrix_} 3.14...
+     */
+    static PI: _Matrix_;
+    /**
+     * 0.25 * PI.
+     * @returns {_Matrix_} 0.78...
+     */
+    static QUARTER_PI: _Matrix_;
+    /**
+     * 0.5 * PI.
+     * @returns {_Matrix_} 1.57...
+     */
+    static HALF_PI: _Matrix_;
+    /**
+     * 2 * PI.
+     * @returns {_Matrix_} 6.28...
+     */
+    static TWO_PI: _Matrix_;
+    /**
+     * E, Napier's constant.
+     * @returns {_Matrix_} 2.71...
+     */
+    static E: _Matrix_;
+    /**
+     * log_e(2)
+     * @returns {_Matrix_} ln(2)
+     */
+    static LN2: _Matrix_;
+    /**
+     * log_e(10)
+     * @returns {_Matrix_} ln(10)
+     */
+    static LN10: _Matrix_;
+    /**
+     * log_2(e)
+     * @returns {_Matrix_} log_2(e)
+     */
+    static LOG2E: _Matrix_;
+    /**
+     * log_10(e)
+     * @returns {_Matrix_} log_10(e)
+     */
+    static LOG10E: _Matrix_;
+    /**
+     * sqrt(2)
+     * @returns {_Matrix_} sqrt(2)
+     */
+    static SQRT2: _Matrix_;
+    /**
+     * sqrt(0.5)
+     * @returns {_Matrix_} sqrt(0.5)
+     */
+    static SQRT1_2: _Matrix_;
+    /**
+     * 0.5
+     * @returns {_Matrix_} 0.5
+     */
+    static HALF: _Matrix_;
+    /**
+     * Positive infinity.
+     * @returns {_Matrix_} Infinity
+     */
+    static POSITIVE_INFINITY: _Matrix_;
+    /**
+     * Negative Infinity.
+     * @returns {_Matrix_} -Infinity
+     */
+    static NEGATIVE_INFINITY: _Matrix_;
+    /**
+     * Not a Number.
+     * @returns {_Matrix_} NaN
+     */
+    static NaN: _Matrix_;
 }
 
 /**
@@ -4115,26 +4269,32 @@ declare class _Statistics_ {
      */
     static skewness(x: any, type?: KStatisticsSettings): _Matrix_;
     /**
-     * Covariance matrix.
+     * Covariance matrix or Covariance value.
+     * - Get a variance-covariance matrix from 1 matrix.
+     * - Get a covariance from 2 vectors.
      * @param {KMatrixInputData} x
+     * @param {KStatisticsSettings|KMatrixInputData} [y_or_type]
      * @param {KStatisticsSettings} [type]
      * @returns {_Matrix_}
      */
-    static cov(x: any, type?: KStatisticsSettings): _Matrix_;
+    static cov(x: any, y_or_type: any, type?: KStatisticsSettings): _Matrix_;
     /**
-     * The samples are normalized to a mean value of 0, standard deviation of 1.
+     * The samples are standardize to a mean value of 0, standard deviation of 1.
      * @param {KMatrixInputData} x
      * @param {KStatisticsSettings} [type]
      * @returns {_Matrix_}
      */
-    static normalize(x: any, type?: KStatisticsSettings): _Matrix_;
+    static standardization(x: any, type?: KStatisticsSettings): _Matrix_;
     /**
-     * Correlation matrix.
+     * Correlation matrix or Correlation coefficient.
+     * - Get a correlation matrix from 1 matrix.
+     * - Get a correlation coefficient from 2 vectors.
      * @param {KMatrixInputData} x
+     * @param {KStatisticsSettings|KMatrixInputData} [y_or_type]
      * @param {KStatisticsSettings} [type]
      * @returns {_Matrix_}
      */
-    static corrcoef(x: any, type?: KStatisticsSettings): _Matrix_;
+    static corrcoef(x: any, y_or_type: any, type?: KStatisticsSettings): _Matrix_;
     /**
      * Sort.
      * - The "order" can choose "ascend"(default) and "descend".
@@ -4144,6 +4304,122 @@ declare class _Statistics_ {
      * @returns {_Matrix_}
      */
     static sort(x: any, order?: string, type?: KStatisticsSettings): _Matrix_;
+}
+
+/**
+ * Settings for multiple regression analysis
+ * @typedef {Object} KMultipleRegressionAnalysisSettings
+ * @property {KMatrixInputData} samples explanatory variable. (Each column is a parameters and each row is a samples.)
+ * @property {KMatrixInputData} target response variable. / actual values. (column vector)
+ * @property {boolean} [is_standardised=false] Use standardized partial regression coefficients.
+ */
+declare type KMultipleRegressionAnalysisSettings = {
+    is_standardised?: boolean;
+};
+
+/**
+ * Vector state
+ * @typedef {Object} KMultipleRegressionAnalysisVectorState
+ * @property {number} df degree of freedom
+ * @property {number} SS sum of squares
+ * @property {number} MS unbiased_variance
+ */
+declare type KMultipleRegressionAnalysisVectorState = {
+    df: number;
+    SS: number;
+    MS: number;
+};
+
+/**
+ * Analysis of variance. ANOVA.
+ * @typedef {Object} KMultipleRegressionAnalysisAnova
+ * @property {KMultipleRegressionAnalysisVectorState} regression regression.
+ * @property {KMultipleRegressionAnalysisVectorState} residual residual error.
+ * @property {KMultipleRegressionAnalysisVectorState} total total.
+ * @property {number} F F value. Dispersion ratio (F0)
+ * @property {number} significance_F Significance F. Test with F distribution with q, n-q-1 degrees of freedom.(_Probability_ of error.)
+ */
+declare type KMultipleRegressionAnalysisAnova = {
+    regression: KMultipleRegressionAnalysisVectorState;
+    residual: KMultipleRegressionAnalysisVectorState;
+    total: KMultipleRegressionAnalysisVectorState;
+    F: number;
+    significance_F: number;
+};
+
+/**
+ * Regression table data.
+ * @typedef {Object} KMultipleRegressionAnalysisPartialRegressionData
+ * @property {number} coefficient Coefficient.
+ * @property {number} standard_error Standard error.
+ * @property {number} t_stat t-statistic.
+ * @property {number} p_value P-value. Risk factor.
+ * @property {number} lower_95 Lower limit of a 95% confidence interval.
+ * @property {number} upper_95 Upper limit of a 95% confidence interval.
+ */
+declare type KMultipleRegressionAnalysisPartialRegressionData = {
+    coefficient: number;
+    standard_error: number;
+    t_stat: number;
+    p_value: number;
+    lower_95: number;
+    upper_95: number;
+};
+
+/**
+ * Regression table.
+ * @typedef {Object} KMultipleRegressionAnalysisPartialRegression
+ * @property {KMultipleRegressionAnalysisPartialRegressionData} intercept Intercept.
+ * @property {KMultipleRegressionAnalysisPartialRegressionData[]} parameters Parameters.
+ */
+declare type KMultipleRegressionAnalysisPartialRegression = {
+    intercept: KMultipleRegressionAnalysisPartialRegressionData;
+    parameters: KMultipleRegressionAnalysisPartialRegressionData[];
+};
+
+/**
+ * Output for multiple regression analysis
+ * @typedef {Object} KMultipleRegressionAnalysisOutput
+ * @property {number} q number of explanatory variables.
+ * @property {number} n number of samples.
+ * @property {number[][]} predicted_values predicted values. (column vector)
+ * @property {number} sY Variance of predicted values of target variable.
+ * @property {number} sy Variance of measured values of target variable.
+ * @property {number} multiple_R Multiple R. Multiple correlation coefficient.
+ * @property {number} R_square R Square. Coefficient of determination.
+ * @property {number} adjusted_R_square Adjusted R Square. Adjusted coefficient of determination.
+ * @property {KMultipleRegressionAnalysisAnova} ANOVA analysis of variance.
+ * @property {number} Ve Unbiased variance of residuals. (Ve)
+ * @property {number} standard_error Standard error. (SE)
+ * @property {number} AIC Akaike's Information Criterion. (AIC)
+ * @property {KMultipleRegressionAnalysisPartialRegression} regression_table Regression table.
+ */
+declare type KMultipleRegressionAnalysisOutput = {
+    q: number;
+    n: number;
+    predicted_values: number[][];
+    sY: number;
+    sy: number;
+    multiple_R: number;
+    R_square: number;
+    adjusted_R_square: number;
+    ANOVA: KMultipleRegressionAnalysisAnova;
+    Ve: number;
+    standard_error: number;
+    AIC: number;
+    regression_table: KMultipleRegressionAnalysisPartialRegression;
+};
+
+/**
+ * Tools for analyzing data.
+ */
+declare class _DataAnalysis_ {
+    /**
+     * Multiple regression analysis
+     * @param {KMultipleRegressionAnalysisSettings} settings - input data
+     * @returns {KMultipleRegressionAnalysisOutput} analyzed data
+     */
+    static MultipleRegressionAnalysis(settings: KMultipleRegressionAnalysisSettings): KMultipleRegressionAnalysisOutput;
 }
 
 

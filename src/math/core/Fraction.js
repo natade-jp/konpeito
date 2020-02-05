@@ -23,6 +23,12 @@ import MathContext from "./context/MathContext.js";
  * - {numerator:KBigIntegerInputData,denominator:KBigIntegerInputData}
  * - {doubleValue:number}
  * - {toString:function}
+ * 
+ * Initialization can be performed as follows.
+ * - 10, "10", "10/1", "10.0/1.0", ["10", "1"], [10, 1]
+ * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
+ * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
+ * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
  * @typedef {Fraction|BigInteger|BigDecimal|number|string|Array<import("./BigInteger.js").KBigIntegerInputData>|{numerator:import("./BigInteger.js").KBigIntegerInputData,denominator:import("./BigInteger.js").KBigIntegerInputData}|{doubleValue:number}|{toString:function}} KFractionInputData
  */
 

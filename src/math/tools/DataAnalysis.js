@@ -8,13 +8,13 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import Matrix from "../math/Matrix.js";
+import Matrix from "../core/Matrix.js";
 
 /**
  * Settings for multiple regression analysis
  * @typedef {Object} KMultipleRegressionAnalysisSettings
- * @property {import("../math/Matrix.js").KMatrixInputData} samples explanatory variable. (Each column is a parameters and each row is a samples.)
- * @property {import("../math/Matrix.js").KMatrixInputData} target response variable. / actual values. (column vector)
+ * @property {import("../core/Matrix.js").KMatrixInputData} samples explanatory variable. (Each column is a parameters and each row is a samples.)
+ * @property {import("../core/Matrix.js").KMatrixInputData} target response variable. / actual values. (column vector)
  * @property {boolean} [is_standardised=false] Use standardized partial regression coefficients.
  */
 
@@ -37,8 +37,9 @@ import Matrix from "../math/Matrix.js";
  */
 
 /**
+ * Regression table data.
  * @typedef {Object} KMultipleRegressionAnalysisPartialRegressionData
- * @property {number} coefficient coefficient.
+ * @property {number} coefficient Coefficient.
  * @property {number} standard_error Standard error.
  * @property {number} t_stat t-statistic.
  * @property {number} p_value P-value. Risk factor.
@@ -47,9 +48,10 @@ import Matrix from "../math/Matrix.js";
  */
 
 /**
+ * Regression table.
  * @typedef {Object} KMultipleRegressionAnalysisPartialRegression
- * @property {KMultipleRegressionAnalysisPartialRegressionData} intercept
- * @property {KMultipleRegressionAnalysisPartialRegressionData[]} parameters
+ * @property {KMultipleRegressionAnalysisPartialRegressionData} intercept Intercept.
+ * @property {KMultipleRegressionAnalysisPartialRegressionData[]} parameters Parameters.
  */
 
 /**
@@ -57,8 +59,6 @@ import Matrix from "../math/Matrix.js";
  * @typedef {Object} KMultipleRegressionAnalysisOutput
  * @property {number} q number of explanatory variables.
  * @property {number} n number of samples.
- * @property {number[][]} partial_regression_coefficient partial regression coefficient. (column vector)
- * @property {number} bias bias
  * @property {number[][]} predicted_values predicted values. (column vector)
  * @property {number} sY Variance of predicted values of target variable.
  * @property {number} sy Variance of measured values of target variable.
@@ -69,15 +69,18 @@ import Matrix from "../math/Matrix.js";
  * @property {number} Ve Unbiased variance of residuals. (Ve)
  * @property {number} standard_error Standard error. (SE)
  * @property {number} AIC Akaike's Information Criterion. (AIC)
- * @property {KMultipleRegressionAnalysisPartialRegression} regression_table
+ * @property {KMultipleRegressionAnalysisPartialRegression} regression_table Regression table.
  */
 
+/**
+ * Tools for analyzing data.
+ */
 export default class DataAnalysis {
 
 	/**
 	 * Multiple regression analysis
-	 * @param {KMultipleRegressionAnalysisSettings} settings
-	 * @returns {KMultipleRegressionAnalysisOutput}
+	 * @param {KMultipleRegressionAnalysisSettings} settings - input data
+	 * @returns {KMultipleRegressionAnalysisOutput} analyzed data
 	 */
 	static MultipleRegressionAnalysis(settings) {
 		//最小二乗法により重回帰分析する。
@@ -123,15 +126,15 @@ export default class DataAnalysis {
 		const y_array = [];
 		const max_var = number_of_explanatory_variables.intValue;
 		for(let i = 0; i < max_var; i++) {
-			y_array[i] = samples.getMatrix(":", i).cov(target, set_unbiased);
+			y_array[i] = [ samples.getMatrix(":", i).cov(target, set_unbiased) ];
 		}
 		const Y = Matrix.create(y_array);
 
-		// 偏回帰係数(縦ベクトル)
+		// 偏回帰係数(縦ベクトル) partial regression coefficient. (column vector)
 		const partial_regression_coefficient =  S.inv().mul(Y);
-		// バイアス・定数項・切片
+		// バイアス・定数項・切片 bias
 		const bias = target.mean().sub(samples.mean().mul(partial_regression_coefficient));
-		// 予測値(縦ベクトル)
+		// 予測値(縦ベクトル) predicted values. (column vector)
 		const predicted_values = samples.mul(partial_regression_coefficient).add(bias);
 		// 目的変量の予測値の分散
 		const sY = predicted_values.var(set_unbiased);
@@ -314,8 +317,6 @@ export default class DataAnalysis {
 		const output = {
 			q : number_of_explanatory_variables.doubleValue,
 			n : number_of_samples.doubleValue,
-			partial_regression_coefficient : partial_regression_coefficient.getNumberMatrixArray(),
-			bias : bias.doubleValue,
 			predicted_values : predicted_values.getNumberMatrixArray(),
 			sY : sY.doubleValue,
 			sy : sy.doubleValue,

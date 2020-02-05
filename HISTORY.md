@@ -1,6 +1,6 @@
 # History
 
-## v3.0.0b
+## v3.0.0
 ### 機能追加
 - `Probability` に `erfinv`, `erfcinv` を追加
 - `Matrix` に重回帰分析 `MultipleRegressionAnalysis` を追加
@@ -13,6 +13,8 @@
 - `Matrix` の `size` に引数を追加して行か、列を直接取得できるように変更
 ### 変更
 - 翻訳を正しい翻訳に変更 正規化`normalize`から標準化を示す`standardization`に変更
+### 不具合
+- `Probability` の `tdist` の引数にマイナスの値を入れると誤った確率値を出す不具合を修正
 
 ## v2.0.0
 ### 機能追加

@@ -1,85 +1,86 @@
 {
-  "coverage": "99.66%",
-  "expectCount": 906,
-  "actualCount": 903,
+  "coverage": "100%",
+  "expectCount": 940,
+  "actualCount": 940,
   "files": {
     "src/konpeito.js": {
-      "expectCount": 9,
-      "actualCount": 9,
-      "undocumentLines": []
-    },
-    "src/math/BigDecimal.js": {
-      "expectCount": 128,
-      "actualCount": 128,
-      "undocumentLines": []
-    },
-    "src/math/BigInteger.js": {
-      "expectCount": 111,
-      "actualCount": 111,
-      "undocumentLines": []
-    },
-    "src/math/Complex.js": {
-      "expectCount": 90,
-      "actualCount": 90,
-      "undocumentLines": []
-    },
-    "src/math/context/MathContext.js": {
-      "expectCount": 14,
-      "actualCount": 14,
-      "undocumentLines": []
-    },
-    "src/math/context/RoundingMode.js": {
-      "expectCount": 37,
-      "actualCount": 37,
-      "undocumentLines": []
-    },
-    "src/math/Fraction.js": {
-      "expectCount": 55,
-      "actualCount": 55,
-      "undocumentLines": []
-    },
-    "src/math/Matrix.js": {
-      "expectCount": 228,
-      "actualCount": 228,
-      "undocumentLines": []
-    },
-    "src/math/tools/LinearAlgebra.js": {
-      "expectCount": 24,
-      "actualCount": 24,
-      "undocumentLines": []
-    },
-    "src/math/tools/Probability.js": {
-      "expectCount": 96,
-      "actualCount": 96,
-      "undocumentLines": []
-    },
-    "src/math/tools/random/MaximumLengthSequence.js": {
       "expectCount": 10,
       "actualCount": 10,
       "undocumentLines": []
     },
-    "src/math/tools/random/Xorshift.js": {
+    "src/math/core/BigDecimal.js": {
+      "expectCount": 128,
+      "actualCount": 128,
+      "undocumentLines": []
+    },
+    "src/math/core/BigInteger.js": {
+      "expectCount": 111,
+      "actualCount": 111,
+      "undocumentLines": []
+    },
+    "src/math/core/Complex.js": {
+      "expectCount": 90,
+      "actualCount": 90,
+      "undocumentLines": []
+    },
+    "src/math/core/context/MathContext.js": {
+      "expectCount": 14,
+      "actualCount": 14,
+      "undocumentLines": []
+    },
+    "src/math/core/context/RoundingMode.js": {
+      "expectCount": 37,
+      "actualCount": 37,
+      "undocumentLines": []
+    },
+    "src/math/core/Fraction.js": {
+      "expectCount": 55,
+      "actualCount": 55,
+      "undocumentLines": []
+    },
+    "src/math/core/Matrix.js": {
+      "expectCount": 253,
+      "actualCount": 253,
+      "undocumentLines": []
+    },
+    "src/math/core/tools/LinearAlgebra.js": {
+      "expectCount": 24,
+      "actualCount": 24,
+      "undocumentLines": []
+    },
+    "src/math/core/tools/Probability.js": {
+      "expectCount": 102,
+      "actualCount": 102,
+      "undocumentLines": []
+    },
+    "src/math/core/tools/random/MaximumLengthSequence.js": {
+      "expectCount": 10,
+      "actualCount": 10,
+      "undocumentLines": []
+    },
+    "src/math/core/tools/random/Xorshift.js": {
       "expectCount": 11,
       "actualCount": 11,
       "undocumentLines": []
     },
-    "src/math/tools/Random.js": {
+    "src/math/core/tools/Random.js": {
       "expectCount": 16,
-      "actualCount": 13,
-      "undocumentLines": [
-        34,
-        185,
-        192
-      ]
+      "actualCount": 16,
+      "undocumentLines": []
     },
-    "src/math/tools/Signal.js": {
+    "src/math/core/tools/Signal.js": {
       "expectCount": 59,
       "actualCount": 59,
       "undocumentLines": []
     },
-    "src/math/tools/Statistics.js": {
+    "src/math/core/tools/Statistics.js": {
       "expectCount": 18,
       "actualCount": 18,
+      "undocumentLines": []
+    },
+    "src/math/tools/DataAnalysis.js": {
+      "expectCount": 2,
+      "actualCount": 2,
       "undocumentLines": []
     }
   }

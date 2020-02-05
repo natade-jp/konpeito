@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl" href="../../../">
-  <title data-ice="title">src/math/BigDecimal.js | konpeito</title>
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/math/core/BigDecimal.js | konpeito</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -30,11 +30,11 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.js~konpeito.html">konpeito</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math">math</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigDecimal.js~BigDecimal.html">BigDecimal</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/BigInteger.js~BigInteger.html">BigInteger</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Complex.js~Complex.html">Complex</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Fraction.js~Fraction.html">Fraction</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/Matrix.js~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-core">math/core</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/BigDecimal.js~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/BigInteger.js~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/Complex.js~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html">Fraction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/Matrix.js~Matrix.html">Matrix</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalDivideType">KBigDecimalDivideType</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalInputData">KBigDecimalInputData</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalLocalInputData">KBigDecimalLocalInputData</a></span></span></li>
@@ -44,22 +44,29 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixSettings">KMatrixSettings</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-context">math/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
-<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/LinearAlgebra.js~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Probability.js~Probability.html">Probability</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Random.js~Random.html">Random</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Signal.js~Signal.html">Signal</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-core-context">math/core/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-core-tools">math/core/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/tools/LinearAlgebra.js~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/tools/Probability.js~Probability.html">Probability</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/tools/Random.js~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/tools/Signal.js~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KRandomSettings">KRandomSettings</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis.js~DataAnalysis.html">DataAnalysis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisAnova">KMultipleRegressionAnalysisAnova</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisOutput">KMultipleRegressionAnalysisOutput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegression">KMultipleRegressionAnalysisPartialRegression</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegressionData">KMultipleRegressionAnalysisPartialRegressionData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisSettings">KMultipleRegressionAnalysisSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisVectorState">KMultipleRegressionAnalysisVectorState</a></span></span></li>
 </ul>
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/math/BigDecimal.js</h1>
+<div class="content" data-ice="content"><h1 data-ice="title">src/math/core/BigDecimal.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
  * The script is part of konpeito.
  * 
@@ -97,6 +104,18 @@ import MathContext from &quot;./context/MathContext.js&quot;;
  * - KBigDecimalLocalInputData
  * - Array&lt;KBigDecimalLocalInputData|MathContext&gt;
  * - KBigDecimalScaleData
+ * 
+ * Initialization can be performed as follows.
+ * - 1200, &quot;1200&quot;, &quot;12e2&quot;, &quot;1.2e3&quot;
+ * - When initializing with array. [ integer, [scale = 0], [context=default]].
+ * - When initializing with object. { integer, [scale = 0], [context=default]}.
+ * 
+ * Description of the settings are as follows, you can also omitted.
+ * - The &quot;scale&quot; is an integer scale factor.
+ * - The &quot;context&quot; is used to normalize the created floating point.
+ * 
+ * If &quot;context&quot; is not specified, the &quot;default_context&quot; set for the class is used.
+ * The &quot;context&quot; is the used when no environment settings are specified during calculation.
  * @typedef {KBigDecimalLocalInputData|Array&lt;KBigDecimalLocalInputData|MathContext&gt;|KBigDecimalScaleData} KBigDecimalInputData
  */
 

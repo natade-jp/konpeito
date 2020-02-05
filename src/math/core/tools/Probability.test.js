@@ -239,6 +239,7 @@ const testOperator3  = function(operator, x1, x2, x3, y, tolerance) {
 	testOperator3("tdist", 0.0, 2, 1, 0.500000000);
 	testOperator3("tdist", 0.1, 2, 1, 0.464732719);
 	testOperator3("tdist", 0.5, 4, 1, 0.321664982);
+	testOperator3("tdist",-0.5, 4, 1, 0.321664982);
 	testOperator3("tdist", 0.8, 20, 1, 0.216555439);
 	testOperator3("tdist", 1.0, 40, 1, 0.161660906);
 	testOperator3("tdist", 0.0, 2, 2, 1.000000000);

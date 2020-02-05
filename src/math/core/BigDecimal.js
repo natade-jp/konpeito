@@ -35,6 +35,18 @@ import MathContext from "./context/MathContext.js";
  * - KBigDecimalLocalInputData
  * - Array<KBigDecimalLocalInputData|MathContext>
  * - KBigDecimalScaleData
+ * 
+ * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3"
+ * - When initializing with array. [ integer, [scale = 0], [context=default]].
+ * - When initializing with object. { integer, [scale = 0], [context=default]}.
+ * 
+ * Description of the settings are as follows, you can also omitted.
+ * - The "scale" is an integer scale factor.
+ * - The "context" is used to normalize the created floating point.
+ * 
+ * If "context" is not specified, the "default_context" set for the class is used.
+ * The "context" is the used when no environment settings are specified during calculation.
  * @typedef {KBigDecimalLocalInputData|Array<KBigDecimalLocalInputData|MathContext>|KBigDecimalScaleData} KBigDecimalInputData
  */
 

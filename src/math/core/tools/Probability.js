@@ -1452,7 +1452,7 @@ export default class Probability {
 		const v_ = Matrix._toDouble(v);
 		const tails_ = Matrix._toDouble(tails);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return ProbabilityComplex.tdist(num, v_, tails_);
+			return ProbabilityComplex.tdist(num.abs(), v_, tails_);
 		});
 	}
 

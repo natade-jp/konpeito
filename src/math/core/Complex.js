@@ -20,6 +20,10 @@ import Matrix from "./Matrix.js";
  * - {_re:number,_im:number}
  * - {doubleValue:number}
  * - {toString:function}
+ * 
+ * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3"
+ * - "3 + 4i", "4j + 3", [3, 4].
  * @typedef {Complex|number|string|Array<number>|{_re:number,_im:number}|{doubleValue:number}|{toString:function}} KComplexInputData
  */
 
