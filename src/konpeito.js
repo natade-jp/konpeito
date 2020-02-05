@@ -16,6 +16,7 @@ import BigInteger from "./math/BigInteger.js";
 import Fraction from "./math/Fraction.js";
 import Complex from "./math/Complex.js";
 import Matrix from "./math/Matrix.js";
+import DataAnalysis from "./tools/DataAnalysis.js";
 
 /**
  * Class collection of numerical calculation processing.
@@ -89,6 +90,14 @@ export default class konpeito {
 	 */
 	static get Random() {
 		return Random;
+	}
+	
+	/**
+	 * Return typedef DataAnalysis.
+	 * @returns {typeof DataAnalysis}
+	 */
+	static get DataAnalysis() {
+		return DataAnalysis;
 	}
 	
 }
