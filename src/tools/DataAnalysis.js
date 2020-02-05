@@ -8,13 +8,13 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import Matrix from "../Matrix.js";
+import Matrix from "../math/Matrix.js";
 
 /**
  * Settings for multiple regression analysis
  * @typedef {Object} KMultipleRegressionAnalysisSettings
- * @property {import("../Matrix.js").KMatrixInputData} samples explanatory variable. (Each column is a parameters and each row is a samples.)
- * @property {import("../Matrix.js").KMatrixInputData} target response variable. / actual values. (column vector)
+ * @property {import("../math/Matrix.js").KMatrixInputData} samples explanatory variable. (Each column is a parameters and each row is a samples.)
+ * @property {import("../math/Matrix.js").KMatrixInputData} target response variable. / actual values. (column vector)
  * @property {boolean} [is_standardised=false] Use standardized partial regression coefficients.
  */
 

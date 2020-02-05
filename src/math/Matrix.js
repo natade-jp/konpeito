@@ -13,7 +13,6 @@ import Statistics from "./tools/Statistics.js";
 import Probability from "./tools/Probability.js";
 import Signal from "./tools/Signal.js";
 import Complex from "./Complex.js";
-import DataAnalysis from "./tools/DataAnalysis.js";
 
 /**
  * Matrix type argument.
@@ -3691,19 +3690,6 @@ export default class Matrix {
 		return Signal.fftshift(this, type);
 	}
 
-	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
-	// データ分析
-	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
-
-	/**
-	 * Multiple regression analysis
-	 * @param {import("./tools/DataAnalysis.js").KMultipleRegressionAnalysisSettings} settings
-	 * @returns {import("./tools/DataAnalysis.js").KMultipleRegressionAnalysisOutput}
-	 */
-	static MultipleRegressionAnalysis(settings) {
-		return DataAnalysis.MultipleRegressionAnalysis(settings);
-	}
-	
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	// 定数
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
