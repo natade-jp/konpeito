@@ -903,7 +903,9 @@ class SignalTool {
 }
 
 /**
- * Signal processing class for Matrix class.
+ * Signal processing class for `Matrix` class.
+ * - These methods can be used in the `Matrix` method chain.
+ * - This class cannot be called directly.
  */
 export default class Signal {
 	

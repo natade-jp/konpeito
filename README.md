@@ -22,6 +22,7 @@ Has the following features.
 - BigDecimal and Fraction are constructed by BigInteger.
 - Matrix is constructed by array of Complex.
 - Matrix can't use huge real numbers like BigInteger or BigDecimal, but they are powerful. Initialization can be described as Scilab, Octave, MATLAB.
+- Does not support sparse matrix.
 
 Please check the console and main.mjs.
 - [BigDecimal](https://natade-jp.github.io/konpeito/html/examples/demos/BigDecimal/)

@@ -20,7 +20,9 @@ import Matrix from "../Matrix.js";
  */
 
 /**
- * Class for statistical processing for Matrix class.
+ * Class for statistical processing for `Matrix` class.
+ * - These methods can be used in the `Matrix` method chain.
+ * - This class cannot be called directly.
  */
 export default class Statistics {
 

@@ -1104,7 +1104,9 @@ class ProbabilityComplex {
 }
 
 /**
- * Calculating probability class for Matrix class.
+ * Calculating probability class for `Matrix` class.
+ * - These methods can be used in the `Matrix` method chain.
+ * - This class cannot be called directly.
  */
 export default class Probability {
 
