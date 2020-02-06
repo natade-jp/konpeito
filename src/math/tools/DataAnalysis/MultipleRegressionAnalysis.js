@@ -8,13 +8,13 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import Matrix from "../core/Matrix.js";
+import Matrix from "../../core/Matrix.js";
 
 /**
  * Settings for multiple regression analysis
  * @typedef {Object} KMultipleRegressionAnalysisSettings
- * @property {import("../core/Matrix.js").KMatrixInputData} samples explanatory variable. (Each column is a parameters and each row is a samples.)
- * @property {import("../core/Matrix.js").KMatrixInputData} target response variable. / actual values. (column vector)
+ * @property {import("../../core/Matrix.js").KMatrixInputData} samples explanatory variable. (Each column is a parameters and each row is a samples.)
+ * @property {import("../../core/Matrix.js").KMatrixInputData} target response variable. / actual values. (column vector)
  * @property {boolean} [is_standardised=false] Use standardized partial regression coefficients.
  */
 
@@ -75,14 +75,14 @@ import Matrix from "../core/Matrix.js";
 /**
  * Tools for analyzing data.
  */
-export default class DataAnalysis {
+export default class MultipleRegressionAnalysis {
 
 	/**
 	 * Multiple regression analysis
 	 * @param {KMultipleRegressionAnalysisSettings} settings - input data
 	 * @returns {KMultipleRegressionAnalysisOutput} analyzed data
 	 */
-	static MultipleRegressionAnalysis(settings) {
+	static doMultipleRegressionAnalysis(settings) {
 		//最小二乗法により重回帰分析する。
 		//参考文献
 		//[1] 図解でわかる多変量解析―データの山から本質を見抜く科学的分析ツール

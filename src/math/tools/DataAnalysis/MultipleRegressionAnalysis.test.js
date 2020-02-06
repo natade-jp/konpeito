@@ -1,5 +1,5 @@
-import DataAnalysis from "./DataAnalysis.js";
-import Matrix from "../core/Matrix.js";
+import MultipleRegressionAnalysis from "./MultipleRegressionAnalysis.js";
+import Matrix from "../../core/Matrix.js";
 const $ = Matrix.create;
 
 /**
@@ -91,7 +91,7 @@ const equalResultsArray = function(name, x, y) {
 {
 	const x = "[5 5 7 5 8 12]'";
 	const y = "[8 9 13 11 14 17]'";
-	const result = DataAnalysis.MultipleRegressionAnalysis({ samples : x, target : y });
+	const result = MultipleRegressionAnalysis.doMultipleRegressionAnalysis({ samples : x, target : y });
 	const ans = {
 		"q": 1,
 		"n": 6,
@@ -181,7 +181,7 @@ const equalResultsArray = function(name, x, y) {
 {
 	const x = "[5.5 12;4.5 9;4.1 8;3.5 6;2.5 5;2.3 6;2.7 5;2.8 4]";
 	const y = "[73; 59; 56; 31; 28; 31; 30; 25]";
-	const result = DataAnalysis.MultipleRegressionAnalysis({ samples : x, target : y });
+	const result = MultipleRegressionAnalysis.doMultipleRegressionAnalysis({ samples : x, target : y });
 	const ans = {
 		"q": 2,
 		"n": 8,
