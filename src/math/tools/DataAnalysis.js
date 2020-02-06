@@ -18,8 +18,8 @@ export default class DataAnalysis {
 
 	/**
 	 * Multiple regression analysis
-	 * @param {KMultipleRegressionAnalysisSettings} settings - input data
-	 * @returns {KMultipleRegressionAnalysisOutput} analyzed data
+	 * @param {import("./DataAnalysis/MultipleRegressionAnalysis.js").KMultipleRegressionAnalysisSettings} settings - input data
+	 * @returns {import("./DataAnalysis/MultipleRegressionAnalysis.js").KMultipleRegressionAnalysisOutput} analyzed data
 	 */
 	static doMultipleRegressionAnalysis(settings) {
 		return MultipleRegressionAnalysis.doMultipleRegressionAnalysis(settings);

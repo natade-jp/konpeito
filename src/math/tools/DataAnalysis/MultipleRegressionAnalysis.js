@@ -73,7 +73,7 @@ import Matrix from "../../core/Matrix.js";
  */
 
 /**
- * Tools for analyzing data.
+ * Multiple regression analysis.
  */
 export default class MultipleRegressionAnalysis {
 
