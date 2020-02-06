@@ -603,7 +603,7 @@ class ProbabilityTool {
 	 * @returns {number}
 	 */
 	static tdist(t, v, tails) {
-		return (1.0 - ProbabilityTool.tcdf(t, v)) * tails;
+		return (1.0 - ProbabilityTool.tcdf(Math.abs(t), v)) * tails;
 	}
 
 	/**
@@ -1454,7 +1454,7 @@ export default class Probability {
 		const v_ = Matrix._toDouble(v);
 		const tails_ = Matrix._toDouble(tails);
 		return X.cloneMatrixDoEachCalculation(function(num) {
-			return ProbabilityComplex.tdist(num.abs(), v_, tails_);
+			return ProbabilityComplex.tdist(num, v_, tails_);
 		});
 	}
 
