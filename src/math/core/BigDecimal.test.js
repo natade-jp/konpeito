@@ -540,3 +540,36 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 }
 
 
+{
+	test_count = 0;
+	testOperator2("and",  1, 3,  1&3);
+	testOperator2("and", -1, 2, -1&2);
+	testOperator2("and",  333, 444, 333&444);
+}
+
+{
+	test_count = 0;
+	testOperator2("or",  1, 3,  1|3);
+	testOperator2("or", -1, 2, -1|2);
+	testOperator2("or",  333, 444, 333|444);
+}
+
+{
+	test_count = 0;
+	testOperator2("xor",  1, 3,  1^3);
+	testOperator2("xor", -1, 2, -1^2);
+	testOperator2("xor",  333, 444, 333^444);
+}
+
+{
+	test_count = 0;
+	testOperator1("not",  1, ~1);
+	testOperator1("not", -1, ~-1);
+	testOperator1("not",  333, ~333);
+}
+
+{
+	test_count = 0;
+	testOperator2("shift", 3,  1,  3 << 1);
+	testOperator2("shift", 3, -1,  3 >> 1);
+}

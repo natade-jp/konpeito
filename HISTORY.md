@@ -1,10 +1,26 @@
 # History
 
-## v3.0.1a
+## v4a
+### 機能追加
+- `BigInteger` に `isPrime` を追加
+- `BigDecimal` に `NaN`, `Infinity` を実装、テストする関数も追加
+- `BigDecimal` の三角関数を拡張、及びビット演算を追加
+- `Complex` / `Matrix` に `isPositiveInfinity`, `isNegativeInfinity` を追加
 ### 改善
-- `/core/tools/` 内で`Matrix`のメソッドチェーンからしか利用できないクラスについてクラス説明文に記載しました
+- `/core/tools/` 内で`Matrix`のメソッドチェーンからしか利用できないクラスについてクラス説明文に記載
 - `README.md` にスパース行列に対応していないことを明記
-- ファイルの整理
+- ファイルやフォルダの位置を整理
+### 変更
+- `BigInteger` を整理し `orNot`, `andNot` を削除
+- `BigDecimal` の `inv` に `0` を入れると例外を返すように変更
+- `BigDecimal` の `rsqrt` に0以下の数値を入れると例外を返すように変更
+- `BigDecimal` の `sqrt` に0未満の数値を入れると例外を返すように変更
+### 不具合
+- `BigInteger` の `isProbablePrime` の入力に0を入れる素数であると判定するバグを修正
+- `BigInteger` の `isProbablePrime` の入力に負の値を入れるとフリーズするバグを修正
+- `BigDecimal` の `pow` の整数入力時の計算結果が無限精度になる不具合を修正
+- `BigDecimal` の `pow` で `0` の `x` 乗が `1` になっていた不具合を修正
+- `Complex` の `sign` に `NaN`を入れたときの動作が誤っていたのを修正
 
 ## v3.0.0
 ### 機能追加

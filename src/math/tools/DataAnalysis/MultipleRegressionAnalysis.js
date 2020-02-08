@@ -82,7 +82,7 @@ export default class MultipleRegressionAnalysis {
 	 * @param {KMultipleRegressionAnalysisSettings} settings - input data
 	 * @returns {KMultipleRegressionAnalysisOutput} analyzed data
 	 */
-	static doMultipleRegressionAnalysis(settings) {
+	static runMultipleRegressionAnalysis(settings) {
 		//最小二乗法により重回帰分析する。
 		//参考文献
 		//[1] 図解でわかる多変量解析―データの山から本質を見抜く科学的分析ツール

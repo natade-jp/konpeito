@@ -67,6 +67,18 @@ import MathContext from "./context/MathContext.js";
 let DEFAULT_CONTEXT = MathContext.DECIMAL128;
 
 /**
+ * Numeric state.
+ * @type {{NUMBER:number, NOT_A_NUMBER:number, POSITIVE_INFINITY:number, NEGATIVE_INFINITY:number}}
+ * @ignore
+ */
+const BIGDECIMAL_NUMBER_STATE = {
+	NUMBER : 0,
+	NOT_A_NUMBER : 1,
+	POSITIVE_INFINITY : 2,
+	NEGATIVE_INFINITY : 3
+};
+
+/**
  * Collection of functions used in BigDecimal.
  * @ignore
  */
@@ -75,13 +87,37 @@ class BigDecimalTool {
 	/**
 	 * Create data for BigDecimal from strings.
 	 * @param {string} ntext 
-	 * @returns {{scale : number, integer : BigInteger}}
+	 * @returns {{state : number, scale : number, integer : BigInteger}}
 	 */
 	static ToBigDecimalFromString(ntext) {
 		let scale = 0;
 		let buff;
 		// 正規化
 		let text = ntext.replace(/\s/g, "").toLowerCase();
+		// 特殊な状態
+		if(/^nan/.test(text)) {
+			return {
+				state : BIGDECIMAL_NUMBER_STATE.NOT_A_NUMBER,
+				scale : 0,
+				integer : BigInteger.ZERO
+			};
+		}
+		else if(/inf/.test(text)) {
+			if(!/-/.test(text)) {
+				return {
+					state : BIGDECIMAL_NUMBER_STATE.POSITIVE_INFINITY,
+					scale : 0,
+					integer : BigInteger.ZERO
+				};
+			}
+			else {
+				return {
+					state : BIGDECIMAL_NUMBER_STATE.NEGATIVE_INFINITY,
+					scale : 0,
+					integer : BigInteger.ZERO
+				};
+			}
+		}
 		// +-の符号があるか
 		let number_text = "";
 		buff = text.match(/^[+-]+/);
@@ -115,6 +151,7 @@ class BigDecimalTool {
 			scale   = scale - parseInt(buff, 10);
 		}
 		return {
+			state : BIGDECIMAL_NUMBER_STATE.NUMBER,
 			scale : scale,
 			integer : new BigInteger([number_text, 10])
 		};
@@ -123,12 +160,34 @@ class BigDecimalTool {
 	/**
 	 * Create data for BigDecimal from number.
 	 * @param {number} value 
-	 * @returns {{scale : number, integer : BigInteger}}
+	 * @returns {{state : number, scale : number, integer : BigInteger}}
 	 */
 	static ToBigDecimalFromNumber(value) {
+		if(isNaN(value)) {
+			return {
+				state : BIGDECIMAL_NUMBER_STATE.NOT_A_NUMBER,
+				scale : 0,
+				integer : BigInteger.ZERO
+			};
+		}
+		else if(value === Infinity) {
+			return {
+				state : BIGDECIMAL_NUMBER_STATE.POSITIVE_INFINITY,
+				scale : 0,
+				integer : BigInteger.ZERO
+			};
+		}
+		else if(value === - Infinity) {
+			return {
+				state : BIGDECIMAL_NUMBER_STATE.NEGATIVE_INFINITY,
+				scale : 0,
+				integer : BigInteger.ZERO
+			};
+		}
 		// 整数
 		if(value === Math.floor(value)) {
 			return {
+				state : BIGDECIMAL_NUMBER_STATE.NUMBER,
 				scale : 0,
 				integer : new BigInteger(Math.round(value))
 			};
@@ -149,6 +208,7 @@ class BigDecimalTool {
 			// 最も下の桁は四捨五入する
 			x = Math.round(x * 1e14) / 1e14;
 			return {
+				state : BIGDECIMAL_NUMBER_STATE.NUMBER,
 				scale : scale,
 				integer : new BigInteger(x)
 			};
@@ -196,6 +256,13 @@ export default class BigDecimal {
 		 */
 		this.default_context = DEFAULT_CONTEXT;
 
+		/**
+		 * Numeric state.
+		 * @private
+		 * @type {number}
+		 */
+		this.state = BIGDECIMAL_NUMBER_STATE.NUMBER;
+
 		// この値がtrueの場合は最後に正規化を実行する
 		let is_set_context = false;
 
@@ -211,8 +278,6 @@ export default class BigDecimal {
 			 */
 			this.integer			= number.integer.clone();
 
-			this._scale				= number._scale;
-			
 			/**
 			 * Integer part of string (for cache).
 			 * @private
@@ -220,16 +285,20 @@ export default class BigDecimal {
 			 */
 			this.int_string			= number.int_string;
 
+			this.state				= number.state;
+			this._scale				= number._scale;
 			this.default_context	= number.default_context;
 
 		}
 		else if(typeof number === "number") {
 			const data = BigDecimalTool.ToBigDecimalFromNumber(number);
+			this.state		= data.state;
 			this.integer	= data.integer;
 			this._scale		= data.scale;
 		}
 		else if(typeof number === "string") {
 			const data = BigDecimalTool.ToBigDecimalFromString(number);
+			this.state		= data.state;
 			this.integer	= data.integer;
 			this._scale		= data.scale;
 		}
@@ -238,17 +307,20 @@ export default class BigDecimal {
 				const prm1 = number[0];
 				if(typeof prm1 === "number") {
 					const data		= BigDecimalTool.ToBigDecimalFromNumber(prm1);
+					this.state		= data.state;
 					this.integer	= data.integer;
 					this._scale		= data.scale;
 				}
 				else if(typeof prm1 === "string") {
 					const data		= BigDecimalTool.ToBigDecimalFromString(prm1);
+					this.state		= data.state;
 					this.integer	= data.integer;
 					this._scale		= data.scale;
 				}
 				else if(prm1 instanceof BigDecimal) {
-					this.integer			= prm1.integer.clone();
-					this._scale				= prm1._scale;
+					this.integer	= prm1.integer.clone();
+					this.state		= prm1.state;
+					this._scale		= prm1._scale;
 				}
 				else if(prm1 instanceof BigInteger) {
 					this.integer			= prm1.clone();
@@ -256,16 +328,19 @@ export default class BigDecimal {
 				else if(typeof prm1 === "object") {
 					if("toBigDecimal" in prm1) {
 						const data		= prm1.toBigDecimal();
+						this.state		= data.state;
 						this.integer	= data.integer;
 						this._scale		= data._scale;
 					}
 					else if("doubleValue" in prm1) {
 						const data = BigDecimalTool.ToBigDecimalFromNumber(prm1.doubleValue);
+						this.state		= data.state;
 						this.integer	= data.integer;
 						this._scale		= data.scale;
 					}
 					else {
 						const data = BigDecimalTool.ToBigDecimalFromString(prm1.toString());
+						this.state		= data.state;
 						this.integer	= data.integer;
 						this._scale		= data.scale;
 					}
@@ -298,12 +373,14 @@ export default class BigDecimal {
 		else if(typeof number === "object") {
 			if("toBigDecimal" in number) {
 				const data				= number.toBigDecimal();
+				this.state				= data.state;
 				this.integer			= data.integer;
 				this._scale				= data._scale;
 				this.default_context	= data.default_context;
 			}
 			else if("doubleValue" in number) {
 				const data = BigDecimalTool.ToBigDecimalFromNumber(number.doubleValue);
+				this.state		= data.state;
 				this.integer	= data.integer;
 				this._scale		= data.scale;
 			}
@@ -319,6 +396,7 @@ export default class BigDecimal {
 			}
 			else if(number instanceof Object) {
 				const data = BigDecimalTool.ToBigDecimalFromString(number.toString());
+				this.state		= data.state;
 				this.integer	= data.integer;
 				this._scale		= data.scale;
 			}
@@ -503,6 +581,9 @@ export default class BigDecimal {
 	 * @returns {number}
 	 */
 	signum() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? 1 : -1);
+		}
 		return this.integer.signum();
 	}
 
@@ -545,6 +626,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} abs(A)
 	 */
 	abs(mc) {
+		if(!this.isFinite) {
+			return this;
+		}
 		const output = this.clone();
 		output.integer = output.integer.abs();
 		return (mc === undefined) ? output : output.round(mc);
@@ -556,6 +640,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} +A
 	 */
 	plus(mc) {
+		if(!this.isFinite) {
+			return this;
+		}
 		const output = this.clone();
 		return (mc === undefined) ? output : output.round(mc);
 	}
@@ -566,6 +653,17 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} -A
 	 */
 	negate(mc) {
+		if(!this.isFinite) {
+			if(this.isPositiveInfinity()) {
+				return BigDecimal.NEGATIVE_INFINITY;
+			}
+			else if(this.isNegativeInfinity()) {
+				return BigDecimal.POSITIVE_INFINITY;
+			}
+			else {
+				return this;
+			}
+		}
 		const output = this.clone();
 		output.integer = output.integer.negate();
 		return (mc === undefined) ? output : output.round(mc);
@@ -577,6 +675,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	movePointLeft(n) {
+		if(!this.isFinite) {
+			return this;
+		}
 		const x = BigDecimal._toInteger(n);
 		let output = this.scaleByPowerOfTen( -x );
 		output = output.setScale(Math.max(this.scale() + x, 0));
@@ -589,6 +690,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	movePointRight(n) {
+		if(!this.isFinite) {
+			return this;
+		}
 		const x = BigDecimal._toInteger(n);
 		let output = this.scaleByPowerOfTen( x );
 		output = output.setScale(Math.max(this.scale() - x, 0));
@@ -600,6 +704,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	stripTrailingZeros() {
+		if(!this.isFinite) {
+			return this;
+		}
 		// 0をできる限り取り除く
 		const sign		= this.signum();
 		const sign_text	= sign >= 0 ? "" : "-";
@@ -626,6 +733,17 @@ export default class BigDecimal {
 	 */
 	add(number, context) {
 		const augend = BigDecimal._toBigDecimal(number);
+		if(!this.isFinite() || !augend.isFinite()) {
+			if(this.isNaN() || augend.isNaN() || (this.state !== augend.state)) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isPositiveInfinity() || augend.isPositiveInfinity()) {
+				return BigDecimal.POSITIVE_INFINITY;
+			}
+			else {
+				return BigDecimal.NEGATIVE_INFINITY;
+			}
+		}
 		const mc = context ? context : augend.default_context;
 		const src			= this;
 		const tgt			= augend;
@@ -656,6 +774,17 @@ export default class BigDecimal {
 	 */
 	subtract(number, context) {
 		const subtrahend = BigDecimal._toBigDecimal(number);
+		if(!this.isFinite() || !subtrahend.isFinite()) {
+			if(this.isNaN() || subtrahend.isNaN() || (this.state === subtrahend.state)) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isNegativeInfinity() || subtrahend.isPositiveInfinity()) {
+				return BigDecimal.NEGATIVE_INFINITY;
+			}
+			else {
+				return BigDecimal.POSITIVE_INFINITY;
+			}
+		}
 		const mc = context ? context : subtrahend.default_context;
 		const src			= this;
 		const tgt			= subtrahend;
@@ -691,6 +820,17 @@ export default class BigDecimal {
 	 */
 	multiply(number, context) {
 		const multiplicand = BigDecimal._toBigDecimal(number);
+		if(!this.isFinite() || !multiplicand.isFinite()) {
+			if(this.isNaN() || multiplicand.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			else if(this.sign() * multiplicand.sign() > 0) {
+				return BigDecimal.POSITIVE_INFINITY;
+			}
+			else {
+				return BigDecimal.NEGATIVE_INFINITY;
+			}
+		}
 		const mc = context ? context : multiplicand.default_context;
 		const src			= this;
 		const tgt			= multiplicand;
@@ -718,6 +858,30 @@ export default class BigDecimal {
 	 */
 	divideToIntegralValue(number, context) {
 		const divisor = BigDecimal._toBigDecimal(number);
+		if(!this.isFinite() || !divisor.isFinite()) {
+			if(this.isNaN() || divisor.isNaN() || (this.isInfinite() && divisor.isInfinite())) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isInfinite()) {
+				if(this.sign() * divisor.sign() >= 0) {
+					return BigDecimal.POSITIVE_INFINITY;
+				}
+				else {
+					return BigDecimal.NEGATIVE_INFINITY;
+				}
+			}
+			else {
+				return BigDecimal.ZERO;
+			}
+		}
+		else if(divisor.isZero()) {
+			if(this.isZero()) {
+				return BigDecimal.NaN;
+			}
+			else {
+				return this.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY;
+			}
+		}
 		const mc = context ? context : divisor.default_context;
 		/**
 		 * @param {number} num 
@@ -799,6 +963,30 @@ export default class BigDecimal {
 	 */
 	divideAndRemainder(number, context) {
 		const divisor = BigDecimal._toBigDecimal(number);
+		if(!this.isFinite() || !divisor.isFinite()) {
+			if(this.isNaN() || divisor.isNaN() || (this.isInfinite() && divisor.isInfinite())) {
+				return [BigDecimal.NaN, BigDecimal.NaN];
+			}
+			else if(this.isInfinite()) {
+				if(this.sign() * divisor.sign() >= 0) {
+					return [BigDecimal.POSITIVE_INFINITY, BigDecimal.ZERO];
+				}
+				else {
+					return [BigDecimal.NEGATIVE_INFINITY, BigDecimal.ZERO];
+				}
+			}
+			else {
+				return [BigDecimal.ZERO, this];
+			}
+		}
+		else if(divisor.isZero()) {
+			if(this.isZero()) {
+				return [BigDecimal.NaN, BigDecimal.NaN];
+			}
+			else {
+				return [this.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY, BigDecimal.ZERO];
+			}
+		}
 		const mc = context ? context : divisor.default_context;
 
 		// 1000e0		/	1e2				=	1000e-2	... 0e0
@@ -861,6 +1049,30 @@ export default class BigDecimal {
 		const divisor = BigDecimal._toBigDecimal(number);
 		const src			= this;
 		const tgt			= divisor;
+		if(!src.isFinite() || !tgt.isFinite()) {
+			if(src.isNaN() || tgt.isNaN() || (this.isInfinite() && tgt.isInfinite())) {
+				return BigDecimal.NaN;
+			}
+			else if(src.isInfinite()) {
+				if(src.sign() * tgt.sign() >= 0) {
+					return BigDecimal.POSITIVE_INFINITY;
+				}
+				else {
+					return BigDecimal.NEGATIVE_INFINITY;
+				}
+			}
+			else {
+				return BigDecimal.ZERO;
+			}
+		}
+		else if(tgt.isZero()) {
+			if(src.isZero()) {
+				return BigDecimal.NaN;
+			}
+			else {
+				return src.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY;
+			}
+		}
 		let roundingMode	= null;
 		let mc				= null;
 		let newScale		= 0;
@@ -990,6 +1202,12 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 1 / A
 	 */
 	inv(context) {
+		if(!this.isFinite()) {
+			return this.isNaN() ? BigDecimal.NaN : BigDecimal.ZERO;
+		}
+		if(this.isZero()) {
+			return BigDecimal.NaN;
+		}
 		// 通常の割り算を行うと、「1」÷巨大な数を計算したときに、
 		// 1 の仮数部の精度によってしまい、結果が0になってしまう場合がある
 		// const mc = context ? context : this.default_context;
@@ -1016,11 +1234,11 @@ export default class BigDecimal {
 		A = A.round(mc);
 		let xn = x0;
 		for(let i = 0; i < 20; i++) {
-			const h = B1.sub(A.mul(xn));
+			const h = B1.sub(A.mul(xn), mc);
 			if(h.isZero()) {
 				break;
 			}
-			xn = xn.mul(B1.add(h).add(h.square()));
+			xn = xn.mul(B1.add(h).add(h.square()), mc);
 		}
 		BigDecimal.setDefaultContext(default_context);
 		// 参考
@@ -1040,6 +1258,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} n!
 	 */
 	factorial(context) {
+		if(!this.isFinite()) {
+			return this;
+		}
 		const mc = context ? context : this.default_context;
 		const y = new BigDecimal((new BigInteger(this)).factorial());
 		return y.round(mc);
@@ -1053,6 +1274,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} A * 10^floor(n)
 	 */
 	scaleByPowerOfTen(n) {
+		if(!this.isFinite()) {
+			return this;
+		}
 		const x = BigDecimal._toInteger(n);
 		const output = this.clone();
 		output._scale = this.scale() - x;
@@ -1090,6 +1314,9 @@ export default class BigDecimal {
 	 * @returns {number}
 	 */
 	get intValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
 		const bigintdata = this.toBigInteger();
 		const x = bigintdata.intValue;
 		return x & 0xFFFFFFFF;
@@ -1101,6 +1328,9 @@ export default class BigDecimal {
 	 * @returns {number}
 	 */
 	get intValueExact() {
+		if(!this.isFinite()) {
+			throw "ArithmeticException";
+		}
 		const bigintdata = this.toBigInteger();
 		const x = bigintdata.intValue;
 		if((x < -2147483648) || (2147483647 < x)) {
@@ -1114,6 +1344,9 @@ export default class BigDecimal {
 	 * @returns {number}
 	 */
 	get floatValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
 		const p = this.precision();
 		if(MathContext.DECIMAL32.getPrecision() < p) {
 			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
@@ -1126,6 +1359,9 @@ export default class BigDecimal {
 	 * @returns {number}
 	 */
 	get doubleValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
 		return parseFloat(this.toEngineeringString());
 	}
 
@@ -1153,12 +1389,14 @@ export default class BigDecimal {
 	equals(number, tolerance) {
 		// 誤差を指定しない場合は、厳密に調査
 		if(!tolerance) {
-			if(number instanceof BigDecimal) {
-				return ((this._scale === number._scale) && (this.integer.equals(number.integer)));
-			}
-			else if((typeof number === "string") || (number instanceof String)) {
-				const val = BigDecimal._toBigDecimal(number);
-				return ((this._scale === val._scale) && (this.integer.equals(val.integer)));
+			if((number instanceof BigDecimal) || (typeof number === "string")) {
+				const val = number instanceof BigDecimal ? number : BigDecimal._toBigDecimal(number);
+				if(val.isNaN() || val.isNaN()) {
+					return false;
+				}
+				else {
+					return ((this.state === val.state) && (this._scale === val._scale) && (this.integer.equals(val.integer)));
+				}
 			}
 			else {
 				return this.compareTo(number) === 0;
@@ -1178,6 +1416,22 @@ export default class BigDecimal {
 	compareTo(number, tolerance) {
 		const src = this;
 		const tgt = BigDecimal._toBigDecimal(number);
+		// 特殊な条件
+		if(!src.isFinite() || !tgt.isFinite()) {
+			if(src.isNaN() || tgt.isNaN()) {
+				return NaN;
+			}
+			if(src.state === tgt.state) {
+				return 0;
+			}
+			if(src.isPositiveInfinity() || tgt.isNegativeInfinity()) {
+				return 1;
+			}
+			else {
+				return -1;
+			}
+		}
+		// 通常の条件
 		if(!tolerance) {
 			// 誤差の指定がない場合
 			// 簡易計算
@@ -1227,6 +1481,9 @@ export default class BigDecimal {
 	 */
 	max(number) {
 		const val = BigDecimal._toBigDecimal(number);
+		if(this.isNaN() || val.isNaN()) {
+			return BigDecimal.NaN;
+		}
 		if(this.compareTo(val) >= 0) {
 			return this.clone();
 		}
@@ -1242,6 +1499,9 @@ export default class BigDecimal {
 	 */
 	min(number) {
 		const val = BigDecimal._toBigDecimal(number);
+		if(this.isNaN() || val.isNaN()) {
+			return BigDecimal.NaN;
+		}
 		if(this.compareTo(val) <= 0) {
 			return this.clone();
 		}
@@ -1260,6 +1520,9 @@ export default class BigDecimal {
 		const min_ = BigDecimal._toBigDecimal(min);
 		const max_ = BigDecimal._toBigDecimal(max);
 		const arg_check = min_.compareTo(max_);
+		if(this.isNaN() || min_.isNaN() || max_.isNaN()) {
+			return BigDecimal.NaN;
+		}
 		if(arg_check === 1) {
 			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
 		}
@@ -1284,6 +1547,9 @@ export default class BigDecimal {
 	 * @returns {string} 
 	 */
 	toString() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
 		// 「調整された指数」
 		const x = - this.scale() + (this.precision() - 1);
 		// スケールが 0 以上で、「調整された指数」が -6 以上
@@ -1301,6 +1567,9 @@ export default class BigDecimal {
 	 * @returns {string} 
 	 */
 	toScientificNotation(e_len) {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
 		const e		= BigDecimal._toInteger(e_len);
 		const text	= this._getUnsignedIntegerString();
 		let s		= this.scale();
@@ -1349,6 +1618,9 @@ export default class BigDecimal {
 	 * @returns {string} 
 	 */
 	toEngineeringString() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
 		// 「調整された指数」
 		const x = - this.scale() + (this.precision() - 1);
 		// スケールが 0 以上で、「調整された指数」が -6 以上
@@ -1366,6 +1638,9 @@ export default class BigDecimal {
 	 * @returns {string} 
 	 */
 	toPlainString() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
 		// スケールの変換なし
 		if(this.scale() === 0) {
 			if(this.signum() < 0) {
@@ -1391,6 +1666,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	setScale(new_scale, rounding_mode) {
+		if(!this.isFinite()) {
+			return this;
+		}
 		const newScale = BigDecimal._toInteger(new_scale);
 		if(this.scale() === newScale) {
 			// scaleが同一なので処理の必要なし
@@ -1462,30 +1740,38 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	round(mc) {
-		if(mc) {
-			// MathContext を設定した場合
-			if(!(mc instanceof MathContext)) {
-				throw "not MathContext";
+		if(!this.isFinite()) {
+			return this;
+		}
+		if(arguments.length === 1) {
+			if(mc !== undefined) {
+				// MathContext を設定した場合
+				if(!(mc instanceof MathContext)) {
+					throw "not MathContext";
+				}
+				const newPrecision	= mc.getPrecision();
+				const delta			= newPrecision - this.precision();
+				if((delta === 0)||(newPrecision === 0)) {
+					return this.clone();
+				}
+				const newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode());
+				/* 精度を上げる必要があるため、0を加えた場合 */
+				if(delta > 0) {
+					return newBigDecimal;
+				}
+				/* 精度を下げる必要があるため、丸めた場合は、桁の数が正しいか調べる */
+				if(newBigDecimal.precision() === mc.getPrecision()) {
+					return newBigDecimal;
+				}
+				/* 切り上げなどで桁数が１つ増えた場合 */
+				const sign_text	= newBigDecimal.integer.signum() >= 0 ? "" : "-";
+				const abs_text	= newBigDecimal._getUnsignedIntegerString();
+				const inte_text	= sign_text + abs_text.substring(0, abs_text.length - 1);
+				return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1]);
 			}
-			const newPrecision	= mc.getPrecision();
-			const delta			= newPrecision - this.precision();
-			if((delta === 0)||(newPrecision === 0)) {
-				return this.clone();
+			else {
+				return this;
 			}
-			const newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode());
-			/* 精度を上げる必要があるため、0を加えた場合 */
-			if(delta > 0) {
-				return newBigDecimal;
-			}
-			/* 精度を下げる必要があるため、丸めた場合は、桁の数が正しいか調べる */
-			if(newBigDecimal.precision() === mc.getPrecision()) {
-				return newBigDecimal;
-			}
-			/* 切り上げなどで桁数が１つ増えた場合 */
-			const sign_text	= newBigDecimal.integer.signum() >= 0 ? "" : "-";
-			const abs_text	= newBigDecimal._getUnsignedIntegerString();
-			const inte_text	= sign_text + abs_text.substring(0, abs_text.length - 1);
-			return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1]);
 		}
 		else {
 			// 小数点以下を四捨五入する
@@ -1498,6 +1784,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} floor(A)
 	 */
 	floor() {
+		if(!this.isFinite()) {
+			return this;
+		}
 		return this.setScale(0, RoundingMode.FLOOR);
 	}
 
@@ -1506,6 +1795,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} ceil(A)
 	 */
 	ceil() {
+		if(!this.isFinite()) {
+			return this;
+		}
 		return this.setScale(0, RoundingMode.CEILING);
 	}
 	
@@ -1514,6 +1806,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} fix(A), trunc(A)
 	 */
 	fix() {
+		if(!this.isFinite()) {
+			return this;
+		}
 		return this.setScale(0, RoundingMode.DOWN);
 	}
 
@@ -1522,6 +1817,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} fract(A)
 	 */
 	fract() {
+		if(!this.isFinite()) {
+			return this;
+		}
 		return this.sub(this.floor());
 	}
 
@@ -1538,19 +1836,41 @@ export default class BigDecimal {
 	 */
 	pow(number, context) {
 		const num = BigDecimal._toBigDecimal(number);
-		const integer = num.intValue;
 		const mc = context ? context : this.default_context;
+		{
+			if(this.isNaN() || num.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			if(num.isZero()) {
+				return context ? BigDecimal.ONE.round(context) : BigDecimal.ONE;
+			}
+			else if(this.isZero()) {
+				return BigDecimal.ZERO;
+			}
+			else if(this.isOne()) {
+				return context ? this.round(context) : this;
+			}
+			else if(this.isInfinite() || num.isInfinite()) {
+				if(this.isNegative()) {
+					return BigDecimal.NaN;
+				}
+				if(this.compareTo(BigDecimal.ONE) < 0) {
+					return BigDecimal.ZERO;
+				}
+				if(num.isPositiveInfinity()) {
+					return BigDecimal.POSITIVE_INFINITY;
+				}
+				else if(num.isNegativeInfinity()) {
+					return BigDecimal.ZERO;
+				}
+			}
+		}
+		const integer = num.intValue;
 		if(Math.abs(integer) > 1000) {
-			throw "ArithmeticException";
-		}
-		else if(this.isZero()) {
-			return context ? BigDecimal.ONE.round(context) : BigDecimal.ONE;
-		}
-		else if(this.isOne()) {
-			return context ? this.round(context) : this;
+			throw BigDecimal.POSITIVE_INFINITY;
 		}
 		else if((mc.getPrecision() === 0) && (num.isNegative())) {
-			throw "ArithmeticException";
+			return BigDecimal.NaN; // 複素数
 		}
 		if(num.isInteger()) {
 			const is_negative = num.isNegative();
@@ -1565,6 +1885,8 @@ export default class BigDecimal {
 				x = x.multiply(x.clone(), MathContext.UNLIMITED);
 				n >>>= 1;
 			}
+			// コンテキストの状態が変わっているので元に戻す
+			y.default_context = mc;
 			if(!is_negative) {
 				y = y.round(mc);
 			}
@@ -1593,6 +1915,20 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} sqrt(A)
 	 */
 	sqrt(context) {
+		{
+			if(this.isZero()) {
+				return BigDecimal.ZERO;
+			}
+			else if(this.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isNegative()) {
+				return BigDecimal.NaN; // 複素数
+			}
+			else if(this.isInfinite()) {
+				return BigDecimal.POSITIVE_INFINITY;
+			}
+		}
 		/*
 		// 【以下は直接求める方法】
 		// ニュートンラフソン法
@@ -1623,6 +1959,9 @@ export default class BigDecimal {
 		}
 		*/
 		//return xn;
+		if(this.isZero()) {
+			return BigDecimal.ZERO.round(context);
+		}
 		// 上記は割り算があり速度が遅いので、以下の計算で求める。
 		return this.rsqrt(context).inv(context);
 	}
@@ -1633,6 +1972,20 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} rsqrt(A)
 	 */
 	rsqrt(context) {
+		{
+			if(this.isZero()) {
+				return BigDecimal.POSITIVE_INFINITY;
+			}
+			else if(this.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isNegative()) {
+				return BigDecimal.NaN; // 複素数
+			}
+			else if(this.isInfinite()) {
+				return BigDecimal.ZERO;
+			}
+		}
 		const mc = context ? context : this.default_context;
 		const default_context = BigDecimal.getDefaultContext();
 		/**
@@ -1652,7 +2005,7 @@ export default class BigDecimal {
 		const x0 = A.inv();
 		if(x0.isZero()) {
 			BigDecimal.setDefaultContext(default_context);
-			return null;
+			throw "ArithmeticException";
 		}
 		let xn = x0;
 		for(let i = 0; i < 50; i++) {
@@ -1675,8 +2028,19 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} log(A)
 	 */
 	log(context) {
-		if(this.isZero() || this.isNegative()) {
-			throw "ArithmeticException";
+		{
+			if(this.isZero()) {
+				return BigDecimal.NEGATIVE_INFINITY;
+			}
+			else if(this.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isNegative()) {
+				return BigDecimal.NaN; // 複素数
+			}
+			else if(this.isInfinite()) {
+				return BigDecimal.POSITIVE_INFINITY;
+			}
 		}
 		const mc = context ? context : this.default_context;
 		if(this.isOne()) {
@@ -1759,8 +2123,19 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} exp(A)
 	 */
 	exp(context) {
-		if(this.isZero()) {
-			return new BigDecimal([1, context]);
+		{
+			if(this.isZero()) {
+				return new BigDecimal([1, context]);
+			}
+			else if(this.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isNegativeInfinity()) {
+				return BigDecimal.ZERO;
+			}
+			else if(this.isPositiveInfinity()) {
+				return BigDecimal.POSITIVE_INFINITY;
+			}
 		}
 		const is_negative = this.isNegative();
 		const mc = context ? context : this.default_context;
@@ -1834,6 +2209,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} sin(A)
 	 */
 	sin(context) {
+		if(!this.isFinite()) {
+			return BigDecimal.NaN;
+		}
 		const mc = context ? context : this.default_context;
 		const default_context = BigDecimal.getDefaultContext();
 		// 2PIの余りを実際の計算で使用する。
@@ -1883,6 +2261,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} cos(A)
 	 */
 	cos(context) {
+		if(!this.isFinite()) {
+			return BigDecimal.NaN;
+		}
 		const mc = context ? context : this.default_context;
 		const default_context = BigDecimal.getDefaultContext();
 		// 2PIの余りを実際の計算で使用する。
@@ -1932,6 +2313,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} tan(A)
 	 */
 	tan(context) {
+		if(!this.isFinite()) {
+			return BigDecimal.NaN;
+		}
 		const mc = context ? context : this.default_context;
 		return this.sin(mc).div(this.cos(mc));
 	}
@@ -1943,6 +2327,17 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} atan(A)
 	 */
 	atan(context) {
+		if(!this.isFinite()) {
+			if(this.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isPositiveInfinity()) {
+				return BigDecimal.HALF_PI;
+			}
+			else {
+				return BigDecimal.HALF_PI.negate();
+			}
+		}
 		const mc = context ? context : this.default_context;
 		const default_context = BigDecimal.getDefaultContext();
 		BigDecimal.setDefaultContext(mc);
@@ -2032,6 +2427,9 @@ export default class BigDecimal {
 		// y.atan2(x) とする。
 		const y = this.round(context);
 		const x = new BigDecimal([number, context]);
+		if(x.isNaN() || y.isNaN()) {
+			return BigDecimal.NaN;
+		}
 		// 参考: https://en.wikipedia.org/wiki/Inverse_trigonometric_functions
 		let ret;
 		if(x.isPositive()) {
@@ -2057,6 +2455,386 @@ export default class BigDecimal {
 	}
 
 	// ----------------------
+	// ビット演算系
+	// ----------------------
+	
+	/**
+	 * Logical AND.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A & B
+	 */
+	and(number, context) {
+		const n_src = this;
+		const n_tgt = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : n_tgt.default_context;
+		if((!n_src.isFinite()) || (!n_tgt.isFinite())) {
+			if(n_src.isNaN() || n_tgt.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			return BigDecimal.ZERO;
+		}
+		const src	= n_src.toBigInteger();
+		const tgt	= n_tgt.toBigInteger();
+		return new BigDecimal([src.and(tgt), mc]);
+	}
+
+	/**
+	 * Logical OR.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A | B
+	 */
+	or(number, context) {
+		const n_src = this;
+		const n_tgt = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : n_tgt.default_context;
+		if((!n_src.isFinite()) || (!n_tgt.isFinite())) {
+			if(n_src.isNaN() || n_tgt.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			if(n_src.isInfinite() || n_tgt.isInfinite()) {
+				return BigDecimal.ZERO;
+			}
+			const x = n_src.isInfinite() ? n_tgt : n_src; 
+			return x.fract().round(mc);
+		}
+		const src	= n_src.toBigInteger();
+		const tgt	= n_tgt.toBigInteger();
+		return new BigDecimal([src.or(tgt), mc]);
+	}
+
+	/**
+	 * Logical Exclusive-OR.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A ^ B
+	 */
+	xor(number, context) {
+		const n_src = this;
+		const n_tgt = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : n_tgt.default_context;
+		if((!n_src.isFinite()) || (!n_tgt.isFinite())) {
+			if(n_src.isNaN() || n_tgt.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			if(n_src.isInfinite() || n_tgt.isInfinite()) {
+				return BigDecimal.ZERO;
+			}
+			const x = n_src.isInfinite() ? n_tgt : n_src; 
+			return x.fract().round(mc);
+		}
+		const src	= n_src.toBigInteger();
+		const tgt	= n_tgt.toBigInteger();
+		return new BigDecimal([src.xor(tgt), mc]);
+	}
+
+	/**
+	 * Logical Not. (mutable)
+	 * - Calculated as an integer.
+	 * @param {MathContext} [context] - MathContext setting after calculation.
+	 * @returns {BigDecimal} !A
+	 */
+	not(context) {
+		const mc = context ? context : this.default_context;
+		const n_src = this;
+		if(!n_src.isFinite()) {
+			if(n_src.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			return BigDecimal.MINUS_ONE.round(mc);
+		}
+		const src	= n_src.toBigInteger();
+		return new BigDecimal([src.not(), mc]);
+	}
+	
+	/**
+	 * this << n
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} n
+	 * @param {MathContext} [context] - MathContext setting after calculation.
+	 * @returns {BigDecimal} A << n
+	 */
+	shift(n, context) {
+		const mc = context ? context : this.default_context;
+		if(!this.isFinite()) {
+			return this.round(mc);
+		}
+		const src		= this.toBigInteger();
+		const number	= BigDecimal._toInteger(n);
+		return new BigDecimal([src.shift(number), mc]);
+	}
+
+	// ----------------------
+	// 特殊な用途の三角関数
+	// ----------------------
+	
+	/**
+	 * Arc sine function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} asin(A)
+	 */
+	asin(context) {
+		// 逆正弦
+		const mc = context ? context : this.default_context;
+		// 複素数
+		const re_1 = this.square().negate().add(1).sqrt();
+		const im_1 = this;
+		// 複素数のログ
+		const norm = re_1.square().add(im_1.square()).sqrt();
+		const arg  = im_1.atan2(re_1);
+		const re_2 = norm.log();
+		const im_2 = arg;
+		// -i を掛け算する
+		return re_2.add(im_2, mc);
+	}
+
+	/**
+	 * Arc cosine function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} acos(A)
+	 */
+	acos(context) {
+		// 逆余弦
+		const mc = context ? context : this.default_context;
+		// 複素数
+		const re_1 = this;
+		const im_1 = this.square().negate().add(1).sqrt();
+		// 複素数のログ
+		const norm = re_1.square().add(im_1.square()).sqrt();
+		const arg  = im_1.atan2(re_1);
+		const re_2 = norm.log();
+		const im_2 = arg;
+		// -i を掛け算する
+		return re_2.add(im_2, mc);
+	}
+	
+	/**
+	 * Inverse hyperbolic sine function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} asinh(A)
+	 */
+	asinh(context) {
+		// 逆双曲線正弦 Math.log(x + Math.sqrt(x * x + 1));
+		if(this.isInfinite()) {
+			return this;
+		}
+		const mc = context ? context : this.default_context;
+		return this.add(this.mul(this).add(1).sqrt()).log(mc);
+	}
+
+	/**
+	 * Inverse hyperbolic cosine function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} acosh(A)
+	 */
+	acosh(context) {
+		// 逆双曲線余弦 Math.log(x + Math.sqrt(x * x - 1));
+		const mc = context ? context : this.default_context;
+		return this.add(this.mul(this).sub(1).sqrt()).log(mc);
+	}
+
+	/**
+	 * Reverse secant function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} asec(A)
+	 */
+	asec(context) {
+		// 逆正割
+		const mc = context ? context : this.default_context;
+		return this.inv().acos(mc);
+	}
+
+	/**
+	 * Inverse hyperbolic secant function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} asech(A)
+	 */
+	asech(context) {
+		// 逆双曲線正割
+		const mc = context ? context : this.default_context;
+		return this.inv().add(this.square().inv().sub(1).sqrt()).log(mc);
+	}
+
+	/**
+	 * Inverse Cotangent function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} acot(A)
+	 */
+	acot(context) {
+		// 逆余接
+		const mc = context ? context : this.default_context;
+		return this.inv().atan(mc);
+	}
+
+	/**
+	 * Inverse hyperbolic cotangent function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} acoth(A)
+	 */
+	acoth(context) {
+		// 逆双曲線余接
+		const mc = context ? context : this.default_context;
+		return this.add(1).div(this.sub(1)).log().mul(0.5, mc);
+	}
+
+	/**
+	 * Inverse hyperbolic tangent function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} atanh(A)
+	 */
+	atanh(context) {
+		// 逆双曲線正接
+		const mc = context ? context : this.default_context;
+		return this.add(1).div(this.negate().add(1)).log().mul(0.5, mc);
+	}
+
+	/**
+	 * Hyperbolic sine function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} sinh(A)
+	 */
+	sinh(context) {
+		// 双曲線正弦
+		const mc = context ? context : this.default_context;
+		const y = this.exp();
+		return y.sub(y.inv()).mul(0.5, mc);
+	}
+
+	/**
+	 * Hyperbolic cosine function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} cosh(A)
+	 */
+	cosh(context) {
+		// 双曲線余弦
+		const mc = context ? context : this.default_context;
+		return this.exp().add(this.negate().exp()).mul(0.5, mc);
+	}
+
+	/**
+	 * Secant function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} sec(A)
+	 */
+	sec(context) {
+		// 正割
+		const mc = context ? context : this.default_context;
+		return this.cos().inv(mc);
+	}
+
+	/**
+	 * Hyperbolic secant function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} sech(A)
+	 */
+	sech(context) {
+		// 双曲線正割
+		const mc = context ? context : this.default_context;
+		return this.exp().add(this.negate().exp()).inv().mul(2, mc);
+	}
+
+	/**
+	 * Cotangent function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} cot(A)
+	 */
+	cot(context) {
+		// 余接
+		const mc = context ? context : this.default_context;
+		return this.tan().inv(mc);
+	}
+
+	/**
+	 * Hyperbolic cotangent function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} coth(A)
+	 */
+	coth(context) {
+		// 双曲線余接
+		const mc = context ? context : this.default_context;
+		const y =  this.mul(2).exp();
+		return y.add(1).div(y.sub(1), mc);
+	}
+
+	/**
+	 * Cosecant function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} csc(A)
+	 */
+	csc(context) {
+		// 余割
+		const mc = context ? context : this.default_context;
+		return this.sin().inv(mc);
+	}
+
+	/**
+	 * Hyperbolic cosecant function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} csch(A)
+	 */
+	csch(context) {
+		// 双曲線余割
+		const mc = context ? context : this.default_context;
+		return this.exp().sub(this.negate().exp()).inv().mul(2, mc);
+	}
+
+	/**
+	 * Inverse cosecant function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} acsc(A)
+	 */
+	acsc(context) {
+		// 逆余割
+		const mc = context ? context : this.default_context;
+		return this.inv().asin(mc);
+	}
+
+	/**
+	 * Inverse hyperbolic cosecant function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} acsch(A)
+	 */
+	acsch(context) {
+		// 逆双曲線余割
+		const mc = context ? context : this.default_context;
+		return this.inv().add(this.square().inv().add(1).sqrt()).log(mc);
+	}
+
+	/**
+	 * Hyperbolic tangent function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} tanh(A)
+	 */
+	tanh(context) {
+		// 双曲線正接
+		const mc = context ? context : this.default_context;
+		const y =  this.mul(2).exp();
+		return y.sub(1).div(y.add(1), mc);
+	}
+
+	// ----------------------
+	// 信号処理系
+	// ----------------------
+	
+	/**
+	 * Normalized sinc function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} sinc(A)
+	 */
+	sinc(context) {
+		const mc = context ? context : this.default_context;
+		if(this.isZero()) {
+			return(BigDecimal.ONE);
+		}
+		const x = BigDecimal.PI.mul(this);
+		return x.sin().div(x, mc);
+	}
+
+	// ----------------------
 	// テスト系
 	// ----------------------
 	
@@ -2066,6 +2844,9 @@ export default class BigDecimal {
 	 * @returns {boolean}
 	 */
 	isInteger(tolerance) {
+		if(!this.isFinite()) {
+			return false;
+		}
 		return this.sub(this.fix()).isZero(tolerance);
 	}
 
@@ -2075,6 +2856,9 @@ export default class BigDecimal {
 	 * @returns {boolean}
 	 */
 	isZero(tolerance) {
+		if(!this.isFinite()) {
+			return false;
+		}
 		if(tolerance) {
 			return this.equals(BigDecimal.ZERO, tolerance);
 		}
@@ -2089,15 +2873,26 @@ export default class BigDecimal {
 	 * @returns {boolean}
 	 */
 	isOne(tolerance) {
+		if(!this.isFinite()) {
+			return false;
+		}
 		return this.compareTo(BigDecimal.ONE, tolerance) === 0;
 	}
 	
+	/**
+	 * this === NaN
+	 * @returns {boolean} isNaN(A)
+	 */
+	isNaN() {
+		return this.state === BIGDECIMAL_NUMBER_STATE.NOT_A_NUMBER;
+	}
+
 	/**
 	 * this > 0
 	 * @returns {boolean}
 	 */
 	isPositive() {
-		return this.integer.isPositive();
+		return this.integer.isPositive() || this.isPositiveInfinity();
 	}
 
 	/**
@@ -2105,7 +2900,7 @@ export default class BigDecimal {
 	 * @returns {boolean}
 	 */
 	isNegative() {
-		return this.integer.isNegative();
+		return this.integer.isNegative() || this.isNegativeInfinity();
 	}
 
 	/**
@@ -2114,6 +2909,38 @@ export default class BigDecimal {
 	 */
 	isNotNegative() {
 		return this.integer.isNotNegative();
+	}
+	
+	/**
+	 * this === Infinity
+	 * @returns {boolean} isPositiveInfinity(A)
+	 */
+	isPositiveInfinity() {
+		return this.state === BIGDECIMAL_NUMBER_STATE.POSITIVE_INFINITY;
+	}
+
+	/**
+	 * this === -Infinity
+	 * @returns {boolean} isNegativeInfinity(A)
+	 */
+	isNegativeInfinity() {
+		return this.state === BIGDECIMAL_NUMBER_STATE.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * this === Infinity or -Infinity
+	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+	 */
+	isInfinite() {
+		return this.isPositiveInfinity() || this.isNegativeInfinity();
+	}
+	
+	/**
+	 * Return true if the value is finite number.
+	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
+	 */
+	isFinite() {
+		return !this.isNaN() && !this.isInfinite();
 	}
 
 	// ----------------------
@@ -2255,7 +3082,31 @@ export default class BigDecimal {
 	static get SQRT1_2() {
 		return CACHED_DATA.SQRT1_2.get();
 	}
+
+	/**
+	 * Positive infinity.
+	 * @returns {BigDecimal} Infinity
+	 */
+	static get POSITIVE_INFINITY() {
+		return DEFINE.POSITIVE_INFINITY;
+	}
 	
+	/**
+	 * Negative Infinity.
+	 * @returns {BigDecimal} -Infinity
+	 */
+	static get NEGATIVE_INFINITY() {
+		return DEFINE.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * Not a Number.
+	 * @returns {BigDecimal} NaN
+	 */
+	static get NaN() {
+		return DEFINE.NaN;
+	}
+
 }
 
 BigDecimal.RoundingMode = RoundingMode;
@@ -2442,7 +3293,22 @@ const DEFINE = {
 	 */
 	SQRT1_2 : function() {
 		return (new BigDecimal(0.5)).sqrt();
-	}
+	},
+	
+	/**
+	 * Positive infinity.
+	 */
+	POSITIVE_INFINITY : new BigDecimal(Number.POSITIVE_INFINITY),
+
+	/**
+	 * Negative Infinity.
+	 */
+	NEGATIVE_INFINITY : new BigDecimal(Number.NEGATIVE_INFINITY),
+
+	/**
+	 * Not a Number.
+	 */
+	NaN : new BigDecimal(Number.NaN)
 	
 };
 

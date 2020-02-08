@@ -323,13 +323,6 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 }
 
 {
-	test_count = 0;
-	testOperator2("andNot", "0x1234ffffff0000000000", $("0x1234ffffff0000000000").negate(), "0x1234fffffe0000000000");
-	testOperator2("andNot", "0x1234ffffff0000000000", $("0x8765ffffff0000000000"), "0x10100000000000000000");
-	testOperator2("andNot", $("0x1234ffffff0000000000").negate(), $("0x8765ffffff0000000000").negate(), "0x85410000000000000000");
-}
-
-{
 	test("intValue", () => {
 		expect(
 			$("0x3334342423423").intValue.toString(16) === "42423423"
@@ -392,7 +385,19 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 		expect(
 			BigInteger.probablePrime(20).isProbablePrime()
 		).toBe(true);
-	});	
+	});
+	
+	test("isPrime 1", () => {
+		expect(
+			$("2147483647").isPrime()
+		).toBe(true);
+	});
+
+	test("isPrime 2", () => {
+		expect(
+			$("826446446281").isPrime()
+		).toBe(false);
+	});
 }
 
 {

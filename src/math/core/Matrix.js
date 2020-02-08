@@ -2179,6 +2179,28 @@ export default class Matrix {
 	}
 
 	/**
+	 * Test if each element of the matrix is positive infinite.
+	 * - 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testPositiveInfinity() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isPositiveInfinity() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+	
+	/**
+	 * Test if each element of the matrix is negative infinite.
+	 * - 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testNegativeInfinity() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isNegativeInfinity() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+	
+	/**
 	 * Test if each element of the matrix is infinite.
 	 * - 1 if true, 0 if false.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.

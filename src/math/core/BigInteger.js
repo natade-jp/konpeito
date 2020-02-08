@@ -1431,6 +1431,36 @@ export default class BigInteger {
 	}
 
 	/**
+	 * Return true if the value is prime number.
+	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
+	 */
+	isPrime() {
+		// 0や負の値は、素数ではない
+		if(this.sign() <= 0) {
+			return false;
+		}
+		// 47453132.81212578 = Math.sqrt(Number.MAX_SAFE_INTEGER)
+		const limit = Math.sqrt(Math.pow(2, 51));
+		const target_number = this.doubleValue;
+		const count_max = Math.ceil(Math.sqrt(target_number));
+		// 1, 2 -> true
+		if(target_number <= 2) {
+			return true;
+		}
+		// 指定した値より大きい場合は計算不可能として false を返す
+		if(count_max > limit) {
+			return null;
+		}
+		for(let i = 2; i <= count_max; i++) {
+			if((target_number % i) === 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
 	 * Return true if the value is prime number by Miller-Labin prime number determination method.
 	 * Attention : it takes a very long time to process.
 	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
@@ -1438,19 +1468,23 @@ export default class BigInteger {
 	 */
 	isProbablePrime(certainty) {
 		const e = this.element;
-		//0, 1, 2 -> true
-		if( (e.length === 0) || ((e.length === 1)&&(e[0] <= 2)) ) {
+		// 0や負の値は、素数ではない
+		if(this.sign() <= 0) {
+			return false;
+		}
+		// 1, 2 -> true
+		if((e.length === 1)&&(e[0] <= 2)) {
 			return true;
 		}
-		//even number -> false
+		// even number -> false
 		else if((e[0] & 1) === 0) {
 			return false;
 		}
 		// ミラーラビン素数判定法
 		// かなり処理が重たいです。まあお遊び程度に使用という感じで。
 		const loop	= certainty !== undefined ? BigInteger._toInteger(certainty) : 100;
-		const ZERO	= new BigInteger(0);
-		const ONE	= new BigInteger(1);
+		const ZERO	= BigInteger.ZERO;
+		const ONE	= BigInteger.ONE;
 		const n		= this;
 		const LEN	= n.bitLength();
 		const n_1	= n.subtract(ONE);
@@ -1844,84 +1878,6 @@ export default class BigInteger {
 	 */
 	not() {
 		return(this.clone()._not());
-	}
-
-	/**
-	 * Logical Not-AND. (mutable)
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A &= (!B)
-	 * @private
-	 */
-	_andNot(number) {
-		const val = BigInteger._toBigInteger(number);
-		return(this._and(val.not()));
-	}
-
-	/**
-	 * Logical Not-AND.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A & (!B)
-	 */
-	andNot(number) {
-		return(this.clone()._andNot(number));
-	}
-
-	/**
-	 * Logical Not-AND. (mutable)
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A &= (!B)
-	 * @private
-	 */
-	_nand(number) {
-		return(this._andNot(number));
-	}
-
-	/**
-	 * Logical Not-AND.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A & (!B)
-	 */
-	nand(number) {
-		return(this.andNot(number));
-	}
-
-	/**
-	 * Logical Not-OR. (mutable)
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A = !(A | B)
-	 * @private
-	 */
-	_orNot(number) {
-		const val = BigInteger._toBigInteger(number);
-		return(this._or(val)._not());
-	}
-
-	/**
-	 * Logical Not-OR.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} !(A | B)
-	 */
-	orNot(number) {
-		return(this.clone()._orNot(number));
-	}
-
-	/**
-	 * Logical Not-OR. (mutable)
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A = !(A | B)
-	 * @private
-	 */
-	_nor(number) {
-		return(this._orNot(number));
-	}
-
-	/**
-	 * Logical Not-OR.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} !(A | B)
-	 */
-	nor(number) {
-		return(this.orNot(number));
 	}
 
 	/**

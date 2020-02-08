@@ -393,9 +393,20 @@ export default class Complex {
 	 * @returns {Complex} 
 	 */
 	sign() {
+		if(!this.isFinite()) {
+			if(this.isNaN() || this._im === Infinity || this._im === -Infinity) {
+				return Complex.NaN;
+			}
+			if(this._re === Infinity) {
+				return Complex.ONE;
+			}
+			else {
+				return Complex.MINUS_ONE;
+			}
+		}
 		if(this._im === 0) {
 			if(this._re === 0) {
-				return new Complex(0);
+				return Complex.ZERO;
 			}
 			else {
 				return new Complex(this._re > 0 ? 1 : -1);
@@ -736,13 +747,26 @@ export default class Complex {
 
 	/**
 	 * this === Infinity
-	 * @returns {boolean} isInfinite(A)
+	 * @returns {boolean} isPositiveInfinity(A)
+	 */
+	isPositiveInfinity() {
+		return this._re === Number.POSITIVE_INFINITY || this._im === Number.POSITIVE_INFINITY;
+	}
+
+	/**
+	 * this === -Infinity
+	 * @returns {boolean} isNegativeInfinity(A)
+	 */
+	isNegativeInfinity() {
+		return this._re === Number.NEGATIVE_INFINITY || this._im === Number.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * this === Infinity or -Infinity
+	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
 	 */
 	isInfinite() {
-		return	(this._re === Number.POSITIVE_INFINITY) ||
-				(this._im === Number.POSITIVE_INFINITY) ||
-				(this._re === Number.NEGATIVE_INFINITY) ||
-				(this._im === Number.NEGATIVE_INFINITY);
+		return this.isPositiveInfinity() || this.isNegativeInfinity();
 	}
 	
 	/**
