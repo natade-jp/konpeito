@@ -25,7 +25,7 @@ import Random from "./tools/Random.js";
  * - "0xff", ["ff", 16]
  * - "0o01234567", ["01234567", 8]
  * - "0b0110101", ["0110101", 2]
- * @typedef {BigInteger|number|string|Array<string|number>|{toBigInteger:function}|{intValue:number}|{toString:function}} KBigIntegerInputData
+ * @typedef {BigInteger|number|boolean|string|Array<string|number>|{toBigInteger:function}|{intValue:number}|{toString:function}} KBigIntegerInputData
  */
 
 /**
@@ -385,6 +385,11 @@ export default class BigInteger {
 					this.element = x.element;
 					this._sign = x._sign;
 				}
+			}
+			else if(typeof number === "boolean") {
+				const x = BigIntegerTool.toBigIntegerFromNumber(number ? 1 : 0);
+				this.element = x.element;
+				this._sign = x._sign;
 			}
 			else {
 				throw "BigInteger Unsupported argument " + number;

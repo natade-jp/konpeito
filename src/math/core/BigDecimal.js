@@ -15,13 +15,14 @@ import MathContext from "./context/MathContext.js";
 /**
  * BigDecimal type argument.(local)
  * - number
+ * - boolean
  * - string
  * - BigDecimal
  * - BigInteger
  * - {toBigDecimal:function}
  * - {doubleValue:number}
  * - {toString:function}
- * @typedef {number|string|BigDecimal|BigInteger|{toBigDecimal:function}|{doubleValue:number}|{toString:function}} KBigDecimalLocalInputData
+ * @typedef {number|boolean|string|BigDecimal|BigInteger|{toBigDecimal:function}|{doubleValue:number}|{toString:function}} KBigDecimalLocalInputData
  */
 
 /**
@@ -95,27 +96,29 @@ class BigDecimalTool {
 		// 正規化
 		let text = ntext.replace(/\s/g, "").toLowerCase();
 		// 特殊な状態
-		if(/^nan/.test(text)) {
-			return {
-				state : BIGDECIMAL_NUMBER_STATE.NOT_A_NUMBER,
-				scale : 0,
-				integer : BigInteger.ZERO
-			};
-		}
-		else if(/inf/.test(text)) {
-			if(!/-/.test(text)) {
+		{
+			if(/nan/.test(text)) {
 				return {
-					state : BIGDECIMAL_NUMBER_STATE.POSITIVE_INFINITY,
+					state : BIGDECIMAL_NUMBER_STATE.NOT_A_NUMBER,
 					scale : 0,
 					integer : BigInteger.ZERO
 				};
 			}
-			else {
-				return {
-					state : BIGDECIMAL_NUMBER_STATE.NEGATIVE_INFINITY,
-					scale : 0,
-					integer : BigInteger.ZERO
-				};
+			else if(/inf/.test(text)) {
+				if(!/-/.test(text)) {
+					return {
+						state : BIGDECIMAL_NUMBER_STATE.POSITIVE_INFINITY,
+						scale : 0,
+						integer : BigInteger.ZERO
+					};
+				}
+				else {
+					return {
+						state : BIGDECIMAL_NUMBER_STATE.NEGATIVE_INFINITY,
+						scale : 0,
+						integer : BigInteger.ZERO
+					};
+				}
 			}
 		}
 		// +-の符号があるか
@@ -159,30 +162,33 @@ class BigDecimalTool {
 
 	/**
 	 * Create data for BigDecimal from number.
-	 * @param {number} value 
+	 * @param {number|boolean} number 
 	 * @returns {{state : number, scale : number, integer : BigInteger}}
 	 */
-	static ToBigDecimalFromNumber(value) {
-		if(isNaN(value)) {
-			return {
-				state : BIGDECIMAL_NUMBER_STATE.NOT_A_NUMBER,
-				scale : 0,
-				integer : BigInteger.ZERO
-			};
-		}
-		else if(value === Infinity) {
-			return {
-				state : BIGDECIMAL_NUMBER_STATE.POSITIVE_INFINITY,
-				scale : 0,
-				integer : BigInteger.ZERO
-			};
-		}
-		else if(value === - Infinity) {
-			return {
-				state : BIGDECIMAL_NUMBER_STATE.NEGATIVE_INFINITY,
-				scale : 0,
-				integer : BigInteger.ZERO
-			};
+	static ToBigDecimalFromNumber(number) {
+		const value = typeof number !== "boolean" ? number : (number ? 1 : 0);
+		if(!isFinite(value)) {
+			if(value === Infinity) {
+				return {
+					state : BIGDECIMAL_NUMBER_STATE.POSITIVE_INFINITY,
+					scale : 0,
+					integer : BigInteger.ZERO
+				};
+			}
+			else if(value === - Infinity) {
+				return {
+					state : BIGDECIMAL_NUMBER_STATE.NEGATIVE_INFINITY,
+					scale : 0,
+					integer : BigInteger.ZERO
+				};
+			}
+			else {
+				return {
+					state : BIGDECIMAL_NUMBER_STATE.NOT_A_NUMBER,
+					scale : 0,
+					integer : BigInteger.ZERO
+				};
+			}
 		}
 		// 整数
 		if(value === Math.floor(value)) {
@@ -220,7 +226,6 @@ class BigDecimalTool {
 
 /**
  * Arbitrary-precision floating-point number class (immutable).
- * - Sorry. Infinity and NaN do not correspond yet.
  */
 export default class BigDecimal {
 	
@@ -290,7 +295,7 @@ export default class BigDecimal {
 			this.default_context	= number.default_context;
 
 		}
-		else if(typeof number === "number") {
+		else if((typeof number === "number") || (typeof number === "boolean")) {
 			const data = BigDecimalTool.ToBigDecimalFromNumber(number);
 			this.state		= data.state;
 			this.integer	= data.integer;
@@ -305,7 +310,7 @@ export default class BigDecimal {
 		else if(number instanceof Array) {
 			if(number.length >= 1) {
 				const prm1 = number[0];
-				if(typeof prm1 === "number") {
+				if((typeof prm1 === "number") || (typeof prm1 === "boolean")) {
 					const data		= BigDecimalTool.ToBigDecimalFromNumber(prm1);
 					this.state		= data.state;
 					this.integer	= data.integer;
@@ -626,8 +631,8 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} abs(A)
 	 */
 	abs(mc) {
-		if(!this.isFinite) {
-			return this;
+		if(!this.isFinite()) {
+			return this.isNegativeInfinity() ? BigDecimal.POSITIVE_INFINITY : this;
 		}
 		const output = this.clone();
 		output.integer = output.integer.abs();
@@ -640,7 +645,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} +A
 	 */
 	plus(mc) {
-		if(!this.isFinite) {
+		if(!this.isFinite()) {
 			return this;
 		}
 		const output = this.clone();
@@ -653,7 +658,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} -A
 	 */
 	negate(mc) {
-		if(!this.isFinite) {
+		if(!this.isFinite()) {
 			if(this.isPositiveInfinity()) {
 				return BigDecimal.NEGATIVE_INFINITY;
 			}
@@ -675,7 +680,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	movePointLeft(n) {
-		if(!this.isFinite) {
+		if(!this.isFinite()) {
 			return this;
 		}
 		const x = BigDecimal._toInteger(n);
@@ -690,7 +695,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	movePointRight(n) {
-		if(!this.isFinite) {
+		if(!this.isFinite()) {
 			return this;
 		}
 		const x = BigDecimal._toInteger(n);
@@ -704,7 +709,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	stripTrailingZeros() {
-		if(!this.isFinite) {
+		if(!this.isFinite()) {
 			return this;
 		}
 		// 0をできる限り取り除く
@@ -861,7 +866,7 @@ export default class BigDecimal {
 		const src		= this;
 		const tgt		= divisor;
 		if(!src.isFinite() || !tgt.isFinite()) {
-			if(src.isNaN() || tgt.isNaN() || (this.isInfinite() && tgt.isInfinite())) {
+			if(src.isNaN() || tgt.isNaN() || (src.isInfinite() && tgt.isInfinite())) {
 				return BigDecimal.NaN;
 			}
 			else if(src.isInfinite()) {
@@ -1054,7 +1059,7 @@ export default class BigDecimal {
 		const src			= this;
 		const tgt			= divisor;
 		if(!src.isFinite() || !tgt.isFinite()) {
-			if(src.isNaN() || tgt.isNaN() || (this.isInfinite() && tgt.isInfinite())) {
+			if(src.isNaN() || tgt.isNaN() || (src.isInfinite() && tgt.isInfinite())) {
 				return BigDecimal.NaN;
 			}
 			else if(src.isInfinite()) {
@@ -1206,11 +1211,13 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 1 / A
 	 */
 	inv(context) {
-		if(!this.isFinite()) {
-			return this.isNaN() ? BigDecimal.NaN : BigDecimal.ZERO;
-		}
-		if(this.isZero()) {
-			return BigDecimal.NaN;
+		{
+			if(!this.isFinite()) {
+				return this.isNaN() ? BigDecimal.NaN : BigDecimal.ZERO;
+			}
+			if(this.isZero()) {
+				return BigDecimal.NaN;
+			}
 		}
 		// 通常の割り算を行うと、「1」÷巨大な数を計算したときに、
 		// 1 の仮数部の精度によってしまい、結果が0になってしまう場合がある
@@ -1395,7 +1402,7 @@ export default class BigDecimal {
 		if(!tolerance) {
 			if((number instanceof BigDecimal) || (typeof number === "string")) {
 				const val = number instanceof BigDecimal ? number : BigDecimal._toBigDecimal(number);
-				if(val.isNaN() || val.isNaN()) {
+				if(this.isNaN() || val.isNaN()) {
 					return false;
 				}
 				else {
@@ -1523,10 +1530,10 @@ export default class BigDecimal {
 	clip(min, max) {
 		const min_ = BigDecimal._toBigDecimal(min);
 		const max_ = BigDecimal._toBigDecimal(max);
-		const arg_check = min_.compareTo(max_);
 		if(this.isNaN() || min_.isNaN() || max_.isNaN()) {
 			return BigDecimal.NaN;
 		}
+		const arg_check = min_.compareTo(max_);
 		if(arg_check === 1) {
 			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
 		}
@@ -1822,7 +1829,7 @@ export default class BigDecimal {
 	 */
 	fract() {
 		if(!this.isFinite()) {
-			return this;
+			return BigDecimal.NaN;
 		}
 		return this.sub(this.floor());
 	}
@@ -2945,14 +2952,6 @@ export default class BigDecimal {
 		}
 		return this.compareTo(BigDecimal.ONE, tolerance) === 0;
 	}
-	
-	/**
-	 * this === NaN
-	 * @returns {boolean} isNaN(A)
-	 */
-	isNaN() {
-		return this.state === BIGDECIMAL_NUMBER_STATE.NOT_A_NUMBER;
-	}
 
 	/**
 	 * this > 0
@@ -2975,7 +2974,15 @@ export default class BigDecimal {
 	 * @returns {boolean}
 	 */
 	isNotNegative() {
-		return this.integer.isNotNegative();
+		return this.integer.isNotNegative() || this.isPositiveInfinity();
+	}
+	
+	/**
+	 * this === NaN
+	 * @returns {boolean} isNaN(A)
+	 */
+	isNaN() {
+		return this.state === BIGDECIMAL_NUMBER_STATE.NOT_A_NUMBER;
 	}
 	
 	/**

@@ -18,6 +18,7 @@ import MathContext from "./context/MathContext.js";
  * - BigInteger
  * - BigDecimal
  * - number
+ * - boolean
  * - string
  * - Array<KBigIntegerInputData>
  * - {numerator:KBigIntegerInputData,denominator:KBigIntegerInputData}
@@ -29,8 +30,20 @@ import MathContext from "./context/MathContext.js";
  * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
  * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
  * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
- * @typedef {Fraction|BigInteger|BigDecimal|number|string|Array<import("./BigInteger.js").KBigIntegerInputData>|{numerator:import("./BigInteger.js").KBigIntegerInputData,denominator:import("./BigInteger.js").KBigIntegerInputData}|{doubleValue:number}|{toString:function}} KFractionInputData
+ * @typedef {Fraction|BigInteger|BigDecimal|number|boolean|string|Array<import("./BigInteger.js").KBigIntegerInputData>|{numerator:import("./BigInteger.js").KBigIntegerInputData,denominator:import("./BigInteger.js").KBigIntegerInputData}|{doubleValue:number}|{toString:function}} KFractionInputData
  */
+
+/**
+ * Numeric state.
+ * @type {{NUMBER:number, NOT_A_NUMBER:number, POSITIVE_INFINITY:number, NEGATIVE_INFINITY:number}}
+ * @ignore
+ */
+const FRACTION_NUMBER_STATE = {
+	NUMBER : 0,
+	NOT_A_NUMBER : 1,
+	POSITIVE_INFINITY : 2,
+	NEGATIVE_INFINITY : 3
+};
 
 /**
  * Collection of functions used in Fraction.
@@ -157,6 +170,22 @@ class FractionTool {
 	 * @return {Fraction}
 	 */
 	static to_fraction_data_from_fraction_string(ntext) {
+		// 特殊な状態
+		if(/nan|inf/i.test(ntext)) {
+			const ret = new Fraction();
+			ret.numerator = BigInteger.ZERO;
+			ret.denominator = BigInteger.ZERO;
+			if(/nan/i.test(ntext)) {
+				ret.state = FRACTION_NUMBER_STATE.NOT_A_NUMBER;
+			}
+			else if(!/-/.test(ntext)) {
+				ret.state = FRACTION_NUMBER_STATE.POSITIVE_INFINITY;
+			}
+			else {
+				ret.state = FRACTION_NUMBER_STATE.NEGATIVE_INFINITY;
+			}
+			return ret;
+		}
 		if(ntext.indexOf("/") === -1) {
 			return FractionTool.to_fraction_data_from_number_string(ntext);
 		}
@@ -170,14 +199,30 @@ class FractionTool {
 
 	/**
 	 * Create data for Fraction from number.
-	 * @param value {number}
+	 * @param number {number|boolean}
 	 * @return {Fraction}
 	 */
-	static to_fraction_data_from_number(value) {
+	static to_fraction_data_from_number(number) {
+		const value = typeof number !== "boolean" ? number : (number ? 1 : 0);
 		let numerator = null;
 		let denominator = null;
+		if(!isFinite(value)) {
+			const ret = new Fraction();
+			ret.numerator = BigInteger.ZERO;
+			ret.denominator = BigInteger.ZERO;
+			if(value === Infinity) {
+				ret.state = FRACTION_NUMBER_STATE.POSITIVE_INFINITY;
+			}
+			else if(value === - Infinity) {
+				ret.state = FRACTION_NUMBER_STATE.NEGATIVE_INFINITY;
+			}
+			else {
+				ret.state = FRACTION_NUMBER_STATE.NOT_A_NUMBER;
+			}
+			return ret;
+		}
 		// 整数
-		if(value === Math.floor(value)) {
+		else if(value === Math.floor(value)) {
 			numerator = new BigInteger(value);
 			denominator = BigInteger.ONE;
 		}
@@ -218,6 +263,7 @@ class FractionTool {
 	 * - Add the sign to the numerator.
 	 * - If the number is zero, the denominator is one.
 	 * @param value {Fraction}
+	 * @returns {void}
 	 */
 	static normalization(value) {
 		if(value.denominator.equals(BigInteger.ONE)) {
@@ -264,15 +310,24 @@ export default class Fraction {
 		
 		// 分子
 		/**
+		 * numerator
 		 * @type {BigInteger}
 		 */
 		this.numerator = null;
 
 		// 分母
 		/**
+		 * denominator
 		 * @type {BigInteger}
 		 */
 		this.denominator = null;
+
+		/**
+		 * Numeric state.
+		 * @private
+		 * @type {number}
+		 */
+		this.state = FRACTION_NUMBER_STATE.NUMBER;
 
 		if(arguments.length === 0) {
 			this.numerator = BigInteger.ZERO;
@@ -280,13 +335,15 @@ export default class Fraction {
 		}
 		else if(arguments.length === 1) {
 			let is_normalization = false;
-			if(typeof number === "number") {
+			if((typeof number === "number") || (typeof number === "boolean")) {
 				const x = FractionTool.to_fraction_data_from_number(number);
+				this.state = x.state;
 				this.numerator = x.numerator;
 				this.denominator = x.denominator;
 			}
 			else if(typeof number === "string") {
 				const x = FractionTool.to_fraction_data_from_fraction_string(number);
+				this.state = x.state;
 				this.numerator = x.numerator;
 				this.denominator = x.denominator;
 			}
@@ -295,6 +352,7 @@ export default class Fraction {
 				this.denominator = BigInteger.ONE;
 			}
 			else if(number instanceof Fraction) {
+				this.state = number.state;
 				this.numerator = number.numerator;
 				this.denominator = number.denominator;
 			}
@@ -305,13 +363,22 @@ export default class Fraction {
 			}
 			else if(number instanceof BigDecimal) {
 				const value = new Fraction(number.unscaledValue());
-				const x = value.scaleByPowerOfTen(-number.scale());
-				this.numerator = x.numerator;
-				this.denominator = x.denominator;
+				this.state = number.state;
+				// stateにあわせて正規化
+				if(this.state !== FRACTION_NUMBER_STATE.NUMBER) {
+					this.numerator = BigInteger.ZERO;
+					this.denominator = BigInteger.ZERO;
+				}
+				else {
+					const x = value.scaleByPowerOfTen(-number.scale());
+					this.numerator = x.numerator;
+					this.denominator = x.denominator;
+				}
 			}
 			else if(typeof number === "object") {
 				if("doubleValue" in number) {
 					const x = FractionTool.to_fraction_data_from_number(number.doubleValue);
+					this.state = x.state;
 					this.numerator = x.numerator;
 					this.denominator = x.denominator;
 				}
@@ -322,6 +389,7 @@ export default class Fraction {
 				}
 				else {
 					const x1 = FractionTool.to_fraction_data_from_fraction_string(number.toString());
+					this.state = x1.state;
 					this.numerator = x1.numerator;
 					this.denominator = x1.denominator;
 				}
@@ -425,6 +493,9 @@ export default class Fraction {
 	 * @returns {Fraction} abs(A)
 	 */
 	abs() {
+		if(!this.isFinite()) {
+			return this.isNegativeInfinity() ? Fraction.POSITIVE_INFINITY : this;
+		}
 		if(this.sign() >= 0) {
 			return this;
 		}
@@ -436,6 +507,17 @@ export default class Fraction {
 	 * @returns {Fraction} -A
 	 */
 	negate() {
+		if(!this.isFinite()) {
+			if(this.isPositiveInfinity()) {
+				return Fraction.NEGATIVE_INFINITY;
+			}
+			else if(this.isNegativeInfinity()) {
+				return Fraction.POSITIVE_INFINITY;
+			}
+			else {
+				return this;
+			}
+		}
 		return new Fraction([this.numerator.negate(), this.denominator]);
 	}
 
@@ -445,6 +527,9 @@ export default class Fraction {
 	 * @returns {number}
 	 */
 	sign() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? 1 : -1);
+		}
 		return this.numerator.sign();
 	}
 	
@@ -453,6 +538,9 @@ export default class Fraction {
 	 * @returns {string} 
 	 */
 	toString() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
 		return this.numerator.toString() + " / " + this.denominator.toString();
 	}
 
@@ -468,6 +556,17 @@ export default class Fraction {
 	add(num) {
 		const x = this;
 		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN() || (x.isInfinite() && y.isInfinite() && x.state !== y.state)) {
+				return Fraction.NaN;
+			}
+			else if(x.isPositiveInfinity() || y.isPositiveInfinity()) {
+				return Fraction.POSITIVE_INFINITY;
+			}
+			else {
+				return Fraction.NEGATIVE_INFINITY;
+			}
+		}
 		let f;
 		if(x.isInteger() && y.isInteger()) {
 			f = new Fraction([ x.numerator.add(y.numerator), BigInteger.ONE]);
@@ -489,6 +588,17 @@ export default class Fraction {
 	sub(num) {
 		const x = this;
 		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN() || (x.state === y.state)) {
+				return Fraction.NaN;
+			}
+			else if(x.isNegativeInfinity() || y.isPositiveInfinity()) {
+				return Fraction.NEGATIVE_INFINITY;
+			}
+			else {
+				return Fraction.POSITIVE_INFINITY;
+			}
+		}
 		let f;
 		if(x.isInteger() && y.isInteger()) {
 			f = new Fraction([ x.numerator.sub(y.numerator), BigInteger.ONE]);
@@ -510,6 +620,17 @@ export default class Fraction {
 	mul(num) {
 		const x = this;
 		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN() || (x.isZero() || y.isZero())) {
+				return Fraction.NaN;
+			}
+			else if(x.sign() * y.sign() > 0) {
+				return Fraction.POSITIVE_INFINITY;
+			}
+			else {
+				return Fraction.NEGATIVE_INFINITY;
+			}
+		}
 		let f;
 		if(x.isInteger() && y.isInteger()) {
 			f = new Fraction([ x.numerator.mul(y.numerator), BigInteger.ONE]);
@@ -528,6 +649,30 @@ export default class Fraction {
 	div(num) {
 		const x = this;
 		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN() || (x.isInfinite() && y.isInfinite())) {
+				return Fraction.NaN;
+			}
+			else if(x.isInfinite()) {
+				if(x.sign() * y.sign() >= 0) {
+					return Fraction.POSITIVE_INFINITY;
+				}
+				else {
+					return Fraction.NEGATIVE_INFINITY;
+				}
+			}
+			else {
+				return Fraction.ZERO;
+			}
+		}
+		else if(y.isZero()) {
+			if(x.isZero()) {
+				return Fraction.NaN;
+			}
+			else {
+				return x.sign() >= 0 ? Fraction.POSITIVE_INFINITY : Fraction.NEGATIVE_INFINITY;
+			}
+		}
 		let f;
 		if(x.isInteger() && y.isInteger()) {
 			f = new Fraction([ x.numerator, y.numerator]);
@@ -543,6 +688,14 @@ export default class Fraction {
 	 * @return {Fraction}
 	 */
 	inv() {
+		{
+			if(!this.isFinite()) {
+				return this.isNaN() ? Fraction.NaN : Fraction.ZERO;
+			}
+			if(this.isZero()) {
+				return Fraction.NaN;
+			}
+		}
 		return new Fraction([ this.denominator, this.numerator]);
 	}
 
@@ -554,6 +707,9 @@ export default class Fraction {
 	mod(num) {
 		const x = this;
 		const y = Fraction._toFraction(num);
+		if(y.isZero()) {
+			return x;
+		}
 		// x - y * floor(x/y)
 		return x.sub(y.mul(x.div(y).floor()));
 	}
@@ -566,9 +722,58 @@ export default class Fraction {
 	 */
 	pow(num) {
 		const x = this;
-		const y = Fraction._toInteger(num);
-		const numerator = x.numerator.pow(y);
-		const denominator = x.denominator.pow(y);
+		const y = Fraction._toFraction(num);
+		{
+			if(x.isNaN() || y.isNaN()) {
+				return Fraction.NaN;
+			}
+			if(y.isZero()) {
+				return Fraction.ONE;
+			}
+			else if(x.isZero()) {
+				return Fraction.ZERO;
+			}
+			else if(x.isOne()) {
+				return Fraction.ONE;
+			}
+			else if(x.isInfinite()) {
+				if(x.isPositiveInfinity()) {
+					return Fraction.POSITIVE_INFINITY;
+				}
+				else {
+					if(y.isPositiveInfinity()) {
+						return Fraction.NaN;
+					}
+					else {
+						return Fraction.create(Infinity * Math.pow(-1, Math.round(y.doubleValue)));
+					}
+				}
+			}
+			else if(y.isInfinite()) {
+				if(x.isNegative()) {
+					// 複素数
+					return Fraction.NaN;
+				}
+				if(x.compareTo(Fraction.ONE) < 0) {
+					if(y.isPositiveInfinity()) {
+						return Fraction.ZERO;
+					}
+					else if(y.isNegativeInfinity()) {
+						return Fraction.POSITIVE_INFINITY;
+					}
+				}
+				else {
+					if(y.isPositiveInfinity()) {
+						return Fraction.POSITIVE_INFINITY;
+					}
+					else if(y.isNegativeInfinity()) {
+						return Fraction.ZERO;
+					}
+				}
+			}
+		}
+		const numerator = x.numerator.pow(y.intValue);
+		const denominator = x.denominator.pow(y.intValue);
 		return new Fraction([ numerator, denominator ]);
 	}
 
@@ -582,6 +787,9 @@ export default class Fraction {
 	 * @returns {Fraction} n!
 	 */
 	factorial() {
+		if(!this.isFinite()) {
+			return this;
+		}
 		return new Fraction([this.toBigInteger().factorial(), Fraction.ONE]);
 	}
 
@@ -592,6 +800,9 @@ export default class Fraction {
 	 * @returns {Fraction}
 	 */
 	scaleByPowerOfTen(n) {
+		if(!this.isFinite()) {
+			return this;
+		}
 		const scale = Fraction._toInteger(n);
 		if(scale === 0) {
 			return this;
@@ -615,6 +826,9 @@ export default class Fraction {
 	 * @returns {number}
 	 */
 	get intValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
 		if(this.isInteger()) {
 			return Math.trunc(this.numerator.doubleValue);
 		}
@@ -626,6 +840,9 @@ export default class Fraction {
 	 * @returns {number}
 	 */
 	get doubleValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
 		if(this.isInteger()) {
 			return this.numerator.doubleValue;
 		}
@@ -648,6 +865,9 @@ export default class Fraction {
 	 * @returns {BigDecimal}
 	 */
 	toBigDecimal(mc) {
+		if(!this.isFinite()) {
+			return new BigDecimal(this.doubleValue);
+		}
 		if(this.isInteger()) {
 			return new BigDecimal(this.numerator);
 		}
@@ -673,6 +893,17 @@ export default class Fraction {
 	equals(num) {
 		const x = this;
 		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN()) {
+				return false;
+			}
+			else if(x.state === y.state) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
 		return x.numerator.equals(y.numerator) && x.denominator.equals(y.denominator);
 	}
 
@@ -682,7 +913,23 @@ export default class Fraction {
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(num) {
-		return this.sub(num).sign();
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN()) {
+				return NaN;
+			}
+			if(x.state === y.state) {
+				return 0;
+			}
+			if(x.isPositiveInfinity() || y.isNegativeInfinity()) {
+				return 1;
+			}
+			else {
+				return -1;
+			}
+		}
+		return x.sub(y).sign();
 	}
 
 	/**
@@ -692,6 +939,9 @@ export default class Fraction {
 	 */
 	max(number) {
 		const val = Fraction._toFraction(number);
+		if(this.isNaN() || val.isNaN()) {
+			return Fraction.NaN;
+		}
 		if(this.compareTo(val) >= 0) {
 			return this;
 		}
@@ -707,6 +957,9 @@ export default class Fraction {
 	 */
 	min(number) {
 		const val = Fraction._toFraction(number);
+		if(this.isNaN() || val.isNaN()) {
+			return Fraction.NaN;
+		}
 		if(this.compareTo(val) >= 0) {
 			return val;
 		}
@@ -724,6 +977,9 @@ export default class Fraction {
 	clip(min, max) {
 		const min_ = Fraction._toFraction(min);
 		const max_ = Fraction._toFraction(max);
+		if(this.isNaN() || min_.isNaN() || max_.isNaN()) {
+			return Fraction.NaN;
+		}
 		const arg_check = min_.compareTo(max_);
 		if(arg_check === 1) {
 			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
@@ -749,7 +1005,7 @@ export default class Fraction {
 	 * @returns {Fraction} floor(A)
 	 */
 	floor() {
-		if(this.isInteger()) {
+		if(this.isInteger() || !this.isFinite()) {
 			return this;
 		}
 		const x = this.fix();
@@ -766,7 +1022,7 @@ export default class Fraction {
 	 * @returns {Fraction} ceil(A)
 	 */
 	ceil() {
-		if(this.isInteger()) {
+		if(this.isInteger() || !this.isFinite()) {
 			return this;
 		}
 		const x = this.fix();
@@ -783,7 +1039,7 @@ export default class Fraction {
 	 * @returns {Fraction} round(A)
 	 */
 	round() {
-		if(this.isInteger()) {
+		if(this.isInteger() || !this.isFinite()) {
 			return this;
 		}
 		const x = this.floor();
@@ -801,7 +1057,7 @@ export default class Fraction {
 	 * @returns {Fraction} fix(A), trunc(A)
 	 */
 	fix() {
-		if(this.isInteger()) {
+		if(this.isInteger() || !this.isFinite()) {
 			return this;
 		}
 		return new Fraction([this.numerator.div(this.denominator), Fraction.ONE]);
@@ -812,6 +1068,9 @@ export default class Fraction {
 	 * @returns {Fraction} fract(A)
 	 */
 	fract() {
+		if(!this.isFinite()) {
+			return Fraction.NaN;
+		}
 		if(this.isInteger()) {
 			return Fraction.ZERO;
 		}
@@ -827,6 +1086,9 @@ export default class Fraction {
 	 * @return {boolean}
 	 */
 	isInteger() {
+		if(!this.isFinite()) {
+			return false;
+		}
 		return this.denominator.equals(BigInteger.ONE);
 	}
 
@@ -835,6 +1097,9 @@ export default class Fraction {
 	 * @return {boolean} A === 0
 	 */
 	isZero() {
+		if(!this.isFinite()) {
+			return false;
+		}
 		return this.numerator.equals(BigInteger.ZERO) && this.denominator.equals(BigInteger.ONE);
 	}
 
@@ -843,6 +1108,9 @@ export default class Fraction {
 	 * @return {boolean} A === 1
 	 */
 	isOne() {
+		if(!this.isFinite()) {
+			return false;
+		}
 		return this.numerator.equals(BigInteger.ONE) && this.denominator.equals(BigInteger.ONE);
 	}
 
@@ -851,7 +1119,7 @@ export default class Fraction {
 	 * @returns {boolean}
 	 */
 	isPositive() {
-		return this.numerator.isPositive();
+		return this.numerator.isPositive() || this.isPositiveInfinity();
 	}
 
 	/**
@@ -859,7 +1127,7 @@ export default class Fraction {
 	 * @returns {boolean}
 	 */
 	isNegative() {
-		return this.numerator.isNegative();
+		return this.numerator.isNegative() || this.isNegativeInfinity();
 	}
 
 	/**
@@ -867,7 +1135,47 @@ export default class Fraction {
 	 * @returns {boolean}
 	 */
 	isNotNegative() {
-		return this.numerator.isNotNegative();
+		return this.numerator.isNotNegative() || this.isPositiveInfinity();
+	}
+	
+	/**
+	 * this === NaN
+	 * @returns {boolean} isNaN(A)
+	 */
+	isNaN() {
+		return this.state === FRACTION_NUMBER_STATE.NOT_A_NUMBER;
+	}
+	
+	/**
+	 * this === Infinity
+	 * @returns {boolean} isPositiveInfinity(A)
+	 */
+	isPositiveInfinity() {
+		return this.state === FRACTION_NUMBER_STATE.POSITIVE_INFINITY;
+	}
+
+	/**
+	 * this === -Infinity
+	 * @returns {boolean} isNegativeInfinity(A)
+	 */
+	isNegativeInfinity() {
+		return this.state === FRACTION_NUMBER_STATE.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * this === Infinity or -Infinity
+	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+	 */
+	isInfinite() {
+		return this.isPositiveInfinity() || this.isNegativeInfinity();
+	}
+	
+	/**
+	 * Return true if the value is finite number.
+	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
+	 */
+	isFinite() {
+		return !this.isNaN() && !this.isInfinite();
 	}
 
 	// ----------------------
@@ -922,6 +1230,30 @@ export default class Fraction {
 		return DEFINE.TEN;
 	}
 
+	/**
+	 * Positive infinity.
+	 * @returns {Fraction} Infinity
+	 */
+	static get POSITIVE_INFINITY() {
+		return DEFINE.POSITIVE_INFINITY;
+	}
+	
+	/**
+	 * Negative Infinity.
+	 * @returns {Fraction} -Infinity
+	 */
+	static get NEGATIVE_INFINITY() {
+		return DEFINE.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * Not a Number.
+	 * @returns {Fraction} NaN
+	 */
+	static get NaN() {
+		return DEFINE.NaN;
+	}
+	
 }
 
 /**
@@ -958,6 +1290,21 @@ const DEFINE = {
 	/**
 	 * 10
 	 */
-	TEN : new Fraction([BigInteger.TEN, BigInteger.ONE])
+	TEN : new Fraction([BigInteger.TEN, BigInteger.ONE]),
+	
+	/**
+	 * Positive infinity.
+	 */
+	POSITIVE_INFINITY : new Fraction(Number.POSITIVE_INFINITY),
+
+	/**
+	 * Negative Infinity.
+	 */
+	NEGATIVE_INFINITY : new Fraction(Number.NEGATIVE_INFINITY),
+
+	/**
+	 * Not a Number.
+	 */
+	NaN : new Fraction(Number.NaN)
 
 };

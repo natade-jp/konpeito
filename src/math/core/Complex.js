@@ -15,6 +15,7 @@ import Matrix from "./Matrix.js";
  * Complex type argument.
  * - Complex
  * - number
+ * - boolean
  * - string
  * - Array<number>
  * - {_re:number,_im:number}
@@ -24,7 +25,7 @@ import Matrix from "./Matrix.js";
  * Initialization can be performed as follows.
  * - 1200, "1200", "12e2", "1.2e3"
  * - "3 + 4i", "4j + 3", [3, 4].
- * @typedef {Complex|number|string|Array<number>|{_re:number,_im:number}|{doubleValue:number}|{toString:function}} KComplexInputData
+ * @typedef {Complex|number|boolean|string|Array<number>|{_re:number,_im:number}|{doubleValue:number}|{toString:function}} KComplexInputData
  */
 
 /**
@@ -135,6 +136,10 @@ export default class Complex {
 				else {
 					throw "Complex Unsupported argument " + arguments;
 				}
+			}
+			else if(typeof obj === "boolean") {
+				this._re = obj ? 1 : 0;
+				this._im = 0.0;
 			}
 			else if("doubleValue" in obj) {
 				this._re = obj.doubleValue;

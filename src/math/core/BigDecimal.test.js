@@ -32,8 +32,8 @@ const testBool = function(operator, x, y) {
 	const X = $(x);
 	// @ts-ignore
 	const Y = X[operator]();
-	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y;
-	const out = ((Y instanceof BigDecimal) && Y.isNaN() && $(y).isNaN()) ? true : Y === y;
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y + " === " + Y;
+	const out = ($(Y).isNaN() && $(y).isNaN()) ? true : Y === y;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -49,8 +49,8 @@ const testOperator1  = function(operator, x, y, tolerance) {
 	const X = $(x);
 	// @ts-ignore
 	const Y = X[operator]();
-	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y;
-	const out = ((Y instanceof BigDecimal) && Y.isNaN() && $(y).isNaN()) ? true : $(Y).compareTo(y, tolerance_) === 0;
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y + " === " + Y;
+	const out = ($(Y).isNaN() && $(y).isNaN()) ? true : $(Y).compareTo(y, tolerance_) === 0;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -68,8 +68,8 @@ const testOperator2  = function(operator, x1, x2, y, tolerance) {
 	const X2 = $(x2);
 	// @ts-ignore
 	const Y = X1[operator](X2);
-	const testname = operator + " " + test_count + " (" + x1 + ")." + operator + "(" + x2 + ") = " + y + " " + Y;
-	const out = ((Y instanceof BigDecimal) && Y.isNaN() && $(y).isNaN()) ? true : $(Y).compareTo(y, tolerance_) === 0;
+	const testname = operator + " " + test_count + " (" + x1 + ")." + operator + "(" + x2 + ") = " + y + " === " + Y;
+	const out = ($(Y).isNaN() && $(y).isNaN()) ? true : $(Y).compareTo(y, tolerance_) === 0;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -87,8 +87,8 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	const X = $(x);
 	// @ts-ignore
 	const Y = X[operator](p1, p2);
-	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + y;
-	const out = ((Y instanceof BigDecimal) && Y.isNaN() && $(y).isNaN()) ? true : $(Y).compareTo(y, tolerance_) === 0;
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + y + " === " + Y;
+	const out = ($(Y).isNaN() && $(y).isNaN()) ? true : $(Y).compareTo(y, tolerance_) === 0;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -420,6 +420,34 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	const y = x1.pow(x2, MathContext.UNLIMITED).toString();
 	test("pow 0 " + x1 + " ** " + x2, () => { expect(y).toBe("556373003462553278521277665419333757914477429707861621164878013.831986527054745197804565133259323738549131155563320488179330998057446584571938059401035776"); });
 	test_count = 1;
+}
+
+{
+	test_count = 0;
+	testOperator1("abs", 12.34, 12.34);
+	testOperator1("abs", -12.34, 12.34);
+	testOperator1("abs",  Infinity, Infinity);
+	testOperator1("abs", -Infinity, Infinity);
+	testOperator1("abs", NaN, NaN);
+}
+
+{
+	test_count = 0;
+	testOperator1("negate", 12.34, -12.34);
+	testOperator1("negate", -12.34, 12.34);
+	testOperator1("negate",  Infinity, -Infinity);
+	testOperator1("negate", -Infinity,  Infinity);
+	testOperator1("negate", NaN, NaN);
+}
+
+{
+	test_count = 0;
+	testOperator1("sign", 12.34, 1);
+	testOperator1("sign", 0, 0);
+	testOperator1("sign", -12.34, -1);
+	testOperator1("sign", Infinity, 1);
+	testOperator1("sign", -Infinity, -1);
+	testOperator1("sign", NaN, NaN);
 }
 
 {

@@ -2,9 +2,10 @@
 
 ## v4a
 ### 機能追加
+- `BigInteger`, `BigDecimal`, `Fraction`, `Complex` の引数に`boolean`型(`1` or `0`)を入力できる機能追加
 - `BigInteger` に `isPrime` を追加
-- `BigDecimal` に `NaN`, `Infinity` を実装、テストする関数も追加
-- `BigDecimal` に拡張した三角関数、ビット演算、素数を追加
+- `BigDecimal`, `Fraction` に `NaN`, `Infinity` を実装、テストする関数も追加
+- `BigDecimal` に拡張した三角関数、ビット演算、素数判定を追加
 - `Complex` / `Matrix` に `isPositiveInfinity`, `isNegativeInfinity` を追加
 ### 改善
 - `/core/tools/` 内で`Matrix`のメソッドチェーンからしか利用できないクラスについてクラス説明文に記載
