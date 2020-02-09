@@ -17,8 +17,8 @@ const testCompareTo = function(operator, x, y, z, tolerance) {
 	test_count++;
 	const X = $(x);
 	const Y = $(y);
-	const testname = operator + " " + test_count + " $(" + x + ", " + tolerance + ")." + operator + "(" + y + ") = " + z;
-	const out = $(X).compareTo(Y, tolerance) === z;
+	const testname = operator + " " + test_count + " $(" + x + ", " + y + ", " + tolerance + ")." + operator + "(" + y + ") = " + z;
+	const out = (X.isNaN() || Y.isNaN()) ? isNaN($(X).compareTo(Y, tolerance)) : $(X).compareTo(Y, tolerance) === z;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -33,7 +33,7 @@ const testBool = function(operator, x, y) {
 	// @ts-ignore
 	const Y = X[operator]();
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y;
-	const out = Y === y;
+	const out = ((Y instanceof BigDecimal) && Y.isNaN() && $(y).isNaN()) ? true : Y === y;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -50,7 +50,7 @@ const testOperator1  = function(operator, x, y, tolerance) {
 	// @ts-ignore
 	const Y = X[operator]();
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y;
-	const out = $(Y).compareTo(y, tolerance_) === 0;
+	const out = ((Y instanceof BigDecimal) && Y.isNaN() && $(y).isNaN()) ? true : $(Y).compareTo(y, tolerance_) === 0;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -68,8 +68,8 @@ const testOperator2  = function(operator, x1, x2, y, tolerance) {
 	const X2 = $(x2);
 	// @ts-ignore
 	const Y = X1[operator](X2);
-	const testname = operator + " " + test_count + " (" + x1 + ")." + operator + "(" + x2 + ") = " + y;
-	const out = $(Y).compareTo(y, tolerance_) === 0;
+	const testname = operator + " " + test_count + " (" + x1 + ")." + operator + "(" + x2 + ") = " + y + " " + Y;
+	const out = ((Y instanceof BigDecimal) && Y.isNaN() && $(y).isNaN()) ? true : $(Y).compareTo(y, tolerance_) === 0;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -88,7 +88,7 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	// @ts-ignore
 	const Y = X[operator](p1, p2);
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + y;
-	const out = $(Y).compareTo(y, tolerance_) === 0;
+	const out = ((Y instanceof BigDecimal) && Y.isNaN() && $(y).isNaN()) ? true : $(Y).compareTo(y, tolerance_) === 0;
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -100,6 +100,14 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testCompareTo("compareTo", -10, -9, -1, null);
 	testCompareTo("compareTo", -10, -10, 0, null);
 	testCompareTo("compareTo", -10, -11, 1, null);
+	testCompareTo("compareTo", Infinity, 9,  1, null);
+	testCompareTo("compareTo", -3, Infinity,  -1, null);
+	testCompareTo("compareTo", -Infinity, 9,  -1, null);
+	testCompareTo("compareTo", -3, -Infinity,  1, null);
+	testCompareTo("compareTo", Infinity, Infinity,  0, null);
+	testCompareTo("compareTo", -Infinity, -Infinity,  0, null);
+	testCompareTo("compareTo", Infinity, NaN, NaN, null);
+	testCompareTo("compareTo", NaN, Infinity, NaN, null);
 }
 
 {
@@ -210,10 +218,76 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 
 {
 	test_count = 0;
+	testOperator2("add", Infinity, 100, Infinity);
+	testOperator2("add", -Infinity, 0, -Infinity);
+	testOperator2("add", 0, Infinity, Infinity);
+	testOperator2("add", -100, -Infinity, -Infinity);
+	testOperator2("add", Infinity, -Infinity, NaN);
+	testOperator2("add", -Infinity, Infinity, NaN);
+	testOperator2("add", Infinity, NaN, NaN);
+}
+
+{
+	test_count = 0;
+	testOperator2("sub", Infinity, 100, Infinity);
+	testOperator2("sub", -Infinity, 0, -Infinity);
+	testOperator2("sub", 0, Infinity, -Infinity);
+	testOperator2("sub", -100, -Infinity, Infinity);
+	testOperator2("sub", Infinity, -Infinity, Infinity);
+	testOperator2("sub", -Infinity, Infinity, -Infinity);
+	testOperator2("sub", Infinity, NaN, NaN);
+}
+
+{
+	test_count = 0;
+	testOperator2("mul", Infinity, 100, Infinity);
+	testOperator2("mul", Infinity, -100, -Infinity);
+	testOperator2("mul", 100, Infinity, Infinity);
+	testOperator2("mul", -100, Infinity, -Infinity);
+	testOperator2("mul", Infinity, Infinity, Infinity);
+	testOperator2("mul", -Infinity, -Infinity, Infinity);
+	testOperator2("mul", Infinity, 0, NaN);
+	testOperator2("mul", 0, -Infinity, NaN);
+	testOperator2("mul", NaN, 0, NaN);
+	testOperator2("mul", Infinity, NaN, NaN);
+}
+
+{
+	test_count = 0;
+	testOperator2("divideToIntegralValue", 100, 0, Infinity);
+	testOperator2("divideToIntegralValue", -100, 0, -Infinity);
+	testOperator2("divideToIntegralValue", 0, 0, NaN);
+	testOperator2("divideToIntegralValue", Infinity, 100, Infinity);
+	testOperator2("divideToIntegralValue", Infinity, -100, -Infinity);
+	testOperator2("divideToIntegralValue", 100, Infinity, 0);
+	testOperator2("divideToIntegralValue", -100, Infinity, 0);
+	testOperator2("divideToIntegralValue", Infinity, Infinity, NaN);
+	testOperator2("divideToIntegralValue", -Infinity, -Infinity, NaN);
+	testOperator2("divideToIntegralValue", Infinity, 0, Infinity);
+	testOperator2("divideToIntegralValue", 0, -Infinity, 0);
+	testOperator2("divideToIntegralValue", NaN, 0, NaN);
+	testOperator2("divideToIntegralValue", Infinity, NaN, NaN);
+}
+
+{
+	test_count = 0;
 	testOperator2("rem", 110, 100, 10);
 	testOperator2("rem",  80, 100, 80);
 	testOperator2("rem",-110, 100,-10);
 	testOperator2("rem", -80, 100,-80);
+	testOperator2("rem", 0, 0, NaN);
+	testOperator2("rem", 100, 0, NaN);
+	testOperator2("rem", Infinity, 0, NaN);
+	testOperator2("rem", -Infinity, 0, NaN);
+	testOperator2("rem", Infinity, 100, NaN);
+	testOperator2("rem", Infinity, -100, NaN);
+	testOperator2("rem", 100, Infinity, NaN);
+	testOperator2("rem", -100, Infinity, NaN);
+	testOperator2("rem", Infinity, Infinity, NaN);
+	testOperator2("rem", -Infinity, -Infinity, NaN);
+	testOperator2("rem", 0, -Infinity, NaN);
+	testOperator2("rem", NaN, 0, NaN);
+	testOperator2("rem", Infinity, NaN, NaN);
 }
 
 {
@@ -222,6 +296,36 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator2("mod",  80, 100, 80);
 	testOperator2("mod", -110, 100, 90);
 	testOperator2("mod",  -80, 100, 20);
+	testOperator2("mod", 0, 0, 0);
+	testOperator2("mod", 100, 0, 100);
+	testOperator2("mod", Infinity, 0, Infinity);
+	testOperator2("mod", -Infinity, 0, -Infinity);
+	testOperator2("mod", Infinity, 100, NaN);
+	testOperator2("mod", Infinity, -100, NaN);
+	testOperator2("mod", 100, Infinity, NaN);
+	testOperator2("mod", -100, Infinity, NaN);
+	testOperator2("mod", Infinity, Infinity, NaN);
+	testOperator2("mod", -Infinity, -Infinity, NaN);
+	testOperator2("mod", 0, -Infinity, NaN);
+	testOperator2("mod", NaN, 0, NaN);
+	testOperator2("mod", Infinity, NaN, NaN);
+}
+
+{
+	test_count = 0;
+	testOperator2("divide", 100, 0, Infinity);
+	testOperator2("divide", -100, 0, -Infinity);
+	testOperator2("divide", 0, 0, NaN);
+	testOperator2("divide", Infinity, 100, Infinity);
+	testOperator2("divide", Infinity, -100, -Infinity);
+	testOperator2("divide", 100, Infinity, 0);
+	testOperator2("divide", -100, Infinity, 0);
+	testOperator2("divide", Infinity, Infinity, NaN);
+	testOperator2("divide", -Infinity, -Infinity, NaN);
+	testOperator2("divide", Infinity, 0, Infinity);
+	testOperator2("divide", 0, -Infinity, 0);
+	testOperator2("divide", NaN, 0, NaN);
+	testOperator2("divide", Infinity, NaN, NaN);
 }
 
 {
@@ -314,7 +418,8 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	const x1 = $("123.456");
 	const x2 = $(30);
 	const y = x1.pow(x2, MathContext.UNLIMITED).toString();
-	test("pow " + x1 + " ** " + x2, () => { expect(y).toBe("556373003462553278521277665419333757914477429707861621164878013.831986527054745197804565133259323738549131155563320488179330998057446584571938059401035776"); });
+	test("pow 0 " + x1 + " ** " + x2, () => { expect(y).toBe("556373003462553278521277665419333757914477429707861621164878013.831986527054745197804565133259323738549131155563320488179330998057446584571938059401035776"); });
+	test_count = 1;
 }
 
 {
@@ -418,8 +523,14 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 {
 	const EPS = 1e-5;
 	test_count = 0;
-	testOperator1("inv", "2", "0.5", EPS);
-	testOperator1("inv", "10", "0.1", EPS);
+	testOperator1("inv", 3, 0.33333, EPS);
+	testOperator1("inv", 0.25, 4, EPS);
+	testOperator1("inv", -3, -0.33333, EPS);
+	testOperator1("inv", -0.25, -4, EPS);
+	testOperator1("inv", 0, NaN);
+	testOperator1("inv", NaN, NaN);
+	testOperator1("inv", Infinity, 0);
+	testOperator1("inv", -Infinity, 0);
 }
 
 {
@@ -428,6 +539,9 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator1("sqrt", "2", "1.41421356237", EPS);
 	testOperator1("sqrt", "4", "2", EPS);
 	testOperator1("sqrt", "1000000", "1000", EPS);
+	testOperator1("sqrt", Infinity, Infinity);
+	testOperator1("sqrt", -Infinity, NaN);
+	testOperator1("sqrt", NaN, NaN);
 }
 
 {
@@ -436,18 +550,68 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator1("rsqrt", "2", 1.0 / Math.sqrt(2), EPS);
 	testOperator1("rsqrt", "4", 0.5, EPS);
 	testOperator1("rsqrt", "1000000", 0.001, EPS);
+	testOperator1("rsqrt", Infinity, 0);
+	testOperator1("rsqrt", -Infinity, 0);
+	testOperator1("rsqrt", NaN, NaN);
 }
 
 {
 	const EPS = 1e-5;
 	test_count = 0;
-	testCompareTo("PI", BigDecimal.PI, "3.14159265359", 0, EPS);
+	testOperator1("log", 0.001,	-6.907755279, EPS);
+	testOperator1("log", 0.5,	-0.693147181, EPS);
+	testOperator1("log", 1,		 0.0, EPS);
+	testOperator1("log", 10,	 2.302585093, EPS);
+	testOperator1("log", 10000,	 9.210340372, EPS);
+	testOperator1("log", 0,	-Infinity);
+	testOperator1("log", Infinity,	Infinity);
+	testOperator1("log", -Infinity,	NaN);
+	testOperator1("log", NaN, NaN);
 }
 
 {
 	const EPS = 1e-5;
 	test_count = 0;
-	testCompareTo("E", BigDecimal.E, "2.71828182845904523536", 0, EPS);
+	testOperator1("exp", -100,	3.720076e-44, EPS);
+	testOperator1("exp", -10,	0.00004539992, EPS);
+	testOperator1("exp", 0,		1, EPS);
+	testOperator1("exp", 0.001,	1.00100050017, EPS);
+	testOperator1("exp", 0.5,	1.6487212707, EPS);
+	testOperator1("exp", 1,		2.71828182846, EPS);
+	testOperator1("exp", 50,	5.1847055e+21, 0.0001e+21);
+	testOperator1("exp", 100,	2.6881171e+43, 0.0001e+43);
+	testOperator1("exp", Infinity,	Infinity);
+	testOperator1("exp", -Infinity,	0);
+	testOperator1("exp", NaN, NaN);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator2("pow", 2, 0, 1);
+	testOperator2("pow", 2, 1, 2);
+	testOperator2("pow", 2, 2, 4);
+	testOperator2("pow", 2, -1, 0.5, EPS);
+	testOperator2("pow", 2, -2, 0.25, EPS);
+	testOperator2("pow",-2, 0, 1);
+	testOperator2("pow",-2, 1,-2);
+	testOperator2("pow",-2, 2, 4);
+	testOperator2("pow",-2, -1,-0.5, EPS);
+	testOperator2("pow",-2, -2, 0.25, EPS);
+	testOperator2("pow", 10, -1.5, 0.03162277660168379, EPS);
+	testOperator2("pow", 10, -1, 0.1, EPS);
+	testOperator2("pow", 10, 0,	1, EPS);
+	testOperator2("pow", 10, 1, 10, EPS);
+	testOperator2("pow", 10, 1.5, 31.622776601683793, EPS);
+	testOperator2("pow", Infinity, 0, 1);
+	testOperator2("pow", Infinity, 1, Infinity);
+	testOperator2("pow", -Infinity, 2, Infinity);
+	testOperator2("pow", -Infinity, 3, -Infinity);
+	testOperator2("pow", -1, Infinity, NaN);
+	testOperator2("pow", 0.5, Infinity, 0);
+	testOperator2("pow", 1.2, Infinity, Infinity);
+	testOperator2("pow", 0.5, -Infinity, Infinity);
+	testOperator2("pow", 1.2, -Infinity, 0);
 }
 
 {
@@ -458,6 +622,8 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator1("sin",   0,  0, EPS);
 	testOperator1("sin",   1,  0.8414709848, EPS);
 	testOperator1("sin",  10, -0.54402111088, EPS);
+	testOperator1("sin", Infinity, NaN);
+	testOperator1("sin", NaN, NaN);
 }
 
 {
@@ -468,6 +634,8 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator1("cos",   0,  1, EPS);
 	testOperator1("cos",   1,  0.54030230586, EPS);
 	testOperator1("cos",  10, -0.83907152907, EPS);
+	testOperator1("cos", Infinity, NaN);
+	testOperator1("cos", NaN, NaN);
 }
 
 {
@@ -478,6 +646,8 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator1("tan",   0,  0, EPS);
 	testOperator1("tan",   1,  1.55740772465, EPS);
 	testOperator1("tan",  10,  0.64836082745, EPS);
+	testOperator1("tan", Infinity, NaN);
+	testOperator1("tan", NaN, NaN);
 }
 
 {
@@ -490,6 +660,9 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator1("atan",  0.2,  0.19739556, EPS);
 	testOperator1("atan",    1,  0.785398163, EPS);
 	testOperator1("atan",   10,  1.47112767, EPS);
+	testOperator1("atan", Infinity, BigDecimal.HALF_PI, EPS);
+	testOperator1("atan",-Infinity, BigDecimal.HALF_PI.negate(), EPS);
+	testOperator1("atan", NaN, NaN);
 }
 
 {
@@ -504,47 +677,15 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator2("atan2",   1, 0, 1.5707963267948966, EPS);
 	testOperator2("atan2",   0,-1, 3.141592653589793, EPS);
 	testOperator2("atan2",  -1, 0,-1.5707963267948966, EPS);
+	testOperator2("atan2", NaN, NaN, NaN);
 }
-
-{
-	const EPS = 1e-5;
-	test_count = 0;
-	testOperator1("log", 0.001,	-6.907755279, EPS);
-	testOperator1("log", 0.5,	-0.693147181, EPS);
-	testOperator1("log", 1,		 0.0, EPS);
-	testOperator1("log", 10,	 2.302585093, EPS);
-	testOperator1("log", 10000,	 9.210340372, EPS);
-}
-
-{
-	const EPS = 1e-5;
-	test_count = 0;
-	testOperator1("exp", -100,	3.720076e-44, EPS);
-	testOperator1("exp", -10,	0.00004539992, EPS);
-	testOperator1("exp", 0,		1, EPS);
-	testOperator1("exp", 0.001,	1.00100050017, EPS);
-	testOperator1("exp", 0.5,	1.6487212707, EPS);
-	testOperator1("exp", 1,		2.71828182846, EPS);
-	testOperator1("exp", 50,	5.1847055e+21, 0.0001e+21);
-	testOperator1("exp", 100,	2.6881171e+43, 0.0001e+43);
-}
-
-{
-	const EPS = 1e-5;
-	test_count = 0;
-	testOperator2("pow",   10, -1.5,	0.03162277660168379, EPS);
-	testOperator2("pow",   10, -1,		0.1, EPS);
-	testOperator2("pow",   10, 0,		1, EPS);
-	testOperator2("pow",   10, 1,		10, EPS);
-	testOperator2("pow",   10, 1.5,		31.622776601683793, EPS);
-}
-
 
 {
 	test_count = 0;
 	testOperator2("and",  1, 3,  1&3);
 	testOperator2("and", -1, 2, -1&2);
 	testOperator2("and",  333, 444, 333&444);
+	testOperator2("and", NaN, NaN, NaN);
 }
 
 {
@@ -552,6 +693,7 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator2("or",  1, 3,  1|3);
 	testOperator2("or", -1, 2, -1|2);
 	testOperator2("or",  333, 444, 333|444);
+	testOperator2("or", NaN, NaN, NaN);
 }
 
 {
@@ -559,6 +701,7 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator2("xor",  1, 3,  1^3);
 	testOperator2("xor", -1, 2, -1^2);
 	testOperator2("xor",  333, 444, 333^444);
+	testOperator2("xor", NaN, NaN, NaN);
 }
 
 {
@@ -566,10 +709,24 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator1("not",  1, ~1);
 	testOperator1("not", -1, ~-1);
 	testOperator1("not",  333, ~333);
+	testOperator1("not", NaN, NaN);
 }
 
 {
 	test_count = 0;
 	testOperator2("shift", 3,  1,  3 << 1);
 	testOperator2("shift", 3, -1,  3 >> 1);
+	testOperator2("shift", NaN, NaN, NaN);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testCompareTo("PI", BigDecimal.PI, "3.14159265359", 0, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testCompareTo("E", BigDecimal.E, "2.71828182845904523536", 0, EPS);
 }

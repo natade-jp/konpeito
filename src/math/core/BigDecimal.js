@@ -733,11 +733,13 @@ export default class BigDecimal {
 	 */
 	add(number, context) {
 		const augend = BigDecimal._toBigDecimal(number);
-		if(!this.isFinite() || !augend.isFinite()) {
-			if(this.isNaN() || augend.isNaN() || (this.state !== augend.state)) {
+		const src			= this;
+		const tgt			= augend;
+		if(!src.isFinite() || !tgt.isFinite()) {
+			if(src.isNaN() || tgt.isNaN() || (src.isInfinite() && tgt.isInfinite() && src.state !== tgt.state)) {
 				return BigDecimal.NaN;
 			}
-			else if(this.isPositiveInfinity() || augend.isPositiveInfinity()) {
+			else if(src.isPositiveInfinity() || tgt.isPositiveInfinity()) {
 				return BigDecimal.POSITIVE_INFINITY;
 			}
 			else {
@@ -745,8 +747,6 @@ export default class BigDecimal {
 			}
 		}
 		const mc = context ? context : augend.default_context;
-		const src			= this;
-		const tgt			= augend;
 		const newscale	= Math.max(src._scale, tgt._scale);
 		if(src._scale === tgt._scale) {
 			// 1 e1 + 1 e1 = 1
@@ -774,11 +774,13 @@ export default class BigDecimal {
 	 */
 	subtract(number, context) {
 		const subtrahend = BigDecimal._toBigDecimal(number);
-		if(!this.isFinite() || !subtrahend.isFinite()) {
-			if(this.isNaN() || subtrahend.isNaN() || (this.state === subtrahend.state)) {
+		const src			= this;
+		const tgt			= subtrahend;
+		if(!src.isFinite() || !tgt.isFinite()) {
+			if(src.isNaN() || tgt.isNaN() || (src.state === tgt.state)) {
 				return BigDecimal.NaN;
 			}
-			else if(this.isNegativeInfinity() || subtrahend.isPositiveInfinity()) {
+			else if(src.isNegativeInfinity() || tgt.isPositiveInfinity()) {
 				return BigDecimal.NEGATIVE_INFINITY;
 			}
 			else {
@@ -786,8 +788,6 @@ export default class BigDecimal {
 			}
 		}
 		const mc = context ? context : subtrahend.default_context;
-		const src			= this;
-		const tgt			= subtrahend;
 		const newscale	= Math.max(src._scale, tgt._scale);
 		if(src._scale === tgt._scale) {
 			return new BigDecimal([src.integer.subtract(tgt.integer), newscale, mc]);
@@ -820,11 +820,13 @@ export default class BigDecimal {
 	 */
 	multiply(number, context) {
 		const multiplicand = BigDecimal._toBigDecimal(number);
-		if(!this.isFinite() || !multiplicand.isFinite()) {
-			if(this.isNaN() || multiplicand.isNaN()) {
+		const src			= this;
+		const tgt			= multiplicand;
+		if(!src.isFinite() || !tgt.isFinite()) {
+			if(src.isNaN() || tgt.isNaN() || (src.isZero() || tgt.isZero())) {
 				return BigDecimal.NaN;
 			}
-			else if(this.sign() * multiplicand.sign() > 0) {
+			else if(src.sign() * tgt.sign() > 0) {
 				return BigDecimal.POSITIVE_INFINITY;
 			}
 			else {
@@ -832,8 +834,6 @@ export default class BigDecimal {
 			}
 		}
 		const mc = context ? context : multiplicand.default_context;
-		const src			= this;
-		const tgt			= multiplicand;
 		const newinteger	= src.integer.multiply(tgt.integer);
 		// 0.1 * 0.01 = 0.001
 		const newscale	= src._scale + tgt._scale;
@@ -858,12 +858,14 @@ export default class BigDecimal {
 	 */
 	divideToIntegralValue(number, context) {
 		const divisor = BigDecimal._toBigDecimal(number);
-		if(!this.isFinite() || !divisor.isFinite()) {
-			if(this.isNaN() || divisor.isNaN() || (this.isInfinite() && divisor.isInfinite())) {
+		const src		= this;
+		const tgt		= divisor;
+		if(!src.isFinite() || !tgt.isFinite()) {
+			if(src.isNaN() || tgt.isNaN() || (this.isInfinite() && tgt.isInfinite())) {
 				return BigDecimal.NaN;
 			}
-			else if(this.isInfinite()) {
-				if(this.sign() * divisor.sign() >= 0) {
+			else if(src.isInfinite()) {
+				if(src.sign() * tgt.sign() >= 0) {
 					return BigDecimal.POSITIVE_INFINITY;
 				}
 				else {
@@ -874,12 +876,12 @@ export default class BigDecimal {
 				return BigDecimal.ZERO;
 			}
 		}
-		else if(divisor.isZero()) {
-			if(this.isZero()) {
+		else if(tgt.isZero()) {
+			if(src.isZero()) {
 				return BigDecimal.NaN;
 			}
 			else {
-				return this.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY;
+				return src.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY;
 			}
 		}
 		const mc = context ? context : divisor.default_context;
@@ -895,7 +897,7 @@ export default class BigDecimal {
 			}
 			return new BigInteger(text);
 		};
-		if(divisor.compareTo(BigDecimal.ZERO) === 0) {
+		if(tgt.compareTo(BigDecimal.ZERO) === 0) {
 			throw "ArithmeticException";
 		}
 
@@ -911,9 +913,6 @@ export default class BigDecimal {
 		// 1000e0		/	100e0			=	10e0
 		// 10000e-1		/	100e0			=	100e-1	
 		// 100000e-2	/	100e0			=	1000e-2
-
-		const src		= this;
-		const tgt		= divisor;
 		let src_integer	= src.integer;
 		let tgt_integer	= tgt.integer;
 		const newScale	= src._scale - tgt._scale;
@@ -969,14 +968,14 @@ export default class BigDecimal {
 			}
 			else if(this.isInfinite()) {
 				if(this.sign() * divisor.sign() >= 0) {
-					return [BigDecimal.POSITIVE_INFINITY, BigDecimal.ZERO];
+					return [BigDecimal.POSITIVE_INFINITY, BigDecimal.NaN];
 				}
 				else {
-					return [BigDecimal.NEGATIVE_INFINITY, BigDecimal.ZERO];
+					return [BigDecimal.NEGATIVE_INFINITY, BigDecimal.NaN];
 				}
 			}
 			else {
-				return [BigDecimal.ZERO, this];
+				return [BigDecimal.ZERO, BigDecimal.NaN];
 			}
 		}
 		else if(divisor.isZero()) {
@@ -984,7 +983,7 @@ export default class BigDecimal {
 				return [BigDecimal.NaN, BigDecimal.NaN];
 			}
 			else {
-				return [this.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY, BigDecimal.ZERO];
+				return [this.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY, BigDecimal.NaN];
 			}
 		}
 		const mc = context ? context : divisor.default_context;
@@ -1026,9 +1025,14 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} A mod B
 	 */
 	mod(number, context) {
-		const x = this.rem(number, context);
+		const src = this;
+		const tgt = BigDecimal._toBigDecimal(number);
+		if(tgt.isZero()) {
+			return src;
+		}
+		const x = src.rem(tgt, context);
 		if(x.compareTo(BigDecimal.ZERO) < 0) {
-			return x.add(number, context);
+			return x.add(tgt, context);
 		}
 		else {
 			return x;
@@ -1836,44 +1840,67 @@ export default class BigDecimal {
 	 */
 	pow(number, context) {
 		const num = BigDecimal._toBigDecimal(number);
+		const src = this;
+		const tgt = num;
 		const mc = context ? context : this.default_context;
 		{
-			if(this.isNaN() || num.isNaN()) {
+			if(src.isNaN() || tgt.isNaN()) {
 				return BigDecimal.NaN;
 			}
-			if(num.isZero()) {
+			if(tgt.isZero()) {
 				return context ? BigDecimal.ONE.round(context) : BigDecimal.ONE;
 			}
-			else if(this.isZero()) {
+			else if(src.isZero()) {
 				return BigDecimal.ZERO;
 			}
-			else if(this.isOne()) {
-				return context ? this.round(context) : this;
+			else if(src.isOne()) {
+				return context ? src.round(context) : src;
 			}
-			else if(this.isInfinite() || num.isInfinite()) {
-				if(this.isNegative()) {
-					return BigDecimal.NaN;
-				}
-				if(this.compareTo(BigDecimal.ONE) < 0) {
-					return BigDecimal.ZERO;
-				}
-				if(num.isPositiveInfinity()) {
+			else if(src.isInfinite()) {
+				if(src.isPositiveInfinity()) {
 					return BigDecimal.POSITIVE_INFINITY;
 				}
-				else if(num.isNegativeInfinity()) {
-					return BigDecimal.ZERO;
+				else {
+					if(tgt.isPositiveInfinity()) {
+						return BigDecimal.NaN;
+					}
+					else {
+						return BigDecimal.create(Infinity * Math.pow(-1, Math.round(tgt.doubleValue)));
+					}
+				}
+			}
+			else if(tgt.isInfinite()) {
+				if(src.isNegative()) {
+					// 複素数
+					return BigDecimal.NaN;
+				}
+				if(src.compareTo(BigDecimal.ONE) < 0) {
+					if(tgt.isPositiveInfinity()) {
+						return BigDecimal.ZERO;
+					}
+					else if(tgt.isNegativeInfinity()) {
+						return BigDecimal.POSITIVE_INFINITY;
+					}
+				}
+				else {
+					if(tgt.isPositiveInfinity()) {
+						return BigDecimal.POSITIVE_INFINITY;
+					}
+					else if(tgt.isNegativeInfinity()) {
+						return BigDecimal.ZERO;
+					}
 				}
 			}
 		}
-		const integer = num.intValue;
+		const integer = tgt.intValue;
 		if(Math.abs(integer) > 1000) {
 			throw BigDecimal.POSITIVE_INFINITY;
 		}
-		else if((mc.getPrecision() === 0) && (num.isNegative())) {
+		else if((mc.getPrecision() === 0) && (tgt.isNegative())) {
 			return BigDecimal.NaN; // 複素数
 		}
-		if(num.isInteger()) {
-			const is_negative = num.isNegative();
+		if(tgt.isInteger()) {
+			const is_negative = tgt.isNegative();
 			let n = Math.round(Math.abs(integer));
 			let x, y;
 			x = this.clone();
@@ -1979,11 +2006,11 @@ export default class BigDecimal {
 			else if(this.isNaN()) {
 				return BigDecimal.NaN;
 			}
-			else if(this.isNegative()) {
-				return BigDecimal.NaN; // 複素数
-			}
 			else if(this.isInfinite()) {
 				return BigDecimal.ZERO;
+			}
+			else if(this.isNegative()) {
+				return BigDecimal.NaN; // 複素数
 			}
 		}
 		const mc = context ? context : this.default_context;
