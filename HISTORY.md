@@ -4,7 +4,7 @@
 ### 機能追加
 - `BigInteger` に `isPrime` を追加
 - `BigDecimal` に `NaN`, `Infinity` を実装、テストする関数も追加
-- `BigDecimal` の三角関数を拡張、及びビット演算を追加
+- `BigDecimal` に拡張した三角関数、ビット演算、素数を追加
 - `Complex` / `Matrix` に `isPositiveInfinity`, `isNegativeInfinity` を追加
 ### 改善
 - `/core/tools/` 内で`Matrix`のメソッドチェーンからしか利用できないクラスについてクラス説明文に記載

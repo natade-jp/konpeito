@@ -1462,6 +1462,7 @@ export default class BigInteger {
 
 	/**
 	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * 
 	 * Attention : it takes a very long time to process.
 	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
 	 * @returns {boolean}
