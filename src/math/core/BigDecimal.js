@@ -2639,6 +2639,22 @@ export default class BigDecimal {
 		return re_2.add(im_2, mc);
 	}
 	
+
+	/**
+	 * Hyperbolic sine function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} sinh(A)
+	 */
+	sinh(context) {
+		// 双曲線正弦
+		if(this.isInfinite()) {
+			return this;
+		}
+		const mc = context ? context : this.default_context;
+		const y = this.exp();
+		return y.sub(y.inv()).mul(0.5, mc);
+	}
+
 	/**
 	 * Inverse hyperbolic sine function.
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
@@ -2654,60 +2670,48 @@ export default class BigDecimal {
 	}
 
 	/**
+	 * Hyperbolic cosine function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} cosh(A)
+	 */
+	cosh(context) {
+		// 双曲線余弦
+		if(this.isInfinite()) {
+			return BigDecimal.POSITIVE_INFINITY;
+		}
+		const mc = context ? context : this.default_context;
+		return this.exp().add(this.negate().exp()).mul(0.5, mc);
+	}
+
+	/**
 	 * Inverse hyperbolic cosine function.
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} acosh(A)
 	 */
 	acosh(context) {
 		// 逆双曲線余弦 Math.log(x + Math.sqrt(x * x - 1));
+		if(this.isInfinite()) {
+			return BigDecimal.NaN;
+		}
 		const mc = context ? context : this.default_context;
 		return this.add(this.mul(this).sub(1).sqrt()).log(mc);
 	}
 
 	/**
-	 * Reverse secant function.
+	 * Hyperbolic tangent function.
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-	 * @returns {BigDecimal} asec(A)
+	 * @returns {BigDecimal} tanh(A)
 	 */
-	asec(context) {
-		// 逆正割
+	tanh(context) {
+		// 双曲線正接
+		if(this.isInfinite()) {
+			return BigDecimal.create(this.signum());
+		}
 		const mc = context ? context : this.default_context;
-		return this.inv().acos(mc);
+		const y =  this.mul(2).exp();
+		return y.sub(1).div(y.add(1), mc);
 	}
-
-	/**
-	 * Inverse hyperbolic secant function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-	 * @returns {BigDecimal} asech(A)
-	 */
-	asech(context) {
-		// 逆双曲線正割
-		const mc = context ? context : this.default_context;
-		return this.inv().add(this.square().inv().sub(1).sqrt()).log(mc);
-	}
-
-	/**
-	 * Inverse Cotangent function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-	 * @returns {BigDecimal} acot(A)
-	 */
-	acot(context) {
-		// 逆余接
-		const mc = context ? context : this.default_context;
-		return this.inv().atan(mc);
-	}
-
-	/**
-	 * Inverse hyperbolic cotangent function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-	 * @returns {BigDecimal} acoth(A)
-	 */
-	acoth(context) {
-		// 逆双曲線余接
-		const mc = context ? context : this.default_context;
-		return this.add(1).div(this.sub(1)).log().mul(0.5, mc);
-	}
-
+	
 	/**
 	 * Inverse hyperbolic tangent function.
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
@@ -2717,29 +2721,6 @@ export default class BigDecimal {
 		// 逆双曲線正接
 		const mc = context ? context : this.default_context;
 		return this.add(1).div(this.negate().add(1)).log().mul(0.5, mc);
-	}
-
-	/**
-	 * Hyperbolic sine function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-	 * @returns {BigDecimal} sinh(A)
-	 */
-	sinh(context) {
-		// 双曲線正弦
-		const mc = context ? context : this.default_context;
-		const y = this.exp();
-		return y.sub(y.inv()).mul(0.5, mc);
-	}
-
-	/**
-	 * Hyperbolic cosine function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-	 * @returns {BigDecimal} cosh(A)
-	 */
-	cosh(context) {
-		// 双曲線余弦
-		const mc = context ? context : this.default_context;
-		return this.exp().add(this.negate().exp()).mul(0.5, mc);
 	}
 
 	/**
@@ -2754,14 +2735,39 @@ export default class BigDecimal {
 	}
 
 	/**
+	 * Reverse secant function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} asec(A)
+	 */
+	asec(context) {
+		// 逆正割
+		const mc = context ? context : this.default_context;
+		return this.inv().acos(mc);
+	}
+
+	/**
 	 * Hyperbolic secant function.
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} sech(A)
 	 */
 	sech(context) {
 		// 双曲線正割
+		if(this.isNegativeInfinity()) {
+			return BigDecimal.ZERO;
+		}
 		const mc = context ? context : this.default_context;
 		return this.exp().add(this.negate().exp()).inv().mul(2, mc);
+	}
+
+	/**
+	 * Inverse hyperbolic secant function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} asech(A)
+	 */
+	asech(context) {
+		// 逆双曲線正割
+		const mc = context ? context : this.default_context;
+		return this.inv().add(this.square().inv().sub(1).sqrt()).log(mc);
 	}
 
 	/**
@@ -2771,8 +2777,25 @@ export default class BigDecimal {
 	 */
 	cot(context) {
 		// 余接
+		if(this.isZero()) {
+			return BigDecimal.POSITIVE_INFINITY;
+		}
 		const mc = context ? context : this.default_context;
 		return this.tan().inv(mc);
+	}
+
+	/**
+	 * Inverse cotangent function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} acot(A)
+	 */
+	acot(context) {
+		// 逆余接
+		if(this.isZero()) {
+			return BigDecimal.HALF_PI;
+		}
+		const mc = context ? context : this.default_context;
+		return this.inv().atan(mc);
 	}
 
 	/**
@@ -2782,9 +2805,26 @@ export default class BigDecimal {
 	 */
 	coth(context) {
 		// 双曲線余接
+		if(this.isInfinite()) {
+			return BigDecimal.create(this.signum());
+		}
 		const mc = context ? context : this.default_context;
 		const y =  this.mul(2).exp();
 		return y.add(1).div(y.sub(1), mc);
+	}
+
+	/**
+	 * Inverse hyperbolic cotangent function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} acoth(A)
+	 */
+	acoth(context) {
+		// 逆双曲線余接
+		if(this.isInfinite()) {
+			return BigDecimal.ZERO;
+		}
+		const mc = context ? context : this.default_context;
+		return this.add(1).div(this.sub(1)).log().mul(0.5, mc);
 	}
 
 	/**
@@ -2794,19 +2834,11 @@ export default class BigDecimal {
 	 */
 	csc(context) {
 		// 余割
+		if(this.isZero()) {
+			return BigDecimal.POSITIVE_INFINITY;
+		}
 		const mc = context ? context : this.default_context;
 		return this.sin().inv(mc);
-	}
-
-	/**
-	 * Hyperbolic cosecant function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-	 * @returns {BigDecimal} csch(A)
-	 */
-	csch(context) {
-		// 双曲線余割
-		const mc = context ? context : this.default_context;
-		return this.exp().sub(this.negate().exp()).inv().mul(2, mc);
 	}
 
 	/**
@@ -2821,26 +2853,34 @@ export default class BigDecimal {
 	}
 
 	/**
+	 * Hyperbolic cosecant function.
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
+	 * @returns {BigDecimal} csch(A)
+	 */
+	csch(context) {
+		if(this.isInfinite()) {
+			return BigDecimal.ZERO;
+		}
+		else if(this.isZero()) {
+			return BigDecimal.POSITIVE_INFINITY;
+		}
+		// 双曲線余割
+		const mc = context ? context : this.default_context;
+		return this.exp().sub(this.negate().exp()).inv().mul(2, mc);
+	}
+
+	/**
 	 * Inverse hyperbolic cosecant function.
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} acsch(A)
 	 */
 	acsch(context) {
+		if(this.isZero()) {
+			return BigDecimal.POSITIVE_INFINITY;
+		}
 		// 逆双曲線余割
 		const mc = context ? context : this.default_context;
 		return this.inv().add(this.square().inv().add(1).sqrt()).log(mc);
-	}
-
-	/**
-	 * Hyperbolic tangent function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
-	 * @returns {BigDecimal} tanh(A)
-	 */
-	tanh(context) {
-		// 双曲線正接
-		const mc = context ? context : this.default_context;
-		const y =  this.mul(2).exp();
-		return y.sub(1).div(y.add(1), mc);
 	}
 
 	// ----------------------

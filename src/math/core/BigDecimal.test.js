@@ -722,7 +722,7 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 {
 	const EPS = 1e-5;
 	test_count = 0;
-	testCompareTo("PI", BigDecimal.PI, "3.14159265359", 0, EPS);
+	testCompareTo("PI", BigDecimal.PI, "3.14159265358979", 0, EPS);
 }
 
 {
@@ -730,3 +730,261 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	test_count = 0;
 	testCompareTo("E", BigDecimal.E, "2.71828182845904523536", 0, EPS);
 }
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("asin", -Infinity, NaN, EPS);
+	testOperator1("asin",   -5, NaN, EPS);
+	testOperator1("asin", -0.5, -0.523598775598299, EPS);
+	testOperator1("asin",    0,  0, EPS);
+	testOperator1("asin",  0.5,  0.523598775598299, EPS);
+	testOperator1("asin",    5, NaN, EPS);
+	testOperator1("asin", Infinity, NaN, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("acos", -Infinity, NaN, EPS);
+	testOperator1("acos",   -5, NaN, EPS);
+	testOperator1("acos", -0.5, 2.09439510239320, EPS);
+	testOperator1("acos",    0, 1.57079632679490, EPS);
+	testOperator1("acos",  0.5, 1.04719755119660, EPS);
+	testOperator1("acos",    5, NaN, EPS);
+	testOperator1("acos", Infinity, NaN, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("sinh", -Infinity, -Infinity, EPS);
+	testOperator1("sinh",   -5, -74.2032105777888, EPS);
+	testOperator1("sinh", -0.5, -0.521095305493747, EPS);
+	testOperator1("sinh",    0,  0, EPS);
+	testOperator1("sinh",  0.5,  0.521095305493747, EPS);
+	testOperator1("sinh",    5,  74.2032105777888, EPS);
+	testOperator1("sinh", Infinity, Infinity, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("asinh", -Infinity, -Infinity, EPS);
+	testOperator1("asinh",   -5, -2.31243834127275, EPS);
+	testOperator1("asinh", -0.5, -0.481211825059603, EPS);
+	testOperator1("asinh",    0,  0, EPS);
+	testOperator1("asinh",  0.5,  0.481211825059603, EPS);
+	testOperator1("asinh",    5,  2.31243834127275, 1);
+	testOperator1("asinh", Infinity, Infinity, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("cosh", -Infinity, Infinity, EPS);
+	testOperator1("cosh",   -5, 74.2099485247878, EPS);
+	testOperator1("cosh", -0.5,  1.12762596520638, EPS);
+	testOperator1("cosh",    0,  1, EPS);
+	testOperator1("cosh",  0.5,  1.12762596520638, EPS);
+	testOperator1("cosh",    5, 74.2099485247878, EPS);
+	testOperator1("cosh", Infinity, Infinity, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("acosh", -Infinity, NaN, EPS);
+	testOperator1("acosh",   -5,  NaN, EPS);
+	testOperator1("acosh", -0.5,  NaN, EPS);
+	testOperator1("acosh",    0,  NaN, EPS);
+	testOperator1("acosh",  0.5,  NaN, EPS);
+	testOperator1("acosh",    5,  2.29243166956118, 1);
+	testOperator1("acosh", Infinity, NaN, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("tanh", -Infinity, -1, EPS);
+	testOperator1("tanh",   -5, -0.999909204262595, EPS);
+	testOperator1("tanh", -0.5, -0.462117157260010, EPS);
+	testOperator1("tanh",    0,  0, EPS);
+	testOperator1("tanh",  0.5,  0.462117157260010, EPS);
+	testOperator1("tanh",    5,  0.999909204262595, EPS);
+	testOperator1("tanh", Infinity, 1, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("atanh", -Infinity, NaN, EPS);
+	testOperator1("atanh",   -5,  NaN, EPS);
+	testOperator1("atanh",   -1,  -Infinity, EPS);
+	testOperator1("atanh", -0.5, -0.549306144334055, EPS);
+	testOperator1("atanh",    0,  0, EPS);
+	testOperator1("atanh",  0.5,  0.549306144334055, EPS);
+	testOperator1("atanh",    1,  Infinity, EPS);
+	testOperator1("atanh",    5,  NaN, EPS);
+	testOperator1("atanh", Infinity, NaN, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("sec", -Infinity, NaN, EPS);
+	testOperator1("sec",   -5,  3.52532008581609, EPS);
+	testOperator1("sec", -0.5,  1.13949392732455, EPS);
+	testOperator1("sec",    0,  1, EPS);
+	testOperator1("sec",  0.5,  1.13949392732455, EPS);
+	testOperator1("sec",    5,  3.52532008581609, EPS);
+	testOperator1("sec", Infinity, NaN, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("asec", -Infinity, 1.57079632679490, EPS);
+	testOperator1("asec",   -5,  1.77215424758523, EPS);
+	testOperator1("asec", -0.5,  NaN, EPS);
+	testOperator1("asec",    0,  NaN, EPS);
+	testOperator1("asec",  0.5,  NaN, EPS);
+	testOperator1("asec",    5,  1.36943840600457, EPS);
+	testOperator1("asec", Infinity, 1.57079632679490, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("sech", -Infinity, 0, EPS);
+	testOperator1("sech",   -5,  0.0134752822213046, EPS);
+	testOperator1("sech", -0.5,  0.886818883970074, EPS);
+	testOperator1("sech",    0,  1, EPS);
+	testOperator1("sech",  0.5,  0.886818883970074, EPS);
+	testOperator1("sech",    5,  0.0134752822213046, EPS);
+	testOperator1("sech", Infinity, 0, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("asech", -Infinity, NaN, EPS);
+	testOperator1("asech",   -5,  NaN, EPS);
+	testOperator1("asech", -0.5,  NaN, EPS);
+	testOperator1("asech",    0,  NaN, EPS);
+	testOperator1("asech",  0.5,  1.31695789692482, EPS);
+	testOperator1("asech",    1,  0.0, EPS);
+	testOperator1("asech",    5,  NaN, EPS);
+	testOperator1("asech", Infinity, NaN, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("cot", -Infinity, NaN, EPS);
+	testOperator1("cot",   -5,  0.295812915532746, EPS);
+	testOperator1("cot", -0.5, -1.83048772171245, EPS);
+	testOperator1("cot",    0,  Infinity, EPS);
+	testOperator1("cot",  0.5,  1.83048772171245, EPS);
+	testOperator1("cot",    5, -0.295812915532746, EPS);
+	testOperator1("cot", Infinity, NaN, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("acot", -Infinity, 0, EPS);
+	testOperator1("acot",   -5, -0.197395559849881, EPS);
+	testOperator1("acot", -0.5, -1.10714871779409, EPS);
+	testOperator1("acot",    0,  1.57079632679490, EPS);
+	testOperator1("acot",  0.5,  1.10714871779409, EPS);
+	testOperator1("acot",    5,  0.197395559849881, EPS);
+	testOperator1("acot", Infinity, 0, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("coth", -Infinity, -1, EPS);
+	testOperator1("coth",   -5, -1.00009080398202, EPS);
+	testOperator1("coth", -0.5, -2.16395341373865, EPS);
+	testOperator1("coth",    0,  Infinity, EPS);
+	testOperator1("coth",  0.5,  2.16395341373865, EPS);
+	testOperator1("coth",    5,  1.00009080398202, EPS);
+	testOperator1("coth", Infinity, 1, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("acoth", -Infinity, 0, EPS);
+	testOperator1("acoth",   -5, -0.202732554054082, EPS);
+	testOperator1("acoth", -0.5,  NaN, EPS);
+	testOperator1("acoth",    0,  NaN, EPS);
+	testOperator1("acoth",  0.5,  NaN, EPS);
+	testOperator1("acoth",    5,  0.202732554054082, EPS);
+	testOperator1("acoth", Infinity, 0, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("csc", -Infinity, NaN, EPS);
+	testOperator1("csc",   -5,  1.04283521277141, EPS);
+	testOperator1("csc", -0.5, -2.08582964293349, EPS);
+	testOperator1("csc",    0,  Infinity, EPS);
+	testOperator1("csc",  0.5,  2.08582964293349, EPS);
+	testOperator1("csc",    5, -1.04283521277141, EPS);
+	testOperator1("csc", Infinity, NaN, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("acsc", -Infinity, 0, EPS);
+	testOperator1("acsc",   -5, -0.201357920790331, EPS);
+	testOperator1("acsc", -0.5,  NaN, EPS);
+	testOperator1("acsc",    0,  NaN, EPS);
+	testOperator1("acsc",  0.5,  NaN, EPS);
+	testOperator1("acsc",    5,  0.201357920790331, EPS);
+	testOperator1("acsc", Infinity, 0, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("csch", -Infinity, 0, EPS);
+	testOperator1("csch",   -5, -0.0134765058305891, EPS);
+	testOperator1("csch", -0.5, -1.91903475133494, EPS);
+	testOperator1("csch",    0,  Infinity, EPS);
+	testOperator1("csch",  0.5,  1.91903475133494, EPS);
+	testOperator1("csch",    5,  0.0134765058305891, EPS);
+	testOperator1("csch", Infinity, 0, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("acsch", -Infinity, 0, EPS);
+	testOperator1("acsch",   -5, -0.198690110349241, EPS);
+	testOperator1("acsch", -0.5, -1.44363547517881, EPS);
+	testOperator1("acsch",    0,  Infinity, EPS);
+	testOperator1("acsch",  0.5,  1.44363547517881, EPS);
+	testOperator1("acsch",    5,  0.198690110349241, EPS);
+	testOperator1("acsch", Infinity, 0, EPS);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
