@@ -56,6 +56,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis.js~DataAnalysis.html">DataAnalysis</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools-dataanalysis">math/tools/DataAnalysis</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.html">MultipleRegressionAnalysis</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisAnova">KMultipleRegressionAnalysisAnova</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisOutput">KMultipleRegressionAnalysisOutput</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegression">KMultipleRegressionAnalysisPartialRegression</a></span></span></li>
@@ -67,13 +68,13 @@
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Fraction from &apos;<span><a href="file/src/math/core/Fraction.js.html#lineNumber251">konpeito/src/math/core/Fraction.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Fraction from &apos;<span><a href="file/src/math/core/Fraction.js.html#lineNumber283">konpeito/src/math/core/Fraction.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/math/core/Fraction.js.html#lineNumber251">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/math/core/Fraction.js.html#lineNumber283">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -182,6 +183,64 @@
           
           
           
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html#static-get-NEGATIVE_INFINITY">NEGATIVE_INFINITY</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Negative Infinity.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html#static-get-NaN">NaN</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Not a Number.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
           <span class="code" data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html#static-get-ONE">ONE</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span>: <span>*</span></span>
         </p>
       </div>
@@ -189,6 +248,35 @@
         
         
         <div data-ice="description"><p>1</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html#static-get-POSITIVE_INFINITY">POSITIVE_INFINITY</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Positive infinity.</p>
 </div>
       </div>
     </td>
@@ -489,6 +577,35 @@
     <td>
       <span class="access" data-ice="access">public</span>
       
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html#instance-get-booleanValue">booleanValue</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>boolean value.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
       
       
       <span class="override" data-ice="override"></span>
@@ -505,7 +622,8 @@
       <div>
         
         
-        
+        <div data-ice="description"><p>denominator</p>
+</div>
       </div>
     </td>
     <td>
@@ -591,7 +709,8 @@
       <div>
         
         
-        
+        <div data-ice="description"><p>numerator</p>
+</div>
       </div>
     </td>
     <td>
@@ -852,6 +971,35 @@
           
           
           
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html#instance-method-equalsState">equalsState</a></span></span><span class="code" data-ice="signature">(number: <span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Numeric type match.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
           <span class="code" data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html#instance-method-factorial">factorial</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span></span>
         </p>
       </div>
@@ -997,6 +1145,64 @@
           
           
           
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html#instance-method-isFinite">isFinite</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Return true if the value is finite number.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html#instance-method-isInfinite">isInfinite</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this === Infinity or -Infinity</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
           <span class="code" data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html#instance-method-isInteger">isInteger</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
         </p>
       </div>
@@ -1026,6 +1232,35 @@
           
           
           
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html#instance-method-isNaN">isNaN</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this === NaN</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
           <span class="code" data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html#instance-method-isNegative">isNegative</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
         </p>
       </div>
@@ -1033,6 +1268,35 @@
         
         
         <div data-ice="description"><p>this &lt; 0</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html#instance-method-isNegativeInfinity">isNegativeInfinity</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this === -Infinity</p>
 </div>
       </div>
     </td>
@@ -1120,6 +1384,35 @@
         
         
         <div data-ice="description"><p>this &gt; 0</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html#instance-method-isPositiveInfinity">isPositiveInfinity</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this === Infinity</p>
 </div>
       </div>
     </td>
@@ -1554,7 +1847,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber897">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1186">source</a></span></span>
     </span>
   </h3>
 
@@ -1611,7 +1904,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber881">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1170">source</a></span></span>
     </span>
   </h3>
 
@@ -1657,6 +1950,120 @@
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-NEGATIVE_INFINITY">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">NEGATIVE_INFINITY</span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1226">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Negative Infinity.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>Infinity</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-NaN">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">NaN</span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1234">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Not a Number.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>NaN</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="static-get-ONE">
     <span class="access" data-ice="access">public</span>
     <span data-ice="static">static</span>
@@ -1668,7 +2075,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber905">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1194">source</a></span></span>
     </span>
   </h3>
 
@@ -1714,6 +2121,63 @@
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-POSITIVE_INFINITY">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">POSITIVE_INFINITY</span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1218">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Positive infinity.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>Infinity</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="static-get-TEN">
     <span class="access" data-ice="access">public</span>
     <span data-ice="static">static</span>
@@ -1725,7 +2189,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber921">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1210">source</a></span></span>
     </span>
   </h3>
 
@@ -1782,7 +2246,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber913">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1202">source</a></span></span>
     </span>
   </h3>
 
@@ -1839,7 +2303,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber889">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1178">source</a></span></span>
     </span>
   </h3>
 
@@ -1899,7 +2363,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber346">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber387">source</a></span></span>
     </span>
   </h3>
 
@@ -1971,7 +2435,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber360">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber401">source</a></span></span>
     </span>
   </h3>
 
@@ -2045,7 +2509,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber385">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber426">source</a></span></span>
     </span>
   </h3>
 
@@ -2117,7 +2581,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber370">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber411">source</a></span></span>
     </span>
   </h3>
 
@@ -2189,7 +2653,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber403">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber444">source</a></span></span>
     </span>
   </h3>
 
@@ -2264,7 +2728,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber263">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber295">source</a></span></span>
     </span>
   </h3>
 
@@ -2324,6 +2788,62 @@
 <div data-ice="memberDetails"><h2 data-ice="title">Public Members</h2>
 
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-get-booleanValue">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">booleanValue</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber801">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>boolean value.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-member-denominator">
     <span class="access" data-ice="access">public</span>
     
@@ -2335,14 +2855,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber275">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber309">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>denominator</p>
+</div>
 
   
 
@@ -2378,7 +2899,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber628">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber823">source</a></span></span>
     </span>
   </h3>
 
@@ -2434,7 +2955,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber617">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber809">source</a></span></span>
     </span>
   </h3>
 
@@ -2490,14 +3011,15 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber269">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber302">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>numerator</p>
+</div>
 
   
 
@@ -2536,7 +3058,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber427">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber468">source</a></span></span>
     </span>
   </h3>
 
@@ -2593,7 +3115,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber468">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber529">source</a></span></span>
     </span>
   </h3>
 
@@ -2665,7 +3187,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber768">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1005">source</a></span></span>
     </span>
   </h3>
 
@@ -2722,7 +3244,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber724">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber958">source</a></span></span>
     </span>
   </h3>
 
@@ -2801,7 +3323,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber419">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber460">source</a></span></span>
     </span>
   </h3>
 
@@ -2857,7 +3379,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber684">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber907">source</a></span></span>
     </span>
   </h3>
 
@@ -2930,7 +3452,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber528">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber622">source</a></span></span>
     </span>
   </h3>
 
@@ -3002,7 +3524,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber673">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber874">source</a></span></span>
     </span>
   </h3>
 
@@ -3064,6 +3586,78 @@
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-equalsState">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">equalsState</span><span class="code" data-ice="signature">(number: <span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber896">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Numeric type match.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"></td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+          
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-factorial">
     <span class="access" data-ice="access">public</span>
     
@@ -3075,7 +3669,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber584">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber762">source</a></span></span>
     </span>
   </h3>
 
@@ -3135,7 +3729,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber803">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1040">source</a></span></span>
     </span>
   </h3>
 
@@ -3192,7 +3786,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber751">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber988">source</a></span></span>
     </span>
   </h3>
 
@@ -3249,7 +3843,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber814">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1051">source</a></span></span>
     </span>
   </h3>
 
@@ -3306,7 +3900,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber545">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber663">source</a></span></span>
     </span>
   </h3>
 
@@ -3351,6 +3945,120 @@
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-isFinite">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">isFinite</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1158">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Return true if the value is finite number.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>!isNaN(A) &amp;&amp; !isInfinite(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-isInfinite">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">isInfinite</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1150">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>this === Infinity or -Infinity</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>isPositiveInfinity(A) || isNegativeInfinity(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-isInteger">
     <span class="access" data-ice="access">public</span>
     
@@ -3362,7 +4070,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber829">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1069">source</a></span></span>
     </span>
   </h3>
 
@@ -3407,6 +4115,63 @@
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-isNaN">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">isNaN</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1126">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>this === NaN</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>isNaN(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-isNegative">
     <span class="access" data-ice="access">public</span>
     
@@ -3418,7 +4183,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber861">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1110">source</a></span></span>
     </span>
   </h3>
 
@@ -3463,6 +4228,63 @@
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-isNegativeInfinity">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">isNegativeInfinity</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1142">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>this === -Infinity</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>isNegativeInfinity(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-isNotNegative">
     <span class="access" data-ice="access">public</span>
     
@@ -3474,7 +4296,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber869">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1118">source</a></span></span>
     </span>
   </h3>
 
@@ -3530,7 +4352,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber845">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1091">source</a></span></span>
     </span>
   </h3>
 
@@ -3587,7 +4409,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber853">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1102">source</a></span></span>
     </span>
   </h3>
 
@@ -3632,6 +4454,63 @@
   
 </div>
 <div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-isPositiveInfinity">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">isPositiveInfinity</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1134">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>this === Infinity</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>isPositiveInfinity(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
   <h3 data-ice="anchor" id="instance-method-isZero">
     <span class="access" data-ice="access">public</span>
     
@@ -3643,7 +4522,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber837">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1080">source</a></span></span>
     </span>
   </h3>
 
@@ -3700,7 +4579,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber693">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber921">source</a></span></span>
     </span>
   </h3>
 
@@ -3773,7 +4652,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber708">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber939">source</a></span></span>
     </span>
   </h3>
 
@@ -3846,7 +4725,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber554">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber680">source</a></span></span>
     </span>
   </h3>
 
@@ -3918,7 +4797,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber510">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber593">source</a></span></span>
     </span>
   </h3>
 
@@ -3990,7 +4869,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber438">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber482">source</a></span></span>
     </span>
   </h3>
 
@@ -4047,7 +4926,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber567">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber696">source</a></span></span>
     </span>
   </h3>
 
@@ -4123,7 +5002,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber785">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber1022">source</a></span></span>
     </span>
   </h3>
 
@@ -4180,7 +5059,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber594">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber775">source</a></span></span>
     </span>
   </h3>
 
@@ -4255,7 +5134,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber447">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber502">source</a></span></span>
     </span>
   </h3>
 
@@ -4314,7 +5193,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber489">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber561">source</a></span></span>
     </span>
   </h3>
 
@@ -4386,7 +5265,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber650">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber848">source</a></span></span>
     </span>
   </h3>
 
@@ -4459,7 +5338,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber641">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber839">source</a></span></span>
     </span>
   </h3>
 
@@ -4515,7 +5394,7 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber455">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/core/Fraction.js.html#lineNumber513">source</a></span></span>
     </span>
   </h3>
 

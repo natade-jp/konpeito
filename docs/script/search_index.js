@@ -48,6 +48,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "konpeito/src/math/tools/dataanalysis/multipleregressionanalysis.js~multipleregressionanalysis",
+    "class/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.html",
+    "<span>MultipleRegressionAnalysis</span> <span class=\"search-result-import-path\">konpeito/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js</span>",
+    "class"
+  ],
+  [
     "konpeito/src/math/core/tools/probability.js~probability",
     "class/src/math/core/tools/Probability.js~Probability.html",
     "<span>Probability</span> <span class=\"search-result-import-path\">konpeito/src/math/core/tools/Probability.js</span>",
@@ -456,9 +462,75 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/bigdecimal.js~bigdecimal#acos",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-acos",
+    "src/math/core/BigDecimal.js~BigDecimal#acos",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#acosh",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-acosh",
+    "src/math/core/BigDecimal.js~BigDecimal#acosh",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#acot",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-acot",
+    "src/math/core/BigDecimal.js~BigDecimal#acot",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#acoth",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-acoth",
+    "src/math/core/BigDecimal.js~BigDecimal#acoth",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#acsc",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-acsc",
+    "src/math/core/BigDecimal.js~BigDecimal#acsc",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#acsch",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-acsch",
+    "src/math/core/BigDecimal.js~BigDecimal#acsch",
+    "method"
+  ],
+  [
     "src/math/core/bigdecimal.js~bigdecimal#add",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-add",
     "src/math/core/BigDecimal.js~BigDecimal#add",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#and",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-and",
+    "src/math/core/BigDecimal.js~BigDecimal#and",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#asec",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-asec",
+    "src/math/core/BigDecimal.js~BigDecimal#asec",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#asech",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-asech",
+    "src/math/core/BigDecimal.js~BigDecimal#asech",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#asin",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-asin",
+    "src/math/core/BigDecimal.js~BigDecimal#asin",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#asinh",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-asinh",
+    "src/math/core/BigDecimal.js~BigDecimal#asinh",
     "method"
   ],
   [
@@ -472,6 +544,18 @@ window.esdocSearchIndex = [
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-atan2",
     "src/math/core/BigDecimal.js~BigDecimal#atan2",
     "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#atanh",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-atanh",
+    "src/math/core/BigDecimal.js~BigDecimal#atanh",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#booleanvalue",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-get-booleanValue",
+    "src/math/core/BigDecimal.js~BigDecimal#booleanValue",
+    "member"
   ],
   [
     "src/math/core/bigdecimal.js~bigdecimal#ceil",
@@ -510,9 +594,39 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/bigdecimal.js~bigdecimal#cosh",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-cosh",
+    "src/math/core/BigDecimal.js~BigDecimal#cosh",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#cot",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-cot",
+    "src/math/core/BigDecimal.js~BigDecimal#cot",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#coth",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-coth",
+    "src/math/core/BigDecimal.js~BigDecimal#coth",
+    "method"
+  ],
+  [
     "src/math/core/bigdecimal.js~bigdecimal#createusingthissettings",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-createUsingThisSettings",
     "src/math/core/BigDecimal.js~BigDecimal#createUsingThisSettings",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#csc",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-csc",
+    "src/math/core/BigDecimal.js~BigDecimal#csc",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#csch",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-csch",
+    "src/math/core/BigDecimal.js~BigDecimal#csch",
     "method"
   ],
   [
@@ -555,6 +669,12 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal#equals",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-equals",
     "src/math/core/BigDecimal.js~BigDecimal#equals",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#equalsstate",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-equalsState",
+    "src/math/core/BigDecimal.js~BigDecimal#equalsState",
     "method"
   ],
   [
@@ -624,15 +744,39 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/bigdecimal.js~bigdecimal#isfinite",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-isFinite",
+    "src/math/core/BigDecimal.js~BigDecimal#isFinite",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#isinfinite",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-isInfinite",
+    "src/math/core/BigDecimal.js~BigDecimal#isInfinite",
+    "method"
+  ],
+  [
     "src/math/core/bigdecimal.js~bigdecimal#isinteger",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-isInteger",
     "src/math/core/BigDecimal.js~BigDecimal#isInteger",
     "method"
   ],
   [
+    "src/math/core/bigdecimal.js~bigdecimal#isnan",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-isNaN",
+    "src/math/core/BigDecimal.js~BigDecimal#isNaN",
+    "method"
+  ],
+  [
     "src/math/core/bigdecimal.js~bigdecimal#isnegative",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-isNegative",
     "src/math/core/BigDecimal.js~BigDecimal#isNegative",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#isnegativeinfinity",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-isNegativeInfinity",
+    "src/math/core/BigDecimal.js~BigDecimal#isNegativeInfinity",
     "method"
   ],
   [
@@ -651,6 +795,24 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal#ispositive",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-isPositive",
     "src/math/core/BigDecimal.js~BigDecimal#isPositive",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#ispositiveinfinity",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-isPositiveInfinity",
+    "src/math/core/BigDecimal.js~BigDecimal#isPositiveInfinity",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#isprime",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-isPrime",
+    "src/math/core/BigDecimal.js~BigDecimal#isPrime",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#isprobableprime",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-isProbablePrime",
+    "src/math/core/BigDecimal.js~BigDecimal#isProbablePrime",
     "method"
   ],
   [
@@ -714,6 +876,24 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/bigdecimal.js~bigdecimal#nextprobableprime",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-nextProbablePrime",
+    "src/math/core/BigDecimal.js~BigDecimal#nextProbablePrime",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#not",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-not",
+    "src/math/core/BigDecimal.js~BigDecimal#not",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#or",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-or",
+    "src/math/core/BigDecimal.js~BigDecimal#or",
+    "method"
+  ],
+  [
     "src/math/core/bigdecimal.js~bigdecimal#plus",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-plus",
     "src/math/core/BigDecimal.js~BigDecimal#plus",
@@ -762,9 +942,27 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/bigdecimal.js~bigdecimal#sec",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-sec",
+    "src/math/core/BigDecimal.js~BigDecimal#sec",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#sech",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-sech",
+    "src/math/core/BigDecimal.js~BigDecimal#sech",
+    "method"
+  ],
+  [
     "src/math/core/bigdecimal.js~bigdecimal#setscale",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-setScale",
     "src/math/core/BigDecimal.js~BigDecimal#setScale",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#shift",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-shift",
+    "src/math/core/BigDecimal.js~BigDecimal#shift",
     "method"
   ],
   [
@@ -783,6 +981,18 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal#sin",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-sin",
     "src/math/core/BigDecimal.js~BigDecimal#sin",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#sinc",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-sinc",
+    "src/math/core/BigDecimal.js~BigDecimal#sinc",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#sinh",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-sinh",
+    "src/math/core/BigDecimal.js~BigDecimal#sinh",
     "method"
   ],
   [
@@ -819,6 +1029,12 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal#tan",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-tan",
     "src/math/core/BigDecimal.js~BigDecimal#tan",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#tanh",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-tanh",
+    "src/math/core/BigDecimal.js~BigDecimal#tanh",
     "method"
   ],
   [
@@ -861,6 +1077,12 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal#unscaledvalue",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-unscaledValue",
     "src/math/core/BigDecimal.js~BigDecimal#unscaledValue",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#xor",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-xor",
+    "src/math/core/BigDecimal.js~BigDecimal#xor",
     "method"
   ],
   [
@@ -912,6 +1134,18 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/math/core/bigdecimal.js~bigdecimal.negative_infinity",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#static-get-NEGATIVE_INFINITY",
+    "src/math/core/BigDecimal.js~BigDecimal.NEGATIVE_INFINITY",
+    "member"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal.nan",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#static-get-NaN",
+    "src/math/core/BigDecimal.js~BigDecimal.NaN",
+    "member"
+  ],
+  [
     "src/math/core/bigdecimal.js~bigdecimal.one",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#static-get-ONE",
     "src/math/core/BigDecimal.js~BigDecimal.ONE",
@@ -921,6 +1155,12 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal.pi",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#static-get-PI",
     "src/math/core/BigDecimal.js~BigDecimal.PI",
+    "member"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal.positive_infinity",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#static-get-POSITIVE_INFINITY",
+    "src/math/core/BigDecimal.js~BigDecimal.POSITIVE_INFINITY",
     "member"
   ],
   [
@@ -1062,12 +1302,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/biginteger.js~biginteger#_andnot",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_andNot",
-    "src/math/core/BigInteger.js~BigInteger#_andNot",
-    "method"
-  ],
-  [
     "src/math/core/biginteger.js~biginteger#_divide",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_divide",
     "src/math/core/BigInteger.js~BigInteger#_divide",
@@ -1110,21 +1344,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/biginteger.js~biginteger#_nand",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_nand",
-    "src/math/core/BigInteger.js~BigInteger#_nand",
-    "method"
-  ],
-  [
     "src/math/core/biginteger.js~biginteger#_negate",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_negate",
     "src/math/core/BigInteger.js~BigInteger#_negate",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_nor",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_nor",
-    "src/math/core/BigInteger.js~BigInteger#_nor",
     "method"
   ],
   [
@@ -1137,12 +1359,6 @@ window.esdocSearchIndex = [
     "src/math/core/biginteger.js~biginteger#_or",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_or",
     "src/math/core/BigInteger.js~BigInteger#_or",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_ornot",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_orNot",
-    "src/math/core/BigInteger.js~BigInteger#_orNot",
     "method"
   ],
   [
@@ -1162,12 +1378,6 @@ window.esdocSearchIndex = [
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_shift",
     "src/math/core/BigInteger.js~BigInteger#_shift",
     "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_sign",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-member-_sign",
-    "src/math/core/BigInteger.js~BigInteger#_sign",
-    "member"
   ],
   [
     "src/math/core/biginteger.js~biginteger#_subtract",
@@ -1200,12 +1410,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/biginteger.js~biginteger#andnot",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-andNot",
-    "src/math/core/BigInteger.js~BigInteger#andNot",
-    "method"
-  ],
-  [
     "src/math/core/biginteger.js~biginteger#bitcount",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-bitCount",
     "src/math/core/BigInteger.js~BigInteger#bitCount",
@@ -1216,6 +1420,12 @@ window.esdocSearchIndex = [
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-bitLength",
     "src/math/core/BigInteger.js~BigInteger#bitLength",
     "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#booleanvalue",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-get-booleanValue",
+    "src/math/core/BigInteger.js~BigInteger#booleanValue",
+    "member"
   ],
   [
     "src/math/core/biginteger.js~biginteger#clearbit",
@@ -1290,6 +1500,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/biginteger.js~biginteger#equalsstate",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-equalsState",
+    "src/math/core/BigInteger.js~BigInteger#equalsState",
+    "method"
+  ],
+  [
     "src/math/core/biginteger.js~biginteger#extgcd",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-extgcd",
     "src/math/core/BigInteger.js~BigInteger#extgcd",
@@ -1338,9 +1554,33 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/math/core/biginteger.js~biginteger#isfinite",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-isFinite",
+    "src/math/core/BigInteger.js~BigInteger#isFinite",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#isinfinite",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-isInfinite",
+    "src/math/core/BigInteger.js~BigInteger#isInfinite",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#isnan",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-isNaN",
+    "src/math/core/BigInteger.js~BigInteger#isNaN",
+    "method"
+  ],
+  [
     "src/math/core/biginteger.js~biginteger#isnegative",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-isNegative",
     "src/math/core/BigInteger.js~BigInteger#isNegative",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#isnegativeinfinity",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-isNegativeInfinity",
+    "src/math/core/BigInteger.js~BigInteger#isNegativeInfinity",
     "method"
   ],
   [
@@ -1359,6 +1599,18 @@ window.esdocSearchIndex = [
     "src/math/core/biginteger.js~biginteger#ispositive",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-isPositive",
     "src/math/core/BigInteger.js~BigInteger#isPositive",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#ispositiveinfinity",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-isPositiveInfinity",
+    "src/math/core/BigInteger.js~BigInteger#isPositiveInfinity",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#isprime",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-isPrime",
+    "src/math/core/BigInteger.js~BigInteger#isPrime",
     "method"
   ],
   [
@@ -1428,12 +1680,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/biginteger.js~biginteger#nand",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-nand",
-    "src/math/core/BigInteger.js~BigInteger#nand",
-    "method"
-  ],
-  [
     "src/math/core/biginteger.js~biginteger#negate",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-negate",
     "src/math/core/BigInteger.js~BigInteger#negate",
@@ -1446,12 +1692,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/biginteger.js~biginteger#nor",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-nor",
-    "src/math/core/BigInteger.js~BigInteger#nor",
-    "method"
-  ],
-  [
     "src/math/core/biginteger.js~biginteger#not",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-not",
     "src/math/core/BigInteger.js~BigInteger#not",
@@ -1461,12 +1701,6 @@ window.esdocSearchIndex = [
     "src/math/core/biginteger.js~biginteger#or",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-or",
     "src/math/core/BigInteger.js~BigInteger#or",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#ornot",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-orNot",
-    "src/math/core/BigInteger.js~BigInteger#orNot",
     "method"
   ],
   [
@@ -1542,6 +1776,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/biginteger.js~biginteger#state",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-member-state",
+    "src/math/core/BigInteger.js~BigInteger#state",
+    "member"
+  ],
+  [
     "src/math/core/biginteger.js~biginteger#sub",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-sub",
     "src/math/core/BigInteger.js~BigInteger#sub",
@@ -1578,9 +1818,27 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/math/core/biginteger.js~biginteger.negative_infinity",
+    "class/src/math/core/BigInteger.js~BigInteger.html#static-get-NEGATIVE_INFINITY",
+    "src/math/core/BigInteger.js~BigInteger.NEGATIVE_INFINITY",
+    "member"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger.nan",
+    "class/src/math/core/BigInteger.js~BigInteger.html#static-get-NaN",
+    "src/math/core/BigInteger.js~BigInteger.NaN",
+    "member"
+  ],
+  [
     "src/math/core/biginteger.js~biginteger.one",
     "class/src/math/core/BigInteger.js~BigInteger.html#static-get-ONE",
     "src/math/core/BigInteger.js~BigInteger.ONE",
+    "member"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger.positive_infinity",
+    "class/src/math/core/BigInteger.js~BigInteger.html#static-get-POSITIVE_INFINITY",
+    "src/math/core/BigInteger.js~BigInteger.POSITIVE_INFINITY",
     "member"
   ],
   [
@@ -1708,6 +1966,12 @@ window.esdocSearchIndex = [
     "class/src/math/core/Complex.js~Complex.html#instance-method-atan2",
     "src/math/core/Complex.js~Complex#atan2",
     "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#booleanvalue",
+    "class/src/math/core/Complex.js~Complex.html#instance-get-booleanValue",
+    "src/math/core/Complex.js~Complex#booleanValue",
+    "member"
   ],
   [
     "src/math/core/complex.js~complex#ceil",
@@ -1866,6 +2130,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#isnegativeinfinity",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-isNegativeInfinity",
+    "src/math/core/Complex.js~Complex#isNegativeInfinity",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#isnotnegative",
     "class/src/math/core/Complex.js~Complex.html#instance-method-isNotNegative",
     "src/math/core/Complex.js~Complex#isNotNegative",
@@ -1881,6 +2151,12 @@ window.esdocSearchIndex = [
     "src/math/core/complex.js~complex#ispositive",
     "class/src/math/core/Complex.js~Complex.html#instance-method-isPositive",
     "src/math/core/Complex.js~Complex#isPositive",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#ispositiveinfinity",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-isPositiveInfinity",
+    "src/math/core/Complex.js~Complex#isPositiveInfinity",
     "method"
   ],
   [
@@ -2202,6 +2478,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#booleanvalue",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-get-booleanValue",
+    "src/math/core/Fraction.js~Fraction#booleanValue",
+    "member"
+  ],
+  [
     "src/math/core/fraction.js~fraction#ceil",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-ceil",
     "src/math/core/Fraction.js~Fraction#ceil",
@@ -2256,6 +2538,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#equalsstate",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-equalsState",
+    "src/math/core/Fraction.js~Fraction#equalsState",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#factorial",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-factorial",
     "src/math/core/Fraction.js~Fraction#factorial",
@@ -2292,15 +2580,39 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#isfinite",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-isFinite",
+    "src/math/core/Fraction.js~Fraction#isFinite",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#isinfinite",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-isInfinite",
+    "src/math/core/Fraction.js~Fraction#isInfinite",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#isinteger",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-isInteger",
     "src/math/core/Fraction.js~Fraction#isInteger",
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#isnan",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-isNaN",
+    "src/math/core/Fraction.js~Fraction#isNaN",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#isnegative",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-isNegative",
     "src/math/core/Fraction.js~Fraction#isNegative",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#isnegativeinfinity",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-isNegativeInfinity",
+    "src/math/core/Fraction.js~Fraction#isNegativeInfinity",
     "method"
   ],
   [
@@ -2319,6 +2631,12 @@ window.esdocSearchIndex = [
     "src/math/core/fraction.js~fraction#ispositive",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-isPositive",
     "src/math/core/Fraction.js~Fraction#isPositive",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#ispositiveinfinity",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-isPositiveInfinity",
+    "src/math/core/Fraction.js~Fraction#isPositiveInfinity",
     "method"
   ],
   [
@@ -2424,9 +2742,27 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/math/core/fraction.js~fraction.negative_infinity",
+    "class/src/math/core/Fraction.js~Fraction.html#static-get-NEGATIVE_INFINITY",
+    "src/math/core/Fraction.js~Fraction.NEGATIVE_INFINITY",
+    "member"
+  ],
+  [
+    "src/math/core/fraction.js~fraction.nan",
+    "class/src/math/core/Fraction.js~Fraction.html#static-get-NaN",
+    "src/math/core/Fraction.js~Fraction.NaN",
+    "member"
+  ],
+  [
     "src/math/core/fraction.js~fraction.one",
     "class/src/math/core/Fraction.js~Fraction.html#static-get-ONE",
     "src/math/core/Fraction.js~Fraction.ONE",
+    "member"
+  ],
+  [
+    "src/math/core/fraction.js~fraction.positive_infinity",
+    "class/src/math/core/Fraction.js~Fraction.html#static-get-POSITIVE_INFINITY",
+    "src/math/core/Fraction.js~Fraction.POSITIVE_INFINITY",
     "member"
   ],
   [
@@ -2626,6 +2962,12 @@ window.esdocSearchIndex = [
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-betapdf",
     "src/math/core/Matrix.js~Matrix#betapdf",
     "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#booleanvalue",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-get-booleanValue",
+    "src/math/core/Matrix.js~Matrix#booleanValue",
+    "member"
   ],
   [
     "src/math/core/matrix.js~matrix#ceil",
@@ -3618,6 +3960,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#testnegativeinfinity",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-testNegativeInfinity",
+    "src/math/core/Matrix.js~Matrix#testNegativeInfinity",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#testnotnegative",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-testNotNegative",
     "src/math/core/Matrix.js~Matrix#testNotNegative",
@@ -3633,6 +3981,12 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#testpositive",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-testPositive",
     "src/math/core/Matrix.js~Matrix#testPositive",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#testpositiveinfinity",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-testPositiveInfinity",
+    "src/math/core/Matrix.js~Matrix#testPositiveInfinity",
     "method"
   ],
   [
@@ -4722,45 +5076,57 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/math/tools/dataanalysis.js~dataanalysis.multipleregressionanalysis",
-    "class/src/math/tools/DataAnalysis.js~DataAnalysis.html#static-method-MultipleRegressionAnalysis",
-    "src/math/tools/DataAnalysis.js~DataAnalysis.MultipleRegressionAnalysis",
+    "src/math/tools/dataanalysis.js~dataanalysis.runmultipleregressionanalysis",
+    "class/src/math/tools/DataAnalysis.js~DataAnalysis.html#static-method-runMultipleRegressionAnalysis",
+    "src/math/tools/DataAnalysis.js~DataAnalysis.runMultipleRegressionAnalysis",
     "method"
   ],
   [
-    "src/math/tools/dataanalysis.js~kmultipleregressionanalysisanova",
+    "src/math/tools/dataanalysis/multipleregressionanalysis.js",
+    "file/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js.html",
+    "src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js",
+    "file"
+  ],
+  [
+    "src/math/tools/dataanalysis/multipleregressionanalysis.js~kmultipleregressionanalysisanova",
     "typedef/index.html#static-typedef-KMultipleRegressionAnalysisAnova",
-    "src/math/tools/DataAnalysis.js~KMultipleRegressionAnalysisAnova",
+    "src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~KMultipleRegressionAnalysisAnova",
     "typedef"
   ],
   [
-    "src/math/tools/dataanalysis.js~kmultipleregressionanalysisoutput",
+    "src/math/tools/dataanalysis/multipleregressionanalysis.js~kmultipleregressionanalysisoutput",
     "typedef/index.html#static-typedef-KMultipleRegressionAnalysisOutput",
-    "src/math/tools/DataAnalysis.js~KMultipleRegressionAnalysisOutput",
+    "src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~KMultipleRegressionAnalysisOutput",
     "typedef"
   ],
   [
-    "src/math/tools/dataanalysis.js~kmultipleregressionanalysispartialregression",
+    "src/math/tools/dataanalysis/multipleregressionanalysis.js~kmultipleregressionanalysispartialregression",
     "typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegression",
-    "src/math/tools/DataAnalysis.js~KMultipleRegressionAnalysisPartialRegression",
+    "src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~KMultipleRegressionAnalysisPartialRegression",
     "typedef"
   ],
   [
-    "src/math/tools/dataanalysis.js~kmultipleregressionanalysispartialregressiondata",
+    "src/math/tools/dataanalysis/multipleregressionanalysis.js~kmultipleregressionanalysispartialregressiondata",
     "typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegressionData",
-    "src/math/tools/DataAnalysis.js~KMultipleRegressionAnalysisPartialRegressionData",
+    "src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~KMultipleRegressionAnalysisPartialRegressionData",
     "typedef"
   ],
   [
-    "src/math/tools/dataanalysis.js~kmultipleregressionanalysissettings",
+    "src/math/tools/dataanalysis/multipleregressionanalysis.js~kmultipleregressionanalysissettings",
     "typedef/index.html#static-typedef-KMultipleRegressionAnalysisSettings",
-    "src/math/tools/DataAnalysis.js~KMultipleRegressionAnalysisSettings",
+    "src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~KMultipleRegressionAnalysisSettings",
     "typedef"
   ],
   [
-    "src/math/tools/dataanalysis.js~kmultipleregressionanalysisvectorstate",
+    "src/math/tools/dataanalysis/multipleregressionanalysis.js~kmultipleregressionanalysisvectorstate",
     "typedef/index.html#static-typedef-KMultipleRegressionAnalysisVectorState",
-    "src/math/tools/DataAnalysis.js~KMultipleRegressionAnalysisVectorState",
+    "src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~KMultipleRegressionAnalysisVectorState",
     "typedef"
+  ],
+  [
+    "src/math/tools/dataanalysis/multipleregressionanalysis.js~multipleregressionanalysis.runmultipleregressionanalysis",
+    "class/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.html#static-method-runMultipleRegressionAnalysis",
+    "src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.runMultipleRegressionAnalysis",
+    "method"
   ]
 ]

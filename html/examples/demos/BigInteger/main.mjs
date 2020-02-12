@@ -149,11 +149,6 @@ const main = function() {
 	Log.println(s1.not().toString(16));
 	Log.println(s2.not().toString(16));
 	
-	Log.println("andNot");
-	Log.println(s1.andNot(s2).toString(16));
-	Log.println(s1.andNot(s3).toString(16));
-	Log.println(s2.andNot(s4).toString(16));
-	
 	Log.println("////////////////////////////////");
 	
 	Log.println("数値の変換");

@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 940,
-  "actualCount": 940,
+  "expectCount": 1002,
+  "actualCount": 1002,
   "files": {
     "src/konpeito.js": {
       "expectCount": 10,
@@ -9,18 +9,18 @@
       "undocumentLines": []
     },
     "src/math/core/BigDecimal.js": {
-      "expectCount": 128,
-      "actualCount": 128,
+      "expectCount": 167,
+      "actualCount": 167,
       "undocumentLines": []
     },
     "src/math/core/BigInteger.js": {
-      "expectCount": 111,
-      "actualCount": 111,
+      "expectCount": 116,
+      "actualCount": 116,
       "undocumentLines": []
     },
     "src/math/core/Complex.js": {
-      "expectCount": 90,
-      "actualCount": 90,
+      "expectCount": 93,
+      "actualCount": 93,
       "undocumentLines": []
     },
     "src/math/core/context/MathContext.js": {
@@ -34,13 +34,13 @@
       "undocumentLines": []
     },
     "src/math/core/Fraction.js": {
-      "expectCount": 55,
-      "actualCount": 55,
+      "expectCount": 65,
+      "actualCount": 65,
       "undocumentLines": []
     },
     "src/math/core/Matrix.js": {
-      "expectCount": 253,
-      "actualCount": 253,
+      "expectCount": 256,
+      "actualCount": 256,
       "undocumentLines": []
     },
     "src/math/core/tools/LinearAlgebra.js": {
@@ -76,6 +76,11 @@
     "src/math/core/tools/Statistics.js": {
       "expectCount": 18,
       "actualCount": 18,
+      "undocumentLines": []
+    },
+    "src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js": {
+      "expectCount": 2,
+      "actualCount": 2,
       "undocumentLines": []
     },
     "src/math/tools/DataAnalysis.js": {

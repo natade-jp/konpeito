@@ -56,6 +56,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis.js~DataAnalysis.html">DataAnalysis</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools-dataanalysis">math/tools/DataAnalysis</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.html">MultipleRegressionAnalysis</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisAnova">KMultipleRegressionAnalysisAnova</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisOutput">KMultipleRegressionAnalysisOutput</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegression">KMultipleRegressionAnalysisPartialRegression</a></span></span></li>
@@ -84,6 +85,7 @@ import Matrix from &quot;./Matrix.js&quot;;
  * Complex type argument.
  * - Complex
  * - number
+ * - boolean
  * - string
  * - Array&lt;number&gt;
  * - {_re:number,_im:number}
@@ -93,7 +95,7 @@ import Matrix from &quot;./Matrix.js&quot;;
  * Initialization can be performed as follows.
  * - 1200, &quot;1200&quot;, &quot;12e2&quot;, &quot;1.2e3&quot;
  * - &quot;3 + 4i&quot;, &quot;4j + 3&quot;, [3, 4].
- * @typedef {Complex|number|string|Array&lt;number&gt;|{_re:number,_im:number}|{doubleValue:number}|{toString:function}} KComplexInputData
+ * @typedef {Complex|number|boolean|string|Array&lt;number&gt;|{_re:number,_im:number}|{doubleValue:number}|{toString:function}} KComplexInputData
  */
 
 /**
@@ -205,6 +207,10 @@ export default class Complex {
 					throw &quot;Complex Unsupported argument &quot; + arguments;
 				}
 			}
+			else if(typeof obj === &quot;boolean&quot;) {
+				this._re = obj ? 1 : 0;
+				this._im = 0.0;
+			}
 			else if(&quot;doubleValue&quot; in obj) {
 				this._re = obj.doubleValue;
 				this._im = 0.0;
@@ -299,11 +305,19 @@ export default class Complex {
 	}
 
 	/**
+	 * boolean value.
+	 * @returns {boolean}
+	 */
+	get booleanValue() {
+		return this._re !== 0 || this._im !== 0;
+	}
+
+	/**
 	 * integer value.
 	 * @returns {number}
 	 */
 	get intValue() {
-		return Math.trunc(this.real);
+		return Math.trunc(this._re);
 	}
 
 	/**
@@ -311,7 +325,7 @@ export default class Complex {
 	 * @returns {number}
 	 */
 	get doubleValue() {
-		return this.real;
+		return this._re;
 	}
 
 	/**
@@ -462,9 +476,20 @@ export default class Complex {
 	 * @returns {Complex} 
 	 */
 	sign() {
+		if(!this.isFinite()) {
+			if(this.isNaN() || this._im === Infinity || this._im === -Infinity) {
+				return Complex.NaN;
+			}
+			if(this._re === Infinity) {
+				return Complex.ONE;
+			}
+			else {
+				return Complex.MINUS_ONE;
+			}
+		}
 		if(this._im === 0) {
 			if(this._re === 0) {
-				return new Complex(0);
+				return Complex.ZERO;
 			}
 			else {
 				return new Complex(this._re &gt; 0 ? 1 : -1);
@@ -805,13 +830,26 @@ export default class Complex {
 
 	/**
 	 * this === Infinity
-	 * @returns {boolean} isInfinite(A)
+	 * @returns {boolean} isPositiveInfinity(A)
+	 */
+	isPositiveInfinity() {
+		return this._re === Number.POSITIVE_INFINITY || this._im === Number.POSITIVE_INFINITY;
+	}
+
+	/**
+	 * this === -Infinity
+	 * @returns {boolean} isNegativeInfinity(A)
+	 */
+	isNegativeInfinity() {
+		return this._re === Number.NEGATIVE_INFINITY || this._im === Number.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * this === Infinity or -Infinity
+	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
 	 */
 	isInfinite() {
-		return	(this._re === Number.POSITIVE_INFINITY) ||
-				(this._im === Number.POSITIVE_INFINITY) ||
-				(this._re === Number.NEGATIVE_INFINITY) ||
-				(this._im === Number.NEGATIVE_INFINITY);
+		return this.isPositiveInfinity() || this.isNegativeInfinity();
 	}
 	
 	/**

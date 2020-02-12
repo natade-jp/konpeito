@@ -1,10 +1,11 @@
 # History
 
-## v4a
+## v4.0.0
 ### 機能追加
 - `BigInteger`, `BigDecimal`, `Fraction`, `Complex` の引数に`boolean`型(`1` or `0`)を入力できる機能追加
+- `BigInteger`, `BigDecimal`, `Fraction`, `Complex`, `Matrix` に `booleanValue` を実装
 - `BigInteger` に `isPrime` を追加
-- `BigDecimal`, `Fraction` に `NaN`, `Infinity` を実装、テストする関数も追加
+- `BigInteger`, `BigDecimal`, `Fraction` に `NaN`, `Infinity` を実装、テストする関数も追加
 - `BigDecimal` に拡張した三角関数、ビット演算、素数判定を追加
 - `Complex` / `Matrix` に `isPositiveInfinity`, `isNegativeInfinity` を追加
 ### 改善
@@ -13,15 +14,19 @@
 - ファイルやフォルダの位置を整理
 ### 変更
 - `BigInteger` を整理し `orNot`, `andNot` を削除
-- `BigDecimal` の `inv` に `0` を入れると例外を返すように変更
-- `BigDecimal` の `rsqrt` に0以下の数値を入れると例外を返すように変更
-- `BigDecimal` の `sqrt` に0未満の数値を入れると例外を返すように変更
+- `BigDecimal` の `inv` に `0` を入れた場合の処理を追加
+- `BigDecimal` の `rsqrt` に0以下の数値を入れた場合の処理を追加
+- `BigDecimal` の `sqrt` に0未満の数値を入れた場合の処理を追加
 ### 不具合
-- `BigInteger` の `isProbablePrime` の入力に0を入れる素数であると判定するバグを修正
-- `BigInteger` の `isProbablePrime` の入力に負の値を入れるとフリーズするバグを修正
+- `BigInteger` に `mod` で被除と被除数の符号によって値が異常だった不具合を修正
+- `BigInteger` の `isProbablePrime` の入力に`0`を入れると素数であると判定する不具合を修正
+- `BigInteger` の `isProbablePrime` の入力に`x < 0`の値を入れるとフリーズする不具合を修正
 - `BigDecimal` の `pow` の整数入力時の計算結果が無限精度になる不具合を修正
 - `BigDecimal` の `pow` で `0` の `x` 乗が `1` になっていた不具合を修正
 - `Complex` の `sign` に `NaN`を入れたときの動作が誤っていたのを修正
+### TODO
+- `BigDecimal` に今回追加した拡張した三角関数を `Complex` でも利用できるようにする
+- `BigDecimal` で利用できるその他の機能のいくつかを `Complex`, `Fraction` で利用できるようにする
 
 ## v3.0.0
 ### 機能追加

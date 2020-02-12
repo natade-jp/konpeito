@@ -57,15 +57,16 @@ declare class konpeito {
 /**
  * _BigDecimal_ type argument.(local)
  * - number
+ * - boolean
  * - string
  * - _BigDecimal_
  * - _BigInteger_
  * - {toBigDecimal:function}
  * - {doubleValue:number}
  * - {toString:function}
- * @typedef {number|string|_BigDecimal_|_BigInteger_|{toBigDecimal:function}|{doubleValue:number}|{toString:function}} KBigDecimalLocalInputData
+ * @typedef {number|boolean|string|_BigDecimal_|_BigInteger_|{toBigDecimal:function}|{doubleValue:number}|{toString:function}} KBigDecimalLocalInputData
  */
-declare type KBigDecimalLocalInputData = number|string|_BigDecimal_|_BigInteger_|{toBigDecimal:any}|{doubleValue:number}|{toString:any};
+declare type KBigDecimalLocalInputData = number|boolean|string|_BigDecimal_|_BigInteger_|{toBigDecimal:any}|{doubleValue:number}|{toString:any};
 
 
 /**
@@ -112,10 +113,23 @@ declare type KBigDecimalDivideType = {
 };
 
 /**
- * Arbitrary-precision floating-point number class (immutable).
- * - Sorry. Infinity and NaN do not correspond yet.
+ * Create an arbitrary-precision floating-point number.
+ *
+ * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3"
+ * - When initializing with array. [ integer, [scale = 0], [context=default]].
+ * - When initializing with object. { integer, [scale = 0], [context=default]}.
+ *
+ * Description of the settings are as follows, you can also omitted.
+ * - The "scale" is an integer scale factor.
+ * - The "context" is used to normalize the created floating point.
+ *
+ * If "context" is not specified, the "default_context" set for the class is used.
+ * The "context" is the used when no environment settings are specified during calculation.
+ * @param {KBigDecimalInputData} number - Real data.
  */
 declare class _BigDecimal_ {
+    constructor(number: KBigDecimalInputData);
     /**
      * Create an arbitrary-precision floating-point number.
      *
@@ -345,6 +359,11 @@ declare class _BigDecimal_ {
      */
     static getDefaultContext(): _MathContext_;
     /**
+     * boolean value.
+     * @returns {boolean}
+     */
+    booleanValue: boolean;
+    /**
      * 32-bit integer value.
      * @returns {number}
      */
@@ -380,6 +399,12 @@ declare class _BigDecimal_ {
      * @returns {boolean} A === B
      */
     equals(number: KBigDecimalInputData, tolerance?: KBigDecimalInputData): boolean;
+    /**
+     * Numeric type match.
+     * @param {KBigDecimalInputData} number
+     * @returns {boolean}
+     */
+    equalsState(number: KBigDecimalInputData): boolean;
     /**
      * Compare values.
      * @param {KBigDecimalInputData} number
@@ -539,6 +564,171 @@ declare class _BigDecimal_ {
      */
     atan2(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
     /**
+     * Logical AND.
+     * - Calculated as an integer.
+     * @param {KBigDecimalInputData} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A & B
+     */
+    and(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
+     * Logical OR.
+     * - Calculated as an integer.
+     * @param {KBigDecimalInputData} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A | B
+     */
+    or(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
+     * Logical Exclusive-OR.
+     * - Calculated as an integer.
+     * @param {KBigDecimalInputData} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A ^ B
+     */
+    xor(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
+     * Logical Not. (mutable)
+     * - Calculated as an integer.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
+     * @returns {_BigDecimal_} !A
+     */
+    not(context?: _MathContext_): _BigDecimal_;
+    /**
+     * this << n
+     * - Calculated as an integer.
+     * @param {KBigDecimalInputData} n
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
+     * @returns {_BigDecimal_} A << n
+     */
+    shift(n: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
+     * Arc sine function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} asin(A)
+     */
+    asin(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Arc cosine function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} acos(A)
+     */
+    acos(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Hyperbolic sine function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} sinh(A)
+     */
+    sinh(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Inverse hyperbolic sine function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} asinh(A)
+     */
+    asinh(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Hyperbolic cosine function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} cosh(A)
+     */
+    cosh(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Inverse hyperbolic cosine function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} acosh(A)
+     */
+    acosh(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Hyperbolic tangent function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} tanh(A)
+     */
+    tanh(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Inverse hyperbolic tangent function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} atanh(A)
+     */
+    atanh(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Secant function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} sec(A)
+     */
+    sec(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Reverse secant function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} asec(A)
+     */
+    asec(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Hyperbolic secant function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} sech(A)
+     */
+    sech(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Inverse hyperbolic secant function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} asech(A)
+     */
+    asech(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Cotangent function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} cot(A)
+     */
+    cot(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Inverse cotangent function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} acot(A)
+     */
+    acot(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Hyperbolic cotangent function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} coth(A)
+     */
+    coth(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Inverse hyperbolic cotangent function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} acoth(A)
+     */
+    acoth(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Cosecant function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} csc(A)
+     */
+    csc(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Inverse cosecant function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} acsc(A)
+     */
+    acsc(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Hyperbolic cosecant function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} csch(A)
+     */
+    csch(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Inverse hyperbolic cosecant function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} acsch(A)
+     */
+    acsch(context?: _MathContext_): _BigDecimal_;
+    /**
+     * Normalized sinc function.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
+     * @returns {_BigDecimal_} sinc(A)
+     */
+    sinc(context?: _MathContext_): _BigDecimal_;
+    /**
      * Return true if the value is integer.
      * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
      * @returns {boolean}
@@ -571,6 +761,54 @@ declare class _BigDecimal_ {
      * @returns {boolean}
      */
     isNotNegative(): boolean;
+    /**
+     * this === NaN
+     * @returns {boolean} isNaN(A)
+     */
+    isNaN(): boolean;
+    /**
+     * this === Infinity
+     * @returns {boolean} isPositiveInfinity(A)
+     */
+    isPositiveInfinity(): boolean;
+    /**
+     * this === -Infinity
+     * @returns {boolean} isNegativeInfinity(A)
+     */
+    isNegativeInfinity(): boolean;
+    /**
+     * this === Infinity or -Infinity
+     * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+     */
+    isInfinite(): boolean;
+    /**
+     * Return true if the value is finite number.
+     * @returns {boolean} !isNaN(A) && !isInfinite(A)
+     */
+    isFinite(): boolean;
+    /**
+     * Return true if the value is prime number.
+     * - Calculated as an integer.
+     * - Calculate up to `2251799813685248(=2^51)`.
+     * @returns {boolean} - If the calculation range is exceeded, null is returned.
+     */
+    isPrime(): boolean;
+    /**
+     * Return true if the value is prime number by Miller-Labin prime number determination method.
+     *
+     * Attention : it takes a very long time to process.
+     * - Calculated as an integer.
+     * @param {KBigDecimalInputData} [certainty=100] - Repeat count (prime precision).
+     * @returns {boolean}
+     */
+    isProbablePrime(certainty?: KBigDecimalInputData): boolean;
+    /**
+     * Next prime.
+     * @param {KBigDecimalInputData} [certainty=100] - Repeat count (prime precision).
+     * @param {KBigDecimalInputData} [search_max=100000] - Search range of next prime.
+     * @returns {_BigDecimal_}
+     */
+    nextProbablePrime(certainty?: KBigDecimalInputData, search_max?: KBigDecimalInputData): _BigDecimal_;
     /**
      * -1
      * @returns {_BigDecimal_} -1
@@ -656,28 +894,21 @@ declare class _BigDecimal_ {
      * @returns {_BigDecimal_} sqrt(0.5)
      */
     static SQRT1_2: _BigDecimal_;
-}
-
-declare namespace _BigDecimal_ {
     /**
-     * Create an arbitrary-precision floating-point number.
-     *
-     * Initialization can be performed as follows.
-     * - 1200, "1200", "12e2", "1.2e3"
-     * - When initializing with array. [ integer, [scale = 0], [context=default]].
-     * - When initializing with object. { integer, [scale = 0], [context=default]}.
-     *
-     * Description of the settings are as follows, you can also omitted.
-     * - The "scale" is an integer scale factor.
-     * - The "context" is used to normalize the created floating point.
-     *
-     * If "context" is not specified, the "default_context" set for the class is used.
-     * The "context" is the used when no environment settings are specified during calculation.
-     * @param {KBigDecimalInputData} number - Real data.
+     * Positive infinity.
+     * @returns {_BigDecimal_} Infinity
      */
-    class _BigDecimal_ {
-        constructor(number: KBigDecimalInputData);
-    }
+    static POSITIVE_INFINITY: _BigDecimal_;
+    /**
+     * Negative Infinity.
+     * @returns {_BigDecimal_} -Infinity
+     */
+    static NEGATIVE_INFINITY: _BigDecimal_;
+    /**
+     * Not a Number.
+     * @returns {_BigDecimal_} NaN
+     */
+    static NaN: _BigDecimal_;
 }
 
 /**
@@ -695,9 +926,9 @@ declare namespace _BigDecimal_ {
  * - "0xff", ["ff", 16]
  * - "0o01234567", ["01234567", 8]
  * - "0b0110101", ["0110101", 2]
- * @typedef {_BigInteger_|number|string|Array<string|number>|{toBigInteger:function}|{intValue:number}|{toString:function}} KBigIntegerInputData
+ * @typedef {_BigInteger_|number|boolean|string|Array<string|number>|{toBigInteger:function}|{intValue:number}|{toString:function}} KBigIntegerInputData
  */
-declare type KBigIntegerInputData = _BigInteger_|number|string|Array<string|number>|{toBigInteger:any}|{intValue:number}|{toString:any};
+declare type KBigIntegerInputData = _BigInteger_|number|boolean|string|Array<string|number>|{toBigInteger:any}|{intValue:number}|{toString:any};
 
 
 /**
@@ -759,13 +990,13 @@ declare class _BigInteger_ {
      * - +1 if positive, -1 if negative, 0 if 0.
      * @returns {number}
      */
-    signum(): number;
+    sign(): number;
     /**
      * The positive or negative sign of this number.
      * - +1 if positive, -1 if negative, 0 if 0.
      * @returns {number}
      */
-    sign(): number;
+    signum(): number;
     /**
      * Add.
      * @param {KBigIntegerInputData} number
@@ -891,6 +1122,11 @@ declare class _BigInteger_ {
      */
     getShort(point: KBigIntegerInputData): number;
     /**
+     * boolean value.
+     * @returns {boolean}
+     */
+    booleanValue: boolean;
+    /**
      * 32-bit integer value.
      * - If it is outside the range of JavaScript Number, it will not be an accurate number.
      * @returns {number}
@@ -935,7 +1171,7 @@ declare class _BigInteger_ {
     /**
      * Compare values without sign.
      * @param {KBigIntegerInputData} number
-     * @returns {number} abs(A) < abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
+     * @returns {number} abs(A) > abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
      */
     compareToAbs(number: KBigIntegerInputData): number;
     /**
@@ -944,6 +1180,12 @@ declare class _BigInteger_ {
      * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
      */
     compareTo(number: KBigIntegerInputData): number;
+    /**
+     * Numeric type match.
+     * @param {KBigIntegerInputData} number
+     * @returns {boolean}
+     */
+    equalsState(number: KBigIntegerInputData): boolean;
     /**
      * Maximum number.
      * @param {KBigIntegerInputData} number
@@ -973,7 +1215,14 @@ declare class _BigInteger_ {
      */
     static probablePrime(bits: KBigIntegerInputData, random?: _Random_, certainty?: KBigIntegerInputData, create_count?: KBigIntegerInputData): _BigInteger_;
     /**
+     * Return true if the value is prime number.
+     * - Calculate up to `2251799813685248(=2^51)`.
+     * @returns {boolean} - If the calculation range is exceeded, null is returned.
+     */
+    isPrime(): boolean;
+    /**
      * Return true if the value is prime number by Miller-Labin prime number determination method.
+     *
      * Attention : it takes a very long time to process.
      * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
      * @returns {boolean}
@@ -1044,30 +1293,6 @@ declare class _BigInteger_ {
      */
     not(): _BigInteger_;
     /**
-     * Logical Not-AND.
-     * @param {KBigIntegerInputData} number
-     * @returns {_BigInteger_} A & (!B)
-     */
-    andNot(number: KBigIntegerInputData): _BigInteger_;
-    /**
-     * Logical Not-AND.
-     * @param {KBigIntegerInputData} number
-     * @returns {_BigInteger_} A & (!B)
-     */
-    nand(number: KBigIntegerInputData): _BigInteger_;
-    /**
-     * Logical Not-OR.
-     * @param {KBigIntegerInputData} number
-     * @returns {_BigInteger_} !(A | B)
-     */
-    orNot(number: KBigIntegerInputData): _BigInteger_;
-    /**
-     * Logical Not-OR.
-     * @param {KBigIntegerInputData} number
-     * @returns {_BigInteger_} !(A | B)
-     */
-    nor(number: KBigIntegerInputData): _BigInteger_;
-    /**
      * this | (1 << n)
      * @param {KBigIntegerInputData} bit
      * @returns {_BigInteger_}
@@ -1117,6 +1342,31 @@ declare class _BigInteger_ {
      */
     isNotNegative(): boolean;
     /**
+     * this === NaN
+     * @returns {boolean} isNaN(A)
+     */
+    isNaN(): boolean;
+    /**
+     * this === Infinity
+     * @returns {boolean} isPositiveInfinity(A)
+     */
+    isPositiveInfinity(): boolean;
+    /**
+     * this === -Infinity
+     * @returns {boolean} isNegativeInfinity(A)
+     */
+    isNegativeInfinity(): boolean;
+    /**
+     * this === Infinity or -Infinity
+     * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+     */
+    isInfinite(): boolean;
+    /**
+     * Return true if the value is finite number.
+     * @returns {boolean} !isNaN(A) && !isInfinite(A)
+     */
+    isFinite(): boolean;
+    /**
      * -1
      * @returns {_BigInteger_} -1
      */
@@ -1141,12 +1391,28 @@ declare class _BigInteger_ {
      * @returns {_BigInteger_} 10
      */
     static TEN: _BigInteger_;
+    /**
+     * Positive infinity.
+     * @returns {_BigInteger_} Infinity
+     */
+    static POSITIVE_INFINITY: _BigInteger_;
+    /**
+     * Negative Infinity.
+     * @returns {_BigInteger_} -Infinity
+     */
+    static NEGATIVE_INFINITY: _BigInteger_;
+    /**
+     * Not a Number.
+     * @returns {_BigInteger_} NaN
+     */
+    static NaN: _BigInteger_;
 }
 
 /**
  * _Complex_ type argument.
  * - _Complex_
  * - number
+ * - boolean
  * - string
  * - Array<number>
  * - {_re:number,_im:number}
@@ -1156,9 +1422,9 @@ declare class _BigInteger_ {
  * Initialization can be performed as follows.
  * - 1200, "1200", "12e2", "1.2e3"
  * - "3 + 4i", "4j + 3", [3, 4].
- * @typedef {_Complex_|number|string|Array<number>|{_re:number,_im:number}|{doubleValue:number}|{toString:function}} KComplexInputData
+ * @typedef {_Complex_|number|boolean|string|Array<number>|{_re:number,_im:number}|{doubleValue:number}|{toString:function}} KComplexInputData
  */
-declare type KComplexInputData = _Complex_|number|string|Array<number>|{_re:number,_im:number}|{doubleValue:number}|{toString:any};
+declare type KComplexInputData = _Complex_|number|boolean|string|Array<number>|{_re:number,_im:number}|{doubleValue:number}|{toString:any};
 
 
 /**
@@ -1183,6 +1449,11 @@ declare class _Complex_ {
      * @returns {_Complex_}
      */
     static valueOf(number: KComplexInputData): _Complex_;
+    /**
+     * boolean value.
+     * @returns {boolean}
+     */
+    booleanValue: boolean;
     /**
      * integer value.
      * @returns {number}
@@ -1377,7 +1648,17 @@ declare class _Complex_ {
     isNotNegative(): boolean;
     /**
      * this === Infinity
-     * @returns {boolean} isInfinite(A)
+     * @returns {boolean} isPositiveInfinity(A)
+     */
+    isPositiveInfinity(): boolean;
+    /**
+     * this === -Infinity
+     * @returns {boolean} isNegativeInfinity(A)
+     */
+    isNegativeInfinity(): boolean;
+    /**
+     * this === Infinity or -Infinity
+     * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
      */
     isInfinite(): boolean;
     /**
@@ -1935,10 +2216,12 @@ declare class _RoundingMode_ {
 declare class _Fraction_ {
     constructor(number?: KFractionInputData);
     /**
+     * numerator
      * @type {_BigInteger_}
      */
     numerator: _BigInteger_;
     /**
+     * denominator
      * @type {_BigInteger_}
      */
     denominator: _BigInteger_;
@@ -2036,6 +2319,11 @@ declare class _Fraction_ {
      */
     scaleByPowerOfTen(n: KFractionInputData): _Fraction_;
     /**
+     * boolean value.
+     * @returns {boolean}
+     */
+    booleanValue: boolean;
+    /**
      * integer value.
      * @returns {number}
      */
@@ -2062,6 +2350,12 @@ declare class _Fraction_ {
      * @returns {boolean} A === B
      */
     equals(num: KFractionInputData): boolean;
+    /**
+     * Numeric type match.
+     * @param {KFractionInputData} number
+     * @returns {boolean}
+     */
+    equalsState(number: KFractionInputData): boolean;
     /**
      * Compare values.
      * @param {KFractionInputData} num
@@ -2143,6 +2437,31 @@ declare class _Fraction_ {
      */
     isNotNegative(): boolean;
     /**
+     * this === NaN
+     * @returns {boolean} isNaN(A)
+     */
+    isNaN(): boolean;
+    /**
+     * this === Infinity
+     * @returns {boolean} isPositiveInfinity(A)
+     */
+    isPositiveInfinity(): boolean;
+    /**
+     * this === -Infinity
+     * @returns {boolean} isNegativeInfinity(A)
+     */
+    isNegativeInfinity(): boolean;
+    /**
+     * this === Infinity or -Infinity
+     * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+     */
+    isInfinite(): boolean;
+    /**
+     * Return true if the value is finite number.
+     * @returns {boolean} !isNaN(A) && !isInfinite(A)
+     */
+    isFinite(): boolean;
+    /**
      * -1
      * @returns {_Fraction_} -1
      */
@@ -2172,6 +2491,21 @@ declare class _Fraction_ {
      * @returns {_Fraction_} 10
      */
     static TEN: _Fraction_;
+    /**
+     * Positive infinity.
+     * @returns {_Fraction_} Infinity
+     */
+    static POSITIVE_INFINITY: _Fraction_;
+    /**
+     * Negative Infinity.
+     * @returns {_Fraction_} -Infinity
+     */
+    static NEGATIVE_INFINITY: _Fraction_;
+    /**
+     * Not a Number.
+     * @returns {_Fraction_} NaN
+     */
+    static NaN: _Fraction_;
 }
 
 /**
@@ -2338,6 +2672,11 @@ declare class _Matrix_ {
      * @returns {_Complex_}
      */
     getComplex(row_or_pos: KMatrixInputData, col?: KMatrixInputData): _Complex_;
+    /**
+     * Boolean value of the first element of the matrix.
+     * @returns {boolean}
+     */
+    booleanValue: boolean;
     /**
      * Integer value of the first element of the matrix.
      * @returns {number}
@@ -2758,6 +3097,18 @@ declare class _Matrix_ {
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
     testNotNegative(): _Matrix_;
+    /**
+     * Test if each element of the matrix is positive infinite.
+     * - 1 if true, 0 if false.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
+     */
+    testPositiveInfinity(): _Matrix_;
+    /**
+     * Test if each element of the matrix is negative infinite.
+     * - 1 if true, 0 if false.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
+     */
+    testNegativeInfinity(): _Matrix_;
     /**
      * Test if each element of the matrix is infinite.
      * - 1 if true, 0 if false.
@@ -3584,7 +3935,9 @@ declare class _Matrix_ {
 }
 
 /**
- * Class for linear algebra for _Matrix_ class.
+ * Class for linear algebra for `_Matrix_` class.
+ * - These methods can be used in the `_Matrix_` method chain.
+ * - This class cannot be called directly.
  */
 declare class _LinearAlgebra_ {
     /**
@@ -3717,7 +4070,9 @@ declare class _LinearAlgebra_ {
 }
 
 /**
- * Calculating probability class for _Matrix_ class.
+ * Calculating probability class for `_Matrix_` class.
+ * - These methods can be used in the `_Matrix_` method chain.
+ * - This class cannot be called directly.
  */
 declare class _Probability_ {
     /**
@@ -4038,7 +4393,9 @@ declare type KSignalSettings = {
 };
 
 /**
- * _Signal_ processing class for _Matrix_ class.
+ * _Signal_ processing class for `_Matrix_` class.
+ * - These methods can be used in the `_Matrix_` method chain.
+ * - This class cannot be called directly.
  */
 declare class _Signal_ {
     /**
@@ -4170,7 +4527,9 @@ declare type KStatisticsSettings = {
 };
 
 /**
- * Class for statistical processing for _Matrix_ class.
+ * Class for statistical processing for `_Matrix_` class.
+ * - These methods can be used in the `_Matrix_` method chain.
+ * - This class cannot be called directly.
  */
 declare class _Statistics_ {
     /**
@@ -4411,6 +4770,18 @@ declare type KMultipleRegressionAnalysisOutput = {
 };
 
 /**
+ * Multiple regression analysis.
+ */
+declare class MultipleRegressionAnalysis {
+    /**
+     * Multiple regression analysis
+     * @param {KMultipleRegressionAnalysisSettings} settings - input data
+     * @returns {KMultipleRegressionAnalysisOutput} analyzed data
+     */
+    static runMultipleRegressionAnalysis(settings: KMultipleRegressionAnalysisSettings): KMultipleRegressionAnalysisOutput;
+}
+
+/**
  * Tools for analyzing data.
  */
 declare class _DataAnalysis_ {
@@ -4419,7 +4790,7 @@ declare class _DataAnalysis_ {
      * @param {KMultipleRegressionAnalysisSettings} settings - input data
      * @returns {KMultipleRegressionAnalysisOutput} analyzed data
      */
-    static MultipleRegressionAnalysis(settings: KMultipleRegressionAnalysisSettings): KMultipleRegressionAnalysisOutput;
+    static runMultipleRegressionAnalysis(settings: any): KMultipleRegressionAnalysisOutput;
 }
 
 

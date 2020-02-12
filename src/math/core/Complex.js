@@ -235,11 +235,19 @@ export default class Complex {
 	}
 
 	/**
+	 * boolean value.
+	 * @returns {boolean}
+	 */
+	get booleanValue() {
+		return this._re !== 0 || this._im !== 0;
+	}
+
+	/**
 	 * integer value.
 	 * @returns {number}
 	 */
 	get intValue() {
-		return Math.trunc(this.real);
+		return Math.trunc(this._re);
 	}
 
 	/**
@@ -247,7 +255,7 @@ export default class Complex {
 	 * @returns {number}
 	 */
 	get doubleValue() {
-		return this.real;
+		return this._re;
 	}
 
 	/**

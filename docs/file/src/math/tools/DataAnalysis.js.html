@@ -56,6 +56,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis.js~DataAnalysis.html">DataAnalysis</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools-dataanalysis">math/tools/DataAnalysis</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.html">MultipleRegressionAnalysis</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisAnova">KMultipleRegressionAnalysisAnova</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisOutput">KMultipleRegressionAnalysisOutput</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegression">KMultipleRegressionAnalysisPartialRegression</a></span></span></li>
@@ -67,7 +68,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/math/tools/DataAnalysis.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
  * The script is part of konpeito.
  * 
  * AUTHOR:
@@ -77,69 +78,8 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import Matrix from &quot;../core/Matrix.js&quot;;
 
-/**
- * Settings for multiple regression analysis
- * @typedef {Object} KMultipleRegressionAnalysisSettings
- * @property {import(&quot;../core/Matrix.js&quot;).KMatrixInputData} samples explanatory variable. (Each column is a parameters and each row is a samples.)
- * @property {import(&quot;../core/Matrix.js&quot;).KMatrixInputData} target response variable. / actual values. (column vector)
- * @property {boolean} [is_standardised=false] Use standardized partial regression coefficients.
- */
-
-/**
- * Vector state
- * @typedef {Object} KMultipleRegressionAnalysisVectorState
- * @property {number} df degree of freedom
- * @property {number} SS sum of squares
- * @property {number} MS unbiased_variance
- */
-
-/**
- * Analysis of variance. ANOVA.
- * @typedef {Object} KMultipleRegressionAnalysisAnova
- * @property {KMultipleRegressionAnalysisVectorState} regression regression.
- * @property {KMultipleRegressionAnalysisVectorState} residual residual error.
- * @property {KMultipleRegressionAnalysisVectorState} total total.
- * @property {number} F F value. Dispersion ratio (F0)
- * @property {number} significance_F Significance F. Test with F distribution with q, n-q-1 degrees of freedom.(Probability of error.)
- */
-
-/**
- * Regression table data.
- * @typedef {Object} KMultipleRegressionAnalysisPartialRegressionData
- * @property {number} coefficient Coefficient.
- * @property {number} standard_error Standard error.
- * @property {number} t_stat t-statistic.
- * @property {number} p_value P-value. Risk factor.
- * @property {number} lower_95 Lower limit of a 95% confidence interval.
- * @property {number} upper_95 Upper limit of a 95% confidence interval.
- */
-
-/**
- * Regression table.
- * @typedef {Object} KMultipleRegressionAnalysisPartialRegression
- * @property {KMultipleRegressionAnalysisPartialRegressionData} intercept Intercept.
- * @property {KMultipleRegressionAnalysisPartialRegressionData[]} parameters Parameters.
- */
-
-/**
- * Output for multiple regression analysis
- * @typedef {Object} KMultipleRegressionAnalysisOutput
- * @property {number} q number of explanatory variables.
- * @property {number} n number of samples.
- * @property {number[][]} predicted_values predicted values. (column vector)
- * @property {number} sY Variance of predicted values of target variable.
- * @property {number} sy Variance of measured values of target variable.
- * @property {number} multiple_R Multiple R. Multiple correlation coefficient.
- * @property {number} R_square R Square. Coefficient of determination.
- * @property {number} adjusted_R_square Adjusted R Square. Adjusted coefficient of determination.
- * @property {KMultipleRegressionAnalysisAnova} ANOVA analysis of variance.
- * @property {number} Ve Unbiased variance of residuals. (Ve)
- * @property {number} standard_error Standard error. (SE)
- * @property {number} AIC Akaike&apos;s Information Criterion. (AIC)
- * @property {KMultipleRegressionAnalysisPartialRegression} regression_table Regression table.
- */
+import MultipleRegressionAnalysis from &quot;./DataAnalysis/MultipleRegressionAnalysis.js&quot;;
 
 /**
  * Tools for analyzing data.
@@ -148,280 +88,14 @@ export default class DataAnalysis {
 
 	/**
 	 * Multiple regression analysis
-	 * @param {KMultipleRegressionAnalysisSettings} settings - input data
-	 * @returns {KMultipleRegressionAnalysisOutput} analyzed data
+	 * @param {import(&quot;./DataAnalysis/MultipleRegressionAnalysis.js&quot;).KMultipleRegressionAnalysisSettings} settings - input data
+	 * @returns {import(&quot;./DataAnalysis/MultipleRegressionAnalysis.js&quot;).KMultipleRegressionAnalysisOutput} analyzed data
 	 */
-	static MultipleRegressionAnalysis(settings) {
-		//&#x6700;&#x5C0F;&#x4E8C;&#x4E57;&#x6CD5;&#x306B;&#x3088;&#x308A;&#x91CD;&#x56DE;&#x5E30;&#x5206;&#x6790;&#x3059;&#x308B;&#x3002;
-		//&#x53C2;&#x8003;&#x6587;&#x732E;
-		//[1] &#x56F3;&#x89E3;&#x3067;&#x308F;&#x304B;&#x308B;&#x591A;&#x5909;&#x91CF;&#x89E3;&#x6790;&#x2015;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x5C71;&#x304B;&#x3089;&#x672C;&#x8CEA;&#x3092;&#x898B;&#x629C;&#x304F;&#x79D1;&#x5B66;&#x7684;&#x5206;&#x6790;&#x30C4;&#x30FC;&#x30EB;
-		//    &#x6D8C;&#x4E95; &#x826F;&#x5E78;, &#x6D8C;&#x4E95; &#x8C9E;&#x7F8E;, &#x65E5;&#x672C;&#x5B9F;&#x696D;&#x51FA;&#x7248;&#x793E; (2001/01)
-		//[2] &#x3053;&#x308C;&#x306A;&#x3089;&#x308F;&#x304B;&#x308B; Excel&#x3067;&#x697D;&#x306B;&#x5B66;&#x3076;&#x591A;&#x5909;&#x91CF;&#x89E3;&#x6790;
-		//    &#x9577;&#x8C37;&#x5DDD; &#x52DD;&#x4E5F;, &#x6280;&#x8853;&#x8A55;&#x8AD6;&#x793E; (2002/07)
-		//[3] &#x3069;&#x7D20;&#x4EBA;&#x306E;&#x300C;Excel &#x56DE;&#x5E30;&#x5206;&#x6790;&#x300D;&#x8868;&#x306E;&#x898B;&#x65B9; (&#x5358;&#x56DE;&#x5E30;&#x5206;&#x6790;)
-		//   http://atiboh.sub.jp/t07kaikibunseki.html
-		//[4] &#x8D64;&#x6C60;&#x306E;&#x60C5;&#x5831;&#x91CF;&#x57FA;&#x6E96;&#xFF08;AIC&#xFF09;&#x306E;&#x8A08;&#x7B97;&#x65B9;&#x6CD5;
-		//   http://software.ssri.co.jp/statweb2/tips/tips_10.html
-
-		// samples &#x8AAC;&#x660E;&#x5909;&#x91CF;&#x3002;&#x884C;&#x304C;&#x30B5;&#x30F3;&#x30D7;&#x30EB;&#x3002;&#x5217;&#x304C;&#x5404;&#x5024;&#x3002;
-		// target  &#x76EE;&#x7684;&#x5909;&#x91CF;&#x30FB;&#x5B9F;&#x6E2C;&#x5024;&#x3002;&#x7E26;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3002;
-		// is_standardised true&#x3067;&#x6A19;&#x6E96;&#x5316;&#x504F;&#x56DE;&#x5E30;&#x4FC2;&#x6570;
-		let samples = Matrix.create(settings.samples);
-		let target = Matrix.create(settings.target);
-		const set_unbiased = {correction : 1};
-		const set_sample = {correction : 0};
-
-		// &#x6A19;&#x6E96;&#x5316;&#x504F;&#x56DE;&#x5E30;&#x4FC2;&#x6570;&#x3092;&#x8ABF;&#x3079;&#x308B;&#x305F;&#x3081;&#x306B;&#x5E73;&#x5747;0 &#x5206;&#x6563;1&#x306B;&#x6B63;&#x898F;&#x5316;&#x3059;&#x308B;
-		if(settings.is_standardised) {
-			samples = samples.standardization();
-			target = target.standardization();
-		}
-
-		// &#x8AAC;&#x660E;&#x5909;&#x91CF;&#x30FB;&#x8AAC;&#x660E;&#x5909;&#x6570;&#x306E;&#x6570; q
-		const number_of_explanatory_variables = Matrix.create(samples.width);
-		// &#x6A19;&#x672C;&#x6570;(&#x89B3;&#x6E2C;&#x6570;) n
-		const number_of_samples = Matrix.create(samples.height);
-
-		// &#x5171;&#x5206;&#x6563;&#x884C;&#x5217;
-		const S = samples.cov(set_unbiased);
-		const S_rcond = S.rcond();
-		// &#x3069;&#x3053;&#x304B;&#x306E;&#x5024;&#x306B;&#x76F8;&#x95A2;&#x304C;&#x975E;&#x5E38;&#x306B;&#x9AD8;&#x3044;&#x3082;&#x306E;&#x304C;&#x3042;&#x308A;&#x8A08;&#x7B97;&#x3067;&#x304D;&#x306A;&#x3044;&#x3002;
-		if(S_rcond &lt;= 1e-10) {
-			console.log(&quot;Analysis failed due to highly correlated explanatory variables.(rcond : &quot; + S_rcond + &quot;)&quot;);
-			return null;
-		}
-
-		// &#x76EE;&#x7684;&#x5909;&#x91CF;&#x3068;&#x306E;&#x5171;&#x5206;&#x6563;(&#x7E26;&#x30D9;&#x30AF;&#x30C8;&#x30EB;)
-		const y_array = [];
-		const max_var = number_of_explanatory_variables.intValue;
-		for(let i = 0; i &lt; max_var; i++) {
-			y_array[i] = [ samples.getMatrix(&quot;:&quot;, i).cov(target, set_unbiased) ];
-		}
-		const Y = Matrix.create(y_array);
-
-		// &#x504F;&#x56DE;&#x5E30;&#x4FC2;&#x6570;(&#x7E26;&#x30D9;&#x30AF;&#x30C8;&#x30EB;) partial regression coefficient. (column vector)
-		const partial_regression_coefficient =  S.inv().mul(Y);
-		// &#x30D0;&#x30A4;&#x30A2;&#x30B9;&#x30FB;&#x5B9A;&#x6570;&#x9805;&#x30FB;&#x5207;&#x7247; bias
-		const bias = target.mean().sub(samples.mean().mul(partial_regression_coefficient));
-		// &#x4E88;&#x6E2C;&#x5024;(&#x7E26;&#x30D9;&#x30AF;&#x30C8;&#x30EB;) predicted values. (column vector)
-		const predicted_values = samples.mul(partial_regression_coefficient).add(bias);
-		// &#x76EE;&#x7684;&#x5909;&#x91CF;&#x306E;&#x4E88;&#x6E2C;&#x5024;&#x306E;&#x5206;&#x6563;
-		const sY = predicted_values.var(set_unbiased);
-		// &#x76EE;&#x7684;&#x5909;&#x91CF;&#x306E;&#x5B9F;&#x6E2C;&#x5024;&#x306E;&#x5206;&#x6563;
-		const sy = target.var(set_unbiased);
-		// &#x91CD;&#x76F8;&#x95A2;&#x4FC2;&#x6570;
-		const multiple_R = predicted_values.corrcoef(target, set_unbiased);
-		// &#x6C7A;&#x5B9A;&#x4FC2;&#x6570;&#x30FB;&#x5BC4;&#x4E0E;&#x7387;
-		const R_square = sY.div(sy);
-
-		// &#x56DE;&#x5E30;
-		const regression_df = number_of_explanatory_variables;					// &#x81EA;&#x7531;&#x5EA6;
-		const regression_SS = predicted_values.sub(target.mean()).dotpow(2).sum();	// &#x5E73;&#x65B9;&#x548C;(&#x5909;&#x52D5;)&#x30FB;MSr
-		const regression_MS = regression_SS.div(regression_df);	// &#x4E0D;&#x504F;&#x5206;&#x6563;(&#x5206;&#x6563;)
-		
-		// &#x6B8B;&#x5DEE; residual error
-		const residual_df = number_of_samples.sub(number_of_explanatory_variables).sub(1);	// &#x81EA;&#x7531;&#x5EA6;
-		const residual_SS = predicted_values.sub(target).dotpow(2).sum();	// &#x5E73;&#x65B9;&#x548C;(&#x5909;&#x52D5;)&#x30FB;MSe
-		const residual_MS = residual_SS.div(residual_df);	// &#x4E0D;&#x504F;&#x5206;&#x6563;(&#x5206;&#x6563;)
-
-		// &#x5168;&#x4F53;
-		const total_df = number_of_samples.sub(1);	// &#x81EA;&#x7531;&#x5EA6;
-		const total_SS = target.sub(target.mean()).dotpow(2).sum();	// &#x5E73;&#x65B9;&#x548C;(&#x5909;&#x52D5;)&#x30FB;MSt&#x30FB;VE
-		const total_MS = total_SS.div(total_df);	// &#x4E0D;&#x504F;&#x5206;&#x6563;(&#x5206;&#x6563;)
-
-		// Ve(&#x6B8B;&#x5DEE;&#x306E;&#x4E0D;&#x504F;&#x5206;&#x6563;)
-		const Ve = residual_MS;
-		
-		// SE(&#x6A19;&#x6E96;&#x8AA4;&#x5DEE;, SE, standard error)
-		const standard_error = Ve.sqrt();
-
-		// &#x56DE;&#x5E30;&#x306E;&#x5206;&#x6563;&#x6BD4;(F&#x5024;)(&#x89B3;&#x6E2C;&#x3055;&#x308C;&#x305F;&#x5206;&#x6563;&#x6BD4;)&#x30FB;F0
-		const regression_F = regression_MS.div(residual_MS);
-
-		// &#x56DE;&#x5E30;&#x306E;&#x6709;&#x610F; F significance F
-		// &#x81EA;&#x7531;&#x5EA6; q, n-q-1 &#x306E;F&#x5206;&#x5E03;&#x306B;&#x3088;&#x308B;&#x691C;&#x5B9A;
-		// &#x8AA4;&#x308A;&#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x78BA;&#x7387;(1 - cdf(&apos;F&apos;,X,A,B))
-		// F&#x5206;&#x5E03;&#x3092;&#x7528;&#x3044;&#x3066;&#x3001;&#x8AA4;&#x308A;&#x304C;&#x767A;&#x751F;&#x3059;&#x308B;&#x78BA;&#x7387;&#x3092;&#x8ABF;&#x3079;&#x308B; (&#x6709;&#x610F; F)
-		const regression_significance_F = Matrix.ONE.sub(regression_F.fcdf(regression_df, residual_df));
-		
-		// &#x81EA;&#x7531;&#x5EA6;&#x4FEE;&#x6B63;&#x6E08;&#x6C7A;&#x5B9A;&#x4FC2;&#x6570;&#x30FB;&#x88DC;&#x6B63;R2 adjusted R2, &#x81EA;&#x7531;&#x5EA6;&#x4FEE;&#x6B63;&#x6E08;&#x6C7A;&#x5B9A;&#x4FC2;&#x6570; / &#x81EA;&#x7531;&#x5EA6;&#x8ABF;&#x6574;&#x6E08;&#x5BC4;&#x4E0E;&#x7387;
-		// 1 - (&#x6B8B;&#x5DEE;&#x306B;&#x3088;&#x308B;&#x5909;&#x52D5; / &#x6B8B;&#x5DEE;&#x306E;&#x81EA;&#x7531;&#x5EA6;) / (&#x5168;&#x5909;&#x52D5; / &#x5168;&#x4F53;&#x306E;&#x81EA;&#x7531;&#x5EA6;)
-		const adjusted_R_square = Matrix.ONE.sub(residual_MS.div(total_MS));
-		
-		// &#x8D64;&#x6C60;&#x60C5;&#x5831;&#x91CF;&#x898F;&#x6E96;(Akaike&apos;s Information Criterion, AIC)
-		// &#x56DE;&#x5E30;&#x5F0F;&#x306B;&#x5B9A;&#x6570;&#x9805;&#x3092;&#x542B;&#x3080;&#x5834;&#x5408;&#x306E;&#x5F0F;
-		// out.n * (log(2 * pi * (table(2, 2)/out.n)) + 1) + 2 * (out.q + 2);
-		const AIC = number_of_samples.mul(
-			residual_SS.div(number_of_samples).mul(2.0 * Math.PI).log().add(1)
-		).add(number_of_explanatory_variables.add(2).mul(2));
-
-		// &#x3053;&#x3053;&#x304B;&#x3089;&#x306F;&#x504F;&#x56DE;&#x5E30;&#x306E;&#x5024;&#x3092;&#x8A08;&#x7B97;&#x3057;&#x3066;&#x3044;&#x304F;
-
-		// &#x504F;&#x5DEE;&#x5E73;&#x65B9;&#x548C;&#x30FB;&#x7A4D;&#x548C;&#x884C;&#x5217;&#x306E;&#x9006;&#x884C;&#x5217;&#x3092;&#x4F5C;&#x308B;
-		// &#x3064;&#x307E;&#x308A;&#x3001;&#x5171;&#x5206;&#x6563;&#x884C;&#x5217;&#x306E;&#x5404;&#x5171;&#x5206;&#x6563;&#x3067;(&#x30B5;&#x30F3;&#x30D7;&#x30EB;&#x6570;N)&#x3092;&#x5272;&#x3089;&#x306A;&#x3044;&#x5024;&#x3092;&#x6C42;&#x3081;&#x308C;&#x3070;&#x3044;&#x3044;&#x3002;
-		// &#x4E0D;&#x504F;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001; &#x504F;&#x5DEE;&#x5E73;&#x65B9;&#x548C; * ( N * (N-1) ) &#x3092;&#x6C42;&#x3081;&#x308C;&#x3070;&#x826F;&#x3044;&#x3002;
-		const IS = S.dotmul(number_of_samples).inv();
-
-		// &#x521D;&#x671F;&#x5316;
-		const intercept = {
-			coefficient : Matrix.ZERO,
-			standard_error : Matrix.ZERO,
-			t_stat : Matrix.ZERO,
-			p_value : Matrix.ZERO,
-			lower_95 : Matrix.ZERO,
-			upper_95 : Matrix.ZERO
-		};
-		const parameters = [];
-		for(let i = 0; i &lt; max_var; i++) {
-			parameters[i] = {
-				coefficient : Matrix.ZERO,
-				standard_error : Matrix.ZERO,
-				t_stat : Matrix.ZERO,
-				p_value : Matrix.ZERO,
-				lower_95 : Matrix.ZERO,
-				upper_95 : Matrix.ZERO
-			};
-		}
-		// &#x4FC2;&#x6570;
-		{
-			// &#x5207;&#x7247;&#x306E;&#x4FC2;&#x6570;
-			intercept.coefficient = bias;
-			// &#x504F;&#x56DE;&#x5E30;&#x306E;&#x4FC2;&#x6570;
-			for(let i = 0; i &lt; max_var; i++) {
-				parameters[i].coefficient = new Matrix(partial_regression_coefficient.getComplex(i));
-			}
-		}
-		// &#x6A19;&#x6E96;&#x8AA4;&#x5DEE;
-		{
-			// &#x5207;&#x7247;&#x306E;&#x6A19;&#x6E96;&#x8AA4;&#x5DEE;
-			const q = number_of_explanatory_variables.intValue;
-			let s = number_of_samples.inv();
-			for(let j = 0; j &lt; q; j++) {
-				for(let k = 0; k &lt; q; k++) {
-					s = s.add(samples.getMatrix(&quot;:&quot;, j).mean().mul(samples.getMatrix(&quot;:&quot;, k).mean()).mul(IS.getMatrix(j, k)));
-				}
-			}
-			intercept.standard_error = s.mul(Ve).sqrt();
-			// &#x504F;&#x56DE;&#x5E30;&#x306E;&#x6A19;&#x6E96;&#x8AA4;&#x5DEE;
-			for(let i = 0; i &lt; max_var; i++) {
-				parameters[i].standard_error = IS.getMatrix(i, i).mul(Ve).sqrt();
-			}
-		}
-		{
-			/**
-			 * t*&#x5024;, P&#x5024;, &#x4FE1;&#x983C;&#x533A;&#x9593;
-			 * @param {any} data 
-			 * @ignore
-			 */
-			const calcTPI = function(data) {
-
-				// t*&#x5024;, &#x5F71;&#x97FF;&#x5EA6;, &#x7D71;&#x8A08;&#x91CF;t, t-statistic.
-				// &#x5927;&#x304D;&#x3044;&#x307B;&#x3069;&#x76EE;&#x7684;&#x5909;&#x6570;&#x3068;&#x306E;&#x95A2;&#x9023;&#x6027;&#x304C;&#x5F37;&#x3044;
-				/**
-				 * @type {Matrix}
-				 */
-				data.t_stat = data.coefficient.div(data.standard_error);
-				
-				// P&#x5024;, &#x5371;&#x967A;&#x7387;, P-value. Risk factor.
-				// &#x5207;&#x7247;&#x3068;&#x504F;&#x56DE;&#x5E30;&#x4FC2;&#x6570;&#x304C;&#x8AA4;&#x3063;&#x3066;&#x3044;&#x308B;&#x78BA;&#x7387;
-				// &#x30B9;&#x30C1;&#x30E5;&#x30FC;&#x30C7;&#x30F3;&#x30C8;&#x306E; t &#x5206;&#x5E03;&#x306E;&#x78BA;&#x7387;&#x5BC6;&#x5EA6;&#x95A2;&#x6570;&#x3092;&#x5229;&#x7528;
-				/**
-				 * @type {Matrix}
-				 */
-				data.p_value = data.t_stat.tdist(residual_df, 2);
-				
-				// &#x4FE1;&#x983C;&#x533A;&#x9593;&#x306E;&#x8A08;&#x7B97;
-				// &#x4E0B;&#x9650; 95%, &#x4E0A;&#x9650; 95%
-				const percent = new Matrix(1.0 - 0.95);
-				data.lower_95 = data.coefficient.sub(percent.tinv2(residual_df).mul(data.standard_error));
-				data.upper_95 = data.coefficient.add(percent.tinv2(residual_df).mul(data.standard_error));
-			};
-			calcTPI(intercept);
-			for(let i = 0; i &lt; max_var; i++) {
-				calcTPI(parameters[i]);
-			}
-		}
-
-		/**
-		 * @type {KMultipleRegressionAnalysisPartialRegression}
-		 */
-		let regression_table = null;
-		{
-			/**
-			 * @type {KMultipleRegressionAnalysisPartialRegressionData}
-			 */
-			const intercept_data = {
-				coefficient : intercept.coefficient.doubleValue,
-				standard_error : intercept.standard_error.doubleValue,
-				t_stat : intercept.t_stat.doubleValue,
-				p_value : intercept.p_value.doubleValue,
-				lower_95 : intercept.lower_95.doubleValue,
-				upper_95 : intercept.upper_95.doubleValue
-			};
-			
-			/**
-			 * @type {KMultipleRegressionAnalysisPartialRegressionData[]}
-			 */
-			const parameters_data = [];
-			for(let i = 0; i &lt; max_var; i++) {
-				parameters_data.push({
-					coefficient : parameters[i].coefficient.doubleValue,
-					standard_error : parameters[i].standard_error.doubleValue,
-					t_stat : parameters[i].t_stat.doubleValue,
-					p_value : parameters[i].p_value.doubleValue,
-					lower_95 : parameters[i].lower_95.doubleValue,
-					upper_95 : parameters[i].upper_95.doubleValue
-				});
-			}
-
-			regression_table = {
-				intercept : intercept_data,
-				parameters : parameters_data
-			};
-		}
-
-		/**
-		 * @type {KMultipleRegressionAnalysisOutput}
-		 */
-		const output = {
-			q : number_of_explanatory_variables.doubleValue,
-			n : number_of_samples.doubleValue,
-			predicted_values : predicted_values.getNumberMatrixArray(),
-			sY : sY.doubleValue,
-			sy : sy.doubleValue,
-			multiple_R : multiple_R.doubleValue,
-			R_square : R_square.doubleValue,
-			adjusted_R_square : adjusted_R_square.doubleValue,
-			ANOVA : {
-				regression : {
-					df : regression_df.doubleValue,
-					SS : regression_SS.doubleValue,
-					MS : regression_MS.doubleValue
-				},
-				residual : {
-					df : residual_df.doubleValue,
-					SS : residual_SS.doubleValue,
-					MS : residual_MS.doubleValue
-				},
-				total : {
-					df : total_df.doubleValue,
-					SS : total_SS.doubleValue,
-					MS : total_MS.doubleValue
-				},
-				F : regression_F.doubleValue,
-				significance_F : regression_significance_F.doubleValue,
-			},
-			Ve : Ve.doubleValue,
-			standard_error : standard_error.doubleValue,
-			AIC : AIC.doubleValue,
-			regression_table : regression_table
-		};
-
-		return output;
+	static runMultipleRegressionAnalysis(settings) {
+		return MultipleRegressionAnalysis.runMultipleRegressionAnalysis(settings);
 	}
 
-}
-</code></pre>
+}</code></pre>
 
 </div>
 

@@ -108,10 +108,6 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testCompareTo("compareTo", -Infinity, -Infinity,  0, null);
 	testCompareTo("compareTo", Infinity, NaN, NaN, null);
 	testCompareTo("compareTo", NaN, Infinity, NaN, null);
-}
-
-{
-	test_count = 0;
 	testCompareTo("compareTo", 10, 8,  1, 1);
 	testCompareTo("compareTo", 10, 9,  0, 1);
 	testCompareTo("compareTo", 10, 10, 0, 1);
@@ -1001,18 +997,3 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator1("acsch",    5,  0.198690110349241, EPS);
 	testOperator1("acsch", Infinity, 0, EPS);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

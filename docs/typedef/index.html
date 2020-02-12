@@ -56,6 +56,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis.js~DataAnalysis.html">DataAnalysis</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools-dataanalysis">math/tools/DataAnalysis</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.html">MultipleRegressionAnalysis</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisAnova">KMultipleRegressionAnalysisAnova</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisOutput">KMultipleRegressionAnalysisOutput</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegression">KMultipleRegressionAnalysisPartialRegression</a></span></span></li>
@@ -143,7 +144,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalLocalInputData">KBigDecimalLocalInputData</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigDecimal">BigDecimal</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigInteger">BigInteger</a></span> | {toBigDecimal: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>} | {doubleValue: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {toString: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>}</span>
+          <span class="code" data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalLocalInputData">KBigDecimalLocalInputData</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigDecimal">BigDecimal</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigInteger">BigInteger</a></span> | {toBigDecimal: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>} | {doubleValue: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {toString: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>}</span>
         </p>
       </div>
       <div>
@@ -152,6 +153,7 @@
         <div data-ice="description"><p>BigDecimal type argument.(local)</p>
 <ul>
 <li>number</li>
+<li>boolean</li>
 <li>string</li>
 <li>BigDecimal</li>
 <li>BigInteger</li>
@@ -239,7 +241,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="typedef/index.html#static-typedef-KComplexInputData">KComplexInputData</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Complex">Complex</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>&gt; | {_re: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, _im: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {doubleValue: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {toString: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>}</span>
+          <span class="code" data-ice="name"><span><a href="typedef/index.html#static-typedef-KComplexInputData">KComplexInputData</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Complex">Complex</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>&gt; | {_re: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, _im: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {doubleValue: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {toString: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>}</span>
         </p>
       </div>
       <div>
@@ -268,7 +270,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigInteger">BigInteger</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigDecimal">BigDecimal</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span>&gt; | {numerator: <span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span>, denominator: <span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span>} | {doubleValue: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {toString: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>}</span>
+          <span class="code" data-ice="name"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigInteger">BigInteger</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigDecimal">BigDecimal</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span>&gt; | {numerator: <span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span>, denominator: <span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span>} | {doubleValue: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {toString: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>}</span>
         </p>
       </div>
       <div>
@@ -297,7 +299,7 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/Complex.js~Complex.html">Complex</a></span></span>
+          <span class="code" data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Complex">Complex</a></span></span>
         </p>
       </div>
       <div>
@@ -752,7 +754,7 @@ The &quot;context&quot; is the used when no environment settings are specified d
     
     
     
-    <span class="code" data-ice="name">KBigDecimalLocalInputData</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigDecimal">BigDecimal</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigInteger">BigInteger</a></span> | {toBigDecimal: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>} | {doubleValue: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {toString: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>}</span>
+    <span class="code" data-ice="name">KBigDecimalLocalInputData</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigDecimal">BigDecimal</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigInteger">BigInteger</a></span> | {toBigDecimal: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>} | {doubleValue: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {toString: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>}</span>
     <span class="right-info">
       
       
@@ -766,6 +768,7 @@ The &quot;context&quot; is the used when no environment settings are specified d
   <div data-ice="description"><p>BigDecimal type argument.(local)</p>
 <ul>
 <li>number</li>
+<li>boolean</li>
 <li>string</li>
 <li>BigDecimal</li>
 <li>BigInteger</li>
@@ -912,7 +915,7 @@ The &quot;context&quot; is the used when no environment settings are specified d
     
     
     
-    <span class="code" data-ice="name">KComplexInputData</span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Complex">Complex</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>&gt; | {_re: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, _im: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {doubleValue: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {toString: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>}</span>
+    <span class="code" data-ice="name">KComplexInputData</span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Complex">Complex</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>&gt; | {_re: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>, _im: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {doubleValue: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {toString: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>}</span>
     <span class="right-info">
       
       
@@ -927,6 +930,7 @@ The &quot;context&quot; is the used when no environment settings are specified d
 <ul>
 <li>Complex</li>
 <li>number</li>
+<li>boolean</li>
 <li>string</li>
 <li>Array&lt;number&gt;</li>
 <li>{_re:number,_im:number}</li>
@@ -970,7 +974,7 @@ The &quot;context&quot; is the used when no environment settings are specified d
     
     
     
-    <span class="code" data-ice="name">KFractionInputData</span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigInteger">BigInteger</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigDecimal">BigDecimal</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span>&gt; | {numerator: <span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span>, denominator: <span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span>} | {doubleValue: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {toString: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>}</span>
+    <span class="code" data-ice="name">KFractionInputData</span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigInteger">BigInteger</a></span> | <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigDecimal">BigDecimal</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span> | <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span>&gt; | {numerator: <span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span>, denominator: <span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span>} | {doubleValue: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>} | {toString: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function">function</a></span>}</span>
     <span class="right-info">
       
       
@@ -987,6 +991,7 @@ The &quot;context&quot; is the used when no environment settings are specified d
 <li>BigInteger</li>
 <li>BigDecimal</li>
 <li>number</li>
+<li>boolean</li>
 <li>string</li>
 <li>Array&lt;KBigIntegerInputData&gt;</li>
 <li>{numerator:KBigIntegerInputData,denominator:KBigIntegerInputData}</li>
@@ -1032,7 +1037,7 @@ The &quot;context&quot; is the used when no environment settings are specified d
     
     
     
-    <span class="code" data-ice="name">KMatrixInputData</span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/Complex.js~Complex.html">Complex</a></span></span>
+    <span class="code" data-ice="name">KMatrixInputData</span><span class="code" data-ice="signature">: <span><a href="class/src/konpeito.js~konpeito.html#static-get-Complex">Complex</a></span></span>
     <span class="right-info">
       
       
@@ -1169,7 +1174,7 @@ The &quot;context&quot; is the used when no environment settings are specified d
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/DataAnalysis.js.html#lineNumberundefined">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js.html#lineNumberundefined">source</a></span></span>
     </span>
   </h3>
 
@@ -1258,7 +1263,7 @@ The &quot;context&quot; is the used when no environment settings are specified d
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/DataAnalysis.js.html#lineNumberundefined">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js.html#lineNumberundefined">source</a></span></span>
     </span>
   </h3>
 
@@ -1403,7 +1408,7 @@ The &quot;context&quot; is the used when no environment settings are specified d
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/DataAnalysis.js.html#lineNumberundefined">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js.html#lineNumberundefined">source</a></span></span>
     </span>
   </h3>
 
@@ -1471,7 +1476,7 @@ The &quot;context&quot; is the used when no environment settings are specified d
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/DataAnalysis.js.html#lineNumberundefined">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js.html#lineNumberundefined">source</a></span></span>
     </span>
   </h3>
 
@@ -1567,7 +1572,7 @@ The &quot;context&quot; is the used when no environment settings are specified d
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/DataAnalysis.js.html#lineNumberundefined">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js.html#lineNumberundefined">source</a></span></span>
     </span>
   </h3>
 
@@ -1643,7 +1648,7 @@ The &quot;context&quot; is the used when no environment settings are specified d
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/math/tools/DataAnalysis.js.html#lineNumberundefined">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js.html#lineNumberundefined">source</a></span></span>
     </span>
   </h3>
 

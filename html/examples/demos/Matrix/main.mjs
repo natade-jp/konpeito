@@ -287,8 +287,8 @@ const main = function() {
 	Log.println($("[1 2 3 4;4 1 5 0]").cov());
 
 	// -0.8461 -0.2820  0.2820  0.8461  0.8461 -0.8461  1.4102 -1.4102
-	Log.println("normalize");
-	Log.println($("[1 2 3 4 4 1 5 0]").normalize());
+	Log.println("standardization");
+	Log.println($("[1 2 3 4 4 1 5 0]").standardization());
 
 	//	 1.0000  0.9570  0.5058 -0.4891
 	//	 0.9570  1.0000  0.2365 -0.6814

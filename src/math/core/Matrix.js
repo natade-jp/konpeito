@@ -1147,6 +1147,14 @@ export default class Matrix {
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	
 	/**
+	 * Boolean value of the first element of the matrix.
+	 * @returns {boolean}
+	 */
+	get booleanValue() {
+		return this.matrix_array[0][0].booleanValue;
+	}
+
+	/**
 	 * Integer value of the first element of the matrix.
 	 * @returns {number}
 	 */

@@ -56,6 +56,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis.js~DataAnalysis.html">DataAnalysis</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools-dataanalysis">math/tools/DataAnalysis</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.html">MultipleRegressionAnalysis</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisAnova">KMultipleRegressionAnalysisAnova</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisOutput">KMultipleRegressionAnalysisOutput</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegression">KMultipleRegressionAnalysisPartialRegression</a></span></span></li>
@@ -94,7 +95,7 @@ import Random from &quot;./tools/Random.js&quot;;
  * - &quot;0xff&quot;, [&quot;ff&quot;, 16]
  * - &quot;0o01234567&quot;, [&quot;01234567&quot;, 8]
  * - &quot;0b0110101&quot;, [&quot;0110101&quot;, 2]
- * @typedef {BigInteger|number|string|Array&lt;string|number&gt;|{toBigInteger:function}|{intValue:number}|{toString:function}} KBigIntegerInputData
+ * @typedef {BigInteger|number|boolean|string|Array&lt;string|number&gt;|{toBigInteger:function}|{intValue:number}|{toString:function}} KBigIntegerInputData
  */
 
 /**
@@ -228,27 +229,47 @@ class BigIntegerTool {
 	/**
 	 * Return a hexadecimal array from the number.
 	 * @param {number} num - Target number.
-	 * @returns {{element : Array&lt;number&gt;, _sign : number}} Data for BigInteger.
+	 * @returns {{element : Array&lt;number&gt;, state : number}} Data for BigInteger.
 	 */
 	static toBigIntegerFromNumber(num) {
+		if(!isFinite(num)) {
+			if(num === Number.POSITIVE_INFINITY) {
+				return {
+					state : BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY,
+					element : []
+				};
+			}
+			if(num === Number.NEGATIVE_INFINITY) {
+				return {
+					state : BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY,
+					element : []
+				};
+			}
+			else {
+				return {
+					state : BIGINTEGER_NUMBER_STATE.NOT_A_NUMBER,
+					element : []
+				};
+			}
+		}
 		let x;
-		let sign;
+		let state;
 		if(num === 0) {
-			sign = 0;
+			state = BIGINTEGER_NUMBER_STATE.ZERO;
 			x = 0;
 		}
 		else if(num &gt; 0) {
-			sign = 1;
+			state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
 			x = num;
 		}
 		else {
-			sign = -1;
+			state = BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
 			x = -num;
 		}
 		if(x &gt; 0xFFFFFFFF) {
 			return {
 				element : BigIntegerTool.toHexadecimalArrayFromPlainString(BigIntegerTool.toPlainStringFromString(x.toFixed()), 10),
-				_sign : sign
+				state : state
 			};
 		}
 		/**
@@ -269,7 +290,7 @@ class BigIntegerTool {
 		
 		return {
 			element : z,
-			_sign : sign
+			state : state
 		};
 	}
 
@@ -317,26 +338,64 @@ class BigIntegerTool {
 	}
 
 	/**
+	 * @param {number[]} element
+	 * @returns {boolean}
+	 * @ignore
+	 */
+	static isZeroElement(element) {
+		if(element.length === 0) {
+			return true;
+		}
+		if((element.length === 1 &amp;&amp; element[0] === 0)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Return data to represent multi-precision numbers from strings.
 	 * @param {string} text - String containing a number.
 	 * @param {number} [radix=10] - Base number.
-	 * @returns {{element : Array&lt;number&gt;, _sign : number}} Data for BigInteger.
+	 * @returns {{element : Array&lt;number&gt;, state : number}} Data for BigInteger.
 	 */
 	static toBigIntegerFromString(text, radix) {
 		let x = text.replace(/\s/g, &quot;&quot;).toLowerCase();
+		// &#x7279;&#x6B8A;&#x306A;&#x72B6;&#x614B;
+		{
+			if(/nan/.test(text)) {
+				return {
+					state : BIGINTEGER_NUMBER_STATE.NOT_A_NUMBER,
+					element : []
+				};
+			}
+			else if(/inf/.test(text)) {
+				if(!/-/.test(text)) {
+					return {
+						state : BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY,
+						element : []
+					};
+				}
+				else {
+					return {
+						state : BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY,
+						element : []
+					};
+				}
+			}
+		}
 		const sign_text = x.match(/^[-+]+/);
 
 		/**
 		 * @type {Array&lt;number&gt;}
 		 */
 		let element     = [];
-		let _sign        = 1;
+		let state       = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
 
 		if(sign_text !== null) {
 			const hit_text = sign_text[0];
 			x = x.substring(hit_text.length, x.length);
 			if(hit_text.indexOf(&quot;-&quot;) !== -1) {
-				_sign = -1;
+				state = BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
 			}
 		}
 
@@ -357,22 +416,35 @@ class BigIntegerTool {
 			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x, 10);
 		}
 		// &quot;0&quot;&#x306E;&#x5834;&#x5408;&#x304C;&#x3042;&#x308B;&#x70BA;
-		if((element.length === 1)&amp;&amp;(element[0] === 0)) {
+		if(BigIntegerTool.isZeroElement(element)) {
 			element = [];
-			_sign = 0;
+			state = BIGINTEGER_NUMBER_STATE.ZERO;
 		}
 
 		return {
 			element : element,
-			_sign : _sign
+			state : state
 		};
 	}
 }
 
+/**
+ * Numeric state.
+ * @type {{ZERO:number, POSITIVE_NUMBER:number, NEGATIVE_NUMBER:number, NOT_A_NUMBER:number, POSITIVE_INFINITY:number, NEGATIVE_INFINITY:number}}
+ * @ignore
+ */
+const BIGINTEGER_NUMBER_STATE = {
+	ZERO : 0,
+	POSITIVE_NUMBER : 1,
+	NEGATIVE_NUMBER : 2,
+	NOT_A_NUMBER : 3,
+	POSITIVE_INFINITY : 4,
+	NEGATIVE_INFINITY : 5
+};
+
 // &#x5185;&#x90E8;&#x3067;&#x306F;1&#x5909;&#x6570;&#x5185;&#x306E;&#x4E2D;&#x306E;16&#x30D3;&#x30C3;&#x30C8;&#x3054;&#x3068;&#x306B;&#x7BA1;&#x7406;
 // 2&#x5909;&#x6570;&#x3067;16&#x30D3;&#x30C3;&#x30C8;*16&#x30D3;&#x30C3;&#x30C8;&#x3067;32&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x8868;&#x3059;
 // this.element	...	16&#x30D3;&#x30C3;&#x30C8;&#x3054;&#x3068;&#x306B;&#x7BA1;&#x7406;
-// this._sign	...	&#x8CA0;&#x306A;&#x3089;-1&#x3001;&#x6B63;&#x306A;&#x3089;1&#x3001;&#x30BC;&#x30ED;&#x306A;&#x3089;0
 //
 // &#x672C;&#x30AF;&#x30E9;&#x30B9;&#x306F;&#x30A4;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
 // &#x5185;&#x90E8;&#x306E;&#x300C;_&#x300D;&#x304B;&#x3089;&#x59CB;&#x307E;&#x308B;&#x30E1;&#x30BD;&#x30C3;&#x30C9;&#x306F;&#x5185;&#x90E8;&#x8A08;&#x7B97;&#x7528;&#x3067;&#x975E;&#x516C;&#x958B;&#x3067;&#x3059;&#x3002;&#x307E;&#x305F;&#x30DF;&#x30E5;&#x30FC;&#x30BF;&#x30D6;&#x30EB;&#x3067;&#x3059;&#x3002;
@@ -394,6 +466,13 @@ export default class BigInteger {
 	 */
 	constructor(number) {
 		
+		/**
+		 * Numeric state.
+		 * @private
+		 * @type {number}
+		 */
+		this.state = BIGINTEGER_NUMBER_STATE.ZERO;
+
 		if(arguments.length === 0) {
 
 			/**
@@ -403,36 +482,27 @@ export default class BigInteger {
 			 */
 			this.element     = [];
 
-			/**
-			 * Positive or negative signs of number.
-			 * - +1 if positive, -1 if negative, 0 if 0.
-			 * - This value may not be correct ?
-			 * @private
-			 * @type {number}
-			 */
-			this._sign        = 0;
 		}
 		else if(arguments.length === 1) {
-			this._sign = 1;
 			if(number instanceof BigInteger) {
 				this.element = number.element.slice(0);
-				this._sign = number._sign;
+				this.state = number.state;
 			}
 			else if(typeof number === &quot;number&quot;) {
 				const x = BigIntegerTool.toBigIntegerFromNumber(number);
 				this.element = x.element;
-				this._sign = x._sign;
+				this.state = x.state;
 			}
 			else if(typeof number === &quot;string&quot;) {
 				const x = BigIntegerTool.toBigIntegerFromString(number);
 				this.element = x.element;
-				this._sign = x._sign;
+				this.state = x.state;
 			}
 			else if(number instanceof Array) {
 				if((number.length === 2) &amp;&amp; (typeof number[0] === &quot;string&quot; &amp;&amp; (typeof number[1] === &quot;number&quot;))) {
 					const x = BigIntegerTool.toBigIntegerFromString(number[0], number[1]);
 					this.element = x.element;
-					this._sign = x._sign;
+					this.state = x.state;
 				}
 				else {
 					throw &quot;BigInteger Unsupported argument &quot; + arguments;
@@ -442,18 +512,23 @@ export default class BigInteger {
 				if(&quot;toBigInteger&quot; in number) {
 					const x = number.toBigInteger();
 					this.element = x.element;
-					this._sign = x._sign;
+					this.state = x.state;
 				}
 				else if(&quot;intValue&quot; in number) {
 					const x = BigIntegerTool.toBigIntegerFromNumber(number.intValue);
 					this.element = x.element;
-					this._sign = x._sign;
+					this.state = x.state;
 				}
 				else {
 					const x = BigIntegerTool.toBigIntegerFromString(number.toString());
 					this.element = x.element;
-					this._sign = x._sign;
+					this.state = x.state;
 				}
+			}
+			else if(typeof number === &quot;boolean&quot;) {
+				const x = BigIntegerTool.toBigIntegerFromNumber(number ? 1 : 0);
+				this.element = x.element;
+				this.state = x.state;
 			}
 			else {
 				throw &quot;BigInteger Unsupported argument &quot; + number;
@@ -550,7 +625,6 @@ export default class BigInteger {
 	static createRandomBigInteger(bitsize, random) {
 		const rand = (random &amp;&amp; (random instanceof Random)) ? random : DEFAULT_RANDOM;
 		const x = new BigInteger();
-		x._sign = 1;
 		const bits = BigInteger._toInteger(bitsize);
 		const size = ((bits - 1) &gt;&gt; 4) + 1;
 		if(bits === 0) {
@@ -574,6 +648,7 @@ export default class BigInteger {
 		}
 		// &#x6700;&#x5F8C;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x306B; 0 &#x3092;&#x305F;&#x304F;&#x3055;&#x3093;&#x4F5C;&#x6210;&#x3057;&#x3066;&#x3044;&#x308B;&#x3068;&#x3001;
 		// 0&#x306E;&#x307F;&#x306E;&#x30C7;&#x30FC;&#x30BF;&#x306B;&#x306A;&#x308B;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#x305F;&#x3081;&#x30E1;&#x30E2;&#x30EA;&#x3092;&#x4FEE;&#x6B63;
+		x.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
 		x._memory_reduction();
 		return x;
 	}
@@ -584,6 +659,9 @@ export default class BigInteger {
 	 * @returns {string}
 	 */
 	toString(radix) {
+		if(!this.isFinite()) {
+			return this.isNaN() ? &quot;NaN&quot; : (this.isPositiveInfinity() ? &quot;Infinity&quot; : &quot;-Infinity&quot;);
+		}
 		const radix_ = radix ? BigInteger._toInteger(radix) : 10;
 
 		// int&#x578B;&#x3067;&#x6271;&#x3048;&#x308B;&#x6570;&#x5024;&#x3067; toString &#x304C;&#x53EF;&#x80FD;&#x306A;&#x306E;&#x3067;&#x3001;
@@ -605,7 +683,7 @@ export default class BigInteger {
 		const x = BigIntegerTool.toPlainStringFromHexadecimalArray(this.element, calcradix);
 		const y = [];
 		let z = &quot;&quot;;
-		if(this.signum() &lt; 0) {
+		if(this.sign() &lt; 0) {
 			y[y.length] = &quot;-&quot;;
 		}
 		for(let i = x.length - 1; i &gt;= 0; i--) {
@@ -634,12 +712,15 @@ export default class BigInteger {
 	 */
 	getTwosComplement(bit_length) {
 		const y = this.clone();
-		if(y._sign &gt;= 0) {
+		if(!this.isFinite()) {
+			return y;
+		}
+		if(y.isNotNegative()) {
 			return y;
 		}
 		else {
 			// &#x6B63;&#x306B;&#x3059;&#x308B;
-			y._sign = 1;
+			y.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
 			// &#x30D3;&#x30C3;&#x30C8;&#x306E;&#x6570;&#x304C;&#x5B58;&#x5728;&#x3057;&#x306A;&#x3044;&#x5834;&#x5408;&#x306F;&#x6570;&#x3048;&#x308B;
 			const len = (bit_length !== undefined) ? bit_length : y.bitLength();
 			const e = y.element;
@@ -664,6 +745,9 @@ export default class BigInteger {
 	 * @private
 	 */
 	_memory_allocation(bit_length) {
+		if(!this.isFinite()) {
+			return;
+		}
 		const n = BigInteger._toInteger(bit_length);
 		const elementsize = this.element.length &lt;&lt; 4;
 		if(elementsize &lt; n) {
@@ -679,15 +763,20 @@ export default class BigInteger {
 	 * @private
 	 */
 	_memory_reduction() {
+		if(!this.isFinite()) {
+			return;
+		}
 		for(let i = this.element.length - 1;i &gt;= 0;i--) {
 			if(this.element[i] !==  0) {
+				// &#x6700;&#x7D42;&#x884C;&#x4EE5;&#x5916;&#x3067;&#x898B;&#x3064;&#x304B;&#x3063;&#x305F;&#x3089;&#x3001;&#x4E0A;&#x306E;&#x9818;&#x57DF;&#x3092;&#x524A;&#x9664;&#x3059;&#x308B;
 				if(i &lt; this.element.length - 1) {
 					this.element.splice(i + 1, this.element.length - i - 1);
 				}
 				return;
 			}
 		}
-		this._sign = 0;
+		// &#x5168;&#x3066;0&#x3060;&#x3063;&#x305F;&#x5834;&#x5408;
+		this.state = BIGINTEGER_NUMBER_STATE.ZERO;
 		this.element = [];
 	}
 
@@ -698,7 +787,12 @@ export default class BigInteger {
 	 */
 	_abs() {
 		// -1 -&gt; 1, 0 -&gt; 0, 1 -&gt; 1
-		this._sign *= this._sign;
+		if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
+			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
+		}
+		else if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY) {
+			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
+		}
 		return this;
 	}
 
@@ -716,7 +810,18 @@ export default class BigInteger {
 	 * @private
 	 */
 	_negate() {
-		this._sign *= -1;
+		if(this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER) {
+			this.state = BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
+		}
+		else if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
+			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
+		}
+		else if(this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY) {
+			this.state = BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY;
+		}
+		else if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY) {
+			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
+		}
 		return this;
 	}
 
@@ -733,11 +838,19 @@ export default class BigInteger {
 	 * - +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number}
 	 */
-	signum() {
-		if(this.element.length === 0) {
+	sign() {
+		if(this.isNaN()) {
+			return NaN;
+		}
+		else if(this.isZero()) {
 			return 0;
 		}
-		return this._sign;
+		else if(this.isPositive()) {
+			return 1;
+		}
+		else {
+			return -1;
+		}
 	}
 
 	/**
@@ -745,8 +858,8 @@ export default class BigInteger {
 	 * - +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number}
 	 */
-	sign() {
-		return this.signum();
+	signum() {
+		return this.sign();
 	}
 
 	// ----------------------
@@ -763,9 +876,24 @@ export default class BigInteger {
 		const val = BigInteger._toBigInteger(number);
 		const o1 = this;
 		const o2 = val;
+		if(!o1.isFinite() || !o2.isFinite()) {
+			let ret;
+			if(o1.isNaN() || o2.isNaN() || (o1.isInfinite() &amp;&amp; o2.isInfinite() &amp;&amp; !o1.equalsState(o2))) {
+				ret = BigInteger.NaN.clone();
+			}
+			else if(o1.isPositiveInfinity() || o2.isPositiveInfinity()) {
+				ret = BigInteger.POSITIVE_INFINITY.clone();
+			}
+			else {
+				ret = BigInteger.NEGATIVE_INFINITY.clone();
+			}
+			this.element = ret.element;
+			this.state = ret.state;
+			return this;
+		}
 		let x1 = o1.element;
 		let x2 = o2.element;
-		if(o1._sign === o2._sign) {
+		if(o1.sign() === o2.sign()) {
 			//&#x8DB3;&#x3057;&#x7B97;
 			this._memory_allocation(x2.length &lt;&lt; 4);
 			let carry = 0;
@@ -788,11 +916,11 @@ export default class BigInteger {
 			const compare = o1.compareToAbs(o2);
 			if(compare === 0) {
 				this.element = [];
-				this._sign = 1;
+				this.state = BIGINTEGER_NUMBER_STATE.ZERO;
 				return this;
 			}
 			else if(compare === -1) {
-				this._sign = o2._sign;
+				this.state = o2.state;
 				const swap = x1;
 				x1 = x2.slice(0);
 				x2 = swap;
@@ -830,10 +958,11 @@ export default class BigInteger {
 	 * @private
 	 */
 	_subtract(number) {
+		// &#x4E00;&#x6642;&#x7684;&#x306B;&#x8A18;&#x9332;&#x3057;&#x3066;&#x304A;&#x3044;&#x3066;&#x5F15;&#x6570;&#x306E;&#x60C5;&#x5831;&#x306F;&#x66F8;&#x304D;&#x63DB;&#x3048;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x3059;&#x308B;
 		const val = BigInteger._toBigInteger(number);
-		const _sign = val._sign;
+		const state = val.state;
 		const out  = this._add(val._negate());
-		val._sign = _sign;
+		val.state = state;
 		return out;
 	}
 
@@ -864,7 +993,7 @@ export default class BigInteger {
 	_multiply(number) {
 		const x = this.multiply(number);
 		this.element = x.element;
-		this._sign    = x._sign;
+		this.state   = x.state;
 		return this;
 	}
 
@@ -875,12 +1004,23 @@ export default class BigInteger {
 	 */
 	multiply(number) {
 		const val = BigInteger._toBigInteger(number);
-		const out  = new BigInteger();
-		const buff = new BigInteger();
 		const o1 = this;
 		const o2 = val;
+		if(!o1.isFinite() || !o2.isFinite()) {
+			if(o1.isNaN() || o2.isNaN() || (o1.isZero() || o2.isZero())) {
+				return BigInteger.NaN.clone();
+			}
+			else if(o1.sign() * o2.sign() &gt; 0) {
+				return BigInteger.POSITIVE_INFINITY.clone();
+			}
+			else {
+				return BigInteger.NEGATIVE_INFINITY.clone();
+			}
+		}
 		const x1 = o1.element;
 		const x2 = o2.element;
+		const out  = new BigInteger();
+		const buff = new BigInteger();
 		const y  = out.element;
 		for(let i = 0; i &lt; x1.length; i++) {
 			buff.element = [];
@@ -926,7 +1066,8 @@ export default class BigInteger {
 				y[y.length] = carry;
 			}
 		}
-		out._sign = this._sign * val._sign;
+		const sign = this.sign() * val.sign();
+		out.state = sign === 1 ? BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER : BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
 		return out;
 	}
 
@@ -946,27 +1087,50 @@ export default class BigInteger {
 	 * @private
 	 */
 	_divideAndRemainder(number) {
-		const val = BigInteger._toBigInteger(number);
-		const out = [];
-		if(val.signum() === 0) {
-			throw &quot;BigInteger divideAndRemainder [&quot; + val.toString() +&quot;]&quot;;
+		const o1 = this;
+		const o2 = BigInteger._toBigInteger(number);
+		if(!o1.isFinite() || !o2.isFinite()) {
+			if(o1.isNaN() || o2.isNaN() || (o1.isInfinite() &amp;&amp; o2.isInfinite())) {
+				return [BigInteger.NaN, BigInteger.NaN];
+			}
+			else if(o1.isInfinite()) {
+				if(o1.sign() * o2.sign() &gt;= 0) {
+					return [BigInteger.POSITIVE_INFINITY, BigInteger.NaN];
+				}
+				else {
+					return [BigInteger.NEGATIVE_INFINITY, BigInteger.NaN];
+				}
+			}
+			else {
+				return [BigInteger.ZERO, BigInteger.NaN];
+			}
 		}
-		const compare = this.compareToAbs(val);
+		else if(o2.isZero()) {
+			if(o1.isZero()) {
+				return [BigInteger.NaN, BigInteger.NaN];
+			}
+			else {
+				return [o1.sign() &gt;= 0 ? BigInteger.POSITIVE_INFINITY : BigInteger.NEGATIVE_INFINITY, BigInteger.NaN];
+			}
+		}
+		const out = [];
+		const compare = o1.compareToAbs(o2);
+		const sign = o1.sign() * o2.sign();
 		if(compare &lt; 0) {
 			out[0] = new BigInteger(0);
-			out[1] = this.clone();
+			out[1] = o1.clone();
 			return out;
 		}
 		else if(compare === 0) {
 			out[0] = new BigInteger(1);
-			out[0]._sign = this._sign * val._sign;
+			out[0].state = sign === 1 ? BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER : BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
 			out[1] = new BigInteger(0);
 			return out;
 		}
 		const ONE = new BigInteger(1);
-		const size = this.bitLength() - val.bitLength();
-		const x1 = this.clone()._abs();
-		const x2 = val.shift(size)._abs();
+		const size = o1.bitLength() - o2.bitLength();
+		const x1 = o1.clone()._abs();
+		const x2 = o2.shift(size)._abs();
 		const y  = new BigInteger();
 		for(let i = 0; i &lt;= size; i++) {
 			if(x1.compareToAbs(x2) &gt;= 0) {
@@ -980,9 +1144,9 @@ export default class BigInteger {
 			y._shift(1);
 		}
 		out[0] = y;
-		out[0]._sign = this._sign * val._sign;
+		out[0].state = sign === 1 ? BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER : BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
 		out[1] = x1;
-		out[1]._sign = this._sign;
+		out[1].state = x1.state !== BIGINTEGER_NUMBER_STATE.ZERO ? o1.state : x1.state;
 		return out;
 	}
 
@@ -1030,7 +1194,10 @@ export default class BigInteger {
 	 * @private
 	 */
 	_remainder(number) {
-		return this._divideAndRemainder(number)[1];
+		const y = this._divideAndRemainder(number)[1];
+		this.element = y.element;
+		this.state = y.state;
+		return this;
 	}
 
 	/**
@@ -1058,20 +1225,18 @@ export default class BigInteger {
 	 * @private
 	 */
 	_mod(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(val.signum() &lt; 0) {
-			return null;
+		const o1 = this;
+		const o2 = BigInteger._toBigInteger(number);
+		if(o2.isZero()) {
+			return o1;
 		}
-		const y = this._divideAndRemainder(val);
-		if(y[1] instanceof BigInteger) {
-			if(y[1].signum() &gt;= 0) {
-				return y[1];
-			}
-			else {
-				return y[1]._add(val);
-			}
+		const y = o1._divideAndRemainder(o2)[1];
+		if(o1.state !== o2.state) {
+			y._add(o2);
 		}
-		return null;
+		this.element = y.element;
+		this.state = y.state;
+		return this;
 	}
 
 	/**
@@ -1166,6 +1331,60 @@ export default class BigInteger {
 	 */
 	pow(exponent) {
 		const e = new BigInteger(exponent);
+		{
+			if(this.isNaN() || e.isNaN()) {
+				return BigInteger.NaN;
+			}
+			if(e.isZero()) {
+				return BigInteger.ONE;
+			}
+			else if(this.isZero()) {
+				if(e.isNegativeInfinity()) {
+					return BigInteger.POSITIVE_INFINITY;
+				}
+				else {
+					return BigInteger.ZERO;
+				}
+			}
+			else if(this.isOne()) {
+				return this;
+			}
+			else if(this.isInfinite()) {
+				if(this.isPositiveInfinity()) {
+					return BigInteger.POSITIVE_INFINITY;
+				}
+				else {
+					if(e.isPositiveInfinity()) {
+						return BigInteger.NaN;
+					}
+					else {
+						return BigInteger.create(Infinity * Math.pow(-1, Math.round(e.doubleValue)));
+					}
+				}
+			}
+			else if(e.isInfinite()) {
+				if(this.isNegative()) {
+					// &#x8907;&#x7D20;&#x6570;
+					return BigInteger.NaN;
+				}
+				if(this.compareTo(BigInteger.ONE) &lt; 0) {
+					if(e.isPositiveInfinity()) {
+						return BigInteger.ZERO;
+					}
+					else if(e.isNegativeInfinity()) {
+						return BigInteger.POSITIVE_INFINITY;
+					}
+				}
+				else {
+					if(e.isPositiveInfinity()) {
+						return BigInteger.POSITIVE_INFINITY;
+					}
+					else if(e.isNegativeInfinity()) {
+						return BigInteger.ZERO;
+					}
+				}
+			}
+		}
 		let x = BigInteger._toBigInteger(this);
 		let y = BigInteger._toBigInteger(1);
 		while(e.element.length !== 0) {
@@ -1191,8 +1410,19 @@ export default class BigInteger {
 	 * @returns {BigInteger} floor(sqrt(A))
 	 */
 	sqrt() {
-		if(this.sign() &lt;= 0) {
-			throw &quot;ArithmeticException&quot;;
+		{
+			if(this.isZero()) {
+				return BigInteger.ZERO;
+			}
+			else if(this.isNaN()) {
+				return BigInteger.NaN;
+			}
+			else if(this.isNegative()) {
+				return BigInteger.NaN; // &#x8907;&#x7D20;&#x6570;
+			}
+			else if(this.isInfinite()) {
+				return BigInteger.POSITIVE_INFINITY;
+			}
 		}
 		const precision = this.toString(10).replace(/^-/, &quot;&quot;).length;
 		const x0 = BigInteger.ONE.scaleByPowerOfTen(precision);
@@ -1240,11 +1470,19 @@ export default class BigInteger {
 	 * @returns {number}
 	 */
 	getShort(point) {
-		const n = BigInteger._toInteger(point);
-		if((n &lt; 0) || (this.element.length &lt;= n)) {
+		if(this.isZero()) {
 			return 0;
 		}
+		const n = BigInteger._toInteger(point);
 		return this.element[n];
+	}
+
+	/**
+	 * boolean value.
+	 * @returns {boolean}
+	 */
+	get booleanValue() {
+		return !this.isZero() &amp;&amp; !this.isNaN();
 	}
 
 	/**
@@ -1253,9 +1491,12 @@ export default class BigInteger {
 	 * @returns {number}
 	 */
 	get intValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
 		let x = this.getShort(0) + (this.getShort(1) &lt;&lt; 16);
 		x &amp;= 0xFFFFFFFF;
-		if((x &gt; 0)&amp;&amp;(this._sign &lt; 0)) {
+		if((x &gt; 0) &amp;&amp; this.isNegative()) {
 			x = -x;
 		}
 		return x;
@@ -1267,12 +1508,15 @@ export default class BigInteger {
 	 * @returns {number}
 	 */
 	get longValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
 		let x = 0;
-		for(let i = 3; i &gt;= 0; i--) {
+		for(let i = Math.min(3, this.element.length - 1); i &gt;= 0; i--) {
 			x *= 65536;
 			x += this.getShort(i);
 		}
-		if(this._sign &lt; 0) {
+		if(this.isNegative()) {
 			x = -x;
 		}
 		return x;
@@ -1284,6 +1528,9 @@ export default class BigInteger {
 	 * @returns {number}
 	 */
 	get doubleValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
 		return parseFloat(this.toString());
 	}
 	
@@ -1302,10 +1549,12 @@ export default class BigInteger {
 		 * @type {any}
 		 */
 		let x = this, y = val, z;
-		while(y.signum() !== 0) {
+		let i = 10;
+		while(y.sign() !== 0 &amp;&amp; i) {
 			z = x.remainder(y);
 			x = y;
 			y = z;
+			i--;
 		}
 		return x;
 	}
@@ -1326,7 +1575,7 @@ export default class BigInteger {
 		let r0 = this, r1 = val, r2, q1;
 		let a0 = ONE,  a1 = ZERO, a2;
 		let b0 = ZERO, b1 = ONE,  b2;
-		while(r1.signum() !== 0) {
+		while(r1.sign() !== 0) {
 			const y = r0.divideAndRemainder(r1);
 			q1 = y[0];
 			r2 = y[1];
@@ -1362,15 +1611,27 @@ export default class BigInteger {
 	 * @returns {boolean} A === B
 	 */
 	equals(number) {
-		const x = BigInteger._toBigInteger(number);
-		if(this.signum() !== x.signum()) {
+		const x = this;
+		const y = BigInteger._toBigInteger(number);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN()) {
+				return false;
+			}
+			else if(x.state === y.state) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		if(x.state !== y.state) {
 			return false;
 		}
-		if(this.element.length !== x.element.length) {
+		if(x.element.length !== y.element.length) {
 			return false;
 		}
-		for(let i = 0; i &lt; x.element.length; i++) {
-			if(this.element[i] !==  x.element[i]) {
+		for(let i = 0; i &lt; y.element.length; i++) {
+			if(x.element[i] !==  y.element[i]) {
 				return false;
 			}
 		}
@@ -1380,20 +1641,35 @@ export default class BigInteger {
 	/**
 	 * Compare values without sign.
 	 * @param {KBigIntegerInputData} number 
-	 * @returns {number} abs(A) &lt; abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
+	 * @returns {number} abs(A) &gt; abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
 	 */
 	compareToAbs(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(this.element.length &lt; val.element.length) {
+		const x = this;
+		const y = BigInteger._toBigInteger(number);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN()) {
+				return NaN;
+			}
+			else if(x.isInfinite() || y.isInfinite()) {
+				return 0;
+			}
+			else if(y.isInfinite()) {
+				return -1;
+			}
+			else {
+				return 1;
+			}
+		}
+		if(x.element.length &lt; y.element.length) {
 			return -1;
 		}
-		else if(this.element.length &gt; val.element.length) {
+		else if(x.element.length &gt; y.element.length) {
 			return 1;
 		}
-		for(let i = this.element.length - 1;i &gt;= 0;i--) {
-			if(this.element[i] !== val.element[i]) {
-				const x = this.element[i] - val.element[i];
-				return ( (x === 0) ? 0 : ((x &gt; 0) ? 1 : -1) );
+		for(let i = x.element.length - 1;i &gt;= 0;i--) {
+			if(x.element[i] !== y.element[i]) {
+				const val = x.element[i] - y.element[i];
+				return ( (val === 0) ? 0 : ((val &gt; 0) ? 1 : -1) );
 			}
 		}
 		return 0;
@@ -1405,19 +1681,47 @@ export default class BigInteger {
 	 * @returns {number} A &gt; B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(this.signum() !== val.signum()) {
-			if(this._sign &gt; val._sign) {
+		const x = this;
+		const y = BigInteger._toBigInteger(number);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN()) {
+				return NaN;
+			}
+			if(x.state === y.state) {
+				return 0;
+			}
+			if(x.isPositiveInfinity() || y.isNegativeInfinity()) {
 				return 1;
 			}
 			else {
 				return -1;
 			}
 		}
-		else if(this.signum() === 0) {
+		const x_sign = x.sign();
+		const y_sign = y.sign();
+		if(x_sign !== y_sign) {
+			if(x_sign &gt; y_sign) {
+				return 1;
+			}
+			else {
+				return -1;
+			}
+		}
+		else if(x_sign === 0) {
 			return 0;
 		}
-		return this.compareToAbs(val) * this._sign;
+		return x.compareToAbs(y) * x_sign;
+	}
+
+	/**
+	 * Numeric type match.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {boolean}
+	 */
+	equalsState(number) {
+		const x = this;
+		const y = BigInteger._toBigInteger(number);
+		return x.state === y.state;
 	}
 
 	/**
@@ -1459,6 +1763,9 @@ export default class BigInteger {
 	clip(min, max) {
 		const min_ = BigInteger._toBigInteger(min);
 		const max_ = BigInteger._toBigInteger(max);
+		if(this.isNaN() || min_.isNaN() || max_.isNaN()) {
+			return BigInteger.NaN;
+		}
 		const arg_check = min_.compareTo(max_);
 		if(arg_check === 1) {
 			throw &quot;clip(min, max) error. (min &gt; max)-&gt;(&quot; + min_ + &quot; &gt; &quot; + max_ + &quot;)&quot;;
@@ -1496,30 +1803,72 @@ export default class BigInteger {
 				return x;
 			}
 		}
-		throw &quot;probablePrime &quot; + create_count;
+		console.log(&quot;probablePrime &quot; + create_count);
+		return BigInteger.NaN;
+	}
+
+	/**
+	 * Return true if the value is prime number.
+	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
+	 */
+	isPrime() {
+		if(!this.isFinite()) {
+			return false;
+		}
+		// 0&#x3084;&#x8CA0;&#x306E;&#x5024;&#x306F;&#x3001;&#x7D20;&#x6570;&#x3067;&#x306F;&#x306A;&#x3044;
+		if(this.sign() &lt;= 0) {
+			return false;
+		}
+		// 47453132.81212578 = Math.sqrt(Number.MAX_SAFE_INTEGER)
+		const limit = Math.sqrt(Math.pow(2, 51));
+		const target_number = this.doubleValue;
+		const count_max = Math.ceil(Math.sqrt(target_number));
+		// 1, 2 -&gt; true
+		if(target_number &lt;= 2) {
+			return true;
+		}
+		// &#x6307;&#x5B9A;&#x3057;&#x305F;&#x5024;&#x3088;&#x308A;&#x5927;&#x304D;&#x3044;&#x5834;&#x5408;&#x306F;&#x8A08;&#x7B97;&#x4E0D;&#x53EF;&#x80FD;&#x3068;&#x3057;&#x3066; false &#x3092;&#x8FD4;&#x3059;
+		if(count_max &gt; limit) {
+			return null;
+		}
+		for(let i = 2; i &lt;= count_max; i++) {
+			if((target_number % i) === 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
 	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * 
 	 * Attention : it takes a very long time to process.
 	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
 	 * @returns {boolean}
 	 */
 	isProbablePrime(certainty) {
+		if(!this.isFinite()) {
+			return false;
+		}
 		const e = this.element;
-		//0, 1, 2 -&gt; true
-		if( (e.length === 0) || ((e.length === 1)&amp;&amp;(e[0] &lt;= 2)) ) {
+		// 0&#x3084;&#x8CA0;&#x306E;&#x5024;&#x306F;&#x3001;&#x7D20;&#x6570;&#x3067;&#x306F;&#x306A;&#x3044;
+		if(this.sign() &lt;= 0) {
+			return false;
+		}
+		// 1, 2 -&gt; true
+		if((e.length === 1)&amp;&amp;(e[0] &lt;= 2)) {
 			return true;
 		}
-		//even number -&gt; false
+		// even number -&gt; false
 		else if((e[0] &amp; 1) === 0) {
 			return false;
 		}
 		// &#x30DF;&#x30E9;&#x30FC;&#x30E9;&#x30D3;&#x30F3;&#x7D20;&#x6570;&#x5224;&#x5B9A;&#x6CD5;
 		// &#x304B;&#x306A;&#x308A;&#x51E6;&#x7406;&#x304C;&#x91CD;&#x305F;&#x3044;&#x3067;&#x3059;&#x3002;&#x307E;&#x3042;&#x304A;&#x904A;&#x3073;&#x7A0B;&#x5EA6;&#x306B;&#x4F7F;&#x7528;&#x3068;&#x3044;&#x3046;&#x611F;&#x3058;&#x3067;&#x3002;
 		const loop	= certainty !== undefined ? BigInteger._toInteger(certainty) : 100;
-		const ZERO	= new BigInteger(0);
-		const ONE	= new BigInteger(1);
+		const ZERO	= BigInteger.ZERO;
+		const ONE	= BigInteger.ONE;
 		const n		= this;
 		const LEN	= n.bitLength();
 		const n_1	= n.subtract(ONE);
@@ -1563,6 +1912,9 @@ export default class BigInteger {
 	 * @returns {BigInteger}
 	 */
 	nextProbablePrime(certainty, search_max) {
+		if(!this.isFinite()) {
+			return BigInteger.NaN;
+		}
 		const loop	= certainty !== undefined ? (BigInteger._toInteger(certainty) &gt;&gt; 1) : 100 / 2;
 		const search_max_ = search_max !== undefined ? BigInteger._toInteger(search_max) : 100000;
 		const x = this.clone();
@@ -1586,6 +1938,9 @@ export default class BigInteger {
 	 * @private
 	 */
 	_shift(shift_length) {
+		if(!this.isFinite()) {
+			return this;
+		}
 		let n = BigInteger._toInteger(shift_length);
 		if(n === 0) {
 			return this;
@@ -1709,6 +2064,9 @@ export default class BigInteger {
 	 * @returns {number}
 	 */
 	getLowestSetBit() {
+		if(!this.isFinite()) {
+			return NaN;
+		}
 		for(let i = 0; i &lt; this.element.length; i++) {
 			if(this.element[i] !==  0) {
 				const x = this.element[i];
@@ -1727,6 +2085,9 @@ export default class BigInteger {
 	 * @returns {number}
 	 */
 	bitLength() {
+		if(!this.isFinite()) {
+			return NaN;
+		}
 		for(let i = this.element.length - 1; i &gt;= 0; i--) {
 			if(this.element[i] !==  0) {
 				const x = this.element[i];
@@ -1745,8 +2106,11 @@ export default class BigInteger {
 	 * @returns {number}
 	 */
 	bitCount() {
+		if(!this.isFinite()) {
+			return NaN;
+		}
 		let target;
-		if(this._sign &gt;= 0) {
+		if(this.sign() &gt;= 0) {
 			target = this;
 		}
 		else {
@@ -1776,7 +2140,20 @@ export default class BigInteger {
 		const val = BigInteger._toBigInteger(number);
 		const e1 = this;
 		const e2 = val;
-		const s1  = e1.signum(), s2 = e2.signum();
+		if((!e1.isFinite()) || (!e2.isFinite())) {
+			let ret;
+			if(e1.isNaN() || e2.isNaN()) {
+				ret = BigInteger.NaN;
+			}
+			else {
+				ret = BigInteger.ZERO;
+			}
+			ret = ret.clone();
+			this.element = ret.element;
+			this.state = ret.state;
+			return this;
+		}
+		const s1  = e1.sign(), s2 = e2.sign();
 		const len = Math.max(e1.bitLength(), e2.bitLength());
 		// &#x5F15;&#x6570;&#x304C;&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;
 		const e1_array = e1.getTwosComplement(len).element;
@@ -1792,10 +2169,10 @@ export default class BigInteger {
 		this._memory_reduction();
 		// &#x7B26;&#x53F7;&#x3092;&#x8A08;&#x7B97;
 		if((s1 === 1)||(s2 === 1)) {
-			this._sign = 1;
+			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
 		}
 		// &#x51FA;&#x529B;&#x304C;&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;
-		else if(this._sign === -1) {
+		else if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
 			this.element = this.getTwosComplement(len).element;
 			// &#x53CD;&#x8EE2;&#x3055;&#x305B;&#x305F;&#x3053;&#x3068;&#x3067;&#x914D;&#x5217;&#x306E;&#x4E0A;&#x4F4D;&#x304C;&#x7A7A;&#x306B;&#x306A;&#x308B;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#x305F;&#x3081;&#x30CE;&#x30FC;&#x30DE;&#x30E9;&#x30A4;&#x30BA;&#x304C;&#x5FC5;&#x8981;
 			this._memory_reduction();
@@ -1822,7 +2199,24 @@ export default class BigInteger {
 		const val = BigInteger._toBigInteger(number);
 		const e1 = this;
 		const e2 = val;
-		const s1  = e1.signum(), s2 = e2.signum();
+		if((!e1.isFinite()) || (!e2.isFinite())) {
+			let ret;
+			if(e1.isNaN() || e2.isNaN()) {
+				ret = BigInteger.NaN.clone();
+			}
+			else if(e1.isInfinite() || e2.isInfinite()) {
+				ret = BigInteger.ZERO;
+			}
+			else {
+				ret = e1.isInfinite() ? e2 : e1;
+			}
+			ret = ret.clone();
+			this.element = ret.element;
+			this.state = ret.state;
+			return this;
+		}
+
+		const s1  = e1.sign(), s2 = e2.sign();
 		const len = Math.max(e1.bitLength(), e2.bitLength());
 		// &#x5F15;&#x6570;&#x304C;&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;
 		const e1_array = e1.getTwosComplement(len).element;
@@ -1835,9 +2229,11 @@ export default class BigInteger {
 			this.element[i] = x1 | x2;
 		}
 		// &#x7B26;&#x53F7;&#x3092;&#x8A08;&#x7B97;
-		this._sign = ((s1 === -1)||(s2 === -1)) ? -1 : Math.max(s1, s2);
+		this.state = ((s1 === -1)||(s2 === -1)) ?
+			BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER :
+			(Math.max(s1, s2) === 0 ? BIGINTEGER_NUMBER_STATE.ZERO : BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER);
 		// &#x51FA;&#x529B;&#x304C;&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;
-		if(this._sign === -1) {
+		if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
 			this.element = this.getTwosComplement(len).element;
 			// &#x53CD;&#x8EE2;&#x3055;&#x305B;&#x305F;&#x3053;&#x3068;&#x3067;&#x914D;&#x5217;&#x306E;&#x4E0A;&#x4F4D;&#x304C;&#x7A7A;&#x306B;&#x306A;&#x308B;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#x305F;&#x3081;&#x30CE;&#x30FC;&#x30DE;&#x30E9;&#x30A4;&#x30BA;&#x304C;&#x5FC5;&#x8981;
 			this._memory_reduction();
@@ -1864,7 +2260,23 @@ export default class BigInteger {
 		const val = BigInteger._toBigInteger(number);
 		const e1 = this;
 		const e2 = val;
-		const s1  = e1.signum(), s2 = e2.signum();
+		if((!e1.isFinite()) || (!e2.isFinite())) {
+			let ret;
+			if(e1.isNaN() || e2.isNaN()) {
+				ret = BigInteger.NaN;
+			}
+			else if(e1.isInfinite() || e2.isInfinite()) {
+				ret = BigInteger.ZERO;
+			}
+			else {
+				ret = e1.isInfinite() ? e2 : e1; 
+			}
+			ret = ret.clone();
+			this.element = ret.element;
+			this.state = ret.state;
+			return this;
+		}
+		const s1  = e1.sign(), s2 = e2.sign();
 		const len = Math.max(e1.bitLength(), e2.bitLength());
 		// &#x5F15;&#x6570;&#x304C;&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;
 		const e1_array = e1.getTwosComplement(len).element;
@@ -1879,9 +2291,9 @@ export default class BigInteger {
 		// &#x914D;&#x5217;&#x306E;&#x4E0A;&#x4F4D;&#x304C;&#x7A7A;&#x306B;&#x306A;&#x308B;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#x305F;&#x3081;&#x30CE;&#x30FC;&#x30DE;&#x30E9;&#x30A4;&#x30BA;&#x304C;&#x5FC5;&#x8981;
 		this._memory_reduction();
 		// &#x7B26;&#x53F7;&#x3092;&#x8A08;&#x7B97;
-		this._sign = ((s1 !== 0)&amp;&amp;(s1 !== s2)) ? -1 : 1;
+		this.state = ((s1 !== 0)&amp;&amp;(s1 !== s2)) ? BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER : BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
 		// &#x51FA;&#x529B;&#x304C;&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;
-		if(this._sign === -1) {
+		if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
 			this.element = this.getTwosComplement(len).element;
 			// &#x53CD;&#x8EE2;&#x3057;&#x305F;&#x3053;&#x3068;&#x3067;&#x3055;&#x3089;&#x306B;&#x7A7A;&#x306B;&#x306A;&#x308B;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;
 			this._memory_reduction();
@@ -1916,84 +2328,6 @@ export default class BigInteger {
 	}
 
 	/**
-	 * Logical Not-AND. (mutable)
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A &amp;= (!B)
-	 * @private
-	 */
-	_andNot(number) {
-		const val = BigInteger._toBigInteger(number);
-		return(this._and(val.not()));
-	}
-
-	/**
-	 * Logical Not-AND.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A &amp; (!B)
-	 */
-	andNot(number) {
-		return(this.clone()._andNot(number));
-	}
-
-	/**
-	 * Logical Not-AND. (mutable)
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A &amp;= (!B)
-	 * @private
-	 */
-	_nand(number) {
-		return(this._andNot(number));
-	}
-
-	/**
-	 * Logical Not-AND.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A &amp; (!B)
-	 */
-	nand(number) {
-		return(this.andNot(number));
-	}
-
-	/**
-	 * Logical Not-OR. (mutable)
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A = !(A | B)
-	 * @private
-	 */
-	_orNot(number) {
-		const val = BigInteger._toBigInteger(number);
-		return(this._or(val)._not());
-	}
-
-	/**
-	 * Logical Not-OR.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} !(A | B)
-	 */
-	orNot(number) {
-		return(this.clone()._orNot(number));
-	}
-
-	/**
-	 * Logical Not-OR. (mutable)
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A = !(A | B)
-	 * @private
-	 */
-	_nor(number) {
-		return(this._orNot(number));
-	}
-
-	/**
-	 * Logical Not-OR.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} !(A | B)
-	 */
-	nor(number) {
-		return(this.orNot(number));
-	}
-
-	/**
 	 * this | (1 &lt;&lt; n) (mutable)
 	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
@@ -2003,6 +2337,7 @@ export default class BigInteger {
 		const n = BigInteger._toInteger(bit);
 		this._memory_allocation(n + 1);
 		this.element[n &gt;&gt;&gt; 4] |= 1 &lt;&lt; (n &amp; 0xF);
+		this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
 		return this;
 	}
 
@@ -2072,8 +2407,7 @@ export default class BigInteger {
 	 * @returns {boolean}
 	 */
 	isZero() {
-		this._memory_reduction();
-		return this._sign === 0;
+		return this.state === BIGINTEGER_NUMBER_STATE.ZERO;
 	}
 	
 	/**
@@ -2081,7 +2415,7 @@ export default class BigInteger {
 	 * @returns {boolean}
 	 */
 	isOne() {
-		return this._sign === 1 &amp;&amp; this.element.length === 1 &amp;&amp; this.element[0] === 1;
+		return this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER &amp;&amp; this.element.length === 1 &amp;&amp; this.element[0] === 1;
 	}
 	
 	/**
@@ -2089,8 +2423,7 @@ export default class BigInteger {
 	 * @returns {boolean}
 	 */
 	isPositive() {
-		this._memory_reduction();
-		return this._sign &gt; 0;
+		return this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER || this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
 	}
 
 	/**
@@ -2098,7 +2431,7 @@ export default class BigInteger {
 	 * @returns {boolean}
 	 */
 	isNegative() {
-		return this._sign &lt; 0;
+		return this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER || this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY;
 	}
 
 	/**
@@ -2106,7 +2439,47 @@ export default class BigInteger {
 	 * @returns {boolean}
 	 */
 	isNotNegative() {
-		return this._sign &gt;= 0;
+		return this.state === BIGINTEGER_NUMBER_STATE.ZERO || this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER || this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
+	}
+	
+	/**
+	 * this === NaN
+	 * @returns {boolean} isNaN(A)
+	 */
+	isNaN() {
+		return this.state === BIGINTEGER_NUMBER_STATE.NOT_A_NUMBER;
+	}
+	
+	/**
+	 * this === Infinity
+	 * @returns {boolean} isPositiveInfinity(A)
+	 */
+	isPositiveInfinity() {
+		return this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
+	}
+
+	/**
+	 * this === -Infinity
+	 * @returns {boolean} isNegativeInfinity(A)
+	 */
+	isNegativeInfinity() {
+		return this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * this === Infinity or -Infinity
+	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+	 */
+	isInfinite() {
+		return this.isPositiveInfinity() || this.isNegativeInfinity();
+	}
+	
+	/**
+	 * Return true if the value is finite number.
+	 * @returns {boolean} !isNaN(A) &amp;&amp; !isInfinite(A)
+	 */
+	isFinite() {
+		return !this.isNaN() &amp;&amp; !this.isInfinite();
 	}
 
 	// ----------------------
@@ -2153,6 +2526,30 @@ export default class BigInteger {
 		return DEFINE.TEN;
 	}
 
+	/**
+	 * Positive infinity.
+	 * @returns {BigInteger} Infinity
+	 */
+	static get POSITIVE_INFINITY() {
+		return DEFINE.POSITIVE_INFINITY;
+	}
+	
+	/**
+	 * Negative Infinity.
+	 * @returns {BigInteger} -Infinity
+	 */
+	static get NEGATIVE_INFINITY() {
+		return DEFINE.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * Not a Number.
+	 * @returns {BigInteger} NaN
+	 */
+	static get NaN() {
+		return DEFINE.NaN;
+	}
+
 }
 
 /**
@@ -2184,8 +2581,22 @@ const DEFINE = {
 	/**
 	 * 10
 	 */
-	TEN : new BigInteger(10)
+	TEN : new BigInteger(10),
 
+	/**
+	 * Positive infinity.
+	 */
+	POSITIVE_INFINITY : new BigInteger(Number.POSITIVE_INFINITY),
+
+	/**
+	 * Negative Infinity.
+	 */
+	NEGATIVE_INFINITY : new BigInteger(Number.NEGATIVE_INFINITY),
+
+	/**
+	 * Not a Number.
+	 */
+	NaN : new BigInteger(Number.NaN)
 };
 </code></pre>
 
