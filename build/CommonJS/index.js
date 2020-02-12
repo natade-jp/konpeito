@@ -1,5 +1,5 @@
 /*!
- * konpeito.js (version 4.0.0, 2020/2/13)
+ * konpeito.js (version 4.0.1, 2020/2/13)
  * https://github.com/natade-jp/konpeito
  * Copyright 2013-2020 natade < https://github.com/natade-jp >
  *
@@ -2131,7 +2131,7 @@ class BigInteger {
 			}
 		}
 		const sign = this.sign() * val.sign();
-		out.state = sign === 1 ? BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER : BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
+		out.state = sign === 0 ? BIGINTEGER_NUMBER_STATE.ZERO :	(sign === 1 ? BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER : BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER);
 		return out;
 	}
 

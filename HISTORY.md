@@ -1,5 +1,9 @@
 # History
 
+## v4.0.1
+### 不具合
+- `BigInteger` で `0` を掛け算した後に `-0` という内部データを持ってしまうデグレ(`v4.0.0`)を修正
+
 ## v4.0.0
 ### 機能追加
 - `BigInteger`, `BigDecimal`, `Fraction`, `Complex` の引数に`boolean`型(`1` or `0`)を入力できる機能追加
@@ -15,8 +19,8 @@
 ### 変更
 - `BigInteger` を整理し `orNot`, `andNot` を削除
 - `BigDecimal` の `inv` に `0` を入れた場合の処理を追加
-- `BigDecimal` の `rsqrt` に0以下の数値を入れた場合の処理を追加
-- `BigDecimal` の `sqrt` に0未満の数値を入れた場合の処理を追加
+- `BigDecimal` の `rsqrt` に`x <= 0`の数値を入れた場合の処理を追加
+- `BigDecimal` の `sqrt` に`x < 0`の数値を入れた場合の処理を追加
 ### 不具合
 - `BigInteger` に `mod` で被除と被除数の符号によって値が異常だった不具合を修正
 - `BigInteger` の `isProbablePrime` の入力に`0`を入れると素数であると判定する不具合を修正

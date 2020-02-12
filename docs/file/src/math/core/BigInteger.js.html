@@ -1067,7 +1067,7 @@ export default class BigInteger {
 			}
 		}
 		const sign = this.sign() * val.sign();
-		out.state = sign === 1 ? BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER : BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
+		out.state = sign === 0 ? BIGINTEGER_NUMBER_STATE.ZERO :	(sign === 1 ? BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER : BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER);
 		return out;
 	}
 
