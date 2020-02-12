@@ -996,7 +996,7 @@ export default class BigDecimal {
 			return src;
 		}
 		const x = src.rem(tgt, context);
-		if(x.compareTo(BigDecimal.ZERO) < 0) {
+		if(!src.equalsState(tgt)) {
 			return x.add(tgt, context);
 		}
 		else {
