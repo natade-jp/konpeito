@@ -1,5 +1,5 @@
 /*!
- * konpeito.js (version 4.0.1, 2020/2/13)
+ * konpeito.js (version 4.0.2, 2020/2/13)
  * https://github.com/natade-jp/konpeito
  * Copyright 2013-2020 natade < https://github.com/natade-jp >
  *
@@ -2343,7 +2343,7 @@ class BigInteger {
 		const y = this.extgcd(m);
 		const ONE  = new BigInteger(1);
 		if(y[2].compareTo(ONE) !== 0) {
-			return null;
+			return BigInteger.NaN;
 		}
 		// 正にするため remainder ではなく mod を使用する
 		return y[0]._add(m_)._mod(m_);
@@ -2358,6 +2358,14 @@ class BigInteger {
 	 * @returns {BigInteger} n!
 	 */
 	factorial() {
+		{
+			if(!this.isFinite()) {
+				return this;
+			}
+			else if(this.isNegative()) {
+				return BigInteger.NaN;
+			}
+		}
 		const loop_max = BigInteger._toInteger(this);
 		let x = BigInteger.ONE;
 		for(let i = 2; i <= loop_max; i++) {
@@ -2538,7 +2546,7 @@ class BigInteger {
 			return 0;
 		}
 		const n = BigInteger._toInteger(point);
-		return this.element[n];
+		return ((0 <= n) && (n <= this.element.length)) ? this.element[n] : NaN;
 	}
 
 	/**
@@ -2609,6 +2617,9 @@ class BigInteger {
 	 */
 	gcd(number) {
 		const val = BigInteger._toBigInteger(number);
+		if(!this.isFinite() || !val.isFinite()) {
+			return BigInteger.NaN;
+		}
 		/**
 		 * @type {any}
 		 */
@@ -2630,6 +2641,9 @@ class BigInteger {
 	 */
 	extgcd(number) {
 		const val = BigInteger._toBigInteger(number);
+		if(!this.isFinite() || !val.isFinite()) {
+			return [BigInteger.NaN, BigInteger.NaN, BigInteger.NaN];
+		}
 		// 非再帰
 		const ONE  = new BigInteger(1);
 		const ZERO = new BigInteger(0);
@@ -2662,6 +2676,9 @@ class BigInteger {
 	 */
 	lcm(number) {
 		const val = BigInteger._toBigInteger(number);
+		if(!this.isFinite() || !val.isFinite()) {
+			return BigInteger.NaN;
+		}
 		return this.mul(val).div(this.gcd(val));
 	}
 
@@ -4657,7 +4674,7 @@ class BigDecimal {
 			return src;
 		}
 		const x = src.rem(tgt, context);
-		if(x.compareTo(BigDecimal.ZERO) < 0) {
+		if(!src.equalsState(tgt)) {
 			return x.add(tgt, context);
 		}
 		else {
@@ -6132,12 +6149,6 @@ class BigDecimal {
 		const n_src = this;
 		const n_tgt = BigDecimal._toBigDecimal(number);
 		const mc = context ? context : n_tgt.default_context;
-		if((!n_src.isFinite()) || (!n_tgt.isFinite())) {
-			if(n_src.isNaN() || n_tgt.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			return BigDecimal.ZERO;
-		}
 		const src	= n_src.toBigInteger();
 		const tgt	= n_tgt.toBigInteger();
 		return new BigDecimal([src.and(tgt), mc]);
@@ -6154,16 +6165,6 @@ class BigDecimal {
 		const n_src = this;
 		const n_tgt = BigDecimal._toBigDecimal(number);
 		const mc = context ? context : n_tgt.default_context;
-		if((!n_src.isFinite()) || (!n_tgt.isFinite())) {
-			if(n_src.isNaN() || n_tgt.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			if(n_src.isInfinite() || n_tgt.isInfinite()) {
-				return BigDecimal.ZERO;
-			}
-			const x = n_src.isInfinite() ? n_tgt : n_src; 
-			return x.fract().round(mc);
-		}
 		const src	= n_src.toBigInteger();
 		const tgt	= n_tgt.toBigInteger();
 		return new BigDecimal([src.or(tgt), mc]);
@@ -6180,16 +6181,6 @@ class BigDecimal {
 		const n_src = this;
 		const n_tgt = BigDecimal._toBigDecimal(number);
 		const mc = context ? context : n_tgt.default_context;
-		if((!n_src.isFinite()) || (!n_tgt.isFinite())) {
-			if(n_src.isNaN() || n_tgt.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			if(n_src.isInfinite() || n_tgt.isInfinite()) {
-				return BigDecimal.ZERO;
-			}
-			const x = n_src.isInfinite() ? n_tgt : n_src; 
-			return x.fract().round(mc);
-		}
 		const src	= n_src.toBigInteger();
 		const tgt	= n_tgt.toBigInteger();
 		return new BigDecimal([src.xor(tgt), mc]);
@@ -6204,12 +6195,6 @@ class BigDecimal {
 	not(context) {
 		const mc = context ? context : this.default_context;
 		const n_src = this;
-		if(!n_src.isFinite()) {
-			if(n_src.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			return BigDecimal.MINUS_ONE.round(mc);
-		}
 		const src	= n_src.toBigInteger();
 		return new BigDecimal([src.not(), mc]);
 	}
@@ -6223,9 +6208,6 @@ class BigDecimal {
 	 */
 	shift(n, context) {
 		const mc = context ? context : this.default_context;
-		if(!this.isFinite()) {
-			return this.round(mc);
-		}
 		const src		= this.toBigInteger();
 		const number	= BigDecimal._toInteger(n);
 		return new BigDecimal([src.shift(number), mc]);
@@ -7220,6 +7202,1356 @@ class BigDecimalConst {
  * @ignore
  */
 const CACHED_DATA = new BigDecimalConst();
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Fraction type argument.
+ * - Fraction
+ * - BigInteger
+ * - BigDecimal
+ * - number
+ * - boolean
+ * - string
+ * - Array<KBigIntegerInputData>
+ * - {numerator:KBigIntegerInputData,denominator:KBigIntegerInputData}
+ * - {doubleValue:number}
+ * - {toString:function}
+ * 
+ * Initialization can be performed as follows.
+ * - 10, "10", "10/1", "10.0/1.0", ["10", "1"], [10, 1]
+ * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
+ * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
+ * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
+ * @typedef {Fraction|BigInteger|BigDecimal|number|boolean|string|Array<import("./BigInteger.js").KBigIntegerInputData>|{numerator:import("./BigInteger.js").KBigIntegerInputData,denominator:import("./BigInteger.js").KBigIntegerInputData}|{doubleValue:number}|{toString:function}} KFractionInputData
+ */
+
+/**
+ * Collection of functions used in Fraction.
+ * @ignore
+ */
+class FractionTool {
+
+	/**
+	 * Create data for Fraction from strings.
+	 * @param ntext {string}
+	 * @return {Fraction}
+	 */
+	static to_fraction_data_from_number_string(ntext) {
+		let scale = 0;
+		let buff;
+		let is_negate = false;
+		// 正規化
+		let text = ntext.replace(/\s/g, "").toLowerCase();
+		// +-の符号があるか
+		const number_text = [];
+		buff = text.match(/^[+-]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			if(buff.indexOf("-") !== -1) {
+				is_negate = true;
+				number_text.push("-");
+			}
+		}
+		// 整数部があるか
+		buff = text.match(/^[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			number_text.push(buff);
+		}
+		// 浮動小数点の計算がない場合はここで完了
+		if(text.length === 0) {
+			return new Fraction([new BigInteger([number_text.join(""), 10]), BigInteger.ONE]);
+		}
+		// 巡回小数点指定があるか
+		let cyclic_decimal = null;
+		if(/[()'"[\]]/.test(text)) {
+			const match_data = text.match(/([^.]*)\.(\d*)[(['"](\d+)[)\]'"](.*)/);
+			if(match_data === null) {
+				throw "Fraction Unsupported argument " + text;
+			}
+			// 巡回少数の場所
+			const cyclic_decimal_scale = match_data[2].length;
+			const cyclic_decimal_text = match_data[3];
+			// 巡回少数以外を抽出
+			if(cyclic_decimal_scale === 0) {
+				text = match_data[1] + match_data[4];
+			}
+			else {
+				text = match_data[1] + "." + match_data[2] + match_data[4];
+			}
+
+			const numerator = new BigInteger([cyclic_decimal_text, 10]);
+			const denominator_string = [];
+			for(let i = 0; i < cyclic_decimal_text.length; i++) {
+				denominator_string.push("9");
+			}
+			const denominator = new BigInteger([denominator_string.join(""), 10]);
+			cyclic_decimal = new Fraction([numerator, denominator]);
+			cyclic_decimal = cyclic_decimal.scaleByPowerOfTen(-cyclic_decimal_scale);
+		}
+		// 小数部があるか
+		buff = text.match(/^\.[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			buff = buff.substr(1);
+			scale = scale + buff.length;
+			number_text.push(buff);
+		}
+		// 指数表記があるか
+		buff = text.match(/^e[+-]?[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0].substr(1);
+			scale = scale - parseInt(buff, 10);
+		}
+
+		let f = null;
+		{
+			let numerator = null;
+			let denominator = null;
+			// 出力用の文字を作成
+			if(scale === 0) {
+				numerator = new BigInteger([number_text.join(""), 10]);
+				denominator = BigInteger.ONE;
+			}
+			if(scale < 0) {
+				for(let i = 0; i < -scale; i++) {
+					number_text.push("0");
+				}
+				numerator = new BigInteger([number_text.join(""), 10]);
+				denominator = BigInteger.ONE;
+			}
+			else if(scale > 0) {
+				numerator = new BigInteger([number_text.join(""), 10]);
+				const denominator_string = ["1"];
+				for(let i = 0; i < scale; i++) {
+					denominator_string.push("0");
+				}
+				denominator = new BigInteger([denominator_string.join(""), 10]);
+			}
+			f = new Fraction([numerator, denominator]);
+		}
+		if(cyclic_decimal) {
+			if(!is_negate) {
+				f = f.add(cyclic_decimal);
+			}
+			else {
+				f = f.sub(cyclic_decimal);
+			}
+		}
+		return f;
+	}
+
+	/**
+	 * Create data for Fraction from fractional string.
+	 * @param ntext {string}
+	 * @return {Fraction}
+	 */
+	static to_fraction_data_from_fraction_string(ntext) {
+		// 特殊な状態
+		if(/nan|inf/i.test(ntext)) {
+			const ret = new Fraction();
+			ret.denominator = BigInteger.ONE;
+			if(/nan/i.test(ntext)) {
+				ret.numerator = BigInteger.NaN;
+			}
+			else if(!/-/.test(ntext)) {
+				ret.numerator = BigInteger.POSITIVE_INFINITY;
+			}
+			else {
+				ret.numerator = BigInteger.NEGATIVE_INFINITY;
+			}
+			return ret;
+		}
+		if(ntext.indexOf("/") === -1) {
+			return FractionTool.to_fraction_data_from_number_string(ntext);
+		}
+		else {
+			const fraction_value = ntext.split("/");
+			const numerator_value = FractionTool.to_fraction_data_from_number_string(fraction_value[0]);
+			const denominator_value = FractionTool.to_fraction_data_from_number_string(fraction_value[1]);
+			return numerator_value.div(denominator_value);
+		}
+	}
+
+	/**
+	 * Create data for Fraction from number.
+	 * @param number {number|boolean}
+	 * @return {Fraction}
+	 */
+	static to_fraction_data_from_number(number) {
+		const value = typeof number !== "boolean" ? number : (number ? 1 : 0);
+		let numerator = null;
+		let denominator = null;
+		if(!isFinite(value)) {
+			const ret = new Fraction();
+			ret.denominator = BigInteger.ONE;
+			if(value === Infinity) {
+				ret.numerator = BigInteger.POSITIVE_INFINITY;
+			}
+			else if(value === - Infinity) {
+				ret.numerator = BigInteger.NEGATIVE_INFINITY;
+			}
+			else {
+				ret.numerator = BigInteger.NaN;
+			}
+			return ret;
+		}
+		// 整数
+		else if(value === Math.floor(value)) {
+			numerator = new BigInteger(value);
+			denominator = BigInteger.ONE;
+		}
+		// 浮動小数
+		else {
+			let scale = Math.trunc(Math.log(Math.abs(value)) / Math.log(10));
+			let x = value / Math.pow(10, scale);
+			// スケールを逆にする
+			scale = - scale;
+			for(let i = 0; i < 14; i++) {
+				x = x * 10;
+				scale = scale + 1;
+				if(Math.abs(x - Math.round(x)) <= Number.EPSILON) {
+					break;
+				}
+			}
+			// 最も下の桁は四捨五入する
+			x = Math.round(x * 1e14) / 1e14;
+			if(scale <= 0) {
+				numerator = new BigInteger(value);
+				denominator = BigInteger.ONE;
+			}
+			else {
+				numerator = new BigInteger(x);
+				const denominator_string = ["1"];
+				for(let i = 0; i < scale; i++) {
+					denominator_string.push("0");
+				}
+				denominator = new BigInteger([denominator_string.join(""), 10]);
+			}
+		}
+		return new Fraction([numerator, denominator]);
+	}
+
+	/**
+	 * Normalization.
+	 * - Reduce fraction using gcd.
+	 * - Add the sign to the numerator.
+	 * - If the number is zero, the denominator is one.
+	 * @param value {Fraction}
+	 * @returns {void}
+	 */
+	static normalization(value) {
+		if(value.denominator.equals(BigInteger.ONE)) {
+			return;
+		}
+		if(value.denominator.equals(BigInteger.MINUS_ONE)) {
+			value.numerator = value.numerator.negate();
+			value.denominator = BigInteger.ONE;
+			return;
+		}
+		if(value.numerator.equals(BigInteger.ZERO)) {
+			value.denominator = BigInteger.ONE;
+			return;
+		}
+		const gcd = value.numerator.gcd(value.denominator);
+		let numerator = value.numerator.div(gcd);
+		let denominator = value.denominator.div(gcd);
+		if(denominator.sign() < 0) {
+			numerator = numerator.negate();
+			denominator = denominator.negate();
+		}
+		value.numerator = numerator;
+		value.denominator = denominator;
+	}
+
+}
+
+/**
+ * Fraction class (immutable).
+ */
+class Fraction {
+
+	/**
+	 * Create an fraction.
+	 * 
+	 * Initialization can be performed as follows.
+	 * - 10, "10", "10/1", "10.0/1.0", ["10", "1"], [10, 1]
+	 * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
+	 * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
+	 * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
+	 * @param {KFractionInputData} [number] - Fraction data. See how to use the function.
+	 */
+	constructor(number) {
+		
+		// 分子
+		/**
+		 * numerator
+		 * @type {BigInteger}
+		 */
+		this.numerator = null;
+
+		// 分母
+		/**
+		 * denominator
+		 * @type {BigInteger}
+		 */
+		this.denominator = null;
+
+		if(arguments.length === 0) {
+			this.numerator = BigInteger.ZERO;
+			this.denominator = BigInteger.ONE;
+		}
+		else if(arguments.length === 1) {
+			let is_normalization = false;
+			if((typeof number === "number") || (typeof number === "boolean")) {
+				const x = FractionTool.to_fraction_data_from_number(number);
+				this.numerator = x.numerator;
+				this.denominator = x.denominator;
+			}
+			else if(typeof number === "string") {
+				const x = FractionTool.to_fraction_data_from_fraction_string(number);
+				this.numerator = x.numerator;
+				this.denominator = x.denominator;
+			}
+			else if(number instanceof BigInteger) {
+				this.numerator = number;
+				this.denominator = BigInteger.ONE;
+			}
+			else if(number instanceof Fraction) {
+				this.numerator = number.numerator;
+				this.denominator = number.denominator;
+			}
+			else if((number instanceof Array) && (number.length === 2)) {
+				this.numerator = (number[0] instanceof BigInteger) ? number[0] : new BigInteger(number[0]);
+				this.denominator = (number[1] instanceof BigInteger) ? number[1] : new BigInteger(number[1]);
+				is_normalization = true;
+			}
+			else if(number instanceof BigDecimal) {
+				const bigint = number.unscaledValue();
+				if(!bigint.isFinite()) {
+					this.numerator = bigint;
+					this.denominator = BigInteger.ONE;
+				}
+				else {
+					const value = new Fraction(number.unscaledValue());
+					const x = value.scaleByPowerOfTen(-number.scale());
+					this.numerator = x.numerator;
+					this.denominator = x.denominator;
+				}
+			}
+			else if(typeof number === "object") {
+				if("doubleValue" in number) {
+					const x = FractionTool.to_fraction_data_from_number(number.doubleValue);
+					this.numerator = x.numerator;
+					this.denominator = x.denominator;
+				}
+				else if(("numerator" in number) && ("denominator" in number)) {
+					this.numerator = (number.numerator instanceof BigInteger) ? number.numerator : new BigInteger(number.numerator);
+					this.denominator = (number.denominator instanceof BigInteger) ? number.denominator : new BigInteger(number.denominator);
+					is_normalization = true;
+				}
+				else {
+					const x1 = FractionTool.to_fraction_data_from_fraction_string(number.toString());
+					this.numerator = x1.numerator;
+					this.denominator = x1.denominator;
+				}
+			}
+			else {
+				throw "Fraction Unsupported argument " + number;
+			}
+			if(is_normalization) {
+				FractionTool.normalization(this);
+			}
+		}
+		else {
+			throw "Fraction Unsupported argument " + number;
+		}
+	}
+
+	/**
+	 * Create an entity object of this class.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction}
+	 */
+	static create(number) {
+		if(number instanceof Fraction) {
+			return number;
+		}
+		else {
+			return new Fraction(number);
+		}
+	}
+
+	/**
+	 * Convert number to Fraction type.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction}
+	 */
+	static valueOf(number) {
+		return Fraction.create(number);
+	}
+
+	/**
+	 * Convert to Fraction.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction}
+	 * @private
+	 */
+	static _toFraction(number) {
+		if(number instanceof Fraction) {
+			return number;
+		}
+		else {
+			return new Fraction(number);
+		}
+	}
+
+	/**
+	 * Convert to real number.
+	 * @param {KFractionInputData} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toFloat(number) {
+		if(typeof number === "number") {
+			return number;
+		}
+		else if(number instanceof Fraction) {
+			return number.doubleValue;
+		}
+		else {
+			return (new Fraction(number)).doubleValue;
+		}
+	}
+
+	/**
+	 * Convert to integer.
+	 * @param {KFractionInputData} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		if(typeof number === "number") {
+			return Math.trunc(number);
+		}
+		else if(number instanceof Fraction) {
+			return number.intValue;
+		}
+		else {
+			return (new Fraction(number)).intValue;
+		}
+	}
+
+	/**
+	 * Deep copy.
+	 * @returns {Fraction} 
+	 */
+	clone() {
+		return new Fraction(this);
+	}
+
+	/**
+	 * Absolute value.
+	 * @returns {Fraction} abs(A)
+	 */
+	abs() {
+		if(!this.isFinite()) {
+			return this.isNegativeInfinity() ? Fraction.POSITIVE_INFINITY : this;
+		}
+		if(this.sign() >= 0) {
+			return this;
+		}
+		return this.negate();
+	}
+
+	/**
+	 * this * -1
+	 * @returns {Fraction} -A
+	 */
+	negate() {
+		if(!this.isFinite()) {
+			if(this.isPositiveInfinity()) {
+				return Fraction.NEGATIVE_INFINITY;
+			}
+			else if(this.isNegativeInfinity()) {
+				return Fraction.POSITIVE_INFINITY;
+			}
+			else {
+				return this;
+			}
+		}
+		return new Fraction([this.numerator.negate(), this.denominator]);
+	}
+
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	sign() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? 1 : -1);
+		}
+		return this.numerator.sign();
+	}
+	
+	/**
+	 * Convert to string.
+	 * @returns {string} 
+	 */
+	toString() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
+		return this.numerator.toString() + " / " + this.denominator.toString();
+	}
+
+	// ----------------------
+	// 四則演算
+	// ----------------------
+	
+	/**
+	 * Add.
+	 * @param {KFractionInputData} num
+	 * @return {Fraction} A + B
+	 */
+	add(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN() || (x.isInfinite() && y.isInfinite() && !x.equalsState(y))) {
+				return Fraction.NaN;
+			}
+			else if(x.isPositiveInfinity() || y.isPositiveInfinity()) {
+				return Fraction.POSITIVE_INFINITY;
+			}
+			else {
+				return Fraction.NEGATIVE_INFINITY;
+			}
+		}
+		let f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator.add(y.numerator), BigInteger.ONE]);
+		}
+		else {
+			f = new Fraction([
+				x.numerator.mul(y.denominator).add(y.numerator.mul(x.denominator)),
+				x.denominator.mul(y.denominator)
+			]);
+		}
+		return f;
+	}
+
+	/**
+	 * Subtract.
+	 * @param {KFractionInputData} num
+	 * @return {Fraction} A - B
+	 */
+	sub(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN() || x.equalsState(y)) {
+				return Fraction.NaN;
+			}
+			else if(x.isNegativeInfinity() || y.isPositiveInfinity()) {
+				return Fraction.NEGATIVE_INFINITY;
+			}
+			else {
+				return Fraction.POSITIVE_INFINITY;
+			}
+		}
+		let f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator.sub(y.numerator), BigInteger.ONE]);
+		}
+		else {
+			f = new Fraction([
+				x.numerator.mul(y.denominator).sub(y.numerator.mul(x.denominator)),
+				x.denominator.mul(y.denominator)
+			]);
+		}
+		return f;
+	}
+
+	/**
+	 * Multiply.
+	 * @param {KFractionInputData} num
+	 * @return {Fraction} A * B
+	 */
+	mul(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN() || (x.isZero() || y.isZero())) {
+				return Fraction.NaN;
+			}
+			else if(x.sign() * y.sign() > 0) {
+				return Fraction.POSITIVE_INFINITY;
+			}
+			else {
+				return Fraction.NEGATIVE_INFINITY;
+			}
+		}
+		let f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator.mul(y.numerator), BigInteger.ONE]);
+		}
+		else {
+			f = new Fraction([ x.numerator.mul(y.numerator), x.denominator.mul(y.denominator) ]);
+		}
+		return f;
+	}
+
+	/**
+	 * Divide.
+	 * @param {KFractionInputData} num
+	 * @return {Fraction} A / B
+	 */
+	div(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN() || (x.isInfinite() && y.isInfinite())) {
+				return Fraction.NaN;
+			}
+			else if(x.isInfinite()) {
+				if(x.sign() * y.sign() >= 0) {
+					return Fraction.POSITIVE_INFINITY;
+				}
+				else {
+					return Fraction.NEGATIVE_INFINITY;
+				}
+			}
+			else {
+				return Fraction.ZERO;
+			}
+		}
+		else if(y.isZero()) {
+			if(x.isZero()) {
+				return Fraction.NaN;
+			}
+			else {
+				return x.sign() >= 0 ? Fraction.POSITIVE_INFINITY : Fraction.NEGATIVE_INFINITY;
+			}
+		}
+		let f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator, y.numerator]);
+		}
+		else {
+			f = new Fraction([ x.numerator.mul(y.denominator), y.numerator.mul(x.denominator)]);
+		}
+		return f;
+	}
+
+	/**
+	 * Inverse number of this value.
+	 * @return {Fraction} 1 / A
+	 */
+	inv() {
+		{
+			if(!this.isFinite()) {
+				return this.isNaN() ? Fraction.NaN : Fraction.ZERO;
+			}
+			if(this.isZero()) {
+				return Fraction.NaN;
+			}
+		}
+		return new Fraction([ this.denominator, this.numerator]);
+	}
+
+	/**
+	 * Modulo, positive remainder of division.
+	 * @param {KFractionInputData} num
+	 * @return {Fraction} A rem B
+	 */
+	rem(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite() || y.isZero()) {
+			return Fraction.NaN;
+		}
+		// x - y * fix(x/y)
+		return x.sub(y.mul(x.div(y).fix()));
+	}
+
+	/**
+	 * Modulo, positive remainder of division.
+	 * @param {KFractionInputData} num
+	 * @returns {Fraction} A mod B
+	 */
+	mod(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(y.isZero()) {
+			return x;
+		}
+		const ret = x.rem(y);
+		if(!x.equalsState(y)) {
+			return ret.add(y);
+		}
+		else {
+			return ret;
+		}
+	}
+
+	/**
+	 * Power function.
+	 * - Supports only integers.
+	 * @param {KFractionInputData} num
+	 * @returns {Fraction} pow(A, B)
+	 */
+	pow(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		{
+			if(x.isNaN() || y.isNaN()) {
+				return Fraction.NaN;
+			}
+			if(y.isZero()) {
+				return Fraction.ONE;
+			}
+			else if(x.isZero()) {
+				return Fraction.ZERO;
+			}
+			else if(x.isOne()) {
+				return Fraction.ONE;
+			}
+			else if(x.isInfinite()) {
+				if(x.isPositiveInfinity()) {
+					return Fraction.POSITIVE_INFINITY;
+				}
+				else {
+					if(y.isPositiveInfinity()) {
+						return Fraction.NaN;
+					}
+					else {
+						return Fraction.create(Infinity * Math.pow(-1, Math.round(y.doubleValue)));
+					}
+				}
+			}
+			else if(y.isInfinite()) {
+				if(x.isNegative()) {
+					// 複素数
+					return Fraction.NaN;
+				}
+				if(x.compareTo(Fraction.ONE) < 0) {
+					if(y.isPositiveInfinity()) {
+						return Fraction.ZERO;
+					}
+					else if(y.isNegativeInfinity()) {
+						return Fraction.POSITIVE_INFINITY;
+					}
+				}
+				else {
+					if(y.isPositiveInfinity()) {
+						return Fraction.POSITIVE_INFINITY;
+					}
+					else if(y.isNegativeInfinity()) {
+						return Fraction.ZERO;
+					}
+				}
+			}
+		}
+		const numerator = x.numerator.pow(y.intValue);
+		const denominator = x.denominator.pow(y.intValue);
+		return new Fraction([ numerator, denominator ]);
+	}
+
+	// ----------------------
+	// その他の演算
+	// ----------------------
+	
+	/**
+	 * Factorial function, x!.
+	 * - Supports only integers.
+	 * @returns {Fraction} n!
+	 */
+	factorial() {
+		if(!this.isFinite()) {
+			return this;
+		}
+		return new Fraction([this.toBigInteger().factorial(), Fraction.ONE]);
+	}
+
+	/**
+	 * Multiply a multiple of ten.
+	 * - Supports only integers.
+	 * @param {KFractionInputData} n
+	 * @returns {Fraction}
+	 */
+	scaleByPowerOfTen(n) {
+		if(!this.isFinite()) {
+			return this;
+		}
+		const scale = Fraction._toInteger(n);
+		if(scale === 0) {
+			return this;
+		}
+		let f;
+		if(scale > 0) {
+			f = new Fraction([ this.numerator.scaleByPowerOfTen(scale), this.denominator]);
+		}
+		else if(scale < 0) {
+			f = new Fraction([ this.numerator, this.denominator.scaleByPowerOfTen(-scale)]);
+		}
+		return f;
+	}
+
+	// ----------------------
+	// 他の型に変換用
+	// ----------------------
+	
+	/**
+	 * boolean value.
+	 * @returns {boolean}
+	 */
+	get booleanValue() {
+		return this.numerator.booleanValue;
+	}
+
+	/**
+	 * integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		if(this.isInteger()) {
+			return Math.trunc(this.numerator.doubleValue);
+		}
+		return Math.trunc(this.doubleValue);
+	}
+
+	/**
+	 * floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		if(this.isInteger()) {
+			return this.numerator.doubleValue;
+		}
+		const x = new BigDecimal([this.numerator, MathContext.UNLIMITED]);
+		const y = new BigDecimal([this.denominator, MathContext.UNLIMITED]);
+		return x.div(y, {context : MathContext.DECIMAL64}).doubleValue;
+	}
+
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return new BigInteger(this.fix().numerator);
+	}
+	
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		if(!this.isFinite()) {
+			return new BigDecimal(this.doubleValue);
+		}
+		if(this.isInteger()) {
+			return new BigDecimal(this.numerator);
+		}
+		const x = new BigDecimal([this.numerator, MathContext.UNLIMITED]);
+		const y = new BigDecimal([this.denominator, MathContext.UNLIMITED]);
+		if(mc) {
+			return x.div(y, {context: mc});
+		}
+		else {
+			return x.div(y, {context: BigDecimal.getDefaultContext()});
+		}
+	}
+
+	// ----------------------
+	// 比較
+	// ----------------------
+	
+	/**
+	 * Equals.
+	 * @param {KFractionInputData} num
+	 * @returns {boolean} A === B
+	 */
+	equals(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN()) {
+				return false;
+			}
+			else if(x.equalsState(y)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		return x.numerator.equals(y.numerator) && x.denominator.equals(y.denominator);
+	}
+
+	/**
+	 * Numeric type match.
+	 * @param {KFractionInputData} number 
+	 * @returns {boolean}
+	 */
+	equalsState(number) {
+		const x = this;
+		const y = Fraction._toFraction(number);
+		return x.numerator.equalsState(y.numerator);
+	}
+
+	/**
+	 * Compare values.
+	 * @param {KFractionInputData} num
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			return x.numerator.compareTo(y.numerator);
+		}
+		return x.sub(y).sign();
+	}
+
+	/**
+	 * Maximum number.
+	 * @param {KFractionInputData} number
+	 * @returns {Fraction} max([A, B])
+	 */
+	max(number) {
+		const val = Fraction._toFraction(number);
+		if(this.isNaN() || val.isNaN()) {
+			return Fraction.NaN;
+		}
+		if(this.compareTo(val) >= 0) {
+			return this;
+		}
+		else {
+			return val;
+		}
+	}
+
+	/**
+	 * Minimum number.
+	 * @param {KFractionInputData} number
+	 * @returns {Fraction} min([A, B])
+	 */
+	min(number) {
+		const val = Fraction._toFraction(number);
+		if(this.isNaN() || val.isNaN()) {
+			return Fraction.NaN;
+		}
+		if(this.compareTo(val) >= 0) {
+			return val;
+		}
+		else {
+			return this;
+		}
+	}
+
+	/**
+	 * Clip number within range.
+	 * @param {KFractionInputData} min 
+	 * @param {KFractionInputData} max
+	 * @returns {Fraction} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = Fraction._toFraction(min);
+		const max_ = Fraction._toFraction(max);
+		if(this.isNaN() || min_.isNaN() || max_.isNaN()) {
+			return Fraction.NaN;
+		}
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	}
+
+	// ----------------------
+	// 丸め
+	// ----------------------
+	
+	/**
+	 * Floor.
+	 * @returns {Fraction} floor(A)
+	 */
+	floor() {
+		if(this.isInteger() || !this.isFinite()) {
+			return this;
+		}
+		const x = this.fix();
+		if(this.sign() > 0) {
+			return x;
+		}
+		else {
+			return new Fraction([x.numerator.sub(BigInteger.ONE), Fraction.ONE]);
+		}
+	}
+
+	/**
+	 * Ceil.
+	 * @returns {Fraction} ceil(A)
+	 */
+	ceil() {
+		if(this.isInteger() || !this.isFinite()) {
+			return this;
+		}
+		const x = this.fix();
+		if(this.sign() > 0) {
+			return new Fraction([x.numerator.add(BigInteger.ONE), Fraction.ONE]);
+		}
+		else {
+			return x;
+		}
+	}
+	
+	/**
+	 * Rounding to the nearest integer.
+	 * @returns {Fraction} round(A)
+	 */
+	round() {
+		if(this.isInteger() || !this.isFinite()) {
+			return this;
+		}
+		const x = this.floor();
+		const fract = this.sub(x);
+		if(fract.compareTo(Fraction.HALF) >= 0) {
+			return new Fraction([x.numerator.add(BigInteger.ONE), Fraction.ONE]);
+		}
+		else {
+			return x;
+		}
+	}
+
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {Fraction} fix(A), trunc(A)
+	 */
+	fix() {
+		if(this.isInteger() || !this.isFinite()) {
+			return this;
+		}
+		return new Fraction([this.numerator.div(this.denominator), Fraction.ONE]);
+	}
+
+	/**
+	 * Fraction.
+	 * @returns {Fraction} fract(A)
+	 */
+	fract() {
+		if(!this.isFinite()) {
+			return Fraction.NaN;
+		}
+		if(this.isInteger()) {
+			return Fraction.ZERO;
+		}
+		return this.sub(this.floor());
+	}
+
+	// ----------------------
+	// テスト系
+	// ----------------------
+	
+	/**
+	 * Return true if the value is integer.
+	 * @return {boolean}
+	 */
+	isInteger() {
+		if(!this.isFinite()) {
+			return false;
+		}
+		return this.denominator.equals(BigInteger.ONE);
+	}
+
+	/**
+	 * this === 0
+	 * @return {boolean} A === 0
+	 */
+	isZero() {
+		if(!this.isFinite()) {
+			return false;
+		}
+		return this.numerator.isZero();
+	}
+
+	/**
+	 * this === 1
+	 * @return {boolean} A === 1
+	 */
+	isOne() {
+		if(!this.isFinite()) {
+			return false;
+		}
+		return this.numerator.equals(BigInteger.ONE) && this.denominator.equals(BigInteger.ONE);
+	}
+
+	/**
+	 * this > 0
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		return this.numerator.isPositive();
+	}
+
+	/**
+	 * this < 0
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return this.numerator.isNegative();
+	}
+
+	/**
+	 * this >= 0
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return this.numerator.isNotNegative();
+	}
+	
+	/**
+	 * this === NaN
+	 * @returns {boolean} isNaN(A)
+	 */
+	isNaN() {
+		return this.numerator.isNaN();
+	}
+	
+	/**
+	 * this === Infinity
+	 * @returns {boolean} isPositiveInfinity(A)
+	 */
+	isPositiveInfinity() {
+		return this.numerator.isPositiveInfinity();
+	}
+
+	/**
+	 * this === -Infinity
+	 * @returns {boolean} isNegativeInfinity(A)
+	 */
+	isNegativeInfinity() {
+		return this.numerator.isNegativeInfinity();
+	}
+
+	/**
+	 * this === Infinity or -Infinity
+	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+	 */
+	isInfinite() {
+		return this.numerator.isInfinite();
+	}
+	
+	/**
+	 * Return true if the value is finite number.
+	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
+	 */
+	isFinite() {
+		return this.numerator.isFinite();
+	}
+
+
+	// ----------------------
+	// 素数
+	// ----------------------
+	
+	/**
+	 * Return true if the value is prime number.
+	 * - Calculated as an integer.
+	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
+	 */
+	isPrime() {
+		const src = this.round().toBigInteger();
+		return src.isPrime();
+	}
+	
+	/**
+	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * 
+	 * Attention : it takes a very long time to process.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} [certainty=100] - Repeat count (prime precision).
+	 * @returns {boolean}
+	 */
+	isProbablePrime(certainty) {
+		const src = this.round().toBigInteger();
+		return src.isProbablePrime(certainty !== undefined ? BigDecimal._toInteger(certainty) : undefined);
+	}
+
+	/**
+	 * Next prime.
+	 * @param {KFractionInputData} [certainty=100] - Repeat count (prime precision).
+	 * @param {KFractionInputData} [search_max=100000] - Search range of next prime.
+	 * @returns {Fraction}
+	 */
+	nextProbablePrime(certainty, search_max) {
+		const src = this.round().toBigInteger();
+		const p1 = certainty !== undefined ? Fraction._toInteger(certainty) : undefined;
+		const p2 = search_max !== undefined ? Fraction._toInteger(search_max) : undefined;
+		return Fraction.create(src.nextProbablePrime(p1, p2));
+	}
+
+	// ----------------------
+	// 定数
+	// ----------------------
+	
+	/**
+	 * -1
+	 * @returns {Fraction} -1
+	 */
+	static get MINUS_ONE() {
+		return DEFINE$3.MINUS_ONE;
+	}
+
+	/**
+	 * 0
+	 * @returns {Fraction} 0
+	 */
+	static get ZERO() {
+		return DEFINE$3.ZERO;
+	}
+
+	/**
+	 * 0.5
+	 * @returns {Fraction} 0.5
+	 */
+	static get HALF() {
+		return DEFINE$3.HALF;
+	}
+	
+	/**
+	 * 1
+	 * @returns {Fraction} 1
+	 */
+	static get ONE() {
+		return DEFINE$3.ONE;
+	}
+	
+	/**
+	 * 2
+	 * @returns {Fraction} 2
+	 */
+	static get TWO() {
+		return DEFINE$3.TWO;
+	}
+	
+	/**
+	 * 10
+	 * @returns {Fraction} 10
+	 */
+	static get TEN() {
+		return DEFINE$3.TEN;
+	}
+
+	/**
+	 * Positive infinity.
+	 * @returns {Fraction} Infinity
+	 */
+	static get POSITIVE_INFINITY() {
+		return DEFINE$3.POSITIVE_INFINITY;
+	}
+	
+	/**
+	 * Negative Infinity.
+	 * @returns {Fraction} -Infinity
+	 */
+	static get NEGATIVE_INFINITY() {
+		return DEFINE$3.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * Not a Number.
+	 * @returns {Fraction} NaN
+	 */
+	static get NaN() {
+		return DEFINE$3.NaN;
+	}
+	
+}
+
+/**
+ * Collection of constant values used in the class.
+ * @ignore
+ */
+const DEFINE$3 = {
+
+	/**
+	 * -1
+	 */
+	MINUS_ONE : new Fraction([BigInteger.MINUS_ONE, BigInteger.ONE]),
+
+	/**
+	 * 0
+	 */
+	ZERO : new Fraction([BigInteger.ZERO, BigInteger.ONE]),
+	
+	/**
+	 * 1
+	 */
+	ONE : new Fraction([BigInteger.ONE, BigInteger.ONE]),
+
+	/**
+	 * 0.5
+	 */
+	HALF : new Fraction([BigInteger.ONE, BigInteger.TWO]),
+
+	/**
+	 * 2
+	 */
+	TWO : new Fraction([BigInteger.TWO, BigInteger.ONE]),
+
+	/**
+	 * 10
+	 */
+	TEN : new Fraction([BigInteger.TEN, BigInteger.ONE]),
+	
+	/**
+	 * Positive infinity.
+	 */
+	POSITIVE_INFINITY : new Fraction(Number.POSITIVE_INFINITY),
+
+	/**
+	 * Negative Infinity.
+	 */
+	NEGATIVE_INFINITY : new Fraction(Number.NEGATIVE_INFINITY),
+
+	/**
+	 * Not a Number.
+	 */
+	NaN : new Fraction(Number.NaN)
+
+};
 
 /**
  * The script is part of konpeito.
@@ -16866,7 +18198,7 @@ class Complex {
 	 * @returns {Complex} 1
 	 */
 	static get ONE() {
-		return DEFINE$3.ONE;
+		return DEFINE$4.ONE;
 	}
 	
 	/**
@@ -16874,7 +18206,7 @@ class Complex {
 	 * @returns {Complex} 2
 	 */
 	static get TWO() {
-		return DEFINE$3.TWO;
+		return DEFINE$4.TWO;
 	}
 	
 	/**
@@ -16882,7 +18214,7 @@ class Complex {
 	 * @returns {Complex} 10
 	 */
 	static get TEN() {
-		return DEFINE$3.TEN;
+		return DEFINE$4.TEN;
 	}
 	
 	/**
@@ -16890,7 +18222,7 @@ class Complex {
 	 * @returns {Complex} 0
 	 */
 	static get ZERO() {
-		return DEFINE$3.ZERO;
+		return DEFINE$4.ZERO;
 	}
 
 	/**
@@ -16898,7 +18230,7 @@ class Complex {
 	 * @returns {Complex} -1
 	 */
 	static get MINUS_ONE() {
-		return DEFINE$3.MINUS_ONE;
+		return DEFINE$4.MINUS_ONE;
 	}
 
 	/**
@@ -16906,7 +18238,7 @@ class Complex {
 	 * @returns {Complex} i
 	 */
 	static get I() {
-		return DEFINE$3.I;
+		return DEFINE$4.I;
 	}
 
 	/**
@@ -16914,7 +18246,7 @@ class Complex {
 	 * @returns {Complex} 3.14...
 	 */
 	static get PI() {
-		return DEFINE$3.PI;
+		return DEFINE$4.PI;
 	}
 
 	/**
@@ -16922,7 +18254,7 @@ class Complex {
 	 * @returns {Complex} 0.78...
 	 */
 	static get QUARTER_PI() {
-		return DEFINE$3.QUARTER_PI;
+		return DEFINE$4.QUARTER_PI;
 	}
 
 	/**
@@ -16930,7 +18262,7 @@ class Complex {
 	 * @returns {Complex} 1.57...
 	 */
 	static get HALF_PI() {
-		return DEFINE$3.HALF_PI;
+		return DEFINE$4.HALF_PI;
 	}
 
 	/**
@@ -16938,7 +18270,7 @@ class Complex {
 	 * @returns {Complex} 6.28...
 	 */
 	static get TWO_PI() {
-		return DEFINE$3.TWO_PI;
+		return DEFINE$4.TWO_PI;
 	}
 
 	/**
@@ -16946,7 +18278,7 @@ class Complex {
 	 * @returns {Complex} 2.71...
 	 */
 	static get E() {
-		return DEFINE$3.E;
+		return DEFINE$4.E;
 	}
 
 	/**
@@ -16954,7 +18286,7 @@ class Complex {
 	 * @returns {Complex} ln(2)
 	 */
 	static get LN2() {
-		return DEFINE$3.LN2;
+		return DEFINE$4.LN2;
 	}
 
 	/**
@@ -16962,7 +18294,7 @@ class Complex {
 	 * @returns {Complex} ln(10)
 	 */
 	static get LN10() {
-		return DEFINE$3.LN10;
+		return DEFINE$4.LN10;
 	}
 
 	/**
@@ -16970,7 +18302,7 @@ class Complex {
 	 * @returns {Complex} log_2(e)
 	 */
 	static get LOG2E() {
-		return DEFINE$3.LOG2E;
+		return DEFINE$4.LOG2E;
 	}
 	
 	/**
@@ -16978,7 +18310,7 @@ class Complex {
 	 * @returns {Complex} log_10(e)
 	 */
 	static get LOG10E() {
-		return DEFINE$3.LOG10E;
+		return DEFINE$4.LOG10E;
 	}
 	
 	/**
@@ -16986,7 +18318,7 @@ class Complex {
 	 * @returns {Complex} sqrt(2)
 	 */
 	static get SQRT2() {
-		return DEFINE$3.SQRT2;
+		return DEFINE$4.SQRT2;
 	}
 	
 	/**
@@ -16994,7 +18326,7 @@ class Complex {
 	 * @returns {Complex} sqrt(0.5)
 	 */
 	static get SQRT1_2() {
-		return DEFINE$3.SQRT1_2;
+		return DEFINE$4.SQRT1_2;
 	}
 	
 	/**
@@ -17002,7 +18334,7 @@ class Complex {
 	 * @returns {Complex} 0.5
 	 */
 	static get HALF() {
-		return DEFINE$3.HALF;
+		return DEFINE$4.HALF;
 	}
 
 	/**
@@ -17010,7 +18342,7 @@ class Complex {
 	 * @returns {Complex} Infinity
 	 */
 	static get POSITIVE_INFINITY() {
-		return DEFINE$3.POSITIVE_INFINITY;
+		return DEFINE$4.POSITIVE_INFINITY;
 	}
 	
 	/**
@@ -17018,7 +18350,7 @@ class Complex {
 	 * @returns {Complex} -Infinity
 	 */
 	static get NEGATIVE_INFINITY() {
-		return DEFINE$3.NEGATIVE_INFINITY;
+		return DEFINE$4.NEGATIVE_INFINITY;
 	}
 
 	/**
@@ -17026,7 +18358,7 @@ class Complex {
 	 * @returns {Complex} NaN
 	 */
 	static get NaN() {
-		return DEFINE$3.NaN;
+		return DEFINE$4.NaN;
 	}
 
 }
@@ -17035,7 +18367,7 @@ class Complex {
  * Collection of constant values used in the class.
  * @ignore
  */
-const DEFINE$3 = {
+const DEFINE$4 = {
 
 	/**
 	 * 0
@@ -17578,7 +18910,7 @@ class konpeito {
 	 * @returns {typeof Fraction}
 	 */
 	static get Fraction() {
-//		return Fraction;
+		return Fraction;
 	}
 
 	/**

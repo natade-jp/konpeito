@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 1002,
-  "actualCount": 1002,
+  "expectCount": 1006,
+  "actualCount": 1006,
   "files": {
     "src/konpeito.js": {
       "expectCount": 10,
@@ -34,8 +34,8 @@
       "undocumentLines": []
     },
     "src/math/core/Fraction.js": {
-      "expectCount": 65,
-      "actualCount": 65,
+      "expectCount": 69,
+      "actualCount": 69,
       "undocumentLines": []
     },
     "src/math/core/Matrix.js": {

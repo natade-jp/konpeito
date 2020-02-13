@@ -2640,6 +2640,18 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#isprime",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-isPrime",
+    "src/math/core/Fraction.js~Fraction#isPrime",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#isprobableprime",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-isProbablePrime",
+    "src/math/core/Fraction.js~Fraction#isProbablePrime",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#iszero",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-isZero",
     "src/math/core/Fraction.js~Fraction#isZero",
@@ -2676,6 +2688,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#nextprobableprime",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-nextProbablePrime",
+    "src/math/core/Fraction.js~Fraction#nextProbablePrime",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#numerator",
     "class/src/math/core/Fraction.js~Fraction.html#instance-member-numerator",
     "src/math/core/Fraction.js~Fraction#numerator",
@@ -2685,6 +2703,12 @@ window.esdocSearchIndex = [
     "src/math/core/fraction.js~fraction#pow",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-pow",
     "src/math/core/Fraction.js~Fraction#pow",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#rem",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-rem",
+    "src/math/core/Fraction.js~Fraction#rem",
     "method"
   ],
   [

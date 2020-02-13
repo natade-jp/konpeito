@@ -193,9 +193,47 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 
 {
 	test_count = 0;
+	testOperator2("rem", 110, 100, 10);
+	testOperator2("rem",  80, 100, 80);
+	testOperator2("rem",-110, 100,-10);
+	testOperator2("rem", -80, 100,-80);
+	testOperator2("rem", 4, 3, 1);
+	testOperator2("rem", 4,-3, 1);
+	testOperator2("rem",-4, 3,-1);
+	testOperator2("rem",-4,-3,-1);
+	testOperator2("rem", 4, 5, 4);
+	testOperator2("rem", 4,-5, 4);
+	testOperator2("rem",-4, 5,-4);
+	testOperator2("rem",-4,-5,-4);
+	testOperator2("rem", 0, 0, NaN);
+	testOperator2("rem", 100, 0, NaN);
+	testOperator2("rem", Infinity, 0, NaN);
+	testOperator2("rem", -Infinity, 0, NaN);
+	testOperator2("rem", Infinity, 100, NaN);
+	testOperator2("rem", Infinity, -100, NaN);
+	testOperator2("rem", 100, Infinity, NaN);
+	testOperator2("rem", -100, Infinity, NaN);
+	testOperator2("rem", Infinity, Infinity, NaN);
+	testOperator2("rem", -Infinity, -Infinity, NaN);
+	testOperator2("rem", 0, -Infinity, NaN);
+	testOperator2("rem", NaN, 0, NaN);
+	testOperator2("rem", Infinity, NaN, NaN);
+}
+
+{
+	test_count = 0;
 	testOperator2("mod", 3, 2.1, 0.9);
 	testOperator2("mod", 5, 1.5, 0.5);
 	testOperator2("mod", -3.3, 2, 0.7);
+	testOperator2("mod", 4, 3, 1);
+	testOperator2("mod", 4,-3,-2);
+	testOperator2("mod",-4, 3, 2);
+	testOperator2("mod",-4,-3,-1);
+	testOperator2("mod", 4, 5, 4);
+	testOperator2("mod", 4,-5,-1);
+	testOperator2("mod",-4, 5, 1);
+	testOperator2("mod",-4,-5,-4);
+	testOperator2("mod", 0, 0, 0);
 	testOperator2("mod", 0, 0, 0);
 	testOperator2("mod", 100, 0, 100);
 	testOperator2("mod", Infinity, 0, Infinity);

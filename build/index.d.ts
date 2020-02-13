@@ -2266,36 +2266,42 @@ declare class _Fraction_ {
     /**
      * Add.
      * @param {KFractionInputData} num
-     * @return {_Fraction_}
+     * @return {_Fraction_} A + B
      */
     add(num: KFractionInputData): _Fraction_;
     /**
      * Subtract.
      * @param {KFractionInputData} num
-     * @return {_Fraction_}
+     * @return {_Fraction_} A - B
      */
     sub(num: KFractionInputData): _Fraction_;
     /**
      * Multiply.
      * @param {KFractionInputData} num
-     * @return {_Fraction_}
+     * @return {_Fraction_} A * B
      */
     mul(num: KFractionInputData): _Fraction_;
     /**
      * Divide.
      * @param {KFractionInputData} num
-     * @return {_Fraction_}
+     * @return {_Fraction_} A / B
      */
     div(num: KFractionInputData): _Fraction_;
     /**
      * Inverse number of this value.
-     * @return {_Fraction_}
+     * @return {_Fraction_} 1 / A
      */
     inv(): _Fraction_;
     /**
      * Modulo, positive remainder of division.
      * @param {KFractionInputData} num
-     * @return {_Fraction_}
+     * @return {_Fraction_} A rem B
+     */
+    rem(num: KFractionInputData): _Fraction_;
+    /**
+     * Modulo, positive remainder of division.
+     * @param {KFractionInputData} num
+     * @returns {_Fraction_} A mod B
      */
     mod(num: KFractionInputData): _Fraction_;
     /**
@@ -2461,6 +2467,29 @@ declare class _Fraction_ {
      * @returns {boolean} !isNaN(A) && !isInfinite(A)
      */
     isFinite(): boolean;
+    /**
+     * Return true if the value is prime number.
+     * - Calculated as an integer.
+     * - Calculate up to `2251799813685248(=2^51)`.
+     * @returns {boolean} - If the calculation range is exceeded, null is returned.
+     */
+    isPrime(): boolean;
+    /**
+     * Return true if the value is prime number by Miller-Labin prime number determination method.
+     *
+     * Attention : it takes a very long time to process.
+     * - Calculated as an integer.
+     * @param {KFractionInputData} [certainty=100] - Repeat count (prime precision).
+     * @returns {boolean}
+     */
+    isProbablePrime(certainty?: KFractionInputData): boolean;
+    /**
+     * Next prime.
+     * @param {KFractionInputData} [certainty=100] - Repeat count (prime precision).
+     * @param {KFractionInputData} [search_max=100000] - Search range of next prime.
+     * @returns {_Fraction_}
+     */
+    nextProbablePrime(certainty?: KFractionInputData, search_max?: KFractionInputData): _Fraction_;
     /**
      * -1
      * @returns {_Fraction_} -1

@@ -524,7 +524,7 @@ export default class Fraction {
 	/**
 	 * Add.
 	 * @param {KFractionInputData} num
-	 * @return {Fraction}
+	 * @return {Fraction} A + B
 	 */
 	add(num) {
 		const x = this;
@@ -556,7 +556,7 @@ export default class Fraction {
 	/**
 	 * Subtract.
 	 * @param {KFractionInputData} num
-	 * @return {Fraction}
+	 * @return {Fraction} A - B
 	 */
 	sub(num) {
 		const x = this;
@@ -588,7 +588,7 @@ export default class Fraction {
 	/**
 	 * Multiply.
 	 * @param {KFractionInputData} num
-	 * @return {Fraction}
+	 * @return {Fraction} A * B
 	 */
 	mul(num) {
 		const x = this;
@@ -617,7 +617,7 @@ export default class Fraction {
 	/**
 	 * Divide.
 	 * @param {KFractionInputData} num
-	 * @return {Fraction}
+	 * @return {Fraction} A / B
 	 */
 	div(num) {
 		const x = this;
@@ -658,7 +658,7 @@ export default class Fraction {
 
 	/**
 	 * Inverse number of this value.
-	 * @return {Fraction}
+	 * @return {Fraction} 1 / A
 	 */
 	inv() {
 		{
@@ -675,7 +675,22 @@ export default class Fraction {
 	/**
 	 * Modulo, positive remainder of division.
 	 * @param {KFractionInputData} num
-	 * @return {Fraction}
+	 * @return {Fraction} A rem B
+	 */
+	rem(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite() || y.isZero()) {
+			return Fraction.NaN;
+		}
+		// x - y * fix(x/y)
+		return x.sub(y.mul(x.div(y).fix()));
+	}
+
+	/**
+	 * Modulo, positive remainder of division.
+	 * @param {KFractionInputData} num
+	 * @returns {Fraction} A mod B
 	 */
 	mod(num) {
 		const x = this;
@@ -683,8 +698,13 @@ export default class Fraction {
 		if(y.isZero()) {
 			return x;
 		}
-		// x - y * floor(x/y)
-		return x.sub(y.mul(x.div(y).floor()));
+		const ret = x.rem(y);
+		if(!x.equalsState(y)) {
+			return ret.add(y);
+		}
+		else {
+			return ret;
+		}
 	}
 
 	/**
