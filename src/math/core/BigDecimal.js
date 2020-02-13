@@ -2471,12 +2471,6 @@ export default class BigDecimal {
 		const n_src = this;
 		const n_tgt = BigDecimal._toBigDecimal(number);
 		const mc = context ? context : n_tgt.default_context;
-		if((!n_src.isFinite()) || (!n_tgt.isFinite())) {
-			if(n_src.isNaN() || n_tgt.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			return BigDecimal.ZERO;
-		}
 		const src	= n_src.toBigInteger();
 		const tgt	= n_tgt.toBigInteger();
 		return new BigDecimal([src.and(tgt), mc]);
@@ -2493,16 +2487,6 @@ export default class BigDecimal {
 		const n_src = this;
 		const n_tgt = BigDecimal._toBigDecimal(number);
 		const mc = context ? context : n_tgt.default_context;
-		if((!n_src.isFinite()) || (!n_tgt.isFinite())) {
-			if(n_src.isNaN() || n_tgt.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			if(n_src.isInfinite() || n_tgt.isInfinite()) {
-				return BigDecimal.ZERO;
-			}
-			const x = n_src.isInfinite() ? n_tgt : n_src; 
-			return x.fract().round(mc);
-		}
 		const src	= n_src.toBigInteger();
 		const tgt	= n_tgt.toBigInteger();
 		return new BigDecimal([src.or(tgt), mc]);
@@ -2519,16 +2503,6 @@ export default class BigDecimal {
 		const n_src = this;
 		const n_tgt = BigDecimal._toBigDecimal(number);
 		const mc = context ? context : n_tgt.default_context;
-		if((!n_src.isFinite()) || (!n_tgt.isFinite())) {
-			if(n_src.isNaN() || n_tgt.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			if(n_src.isInfinite() || n_tgt.isInfinite()) {
-				return BigDecimal.ZERO;
-			}
-			const x = n_src.isInfinite() ? n_tgt : n_src; 
-			return x.fract().round(mc);
-		}
 		const src	= n_src.toBigInteger();
 		const tgt	= n_tgt.toBigInteger();
 		return new BigDecimal([src.xor(tgt), mc]);
@@ -2543,12 +2517,6 @@ export default class BigDecimal {
 	not(context) {
 		const mc = context ? context : this.default_context;
 		const n_src = this;
-		if(!n_src.isFinite()) {
-			if(n_src.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			return BigDecimal.MINUS_ONE.round(mc);
-		}
 		const src	= n_src.toBigInteger();
 		return new BigDecimal([src.not(), mc]);
 	}
@@ -2562,9 +2530,6 @@ export default class BigDecimal {
 	 */
 	shift(n, context) {
 		const mc = context ? context : this.default_context;
-		if(!this.isFinite()) {
-			return this.round(mc);
-		}
 		const src		= this.toBigInteger();
 		const number	= BigDecimal._toInteger(n);
 		return new BigDecimal([src.shift(number), mc]);

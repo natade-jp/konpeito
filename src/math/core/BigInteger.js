@@ -1209,7 +1209,7 @@ export default class BigInteger {
 		const y = this.extgcd(m);
 		const ONE  = new BigInteger(1);
 		if(y[2].compareTo(ONE) !== 0) {
-			return null;
+			return BigInteger.NaN;
 		}
 		// 正にするため remainder ではなく mod を使用する
 		return y[0]._add(m_)._mod(m_);
@@ -1224,6 +1224,14 @@ export default class BigInteger {
 	 * @returns {BigInteger} n!
 	 */
 	factorial() {
+		{
+			if(!this.isFinite()) {
+				return this;
+			}
+			else if(this.isNegative()) {
+				return BigInteger.NaN;
+			}
+		}
 		const loop_max = BigInteger._toInteger(this);
 		let x = BigInteger.ONE;
 		for(let i = 2; i <= loop_max; i++) {
@@ -1404,7 +1412,7 @@ export default class BigInteger {
 			return 0;
 		}
 		const n = BigInteger._toInteger(point);
-		return this.element[n];
+		return ((0 <= n) && (n <= this.element.length)) ? this.element[n] : NaN;
 	}
 
 	/**
@@ -1475,6 +1483,9 @@ export default class BigInteger {
 	 */
 	gcd(number) {
 		const val = BigInteger._toBigInteger(number);
+		if(!this.isFinite() || !val.isFinite()) {
+			return BigInteger.NaN;
+		}
 		/**
 		 * @type {any}
 		 */
@@ -1496,6 +1507,9 @@ export default class BigInteger {
 	 */
 	extgcd(number) {
 		const val = BigInteger._toBigInteger(number);
+		if(!this.isFinite() || !val.isFinite()) {
+			return [BigInteger.NaN, BigInteger.NaN, BigInteger.NaN];
+		}
 		// 非再帰
 		const ONE  = new BigInteger(1);
 		const ZERO = new BigInteger(0);
@@ -1528,6 +1542,9 @@ export default class BigInteger {
 	 */
 	lcm(number) {
 		const val = BigInteger._toBigInteger(number);
+		if(!this.isFinite() || !val.isFinite()) {
+			return BigInteger.NaN;
+		}
 		return this.mul(val).div(this.gcd(val));
 	}
 

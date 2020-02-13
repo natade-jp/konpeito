@@ -514,6 +514,7 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	testOperator2("and", "0x1234ffffff0000000000", $("0x1234ffffff0000000000").negate(), "0x10000000000");
 	testOperator2("and", "0x1234ffffff0000000000", $("0x8765ffffff0000000000"), "0x224ffffff0000000000");
 	testOperator2("and", $("0x1234ffffff0000000000").negate(), $("0x8765ffffff0000000000").negate(), "-0x9775ffffff0000000000");
+	testOperator2("and", NaN, NaN, NaN);
 }
 
 {
@@ -521,6 +522,7 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	testOperator2("or", "0x1234ffffff0000000000", $("0x1234ffffff0000000000").negate(), "-0x10000000000");
 	testOperator2("or", "0x1234ffffff0000000000", $("0x8765ffffff0000000000"), "0x9775ffffff0000000000");
 	testOperator2("or", $("0x1234ffffff0000000000").negate(), $("0x8765ffffff0000000000").negate(), "-0x224ffffff0000000000");
+	testOperator2("or", NaN, NaN, NaN);
 }
 
 {
@@ -529,12 +531,14 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	testOperator2("xor", "0x1234ffffff0000000000", $("0x1234ffffff0000000000").negate(), "-0x20000000000");
 	testOperator2("xor", "0x1234ffffff0000000000", $("0x8765ffffff0000000000"), "0x95510000000000000000");
 	testOperator2("xor", $("0x1234ffffff0000000000").negate(), $("0x8765ffffff0000000000").negate(), "0x95510000000000000000");
+	testOperator2("xor", NaN, NaN, NaN);
 }
 
 {
 	test_count = 0;
 	testOperator1("not", "0x1234ffffff0000000000", "-0x1234ffffff0000000001");
 	testOperator1("not", $("0x1234ffffff0000000000").negate(), "0x1234fffffeffffffffff");
+	testOperator1("not", NaN, NaN);
 }
 
 {

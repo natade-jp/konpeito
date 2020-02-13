@@ -1159,6 +1159,48 @@ export default class Fraction {
 		return this.numerator.isFinite();
 	}
 
+
+	// ----------------------
+	// 素数
+	// ----------------------
+	
+	/**
+	 * Return true if the value is prime number.
+	 * - Calculated as an integer.
+	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
+	 */
+	isPrime() {
+		const src = this.round().toBigInteger();
+		return src.isPrime();
+	}
+	
+	/**
+	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * 
+	 * Attention : it takes a very long time to process.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} [certainty=100] - Repeat count (prime precision).
+	 * @returns {boolean}
+	 */
+	isProbablePrime(certainty) {
+		const src = this.round().toBigInteger();
+		return src.isProbablePrime(certainty !== undefined ? BigDecimal._toInteger(certainty) : undefined);
+	}
+
+	/**
+	 * Next prime.
+	 * @param {KFractionInputData} [certainty=100] - Repeat count (prime precision).
+	 * @param {KFractionInputData} [search_max=100000] - Search range of next prime.
+	 * @returns {Fraction}
+	 */
+	nextProbablePrime(certainty, search_max) {
+		const src = this.round().toBigInteger();
+		const p1 = certainty !== undefined ? Fraction._toInteger(certainty) : undefined;
+		const p2 = search_max !== undefined ? Fraction._toInteger(search_max) : undefined;
+		return Fraction.create(src.nextProbablePrime(p1, p2));
+	}
+
 	// ----------------------
 	// 定数
 	// ----------------------
