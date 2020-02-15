@@ -10,6 +10,8 @@
 
 import Random from "./tools/Random.js";
 import Matrix from "./Matrix.js";
+import BigInteger from "./BigInteger.js";
+import Probability from "./tools/Probability.js";
 
 /**
  * Complex type argument.
@@ -438,10 +440,11 @@ export default class Complex {
 	 * @returns {Complex} A + B
 	 */
 	add(number) {
-		const x = new Complex(number);
-		x._re = this._re + x._re;
-		x._im = this._im + x._im;
-		return x;
+		const A = this;
+		const B = new Complex(number);
+		B._re = A._re + B._re;
+		B._im = A._im + B._im;
+		return B;
 	}
 
 	/**
@@ -450,10 +453,11 @@ export default class Complex {
 	 * @returns {Complex} A - B
 	 */
 	sub(number) {
-		const x = new Complex(number);
-		x._re = this._re - x._re;
-		x._im = this._im - x._im;
-		return x;
+		const A = this;
+		const B = new Complex(number);
+		B._re = A._re - B._re;
+		B._im = A._im - B._im;
+		return B;
 	}
 
 	/**
@@ -462,22 +466,23 @@ export default class Complex {
 	 * @returns {Complex} A * B
 	 */
 	mul(number) {
-		const x = new Complex(number);
-		if((this._im === 0) && (x._im === 0)) {
-			x._re = this._re * x._re;
-			return x;
+		const A = this;
+		const B = new Complex(number);
+		if((A._im === 0) && (B._im === 0)) {
+			B._re = A._re * B._re;
+			return B;
 		}
-		else if((this._re === 0) && (x._re === 0)) {
-			x._re = - this._im * x._im;
-			x._im = 0;
-			return x;
+		else if((A._re === 0) && (B._re === 0)) {
+			B._re = - A._im * B._im;
+			B._im = 0;
+			return B;
 		}
 		else {
-			const re = this._re * x._re - this._im * x._im;
-			const im = this._im * x._re + this._re * x._im;
-			x._re = re;
-			x._im = im;
-			return x;
+			const re = A._re * B._re - A._im * B._im;
+			const im = A._im * B._re + A._re * B._im;
+			B._re = re;
+			B._im = im;
+			return B;
 		}
 	}
 	
@@ -487,22 +492,23 @@ export default class Complex {
 	 * @returns {Complex} A * conj(B)
 	 */
 	dot(number) {
-		const x = new Complex(number);
-		if((this._im === 0) && (x._im === 0)) {
-			x._re = this._re * x._re;
-			return x;
+		const A = this;
+		const B = new Complex(number);
+		if((A._im === 0) && (B._im === 0)) {
+			B._re = A._re * B._re;
+			return B;
 		}
-		else if((this._re === 0) && (x._re === 0)) {
-			x._re = this._im * x._im;
-			x._im = 0;
-			return x;
+		else if((A._re === 0) && (B._re === 0)) {
+			B._re = A._im * B._im;
+			B._im = 0;
+			return B;
 		}
 		else {
-			const re = this._re * x._re + this._im * x._im;
-			const im = - this._im * x._re + this._re * x._im;
-			x._re = re;
-			x._im = im;
-			return x;
+			const re =   A._re * B._re + A._im * B._im;
+			const im = - A._im * B._re + A._re * B._im;
+			B._re = re;
+			B._im = im;
+			return B;
 		}
 	}
 	
@@ -512,42 +518,68 @@ export default class Complex {
 	 * @returns {Complex} A / B
 	 */
 	div(number) {
-		const x = new Complex(number);
-		if((this._im === 0) && (x._im === 0)) {
-			x._re = this._re / x._re;
-			return x;
+		const A = this;
+		const B = new Complex(number);
+		if((A._im === 0) && (B._im === 0)) {
+			B._re = A._re / B._re;
+			return B;
 		}
-		else if((this._re === 0) && (x._re === 0)) {
-			x._re = this._im / x._im;
-			x._im = 0;
-			return x;
+		else if((A._re === 0) && (B._re === 0)) {
+			B._re = A._im / B._im;
+			B._im = 0;
+			return B;
 		}
 		else {
-			const re = this._re * x._re + this._im * x._im;
-			const im = this._im * x._re - this._re * x._im;
-			const denominator = 1.0 / (x._re * x._re + x._im * x._im);
-			x._re = re * denominator;
-			x._im = im * denominator;
-			return x;
+			const re = A._re * B._re + A._im * B._im;
+			const im = A._im * B._re - A._re * B._im;
+			const denominator = 1.0 / (B._re * B._re + B._im * B._im);
+			B._re = re * denominator;
+			B._im = im * denominator;
+			return B;
 		}
 	}
 
 	/**
 	 * Modulo, positive remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {KComplexInputData} number - Divided value (real number only).
+	 * @returns {Complex} A rem B
+	 */
+	rem(number) {
+		const A = this;
+		const B = new Complex(number);
+		if((A._im !== 0) || (B._im !== 0)) {
+			throw "calculation method is undefined.";
+		}
+		if(!A.isFinite() || !B.isFinite() || B.isZero()) {
+			return Complex.NaN;
+		}
+		B._re = A._re - B._re * (Math.trunc(A._re / B._re));
+		return B;
+	}
+
+	/**
+	 * Modulo, positive remainder of division.
+	 * - Result has same sign as the Divisor.
 	 * @param {KComplexInputData} number - Divided value (real number only).
 	 * @returns {Complex} A mod B
 	 */
 	mod(number) {
-		const x = new Complex(number);
-		if((this._im !== 0) || (x._im !== 0)) {
+		const A = this;
+		const B = new Complex(number);
+		if((A._im !== 0) || (B._im !== 0)) {
 			throw "calculation method is undefined.";
 		}
-		let _re = this._re - x._re * (0 | (this._re / x._re));
-		if(_re < 0) {
-			_re += x._re;
+		if(B.isZero()) {
+			return A;
 		}
-		x._re = _re;
-		return x;
+		const ret = A.rem(B);
+		if(!A.equalsState(B)) {
+			return ret.add(B);
+		}
+		else {
+			return ret;
+		}
 	}
 
 	/**
@@ -575,14 +607,52 @@ export default class Complex {
 	 * @returns {boolean} A === B
 	 */
 	equals(number, tolerance) {
-		const x = Complex._toComplex(number);
-		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		const A = this;
+		const B = Complex._toComplex(number);
 		// 無限大、非数の値も含めて一度確認
-		if((this._re === x._re) && (this._im === x._im)) {
+		if(A.isNaN() || B.isNaN()) {
+			return false;
+		}
+		if((A._re === B._re) && (A._im === B._im)) {
 			return true;
 		}
 		// 誤差を含んだ値の比較
-		return (Math.abs(this._re - x._re) <  tolerance_) && (Math.abs(this._im - x._im) < tolerance_);
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(A._re - B._re) <  tolerance_) && (Math.abs(A._im - B._im) < tolerance_);
+	}
+
+	/**
+	 * Numeric type match.
+	 * @param {KComplexInputData} number 
+	 * @returns {boolean}
+	 */
+	equalsState(number) {
+		const A = this;
+		const B = Complex._toComplex(number);
+		/**
+		 * @param {Complex} num
+		 * @returns {number}
+		 */
+		const getState = function(num) {
+			if(num.isZero()) {
+				return 0;
+			}
+			if(!num.isFinite()) {
+				if(num.isPositiveInfinity()) {
+					return 4;
+				}
+				else if(num.isNegativeInfinity()) {
+					return 5;
+				}
+				else {
+					return 3;
+				}
+			}
+			return num.isPositive() ? 1 : 2;
+		};
+		const A_type = getState(A);
+		const B_type = getState(B);
+		return A_type === B_type;
 	}
 
 	/**
@@ -592,11 +662,11 @@ export default class Complex {
 	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, tolerance) {
-		const x1 = this;
-		const x2 = Complex._toComplex(number);
+		const A = this;
+		const B = Complex._toComplex(number);
 		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
-		const a = x1.real + x1.imag;
-		const b = x2.real + x2.imag;
+		const a = A.real + A.imag;
+		const b = B.real + B.imag;
 		if((Math.abs(a - b) <= tolerance_)) {
 			return 0;
 		}
@@ -659,135 +729,47 @@ export default class Complex {
 	}
 
 	// ----------------------
-	// テスト系
+	// 丸め
 	// ----------------------
 	
 	/**
-	 * Return true if the value is integer.
-	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
-	 * @returns {boolean}
+	 * Floor.
+	 * @returns {Complex} floor(A)
 	 */
-	isInteger(tolerance) {
-		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
-		return this.isReal() && (Math.abs(this._re - Math.trunc(this._re)) < tolerance_);
+	floor() {
+		return new Complex([Math.floor(this._re), Math.floor(this._im)]);
 	}
 
 	/**
-	 * Returns true if the vallue is complex integer (including normal integer).
-	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
-	 * @returns {boolean} real(A) === integer && imag(A) === integer
+	 * Ceil.
+	 * @returns {Complex} ceil(A)
 	 */
-	isComplexInteger(tolerance) {
-		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
-		// 複素整数
-		return (Math.abs(this._re - Math.trunc(this._re)) < tolerance_) &&
-				(Math.abs(this._im - Math.trunc(this._im)) < tolerance_);
-	}
-
-	/**
-	 * this === 0
-	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
-	 * @returns {boolean} A === 0
-	 */
-	isZero(tolerance) {
-		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
-		return (Math.abs(this._re) < tolerance_) && (Math.abs(this._im) < tolerance_);
-	}
-
-	/**
-	 * this === 1
-	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
-	 * @returns {boolean} A === 1
-	 */
-	isOne(tolerance) {
-		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
-		return (Math.abs(this._re - 1.0) < tolerance_) && (Math.abs(this._im) < tolerance_);
-	}
-
-	/**
-	 * Returns true if the vallue is complex number (imaginary part is not 0).
-	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
-	 * @returns {boolean} imag(A) !== 0
-	 */
-	isComplex(tolerance) {
-		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
-		return (Math.abs(this._im) >= tolerance_);
+	ceil() {
+		return new Complex([Math.ceil(this._re), Math.ceil(this._im)]);
 	}
 	
 	/**
-	 * Return true if the value is real number.
-	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
-	 * @returns {boolean} imag(A) === 0
+	 * Rounding to the nearest integer.
+	 * @returns {Complex} round(A)
 	 */
-	isReal(tolerance) {
-		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
-		return (Math.abs(this._im) < tolerance_);
+	round() {
+		return new Complex([Math.round(this._re), Math.round(this._im)]);
 	}
 
 	/**
-	 * this === NaN
-	 * @returns {boolean} isNaN(A)
+	 * To integer rounded down to the nearest.
+	 * @returns {Complex} fix(A), trunc(A)
 	 */
-	isNaN() {
-		return isNaN(this._re) || isNaN(this._im);
+	fix() {
+		return new Complex([Math.trunc(this._re), Math.trunc(this._im)]);
 	}
 
 	/**
-	 * Return true if this real part of the complex positive.
-	 * @returns {boolean} real(x) > 0
+	 * Fraction.
+	 * @returns {Complex} fract(A)
 	 */
-	isPositive() {
-		// Number.EPSILONは使用しない。どちらにぶれるか不明な点及び
-		// わずかな負の数だった場合に、sqrtでエラーが発生するため
-		return 0.0 < this._re;
-	}
-
-	/**
-	 * real(this) < 0
-	 * @returns {boolean} real(x) < 0
-	 */
-	isNegative() {
-		return 0.0 > this._re;
-	}
-
-	/**
-	 * real(this) >= 0
-	 * @returns {boolean} real(x) >= 0
-	 */
-	isNotNegative() {
-		return 0.0 <= this._re;
-	}
-
-	/**
-	 * this === Infinity
-	 * @returns {boolean} isPositiveInfinity(A)
-	 */
-	isPositiveInfinity() {
-		return this._re === Number.POSITIVE_INFINITY || this._im === Number.POSITIVE_INFINITY;
-	}
-
-	/**
-	 * this === -Infinity
-	 * @returns {boolean} isNegativeInfinity(A)
-	 */
-	isNegativeInfinity() {
-		return this._re === Number.NEGATIVE_INFINITY || this._im === Number.NEGATIVE_INFINITY;
-	}
-
-	/**
-	 * this === Infinity or -Infinity
-	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
-	 */
-	isInfinite() {
-		return this.isPositiveInfinity() || this.isNegativeInfinity();
-	}
-	
-	/**
-	 * Return true if the value is finite number.
-	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
-	 */
-	isFinite() {
-		return !this.isNaN() && !this.isInfinite();
+	fract() {
+		return new Complex([this._re - Math.floor(this._re), this._im - Math.floor(this._im)]);
 	}
 
 	// ----------------------
@@ -1006,6 +988,233 @@ export default class Complex {
 	}
 	
 	// ----------------------
+	// 双曲線関数
+	// ----------------------
+	
+	/**
+	 * Arc sine function.
+	 * @returns {Complex} asin(A)
+	 */
+	asin() {
+		// 逆正弦
+		return this.mul(Complex.I).add(Complex.ONE.sub(this.square()).sqrt()).log().mul(Complex.MINUS_I);
+	}
+
+	/**
+	 * Arc cosine function.
+	 * @returns {Complex} acos(A)
+	 */
+	acos() {
+		// 逆余弦
+		return this.add(Complex.I.mul(Complex.ONE.sub(this.square()).sqrt())).log().mul(Complex.MINUS_I);
+	}
+	
+
+	/**
+	 * Hyperbolic sine function.
+	 * @returns {Complex} sinh(A)
+	 */
+	sinh() {
+		// 双曲線正弦
+		const y = this.exp();
+		return y.sub(y.inv()).mul(0.5);
+	}
+
+	/**
+	 * Inverse hyperbolic sine function.
+	 * @returns {Complex} asinh(A)
+	 */
+	asinh() {
+		// 逆双曲線正弦 Math.log(x + Math.sqrt(x * x + 1));
+		if(this.isInfinite()) {
+			return this;
+		}
+		return this.add(this.mul(this).add(1).sqrt()).log();
+	}
+
+	/**
+	 * Hyperbolic cosine function.
+	 * @returns {Complex} cosh(A)
+	 */
+	cosh() {
+		// 双曲線余弦
+		return this.exp().add(this.negate().exp()).mul(0.5);
+	}
+
+	/**
+	 * Inverse hyperbolic cosine function.
+	 * @returns {Complex} acosh(A)
+	 */
+	acosh() {
+		// 逆双曲線余弦 Math.log(x + Math.sqrt(x * x - 1));
+		// Octave だと log(0.5+(0.5*0.5-1)^0.5) !== acosh(0.5) になる。
+		// おそらく log(0.5-(0.5*0.5-1)^0.5) の式に切り替わるようになっている
+		// これは2つの値を持っているためだと思われるので合わせてみる
+		if(this.isZero()) {
+			return new Complex([0, Math.PI * 0.5]);
+		}
+		if(this.compareTo(Complex.ONE) >= 1) {
+			return this.add(this.square().sub(1).sqrt()).log();
+		}
+		else {
+			return this.sub(this.square().sub(1).sqrt()).log();
+		}
+	}
+
+	/**
+	 * Hyperbolic tangent function.
+	 * @returns {Complex} tanh(A)
+	 */
+	tanh() {
+		// 双曲線正接
+		if(this.isNaN()) {
+			return Complex.NaN;
+		}
+		const y =  this.mul(2).exp();
+		if(y.isZero()) {
+			return Complex.MINUS_ONE;
+		}
+		else if(y.isPositiveInfinity()) {
+			return Complex.ONE;
+		}
+		return y.sub(1).div(y.add(1));
+	}
+	
+	/**
+	 * Inverse hyperbolic tangent function.
+	 * @returns {Complex} atanh(A)
+	 */
+	atanh() {
+		// 逆双曲線正接
+		if(this.isInfinite() && this.isReal()) {
+			return new Complex([0, Math.PI * 0.5]);
+		}
+		return this.add(1).div(this.negate().add(1)).log().mul(0.5);
+	}
+
+	/**
+	 * Secant function.
+	 * @returns {Complex} sec(A)
+	 */
+	sec() {
+		// 正割
+		return this.cos().inv();
+	}
+
+	/**
+	 * Reverse secant function.
+	 * @returns {Complex} asec(A)
+	 */
+	asec() {
+		// 逆正割
+		return this.inv().acos();
+	}
+
+	/**
+	 * Hyperbolic secant function.
+	 * @returns {Complex} sech(A)
+	 */
+	sech() {
+		// 双曲線正割
+		return this.exp().add(this.negate().exp()).inv().mul(2);
+	}
+
+	/**
+	 * Inverse hyperbolic secant function.
+	 * @returns {Complex} asech(A)
+	 */
+	asech() {
+		// 逆双曲線正割
+		if(this.isInfinite() && this.isReal()) {
+			return new Complex([0, Math.PI * 0.5]);
+		}
+		if(this.isPositive() || (this.compareTo(Complex.MINUS_ONE) == -1)) {
+			return this.inv().add(this.square().inv().sub(1).sqrt()).log();
+		}
+		else {
+			return this.inv().sub(this.square().inv().sub(1).sqrt()).log();
+		}
+	}
+
+	/**
+	 * Cotangent function.
+	 * @returns {Complex} cot(A)
+	 */
+	cot() {
+		// 余接
+		return this.tan().inv();
+	}
+
+	/**
+	 * Inverse cotangent function.
+	 * @returns {Complex} acot(A)
+	 */
+	acot() {
+		// 逆余接
+		return this.inv().atan();
+	}
+
+	/**
+	 * Hyperbolic cotangent function.
+	 * @returns {Complex} coth(A)
+	 */
+	coth() {
+		// 双曲線余接
+		if(this.isZero()) {
+			return Complex.POSITIVE_INFINITY;
+		}
+		return this.tanh().inv();
+	}
+
+	/**
+	 * Inverse hyperbolic cotangent function.
+	 * @returns {Complex} acoth(A)
+	 */
+	acoth() {
+		// 逆双曲線余接
+		if(this.isInfinite()) {
+			return Complex.ZERO;
+		}
+		return this.add(1).div(this.sub(1)).log().mul(0.5);
+	}
+
+	/**
+	 * Cosecant function.
+	 * @returns {Complex} csc(A)
+	 */
+	csc() {
+		// 余割
+		return this.sin().inv();
+	}
+
+	/**
+	 * Inverse cosecant function.
+	 * @returns {Complex} acsc(A)
+	 */
+	acsc() {
+		// 逆余割
+		return this.inv().asin();
+	}
+
+	/**
+	 * Hyperbolic cosecant function.
+	 * @returns {Complex} csch(A)
+	 */
+	csch() {
+		// 双曲線余割
+		return this.exp().sub(this.negate().exp()).inv().mul(2);
+	}
+
+	/**
+	 * Inverse hyperbolic cosecant function.
+	 * @returns {Complex} acsch(A)
+	 */
+	acsch() {
+		// 逆双曲線余割
+		return this.inv().add(this.square().inv().add(1).sqrt()).log();
+	}
+
+	// ----------------------
 	// 信号処理系
 	// ----------------------
 	
@@ -1025,48 +1234,676 @@ export default class Complex {
 		return new Complex( x.sin().div(x) );
 	}
 
+
 	// ----------------------
-	// 丸め
+	// テスト系
 	// ----------------------
 	
 	/**
-	 * Floor.
-	 * @returns {Complex} floor(A)
+	 * Return true if the value is integer.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @returns {boolean}
 	 */
-	floor() {
-		return new Complex([Math.floor(this._re), Math.floor(this._im)]);
+	isInteger(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return this.isReal() && (Math.abs(this._re - Math.trunc(this._re)) < tolerance_);
 	}
 
 	/**
-	 * Ceil.
-	 * @returns {Complex} ceil(A)
+	 * Returns true if the vallue is complex integer (including normal integer).
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @returns {boolean} real(A) === integer && imag(A) === integer
 	 */
-	ceil() {
-		return new Complex([Math.ceil(this._re), Math.ceil(this._im)]);
+	isComplexInteger(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		// 複素整数
+		return (Math.abs(this._re - Math.trunc(this._re)) < tolerance_) &&
+				(Math.abs(this._im - Math.trunc(this._im)) < tolerance_);
+	}
+
+	/**
+	 * this === 0
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @returns {boolean} A === 0
+	 */
+	isZero(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._re) < tolerance_) && (Math.abs(this._im) < tolerance_);
+	}
+
+	/**
+	 * this === 1
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @returns {boolean} A === 1
+	 */
+	isOne(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._re - 1.0) < tolerance_) && (Math.abs(this._im) < tolerance_);
+	}
+
+	/**
+	 * Returns true if the vallue is complex number (imaginary part is not 0).
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @returns {boolean} imag(A) !== 0
+	 */
+	isComplex(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._im) >= tolerance_);
 	}
 	
 	/**
-	 * Rounding to the nearest integer.
-	 * @returns {Complex} round(A)
+	 * Return true if the value is real number.
+	 * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
+	 * @returns {boolean} imag(A) === 0
 	 */
-	round() {
-		return new Complex([Math.round(this._re), Math.round(this._im)]);
+	isReal(tolerance) {
+		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
+		return (Math.abs(this._im) < tolerance_);
 	}
 
 	/**
-	 * To integer rounded down to the nearest.
-	 * @returns {Complex} fix(A), trunc(A)
+	 * this === NaN
+	 * @returns {boolean} isNaN(A)
 	 */
-	fix() {
-		return new Complex([Math.trunc(this._re), Math.trunc(this._im)]);
+	isNaN() {
+		return isNaN(this._re) || isNaN(this._im);
 	}
 
 	/**
-	 * Fraction.
-	 * @returns {Complex} fract(A)
+	 * Return true if this real part of the complex positive.
+	 * @returns {boolean} real(x) > 0
 	 */
-	fract() {
-		return new Complex([this._re - Math.floor(this._re), this._im - Math.floor(this._im)]);
+	isPositive() {
+		// Number.EPSILONは使用しない。どちらにぶれるか不明な点及び
+		// わずかな負の数だった場合に、sqrtでエラーが発生するため
+		return 0.0 < this._re;
+	}
+
+	/**
+	 * real(this) < 0
+	 * @returns {boolean} real(x) < 0
+	 */
+	isNegative() {
+		return 0.0 > this._re;
+	}
+
+	/**
+	 * real(this) >= 0
+	 * @returns {boolean} real(x) >= 0
+	 */
+	isNotNegative() {
+		return 0.0 <= this._re;
+	}
+
+	/**
+	 * this === Infinity
+	 * @returns {boolean} isPositiveInfinity(A)
+	 */
+	isPositiveInfinity() {
+		return this._re === Number.POSITIVE_INFINITY || this._im === Number.POSITIVE_INFINITY;
+	}
+
+	/**
+	 * this === -Infinity
+	 * @returns {boolean} isNegativeInfinity(A)
+	 */
+	isNegativeInfinity() {
+		return this._re === Number.NEGATIVE_INFINITY || this._im === Number.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * this === Infinity or -Infinity
+	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+	 */
+	isInfinite() {
+		return this.isPositiveInfinity() || this.isNegativeInfinity();
+	}
+	
+	/**
+	 * Return true if the value is finite number.
+	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
+	 */
+	isFinite() {
+		return !this.isNaN() && !this.isInfinite();
+	}
+
+	// ----------------------
+	// 確率
+	// ----------------------
+	
+	/**
+	 * Log-gamma function.
+	 * - Calculate from real values.
+	 * @returns {Complex}
+	 */
+	gammaln() {
+		return new Complex(Probability.gammaln(this._re));
+	}
+	
+	/**
+	 * Gamma function.
+	 * - Calculate from real values.
+	 * @returns {Complex}
+	 */
+	gamma() {
+		return new Complex(Probability.gamma(this._re));
+	}
+	
+	/**
+	 * Incomplete gamma function.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} a
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
+	 * @returns {Complex}
+	 */
+	gammainc(a, tail) {
+		const a_ = Complex._toDouble(a);
+		return new Complex(Probability.gammainc(this._re, a_, tail));
+	}
+
+	/**
+	 * Probability density function (PDF) of the gamma distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} k - Shape parameter.
+	 * @param {KComplexInputData} s - Scale parameter.
+	 * @returns {Complex}
+	 */
+	gampdf(k, s) {
+		const k_ = Complex._toDouble(k);
+		const s_ = Complex._toDouble(s);
+		return new Complex(Probability.gampdf(this._re, k_, s_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of gamma distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} k - Shape parameter.
+	 * @param {KComplexInputData} s - Scale parameter.
+	 * @returns {Complex}
+	 */
+	gamcdf(k, s) {
+		const k_ = Complex._toDouble(k);
+		const s_ = Complex._toDouble(s);
+		return new Complex(Probability.gamcdf(this._re, k_, s_));
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} k - Shape parameter.
+	 * @param {KComplexInputData} s - Scale parameter.
+	 * @returns {Complex}
+	 */
+	gaminv(k, s) {
+		const k_ = Complex._toDouble(k);
+		const s_ = Complex._toDouble(s);
+		return new Complex(Probability.gaminv(this._re, k_, s_));
+	}
+
+	/**
+	 * Beta function.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} y
+	 * @returns {Complex}
+	 */
+	beta(y) {
+		const y_ = Complex._toDouble(y);
+		return new Complex(Probability.beta(this._re, y_));
+	}
+
+	/**
+	 * Incomplete beta function.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} a
+	 * @param {KComplexInputData} b
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
+	 * @returns {Complex}
+	 */
+	betainc(a, b, tail) {
+		const a_ = Complex._toDouble(a);
+		const b_ = Complex._toDouble(b);
+		return new Complex(Probability.betainc(this._re, a_, b_, tail));
+	}
+
+	/**
+	 * Probability density function (PDF) of beta distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} a
+	 * @param {KComplexInputData} b
+	 * @returns {Complex}
+	 */
+	betapdf(a, b) {
+		const a_ = Complex._toDouble(a);
+		const b_ = Complex._toDouble(b);
+		return new Complex(Probability.betapdf(this._re, a_, b_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of beta distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} a
+	 * @param {KComplexInputData} b
+	 * @returns {Complex}
+	 */
+	betacdf(a, b) {
+		const a_ = Complex._toDouble(a);
+		const b_ = Complex._toDouble(b);
+		return new Complex(Probability.betacdf(this._re, a_, b_));
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} a
+	 * @param {KComplexInputData} b
+	 * @returns {Complex}
+	 */
+	betainv(a, b) {
+		const a_ = Complex._toDouble(a);
+		const b_ = Complex._toDouble(b);
+		return new Complex(Probability.betainv(this._re, a_, b_));
+	}
+
+	/**
+	 * Factorial function, x!.
+	 * - Calculate from real values.
+	 * @returns {Complex}
+	 */
+	factorial() {
+		return new Complex(Probability.factorial(this._re));
+	}
+
+	/**
+	 * Binomial coefficient, number of all combinations, nCk.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} k
+	 * @returns {Complex}
+	 */
+	nchoosek(k) {
+		const k_ = Complex._toDouble(k);
+		return new Complex(Probability.nchoosek(this._re, k_));
+	}
+	
+	/**
+	 * Error function.
+	 * - Calculate from real values.
+	 * @returns {Complex}
+	 */
+	erf() {
+		return new Complex(Probability.erf(this._re));
+	}
+
+	/**
+	 * Complementary error function.
+	 * - Calculate from real values.
+	 * @returns {Complex}
+	 */
+	erfc() {
+		return new Complex(Probability.erfc(this._re));
+	}
+
+	/**
+	 * Inverse function of Error function.
+	 * - Calculate from real values.
+	 * @returns {Complex}
+	 */
+	erfinv() {
+		return new Complex(Probability.erfinv(this._re));
+	}
+
+	/**
+	 * Inverse function of Complementary error function.
+	 * - Calculate from real values.
+	 * @returns {Complex}
+	 */
+	erfcinv() {
+		return new Complex(Probability.erfcinv(this._re));
+	}
+
+	/**
+	 * Probability density function (PDF) of normal distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} [u=0.0] - Average value.
+	 * @param {KComplexInputData} [s=1.0] - Variance value.
+	 * @returns {Complex}
+	 */
+	normpdf(u, s) {
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
+		return new Complex(Probability.normpdf(this._re, u_, s_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of normal distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} [u=0.0] - Average value.
+	 * @param {KComplexInputData} [s=1.0] - Variance value.
+	 * @returns {Complex}
+	 */
+	normcdf(u, s) {
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
+		return new Complex(Probability.normcdf(this._re, u_, s_));
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} [u=0.0] - Average value.
+	 * @param {KComplexInputData} [s=1.0] - Variance value.
+	 * @returns {Complex}
+	 */
+	norminv(u, s) {
+		const u_ = u !== undefined ? Complex._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Complex._toDouble(s) : 1.0;
+		return new Complex(Probability.norminv(this._re, u_, s_));
+	}
+	
+	/**
+	 * Probability density function (PDF) of Student's t-distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} v - The degrees of freedom. (DF)
+	 * @returns {Complex}
+	 */
+	tpdf(v) {
+		const v_ = Complex._toDouble(v);
+		return new Complex(Probability.tpdf(this._re, v_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of Student's t-distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} v - The degrees of freedom. (DF)
+	 * @returns {Complex}
+	 */
+	tcdf(v) {
+		const v_ = Complex._toDouble(v);
+		return new Complex(Probability.tcdf(this._re, v_));
+	}
+
+	/**
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} v - The degrees of freedom. (DF)
+	 * @returns {Complex}
+	 */
+	tinv(v) {
+		const v_ = Complex._toDouble(v);
+		return new Complex(Probability.tinv(this._re, v_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} v - The degrees of freedom. (DF)
+	 * @param {KComplexInputData} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
+	 * @returns {Complex}
+	 */
+	tdist(v, tails) {
+		const v_ = Complex._toDouble(v);
+		const tails_ = Complex._toInteger(tails);
+		return new Complex(Probability.tdist(this._re, v_, tails_));
+	}
+
+	/**
+	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} v - The degrees of freedom. (DF)
+	 * @returns {Complex}
+	 */
+	tinv2(v) {
+		const v_ = Complex._toDouble(v);
+		return new Complex(Probability.tinv2(this._re, v_));
+	}
+
+	/**
+	 * Probability density function (PDF) of chi-square distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} k - The degrees of freedom. (DF)
+	 * @returns {Complex}
+	 */
+	chi2pdf(k) {
+		const k_ = Complex._toDouble(k);
+		return new Complex(Probability.chi2pdf(this._re, k_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of chi-square distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} k - The degrees of freedom. (DF)
+	 * @returns {Complex}
+	 */
+	chi2cdf(k) {
+		const k_ = Complex._toDouble(k);
+		return new Complex(Probability.chi2cdf(this._re, k_));
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} k - The degrees of freedom. (DF)
+	 * @returns {Complex}
+	 */
+	chi2inv(k) {
+		const k_ = Complex._toDouble(k);
+		return new Complex(Probability.chi2inv(this._re, k_));
+	}
+
+	/**
+	 * Probability density function (PDF) of F-distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} d1 - The degree of freedom of the molecules.
+	 * @param {KComplexInputData} d2 - The degree of freedom of the denominator
+	 * @returns {Complex}
+	 */
+	fpdf(d1, d2) {
+		const d1_ = Complex._toDouble(d1);
+		const d2_ = Complex._toDouble(d2);
+		return new Complex(Probability.fpdf(this._re, d1_, d2_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of F-distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} d1 - The degree of freedom of the molecules.
+	 * @param {KComplexInputData} d2 - The degree of freedom of the denominator
+	 * @returns {Complex}
+	 */
+	fcdf(d1, d2) {
+		const d1_ = Complex._toDouble(d1);
+		const d2_ = Complex._toDouble(d2);
+		return new Complex(Probability.fcdf(this._re, d1_, d2_));
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} d1 - The degree of freedom of the molecules.
+	 * @param {KComplexInputData} d2 - The degree of freedom of the denominator
+	 * @returns {Complex}
+	 */
+	finv(d1, d2) {
+		const d1_ = Complex._toDouble(d1);
+		const d2_ = Complex._toDouble(d2);
+		return new Complex(Probability.finv(this._re, d1_, d2_));
+	}
+
+	// ----------------------
+	// ビット演算系
+	// ----------------------
+	
+	/**
+	 * Logical AND.
+	 * - Calculated as an integer.
+	 * @param {KComplexInputData} number 
+	 * @returns {Complex} A & B
+	 */
+	and(number) {
+		const n_src = Math.round(this.real);
+		const n_tgt = Math.round(Complex._toDouble(number));
+		return new Complex(n_src & n_tgt);
+	}
+
+	/**
+	 * Logical OR.
+	 * - Calculated as an integer.
+	 * @param {KComplexInputData} number 
+	 * @returns {Complex} A | B
+	 */
+	or(number) {
+		const n_src = Math.round(this.real);
+		const n_tgt = Math.round(Complex._toDouble(number));
+		return new Complex(n_src | n_tgt);
+	}
+
+	/**
+	 * Logical Exclusive-OR.
+	 * - Calculated as an integer.
+	 * @param {KComplexInputData} number 
+	 * @returns {Complex} A ^ B
+	 */
+	xor(number) {
+		const n_src = Math.round(this.real);
+		const n_tgt = Math.round(Complex._toDouble(number));
+		return new Complex(n_src ^ n_tgt);
+	}
+
+	/**
+	 * Logical Not. (mutable)
+	 * - Calculated as an integer.
+	 * @returns {Complex} !A
+	 */
+	not() {
+		const n_src = Math.round(this.real);
+		return new Complex(!n_src);
+	}
+	
+	/**
+	 * this << n
+	 * - Calculated as an integer.
+	 * @param {KComplexInputData} n
+	 * @returns {Complex} A << n
+	 */
+	shift(n) {
+		const src = Math.round(this.real);
+		const number = Math.round(Complex._toDouble(n));
+		return new Complex(src << number);
+	}
+
+	// ----------------------
+	// gcd, lcm
+	// ----------------------
+	
+	/**
+	 * Euclidean algorithm.
+	 * - Calculated as an integer.
+	 * @param {KComplexInputData} number 
+	 * @returns {Complex} gcd(x, y)
+	 */
+	gcd(number) {
+		const x = Math.round(this.real);
+		const y = Math.round(Complex._toDouble(number));
+		const result = new BigInteger(x).gcd(y);
+		return new Complex(result);
+	}
+
+	/**
+	 * Extended Euclidean algorithm.
+	 * - Calculated as an integer.
+	 * @param {KComplexInputData} number 
+	 * @returns {Array<Complex>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 */
+	extgcd(number) {
+		const x = Math.round(this.real);
+		const y = Math.round(Complex._toDouble(number));
+		const result = new BigInteger(x).extgcd(y);
+		return [new Complex(result[0]), new Complex(result[1]), new Complex(result[2])];
+	}
+
+	/**
+	 * Least common multiple.
+	 * - Calculated as an integer.
+	 * @param {KComplexInputData} number 
+	 * @returns {Complex} lcm(x, y)
+	 */
+	lcm(number) {
+		const x = Math.round(this.real);
+		const y = Math.round(Complex._toDouble(number));
+		const result = new BigInteger(x).lcm(y);
+		return new Complex(result);
+	}
+
+	// ----------------------
+	// mod
+	// ----------------------
+
+	/**
+	 * Modular exponentiation.
+	 * - Calculated as an integer.
+	 * @param {KComplexInputData} exponent
+	 * @param {KComplexInputData} m 
+	 * @returns {Complex} A^B mod m
+	 */
+	modPow(exponent, m) {
+		const A = Math.round(this.real);
+		const B = Math.round(Complex._toDouble(exponent));
+		const m_ = Math.round(Complex._toDouble(m));
+		const result = new BigInteger(A).modPow(B, m_);
+		return new Complex(result);
+	}
+
+	/**
+	 * Modular multiplicative inverse.
+	 * - Calculated as an integer.
+	 * @param {KComplexInputData} m
+	 * @returns {Complex} A^(-1) mod m
+	 */
+	modInverse(m) {
+		const A = Math.round(this.real);
+		const m_ = Math.round(Complex._toDouble(m));
+		const result = new BigInteger(A).modInverse(m_);
+		return new Complex(result);
+	}
+	
+	// ----------------------
+	// 素数
+	// ----------------------
+	
+	/**
+	 * Return true if the value is prime number.
+	 * - Calculated as an integer.
+	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
+	 */
+	isPrime() {
+		const src = new BigInteger(Math.round(this.real));
+		return src.isPrime();
+	}
+	
+	/**
+	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * 
+	 * Attention : it takes a very long time to process.
+	 * - Calculated as an integer.
+	 * @param {KComplexInputData} [certainty=100] - Repeat count (prime precision).
+	 * @returns {boolean}
+	 */
+	isProbablePrime(certainty) {
+		const src = new BigInteger(Math.round(this.real));
+		return src.isProbablePrime(certainty !== undefined ? Math.round(Complex._toDouble(certainty)) : undefined);
+	}
+
+	/**
+	 * Next prime.
+	 * @param {KComplexInputData} [certainty=100] - Repeat count (prime precision).
+	 * @param {KComplexInputData} [search_max=100000] - Search range of next prime.
+	 * @returns {Complex}
+	 */
+	nextProbablePrime(certainty, search_max) {
+		const src = new BigInteger(Math.round(this.real));
+		const p1 = certainty !== undefined ? Math.round(Complex._toDouble(certainty)) : undefined;
+		const p2 = search_max !== undefined ? Math.round(Complex._toDouble(search_max)) : undefined;
+		return new Complex(src.nextProbablePrime(p1, p2));
 	}
 
 	// ----------------------
@@ -1119,6 +1956,14 @@ export default class Complex {
 	 */
 	static get I() {
 		return DEFINE.I;
+	}
+
+	/**
+	 * - i, - j
+	 * @returns {Complex} - i
+	 */
+	static get MINUS_I() {
+		return DEFINE.MINUS_I;
 	}
 
 	/**
@@ -1241,6 +2086,64 @@ export default class Complex {
 		return DEFINE.NaN;
 	}
 
+	// ----------------------
+	// 互換性
+	// ----------------------
+	
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {Complex}
+	 */
+	signum() {
+		return this.sign();
+	}
+
+	/**
+	 * Subtract.
+	 * @param {KComplexInputData} number
+	 * @returns {Complex} A - B
+	 */
+	subtract(number) {
+		return this.sub(number);
+	}
+
+	/**
+	 * Multiply.
+	 * @param {KComplexInputData} number
+	 * @returns {Complex} A * B
+	 */
+	multiply(number) {
+		return this.mul(number);
+	}
+
+	/**
+	 * Divide.
+	 * @param {KComplexInputData} number
+	 * @returns {Complex} fix(A / B)
+	 */
+	divide(number) {
+		return this.div(number);
+	}
+
+	/**
+	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {KComplexInputData} number
+	 * @returns {Complex} A % B
+	 */
+	remainder(number) {
+		return this.rem(number);
+	}
+	
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {Complex} fix(A), trunc(A)
+	 */
+	trunc() {
+		return this.fix();
+	}
+	
 }
 
 /**
@@ -1278,6 +2181,11 @@ const DEFINE = {
 	 * i, j
 	 */
 	I : new Complex([0, 1]),
+
+	/**
+	 * - i, - j
+	 */
+	MINUS_I : new Complex([0, -1]),
 
 	/**
 	 * PI.

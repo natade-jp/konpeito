@@ -1,5 +1,10 @@
 # History
 
+## v4.1.0
+### 改善
+- `Complex` に `mod` しか実装されていなかったのを `rem` と `mod` を追加 
+- その他、利用できるメソッドの統一化
+
 ## v4.0.2
 ### 改善
 - `BigInteger` の非数や無限の対応強化
@@ -19,7 +24,7 @@
 - `BigInteger`, `BigDecimal`, `Fraction`, `Complex`, `Matrix` に `booleanValue` を実装
 - `BigInteger` に `isPrime` を追加
 - `BigInteger`, `BigDecimal`, `Fraction` に `NaN`, `Infinity` を実装、テストする関数も追加
-- `BigDecimal` に拡張した三角関数、ビット演算、素数判定を追加
+- `BigDecimal` に双曲線関数、ビット演算、素数判定を追加
 - `Complex` / `Matrix` に `isPositiveInfinity`, `isNegativeInfinity` を追加
 ### 改善
 - `/core/tools/` 内で`Matrix`のメソッドチェーンからしか利用できないクラスについてクラス説明文に記載

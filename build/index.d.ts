@@ -183,12 +183,6 @@ declare class _BigDecimal_ {
      * - +1 if positive, -1 if negative, 0 if 0.
      * @returns {number}
      */
-    signum(): number;
-    /**
-     * The positive or negative sign of this number.
-     * - +1 if positive, -1 if negative, 0 if 0.
-     * @returns {number}
-     */
     sign(): number;
     /**
      * Precision.
@@ -253,21 +247,7 @@ declare class _BigDecimal_ {
      * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} A - B
      */
-    subtract(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
-    /**
-     * Subtract.
-     * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
-     * @returns {_BigDecimal_} A - B
-     */
     sub(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
-    /**
-     * Multiply.
-     * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
-     * @returns {_BigDecimal_} A * B
-     */
-    multiply(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
     /**
      * Multiply.
      * @param {KBigDecimalInputData} number
@@ -291,6 +271,7 @@ declare class _BigDecimal_ {
     divideAndRemainder(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_[];
     /**
      * Remainder of division.
+     * - Result has same sign as the Dividend.
      * @param {KBigDecimalInputData} number
      * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} A % B
@@ -298,6 +279,7 @@ declare class _BigDecimal_ {
     rem(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
     /**
      * Modulo, positive remainder of division.
+     * - Result has same sign as the Divisor.
      * @param {KBigDecimalInputData} number
      * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} A mod B
@@ -312,17 +294,6 @@ declare class _BigDecimal_ {
      * @param {KBigDecimalInputData} number
      * @param {_MathContext_|KBigDecimalDivideType} [type] - Scale, _MathContext_, _RoundingMode_ used for the calculation.
      * @returns {_BigDecimal_}
-     */
-    divide(number: KBigDecimalInputData, type?: _MathContext_ | KBigDecimalDivideType): _BigDecimal_;
-    /**
-     * Divide.
-     * - The argument can specify the scale after calculation.
-     * - In the case of precision infinity, it may generate an error by a repeating decimal.
-     * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
-     * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
-     * @param {KBigDecimalInputData} number
-     * @param {_MathContext_|KBigDecimalDivideType} [type] - Scale, _MathContext_, _RoundingMode_ used for the calculation.
-     * @returns {_BigDecimal_} A / B
      */
     div(number: KBigDecimalInputData, type?: _MathContext_ | KBigDecimalDivideType): _BigDecimal_;
     /**
@@ -564,45 +535,6 @@ declare class _BigDecimal_ {
      */
     atan2(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
     /**
-     * Logical AND.
-     * - Calculated as an integer.
-     * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
-     * @returns {_BigDecimal_} A & B
-     */
-    and(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
-    /**
-     * Logical OR.
-     * - Calculated as an integer.
-     * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
-     * @returns {_BigDecimal_} A | B
-     */
-    or(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
-    /**
-     * Logical Exclusive-OR.
-     * - Calculated as an integer.
-     * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
-     * @returns {_BigDecimal_} A ^ B
-     */
-    xor(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
-    /**
-     * Logical Not. (mutable)
-     * - Calculated as an integer.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
-     * @returns {_BigDecimal_} !A
-     */
-    not(context?: _MathContext_): _BigDecimal_;
-    /**
-     * this << n
-     * - Calculated as an integer.
-     * @param {KBigDecimalInputData} n
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
-     * @returns {_BigDecimal_} A << n
-     */
-    shift(n: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
-    /**
      * Arc sine function.
      * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} asin(A)
@@ -787,6 +719,86 @@ declare class _BigDecimal_ {
      */
     isFinite(): boolean;
     /**
+     * Logical AND.
+     * - Calculated as an integer.
+     * @param {KBigDecimalInputData} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A & B
+     */
+    and(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
+     * Logical OR.
+     * - Calculated as an integer.
+     * @param {KBigDecimalInputData} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A | B
+     */
+    or(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
+     * Logical Exclusive-OR.
+     * - Calculated as an integer.
+     * @param {KBigDecimalInputData} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A ^ B
+     */
+    xor(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
+     * Logical Not. (mutable)
+     * - Calculated as an integer.
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
+     * @returns {_BigDecimal_} !A
+     */
+    not(context?: _MathContext_): _BigDecimal_;
+    /**
+     * this << n
+     * - Calculated as an integer.
+     * @param {KBigDecimalInputData} n
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
+     * @returns {_BigDecimal_} A << n
+     */
+    shift(n: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
+     * Euclidean algorithm.
+     * - Calculated as an integer.
+     * @param {KBigDecimalInputData} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
+     * @returns {_BigDecimal_} gcd(x, y)
+     */
+    gcd(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
+     * Extended Euclidean algorithm.
+     * - Calculated as an integer.
+     * @param {KBigDecimalInputData} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
+     * @returns {Array<_BigDecimal_>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+     */
+    extgcd(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_[];
+    /**
+     * Least common multiple.
+     * - Calculated as an integer.
+     * @param {KBigDecimalInputData} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
+     * @returns {_BigDecimal_} lcm(x, y)
+     */
+    lcm(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
+     * Modular exponentiation.
+     * - Calculated as an integer.
+     * @param {KBigDecimalInputData} exponent
+     * @param {KBigDecimalInputData} m
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
+     * @returns {_BigDecimal_} A^B mod m
+     */
+    modPow(exponent: KBigDecimalInputData, m: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
+     * Modular multiplicative inverse.
+     * - Calculated as an integer.
+     * @param {KBigDecimalInputData} m
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
+     * @returns {_BigDecimal_} A^(-1) mod m
+     */
+    modInverse(m: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
      * Return true if the value is prime number.
      * - Calculated as an integer.
      * - Calculate up to `2251799813685248(=2^51)`.
@@ -909,6 +921,50 @@ declare class _BigDecimal_ {
      * @returns {_BigDecimal_} NaN
      */
     static NaN: _BigDecimal_;
+    /**
+     * The positive or negative sign of this number.
+     * - +1 if positive, -1 if negative, 0 if 0.
+     * @returns {number}
+     */
+    signum(): number;
+    /**
+     * Subtract.
+     * @param {KBigDecimalInputData} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A - B
+     */
+    subtract(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
+     * Multiply.
+     * @param {KBigDecimalInputData} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A * B
+     */
+    multiply(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
+     * Divide.
+     * - The argument can specify the scale after calculation.
+     * - In the case of precision infinity, it may generate an error by a repeating decimal.
+     * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
+     * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
+     * @param {KBigDecimalInputData} number
+     * @param {_MathContext_|KBigDecimalDivideType} [type] - Scale, _MathContext_, _RoundingMode_ used for the calculation.
+     * @returns {_BigDecimal_} A / B
+     */
+    divide(number: KBigDecimalInputData, type?: _MathContext_ | KBigDecimalDivideType): _BigDecimal_;
+    /**
+     * Remainder of division.
+     * - Result has same sign as the Dividend.
+     * @param {KBigDecimalInputData} number
+     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
+     * @returns {_BigDecimal_} A % B
+     */
+    remainder(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    /**
+     * To integer rounded down to the nearest.
+     * @returns {_BigDecimal_} fix(A), trunc(A)
+     */
+    trunc(): _BigDecimal_;
 }
 
 /**
@@ -992,23 +1048,11 @@ declare class _BigInteger_ {
      */
     sign(): number;
     /**
-     * The positive or negative sign of this number.
-     * - +1 if positive, -1 if negative, 0 if 0.
-     * @returns {number}
-     */
-    signum(): number;
-    /**
      * Add.
      * @param {KBigIntegerInputData} number
      * @returns {_BigInteger_} A + B
      */
     add(number: KBigIntegerInputData): _BigInteger_;
-    /**
-     * Subtract.
-     * @param {KBigIntegerInputData} number
-     * @returns {_BigInteger_} A - B
-     */
-    subtract(number: KBigIntegerInputData): _BigInteger_;
     /**
      * Subtract.
      * @param {KBigIntegerInputData} number
@@ -1020,15 +1064,9 @@ declare class _BigInteger_ {
      * @param {KBigIntegerInputData} number
      * @returns {_BigInteger_} A * B
      */
-    multiply(number: KBigIntegerInputData): _BigInteger_;
-    /**
-     * Multiply.
-     * @param {KBigIntegerInputData} number
-     * @returns {_BigInteger_} A * B
-     */
     mul(number: KBigIntegerInputData): _BigInteger_;
     /**
-     * Divide and remainder.
+     * Divide and rem.
      * @param {KBigIntegerInputData} number
      * @returns {Array<_BigInteger_>} [C = fix(A / B), A - C * B]
      */
@@ -1038,27 +1076,17 @@ declare class _BigInteger_ {
      * @param {KBigIntegerInputData} number
      * @returns {_BigInteger_} fix(A / B)
      */
-    divide(number: KBigIntegerInputData): _BigInteger_;
-    /**
-     * Divide.
-     * @param {KBigIntegerInputData} number
-     * @returns {_BigInteger_} fix(A / B)
-     */
     div(number: KBigIntegerInputData): _BigInteger_;
     /**
      * Remainder of division.
-     * @param {KBigIntegerInputData} number
-     * @returns {_BigInteger_} A % B
-     */
-    remainder(number: KBigIntegerInputData): _BigInteger_;
-    /**
-     * Remainder of division.
+     * - Result has same sign as the Dividend.
      * @param {KBigIntegerInputData} number
      * @returns {_BigInteger_} A % B
      */
     rem(number: KBigIntegerInputData): _BigInteger_;
     /**
-     * Modulo, positive remainder of division.
+     * Modulo, positive rem of division.
+     * - Result has same sign as the Divisor.
      * @param {KBigIntegerInputData} number
      * @returns {_BigInteger_} A mod B
      */
@@ -1406,6 +1434,37 @@ declare class _BigInteger_ {
      * @returns {_BigInteger_} NaN
      */
     static NaN: _BigInteger_;
+    /**
+     * The positive or negative sign of this number.
+     * - +1 if positive, -1 if negative, 0 if 0.
+     * @returns {number}
+     */
+    signum(): number;
+    /**
+     * Subtract.
+     * @param {KBigIntegerInputData} number
+     * @returns {_BigInteger_} A - B
+     */
+    subtract(number: KBigIntegerInputData): _BigInteger_;
+    /**
+     * Multiply.
+     * @param {KBigIntegerInputData} number
+     * @returns {_BigInteger_} A * B
+     */
+    multiply(number: KBigIntegerInputData): _BigInteger_;
+    /**
+     * Divide.
+     * @param {KBigIntegerInputData} number
+     * @returns {_BigInteger_} fix(A / B)
+     */
+    divide(number: KBigIntegerInputData): _BigInteger_;
+    /**
+     * Remainder of division.
+     * - Result has same sign as the Dividend.
+     * @param {KBigIntegerInputData} number
+     * @returns {_BigInteger_} A % B
+     */
+    remainder(number: KBigIntegerInputData): _BigInteger_;
 }
 
 /**
@@ -1548,6 +1607,14 @@ declare class _Complex_ {
     div(number: KComplexInputData): _Complex_;
     /**
      * Modulo, positive remainder of division.
+     * - Result has same sign as the Dividend.
+     * @param {KComplexInputData} number - Divided value (real number only).
+     * @returns {_Complex_} A rem B
+     */
+    rem(number: KComplexInputData): _Complex_;
+    /**
+     * Modulo, positive remainder of division.
+     * - Result has same sign as the Divisor.
      * @param {KComplexInputData} number - Divided value (real number only).
      * @returns {_Complex_} A mod B
      */
@@ -1564,6 +1631,12 @@ declare class _Complex_ {
      * @returns {boolean} A === B
      */
     equals(number: KComplexInputData, tolerance?: KComplexInputData): boolean;
+    /**
+     * Numeric type match.
+     * @param {KComplexInputData} number
+     * @returns {boolean}
+     */
+    equalsState(number: KComplexInputData): boolean;
     /**
      * Compare values.
      * @param {KComplexInputData} number
@@ -1590,6 +1663,211 @@ declare class _Complex_ {
      * @returns {_Complex_} min(max(x, min), max)
      */
     clip(min: KComplexInputData, max: KComplexInputData): _Complex_;
+    /**
+     * Floor.
+     * @returns {_Complex_} floor(A)
+     */
+    floor(): _Complex_;
+    /**
+     * Ceil.
+     * @returns {_Complex_} ceil(A)
+     */
+    ceil(): _Complex_;
+    /**
+     * Rounding to the nearest integer.
+     * @returns {_Complex_} round(A)
+     */
+    round(): _Complex_;
+    /**
+     * To integer rounded down to the nearest.
+     * @returns {_Complex_} fix(A), trunc(A)
+     */
+    fix(): _Complex_;
+    /**
+     * _Fraction_.
+     * @returns {_Complex_} fract(A)
+     */
+    fract(): _Complex_;
+    /**
+     * Absolute value.
+     * @returns {_Complex_} abs(A)
+     */
+    abs(): _Complex_;
+    /**
+     * _Complex_ conjugate.
+     * @returns {_Complex_} real(A) - imag(A)j
+     */
+    conj(): _Complex_;
+    /**
+     * this * -1
+     * @returns {_Complex_} -A
+     */
+    negate(): _Complex_;
+    /**
+     * Power function.
+     * @param {KComplexInputData} number
+     * @returns {_Complex_} pow(A, B)
+     */
+    pow(number: KComplexInputData): _Complex_;
+    /**
+     * Square.
+     * @returns {_Complex_} pow(A, 2)
+     */
+    square(): _Complex_;
+    /**
+     * Square root.
+     * @returns {_Complex_} sqrt(A)
+     */
+    sqrt(): _Complex_;
+    /**
+     * Reciprocal square root.
+     * @returns {_Complex_} rsqrt(A)
+     */
+    rsqrt(): _Complex_;
+    /**
+     * Logarithmic function.
+     * @returns {_Complex_} log(A)
+     */
+    log(): _Complex_;
+    /**
+     * Exponential function.
+     * @returns {_Complex_} exp(A)
+     */
+    exp(): _Complex_;
+    /**
+     * Sine function.
+     * @returns {_Complex_} sin(A)
+     */
+    sin(): _Complex_;
+    /**
+     * Cosine function.
+     * @returns {_Complex_} cos(A)
+     */
+    cos(): _Complex_;
+    /**
+     * Tangent function.
+     * @returns {_Complex_} tan(A)
+     */
+    tan(): _Complex_;
+    /**
+     * Atan (arc tangent) function.
+     * - Return the values of [-PI/2, PI/2].
+     * @returns {_Complex_} atan(A)
+     */
+    atan(): _Complex_;
+    /**
+     * Atan (arc tangent) function.
+     * Return the values of [-PI, PI] .
+     * Supports only real numbers.
+     * @param {KComplexInputData} [number] - X
+     * @returns {_Complex_} atan2(Y, X)
+     */
+    atan2(number?: KComplexInputData): _Complex_;
+    /**
+     * Arc sine function.
+     * @returns {_Complex_} asin(A)
+     */
+    asin(): _Complex_;
+    /**
+     * Arc cosine function.
+     * @returns {_Complex_} acos(A)
+     */
+    acos(): _Complex_;
+    /**
+     * Hyperbolic sine function.
+     * @returns {_Complex_} sinh(A)
+     */
+    sinh(): _Complex_;
+    /**
+     * Inverse hyperbolic sine function.
+     * @returns {_Complex_} asinh(A)
+     */
+    asinh(): _Complex_;
+    /**
+     * Hyperbolic cosine function.
+     * @returns {_Complex_} cosh(A)
+     */
+    cosh(): _Complex_;
+    /**
+     * Inverse hyperbolic cosine function.
+     * @returns {_Complex_} acosh(A)
+     */
+    acosh(): _Complex_;
+    /**
+     * Hyperbolic tangent function.
+     * @returns {_Complex_} tanh(A)
+     */
+    tanh(): _Complex_;
+    /**
+     * Inverse hyperbolic tangent function.
+     * @returns {_Complex_} atanh(A)
+     */
+    atanh(): _Complex_;
+    /**
+     * Secant function.
+     * @returns {_Complex_} sec(A)
+     */
+    sec(): _Complex_;
+    /**
+     * Reverse secant function.
+     * @returns {_Complex_} asec(A)
+     */
+    asec(): _Complex_;
+    /**
+     * Hyperbolic secant function.
+     * @returns {_Complex_} sech(A)
+     */
+    sech(): _Complex_;
+    /**
+     * Inverse hyperbolic secant function.
+     * @returns {_Complex_} asech(A)
+     */
+    asech(): _Complex_;
+    /**
+     * Cotangent function.
+     * @returns {_Complex_} cot(A)
+     */
+    cot(): _Complex_;
+    /**
+     * Inverse cotangent function.
+     * @returns {_Complex_} acot(A)
+     */
+    acot(): _Complex_;
+    /**
+     * Hyperbolic cotangent function.
+     * @returns {_Complex_} coth(A)
+     */
+    coth(): _Complex_;
+    /**
+     * Inverse hyperbolic cotangent function.
+     * @returns {_Complex_} acoth(A)
+     */
+    acoth(): _Complex_;
+    /**
+     * Cosecant function.
+     * @returns {_Complex_} csc(A)
+     */
+    csc(): _Complex_;
+    /**
+     * Inverse cosecant function.
+     * @returns {_Complex_} acsc(A)
+     */
+    acsc(): _Complex_;
+    /**
+     * Hyperbolic cosecant function.
+     * @returns {_Complex_} csch(A)
+     */
+    csch(): _Complex_;
+    /**
+     * Inverse hyperbolic cosecant function.
+     * @returns {_Complex_} acsch(A)
+     */
+    acsch(): _Complex_;
+    /**
+     * Normalized sinc function.
+     * @returns {_Complex_} sinc(A)
+     */
+    sinc(): _Complex_;
     /**
      * Return true if the value is integer.
      * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
@@ -1667,110 +1945,324 @@ declare class _Complex_ {
      */
     isFinite(): boolean;
     /**
-     * Absolute value.
-     * @returns {_Complex_} abs(A)
+     * Log-gamma function.
+     * - Calculate from real values.
+     * @returns {_Complex_}
      */
-    abs(): _Complex_;
+    gammaln(): _Complex_;
     /**
-     * _Complex_ conjugate.
-     * @returns {_Complex_} real(A) - imag(A)j
+     * Gamma function.
+     * - Calculate from real values.
+     * @returns {_Complex_}
      */
-    conj(): _Complex_;
+    gamma(): _Complex_;
     /**
-     * this * -1
-     * @returns {_Complex_} -A
+     * Incomplete gamma function.
+     * - Calculate from real values.
+     * @param {KComplexInputData} a
+     * @param {string} [tail="lower"] - lower (default) , "upper"
+     * @returns {_Complex_}
      */
-    negate(): _Complex_;
+    gammainc(a: KComplexInputData, tail?: string): _Complex_;
     /**
-     * Power function.
+     * _Probability_ density function (PDF) of the gamma distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} k - Shape parameter.
+     * @param {KComplexInputData} s - Scale parameter.
+     * @returns {_Complex_}
+     */
+    gampdf(k: KComplexInputData, s: KComplexInputData): _Complex_;
+    /**
+     * Cumulative distribution function (CDF) of gamma distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} k - Shape parameter.
+     * @param {KComplexInputData} s - Scale parameter.
+     * @returns {_Complex_}
+     */
+    gamcdf(k: KComplexInputData, s: KComplexInputData): _Complex_;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of gamma distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} k - Shape parameter.
+     * @param {KComplexInputData} s - Scale parameter.
+     * @returns {_Complex_}
+     */
+    gaminv(k: KComplexInputData, s: KComplexInputData): _Complex_;
+    /**
+     * Beta function.
+     * - Calculate from real values.
+     * @param {KComplexInputData} y
+     * @returns {_Complex_}
+     */
+    beta(y: KComplexInputData): _Complex_;
+    /**
+     * Incomplete beta function.
+     * - Calculate from real values.
+     * @param {KComplexInputData} a
+     * @param {KComplexInputData} b
+     * @param {string} [tail="lower"] - lower (default) , "upper"
+     * @returns {_Complex_}
+     */
+    betainc(a: KComplexInputData, b: KComplexInputData, tail?: string): _Complex_;
+    /**
+     * _Probability_ density function (PDF) of beta distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} a
+     * @param {KComplexInputData} b
+     * @returns {_Complex_}
+     */
+    betapdf(a: KComplexInputData, b: KComplexInputData): _Complex_;
+    /**
+     * Cumulative distribution function (CDF) of beta distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} a
+     * @param {KComplexInputData} b
+     * @returns {_Complex_}
+     */
+    betacdf(a: KComplexInputData, b: KComplexInputData): _Complex_;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of beta distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} a
+     * @param {KComplexInputData} b
+     * @returns {_Complex_}
+     */
+    betainv(a: KComplexInputData, b: KComplexInputData): _Complex_;
+    /**
+     * Factorial function, x!.
+     * - Calculate from real values.
+     * @returns {_Complex_}
+     */
+    factorial(): _Complex_;
+    /**
+     * Binomial coefficient, number of all combinations, nCk.
+     * - Calculate from real values.
+     * @param {KComplexInputData} k
+     * @returns {_Complex_}
+     */
+    nchoosek(k: KComplexInputData): _Complex_;
+    /**
+     * Error function.
+     * - Calculate from real values.
+     * @returns {_Complex_}
+     */
+    erf(): _Complex_;
+    /**
+     * Complementary error function.
+     * - Calculate from real values.
+     * @returns {_Complex_}
+     */
+    erfc(): _Complex_;
+    /**
+     * Inverse function of Error function.
+     * - Calculate from real values.
+     * @returns {_Complex_}
+     */
+    erfinv(): _Complex_;
+    /**
+     * Inverse function of Complementary error function.
+     * - Calculate from real values.
+     * @returns {_Complex_}
+     */
+    erfcinv(): _Complex_;
+    /**
+     * _Probability_ density function (PDF) of normal distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} [u=0.0] - Average value.
+     * @param {KComplexInputData} [s=1.0] - Variance value.
+     * @returns {_Complex_}
+     */
+    normpdf(u?: KComplexInputData, s?: KComplexInputData): _Complex_;
+    /**
+     * Cumulative distribution function (CDF) of normal distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} [u=0.0] - Average value.
+     * @param {KComplexInputData} [s=1.0] - Variance value.
+     * @returns {_Complex_}
+     */
+    normcdf(u?: KComplexInputData, s?: KComplexInputData): _Complex_;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of normal distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} [u=0.0] - Average value.
+     * @param {KComplexInputData} [s=1.0] - Variance value.
+     * @returns {_Complex_}
+     */
+    norminv(u?: KComplexInputData, s?: KComplexInputData): _Complex_;
+    /**
+     * _Probability_ density function (PDF) of Student's t-distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} v - The degrees of freedom. (DF)
+     * @returns {_Complex_}
+     */
+    tpdf(v: KComplexInputData): _Complex_;
+    /**
+     * Cumulative distribution function (CDF) of Student's t-distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} v - The degrees of freedom. (DF)
+     * @returns {_Complex_}
+     */
+    tcdf(v: KComplexInputData): _Complex_;
+    /**
+     * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} v - The degrees of freedom. (DF)
+     * @returns {_Complex_}
+     */
+    tinv(v: KComplexInputData): _Complex_;
+    /**
+     * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
+     * - Calculate from real values.
+     * @param {KComplexInputData} v - The degrees of freedom. (DF)
+     * @param {KComplexInputData} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
+     * @returns {_Complex_}
+     */
+    tdist(v: KComplexInputData, tails: KComplexInputData): _Complex_;
+    /**
+     * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+     * - Calculate from real values.
+     * @param {KComplexInputData} v - The degrees of freedom. (DF)
+     * @returns {_Complex_}
+     */
+    tinv2(v: KComplexInputData): _Complex_;
+    /**
+     * _Probability_ density function (PDF) of chi-square distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} k - The degrees of freedom. (DF)
+     * @returns {_Complex_}
+     */
+    chi2pdf(k: KComplexInputData): _Complex_;
+    /**
+     * Cumulative distribution function (CDF) of chi-square distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} k - The degrees of freedom. (DF)
+     * @returns {_Complex_}
+     */
+    chi2cdf(k: KComplexInputData): _Complex_;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} k - The degrees of freedom. (DF)
+     * @returns {_Complex_}
+     */
+    chi2inv(k: KComplexInputData): _Complex_;
+    /**
+     * _Probability_ density function (PDF) of F-distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} d1 - The degree of freedom of the molecules.
+     * @param {KComplexInputData} d2 - The degree of freedom of the denominator
+     * @returns {_Complex_}
+     */
+    fpdf(d1: KComplexInputData, d2: KComplexInputData): _Complex_;
+    /**
+     * Cumulative distribution function (CDF) of F-distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} d1 - The degree of freedom of the molecules.
+     * @param {KComplexInputData} d2 - The degree of freedom of the denominator
+     * @returns {_Complex_}
+     */
+    fcdf(d1: KComplexInputData, d2: KComplexInputData): _Complex_;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of F-distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} d1 - The degree of freedom of the molecules.
+     * @param {KComplexInputData} d2 - The degree of freedom of the denominator
+     * @returns {_Complex_}
+     */
+    finv(d1: KComplexInputData, d2: KComplexInputData): _Complex_;
+    /**
+     * Logical AND.
+     * - Calculated as an integer.
      * @param {KComplexInputData} number
-     * @returns {_Complex_} pow(A, B)
+     * @returns {_Complex_} A & B
      */
-    pow(number: KComplexInputData): _Complex_;
+    and(number: KComplexInputData): _Complex_;
     /**
-     * Square.
-     * @returns {_Complex_} pow(A, 2)
+     * Logical OR.
+     * - Calculated as an integer.
+     * @param {KComplexInputData} number
+     * @returns {_Complex_} A | B
      */
-    square(): _Complex_;
+    or(number: KComplexInputData): _Complex_;
     /**
-     * Square root.
-     * @returns {_Complex_} sqrt(A)
+     * Logical Exclusive-OR.
+     * - Calculated as an integer.
+     * @param {KComplexInputData} number
+     * @returns {_Complex_} A ^ B
      */
-    sqrt(): _Complex_;
+    xor(number: KComplexInputData): _Complex_;
     /**
-     * Reciprocal square root.
-     * @returns {_Complex_} rsqrt(A)
+     * Logical Not. (mutable)
+     * - Calculated as an integer.
+     * @returns {_Complex_} !A
      */
-    rsqrt(): _Complex_;
+    not(): _Complex_;
     /**
-     * Logarithmic function.
-     * @returns {_Complex_} log(A)
+     * this << n
+     * - Calculated as an integer.
+     * @param {KComplexInputData} n
+     * @returns {_Complex_} A << n
      */
-    log(): _Complex_;
+    shift(n: KComplexInputData): _Complex_;
     /**
-     * Exponential function.
-     * @returns {_Complex_} exp(A)
+     * Euclidean algorithm.
+     * - Calculated as an integer.
+     * @param {KComplexInputData} number
+     * @returns {_Complex_} gcd(x, y)
      */
-    exp(): _Complex_;
+    gcd(number: KComplexInputData): _Complex_;
     /**
-     * Sine function.
-     * @returns {_Complex_} sin(A)
+     * Extended Euclidean algorithm.
+     * - Calculated as an integer.
+     * @param {KComplexInputData} number
+     * @returns {Array<_Complex_>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
      */
-    sin(): _Complex_;
+    extgcd(number: KComplexInputData): _Complex_[];
     /**
-     * Cosine function.
-     * @returns {_Complex_} cos(A)
+     * Least common multiple.
+     * - Calculated as an integer.
+     * @param {KComplexInputData} number
+     * @returns {_Complex_} lcm(x, y)
      */
-    cos(): _Complex_;
+    lcm(number: KComplexInputData): _Complex_;
     /**
-     * Tangent function.
-     * @returns {_Complex_} tan(A)
+     * Modular exponentiation.
+     * - Calculated as an integer.
+     * @param {KComplexInputData} exponent
+     * @param {KComplexInputData} m
+     * @returns {_Complex_} A^B mod m
      */
-    tan(): _Complex_;
+    modPow(exponent: KComplexInputData, m: KComplexInputData): _Complex_;
     /**
-     * Atan (arc tangent) function.
-     * - Return the values of [-PI/2, PI/2].
-     * @returns {_Complex_} atan(A)
+     * Modular multiplicative inverse.
+     * - Calculated as an integer.
+     * @param {KComplexInputData} m
+     * @returns {_Complex_} A^(-1) mod m
      */
-    atan(): _Complex_;
+    modInverse(m: KComplexInputData): _Complex_;
     /**
-     * Atan (arc tangent) function.
-     * Return the values of [-PI, PI] .
-     * Supports only real numbers.
-     * @param {KComplexInputData} [number] - X
-     * @returns {_Complex_} atan2(Y, X)
+     * Return true if the value is prime number.
+     * - Calculated as an integer.
+     * - Calculate up to `2251799813685248(=2^51)`.
+     * @returns {boolean} - If the calculation range is exceeded, null is returned.
      */
-    atan2(number?: KComplexInputData): _Complex_;
+    isPrime(): boolean;
     /**
-     * Normalized sinc function.
-     * @returns {_Complex_} sinc(A)
+     * Return true if the value is prime number by Miller-Labin prime number determination method.
+     *
+     * Attention : it takes a very long time to process.
+     * - Calculated as an integer.
+     * @param {KComplexInputData} [certainty=100] - Repeat count (prime precision).
+     * @returns {boolean}
      */
-    sinc(): _Complex_;
+    isProbablePrime(certainty?: KComplexInputData): boolean;
     /**
-     * Floor.
-     * @returns {_Complex_} floor(A)
+     * Next prime.
+     * @param {KComplexInputData} [certainty=100] - Repeat count (prime precision).
+     * @param {KComplexInputData} [search_max=100000] - Search range of next prime.
+     * @returns {_Complex_}
      */
-    floor(): _Complex_;
-    /**
-     * Ceil.
-     * @returns {_Complex_} ceil(A)
-     */
-    ceil(): _Complex_;
-    /**
-     * Rounding to the nearest integer.
-     * @returns {_Complex_} round(A)
-     */
-    round(): _Complex_;
-    /**
-     * To integer rounded down to the nearest.
-     * @returns {_Complex_} fix(A), trunc(A)
-     */
-    fix(): _Complex_;
-    /**
-     * _Fraction_.
-     * @returns {_Complex_} fract(A)
-     */
-    fract(): _Complex_;
+    nextProbablePrime(certainty?: KComplexInputData, search_max?: KComplexInputData): _Complex_;
     /**
      * 1
      * @returns {_Complex_} 1
@@ -1801,6 +2293,11 @@ declare class _Complex_ {
      * @returns {_Complex_} i
      */
     static I: _Complex_;
+    /**
+     * - i, - j
+     * @returns {_Complex_} - i
+     */
+    static MINUS_I: _Complex_;
     /**
      * PI.
      * @returns {_Complex_} 3.14...
@@ -1876,6 +2373,42 @@ declare class _Complex_ {
      * @returns {_Complex_} NaN
      */
     static NaN: _Complex_;
+    /**
+     * The positive or negative sign of this number.
+     * - +1 if positive, -1 if negative, 0 if 0.
+     * @returns {_Complex_}
+     */
+    signum(): _Complex_;
+    /**
+     * Subtract.
+     * @param {KComplexInputData} number
+     * @returns {_Complex_} A - B
+     */
+    subtract(number: KComplexInputData): _Complex_;
+    /**
+     * Multiply.
+     * @param {KComplexInputData} number
+     * @returns {_Complex_} A * B
+     */
+    multiply(number: KComplexInputData): _Complex_;
+    /**
+     * Divide.
+     * @param {KComplexInputData} number
+     * @returns {_Complex_} fix(A / B)
+     */
+    divide(number: KComplexInputData): _Complex_;
+    /**
+     * Remainder of division.
+     * - Result has same sign as the Dividend.
+     * @param {KComplexInputData} number
+     * @returns {_Complex_} A % B
+     */
+    remainder(number: KComplexInputData): _Complex_;
+    /**
+     * To integer rounded down to the nearest.
+     * @returns {_Complex_} fix(A), trunc(A)
+     */
+    trunc(): _Complex_;
 }
 
 /**
@@ -2294,12 +2827,14 @@ declare class _Fraction_ {
     inv(): _Fraction_;
     /**
      * Modulo, positive remainder of division.
+     * - Result has same sign as the Dividend.
      * @param {KFractionInputData} num
      * @return {_Fraction_} A rem B
      */
     rem(num: KFractionInputData): _Fraction_;
     /**
      * Modulo, positive remainder of division.
+     * - Result has same sign as the Divisor.
      * @param {KFractionInputData} num
      * @returns {_Fraction_} A mod B
      */
@@ -2468,6 +3003,76 @@ declare class _Fraction_ {
      */
     isFinite(): boolean;
     /**
+     * Logical AND.
+     * - Calculated as an integer.
+     * @param {KFractionInputData} number
+     * @returns {_Fraction_} A & B
+     */
+    and(number: KFractionInputData): _Fraction_;
+    /**
+     * Logical OR.
+     * - Calculated as an integer.
+     * @param {KFractionInputData} number
+     * @returns {_Fraction_} A | B
+     */
+    or(number: KFractionInputData): _Fraction_;
+    /**
+     * Logical Exclusive-OR.
+     * - Calculated as an integer.
+     * @param {KFractionInputData} number
+     * @returns {_Fraction_} A ^ B
+     */
+    xor(number: KFractionInputData): _Fraction_;
+    /**
+     * Logical Not. (mutable)
+     * - Calculated as an integer.
+     * @returns {_Fraction_} !A
+     */
+    not(): _Fraction_;
+    /**
+     * this << n
+     * - Calculated as an integer.
+     * @param {KFractionInputData} n
+     * @returns {_Fraction_} A << n
+     */
+    shift(n: KFractionInputData): _Fraction_;
+    /**
+     * Euclidean algorithm.
+     * - Calculated as an integer.
+     * @param {KFractionInputData} number
+     * @returns {_Fraction_} gcd(x, y)
+     */
+    gcd(number: KFractionInputData): _Fraction_;
+    /**
+     * Extended Euclidean algorithm.
+     * - Calculated as an integer.
+     * @param {KFractionInputData} number
+     * @returns {Array<_Fraction_>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+     */
+    extgcd(number: KFractionInputData): _Fraction_[];
+    /**
+     * Least common multiple.
+     * - Calculated as an integer.
+     * @param {KFractionInputData} number
+     * @returns {_Fraction_} lcm(x, y)
+     */
+    lcm(number: KFractionInputData): _Fraction_;
+    /**
+     * Modular exponentiation.
+     * - Calculated as an integer.
+     * @param {KFractionInputData} exponent
+     * @param {KFractionInputData} m
+     * @returns {_Fraction_} A^B mod m
+     */
+    modPow(exponent: KFractionInputData, m: KFractionInputData): _Fraction_;
+    /**
+     * Modular multiplicative inverse.
+     * - Calculated as an integer.
+     * @param {KFractionInputData} m
+     * @returns {_Fraction_} A^(-1) mod m
+     */
+    modInverse(m: KFractionInputData): _Fraction_;
+    /**
      * Return true if the value is prime number.
      * - Calculated as an integer.
      * - Calculate up to `2251799813685248(=2^51)`.
@@ -2535,6 +3140,37 @@ declare class _Fraction_ {
      * @returns {_Fraction_} NaN
      */
     static NaN: _Fraction_;
+    /**
+     * The positive or negative sign of this number.
+     * - +1 if positive, -1 if negative, 0 if 0.
+     * @returns {number}
+     */
+    signum(): number;
+    /**
+     * Subtract.
+     * @param {KFractionInputData} number
+     * @returns {_Fraction_} A - B
+     */
+    subtract(number: KFractionInputData): _Fraction_;
+    /**
+     * Multiply.
+     * @param {KFractionInputData} number
+     * @returns {_Fraction_} A * B
+     */
+    multiply(number: KFractionInputData): _Fraction_;
+    /**
+     * Divide.
+     * @param {KFractionInputData} number
+     * @returns {_Fraction_} fix(A / B)
+     */
+    divide(number: KFractionInputData): _Fraction_;
+    /**
+     * Remainder of division.
+     * - Result has same sign as the Dividend.
+     * @param {KFractionInputData} number
+     * @returns {_Fraction_} A % B
+     */
+    remainder(number: KFractionInputData): _Fraction_;
 }
 
 /**
@@ -3040,6 +3676,20 @@ declare class _Matrix_ {
      */
     npow(number: KMatrixInputData): _Matrix_;
     /**
+     * Modulo, positive remainder of division for each element of matrix.
+     * - Result has same sign as the Dividend.
+     * @param {KMatrixInputData} number
+     * @returns {_Matrix_} A .rem B
+     */
+    rem(number: KMatrixInputData): _Matrix_;
+    /**
+     * Modulo, positive remainder of division for each element of matrix.
+     * - Result has same sign as the Divisor.
+     * @param {KMatrixInputData} number
+     * @returns {_Matrix_} A .mod B
+     */
+    mod(number: KMatrixInputData): _Matrix_;
+    /**
      * Real part of each element.
      * @returns {_Matrix_} real(A)
      */
@@ -3060,6 +3710,195 @@ declare class _Matrix_ {
      * @returns {_Matrix_}
      */
     sign(): _Matrix_;
+    /**
+     * Floor.
+     * @returns {_Matrix_} floor(A)
+     */
+    floor(): _Matrix_;
+    /**
+     * Ceil.
+     * @returns {_Matrix_} ceil(A)
+     */
+    ceil(): _Matrix_;
+    /**
+     * Rounding to the nearest integer.
+     * @returns {_Matrix_} round(A)
+     */
+    round(): _Matrix_;
+    /**
+     * To integer rounded down to the nearest.
+     * @returns {_Matrix_} fix(A), trunc(A)
+     */
+    fix(): _Matrix_;
+    /**
+     * _Fraction_.
+     * @returns {_Matrix_} fract(A)
+     */
+    fract(): _Matrix_;
+    /**
+     * Absolute value.
+     * @returns {_Matrix_} abs(A)
+     */
+    abs(): _Matrix_;
+    /**
+     * _Complex_ conjugate matrix.
+     * @returns {_Matrix_} real(A) - imag(A)j
+     */
+    conj(): _Matrix_;
+    /**
+     * this * -1
+     * @returns {_Matrix_} -A
+     */
+    negate(): _Matrix_;
+    /**
+     * Square root.
+     * @returns {_Matrix_} sqrt(A)
+     */
+    sqrt(): _Matrix_;
+    /**
+     * Logarithmic function.
+     * @returns {_Matrix_} log(A)
+     */
+    log(): _Matrix_;
+    /**
+     * Exponential function.
+     * @returns {_Matrix_} exp(A)
+     */
+    exp(): _Matrix_;
+    /**
+     * Sine function.
+     * @returns {_Matrix_} sin(A)
+     */
+    sin(): _Matrix_;
+    /**
+     * Cosine function.
+     * @returns {_Matrix_} cos(A)
+     */
+    cos(): _Matrix_;
+    /**
+     * Tangent function.
+     * @returns {_Matrix_} tan(A)
+     */
+    tan(): _Matrix_;
+    /**
+     * Atan (arc tangent) function.
+     * - Return the values of [-PI/2, PI/2].
+     * @returns {_Matrix_} atan(A)
+     */
+    atan(): _Matrix_;
+    /**
+     * Atan (arc tangent) function.
+     * - Return the values of [-PI, PI].
+     * - Supports only real numbers.
+     * @param {KMatrixInputData} number - X
+     * @returns {_Matrix_} atan2(Y, X)
+     */
+    atan2(number: KMatrixInputData): _Matrix_;
+    /**
+     * Arc sine function.
+     * @returns {_Matrix_} asin(A)
+     */
+    asin(): _Matrix_;
+    /**
+     * Arc cosine function.
+     * @returns {_Matrix_} acos(A)
+     */
+    acos(): _Matrix_;
+    /**
+     * Hyperbolic sine function.
+     * @returns {_Matrix_} sinh(A)
+     */
+    sinh(): _Matrix_;
+    /**
+     * Inverse hyperbolic sine function.
+     * @returns {_Matrix_} asinh(A)
+     */
+    asinh(): _Matrix_;
+    /**
+     * Hyperbolic cosine function.
+     * @returns {_Matrix_} cosh(A)
+     */
+    cosh(): _Matrix_;
+    /**
+     * Inverse hyperbolic cosine function.
+     * @returns {_Matrix_} acosh(A)
+     */
+    acosh(): _Matrix_;
+    /**
+     * Hyperbolic tangent function.
+     * @returns {_Matrix_} tanh(A)
+     */
+    tanh(): _Matrix_;
+    /**
+     * Inverse hyperbolic tangent function.
+     * @returns {_Matrix_} atanh(A)
+     */
+    atanh(): _Matrix_;
+    /**
+     * Secant function.
+     * @returns {_Matrix_} sec(A)
+     */
+    sec(): _Matrix_;
+    /**
+     * Reverse secant function.
+     * @returns {_Matrix_} asec(A)
+     */
+    asec(): _Matrix_;
+    /**
+     * Hyperbolic secant function.
+     * @returns {_Matrix_} sech(A)
+     */
+    sech(): _Matrix_;
+    /**
+     * Inverse hyperbolic secant function.
+     * @returns {_Matrix_} asech(A)
+     */
+    asech(): _Matrix_;
+    /**
+     * Cotangent function.
+     * @returns {_Matrix_} cot(A)
+     */
+    cot(): _Matrix_;
+    /**
+     * Inverse cotangent function.
+     * @returns {_Matrix_} acot(A)
+     */
+    acot(): _Matrix_;
+    /**
+     * Hyperbolic cotangent function.
+     * @returns {_Matrix_} coth(A)
+     */
+    coth(): _Matrix_;
+    /**
+     * Inverse hyperbolic cotangent function.
+     * @returns {_Matrix_} acoth(A)
+     */
+    acoth(): _Matrix_;
+    /**
+     * Cosecant function.
+     * @returns {_Matrix_} csc(A)
+     */
+    csc(): _Matrix_;
+    /**
+     * Inverse cosecant function.
+     * @returns {_Matrix_} acsc(A)
+     */
+    acsc(): _Matrix_;
+    /**
+     * Hyperbolic cosecant function.
+     * @returns {_Matrix_} csch(A)
+     */
+    csch(): _Matrix_;
+    /**
+     * Inverse hyperbolic cosecant function.
+     * @returns {_Matrix_} acsch(A)
+     */
+    acsch(): _Matrix_;
+    /**
+     * Normalized sinc function.
+     * @returns {_Matrix_} sinc(A)
+     */
+    sinc(): _Matrix_;
     /**
      * Test if each element of the matrix is integer.
      * - 1 if true, 0 if false.
@@ -3150,95 +3989,6 @@ declare class _Matrix_ {
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
     testFinite(): _Matrix_;
-    /**
-     * Absolute value.
-     * @returns {_Matrix_} abs(A)
-     */
-    abs(): _Matrix_;
-    /**
-     * _Complex_ conjugate matrix.
-     * @returns {_Matrix_} real(A) - imag(A)j
-     */
-    conj(): _Matrix_;
-    /**
-     * this * -1
-     * @returns {_Matrix_} -A
-     */
-    negate(): _Matrix_;
-    /**
-     * Square root.
-     * @returns {_Matrix_} sqrt(A)
-     */
-    sqrt(): _Matrix_;
-    /**
-     * Logarithmic function.
-     * @returns {_Matrix_} log(A)
-     */
-    log(): _Matrix_;
-    /**
-     * Exponential function.
-     * @returns {_Matrix_} exp(A)
-     */
-    exp(): _Matrix_;
-    /**
-     * Sine function.
-     * @returns {_Matrix_} sin(A)
-     */
-    sin(): _Matrix_;
-    /**
-     * Cosine function.
-     * @returns {_Matrix_} cos(A)
-     */
-    cos(): _Matrix_;
-    /**
-     * Tangent function.
-     * @returns {_Matrix_} tan(A)
-     */
-    tan(): _Matrix_;
-    /**
-     * Atan (arc tangent) function.
-     * - Return the values of [-PI/2, PI/2].
-     * @returns {_Matrix_} atan(A)
-     */
-    atan(): _Matrix_;
-    /**
-     * Atan (arc tangent) function.
-     * - Return the values of [-PI, PI].
-     * - Supports only real numbers.
-     * @param {KMatrixInputData} number - X
-     * @returns {_Matrix_} atan2(Y, X)
-     */
-    atan2(number: KMatrixInputData): _Matrix_;
-    /**
-     * Floor.
-     * @returns {_Matrix_} floor(A)
-     */
-    floor(): _Matrix_;
-    /**
-     * Ceil.
-     * @returns {_Matrix_} ceil(A)
-     */
-    ceil(): _Matrix_;
-    /**
-     * Rounding to the nearest integer.
-     * @returns {_Matrix_} round(A)
-     */
-    round(): _Matrix_;
-    /**
-     * To integer rounded down to the nearest.
-     * @returns {_Matrix_} fix(A), trunc(A)
-     */
-    fix(): _Matrix_;
-    /**
-     * _Fraction_.
-     * @returns {_Matrix_} fract(A)
-     */
-    fract(): _Matrix_;
-    /**
-     * Normalized sinc function.
-     * @returns {_Matrix_} sinc(A)
-     */
-    sinc(): _Matrix_;
     /**
      * Rotate matrix 90 degrees clockwise.
      * @param {KMatrixInputData} rot_90_count - Number of times rotated by 90 degrees.
@@ -3444,16 +4194,19 @@ declare class _Matrix_ {
     pinv(): _Matrix_;
     /**
      * Log-gamma function.
+     * - Calculate from real values.
      * @returns {_Matrix_}
      */
     gammaln(): _Matrix_;
     /**
      * Gamma function.
+     * - Calculate from real values.
      * @returns {_Matrix_}
      */
     gamma(): _Matrix_;
     /**
      * Incomplete gamma function.
+     * - Calculate from real values.
      * @param {KMatrixInputData} a
      * @param {string} [tail="lower"] - lower (default) , "upper"
      * @returns {_Matrix_}
@@ -3461,6 +4214,7 @@ declare class _Matrix_ {
     gammainc(a: KMatrixInputData, tail?: string): _Matrix_;
     /**
      * _Probability_ density function (PDF) of the gamma distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} k - Shape parameter.
      * @param {KMatrixInputData} s - Scale parameter.
      * @returns {_Matrix_}
@@ -3468,6 +4222,7 @@ declare class _Matrix_ {
     gampdf(k: KMatrixInputData, s: KMatrixInputData): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of gamma distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} k - Shape parameter.
      * @param {KMatrixInputData} s - Scale parameter.
      * @returns {_Matrix_}
@@ -3475,6 +4230,7 @@ declare class _Matrix_ {
     gamcdf(k: KMatrixInputData, s: KMatrixInputData): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of gamma distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} k - Shape parameter.
      * @param {KMatrixInputData} s - Scale parameter.
      * @returns {_Matrix_}
@@ -3482,12 +4238,14 @@ declare class _Matrix_ {
     gaminv(k: KMatrixInputData, s: KMatrixInputData): _Matrix_;
     /**
      * Beta function.
+     * - Calculate from real values.
      * @param {KMatrixInputData} y
      * @returns {_Matrix_}
      */
     beta(y: KMatrixInputData): _Matrix_;
     /**
      * Incomplete beta function.
+     * - Calculate from real values.
      * @param {KMatrixInputData} a
      * @param {KMatrixInputData} b
      * @param {string} [tail="lower"] - lower (default) , "upper"
@@ -3496,6 +4254,7 @@ declare class _Matrix_ {
     betainc(a: KMatrixInputData, b: KMatrixInputData, tail?: string): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of beta distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} a
      * @param {KMatrixInputData} b
      * @returns {_Matrix_}
@@ -3503,6 +4262,7 @@ declare class _Matrix_ {
     betacdf(a: KMatrixInputData, b: KMatrixInputData): _Matrix_;
     /**
      * _Probability_ density function (PDF) of beta distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} a
      * @param {KMatrixInputData} b
      * @returns {_Matrix_}
@@ -3510,6 +4270,7 @@ declare class _Matrix_ {
     betapdf(a: KMatrixInputData, b: KMatrixInputData): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of beta distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} a
      * @param {KMatrixInputData} b
      * @returns {_Matrix_}
@@ -3517,37 +4278,44 @@ declare class _Matrix_ {
     betainv(a: KMatrixInputData, b: KMatrixInputData): _Matrix_;
     /**
      * Factorial function, x!.
+     * - Calculate from real values.
      * @returns {_Matrix_}
      */
     factorial(): _Matrix_;
     /**
      * Binomial coefficient, number of all combinations, nCk.
+     * - Calculate from real values.
      * @param {KMatrixInputData} k
      * @returns {_Matrix_}
      */
     nchoosek(k: KMatrixInputData): _Matrix_;
     /**
      * Error function.
+     * - Calculate from real values.
      * @returns {_Matrix_}
      */
     erf(): _Matrix_;
     /**
      * Complementary error function.
+     * - Calculate from real values.
      * @returns {_Matrix_}
      */
     erfc(): _Matrix_;
     /**
      * Inverse function of Error function.
+     * - Calculate from real values.
      * @returns {_Matrix_}
      */
     erfinv(): _Matrix_;
     /**
      * Inverse function of Complementary error function.
+     * - Calculate from real values.
      * @returns {_Matrix_}
      */
     erfcinv(): _Matrix_;
     /**
      * _Probability_ density function (PDF) of normal distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} [u=0.0] - Average value.
      * @param {KMatrixInputData} [s=1.0] - Variance value.
      * @returns {_Matrix_}
@@ -3555,6 +4323,7 @@ declare class _Matrix_ {
     normpdf(u?: KMatrixInputData, s?: KMatrixInputData): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of normal distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} [u=0.0] - Average value.
      * @param {KMatrixInputData} [s=1.0] - Variance value.
      * @returns {_Matrix_}
@@ -3562,6 +4331,7 @@ declare class _Matrix_ {
     normcdf(u?: KMatrixInputData, s?: KMatrixInputData): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of normal distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} [u=0.0] - Average value.
      * @param {KMatrixInputData} [s=1.0] - Variance value.
      * @returns {_Matrix_}
@@ -3569,26 +4339,28 @@ declare class _Matrix_ {
     norminv(u?: KMatrixInputData, s?: KMatrixInputData): _Matrix_;
     /**
      * _Probability_ density function (PDF) of Student's t-distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} v - The degrees of freedom. (DF)
      * @returns {_Matrix_}
      */
     tpdf(v: KMatrixInputData): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of Student's t-distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} v - The degrees of freedom. (DF)
      * @returns {_Matrix_}
      */
     tcdf(v: KMatrixInputData): _Matrix_;
     /**
      * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} v - The degrees of freedom. (DF)
      * @returns {_Matrix_}
      */
     tinv(v: KMatrixInputData): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-     * - If tails = 1, TDIST returns the one-tailed distribution.
-     * - If tails = 2, TDIST returns the two-tailed distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} v - The degrees of freedom. (DF)
      * @param {KMatrixInputData} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
      * @returns {_Matrix_}
@@ -3596,31 +4368,35 @@ declare class _Matrix_ {
     tdist(v: KMatrixInputData, tails: KMatrixInputData): _Matrix_;
     /**
      * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+     * - Calculate from real values.
      * @param {KMatrixInputData} v - The degrees of freedom. (DF)
      * @returns {_Matrix_}
      */
     tinv2(v: KMatrixInputData): _Matrix_;
     /**
      * _Probability_ density function (PDF) of chi-square distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} k - The degrees of freedom. (DF)
      * @returns {_Matrix_}
      */
     chi2pdf(k: KMatrixInputData): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of chi-square distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} k - The degrees of freedom. (DF)
      * @returns {_Matrix_}
      */
     chi2cdf(k: KMatrixInputData): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} k - The degrees of freedom. (DF)
      * @returns {_Matrix_}
      */
     chi2inv(k: KMatrixInputData): _Matrix_;
     /**
      * _Probability_ density function (PDF) of F-distribution.
-     * - In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
      * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
      * @returns {_Matrix_}
@@ -3628,6 +4404,7 @@ declare class _Matrix_ {
     fpdf(d1: KMatrixInputData, d2: KMatrixInputData): _Matrix_;
     /**
      * Cumulative distribution function (CDF) of F-distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
      * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
      * @returns {_Matrix_}
@@ -3635,11 +4412,106 @@ declare class _Matrix_ {
     fcdf(d1: KMatrixInputData, d2: KMatrixInputData): _Matrix_;
     /**
      * Inverse function of cumulative distribution function (CDF) of F-distribution.
+     * - Calculate from real values.
      * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
      * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
      * @returns {_Matrix_}
      */
     finv(d1: KMatrixInputData, d2: KMatrixInputData): _Matrix_;
+    /**
+     * Logical AND.
+     * - Calculated as an integer.
+     * @param {KMatrixInputData} number
+     * @returns {_Matrix_} A & B
+     */
+    and(number: KMatrixInputData): _Matrix_;
+    /**
+     * Logical OR.
+     * - Calculated as an integer.
+     * @param {KMatrixInputData} number
+     * @returns {_Matrix_} A | B
+     */
+    or(number: KMatrixInputData): _Matrix_;
+    /**
+     * Logical Exclusive-OR.
+     * - Calculated as an integer.
+     * @param {KMatrixInputData} number
+     * @returns {_Matrix_} A ^ B
+     */
+    xor(number: KMatrixInputData): _Matrix_;
+    /**
+     * Logical Not. (mutable)
+     * - Calculated as an integer.
+     * @returns {_Matrix_} !A
+     */
+    not(): _Matrix_;
+    /**
+     * this << n
+     * - Calculated as an integer.
+     * @param {KMatrixInputData} n
+     * @returns {_Matrix_} A << n
+     */
+    shift(n: KMatrixInputData): _Matrix_;
+    /**
+     * Euclidean algorithm.
+     * - Calculated as an integer.
+     * @param {KMatrixInputData} number
+     * @returns {_Matrix_} gcd(x, y)
+     */
+    gcd(number: KMatrixInputData): _Matrix_;
+    /**
+     * Extended Euclidean algorithm.
+     * - Calculated as an integer.
+     * @param {KMatrixInputData} number
+     * @returns {Array<_Matrix_>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+     */
+    extgcd(number: KMatrixInputData): _Matrix_[];
+    /**
+     * Least common multiple.
+     * - Calculated as an integer.
+     * @param {KMatrixInputData} number
+     * @returns {_Matrix_} lcm(x, y)
+     */
+    lcm(number: KMatrixInputData): _Matrix_;
+    /**
+     * Modular exponentiation.
+     * - Calculated as an integer.
+     * @param {KMatrixInputData} exponent
+     * @param {KMatrixInputData} m
+     * @returns {_Matrix_} A^B mod m
+     */
+    modPow(exponent: KMatrixInputData, m: KMatrixInputData): _Matrix_;
+    /**
+     * Modular multiplicative inverse.
+     * - Calculated as an integer.
+     * @param {KMatrixInputData} m
+     * @returns {_Matrix_} A^(-1) mod m
+     */
+    modInverse(m: KMatrixInputData): _Matrix_;
+    /**
+     * Test if each element of the matrix is prime number.
+     * - 1 if true, 0 if false.
+     * - Calculated as an integer.
+     * - Calculate up to `2251799813685248(=2^51)`.
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
+     */
+    testPrime(): _Matrix_;
+    /**
+     * Test if each element of the matrix is prime number by Miller-Labin prime number determination method.
+     * - 1 if true, 0 if false.
+     * Attention : it takes a very long time to process.
+     * - Calculated as an integer.
+     * @param {KMatrixInputData} [certainty=100] - Repeat count (prime precision).
+     * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
+     */
+    testProbablePrime(certainty?: KMatrixInputData): _Matrix_;
+    /**
+     * Next prime.
+     * @param {KMatrixInputData} [certainty=100] - Repeat count (prime precision).
+     * @param {KMatrixInputData} [search_max=100000] - Search range of next prime.
+     * @returns {_Matrix_}
+     */
+    nextProbablePrime(certainty?: KMatrixInputData, search_max?: KMatrixInputData): _Matrix_;
     /**
      * Maximum number.
      * @param {KMatrixSettings} [type]
@@ -3961,6 +4833,42 @@ declare class _Matrix_ {
      * @returns {_Matrix_} NaN
      */
     static NaN: _Matrix_;
+    /**
+     * The positive or negative sign of this number.
+     * - +1 if positive, -1 if negative, 0 if 0.
+     * @returns {_Matrix_}
+     */
+    signum(): _Matrix_;
+    /**
+     * Subtract.
+     * @param {KMatrixInputData} number
+     * @returns {_Matrix_} A - B
+     */
+    subtract(number: KMatrixInputData): _Matrix_;
+    /**
+     * Multiply.
+     * @param {KMatrixInputData} number
+     * @returns {_Matrix_} A * B
+     */
+    multiply(number: KMatrixInputData): _Matrix_;
+    /**
+     * Divide.
+     * @param {KMatrixInputData} number
+     * @returns {_Matrix_} fix(A / B)
+     */
+    divide(number: KMatrixInputData): _Matrix_;
+    /**
+     * Remainder of division.
+     * - Result has same sign as the Dividend.
+     * @param {KMatrixInputData} number
+     * @returns {_Matrix_} A % B
+     */
+    remainder(number: KMatrixInputData): _Matrix_;
+    /**
+     * To integer rounded down to the nearest.
+     * @returns {_Matrix_} fix(A), trunc(A)
+     */
+    trunc(): _Matrix_;
 }
 
 /**
@@ -4099,237 +5007,275 @@ declare class _LinearAlgebra_ {
 }
 
 /**
- * Calculating probability class for `_Matrix_` class.
- * - These methods can be used in the `_Matrix_` method chain.
+ * Collection for calculating probability using real numbers.
+ * - These methods can be used in the `_Matrix_`, `_Complex_` method chain.
  * - This class cannot be called directly.
  */
 declare class _Probability_ {
     /**
      * Log-gamma function.
-     * @param {KMatrixInputData} x
-     * @returns {_Matrix_}
+     * @param {number} x
+     * @returns {number}
      */
-    static gammaln(x: any): _Matrix_;
+    static gammaln(x: number): number;
+    /**
+     * Incomplete gamma function upper side.
+     * @param {number} x
+     * @param {number} a
+     * @param {number} gammaln_a
+     * @returns {number}
+     */
+    static q_gamma(x: number, a: number, gammaln_a: number): number;
+    /**
+     * Incomplete gamma function lower side.
+     * @param {number} x
+     * @param {number} a
+     * @param {number} gammaln_a
+     * @returns {number}
+     */
+    static p_gamma(x: number, a: number, gammaln_a: number): number;
     /**
      * Gamma function.
-     * @param {KMatrixInputData} x
-     * @returns {_Matrix_}
+     * @param {number} z
+     * @returns {number}
      */
-    static gamma(x: any): _Matrix_;
+    static gamma(z: number): number;
     /**
      * Incomplete gamma function.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} a
+     * @param {number} x
+     * @param {number} a
      * @param {string} [tail="lower"] - lower (default) , "upper"
-     * @returns {_Matrix_}
+     * @returns {number}
      */
-    static gammainc(x: any, a: any, tail?: string): _Matrix_;
+    static gammainc(x: number, a: number, tail?: string): number;
     /**
      * _Probability_ density function (PDF) of the gamma distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} k - Shape parameter.
-     * @param {KMatrixInputData} s - Scale parameter.
-     * @returns {_Matrix_}
+     * @param {number} x
+     * @param {number} k - Shape parameter.
+     * @param {number} s - Scale parameter.
+     * @returns {number}
      */
-    static gampdf(x: any, k: any, s: any): _Matrix_;
+    static gampdf(x: number, k: number, s: number): number;
     /**
      * Cumulative distribution function (CDF) of gamma distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} k - Shape parameter.
-     * @param {KMatrixInputData} s - Scale parameter.
-     * @returns {_Matrix_}
+     * @param {number} x
+     * @param {number} k - Shape parameter.
+     * @param {number} s - Scale parameter.
+     * @returns {number}
      */
-    static gamcdf(x: any, k: any, s: any): _Matrix_;
+    static gamcdf(x: number, k: number, s: number): number;
     /**
      * Inverse function of cumulative distribution function (CDF) of gamma distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} k - Shape parameter.
-     * @param {KMatrixInputData} s - Scale parameter.
-     * @returns {_Matrix_}
+     * @param {number} p
+     * @param {number} k - Shape parameter.
+     * @param {number} s - Scale parameter.
+     * @returns {number}
      */
-    static gaminv(x: any, k: any, s: any): _Matrix_;
+    static gaminv(p: number, k: number, s: number): number;
     /**
      * Beta function.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} y
-     * @returns {_Matrix_}
+     * @param {number} x
+     * @param {number} y
+     * @returns {number}
      */
-    static beta(x: any, y: any): _Matrix_;
+    static beta(x: number, y: number): number;
+    /**
+     * Incomplete beta function lower side.
+     * @param {number} x
+     * @param {number} a
+     * @param {number} b
+     * @returns {number}
+     */
+    static p_beta(x: number, a: number, b: number): number;
+    /**
+     * Incomplete beta function upper side.
+     * @param {number} x
+     * @param {number} a
+     * @param {number} b
+     * @returns {number}
+     */
+    static q_beta(x: number, a: number, b: number): number;
     /**
      * Incomplete beta function.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} a
-     * @param {KMatrixInputData} b
+     * @param {number} x
+     * @param {number} a
+     * @param {number} b
      * @param {string} [tail="lower"] - lower (default) , "upper"
-     * @returns {_Matrix_}
+     * @returns {number}
      */
-    static betainc(x: any, a: any, b: any, tail?: string): _Matrix_;
+    static betainc(x: number, a: number, b: number, tail?: string): number;
     /**
-     * Cumulative distribution function (CDF) of beta distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} a
-     * @param {KMatrixInputData} b
-     * @returns {_Matrix_}
+     * Return true if the value is integer.
+     * @param {number} x
+     * @returns {boolean}
      */
-    static betacdf(x: any, a: any, b: any): _Matrix_;
+    static isInteger(x: number): boolean;
     /**
      * _Probability_ density function (PDF) of beta distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} a
-     * @param {KMatrixInputData} b
-     * @returns {_Matrix_}
+     * @param {number} x
+     * @param {number} a
+     * @param {number} b
+     * @returns {number}
      */
-    static betapdf(x: any, a: any, b: any): _Matrix_;
+    static betapdf(x: number, a: number, b: number): number;
+    /**
+     * Cumulative distribution function (CDF) of beta distribution.
+     * @param {number} x
+     * @param {number} a
+     * @param {number} b
+     * @returns {number}
+     */
+    static betacdf(x: number, a: number, b: number): number;
     /**
      * Inverse function of cumulative distribution function (CDF) of beta distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} a
-     * @param {KMatrixInputData} b
-     * @returns {_Matrix_}
+     * @param {number} p
+     * @param {number} a
+     * @param {number} b
+     * @returns {number}
      */
-    static betainv(x: any, a: any, b: any): _Matrix_;
+    static betainv(p: number, a: number, b: number): number;
     /**
      * Factorial function, x!.
-     * @param {KMatrixInputData} x
-     * @returns {_Matrix_}
+     * @param {number} n
+     * @returns {number}
      */
-    static factorial(x: any): _Matrix_;
+    static factorial(n: number): number;
     /**
      * Binomial coefficient, number of all combinations, nCk.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} k
-     * @returns {_Matrix_}
+     * @param {number} n
+     * @param {number} k
+     * @returns {number} nCk
      */
-    static nchoosek(x: any, k: any): _Matrix_;
+    static nchoosek(n: number, k: number): number;
     /**
      * Error function.
-     * @param {KMatrixInputData} x
-     * @returns {_Matrix_}
+     * @param {number} x
+     * @returns {number}
      */
-    static erf(x: any): _Matrix_;
+    static erf(x: number): number;
     /**
      * Complementary error function.
-     * @param {KMatrixInputData} x
-     * @returns {_Matrix_}
+     * @param {number} x
+     * @returns {number}
      */
-    static erfc(x: any): _Matrix_;
+    static erfc(x: number): number;
     /**
      * Inverse function of Error function.
-     * @param {KMatrixInputData} p
-     * @returns {_Matrix_}
+     * @param {number} p
+     * @returns {number}
      */
-    static erfinv(p: any): _Matrix_;
+    static erfinv(p: number): number;
     /**
      * Inverse function of Complementary error function.
-     * @param {KMatrixInputData} p
-     * @returns {_Matrix_}
+     * @param {number} p
+     * @returns {number}
      */
-    static erfcinv(p: any): _Matrix_;
+    static erfcinv(p: number): number;
     /**
      * _Probability_ density function (PDF) of normal distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} [u=0.0] - Average value.
-     * @param {KMatrixInputData} [s=1.0] - Variance value.
-     * @returns {_Matrix_}
+     * @param {number} x
+     * @param {number} [u=0.0] - Average value.
+     * @param {number} [s=1.0] - Variance value.
+     * @returns {number}
      */
-    static normpdf(x: any, u: any, s: any): _Matrix_;
+    static normpdf(x: number, u?: number, s?: number): number;
     /**
      * Cumulative distribution function (CDF) of normal distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} [u=0.0] - Average value.
-     * @param {KMatrixInputData} [s=1.0] - Variance value.
-     * @returns {_Matrix_}
+     * @param {number} x
+     * @param {number} [u=0.0] - Average value.
+     * @param {number} [s=1.0] - Variance value.
+     * @returns {number}
      */
-    static normcdf(x: any, u: any, s: any): _Matrix_;
+    static normcdf(x: number, u?: number, s?: number): number;
     /**
      * Inverse function of cumulative distribution function (CDF) of normal distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} [u=0.0] - Average value.
-     * @param {KMatrixInputData} [s=1.0] - Variance value.
-     * @returns {_Matrix_}
+     * @param {number} p - _Probability_.
+     * @param {number} [u=0.0] - Average value.
+     * @param {number} [s=1.0] - Variance value.
+     * @returns {number}
      */
-    static norminv(x: any, u: any, s: any): _Matrix_;
+    static norminv(p: number, u?: number, s?: number): number;
     /**
      * _Probability_ density function (PDF) of Student's t-distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} v - The degrees of freedom. (DF)
-     * @returns {_Matrix_}
+     * @param {number} t - T-value.
+     * @param {number} v - The degrees of freedom. (DF)
+     * @returns {number}
      */
-    static tpdf(x: any, v: any): _Matrix_;
+    static tpdf(t: number, v: number): number;
     /**
      * Cumulative distribution function (CDF) of Student's t-distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} v - The degrees of freedom. (DF)
-     * @returns {_Matrix_}
+     * @param {number} t - T-value.
+     * @param {number} v - The degrees of freedom. (DF)
+     * @returns {number}
      */
-    static tcdf(x: any, v: any): _Matrix_;
+    static tcdf(t: number, v: number): number;
     /**
      * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} v - The degrees of freedom. (DF)
-     * @returns {_Matrix_}
+     * @param {number} p - _Probability_.
+     * @param {number} v - The degrees of freedom. (DF)
+     * @returns {number}
      */
-    static tinv(x: any, v: any): _Matrix_;
+    static tinv(p: number, v: number): number;
     /**
      * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} v - The degrees of freedom. (DF)
-     * @param {KMatrixInputData} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
-     * @returns {_Matrix_}
+     * @param {number} t - T-value.
+     * @param {number} v - The degrees of freedom. (DF)
+     * @param {number} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
+     * @returns {number}
      */
-    static tdist(x: any, v: any, tails: any): _Matrix_;
+    static tdist(t: number, v: number, tails: number): number;
     /**
      * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} v - The degrees of freedom. (DF)
-     * @returns {_Matrix_}
+     * @param {number} p - _Probability_.
+     * @param {number} v - The degrees of freedom. (DF)
+     * @returns {number}
      */
-    static tinv2(x: any, v: any): _Matrix_;
+    static tinv2(p: number, v: number): number;
     /**
      * _Probability_ density function (PDF) of chi-square distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} k - The degrees of freedom. (DF)
-     * @returns {_Matrix_}
+     * @param {number} x
+     * @param {number} k - The degrees of freedom. (DF)
+     * @returns {number}
      */
-    static chi2pdf(x: any, k: any): _Matrix_;
+    static chi2pdf(x: number, k: number): number;
     /**
      * Cumulative distribution function (CDF) of chi-square distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} k - The degrees of freedom. (DF)
-     * @returns {_Matrix_}
+     * @param {number} x
+     * @param {number} k - The degrees of freedom. (DF)
+     * @returns {number}
      */
-    static chi2cdf(x: any, k: any): _Matrix_;
+    static chi2cdf(x: number, k: number): number;
     /**
      * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} k - The degrees of freedom. (DF)
-     * @returns {_Matrix_}
+     * @param {number} p - _Probability_.
+     * @param {number} k - The degrees of freedom. (DF)
+     * @returns {number}
      */
-    static chi2inv(x: any, k: any): _Matrix_;
+    static chi2inv(p: number, k: number): number;
     /**
      * _Probability_ density function (PDF) of F-distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
-     * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
-     * @returns {_Matrix_}
+     * @param {number} x
+     * @param {number} d1 - The degree of freedom of the molecules.
+     * @param {number} d2 - The degree of freedom of the denominator
+     * @returns {number}
      */
-    static fpdf(x: any, d1: any, d2: any): _Matrix_;
+    static fpdf(x: number, d1: number, d2: number): number;
     /**
      * Cumulative distribution function (CDF) of F-distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
-     * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
-     * @returns {_Matrix_}
+     * @param {number} x
+     * @param {number} d1 - The degree of freedom of the molecules.
+     * @param {number} d2 - The degree of freedom of the denominator
+     * @returns {number}
      */
-    static fcdf(x: any, d1: any, d2: any): _Matrix_;
+    static fcdf(x: number, d1: number, d2: number): number;
     /**
      * Inverse function of cumulative distribution function (CDF) of F-distribution.
-     * @param {KMatrixInputData} x
-     * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
-     * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
-     * @returns {_Matrix_}
+     * @param {number} p - _Probability_.
+     * @param {number} d1 - The degree of freedom of the molecules.
+     * @param {number} d2 - The degree of freedom of the denominator
+     * @returns {number}
      */
-    static finv(x: any, d1: any, d2: any): _Matrix_;
+    static finv(p: number, d1: number, d2: number): number;
 }
 
 /**

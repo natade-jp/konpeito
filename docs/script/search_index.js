@@ -684,6 +684,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/bigdecimal.js~bigdecimal#extgcd",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-extgcd",
+    "src/math/core/BigDecimal.js~BigDecimal#extgcd",
+    "method"
+  ],
+  [
     "src/math/core/bigdecimal.js~bigdecimal#factorial",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-factorial",
     "src/math/core/BigDecimal.js~BigDecimal#factorial",
@@ -711,6 +717,12 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal#fract",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-fract",
     "src/math/core/BigDecimal.js~BigDecimal#fract",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#gcd",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-gcd",
+    "src/math/core/BigDecimal.js~BigDecimal#gcd",
     "method"
   ],
   [
@@ -822,6 +834,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/bigdecimal.js~bigdecimal#lcm",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-lcm",
+    "src/math/core/BigDecimal.js~BigDecimal#lcm",
+    "method"
+  ],
+  [
     "src/math/core/bigdecimal.js~bigdecimal#log",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-log",
     "src/math/core/BigDecimal.js~BigDecimal#log",
@@ -843,6 +861,18 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal#mod",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-mod",
     "src/math/core/BigDecimal.js~BigDecimal#mod",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#modinverse",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-modInverse",
+    "src/math/core/BigDecimal.js~BigDecimal#modInverse",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#modpow",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-modPow",
+    "src/math/core/BigDecimal.js~BigDecimal#modPow",
     "method"
   ],
   [
@@ -915,6 +945,12 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal#rem",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-rem",
     "src/math/core/BigDecimal.js~BigDecimal#rem",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#remainder",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-remainder",
+    "src/math/core/BigDecimal.js~BigDecimal#remainder",
     "method"
   ],
   [
@@ -1065,6 +1101,12 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal#tostring",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-toString",
     "src/math/core/BigDecimal.js~BigDecimal#toString",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#trunc",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-trunc",
+    "src/math/core/BigDecimal.js~BigDecimal#trunc",
     "method"
   ],
   [
@@ -1302,9 +1344,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/biginteger.js~biginteger#_divide",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_divide",
-    "src/math/core/BigInteger.js~BigInteger#_divide",
+    "src/math/core/biginteger.js~biginteger#_div",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_div",
+    "src/math/core/BigInteger.js~BigInteger#_div",
     "method"
   ],
   [
@@ -1338,9 +1380,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/biginteger.js~biginteger#_multiply",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_multiply",
-    "src/math/core/BigInteger.js~BigInteger#_multiply",
+    "src/math/core/biginteger.js~biginteger#_mul",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_mul",
+    "src/math/core/BigInteger.js~BigInteger#_mul",
     "method"
   ],
   [
@@ -1362,9 +1404,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/biginteger.js~biginteger#_remainder",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_remainder",
-    "src/math/core/BigInteger.js~BigInteger#_remainder",
+    "src/math/core/biginteger.js~biginteger#_rem",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_rem",
+    "src/math/core/BigInteger.js~BigInteger#_rem",
     "method"
   ],
   [
@@ -1380,9 +1422,9 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/biginteger.js~biginteger#_subtract",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_subtract",
-    "src/math/core/BigInteger.js~BigInteger#_subtract",
+    "src/math/core/biginteger.js~biginteger#_sub",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_sub",
+    "src/math/core/BigInteger.js~BigInteger#_sub",
     "method"
   ],
   [
@@ -1944,9 +1986,51 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#acos",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-acos",
+    "src/math/core/Complex.js~Complex#acos",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#acosh",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-acosh",
+    "src/math/core/Complex.js~Complex#acosh",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#acot",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-acot",
+    "src/math/core/Complex.js~Complex#acot",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#acoth",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-acoth",
+    "src/math/core/Complex.js~Complex#acoth",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#acsc",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-acsc",
+    "src/math/core/Complex.js~Complex#acsc",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#acsch",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-acsch",
+    "src/math/core/Complex.js~Complex#acsch",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#add",
     "class/src/math/core/Complex.js~Complex.html#instance-method-add",
     "src/math/core/Complex.js~Complex#add",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#and",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-and",
+    "src/math/core/Complex.js~Complex#and",
     "method"
   ],
   [
@@ -1954,6 +2038,30 @@ window.esdocSearchIndex = [
     "class/src/math/core/Complex.js~Complex.html#instance-get-arg",
     "src/math/core/Complex.js~Complex#arg",
     "member"
+  ],
+  [
+    "src/math/core/complex.js~complex#asec",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-asec",
+    "src/math/core/Complex.js~Complex#asec",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#asech",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-asech",
+    "src/math/core/Complex.js~Complex#asech",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#asin",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-asin",
+    "src/math/core/Complex.js~Complex#asin",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#asinh",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-asinh",
+    "src/math/core/Complex.js~Complex#asinh",
+    "method"
   ],
   [
     "src/math/core/complex.js~complex#atan",
@@ -1968,6 +2076,42 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#atanh",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-atanh",
+    "src/math/core/Complex.js~Complex#atanh",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#beta",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-beta",
+    "src/math/core/Complex.js~Complex#beta",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#betacdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-betacdf",
+    "src/math/core/Complex.js~Complex#betacdf",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#betainc",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-betainc",
+    "src/math/core/Complex.js~Complex#betainc",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#betainv",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-betainv",
+    "src/math/core/Complex.js~Complex#betainv",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#betapdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-betapdf",
+    "src/math/core/Complex.js~Complex#betapdf",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#booleanvalue",
     "class/src/math/core/Complex.js~Complex.html#instance-get-booleanValue",
     "src/math/core/Complex.js~Complex#booleanValue",
@@ -1977,6 +2121,24 @@ window.esdocSearchIndex = [
     "src/math/core/complex.js~complex#ceil",
     "class/src/math/core/Complex.js~Complex.html#instance-method-ceil",
     "src/math/core/Complex.js~Complex#ceil",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#chi2cdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-chi2cdf",
+    "src/math/core/Complex.js~Complex#chi2cdf",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#chi2inv",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-chi2inv",
+    "src/math/core/Complex.js~Complex#chi2inv",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#chi2pdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-chi2pdf",
+    "src/math/core/Complex.js~Complex#chi2pdf",
     "method"
   ],
   [
@@ -2016,9 +2178,45 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#cosh",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-cosh",
+    "src/math/core/Complex.js~Complex#cosh",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#cot",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-cot",
+    "src/math/core/Complex.js~Complex#cot",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#coth",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-coth",
+    "src/math/core/Complex.js~Complex#coth",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#csc",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-csc",
+    "src/math/core/Complex.js~Complex#csc",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#csch",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-csch",
+    "src/math/core/Complex.js~Complex#csch",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#div",
     "class/src/math/core/Complex.js~Complex.html#instance-method-div",
     "src/math/core/Complex.js~Complex#div",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#divide",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-divide",
+    "src/math/core/Complex.js~Complex#divide",
     "method"
   ],
   [
@@ -2040,9 +2238,63 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#equalsstate",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-equalsState",
+    "src/math/core/Complex.js~Complex#equalsState",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#erf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-erf",
+    "src/math/core/Complex.js~Complex#erf",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#erfc",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-erfc",
+    "src/math/core/Complex.js~Complex#erfc",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#erfcinv",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-erfcinv",
+    "src/math/core/Complex.js~Complex#erfcinv",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#erfinv",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-erfinv",
+    "src/math/core/Complex.js~Complex#erfinv",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#exp",
     "class/src/math/core/Complex.js~Complex.html#instance-method-exp",
     "src/math/core/Complex.js~Complex#exp",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#extgcd",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-extgcd",
+    "src/math/core/Complex.js~Complex#extgcd",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#factorial",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-factorial",
+    "src/math/core/Complex.js~Complex#factorial",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#fcdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-fcdf",
+    "src/math/core/Complex.js~Complex#fcdf",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#finv",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-finv",
+    "src/math/core/Complex.js~Complex#finv",
     "method"
   ],
   [
@@ -2058,9 +2310,57 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#fpdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-fpdf",
+    "src/math/core/Complex.js~Complex#fpdf",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#fract",
     "class/src/math/core/Complex.js~Complex.html#instance-method-fract",
     "src/math/core/Complex.js~Complex#fract",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#gamcdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-gamcdf",
+    "src/math/core/Complex.js~Complex#gamcdf",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#gaminv",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-gaminv",
+    "src/math/core/Complex.js~Complex#gaminv",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#gamma",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-gamma",
+    "src/math/core/Complex.js~Complex#gamma",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#gammainc",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-gammainc",
+    "src/math/core/Complex.js~Complex#gammainc",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#gammaln",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-gammaln",
+    "src/math/core/Complex.js~Complex#gammaln",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#gampdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-gampdf",
+    "src/math/core/Complex.js~Complex#gampdf",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#gcd",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-gcd",
+    "src/math/core/Complex.js~Complex#gcd",
     "method"
   ],
   [
@@ -2160,6 +2460,18 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#isprime",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-isPrime",
+    "src/math/core/Complex.js~Complex#isPrime",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#isprobableprime",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-isProbablePrime",
+    "src/math/core/Complex.js~Complex#isProbablePrime",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#isreal",
     "class/src/math/core/Complex.js~Complex.html#instance-method-isReal",
     "src/math/core/Complex.js~Complex#isReal",
@@ -2169,6 +2481,12 @@ window.esdocSearchIndex = [
     "src/math/core/complex.js~complex#iszero",
     "class/src/math/core/Complex.js~Complex.html#instance-method-isZero",
     "src/math/core/Complex.js~Complex#isZero",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#lcm",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-lcm",
+    "src/math/core/Complex.js~Complex#lcm",
     "method"
   ],
   [
@@ -2196,9 +2514,33 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#modinverse",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-modInverse",
+    "src/math/core/Complex.js~Complex#modInverse",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#modpow",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-modPow",
+    "src/math/core/Complex.js~Complex#modPow",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#mul",
     "class/src/math/core/Complex.js~Complex.html#instance-method-mul",
     "src/math/core/Complex.js~Complex#mul",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#multiply",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-multiply",
+    "src/math/core/Complex.js~Complex#multiply",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#nchoosek",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-nchoosek",
+    "src/math/core/Complex.js~Complex#nchoosek",
     "method"
   ],
   [
@@ -2208,10 +2550,46 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#nextprobableprime",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-nextProbablePrime",
+    "src/math/core/Complex.js~Complex#nextProbablePrime",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#norm",
     "class/src/math/core/Complex.js~Complex.html#instance-get-norm",
     "src/math/core/Complex.js~Complex#norm",
     "member"
+  ],
+  [
+    "src/math/core/complex.js~complex#normcdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-normcdf",
+    "src/math/core/Complex.js~Complex#normcdf",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#norminv",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-norminv",
+    "src/math/core/Complex.js~Complex#norminv",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#normpdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-normpdf",
+    "src/math/core/Complex.js~Complex#normpdf",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#not",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-not",
+    "src/math/core/Complex.js~Complex#not",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#or",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-or",
+    "src/math/core/Complex.js~Complex#or",
+    "method"
   ],
   [
     "src/math/core/complex.js~complex#pow",
@@ -2226,6 +2604,18 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/math/core/complex.js~complex#rem",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-rem",
+    "src/math/core/Complex.js~Complex#rem",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#remainder",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-remainder",
+    "src/math/core/Complex.js~Complex#remainder",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#round",
     "class/src/math/core/Complex.js~Complex.html#instance-method-round",
     "src/math/core/Complex.js~Complex#round",
@@ -2238,9 +2628,33 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#sec",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-sec",
+    "src/math/core/Complex.js~Complex#sec",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#sech",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-sech",
+    "src/math/core/Complex.js~Complex#sech",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#shift",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-shift",
+    "src/math/core/Complex.js~Complex#shift",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#sign",
     "class/src/math/core/Complex.js~Complex.html#instance-method-sign",
     "src/math/core/Complex.js~Complex#sign",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#signum",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-signum",
+    "src/math/core/Complex.js~Complex#signum",
     "method"
   ],
   [
@@ -2253,6 +2667,12 @@ window.esdocSearchIndex = [
     "src/math/core/complex.js~complex#sinc",
     "class/src/math/core/Complex.js~Complex.html#instance-method-sinc",
     "src/math/core/Complex.js~Complex#sinc",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#sinh",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-sinh",
+    "src/math/core/Complex.js~Complex#sinh",
     "method"
   ],
   [
@@ -2274,15 +2694,69 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#subtract",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-subtract",
+    "src/math/core/Complex.js~Complex#subtract",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#tan",
     "class/src/math/core/Complex.js~Complex.html#instance-method-tan",
     "src/math/core/Complex.js~Complex#tan",
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#tanh",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-tanh",
+    "src/math/core/Complex.js~Complex#tanh",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#tcdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-tcdf",
+    "src/math/core/Complex.js~Complex#tcdf",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#tdist",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-tdist",
+    "src/math/core/Complex.js~Complex#tdist",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#tinv",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-tinv",
+    "src/math/core/Complex.js~Complex#tinv",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#tinv2",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-tinv2",
+    "src/math/core/Complex.js~Complex#tinv2",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#tostring",
     "class/src/math/core/Complex.js~Complex.html#instance-method-toString",
     "src/math/core/Complex.js~Complex#toString",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#tpdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-tpdf",
+    "src/math/core/Complex.js~Complex#tpdf",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#trunc",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-trunc",
+    "src/math/core/Complex.js~Complex#trunc",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#xor",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-xor",
+    "src/math/core/Complex.js~Complex#xor",
     "method"
   ],
   [
@@ -2331,6 +2805,12 @@ window.esdocSearchIndex = [
     "src/math/core/complex.js~complex.log2e",
     "class/src/math/core/Complex.js~Complex.html#static-get-LOG2E",
     "src/math/core/Complex.js~Complex.LOG2E",
+    "member"
+  ],
+  [
+    "src/math/core/complex.js~complex.minus_i",
+    "class/src/math/core/Complex.js~Complex.html#static-get-MINUS_I",
+    "src/math/core/Complex.js~Complex.MINUS_I",
     "member"
   ],
   [
@@ -2478,6 +2958,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#and",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-and",
+    "src/math/core/Fraction.js~Fraction#and",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#booleanvalue",
     "class/src/math/core/Fraction.js~Fraction.html#instance-get-booleanValue",
     "src/math/core/Fraction.js~Fraction#booleanValue",
@@ -2526,6 +3012,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#divide",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-divide",
+    "src/math/core/Fraction.js~Fraction#divide",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#doublevalue",
     "class/src/math/core/Fraction.js~Fraction.html#instance-get-doubleValue",
     "src/math/core/Fraction.js~Fraction#doubleValue",
@@ -2541,6 +3033,12 @@ window.esdocSearchIndex = [
     "src/math/core/fraction.js~fraction#equalsstate",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-equalsState",
     "src/math/core/Fraction.js~Fraction#equalsState",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#extgcd",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-extgcd",
+    "src/math/core/Fraction.js~Fraction#extgcd",
     "method"
   ],
   [
@@ -2565,6 +3063,12 @@ window.esdocSearchIndex = [
     "src/math/core/fraction.js~fraction#fract",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-fract",
     "src/math/core/Fraction.js~Fraction#fract",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#gcd",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-gcd",
+    "src/math/core/Fraction.js~Fraction#gcd",
     "method"
   ],
   [
@@ -2658,6 +3162,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#lcm",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-lcm",
+    "src/math/core/Fraction.js~Fraction#lcm",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#max",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-max",
     "src/math/core/Fraction.js~Fraction#max",
@@ -2676,9 +3186,27 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#modinverse",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-modInverse",
+    "src/math/core/Fraction.js~Fraction#modInverse",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#modpow",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-modPow",
+    "src/math/core/Fraction.js~Fraction#modPow",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#mul",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-mul",
     "src/math/core/Fraction.js~Fraction#mul",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#multiply",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-multiply",
+    "src/math/core/Fraction.js~Fraction#multiply",
     "method"
   ],
   [
@@ -2694,10 +3222,22 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#not",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-not",
+    "src/math/core/Fraction.js~Fraction#not",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#numerator",
     "class/src/math/core/Fraction.js~Fraction.html#instance-member-numerator",
     "src/math/core/Fraction.js~Fraction#numerator",
     "member"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#or",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-or",
+    "src/math/core/Fraction.js~Fraction#or",
+    "method"
   ],
   [
     "src/math/core/fraction.js~fraction#pow",
@@ -2709,6 +3249,12 @@ window.esdocSearchIndex = [
     "src/math/core/fraction.js~fraction#rem",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-rem",
     "src/math/core/Fraction.js~Fraction#rem",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#remainder",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-remainder",
+    "src/math/core/Fraction.js~Fraction#remainder",
     "method"
   ],
   [
@@ -2724,15 +3270,33 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#shift",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-shift",
+    "src/math/core/Fraction.js~Fraction#shift",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#sign",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-sign",
     "src/math/core/Fraction.js~Fraction#sign",
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#signum",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-signum",
+    "src/math/core/Fraction.js~Fraction#signum",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#sub",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-sub",
     "src/math/core/Fraction.js~Fraction#sub",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#subtract",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-subtract",
+    "src/math/core/Fraction.js~Fraction#subtract",
     "method"
   ],
   [
@@ -2751,6 +3315,12 @@ window.esdocSearchIndex = [
     "src/math/core/fraction.js~fraction#tostring",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-toString",
     "src/math/core/Fraction.js~Fraction#toString",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#xor",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-xor",
+    "src/math/core/Fraction.js~Fraction#xor",
     "method"
   ],
   [
@@ -2934,15 +3504,81 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#acos",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-acos",
+    "src/math/core/Matrix.js~Matrix#acos",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#acosh",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-acosh",
+    "src/math/core/Matrix.js~Matrix#acosh",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#acot",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-acot",
+    "src/math/core/Matrix.js~Matrix#acot",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#acoth",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-acoth",
+    "src/math/core/Matrix.js~Matrix#acoth",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#acsc",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-acsc",
+    "src/math/core/Matrix.js~Matrix#acsc",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#acsch",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-acsch",
+    "src/math/core/Matrix.js~Matrix#acsch",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#add",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-add",
     "src/math/core/Matrix.js~Matrix#add",
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#and",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-and",
+    "src/math/core/Matrix.js~Matrix#and",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#arg",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-arg",
     "src/math/core/Matrix.js~Matrix#arg",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#asec",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-asec",
+    "src/math/core/Matrix.js~Matrix#asec",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#asech",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-asech",
+    "src/math/core/Matrix.js~Matrix#asech",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#asin",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-asin",
+    "src/math/core/Matrix.js~Matrix#asin",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#asinh",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-asinh",
+    "src/math/core/Matrix.js~Matrix#asinh",
     "method"
   ],
   [
@@ -2955,6 +3591,12 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#atan2",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-atan2",
     "src/math/core/Matrix.js~Matrix#atan2",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#atanh",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-atanh",
+    "src/math/core/Matrix.js~Matrix#atanh",
     "method"
   ],
   [
@@ -3102,9 +3744,39 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#cosh",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-cosh",
+    "src/math/core/Matrix.js~Matrix#cosh",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#cot",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-cot",
+    "src/math/core/Matrix.js~Matrix#cot",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#coth",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-coth",
+    "src/math/core/Matrix.js~Matrix#coth",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#cov",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-cov",
     "src/math/core/Matrix.js~Matrix#cov",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#csc",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-csc",
+    "src/math/core/Matrix.js~Matrix#csc",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#csch",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-csch",
+    "src/math/core/Matrix.js~Matrix#csch",
     "method"
   ],
   [
@@ -3153,6 +3825,12 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#div",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-div",
     "src/math/core/Matrix.js~Matrix#div",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#divide",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-divide",
+    "src/math/core/Matrix.js~Matrix#divide",
     "method"
   ],
   [
@@ -3270,6 +3948,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#extgcd",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-extgcd",
+    "src/math/core/Matrix.js~Matrix#extgcd",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#factorial",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-factorial",
     "src/math/core/Matrix.js~Matrix#factorial",
@@ -3381,6 +4065,12 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#gampdf",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-gampdf",
     "src/math/core/Matrix.js~Matrix#gampdf",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#gcd",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-gcd",
+    "src/math/core/Matrix.js~Matrix#gcd",
     "method"
   ],
   [
@@ -3594,6 +4284,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#lcm",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-lcm",
+    "src/math/core/Matrix.js~Matrix#lcm",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#length",
     "class/src/math/core/Matrix.js~Matrix.html#instance-get-length",
     "src/math/core/Matrix.js~Matrix#length",
@@ -3660,6 +4356,24 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#mod",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-mod",
+    "src/math/core/Matrix.js~Matrix#mod",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#modinverse",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-modInverse",
+    "src/math/core/Matrix.js~Matrix#modInverse",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#modpow",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-modPow",
+    "src/math/core/Matrix.js~Matrix#modPow",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#mode",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-mode",
     "src/math/core/Matrix.js~Matrix#mode",
@@ -3678,6 +4392,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#multiply",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-multiply",
+    "src/math/core/Matrix.js~Matrix#multiply",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#nchoosek",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-nchoosek",
     "src/math/core/Matrix.js~Matrix#nchoosek",
@@ -3693,6 +4413,12 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#negate",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-negate",
     "src/math/core/Matrix.js~Matrix#negate",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#nextprobableprime",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-nextProbablePrime",
+    "src/math/core/Matrix.js~Matrix#nextProbablePrime",
     "method"
   ],
   [
@@ -3744,9 +4470,21 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#not",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-not",
+    "src/math/core/Matrix.js~Matrix#not",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#npow",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-npow",
     "src/math/core/Matrix.js~Matrix#npow",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#or",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-or",
+    "src/math/core/Matrix.js~Matrix#or",
     "method"
   ],
   [
@@ -3798,6 +4536,18 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#rem",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-rem",
+    "src/math/core/Matrix.js~Matrix#rem",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#remainder",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-remainder",
+    "src/math/core/Matrix.js~Matrix#remainder",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#reshape",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-reshape",
     "src/math/core/Matrix.js~Matrix#reshape",
@@ -3840,15 +4590,39 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/math/core/matrix.js~matrix#sec",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-sec",
+    "src/math/core/Matrix.js~Matrix#sec",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#sech",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-sech",
+    "src/math/core/Matrix.js~Matrix#sech",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#setmatrix",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-setMatrix",
     "src/math/core/Matrix.js~Matrix#setMatrix",
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#shift",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-shift",
+    "src/math/core/Matrix.js~Matrix#shift",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#sign",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-sign",
     "src/math/core/Matrix.js~Matrix#sign",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#signum",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-signum",
+    "src/math/core/Matrix.js~Matrix#signum",
     "method"
   ],
   [
@@ -3861,6 +4635,12 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#sinc",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-sinc",
     "src/math/core/Matrix.js~Matrix#sinc",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#sinh",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-sinh",
+    "src/math/core/Matrix.js~Matrix#sinh",
     "method"
   ],
   [
@@ -3912,6 +4692,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#subtract",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-subtract",
+    "src/math/core/Matrix.js~Matrix#subtract",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#sum",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-sum",
     "src/math/core/Matrix.js~Matrix#sum",
@@ -3927,6 +4713,12 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#tan",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-tan",
     "src/math/core/Matrix.js~Matrix#tan",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#tanh",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-tanh",
+    "src/math/core/Matrix.js~Matrix#tanh",
     "method"
   ],
   [
@@ -4014,6 +4806,18 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#testprime",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-testPrime",
+    "src/math/core/Matrix.js~Matrix#testPrime",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#testprobableprime",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-testProbablePrime",
+    "src/math/core/Matrix.js~Matrix#testProbablePrime",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#testreal",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-testReal",
     "src/math/core/Matrix.js~Matrix#testReal",
@@ -4074,6 +4878,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#trunc",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-trunc",
+    "src/math/core/Matrix.js~Matrix#trunc",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#var",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-var",
     "src/math/core/Matrix.js~Matrix#var",
@@ -4089,6 +4899,12 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#xcorr",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-xcorr",
     "src/math/core/Matrix.js~Matrix#xcorr",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#xor",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-xor",
+    "src/math/core/Matrix.js~Matrix#xor",
     "method"
   ],
   [
@@ -4710,6 +5526,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/tools/probability.js~probability.isinteger",
+    "class/src/math/core/tools/Probability.js~Probability.html#static-method-isInteger",
+    "src/math/core/tools/Probability.js~Probability.isInteger",
+    "method"
+  ],
+  [
     "src/math/core/tools/probability.js~probability.nchoosek",
     "class/src/math/core/tools/Probability.js~Probability.html#static-method-nchoosek",
     "src/math/core/tools/Probability.js~Probability.nchoosek",
@@ -4731,6 +5553,30 @@ window.esdocSearchIndex = [
     "src/math/core/tools/probability.js~probability.normpdf",
     "class/src/math/core/tools/Probability.js~Probability.html#static-method-normpdf",
     "src/math/core/tools/Probability.js~Probability.normpdf",
+    "method"
+  ],
+  [
+    "src/math/core/tools/probability.js~probability.p_beta",
+    "class/src/math/core/tools/Probability.js~Probability.html#static-method-p_beta",
+    "src/math/core/tools/Probability.js~Probability.p_beta",
+    "method"
+  ],
+  [
+    "src/math/core/tools/probability.js~probability.p_gamma",
+    "class/src/math/core/tools/Probability.js~Probability.html#static-method-p_gamma",
+    "src/math/core/tools/Probability.js~Probability.p_gamma",
+    "method"
+  ],
+  [
+    "src/math/core/tools/probability.js~probability.q_beta",
+    "class/src/math/core/tools/Probability.js~Probability.html#static-method-q_beta",
+    "src/math/core/tools/Probability.js~Probability.q_beta",
+    "method"
+  ],
+  [
+    "src/math/core/tools/probability.js~probability.q_gamma",
+    "class/src/math/core/tools/Probability.js~Probability.html#static-method-q_gamma",
+    "src/math/core/tools/Probability.js~Probability.q_gamma",
     "method"
   ],
   [

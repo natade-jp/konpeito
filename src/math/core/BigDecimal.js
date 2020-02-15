@@ -545,20 +545,11 @@ export default class BigDecimal {
 	 * - +1 if positive, -1 if negative, 0 if 0.
 	 * @returns {number}
 	 */
-	signum() {
+	sign() {
 		if(!this.isFinite()) {
 			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? 1 : -1);
 		}
-		return this.integer.signum();
-	}
-
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number}
-	 */
-	sign() {
-		return this.signum();
+		return this.integer.sign();
 	}
 
 	/**
@@ -673,7 +664,7 @@ export default class BigDecimal {
 			return this;
 		}
 		// 0をできる限り取り除く
-		const sign		= this.signum();
+		const sign		= this.sign();
 		const sign_text	= sign >= 0 ? "" : "-";
 		const text		= this.integer.toString(10).replace(/^-/, "");
 		const zeros		= text.match(/0+$/);
@@ -737,7 +728,7 @@ export default class BigDecimal {
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A - B
 	 */
-	subtract(number, context) {
+	sub(number, context) {
 		const subtrahend = BigDecimal._toBigDecimal(number);
 		const src			= this;
 		const tgt			= subtrahend;
@@ -755,26 +746,16 @@ export default class BigDecimal {
 		const mc = context ? context : subtrahend.default_context;
 		const newscale	= Math.max(src._scale, tgt._scale);
 		if(src._scale === tgt._scale) {
-			return new BigDecimal([src.integer.subtract(tgt.integer), newscale, mc]);
+			return new BigDecimal([src.integer.sub(tgt.integer), newscale, mc]);
 		}
 		else if(src._scale > tgt._scale) {
 			const newdst = tgt.setScale(src._scale);
-			return new BigDecimal([src.integer.subtract(newdst.integer), newscale, mc]);
+			return new BigDecimal([src.integer.sub(newdst.integer), newscale, mc]);
 		}
 		else {
 			const newsrc = src.setScale(tgt._scale);
-			return new BigDecimal([newsrc.integer.subtract(tgt.integer), newscale, mc]);
+			return new BigDecimal([newsrc.integer.sub(tgt.integer), newscale, mc]);
 		}
-	}
-
-	/**
-	 * Subtract.
-	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-	 * @returns {BigDecimal} A - B
-	 */
-	sub(number, context) {
-		return this.subtract(number, context);
 	}
 
 	/**
@@ -783,7 +764,7 @@ export default class BigDecimal {
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A * B
 	 */
-	multiply(number, context) {
+	mul(number, context) {
 		const multiplicand = BigDecimal._toBigDecimal(number);
 		const src			= this;
 		const tgt			= multiplicand;
@@ -799,20 +780,10 @@ export default class BigDecimal {
 			}
 		}
 		const mc = context ? context : multiplicand.default_context;
-		const newinteger	= src.integer.multiply(tgt.integer);
+		const newinteger	= src.integer.mul(tgt.integer);
 		// 0.1 * 0.01 = 0.001
 		const newscale	= src._scale + tgt._scale;
 		return new BigDecimal([newinteger, newscale, mc]);
-	}
-
-	/**
-	 * Multiply.
-	 * @param {KBigDecimalInputData} number
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-	 * @returns {BigDecimal} A * B
-	 */
-	mul(number, context) {
-		return this.multiply(number, context);
 	}
 
 	/**
@@ -885,17 +856,17 @@ export default class BigDecimal {
 		// 100e-2 / 3e-1 = 1 / 0.3 -> 100 / 30
 		if(src._scale > tgt._scale) {
 			// src._scale に合わせる
-			tgt_integer = tgt_integer.multiply(getDigit(  newScale ));
+			tgt_integer = tgt_integer.mul(getDigit(  newScale ));
 		}
 		// 1e-1 / 3e-2 = 0.1 / 0.03 -> 10 / 3
 		else if(src._scale < tgt._scale) {
 			// tgt._scale に合わせる
-			src_integer = src_integer.multiply(getDigit( -newScale ));
+			src_integer = src_integer.mul(getDigit( -newScale ));
 		}
 
 		// とりあえず計算結果だけ作ってしまう
-		const new_integer	= src_integer.divide(tgt_integer);
-		const sign			= new_integer.signum();
+		const new_integer	= src_integer.div(tgt_integer);
+		const sign			= new_integer.sign();
 		if(sign !== 0) {
 			const text	= new_integer.toString(10).replace(/^-/, "");
 			// 指定した桁では表すことができない
@@ -967,7 +938,7 @@ export default class BigDecimal {
 		// 100000e-2	/	100e0			=	1000e-2	... 0e-2
 
 		const result_divide	= this.divideToIntegralValue(divisor, mc);
-		const result_remaind	= this.subtract(result_divide.multiply(divisor, mc), mc);
+		const result_remaind	= this.sub(result_divide.mul(divisor, mc), mc);
 
 		const output = [result_divide, result_remaind];
 		return output;
@@ -975,6 +946,7 @@ export default class BigDecimal {
 
 	/**
 	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
 	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A % B
@@ -985,6 +957,7 @@ export default class BigDecimal {
 
 	/**
 	 * Modulo, positive remainder of division.
+	 * - Result has same sign as the Divisor.
 	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A mod B
@@ -1014,7 +987,7 @@ export default class BigDecimal {
 	 * @param {MathContext|KBigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal}
 	 */
-	divide(number, type) {
+	div(number, type) {
 		const divisor = BigDecimal._toBigDecimal(number);
 		const src			= this;
 		const tgt			= divisor;
@@ -1149,20 +1122,6 @@ export default class BigDecimal {
 		}
 		all_result = all_result.round(mc);
 		return all_result;
-	}
-
-	/**
-	 * Divide.
-	 * - The argument can specify the scale after calculation.
-	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
-	 * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
-	 * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
-	 * @param {KBigDecimalInputData} number
-	 * @param {MathContext|KBigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
-	 * @returns {BigDecimal} A / B
-	 */
-	div(number, type) {
-		return this.divide(number, type);
 	}
 
 	/**
@@ -1328,7 +1287,7 @@ export default class BigDecimal {
 		}
 		const p = this.precision();
 		if(MathContext.DECIMAL32.getPrecision() < p) {
-			return(this.signum() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
+			return(this.sign() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
 		}
 		return parseFloat(this.toEngineeringString());
 	}
@@ -1415,8 +1374,8 @@ export default class BigDecimal {
 			// 誤差の指定がない場合
 			// 簡易計算
 			{
-				const src_sign	= src.signum();
-				const tgt_sign	= tgt.signum();
+				const src_sign	= src.sign();
+				const tgt_sign	= tgt.sign();
 				if((src_sign === 0) && (src_sign === tgt_sign)) {
 					return 0;
 				}
@@ -1555,7 +1514,7 @@ export default class BigDecimal {
 		const x		= [];
 		let i, k;
 		// -
-		if(this.signum() === -1) {
+		if(this.sign() === -1) {
 			x[x.length] = "-";
 		}
 		// 表示上の桁数
@@ -1622,7 +1581,7 @@ export default class BigDecimal {
 		}
 		// スケールの変換なし
 		if(this.scale() === 0) {
-			if(this.signum() < 0) {
+			if(this.sign() < 0) {
 				return "-" + this._getUnsignedIntegerString();
 			}
 			else {
@@ -1656,7 +1615,7 @@ export default class BigDecimal {
 		const roundingMode = (rounding_mode !== undefined) ? RoundingMode.valueOf(rounding_mode) : RoundingMode.UNNECESSARY;
 		// 文字列を扱ううえで、符号があるとやりにくいので外しておく
 		let text		= this._getUnsignedIntegerString();
-		const sign		= this.signum();
+		const sign		= this.sign();
 		const sign_text	= sign >= 0 ? "" : "-";
 		// scale の誤差
 		// 0 以上なら 0 を加えればいい。0未満なら0を削るか、四捨五入など丸めを行う
@@ -1743,7 +1702,7 @@ export default class BigDecimal {
 					return newBigDecimal;
 				}
 				/* 切り上げなどで桁数が１つ増えた場合 */
-				const sign_text	= newBigDecimal.integer.signum() >= 0 ? "" : "-";
+				const sign_text	= newBigDecimal.integer.sign() >= 0 ? "" : "-";
 				const abs_text	= newBigDecimal._getUnsignedIntegerString();
 				const inte_text	= sign_text + abs_text.substring(0, abs_text.length - 1);
 				return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1]);
@@ -1882,9 +1841,9 @@ export default class BigDecimal {
 			y = BigDecimal.ONE;
 			while(n !== 0) {
 				if((n & 1) !== 0) {
-					y = y.multiply(x, MathContext.UNLIMITED);
+					y = y.mul(x, MathContext.UNLIMITED);
 				}
-				x = x.multiply(x.clone(), MathContext.UNLIMITED);
+				x = x.mul(x.clone(), MathContext.UNLIMITED);
 				n >>>= 1;
 			}
 			// コンテキストの状態が変わっているので元に戻す
@@ -2072,7 +2031,7 @@ export default class BigDecimal {
 					if(a.compareTo(e) <= 0) {
 						break;
 					}
-					a = a.divide(e, mc);
+					a = a.div(e, mc);
 				}
 			}
 			// 内部の値が小さすぎるので大きくする
@@ -2457,86 +2416,7 @@ export default class BigDecimal {
 	}
 
 	// ----------------------
-	// ビット演算系
-	// ----------------------
-	
-	/**
-	 * Logical AND.
-	 * - Calculated as an integer.
-	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-	 * @returns {BigDecimal} A & B
-	 */
-	and(number, context) {
-		const n_src = this;
-		const n_tgt = BigDecimal._toBigDecimal(number);
-		const mc = context ? context : n_tgt.default_context;
-		const src	= n_src.toBigInteger();
-		const tgt	= n_tgt.toBigInteger();
-		return new BigDecimal([src.and(tgt), mc]);
-	}
-
-	/**
-	 * Logical OR.
-	 * - Calculated as an integer.
-	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-	 * @returns {BigDecimal} A | B
-	 */
-	or(number, context) {
-		const n_src = this;
-		const n_tgt = BigDecimal._toBigDecimal(number);
-		const mc = context ? context : n_tgt.default_context;
-		const src	= n_src.toBigInteger();
-		const tgt	= n_tgt.toBigInteger();
-		return new BigDecimal([src.or(tgt), mc]);
-	}
-
-	/**
-	 * Logical Exclusive-OR.
-	 * - Calculated as an integer.
-	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-	 * @returns {BigDecimal} A ^ B
-	 */
-	xor(number, context) {
-		const n_src = this;
-		const n_tgt = BigDecimal._toBigDecimal(number);
-		const mc = context ? context : n_tgt.default_context;
-		const src	= n_src.toBigInteger();
-		const tgt	= n_tgt.toBigInteger();
-		return new BigDecimal([src.xor(tgt), mc]);
-	}
-
-	/**
-	 * Logical Not. (mutable)
-	 * - Calculated as an integer.
-	 * @param {MathContext} [context] - MathContext setting after calculation.
-	 * @returns {BigDecimal} !A
-	 */
-	not(context) {
-		const mc = context ? context : this.default_context;
-		const n_src = this;
-		const src	= n_src.toBigInteger();
-		return new BigDecimal([src.not(), mc]);
-	}
-	
-	/**
-	 * this << n
-	 * - Calculated as an integer.
-	 * @param {KBigDecimalInputData} n
-	 * @param {MathContext} [context] - MathContext setting after calculation.
-	 * @returns {BigDecimal} A << n
-	 */
-	shift(n, context) {
-		const mc = context ? context : this.default_context;
-		const src		= this.toBigInteger();
-		const number	= BigDecimal._toInteger(n);
-		return new BigDecimal([src.shift(number), mc]);
-	}
-
-	// ----------------------
-	// 特殊な用途の三角関数
+	// 双曲線関数
 	// ----------------------
 	
 	/**
@@ -2645,7 +2525,7 @@ export default class BigDecimal {
 	tanh(context) {
 		// 双曲線正接
 		if(this.isInfinite()) {
-			return BigDecimal.create(this.signum());
+			return BigDecimal.create(this.sign());
 		}
 		const mc = context ? context : this.default_context;
 		const y =  this.mul(2).exp();
@@ -2746,7 +2626,7 @@ export default class BigDecimal {
 	coth(context) {
 		// 双曲線余接
 		if(this.isInfinite()) {
-			return BigDecimal.create(this.signum());
+			return BigDecimal.create(this.sign());
 		}
 		const mc = context ? context : this.default_context;
 		const y =  this.mul(2).exp();
@@ -2951,6 +2831,170 @@ export default class BigDecimal {
 	}
 
 	// ----------------------
+	// ビット演算系
+	// ----------------------
+	
+	/**
+	 * Logical AND.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A & B
+	 */
+	and(number, context) {
+		const n_src = this;
+		const n_tgt = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : n_tgt.default_context;
+		const src	= n_src.round().toBigInteger();
+		const tgt	= n_tgt.round().toBigInteger();
+		return new BigDecimal([src.and(tgt), mc]);
+	}
+
+	/**
+	 * Logical OR.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A | B
+	 */
+	or(number, context) {
+		const n_src = this;
+		const n_tgt = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : n_tgt.default_context;
+		const src	= n_src.round().toBigInteger();
+		const tgt	= n_tgt.round().toBigInteger();
+		return new BigDecimal([src.or(tgt), mc]);
+	}
+
+	/**
+	 * Logical Exclusive-OR.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A ^ B
+	 */
+	xor(number, context) {
+		const n_src = this;
+		const n_tgt = BigDecimal._toBigDecimal(number);
+		const mc = context ? context : n_tgt.default_context;
+		const src	= n_src.round().toBigInteger();
+		const tgt	= n_tgt.round().toBigInteger();
+		return new BigDecimal([src.xor(tgt), mc]);
+	}
+
+	/**
+	 * Logical Not. (mutable)
+	 * - Calculated as an integer.
+	 * @param {MathContext} [context] - MathContext setting after calculation.
+	 * @returns {BigDecimal} !A
+	 */
+	not(context) {
+		const mc = context ? context : this.default_context;
+		const n_src = this;
+		const src	= n_src.round().toBigInteger();
+		return new BigDecimal([src.not(), mc]);
+	}
+	
+	/**
+	 * this << n
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} n
+	 * @param {MathContext} [context] - MathContext setting after calculation.
+	 * @returns {BigDecimal} A << n
+	 */
+	shift(n, context) {
+		const mc = context ? context : this.default_context;
+		const src		= this.round().toBigInteger();
+		const number	= BigDecimal._toInteger(n);
+		return new BigDecimal([src.shift(number), mc]);
+	}
+
+	// ----------------------
+	// gcd, lcm
+	// ----------------------
+	
+	/**
+	 * Euclidean algorithm.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation.
+	 * @returns {BigDecimal} gcd(x, y)
+	 */
+	gcd(number, context) {
+		const mc = context ? context : this.default_context;
+		const x = this.round().toBigInteger();
+		const y = BigDecimal._toBigDecimal(number).toBigInteger();
+		const result = x.gcd(y);
+		return new BigDecimal([result, mc]);
+	}
+
+	/**
+	 * Extended Euclidean algorithm.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation.
+	 * @returns {Array<BigDecimal>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 */
+	extgcd(number, context) {
+		const mc = context ? context : this.default_context;
+		const x = this.round().toBigInteger();
+		const y = BigDecimal._toBigDecimal(number).toBigInteger();
+		const result = x.extgcd(y);
+		return [new BigDecimal([result[0], mc]), new BigDecimal([result[1], mc]), new BigDecimal([result[2], mc])];
+	}
+
+	/**
+	 * Least common multiple.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation.
+	 * @returns {BigDecimal} lcm(x, y)
+	 */
+	lcm(number, context) {
+		const mc = context ? context : this.default_context;
+		const x = this.round().toBigInteger();
+		const y = BigDecimal._toBigDecimal(number).toBigInteger();
+		const result = x.lcm(y);
+		return new BigDecimal([result, mc]);
+	}
+
+	// ----------------------
+	// mod
+	// ----------------------
+
+	/**
+	 * Modular exponentiation.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} exponent
+	 * @param {KBigDecimalInputData} m 
+	 * @param {MathContext} [context] - MathContext setting after calculation.
+	 * @returns {BigDecimal} A^B mod m
+	 */
+	modPow(exponent, m, context) {
+		const mc = context ? context : this.default_context;
+		const A = this.round().toBigInteger();
+		const B = BigDecimal._toBigDecimal(exponent).toBigInteger();
+		const m_ = BigDecimal._toBigDecimal(m).toBigInteger();
+		const result = A.modPow(B, m_);
+		return new BigDecimal([result, mc]);
+	}
+
+	/**
+	 * Modular multiplicative inverse.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} m
+	 * @param {MathContext} [context] - MathContext setting after calculation.
+	 * @returns {BigDecimal} A^(-1) mod m
+	 */
+	modInverse(m, context) {
+		const mc = context ? context : this.default_context;
+		const A = this.round().toBigInteger();
+		const m_ = BigDecimal._toBigDecimal(m).toBigInteger();
+		const result = A.modInverse(m_);
+		return new BigDecimal([result, mc]);
+	}
+	
+	// ----------------------
 	// 素数
 	// ----------------------
 	
@@ -3153,6 +3197,72 @@ export default class BigDecimal {
 	 */
 	static get NaN() {
 		return DEFINE.NaN;
+	}
+
+	// ----------------------
+	// 互換性
+	// ----------------------
+	
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	signum() {
+		return this.sign();
+	}
+
+	/**
+	 * Subtract.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A - B
+	 */
+	subtract(number, context) {
+		return this.sub(number, context);
+	}
+
+	/**
+	 * Multiply.
+	 * @param {KBigDecimalInputData} number
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A * B
+	 */
+	multiply(number, context) {
+		return this.mul(number, context);
+	}
+
+	/**
+	 * Divide.
+	 * - The argument can specify the scale after calculation.
+	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
+	 * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
+	 * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
+	 * @param {KBigDecimalInputData} number
+	 * @param {MathContext|KBigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @returns {BigDecimal} A / B
+	 */
+	divide(number, type) {
+		return this.div(number, type);
+	}
+
+	/**
+	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {KBigDecimalInputData} number
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} A % B
+	 */
+	remainder(number, context) {
+		return this.rem(number, context);
+	}
+	
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {BigDecimal} fix(A), trunc(A)
+	 */
+	trunc() {
+		return this.fix();
 	}
 
 }

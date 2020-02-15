@@ -783,15 +783,6 @@ export default class BigInteger {
 		}
 	}
 
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number}
-	 */
-	signum() {
-		return this.sign();
-	}
-
 	// ----------------------
 	// 四則演算
 	// ----------------------
@@ -887,7 +878,7 @@ export default class BigInteger {
 	 * @returns {BigInteger} A -= B
 	 * @private
 	 */
-	_subtract(number) {
+	_sub(number) {
 		// 一時的に記録しておいて引数の情報は書き換えないようにする
 		const val = BigInteger._toBigInteger(number);
 		const state = val.state;
@@ -901,17 +892,8 @@ export default class BigInteger {
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A - B
 	 */
-	subtract(number) {
-		return this.clone()._subtract(number);
-	}
-
-	/**
-	 * Subtract.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A - B
-	 */
 	sub(number) {
-		return this.subtract(number);
+		return this.clone()._sub(number);
 	}
 
 	/**
@@ -920,8 +902,8 @@ export default class BigInteger {
 	 * @returns {BigInteger} A *= B
 	 * @private
 	 */
-	_multiply(number) {
-		const x = this.multiply(number);
+	_mul(number) {
+		const x = this.mul(number);
 		this.element = x.element;
 		this.state   = x.state;
 		return this;
@@ -932,7 +914,7 @@ export default class BigInteger {
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A * B
 	 */
-	multiply(number) {
+	mul(number) {
 		const val = BigInteger._toBigInteger(number);
 		const o1 = this;
 		const o2 = val;
@@ -1002,16 +984,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * Multiply.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A * B
-	 */
-	mul(number) {
-		return this.multiply(number);
-	}
-
-	/**
-	 * Divide and remainder. (mutable)
+	 * Divide and rem. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
 	 * @private
@@ -1064,7 +1037,7 @@ export default class BigInteger {
 		const y  = new BigInteger();
 		for(let i = 0; i <= size; i++) {
 			if(x1.compareToAbs(x2) >= 0) {
-				x1._subtract(x2);
+				x1._sub(x2);
 				y._add(ONE);
 			}
 			if(i === size) {
@@ -1081,7 +1054,7 @@ export default class BigInteger {
 	}
 
 	/**
-	 * Divide and remainder.
+	 * Divide and rem.
 	 * @param {KBigIntegerInputData} number
 	 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
 	 */
@@ -1095,7 +1068,7 @@ export default class BigInteger {
 	 * @returns {BigInteger} fix(A / B)
 	 * @private
 	 */
-	_divide(number) {
+	_div(number) {
 		return this._divideAndRemainder(number)[0];
 	}
 
@@ -1104,26 +1077,18 @@ export default class BigInteger {
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} fix(A / B)
 	 */
-	divide(number) {
-		return this.clone()._divide(number);
-	}
-
-	/**
-	 * Divide.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} fix(A / B)
-	 */
 	div(number) {
-		return this.divide(number);
+		return this.clone()._div(number);
 	}
 
 	/**
 	 * Remainder of division. (mutable)
+	 * - Result has same sign as the Dividend.
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A %= B
 	 * @private
 	 */
-	_remainder(number) {
+	_rem(number) {
 		const y = this._divideAndRemainder(number)[1];
 		this.element = y.element;
 		this.state = y.state;
@@ -1132,24 +1097,17 @@ export default class BigInteger {
 
 	/**
 	 * Remainder of division.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A % B
-	 */
-	remainder(number) {
-		return this.clone()._remainder(number);
-	}
-
-	/**
-	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A % B
 	 */
 	rem(number) {
-		return this.remainder(number);
+		return this.clone()._rem(number);
 	}
 
 	/**
-	 * Modulo, positive remainder of division. (mutable)
+	 * Modulo, positive rem of division. (mutable)
+	 * - Result has same sign as the Divisor.
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A = A mod B
 	 * @private
@@ -1170,7 +1128,8 @@ export default class BigInteger {
 	}
 
 	/**
-	 * Modulo, positive remainder of division.
+	 * Modulo, positive rem of division.
+	 * - Result has same sign as the Divisor.
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A mod B
 	 */
@@ -1189,6 +1148,9 @@ export default class BigInteger {
 		let x = new BigInteger(this);
 		let y = new BigInteger(1);
 		const e = new BigInteger(exponent);
+		if(!x.isFinite() || !e.isFinite()) {
+			return BigInteger.NaN;
+		}
 		while(e.element.length !== 0) {
 			if((e.element[0] & 1) !== 0) {
 				y = y.multiply(x).mod(m_);
@@ -1206,13 +1168,16 @@ export default class BigInteger {
 	 */
 	modInverse(m) {
 		const m_ = BigInteger._toBigInteger(m);
+		if(!this.isFinite() || !m_.isFinite()) {
+			return BigInteger.NaN;
+		}
 		const y = this.extgcd(m);
 		const ONE  = new BigInteger(1);
 		if(y[2].compareTo(ONE) !== 0) {
 			return BigInteger.NaN;
 		}
-		// 正にするため remainder ではなく mod を使用する
-		return y[0]._add(m_)._mod(m_);
+		// 正にするため rem ではなく mod を使用する
+		return y[0]._add(m_).rem(m_);
 	}
 
 	// ----------------------
@@ -1492,7 +1457,7 @@ export default class BigInteger {
 		let x = this, y = val, z;
 		let i = 10;
 		while(y.sign() !== 0 && i) {
-			z = x.remainder(y);
+			z = x.rem(y);
 			x = y;
 			y = z;
 			i--;
@@ -2495,6 +2460,56 @@ export default class BigInteger {
 	 */
 	static get NaN() {
 		return DEFINE.NaN;
+	}
+
+	// ----------------------
+	// 互換性
+	// ----------------------
+	
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	signum() {
+		return this.sign();
+	}
+
+	/**
+	 * Subtract.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A - B
+	 */
+	subtract(number) {
+		return this.sub(number);
+	}
+
+	/**
+	 * Multiply.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A * B
+	 */
+	multiply(number) {
+		return this.mul(number);
+	}
+
+	/**
+	 * Divide.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} fix(A / B)
+	 */
+	divide(number) {
+		return this.div(number);
+	}
+
+	/**
+	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A % B
+	 */
+	remainder(number) {
+		return this.rem(number);
 	}
 
 }

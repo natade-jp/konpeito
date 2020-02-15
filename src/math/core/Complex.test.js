@@ -44,8 +44,8 @@ const testGet  = function(operator, x, y) {
 	const X = $(x);
 	// @ts-ignore
 	const Y = X[operator];
-	const testname = operator + " " + test_count + " (" + x + ")." + operator + "= " + Y;
-	const out = $(Y).equals(y, 0.001);
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "= " + y + " === " + Y;
+	const out = ($(Y).isNaN() && $(y).isNaN()) ? true : $(Y).equals(y, 0.001);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -57,13 +57,12 @@ const testGet  = function(operator, x, y) {
  */
 const testOperator1  = function(operator, x, y, tolerance) {
 	test_count++;
-	const tolerance_ = tolerance ? tolerance : 0.1;
+	const tolerance_ = tolerance !== undefined ? tolerance : 0.1;
 	const X = $(x);
 	// @ts-ignore
 	const Y = X[operator]();
-	const Y_str = Y;
-	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + Y_str;
-	const out = $(Y).equals(y, tolerance_);
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y + " === " + Y;
+	const out = ($(Y).isNaN() && $(y).isNaN()) ? true : $(Y).equals(y, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -76,13 +75,12 @@ const testOperator1  = function(operator, x, y, tolerance) {
  */
 const testOperator2  = function(operator, x, p, y, tolerance) {
 	test_count++;
-	const tolerance_ = tolerance ? tolerance : 0.1;
+	const tolerance_ = tolerance !== undefined ? tolerance : 0.1;
 	const X = $(x);
 	// @ts-ignore
 	const Y = X[operator](p);
-	const Y_str = Y;
-	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p + ") = " + Y_str;
-	const out = $(Y).equals(y, tolerance_);
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p + ") = " + y + " === " + Y;
+	const out = ($(Y).isNaN() && $(y).isNaN()) ? true : $(Y).equals(y, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -100,9 +98,8 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	const X = $(x);
 	// @ts-ignore
 	const Y = X[operator](p1, p2);
-	const Y_str = Y;
-	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + Y_str;
-	const out = $(Y).equals(y, tolerance_);
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "(" + p1 + ", " + p2 + ") = " + y + " === " + Y;
+	const out = ($(Y).isNaN() && $(y).isNaN()) ? true : $(Y).equals(y, tolerance_);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -116,7 +113,7 @@ const testOperator1Bool  = function(operator, x, y) {
 	const X = $(x);
 	// @ts-ignore
 	const Y = X[operator]();
-	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + Y;
+	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y + " === " + Y;
 	const out = y === Y;
 	test(testname, () => { expect(out).toBe(true); });
 };
@@ -183,8 +180,59 @@ const testOperator1Bool  = function(operator, x, y) {
 
 {
 	test_count = 0;
+	testOperator2("rem", 110, 100, 10);
+	testOperator2("rem",  80, 100, 80);
+	testOperator2("rem",-110, 100,-10);
+	testOperator2("rem", -80, 100,-80);
+	testOperator2("rem", 4, 3, 1);
+	testOperator2("rem", 4,-3, 1);
+	testOperator2("rem",-4, 3,-1);
+	testOperator2("rem",-4,-3,-1);
+	testOperator2("rem", 4, 5, 4);
+	testOperator2("rem", 4,-5, 4);
+	testOperator2("rem",-4, 5,-4);
+	testOperator2("rem",-4,-5,-4);
+	testOperator2("rem", 0, 0, NaN);
+	testOperator2("rem", 100, 0, NaN);
+	testOperator2("rem", Infinity, 0, NaN);
+	testOperator2("rem", -Infinity, 0, NaN);
+	testOperator2("rem", Infinity, 100, NaN);
+	testOperator2("rem", Infinity, -100, NaN);
+	testOperator2("rem", 100, Infinity, NaN);
+	testOperator2("rem", -100, Infinity, NaN);
+	testOperator2("rem", Infinity, Infinity, NaN);
+	testOperator2("rem", -Infinity, -Infinity, NaN);
+	testOperator2("rem", 0, -Infinity, NaN);
+	testOperator2("rem", NaN, 0, NaN);
+	testOperator2("rem", Infinity, NaN, NaN);
+}
+
+{
+	test_count = 0;
 	testOperator2("mod", "30.4", "2.5", "0.4");
 	testOperator2("mod", "-30.4", "2.5", "2.1");
+	testOperator2("mod", 4, 3, 1);
+	testOperator2("mod", 4,-3,-2);
+	testOperator2("mod",-4, 3, 2);
+	testOperator2("mod",-4,-3,-1);
+	testOperator2("mod", 4, 5, 4);
+	testOperator2("mod", 4,-5,-1);
+	testOperator2("mod",-4, 5, 1);
+	testOperator2("mod",-4,-5,-4);
+	testOperator2("mod", 0, 0, 0);
+	testOperator2("mod", 0, 0, 0);
+	testOperator2("mod", 100, 0, 100);
+	testOperator2("mod", Infinity, 0, Infinity);
+	testOperator2("mod", -Infinity, 0, -Infinity);
+	testOperator2("mod", Infinity, 100, NaN);
+	testOperator2("mod", Infinity, -100, NaN);
+	testOperator2("mod", 100, Infinity, NaN);
+	testOperator2("mod", -100, Infinity, NaN);
+	testOperator2("mod", Infinity, Infinity, NaN);
+	testOperator2("mod", -Infinity, -Infinity, NaN);
+	testOperator2("mod", 0, -Infinity, NaN);
+	testOperator2("mod", NaN, 0, NaN);
+	testOperator2("mod", Infinity, NaN, NaN);
 }
 
 {
@@ -394,6 +442,235 @@ const testOperator1Bool  = function(operator, x, y) {
 	test_count = 0;
 	testOperator2("atan2", "1.72", "1.2", "0.96163");
 }
+
+
+{
+	test_count = 0;
+	testOperator1("asin", -Infinity, NaN);
+	testOperator1("asin",   -5, "-1.5708 + 2.2924i");
+	testOperator1("asin", -0.5, -0.523598775598299);
+	testOperator1("asin",    0,  0);
+	testOperator1("asin",  0.5,  0.523598775598299);
+	testOperator1("asin",    5, "1.5708 - 2.2924i");
+	testOperator1("asin", Infinity, NaN);
+}
+
+{
+	test_count = 0;
+	testOperator1("acos", -Infinity, NaN);
+	testOperator1("acos",   -5, "3.1416 - 2.2924i");
+	testOperator1("acos", -0.5, 2.09439510239320);
+	testOperator1("acos",    0, 1.57079632679490);
+	testOperator1("acos",  0.5, 1.04719755119660);
+	testOperator1("acos",    5, "2.29243i");
+	testOperator1("acos", Infinity, NaN);
+}
+
+{
+	test_count = 0;
+	testOperator1("sinh", -Infinity, -Infinity);
+	testOperator1("sinh",   -5, -74.2032105777888);
+	testOperator1("sinh", -0.5, -0.521095305493747);
+	testOperator1("sinh",    0,  0);
+	testOperator1("sinh",  0.5,  0.521095305493747);
+	testOperator1("sinh",    5,  74.2032105777888);
+	testOperator1("sinh", Infinity, Infinity);
+}
+
+{
+	test_count = 0;
+	testOperator1("asinh", -Infinity, -Infinity);
+	testOperator1("asinh",   -5, -2.31243834127275);
+	testOperator1("asinh", -0.5, -0.481211825059603);
+	testOperator1("asinh",    0,  0);
+	testOperator1("asinh",  0.5,  0.481211825059603);
+	testOperator1("asinh",    5,  2.31243834127275, 1);
+	testOperator1("asinh", Infinity, Infinity);
+}
+
+{
+	test_count = 0;
+	testOperator1("cosh", -Infinity, Infinity);
+	testOperator1("cosh",   -5, 74.2099485247878);
+	testOperator1("cosh", -0.5,  1.12762596520638);
+	testOperator1("cosh",    0,  1);
+	testOperator1("cosh",  0.5,  1.12762596520638);
+	testOperator1("cosh",    5, 74.2099485247878);
+	testOperator1("cosh", Infinity, Infinity);
+}
+
+{
+	test_count = 0;
+//	testOperator1("acosh", -Infinity, NaN);
+	testOperator1("acosh",   -5,  "2.2924 + 3.1416i");
+	testOperator1("acosh", -0.5,  "1.1102e-016 - 2.0944e+000i");
+	testOperator1("acosh",    0,  "1.57080i");
+	testOperator1("acosh",  0.5,  "1.1102e-016 - 1.0472e+000i");
+	testOperator1("acosh",    5,  2.29243166956118, 1);
+//	testOperator1("acosh", Infinity, NaN);
+}
+
+{
+	test_count = 0;
+	testOperator1("tanh", -Infinity, -1);
+	testOperator1("tanh",   -5, -0.999909204262595);
+	testOperator1("tanh", -0.5, -0.462117157260010);
+	testOperator1("tanh",    0,  0);
+	testOperator1("tanh",  0.5,  0.462117157260010);
+	testOperator1("tanh",    5,  0.999909204262595);
+	testOperator1("tanh", Infinity, 1);
+}
+
+{
+	test_count = 0;
+	testOperator1("atanh", -Infinity, "1.57080i");
+	testOperator1("atanh",   -5,  "-0.20273 + 1.57080i");
+	testOperator1("atanh",   -1,  -Infinity);
+	testOperator1("atanh", -0.5, -0.549306144334055);
+	testOperator1("atanh",    0,  0);
+	testOperator1("atanh",  0.5,  0.549306144334055);
+	testOperator1("atanh",    1,  Infinity);
+	testOperator1("atanh",    5,  "0.20273 + 1.57080i");
+	testOperator1("atanh", Infinity, "1.57080i");
+}
+
+{
+	test_count = 0;
+	testOperator1("sec", -Infinity, NaN);
+	testOperator1("sec",   -5,  3.52532008581609);
+	testOperator1("sec", -0.5,  1.13949392732455);
+	testOperator1("sec",    0,  1);
+	testOperator1("sec",  0.5,  1.13949392732455);
+	testOperator1("sec",    5,  3.52532008581609);
+	testOperator1("sec", Infinity, NaN);
+}
+
+{
+	test_count = 0;
+	testOperator1("asec", -Infinity, 1.57079632679490);
+	testOperator1("asec",   -5,  1.77215424758523);
+	testOperator1("asec", -0.5,  "3.1416 - 1.3170i");
+//	testOperator1("asec",    0,  NaN);
+	testOperator1("asec",  0.5,  "1.31696i");
+	testOperator1("asec",    5,  1.36943840600457);
+	testOperator1("asec", Infinity, 1.57079632679490);
+}
+
+{
+	test_count = 0;
+	testOperator1("sech", -Infinity, 0);
+	testOperator1("sech",   -5,  0.0134752822213046);
+	testOperator1("sech", -0.5,  0.886818883970074);
+	testOperator1("sech",    0,  1);
+	testOperator1("sech",  0.5,  0.886818883970074);
+	testOperator1("sech",    5,  0.0134752822213046);
+	testOperator1("sech", Infinity, 0);
+}
+
+{
+	test_count = 0;
+	testOperator1("asech", -Infinity, "1.57080i");
+	testOperator1("asech",   -5,  "1.77215i");
+	testOperator1("asech", -0.5,  "1.3170 + 3.1416i");
+//	testOperator1("asech",    0,  NaN);
+	testOperator1("asech",  0.5,  1.31695789692482);
+	testOperator1("asech",    1,  0.0);
+	testOperator1("asech",    5,  "1.36944i");
+	testOperator1("asech", Infinity, "1.57080i");
+}
+
+{
+	test_count = 0;
+	testOperator1("cot", -Infinity, NaN);
+	testOperator1("cot",   -5,  0.295812915532746);
+	testOperator1("cot", -0.5, -1.83048772171245);
+	testOperator1("cot",    0,  Infinity);
+	testOperator1("cot",  0.5,  1.83048772171245);
+	testOperator1("cot",    5, -0.295812915532746);
+	testOperator1("cot", Infinity, NaN);
+}
+
+{
+	test_count = 0;
+	testOperator1("acot", -Infinity, 0);
+	testOperator1("acot",   -5, -0.197395559849881);
+	testOperator1("acot", -0.5, -1.10714871779409);
+	testOperator1("acot",    0,  1.57079632679490);
+	testOperator1("acot",  0.5,  1.10714871779409);
+	testOperator1("acot",    5,  0.197395559849881);
+	testOperator1("acot", Infinity, 0);
+}
+
+{
+	test_count = 0;
+	testOperator1("coth", -Infinity, -1);
+	testOperator1("coth",   -5, -1.00009080398202);
+	testOperator1("coth", -0.5, -2.16395341373865);
+	testOperator1("coth",    0,  Infinity);
+	testOperator1("coth",  0.5,  2.16395341373865);
+	testOperator1("coth",    5,  1.00009080398202);
+	testOperator1("coth", Infinity, 1);
+}
+
+{
+	test_count = 0;
+	testOperator1("acoth", -Infinity, 0);
+	testOperator1("acoth",   -5, -0.202732554054082);
+	testOperator1("acoth", -0.5,  " -0.54931 + 1.57080i");
+	testOperator1("acoth",    0,  " 1.57080i");
+	testOperator1("acoth",  0.5,  " 0.54931 + 1.57080i");
+	testOperator1("acoth",    5,  0.202732554054082);
+	testOperator1("acoth", Infinity, 0);
+}
+
+{
+	test_count = 0;
+	testOperator1("csc", -Infinity, NaN);
+	testOperator1("csc",   -5,  1.04283521277141);
+	testOperator1("csc", -0.5, -2.08582964293349);
+	testOperator1("csc",    0,  Infinity);
+	testOperator1("csc",  0.5,  2.08582964293349);
+	testOperator1("csc",    5, -1.04283521277141);
+	testOperator1("csc", Infinity, NaN);
+}
+
+{
+	test_count = 0;
+	testOperator1("acsc", -Infinity, 0);
+	testOperator1("acsc",   -5, -0.201357920790331);
+	testOperator1("acsc", -0.5,  "-1.5708 + 1.3170i");
+	testOperator1("acsc",    0,  NaN);
+	testOperator1("acsc",  0.5,  "1.5708 - 1.3170i");
+	testOperator1("acsc",    5,  0.201357920790331);
+	testOperator1("acsc", Infinity, 0);
+}
+
+{
+	test_count = 0;
+	testOperator1("csch", -Infinity, 0);
+	testOperator1("csch",   -5, -0.0134765058305891);
+	testOperator1("csch", -0.5, -1.91903475133494);
+	testOperator1("csch",    0,  Infinity);
+	testOperator1("csch",  0.5,  1.91903475133494);
+	testOperator1("csch",    5,  0.0134765058305891);
+	testOperator1("csch", Infinity, 0);
+}
+
+{
+	test_count = 0;
+	testOperator1("acsch", -Infinity, 0);
+	testOperator1("acsch",   -5, -0.198690110349241);
+	testOperator1("acsch", -0.5, -1.44363547517881);
+	testOperator1("acsch",    0,  Infinity);
+	testOperator1("acsch",  0.5,  1.44363547517881);
+	testOperator1("acsch",    5,  0.198690110349241);
+	testOperator1("acsch", Infinity, 0);
+}
+
+
+
+
+
 
 {
 	test_count = 0;

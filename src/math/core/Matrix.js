@@ -10,7 +10,6 @@
 
 import LinearAlgebra from "./tools/LinearAlgebra.js";
 import Statistics from "./tools/Statistics.js";
-import Probability from "./tools/Probability.js";
 import Signal from "./tools/Signal.js";
 import Complex from "./Complex.js";
 
@@ -2025,6 +2024,52 @@ export default class Matrix {
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// 余り
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+
+	/**
+	 * Modulo, positive remainder of division for each element of matrix.
+	 * - Result has same sign as the Dividend.
+	 * @param {KMatrixInputData} number 
+	 * @returns {Matrix} A .rem B
+	 */
+	rem(number) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
+		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
+			throw "Matrix size does not match";
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].rem(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+
+	/**
+	 * Modulo, positive remainder of division for each element of matrix.
+	 * - Result has same sign as the Divisor.
+	 * @param {KMatrixInputData} number 
+	 * @returns {Matrix} A .mod B
+	 */
+	mod(number) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
+		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
+			throw "Matrix size does not match";
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].mod(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+	
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	// Complexのメソッドにある機能
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 
@@ -2070,163 +2115,52 @@ export default class Matrix {
 	}
 
 	/**
-	 * Test if each element of the matrix is integer.
-	 * - 1 if true, 0 if false.
-	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
-	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 * Floor.
+	 * @returns {Matrix} floor(A)
 	 */
-	testInteger(tolerance) {
+	floor() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isInteger(tolerance) ? Complex.ONE : Complex.ZERO;
+			return num.floor();
 		});
 	}
 
 	/**
-	 * Test if each element of the matrix is complex integer.
-	 * - 1 if true, 0 if false.
-	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
-	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 * Ceil.
+	 * @returns {Matrix} ceil(A)
 	 */
-	testComplexInteger(tolerance) {
+	ceil() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isComplexInteger(tolerance) ? Complex.ONE : Complex.ZERO;
+			return num.ceil();
 		});
 	}
 
 	/**
-	 * real(this) === 0
-	 * - 1 if true, 0 if false.
-	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
-	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 * Rounding to the nearest integer.
+	 * @returns {Matrix} round(A)
 	 */
-	testZero(tolerance) {
+	round() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isZero(tolerance) ? Complex.ONE : Complex.ZERO;
+			return num.round();
 		});
 	}
 
 	/**
-	 * real(this) === 1
-	 * - 1 if true, 0 if false.
-	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
-	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 * To integer rounded down to the nearest.
+	 * @returns {Matrix} fix(A), trunc(A)
 	 */
-	testOne(tolerance) {
+	fix() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isOne(tolerance) ? Complex.ONE : Complex.ZERO;
-		});
-	}
-	
-	/**
-	 * Test if each element of the matrix is complex.
-	 * - 1 if true, 0 if false.
-	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
-	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
-	 */
-	testComplex(tolerance) {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isComplex(tolerance) ? Complex.ONE : Complex.ZERO;
+			return num.fix();
 		});
 	}
 
 	/**
-	 * Test if each element of the matrix is real.
-	 * - 1 if true, 0 if false.
-	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
-	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 * Fraction.
+	 * @returns {Matrix} fract(A)
 	 */
-	testReal(tolerance) {
+	fract() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isReal(tolerance) ? Complex.ONE : Complex.ZERO;
-		});
-	}
-
-	/**
-	 * Test if each element of the matrix is NaN.
-	 * - 1 if true, 0 if false.
-	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
-	 */
-	testNaN() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isNaN() ? Complex.ONE : Complex.ZERO;
-		});
-	}
-
-
-	/**
-	 * real(this) > 0
-	 * - 1 if true, 0 if false.
-	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
-	 */
-	testPositive() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isPositive() ? Complex.ONE : Complex.ZERO;
-		});
-	}
-
-	/**
-	 * real(this) < 0
-	 * - 1 if true, 0 if false.
-	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
-	 */
-	testNegative() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isNegative() ? Complex.ONE : Complex.ZERO;
-		});
-	}
-
-	/**
-	 * real(this) >= 0
-	 * - 1 if true, 0 if false.
-	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
-	 */
-	testNotNegative() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isNotNegative() ? Complex.ONE : Complex.ZERO;
-		});
-	}
-
-	/**
-	 * Test if each element of the matrix is positive infinite.
-	 * - 1 if true, 0 if false.
-	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
-	 */
-	testPositiveInfinity() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isPositiveInfinity() ? Complex.ONE : Complex.ZERO;
-		});
-	}
-	
-	/**
-	 * Test if each element of the matrix is negative infinite.
-	 * - 1 if true, 0 if false.
-	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
-	 */
-	testNegativeInfinity() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isNegativeInfinity() ? Complex.ONE : Complex.ZERO;
-		});
-	}
-	
-	/**
-	 * Test if each element of the matrix is infinite.
-	 * - 1 if true, 0 if false.
-	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
-	 */
-	testInfinite() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isInfinite() ? Complex.ONE : Complex.ZERO;
-		});
-	}
-	
-	/**
-	 * Test if each element of the matrix is finite.
-	 * - 1 if true, 0 if false.
-	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
-	 */
-	testFinite() {
-		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.isFinite() ? Complex.ONE : Complex.ZERO;
+			return num.fract();
 		});
 	}
 
@@ -2346,52 +2280,202 @@ export default class Matrix {
 	}
 
 	/**
-	 * Floor.
-	 * @returns {Matrix} floor(A)
+	 * Arc sine function.
+	 * @returns {Matrix} asin(A)
 	 */
-	floor() {
+	asin() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.floor();
+			return num.asin();
 		});
 	}
 
 	/**
-	 * Ceil.
-	 * @returns {Matrix} ceil(A)
+	 * Arc cosine function.
+	 * @returns {Matrix} acos(A)
 	 */
-	ceil() {
+	acos() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.ceil();
+			return num.acos();
+		});
+	}
+	
+	/**
+	 * Hyperbolic sine function.
+	 * @returns {Matrix} sinh(A)
+	 */
+	sinh() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.sinh();
 		});
 	}
 
 	/**
-	 * Rounding to the nearest integer.
-	 * @returns {Matrix} round(A)
+	 * Inverse hyperbolic sine function.
+	 * @returns {Matrix} asinh(A)
 	 */
-	round() {
+	asinh() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.round();
+			return num.asinh();
 		});
 	}
 
 	/**
-	 * To integer rounded down to the nearest.
-	 * @returns {Matrix} fix(A), trunc(A)
+	 * Hyperbolic cosine function.
+	 * @returns {Matrix} cosh(A)
 	 */
-	fix() {
+	cosh() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.fix();
+			return num.cosh();
 		});
 	}
 
 	/**
-	 * Fraction.
-	 * @returns {Matrix} fract(A)
+	 * Inverse hyperbolic cosine function.
+	 * @returns {Matrix} acosh(A)
 	 */
-	fract() {
+	acosh() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
-			return num.fract();
+			return num.acosh();
+		});
+	}
+
+	/**
+	 * Hyperbolic tangent function.
+	 * @returns {Matrix} tanh(A)
+	 */
+	tanh() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.tanh();
+		});
+	}
+	
+	/**
+	 * Inverse hyperbolic tangent function.
+	 * @returns {Matrix} atanh(A)
+	 */
+	atanh() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.atanh();
+		});
+	}
+
+	/**
+	 * Secant function.
+	 * @returns {Matrix} sec(A)
+	 */
+	sec() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.sec();
+		});
+	}
+
+	/**
+	 * Reverse secant function.
+	 * @returns {Matrix} asec(A)
+	 */
+	asec() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.asec();
+		});
+	}
+
+	/**
+	 * Hyperbolic secant function.
+	 * @returns {Matrix} sech(A)
+	 */
+	sech() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.sech();
+		});
+	}
+
+	/**
+	 * Inverse hyperbolic secant function.
+	 * @returns {Matrix} asech(A)
+	 */
+	asech() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.asech();
+		});
+	}
+
+	/**
+	 * Cotangent function.
+	 * @returns {Matrix} cot(A)
+	 */
+	cot() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.cot();
+		});
+	}
+
+	/**
+	 * Inverse cotangent function.
+	 * @returns {Matrix} acot(A)
+	 */
+	acot() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.acot();
+		});
+	}
+
+	/**
+	 * Hyperbolic cotangent function.
+	 * @returns {Matrix} coth(A)
+	 */
+	coth() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.coth();
+		});
+	}
+
+	/**
+	 * Inverse hyperbolic cotangent function.
+	 * @returns {Matrix} acoth(A)
+	 */
+	acoth() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.acoth();
+		});
+	}
+
+	/**
+	 * Cosecant function.
+	 * @returns {Matrix} csc(A)
+	 */
+	csc() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.csc();
+		});
+	}
+
+	/**
+	 * Inverse cosecant function.
+	 * @returns {Matrix} acsc(A)
+	 */
+	acsc() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.acsc();
+		});
+	}
+
+	/**
+	 * Hyperbolic cosecant function.
+	 * @returns {Matrix} csch(A)
+	 */
+	csch() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.csch();
+		});
+	}
+
+	/**
+	 * Inverse hyperbolic cosecant function.
+	 * @returns {Matrix} acsch(A)
+	 */
+	acsch() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.acsch();
 		});
 	}
 
@@ -2402,6 +2486,166 @@ export default class Matrix {
 	sinc() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.sinc();
+		});
+	}
+	
+	/**
+	 * Test if each element of the matrix is integer.
+	 * - 1 if true, 0 if false.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testInteger(tolerance) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isInteger(tolerance) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * Test if each element of the matrix is complex integer.
+	 * - 1 if true, 0 if false.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testComplexInteger(tolerance) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isComplexInteger(tolerance) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * real(this) === 0
+	 * - 1 if true, 0 if false.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testZero(tolerance) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isZero(tolerance) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * real(this) === 1
+	 * - 1 if true, 0 if false.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testOne(tolerance) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isOne(tolerance) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+	
+	/**
+	 * Test if each element of the matrix is complex.
+	 * - 1 if true, 0 if false.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testComplex(tolerance) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isComplex(tolerance) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * Test if each element of the matrix is real.
+	 * - 1 if true, 0 if false.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testReal(tolerance) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isReal(tolerance) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * Test if each element of the matrix is NaN.
+	 * - 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testNaN() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isNaN() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * real(this) > 0
+	 * - 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testPositive() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isPositive() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * real(this) < 0
+	 * - 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testNegative() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isNegative() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * real(this) >= 0
+	 * - 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testNotNegative() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isNotNegative() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * Test if each element of the matrix is positive infinite.
+	 * - 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testPositiveInfinity() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isPositiveInfinity() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+	
+	/**
+	 * Test if each element of the matrix is negative infinite.
+	 * - 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testNegativeInfinity() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isNegativeInfinity() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+	
+	/**
+	 * Test if each element of the matrix is infinite.
+	 * - 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testInfinite() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isInfinite() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+	
+	/**
+	 * Test if each element of the matrix is finite.
+	 * - 1 if true, 0 if false.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testFinite() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isFinite() ? Complex.ONE : Complex.ZERO;
 		});
 	}
 
@@ -3116,293 +3360,605 @@ export default class Matrix {
 
 	/**
 	 * Log-gamma function.
+	 * - Calculate from real values.
 	 * @returns {Matrix}
 	 */
 	gammaln() {
-		return Probability.gammaln(this);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.gammaln();
+		});
 	}
 
 	/**
 	 * Gamma function.
+	 * - Calculate from real values.
 	 * @returns {Matrix}
 	 */
 	gamma() {
-		return Probability.gamma(this);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.gamma();
+		});
 	}
 
 	/**
 	 * Incomplete gamma function.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} a
 	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
 	gammainc(a, tail) {
-		return Probability.gammainc(this, a, tail);
+		
+		const a_ = Matrix._toDouble(a);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.gammainc(a_, tail);
+		});
 	}
 
 	/**
 	 * Probability density function (PDF) of the gamma distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} k - Shape parameter.
 	 * @param {KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	gampdf(k, s) {
-		return Probability.gampdf(this, k, s);
+		
+		const k_ = Matrix._toDouble(k);
+		const s_ = Matrix._toDouble(s);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.gampdf(k_, s_);
+		});
 	}
 
 	/**
 	 * Cumulative distribution function (CDF) of gamma distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} k - Shape parameter.
 	 * @param {KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	gamcdf(k, s) {
-		return Probability.gampdf(this, k, s);
+		const k_ = Matrix._toDouble(k);
+		const s_ = Matrix._toDouble(s);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.gamcdf(k_, s_);
+		});
 	}
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of gamma distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} k - Shape parameter.
 	 * @param {KMatrixInputData} s - Scale parameter.
 	 * @returns {Matrix}
 	 */
 	gaminv(k, s) {
-		return Probability.gaminv(this, k, s);
+		const k_ = Matrix._toDouble(k);
+		const s_ = Matrix._toDouble(s);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.gaminv(k_, s_);
+		});
 	}
 
 	/**
 	 * Beta function.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} y
 	 * @returns {Matrix}
 	 */
 	beta(y) {
-		return Probability.beta(this, y);
+		const y_ = Matrix._toDouble(y);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.beta(y_);
+		});
 	}
 	
 	/**
 	 * Incomplete beta function.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} a
 	 * @param {KMatrixInputData} b
 	 * @param {string} [tail="lower"] - lower (default) , "upper"
 	 * @returns {Matrix}
 	 */
 	betainc(a, b, tail) {
-		return Probability.betainc(this, a, b, tail);
+		const a_ = Matrix._toDouble(a);
+		const b_ = Matrix._toDouble(b);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.betainc(a_, b_, tail);
+		});
 	}
 
 	/**
 	 * Cumulative distribution function (CDF) of beta distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} a
 	 * @param {KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	betacdf(a, b) {
-		return Probability.betacdf(this, a, b);
+		const a_ = Matrix._toDouble(a);
+		const b_ = Matrix._toDouble(b);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.betacdf(a_, b_);
+		});
 	}
 
 	/**
 	 * Probability density function (PDF) of beta distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} a
 	 * @param {KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	betapdf(a, b) {
-		return Probability.betapdf(this, a, b);
+		const a_ = Matrix._toDouble(a);
+		const b_ = Matrix._toDouble(b);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.betapdf(a_, b_);
+		});
 	}
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of beta distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} a
 	 * @param {KMatrixInputData} b
 	 * @returns {Matrix}
 	 */
 	betainv(a, b) {
-		return Probability.betainv(this, a, b);
+		const a_ = Matrix._toDouble(a);
+		const b_ = Matrix._toDouble(b);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.betainv(a_, b_);
+		});
 	}
 
 	/**
 	 * Factorial function, x!.
+	 * - Calculate from real values.
 	 * @returns {Matrix}
 	 */
 	factorial() {
-		return Probability.factorial(this);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.factorial();
+		});
 	}
 	
 	/**
 	 * Binomial coefficient, number of all combinations, nCk.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} k
 	 * @returns {Matrix}
 	 */
 	nchoosek(k) {
-		return Probability.nchoosek(this, k);
+		const k_ = Matrix._toDouble(k);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.nchoosek(k_);
+		});
 	}
 	
 	/**
 	 * Error function.
+	 * - Calculate from real values.
 	 * @returns {Matrix}
 	 */
 	erf() {
-		return Probability.erf(this);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.erf();
+		});
 	}
 
 	/**
 	 * Complementary error function.
+	 * - Calculate from real values.
 	 * @returns {Matrix}
 	 */
 	erfc() {
-		return Probability.erfc(this);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.erfc();
+		});
 	}
 	
 	/**
 	 * Inverse function of Error function.
+	 * - Calculate from real values.
 	 * @returns {Matrix}
 	 */
 	erfinv() {
-		return Probability.erfinv(this);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.erfinv();
+		});
 	}
 	
 	/**
 	 * Inverse function of Complementary error function.
+	 * - Calculate from real values.
 	 * @returns {Matrix}
 	 */
 	erfcinv() {
-		return Probability.erfcinv(this);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.erfcinv();
+		});
 	}
-	
+
 	/**
 	 * Probability density function (PDF) of normal distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} [u=0.0] - Average value.
 	 * @param {KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
-	normpdf(u=0.0, s=1.0) {
-		return Probability.normpdf(this, u, s);
+	normpdf(u, s) {
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.normpdf(u_, s_);
+		});
 	}
 
 	/**
 	 * Cumulative distribution function (CDF) of normal distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} [u=0.0] - Average value.
 	 * @param {KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
-	normcdf(u=0.0, s=1.0) {
-		return Probability.normcdf(this, u, s);
+	normcdf(u, s) {
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.normcdf(u_, s_);
+		});
 	}
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of normal distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} [u=0.0] - Average value.
 	 * @param {KMatrixInputData} [s=1.0] - Variance value.
 	 * @returns {Matrix}
 	 */
-	norminv(u=0.0, s=1.0) {
-		return Probability.norminv(this, u, s);
+	norminv(u, s) {
+		const u_ = u !== undefined ? Matrix._toDouble(u) : 0.0;
+		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.norminv(u_, s_);
+		});
 	}
 
 	/**
 	 * Probability density function (PDF) of Student's t-distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tpdf(v) {
-		return Probability.tpdf(this, v);
+		const v_ = Matrix._toDouble(v);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.tpdf(v_);
+		});
 	}
 
 	/**
 	 * Cumulative distribution function (CDF) of Student's t-distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tcdf(v) {
-		return Probability.tcdf(this, v);
+		const v_ = Matrix._toDouble(v);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.tcdf(v_);
+		});
 	}
 
 	/**
 	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tinv(v) {
-		return Probability.tinv(this, v);
+		const v_ = Matrix._toDouble(v);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.tinv(v_);
+		});
 	}
 
 	/**
 	 * Cumulative distribution function (CDF) of Student's t-distribution that can specify tail.
-	 * - If tails = 1, TDIST returns the one-tailed distribution.
-	 * - If tails = 2, TDIST returns the two-tailed distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @param {KMatrixInputData} tails - Tail. (1 = the one-tailed distribution, 2 =  the two-tailed distribution.)
 	 * @returns {Matrix}
 	 */
 	tdist(v, tails) {
-		return Probability.tdist(this, v, tails);
+		const v_ = Matrix._toDouble(v);
+		const tails_ = Matrix._toDouble(tails);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.tdist(v_, tails_);
+		});
 	}
 
 	/**
 	 * Inverse of cumulative distribution function (CDF) of Student's t-distribution in two-sided test.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} v - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	tinv2(v) {
-		return Probability.tinv2(this, v);
+		const v_ = Matrix._toDouble(v);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.tinv2(v_);
+		});
 	}
 
 	/**
 	 * Probability density function (PDF) of chi-square distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	chi2pdf(k) {
-		return Probability.chi2pdf(this, k);
+		const k_ = Matrix._toDouble(k);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.chi2pdf(k_);
+		});
 	}
 
 	/**
 	 * Cumulative distribution function (CDF) of chi-square distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	chi2cdf(k) {
-		return Probability.chi2cdf(this, k);
+		const k_ = Matrix._toDouble(k);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.chi2cdf(k_);
+		});
 	}
 	
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of chi-square distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} k - The degrees of freedom. (DF)
 	 * @returns {Matrix}
 	 */
 	chi2inv(k) {
-		return Probability.chi2inv(this, k);
+		const k_ = Matrix._toDouble(k);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.chi2inv(k_);
+		});
 	}
 
 	/**
 	 * Probability density function (PDF) of F-distribution.
-	 * - In the argument, specify the degree of freedom of ratio of two variables according to chi-square distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
 	 * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	fpdf(d1, d2) {
-		return Probability.fpdf(this, d1, d2);
+		const d1_ = Matrix._toDouble(d1);
+		const d2_ = Matrix._toDouble(d2);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.fpdf(d1_, d2_);
+		});
 	}
 
 	/**
 	 * Cumulative distribution function (CDF) of F-distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
 	 * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	fcdf(d1, d2) {
-		return Probability.fcdf(this, d1, d2);
+		const d1_ = Matrix._toDouble(d1);
+		const d2_ = Matrix._toDouble(d2);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.fcdf(d1_, d2_);
+		});
 	}
 
 	/**
 	 * Inverse function of cumulative distribution function (CDF) of F-distribution.
+	 * - Calculate from real values.
 	 * @param {KMatrixInputData} d1 - The degree of freedom of the molecules.
 	 * @param {KMatrixInputData} d2 - The degree of freedom of the denominator
 	 * @returns {Matrix}
 	 */
 	finv(d1, d2) {
-		return Probability.finv(this, d1, d2);
+		const d1_ = Matrix._toDouble(d1);
+		const d2_ = Matrix._toDouble(d2);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.finv(d1_, d2_);
+		});
+	}
+
+	// ----------------------
+	// ビット演算系
+	// ----------------------
+	
+	/**
+	 * Logical AND.
+	 * - Calculated as an integer.
+	 * @param {KMatrixInputData} number 
+	 * @returns {Matrix} A & B
+	 */
+	and(number) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.and(Matrix._toDouble(number));
+		});
+	}
+
+	/**
+	 * Logical OR.
+	 * - Calculated as an integer.
+	 * @param {KMatrixInputData} number 
+	 * @returns {Matrix} A | B
+	 */
+	or(number) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.or(Matrix._toDouble(number));
+		});
+	}
+
+	/**
+	 * Logical Exclusive-OR.
+	 * - Calculated as an integer.
+	 * @param {KMatrixInputData} number 
+	 * @returns {Matrix} A ^ B
+	 */
+	xor(number) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.xor(Matrix._toDouble(number));
+		});
+	}
+
+	/**
+	 * Logical Not. (mutable)
+	 * - Calculated as an integer.
+	 * @returns {Matrix} !A
+	 */
+	not() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.not();
+		});
+	}
+	
+	/**
+	 * this << n
+	 * - Calculated as an integer.
+	 * @param {KMatrixInputData} n
+	 * @returns {Matrix} A << n
+	 */
+	shift(n) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.shift(Matrix._toDouble(n));
+		});
+	}
+
+	// ----------------------
+	// gcd, lcm
+	// ----------------------
+	
+	/**
+	 * Euclidean algorithm.
+	 * - Calculated as an integer.
+	 * @param {KMatrixInputData} number 
+	 * @returns {Matrix} gcd(x, y)
+	 */
+	gcd(number) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.gcd(Matrix._toDouble(number));
+		});
+	}
+
+	/**
+	 * Extended Euclidean algorithm.
+	 * - Calculated as an integer.
+	 * @param {KMatrixInputData} number 
+	 * @returns {Array<Matrix>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 */
+	extgcd(number) {
+		if(!this.isScalar()) {
+			throw "IllegalArgumentException";
+		}
+		const x = this.scalar;
+		const y = Matrix._toDouble(number);
+		const result =x.extgcd(y);
+		return [new Matrix(result[0]), new Matrix(result[1]), new Matrix(result[2])];
+	}
+
+	/**
+	 * Least common multiple.
+	 * - Calculated as an integer.
+	 * @param {KMatrixInputData} number 
+	 * @returns {Matrix} lcm(x, y)
+	 */
+	lcm(number) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.lcm(Matrix._toDouble(number));
+		});
+	}
+
+	// ----------------------
+	// mod
+	// ----------------------
+
+	/**
+	 * Modular exponentiation.
+	 * - Calculated as an integer.
+	 * @param {KMatrixInputData} exponent
+	 * @param {KMatrixInputData} m 
+	 * @returns {Matrix} A^B mod m
+	 */
+	modPow(exponent, m) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.modPow(Matrix._toDouble(exponent), Matrix._toDouble(m));
+		});
+	}
+
+	/**
+	 * Modular multiplicative inverse.
+	 * - Calculated as an integer.
+	 * @param {KMatrixInputData} m
+	 * @returns {Matrix} A^(-1) mod m
+	 */
+	modInverse(m) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.modInverse(Matrix._toDouble(m));
+		});
+	}
+	
+	// ----------------------
+	// 素数
+	// ----------------------
+	
+	/**
+	 * Test if each element of the matrix is prime number.
+	 * - 1 if true, 0 if false.
+	 * - Calculated as an integer.
+	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testPrime() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isPrime() ? Complex.ONE : Complex.ZERO;
+		});
+	}
+	
+	/**
+	 * Test if each element of the matrix is prime number by Miller-Labin prime number determination method.
+	 * - 1 if true, 0 if false.
+	 * Attention : it takes a very long time to process.
+	 * - Calculated as an integer.
+	 * @param {KMatrixInputData} [certainty=100] - Repeat count (prime precision).
+	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
+	 */
+	testProbablePrime(certainty) {
+		const p1 = certainty !== undefined ? Math.round(Complex._toDouble(certainty)) : undefined;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.isProbablePrime(p1) ? Complex.ONE : Complex.ZERO;
+		});
+	}
+
+	/**
+	 * Next prime.
+	 * @param {KMatrixInputData} [certainty=100] - Repeat count (prime precision).
+	 * @param {KMatrixInputData} [search_max=100000] - Search range of next prime.
+	 * @returns {Matrix}
+	 */
+	nextProbablePrime(certainty, search_max) {
+		const p1 = certainty !== undefined ? Math.round(Matrix._toDouble(certainty)) : undefined;
+		const p2 = search_max !== undefined ? Math.round(Matrix._toDouble(search_max)) : undefined;
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.nextProbablePrime(p1, p2);
+		});
 	}
 	
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
@@ -3895,6 +4451,64 @@ export default class Matrix {
 	 */
 	static get NaN() {
 		return new Matrix(Number.NaN);
+	}
+
+	// ----------------------
+	// 互換性
+	// ----------------------
+	
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {Matrix}
+	 */
+	signum() {
+		return this.sign();
+	}
+
+	/**
+	 * Subtract.
+	 * @param {KMatrixInputData} number
+	 * @returns {Matrix} A - B
+	 */
+	subtract(number) {
+		return this.sub(number);
+	}
+
+	/**
+	 * Multiply.
+	 * @param {KMatrixInputData} number
+	 * @returns {Matrix} A * B
+	 */
+	multiply(number) {
+		return this.mul(number);
+	}
+
+	/**
+	 * Divide.
+	 * @param {KMatrixInputData} number
+	 * @returns {Matrix} fix(A / B)
+	 */
+	divide(number) {
+		return this.div(number);
+	}
+
+	/**
+	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {KMatrixInputData} number
+	 * @returns {Matrix} A % B
+	 */
+	remainder(number) {
+		return this.rem(number);
+	}
+	
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {Matrix} fix(A), trunc(A)
+	 */
+	trunc() {
+		return this.fix();
 	}
 
 }

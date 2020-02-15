@@ -326,19 +326,19 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 
 {
 	test_count = 0;
-	testOperator2("divide", 100, 0, Infinity);
-	testOperator2("divide", -100, 0, -Infinity);
-	testOperator2("divide", 0, 0, NaN);
-	testOperator2("divide", Infinity, 100, Infinity);
-	testOperator2("divide", Infinity, -100, -Infinity);
-	testOperator2("divide", 100, Infinity, 0);
-	testOperator2("divide", -100, Infinity, 0);
-	testOperator2("divide", Infinity, Infinity, NaN);
-	testOperator2("divide", -Infinity, -Infinity, NaN);
-	testOperator2("divide", Infinity, 0, Infinity);
-	testOperator2("divide", 0, -Infinity, 0);
-	testOperator2("divide", NaN, 0, NaN);
-	testOperator2("divide", Infinity, NaN, NaN);
+	testOperator2("div", 100, 0, Infinity);
+	testOperator2("div", -100, 0, -Infinity);
+	testOperator2("div", 0, 0, NaN);
+	testOperator2("div", Infinity, 100, Infinity);
+	testOperator2("div", Infinity, -100, -Infinity);
+	testOperator2("div", 100, Infinity, 0);
+	testOperator2("div", -100, Infinity, 0);
+	testOperator2("div", Infinity, Infinity, NaN);
+	testOperator2("div", -Infinity, -Infinity, NaN);
+	testOperator2("div", Infinity, 0, Infinity);
+	testOperator2("div", 0, -Infinity, 0);
+	testOperator2("div", NaN, 0, NaN);
+	testOperator2("div", Infinity, NaN, NaN);
 }
 
 {
@@ -358,7 +358,7 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 }
 
 {
-	// x, y, divide, remainder
+	// x, y, div, remainder
 	const testDiv = [
 		["1000e0",	"1e2",	"1000e-2",	"0e0"],
 		["1000e0",	"10e1",	"100e-1",	"0e0"],
@@ -399,8 +399,8 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 {
 	const x1 = $("4.36");
 	const x2 = $("3.4");
-	const y = x1.divide(x2, MathContext.DECIMAL128).toString();
-	test("divide 1 " + x1 + " / " + x2 + " = " + y, () => { expect(y).toBe("1.282352941176470588235294117647059"); });
+	const y = x1.div(x2, MathContext.DECIMAL128).toString();
+	test("div 1 " + x1 + " / " + x2 + " = " + y, () => { expect(y).toBe("1.282352941176470588235294117647059"); });
 }
 
 {
@@ -408,14 +408,14 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	const x2 = $(["7", MathContext.UNLIMITED]);
 	let y1 = "";
 	try {
-		x1.divide(x2);
+		x1.div(x2);
 	}
 	catch(e) {
 		y1 = e;
 	}
-	const y2 = x1.divide(x2, { context : MathContext.DECIMAL128 }).toString();
-	test("divide 2 " + x1 + " / " + x2 + " = " + y1, () => { expect(y1).toBe("ArithmeticException 0.142857[1]"); });
-	test("divide 3 " + x1 + " / " + x2 + " = " + y2, () => { expect(y2).toBe("0.1428571428571428571428571428571428"); });
+	const y2 = x1.div(x2, { context : MathContext.DECIMAL128 }).toString();
+	test("div 2 " + x1 + " / " + x2 + " = " + y1, () => { expect(y1).toBe("ArithmeticException 0.142857[1]"); });
+	test("div 3 " + x1 + " / " + x2 + " = " + y2, () => { expect(y2).toBe("0.1428571428571428571428571428571428"); });
 }
 
 {

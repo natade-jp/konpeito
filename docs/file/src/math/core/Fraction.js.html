@@ -744,6 +744,7 @@ export default class Fraction {
 
 	/**
 	 * Modulo, positive remainder of division.
+	 * - Result has same sign as the Dividend.
 	 * @param {KFractionInputData} num
 	 * @return {Fraction} A rem B
 	 */
@@ -759,6 +760,7 @@ export default class Fraction {
 
 	/**
 	 * Modulo, positive remainder of division.
+	 * - Result has same sign as the Divisor.
 	 * @param {KFractionInputData} num
 	 * @returns {Fraction} A mod B
 	 */
@@ -808,7 +810,7 @@ export default class Fraction {
 						return Fraction.NaN;
 					}
 					else {
-						return Fraction.create(Infinity * Math.pow(-1, Math.round(y.doubleValue)));
+						return new Fraction(Infinity * Math.pow(-1, Math.round(y.doubleValue)));
 					}
 				}
 			}
@@ -1249,7 +1251,150 @@ export default class Fraction {
 		return this.numerator.isFinite();
 	}
 
+	// ----------------------
+	// &#x30D3;&#x30C3;&#x30C8;&#x6F14;&#x7B97;&#x7CFB;
+	// ----------------------
+	
+	/**
+	 * Logical AND.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction} A &amp; B
+	 */
+	and(number) {
+		const n_src = this;
+		const n_tgt = Fraction._toFraction(number);
+		const src	= n_src.round().toBigInteger();
+		const tgt	= n_tgt.round().toBigInteger();
+		return new Fraction(src.and(tgt));
+	}
 
+	/**
+	 * Logical OR.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction} A | B
+	 */
+	or(number) {
+		const n_src = this;
+		const n_tgt = Fraction._toFraction(number);
+		const src	= n_src.round().toBigInteger();
+		const tgt	= n_tgt.round().toBigInteger();
+		return new Fraction(src.or(tgt));
+	}
+
+	/**
+	 * Logical Exclusive-OR.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction} A ^ B
+	 */
+	xor(number) {
+		const n_src = this;
+		const n_tgt = Fraction._toFraction(number);
+		const src	= n_src.round().toBigInteger();
+		const tgt	= n_tgt.round().toBigInteger();
+		return new Fraction(src.xor(tgt));
+	}
+
+	/**
+	 * Logical Not. (mutable)
+	 * - Calculated as an integer.
+	 * @returns {Fraction} !A
+	 */
+	not() {
+		const n_src = this;
+		const src	= n_src.round().toBigInteger();
+		return new Fraction(src.not());
+	}
+	
+	/**
+	 * this &lt;&lt; n
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} n
+	 * @returns {Fraction} A &lt;&lt; n
+	 */
+	shift(n) {
+		const src		= this.round().toBigInteger();
+		const number	= BigDecimal._toInteger(n);
+		return new Fraction(src.shift(number));
+	}
+
+	// ----------------------
+	// gcd, lcm
+	// ----------------------
+	
+	/**
+	 * Euclidean algorithm.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction} gcd(x, y)
+	 */
+	gcd(number) {
+		const x = this.round().toBigInteger();
+		const y = Fraction._toFraction(number).toBigInteger();
+		const result = x.gcd(y);
+		return new Fraction(result);
+	}
+
+	/**
+	 * Extended Euclidean algorithm.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} number 
+	 * @returns {Array&lt;Fraction&gt;} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 */
+	extgcd(number) {
+		const x = this.round().toBigInteger();
+		const y = Fraction._toFraction(number).toBigInteger();
+		const result = x.extgcd(y);
+		return [new Fraction(result[0]), new Fraction(result[1]), new Fraction(result[2])];
+	}
+
+	/**
+	 * Least common multiple.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction} lcm(x, y)
+	 */
+	lcm(number) {
+		const x = this.round().toBigInteger();
+		const y = Fraction._toFraction(number).toBigInteger();
+		const result = x.lcm(y);
+		return new Fraction(result);
+	}
+
+	// ----------------------
+	// mod
+	// ----------------------
+
+	/**
+	 * Modular exponentiation.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} exponent
+	 * @param {KFractionInputData} m 
+	 * @returns {Fraction} A^B mod m
+	 */
+	modPow(exponent, m) {
+		const A = this.round().toBigInteger();
+		const B = Fraction._toFraction(exponent).toBigInteger();
+		const m_ = Fraction._toFraction(m).toBigInteger();
+		const result = A.modPow(B, m_);
+		return new Fraction(result);
+	}
+
+	/**
+	 * Modular multiplicative inverse.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} m
+	 * @returns {Fraction} A^(-1) mod m
+	 */
+	modInverse(m) {
+		const A = this.round().toBigInteger();
+		const m_ = Fraction._toFraction(m).toBigInteger();
+		const result = A.modInverse(m_);
+		return new Fraction(result);
+	}
+	
 	// ----------------------
 	// &#x7D20;&#x6570;
 	// ----------------------
@@ -1288,7 +1433,7 @@ export default class Fraction {
 		const src = this.round().toBigInteger();
 		const p1 = certainty !== undefined ? Fraction._toInteger(certainty) : undefined;
 		const p2 = search_max !== undefined ? Fraction._toInteger(search_max) : undefined;
-		return Fraction.create(src.nextProbablePrime(p1, p2));
+		return new Fraction(src.nextProbablePrime(p1, p2));
 	}
 
 	// ----------------------
@@ -1367,6 +1512,56 @@ export default class Fraction {
 		return DEFINE.NaN;
 	}
 	
+	// ----------------------
+	// &#x4E92;&#x63DB;&#x6027;
+	// ----------------------
+	
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	signum() {
+		return this.sign();
+	}
+
+	/**
+	 * Subtract.
+	 * @param {KFractionInputData} number
+	 * @returns {Fraction} A - B
+	 */
+	subtract(number) {
+		return this.sub(number);
+	}
+
+	/**
+	 * Multiply.
+	 * @param {KFractionInputData} number
+	 * @returns {Fraction} A * B
+	 */
+	multiply(number) {
+		return this.mul(number);
+	}
+
+	/**
+	 * Divide.
+	 * @param {KFractionInputData} number
+	 * @returns {Fraction} fix(A / B)
+	 */
+	divide(number) {
+		return this.div(number);
+	}
+
+	/**
+	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {KFractionInputData} number
+	 * @returns {Fraction} A % B
+	 */
+	remainder(number) {
+		return this.rem(number);
+	}
+
 }
 
 /**

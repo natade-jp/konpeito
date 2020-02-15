@@ -1,8 +1,29 @@
 import Probability from "./Probability.js";
-import Matrix from "../Matrix.js";
-const $ = Matrix.create;
 
 let test_count = 0;
+
+/**
+ * @param {number} x1
+ * @param {number} x2
+ * @param {number} [tolerance]
+ * @returns {boolean}
+ */
+const equals = function(x1, x2, tolerance) {
+	let out;
+	const tolerance_ = tolerance ? tolerance : 0.001;
+	if(!isFinite(x1) || !isFinite(x2)) {
+		if(isNaN(x1) && isNaN(x2)) {
+			return true;
+		}
+		else {
+			out = x1 === x2;
+		}
+	}
+	else {
+		out = Math.abs(x1 - x2) <= tolerance_;
+	}
+	return out;
+};
 
 /**
  * @param {*} operator 
@@ -12,12 +33,10 @@ let test_count = 0;
  */
 const testOperator1  = function(operator, x1, y, tolerance) {
 	test_count++;
-	const tolerance_ = tolerance ? tolerance : 0.001;
 	// @ts-ignore
 	const cy = Probability[operator](x1);
-	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
-	const testname = operator + " " + test_count + " " + operator + "(" + x1 + ") = " + cy_str;
-	const out = $(y).equals(cy, tolerance_);
+	const testname = operator + " " + test_count + " " + operator + "(" + x1 + ") = " + y + " === " + cy;
+	const out = equals(y, cy, tolerance);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -30,13 +49,10 @@ const testOperator1  = function(operator, x1, y, tolerance) {
  */
 const testOperator2  = function(operator, x1, x2, y, tolerance) {
 	test_count++;
-	const tolerance_ = tolerance ? tolerance : 0.001;
-	const x2_str = (typeof x2 === "object") ? JSON.stringify(x2) : x2.toString();
 	// @ts-ignore
 	const cy = Probability[operator](x1, x2);
-	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
-	const testname = operator + " " + test_count + " " + operator + "(" + x1 + "," + x2_str + ") = " + cy_str;
-	const out = $(y).equals(cy, tolerance_);
+	const testname = operator + " " + test_count + " " + operator + "(" + x1 + "," + x2 + ") = " + y + " === " + cy;
+	const out = equals(y, cy, tolerance);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -50,12 +66,10 @@ const testOperator2  = function(operator, x1, x2, y, tolerance) {
  */
 const testOperator3  = function(operator, x1, x2, x3, y, tolerance) {
 	test_count++;
-	const tolerance_ = tolerance ? tolerance : 0.001;
 	// @ts-ignore
 	const cy = Probability[operator](x1, x2, x3);
-	const cy_str = cy instanceof Matrix ? cy.toOneLineString() : cy.toString();
-	const testname = operator + " " + test_count + " " + operator + "(" + x1 + "," + x2 + "," + x3 + ") = " + cy_str;
-	const out = $(y).equals(cy, tolerance_);
+	const testname = operator + " " + test_count + " " + operator + "(" + x1 + "," + x2 + "," + x3 + ") = " + y + " === " + cy;
+	const out = equals(y, cy, tolerance);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
