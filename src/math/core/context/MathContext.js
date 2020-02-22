@@ -10,13 +10,13 @@
 import RoundingMode, {RoundingModeEntity} from "./RoundingMode.js";
 
 /**
- * Configuration class for BigDecimal.
+ * Configuration class for BigDecimal (immutable).
  */
 export default class MathContext {
 
 	/**
 	 * Create BigDecimal configuration.
-	 * @param {string|number} precision_or_name - Precision. Or String output by MathContext.toString.
+	 * @param {string|number|MathContext} precision_or_name - Precision. Or String output by MathContext.toString.
 	 * @param {RoundingModeEntity} [roundingMode=RoundingMode.HALF_UP] - RoundingMode.
 	 */
 	constructor(precision_or_name, roundingMode) {
@@ -38,7 +38,11 @@ export default class MathContext {
 		if(typeof precision_or_name === "number") {
 			this.precision = precision_or_name;
 		}
-		if(typeof precision_or_name === "string") {
+		else if(precision_or_name instanceof MathContext) {
+			this.roundingMode = roundingMode === undefined ? precision_or_name.roundingMode : roundingMode;
+			this.precision = precision_or_name.precision;
+		}
+		else if(typeof precision_or_name === "string") {
 			let buff;
 			buff = precision_or_name.match(/precision=\d+/);
 			if(buff !== null) {
@@ -54,6 +58,19 @@ export default class MathContext {
 		if(this.precision < 0) {
 			throw "IllegalArgumentException";
 		}
+	}
+	
+	/**
+	 * Create BigDecimal configuration.
+	 * @param {string|number|MathContext} precision_or_name - Precision. Or String output by MathContext.toString.
+	 * @param {RoundingModeEntity} [roundingMode=RoundingMode.HALF_UP] - RoundingMode.
+	 * @returns {MathContext}
+	 */
+	create(precision_or_name, roundingMode) {
+		if(precision_or_name instanceof MathContext) {
+			return this;
+		}
+		return new MathContext(precision_or_name, roundingMode);
 	}
 
 	/**
@@ -92,6 +109,34 @@ export default class MathContext {
 	 */
 	toString() {
 		return ("precision=" + this.precision + " roundingMode=" + this.roundingMode.toString());
+	}
+
+	/**
+	 * Increase in the precision of x.
+	 * - If the setting has no precision limit, do not change.
+	 * @param {number} [x=1]
+	 * @returns {MathContext}
+	 */
+	increasePrecision(x) {
+		if(this.precision === 0) {
+			return this;
+		}
+		const new_precision = this.precision + (x === undefined ? 1 : x);
+		return new MathContext(Math.max(1, new_precision), this.roundingMode);
+	}
+	
+	/**
+	 * Decrease in the precision of x.
+	 * - If the setting has no precision limit, do not change.
+	 * @param {number} [x=1]
+	 * @returns {MathContext}
+	 */
+	decreasePrecision(x) {
+		if(this.precision === 0) {
+			return this;
+		}
+		const new_precision = this.precision - (x === undefined ? 1 : x);
+		return new MathContext(Math.max(1, new_precision), this.roundingMode);
 	}
 
 	// ----------------------

@@ -1,1 +1,1 @@
-import konpeito from "../../../build/konpeito.esm.min.js";export default konpeito;
+import konpeito from "../../../src/konpeito.js";export default konpeito;

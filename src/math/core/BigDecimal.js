@@ -62,10 +62,11 @@ import MathContext from "./context/MathContext.js";
 /**
  * Default MathContext class.
  * Used when MathContext not specified explicitly.
- * @type {MathContext}
+ * @type {MathContext[]}
  * @ignore
  */
-let DEFAULT_CONTEXT = MathContext.DECIMAL128;
+const DEFAULT_CONTEXT_ = [];
+DEFAULT_CONTEXT_[0] = MathContext.DECIMAL128;
 
 /**
  * Collection of functions used in BigDecimal.
@@ -229,6 +230,7 @@ export default class BigDecimal {
 		/**
 		 * The scale of this BigDecimal.
 		 * @private
+		 * @ignore
 		 * @type {number}
 		 */
 		this._scale	= 0;
@@ -236,9 +238,10 @@ export default class BigDecimal {
 		/**
 		 * Context used during initialization.
 		 * @private
+		 * @ignore
 		 * @type {MathContext}
 		 */
-		this.default_context = DEFAULT_CONTEXT;
+		this.context = BigDecimal.getDefaultContext();
 
 		// この値がtrueの場合は最後に正規化を実行する
 		let is_set_context = false;
@@ -251,6 +254,7 @@ export default class BigDecimal {
 			/**
 			 * Integer part.
 			 * @private
+			 * @ignore
 			 * @type {BigInteger}
 			 */
 			this.integer			= number.integer.clone();
@@ -258,12 +262,13 @@ export default class BigDecimal {
 			/**
 			 * Integer part of string (for cache).
 			 * @private
+			 * @ignore
 			 * @type {string}
 			 */
 			this.int_string			= number.int_string;
 
 			this._scale				= number._scale;
-			this.default_context	= number.default_context;
+			this.context			= number.context;
 
 		}
 		else if((typeof number === "number") || (typeof number === "boolean")) {
@@ -323,13 +328,13 @@ export default class BigDecimal {
 					// 2つめが数値の場合は、2つ目をスケール値として使用する
 					this._scale	= number[1];
 					if(number.length >= 3) {
-						this.default_context = ((number[2] !== undefined) && (number[2] instanceof MathContext)) ? number[2] : DEFAULT_CONTEXT;
+						this.context = ((number[2] !== undefined) && (number[2] instanceof MathContext)) ? number[2] : BigDecimal.getDefaultContext();
 						is_set_context = true;
 					}
 				}
 				else {
 					if(number.length >= 2) {
-						this.default_context = ((number[1] !== undefined) && (number[1] instanceof MathContext)) ? number[1] : DEFAULT_CONTEXT;
+						this.context = ((number[1] !== undefined) && (number[1] instanceof MathContext)) ? number[1] : BigDecimal.getDefaultContext();
 						is_set_context = true;
 					}
 				}
@@ -340,10 +345,10 @@ export default class BigDecimal {
 		}
 		else if(typeof number === "object") {
 			if("toBigDecimal" in number) {
-				const data				= number.toBigDecimal();
-				this.integer			= data.integer;
-				this._scale				= data._scale;
-				this.default_context	= data.default_context;
+				const data		= number.toBigDecimal();
+				this.integer	= data.integer;
+				this._scale		= data._scale;
+				this.context	= data.context;
 			}
 			else if("doubleValue" in number) {
 				const data = BigDecimalTool.ToBigDecimalFromNumber(number.doubleValue);
@@ -356,7 +361,7 @@ export default class BigDecimal {
 					this._scale = number.scale;
 				}
 				if(number.context) {
-					this.default_context = number.context;
+					this.context = number.context;
 					is_set_context = true;
 				}
 			}
@@ -371,13 +376,13 @@ export default class BigDecimal {
 		}
 		// データを正規化
 		if(is_set_context) {
-			const newbigdecimal = this.round(this.default_context);
+			const newbigdecimal = this.round(this.context);
 			this.integer	= newbigdecimal.integer;
 			this._scale		= newbigdecimal._scale;
 			delete this.int_string;
 		}
 		// データが正しいかチェックする
-		if((!(this.integer instanceof BigInteger)) || (!(this.default_context instanceof MathContext))) {
+		if((!(this.integer instanceof BigInteger)) || (!(this.context instanceof MathContext))) {
 			throw "BigDecimal Unsupported argument " + arguments;
 		}
 	}
@@ -405,21 +410,6 @@ export default class BigDecimal {
 		}
 		else {
 			return new BigDecimal(number);
-		}
-	}
-
-	/**
-	 * Create a number using settings of this number.
-	 * @param {KBigDecimalLocalInputData} number - Real data.
-	 * @param {MathContext} [mc] - Setting preferences when creating objects.
-	 * @returns {BigDecimal}
-	 */
-	createUsingThisSettings(number, mc) {
-		if(mc) {
-			return new BigDecimal([number, mc]);
-		}
-		else {
-			return new BigDecimal([number, this.default_context]);
 		}
 	}
 
@@ -578,51 +568,30 @@ export default class BigDecimal {
 
 	/**
 	 * Absolute value.
-	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} abs(A)
 	 */
-	abs(mc) {
-		if(!this.isFinite()) {
-			return this.isNegativeInfinity() ? BigDecimal.POSITIVE_INFINITY : this;
-		}
+	abs() {
 		const output = this.clone();
 		output.integer = output.integer.abs();
-		return (mc === undefined) ? output : output.round(mc);
+		return output;
 	}
 
 	/**
 	 * this * 1
-	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
 	 * @returns {BigDecimal} +A
 	 */
-	plus(mc) {
-		if(!this.isFinite()) {
-			return this;
-		}
-		const output = this.clone();
-		return (mc === undefined) ? output : output.round(mc);
+	plus() {
+		return this;
 	}
 
 	/**
 	 * this * -1
-	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object..
 	 * @returns {BigDecimal} -A
 	 */
-	negate(mc) {
-		if(!this.isFinite()) {
-			if(this.isPositiveInfinity()) {
-				return BigDecimal.NEGATIVE_INFINITY;
-			}
-			else if(this.isNegativeInfinity()) {
-				return BigDecimal.POSITIVE_INFINITY;
-			}
-			else {
-				return this;
-			}
-		}
+	negate() {
 		const output = this.clone();
 		output.integer = output.integer.negate();
-		return (mc === undefined) ? output : output.round(mc);
+		return output;
 	}
 
 	/**
@@ -646,13 +615,7 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} 
 	 */
 	movePointRight(n) {
-		if(!this.isFinite()) {
-			return this;
-		}
-		const x = BigDecimal._toInteger(n);
-		let output = this.scaleByPowerOfTen( x );
-		output = output.setScale(Math.max(this.scale() - x, 0));
-		return output;
+		return this.movePointLeft(-n);
 	}
 
 	/**
@@ -683,11 +646,10 @@ export default class BigDecimal {
 	
 	/**
 	 * Add.
-	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @param {KBigDecimalInputData} number
 	 * @returns {BigDecimal} A + B
 	 */
-	add(number, context) {
+	add(number) {
 		const augend = BigDecimal._toBigDecimal(number);
 		const src			= this;
 		const tgt			= augend;
@@ -702,7 +664,7 @@ export default class BigDecimal {
 				return BigDecimal.NEGATIVE_INFINITY;
 			}
 		}
-		const mc = context ? context : augend.default_context;
+		const mc = BigDecimal.getDefaultContext();
 		const newscale	= Math.max(src._scale, tgt._scale);
 		if(src._scale === tgt._scale) {
 			// 1 e1 + 1 e1 = 1
@@ -725,46 +687,19 @@ export default class BigDecimal {
 	/**
 	 * Subtract.
 	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A - B
 	 */
-	sub(number, context) {
+	sub(number) {
 		const subtrahend = BigDecimal._toBigDecimal(number);
-		const src			= this;
-		const tgt			= subtrahend;
-		if(!src.isFinite() || !tgt.isFinite()) {
-			if(src.isNaN() || tgt.isNaN() || src.equalsState(tgt)) {
-				return BigDecimal.NaN;
-			}
-			else if(src.isNegativeInfinity() || tgt.isPositiveInfinity()) {
-				return BigDecimal.NEGATIVE_INFINITY;
-			}
-			else {
-				return BigDecimal.POSITIVE_INFINITY;
-			}
-		}
-		const mc = context ? context : subtrahend.default_context;
-		const newscale	= Math.max(src._scale, tgt._scale);
-		if(src._scale === tgt._scale) {
-			return new BigDecimal([src.integer.sub(tgt.integer), newscale, mc]);
-		}
-		else if(src._scale > tgt._scale) {
-			const newdst = tgt.setScale(src._scale);
-			return new BigDecimal([src.integer.sub(newdst.integer), newscale, mc]);
-		}
-		else {
-			const newsrc = src.setScale(tgt._scale);
-			return new BigDecimal([newsrc.integer.sub(tgt.integer), newscale, mc]);
-		}
+		return this.add(subtrahend.negate());
 	}
 
 	/**
 	 * Multiply.
 	 * @param {KBigDecimalInputData} number
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A * B
 	 */
-	mul(number, context) {
+	mul(number) {
 		const multiplicand = BigDecimal._toBigDecimal(number);
 		const src			= this;
 		const tgt			= multiplicand;
@@ -779,7 +714,7 @@ export default class BigDecimal {
 				return BigDecimal.NEGATIVE_INFINITY;
 			}
 		}
-		const mc = context ? context : multiplicand.default_context;
+		const mc = BigDecimal.getDefaultContext();
 		const newinteger	= src.integer.mul(tgt.integer);
 		// 0.1 * 0.01 = 0.001
 		const newscale	= src._scale + tgt._scale;
@@ -789,10 +724,9 @@ export default class BigDecimal {
 	/**
 	 * Divide not calculated to the decimal point.
 	 * @param {KBigDecimalInputData} number
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} (int)(A / B)
 	 */
-	divideToIntegralValue(number, context) {
+	divideToIntegralValue(number) {
 		const divisor = BigDecimal._toBigDecimal(number);
 		const src		= this;
 		const tgt		= divisor;
@@ -820,7 +754,7 @@ export default class BigDecimal {
 				return src.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY;
 			}
 		}
-		const mc = context ? context : divisor.default_context;
+		const mc = BigDecimal.getDefaultContext();
 		/**
 		 * @param {number} num 
 		 * @returns {BigInteger}
@@ -886,17 +820,16 @@ export default class BigDecimal {
 		let output = new BigDecimal(new_integer);
 		output = output.setScale(newScale, RoundingMode.UP);
 		output = output.round(mc);
-		output.default_context = mc;
+		output.context = mc;
 		return output;
 	}
 
 	/**
 	 * Divide and remainder.
 	 * @param {KBigDecimalInputData} number
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {Array<BigDecimal>} [C = (int)(A / B), A - C * B]
 	 */
-	divideAndRemainder(number, context) {
+	divideAndRemainder(number) {
 		const divisor = BigDecimal._toBigDecimal(number);
 		if(!this.isFinite() || !divisor.isFinite()) {
 			if(this.isNaN() || divisor.isNaN() || (this.isInfinite() && divisor.isInfinite())) {
@@ -922,8 +855,6 @@ export default class BigDecimal {
 				return [this.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY, BigDecimal.NaN];
 			}
 		}
-		const mc = context ? context : divisor.default_context;
-
 		// 1000e0		/	1e2				=	1000e-2	... 0e0
 		// 1000e0		/	10e1			=	100e-1	... 0e0
 		// 1000e0		/	100e0			=	10e0	... 0e0
@@ -937,8 +868,8 @@ export default class BigDecimal {
 		// 10000e-1		/	100e0			=	100e-1	... 0e-1
 		// 100000e-2	/	100e0			=	1000e-2	... 0e-2
 
-		const result_divide	= this.divideToIntegralValue(divisor, mc);
-		const result_remaind	= this.sub(result_divide.mul(divisor, mc), mc);
+		const result_divide	= this.divideToIntegralValue(divisor);
+		const result_remaind	= this.sub(result_divide.mul(divisor));
 
 		const output = [result_divide, result_remaind];
 		return output;
@@ -948,29 +879,27 @@ export default class BigDecimal {
 	 * Remainder of division.
 	 * - Result has same sign as the Dividend.
 	 * @param {KBigDecimalInputData} number
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A % B
 	 */
-	rem(number, context) {
-		return this.divideAndRemainder(number, context)[1];
+	rem(number) {
+		return this.divideAndRemainder(number)[1];
 	}
 
 	/**
 	 * Modulo, positive remainder of division.
 	 * - Result has same sign as the Divisor.
 	 * @param {KBigDecimalInputData} number
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A mod B
 	 */
-	mod(number, context) {
+	mod(number) {
 		const src = this;
 		const tgt = BigDecimal._toBigDecimal(number);
 		if(tgt.isZero()) {
 			return src;
 		}
-		const x = src.rem(tgt, context);
+		const x = src.rem(tgt);
 		if(!src.equalsState(tgt)) {
-			return x.add(tgt, context);
+			return x.add(tgt);
 		}
 		else {
 			return x;
@@ -982,7 +911,7 @@ export default class BigDecimal {
 	 * - The argument can specify the scale after calculation.
 	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
 	 * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
-	 * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
+	 * - When null is specified for the argument, it is calculated on the scale of "divisor.context".
 	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext|KBigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal}
@@ -1022,7 +951,7 @@ export default class BigDecimal {
 
 		// 設定をロードする
 		if(!type) {
-			mc = tgt.default_context;
+			mc = BigDecimal.getDefaultContext();
 			roundingMode = mc.getRoundingMode();
 			newScale = mc.getPrecision();
 		}
@@ -1050,7 +979,7 @@ export default class BigDecimal {
 				newScale = mc.getPrecision();
 			}
 			else {
-				mc = this.default_context;
+				mc = this.context;
 			}
 			if(type && type.roundingMode) {
 				roundingMode = type.roundingMode;
@@ -1078,16 +1007,20 @@ export default class BigDecimal {
 			all_result = BigDecimal.ZERO;
 			const check_max = precision !== 0 ? (precision + 8) : 0x3FFFF;
 			newsrc = src;
+			BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
+			let is_error = false;
+			let error_message;
 			for(let i = 0; i < check_max; i++) {
-				result = newsrc.divideAndRemainder(tgt, MathContext.UNLIMITED);
+				result = newsrc.divideAndRemainder(tgt);
 				result_divide	= result[0];
 				result_remaind	= result[1];
-				// ここで default_context が MathContext.UNLIMITED に書き換わる
-				all_result = all_result.add(result_divide.scaleByPowerOfTen(-i), MathContext.UNLIMITED);
+				all_result = all_result.add(result_divide.scaleByPowerOfTen(-i));
 				if(result_remaind.compareTo(BigDecimal.ZERO) !== 0) {
 					if(precision === 0) {	// 精度無限大の場合は、循環小数のチェックが必要
 						if(result_map[result_remaind._getUnsignedIntegerString()]) {
-							throw "ArithmeticException " + all_result + "[" + result_remaind._getUnsignedIntegerString() + "]";
+							is_error = true;
+							error_message = "ArithmeticException " + all_result + "[" + result_remaind._getUnsignedIntegerString() + "]";
+							break;
 						}
 						else {
 							result_map[result_remaind._getUnsignedIntegerString()] = true;
@@ -1099,15 +1032,19 @@ export default class BigDecimal {
 					break;
 				}
 			}
-			// default_context の設定を元に戻す
+			BigDecimal.popDefaultContext();
+			if(is_error) {
+				throw error_message;
+			}
 		}
 		else {
 			// 巨大な値は繰り返しで求める
-			const new_mc = new MathContext(precision + 4,	RoundingMode.HALF_UP);
-			all_result = this.mul(tgt.inv(new_mc), new_mc);
+			BigDecimal.pushDefaultContext(new MathContext(precision + 4, RoundingMode.HALF_UP));
+			all_result = this.mul(tgt.inv());
+			BigDecimal.popDefaultContext();
 		}
 	
-		all_result.default_context = mc;
+		all_result.context = mc;
 		if(isPriorityScale) {
 			// 優先スケールの場合は、スケールの変更に失敗する可能性あり
 			try {
@@ -1120,16 +1057,18 @@ export default class BigDecimal {
 		else {
 			all_result = all_result.setScale(newScale, roundingMode);
 		}
-		all_result = all_result.round(mc);
+		all_result = all_result.round(BigDecimal.getDefaultContext());
 		return all_result;
 	}
 
 	/**
 	 * Inverse number of this value.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} 1 / A
 	 */
-	inv(context) {
+	inv() {
+		if(BigDecimal.getDefaultContext().equals(MathContext.UNLIMITED)) {
+			return BigDecimal.ONE.div(this);
+		}
 		{
 			if(!this.isFinite()) {
 				return this.isNaN() ? BigDecimal.NaN : BigDecimal.ZERO;
@@ -1140,37 +1079,28 @@ export default class BigDecimal {
 		}
 		// 通常の割り算を行うと、「1」÷巨大な数を計算したときに、
 		// 1 の仮数部の精度によってしまい、結果が0になってしまう場合がある
-		// const mc = context ? context : this.default_context;
+		// const mc = context ? context : this.context;
 		// const b1 = this.createUsingThisSettings(1, mc);
 		// return b1.div(this, mc);
-		const mc = context ? context : this.default_context;
-		const default_context = BigDecimal.getDefaultContext();
 		// 計算は絶対値を用いて行う
 		const is_negative = this.isNegative();
-		/**
-		 * @type {BigDecimal}
-		 */
-		let A = !is_negative ? this: this.negate();
-		BigDecimal.setDefaultContext(mc);
+		const A = !is_negative ? this: this.negate();
 		// 3次のニュートン・ラフソン法で求める
 		const B1 = BigDecimal.create(1);
 		// 初期値は、指数部の情報を使用する
 		const scale = - A.scale() + (A.precision() - 1);
 		const x0 = new BigDecimal([1, scale + 1]);
 		if(x0.isZero()) {
-			BigDecimal.setDefaultContext(default_context);
 			return null;
 		}
-		A = A.round(mc);
 		let xn = x0;
 		for(let i = 0; i < 20; i++) {
-			const h = B1.sub(A.mul(xn), mc);
+			const h = B1.sub(A.mul(xn));
 			if(h.isZero()) {
 				break;
 			}
-			xn = xn.mul(B1.add(h).add(h.square()), mc);
+			xn = xn.mul(B1.add(h).add(h.square()));
 		}
-		BigDecimal.setDefaultContext(default_context);
 		// 参考
 		// Lyuka - 逆数と平方根を求める高次収束アルゴリズム
 		// http://www.finetune.co.jp/~lyuka/technote/fract/sqrt.html
@@ -1184,16 +1114,14 @@ export default class BigDecimal {
 	/**
 	 * Factorial function, x!.
 	 * - Supports only integers.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} n!
 	 */
-	factorial(context) {
+	factorial() {
 		if(!this.isFinite()) {
 			return this;
 		}
-		const mc = context ? context : this.default_context;
-		const y = new BigDecimal((new BigInteger(this)).factorial());
-		return y.round(mc);
+		const output = new BigDecimal((new BigInteger(this)).factorial());
+		return output;
 	}
 
 	/**
@@ -1219,20 +1147,37 @@ export default class BigDecimal {
 	
 	/**
 	 * Set default the MathContext.
-	 * This is used if you do not specify MathContext when creating a new object.
+	 * - This is used if you do not specify MathContext when creating a new object.
 	 * @param {MathContext} [context=MathContext.DECIMAL128]
 	 */
 	static setDefaultContext(context) {
-		DEFAULT_CONTEXT = context ? context : MathContext.DECIMAL128;
+		DEFAULT_CONTEXT_[DEFAULT_CONTEXT_.length - 1] = context ? context : MathContext.DECIMAL128;
 	}
 
 	/**
 	 * Return default MathContext class.
-	 * Used when MathContext not specified explicitly.
+	 * - Used when MathContext not specified explicitly.
 	 * @returns {MathContext}
 	 */
 	static getDefaultContext() {
-		return DEFAULT_CONTEXT;
+		return DEFAULT_CONTEXT_[DEFAULT_CONTEXT_.length - 1];
+	}
+
+	/**
+	 * Push default the MathContext.
+	 * - Use with `popDefaultContext` when you want to switch settings temporarily.
+	 * @param {MathContext} [context]
+	 */
+	static pushDefaultContext(context) {
+		DEFAULT_CONTEXT_.push(context);
+	}
+
+	/**
+	 * Pop default the MathContext.
+	 * - Use with `pushDefaultContext` when you want to switch settings temporarily.
+	 */
+	static popDefaultContext() {
+		DEFAULT_CONTEXT_.pop();
 	}
 
 	// ----------------------
@@ -1401,7 +1346,9 @@ export default class BigDecimal {
 		}
 		else {
 			const tolerance_ = BigDecimal._toBigDecimal(tolerance);
-			const delta = src.sub(tgt, MathContext.UNLIMITED);
+			BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
+			const delta = src.sub(tgt);
+			BigDecimal.popDefaultContext();
 			const delta_abs = delta.abs();
 			if(delta_abs.compareTo(tolerance_) <= 0) {
 				return 0;
@@ -1769,26 +1716,24 @@ export default class BigDecimal {
 	 * Power function.
 	 * - An exception occurs when doing a huge multiplication.
 	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} pow(A, B)
 	 */
-	pow(number, context) {
+	pow(number) {
 		const num = BigDecimal._toBigDecimal(number);
 		const src = this;
 		const tgt = num;
-		const mc = context ? context : this.default_context;
 		{
 			if(src.isNaN() || tgt.isNaN()) {
 				return BigDecimal.NaN;
 			}
 			if(tgt.isZero()) {
-				return context ? BigDecimal.ONE.round(context) : BigDecimal.ONE;
+				return BigDecimal.ONE;
 			}
 			else if(src.isZero()) {
 				return BigDecimal.ZERO;
 			}
 			else if(src.isOne()) {
-				return context ? src.round(context) : src;
+				return src;
 			}
 			else if(src.isInfinite()) {
 				if(src.isPositiveInfinity()) {
@@ -1826,6 +1771,7 @@ export default class BigDecimal {
 				}
 			}
 		}
+		const mc = BigDecimal.getDefaultContext();
 		const integer = tgt.intValue;
 		if(Math.abs(integer) > 1000) {
 			throw BigDecimal.POSITIVE_INFINITY;
@@ -1839,43 +1785,41 @@ export default class BigDecimal {
 			let x, y;
 			x = this.clone();
 			y = BigDecimal.ONE;
+			BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
 			while(n !== 0) {
 				if((n & 1) !== 0) {
-					y = y.mul(x, MathContext.UNLIMITED);
+					y = y.mul(x);
 				}
-				x = x.mul(x.clone(), MathContext.UNLIMITED);
+				x = x.square();
 				n >>>= 1;
 			}
+			BigDecimal.popDefaultContext();
 			// コンテキストの状態が変わっているので元に戻す
-			y.default_context = mc;
-			if(!is_negative) {
-				y = y.round(mc);
+			y.context = mc;
+			if(is_negative) {
+				y = y.inv();
 			}
-			else {
-				y = y.inv(mc);
-			}
+			y = y.round(mc);
 			return y;
 		}
 		else {
-			return this.log(mc).mul(number, mc).exp(mc);
+			return this.log().mul(number).exp();
 		}
 	}
 	
 	/**
 	 * Square.
-	 * @param {MathContext} [mc] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} A^2
 	 */
-	square(mc) {
-		return this.mul(this, mc);
+	square() {
+		return this.mul(this);
 	}
 
 	/**
 	 * Square root.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} sqrt(A)
 	 */
-	sqrt(context) {
+	sqrt() {
 		{
 			if(this.isZero()) {
 				return BigDecimal.ZERO;
@@ -1921,18 +1865,17 @@ export default class BigDecimal {
 		*/
 		//return xn;
 		if(this.isZero()) {
-			return BigDecimal.ZERO.round(context);
+			return BigDecimal.ZERO;
 		}
 		// 上記は割り算があり速度が遅いので、以下の計算で求める。
-		return this.rsqrt(context).inv(context);
+		return this.rsqrt().inv();
 	}
 
 	/**
 	 * Reciprocal square root.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} rsqrt(A)
 	 */
-	rsqrt(context) {
+	rsqrt() {
 		{
 			if(this.isZero()) {
 				return BigDecimal.POSITIVE_INFINITY;
@@ -1947,13 +1890,10 @@ export default class BigDecimal {
 				return BigDecimal.NaN; // 複素数
 			}
 		}
-		const mc = context ? context : this.default_context;
-		const default_context = BigDecimal.getDefaultContext();
 		/**
 		 * @type {BigDecimal}
 		 */
-		const A = this.round(mc);
-		BigDecimal.setDefaultContext(mc);
+		const A = this;
 		// 4次収束のニュートン・ラフソン法で求める
 		// 使用する固定値を列挙
 		const B1 = BigDecimal.create(1);
@@ -1965,18 +1905,16 @@ export default class BigDecimal {
 		// 初期値
 		const x0 = A.inv();
 		if(x0.isZero()) {
-			BigDecimal.setDefaultContext(default_context);
 			throw "ArithmeticException";
 		}
 		let xn = x0;
 		for(let i = 0; i < 50; i++) {
-			const h = B1.sub(A.mul(xn.square())).round(mc);
+			const h = B1.sub(A.mul(xn.square()));
 			if(h.isZero()) {
 				break;
 			}
 			xn = xn.mul(B1.add(h.mul(B8.add(h.mul(B6.add(B5.mul(h))))).mul(B16r)));
 		}
-		BigDecimal.setDefaultContext(default_context);
 		// 参考
 		// Lyuka - 逆数と平方根を求める高次収束アルゴリズム
 		// http://www.finetune.co.jp/~lyuka/technote/fract/sqrt.html
@@ -1985,10 +1923,9 @@ export default class BigDecimal {
 	
 	/**
 	 * Logarithmic function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} log(A)
 	 */
-	log(context) {
+	log() {
 		{
 			if(this.isZero()) {
 				return BigDecimal.NEGATIVE_INFINITY;
@@ -2003,27 +1940,28 @@ export default class BigDecimal {
 				return BigDecimal.POSITIVE_INFINITY;
 			}
 		}
-		const mc = context ? context : this.default_context;
 		if(this.isOne()) {
-			return new BigDecimal([0, mc]);
+			return BigDecimal.ZERO;
 		}
-		const default_context = BigDecimal.getDefaultContext();
+		const mc = BigDecimal.getDefaultContext();
 		// log(x)
 		// -> x = a * E -> log(a * E) = log(a) + log(E)
 		// -> x = a / E -> log(a / E) = log(E) - log(a)
 		// 上記の式を使用して、適切な値の範囲で計算できるように調整する
 		const scale = - this.scale() + (this.precision() - 1) + 1;
-		const new_mc = new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP);
-		BigDecimal.setDefaultContext(new_mc);
-		let a = this.round(new_mc);
+		BigDecimal.pushDefaultContext(new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP));
+		/**
+		 * @type {BigDecimal}
+		 */
+		let a = this;
 		let b = 0;
 		{
 			// 範囲を 1 < x <= e の間に収める
 			const e = BigDecimal.E;
 			const compare_to_e = a.compareTo(e);
 			if(compare_to_e === 0) {
-				BigDecimal.setDefaultContext(mc);
-				return new BigDecimal([1, mc]);
+				BigDecimal.popDefaultContext();
+				return BigDecimal.ONE;
 			}
 			// 内部の値が大きすぎるので小さくする
 			else if(compare_to_e > 0) {
@@ -2031,7 +1969,7 @@ export default class BigDecimal {
 					if(a.compareTo(e) <= 0) {
 						break;
 					}
-					a = a.div(e, mc);
+					a = a.div(e);
 				}
 			}
 			// 内部の値が小さすぎるので大きくする
@@ -2042,13 +1980,13 @@ export default class BigDecimal {
 						if(a.compareTo(B1) > 0) {
 							break;
 						}
-						a = a.mul(e, mc);
+						a = a.mul(e);
 					}
 				}
 			}
 		}
-		BigDecimal.setDefaultContext(mc);
-		a = a.round(mc);
+		BigDecimal.popDefaultContext();
+		a = a.round(BigDecimal.getDefaultContext());
 		// この時点で 1 < x <= e となる
 		// log((1+u)/(1-u)) = 2 * (u + u^3/3 + u^5/5 + ...) の式を使用する
 		// solve((1+u)/(1-u)-x=0,[u]);->u=(x-1)/(x+1)
@@ -2074,19 +2012,17 @@ export default class BigDecimal {
 		}
 		// 最終結果
 		const y = a.add(b);
-		BigDecimal.setDefaultContext(default_context);
 		return y;
 	}
 
 	/**
 	 * Exponential function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} exp(A)
 	 */
-	exp(context) {
+	exp() {
 		{
 			if(this.isZero()) {
-				return new BigDecimal([1, context]);
+				return BigDecimal.ONE;
 			}
 			else if(this.isNaN()) {
 				return BigDecimal.NaN;
@@ -2099,8 +2035,6 @@ export default class BigDecimal {
 			}
 		}
 		const is_negative = this.isNegative();
-		const mc = context ? context : this.default_context;
-		const default_context = BigDecimal.getDefaultContext();
 		/**
 		 * @type {BigDecimal}
 		 */
@@ -2114,8 +2048,8 @@ export default class BigDecimal {
 		// scale > (10^a) = b ≒ this
 		// 小さな値で計算するため精度をあげる
 		const scale = - number.scale() + (number.precision() - 1) + 1;
-		const new_mc = new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP);
-		BigDecimal.setDefaultContext(new_mc);
+		const mc = BigDecimal.getDefaultContext();
+		BigDecimal.pushDefaultContext(new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP));
 		let a = 0;
 		let b = 1;
 		{
@@ -2150,13 +2084,14 @@ export default class BigDecimal {
 		}
 		// exp(x) = pow(y, b)である。
 		y = y.pow(b);
-		BigDecimal.setDefaultContext(default_context);
+		BigDecimal.popDefaultContext();
+		y = y.round(BigDecimal.getDefaultContext());
 		// 負の値だったら 1/(x^2) にして戻す
 		if(is_negative) {
-			return y.round(mc).inv();
+			return y.inv();
 		}
 		else {
-			return y.round(mc);
+			return y;
 		}
 	}
 
@@ -2166,22 +2101,18 @@ export default class BigDecimal {
 
 	/**
 	 * Sine function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} sin(A)
 	 */
-	sin(context) {
+	sin() {
 		if(!this.isFinite()) {
 			return BigDecimal.NaN;
 		}
-		const mc = context ? context : this.default_context;
-		const default_context = BigDecimal.getDefaultContext();
 		// 2PIの余りを実際の計算で使用する。
 		const scale = - this.scale() + (this.precision() - 1) + 1;
-		const new_mc = new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP);
-		BigDecimal.setDefaultContext(new_mc);
-		let target = this.mod(BigDecimal.TWO_PI, mc);
-		BigDecimal.setDefaultContext(mc);
-		target = target.round(mc);
+		const new_mc = new MathContext(BigDecimal.getDefaultContext().getPrecision() + scale, RoundingMode.HALF_UP);
+		BigDecimal.pushDefaultContext(new_mc);
+		const target = this.mod(BigDecimal.TWO_PI);
+		BigDecimal.popDefaultContext();
 		// マクローリン展開で計算する
 		// 初期値
 		let n0 = target;
@@ -2212,28 +2143,22 @@ export default class BigDecimal {
 				}
 			}
 		}
-		BigDecimal.setDefaultContext(default_context);
 		return n0;
 	}
 
 	/**
 	 * Cosine function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} cos(A)
 	 */
-	cos(context) {
+	cos() {
 		if(!this.isFinite()) {
 			return BigDecimal.NaN;
 		}
-		const mc = context ? context : this.default_context;
-		const default_context = BigDecimal.getDefaultContext();
-		// 2PIの余りを実際の計算で使用する。
 		const scale = - this.scale() + (this.precision() - 1) + 1;
-		const new_mc = new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP);
-		BigDecimal.setDefaultContext(new_mc);
-		let target = this.mod(BigDecimal.TWO_PI, mc);
-		BigDecimal.setDefaultContext(mc);
-		target = target.round(mc);
+		const new_mc = new MathContext(BigDecimal.getDefaultContext().getPrecision() + scale, RoundingMode.HALF_UP);
+		BigDecimal.pushDefaultContext(new_mc);
+		const target = this.mod(BigDecimal.TWO_PI);
+		BigDecimal.popDefaultContext();
 		// マクローリン展開で計算する
 		// 初期値
 		let n0 = BigDecimal.ONE;
@@ -2264,30 +2189,26 @@ export default class BigDecimal {
 				}
 			}
 		}
-		BigDecimal.setDefaultContext(default_context);
 		return n0;
 	}
 
 	/**
 	 * Tangent function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} tan(A)
 	 */
-	tan(context) {
+	tan() {
 		if(!this.isFinite()) {
 			return BigDecimal.NaN;
 		}
-		const mc = context ? context : this.default_context;
-		return this.sin(mc).div(this.cos(mc));
+		return this.sin().div(this.cos());
 	}
 
 	/**
 	 * Atan (arc tangent) function.
 	 * - Return the values of [-PI/2, PI/2].
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} atan(A)
 	 */
-	atan(context) {
+	atan() {
 		if(!this.isFinite()) {
 			if(this.isNaN()) {
 				return BigDecimal.NaN;
@@ -2299,27 +2220,21 @@ export default class BigDecimal {
 				return BigDecimal.HALF_PI.negate();
 			}
 		}
-		const mc = context ? context : this.default_context;
-		const default_context = BigDecimal.getDefaultContext();
-		BigDecimal.setDefaultContext(mc);
 		if(this.isZero()) {
 			const y = BigDecimal.ZERO;
-			BigDecimal.setDefaultContext(default_context);
 			return y;
 		}
 		else if(this.compareTo(BigDecimal.ONE) === 0) {
 			const y = BigDecimal.QUARTER_PI;
-			BigDecimal.setDefaultContext(default_context);
 			return y;
 		}
 		else if(this.compareTo(BigDecimal.MINUS_ONE) === 0) {
 			const y = BigDecimal.QUARTER_PI.negate();
-			BigDecimal.setDefaultContext(default_context);
 			return y;
 		}
 		// x を 0 <= x <= 0.5 に収める
 		const target_sign = this.sign();
-		let target = this.abs(mc);
+		let target = this.abs();
 		let type;
 		if(target.compareTo(BigDecimal.TWO) === 1) {
 			// atan(x) = pi/2-atan(1/x)
@@ -2371,7 +2286,6 @@ export default class BigDecimal {
 		if(target_sign < 0) {
 			n0 = n0.negate();
 		}
-		BigDecimal.setDefaultContext(default_context);
 		return n0;
 	}
 
@@ -2421,12 +2335,10 @@ export default class BigDecimal {
 	
 	/**
 	 * Arc sine function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} asin(A)
 	 */
-	asin(context) {
+	asin() {
 		// 逆正弦
-		const mc = context ? context : this.default_context;
 		// 複素数
 		const re_1 = this.square().negate().add(1).sqrt();
 		const im_1 = this;
@@ -2436,17 +2348,15 @@ export default class BigDecimal {
 		const re_2 = norm.log();
 		const im_2 = arg;
 		// -i を掛け算する
-		return re_2.add(im_2, mc);
+		return re_2.add(im_2);
 	}
 
 	/**
 	 * Arc cosine function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} acos(A)
 	 */
-	acos(context) {
+	acos() {
 		// 逆余弦
-		const mc = context ? context : this.default_context;
 		// 複素数
 		const re_1 = this;
 		const im_1 = this.square().negate().add(1).sqrt();
@@ -2456,228 +2366,194 @@ export default class BigDecimal {
 		const re_2 = norm.log();
 		const im_2 = arg;
 		// -i を掛け算する
-		return re_2.add(im_2, mc);
+		return re_2.add(im_2);
 	}
 	
 
 	/**
 	 * Hyperbolic sine function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} sinh(A)
 	 */
-	sinh(context) {
+	sinh() {
 		// 双曲線正弦
 		if(this.isInfinite()) {
 			return this;
 		}
-		const mc = context ? context : this.default_context;
 		const y = this.exp();
-		return y.sub(y.inv()).mul(0.5, mc);
+		return y.sub(y.inv()).mul(0.5);
 	}
 
 	/**
 	 * Inverse hyperbolic sine function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} asinh(A)
 	 */
-	asinh(context) {
-		// 逆双曲線正弦 Math.log(x + Math.sqrt(x * x + 1));
+	asinh() {
 		if(this.isInfinite()) {
 			return this;
 		}
-		const mc = context ? context : this.default_context;
-		return this.add(this.mul(this).add(1).sqrt()).log(mc);
+		return this.add(this.mul(this).add(1).sqrt()).log();
 	}
 
 	/**
 	 * Hyperbolic cosine function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} cosh(A)
 	 */
-	cosh(context) {
+	cosh() {
 		// 双曲線余弦
 		if(this.isInfinite()) {
 			return BigDecimal.POSITIVE_INFINITY;
 		}
-		const mc = context ? context : this.default_context;
-		return this.exp().add(this.negate().exp()).mul(0.5, mc);
+		return this.exp().add(this.negate().exp()).mul(0.5);
 	}
 
 	/**
 	 * Inverse hyperbolic cosine function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} acosh(A)
 	 */
-	acosh(context) {
+	acosh() {
 		// 逆双曲線余弦 Math.log(x + Math.sqrt(x * x - 1));
 		if(this.isInfinite()) {
 			return BigDecimal.NaN;
 		}
-		const mc = context ? context : this.default_context;
-		return this.add(this.mul(this).sub(1).sqrt()).log(mc);
+		return this.add(this.mul(this).sub(1).sqrt()).log();
 	}
 
 	/**
 	 * Hyperbolic tangent function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} tanh(A)
 	 */
-	tanh(context) {
+	tanh() {
 		// 双曲線正接
 		if(this.isInfinite()) {
 			return BigDecimal.create(this.sign());
 		}
-		const mc = context ? context : this.default_context;
 		const y =  this.mul(2).exp();
-		return y.sub(1).div(y.add(1), mc);
+		return y.sub(1).div(y.add(1));
 	}
 	
 	/**
 	 * Inverse hyperbolic tangent function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} atanh(A)
 	 */
-	atanh(context) {
+	atanh() {
 		// 逆双曲線正接
-		const mc = context ? context : this.default_context;
-		return this.add(1).div(this.negate().add(1)).log().mul(0.5, mc);
+		return this.add(1).div(this.negate().add(1)).log().mul(0.5);
 	}
 
 	/**
 	 * Secant function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} sec(A)
 	 */
-	sec(context) {
+	sec() {
 		// 正割
-		const mc = context ? context : this.default_context;
-		return this.cos().inv(mc);
+		return this.cos().inv();
 	}
 
 	/**
 	 * Reverse secant function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} asec(A)
 	 */
-	asec(context) {
+	asec() {
 		// 逆正割
-		const mc = context ? context : this.default_context;
-		return this.inv().acos(mc);
+		return this.inv().acos();
 	}
 
 	/**
 	 * Hyperbolic secant function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} sech(A)
 	 */
-	sech(context) {
+	sech() {
 		// 双曲線正割
 		if(this.isNegativeInfinity()) {
 			return BigDecimal.ZERO;
 		}
-		const mc = context ? context : this.default_context;
-		return this.exp().add(this.negate().exp()).inv().mul(2, mc);
+		return this.exp().add(this.negate().exp()).inv().mul(2);
 	}
 
 	/**
 	 * Inverse hyperbolic secant function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} asech(A)
 	 */
-	asech(context) {
+	asech() {
 		// 逆双曲線正割
-		const mc = context ? context : this.default_context;
-		return this.inv().add(this.square().inv().sub(1).sqrt()).log(mc);
+		return this.inv().add(this.square().inv().sub(1).sqrt()).log();
 	}
 
 	/**
 	 * Cotangent function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} cot(A)
 	 */
-	cot(context) {
+	cot() {
 		// 余接
 		if(this.isZero()) {
 			return BigDecimal.POSITIVE_INFINITY;
 		}
-		const mc = context ? context : this.default_context;
-		return this.tan().inv(mc);
+		return this.tan().inv();
 	}
 
 	/**
 	 * Inverse cotangent function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} acot(A)
 	 */
-	acot(context) {
+	acot() {
 		// 逆余接
 		if(this.isZero()) {
 			return BigDecimal.HALF_PI;
 		}
-		const mc = context ? context : this.default_context;
-		return this.inv().atan(mc);
+		return this.inv().atan();
 	}
 
 	/**
 	 * Hyperbolic cotangent function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} coth(A)
 	 */
-	coth(context) {
+	coth() {
 		// 双曲線余接
 		if(this.isInfinite()) {
 			return BigDecimal.create(this.sign());
 		}
-		const mc = context ? context : this.default_context;
 		const y =  this.mul(2).exp();
-		return y.add(1).div(y.sub(1), mc);
+		return y.add(1).div(y.sub(1));
 	}
 
 	/**
 	 * Inverse hyperbolic cotangent function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} acoth(A)
 	 */
-	acoth(context) {
+	acoth() {
 		// 逆双曲線余接
 		if(this.isInfinite()) {
 			return BigDecimal.ZERO;
 		}
-		const mc = context ? context : this.default_context;
-		return this.add(1).div(this.sub(1)).log().mul(0.5, mc);
+		return this.add(1).div(this.sub(1)).log().mul(0.5);
 	}
 
 	/**
 	 * Cosecant function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} csc(A)
 	 */
-	csc(context) {
+	csc() {
 		// 余割
 		if(this.isZero()) {
 			return BigDecimal.POSITIVE_INFINITY;
 		}
-		const mc = context ? context : this.default_context;
-		return this.sin().inv(mc);
+		return this.sin().inv();
 	}
 
 	/**
 	 * Inverse cosecant function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} acsc(A)
 	 */
-	acsc(context) {
+	acsc() {
 		// 逆余割
-		const mc = context ? context : this.default_context;
-		return this.inv().asin(mc);
+		return this.inv().asin();
 	}
 
 	/**
 	 * Hyperbolic cosecant function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} csch(A)
 	 */
-	csch(context) {
+	csch() {
 		if(this.isInfinite()) {
 			return BigDecimal.ZERO;
 		}
@@ -2685,22 +2561,19 @@ export default class BigDecimal {
 			return BigDecimal.POSITIVE_INFINITY;
 		}
 		// 双曲線余割
-		const mc = context ? context : this.default_context;
-		return this.exp().sub(this.negate().exp()).inv().mul(2, mc);
+		return this.exp().sub(this.negate().exp()).inv().mul(2);
 	}
 
 	/**
 	 * Inverse hyperbolic cosecant function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} acsch(A)
 	 */
-	acsch(context) {
+	acsch() {
 		if(this.isZero()) {
 			return BigDecimal.POSITIVE_INFINITY;
 		}
 		// 逆双曲線余割
-		const mc = context ? context : this.default_context;
-		return this.inv().add(this.square().inv().add(1).sqrt()).log(mc);
+		return this.inv().add(this.square().inv().add(1).sqrt()).log();
 	}
 
 	// ----------------------
@@ -2709,16 +2582,14 @@ export default class BigDecimal {
 	
 	/**
 	 * Normalized sinc function.
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of this object.
 	 * @returns {BigDecimal} sinc(A)
 	 */
-	sinc(context) {
-		const mc = context ? context : this.default_context;
+	sinc() {
 		if(this.isZero()) {
 			return(BigDecimal.ONE);
 		}
 		const x = BigDecimal.PI.mul(this);
-		return x.sin().div(x, mc);
+		return x.sin().div(x);
 	}
 
 	// ----------------------
@@ -2838,75 +2709,65 @@ export default class BigDecimal {
 	 * Logical AND.
 	 * - Calculated as an integer.
 	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A & B
 	 */
-	and(number, context) {
+	and(number) {
 		const n_src = this;
 		const n_tgt = BigDecimal._toBigDecimal(number);
-		const mc = context ? context : n_tgt.default_context;
 		const src	= n_src.round().toBigInteger();
 		const tgt	= n_tgt.round().toBigInteger();
-		return new BigDecimal([src.and(tgt), mc]);
+		return new BigDecimal(src.and(tgt));
 	}
 
 	/**
 	 * Logical OR.
 	 * - Calculated as an integer.
 	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A | B
 	 */
-	or(number, context) {
+	or(number) {
 		const n_src = this;
 		const n_tgt = BigDecimal._toBigDecimal(number);
-		const mc = context ? context : n_tgt.default_context;
 		const src	= n_src.round().toBigInteger();
 		const tgt	= n_tgt.round().toBigInteger();
-		return new BigDecimal([src.or(tgt), mc]);
+		return new BigDecimal(src.or(tgt));
 	}
 
 	/**
 	 * Logical Exclusive-OR.
 	 * - Calculated as an integer.
 	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A ^ B
 	 */
-	xor(number, context) {
+	xor(number) {
 		const n_src = this;
 		const n_tgt = BigDecimal._toBigDecimal(number);
-		const mc = context ? context : n_tgt.default_context;
 		const src	= n_src.round().toBigInteger();
 		const tgt	= n_tgt.round().toBigInteger();
-		return new BigDecimal([src.xor(tgt), mc]);
+		return new BigDecimal(src.xor(tgt));
 	}
 
 	/**
 	 * Logical Not. (mutable)
 	 * - Calculated as an integer.
-	 * @param {MathContext} [context] - MathContext setting after calculation.
 	 * @returns {BigDecimal} !A
 	 */
-	not(context) {
-		const mc = context ? context : this.default_context;
+	not() {
 		const n_src = this;
 		const src	= n_src.round().toBigInteger();
-		return new BigDecimal([src.not(), mc]);
+		return new BigDecimal(src.not());
 	}
 	
 	/**
 	 * this << n
 	 * - Calculated as an integer.
 	 * @param {KBigDecimalInputData} n
-	 * @param {MathContext} [context] - MathContext setting after calculation.
 	 * @returns {BigDecimal} A << n
 	 */
-	shift(n, context) {
-		const mc = context ? context : this.default_context;
+	shift(n) {
 		const src		= this.round().toBigInteger();
 		const number	= BigDecimal._toInteger(n);
-		return new BigDecimal([src.shift(number), mc]);
+		return new BigDecimal(src.shift(number));
 	}
 
 	// ----------------------
@@ -2917,45 +2778,39 @@ export default class BigDecimal {
 	 * Euclidean algorithm.
 	 * - Calculated as an integer.
 	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation.
 	 * @returns {BigDecimal} gcd(x, y)
 	 */
-	gcd(number, context) {
-		const mc = context ? context : this.default_context;
+	gcd(number) {
 		const x = this.round().toBigInteger();
 		const y = BigDecimal._toBigDecimal(number).toBigInteger();
 		const result = x.gcd(y);
-		return new BigDecimal([result, mc]);
+		return new BigDecimal(result);
 	}
 
 	/**
 	 * Extended Euclidean algorithm.
 	 * - Calculated as an integer.
 	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation.
 	 * @returns {Array<BigDecimal>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
 	 */
-	extgcd(number, context) {
-		const mc = context ? context : this.default_context;
+	extgcd(number) {
 		const x = this.round().toBigInteger();
 		const y = BigDecimal._toBigDecimal(number).toBigInteger();
 		const result = x.extgcd(y);
-		return [new BigDecimal([result[0], mc]), new BigDecimal([result[1], mc]), new BigDecimal([result[2], mc])];
+		return [new BigDecimal(result[0]), new BigDecimal(result[1]), new BigDecimal(result[2])];
 	}
 
 	/**
 	 * Least common multiple.
 	 * - Calculated as an integer.
 	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation.
 	 * @returns {BigDecimal} lcm(x, y)
 	 */
-	lcm(number, context) {
-		const mc = context ? context : this.default_context;
+	lcm(number) {
 		const x = this.round().toBigInteger();
 		const y = BigDecimal._toBigDecimal(number).toBigInteger();
 		const result = x.lcm(y);
-		return new BigDecimal([result, mc]);
+		return new BigDecimal(result);
 	}
 
 	// ----------------------
@@ -2967,31 +2822,27 @@ export default class BigDecimal {
 	 * - Calculated as an integer.
 	 * @param {KBigDecimalInputData} exponent
 	 * @param {KBigDecimalInputData} m 
-	 * @param {MathContext} [context] - MathContext setting after calculation.
 	 * @returns {BigDecimal} A^B mod m
 	 */
-	modPow(exponent, m, context) {
-		const mc = context ? context : this.default_context;
+	modPow(exponent, m) {
 		const A = this.round().toBigInteger();
 		const B = BigDecimal._toBigDecimal(exponent).toBigInteger();
 		const m_ = BigDecimal._toBigDecimal(m).toBigInteger();
 		const result = A.modPow(B, m_);
-		return new BigDecimal([result, mc]);
+		return new BigDecimal(result);
 	}
 
 	/**
 	 * Modular multiplicative inverse.
 	 * - Calculated as an integer.
 	 * @param {KBigDecimalInputData} m
-	 * @param {MathContext} [context] - MathContext setting after calculation.
 	 * @returns {BigDecimal} A^(-1) mod m
 	 */
-	modInverse(m, context) {
-		const mc = context ? context : this.default_context;
+	modInverse(m) {
 		const A = this.round().toBigInteger();
 		const m_ = BigDecimal._toBigDecimal(m).toBigInteger();
 		const result = A.modInverse(m_);
-		return new BigDecimal([result, mc]);
+		return new BigDecimal(result);
 	}
 	
 	// ----------------------
@@ -3215,21 +3066,19 @@ export default class BigDecimal {
 	/**
 	 * Subtract.
 	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A - B
 	 */
-	subtract(number, context) {
-		return this.sub(number, context);
+	subtract(number) {
+		return this.sub(number);
 	}
 
 	/**
 	 * Multiply.
 	 * @param {KBigDecimalInputData} number
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A * B
 	 */
-	multiply(number, context) {
-		return this.mul(number, context);
+	multiply(number) {
+		return this.mul(number);
 	}
 
 	/**
@@ -3237,7 +3086,7 @@ export default class BigDecimal {
 	 * - The argument can specify the scale after calculation.
 	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
 	 * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
-	 * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
+	 * - When null is specified for the argument, it is calculated on the scale of "divisor.context".
 	 * @param {KBigDecimalInputData} number
 	 * @param {MathContext|KBigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
 	 * @returns {BigDecimal} A / B
@@ -3250,11 +3099,10 @@ export default class BigDecimal {
 	 * Remainder of division.
 	 * - Result has same sign as the Dividend.
 	 * @param {KBigDecimalInputData} number
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
 	 * @returns {BigDecimal} A % B
 	 */
-	remainder(number, context) {
-		return this.rem(number, context);
+	remainder(number) {
+		return this.rem(number);
 	}
 	
 	/**
@@ -3329,35 +3177,44 @@ const DEFINE = {
 	 * @returns {BigDecimal} 3.14...
 	 */
 	PI : function() {
-		// ガウス＝ルジャンドルのアルゴリズム
-		// 使用する固定値を列挙
-		const B1		= BigDecimal.create(1);
-		const B2		= BigDecimal.create(2);
-		const B4		= BigDecimal.create(4);
-		// 初期値
-		let a = B1;
-		let b = B2.sqrt().inv();
-		let t = B4.inv();
-		let p = B1;
-		let pi = B1;
-		// 繰り返し求める
-		for(let i = 0; i < 300; i++) {
-			const a1 = a.add(b).div(B2);
-			const b1 = a.mul(b).sqrt();
-			const t1 = t.sub(p.mul(a.sub(a1).square()));
-			const p1 = p.mul(B2);
-			const pi1 = a1.add(b1).square().div(t1.mul(B4));
-			const delta = pi1.sub(pi);
-			pi = pi1;
-			if(delta.isZero()) {
-				break;
-			}
-			a = a1;
-			b = b1;
-			t = t1;
-			p = p1;
+		// DECIMAL256 でも精度は72桁ほどである。
+		// 従って、79桁のPIをすでにデータとして持っておく。
+		const PI79 = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862";
+		const context = BigDecimal.getDefaultContext();
+		if(context.getPrecision() <= 78) {
+			return new BigDecimal(PI79).round(context);
 		}
-		return pi;
+		else {
+			// ガウス＝ルジャンドルのアルゴリズム
+			// 使用する固定値を列挙
+			const B1		= BigDecimal.create(1);
+			const B2		= BigDecimal.create(2);
+			const B4		= BigDecimal.create(4);
+			// 初期値
+			let a = B1;
+			let b = B2.sqrt().inv();
+			let t = B4.inv();
+			let p = B1;
+			let pi = B1;
+			// 繰り返し求める
+			for(let i = 0; i < 10; i++) {
+				const a1 = a.add(b).div(B2);
+				const b1 = a.mul(b).sqrt();
+				const t1 = t.sub(p.mul(a.sub(a1).square()));
+				const p1 = p.mul(B2);
+				const pi1 = a1.add(b1).square().div(t1.mul(B4));
+				const delta = pi1.sub(pi);
+				pi = pi1;
+				if(delta.isZero()) {
+					break;
+				}
+				a = a1;
+				b = b1;
+				t = t1;
+				p = p1;
+			}
+			return pi;
+		}
 	},
 
 	/**
@@ -3389,20 +3246,29 @@ const DEFINE = {
 	 * @returns {BigDecimal} E
 	 */
 	E : function() {
-		// 初期値
-		let n0 = BigDecimal.create(2);
-		let k = BigDecimal.create(1);
-		// 繰り返し求める
-		for(let i = 2; i < 300; i++) {
-			k = k.mul(i);
-			const n1 = n0.add(k.inv());
-			const delta = n1.sub(n0);
-			n0 = n1;
-			if(delta.isZero()) {
-				break;
-			}
+		// DECIMAL256 でも精度は72桁ほどである。
+		// 従って、84桁のEをすでにデータとして持っておく。
+		const E84 = "2.71828182845904523536028747135266249775724709369995957496696762772407663035354759";
+		const context = BigDecimal.getDefaultContext();
+		if(context.getPrecision() <= 83) {
+			return new BigDecimal(E84).round(context);
 		}
-		return n0;
+		else {
+			// 初期値
+			let n0 = BigDecimal.create(2);
+			let k = BigDecimal.create(1);
+			// 繰り返し求める
+			for(let i = 2; i < 300; i++) {
+				k = k.mul(i);
+				const n1 = n0.add(k.inv());
+				const delta = n1.sub(n0);
+				n0 = n1;
+				if(delta.isZero()) {
+					break;
+				}
+			}
+			return n0;
+		}
 	},
 
 	/**

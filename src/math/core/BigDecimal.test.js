@@ -204,9 +204,11 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 {
 	const x = $(["3333.3333", MathContext.UNLIMITED]);
 	const y = $(["-123.45", MathContext.UNLIMITED]);
+	BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
 	const add = x.add(y).toString();
 	const sub = x.sub(y).toString();
 	const mul = x.mul(y).toString();
+	BigDecimal.popDefaultContext();
 	test("add " + x + " + " + y + " = " + add, () => { expect(add).toBe("3209.8833"); });
 	test("sub " + x + " + " + y + " = " + sub, () => { expect(sub).toBe("3456.7833"); });
 	test("mul " + x + " + " + y + " = " + mul, () => { expect(mul).toBe("-411499.995885"); });
@@ -375,9 +377,11 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 
 	for(let i = 0; i < testDiv.length; i++) {
 		const data = testDiv[i];
-		const x1 = $([data[0], MathContext.UNLIMITED]);
-		const x2 = $([data[1], MathContext.UNLIMITED]);
+		BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
+		const x1 = $(data[0]);
+		const x2 = $(data[1]);
 		const y  = x1.divideAndRemainder(x2);
+		BigDecimal.popDefaultContext();
 		const y1 = "" + y[0].unscaledValue() + "e" + -1 * y[0].scale();
 		const y2 = "" + y[1].unscaledValue() + "e" + -1 * y[1].scale();
 		const test_name = "divideAndRemainder " + (i + 1) + " [" + data[0] + "/" + data[1] + "]\t";
@@ -406,6 +410,7 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 {
 	const x1 = $(["1", MathContext.UNLIMITED]);
 	const x2 = $(["7", MathContext.UNLIMITED]);
+	BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
 	let y1 = "";
 	try {
 		x1.div(x2);
@@ -413,8 +418,9 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	catch(e) {
 		y1 = e;
 	}
-	const y2 = x1.div(x2, { context : MathContext.DECIMAL128 }).toString();
+	BigDecimal.popDefaultContext();
 	test("div 2 " + x1 + " / " + x2 + " = " + y1, () => { expect(y1).toBe("ArithmeticException 0.142857[1]"); });
+	const y2 = x1.div(x2, { context : MathContext.DECIMAL128 }).toString();
 	test("div 3 " + x1 + " / " + x2 + " = " + y2, () => { expect(y2).toBe("0.1428571428571428571428571428571428"); });
 }
 
@@ -430,7 +436,9 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 {
 	const x1 = $("123.456");
 	const x2 = $(30);
-	const y = x1.pow(x2, MathContext.UNLIMITED).toString();
+	BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
+	const y = x1.pow(x2).toString();
+	BigDecimal.popDefaultContext();
 	test("pow 0 " + x1 + " ** " + x2, () => { expect(y).toBe("556373003462553278521277665419333757914477429707861621164878013.831986527054745197804565133259323738549131155563320488179330998057446584571938059401035776"); });
 	test_count = 1;
 }

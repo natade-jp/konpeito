@@ -1,5 +1,18 @@
 # History
 
+
+## v5.0.0b
+### 改善
+- `MathContext`, `Random` クラスに `create` メソッドを追加
+- `MathContext` クラスに `increasePrecision`, `decreasePrecision` メソッドを追加
+- `BigDecimal` クラスに `pushDefaultContext`, `popDefaultContext` メソッドを追加
+- `BigDecimal` クラスの `PI`, `E` で `MathContext.DECIMAL256` の精度までは計算済みの値を返すように修正
+### 変更
+- `BigDecimal` クラスの各メソッドで `MathContext` を引数に取ることができるようになっていたのをシンプル化及び高速化のため `div` を除いて削除しました
+### 不具合
+- `BigDecimal` の無限精度で割り切れない値で `inv` 関数を使用すると非常に重たくなりフリーズする可能性がある不具合を修正
+
+
 ## v4.1.0
 ### 改善
 - `Complex` に `mod` しか実装されていなかったのを `rem` と `mod` を追加 
@@ -42,9 +55,6 @@
 - `BigDecimal` の `pow` の整数入力時の計算結果が無限精度になる不具合を修正
 - `BigDecimal` の `pow` で `0` の `x` 乗が `1` になっていた不具合を修正
 - `Complex` の `sign` に `NaN`を入れたときの動作が誤っていたのを修正
-### TODO
-- `BigDecimal` に今回追加した拡張した三角関数を `Complex` でも利用できるようにする
-- `BigDecimal` で利用できるその他の機能のいくつかを `Complex`, `Fraction` で利用できるようにする
 
 ## v3.0.0
 ### 機能追加
