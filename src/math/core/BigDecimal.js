@@ -11,6 +11,7 @@
 import BigInteger from "./BigInteger.js";
 import RoundingMode, {RoundingModeEntity} from "./context/RoundingMode.js";
 import MathContext from "./context/MathContext.js";
+import Random from "./tools/Random.js";
 
 /**
  * BigDecimal type argument.(local)
@@ -1616,10 +1617,10 @@ export default class BigDecimal {
 	/**
 	 * Round with specified settings.
 	 * 
-	 * This method is not a method round the decimal point.
-	 * This method converts numbers in the specified Context and rounds unconvertible digits.
+	 * - This method is not a method round the decimal point.
+	 * - This method converts numbers in the specified Context and rounds unconvertible digits.
 	 * 
-	 * Use this.setScale(0, RoundingMode.HALF_UP) if you want to round the decimal point.
+	 * Use `this.setScale(0, RoundingMode.HALF_UP)` if you want to round the decimal point.
 	 * When the argument is omitted, such decimal point rounding operation is performed.
 	 * @param {MathContext} [mc] - New setting.
 	 * @returns {BigDecimal} 
@@ -1834,43 +1835,47 @@ export default class BigDecimal {
 				return BigDecimal.POSITIVE_INFINITY;
 			}
 		}
-		/*
-		// 【以下は直接求める方法】
-		// ニュートンラフソン法
-		// A^0.5  = x
-		//     A  = x^2
-		//     0  = x^2 - A
-		//   f(x) = x^2 - A
-		// ここで f(x) = 0 となるような x を知りたい
-		// なお f(x) は単調増加関数なのでニュートンラフソン法で求められる
-		// x_(n+1) = x_n - f(x_n)/f'(x_n)
-		// ここで f'(x) = 2x なので以下を求めればよい
-		// x_(n+1) = x_n - (x_n^2 - A) / (2 * x_n)
-		// 初期値の決め方は近い値のほうがよい
-		// 使用する固定値を列挙
-		const B1 = this.createUsingThisSettings(1, context);
-		const B2 = this.createUsingThisSettings(2, context);
-		// 初期値
-		const scale = - this.scale() + (this.precision() - 1);
-		const x0 = B1.scaleByPowerOfTen(scale);
+		if(this.isZero()) {
+			return BigDecimal.ZERO;
+		}
+		// ニュートンラフソン法は割り算があり速度が遅いので、以下の計算で求める。
+		return this.rsqrt().inv();
+	}
+
+	/**
+	 * Cube root.
+	 * @returns {BigDecimal} cbrt(A)
+	 */
+	cbrt() {
+		{
+			if(this.isZero()) {
+				return BigDecimal.ZERO;
+			}
+			else if(this.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isInfinite()) {
+				return this;
+			}
+		}
+		// ニュートン法によって求める
+		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
+		const sign = this.sign();
+		const abs = this.abs();
+		const x0 = abs.compareTo(BigDecimal.ONE) === 1 ? abs : BigDecimal.ONE;
 		let xn = x0;
-		for(let i = 0; i < 300; i++) {
-			const xn1 = xn.sub( (xn.mul(xn).sub(this)).div(xn.mul(B2)) );
+		for(let i = 0; i < 1000; i++) {
+			const xn_2 = xn.mul(xn);
+			const xn1 = xn.mul(2).add(abs.div(xn_2)).div(3);
 			const delta = xn1.sub(xn);
 			if(delta.isZero()) {
 				break;
 			}
 			xn = xn1;
 		}
-		*/
-		//return xn;
-		if(this.isZero()) {
-			return BigDecimal.ZERO;
-		}
-		// 上記は割り算があり速度が遅いので、以下の計算で求める。
-		return this.rsqrt().inv();
+		return sign === 1 ? xn : xn.negate();
 	}
-
+	
 	/**
 	 * Reciprocal square root.
 	 * @returns {BigDecimal} rsqrt(A)
@@ -2592,6 +2597,59 @@ export default class BigDecimal {
 		return x.sin().div(x);
 	}
 
+	// ----------------------
+	// 乱数
+	// ----------------------
+	
+	/**
+	 * Create random values with uniform random numbers.
+	 * @param {Random} [random] - Class for creating random numbers.
+	 * @returns {BigDecimal}
+	 */
+	static rand(random) {
+		let precision = BigDecimal.getDefaultContext().getPrecision();
+		if(precision <= 0) {
+			precision = 100;
+		}
+		const keta = Math.ceil(precision * Math.log(10) / Math.log(2));
+		const a = BigInteger.ONE.shiftLeft(keta);
+		const b = BigInteger.createRandomBigInteger(keta, random);
+		return (new BigDecimal(b)).div(a);
+	}
+
+	/**
+	 * Create random values with normal distribution.
+	 * @param {Random} [random] - Class for creating random numbers.
+	 * @returns {BigDecimal}
+	 */
+	static randn(random) {
+		// Box-Muller法
+		const a = BigDecimal.rand(random).log().mul(-2).sqrt();
+		const b = BigDecimal.rand(random).mul(2).mul(BigDecimal.PI);
+		const y = a.mul(b.sin());
+		return y;
+	}
+
+	// ----------------------
+	// JavaScript Math追加
+	// ----------------------
+	
+	expm1() {
+
+	}
+
+	log10() {
+
+	}
+
+	log1p() {
+
+	}
+	
+	log2() {
+
+	}
+	
 	// ----------------------
 	// テスト系
 	// ----------------------

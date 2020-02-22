@@ -66,9 +66,9 @@ export default class MathContext {
 	 * @param {RoundingModeEntity} [roundingMode=RoundingMode.HALF_UP] - RoundingMode.
 	 * @returns {MathContext}
 	 */
-	create(precision_or_name, roundingMode) {
+	static create(precision_or_name, roundingMode) {
 		if(precision_or_name instanceof MathContext) {
-			return this;
+			return precision_or_name;
 		}
 		return new MathContext(precision_or_name, roundingMode);
 	}

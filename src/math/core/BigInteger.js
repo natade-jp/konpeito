@@ -553,7 +553,7 @@ export default class BigInteger {
 	 * @returns {BigInteger}
 	 */
 	static createRandomBigInteger(bitsize, random) {
-		const rand = (random && (random instanceof Random)) ? random : DEFAULT_RANDOM;
+		const rand = (random !== undefined && random instanceof Random) ? random : DEFAULT_RANDOM;
 		const x = new BigInteger();
 		const bits = BigInteger._toInteger(bitsize);
 		const size = ((bits - 1) >> 4) + 1;
@@ -1327,11 +1327,72 @@ export default class BigInteger {
 				return BigInteger.POSITIVE_INFINITY;
 			}
 		}
-		const precision = this.toString(10).replace(/^-/, "").length;
-		const x0 = BigInteger.ONE.scaleByPowerOfTen(precision);
+		// ニュートン法によって求める
+		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
+		// A^0.5  = x
+		//     A  = x^2
+		//     0  = x^2 - A
+		//   f(x) = x^2 - A
+		//   f'(x) = 2x
+		// x_(n+1) = x_n - f(x_n)/f'(x_n)
+		//         = x_n - (x_n^2 - A)/2x_n
+		//         = (2*x_n^2 - x_n^2 + A)/2x_n
+		//         = (x_n^2 + A)/2x_n
+		//         = (x_n + (A/x_n)) / 2
+		let s = BigInteger.ONE;
+		/**
+		 * @type {BigInteger}
+		 */
+		let t = this;
+		while(s.compareToAbs(t) === -1) {
+			s = s.shiftLeft(1);
+			t = t.shiftRight(1);
+		}
+		const x0 = t;
 		let xn = x0;
 		for(let i = 0; i < 300; i++) {
 			const xn1 = xn.add(this.div(xn)).shiftRight(1);
+			const delta = xn1.sub(xn);
+			if(delta.isZero()) {
+				break;
+			}
+			xn = xn1;
+		}
+		return xn;
+	}
+	
+	/**
+	 * Cube root.
+	 * @returns {BigInteger} floor(cbrt(A))
+	 */
+	cbrt() {
+		{
+			if(this.isZero()) {
+				return BigInteger.ZERO;
+			}
+			else if(this.isNaN()) {
+				return BigInteger.NaN;
+			}
+			else if(this.isInfinite()) {
+				return this;
+			}
+		}
+		// ニュートン法によって求める
+		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
+		let s = BigInteger.ONE;
+		/**
+		 * @type {BigInteger}
+		 */
+		let t = this;
+		while(s.compareToAbs(t) === -1) {
+			s = s.shiftLeft(1);
+			t = t.shiftRight(2);
+		}
+		const x0 = t;
+		let xn = x0;
+		for(let i = 0; i < 300; i++) {
+			const xn_2 = xn.mul(xn);
+			const xn1 = xn.shiftLeft(1).add(this.div(xn_2)).div(3);
 			const delta = xn1.sub(xn);
 			if(delta.isZero()) {
 				break;

@@ -12,6 +12,7 @@ import LinearAlgebra from "./tools/LinearAlgebra.js";
 import Statistics from "./tools/Statistics.js";
 import Signal from "./tools/Signal.js";
 import Complex from "./Complex.js";
+import Random from "./tools/Random.js";
 
 /**
  * Matrix type argument.
@@ -1343,11 +1344,12 @@ export default class Matrix {
 	 * Generate a matrix composed of random values with uniform random numbers.
 	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
 	 * @param {KMatrixInputData} [column_length] - Number of columns.
+	 * @param {Random} [random] - Class for creating random numbers.
 	 * @returns {Matrix}
 	 */
-	static rand(dimension, column_length) {
+	static rand(dimension, column_length, random) {
 		return Matrix.createMatrixDoEachCalculation(function() {
-			return Complex.rand();
+			return Complex.rand(random);
 		}, dimension, column_length);
 	}
 
@@ -1355,11 +1357,12 @@ export default class Matrix {
 	 * Generate a matrix composed of random values with normal distribution.
 	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
 	 * @param {KMatrixInputData} [column_length] - Number of columns.
+	 * @param {Random} [random] - Class for creating random numbers.
 	 * @returns {Matrix}
 	 */
-	static randn(dimension, column_length) {
+	static randn(dimension, column_length, random) {
 		return Matrix.createMatrixDoEachCalculation(function() {
-			return Complex.randn();
+			return Complex.randn(random);
 		}, dimension, column_length);
 	}
 

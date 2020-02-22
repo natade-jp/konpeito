@@ -79,7 +79,7 @@ export default class Random {
 	 * - algorithm : "XORSHIFT" / "MLS" / "FAST"
 	 * @param {number|KRandomSettings} [init_data] - Seed number for random number generation. If not specified, create from time.
 	 */
-	create(init_data) {
+	static create(init_data) {
 		return new Random(init_data);
 	}
 

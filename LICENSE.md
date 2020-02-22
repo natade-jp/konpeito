@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2019 natade < https://github.com/natade-jp >
+Copyright (c) 2019-2020 natade < https://github.com/natade-jp >
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

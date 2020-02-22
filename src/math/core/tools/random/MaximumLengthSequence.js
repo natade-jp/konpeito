@@ -9,23 +9,6 @@
  */
 
 /**
- * Multiply two 32-bit integers and output a 32-bit integer.
- * @param {number} x1 
- * @param {number} x2 
- * @returns {number}
- * @private
- * @ignore
- */
-const multiplication32 = function(x1, x2) {
-	let y = ((x1 & 0xFFFF) * (x2 & 0xFFFF)) >>> 0;
-	let b = (x1 & 0xFFFF) * (x2 >>> 16);
-	y = (y + ((b & 0xFFFF) << 16)) >>> 0;
-	b = (x1 >>> 16) * (x2 & 0xFFFF);
-	y = (y + ((b & 0xFFFF) << 16));
-	return (y & 0xFFFFFFFF);
-};
-
-/**
  * Random number class.
  * @private
  * @ignore
@@ -87,7 +70,7 @@ export default class MaximumLengthSequence {
 		let random_seed = seed;
 		for(let i = 0; i <= 16; i++) {
 			for(let j = 0; j < 32; j++) {
-				random_seed = multiplication32(random_seed, 0x5D588B65) + 1;
+				random_seed = Math.imul(random_seed, 0x5D588B65) + 1;
 				u = (u >>> 1) + ((random_seed < 0) ? 0x80000000 : 0);
 			}
 			x[i] = u;

@@ -313,18 +313,22 @@ export default class Complex {
 	
 	/**
 	 * Create random values with uniform random numbers.
+	 * @param {Random} [random] - Class for creating random numbers.
 	 * @returns {Complex}
 	 */
-	static rand() {
-		return new Complex(random_class.nextDouble());
+	static rand(random) {
+		const rand = (random !== undefined && random instanceof Random) ? random : random_class;
+		return new Complex(rand.nextDouble());
 	}
 
 	/**
 	 * Create random values with normal distribution.
+	 * @param {Random} [random] - Class for creating random numbers.
 	 * @returns {Complex}
 	 */
-	static randn() {
-		return new Complex(random_class.nextGaussian());
+	static randn(random) {
+		const rand = (random !== undefined && random instanceof Random) ? random : random_class;
+		return new Complex(rand.nextGaussian());
 	}
 
 	/**

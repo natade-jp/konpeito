@@ -2,11 +2,15 @@
 
 
 ## v5.0.0b
-### 改善
+### 機能追加
 - `MathContext`, `Random` クラスに `create` メソッドを追加
 - `MathContext` クラスに `increasePrecision`, `decreasePrecision` メソッドを追加
 - `BigDecimal` クラスに `pushDefaultContext`, `popDefaultContext` メソッドを追加
+- `BigDecimal` クラスに乱数作成 `rand`, `randn` を追加
+- `BigInteger`, `BigDecimal` クラスに立方根 `cbrt` を追加
+### 改善
 - `BigDecimal` クラスの `PI`, `E` で `MathContext.DECIMAL256` の精度までは計算済みの値を返すように修正
+- `Matrix`, `Complex` クラスの `rand`, `randn` の引数に乱数を設定できるように改善
 ### 変更
 - `BigDecimal` クラスの各メソッドで `MathContext` を引数に取ることができるようになっていたのをシンプル化及び高速化のため `div` を除いて削除しました
 ### 不具合
