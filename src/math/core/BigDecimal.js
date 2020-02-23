@@ -1804,7 +1804,11 @@ export default class BigDecimal {
 			return y;
 		}
 		else {
-			return this.log().mul(number).exp();
+			const mc = BigDecimal.getDefaultContext();
+			BigDecimal.pushDefaultContext(BigDecimal.getDefaultContext().increasePrecision());
+			const ret = this.log().mul(number).exp().round(mc);
+			BigDecimal.popDefaultContext();
+			return ret;
 		}
 	}
 	
@@ -1839,7 +1843,13 @@ export default class BigDecimal {
 			return BigDecimal.ZERO;
 		}
 		// ニュートンラフソン法は割り算があり速度が遅いので、以下の計算で求める。
-		return this.rsqrt().inv();
+		{
+			const mc = BigDecimal.getDefaultContext();
+			BigDecimal.pushDefaultContext(BigDecimal.getDefaultContext().increasePrecision());
+			const ret = this.rsqrt().inv().round(mc);
+			BigDecimal.popDefaultContext();
+			return ret;
+		}
 	}
 
 	/**
@@ -1858,22 +1868,34 @@ export default class BigDecimal {
 				return this;
 			}
 		}
-		// ニュートン法によって求める
-		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
+		const scale = - this.scale() + (this.precision() - 1) + 1;
 		const sign = this.sign();
 		const abs = this.abs();
-		const x0 = abs.compareTo(BigDecimal.ONE) === 1 ? abs : BigDecimal.ONE;
-		let xn = x0;
-		for(let i = 0; i < 1000; i++) {
-			const xn_2 = xn.mul(xn);
-			const xn1 = xn.mul(2).add(abs.div(xn_2)).div(3);
-			const delta = xn1.sub(xn);
-			if(delta.isZero()) {
-				break;
-			}
-			xn = xn1;
+		let ret;
+		// 小さい数値はpowを使ったほうが早く計算できる
+		if(scale < 30) {
+			const mc = BigDecimal.getDefaultContext();
+			BigDecimal.pushDefaultContext(BigDecimal.getDefaultContext().increasePrecision());
+			ret = abs.log().div(3).exp().round(mc);
+			BigDecimal.popDefaultContext();
 		}
-		return sign === 1 ? xn : xn.negate();
+		else {
+			// ニュートン法によって求める
+			// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
+			const x0 = abs.compareTo(BigDecimal.ONE) === 1 ? abs : BigDecimal.ONE;
+			let xn = x0;
+			for(let i = 0; i < 1000; i++) {
+				const xn_2 = xn.mul(xn);
+				const xn1 = xn.mul(2).add(abs.div(xn_2)).div(3);
+				const delta = xn1.sub(xn);
+				if(delta.isZero()) {
+					break;
+				}
+				xn = xn1;
+			}
+			ret = xn;
+		}
+		return sign === 1 ? ret : ret.negate();
 	}
 	
 	/**
@@ -2100,6 +2122,39 @@ export default class BigDecimal {
 		}
 	}
 
+	/**
+	 * e^x - 1
+	 * @returns {BigDecimal} expm1(A)
+	 */
+	expm1() {
+		return this.exp().sub(1);
+	}
+
+	/**
+	 * ln(1 + x)
+	 * @returns {BigDecimal} log1p(A)
+	 */
+	log1p() {
+		return this.add(1).log();
+	}
+	
+	/**
+	 * log_2(x)
+	 * @returns {BigDecimal} log2(A)
+	 */
+	log2() {
+		return this.log().div(BigDecimal.LN2);
+		
+	}
+
+	/**
+	 * log_10(x)
+	 * @returns {BigDecimal} log10(A)
+	 */
+	log10() {
+		return this.log().div(BigDecimal.LN10);
+	}
+	
 	// ----------------------
 	// 三角関数
 	// ----------------------
@@ -2630,26 +2685,6 @@ export default class BigDecimal {
 		return y;
 	}
 
-	// ----------------------
-	// JavaScript Math追加
-	// ----------------------
-	
-	expm1() {
-
-	}
-
-	log10() {
-
-	}
-
-	log1p() {
-
-	}
-	
-	log2() {
-
-	}
-	
 	// ----------------------
 	// テスト系
 	// ----------------------

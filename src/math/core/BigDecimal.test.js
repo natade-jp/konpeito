@@ -596,6 +596,17 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 {
 	const EPS = 1e-5;
 	test_count = 0;
+	testOperator1("cbrt", "2", "1.25992104989487", EPS);
+	testOperator1("cbrt", "-8", "-2", EPS);
+	testOperator1("cbrt", "1000000", "100", EPS);
+	testOperator1("cbrt", Infinity, Infinity);
+	testOperator1("cbrt", -Infinity, -Infinity);
+	testOperator1("cbrt", NaN, NaN);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
 	testOperator1("rsqrt", "2", 1.0 / Math.sqrt(2), EPS);
 	testOperator1("rsqrt", "4", 0.5, EPS);
 	testOperator1("rsqrt", "1000000", 0.001, EPS);
@@ -661,6 +672,54 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator2("pow", 1.2, Infinity, Infinity);
 	testOperator2("pow", 0.5, -Infinity, Infinity);
 	testOperator2("pow", 1.2, -Infinity, 0);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("expm1",-1, Math.expm1(-1), EPS);
+	testOperator1("expm1", 0, Math.expm1(0), EPS);
+	testOperator1("expm1", 1, Math.expm1(1), EPS);
+	testOperator1("expm1", 2, Math.expm1(2), EPS);
+	testOperator1("expm1", Infinity, Math.expm1( Infinity));
+	testOperator1("expm1",-Infinity, Math.expm1(-Infinity));
+	testOperator1("expm1", NaN, Math.expm1(NaN));
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("log1p",-1, Math.log1p(-1), EPS);
+	testOperator1("log1p", 0, Math.log1p(0), EPS);
+	testOperator1("log1p", 1, Math.log1p(1), EPS);
+	testOperator1("log1p", 2, Math.log1p(2), EPS);
+	testOperator1("log1p", Infinity, Math.log1p( Infinity));
+	testOperator1("log1p",-Infinity, Math.log1p(-Infinity));
+	testOperator1("log1p", NaN, Math.log1p(NaN));
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("log2", 0, Math.log2(0), EPS);
+	testOperator1("log2", 7, Math.log2(7), EPS);
+	testOperator1("log2", 8, Math.log2(8), EPS);
+	testOperator1("log2", -1000000, NaN);
+	testOperator1("log2", NaN, NaN);
+	testOperator1("log2", -Infinity, NaN);
+	testOperator1("log2", Infinity, Infinity);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("log10", 0, Math.log10(0), EPS);
+	testOperator1("log10", 99, Math.log10(99), EPS);
+	testOperator1("log10", 100, Math.log10(100), EPS);
+	testOperator1("log10", -1000000, NaN);
+	testOperator1("log10", NaN, NaN);
+	testOperator1("log10", -Infinity, NaN);
+	testOperator1("log10", Infinity, Infinity);
 }
 
 {

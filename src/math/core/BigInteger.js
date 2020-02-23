@@ -1402,6 +1402,50 @@ export default class BigInteger {
 		return xn;
 	}
 
+	/**
+	 * log_2(x)
+	 * @returns {BigInteger} log2(A)
+	 */
+	log2() {
+		{
+			if(this.isZero()) {
+				return BigInteger.ZERO;
+			}
+			else if(this.isNaN()) {
+				return BigInteger.NaN;
+			}
+			else if(this.isNegative()) {
+				return BigInteger.NaN;
+			}
+			else if(this.isInfinite()) {
+				return BigInteger.POSITIVE_INFINITY;
+			}
+		}
+		return BigInteger.create(this.bitLength() - 1);
+	}
+
+	/**
+	 * log_10(x)
+	 * @returns {BigInteger} log10(A)
+	 */
+	log10() {
+		{
+			if(this.isZero()) {
+				return BigInteger.ZERO;
+			}
+			else if(this.isNaN()) {
+				return BigInteger.NaN;
+			}
+			else if(this.isNegative()) {
+				return BigInteger.NaN;
+			}
+			else if(this.isInfinite()) {
+				return BigInteger.POSITIVE_INFINITY;
+			}
+		}
+		return BigInteger.create(this.toString(10).length - 1);
+	}
+
 	// ----------------------
 	// 環境設定用
 	// ----------------------

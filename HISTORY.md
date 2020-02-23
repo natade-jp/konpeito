@@ -8,11 +8,14 @@
 - `BigDecimal` クラスに `pushDefaultContext`, `popDefaultContext` メソッドを追加
 - `BigDecimal` クラスに乱数作成 `rand`, `randn` を追加
 - `BigInteger`, `BigDecimal` クラスに立方根 `cbrt` を追加
+- `BigInteger`, `BigDecimal` クラスに `log2`, `log10` を追加
+- `BigDecimal` クラスに `expm1`, `log1p` を追加
 ### 改善
-- `BigDecimal` クラスの `PI`, `E` で `MathContext.DECIMAL256` の精度までは計算済みの値を返すように修正
+- `BigDecimal` クラスの `PI`, `E` で `MathContext.DECIMAL256` の精度までは計算済みの値を返すようにして高速化
 - `Matrix`, `Complex` クラスの `rand`, `randn` の引数に乱数を設定できるように改善
+- 32ビットの整数演算をビルドイン関数 `Math.imul` を利用するように変更
 ### 変更
-- `BigDecimal` クラスの各メソッドで `MathContext` を引数に取ることができるようになっていたのをシンプル化及び高速化のため `div` を除いて削除しました
+- `BigDecimal` クラスの各メソッドで `MathContext` を引数に取ることができるようになっていたのを仕様シンプル化及び高速化のため `div` を除いて削除しました
 ### 不具合
 - `BigDecimal` の無限精度で割り切れない値で `inv` 関数を使用すると非常に重たくなりフリーズする可能性がある不具合を修正
 

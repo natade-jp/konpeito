@@ -59,7 +59,7 @@ const testOperator1  = function(operator, x, y) {
 	// @ts-ignore
 	const Y = X[operator]();
 	const testname = operator + " " + test_count + " (" + x + ")." + operator + "() = " + y + " === " + Y;
-	const out = (X.isNaN() && $(Y).isNaN()) ? true : $(Y).equals(y);
+	const out = ($(y).isNaN() && $(Y).isNaN()) ? true : $(Y).equals(y);
 	test(testname, () => { expect(out).toBe(true); });
 };
 
@@ -659,8 +659,22 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 
 {
 	test_count = 0;
+	testOperator1("sqrt", 0, 0);
 	testOperator1("sqrt", 1000, 31);
 	testOperator1("sqrt", 1000000, 1000);
+	testOperator1("sqrt", NaN, NaN);
+	testOperator1("sqrt", -100, NaN);
+	testOperator1("sqrt", Infinity, Infinity);
+}
+
+{
+	test_count = 0;
+	testOperator1("cbrt", 0, 0);
+	testOperator1("cbrt", 100, 4);
+	testOperator1("cbrt", -1000000, -100);
+	testOperator1("cbrt", NaN, NaN);
+	testOperator1("cbrt", -Infinity, -Infinity);
+	testOperator1("cbrt", Infinity, Infinity);
 }
 
 {
@@ -675,6 +689,28 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	testOperator2("pow", 1, Infinity, 1);
 	testOperator2("pow", 0, -Infinity, Infinity);
 	testOperator2("pow", 1, -Infinity, 1);
+}
+
+{
+	test_count = 0;
+	testOperator1("log2", 0, 0);
+	testOperator1("log2", 7, 2);
+	testOperator1("log2", 8, 3);
+	testOperator1("log2", -1000000, NaN);
+	testOperator1("log2", NaN, NaN);
+	testOperator1("log2", -Infinity, NaN);
+	testOperator1("log2", Infinity, Infinity);
+}
+
+{
+	test_count = 0;
+	testOperator1("log10", 0, 0);
+	testOperator1("log10", 99, 1);
+	testOperator1("log10", 100, 2);
+	testOperator1("log10", -1000000, NaN);
+	testOperator1("log10", NaN, NaN);
+	testOperator1("log10", -Infinity, NaN);
+	testOperator1("log10", Infinity, Infinity);
 }
 
 {
