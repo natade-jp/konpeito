@@ -149,13 +149,6 @@ declare class _BigDecimal_ {
      */
     static create(number: KBigDecimalInputData): _BigDecimal_;
     /**
-     * Create a number using settings of this number.
-     * @param {KBigDecimalLocalInputData} number - Real data.
-     * @param {_MathContext_} [mc] - Setting preferences when creating objects.
-     * @returns {_BigDecimal_}
-     */
-    createUsingThisSettings(number: KBigDecimalLocalInputData, mc?: _MathContext_): _BigDecimal_;
-    /**
      * Convert number to _BigDecimal_ type.
      * @param {KBigDecimalLocalInputData} x
      * @param {_MathContext_} [scale]
@@ -201,22 +194,19 @@ declare class _BigDecimal_ {
     ulp(): _BigDecimal_;
     /**
      * Absolute value.
-     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} abs(A)
      */
-    abs(mc?: _MathContext_): _BigDecimal_;
+    abs(): _BigDecimal_;
     /**
      * this * 1
-     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object..
      * @returns {_BigDecimal_} +A
      */
-    plus(mc?: _MathContext_): _BigDecimal_;
+    plus(): _BigDecimal_;
     /**
      * this * -1
-     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object..
      * @returns {_BigDecimal_} -A
      */
-    negate(mc?: _MathContext_): _BigDecimal_;
+    negate(): _BigDecimal_;
     /**
      * Move the decimal point to the left.
      * @param {KBigDecimalInputData} n
@@ -237,60 +227,53 @@ declare class _BigDecimal_ {
     /**
      * Add.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} A + B
      */
-    add(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    add(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * Subtract.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} A - B
      */
-    sub(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    sub(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * Multiply.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} A * B
      */
-    mul(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    mul(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * Divide not calculated to the decimal point.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} (int)(A / B)
      */
-    divideToIntegralValue(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    divideToIntegralValue(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * Divide and remainder.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {Array<_BigDecimal_>} [C = (int)(A / B), A - C * B]
      */
-    divideAndRemainder(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_[];
+    divideAndRemainder(number: KBigDecimalInputData): _BigDecimal_[];
     /**
      * Remainder of division.
      * - Result has same sign as the Dividend.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} A % B
      */
-    rem(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    rem(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * Modulo, positive remainder of division.
      * - Result has same sign as the Divisor.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} A mod B
      */
-    mod(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    mod(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * Divide.
      * - The argument can specify the scale after calculation.
      * - In the case of precision infinity, it may generate an error by a repeating decimal.
      * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
-     * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
+     * - When null is specified for the argument, it is calculated on the scale of "divisor.context".
      * @param {KBigDecimalInputData} number
      * @param {_MathContext_|KBigDecimalDivideType} [type] - Scale, _MathContext_, _RoundingMode_ used for the calculation.
      * @returns {_BigDecimal_}
@@ -298,17 +281,15 @@ declare class _BigDecimal_ {
     div(number: KBigDecimalInputData, type?: _MathContext_ | KBigDecimalDivideType): _BigDecimal_;
     /**
      * Inverse number of this value.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} 1 / A
      */
-    inv(context?: _MathContext_): _BigDecimal_;
+    inv(): _BigDecimal_;
     /**
      * Factorial function, x!.
      * - Supports only integers.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} n!
      */
-    factorial(context?: _MathContext_): _BigDecimal_;
+    factorial(): _BigDecimal_;
     /**
      * Multiply a multiple of ten.
      * - Supports only integers.
@@ -319,16 +300,27 @@ declare class _BigDecimal_ {
     scaleByPowerOfTen(n: KBigDecimalInputData): _BigDecimal_;
     /**
      * Set default the _MathContext_.
-     * This is used if you do not specify _MathContext_ when creating a new object.
+     * - This is used if you do not specify _MathContext_ when creating a new object.
      * @param {_MathContext_} [context=_MathContext_.DECIMAL128]
      */
     static setDefaultContext(context?: _MathContext_): void;
     /**
      * Return default _MathContext_ class.
-     * Used when _MathContext_ not specified explicitly.
+     * - Used when _MathContext_ not specified explicitly.
      * @returns {_MathContext_}
      */
     static getDefaultContext(): _MathContext_;
+    /**
+     * Push default the _MathContext_.
+     * - Use with `popDefaultContext` when you want to switch settings temporarily.
+     * @param {_MathContext_} [context]
+     */
+    static pushDefaultContext(context?: _MathContext_): void;
+    /**
+     * Pop default the _MathContext_.
+     * - Use with `pushDefaultContext` when you want to switch settings temporarily.
+     */
+    static popDefaultContext(): void;
     /**
      * boolean value.
      * @returns {boolean}
@@ -433,10 +425,10 @@ declare class _BigDecimal_ {
     /**
      * Round with specified settings.
      *
-     * This method is not a method round the decimal point.
-     * This method converts numbers in the specified Context and rounds unconvertible digits.
+     * - This method is not a method round the decimal point.
+     * - This method converts numbers in the specified Context and rounds unconvertible digits.
      *
-     * Use this.setScale(0, _RoundingMode_.HALF_UP) if you want to round the decimal point.
+     * Use `this.setScale(0, _RoundingMode_.HALF_UP)` if you want to round the decimal point.
      * When the argument is omitted, such decimal point rounding operation is performed.
      * @param {_MathContext_} [mc] - New setting.
      * @returns {_BigDecimal_}
@@ -466,65 +458,80 @@ declare class _BigDecimal_ {
      * Power function.
      * - An exception occurs when doing a huge multiplication.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} pow(A, B)
      */
-    pow(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    pow(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * Square.
-     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} A^2
      */
-    square(mc?: _MathContext_): _BigDecimal_;
+    square(): _BigDecimal_;
     /**
      * Square root.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} sqrt(A)
      */
-    sqrt(context?: _MathContext_): _BigDecimal_;
+    sqrt(): _BigDecimal_;
+    /**
+     * Cube root.
+     * @returns {_BigDecimal_} cbrt(A)
+     */
+    cbrt(): _BigDecimal_;
     /**
      * Reciprocal square root.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} rsqrt(A)
      */
-    rsqrt(context?: _MathContext_): _BigDecimal_;
+    rsqrt(): _BigDecimal_;
     /**
      * Logarithmic function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} log(A)
      */
-    log(context?: _MathContext_): _BigDecimal_;
+    log(): _BigDecimal_;
     /**
      * Exponential function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} exp(A)
      */
-    exp(context?: _MathContext_): _BigDecimal_;
+    exp(): _BigDecimal_;
+    /**
+     * e^x - 1
+     * @returns {_BigDecimal_} expm1(A)
+     */
+    expm1(): _BigDecimal_;
+    /**
+     * ln(1 + x)
+     * @returns {_BigDecimal_} log1p(A)
+     */
+    log1p(): _BigDecimal_;
+    /**
+     * log_2(x)
+     * @returns {_BigDecimal_} log2(A)
+     */
+    log2(): _BigDecimal_;
+    /**
+     * log_10(x)
+     * @returns {_BigDecimal_} log10(A)
+     */
+    log10(): _BigDecimal_;
     /**
      * Sine function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} sin(A)
      */
-    sin(context?: _MathContext_): _BigDecimal_;
+    sin(): _BigDecimal_;
     /**
      * Cosine function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} cos(A)
      */
-    cos(context?: _MathContext_): _BigDecimal_;
+    cos(): _BigDecimal_;
     /**
      * Tangent function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} tan(A)
      */
-    tan(context?: _MathContext_): _BigDecimal_;
+    tan(): _BigDecimal_;
     /**
      * Atan (arc tangent) function.
      * - Return the values of [-PI/2, PI/2].
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} atan(A)
      */
-    atan(context?: _MathContext_): _BigDecimal_;
+    atan(): _BigDecimal_;
     /**
      * Atan (arc tangent) function.
      * Return the values of [-PI, PI] .
@@ -536,130 +543,121 @@ declare class _BigDecimal_ {
     atan2(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
     /**
      * Arc sine function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} asin(A)
      */
-    asin(context?: _MathContext_): _BigDecimal_;
+    asin(): _BigDecimal_;
     /**
      * Arc cosine function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} acos(A)
      */
-    acos(context?: _MathContext_): _BigDecimal_;
+    acos(): _BigDecimal_;
     /**
      * Hyperbolic sine function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} sinh(A)
      */
-    sinh(context?: _MathContext_): _BigDecimal_;
+    sinh(): _BigDecimal_;
     /**
      * Inverse hyperbolic sine function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} asinh(A)
      */
-    asinh(context?: _MathContext_): _BigDecimal_;
+    asinh(): _BigDecimal_;
     /**
      * Hyperbolic cosine function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} cosh(A)
      */
-    cosh(context?: _MathContext_): _BigDecimal_;
+    cosh(): _BigDecimal_;
     /**
      * Inverse hyperbolic cosine function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} acosh(A)
      */
-    acosh(context?: _MathContext_): _BigDecimal_;
+    acosh(): _BigDecimal_;
     /**
      * Hyperbolic tangent function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} tanh(A)
      */
-    tanh(context?: _MathContext_): _BigDecimal_;
+    tanh(): _BigDecimal_;
     /**
      * Inverse hyperbolic tangent function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} atanh(A)
      */
-    atanh(context?: _MathContext_): _BigDecimal_;
+    atanh(): _BigDecimal_;
     /**
      * Secant function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} sec(A)
      */
-    sec(context?: _MathContext_): _BigDecimal_;
+    sec(): _BigDecimal_;
     /**
      * Reverse secant function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} asec(A)
      */
-    asec(context?: _MathContext_): _BigDecimal_;
+    asec(): _BigDecimal_;
     /**
      * Hyperbolic secant function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} sech(A)
      */
-    sech(context?: _MathContext_): _BigDecimal_;
+    sech(): _BigDecimal_;
     /**
      * Inverse hyperbolic secant function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} asech(A)
      */
-    asech(context?: _MathContext_): _BigDecimal_;
+    asech(): _BigDecimal_;
     /**
      * Cotangent function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} cot(A)
      */
-    cot(context?: _MathContext_): _BigDecimal_;
+    cot(): _BigDecimal_;
     /**
      * Inverse cotangent function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} acot(A)
      */
-    acot(context?: _MathContext_): _BigDecimal_;
+    acot(): _BigDecimal_;
     /**
      * Hyperbolic cotangent function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} coth(A)
      */
-    coth(context?: _MathContext_): _BigDecimal_;
+    coth(): _BigDecimal_;
     /**
      * Inverse hyperbolic cotangent function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} acoth(A)
      */
-    acoth(context?: _MathContext_): _BigDecimal_;
+    acoth(): _BigDecimal_;
     /**
      * Cosecant function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} csc(A)
      */
-    csc(context?: _MathContext_): _BigDecimal_;
+    csc(): _BigDecimal_;
     /**
      * Inverse cosecant function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} acsc(A)
      */
-    acsc(context?: _MathContext_): _BigDecimal_;
+    acsc(): _BigDecimal_;
     /**
      * Hyperbolic cosecant function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} csch(A)
      */
-    csch(context?: _MathContext_): _BigDecimal_;
+    csch(): _BigDecimal_;
     /**
      * Inverse hyperbolic cosecant function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} acsch(A)
      */
-    acsch(context?: _MathContext_): _BigDecimal_;
+    acsch(): _BigDecimal_;
     /**
      * Normalized sinc function.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of this object.
      * @returns {_BigDecimal_} sinc(A)
      */
-    sinc(context?: _MathContext_): _BigDecimal_;
+    sinc(): _BigDecimal_;
+    /**
+     * Create random values with uniform random numbers.
+     * @param {_Random_} [random] - Class for creating random numbers.
+     * @returns {_BigDecimal_}
+     */
+    static rand(random?: _Random_): _BigDecimal_;
+    /**
+     * Create random values with normal distribution.
+     * @param {_Random_} [random] - Class for creating random numbers.
+     * @returns {_BigDecimal_}
+     */
+    static randn(random?: _Random_): _BigDecimal_;
     /**
      * Return true if the value is integer.
      * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
@@ -722,82 +720,72 @@ declare class _BigDecimal_ {
      * Logical AND.
      * - Calculated as an integer.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} A & B
      */
-    and(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    and(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * Logical OR.
      * - Calculated as an integer.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} A | B
      */
-    or(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    or(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * Logical Exclusive-OR.
      * - Calculated as an integer.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} A ^ B
      */
-    xor(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    xor(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * Logical Not. (mutable)
      * - Calculated as an integer.
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
      * @returns {_BigDecimal_} !A
      */
-    not(context?: _MathContext_): _BigDecimal_;
+    not(): _BigDecimal_;
     /**
      * this << n
      * - Calculated as an integer.
      * @param {KBigDecimalInputData} n
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
      * @returns {_BigDecimal_} A << n
      */
-    shift(n: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    shift(n: KBigDecimalInputData): _BigDecimal_;
     /**
      * Euclidean algorithm.
      * - Calculated as an integer.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
      * @returns {_BigDecimal_} gcd(x, y)
      */
-    gcd(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    gcd(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * Extended Euclidean algorithm.
      * - Calculated as an integer.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
      * @returns {Array<_BigDecimal_>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
      */
-    extgcd(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_[];
+    extgcd(number: KBigDecimalInputData): _BigDecimal_[];
     /**
      * Least common multiple.
      * - Calculated as an integer.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
      * @returns {_BigDecimal_} lcm(x, y)
      */
-    lcm(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    lcm(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * Modular exponentiation.
      * - Calculated as an integer.
      * @param {KBigDecimalInputData} exponent
      * @param {KBigDecimalInputData} m
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
      * @returns {_BigDecimal_} A^B mod m
      */
-    modPow(exponent: KBigDecimalInputData, m: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    modPow(exponent: KBigDecimalInputData, m: KBigDecimalInputData): _BigDecimal_;
     /**
      * Modular multiplicative inverse.
      * - Calculated as an integer.
      * @param {KBigDecimalInputData} m
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation.
      * @returns {_BigDecimal_} A^(-1) mod m
      */
-    modInverse(m: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    modInverse(m: KBigDecimalInputData): _BigDecimal_;
     /**
      * Return true if the value is prime number.
      * - Calculated as an integer.
@@ -930,23 +918,21 @@ declare class _BigDecimal_ {
     /**
      * Subtract.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} A - B
      */
-    subtract(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    subtract(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * Multiply.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} A * B
      */
-    multiply(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    multiply(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * Divide.
      * - The argument can specify the scale after calculation.
      * - In the case of precision infinity, it may generate an error by a repeating decimal.
      * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
-     * - When null is specified for the argument, it is calculated on the scale of "divisor.default_context".
+     * - When null is specified for the argument, it is calculated on the scale of "divisor.context".
      * @param {KBigDecimalInputData} number
      * @param {_MathContext_|KBigDecimalDivideType} [type] - Scale, _MathContext_, _RoundingMode_ used for the calculation.
      * @returns {_BigDecimal_} A / B
@@ -956,10 +942,9 @@ declare class _BigDecimal_ {
      * Remainder of division.
      * - Result has same sign as the Dividend.
      * @param {KBigDecimalInputData} number
-     * @param {_MathContext_} [context] - _MathContext_ setting after calculation. If omitted, use the _MathContext_ of the B.
      * @returns {_BigDecimal_} A % B
      */
-    remainder(number: KBigDecimalInputData, context?: _MathContext_): _BigDecimal_;
+    remainder(number: KBigDecimalInputData): _BigDecimal_;
     /**
      * To integer rounded down to the nearest.
      * @returns {_BigDecimal_} fix(A), trunc(A)
@@ -1131,6 +1116,21 @@ declare class _BigInteger_ {
      * @returns {_BigInteger_} floor(sqrt(A))
      */
     sqrt(): _BigInteger_;
+    /**
+     * Cube root.
+     * @returns {_BigInteger_} floor(cbrt(A))
+     */
+    cbrt(): _BigInteger_;
+    /**
+     * log_2(x)
+     * @returns {_BigInteger_} log2(A)
+     */
+    log2(): _BigInteger_;
+    /**
+     * log_10(x)
+     * @returns {_BigInteger_} log10(A)
+     */
+    log10(): _BigInteger_;
     /**
      * Set default class of random.
      * This is used if you do not specify a random number.
@@ -1534,16 +1534,6 @@ declare class _Complex_ {
      */
     toString(): string;
     /**
-     * Create random values with uniform random numbers.
-     * @returns {_Complex_}
-     */
-    static rand(): _Complex_;
-    /**
-     * Create random values with normal distribution.
-     * @returns {_Complex_}
-     */
-    static randn(): _Complex_;
-    /**
      * The real part of this Comlex.
      * @returns {number} real(A)
      */
@@ -1720,6 +1710,12 @@ declare class _Complex_ {
      */
     sqrt(): _Complex_;
     /**
+     * Cube root.
+     * @param {KComplexInputData} [n=0] - Value type(0,1,2)
+     * @returns {_Complex_} cbrt(A)
+     */
+    cbrt(n?: KComplexInputData): _Complex_;
+    /**
      * Reciprocal square root.
      * @returns {_Complex_} rsqrt(A)
      */
@@ -1734,6 +1730,26 @@ declare class _Complex_ {
      * @returns {_Complex_} exp(A)
      */
     exp(): _Complex_;
+    /**
+     * e^x - 1
+     * @returns {_Complex_} expm1(A)
+     */
+    expm1(): _Complex_;
+    /**
+     * ln(1 + x)
+     * @returns {_Complex_} log1p(A)
+     */
+    log1p(): _Complex_;
+    /**
+     * log_2(x)
+     * @returns {_Complex_} log2(A)
+     */
+    log2(): _Complex_;
+    /**
+     * log_10(x)
+     * @returns {_Complex_} log10(A)
+     */
+    log10(): _Complex_;
     /**
      * Sine function.
      * @returns {_Complex_} sin(A)
@@ -1868,6 +1884,18 @@ declare class _Complex_ {
      * @returns {_Complex_} sinc(A)
      */
     sinc(): _Complex_;
+    /**
+     * Create random values with uniform random numbers.
+     * @param {_Random_} [random] - Class for creating random numbers.
+     * @returns {_Complex_}
+     */
+    static rand(random?: _Random_): _Complex_;
+    /**
+     * Create random values with normal distribution.
+     * @param {_Random_} [random] - Class for creating random numbers.
+     * @returns {_Complex_}
+     */
+    static randn(random?: _Random_): _Complex_;
     /**
      * Return true if the value is integer.
      * @param {KComplexInputData} [tolerance=Number.EPSILON] - Calculation tolerance of calculation.
@@ -2413,11 +2441,18 @@ declare class _Complex_ {
 
 /**
  * Create _BigDecimal_ configuration.
- * @param {string|number} precision_or_name - Precision. Or String output by _MathContext_.toString.
+ * @param {string|number|_MathContext_} precision_or_name - Precision. Or String output by _MathContext_.toString.
  * @param {_RoundingModeEntity_} [roundingMode=_RoundingMode_.HALF_UP] - _RoundingMode_.
  */
 declare class _MathContext_ {
-    constructor(precision_or_name: string | number, roundingMode?: _RoundingModeEntity_);
+    constructor(precision_or_name: string | number | _MathContext_, roundingMode?: _RoundingModeEntity_);
+    /**
+     * Create _BigDecimal_ configuration.
+     * @param {string|number|_MathContext_} precision_or_name - Precision. Or String output by _MathContext_.toString.
+     * @param {_RoundingModeEntity_} [roundingMode=_RoundingMode_.HALF_UP] - _RoundingMode_.
+     * @returns {_MathContext_}
+     */
+    static create(precision_or_name: string | number | _MathContext_, roundingMode?: _RoundingModeEntity_): _MathContext_;
     /**
      * The precision of this _BigDecimal_.
      * @returns {number}
@@ -2439,6 +2474,20 @@ declare class _MathContext_ {
      * @returns {string}
      */
     toString(): string;
+    /**
+     * Increase in the precision of x.
+     * - If the setting has no precision limit, do not change.
+     * @param {number} [x=1]
+     * @returns {_MathContext_}
+     */
+    increasePrecision(x?: number): _MathContext_;
+    /**
+     * Decrease in the precision of x.
+     * - If the setting has no precision limit, do not change.
+     * @param {number} [x=1]
+     * @returns {_MathContext_}
+     */
+    decreasePrecision(x?: number): _MathContext_;
     /**
      * No decimal point limit.
      * However, an error occurs in the case of cyclic fraction in division.
@@ -3446,20 +3495,6 @@ declare class _Matrix_ {
      */
     static ones(dimension: KMatrixInputData, column_length?: KMatrixInputData): _Matrix_;
     /**
-     * Generate a matrix composed of random values with uniform random numbers.
-     * @param {KMatrixInputData} dimension - Number of dimensions or rows.
-     * @param {KMatrixInputData} [column_length] - Number of columns.
-     * @returns {_Matrix_}
-     */
-    static rand(dimension: KMatrixInputData, column_length?: KMatrixInputData): _Matrix_;
-    /**
-     * Generate a matrix composed of random values with normal distribution.
-     * @param {KMatrixInputData} dimension - Number of dimensions or rows.
-     * @param {KMatrixInputData} [column_length] - Number of columns.
-     * @returns {_Matrix_}
-     */
-    static randn(dimension: KMatrixInputData, column_length?: KMatrixInputData): _Matrix_;
-    /**
      * If matrix, generate diagonal column vector.
      * If vector, generate a matrix with diagonal elements.
      * @returns {_Matrix_} _Matrix_ or vector created. See how to use the function.
@@ -3608,23 +3643,24 @@ declare class _Matrix_ {
     sub(number: KMatrixInputData): _Matrix_;
     /**
      * Multiply.
+     * - Use `dotmul` if you want to use `mul` for each element.
      * @param {KMatrixInputData} number
      * @returns {_Matrix_} A * B
      */
     mul(number: KMatrixInputData): _Matrix_;
     /**
      * Divide.
+     * - Use `dotdiv` if you want to use `div` for each element.
      * @param {KMatrixInputData} number
      * @returns {_Matrix_} A / B
      */
     div(number: KMatrixInputData): _Matrix_;
     /**
-     * Power function.
-     * - Supports only integers.
-     * @param {KMatrixInputData} number - 整数
-     * @returns {_Matrix_} pow(A, B)
+     * Inverse matrix of this matrix.
+     * - Use `dotinv` if you want to use `inv` for each element.
+     * @returns {_Matrix_} A^-1
      */
-    pow(number: KMatrixInputData): _Matrix_;
+    inv(): _Matrix_;
     /**
      * Multiplication for each element of matrix.
      * @param {KMatrixInputData} number
@@ -3642,12 +3678,6 @@ declare class _Matrix_ {
      * @returns {_Matrix_} 1 ./ A
      */
     dotinv(): _Matrix_;
-    /**
-     * Power function for each element of the matrix.
-     * @param {KMatrixInputData} number
-     * @returns {_Matrix_} A .^ B
-     */
-    dotpow(number: KMatrixInputData): _Matrix_;
     /**
      * Multiplication for each element of matrix.
      * @param {KMatrixInputData} number
@@ -3751,10 +3781,34 @@ declare class _Matrix_ {
      */
     negate(): _Matrix_;
     /**
+     * Power function.
+     * - Unless the matrix is a scalar value, only integers are supported.
+     * - Use `dotpow` if you want to use `pow` for each element. A real number can be specified.
+     * @param {KMatrixInputData} number - 整数
+     * @returns {_Matrix_} pow(A, B)
+     */
+    pow(number: KMatrixInputData): _Matrix_;
+    /**
+     * Power function for each element of the matrix.
+     * @param {KMatrixInputData} number
+     * @returns {_Matrix_} A .^ B
+     */
+    dotpow(number: KMatrixInputData): _Matrix_;
+    /**
      * Square root.
      * @returns {_Matrix_} sqrt(A)
      */
     sqrt(): _Matrix_;
+    /**
+     * Cube root.
+     * @returns {_Matrix_} sqrt(A)
+     */
+    cbrt(): _Matrix_;
+    /**
+     * Reciprocal square root.
+     * @returns {_Matrix_} rsqrt(A)
+     */
+    rsqrt(): _Matrix_;
     /**
      * Logarithmic function.
      * @returns {_Matrix_} log(A)
@@ -3765,6 +3819,26 @@ declare class _Matrix_ {
      * @returns {_Matrix_} exp(A)
      */
     exp(): _Matrix_;
+    /**
+     * e^x - 1
+     * @returns {_Matrix_} expm1(A)
+     */
+    expm1(): _Matrix_;
+    /**
+     * ln(1 + x)
+     * @returns {_Matrix_} log1p(A)
+     */
+    log1p(): _Matrix_;
+    /**
+     * log_2(x)
+     * @returns {_Matrix_} log2(A)
+     */
+    log2(): _Matrix_;
+    /**
+     * log_10(x)
+     * @returns {_Matrix_} log10(A)
+     */
+    log10(): _Matrix_;
     /**
      * Sine function.
      * @returns {_Matrix_} sin(A)
@@ -3899,6 +3973,22 @@ declare class _Matrix_ {
      * @returns {_Matrix_} sinc(A)
      */
     sinc(): _Matrix_;
+    /**
+     * Generate a matrix composed of random values with uniform random numbers.
+     * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+     * @param {KMatrixInputData} [column_length] - Number of columns.
+     * @param {_Random_} [random] - Class for creating random numbers.
+     * @returns {_Matrix_}
+     */
+    static rand(dimension: KMatrixInputData, column_length?: KMatrixInputData, random?: _Random_): _Matrix_;
+    /**
+     * Generate a matrix composed of random values with normal distribution.
+     * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+     * @param {KMatrixInputData} [column_length] - Number of columns.
+     * @param {_Random_} [random] - Class for creating random numbers.
+     * @returns {_Matrix_}
+     */
+    static randn(dimension: KMatrixInputData, column_length?: KMatrixInputData, random?: _Random_): _Matrix_;
     /**
      * Test if each element of the matrix is integer.
      * - 1 if true, 0 if false.
@@ -4182,11 +4272,6 @@ declare class _Matrix_ {
      * @returns {{U: _Matrix_, S: _Matrix_, V: _Matrix_}} U*S*V'=A
      */
     svd(): {U: _Matrix_, S: _Matrix_, V: _Matrix_};
-    /**
-     * Inverse matrix of this matrix.
-     * @returns {_Matrix_} A^-1
-     */
-    inv(): _Matrix_;
     /**
      * Pseudo-inverse matrix.
      * @returns {_Matrix_} A^+
@@ -5296,6 +5381,12 @@ declare type KRandomSettings = {
  */
 declare class _Random_ {
     constructor(init_data?: number | KRandomSettings);
+    /**
+     * Create _Random_.
+     * - algorithm : "XORSHIFT" / "MLS" / "FAST"
+     * @param {number|KRandomSettings} [init_data] - Seed number for random number generation. If not specified, create from time.
+     */
+    static create(init_data?: number | KRandomSettings): void;
     /**
      * Initialize random seed.
      * @param {number} seed

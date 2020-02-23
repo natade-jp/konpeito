@@ -79,23 +79,6 @@
  */
 
 /**
- * Multiply two 32-bit integers and output a 32-bit integer.
- * @param {number} x1 
- * @param {number} x2 
- * @returns {number}
- * @private
- * @ignore
- */
-const multiplication32 = function(x1, x2) {
-	let y = ((x1 &amp; 0xFFFF) * (x2 &amp; 0xFFFF)) &gt;&gt;&gt; 0;
-	let b = (x1 &amp; 0xFFFF) * (x2 &gt;&gt;&gt; 16);
-	y = (y + ((b &amp; 0xFFFF) &lt;&lt; 16)) &gt;&gt;&gt; 0;
-	b = (x1 &gt;&gt;&gt; 16) * (x2 &amp; 0xFFFF);
-	y = (y + ((b &amp; 0xFFFF) &lt;&lt; 16));
-	return (y &amp; 0xFFFFFFFF);
-};
-
-/**
  * Random number class.
  * @private
  * @ignore
@@ -154,9 +137,9 @@ export default class Xorshift {
 	setSeed(seed) {
 		// seed&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x7DDA;&#x5F62;&#x5408;&#x540C;&#x6CD5;&#x3067;&#x521D;&#x671F;&#x5024;&#x3092;&#x8A2D;&#x5B9A;
 		let random_seed = seed;
-		random_seed = (multiplication32(random_seed, 214013) + 2531011) &gt;&gt;&gt; 0;
+		random_seed = (Math.imul(random_seed, 214013) + 2531011) &gt;&gt;&gt; 0;
 		this.z = random_seed;
-		random_seed = (multiplication32(random_seed, 214013) + 2531011) &gt;&gt;&gt; 0;
+		random_seed = (Math.imul(random_seed, 214013) + 2531011) &gt;&gt;&gt; 0;
 		this.w = random_seed;
 
 		/**

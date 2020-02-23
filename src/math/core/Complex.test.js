@@ -260,6 +260,20 @@ const testOperator1Bool  = function(operator, x, y) {
 	testOperator2("compareTo", "5j", "5j", "0");
 	testOperator2("compareTo", "3+3j", "3-3j", "1");
 	testOperator2("compareTo", "-3+3j", "3-3j", "0");
+	testOperator2("compareTo", Infinity, 1, 1);
+	testOperator2("compareTo", Infinity, 0, 1);
+	testOperator2("compareTo", Infinity,-1, 1);
+	testOperator2("compareTo",-Infinity, 1,-1);
+	testOperator2("compareTo",-Infinity, 0,-1);
+	testOperator2("compareTo",-Infinity,-1,-1);
+	testOperator2("compareTo", 1, Infinity,-1);
+	testOperator2("compareTo", 0, Infinity,-1);
+	testOperator2("compareTo",-1, Infinity,-1);
+	testOperator2("compareTo", 1,-Infinity, 1);
+	testOperator2("compareTo", 0,-Infinity, 1);
+	testOperator2("compareTo",-1,-Infinity, 1);
+	testOperator2("compareTo", Infinity, Infinity, 0);
+	testOperator2("compareTo",-Infinity,-Infinity, 0);
 }
 
 {
@@ -362,23 +376,6 @@ const testOperator1Bool  = function(operator, x, y) {
 
 {
 	test_count = 0;
-	testOperator1("log", "3", "1.0986");
-	testOperator1("log", "-3", "1.0986 + 3.1416i");
-	testOperator1("log", "3j", " 1.0986 + 1.5708i");
-	testOperator1("log", "2+3j", "1.28247 + 0.98279i");
-	testOperator1("log", "-3+2j", "1.2825 + 2.5536i");
-}
-
-{
-	test_count = 0;
-	testOperator1("exp", "3", "20.086");
-	testOperator1("exp", "-3", "0.049787");
-	testOperator1("exp", "3j", " -0.98999 + 0.14112i");
-	testOperator1("exp", "2+3j", "-7.3151 + 1.0427i");
-}
-
-{
-	test_count = 0;
 	testOperator2("pow", "3", "5", "243");
 	testOperator2("pow", "3", "5+j", "110.52 + 216.41i");
 	testOperator2("pow", "-2", "0.5", "1.4142i");
@@ -396,10 +393,63 @@ const testOperator1Bool  = function(operator, x, y) {
 
 {
 	test_count = 0;
-	testOperator1("sqrt", "3", "1.7321");
+	testOperator1("sqrt", 3, Math.sqrt(3));
 	testOperator1("sqrt", "3j", "1.2247 + 1.2247i");
 	testOperator1("sqrt", "-1+3j", "1.0398 + 1.4426i");
 	testOperator1("sqrt", "2-3j", "1.67415 - 0.89598i");
+}
+
+{
+	test_count = 0;
+	testOperator1("cbrt", 3, Math.cbrt(3));
+	testOperator1("cbrt", "1+2j", "1.219616507971758 + 0.471711267789389i");
+	testOperator1("cbrt", "-3+4j", "1.26495290635775 + 1.15061369838445i");
+	testOperator1("cbrt", "5-6j", "1.900064545092889 - 0.571184652790256i");
+	testOperator1("cbrt", "-7-8j", "1.58887866287526 - 1.51988575944752i");
+}
+
+{
+	test_count = 0;
+	testOperator1("rsqrt", "2", 1.0 / Math.sqrt(2));
+	testOperator1("rsqrt", "-2", "-0.70711i");
+	testOperator1("rsqrt", "2i", "0.5 - 0.5i");
+}
+
+{
+	test_count = 0;
+	testOperator1("log", 3, Math.log(3));
+	testOperator1("log", "-3", "1.0986 + 3.1416i");
+	testOperator1("log", "3j", " 1.0986 + 1.5708i");
+	testOperator1("log", "2+3j", "1.28247 + 0.98279i");
+	testOperator1("log", "-3+2j", "1.2825 + 2.5536i");
+}
+
+{
+	test_count = 0;
+	testOperator1("exp", 3, Math.exp(3));
+	testOperator1("exp", "-3", "0.049787");
+	testOperator1("exp", "3j", " -0.98999 + 0.14112i");
+	testOperator1("exp", "2+3j", "-7.3151 + 1.0427i");
+}
+
+{
+	test_count = 0;
+	testOperator1("expm1", 3, Math.expm1(3));
+}
+
+{
+	test_count = 0;
+	testOperator1("log1p", 3, Math.log1p(3));
+}
+
+{
+	test_count = 0;
+	testOperator1("log2", 3, Math.log2(3));
+}
+
+{
+	test_count = 0;
+	testOperator1("log10", 3, Math.log10(3));
 }
 
 {
@@ -442,7 +492,6 @@ const testOperator1Bool  = function(operator, x, y) {
 	test_count = 0;
 	testOperator2("atan2", "1.72", "1.2", "0.96163");
 }
-
 
 {
 	test_count = 0;
@@ -501,13 +550,13 @@ const testOperator1Bool  = function(operator, x, y) {
 
 {
 	test_count = 0;
-//	testOperator1("acosh", -Infinity, NaN);
+	//	testOperator1("acosh", -Infinity, NaN);
 	testOperator1("acosh",   -5,  "2.2924 + 3.1416i");
 	testOperator1("acosh", -0.5,  "1.1102e-016 - 2.0944e+000i");
 	testOperator1("acosh",    0,  "1.57080i");
 	testOperator1("acosh",  0.5,  "1.1102e-016 - 1.0472e+000i");
 	testOperator1("acosh",    5,  2.29243166956118, 1);
-//	testOperator1("acosh", Infinity, NaN);
+	//	testOperator1("acosh", Infinity, NaN);
 }
 
 {
@@ -550,7 +599,7 @@ const testOperator1Bool  = function(operator, x, y) {
 	testOperator1("asec", -Infinity, 1.57079632679490);
 	testOperator1("asec",   -5,  1.77215424758523);
 	testOperator1("asec", -0.5,  "3.1416 - 1.3170i");
-//	testOperator1("asec",    0,  NaN);
+	//	testOperator1("asec",    0,  NaN);
 	testOperator1("asec",  0.5,  "1.31696i");
 	testOperator1("asec",    5,  1.36943840600457);
 	testOperator1("asec", Infinity, 1.57079632679490);
@@ -572,7 +621,7 @@ const testOperator1Bool  = function(operator, x, y) {
 	testOperator1("asech", -Infinity, "1.57080i");
 	testOperator1("asech",   -5,  "1.77215i");
 	testOperator1("asech", -0.5,  "1.3170 + 3.1416i");
-//	testOperator1("asech",    0,  NaN);
+	//	testOperator1("asech",    0,  NaN);
 	testOperator1("asech",  0.5,  1.31695789692482);
 	testOperator1("asech",    1,  0.0);
 	testOperator1("asech",    5,  "1.36944i");
@@ -667,11 +716,6 @@ const testOperator1Bool  = function(operator, x, y) {
 	testOperator1("acsch", Infinity, 0);
 }
 
-
-
-
-
-
 {
 	test_count = 0;
 	testOperator1("sinc", "1.72", "-0.14259");
@@ -693,11 +737,3 @@ const testOperator1Bool  = function(operator, x, y) {
 	testOperator3("clip", "2.0j", "1.5j", "2.5j", "2.0j");
 	testOperator3("clip", "3.0j", "1.5j", "2.5j", "2.5j");
 }
-
-{
-	test_count = 0;
-	testOperator1("rsqrt", "2", 1.0 / Math.sqrt(2));
-	testOperator1("rsqrt", "-2", "-0.70711i");
-	testOperator1("rsqrt", "2i", "0.5 - 0.5i");
-}
-

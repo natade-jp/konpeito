@@ -312,26 +312,6 @@ export default class Complex {
 	}
 	
 	/**
-	 * Create random values with uniform random numbers.
-	 * @param {Random} [random] - Class for creating random numbers.
-	 * @returns {Complex}
-	 */
-	static rand(random) {
-		const rand = (random !== undefined && random instanceof Random) ? random : random_class;
-		return new Complex(rand.nextDouble());
-	}
-
-	/**
-	 * Create random values with normal distribution.
-	 * @param {Random} [random] - Class for creating random numbers.
-	 * @returns {Complex}
-	 */
-	static randn(random) {
-		const rand = (random !== undefined && random instanceof Random) ? random : random_class;
-		return new Complex(rand.nextGaussian());
-	}
-
-	/**
 	 * The real part of this Comlex.
 	 * @returns {number} real(A)
 	 */
@@ -668,6 +648,28 @@ export default class Complex {
 	compareTo(number, tolerance) {
 		const A = this;
 		const B = Complex._toComplex(number);
+		if(!A.isFinite() || !B.isFinite()) {
+			if(A.equals(B)) {
+				return 0;
+			}
+			else if(
+				A.isNaN() || B.isNaN() ||
+				(A.real ===  Infinity && A.imag === -Infinity) ||
+				(A.real === -Infinity && A.imag ===  Infinity) ||
+				(B.real ===  Infinity && B.imag === -Infinity) ||
+				(B.real === -Infinity && B.imag ===  Infinity) ) {
+				return NaN;
+			}
+			else if(A.isFinite()) {
+				return B.real + B.imag < 0 ? 1 : -1;
+			}
+			else if(B.isFinite()) {
+				return A.real + A.imag > 0 ? 1 : -1;
+			}
+			else {
+				return NaN;
+			}
+		}
 		const tolerance_ = tolerance ? Complex._toDouble(tolerance) : Number.EPSILON;
 		const a = A.real + A.imag;
 		const b = B.real + B.imag;
@@ -871,6 +873,25 @@ export default class Complex {
 	}
 
 	/**
+	 * Cube root.
+	 * @param {KComplexInputData} [n=0] - Value type(0,1,2)
+	 * @returns {Complex} cbrt(A)
+	 */
+	cbrt(n) {
+		const type = Complex._toInteger(n !== undefined ? n : 0);
+		const x = this.log().div(3).exp();
+		if(type === 0) {
+			return x;
+		}
+		else if(type === 1) {
+			return x.mul([-0.5, Math.sqrt(3) * 0.5]);
+		}
+		else {
+			return x.mul([-0.5, - Math.sqrt(3) * 0.5]);
+		}
+	}
+
+	/**
 	 * Reciprocal square root.
 	 * @returns {Complex} rsqrt(A)
 	 */
@@ -909,6 +930,39 @@ export default class Complex {
 		// 複素指数関数
 		const r = Math.exp(this._re);
 		return new Complex([r * Math.cos(this._im), r * Math.sin(this._im)]);
+	}
+
+	/**
+	 * e^x - 1
+	 * @returns {Complex} expm1(A)
+	 */
+	expm1() {
+		return this.exp().sub(1);
+	}
+
+	/**
+	 * ln(1 + x)
+	 * @returns {Complex} log1p(A)
+	 */
+	log1p() {
+		return this.add(1).log();
+	}
+	
+	/**
+	 * log_2(x)
+	 * @returns {Complex} log2(A)
+	 */
+	log2() {
+		return this.log().div(Complex.LN2);
+		
+	}
+
+	/**
+	 * log_10(x)
+	 * @returns {Complex} log10(A)
+	 */
+	log10() {
+		return this.log().div(Complex.LN10);
 	}
 
 	// ----------------------
@@ -1238,6 +1292,29 @@ export default class Complex {
 		return new Complex( x.sin().div(x) );
 	}
 
+	// ----------------------
+	// 乱数
+	// ----------------------
+	
+	/**
+	 * Create random values with uniform random numbers.
+	 * @param {Random} [random] - Class for creating random numbers.
+	 * @returns {Complex}
+	 */
+	static rand(random) {
+		const rand = (random !== undefined && random instanceof Random) ? random : random_class;
+		return new Complex(rand.nextDouble());
+	}
+
+	/**
+	 * Create random values with normal distribution.
+	 * @param {Random} [random] - Class for creating random numbers.
+	 * @returns {Complex}
+	 */
+	static randn(random) {
+		const rand = (random !== undefined && random instanceof Random) ? random : random_class;
+		return new Complex(rand.nextGaussian());
+	}
 
 	// ----------------------
 	// テスト系

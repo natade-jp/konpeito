@@ -450,12 +450,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/bigdecimal.js~bigdecimal#_scale",
-    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-member-_scale",
-    "src/math/core/BigDecimal.js~BigDecimal#_scale",
-    "member"
-  ],
-  [
     "src/math/core/bigdecimal.js~bigdecimal#abs",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-abs",
     "src/math/core/BigDecimal.js~BigDecimal#abs",
@@ -558,6 +552,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/math/core/bigdecimal.js~bigdecimal#cbrt",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-cbrt",
+    "src/math/core/BigDecimal.js~BigDecimal#cbrt",
+    "method"
+  ],
+  [
     "src/math/core/bigdecimal.js~bigdecimal#ceil",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-ceil",
     "src/math/core/BigDecimal.js~BigDecimal#ceil",
@@ -612,12 +612,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/bigdecimal.js~bigdecimal#createusingthissettings",
-    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-createUsingThisSettings",
-    "src/math/core/BigDecimal.js~BigDecimal#createUsingThisSettings",
-    "method"
-  ],
-  [
     "src/math/core/bigdecimal.js~bigdecimal#csc",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-csc",
     "src/math/core/BigDecimal.js~BigDecimal#csc",
@@ -628,12 +622,6 @@ window.esdocSearchIndex = [
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-csch",
     "src/math/core/BigDecimal.js~BigDecimal#csch",
     "method"
-  ],
-  [
-    "src/math/core/bigdecimal.js~bigdecimal#default_context",
-    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-member-default_context",
-    "src/math/core/BigDecimal.js~BigDecimal#default_context",
-    "member"
   ],
   [
     "src/math/core/bigdecimal.js~bigdecimal#div",
@@ -681,6 +669,12 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal#exp",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-exp",
     "src/math/core/BigDecimal.js~BigDecimal#exp",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#expm1",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-expm1",
+    "src/math/core/BigDecimal.js~BigDecimal#expm1",
     "method"
   ],
   [
@@ -735,18 +729,6 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal#intvalueexact",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-get-intValueExact",
     "src/math/core/BigDecimal.js~BigDecimal#intValueExact",
-    "member"
-  ],
-  [
-    "src/math/core/bigdecimal.js~bigdecimal#int_string",
-    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-member-int_string",
-    "src/math/core/BigDecimal.js~BigDecimal#int_string",
-    "member"
-  ],
-  [
-    "src/math/core/bigdecimal.js~bigdecimal#integer",
-    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-member-integer",
-    "src/math/core/BigDecimal.js~BigDecimal#integer",
     "member"
   ],
   [
@@ -843,6 +825,24 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal#log",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-log",
     "src/math/core/BigDecimal.js~BigDecimal#log",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#log10",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-log10",
+    "src/math/core/BigDecimal.js~BigDecimal#log10",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#log1p",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-log1p",
+    "src/math/core/BigDecimal.js~BigDecimal#log1p",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#log2",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-log2",
+    "src/math/core/BigDecimal.js~BigDecimal#log2",
     "method"
   ],
   [
@@ -1284,6 +1284,30 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/bigdecimal.js~bigdecimal.popdefaultcontext",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#static-method-popDefaultContext",
+    "src/math/core/BigDecimal.js~BigDecimal.popDefaultContext",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal.pushdefaultcontext",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#static-method-pushDefaultContext",
+    "src/math/core/BigDecimal.js~BigDecimal.pushDefaultContext",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal.rand",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#static-method-rand",
+    "src/math/core/BigDecimal.js~BigDecimal.rand",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal.randn",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#static-method-randn",
+    "src/math/core/BigDecimal.js~BigDecimal.randn",
+    "method"
+  ],
+  [
     "src/math/core/bigdecimal.js~bigdecimal.setdefaultcontext",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#static-method-setDefaultContext",
     "src/math/core/BigDecimal.js~BigDecimal.setDefaultContext",
@@ -1468,6 +1492,12 @@ window.esdocSearchIndex = [
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-get-booleanValue",
     "src/math/core/BigInteger.js~BigInteger#booleanValue",
     "member"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#cbrt",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-cbrt",
+    "src/math/core/BigInteger.js~BigInteger#cbrt",
+    "method"
   ],
   [
     "src/math/core/biginteger.js~biginteger#clearbit",
@@ -1671,6 +1701,18 @@ window.esdocSearchIndex = [
     "src/math/core/biginteger.js~biginteger#lcm",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-lcm",
     "src/math/core/BigInteger.js~BigInteger#lcm",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#log10",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-log10",
+    "src/math/core/BigInteger.js~BigInteger#log10",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#log2",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-log2",
+    "src/math/core/BigInteger.js~BigInteger#log2",
     "method"
   ],
   [
@@ -2118,6 +2160,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/math/core/complex.js~complex#cbrt",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-cbrt",
+    "src/math/core/Complex.js~Complex#cbrt",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#ceil",
     "class/src/math/core/Complex.js~Complex.html#instance-method-ceil",
     "src/math/core/Complex.js~Complex#ceil",
@@ -2271,6 +2319,12 @@ window.esdocSearchIndex = [
     "src/math/core/complex.js~complex#exp",
     "class/src/math/core/Complex.js~Complex.html#instance-method-exp",
     "src/math/core/Complex.js~Complex#exp",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#expm1",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-expm1",
+    "src/math/core/Complex.js~Complex#expm1",
     "method"
   ],
   [
@@ -2493,6 +2547,24 @@ window.esdocSearchIndex = [
     "src/math/core/complex.js~complex#log",
     "class/src/math/core/Complex.js~Complex.html#instance-method-log",
     "src/math/core/Complex.js~Complex#log",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#log10",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-log10",
+    "src/math/core/Complex.js~Complex#log10",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#log1p",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-log1p",
+    "src/math/core/Complex.js~Complex#log1p",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#log2",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-log2",
+    "src/math/core/Complex.js~Complex#log2",
     "method"
   ],
   [
@@ -3636,6 +3708,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/math/core/matrix.js~matrix#cbrt",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-cbrt",
+    "src/math/core/Matrix.js~Matrix#cbrt",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#ceil",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-ceil",
     "src/math/core/Matrix.js~Matrix#ceil",
@@ -3945,6 +4023,12 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#exp",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-exp",
     "src/math/core/Matrix.js~Matrix#exp",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#expm1",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-expm1",
+    "src/math/core/Matrix.js~Matrix#expm1",
     "method"
   ],
   [
@@ -4308,6 +4392,24 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#log10",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-log10",
+    "src/math/core/Matrix.js~Matrix#log10",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#log1p",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-log1p",
+    "src/math/core/Matrix.js~Matrix#log1p",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#log2",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-log2",
+    "src/math/core/Matrix.js~Matrix#log2",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#lu",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-lu",
     "src/math/core/Matrix.js~Matrix#lu",
@@ -4582,6 +4684,12 @@ window.esdocSearchIndex = [
     "class/src/math/core/Matrix.js~Matrix.html#instance-member-row_length",
     "src/math/core/Matrix.js~Matrix#row_length",
     "member"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#rsqrt",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-rsqrt",
+    "src/math/core/Matrix.js~Matrix#rsqrt",
+    "method"
   ],
   [
     "src/math/core/matrix.js~matrix#scalar",
@@ -5148,6 +5256,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/context/mathcontext.js~mathcontext#decreaseprecision",
+    "class/src/math/core/context/MathContext.js~MathContext.html#instance-method-decreasePrecision",
+    "src/math/core/context/MathContext.js~MathContext#decreasePrecision",
+    "method"
+  ],
+  [
     "src/math/core/context/mathcontext.js~mathcontext#equals",
     "class/src/math/core/context/MathContext.js~MathContext.html#instance-method-equals",
     "src/math/core/context/MathContext.js~MathContext#equals",
@@ -5163,6 +5277,12 @@ window.esdocSearchIndex = [
     "src/math/core/context/mathcontext.js~mathcontext#getroundingmode",
     "class/src/math/core/context/MathContext.js~MathContext.html#instance-method-getRoundingMode",
     "src/math/core/context/MathContext.js~MathContext#getRoundingMode",
+    "method"
+  ],
+  [
+    "src/math/core/context/mathcontext.js~mathcontext#increaseprecision",
+    "class/src/math/core/context/MathContext.js~MathContext.html#instance-method-increasePrecision",
+    "src/math/core/context/MathContext.js~MathContext#increasePrecision",
     "method"
   ],
   [
@@ -5212,6 +5332,12 @@ window.esdocSearchIndex = [
     "class/src/math/core/context/MathContext.js~MathContext.html#static-get-UNLIMITED",
     "src/math/core/context/MathContext.js~MathContext.UNLIMITED",
     "member"
+  ],
+  [
+    "src/math/core/context/mathcontext.js~mathcontext.create",
+    "class/src/math/core/context/MathContext.js~MathContext.html#static-method-create",
+    "src/math/core/context/MathContext.js~MathContext.create",
+    "method"
   ],
   [
     "src/math/core/context/roundingmode.js",
@@ -5709,6 +5835,12 @@ window.esdocSearchIndex = [
     "src/math/core/tools/random.js~random#setseed",
     "class/src/math/core/tools/Random.js~Random.html#instance-method-setSeed",
     "src/math/core/tools/Random.js~Random#setSeed",
+    "method"
+  ],
+  [
+    "src/math/core/tools/random.js~random.create",
+    "class/src/math/core/tools/Random.js~Random.html#static-method-create",
+    "src/math/core/tools/Random.js~Random.create",
     "method"
   ],
   [

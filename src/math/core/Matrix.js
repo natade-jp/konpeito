@@ -1341,32 +1341,6 @@ export default class Matrix {
 	}
 
 	/**
-	 * Generate a matrix composed of random values with uniform random numbers.
-	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
-	 * @param {KMatrixInputData} [column_length] - Number of columns.
-	 * @param {Random} [random] - Class for creating random numbers.
-	 * @returns {Matrix}
-	 */
-	static rand(dimension, column_length, random) {
-		return Matrix.createMatrixDoEachCalculation(function() {
-			return Complex.rand(random);
-		}, dimension, column_length);
-	}
-
-	/**
-	 * Generate a matrix composed of random values with normal distribution.
-	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
-	 * @param {KMatrixInputData} [column_length] - Number of columns.
-	 * @param {Random} [random] - Class for creating random numbers.
-	 * @returns {Matrix}
-	 */
-	static randn(dimension, column_length, random) {
-		return Matrix.createMatrixDoEachCalculation(function() {
-			return Complex.randn(random);
-		}, dimension, column_length);
-	}
-
-	/**
 	 * If matrix, generate diagonal column vector.
 	 * If vector, generate a matrix with diagonal elements.
 	 * @returns {Matrix} Matrix or vector created. See how to use the function.
@@ -1395,8 +1369,6 @@ export default class Matrix {
 			return new Matrix(y);
 		}
 	}
-
-	// TODO 行列の結合がほしい
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	// 比較や判定
@@ -1798,6 +1770,7 @@ export default class Matrix {
 
 	/**
 	 * Multiply.
+	 * - Use `dotmul` if you want to use `mul` for each element.
 	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A * B
 	 */
@@ -1850,6 +1823,7 @@ export default class Matrix {
 
 	/**
 	 * Divide.
+	 * - Use `dotdiv` if you want to use `div` for each element.
 	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix} A / B
 	 */
@@ -1889,30 +1863,12 @@ export default class Matrix {
 	}
 
 	/**
-	 * Power function.
-	 * - Supports only integers.
-	 * @param {KMatrixInputData} number - 整数
-	 * @returns {Matrix} pow(A, B)
+	 * Inverse matrix of this matrix.
+	 * - Use `dotinv` if you want to use `inv` for each element.
+	 * @returns {Matrix} A^-1
 	 */
-	pow(number) {
-		if(!this.isSquare()) {
-			throw "not square " + this;
-		}
-		let n = Matrix._toInteger(number);
-		if(n < 0) {
-			throw "error negative number " + n;
-		}
-		let x, y;
-		x = this.clone();
-		y = Matrix.eye(this.length);
-		while(n !== 0) {
-			if((n & 1) !== 0) {
-				y = y.mul(x);
-			}
-			x = x.mul(x);
-			n >>>= 1;
-		}
-		return y;
+	inv() {
+		return LinearAlgebra.inv(this);
 	}
 
 	/**
@@ -1965,26 +1921,6 @@ export default class Matrix {
 		return Matrix.createMatrixDoEachCalculation(function(row, col) {
 			return x1[row][col].inv();
 		}, M1.row_length, M1.column_length);
-	}
-
-	/**
-	 * Power function for each element of the matrix.
-	 * @param {KMatrixInputData} number 
-	 * @returns {Matrix} A .^ B
-	 */
-	dotpow(number) {
-		const M1 = this;
-		const M2 = Matrix._toMatrix(number);
-		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
-			throw "Matrix size does not match";
-		}
-		const x1 = M1.matrix_array;
-		const x2 = M2.matrix_array;
-		const y_row_length = Math.max(M1.row_length, M2.row_length);
-		const y_column_length = Math.max(M1.column_length, M2.column_length);
-		return Matrix.createMatrixDoEachCalculation(function(row, col) {
-			return x1[row % M1.row_length][col % M1.column_length].pow(x2[row % M2.row_length][col % M2.column_length]);
-		}, y_row_length, y_column_length);
 	}
 
 	/**
@@ -2197,6 +2133,63 @@ export default class Matrix {
 		});
 	}
 
+	// ----------------------
+	// 指数
+	// ----------------------
+	
+	/**
+	 * Power function.
+	 * - Unless the matrix is a scalar value, only integers are supported.
+	 * - Use `dotpow` if you want to use `pow` for each element. A real number can be specified.
+	 * @param {KMatrixInputData} number - 整数
+	 * @returns {Matrix} pow(A, B)
+	 */
+	pow(number) {
+		if(this.isScalar()) {
+			return new Matrix(this.scalar.pow(Matrix._toDouble(number)));
+		}
+		else {
+			if(!this.isSquare()) {
+				throw "not square " + this;
+			}
+			let n = Matrix._toInteger(number);
+			if(n < 0) {
+				throw "error negative number " + n;
+			}
+			let x, y;
+			x = this.clone();
+			y = Matrix.eye(this.length);
+			while(n !== 0) {
+				if((n & 1) !== 0) {
+					y = y.mul(x);
+				}
+				x = x.mul(x);
+				n >>>= 1;
+			}
+			return y;
+		}
+	}
+
+	/**
+	 * Power function for each element of the matrix.
+	 * @param {KMatrixInputData} number 
+	 * @returns {Matrix} A .^ B
+	 */
+	dotpow(number) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
+		if(!M1.isScalar() && !M2.isScalar() && (M1.row_length !== M2.row_length) && (M1.column_length !== M2.column_length)) {
+			throw "Matrix size does not match";
+		}
+		const x1 = M1.matrix_array;
+		const x2 = M2.matrix_array;
+		const y_row_length = Math.max(M1.row_length, M2.row_length);
+		const y_column_length = Math.max(M1.column_length, M2.column_length);
+		return Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return x1[row % M1.row_length][col % M1.column_length].pow(x2[row % M2.row_length][col % M2.column_length]);
+		}, y_row_length, y_column_length);
+	}
+
 	/**
 	 * Square root.
 	 * @returns {Matrix} sqrt(A)
@@ -2204,6 +2197,26 @@ export default class Matrix {
 	sqrt() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.sqrt();
+		});
+	}
+
+	/**
+	 * Cube root.
+	 * @returns {Matrix} sqrt(A)
+	 */
+	cbrt() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.cbrt();
+		});
+	}
+
+	/**
+	 * Reciprocal square root.
+	 * @returns {Matrix} rsqrt(A)
+	 */
+	rsqrt() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.rsqrt();
 		});
 	}
 
@@ -2227,6 +2240,50 @@ export default class Matrix {
 		});
 	}
 
+	/**
+	 * e^x - 1
+	 * @returns {Matrix} expm1(A)
+	 */
+	expm1() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.expm1();
+		});
+	}
+
+	/**
+	 * ln(1 + x)
+	 * @returns {Matrix} log1p(A)
+	 */
+	log1p() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.log1p();
+		});
+	}
+	
+	/**
+	 * log_2(x)
+	 * @returns {Matrix} log2(A)
+	 */
+	log2() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.log2();
+		});
+	}
+
+	/**
+	 * log_10(x)
+	 * @returns {Matrix} log10(A)
+	 */
+	log10() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.log10();
+		});
+	}
+
+	// ----------------------
+	// 三角関数
+	// ----------------------
+	
 	/**
 	 * Sine function.
 	 * @returns {Matrix} sin(A)
@@ -2282,6 +2339,10 @@ export default class Matrix {
 		});
 	}
 
+	// ----------------------
+	// 双曲線関数
+	// ----------------------
+	
 	/**
 	 * Arc sine function.
 	 * @returns {Matrix} asin(A)
@@ -2482,6 +2543,10 @@ export default class Matrix {
 		});
 	}
 
+	// ----------------------
+	// 信号処理系
+	// ----------------------
+	
 	/**
 	 * Normalized sinc function.
 	 * @returns {Matrix} sinc(A)
@@ -2491,6 +2556,40 @@ export default class Matrix {
 			return num.sinc();
 		});
 	}
+	
+	// ----------------------
+	// 乱数
+	// ----------------------
+	
+	/**
+	 * Generate a matrix composed of random values with uniform random numbers.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length] - Number of columns.
+	 * @param {Random} [random] - Class for creating random numbers.
+	 * @returns {Matrix}
+	 */
+	static rand(dimension, column_length, random) {
+		return Matrix.createMatrixDoEachCalculation(function() {
+			return Complex.rand(random);
+		}, dimension, column_length);
+	}
+
+	/**
+	 * Generate a matrix composed of random values with normal distribution.
+	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
+	 * @param {KMatrixInputData} [column_length] - Number of columns.
+	 * @param {Random} [random] - Class for creating random numbers.
+	 * @returns {Matrix}
+	 */
+	static randn(dimension, column_length, random) {
+		return Matrix.createMatrixDoEachCalculation(function() {
+			return Complex.randn(random);
+		}, dimension, column_length);
+	}
+
+	// ----------------------
+	// テスト系
+	// ----------------------
 	
 	/**
 	 * Test if each element of the matrix is integer.
@@ -3339,14 +3438,6 @@ export default class Matrix {
 	 */
 	svd() {
 		return LinearAlgebra.svd(this);
-	}
-
-	/**
-	 * Inverse matrix of this matrix.
-	 * @returns {Matrix} A^-1
-	 */
-	inv() {
-		return LinearAlgebra.inv(this);
 	}
 
 	/**
