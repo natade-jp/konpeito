@@ -8,6 +8,7 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+import Polyfill from "../tools/Polyfill.js";
 import BigInteger from "./BigInteger.js";
 import BigDecimal from "./BigDecimal.js";
 import MathContext from "./context/MathContext.js";

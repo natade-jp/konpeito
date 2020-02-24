@@ -8,6 +8,7 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+import Polyfill from "../../tools/Polyfill.js";
 import MaximumLengthSequence from "./random/MaximumLengthSequence.js";
 import Xorshift from "./random/Xorshift.js";
 

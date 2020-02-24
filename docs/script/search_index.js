@@ -426,6 +426,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/konpeito.js~konpeito.probability",
+    "class/src/konpeito.js~konpeito.html#static-get-Probability",
+    "src/konpeito.js~konpeito.Probability",
+    "member"
+  ],
+  [
     "src/konpeito.js~konpeito.random",
     "class/src/konpeito.js~konpeito.html#static-get-Random",
     "src/konpeito.js~konpeito.Random",
@@ -2154,6 +2160,24 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#binocdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-binocdf",
+    "src/math/core/Complex.js~Complex#binocdf",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#binoinv",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-binoinv",
+    "src/math/core/Complex.js~Complex#binoinv",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#binopdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-binopdf",
+    "src/math/core/Complex.js~Complex#binopdf",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#booleanvalue",
     "class/src/math/core/Complex.js~Complex.html#instance-get-booleanValue",
     "src/math/core/Complex.js~Complex#booleanValue",
@@ -2661,6 +2685,24 @@ window.esdocSearchIndex = [
     "src/math/core/complex.js~complex#or",
     "class/src/math/core/Complex.js~Complex.html#instance-method-or",
     "src/math/core/Complex.js~Complex#or",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#poisscdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-poisscdf",
+    "src/math/core/Complex.js~Complex#poisscdf",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#poissinv",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-poissinv",
+    "src/math/core/Complex.js~Complex#poissinv",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#poisspdf",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-poisspdf",
+    "src/math/core/Complex.js~Complex#poisspdf",
     "method"
   ],
   [
@@ -3702,6 +3744,24 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#binocdf",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-binocdf",
+    "src/math/core/Matrix.js~Matrix#binocdf",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#binoinv",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-binoinv",
+    "src/math/core/Matrix.js~Matrix#binoinv",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#binopdf",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-binopdf",
+    "src/math/core/Matrix.js~Matrix#binopdf",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#booleanvalue",
     "class/src/math/core/Matrix.js~Matrix.html#instance-get-booleanValue",
     "src/math/core/Matrix.js~Matrix#booleanValue",
@@ -4593,6 +4653,24 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#pinv",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-pinv",
     "src/math/core/Matrix.js~Matrix#pinv",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#poisscdf",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-poisscdf",
+    "src/math/core/Matrix.js~Matrix#poisscdf",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#poissinv",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-poissinv",
+    "src/math/core/Matrix.js~Matrix#poissinv",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#poisspdf",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-poisspdf",
+    "src/math/core/Matrix.js~Matrix#poisspdf",
     "method"
   ],
   [
@@ -5550,6 +5628,24 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/tools/probability.js~probability.binocdf",
+    "class/src/math/core/tools/Probability.js~Probability.html#static-method-binocdf",
+    "src/math/core/tools/Probability.js~Probability.binocdf",
+    "method"
+  ],
+  [
+    "src/math/core/tools/probability.js~probability.binoinv",
+    "class/src/math/core/tools/Probability.js~Probability.html#static-method-binoinv",
+    "src/math/core/tools/Probability.js~Probability.binoinv",
+    "method"
+  ],
+  [
+    "src/math/core/tools/probability.js~probability.binopdf",
+    "class/src/math/core/tools/Probability.js~Probability.html#static-method-binopdf",
+    "src/math/core/tools/Probability.js~Probability.binopdf",
+    "method"
+  ],
+  [
     "src/math/core/tools/probability.js~probability.chi2cdf",
     "class/src/math/core/tools/Probability.js~Probability.html#static-method-chi2cdf",
     "src/math/core/tools/Probability.js~Probability.chi2cdf",
@@ -5652,12 +5748,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/tools/probability.js~probability.isinteger",
-    "class/src/math/core/tools/Probability.js~Probability.html#static-method-isInteger",
-    "src/math/core/tools/Probability.js~Probability.isInteger",
-    "method"
-  ],
-  [
     "src/math/core/tools/probability.js~probability.nchoosek",
     "class/src/math/core/tools/Probability.js~Probability.html#static-method-nchoosek",
     "src/math/core/tools/Probability.js~Probability.nchoosek",
@@ -5691,6 +5781,24 @@ window.esdocSearchIndex = [
     "src/math/core/tools/probability.js~probability.p_gamma",
     "class/src/math/core/tools/Probability.js~Probability.html#static-method-p_gamma",
     "src/math/core/tools/Probability.js~Probability.p_gamma",
+    "method"
+  ],
+  [
+    "src/math/core/tools/probability.js~probability.poisscdf",
+    "class/src/math/core/tools/Probability.js~Probability.html#static-method-poisscdf",
+    "src/math/core/tools/Probability.js~Probability.poisscdf",
+    "method"
+  ],
+  [
+    "src/math/core/tools/probability.js~probability.poissinv",
+    "class/src/math/core/tools/Probability.js~Probability.html#static-method-poissinv",
+    "src/math/core/tools/Probability.js~Probability.poissinv",
+    "method"
+  ],
+  [
+    "src/math/core/tools/probability.js~probability.poisspdf",
+    "class/src/math/core/tools/Probability.js~Probability.html#static-method-poisspdf",
+    "src/math/core/tools/Probability.js~Probability.poisspdf",
     "method"
   ],
   [
@@ -6130,5 +6238,11 @@ window.esdocSearchIndex = [
     "class/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.html#static-method-runMultipleRegressionAnalysis",
     "src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.runMultipleRegressionAnalysis",
     "method"
+  ],
+  [
+    "src/math/tools/polyfill.js",
+    "file/src/math/tools/Polyfill.js.html",
+    "src/math/tools/Polyfill.js",
+    "file"
   ]
 ]

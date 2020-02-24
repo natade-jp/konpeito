@@ -170,20 +170,25 @@ const testOperator3  = function(operator, x1, x2, x3, y, tolerance) {
 	test_count = 0;
 	testOperator2("nchoosek", 3, 2, 3);
 	testOperator2("nchoosek", 10, 4, 210);
+	testOperator2("nchoosek", 200, 3, 1313400);
 }
 
 {
 	test_count = 0;
+	testOperator1("erf",-Infinity, -1.0);
 	testOperator1("erf", 0.0, 0);
 	testOperator1("erf", 0.5, 0.52050);
 	testOperator1("erf", 1.0, 0.84270);
+	testOperator1("erf", Infinity, 1.0);
 }
 
 {
 	test_count = 0;
+	testOperator1("erfc",-Infinity, 2.0);
 	testOperator1("erfc", 0.0, 1);
 	testOperator1("erfc", 0.5, 0.47950);
 	testOperator1("erfc", 1.0, 0.15730);
+	testOperator1("erfc", Infinity, 0.0);
 }
 
 {
@@ -222,6 +227,51 @@ const testOperator3  = function(operator, x1, x2, x3, y, tolerance) {
 	testOperator3("norminv", 0.3, 0.2, 0.8, -0.21952);
 	testOperator3("norminv", 0.8,-0.5, 1.5, 0.76243);
 	testOperator3("norminv", 1.0, 0.0, 1.0, Number.POSITIVE_INFINITY);
+}
+
+{
+	test_count = 0;
+	testOperator3("binopdf",   3,   4, 0.6, 0.345600000000000);
+	testOperator3("binopdf",  30,  40, 0.6, 0.0196498565908407);
+	testOperator3("binopdf",  30,  40, 0.8, 0.107453737710899);
+	testOperator3("binopdf",  30,  40, 1.0, 0.0);
+}
+
+{
+	test_count = 0;
+	testOperator3("binocdf",   3,   4, 0.6, 0.870400000000000);
+	testOperator3("binocdf",  30,  40, 0.6, 0.984427376476672);
+	testOperator3("binocdf",  30,  40, 0.8, 0.268222885708516);
+}
+
+{
+	test_count = 0;
+	testOperator3("binoinv", 0.87,   4, 0.60,  3);
+	testOperator3("binoinv", 0.30,  40, 0.20,  7);
+	testOperator3("binoinv", 0.90, 100, 0.80, 85);
+}
+
+{
+	test_count = 0;
+	testOperator2("poisspdf",   2,  10, 0.00226999648812424);
+	testOperator2("poisspdf",   5,  10, 0.0378332748020708);
+	testOperator2("poisspdf",  15,  10, 0.0347180696306842);
+	testOperator2("poisspdf", 299, 300, 0.0230265461491858);
+}
+
+{
+	test_count = 0;
+	testOperator2("poisscdf",   2,  10, 0.00276939571551160);
+	testOperator2("poisscdf",   5,  10, 0.0670859628790318);
+	testOperator2("poisscdf",  15,  10, 0.951259596696021);
+	testOperator2("poisscdf", 299, 300, 0.492322211113656);
+}
+
+{
+	test_count = 0;
+	testOperator2("poissinv", 0.01,    30,    18);
+	testOperator2("poissinv", 0.43,   300,   297);
+	testOperator2("poissinv", 0.98, 12345, 12574);
 }
 
 {

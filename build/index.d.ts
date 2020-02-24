@@ -52,6 +52,11 @@ declare class konpeito {
      * @returns {typeof _DataAnalysis_}
      */
     static DataAnalysis: typeof _DataAnalysis_;
+    /**
+     * Return typedef _Probability_.
+     * @returns {typeof _Probability_}
+     */
+    static Probability: typeof _Probability_;
 }
 
 /**
@@ -2117,6 +2122,52 @@ declare class _Complex_ {
      * @returns {_Complex_}
      */
     norminv(u?: KComplexInputData, s?: KComplexInputData): _Complex_;
+    /**
+     * _Probability_ density function (PDF) of binomial distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} n
+     * @param {KComplexInputData} p
+     * @returns {_Complex_}
+     */
+    binopdf(n: KComplexInputData, p: KComplexInputData): _Complex_;
+    /**
+     * Cumulative distribution function (CDF) of binomial distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} n
+     * @param {KComplexInputData} p
+     * @param {string} [tail="lower"] - lower (default) , "upper"
+     * @returns {_Complex_}
+     */
+    binocdf(n: KComplexInputData, p: KComplexInputData, tail?: string): _Complex_;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of binomial distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} n
+     * @param {KComplexInputData} p
+     * @returns {_Complex_}
+     */
+    binoinv(n: KComplexInputData, p: KComplexInputData): _Complex_;
+    /**
+     * _Probability_ density function (PDF) of Poisson distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} lambda
+     * @returns {_Complex_}
+     */
+    poisspdf(lambda: KComplexInputData): _Complex_;
+    /**
+     * Cumulative distribution function (CDF) of Poisson distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} lambda
+     * @returns {_Complex_}
+     */
+    poisscdf(lambda: KComplexInputData): _Complex_;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of Poisson distribution.
+     * - Calculate from real values.
+     * @param {KComplexInputData} lambda
+     * @returns {_Complex_}
+     */
+    poissinv(lambda: KComplexInputData): _Complex_;
     /**
      * _Probability_ density function (PDF) of Student's t-distribution.
      * - Calculate from real values.
@@ -4423,6 +4474,52 @@ declare class _Matrix_ {
      */
     norminv(u?: KMatrixInputData, s?: KMatrixInputData): _Matrix_;
     /**
+     * _Probability_ density function (PDF) of binomial distribution.
+     * - Calculate from real values.
+     * @param {KMatrixInputData} n
+     * @param {KMatrixInputData} p
+     * @returns {_Matrix_}
+     */
+    binopdf(n: KMatrixInputData, p: KMatrixInputData): _Matrix_;
+    /**
+     * Cumulative distribution function (CDF) of binomial distribution.
+     * - Calculate from real values.
+     * @param {KMatrixInputData} n
+     * @param {KMatrixInputData} p
+     * @param {string} [tail="lower"] - lower (default) , "upper"
+     * @returns {_Matrix_}
+     */
+    binocdf(n: KMatrixInputData, p: KMatrixInputData, tail?: string): _Matrix_;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of binomial distribution.
+     * - Calculate from real values.
+     * @param {KMatrixInputData} n
+     * @param {KMatrixInputData} p
+     * @returns {_Matrix_}
+     */
+    binoinv(n: KMatrixInputData, p: KMatrixInputData): _Matrix_;
+    /**
+     * _Probability_ density function (PDF) of Poisson distribution.
+     * - Calculate from real values.
+     * @param {KMatrixInputData} lambda
+     * @returns {_Matrix_}
+     */
+    poisspdf(lambda: KMatrixInputData): _Matrix_;
+    /**
+     * Cumulative distribution function (CDF) of Poisson distribution.
+     * - Calculate from real values.
+     * @param {KMatrixInputData} lambda
+     * @returns {_Matrix_}
+     */
+    poisscdf(lambda: KMatrixInputData): _Matrix_;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of Poisson distribution.
+     * - Calculate from real values.
+     * @param {KMatrixInputData} lambda
+     * @returns {_Matrix_}
+     */
+    poissinv(lambda: KMatrixInputData): _Matrix_;
+    /**
      * _Probability_ density function (PDF) of Student's t-distribution.
      * - Calculate from real values.
      * @param {KMatrixInputData} v - The degrees of freedom. (DF)
@@ -5190,12 +5287,6 @@ declare class _Probability_ {
      */
     static betainc(x: number, a: number, b: number, tail?: string): number;
     /**
-     * Return true if the value is integer.
-     * @param {number} x
-     * @returns {boolean}
-     */
-    static isInteger(x: number): boolean;
-    /**
      * _Probability_ density function (PDF) of beta distribution.
      * @param {number} x
      * @param {number} a
@@ -5245,13 +5336,13 @@ declare class _Probability_ {
      */
     static erfc(x: number): number;
     /**
-     * Inverse function of Error function.
+     * Inverse function of error function.
      * @param {number} p
      * @returns {number}
      */
     static erfinv(p: number): number;
     /**
-     * Inverse function of Complementary error function.
+     * Inverse function of complementary error function.
      * @param {number} p
      * @returns {number}
      */
@@ -5280,6 +5371,52 @@ declare class _Probability_ {
      * @returns {number}
      */
     static norminv(p: number, u?: number, s?: number): number;
+    /**
+     * _Probability_ density function (PDF) of binomial distribution.
+     * @param {number} x
+     * @param {number} n
+     * @param {number} p
+     * @returns {number}
+     */
+    static binopdf(x: number, n: number, p: number): number;
+    /**
+     * Cumulative distribution function (CDF) of binomial distribution.
+     * @param {number} x
+     * @param {number} n
+     * @param {number} p
+     * @param {string} [tail="lower"] - lower (default) , "upper"
+     * @returns {number}
+     */
+    static binocdf(x: number, n: number, p: number, tail?: string): number;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of binomial distribution.
+     * @param {number} y
+     * @param {number} n
+     * @param {number} p
+     * @returns {number}
+     */
+    static binoinv(y: number, n: number, p: number): number;
+    /**
+     * _Probability_ density function (PDF) of Poisson distribution.
+     * @param {number} k
+     * @param {number} lambda
+     * @returns {number}
+     */
+    static poisspdf(k: number, lambda: number): number;
+    /**
+     * Cumulative distribution function (CDF) of Poisson distribution.
+     * @param {number} k
+     * @param {number} lambda
+     * @returns {number}
+     */
+    static poisscdf(k: number, lambda: number): number;
+    /**
+     * Inverse function of cumulative distribution function (CDF) of Poisson distribution.
+     * @param {number} p
+     * @param {number} lambda
+     * @returns {number}
+     */
+    static poissinv(p: number, lambda: number): number;
     /**
      * _Probability_ density function (PDF) of Student's t-distribution.
      * @param {number} t - T-value.

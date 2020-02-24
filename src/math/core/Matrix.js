@@ -8,6 +8,7 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+import Polyfill from "../tools/Polyfill.js";
 import LinearAlgebra from "./tools/LinearAlgebra.js";
 import Statistics from "./tools/Statistics.js";
 import Signal from "./tools/Signal.js";
@@ -3482,7 +3483,6 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	gammainc(a, tail) {
-		
 		const a_ = Matrix._toDouble(a);
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.gammainc(a_, tail);
@@ -3497,7 +3497,6 @@ export default class Matrix {
 	 * @returns {Matrix}
 	 */
 	gampdf(k, s) {
-		
 		const k_ = Matrix._toDouble(k);
 		const s_ = Matrix._toDouble(s);
 		return this.cloneMatrixDoEachCalculation(function(num) {
@@ -3719,6 +3718,91 @@ export default class Matrix {
 		const s_ = s !== undefined ? Matrix._toDouble(s) : 1.0;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.norminv(u_, s_);
+		});
+	}
+
+	/**
+	 * Probability density function (PDF) of binomial distribution.
+	 * - Calculate from real values.
+	 * @param {KMatrixInputData} n
+	 * @param {KMatrixInputData} p
+	 * @returns {Matrix}
+	 */
+	binopdf(n, p) {
+		const n_ = Matrix._toDouble(n);
+		const p_ = Matrix._toDouble(p);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.binopdf(n_, p_);
+		});
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of binomial distribution.
+	 * - Calculate from real values.
+	 * @param {KMatrixInputData} n
+	 * @param {KMatrixInputData} p
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
+	 * @returns {Matrix}
+	 */
+	binocdf(n, p, tail) {
+		const n_ = Matrix._toDouble(n);
+		const p_ = Matrix._toDouble(p);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.binocdf(n_, p_, tail);
+		});
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of binomial distribution.
+	 * - Calculate from real values.
+	 * @param {KMatrixInputData} n
+	 * @param {KMatrixInputData} p
+	 * @returns {Matrix}
+	 */
+	binoinv(n, p) {
+		const n_ = Matrix._toDouble(n);
+		const p_ = Matrix._toDouble(p);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.binoinv(n_, p_);
+		});
+	}
+
+	/**
+	 * Probability density function (PDF) of Poisson distribution.
+	 * - Calculate from real values.
+	 * @param {KMatrixInputData} lambda
+	 * @returns {Matrix}
+	 */
+	poisspdf(lambda) {
+		const lambda_ = Matrix._toDouble(lambda);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.poisspdf(lambda_);
+		});
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of Poisson distribution.
+	 * - Calculate from real values.
+	 * @param {KMatrixInputData} lambda
+	 * @returns {Matrix}
+	 */
+	poisscdf(lambda) {
+		const lambda_ = Matrix._toDouble(lambda);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.poisscdf(lambda_);
+		});
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of Poisson distribution.
+	 * - Calculate from real values.
+	 * @param {KMatrixInputData} lambda
+	 * @returns {Matrix}
+	 */
+	poissinv(lambda) {
+		const lambda_ = Matrix._toDouble(lambda);
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.poissinv(lambda_);
 		});
 	}
 

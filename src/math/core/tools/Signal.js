@@ -8,6 +8,7 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+import Polyfill from "../../tools/Polyfill.js";
 import Complex from "../Complex.js";
 import Matrix from "../Matrix.js";
 

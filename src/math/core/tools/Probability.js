@@ -8,6 +8,18 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+import Polyfill from "../../tools/Polyfill.js";
+
+/**
+ * Return true if the value is integer.
+ * @param {number} x
+ * @returns {boolean}
+ * @ignore
+ */
+const isInteger = function(x) {
+	return (x - Math.trunc(x) !== 0.0);
+};
+
 /**
  * Collection for calculating probability using real numbers.
  * - These methods can be used in the `Matrix`, `Complex` method chain.
@@ -21,6 +33,14 @@ export default class Probability {
 	 * @returns {number}
 	 */
 	static gammaln(x) {
+		if(!isFinite(x)) {
+			if(isNaN(x)) {
+				return NaN;
+			}
+			else {
+				return Infinity;
+			}
+		}
 		// 参考：奥村,"C言語による最新アルゴリズム事典",p30,技術評論社,1991
 		const LOG_2PI = Math.log(2.0 * Math.PI);
 		//ベルヌーイ数
@@ -71,6 +91,14 @@ export default class Probability {
 	 * @returns {number}
 	 */
 	static q_gamma(x, a, gammaln_a) {
+		if(!isFinite(x)) {
+			if(x === Infinity) {
+				return 0.0;
+			}
+			else {
+				return NaN;
+			}
+		}
 		// 参考：奥村,"C言語による最新アルゴリズム事典",p227,技術評論社,1991
 		let k;
 		let result, w, temp, previous;
@@ -104,6 +132,14 @@ export default class Probability {
 	 * @returns {number}
 	 */
 	static p_gamma(x, a, gammaln_a) {
+		if(!isFinite(x)) {
+			if(x === Infinity) {
+				return 1.0;
+			}
+			else {
+				return NaN;
+			}
+		}
 		// 参考：奥村,"C言語による最新アルゴリズム事典",p227,技術評論社,1991
 		let k;
 		let result, term, previous;
@@ -152,7 +188,7 @@ export default class Probability {
 		else if(tail === "upper") {
 			return Probability.q_gamma(x, a, Probability.gammaln(a));
 		}
-		else if((arguments.length === 3) || (tail === undefined)) {
+		else if(tail === undefined) {
 			// 引数を省略した場合
 			return Probability.gammainc(x, a, "lower");
 		}
@@ -169,6 +205,9 @@ export default class Probability {
 	 * @returns {number}
 	 */
 	static gampdf(x, k, s) {
+		if(x === -Infinity) {
+			return 0.0;
+		}
 		let y = 1.0 / (Probability.gamma(k) * Math.pow(s, k));
 		y *= Math.pow( x, k - 1);
 		y *= Math.exp( - x / s );
@@ -183,6 +222,9 @@ export default class Probability {
 	 * @returns {number}
 	 */
 	static gamcdf(x, k, s) {
+		if(x < 0) {
+			return 0.0;
+		}
 		return Probability.gammainc(x / s, k);
 	}
 	
@@ -314,22 +356,13 @@ export default class Probability {
 		else if(tail === "upper") {
 			return Probability.q_beta(x, a, b);
 		}
-		else if((arguments.length === 3) || (tail === undefined)) {
+		else if(tail === undefined) {
 			// 引数を省略した場合
 			return Probability.betainc(x, a, b, "lower");
 		}
 		else {
 			throw "betainc unsupported argument [" + tail + "]";
 		}
-	}
-	
-	/**
-	 * Return true if the value is integer.
-	 * @param {number} x
-	 * @returns {boolean}
-	 */
-	static isInteger(x) {
-		return (x - Math.trunc(x) !== 0.0);
 	}
 	
 	/**
@@ -342,8 +375,8 @@ export default class Probability {
 	static betapdf(x, a, b) {
 		// powの計算結果が複素数になる場合は計算を行わない
 		if	(
-			((x < 0) && (Probability.isInteger(b - 1))) ||
-			((1 - x < 0) && (Probability.isInteger(b - 1)))
+			((x < 0) && isInteger(b - 1)) ||
+			((1 - x < 0) && isInteger(b - 1))
 		) {
 			return 0.0;
 		}
@@ -437,7 +470,17 @@ export default class Probability {
 	 * @returns {number} nCk
 	 */
 	static nchoosek(n, k) {
-		return (Math.round(Probability.factorial(n) / (Probability.factorial(n - k) * Probability.factorial(k))));
+		// 少ない数字なら以下の計算でよい
+		// return Math.round(Probability.factorial(n) / (Probability.factorial(n - k) * Probability.factorial(k)));
+		let x = 1;
+		const new_k = Math.min(k, n - k);
+		for(let i = 1; i <= new_k; i++) {
+			x *= (n + 1 - i) / i;
+			if(x >= Number.MAX_SAFE_INTEGER) {
+				return Infinity;
+			}
+		}
+		return x;
 	}
 
 	/**
@@ -459,7 +502,7 @@ export default class Probability {
 	}
 
 	/**
-	 * Inverse function of Error function.
+	 * Inverse function of error function.
 	 * @param {number} p
 	 * @returns {number}
 	 */
@@ -468,7 +511,7 @@ export default class Probability {
 	}
 
 	/**
-	 * Inverse function of Complementary error function.
+	 * Inverse function of complementary error function.
 	 * @param {number} p
 	 * @returns {number}
 	 */
@@ -541,6 +584,164 @@ export default class Probability {
 			y = y2;
 		}
 		return y;
+	}
+
+	/**
+	 * Probability density function (PDF) of binomial distribution.
+	 * @param {number} x
+	 * @param {number} n
+	 * @param {number} p
+	 * @returns {number}
+	 */
+	static binopdf(x, n, p) {
+		if(!isFinite(p)) {
+			if(isNaN(p)) {
+				return NaN;
+			}
+			else {
+				return 0.0;
+			}
+		}
+		return Probability.nchoosek(n, x) * Math.pow(p, x) * Math.pow(1.0 - p, n - x);
+	}
+	
+	/**
+	 * Cumulative distribution function (CDF) of binomial distribution.
+	 * @param {number} x
+	 * @param {number} n
+	 * @param {number} p
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
+	 * @returns {number}
+	 */
+	static binocdf(x, n, p, tail) {
+		return Probability.betainc(1.0 - p, n - Math.floor(x), 1 + Math.floor(x), tail);
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of binomial distribution.
+	 * @param {number} y
+	 * @param {number} n
+	 * @param {number} p
+	 * @returns {number}
+	 */
+	static binoinv(y, n, p) {
+		if((y < 0.0) || (1.0 < y) || (p < 0.0) || (1.0 < p)) {
+			return Number.NaN;
+		}
+		else if((y == 0.0) || (p == 0.0)) {
+			return 0.0;
+		}
+		else if(p == 1.0) {
+			return n;
+		}
+		// 初期値を決める
+		let min = 1;
+		let max = n;
+		let middle = 0, old_middle = 0; 
+		// ニュートンラフソン法だと安定しないので
+		// 挟み込み法（二分法）で求める
+		for(let i = 0; i < 200; i++) {
+			middle = Math.round((min + max) / 2);
+			const Y = Probability.binocdf(middle, n, p);
+			if(middle === old_middle) {
+				break;
+			}
+			if(Y > y) {
+				max = middle;
+			}
+			else {
+				min = middle;
+			}
+			old_middle = middle;
+		}
+		return middle;
+	}
+
+	/**
+	 * Probability density function (PDF) of Poisson distribution.
+	 * @param {number} k
+	 * @param {number} lambda
+	 * @returns {number}
+	 */
+	static poisspdf(k, lambda) {
+		if(!isFinite(k)) {
+			if(isNaN(k)) {
+				return Number.NaN;
+			}
+			else {
+				return 0.0;
+			}
+		}
+		// k が大きいとInfになってしまうので以下の処理はだめ
+		// Math.pow(lambda, k) * Math.exp( - lambda ) / Probability.factorial(k);
+		// あふれないように調整しながら、地道に計算する。
+		const inv_e = 1.0 / Math.E;
+		let x = 1.0;
+		let lambda_i = 0;
+		for(let i = 1; i <= k; i++) {
+			x = x * lambda / i;
+			if(lambda_i < lambda) {
+				x *= inv_e;
+				lambda_i++;
+			}
+		}
+		for(; lambda_i < lambda; lambda_i++) {
+			x *= inv_e;
+		}
+		return x;
+	}
+	
+	/**
+	 * Cumulative distribution function (CDF) of Poisson distribution.
+	 * @param {number} k
+	 * @param {number} lambda
+	 * @returns {number}
+	 */
+	static poisscdf(k, lambda) {
+		if(k < 0) {
+			return 0;
+		}
+		return 1.0 - Probability.gammainc(lambda, Math.floor(k + 1));
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of Poisson distribution.
+	 * @param {number} p
+	 * @param {number} lambda
+	 * @returns {number}
+	 */
+	static poissinv(p, lambda) {
+		if((p < 0.0) || (1.0 < p)) {
+			return Number.NaN;
+		}
+		else if(p == 0.0) {
+			return 0.0;
+		}
+		else if(p == 1.0) {
+			return Number.POSITIVE_INFINITY;
+		}
+		// 初期値を決める
+		let min = 1;
+		let max = lambda * 20;
+		let middle = 0, old_middle = 0; 
+		// ニュートンラフソン法だと安定しないので
+		// 挟み込み法（二分法）で求める
+		for(let i = 0; i < 200; i++) {
+			middle = Math.round((min + max) / 2);
+			const P = Probability.poisscdf(middle, lambda);
+			if(middle === old_middle) {
+				break;
+			}
+			if(P > p) {
+				max = middle;
+			}
+			else {
+				min = middle;
+			}
+			old_middle = middle;
+			// console.log(i + " " + min + " " + P + " " + max);
+		}
+		return middle;
 	}
 
 	/**

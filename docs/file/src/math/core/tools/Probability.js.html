@@ -78,6 +78,18 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+import Polyfill from &quot;../../tools/Polyfill.js&quot;;
+
+/**
+ * Return true if the value is integer.
+ * @param {number} x
+ * @returns {boolean}
+ * @ignore
+ */
+const isInteger = function(x) {
+	return (x - Math.trunc(x) !== 0.0);
+};
+
 /**
  * Collection for calculating probability using real numbers.
  * - These methods can be used in the `Matrix`, `Complex` method chain.
@@ -91,6 +103,14 @@ export default class Probability {
 	 * @returns {number}
 	 */
 	static gammaln(x) {
+		if(!isFinite(x)) {
+			if(isNaN(x)) {
+				return NaN;
+			}
+			else {
+				return Infinity;
+			}
+		}
 		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;,&quot;C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;&quot;,p30,&#x6280;&#x8853;&#x8A55;&#x8AD6;&#x793E;,1991
 		const LOG_2PI = Math.log(2.0 * Math.PI);
 		//&#x30D9;&#x30EB;&#x30CC;&#x30FC;&#x30A4;&#x6570;
@@ -141,6 +161,14 @@ export default class Probability {
 	 * @returns {number}
 	 */
 	static q_gamma(x, a, gammaln_a) {
+		if(!isFinite(x)) {
+			if(x === Infinity) {
+				return 0.0;
+			}
+			else {
+				return NaN;
+			}
+		}
 		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;,&quot;C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;&quot;,p227,&#x6280;&#x8853;&#x8A55;&#x8AD6;&#x793E;,1991
 		let k;
 		let result, w, temp, previous;
@@ -174,6 +202,14 @@ export default class Probability {
 	 * @returns {number}
 	 */
 	static p_gamma(x, a, gammaln_a) {
+		if(!isFinite(x)) {
+			if(x === Infinity) {
+				return 1.0;
+			}
+			else {
+				return NaN;
+			}
+		}
 		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;,&quot;C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;&quot;,p227,&#x6280;&#x8853;&#x8A55;&#x8AD6;&#x793E;,1991
 		let k;
 		let result, term, previous;
@@ -222,7 +258,7 @@ export default class Probability {
 		else if(tail === &quot;upper&quot;) {
 			return Probability.q_gamma(x, a, Probability.gammaln(a));
 		}
-		else if((arguments.length === 3) || (tail === undefined)) {
+		else if(tail === undefined) {
 			// &#x5F15;&#x6570;&#x3092;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;
 			return Probability.gammainc(x, a, &quot;lower&quot;);
 		}
@@ -239,6 +275,9 @@ export default class Probability {
 	 * @returns {number}
 	 */
 	static gampdf(x, k, s) {
+		if(x === -Infinity) {
+			return 0.0;
+		}
 		let y = 1.0 / (Probability.gamma(k) * Math.pow(s, k));
 		y *= Math.pow( x, k - 1);
 		y *= Math.exp( - x / s );
@@ -253,6 +292,9 @@ export default class Probability {
 	 * @returns {number}
 	 */
 	static gamcdf(x, k, s) {
+		if(x &lt; 0) {
+			return 0.0;
+		}
 		return Probability.gammainc(x / s, k);
 	}
 	
@@ -384,22 +426,13 @@ export default class Probability {
 		else if(tail === &quot;upper&quot;) {
 			return Probability.q_beta(x, a, b);
 		}
-		else if((arguments.length === 3) || (tail === undefined)) {
+		else if(tail === undefined) {
 			// &#x5F15;&#x6570;&#x3092;&#x7701;&#x7565;&#x3057;&#x305F;&#x5834;&#x5408;
 			return Probability.betainc(x, a, b, &quot;lower&quot;);
 		}
 		else {
 			throw &quot;betainc unsupported argument [&quot; + tail + &quot;]&quot;;
 		}
-	}
-	
-	/**
-	 * Return true if the value is integer.
-	 * @param {number} x
-	 * @returns {boolean}
-	 */
-	static isInteger(x) {
-		return (x - Math.trunc(x) !== 0.0);
 	}
 	
 	/**
@@ -412,8 +445,8 @@ export default class Probability {
 	static betapdf(x, a, b) {
 		// pow&#x306E;&#x8A08;&#x7B97;&#x7D50;&#x679C;&#x304C;&#x8907;&#x7D20;&#x6570;&#x306B;&#x306A;&#x308B;&#x5834;&#x5408;&#x306F;&#x8A08;&#x7B97;&#x3092;&#x884C;&#x308F;&#x306A;&#x3044;
 		if	(
-			((x &lt; 0) &amp;&amp; (Probability.isInteger(b - 1))) ||
-			((1 - x &lt; 0) &amp;&amp; (Probability.isInteger(b - 1)))
+			((x &lt; 0) &amp;&amp; isInteger(b - 1)) ||
+			((1 - x &lt; 0) &amp;&amp; isInteger(b - 1))
 		) {
 			return 0.0;
 		}
@@ -507,7 +540,17 @@ export default class Probability {
 	 * @returns {number} nCk
 	 */
 	static nchoosek(n, k) {
-		return (Math.round(Probability.factorial(n) / (Probability.factorial(n - k) * Probability.factorial(k))));
+		// &#x5C11;&#x306A;&#x3044;&#x6570;&#x5B57;&#x306A;&#x3089;&#x4EE5;&#x4E0B;&#x306E;&#x8A08;&#x7B97;&#x3067;&#x3088;&#x3044;
+		// return Math.round(Probability.factorial(n) / (Probability.factorial(n - k) * Probability.factorial(k)));
+		let x = 1;
+		const new_k = Math.min(k, n - k);
+		for(let i = 1; i &lt;= new_k; i++) {
+			x *= (n + 1 - i) / i;
+			if(x &gt;= Number.MAX_SAFE_INTEGER) {
+				return Infinity;
+			}
+		}
+		return x;
 	}
 
 	/**
@@ -529,7 +572,7 @@ export default class Probability {
 	}
 
 	/**
-	 * Inverse function of Error function.
+	 * Inverse function of error function.
 	 * @param {number} p
 	 * @returns {number}
 	 */
@@ -538,7 +581,7 @@ export default class Probability {
 	}
 
 	/**
-	 * Inverse function of Complementary error function.
+	 * Inverse function of complementary error function.
 	 * @param {number} p
 	 * @returns {number}
 	 */
@@ -611,6 +654,164 @@ export default class Probability {
 			y = y2;
 		}
 		return y;
+	}
+
+	/**
+	 * Probability density function (PDF) of binomial distribution.
+	 * @param {number} x
+	 * @param {number} n
+	 * @param {number} p
+	 * @returns {number}
+	 */
+	static binopdf(x, n, p) {
+		if(!isFinite(p)) {
+			if(isNaN(p)) {
+				return NaN;
+			}
+			else {
+				return 0.0;
+			}
+		}
+		return Probability.nchoosek(n, x) * Math.pow(p, x) * Math.pow(1.0 - p, n - x);
+	}
+	
+	/**
+	 * Cumulative distribution function (CDF) of binomial distribution.
+	 * @param {number} x
+	 * @param {number} n
+	 * @param {number} p
+	 * @param {string} [tail=&quot;lower&quot;] - lower (default) , &quot;upper&quot;
+	 * @returns {number}
+	 */
+	static binocdf(x, n, p, tail) {
+		return Probability.betainc(1.0 - p, n - Math.floor(x), 1 + Math.floor(x), tail);
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of binomial distribution.
+	 * @param {number} y
+	 * @param {number} n
+	 * @param {number} p
+	 * @returns {number}
+	 */
+	static binoinv(y, n, p) {
+		if((y &lt; 0.0) || (1.0 &lt; y) || (p &lt; 0.0) || (1.0 &lt; p)) {
+			return Number.NaN;
+		}
+		else if((y == 0.0) || (p == 0.0)) {
+			return 0.0;
+		}
+		else if(p == 1.0) {
+			return n;
+		}
+		// &#x521D;&#x671F;&#x5024;&#x3092;&#x6C7A;&#x3081;&#x308B;
+		let min = 1;
+		let max = n;
+		let middle = 0, old_middle = 0; 
+		// &#x30CB;&#x30E5;&#x30FC;&#x30C8;&#x30F3;&#x30E9;&#x30D5;&#x30BD;&#x30F3;&#x6CD5;&#x3060;&#x3068;&#x5B89;&#x5B9A;&#x3057;&#x306A;&#x3044;&#x306E;&#x3067;
+		// &#x631F;&#x307F;&#x8FBC;&#x307F;&#x6CD5;&#xFF08;&#x4E8C;&#x5206;&#x6CD5;&#xFF09;&#x3067;&#x6C42;&#x3081;&#x308B;
+		for(let i = 0; i &lt; 200; i++) {
+			middle = Math.round((min + max) / 2);
+			const Y = Probability.binocdf(middle, n, p);
+			if(middle === old_middle) {
+				break;
+			}
+			if(Y &gt; y) {
+				max = middle;
+			}
+			else {
+				min = middle;
+			}
+			old_middle = middle;
+		}
+		return middle;
+	}
+
+	/**
+	 * Probability density function (PDF) of Poisson distribution.
+	 * @param {number} k
+	 * @param {number} lambda
+	 * @returns {number}
+	 */
+	static poisspdf(k, lambda) {
+		if(!isFinite(k)) {
+			if(isNaN(k)) {
+				return Number.NaN;
+			}
+			else {
+				return 0.0;
+			}
+		}
+		// k &#x304C;&#x5927;&#x304D;&#x3044;&#x3068;Inf&#x306B;&#x306A;&#x3063;&#x3066;&#x3057;&#x307E;&#x3046;&#x306E;&#x3067;&#x4EE5;&#x4E0B;&#x306E;&#x51E6;&#x7406;&#x306F;&#x3060;&#x3081;
+		// Math.pow(lambda, k) * Math.exp( - lambda ) / Probability.factorial(k);
+		// &#x3042;&#x3075;&#x308C;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x8ABF;&#x6574;&#x3057;&#x306A;&#x304C;&#x3089;&#x3001;&#x5730;&#x9053;&#x306B;&#x8A08;&#x7B97;&#x3059;&#x308B;&#x3002;
+		const inv_e = 1.0 / Math.E;
+		let x = 1.0;
+		let lambda_i = 0;
+		for(let i = 1; i &lt;= k; i++) {
+			x = x * lambda / i;
+			if(lambda_i &lt; lambda) {
+				x *= inv_e;
+				lambda_i++;
+			}
+		}
+		for(; lambda_i &lt; lambda; lambda_i++) {
+			x *= inv_e;
+		}
+		return x;
+	}
+	
+	/**
+	 * Cumulative distribution function (CDF) of Poisson distribution.
+	 * @param {number} k
+	 * @param {number} lambda
+	 * @returns {number}
+	 */
+	static poisscdf(k, lambda) {
+		if(k &lt; 0) {
+			return 0;
+		}
+		return 1.0 - Probability.gammainc(lambda, Math.floor(k + 1));
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of Poisson distribution.
+	 * @param {number} p
+	 * @param {number} lambda
+	 * @returns {number}
+	 */
+	static poissinv(p, lambda) {
+		if((p &lt; 0.0) || (1.0 &lt; p)) {
+			return Number.NaN;
+		}
+		else if(p == 0.0) {
+			return 0.0;
+		}
+		else if(p == 1.0) {
+			return Number.POSITIVE_INFINITY;
+		}
+		// &#x521D;&#x671F;&#x5024;&#x3092;&#x6C7A;&#x3081;&#x308B;
+		let min = 1;
+		let max = lambda * 20;
+		let middle = 0, old_middle = 0; 
+		// &#x30CB;&#x30E5;&#x30FC;&#x30C8;&#x30F3;&#x30E9;&#x30D5;&#x30BD;&#x30F3;&#x6CD5;&#x3060;&#x3068;&#x5B89;&#x5B9A;&#x3057;&#x306A;&#x3044;&#x306E;&#x3067;
+		// &#x631F;&#x307F;&#x8FBC;&#x307F;&#x6CD5;&#xFF08;&#x4E8C;&#x5206;&#x6CD5;&#xFF09;&#x3067;&#x6C42;&#x3081;&#x308B;
+		for(let i = 0; i &lt; 200; i++) {
+			middle = Math.round((min + max) / 2);
+			const P = Probability.poisscdf(middle, lambda);
+			if(middle === old_middle) {
+				break;
+			}
+			if(P &gt; p) {
+				max = middle;
+			}
+			else {
+				min = middle;
+			}
+			old_middle = middle;
+			// console.log(i + &quot; &quot; + min + &quot; &quot; + P + &quot; &quot; + max);
+		}
+		return middle;
 	}
 
 	/**

@@ -187,7 +187,8 @@ let dts_text = File.loadTextFile("./out/types.d.ts");
 		"RoundingModeEntity",
 		"Signal",
 		"SignalTool",
-		"Statistics"
+		"Statistics",
+		"Polyfill"
 	];
 	for(let i = 0; i < types.length; i++) {
 		const word = types[i];

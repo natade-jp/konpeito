@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl" href="../../../../../">
-  <title data-ice="title">src/math/core/tools/Random.js | konpeito</title>
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">src/math/tools/Polyfill.js | konpeito</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -67,8 +67,8 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/math/core/tools/Random.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
+<div class="content" data-ice="content"><h1 data-ice="title">src/math/tools/Polyfill.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">/**
  * The script is part of konpeito.
  * 
  * AUTHOR:
@@ -78,223 +78,75 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import Polyfill from &quot;../../tools/Polyfill.js&quot;;
-import MaximumLengthSequence from &quot;./random/MaximumLengthSequence.js&quot;;
-import Xorshift from &quot;./random/Xorshift.js&quot;;
-
 /**
- * Setting random numbers
- * @typedef {Object} KRandomSettings
- * @property {number} [seed] Seed number for random number generation. If not specified, create from time.
- * @property {string} [algorithm=&quot;FAST&quot;] Algorithm type : &quot;XORSHIFT&quot; / &quot;MLS&quot; / &quot;FAST&quot;
+ * Class for improving compatibility.
+ * @ignore
  */
-
-/**
- * Random number class.
- */
-export default class Random {
-	
-	/**
-	 * Create Random.
-	 * - algorithm : &quot;XORSHIFT&quot; / &quot;MLS&quot; / &quot;FAST&quot;
-	 * @param {number|KRandomSettings} [init_data] - Seed number for random number generation. If not specified, create from time.
-	 */
-	constructor(init_data) {
-		let seed_number = undefined;
-		let algorithm = &quot;fast&quot;;
-
-		/**
-		 * Random Number Generator.
-		 * @private
-		 * @type {Xorshift|MaximumLengthSequence}
-		 */
-		this.rand = null;
-		
-		/**
-		 * have `NextNextGaussian`
-		 * @private
-		 * @type {boolean}
-		 */
-		this.haveNextNextGaussian = false;
-
-		/**
-		 * Normally distributed random numbers.
-		 * @private
-		 * @type {number}
-		 */
-		this.nextNextGaussian = 0.0;
-
-		if(typeof init_data === &quot;number&quot;) {
-			seed_number = init_data;
-		}
-		else if(typeof init_data === &quot;object&quot;) {
-			if(init_data.seed !== undefined) {
-				seed_number = init_data.seed;
-			}
-			if(init_data.algorithm !== undefined) {
-				algorithm = init_data.algorithm;
-			}
-		}
-		if(/fast|xorshift/i.test(algorithm)) {
-			// XORSHIFT
-			this.rand = new Xorshift(seed_number);
-		}
-		else {
-			// MLS
-			this.rand = new MaximumLengthSequence(seed_number);
-		}
-	}
+export default class Polyfill {
 
 	/**
-	 * Create Random.
-	 * - algorithm : &quot;XORSHIFT&quot; / &quot;MLS&quot; / &quot;FAST&quot;
-	 * @param {number|KRandomSettings} [init_data] - Seed number for random number generation. If not specified, create from time.
+	 * Improved compatibility
+	 * @private
+	 * @ignore
 	 */
-	static create(init_data) {
-		return new Random(init_data);
-	}
-
-	/**
-	 * Initialize random seed.
-	 * @param {number} seed
-	 */
-	setSeed(seed) {
-		this.rand.setSeed(seed);
-	}
-
-	/**
-	 * 32-bit random number.
-	 * @returns {number} - 32-bit random number
-	 */
-	genrand_int32() {
-		return this.rand.genrand_int32();
-	}
-
-	/**
-	 * Random number of specified bit length.
-	 * @param {number} bits - Required number of bits (up to 64 possible).
-	 * @returns {number}
-	 */
-	next(bits) {
-		if(bits === 0) {
-			return 0;
+	static run() {
+		if(Math.imul === undefined) {
+			Math.imul = function(x1, x2) {
+				let y = ((x1 &amp; 0xFFFF) * (x2 &amp; 0xFFFF)) &gt;&gt;&gt; 0;
+				let b = (x1 &amp; 0xFFFF) * (x2 &gt;&gt;&gt; 16);
+				y = (y + ((b &amp; 0xFFFF) &lt;&lt; 16)) &gt;&gt;&gt; 0;
+				b = (x1 &gt;&gt;&gt; 16) * (x2 &amp; 0xFFFF);
+				y = (y + ((b &amp; 0xFFFF) &lt;&lt; 16));
+				return (y &amp; 0xFFFFFFFF);
+			};
 		}
-		else if(bits === 32) {
-			return this.genrand_int32();
+		if(Math.trunc === undefined) {
+			Math.trunc = function(x) {
+				return x &gt; 0 ? Math.floor(x) : Math.ceil(x);
+			};
 		}
-		else if(bits &lt; 32) {
-			// &#x7DDA;&#x5F62;&#x5408;&#x540C;&#x6CD5;&#x3067;&#x306F;&#x306A;&#x3044;&#x305F;&#x3081;
-
-			// &#x4E0A;&#x4F4D;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x3092;&#x4F7F;&#x7528;&#x3057;&#x306A;&#x304F;&#x3066;&#x3082;&#x3044;&#x3044;&#x304C;Java&#x3063;&#x307D;&#x304F;&#x3002;
-			return (this.genrand_int32() &gt;&gt;&gt; (32 - bits));
+		if(Number.isFinite === undefined) {
+			Number.isFinite = isFinite;
 		}
-		// double&#x578B;&#x306E;&#x305F;&#x3081;&#x3001;52&#x30D3;&#x30C3;&#x30C8;&#x307E;&#x3067;&#x306F;&#x3001;&#x6574;&#x6570;&#x3068;&#x3057;&#x3066;&#x51FA;&#x529B;&#x53EF;&#x80FD;
-		else if(bits === 63) {
-			// &#x6B63;&#x306E;&#x5024;&#x3092;&#x51FA;&#x529B;&#x3059;&#x308B;&#x3088;&#x3046;&#x306B;&#x8ABF;&#x7BC0;
-			return (this.genrand_int32() * 0x80000000 + this.genrand_int32());
+		if(Number.isInteger === undefined) {
+			Number.isInteger = function(x) {
+				return isFinite(x) &amp;&amp; ((x | 0) === x);
+			};
 		}
-		else if(bits === 64) {
-			return (this.genrand_int32() * 0x100000000 + this.genrand_int32());
+		if(Number.isNaN === undefined) {
+			Number.isNaN = isNaN;
 		}
-		else if(bits &lt; 63) {
-			return (this.genrand_int32() * (1 &lt;&lt; (bits - 32)) + (this.genrand_int32()  &gt;&gt;&gt; (64 - bits)));
+		if(Number.NaN === undefined) {
+			// @ts-ignore
+			// eslint-disable-next-line no-global-assign
+			Number.NaN = NaN;
 		}
-	}
-
-	/**
-	 * 8-bit random number array of specified length.
-	 * @param {number} size - &#x5FC5;&#x8981;&#x306A;&#x9577;&#x3055;
-	 * @returns {Array&lt;number&gt;}
-	 */
-	nextBytes(size) {
-		const y = new Array(size);
-		// &#x914D;&#x5217;y&#x306B;&#x4E71;&#x6570;&#x3092;&#x5165;&#x308C;&#x308B;
-		// 8&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x305F;&#x3081;&#x306B;&#x3001;32&#x30D3;&#x30C3;&#x30C8;&#x4E71;&#x6570;&#x3092;1&#x56DE;&#x56DE;&#x3059;&#x306E;&#x306F;&#x3082;&#x3063;&#x305F;&#x3044;&#x306A;&#x3044;
-		for(let i = 0;i &lt; y.length; i++) {
-			y[i] = this.next(8);
+		if(Number.EPSILON === undefined) {
+			// @ts-ignore
+			// eslint-disable-next-line no-global-assign
+			Number.EPSILON = 2.220446049250313e-16;
 		}
-		return y;
-	}
-
-	/**
-	 * 16-bit random number.
-	 * @returns {number}
-	 */
-	nextShort() {
-		return (this.next(16));
-	}
-
-	/**
-	 * 32-bit random number.
-	 * @param {number} [x] - &#x6307;&#x5B9A;&#x3057;&#x305F;&#x5024;&#x672A;&#x6E80;&#x306E;&#x6570;&#x5024;&#x3092;&#x4F5C;&#x308B;
-	 * @returns {number}
-	 */
-	nextInt(x) {
-		if((x !== undefined) &amp;&amp; (typeof x === &quot;number&quot;)) {
-			let r, y;
-			do {
-				r = this.genrand_int32() &gt;&gt;&gt; 0;
-				y = r % x;
-			} while((r - y + x) &gt; 0x100000000 );
-			return y;
+		if(Number.MIN_SAFE_INTEGER === undefined) {
+			// @ts-ignore
+			// eslint-disable-next-line no-global-assign
+			Number.MIN_SAFE_INTEGER = -9007199254740991;
 		}
-		return (this.next(32) &amp; 0xFFFFFFFF);
-	}
-
-	/**
-	 * 64-bit random number.
-	 * @returns {number}
-	 */
-	nextLong() {
-		return this.next(64);
-	}
-
-	/**
-	 * Random boolean.
-	 * @returns {boolean}
-	 */
-	nextBoolean() {
-		// 1&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x305F;&#x3081;&#x306B;&#x3001;32&#x30D3;&#x30C3;&#x30C8;&#x4E71;&#x6570;&#x3092;1&#x56DE;&#x56DE;&#x3059;&#x306E;&#x306F;&#x3082;&#x3063;&#x305F;&#x3044;&#x306A;&#x3044;
-		return (this.next(1) !== 0);
-	}
-
-	/**
-	 * Float type random number in the range of [0, 1).
-	 * @returns {number}
-	 */
-	nextFloat() {
-		return (this.next(24) / 0x1000000);
-	}
-
-	/**
-	 * Double type random number in the range of [0, 1).
-	 * @returns {number}
-	 */
-	nextDouble() {
-		const a1 = this.next(26) * 0x8000000 + this.next(27);
-		const a2 = 0x8000000 * 0x4000000;
-		return (a1 / a2);
-	}
-
-	/**
-	 * Random numbers from a Gaussian distribution.
-	 * This random number is a distribution with an average value of 0 and a standard deviation of 1.
-	 * @returns {number}
-	 */
-	nextGaussian() {
-		if(this.haveNextNextGaussian) {
-			this.haveNextNextGaussian = false;
-			return this.nextNextGaussian;
+		if(Number.MAX_SAFE_INTEGER === undefined) {
+			// @ts-ignore
+			// eslint-disable-next-line no-global-assign
+			Number.MAX_SAFE_INTEGER = 9007199254740991;
 		}
-		// Box-Muller&#x6CD5;
-		const a = Math.sqrt( -2 * Math.log( this.nextDouble() ) );
-		const b = 2 * Math.PI * this.nextDouble();
-		const y = a * Math.sin(b);
-		this.nextNextGaussian = a * Math.cos(b);
-		this.haveNextNextGaussian = true;
-		return y;
+		if(Number.parseFloat === undefined) {
+			Number.parseFloat = parseFloat;
+		}
+		if(Number.parseInt === undefined) {
+			Number.parseInt = parseInt;
+		}
 	}
 }
+
+Polyfill.run();
+
 </code></pre>
 
 </div>

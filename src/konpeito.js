@@ -11,6 +11,7 @@
 import Random from "./math/core/tools/Random.js";
 import RoundingMode from "./math/core/context/RoundingMode.js";
 import MathContext from "./math/core/context/MathContext.js";
+import Probability from "./math/core/tools/Probability.js";
 import BigDecimal from "./math/core/BigDecimal.js";
 import BigInteger from "./math/core/BigInteger.js";
 import Fraction from "./math/core/Fraction.js";
@@ -100,4 +101,12 @@ export default class konpeito {
 		return DataAnalysis;
 	}
 	
+	/**
+	 * Return typedef Probability.
+	 * @returns {typeof Probability}
+	 */
+	static get Probability() {
+		return Probability;
+	}
+
 }

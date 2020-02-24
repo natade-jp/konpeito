@@ -8,6 +8,7 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+import Polyfill from "../tools/Polyfill.js";
 import Random from "./tools/Random.js";
 import Matrix from "./Matrix.js";
 import BigInteger from "./BigInteger.js";
@@ -1680,6 +1681,79 @@ export default class Complex {
 		return new Complex(Probability.norminv(this._re, u_, s_));
 	}
 	
+	/**
+	 * Probability density function (PDF) of binomial distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} n
+	 * @param {KComplexInputData} p
+	 * @returns {Complex}
+	 */
+	binopdf(n, p) {
+		const n_ = Complex._toDouble(n);
+		const p_ = Complex._toDouble(p);
+		return new Complex(Probability.binopdf(this._re, n_, p_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of binomial distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} n
+	 * @param {KComplexInputData} p
+	 * @param {string} [tail="lower"] - lower (default) , "upper"
+	 * @returns {Complex}
+	 */
+	binocdf(n, p, tail) {
+		const n_ = Complex._toDouble(n);
+		const p_ = Complex._toDouble(p);
+		return new Complex(Probability.binocdf(this._re, n_, p_, tail));
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of binomial distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} n
+	 * @param {KComplexInputData} p
+	 * @returns {Complex}
+	 */
+	binoinv(n, p) {
+		const n_ = Complex._toDouble(n);
+		const p_ = Complex._toDouble(p);
+		return new Complex(Probability.binoinv(this._re, n_, p_));
+	}
+
+	/**
+	 * Probability density function (PDF) of Poisson distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} lambda
+	 * @returns {Complex}
+	 */
+	poisspdf(lambda) {
+		const lambda_ = Complex._toDouble(lambda);
+		return new Complex(Probability.poisspdf(this._re, lambda_));
+	}
+
+	/**
+	 * Cumulative distribution function (CDF) of Poisson distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} lambda
+	 * @returns {Complex}
+	 */
+	poisscdf(lambda) {
+		const lambda_ = Complex._toDouble(lambda);
+		return new Complex(Probability.poisscdf(this._re, lambda_));
+	}
+
+	/**
+	 * Inverse function of cumulative distribution function (CDF) of Poisson distribution.
+	 * - Calculate from real values.
+	 * @param {KComplexInputData} lambda
+	 * @returns {Complex}
+	 */
+	poissinv(lambda) {
+		const lambda_ = Complex._toDouble(lambda);
+		return new Complex(Probability.poissinv(this._re, lambda_));
+	}
+
 	/**
 	 * Probability density function (PDF) of Student's t-distribution.
 	 * - Calculate from real values.
