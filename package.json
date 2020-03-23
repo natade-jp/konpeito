@@ -72,7 +72,7 @@
 		"jest": "^24.9.0",
 		"jsdoc": "^3.6.3",
 		"jsdoc-export-default-interop": "^0.3.1",
-		"rollup": "^1.29.1",
+		"rollup": "^1.32.1",
 		"rollup-plugin-buble": "^0.19.8",
 		"rollup-plugin-uglify": "^6.0.4",
 		"rollup-plugin-uglify-es": "0.0.1",
