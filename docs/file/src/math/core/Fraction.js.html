@@ -283,9 +283,16 @@ class FractionTool {
 			}
 			return ret;
 		}
+		// 0.0
+		else if(value === 0.0) {
+			const ret = new Fraction();
+			ret.denominator = BigInteger.ONE;
+			ret.numerator = BigInteger.ZERO;
+			return ret;
+		}
 		// &#x6574;&#x6570;
-		else if(value === Math.floor(value)) {
-			numerator = new BigInteger(value);
+		else if( Math.abs(value - Math.round(value)) &lt;= Number.EPSILON) {
+			numerator = new BigInteger(Math.round(value));
 			denominator = BigInteger.ONE;
 		}
 		// &#x6D6E;&#x52D5;&#x5C0F;&#x6570;

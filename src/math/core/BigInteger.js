@@ -165,18 +165,19 @@ class BigIntegerTool {
 
 	/**
 	 * Return a hexadecimal array from the number.
-	 * @param {number} num - Target number.
+	 * @param {number|boolean} number - Target number.
 	 * @returns {{element : Array<number>, state : number}} Data for BigInteger.
 	 */
-	static toBigIntegerFromNumber(num) {
-		if(!isFinite(num)) {
-			if(num === Number.POSITIVE_INFINITY) {
+	static toBigIntegerFromNumber(number) {
+		const value = typeof number !== "boolean" ? number : (number ? 1 : 0);
+		if(!isFinite(value)) {
+			if(value === Number.POSITIVE_INFINITY) {
 				return {
 					state : BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY,
 					element : []
 				};
 			}
-			if(num === Number.NEGATIVE_INFINITY) {
+			if(value === Number.NEGATIVE_INFINITY) {
 				return {
 					state : BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY,
 					element : []
@@ -191,17 +192,19 @@ class BigIntegerTool {
 		}
 		let x;
 		let state;
-		if((num | 0) === 0) {
-			state = BIGINTEGER_NUMBER_STATE.ZERO;
-			x = 0;
+		if(Math.abs(value) < 1.0 - Number.EPSILON) {
+			return {
+				element : [],
+				state : BIGINTEGER_NUMBER_STATE.ZERO
+			};
 		}
-		else if(num > 0) {
+		else if(value > 0) {
 			state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
-			x = num;
+			x = value;
 		}
 		else {
 			state = BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
-			x = -num;
+			x = -value;
 		}
 		if(x > 0xFFFFFFFF) {
 			return {
@@ -209,26 +212,34 @@ class BigIntegerTool {
 				state : state
 			};
 		}
-		/**
-		 * @type {Array<number>}
-		 */
-		const y = [];
-		while(x !==  0) {
-			y[y.length] = x & 1;
-			x >>>= 1;
+		else {
+			if( Math.abs(value - Math.round(value)) <= Number.EPSILON) {
+				x = Math.round(x);
+			}
+			else {
+				x = Math.trunc(x);
+			}
+			/**
+			 * @type {Array<number>}
+			 */
+			const y = [];
+			while(x !==  0) {
+				y[y.length] = x & 1;
+				x >>>= 1;
+			}
+			/**
+			 * @type {Array<number>}
+			 */
+			const z = [];
+			for(let i = 0; i < y.length; i++) {
+				z[i >>> 4] |= y[i] << (i & 0xF);
+			}
+			
+			return {
+				element : z,
+				state : state
+			};
 		}
-		/**
-		 * @type {Array<number>}
-		 */
-		const z = [];
-		for(let i = 0; i < y.length; i++) {
-			z[i >>> 4] |= y[i] << (i & 0xF);
-		}
-		
-		return {
-			element : z,
-			state : state
-		};
 	}
 
 	/**
@@ -464,7 +475,7 @@ export default class BigInteger extends KonpeitoInteger {
 				}
 			}
 			else if(typeof number === "boolean") {
-				const x = BigIntegerTool.toBigIntegerFromNumber(number ? 1 : 0);
+				const x = BigIntegerTool.toBigIntegerFromNumber(number);
 				this.element = x.element;
 				this.state = x.state;
 			}

@@ -211,9 +211,16 @@ class FractionTool {
 			}
 			return ret;
 		}
+		// 0.0
+		else if(value === 0.0) {
+			const ret = new Fraction();
+			ret.denominator = BigInteger.ONE;
+			ret.numerator = BigInteger.ZERO;
+			return ret;
+		}
 		// 整数
-		else if(value === Math.floor(value)) {
-			numerator = new BigInteger(value);
+		else if( Math.abs(value - Math.round(value)) <= Number.EPSILON) {
+			numerator = new BigInteger(Math.round(value));
 			denominator = BigInteger.ONE;
 		}
 		// 浮動小数

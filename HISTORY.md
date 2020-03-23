@@ -1,5 +1,11 @@
 # History
 
+## v5.2.2
+### 改善
+- `BigInteger`, `BigDecimal`, `Fraction` で数値を引数としたときに計算誤差を除去する動作へ変更
+### 不具合
+- `v5.2.1` の2番目の不具合修正で入れた内容に問題があったのを修正
+
 ## v5.2.1
 ### 改善
 - `BigInteger`, `BigDecimal`, `Fraction`, `Complex`, `Matrix` 用の基底クラスを作りリファクタリング

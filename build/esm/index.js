@@ -1,5 +1,5 @@
 /*!
- * konpeito.js (version 5.2.1, 2020/3/23)
+ * konpeito.js (version 5.2.2, 2020/3/23)
  * https://github.com/natade-jp/konpeito
  * Copyright 2013-2020 natade < https://github.com/natade-jp >
  *
@@ -14006,9 +14006,16 @@ class FractionTool {
 			}
 			return ret;
 		}
+		// 0.0
+		else if(value === 0.0) {
+			const ret = new Fraction();
+			ret.denominator = BigInteger.ONE;
+			ret.numerator = BigInteger.ZERO;
+			return ret;
+		}
 		// 整数
-		else if(value === Math.floor(value)) {
-			numerator = new BigInteger(value);
+		else if( Math.abs(value - Math.round(value)) <= Number.EPSILON) {
+			numerator = new BigInteger(Math.round(value));
 			denominator = BigInteger.ONE;
 		}
 		// 浮動小数
@@ -15581,18 +15588,19 @@ class BigIntegerTool {
 
 	/**
 	 * Return a hexadecimal array from the number.
-	 * @param {number} num - Target number.
+	 * @param {number|boolean} number - Target number.
 	 * @returns {{element : Array<number>, state : number}} Data for BigInteger.
 	 */
-	static toBigIntegerFromNumber(num) {
-		if(!isFinite(num)) {
-			if(num === Number.POSITIVE_INFINITY) {
+	static toBigIntegerFromNumber(number) {
+		const value = typeof number !== "boolean" ? number : (number ? 1 : 0);
+		if(!isFinite(value)) {
+			if(value === Number.POSITIVE_INFINITY) {
 				return {
 					state : BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY,
 					element : []
 				};
 			}
-			if(num === Number.NEGATIVE_INFINITY) {
+			if(value === Number.NEGATIVE_INFINITY) {
 				return {
 					state : BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY,
 					element : []
@@ -15607,17 +15615,19 @@ class BigIntegerTool {
 		}
 		let x;
 		let state;
-		if((num | 0) === 0) {
-			state = BIGINTEGER_NUMBER_STATE.ZERO;
-			x = 0;
+		if(Math.abs(value) < 1.0 - Number.EPSILON) {
+			return {
+				element : [],
+				state : BIGINTEGER_NUMBER_STATE.ZERO
+			};
 		}
-		else if(num > 0) {
+		else if(value > 0) {
 			state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
-			x = num;
+			x = value;
 		}
 		else {
 			state = BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
-			x = -num;
+			x = -value;
 		}
 		if(x > 0xFFFFFFFF) {
 			return {
@@ -15625,26 +15635,34 @@ class BigIntegerTool {
 				state : state
 			};
 		}
-		/**
-		 * @type {Array<number>}
-		 */
-		const y = [];
-		while(x !==  0) {
-			y[y.length] = x & 1;
-			x >>>= 1;
+		else {
+			if( Math.abs(value - Math.round(value)) <= Number.EPSILON) {
+				x = Math.round(x);
+			}
+			else {
+				x = Math.trunc(x);
+			}
+			/**
+			 * @type {Array<number>}
+			 */
+			const y = [];
+			while(x !==  0) {
+				y[y.length] = x & 1;
+				x >>>= 1;
+			}
+			/**
+			 * @type {Array<number>}
+			 */
+			const z = [];
+			for(let i = 0; i < y.length; i++) {
+				z[i >>> 4] |= y[i] << (i & 0xF);
+			}
+			
+			return {
+				element : z,
+				state : state
+			};
 		}
-		/**
-		 * @type {Array<number>}
-		 */
-		const z = [];
-		for(let i = 0; i < y.length; i++) {
-			z[i >>> 4] |= y[i] << (i & 0xF);
-		}
-		
-		return {
-			element : z,
-			state : state
-		};
 	}
 
 	/**
@@ -15880,7 +15898,7 @@ class BigInteger extends KonpeitoInteger {
 				}
 			}
 			else if(typeof number === "boolean") {
-				const x = BigIntegerTool.toBigIntegerFromNumber(number ? 1 : 0);
+				const x = BigIntegerTool.toBigIntegerFromNumber(number);
 				this.element = x.element;
 				this.state = x.state;
 			}
@@ -18372,8 +18390,16 @@ class BigDecimalTool {
 				};
 			}
 		}
+		// 0.0
+		else if(value === 0) {
+			return {
+				scale : 0,
+				integer : BigInteger.ZERO
+			};
+		}
 		// 整数
-		if(value === Math.floor(value)) {
+		else if((Math.abs(value) >= 1.0 - Number.EPSILON) && ((Math.abs(value - Math.round(value)) <= Number.EPSILON))) {
+			// 1以上の場合は誤差が計算範囲外なら無視して整数扱いする
 			return {
 				scale : 0,
 				integer : new BigInteger(Math.round(value))

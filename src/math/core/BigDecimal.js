@@ -179,8 +179,16 @@ class BigDecimalTool {
 				};
 			}
 		}
+		// 0.0
+		else if(value === 0) {
+			return {
+				scale : 0,
+				integer : BigInteger.ZERO
+			};
+		}
 		// 整数
-		if(value === Math.floor(value)) {
+		else if((Math.abs(value) >= 1.0 - Number.EPSILON) && ((Math.abs(value - Math.round(value)) <= Number.EPSILON))) {
+			// 1以上の場合は誤差が計算範囲外なら無視して整数扱いする
 			return {
 				scale : 0,
 				integer : new BigInteger(Math.round(value))

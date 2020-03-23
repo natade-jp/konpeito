@@ -251,8 +251,16 @@ class BigDecimalTool {
 				};
 			}
 		}
+		// 0.0
+		else if(value === 0) {
+			return {
+				scale : 0,
+				integer : BigInteger.ZERO
+			};
+		}
 		// &#x6574;&#x6570;
-		if(value === Math.floor(value)) {
+		else if((Math.abs(value) &gt;= 1.0 - Number.EPSILON) &amp;&amp; ((Math.abs(value - Math.round(value)) &lt;= Number.EPSILON))) {
+			// 1&#x4EE5;&#x4E0A;&#x306E;&#x5834;&#x5408;&#x306F;&#x8AA4;&#x5DEE;&#x304C;&#x8A08;&#x7B97;&#x7BC4;&#x56F2;&#x5916;&#x306A;&#x3089;&#x7121;&#x8996;&#x3057;&#x3066;&#x6574;&#x6570;&#x6271;&#x3044;&#x3059;&#x308B;
 			return {
 				scale : 0,
 				integer : new BigInteger(Math.round(value))
