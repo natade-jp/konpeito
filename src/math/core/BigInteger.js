@@ -10,6 +10,11 @@
 
 import Polyfill from "../tools/Polyfill.js";
 import Random from "./tools/Random.js";
+import Fraction from "./Fraction.js";
+import BigDecimal from "./BigDecimal.js";
+import Complex from "./Complex.js";
+import Matrix from "./Matrix.js";
+import MathContext from "./context/MathContext.js";
 
 /**
  * BigInteger type argument.
@@ -1515,6 +1520,7 @@ export default class BigInteger {
 	 * 64-bit integer value.
 	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
 	 * @returns {number}
+	 * @deprecated
 	 */
 	get longValue() {
 		if(!this.isFinite()) {
@@ -1544,79 +1550,53 @@ export default class BigInteger {
 	}
 	
 	// ----------------------
-	// gcd, lcm
+	// konpeito で扱う数値型へ変換
 	// ----------------------
 	
 	/**
-	 * Euclidean algorithm.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} gcd(x, y)
+	 * return BigInteger.
+	 * @returns {BigInteger}
 	 */
-	gcd(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(!this.isFinite() || !val.isFinite()) {
-			return BigInteger.NaN;
-		}
-		/**
-		 * @type {any}
-		 */
-		let x = this, y = val, z;
-		let i = 10;
-		while(y.sign() !== 0 && i) {
-			z = x.rem(y);
-			x = y;
-			y = z;
-			i--;
-		}
-		return x;
+	toBigInteger() {
+		return this;
 	}
 
 	/**
-	 * Extended Euclidean algorithm.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
 	 */
-	extgcd(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(!this.isFinite() || !val.isFinite()) {
-			return [BigInteger.NaN, BigInteger.NaN, BigInteger.NaN];
+	toBigDecimal(mc) {
+		if(mc) {
+			return new BigDecimal([this, mc]);
 		}
-		// 非再帰
-		const ONE  = new BigInteger(1);
-		const ZERO = new BigInteger(0);
-		/**
-		 * @type {any}
-		 */
-		let r0 = this, r1 = val, r2, q1;
-		let a0 = ONE,  a1 = ZERO, a2;
-		let b0 = ZERO, b1 = ONE,  b2;
-		while(r1.sign() !== 0) {
-			const y = r0.divideAndRemainder(r1);
-			q1 = y[0];
-			r2 = y[1];
-			a2 = a0.subtract(q1.multiply(a1));
-			b2 = b0.subtract(q1.multiply(b1));
-			a0 = a1;
-			a1 = a2;
-			b0 = b1;
-			b1 = b2;
-			r0 = r1;
-			r1 = r2;
+		else {
+			return new BigDecimal(this);
 		}
-		return [a0, b0, r0];
 	}
-
+	
 	/**
-	 * Least common multiple.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} lcm(x, y)
+	 * return Fraction.
+	 * @returns {Fraction}
 	 */
-	lcm(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(!this.isFinite() || !val.isFinite()) {
-			return BigInteger.NaN;
-		}
-		return this.mul(val).div(this.gcd(val));
+	toFraction() {
+		return new Fraction(this);
+	}
+	
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return new Complex(this);
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return new Matrix(this);
 	}
 
 	// ----------------------
@@ -1798,6 +1778,82 @@ export default class BigInteger {
 			return min_;
 		}
 		return this;
+	}
+
+	// ----------------------
+	// gcd, lcm
+	// ----------------------
+	
+	/**
+	 * Euclidean algorithm.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {BigInteger} gcd(x, y)
+	 */
+	gcd(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(!this.isFinite() || !val.isFinite()) {
+			return BigInteger.NaN;
+		}
+		/**
+		 * @type {any}
+		 */
+		let x = this, y = val, z;
+		let i = 10;
+		while(y.sign() !== 0 && i) {
+			z = x.rem(y);
+			x = y;
+			y = z;
+			i--;
+		}
+		return x;
+	}
+
+	/**
+	 * Extended Euclidean algorithm.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 */
+	extgcd(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(!this.isFinite() || !val.isFinite()) {
+			return [BigInteger.NaN, BigInteger.NaN, BigInteger.NaN];
+		}
+		// 非再帰
+		const ONE  = new BigInteger(1);
+		const ZERO = new BigInteger(0);
+		/**
+		 * @type {any}
+		 */
+		let r0 = this, r1 = val, r2, q1;
+		let a0 = ONE,  a1 = ZERO, a2;
+		let b0 = ZERO, b1 = ONE,  b2;
+		while(r1.sign() !== 0) {
+			const y = r0.divideAndRemainder(r1);
+			q1 = y[0];
+			r2 = y[1];
+			a2 = a0.subtract(q1.multiply(a1));
+			b2 = b0.subtract(q1.multiply(b1));
+			a0 = a1;
+			a1 = a2;
+			b0 = b1;
+			b1 = b2;
+			r0 = r1;
+			r1 = r2;
+		}
+		return [a0, b0, r0];
+	}
+
+	/**
+	 * Least common multiple.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {BigInteger} lcm(x, y)
+	 */
+	lcm(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(!this.isFinite() || !val.isFinite()) {
+			return BigInteger.NaN;
+		}
+		return this.mul(val).div(this.gcd(val));
 	}
 
 	// ----------------------

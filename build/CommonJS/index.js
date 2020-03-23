@@ -1,5 +1,5 @@
 /*!
- * konpeito.js (version 5.1.0, 2020/2/24)
+ * konpeito.js (version 5.2.0, 2020/3/23)
  * https://github.com/natade-jp/konpeito
  * Copyright 2013-2020 natade < https://github.com/natade-jp >
  *
@@ -2130,7808 +2130,6 @@ class Probability {
 	}
 
 }
-
-/**
- * The script is part of konpeito.
- * 
- * AUTHOR:
- *  natade (http://twitter.com/natadea)
- * 
- * LICENSE:
- *  The MIT license https://opensource.org/licenses/MIT
- */
-
-/**
- * BigInteger type argument.
- * - BigInteger
- * - number
- * - string
- * - Array<string|number>
- * - {toBigInteger:function}
- * - {intValue:number}
- * - {toString:function}
- * 
- * Initialization can be performed as follows.
- * - 1200, "1200", "12e2", "1.2e3", ["1200", 10]
- * - "0xff", ["ff", 16]
- * - "0o01234567", ["01234567", 8]
- * - "0b0110101", ["0110101", 2]
- * @typedef {BigInteger|number|boolean|string|Array<string|number>|{toBigInteger:function}|{intValue:number}|{toString:function}} KBigIntegerInputData
- */
-
-/**
- * Random number class to be used when the random number class is not set.
- * @type {Random}
- * @ignore
- */
-let DEFAULT_RANDOM = new Random();
-
-/**
- * Collection of functions used in BigInteger.
- * @ignore
- */
-class BigIntegerTool {
-
-	/**
-	 * Return a hex array from a string containing numbers.
-	 * @param {string} text - String containing a number (remove the negative sign).
-	 * @param {number} radix - Base number.
-	 * @returns {Array<number>} Hex array.
-	 */
-	static toHexadecimalArrayFromPlainString(text, radix) {
-		// 下の変換をすることで、2進数での変換時に内部のforの繰り返す回数が減る
-		// v0.03 出来る限りまとめてn進数変換する
-		const max_num = 0x3FFFFFFF;
-		const keta = Math.floor( Math.log(max_num) / Math.log(radix) );
-
-		/**
-		 * @type {Array<number>}
-		 */
-		let x = [];
-		
-		/**
-		 * @type {Array<number>}
-		 */
-		const y = [];
-		const len = Math.ceil(text.length / keta);
-		let offset = text.length;
-		for(let i = 0; i < len; i++ ) {
-			offset -= keta;
-			if(offset >= 0) {
-				x[i] = parseInt(text.substring(offset, offset + keta), radix);
-			}
-			else {
-				x[i] = parseInt(text.substring(0, offset + keta), radix);
-			}
-		}
-		const calcradix = Math.round(Math.pow(radix, keta));
-		// v0.03ここまで
-		// 2で割っていくアルゴリズムで2進数に変換する
-		while(x.length !==  0) {
-			// 2で割っていく
-			// 隣の桁でたcarryはradix進数をかけて桁上げしてる
-			let carry = 0;
-			for(let i = x.length - 1; i >= 0; i--) {
-				const a = x[i] + carry * calcradix;
-				x[i]  = a >>> 1;
-				carry = a & 1;
-			}
-			// 1余るかどうかをテストする
-			y[y.length] = carry;
-			// xが0になっている部分は削除していく
-			if(x[x.length - 1] === 0) {
-				x.pop();
-			}
-		}
-		// メモリ節約のため1つの変数（16ビット）に収めるだけ収めていく
-		x = [];
-		for(let i = 0; i < y.length; i++) {
-			x[i >>> 4] |= y[i] << (i & 0xF);
-		}
-		return x;
-	}
-
-	/**
-	 * Remove exponent notation in strings representing unsigned numbers.
-	 * @param {string} ntext 
-	 * @returns {string}
-	 */
-	static toPlainStringFromString(ntext) {
-		let scale = 0;
-		let buff;
-		// 正規化
-		let text = ntext.replace(/\s/g, "").toLowerCase();
-
-		/**
-		 * @type {Array<string>}
-		 */
-		const number_text = [];
-		// 整数部を抽出
-		buff = text.match(/^[0-9]+/);
-		if(buff !== null) {
-			buff = buff[0];
-			text = text.substr(buff.length);
-			number_text.push(buff);
-		}
-		// 小数部があるか
-		buff = text.match(/^\.[0-9]+/);
-		if(buff !== null) {
-			buff = buff[0];
-			text = text.substr(buff.length);
-			buff = buff.substr(1);
-			scale = scale + buff.length;
-			number_text.push(buff);
-		}
-		// 指数表記があるか
-		buff = text.match(/^e[+-]?[0-9]+/);
-		if(buff !== null) {
-			buff = buff[0].substr(1);
-			scale -= parseInt(buff, 10);
-		}
-		// 出力用の文字を作成
-		let output_string;
-		if(scale === 0) {
-			output_string = number_text.join("");
-		}
-		if(scale < 0) {
-			for(let i = 0; i < -scale; i++) {
-				number_text.push("0");
-			}
-			output_string = number_text.join("");
-		}
-		else if(scale > 0) {
-			output_string = number_text.join("");
-			output_string = output_string.substring(0, output_string.length - scale);
-			output_string = output_string.length !== 0 ? output_string : "0";
-		}
-		return output_string;
-	}
-
-	/**
-	 * Return a hexadecimal array from the number.
-	 * @param {number} num - Target number.
-	 * @returns {{element : Array<number>, state : number}} Data for BigInteger.
-	 */
-	static toBigIntegerFromNumber(num) {
-		if(!isFinite(num)) {
-			if(num === Number.POSITIVE_INFINITY) {
-				return {
-					state : BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY,
-					element : []
-				};
-			}
-			if(num === Number.NEGATIVE_INFINITY) {
-				return {
-					state : BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY,
-					element : []
-				};
-			}
-			else {
-				return {
-					state : BIGINTEGER_NUMBER_STATE.NOT_A_NUMBER,
-					element : []
-				};
-			}
-		}
-		let x;
-		let state;
-		if(num === 0) {
-			state = BIGINTEGER_NUMBER_STATE.ZERO;
-			x = 0;
-		}
-		else if(num > 0) {
-			state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
-			x = num;
-		}
-		else {
-			state = BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
-			x = -num;
-		}
-		if(x > 0xFFFFFFFF) {
-			return {
-				element : BigIntegerTool.toHexadecimalArrayFromPlainString(BigIntegerTool.toPlainStringFromString(x.toFixed()), 10),
-				state : state
-			};
-		}
-		/**
-		 * @type {Array<number>}
-		 */
-		const y = [];
-		while(x !==  0) {
-			y[y.length] = x & 1;
-			x >>>= 1;
-		}
-		/**
-		 * @type {Array<number>}
-		 */
-		const z = [];
-		for(let i = 0; i < y.length; i++) {
-			z[i >>> 4] |= y[i] << (i & 0xF);
-		}
-		
-		return {
-			element : z,
-			state : state
-		};
-	}
-
-	/**
-	 * Return string of number from a hexadecimal array.
-	 * @param {Array<number>} binary - Hex array.
-	 * @param {number} radix - Base number.
-	 * @returns {Array<number>} Numeric array for each digit in the specified base number.
-	 */
-	static toPlainStringFromHexadecimalArray(binary, radix) {
-
-		/**
-		 * @param {Array<number>} x1 
-		 * @param {Array<number>} x2 
-		 * @param {Array<number>} y 
-		 */
-		const add = function(x1, x2, y) {
-			const size = x1.length;
-			let carry = 0;
-			for(let i = 0; i < size; i++) {
-				y[i] = x1[i] + ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
-				if(y[i] >= radix) {
-					carry = 1;
-					y[i] -= radix;
-				}
-				else {
-					carry = 0;
-				}
-			}
-			if(carry === 1) {
-				y[size] = 1;
-			}
-		};
-		const y = [0];
-		const t = [1];
-		for(let i = 0;i < binary.length;i++) {
-			for(let j = 0; j < 16; j++) {
-				if((binary[i] >>> j) & 1) {
-					add(t, y, y);
-				}
-				add(t, t, t);
-			}
-		}
-		return y;
-	}
-
-	/**
-	 * @param {number[]} element
-	 * @returns {boolean}
-	 * @ignore
-	 */
-	static isZeroElement(element) {
-		if(element.length === 0) {
-			return true;
-		}
-		if((element.length === 1 && element[0] === 0)) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Return data to represent multi-precision numbers from strings.
-	 * @param {string} text - String containing a number.
-	 * @param {number} [radix=10] - Base number.
-	 * @returns {{element : Array<number>, state : number}} Data for BigInteger.
-	 */
-	static toBigIntegerFromString(text, radix) {
-		let x = text.replace(/\s/g, "").toLowerCase();
-		// 特殊な状態
-		{
-			if(/nan/.test(text)) {
-				return {
-					state : BIGINTEGER_NUMBER_STATE.NOT_A_NUMBER,
-					element : []
-				};
-			}
-			else if(/inf/.test(text)) {
-				if(!/-/.test(text)) {
-					return {
-						state : BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY,
-						element : []
-					};
-				}
-				else {
-					return {
-						state : BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY,
-						element : []
-					};
-				}
-			}
-		}
-		const sign_text = x.match(/^[-+]+/);
-
-		/**
-		 * @type {Array<number>}
-		 */
-		let element     = [];
-		let state       = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
-
-		if(sign_text !== null) {
-			const hit_text = sign_text[0];
-			x = x.substring(hit_text.length, x.length);
-			if(hit_text.indexOf("-") !== -1) {
-				state = BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
-			}
-		}
-
-		if(radix) {
-			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x, radix);
-		}
-		else if(/^0x/.test(x)) {
-			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 16);
-		}
-		else if(/^0b/.test(x)) {
-			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 2);
-		}
-		else if(/^0o/.test(x)) {
-			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 8);
-		}
-		else {
-			x = BigIntegerTool.toPlainStringFromString(x);
-			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x, 10);
-		}
-		// "0"の場合がある為
-		if(BigIntegerTool.isZeroElement(element)) {
-			element = [];
-			state = BIGINTEGER_NUMBER_STATE.ZERO;
-		}
-
-		return {
-			element : element,
-			state : state
-		};
-	}
-}
-
-/**
- * Numeric state.
- * @type {{ZERO:number, POSITIVE_NUMBER:number, NEGATIVE_NUMBER:number, NOT_A_NUMBER:number, POSITIVE_INFINITY:number, NEGATIVE_INFINITY:number}}
- * @ignore
- */
-const BIGINTEGER_NUMBER_STATE = {
-	ZERO : 0,
-	POSITIVE_NUMBER : 1,
-	NEGATIVE_NUMBER : 2,
-	NOT_A_NUMBER : 3,
-	POSITIVE_INFINITY : 4,
-	NEGATIVE_INFINITY : 5
-};
-
-// 内部では1変数内の中の16ビットごとに管理
-// 2変数で16ビット*16ビットで32ビットを表す
-// this.element	...	16ビットごとに管理
-//
-// 本クラスはイミュータブルです。
-// 内部の「_」から始まるメソッドは内部計算用で非公開です。またミュータブルです。
-
-/**
- * Arbitrary-precision integer class (immutable).
- */
-class BigInteger {
-
-	/**
-	 * Create an arbitrary-precision integer.
-	 * 
-	 * Initialization can be performed as follows.
-	 * - 1200, "1200", "12e2", "1.2e3", ["1200", 10]
-	 * - "0xff", ["ff", 16]
-	 * - "0o01234567", ["01234567", 8]
-	 * - "0b0110101", ["0110101", 2]
-	 * @param {KBigIntegerInputData} [number] - Numeric data. See how to use the function.
-	 */
-	constructor(number) {
-		
-		/**
-		 * Numeric state.
-		 * @private
-		 * @type {number}
-		 */
-		this.state = BIGINTEGER_NUMBER_STATE.ZERO;
-
-		if(arguments.length === 0) {
-
-			/**
-			 * An integer consisting of 16 bits per element of the array.
-			 * @private
-			 * @type {Array<number>}
-			 */
-			this.element     = [];
-
-		}
-		else if(arguments.length === 1) {
-			if(number instanceof BigInteger) {
-				this.element = number.element.slice(0);
-				this.state = number.state;
-			}
-			else if(typeof number === "number") {
-				const x = BigIntegerTool.toBigIntegerFromNumber(number);
-				this.element = x.element;
-				this.state = x.state;
-			}
-			else if(typeof number === "string") {
-				const x = BigIntegerTool.toBigIntegerFromString(number);
-				this.element = x.element;
-				this.state = x.state;
-			}
-			else if(number instanceof Array) {
-				if((number.length === 2) && (typeof number[0] === "string" && (typeof number[1] === "number"))) {
-					const x = BigIntegerTool.toBigIntegerFromString(number[0], number[1]);
-					this.element = x.element;
-					this.state = x.state;
-				}
-				else {
-					throw "BigInteger Unsupported argument " + arguments;
-				}
-			}
-			else if(typeof number === "object") {
-				if("toBigInteger" in number) {
-					const x = number.toBigInteger();
-					this.element = x.element;
-					this.state = x.state;
-				}
-				else if("intValue" in number) {
-					const x = BigIntegerTool.toBigIntegerFromNumber(number.intValue);
-					this.element = x.element;
-					this.state = x.state;
-				}
-				else {
-					const x = BigIntegerTool.toBigIntegerFromString(number.toString());
-					this.element = x.element;
-					this.state = x.state;
-				}
-			}
-			else if(typeof number === "boolean") {
-				const x = BigIntegerTool.toBigIntegerFromNumber(number ? 1 : 0);
-				this.element = x.element;
-				this.state = x.state;
-			}
-			else {
-				throw "BigInteger Unsupported argument " + number;
-			}
-		}
-		else {
-			throw "BigInteger Unsupported argument " + number;
-		}
-	}
-
-	/**
-	 * Create an entity object of this class.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger}
-	 */
-	static create(number) {
-		if(number instanceof BigInteger) {
-			return number;
-		}
-		else {
-			return new BigInteger(number);
-		}
-	}
-
-	/**
-	 * Create an arbitrary-precision integer.
-	 * - Does not support strings using exponential notation.
-	 * - If you want to initialize with the specified base number, please set up with an array ["ff", 16].
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger}
-	 */
-	static valueOf(number) {
-		return BigInteger.create(number);
-	}
-
-	/**
-	 * Convert to BigInteger.
-	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger}
-	 * @private
-	 */
-	static _toBigInteger(number) {
-		if(number instanceof BigInteger) {
-			return number;
-		}
-		else {
-			return new BigInteger(number);
-		}
-	}
-
-	/**
-	 * Convert to real number.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {number}
-	 * @private
-	 */
-	static _toFloat(number) {
-		if(typeof number === "number") {
-			return number;
-		}
-		else if(number instanceof BigInteger) {
-			return number.doubleValue;
-		}
-		else {
-			return (new BigInteger(number)).doubleValue;
-		}
-	}
-
-	/**
-	 * Convert to integer.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {number}
-	 * @private
-	 */
-	static _toInteger(number) {
-		if(typeof number === "number") {
-			return Math.trunc(number);
-		}
-		else if(number instanceof BigInteger) {
-			return number.intValue;
-		}
-		else {
-			return (new BigInteger(number)).intValue;
-		}
-	}
-
-	/**
-	 * Random number of specified bit length.
-	 * @param {KBigIntegerInputData} bitsize - Bit length.
-	 * @param {Random} [random] - Class for creating random numbers.
-	 * @returns {BigInteger}
-	 */
-	static createRandomBigInteger(bitsize, random) {
-		const rand = (random !== undefined && random instanceof Random) ? random : DEFAULT_RANDOM;
-		const x = new BigInteger();
-		const bits = BigInteger._toInteger(bitsize);
-		const size = ((bits - 1) >> 4) + 1;
-		if(bits === 0) {
-			return BigInteger.ZERO;
-		}
-		let r;
-		for(let i = 0, j = 0; i < size; i++) {
-			if(j === 0) {
-				r = rand.nextInt(); // 32ビットずつ作成する
-				x.element[i] = r & 0xFFFF;
-				j = 1;
-			}
-			else {
-				x.element[i] = (r >>> 16) & 0xFFFF;
-				j = 0;
-			}
-		}
-		// 1～15ビット余る場合は、16ビットずつ作成しているので削る
-		if((bits % 16) !== 0) {
-			x.element[x.element.length - 1] &= (1 << (bits % 16)) - 1;
-		}
-		// 最後のビットに 0 をたくさん作成していると、
-		// 0のみのデータになる可能性があるためメモリを修正
-		x.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
-		x._memory_reduction();
-		return x;
-	}
-
-	/**
-	 * Convert to string.
-	 * @param {KBigIntegerInputData} [radix=10] - Base number.
-	 * @returns {string}
-	 */
-	toString(radix) {
-		if(!this.isFinite()) {
-			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
-		}
-		const radix_ = radix ? BigInteger._toInteger(radix) : 10;
-
-		// int型で扱える数値で toString が可能なので、
-		// せっかくだからより大きな進数で計算していけば、あとでtoStringする回数が減るテクニック
-		// 2進数であれば、2^n乗で計算しても問題がない 4進数や8進数で計算して、2進数に戻せば巡回少数なし
-		// v0.03 出来る限りまとめてn進数変換する
-		const max_num = 0x3FFFFFFF;
-		//                        max_num > radix^x
-		// floor(log max_num / log radix) = x
-		const keta = Math.floor( Math.log(max_num) / Math.log(radix_) );
-		const calcradix = Math.round(Math.pow(radix_, keta));
-		// zeros = "00000000...."
-		const zeros_array = [];
-		for(let i = 0; i < keta; i++) {
-			zeros_array[i] = "0";
-		}
-		const zeros_string = zeros_array.join("");
-		// v0.03ここまで
-		const x = BigIntegerTool.toPlainStringFromHexadecimalArray(this.element, calcradix);
-		const y = [];
-		let z = "";
-		if(this.sign() < 0) {
-			y[y.length] = "-";
-		}
-		for(let i = x.length - 1; i >= 0; i--) {
-			z = x[i].toString(radix_);
-			if(i < (x.length - 1)) {
-				y[y.length] = zeros_string.substring(0, keta - z.length);
-			}
-			y[y.length] = z;
-		}
-		return y.join("");
-	}
-
-	/**
-	 * Deep copy.
-	 * @returns {BigInteger}
-	 */
-	clone() {
-		return new BigInteger(this);
-	}
-
-	/**
-	 * Create a numerical value for addition. If negative, two's complement.
-	 * @param {number} [bit_length] - Bit length. If not set, it will be calculated automatically.
-	 * @returns {BigInteger}
-	 * @private
-	 */
-	getTwosComplement(bit_length) {
-		const y = this.clone();
-		if(!this.isFinite()) {
-			return y;
-		}
-		if(y.isNotNegative()) {
-			return y;
-		}
-		else {
-			// 正にする
-			y.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
-			// ビットの数が存在しない場合は数える
-			const len = (bit_length !== undefined) ? bit_length : y.bitLength();
-			const e = y.element;
-			// ビット反転後
-			for(let i = 0; i < e.length; i++) {
-				e[i] ^= 0xFFFF;
-			}
-			// 1～15ビット余る場合は、16ビットずつ作成しているので削る
-			// nビットのマスク（なお負の値を表す最上位ビットは削除する）
-			if((len % 16) !== 0) {
-				e[e.length - 1] &= (1 << (len % 16)) - 1;
-			}
-			// 1を加算
-			y._add(new BigInteger(1));
-			return y;
-		}
-	}
-
-	/**
-	 * Expand memory to specified bit length. (mutable)
-	 * @param {number} bit_length - Bit length.
-	 * @private
-	 */
-	_memory_allocation(bit_length) {
-		if(!this.isFinite()) {
-			return;
-		}
-		const n = BigInteger._toInteger(bit_length);
-		const elementsize = this.element.length << 4;
-		if(elementsize < n) {
-			const addsize = (((n - elementsize - 1) & 0xFFFFFFF0) >>> 4) + 1;
-			for(let i = 0;i < addsize;i++) {
-				this.element[this.element.length] = 0;
-			}
-		}
-	}
-
-	/**
-	 * Normalization of the internal data. (mutable)
-	 * @private
-	 */
-	_memory_reduction() {
-		if(!this.isFinite()) {
-			return;
-		}
-		for(let i = this.element.length - 1;i >= 0;i--) {
-			if(this.element[i] !==  0) {
-				// 最終行以外で見つかったら、上の領域を削除する
-				if(i < this.element.length - 1) {
-					this.element.splice(i + 1, this.element.length - i - 1);
-				}
-				return;
-			}
-		}
-		// 全て0だった場合
-		this.state = BIGINTEGER_NUMBER_STATE.ZERO;
-		this.element = [];
-	}
-
-	/**
-	 * Absolute value. (mutable)
-	 * @returns {BigInteger} A = abs(A)
-	 * @private
-	 */
-	_abs() {
-		// -1 -> 1, 0 -> 0, 1 -> 1
-		if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
-			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
-		}
-		else if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY) {
-			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
-		}
-		return this;
-	}
-
-	/**
-	 * Absolute value.
-	 * @returns {BigInteger} abs(A)
-	 */
-	abs() {
-		return this.clone()._abs();
-	}
-
-	/**
-	 * this *= -1
-	 * @returns {BigInteger} A = -A
-	 * @private
-	 */
-	_negate() {
-		if(this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER) {
-			this.state = BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
-		}
-		else if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
-			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
-		}
-		else if(this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY) {
-			this.state = BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY;
-		}
-		else if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY) {
-			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
-		}
-		return this;
-	}
-
-	/**
-	 * this * -1
-	 * @returns {BigInteger} -A
-	 */
-	negate() {
-		return this.clone()._negate();
-	}
-
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number}
-	 */
-	sign() {
-		if(this.isNaN()) {
-			return NaN;
-		}
-		else if(this.isZero()) {
-			return 0;
-		}
-		else if(this.isPositive()) {
-			return 1;
-		}
-		else {
-			return -1;
-		}
-	}
-
-	// ----------------------
-	// 四則演算
-	// ----------------------
-	
-	/**
-	 * Add. (mutable)
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A += B
-	 * @private
-	 */
-	_add(number) {
-		const val = BigInteger._toBigInteger(number);
-		const o1 = this;
-		const o2 = val;
-		if(!o1.isFinite() || !o2.isFinite()) {
-			let ret;
-			if(o1.isNaN() || o2.isNaN() || (o1.isInfinite() && o2.isInfinite() && !o1.equalsState(o2))) {
-				ret = BigInteger.NaN.clone();
-			}
-			else if(o1.isPositiveInfinity() || o2.isPositiveInfinity()) {
-				ret = BigInteger.POSITIVE_INFINITY.clone();
-			}
-			else {
-				ret = BigInteger.NEGATIVE_INFINITY.clone();
-			}
-			this.element = ret.element;
-			this.state = ret.state;
-			return this;
-		}
-		let x1 = o1.element;
-		let x2 = o2.element;
-		if(o1.sign() === o2.sign()) {
-			//足し算
-			this._memory_allocation(x2.length << 4);
-			let carry = 0;
-			for(let i = 0; i < x1.length; i++) {
-				x1[i] += ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
-				if(x1[i] > 0xFFFF) {
-					carry = 1;
-					x1[i] &= 0xFFFF;
-				}
-				else {
-					carry = 0;
-				}
-			}
-			if(carry !== 0) {
-				x1[x1.length] = carry;
-			}
-		}
-		else {
-			// 引き算
-			const compare = o1.compareToAbs(o2);
-			if(compare === 0) {
-				this.element = [];
-				this.state = BIGINTEGER_NUMBER_STATE.ZERO;
-				return this;
-			}
-			else if(compare === -1) {
-				this.state = o2.state;
-				const swap = x1;
-				x1 = x2.slice(0);
-				x2 = swap;
-			}
-			let carry = 0;
-			for(let i = 0; i < x1.length; i++) {
-				x1[i] -= ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
-				if(x1[i] < 0) {
-					x1[i] += 0x10000;
-					carry  = 1;
-				}
-				else {
-					carry  = 0;
-				}
-			}
-			this.element = x1;
-			this._memory_reduction();
-		}
-		return this;
-	}
-
-	/**
-	 * Add.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A + B
-	 */
-	add(number) {
-		return this.clone()._add(number);
-	}
-
-	/**
-	 * Subtract. (mutable)
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A -= B
-	 * @private
-	 */
-	_sub(number) {
-		// 一時的に記録しておいて引数の情報は書き換えないようにする
-		const val = BigInteger._toBigInteger(number);
-		const state = val.state;
-		const out  = this._add(val._negate());
-		val.state = state;
-		return out;
-	}
-
-	/**
-	 * Subtract.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A - B
-	 */
-	sub(number) {
-		return this.clone()._sub(number);
-	}
-
-	/**
-	 * Multiply. (mutable)
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A *= B
-	 * @private
-	 */
-	_mul(number) {
-		const x = this.mul(number);
-		this.element = x.element;
-		this.state   = x.state;
-		return this;
-	}
-
-	/**
-	 * Multiply.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A * B
-	 */
-	mul(number) {
-		const val = BigInteger._toBigInteger(number);
-		const o1 = this;
-		const o2 = val;
-		if(!o1.isFinite() || !o2.isFinite()) {
-			if(o1.isNaN() || o2.isNaN() || (o1.isZero() || o2.isZero())) {
-				return BigInteger.NaN.clone();
-			}
-			else if(o1.sign() * o2.sign() > 0) {
-				return BigInteger.POSITIVE_INFINITY.clone();
-			}
-			else {
-				return BigInteger.NEGATIVE_INFINITY.clone();
-			}
-		}
-		const x1 = o1.element;
-		const x2 = o2.element;
-		const out  = new BigInteger();
-		const buff = new BigInteger();
-		const y  = out.element;
-		for(let i = 0; i < x1.length; i++) {
-			buff.element = [];
-			// x3 = x1[i] * x2
-			const x3 = buff.element;
-			let carry = 0;
-			for(let j = 0; j < x2.length; j++) {
-				x3[j] = x1[i] * x2[j] + carry;
-				if(x3[j] > 0xFFFF) {
-					carry = x3[j] >>> 16;
-					x3[j] &= 0xFFFF;
-				}
-				else {
-					carry = 0;
-				}
-			}
-			if(carry !== 0) {
-				x3[x3.length] = carry;
-			}
-			// x3 = x3 << (i * 16)
-			//buff._shift(i << 4);
-			for(let j = x3.length - 1; j >= 0; j--) {
-				x3[j + i] = x3[j];
-			}
-			for(let j = i - 1; j >= 0; j--) {
-				x3[j] = 0;
-			}
-			// y = y + x3 (out._add(buff))
-			//out._add(buff);
-			carry = 0;
-			out._memory_allocation(x3.length << 4);
-			for(let j = i; j < y.length; j++) {
-				y[j] += ((x3.length >= (j + 1)) ? x3[j] : 0) + carry;
-				if(y[j] > 0xFFFF) {
-					carry = 1;
-					y[j] &= 0xFFFF;
-				}
-				else {
-					carry = 0;
-				}
-			}
-			if(carry !== 0) {
-				y[y.length] = carry;
-			}
-		}
-		const sign = this.sign() * val.sign();
-		out.state = sign === 0 ? BIGINTEGER_NUMBER_STATE.ZERO :	(sign === 1 ? BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER : BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER);
-		return out;
-	}
-
-	/**
-	 * Divide and rem. (mutable)
-	 * @param {KBigIntegerInputData} number
-	 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
-	 * @private
-	 */
-	_divideAndRemainder(number) {
-		const o1 = this;
-		const o2 = BigInteger._toBigInteger(number);
-		if(!o1.isFinite() || !o2.isFinite()) {
-			if(o1.isNaN() || o2.isNaN() || (o1.isInfinite() && o2.isInfinite())) {
-				return [BigInteger.NaN, BigInteger.NaN];
-			}
-			else if(o1.isInfinite()) {
-				if(o1.sign() * o2.sign() >= 0) {
-					return [BigInteger.POSITIVE_INFINITY, BigInteger.NaN];
-				}
-				else {
-					return [BigInteger.NEGATIVE_INFINITY, BigInteger.NaN];
-				}
-			}
-			else {
-				return [BigInteger.ZERO, BigInteger.NaN];
-			}
-		}
-		else if(o2.isZero()) {
-			if(o1.isZero()) {
-				return [BigInteger.NaN, BigInteger.NaN];
-			}
-			else {
-				return [o1.sign() >= 0 ? BigInteger.POSITIVE_INFINITY : BigInteger.NEGATIVE_INFINITY, BigInteger.NaN];
-			}
-		}
-		const out = [];
-		const compare = o1.compareToAbs(o2);
-		const sign = o1.sign() * o2.sign();
-		if(compare < 0) {
-			out[0] = new BigInteger(0);
-			out[1] = o1.clone();
-			return out;
-		}
-		else if(compare === 0) {
-			out[0] = new BigInteger(1);
-			out[0].state = sign === 1 ? BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER : BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
-			out[1] = new BigInteger(0);
-			return out;
-		}
-		const ONE = new BigInteger(1);
-		const size = o1.bitLength() - o2.bitLength();
-		const x1 = o1.clone()._abs();
-		const x2 = o2.shift(size)._abs();
-		const y  = new BigInteger();
-		for(let i = 0; i <= size; i++) {
-			if(x1.compareToAbs(x2) >= 0) {
-				x1._sub(x2);
-				y._add(ONE);
-			}
-			if(i === size) {
-				break;
-			}
-			x2._shift(-1);
-			y._shift(1);
-		}
-		out[0] = y;
-		out[0].state = sign === 1 ? BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER : BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
-		out[1] = x1;
-		out[1].state = x1.state !== BIGINTEGER_NUMBER_STATE.ZERO ? o1.state : x1.state;
-		return out;
-	}
-
-	/**
-	 * Divide and rem.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
-	 */
-	divideAndRemainder(number) {
-		return this.clone()._divideAndRemainder(number);
-	}
-
-	/**
-	 * Divide. (mutable)
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} fix(A / B)
-	 * @private
-	 */
-	_div(number) {
-		return this._divideAndRemainder(number)[0];
-	}
-
-	/**
-	 * Divide.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} fix(A / B)
-	 */
-	div(number) {
-		return this.clone()._div(number);
-	}
-
-	/**
-	 * Remainder of division. (mutable)
-	 * - Result has same sign as the Dividend.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A %= B
-	 * @private
-	 */
-	_rem(number) {
-		const y = this._divideAndRemainder(number)[1];
-		this.element = y.element;
-		this.state = y.state;
-		return this;
-	}
-
-	/**
-	 * Remainder of division.
-	 * - Result has same sign as the Dividend.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A % B
-	 */
-	rem(number) {
-		return this.clone()._rem(number);
-	}
-
-	/**
-	 * Modulo, positive rem of division. (mutable)
-	 * - Result has same sign as the Divisor.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A = A mod B
-	 * @private
-	 */
-	_mod(number) {
-		const o1 = this;
-		const o2 = BigInteger._toBigInteger(number);
-		if(o2.isZero()) {
-			return o1;
-		}
-		const y = o1._divideAndRemainder(o2)[1];
-		if(o1.state !== o2.state) {
-			y._add(o2);
-		}
-		this.element = y.element;
-		this.state = y.state;
-		return this;
-	}
-
-	/**
-	 * Modulo, positive rem of division.
-	 * - Result has same sign as the Divisor.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A mod B
-	 */
-	mod(number) {
-		return this.clone()._mod(number);
-	}
-
-	/**
-	 * Modular exponentiation.
-	 * @param {KBigIntegerInputData} exponent
-	 * @param {KBigIntegerInputData} m 
-	 * @returns {BigInteger} A^B mod m
-	 */
-	modPow(exponent, m) {
-		const m_ = BigInteger._toBigInteger(m);
-		let x = new BigInteger(this);
-		let y = new BigInteger(1);
-		const e = new BigInteger(exponent);
-		if(!x.isFinite() || !e.isFinite()) {
-			return BigInteger.NaN;
-		}
-		while(e.element.length !== 0) {
-			if((e.element[0] & 1) !== 0) {
-				y = y.multiply(x).mod(m_);
-			}
-			x = x.multiply(x).mod(m_);
-			e._shift(-1);
-		}
-		return y;
-	}
-
-	/**
-	 * Modular multiplicative inverse.
-	 * @param {KBigIntegerInputData} m
-	 * @returns {BigInteger} A^(-1) mod m
-	 */
-	modInverse(m) {
-		const m_ = BigInteger._toBigInteger(m);
-		if(!this.isFinite() || !m_.isFinite()) {
-			return BigInteger.NaN;
-		}
-		const y = this.extgcd(m);
-		const ONE  = new BigInteger(1);
-		if(y[2].compareTo(ONE) !== 0) {
-			return BigInteger.NaN;
-		}
-		// 正にするため rem ではなく mod を使用する
-		return y[0]._add(m_).rem(m_);
-	}
-
-	// ----------------------
-	// その他の演算
-	// ----------------------
-	
-	/**
-	 * Factorial function, x!.
-	 * @returns {BigInteger} n!
-	 */
-	factorial() {
-		{
-			if(!this.isFinite()) {
-				return this;
-			}
-			else if(this.isNegative()) {
-				return BigInteger.NaN;
-			}
-		}
-		const loop_max = BigInteger._toInteger(this);
-		let x = BigInteger.ONE;
-		for(let i = 2; i <= loop_max; i++) {
-			x = x.multiply(i);
-		}
-		return x;
-	}
-
-	/**
-	 * Multiply a multiple of ten.
-	 * @param {KBigIntegerInputData} n
-	 * @returns {BigInteger} x * 10^n
-	 */
-	scaleByPowerOfTen(n) {
-		const x = BigInteger._toInteger(n);
-		if(x === 0) {
-			return this;
-		}
-		if(x > 0) {
-			return this.mul(BigInteger.TEN.pow(x));
-		}
-		else {
-			return this.div(BigInteger.TEN.pow(x));
-		}
-	}
-
-	// ----------------------
-	// 指数
-	// ----------------------
-	
-	/**
-	 * Power function.
-	 * @param {KBigIntegerInputData} exponent
-	 * @returns {BigInteger} pow(A, B)
-	 */
-	pow(exponent) {
-		const e = new BigInteger(exponent);
-		{
-			if(this.isNaN() || e.isNaN()) {
-				return BigInteger.NaN;
-			}
-			if(e.isZero()) {
-				return BigInteger.ONE;
-			}
-			else if(this.isZero()) {
-				if(e.isNegativeInfinity()) {
-					return BigInteger.POSITIVE_INFINITY;
-				}
-				else {
-					return BigInteger.ZERO;
-				}
-			}
-			else if(this.isOne()) {
-				return this;
-			}
-			else if(this.isInfinite()) {
-				if(this.isPositiveInfinity()) {
-					return BigInteger.POSITIVE_INFINITY;
-				}
-				else {
-					if(e.isPositiveInfinity()) {
-						return BigInteger.NaN;
-					}
-					else {
-						return BigInteger.create(Infinity * Math.pow(-1, Math.round(e.doubleValue)));
-					}
-				}
-			}
-			else if(e.isInfinite()) {
-				if(this.isNegative()) {
-					// 複素数
-					return BigInteger.NaN;
-				}
-				if(this.compareTo(BigInteger.ONE) < 0) {
-					if(e.isPositiveInfinity()) {
-						return BigInteger.ZERO;
-					}
-					else if(e.isNegativeInfinity()) {
-						return BigInteger.POSITIVE_INFINITY;
-					}
-				}
-				else {
-					if(e.isPositiveInfinity()) {
-						return BigInteger.POSITIVE_INFINITY;
-					}
-					else if(e.isNegativeInfinity()) {
-						return BigInteger.ZERO;
-					}
-				}
-			}
-		}
-		let x = BigInteger._toBigInteger(this);
-		let y = BigInteger._toBigInteger(1);
-		while(e.element.length !== 0) {
-			if((e.element[0] & 1) !== 0) {
-				y = y.multiply(x);
-			}
-			x = x.multiply(x);
-			e._shift(-1);
-		}
-		return y;
-	}
-
-	/**
-	 * Square.
-	 * @returns {BigInteger} A^2
-	 */
-	square() {
-		return this.mul(this);
-	}
-
-	/**
-	 * Square root.
-	 * @returns {BigInteger} floor(sqrt(A))
-	 */
-	sqrt() {
-		{
-			if(this.isZero()) {
-				return BigInteger.ZERO;
-			}
-			else if(this.isNaN()) {
-				return BigInteger.NaN;
-			}
-			else if(this.isNegative()) {
-				return BigInteger.NaN; // 複素数
-			}
-			else if(this.isInfinite()) {
-				return BigInteger.POSITIVE_INFINITY;
-			}
-		}
-		// ニュートン法によって求める
-		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
-		// A^0.5  = x
-		//     A  = x^2
-		//     0  = x^2 - A
-		//   f(x) = x^2 - A
-		//   f'(x) = 2x
-		// x_(n+1) = x_n - f(x_n)/f'(x_n)
-		//         = x_n - (x_n^2 - A)/2x_n
-		//         = (2*x_n^2 - x_n^2 + A)/2x_n
-		//         = (x_n^2 + A)/2x_n
-		//         = (x_n + (A/x_n)) / 2
-		let s = BigInteger.ONE;
-		/**
-		 * @type {BigInteger}
-		 */
-		let t = this;
-		while(s.compareToAbs(t) === -1) {
-			s = s.shiftLeft(1);
-			t = t.shiftRight(1);
-		}
-		const x0 = t;
-		let xn = x0;
-		for(let i = 0; i < 300; i++) {
-			const xn1 = xn.add(this.div(xn)).shiftRight(1);
-			const delta = xn1.sub(xn);
-			if(delta.isZero()) {
-				break;
-			}
-			xn = xn1;
-		}
-		return xn;
-	}
-	
-	/**
-	 * Cube root.
-	 * @returns {BigInteger} floor(cbrt(A))
-	 */
-	cbrt() {
-		{
-			if(this.isZero()) {
-				return BigInteger.ZERO;
-			}
-			else if(this.isNaN()) {
-				return BigInteger.NaN;
-			}
-			else if(this.isInfinite()) {
-				return this;
-			}
-		}
-		// ニュートン法によって求める
-		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
-		let s = BigInteger.ONE;
-		/**
-		 * @type {BigInteger}
-		 */
-		let t = this;
-		while(s.compareToAbs(t) === -1) {
-			s = s.shiftLeft(1);
-			t = t.shiftRight(2);
-		}
-		const x0 = t;
-		let xn = x0;
-		for(let i = 0; i < 300; i++) {
-			const xn_2 = xn.mul(xn);
-			const xn1 = xn.shiftLeft(1).add(this.div(xn_2)).div(3);
-			const delta = xn1.sub(xn);
-			if(delta.isZero()) {
-				break;
-			}
-			xn = xn1;
-		}
-		return xn;
-	}
-
-	/**
-	 * log_2(x)
-	 * @returns {BigInteger} log2(A)
-	 */
-	log2() {
-		{
-			if(this.isZero()) {
-				return BigInteger.ZERO;
-			}
-			else if(this.isNaN()) {
-				return BigInteger.NaN;
-			}
-			else if(this.isNegative()) {
-				return BigInteger.NaN;
-			}
-			else if(this.isInfinite()) {
-				return BigInteger.POSITIVE_INFINITY;
-			}
-		}
-		return BigInteger.create(this.bitLength() - 1);
-	}
-
-	/**
-	 * log_10(x)
-	 * @returns {BigInteger} log10(A)
-	 */
-	log10() {
-		{
-			if(this.isZero()) {
-				return BigInteger.ZERO;
-			}
-			else if(this.isNaN()) {
-				return BigInteger.NaN;
-			}
-			else if(this.isNegative()) {
-				return BigInteger.NaN;
-			}
-			else if(this.isInfinite()) {
-				return BigInteger.POSITIVE_INFINITY;
-			}
-		}
-		return BigInteger.create(this.toString(10).length - 1);
-	}
-
-	// ----------------------
-	// 環境設定用
-	// ----------------------
-	
-	/**
-	 * Set default class of random.
-	 * This is used if you do not specify a random number.
-	 * @param {Random} random
-	 */
-	static setDefaultRandom(random) {
-		DEFAULT_RANDOM = random;
-	}
-
-	/**
-	 * Return default Random class.
-	 * Used when Random not specified explicitly.
-	 * @returns {Random}
-	 */
-	static getDefaultRandom() {
-		return DEFAULT_RANDOM;
-	}
-
-	// ----------------------
-	// 他の型に変換用
-	// ----------------------
-	
-	/**
-	 * Value at the specified position of the internally used array that composed of hexadecimal numbers.
-	 * @param {KBigIntegerInputData} point - Array address.
-	 * @returns {number}
-	 */
-	getShort(point) {
-		if(this.isZero()) {
-			return 0;
-		}
-		const n = BigInteger._toInteger(point);
-		return ((0 <= n) && (n <= this.element.length)) ? this.element[n] : NaN;
-	}
-
-	/**
-	 * boolean value.
-	 * @returns {boolean}
-	 */
-	get booleanValue() {
-		return !this.isZero() && !this.isNaN();
-	}
-
-	/**
-	 * 32-bit integer value.
-	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-	 * @returns {number}
-	 */
-	get intValue() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
-		}
-		let x = this.getShort(0) + (this.getShort(1) << 16);
-		x &= 0xFFFFFFFF;
-		if((x > 0) && this.isNegative()) {
-			x = -x;
-		}
-		return x;
-	}
-
-	/**
-	 * 64-bit integer value.
-	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-	 * @returns {number}
-	 */
-	get longValue() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
-		}
-		let x = 0;
-		for(let i = Math.min(3, this.element.length - 1); i >= 0; i--) {
-			x *= 65536;
-			x += this.getShort(i);
-		}
-		if(this.isNegative()) {
-			x = -x;
-		}
-		return x;
-	}
-
-	/**
-	 * 64-bit floating point.
-	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-	 * @returns {number}
-	 */
-	get doubleValue() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
-		}
-		return parseFloat(this.toString());
-	}
-	
-	// ----------------------
-	// gcd, lcm
-	// ----------------------
-	
-	/**
-	 * Euclidean algorithm.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} gcd(x, y)
-	 */
-	gcd(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(!this.isFinite() || !val.isFinite()) {
-			return BigInteger.NaN;
-		}
-		/**
-		 * @type {any}
-		 */
-		let x = this, y = val, z;
-		let i = 10;
-		while(y.sign() !== 0 && i) {
-			z = x.rem(y);
-			x = y;
-			y = z;
-			i--;
-		}
-		return x;
-	}
-
-	/**
-	 * Extended Euclidean algorithm.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
-	 */
-	extgcd(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(!this.isFinite() || !val.isFinite()) {
-			return [BigInteger.NaN, BigInteger.NaN, BigInteger.NaN];
-		}
-		// 非再帰
-		const ONE  = new BigInteger(1);
-		const ZERO = new BigInteger(0);
-		/**
-		 * @type {any}
-		 */
-		let r0 = this, r1 = val, r2, q1;
-		let a0 = ONE,  a1 = ZERO, a2;
-		let b0 = ZERO, b1 = ONE,  b2;
-		while(r1.sign() !== 0) {
-			const y = r0.divideAndRemainder(r1);
-			q1 = y[0];
-			r2 = y[1];
-			a2 = a0.subtract(q1.multiply(a1));
-			b2 = b0.subtract(q1.multiply(b1));
-			a0 = a1;
-			a1 = a2;
-			b0 = b1;
-			b1 = b2;
-			r0 = r1;
-			r1 = r2;
-		}
-		return [a0, b0, r0];
-	}
-
-	/**
-	 * Least common multiple.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} lcm(x, y)
-	 */
-	lcm(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(!this.isFinite() || !val.isFinite()) {
-			return BigInteger.NaN;
-		}
-		return this.mul(val).div(this.gcd(val));
-	}
-
-	// ----------------------
-	// 比較
-	// ----------------------
-	
-	/**
-	 * Equals.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {boolean} A === B
-	 */
-	equals(number) {
-		const x = this;
-		const y = BigInteger._toBigInteger(number);
-		if(!x.isFinite() || !y.isFinite()) {
-			if(x.isNaN() || y.isNaN()) {
-				return false;
-			}
-			else if(x.state === y.state) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		if(x.state !== y.state) {
-			return false;
-		}
-		if(x.element.length !== y.element.length) {
-			return false;
-		}
-		for(let i = 0; i < y.element.length; i++) {
-			if(x.element[i] !==  y.element[i]) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * Compare values without sign.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {number} abs(A) > abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
-	 */
-	compareToAbs(number) {
-		const x = this;
-		const y = BigInteger._toBigInteger(number);
-		if(!x.isFinite() || !y.isFinite()) {
-			if(x.isNaN() || y.isNaN()) {
-				return NaN;
-			}
-			else if(x.isInfinite() || y.isInfinite()) {
-				return 0;
-			}
-			else if(y.isInfinite()) {
-				return -1;
-			}
-			else {
-				return 1;
-			}
-		}
-		if(x.element.length < y.element.length) {
-			return -1;
-		}
-		else if(x.element.length > y.element.length) {
-			return 1;
-		}
-		for(let i = x.element.length - 1;i >= 0;i--) {
-			if(x.element[i] !== y.element[i]) {
-				const val = x.element[i] - y.element[i];
-				return ( (val === 0) ? 0 : ((val > 0) ? 1 : -1) );
-			}
-		}
-		return 0;
-	}
-
-	/**
-	 * Compare values.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
-	 */
-	compareTo(number) {
-		const x = this;
-		const y = BigInteger._toBigInteger(number);
-		if(!x.isFinite() || !y.isFinite()) {
-			if(x.isNaN() || y.isNaN()) {
-				return NaN;
-			}
-			if(x.state === y.state) {
-				return 0;
-			}
-			if(x.isPositiveInfinity() || y.isNegativeInfinity()) {
-				return 1;
-			}
-			else {
-				return -1;
-			}
-		}
-		const x_sign = x.sign();
-		const y_sign = y.sign();
-		if(x_sign !== y_sign) {
-			if(x_sign > y_sign) {
-				return 1;
-			}
-			else {
-				return -1;
-			}
-		}
-		else if(x_sign === 0) {
-			return 0;
-		}
-		return x.compareToAbs(y) * x_sign;
-	}
-
-	/**
-	 * Numeric type match.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {boolean}
-	 */
-	equalsState(number) {
-		const x = this;
-		const y = BigInteger._toBigInteger(number);
-		return x.state === y.state;
-	}
-
-	/**
-	 * Maximum number.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} max([A, B])
-	 */
-	max(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(this.compareTo(val) >= 0) {
-			return this.clone();
-		}
-		else {
-			return val.clone();
-		}
-	}
-
-	/**
-	 * Minimum number.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} min([A, B])
-	 */
-	min(number) {
-		const val = BigInteger._toBigInteger(number);
-		if(this.compareTo(val) >= 0) {
-			return val.clone();
-		}
-		else {
-			return this.clone();
-		}
-	}
-
-	/**
-	 * Clip number within range.
-	 * @param {KBigIntegerInputData} min 
-	 * @param {KBigIntegerInputData} max
-	 * @returns {BigInteger} min(max(x, min), max)
-	 */
-	clip(min, max) {
-		const min_ = BigInteger._toBigInteger(min);
-		const max_ = BigInteger._toBigInteger(max);
-		if(this.isNaN() || min_.isNaN() || max_.isNaN()) {
-			return BigInteger.NaN;
-		}
-		const arg_check = min_.compareTo(max_);
-		if(arg_check === 1) {
-			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
-		}
-		else if(arg_check === 0) {
-			return min_;
-		}
-		if(this.compareTo(max_) === 1) {
-			return max_;
-		}
-		else if(this.compareTo(min_) === -1) {
-			return min_;
-		}
-		return this;
-	}
-
-	// ----------------------
-	// 素数系
-	// ----------------------
-	
-	/**
-	 * Prime represented within the specified bit length.
-	 * @param {KBigIntegerInputData} bits - Bit length.
-	 * @param {Random} [random] - Class for creating random numbers.
-	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
-	 * @param {KBigIntegerInputData} [create_count=500] - Number of times to retry if prime generation fails.
-	 * @returns {BigInteger}
-	 */
-	static probablePrime(bits, random, certainty, create_count ) {
-		const certainty_ = certainty ? BigInteger._toInteger(certainty) : 100;
-		const create_count_ = create_count ? BigInteger._toInteger(create_count) : 500;
-		for(let i = 0; i < create_count_; i++) {
-			const x = BigInteger.createRandomBigInteger(bits, random);
-			if(x.isProbablePrime(certainty_)) {
-				return x;
-			}
-		}
-		console.log("probablePrime " + create_count);
-		return BigInteger.NaN;
-	}
-
-	/**
-	 * Return true if the value is prime number.
-	 * - Calculate up to `2251799813685248(=2^51)`.
-	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
-	 */
-	isPrime() {
-		if(!this.isFinite()) {
-			return false;
-		}
-		// 0や負の値は、素数ではない
-		if(this.sign() <= 0) {
-			return false;
-		}
-		// 47453132.81212578 = Math.sqrt(Number.MAX_SAFE_INTEGER)
-		const limit = Math.sqrt(Math.pow(2, 51));
-		const target_number = this.doubleValue;
-		const count_max = Math.ceil(Math.sqrt(target_number));
-		// 1, 2 -> true
-		if(target_number <= 2) {
-			return true;
-		}
-		// 指定した値より大きい場合は計算不可能として false を返す
-		if(count_max > limit) {
-			return null;
-		}
-		for(let i = 2; i <= count_max; i++) {
-			if((target_number % i) === 0) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * Return true if the value is prime number by Miller-Labin prime number determination method.
-	 * 
-	 * Attention : it takes a very long time to process.
-	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
-	 * @returns {boolean}
-	 */
-	isProbablePrime(certainty) {
-		if(!this.isFinite()) {
-			return false;
-		}
-		const e = this.element;
-		// 0や負の値は、素数ではない
-		if(this.sign() <= 0) {
-			return false;
-		}
-		// 1, 2 -> true
-		if((e.length === 1)&&(e[0] <= 2)) {
-			return true;
-		}
-		// even number -> false
-		else if((e[0] & 1) === 0) {
-			return false;
-		}
-		// ミラーラビン素数判定法
-		// かなり処理が重たいです。まあお遊び程度に使用という感じで。
-		const loop	= certainty !== undefined ? BigInteger._toInteger(certainty) : 100;
-		const ZERO	= BigInteger.ZERO;
-		const ONE	= BigInteger.ONE;
-		const n		= this;
-		const LEN	= n.bitLength();
-		const n_1	= n.subtract(ONE);
-		const s 	= n_1.getLowestSetBit();
-		const d 	= n_1.shift(-s);
-
-		if(loop <= 0) {
-			return false;
-		}
-
-		for(let i = 0; i < loop; i++ ) {
-			//[ 1, n - 1] の範囲から a を選択
-			let a;
-			do {
-				a = BigInteger.createRandomBigInteger(LEN);
-			} while(( a.compareTo(ZERO) === 0 )||( a.compareTo(n) !== -1 ));
-
-			let t = d;
-			// a^t != 1 mod n
-			let y = a.modPow(t, n);
-			
-			while(true) {
-				if((t.equals(n_1)) || (y.equals(ONE)) || (y.equals(n_1))) {
-					break;
-				}
-				y = y.mul(y)._mod(n);
-				t = t.shiftLeft(1);
-			}
-
-			if((!y.equals(n_1)) && ((t.element[0] & 1) === 0)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * Next prime.
-	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
-	 * @param {KBigIntegerInputData} [search_max=100000] - Search range of next prime.
-	 * @returns {BigInteger}
-	 */
-	nextProbablePrime(certainty, search_max) {
-		if(!this.isFinite()) {
-			return BigInteger.NaN;
-		}
-		const loop	= certainty !== undefined ? (BigInteger._toInteger(certainty) >> 1) : 100 / 2;
-		const search_max_ = search_max !== undefined ? BigInteger._toInteger(search_max) : 100000;
-		const x = this.clone();
-		for(let i = 0; i < search_max_; i++) {
-			x._add(BigInteger.ONE);
-			if(x.isProbablePrime(loop)) {
-				return x;
-			}
-		}
-		throw "nextProbablePrime [" + search_max_ +"]";
-	}
-
-	// ----------------------
-	// シフト演算系
-	// ----------------------
-	
-	/**
-	 * this <<= n
-	 * @param {KBigIntegerInputData} shift_length - Bit shift size.
-	 * @returns {BigInteger} A <<= n
-	 * @private
-	 */
-	_shift(shift_length) {
-		if(!this.isFinite()) {
-			return this;
-		}
-		let n = BigInteger._toInteger(shift_length);
-		if(n === 0) {
-			return this;
-		}
-		const x = this.element;
-		// 1ビットなら専用コードで高速計算
-		if(n === 1) {
-			let i = x.length - 1;
-			if((x[i] & 0x8000) !==  0) {
-				x[x.length] = 1;
-			}
-			for(;i >= 0;i--) {
-				x[i] <<= 1;
-				x[i]  &= 0xFFFF;
-				if((i > 0) && ((x[i - 1] & 0x8000) !==  0)) {
-					x[i] += 1;
-				}
-			}
-		}
-		else if(n === -1) {
-			for(let i = 0;i < x.length;i++) {
-				x[i] >>>= 1;
-				if((i < x.length - 1) && ((x[i + 1] & 1) !==  0)) {
-					x[i] |= 0x8000;
-				}
-			}
-			if(x[x.length - 1] === 0) {
-				x.pop();
-			}
-		}
-		else {
-			// 16ビット単位なら配列を追加削除する高速計算
-			if(n >= 16) {
-				const m = n >>> 4;
-				for(let i = x.length - 1; i >= 0; i--) {
-					x[i + m] = x[i];
-				}
-				for(let i = m - 1; i >= 0; i--) {
-					x[i] = 0;
-				}
-				n &= 0xF;
-			}
-			else if(n <= -16){
-				const m = (-n) >>> 4;
-				x.splice(0, m);
-				n += m << 4;
-			}
-			if(n !== 0) {
-				// 15ビット以内ならビット演算でまとめて操作
-				if(0 < n) {
-					let carry = 0;
-					for(let i = 0; i < x.length; i++) {
-						x[i] = (x[i] << n) + carry;
-						if(x[i] > 0xFFFF) {
-							carry = x[i] >>> 16;
-							x[i] &= 0xFFFF;
-						}
-						else {
-							carry = 0;
-						}
-					}
-					if(carry !== 0) {
-						x[x.length] = carry;
-					}
-				}
-				else {
-					n = -n;
-					for(let i = 0; i < x.length; i++) {
-						if(i !== x.length - 1) {
-							x[i] += x[i + 1] << 16;
-							x[i] >>>= n;
-							x[i] &= 0xFFFF;
-						}
-						else {
-							x[i] >>>= n;
-						}
-					}
-					if(x[x.length - 1] === 0) {
-						x.pop();
-					}
-				}
-			}
-		}
-		return this;
-	}
-
-	/**
-	 * this << n
-	 * @param {KBigIntegerInputData} n
-	 * @returns {BigInteger} A << n
-	 */
-	shift(n) {
-		return this.clone()._shift(n);
-	}
-
-	/**
-	 * this << n
-	 * @param {KBigIntegerInputData} n
-	 * @returns {BigInteger} A << n
-	 */
-	shiftLeft(n) {
-		return this.shift(n);
-	}
-
-	/**
-	 * this >> n
-	 * @param {KBigIntegerInputData} n
-	 * @returns {BigInteger} A >> n
-	 */
-	shiftRight(n) {
-		return this.shift(-n);
-	}
-
-	// ----------------------
-	// ビット演算系
-	// ----------------------
-	
-	/**
-	 * Number of digits in which the number "1" appears first when expressed in binary.
-	 * - Return -1 If 1 is not found it.
-	 * @returns {number}
-	 */
-	getLowestSetBit() {
-		if(!this.isFinite()) {
-			return NaN;
-		}
-		for(let i = 0; i < this.element.length; i++) {
-			if(this.element[i] !==  0) {
-				const x = this.element[i];
-				for(let j = 0; j < 16; j++) {
-					if(((x >>> j) & 1) !==  0) {
-						return i * 16 + j;
-					}
-				}
-			}
-		}
-		return -1;
-	}
-
-	/**
-	 * Length when the number is binary.
-	 * @returns {number}
-	 */
-	bitLength() {
-		if(!this.isFinite()) {
-			return NaN;
-		}
-		for(let i = this.element.length - 1; i >= 0; i--) {
-			if(this.element[i] !==  0) {
-				const x = this.element[i];
-				for(let j = 15; j >= 0; j--) {
-					if(((x >>> j) & 1) !==  0) {
-						return i * 16 + j + 1;
-					}
-				}
-			}
-		}
-		return 0;
-	}
-
-	/**
-	 * Sum that the bit is 1 when represented in the two's complement.
-	 * @returns {number}
-	 */
-	bitCount() {
-		if(!this.isFinite()) {
-			return NaN;
-		}
-		let target;
-		if(this.sign() >= 0) {
-			target = this;
-		}
-		else {
-			target = this.add(new BigInteger(1));
-		}
-		const len = target.bitLength();
-		let bit = 0;
-		let count = 0;
-		for(let i = 0;bit < len;i++) {
-			const x = target.element[i];
-			for(let j = 0;((j < 16) && (bit < len));j++, bit++) {
-				if(((x >>> j) & 1) !==  0) {
-					count = count + 1;
-				}
-			}
-		}
-		return count;
-	}
-
-	/**
-	 * Logical AND. (mutable)
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A &= B
-	 * @private
-	 */
-	_and(number) {
-		const val = BigInteger._toBigInteger(number);
-		const e1 = this;
-		const e2 = val;
-		if((!e1.isFinite()) || (!e2.isFinite())) {
-			let ret;
-			if(e1.isNaN() || e2.isNaN()) {
-				ret = BigInteger.NaN;
-			}
-			else {
-				ret = BigInteger.ZERO;
-			}
-			ret = ret.clone();
-			this.element = ret.element;
-			this.state = ret.state;
-			return this;
-		}
-		const s1  = e1.sign(), s2 = e2.sign();
-		const len = Math.max(e1.bitLength(), e2.bitLength());
-		// 引数が負の場合は、2の補数
-		const e1_array = e1.getTwosComplement(len).element;
-		const e2_array = e2.getTwosComplement(len).element;
-		const size = Math.max(e1_array.length, e2_array.length);
-		this.element = [];
-		for(let i = 0;i < size;i++) {
-			const x1 = (i >= e1_array.length) ? 0 : e1_array[i];
-			const x2 = (i >= e2_array.length) ? 0 : e2_array[i];
-			this.element[i] = x1 & x2;
-		}
-		// 配列の上位が空になる可能性があるためノーマライズが必要
-		this._memory_reduction();
-		// 符号を計算
-		if((s1 === 1)||(s2 === 1)) {
-			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
-		}
-		// 出力が負の場合は、2の補数
-		else if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
-			this.element = this.getTwosComplement(len).element;
-			// 反転させたことで配列の上位が空になる可能性があるためノーマライズが必要
-			this._memory_reduction();
-		}
-		return this;
-	}
-
-	/**
-	 * Logical AND.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A & B
-	 */
-	and(number) {
-		return this.clone()._and(number);
-	}
-
-	/**
-	 * Logical OR. (mutable)
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A |= B
-	 * @private
-	 */
-	_or(number) {
-		const val = BigInteger._toBigInteger(number);
-		const e1 = this;
-		const e2 = val;
-		if((!e1.isFinite()) || (!e2.isFinite())) {
-			let ret;
-			if(e1.isNaN() || e2.isNaN()) {
-				ret = BigInteger.NaN.clone();
-			}
-			else if(e1.isInfinite() || e2.isInfinite()) {
-				ret = BigInteger.ZERO;
-			}
-			else {
-				ret = e1.isInfinite() ? e2 : e1;
-			}
-			ret = ret.clone();
-			this.element = ret.element;
-			this.state = ret.state;
-			return this;
-		}
-
-		const s1  = e1.sign(), s2 = e2.sign();
-		const len = Math.max(e1.bitLength(), e2.bitLength());
-		// 引数が負の場合は、2の補数
-		const e1_array = e1.getTwosComplement(len).element;
-		const e2_array = e2.getTwosComplement(len).element;
-		const size = Math.max(e1_array.length, e2_array.length);
-		this.element = [];
-		for(let i = 0;i < size;i++) {
-			const x1 = (i >= e1_array.length) ? 0 : e1_array[i];
-			const x2 = (i >= e2_array.length) ? 0 : e2_array[i];
-			this.element[i] = x1 | x2;
-		}
-		// 符号を計算
-		this.state = ((s1 === -1)||(s2 === -1)) ?
-			BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER :
-			(Math.max(s1, s2) === 0 ? BIGINTEGER_NUMBER_STATE.ZERO : BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER);
-		// 出力が負の場合は、2の補数
-		if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
-			this.element = this.getTwosComplement(len).element;
-			// 反転させたことで配列の上位が空になる可能性があるためノーマライズが必要
-			this._memory_reduction();
-		}
-		return this;
-	}
-
-	/**
-	 * Logical OR.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A | B
-	 */
-	or(number) {
-		return this.clone()._or(number);
-	}
-
-	/**
-	 * Logical Exclusive-OR. (mutable)
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A ^= B
-	 * @private
-	 */
-	_xor(number) {
-		const val = BigInteger._toBigInteger(number);
-		const e1 = this;
-		const e2 = val;
-		if((!e1.isFinite()) || (!e2.isFinite())) {
-			let ret;
-			if(e1.isNaN() || e2.isNaN()) {
-				ret = BigInteger.NaN;
-			}
-			else if(e1.isInfinite() || e2.isInfinite()) {
-				ret = BigInteger.ZERO;
-			}
-			else {
-				ret = e1.isInfinite() ? e2 : e1; 
-			}
-			ret = ret.clone();
-			this.element = ret.element;
-			this.state = ret.state;
-			return this;
-		}
-		const s1  = e1.sign(), s2 = e2.sign();
-		const len = Math.max(e1.bitLength(), e2.bitLength());
-		// 引数が負の場合は、2の補数
-		const e1_array = e1.getTwosComplement(len).element;
-		const e2_array = e2.getTwosComplement(len).element;
-		const size = Math.max(e1_array.length, e2_array.length);
-		this.element = [];
-		for(let i = 0;i < size;i++) {
-			const x1 = (i >= e1_array.length) ? 0 : e1_array[i];
-			const x2 = (i >= e2_array.length) ? 0 : e2_array[i];
-			this.element[i] = x1 ^ x2;
-		}
-		// 配列の上位が空になる可能性があるためノーマライズが必要
-		this._memory_reduction();
-		// 符号を計算
-		this.state = ((s1 !== 0)&&(s1 !== s2)) ? BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER : BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
-		// 出力が負の場合は、2の補数
-		if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
-			this.element = this.getTwosComplement(len).element;
-			// 反転したことでさらに空になる可能性がある
-			this._memory_reduction();
-		}
-		return this;
-	}
-
-	/**
-	 * Logical Exclusive-OR.
-	 * @param {KBigIntegerInputData} number 
-	 * @returns {BigInteger} A ^ B
-	 */
-	xor(number) {
-		return(this.clone()._xor(number));
-	}
-
-	/**
-	 * Logical Not.
-	 * @returns {BigInteger} A = !A
-	 * @private
-	 */
-	_not() {
-		return(this._add(new BigInteger(1))._negate());
-	}
-
-	/**
-	 * Logical Not. (mutable)
-	 * @returns {BigInteger} !A
-	 */
-	not() {
-		return(this.clone()._not());
-	}
-
-	/**
-	 * this | (1 << n) (mutable)
-	 * @param {KBigIntegerInputData} bit
-	 * @returns {BigInteger}
-	 * @private
-	 */
-	_setBit(bit) {
-		const n = BigInteger._toInteger(bit);
-		this._memory_allocation(n + 1);
-		this.element[n >>> 4] |= 1 << (n & 0xF);
-		this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
-		return this;
-	}
-
-	/**
-	 * this | (1 << n)
-	 * @param {KBigIntegerInputData} bit
-	 * @returns {BigInteger}
-	 */
-	setBit(bit) {
-		const n = BigInteger._toInteger(bit);
-		return this.clone()._setBit(n);
-	}
-
-	/**
-	 * Invert a specific bit.) (mutable)
-	 * @param {KBigIntegerInputData} bit
-	 * @returns {BigInteger}
-	 * @private
-	 */
-	_flipBit(bit) {
-		const n = BigInteger._toInteger(bit);
-		this._memory_allocation(n + 1);
-		this.element[n >>> 4] ^= 1 << (n & 0xF);
-		this._memory_reduction();
-		return this;
-	}
-
-	/**
-	 * Invert a specific bit.
-	 * @param {KBigIntegerInputData} bit
-	 * @returns {BigInteger}
-	 */
-	flipBit(bit) {
-		const n = BigInteger._toInteger(bit);
-		return this.clone()._flipBit(n);
-	}
-
-	/**
-	 * Lower a specific bit.
-	 * @param {KBigIntegerInputData} bit 
-	 * @returns {BigInteger}
-	 */
-	clearBit(bit) {
-		const n = BigInteger._toInteger(bit);
-		const y = this.clone();
-		y.element[n >>> 4] &= ~(1 << (n & 0xF));
-		y._memory_reduction();
-		return y;
-	}
-
-	/**
-	 * Test if a particular bit is on.
-	 * @param {KBigIntegerInputData} bit
-	 * @returns {boolean}
-	 */
-	testBit(bit) {
-		const n = BigInteger._toInteger(bit);
-		return ((this.element[n >>> 4] >>> (n & 0xF)) & 1) !== 0;
-	}
-
-	// ----------------------
-	// テスト系
-	// ----------------------
-	
-	/**
-	 * this === 0
-	 * @returns {boolean}
-	 */
-	isZero() {
-		return this.state === BIGINTEGER_NUMBER_STATE.ZERO;
-	}
-	
-	/**
-	 * this === 1
-	 * @returns {boolean}
-	 */
-	isOne() {
-		return this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER && this.element.length === 1 && this.element[0] === 1;
-	}
-	
-	/**
-	 * this > 0
-	 * @returns {boolean}
-	 */
-	isPositive() {
-		return this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER || this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
-	}
-
-	/**
-	 * this < 0
-	 * @returns {boolean}
-	 */
-	isNegative() {
-		return this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER || this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY;
-	}
-
-	/**
-	 * this >= 0
-	 * @returns {boolean}
-	 */
-	isNotNegative() {
-		return this.state === BIGINTEGER_NUMBER_STATE.ZERO || this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER || this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
-	}
-	
-	/**
-	 * this === NaN
-	 * @returns {boolean} isNaN(A)
-	 */
-	isNaN() {
-		return this.state === BIGINTEGER_NUMBER_STATE.NOT_A_NUMBER;
-	}
-	
-	/**
-	 * this === Infinity
-	 * @returns {boolean} isPositiveInfinity(A)
-	 */
-	isPositiveInfinity() {
-		return this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
-	}
-
-	/**
-	 * this === -Infinity
-	 * @returns {boolean} isNegativeInfinity(A)
-	 */
-	isNegativeInfinity() {
-		return this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY;
-	}
-
-	/**
-	 * this === Infinity or -Infinity
-	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
-	 */
-	isInfinite() {
-		return this.isPositiveInfinity() || this.isNegativeInfinity();
-	}
-	
-	/**
-	 * Return true if the value is finite number.
-	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
-	 */
-	isFinite() {
-		return !this.isNaN() && !this.isInfinite();
-	}
-
-	// ----------------------
-	// 定数
-	// ----------------------
-	
-	/**
-	 * -1
-	 * @returns {BigInteger} -1
-	 */
-	static get MINUS_ONE() {
-		return DEFINE$1.MINUS_ONE;
-	}
-	
-	/**
-	 * 0
-	 * @returns {BigInteger} 0
-	 */
-	static get ZERO() {
-		return DEFINE$1.ZERO;
-	}
-
-	/**
-	 * 1
-	 * @returns {BigInteger} 1
-	 */
-	static get ONE() {
-		return DEFINE$1.ONE;
-	}
-	
-	/**
-	 * 2
-	 * @returns {BigInteger} 2
-	 */
-	static get TWO() {
-		return DEFINE$1.TWO;
-	}
-	
-	/**
-	 * 10
-	 * @returns {BigInteger} 10
-	 */
-	static get TEN() {
-		return DEFINE$1.TEN;
-	}
-
-	/**
-	 * Positive infinity.
-	 * @returns {BigInteger} Infinity
-	 */
-	static get POSITIVE_INFINITY() {
-		return DEFINE$1.POSITIVE_INFINITY;
-	}
-	
-	/**
-	 * Negative Infinity.
-	 * @returns {BigInteger} -Infinity
-	 */
-	static get NEGATIVE_INFINITY() {
-		return DEFINE$1.NEGATIVE_INFINITY;
-	}
-
-	/**
-	 * Not a Number.
-	 * @returns {BigInteger} NaN
-	 */
-	static get NaN() {
-		return DEFINE$1.NaN;
-	}
-
-	// ----------------------
-	// 互換性
-	// ----------------------
-	
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number}
-	 */
-	signum() {
-		return this.sign();
-	}
-
-	/**
-	 * Subtract.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A - B
-	 */
-	subtract(number) {
-		return this.sub(number);
-	}
-
-	/**
-	 * Multiply.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A * B
-	 */
-	multiply(number) {
-		return this.mul(number);
-	}
-
-	/**
-	 * Divide.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} fix(A / B)
-	 */
-	divide(number) {
-		return this.div(number);
-	}
-
-	/**
-	 * Remainder of division.
-	 * - Result has same sign as the Dividend.
-	 * @param {KBigIntegerInputData} number
-	 * @returns {BigInteger} A % B
-	 */
-	remainder(number) {
-		return this.rem(number);
-	}
-
-}
-
-/**
- * Collection of constant values used in the class.
- * @ignore
- */
-const DEFINE$1 = {
-
-	/**
-	 * -1
-	 */
-	MINUS_ONE : new BigInteger(-1),
-
-	/**
-	 * 0
-	 */
-	ZERO : new BigInteger(0),
-	
-	/**
-	 * 1
-	 */
-	ONE : new BigInteger(1),
-
-	/**
-	 * 2
-	 */
-	TWO : new BigInteger(2),
-
-	/**
-	 * 10
-	 */
-	TEN : new BigInteger(10),
-
-	/**
-	 * Positive infinity.
-	 */
-	POSITIVE_INFINITY : new BigInteger(Number.POSITIVE_INFINITY),
-
-	/**
-	 * Negative Infinity.
-	 */
-	NEGATIVE_INFINITY : new BigInteger(Number.NEGATIVE_INFINITY),
-
-	/**
-	 * Not a Number.
-	 */
-	NaN : new BigInteger(Number.NaN)
-};
-
-/**
- * The script is part of konpeito.
- * 
- * AUTHOR:
- *  natade (http://twitter.com/natadea)
- * 
- * LICENSE:
- *  The MIT license https://opensource.org/licenses/MIT
- */
-
-/**
- * BigDecimal type argument.(local)
- * - number
- * - boolean
- * - string
- * - BigDecimal
- * - BigInteger
- * - {toBigDecimal:function}
- * - {doubleValue:number}
- * - {toString:function}
- * @typedef {number|boolean|string|BigDecimal|BigInteger|{toBigDecimal:function}|{doubleValue:number}|{toString:function}} KBigDecimalLocalInputData
- */
-
-/**
- * ScaleData for argument of BigDecimal.
- * - {integer:BigInteger,scale:?number,context:?MathContext}
- * @typedef {{integer:BigInteger,scale:?number,context:?MathContext}} KBigDecimalScaleData
- */
-
-/**
- * BigDecimal type argument.
- * - KBigDecimalLocalInputData
- * - Array<KBigDecimalLocalInputData|MathContext>
- * - KBigDecimalScaleData
- * 
- * Initialization can be performed as follows.
- * - 1200, "1200", "12e2", "1.2e3"
- * - When initializing with array. [ integer, [scale = 0], [context=default]].
- * - When initializing with object. { integer, [scale = 0], [context=default]}.
- * 
- * Description of the settings are as follows, you can also omitted.
- * - The "scale" is an integer scale factor.
- * - The "context" is used to normalize the created floating point.
- * 
- * If "context" is not specified, the "default_context" set for the class is used.
- * The "context" is the used when no environment settings are specified during calculation.
- * @typedef {KBigDecimalLocalInputData|Array<KBigDecimalLocalInputData|MathContext>|KBigDecimalScaleData} KBigDecimalInputData
- */
-
-/**
- * Setting of calculation result of division.
- * @typedef {Object} KBigDecimalDivideType
- * @property {number} [scale] Scale of rounding.
- * @property {RoundingModeEntity} [roundingMode] Rounding mode.
- * @property {MathContext} [context] Configuration.(scale and roundingMode are unnecessary.)
- */
-
-/**
- * Default MathContext class.
- * Used when MathContext not specified explicitly.
- * @type {MathContext[]}
- * @ignore
- */
-const DEFAULT_CONTEXT_ = [];
-DEFAULT_CONTEXT_[0] = MathContext.DECIMAL128;
-
-/**
- * Collection of functions used in BigDecimal.
- * @ignore
- */
-class BigDecimalTool {
-
-	/**
-	 * Create data for BigDecimal from strings.
-	 * @param {string} ntext 
-	 * @returns {{scale : number, integer : BigInteger}}
-	 */
-	static ToBigDecimalFromString(ntext) {
-		let scale = 0;
-		let buff;
-		// 正規化
-		let text = ntext.replace(/\s/g, "").toLowerCase();
-		// 特殊な状態
-		{
-			if(/nan/.test(text)) {
-				return {
-					scale : 0,
-					integer : BigInteger.NaN
-				};
-			}
-			else if(/inf/.test(text)) {
-				if(!/-/.test(text)) {
-					return {
-						scale : 0,
-						integer : BigInteger.POSITIVE_INFINITY
-					};
-				}
-				else {
-					return {
-						scale : 0,
-						integer : BigInteger.NEGATIVE_INFINITY
-					};
-				}
-			}
-		}
-		// +-の符号があるか
-		let number_text = "";
-		buff = text.match(/^[+-]+/);
-		if(buff !== null) {
-			buff = buff[0];
-			text = text.substr(buff.length);
-			if(buff.indexOf("-") !== -1) {
-				number_text += "-";
-			}
-		}
-		// 整数部があるか
-		buff = text.match(/^[0-9]+/);
-		if(buff !== null) {
-			buff = buff[0];
-			text = text.substr(buff.length);
-			number_text += buff;
-		}
-		// 小数部があるか
-		buff = text.match(/^\.[0-9]+/);
-		if(buff !== null) {
-			buff = buff[0];
-			text = text.substr(buff.length);
-			buff = buff.substr(1);
-			scale = scale + buff.length;
-			number_text += buff;
-		}
-		// 指数表記があるか
-		buff = text.match(/^e[+-]?[0-9]+/);
-		if(buff !== null) {
-			buff = buff[0].substr(1);
-			scale   = scale - parseInt(buff, 10);
-		}
-		return {
-			scale : scale,
-			integer : new BigInteger([number_text, 10])
-		};
-	}
-
-	/**
-	 * Create data for BigDecimal from number.
-	 * @param {number|boolean} number 
-	 * @returns {{scale : number, integer : BigInteger}}
-	 */
-	static ToBigDecimalFromNumber(number) {
-		const value = typeof number !== "boolean" ? number : (number ? 1 : 0);
-		if(!isFinite(value)) {
-			if(value === Infinity) {
-				return {
-					scale : 0,
-					integer : BigInteger.POSITIVE_INFINITY
-				};
-			}
-			else if(value === - Infinity) {
-				return {
-					scale : 0,
-					integer : BigInteger.NEGATIVE_INFINITY
-				};
-			}
-			else {
-				return {
-					scale : 0,
-					integer : BigInteger.NaN
-				};
-			}
-		}
-		// 整数
-		if(value === Math.floor(value)) {
-			return {
-				scale : 0,
-				integer : new BigInteger(Math.round(value))
-			};
-		}
-		// 浮動小数
-		else {
-			let scale = Math.trunc(Math.log(Math.abs(value)) / Math.log(10));
-			let x = value / Math.pow(10, scale);
-			// スケールを逆にする
-			scale = - scale;
-			for(let i = 0; i < 14; i++) {
-				x = x * 10;
-				scale = scale + 1;
-				if(Math.abs(x - Math.round(x)) <= Number.EPSILON) {
-					break;
-				}
-			}
-			// 最も下の桁は四捨五入する
-			x = Math.round(x * 1e14) / 1e14;
-			return {
-				scale : scale,
-				integer : new BigInteger(x)
-			};
-			// 64ビットの実数型は15桁程度まで正しい
-			// 余裕をもって12桁程度までを抜き出すのが良いかと思われる。
-		}
-	}
-}
-
-/**
- * Arbitrary-precision floating-point number class (immutable).
- */
-class BigDecimal {
-	
-	/**
-	 * Create an arbitrary-precision floating-point number.
-	 * 
-	 * Initialization can be performed as follows.
-	 * - 1200, "1200", "12e2", "1.2e3"
-	 * - When initializing with array. [ integer, [scale = 0], [context=default]].
-	 * - When initializing with object. { integer, [scale = 0], [context=default]}.
-	 * 
-	 * Description of the settings are as follows, you can also omitted.
-	 * - The "scale" is an integer scale factor.
-	 * - The "context" is used to normalize the created floating point.
-	 * 
-	 * If "context" is not specified, the "default_context" set for the class is used.
-	 * The "context" is the used when no environment settings are specified during calculation.
-	 * @param {KBigDecimalInputData} number - Real data.
-	 */
-	constructor(number) {
-
-		/**
-		 * The scale of this BigDecimal.
-		 * @private
-		 * @ignore
-		 * @type {number}
-		 */
-		this._scale	= 0;
-		
-		/**
-		 * Context used during initialization.
-		 * @private
-		 * @ignore
-		 * @type {MathContext}
-		 */
-		this.context = BigDecimal.getDefaultContext();
-
-		// この値がtrueの場合は最後に正規化を実行する
-		let is_set_context = false;
-
-		if(arguments.length > 1) {
-			throw "BigDecimal Unsupported argument[" + arguments.length + "]";
-		}
-		if(number instanceof BigDecimal) {
-
-			/**
-			 * Integer part.
-			 * @private
-			 * @ignore
-			 * @type {BigInteger}
-			 */
-			this.integer			= number.integer.clone();
-
-			/**
-			 * Integer part of string (for cache).
-			 * @private
-			 * @ignore
-			 * @type {string}
-			 */
-			this.int_string			= number.int_string;
-
-			this._scale				= number._scale;
-			this.context			= number.context;
-
-		}
-		else if((typeof number === "number") || (typeof number === "boolean")) {
-			const data = BigDecimalTool.ToBigDecimalFromNumber(number);
-			this.integer	= data.integer;
-			this._scale		= data.scale;
-		}
-		else if(typeof number === "string") {
-			const data = BigDecimalTool.ToBigDecimalFromString(number);
-			this.integer	= data.integer;
-			this._scale		= data.scale;
-		}
-		else if(number instanceof Array) {
-			if(number.length >= 1) {
-				const prm1 = number[0];
-				if((typeof prm1 === "number") || (typeof prm1 === "boolean")) {
-					const data		= BigDecimalTool.ToBigDecimalFromNumber(prm1);
-					this.integer	= data.integer;
-					this._scale		= data.scale;
-				}
-				else if(typeof prm1 === "string") {
-					const data		= BigDecimalTool.ToBigDecimalFromString(prm1);
-					this.integer	= data.integer;
-					this._scale		= data.scale;
-				}
-				else if(prm1 instanceof BigDecimal) {
-					this.integer	= prm1.integer.clone();
-					this._scale		= prm1._scale;
-				}
-				else if(prm1 instanceof BigInteger) {
-					this.integer			= prm1.clone();
-				}
-				else if(typeof prm1 === "object") {
-					if("toBigDecimal" in prm1) {
-						const data		= prm1.toBigDecimal();
-						this.integer	= data.integer;
-						this._scale		= data._scale;
-					}
-					else if("doubleValue" in prm1) {
-						const data = BigDecimalTool.ToBigDecimalFromNumber(prm1.doubleValue);
-						this.integer	= data.integer;
-						this._scale		= data.scale;
-					}
-					else {
-						const data = BigDecimalTool.ToBigDecimalFromString(prm1.toString());
-						this.integer	= data.integer;
-						this._scale		= data.scale;
-					}
-				}
-				else {
-					throw "BigDecimal Unsupported argument " + prm1 + "(" + (typeof prm1) + ")";
-				}
-			}
-			if(number.length >= 2) {
-				// スケール値を省略しているかどうかを、数値かどうかで判定している。
-				if(typeof number[1] === "number") {
-					// 2つめが数値の場合は、2つ目をスケール値として使用する
-					this._scale	= number[1];
-					if(number.length >= 3) {
-						this.context = ((number[2] !== undefined) && (number[2] instanceof MathContext)) ? number[2] : BigDecimal.getDefaultContext();
-						is_set_context = true;
-					}
-				}
-				else {
-					if(number.length >= 2) {
-						this.context = ((number[1] !== undefined) && (number[1] instanceof MathContext)) ? number[1] : BigDecimal.getDefaultContext();
-						is_set_context = true;
-					}
-				}
-			}
-		}
-		else if(number instanceof BigInteger) {
-			this.integer	= number.clone();
-		}
-		else if(typeof number === "object") {
-			if("toBigDecimal" in number) {
-				const data		= number.toBigDecimal();
-				this.integer	= data.integer;
-				this._scale		= data._scale;
-				this.context	= data.context;
-			}
-			else if("doubleValue" in number) {
-				const data = BigDecimalTool.ToBigDecimalFromNumber(number.doubleValue);
-				this.integer	= data.integer;
-				this._scale		= data.scale;
-			}
-			else if(("integer" in number) && ("scale" in number) && ("context" in number)) {
-				this.integer	= new BigInteger(number.integer);
-				if(number.scale) {
-					this._scale = number.scale;
-				}
-				if(number.context) {
-					this.context = number.context;
-					is_set_context = true;
-				}
-			}
-			else if(number instanceof Object) {
-				const data = BigDecimalTool.ToBigDecimalFromString(number.toString());
-				this.integer	= data.integer;
-				this._scale		= data.scale;
-			}
-		}
-		else {
-			throw "BigDecimal Unsupported argument " + arguments;
-		}
-		// データを正規化
-		if(is_set_context) {
-			const newbigdecimal = this.round(this.context);
-			this.integer	= newbigdecimal.integer;
-			this._scale		= newbigdecimal._scale;
-			delete this.int_string;
-		}
-		// データが正しいかチェックする
-		if((!(this.integer instanceof BigInteger)) || (!(this.context instanceof MathContext))) {
-			throw "BigDecimal Unsupported argument " + arguments;
-		}
-	}
-
-	/**
-	 * Create an arbitrary-precision floating-point number.
-	 * 
-	 * Initialization can be performed as follows.
-	 * - 1200, "1200", "12e2", "1.2e3"
-	 * - When initializing with array. [ integer, [scale = 0], [context=default]].
-	 * - When initializing with object. { integer, [scale = 0], [context=default]}.
-	 * 
-	 * Description of the settings are as follows, you can also omitted.
-	 * - The "scale" is an integer scale factor.
-	 * - The "context" is used to normalize the created floating point.
-	 * 
-	 * If "context" is not specified, the "default_context" set for the class is used.
-	 * The "context" is the used when no environment settings are specified during calculation.
-	 * @param {KBigDecimalInputData} number - Real data.
-	 * @returns {BigDecimal}
-	 */
-	static create(number) {
-		if(number instanceof BigDecimal) {
-			return number;
-		}
-		else {
-			return new BigDecimal(number);
-		}
-	}
-
-	/**
-	 * Convert number to BigDecimal type.
-	 * @param {KBigDecimalLocalInputData} x 
-	 * @param {MathContext} [scale] 
-	 * @returns {BigDecimal}
-	 */
-	static valueOf(x, scale) {
-		if(arguments.length === 1) {
-			return new BigDecimal(x);
-		}
-		else {
-			return new BigDecimal([x, scale]);
-		}
-	}
-
-	/**
-	 * Convert to BigDecimal.
-	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {BigDecimal}
-	 * @private
-	 */
-	static _toBigDecimal(number) {
-		if(number instanceof BigDecimal) {
-			return number;
-		}
-		else {
-			return new BigDecimal(number);
-		}
-	}
-
-	/**
-	 * Convert to BigInteger.
-	 * If type conversion is unnecessary, return the value as it is.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {BigInteger}
-	 * @private
-	 */
-	static _toBigInteger(number) {
-		if(number instanceof BigInteger) {
-			return number;
-		}
-		else if(number instanceof BigDecimal) {
-			return number.toBigInteger();
-		}
-		else {
-			// @ts-ignore
-			return new BigInteger(number);
-		}
-	}
-
-	/**
-	 * Convert to real number.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {number}
-	 * @private
-	 */
-	static _toFloat(number) {
-		if(typeof number === "number") {
-			return number;
-		}
-		else if(number instanceof BigDecimal) {
-			return number.doubleValue;
-		}
-		else {
-			return (new BigDecimal(number)).doubleValue;
-		}
-	}
-
-	/**
-	 * Convert to integer.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {number}
-	 * @private
-	 */
-	static _toInteger(number) {
-		if(typeof number === "number") {
-			return Math.trunc(number);
-		}
-		else if(number instanceof BigInteger) {
-			return number.intValue;
-		}
-		else {
-			// @ts-ignore
-			return (new BigInteger(number)).intValue;
-		}
-	}
-
-	/**
-	 * Return string of this number without sign.
-	 * If cache is already created, return cache.
-	 * @returns {string} 
-	 */
-	_getUnsignedIntegerString() {
-		// キャッシュする
-		if(typeof this.int_string === "undefined") {
-			this.int_string = this.integer.toString(10).replace(/^-/, "");
-		}
-		return this.int_string;
-	}
-
-	/**
-	 * Deep copy.
-	 * @returns {BigDecimal} 
-	 */
-	clone() {
-		return new BigDecimal(this);
-	}
-	
-	/**
-	 * The scale of this BigDecimal.
-	 * @returns {number} 
-	 */
-	scale() {
-		return this._scale;
-	}
-
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number}
-	 */
-	sign() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? 1 : -1);
-		}
-		return this.integer.sign();
-	}
-
-	/**
-	 * Precision.
-	 * @returns {number} 
-	 */
-	precision() {
-		return this._getUnsignedIntegerString().length;
-	}
-
-	/**
-	 * An integer with the exponent part removed.
-	 * @returns {BigInteger} 
-	 */
-	unscaledValue() {
-		return new BigInteger(this.integer);
-	}
-
-	/**
-	 * The smallest value that can be represented with the set precision.
-	 * @returns {BigDecimal} 
-	 */
-	ulp() {
-		return new BigDecimal([BigInteger.ONE, this.scale()]);
-	}
-
-	/**
-	 * Absolute value.
-	 * @returns {BigDecimal} abs(A)
-	 */
-	abs() {
-		const output = this.clone();
-		output.integer = output.integer.abs();
-		return output;
-	}
-
-	/**
-	 * this * 1
-	 * @returns {BigDecimal} +A
-	 */
-	plus() {
-		return this;
-	}
-
-	/**
-	 * this * -1
-	 * @returns {BigDecimal} -A
-	 */
-	negate() {
-		const output = this.clone();
-		output.integer = output.integer.negate();
-		return output;
-	}
-
-	/**
-	 * Move the decimal point to the left.
-	 * @param {KBigDecimalInputData} n 
-	 * @returns {BigDecimal} 
-	 */
-	movePointLeft(n) {
-		if(!this.isFinite()) {
-			return this;
-		}
-		const x = BigDecimal._toInteger(n);
-		let output = this.scaleByPowerOfTen( -x );
-		output = output.setScale(Math.max(this.scale() + x, 0));
-		return output;
-	}
-
-	/**
-	 * Move the decimal point to the right.
-	 * @param {KBigDecimalInputData} n 
-	 * @returns {BigDecimal} 
-	 */
-	movePointRight(n) {
-		return this.movePointLeft(-n);
-	}
-
-	/**
-	 * Remove the 0 to the right of the numbers and normalize the scale.
-	 * @returns {BigDecimal} 
-	 */
-	stripTrailingZeros() {
-		if(!this.isFinite()) {
-			return this;
-		}
-		// 0をできる限り取り除く
-		const sign		= this.sign();
-		const sign_text	= sign >= 0 ? "" : "-";
-		const text		= this.integer.toString(10).replace(/^-/, "");
-		const zeros		= text.match(/0+$/);
-		let zero_length	= (zeros !== null) ? zeros[0].length : 0;
-		if(zero_length === text.length) {
-			// 全て 0 なら 1 ケタ残す
-			zero_length = text.length - 1;
-		}
-		const newScale	= this.scale() - zero_length;
-		return new BigDecimal([new BigInteger(sign_text + text.substring(0, text.length - zero_length)), newScale]);
-	}
-
-	// ----------------------
-	// 四則演算
-	// ----------------------
-	
-	/**
-	 * Add.
-	 * @param {KBigDecimalInputData} number
-	 * @returns {BigDecimal} A + B
-	 */
-	add(number) {
-		const augend = BigDecimal._toBigDecimal(number);
-		const src			= this;
-		const tgt			= augend;
-		if(!src.isFinite() || !tgt.isFinite()) {
-			if(src.isNaN() || tgt.isNaN() || (src.isInfinite() && tgt.isInfinite() && !src.equalsState(tgt))) {
-				return BigDecimal.NaN;
-			}
-			else if(src.isPositiveInfinity() || tgt.isPositiveInfinity()) {
-				return BigDecimal.POSITIVE_INFINITY;
-			}
-			else {
-				return BigDecimal.NEGATIVE_INFINITY;
-			}
-		}
-		const mc = BigDecimal.getDefaultContext();
-		const newscale	= Math.max(src._scale, tgt._scale);
-		if(src._scale === tgt._scale) {
-			// 1 e1 + 1 e1 = 1
-			return new BigDecimal([src.integer.add(tgt.integer), newscale, mc]);
-		}
-		else if(src._scale > tgt._scale) {
-			// 1 e-2 + 1 e-1
-			const newdst = tgt.setScale(src._scale);
-			// 0.01 + 0.10 = 0.11 = 11 e-2
-			return new BigDecimal([src.integer.add(newdst.integer), newscale, mc]);
-		}
-		else {
-			// 1 e-1 + 1 e-2
-			const newsrc = src.setScale(tgt._scale);
-			// 0.1 + 0.01 = 0.11 = 11 e-2
-			return new BigDecimal([newsrc.integer.add(tgt.integer), newscale, mc]);
-		}
-	}
-
-	/**
-	 * Subtract.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {BigDecimal} A - B
-	 */
-	sub(number) {
-		const subtrahend = BigDecimal._toBigDecimal(number);
-		return this.add(subtrahend.negate());
-	}
-
-	/**
-	 * Multiply.
-	 * @param {KBigDecimalInputData} number
-	 * @returns {BigDecimal} A * B
-	 */
-	mul(number) {
-		const multiplicand = BigDecimal._toBigDecimal(number);
-		const src			= this;
-		const tgt			= multiplicand;
-		if(!src.isFinite() || !tgt.isFinite()) {
-			if(src.isNaN() || tgt.isNaN() || (src.isZero() || tgt.isZero())) {
-				return BigDecimal.NaN;
-			}
-			else if(src.sign() * tgt.sign() > 0) {
-				return BigDecimal.POSITIVE_INFINITY;
-			}
-			else {
-				return BigDecimal.NEGATIVE_INFINITY;
-			}
-		}
-		const mc = BigDecimal.getDefaultContext();
-		const newinteger	= src.integer.mul(tgt.integer);
-		// 0.1 * 0.01 = 0.001
-		const newscale	= src._scale + tgt._scale;
-		return new BigDecimal([newinteger, newscale, mc]);
-	}
-
-	/**
-	 * Divide not calculated to the decimal point.
-	 * @param {KBigDecimalInputData} number
-	 * @returns {BigDecimal} (int)(A / B)
-	 */
-	divideToIntegralValue(number) {
-		const divisor = BigDecimal._toBigDecimal(number);
-		const src		= this;
-		const tgt		= divisor;
-		if(!src.isFinite() || !tgt.isFinite()) {
-			if(src.isNaN() || tgt.isNaN() || (src.isInfinite() && tgt.isInfinite())) {
-				return BigDecimal.NaN;
-			}
-			else if(src.isInfinite()) {
-				if(src.sign() * tgt.sign() >= 0) {
-					return BigDecimal.POSITIVE_INFINITY;
-				}
-				else {
-					return BigDecimal.NEGATIVE_INFINITY;
-				}
-			}
-			else {
-				return BigDecimal.ZERO;
-			}
-		}
-		else if(tgt.isZero()) {
-			if(src.isZero()) {
-				return BigDecimal.NaN;
-			}
-			else {
-				return src.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY;
-			}
-		}
-		const mc = BigDecimal.getDefaultContext();
-		/**
-		 * @param {number} num 
-		 * @returns {BigInteger}
-		 */
-		const getDigit  = function( num ) {
-			let i;
-			let text = "1";
-			for(i = 0; i < num; i++) {
-				text = text + "0";
-			}
-			return new BigInteger(text);
-		};
-		if(tgt.compareTo(BigDecimal.ZERO) === 0) {
-			throw "ArithmeticException";
-		}
-
-		// 1000e0		/	1e2				=	1000e-2
-		// 1000e0		/	10e1			=	100e-1
-		// 1000e0		/	100e0			=	10e0
-		// 1000e0		/	1000e-1			=	1e1
-		// 1000e0		/	10000e-2		=	1e1
-		// 1000e0		/	100000e-3		=	1e1
-
-		// 10e2			/	100e0			=	1e1
-		// 100e1		/	100e0			=	1e1
-		// 1000e0		/	100e0			=	10e0
-		// 10000e-1		/	100e0			=	100e-1	
-		// 100000e-2	/	100e0			=	1000e-2
-		let src_integer	= src.integer;
-		let tgt_integer	= tgt.integer;
-		const newScale	= src._scale - tgt._scale;
-
-		// 100e-2 / 3e-1 = 1 / 0.3 -> 100 / 30
-		if(src._scale > tgt._scale) {
-			// src._scale に合わせる
-			tgt_integer = tgt_integer.mul(getDigit(  newScale ));
-		}
-		// 1e-1 / 3e-2 = 0.1 / 0.03 -> 10 / 3
-		else if(src._scale < tgt._scale) {
-			// tgt._scale に合わせる
-			src_integer = src_integer.mul(getDigit( -newScale ));
-		}
-
-		// とりあえず計算結果だけ作ってしまう
-		const new_integer	= src_integer.div(tgt_integer);
-		const sign			= new_integer.sign();
-		if(sign !== 0) {
-			const text	= new_integer.toString(10).replace(/^-/, "");
-			// 指定した桁では表すことができない
-			if((mc.getPrecision() !== 0) && (text.length > mc.getPrecision())) {
-				throw "ArithmeticException";
-			}
-			// 結果の優先スケール に合わせる (this.scale() - divisor.scale())
-			if(text.length <= (-newScale)) {
-				// 合わせることができないので、0をできる限り削る = stripTrailingZerosメソッド
-				const zeros			= text.match(/0+$/);
-				const zero_length	= (zeros !== null) ? zeros[0].length : 0;
-				const sign_text		= sign >= 0 ? "" : "-";
-				return new BigDecimal([new BigInteger(sign_text + text.substring(0, text.length - zero_length)), -zero_length, mc]);
-			}
-		}
-
-		let output = new BigDecimal(new_integer);
-		output = output.setScale(newScale, RoundingMode.UP);
-		output = output.round(mc);
-		output.context = mc;
-		return output;
-	}
-
-	/**
-	 * Divide and remainder.
-	 * @param {KBigDecimalInputData} number
-	 * @returns {Array<BigDecimal>} [C = (int)(A / B), A - C * B]
-	 */
-	divideAndRemainder(number) {
-		const divisor = BigDecimal._toBigDecimal(number);
-		if(!this.isFinite() || !divisor.isFinite()) {
-			if(this.isNaN() || divisor.isNaN() || (this.isInfinite() && divisor.isInfinite())) {
-				return [BigDecimal.NaN, BigDecimal.NaN];
-			}
-			else if(this.isInfinite()) {
-				if(this.sign() * divisor.sign() >= 0) {
-					return [BigDecimal.POSITIVE_INFINITY, BigDecimal.NaN];
-				}
-				else {
-					return [BigDecimal.NEGATIVE_INFINITY, BigDecimal.NaN];
-				}
-			}
-			else {
-				return [BigDecimal.ZERO, BigDecimal.NaN];
-			}
-		}
-		else if(divisor.isZero()) {
-			if(this.isZero()) {
-				return [BigDecimal.NaN, BigDecimal.NaN];
-			}
-			else {
-				return [this.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY, BigDecimal.NaN];
-			}
-		}
-		// 1000e0		/	1e2				=	1000e-2	... 0e0
-		// 1000e0		/	10e1			=	100e-1	... 0e0
-		// 1000e0		/	100e0			=	10e0	... 0e0
-		// 1000e0		/	1000e-1			=	1e1		... 0e0
-		// 1000e0		/	10000e-2		=	1e1		... 0e-1
-		// 1000e0		/	100000e-3		=	1e1		... 0e-2
-
-		// 10e2			/	100e0			=	1e1		... 0e1
-		// 100e1		/	100e0			=	1e1		... 0e1
-		// 1000e0		/	100e0			=	10e0	... 0e0
-		// 10000e-1		/	100e0			=	100e-1	... 0e-1
-		// 100000e-2	/	100e0			=	1000e-2	... 0e-2
-
-		const result_divide	= this.divideToIntegralValue(divisor);
-		const result_remaind	= this.sub(result_divide.mul(divisor));
-
-		const output = [result_divide, result_remaind];
-		return output;
-	}
-
-	/**
-	 * Remainder of division.
-	 * - Result has same sign as the Dividend.
-	 * @param {KBigDecimalInputData} number
-	 * @returns {BigDecimal} A % B
-	 */
-	rem(number) {
-		return this.divideAndRemainder(number)[1];
-	}
-
-	/**
-	 * Modulo, positive remainder of division.
-	 * - Result has same sign as the Divisor.
-	 * @param {KBigDecimalInputData} number
-	 * @returns {BigDecimal} A mod B
-	 */
-	mod(number) {
-		const src = this;
-		const tgt = BigDecimal._toBigDecimal(number);
-		if(tgt.isZero()) {
-			return src;
-		}
-		const x = src.rem(tgt);
-		if(!src.equalsState(tgt)) {
-			return x.add(tgt);
-		}
-		else {
-			return x;
-		}
-	}
-
-	/**
-	 * Divide.
-	 * - The argument can specify the scale after calculation.
-	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
-	 * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
-	 * - When null is specified for the argument, it is calculated on the scale of "divisor.context".
-	 * @param {KBigDecimalInputData} number
-	 * @param {MathContext|KBigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
-	 * @returns {BigDecimal}
-	 */
-	div(number, type) {
-		const divisor = BigDecimal._toBigDecimal(number);
-		const src			= this;
-		const tgt			= divisor;
-		if(!src.isFinite() || !tgt.isFinite()) {
-			if(src.isNaN() || tgt.isNaN() || (src.isInfinite() && tgt.isInfinite())) {
-				return BigDecimal.NaN;
-			}
-			else if(src.isInfinite()) {
-				if(src.sign() * tgt.sign() >= 0) {
-					return BigDecimal.POSITIVE_INFINITY;
-				}
-				else {
-					return BigDecimal.NEGATIVE_INFINITY;
-				}
-			}
-			else {
-				return BigDecimal.ZERO;
-			}
-		}
-		else if(tgt.isZero()) {
-			if(src.isZero()) {
-				return BigDecimal.NaN;
-			}
-			else {
-				return src.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY;
-			}
-		}
-		let roundingMode	= null;
-		let mc				= null;
-		let newScale		= 0;
-		let isPriorityScale	= false;
-
-		// 設定をロードする
-		if(!type) {
-			mc = BigDecimal.getDefaultContext();
-			roundingMode = mc.getRoundingMode();
-			newScale = mc.getPrecision();
-		}
-		else if(type instanceof MathContext) {
-			mc = type;
-			roundingMode = mc.getRoundingMode();
-			newScale = mc.getPrecision();
-		}
-		else {
-			if(type && type.scale) {
-				newScale = type.scale;
-			}
-			else {
-				isPriorityScale	= true;
-				if(type && (type.roundingMode || type.context)) {
-					newScale = src.scale();
-				}
-				else {
-					newScale = src.scale() - tgt.scale();
-				}
-			}
-			if(type && type.context) {
-				mc = type.context;
-				roundingMode = mc.getRoundingMode();
-				newScale = mc.getPrecision();
-			}
-			else {
-				mc = this.context;
-			}
-			if(type && type.roundingMode) {
-				roundingMode = type.roundingMode;
-			}
-			else {
-				roundingMode = mc.getRoundingMode();
-			}
-		}
-		
-		if(tgt.compareTo(BigDecimal.ZERO) === 0) {
-			throw "ArithmeticException";
-		}
-
-		const precision = mc.getPrecision();
-
-		let all_result;
-		// 無限精度か、精度が小さい場合は厳密に求める
-		if((precision === 0) || (precision <= 100)) {
-			let newsrc;
-			/**
-			 * @type {any}
-			 */
-			const result_map = {};
-			let result, result_divide, result_remaind;
-			all_result = BigDecimal.ZERO;
-			const check_max = precision !== 0 ? (precision + 8) : 0x3FFFF;
-			newsrc = src;
-			BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
-			let is_error = false;
-			let error_message;
-			for(let i = 0; i < check_max; i++) {
-				result = newsrc.divideAndRemainder(tgt);
-				result_divide	= result[0];
-				result_remaind	= result[1];
-				all_result = all_result.add(result_divide.scaleByPowerOfTen(-i));
-				if(result_remaind.compareTo(BigDecimal.ZERO) !== 0) {
-					if(precision === 0) {	// 精度無限大の場合は、循環小数のチェックが必要
-						if(result_map[result_remaind._getUnsignedIntegerString()]) {
-							is_error = true;
-							error_message = "ArithmeticException " + all_result + "[" + result_remaind._getUnsignedIntegerString() + "]";
-							break;
-						}
-						else {
-							result_map[result_remaind._getUnsignedIntegerString()] = true;
-						}
-					}
-					newsrc = result_remaind.scaleByPowerOfTen(1);
-				}
-				else {
-					break;
-				}
-			}
-			BigDecimal.popDefaultContext();
-			if(is_error) {
-				throw error_message;
-			}
-		}
-		else {
-			// 巨大な値は繰り返しで求める
-			BigDecimal.pushDefaultContext(new MathContext(precision + 4, RoundingMode.HALF_UP));
-			all_result = this.mul(tgt.inv());
-			BigDecimal.popDefaultContext();
-		}
-	
-		all_result.context = mc;
-		if(isPriorityScale) {
-			// 優先スケールの場合は、スケールの変更に失敗する可能性あり
-			try {
-				all_result = all_result.setScale(newScale, roundingMode);
-			}
-			catch(e) {
-				// falls through
-			}
-		}
-		else {
-			all_result = all_result.setScale(newScale, roundingMode);
-		}
-		all_result = all_result.round(BigDecimal.getDefaultContext());
-		return all_result;
-	}
-
-	/**
-	 * Inverse number of this value.
-	 * @returns {BigDecimal} 1 / A
-	 */
-	inv() {
-		if(BigDecimal.getDefaultContext().equals(MathContext.UNLIMITED)) {
-			return BigDecimal.ONE.div(this);
-		}
-		{
-			if(!this.isFinite()) {
-				return this.isNaN() ? BigDecimal.NaN : BigDecimal.ZERO;
-			}
-			if(this.isZero()) {
-				return BigDecimal.NaN;
-			}
-		}
-		// 通常の割り算を行うと、「1」÷巨大な数を計算したときに、
-		// 1 の仮数部の精度によってしまい、結果が0になってしまう場合がある
-		// const mc = context ? context : this.context;
-		// const b1 = this.createUsingThisSettings(1, mc);
-		// return b1.div(this, mc);
-		// 計算は絶対値を用いて行う
-		const is_negative = this.isNegative();
-		const A = !is_negative ? this: this.negate();
-		// 3次のニュートン・ラフソン法で求める
-		const B1 = BigDecimal.create(1);
-		// 初期値は、指数部の情報を使用する
-		const scale = - A.scale() + (A.precision() - 1);
-		const x0 = new BigDecimal([1, scale + 1]);
-		if(x0.isZero()) {
-			return null;
-		}
-		let xn = x0;
-		for(let i = 0; i < 20; i++) {
-			const h = B1.sub(A.mul(xn));
-			if(h.isZero()) {
-				break;
-			}
-			xn = xn.mul(B1.add(h).add(h.square()));
-		}
-		// 参考
-		// Lyuka - 逆数と平方根を求める高次収束アルゴリズム
-		// http://www.finetune.co.jp/~lyuka/technote/fract/sqrt.html
-		return !is_negative ? xn : xn.negate();
-	}
-
-	// ----------------------
-	// その他の演算
-	// ----------------------
-	
-	/**
-	 * Factorial function, x!.
-	 * - Supports only integers.
-	 * @returns {BigDecimal} n!
-	 */
-	factorial() {
-		if(!this.isFinite()) {
-			return this;
-		}
-		const output = new BigDecimal((new BigInteger(this)).factorial());
-		return output;
-	}
-
-	/**
-	 * Multiply a multiple of ten.
-	 * - Supports only integers.
-	 * - Only the scale is changed without changing the precision.
-	 * @param {KBigDecimalInputData} n 
-	 * @returns {BigDecimal} A * 10^floor(n)
-	 */
-	scaleByPowerOfTen(n) {
-		if(!this.isFinite()) {
-			return this;
-		}
-		const x = BigDecimal._toInteger(n);
-		const output = this.clone();
-		output._scale = this.scale() - x;
-		return output;
-	}
-
-	// ----------------------
-	// 環境設定用
-	// ----------------------
-	
-	/**
-	 * Set default the MathContext.
-	 * - This is used if you do not specify MathContext when creating a new object.
-	 * @param {MathContext} [context=MathContext.DECIMAL128]
-	 */
-	static setDefaultContext(context) {
-		DEFAULT_CONTEXT_[DEFAULT_CONTEXT_.length - 1] = context ? context : MathContext.DECIMAL128;
-	}
-
-	/**
-	 * Return default MathContext class.
-	 * - Used when MathContext not specified explicitly.
-	 * @returns {MathContext}
-	 */
-	static getDefaultContext() {
-		return DEFAULT_CONTEXT_[DEFAULT_CONTEXT_.length - 1];
-	}
-
-	/**
-	 * Push default the MathContext.
-	 * - Use with `popDefaultContext` when you want to switch settings temporarily.
-	 * @param {MathContext} [context]
-	 */
-	static pushDefaultContext(context) {
-		DEFAULT_CONTEXT_.push(context);
-	}
-
-	/**
-	 * Pop default the MathContext.
-	 * - Use with `pushDefaultContext` when you want to switch settings temporarily.
-	 */
-	static popDefaultContext() {
-		DEFAULT_CONTEXT_.pop();
-	}
-
-	// ----------------------
-	// 他の型に変換用
-	// ----------------------
-	
-	/**
-	 * boolean value.
-	 * @returns {boolean}
-	 */
-	get booleanValue() {
-		return this.integer.booleanValue;
-	}
-
-	/**
-	 * 32-bit integer value.
-	 * @returns {number}
-	 */
-	get intValue() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
-		}
-		const bigintdata = this.toBigInteger();
-		const x = bigintdata.intValue;
-		return x & 0xFFFFFFFF;
-	}
-
-	/**
-	 * 32-bit integer value.
-	 * An error occurs if conversion fails.
-	 * @returns {number}
-	 */
-	get intValueExact() {
-		if(!this.isFinite()) {
-			throw "ArithmeticException";
-		}
-		const bigintdata = this.toBigInteger();
-		const x = bigintdata.intValue;
-		if((x < -2147483648) || (2147483647 < x)) {
-			throw "ArithmeticException";
-		}
-		return x;
-	}
-
-	/**
-	 * 32-bit floating point.
-	 * @returns {number}
-	 */
-	get floatValue() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
-		}
-		const p = this.precision();
-		if(MathContext.DECIMAL32.getPrecision() < p) {
-			return(this.sign() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
-		}
-		return parseFloat(this.toEngineeringString());
-	}
-
-	/**
-	 * 64-bit floating point.
-	 * @returns {number}
-	 */
-	get doubleValue() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
-		}
-		return parseFloat(this.toEngineeringString());
-	}
-
-	/**
-	 * Get as a BigInteger.
-	 * @returns {BigInteger}
-	 */
-	toBigInteger() {
-		return this.integer.scaleByPowerOfTen(-this.scale());
-	}
-
-	// ----------------------
-	// 比較
-	// ----------------------
-	
-	/**
-	 * Equals.
-	 * - Attention : Test for equality, including the precision and the scale. 
-	 * - Use the "compareTo" if you only want to find out whether they are also mathematically equal.
-	 * - If you specify a "tolerance", it is calculated by ignoring the test of the precision and the scale.
-	 * @param {KBigDecimalInputData} number 
-	 * @param {KBigDecimalInputData} [tolerance] - Calculation tolerance of calculation.
-	 * @returns {boolean} A === B
-	 */
-	equals(number, tolerance) {
-		// 誤差を指定しない場合は、厳密に調査
-		if(!tolerance) {
-			if((number instanceof BigDecimal) || (typeof number === "string")) {
-				const val = number instanceof BigDecimal ? number : BigDecimal._toBigDecimal(number);
-				if(this.isNaN() || val.isNaN()) {
-					return false;
-				}
-				else {
-					return (this.equalsState(val) && (this._scale === val._scale) && this.integer.equals(val.integer));
-				}
-			}
-			else {
-				return this.compareTo(number) === 0;
-			}
-		}
-		else {
-			return this.compareTo(number, tolerance) === 0;
-		}
-	}
-
-	/**
-	 * Numeric type match.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {boolean}
-	 */
-	equalsState(number) {
-		const x = this;
-		const y = BigDecimal._toBigDecimal(number);
-		return x.integer.equalsState(y.integer);
-	}
-
-	/**
-	 * Compare values.
-	 * @param {KBigDecimalInputData} number
-	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
-	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
-	 */
-	compareTo(number, tolerance) {
-		const src = this;
-		const tgt = BigDecimal._toBigDecimal(number);
-		// 特殊な条件
-		if(!src.isFinite() || !tgt.isFinite()) {
-			return src.integer.compareTo(tgt.integer);
-		}
-		// 通常の条件
-		if(!tolerance) {
-			// 誤差の指定がない場合
-			// 簡易計算
-			{
-				const src_sign	= src.sign();
-				const tgt_sign	= tgt.sign();
-				if((src_sign === 0) && (src_sign === tgt_sign)) {
-					return 0;
-				}
-				else if(src_sign === 0) {
-					return - tgt_sign;
-				}
-				else if(tgt_sign === 0) {
-					return src_sign;
-				}
-			}
-			// 実際に計算する
-			if(src._scale === tgt._scale) {
-				return src.integer.compareTo(tgt.integer);
-			}
-			else if(src._scale > tgt._scale) {
-				const newdst = tgt.setScale(src._scale);
-				return src.integer.compareTo(newdst.integer);
-			}
-			else {
-				const newsrc = src.setScale(tgt._scale);
-				return newsrc.integer.compareTo(tgt.integer);
-			}
-		}
-		else {
-			const tolerance_ = BigDecimal._toBigDecimal(tolerance);
-			BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
-			const delta = src.sub(tgt);
-			BigDecimal.popDefaultContext();
-			const delta_abs = delta.abs();
-			if(delta_abs.compareTo(tolerance_) <= 0) {
-				return 0;
-			}
-			else {
-				return delta.sign();
-			}
-		}
-	}
-
-	/**
-	 * Maximum number.
-	 * @param {KBigDecimalInputData} number
-	 * @returns {BigDecimal} max([A, B])
-	 */
-	max(number) {
-		const val = BigDecimal._toBigDecimal(number);
-		if(this.isNaN() || val.isNaN()) {
-			return BigDecimal.NaN;
-		}
-		if(this.compareTo(val) >= 0) {
-			return this.clone();
-		}
-		else {
-			return val.clone();
-		}
-	}
-
-	/**
-	 * Minimum number.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {BigDecimal} min([A, B])
-	 */
-	min(number) {
-		const val = BigDecimal._toBigDecimal(number);
-		if(this.isNaN() || val.isNaN()) {
-			return BigDecimal.NaN;
-		}
-		if(this.compareTo(val) <= 0) {
-			return this.clone();
-		}
-		else {
-			return val.clone();
-		}
-	}
-
-	/**
-	 * Clip number within range.
-	 * @param {KBigDecimalInputData} min
-	 * @param {KBigDecimalInputData} max
-	 * @returns {BigDecimal} min(max(x, min), max)
-	 */
-	clip(min, max) {
-		const min_ = BigDecimal._toBigDecimal(min);
-		const max_ = BigDecimal._toBigDecimal(max);
-		if(this.isNaN() || min_.isNaN() || max_.isNaN()) {
-			return BigDecimal.NaN;
-		}
-		const arg_check = min_.compareTo(max_);
-		if(arg_check === 1) {
-			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
-		}
-		else if(arg_check === 0) {
-			return min_;
-		}
-		if(this.compareTo(max_) === 1) {
-			return max_;
-		}
-		else if(this.compareTo(min_) === -1) {
-			return min_;
-		}
-		return this;
-	}
-
-	// ----------------------
-	// 文字列化
-	// ----------------------
-	
-	/**
-	 * Convert to string.
-	 * @returns {string} 
-	 */
-	toString() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
-		}
-		// 「調整された指数」
-		const x = - this.scale() + (this.precision() - 1);
-		// スケールが 0 以上で、「調整された指数」が -6 以上
-		if((this.scale() >= 0) && (x >= -6)) {
-			return this.toPlainString();
-		}
-		else {
-			return this.toScientificNotation(x);
-		}
-	}
-
-	/**
-	 * Convert to string using scientific notation.
-	 * @param {KBigDecimalInputData} e_len - Number of digits in exponent part.
-	 * @returns {string} 
-	 */
-	toScientificNotation(e_len) {
-		if(!this.isFinite()) {
-			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
-		}
-		const e		= BigDecimal._toInteger(e_len);
-		const text	= this._getUnsignedIntegerString();
-		let s		= this.scale();
-		const x		= [];
-		let i, k;
-		// -
-		if(this.sign() === -1) {
-			x[x.length] = "-";
-		}
-		// 表示上の桁数
-		s = - e - s;
-		// 小数点が付かない
-		if(s >= 0) {
-			x[x.length] = text;
-			for(i = 0; i < s; i++) {
-				x[x.length] = "0";
-			}
-		}
-		// 小数点が付く
-		else {
-			k = this.precision() + s;
-			if(0 < k) {
-				x[x.length] = text.substring(0, k);
-				x[x.length] = ".";
-				x[x.length] = text.substring(k, text.length);
-			}
-			else {
-				k = - k;
-				x[x.length] = "0.";
-				for(i = 0; i < k; i++) {
-					x[x.length] = "0";
-				}
-				x[x.length] = text;
-			}
-		}
-		x[x.length] = "E";
-		if(e >= 0) {
-			x[x.length] = "+";
-		}
-		x[x.length] = e;
-		return x.join("");
-	}
-
-	/**
-	 * Convert to string usding technical notation.
-	 * @returns {string} 
-	 */
-	toEngineeringString() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
-		}
-		// 「調整された指数」
-		const x = - this.scale() + (this.precision() - 1);
-		// スケールが 0 以上で、「調整された指数」が -6 以上
-		if((this.scale() >= 0) && (x >= -6)) {
-			return this.toPlainString();
-		}
-		else {
-			// 0 でない値の整数部が 1 〜 999 の範囲に収まるように調整
-			return this.toScientificNotation(Math.floor(x / 3) * 3);
-		}
-	}
-
-	/**
-	 * Convert to string without exponential notation.
-	 * @returns {string} 
-	 */
-	toPlainString() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
-		}
-		// スケールの変換なし
-		if(this.scale() === 0) {
-			if(this.sign() < 0) {
-				return "-" + this._getUnsignedIntegerString();
-			}
-			else {
-				return this._getUnsignedIntegerString();
-			}
-		}
-		// 指数0で文字列を作成後、Eの後ろの部分をとっぱらう
-		const text = this.toScientificNotation(0);
-		return text.match(/^[^E]*/)[0];
-	}
-
-	// ----------------------
-	// 丸め
-	// ----------------------
-	
-	/**
-	 * Change the scale.
-	 * @param {KBigDecimalInputData} new_scale - New scale.
-	 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
-	 * @returns {BigDecimal} 
-	 */
-	setScale(new_scale, rounding_mode) {
-		if(!this.isFinite()) {
-			return this;
-		}
-		const newScale = BigDecimal._toInteger(new_scale);
-		if(this.scale() === newScale) {
-			// scaleが同一なので処理の必要なし
-			return(this.clone());
-		}
-		const roundingMode = (rounding_mode !== undefined) ? RoundingMode.valueOf(rounding_mode) : RoundingMode.UNNECESSARY;
-		// 文字列を扱ううえで、符号があるとやりにくいので外しておく
-		let text		= this._getUnsignedIntegerString();
-		const sign		= this.sign();
-		const sign_text	= sign >= 0 ? "" : "-";
-		// scale の誤差
-		// 0 以上なら 0 を加えればいい。0未満なら0を削るか、四捨五入など丸めを行う
-		const delta		= newScale - this.scale();	// この桁分増やすといい
-		if(0 <= delta) {
-			// 0を加える
-			let i;
-			for(i = 0; i < delta; i++) {
-				text = text + "0";
-			}
-			return new BigDecimal([new BigInteger(sign_text + text), newScale]);
-		}
-		const keta = text.length + delta;		// 最終的な桁数
-		const keta_marume = keta + 1;
-		if(keta <= 0) {
-			// 指定した scale では設定できない場合
-			// 例えば "0.1".setScale(-2), "10".setScale(-3) としても表すことは不可能であるため、
-			// sign（-1, 0, +1）のどれかの数値を使用して丸める
-			const outdata = (sign + roundingMode.getAddNumber(sign)) / 10;
-			// 上記の式は、CEILINGなら必ず1、正でCEILINGなら1、負でFLOORなら1、それ以外は0となり、
-			// さらに元々の数値が 0 なら 0、切り捨て不能なら例外が返る計算式である。
-			// これは Java の動作をまねています。
-			return new BigDecimal([new BigInteger(outdata), newScale]);
-		}
-		{
-			// 0を削るだけで解決する場合
-			// 単純な切捨て(0を削るのみ)
-			const zeros			= text.match(/0+$/);
-			const zero_length		= (zeros !== null) ? zeros[0].length : 0;
-			if(( (zero_length + delta) >= 0 ) || (roundingMode === RoundingMode.DOWN)) {
-				return new BigDecimal([new BigInteger(sign_text + text.substring(0, keta)), newScale]);
-			}
-		}
-		{
-			// 丸め計算で解決する場合
-			// 12345 -> '123'45
-			text = text.substring(0, keta_marume);
-			// 丸め計算に必要な切り取る桁数(後ろの1～2桁を取得)
-			const cutsize = text.length > 1 ? 2 : 1;
-			// '123'45 -> 1'23'4
-			const number = parseInt(text.substring(text.length - cutsize, text.length)) * sign;
-			// 「元の数」と「丸めに必要な数」を足す
-			const x1 = new BigInteger(sign_text + text);
-			const x2 = new BigInteger(roundingMode.getAddNumber(number));
-			text = x1.add(x2).toString();
-			// 丸め後の桁数に戻して
-			return new BigDecimal([new BigInteger(text.substring(0, text.length - 1)), newScale]);
-		}
-	}
-
-	/**
-	 * Round with specified settings.
-	 * 
-	 * - This method is not a method round the decimal point.
-	 * - This method converts numbers in the specified Context and rounds unconvertible digits.
-	 * 
-	 * Use `this.setScale(0, RoundingMode.HALF_UP)` if you want to round the decimal point.
-	 * When the argument is omitted, such decimal point rounding operation is performed.
-	 * @param {MathContext} [mc] - New setting.
-	 * @returns {BigDecimal} 
-	 */
-	round(mc) {
-		if(!this.isFinite()) {
-			return this;
-		}
-		if(arguments.length === 1) {
-			if(mc !== undefined) {
-				// MathContext を設定した場合
-				if(!(mc instanceof MathContext)) {
-					throw "not MathContext";
-				}
-				const newPrecision	= mc.getPrecision();
-				const delta			= newPrecision - this.precision();
-				if((delta === 0)||(newPrecision === 0)) {
-					return this.clone();
-				}
-				const newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode());
-				/* 精度を上げる必要があるため、0を加えた場合 */
-				if(delta > 0) {
-					return newBigDecimal;
-				}
-				/* 精度を下げる必要があるため、丸めた場合は、桁の数が正しいか調べる */
-				if(newBigDecimal.precision() === mc.getPrecision()) {
-					return newBigDecimal;
-				}
-				/* 切り上げなどで桁数が１つ増えた場合 */
-				const sign_text	= newBigDecimal.integer.sign() >= 0 ? "" : "-";
-				const abs_text	= newBigDecimal._getUnsignedIntegerString();
-				const inte_text	= sign_text + abs_text.substring(0, abs_text.length - 1);
-				return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1]);
-			}
-			else {
-				return this;
-			}
-		}
-		else {
-			// 小数点以下を四捨五入する
-			return this.setScale(0, RoundingMode.HALF_UP);
-		}
-	}
-
-	/**
-	 * Floor.
-	 * @returns {BigDecimal} floor(A)
-	 */
-	floor() {
-		if(!this.isFinite()) {
-			return this;
-		}
-		return this.setScale(0, RoundingMode.FLOOR);
-	}
-
-	/**
-	 * Ceil.
-	 * @returns {BigDecimal} ceil(A)
-	 */
-	ceil() {
-		if(!this.isFinite()) {
-			return this;
-		}
-		return this.setScale(0, RoundingMode.CEILING);
-	}
-	
-	/**
-	 * To integer rounded down to the nearest.
-	 * @returns {BigDecimal} fix(A), trunc(A)
-	 */
-	fix() {
-		if(!this.isFinite()) {
-			return this;
-		}
-		return this.setScale(0, RoundingMode.DOWN);
-	}
-
-	/**
-	 * Fraction.
-	 * @returns {BigDecimal} fract(A)
-	 */
-	fract() {
-		if(!this.isFinite()) {
-			return BigDecimal.NaN;
-		}
-		return this.sub(this.floor());
-	}
-
-	// ----------------------
-	// 指数
-	// ----------------------
-	
-	/**
-	 * Power function.
-	 * - An exception occurs when doing a huge multiplication.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {BigDecimal} pow(A, B)
-	 */
-	pow(number) {
-		const num = BigDecimal._toBigDecimal(number);
-		const src = this;
-		const tgt = num;
-		{
-			if(src.isNaN() || tgt.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			if(tgt.isZero()) {
-				return BigDecimal.ONE;
-			}
-			else if(src.isZero()) {
-				return BigDecimal.ZERO;
-			}
-			else if(src.isOne()) {
-				return src;
-			}
-			else if(src.isInfinite()) {
-				if(src.isPositiveInfinity()) {
-					return BigDecimal.POSITIVE_INFINITY;
-				}
-				else {
-					if(tgt.isPositiveInfinity()) {
-						return BigDecimal.NaN;
-					}
-					else {
-						return BigDecimal.create(Infinity * Math.pow(-1, Math.round(tgt.doubleValue)));
-					}
-				}
-			}
-			else if(tgt.isInfinite()) {
-				if(src.isNegative()) {
-					// 複素数
-					return BigDecimal.NaN;
-				}
-				if(src.compareTo(BigDecimal.ONE) < 0) {
-					if(tgt.isPositiveInfinity()) {
-						return BigDecimal.ZERO;
-					}
-					else if(tgt.isNegativeInfinity()) {
-						return BigDecimal.POSITIVE_INFINITY;
-					}
-				}
-				else {
-					if(tgt.isPositiveInfinity()) {
-						return BigDecimal.POSITIVE_INFINITY;
-					}
-					else if(tgt.isNegativeInfinity()) {
-						return BigDecimal.ZERO;
-					}
-				}
-			}
-		}
-		const mc = BigDecimal.getDefaultContext();
-		const integer = tgt.intValue;
-		if(Math.abs(integer) > 1000) {
-			throw BigDecimal.POSITIVE_INFINITY;
-		}
-		else if((mc.getPrecision() === 0) && (tgt.isNegative())) {
-			return BigDecimal.NaN; // 複素数
-		}
-		if(tgt.isInteger()) {
-			const is_negative = tgt.isNegative();
-			let n = Math.round(Math.abs(integer));
-			let x, y;
-			x = this.clone();
-			y = BigDecimal.ONE;
-			BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
-			while(n !== 0) {
-				if((n & 1) !== 0) {
-					y = y.mul(x);
-				}
-				x = x.square();
-				n >>>= 1;
-			}
-			BigDecimal.popDefaultContext();
-			// コンテキストの状態が変わっているので元に戻す
-			y.context = mc;
-			if(is_negative) {
-				y = y.inv();
-			}
-			y = y.round(mc);
-			return y;
-		}
-		else {
-			const mc = BigDecimal.getDefaultContext();
-			BigDecimal.pushDefaultContext(BigDecimal.getDefaultContext().increasePrecision());
-			const ret = this.log().mul(number).exp().round(mc);
-			BigDecimal.popDefaultContext();
-			return ret;
-		}
-	}
-	
-	/**
-	 * Square.
-	 * @returns {BigDecimal} A^2
-	 */
-	square() {
-		return this.mul(this);
-	}
-
-	/**
-	 * Square root.
-	 * @returns {BigDecimal} sqrt(A)
-	 */
-	sqrt() {
-		{
-			if(this.isZero()) {
-				return BigDecimal.ZERO;
-			}
-			else if(this.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			else if(this.isNegative()) {
-				return BigDecimal.NaN; // 複素数
-			}
-			else if(this.isInfinite()) {
-				return BigDecimal.POSITIVE_INFINITY;
-			}
-		}
-		if(this.isZero()) {
-			return BigDecimal.ZERO;
-		}
-		// ニュートンラフソン法は割り算があり速度が遅いので、以下の計算で求める。
-		{
-			const mc = BigDecimal.getDefaultContext();
-			BigDecimal.pushDefaultContext(BigDecimal.getDefaultContext().increasePrecision());
-			const ret = this.rsqrt().inv().round(mc);
-			BigDecimal.popDefaultContext();
-			return ret;
-		}
-	}
-
-	/**
-	 * Cube root.
-	 * @returns {BigDecimal} cbrt(A)
-	 */
-	cbrt() {
-		{
-			if(this.isZero()) {
-				return BigDecimal.ZERO;
-			}
-			else if(this.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			else if(this.isInfinite()) {
-				return this;
-			}
-		}
-		const scale = - this.scale() + (this.precision() - 1) + 1;
-		const sign = this.sign();
-		const abs = this.abs();
-		let ret;
-		// 小さい数値はpowを使ったほうが早く計算できる
-		if(scale < 30) {
-			const mc = BigDecimal.getDefaultContext();
-			BigDecimal.pushDefaultContext(BigDecimal.getDefaultContext().increasePrecision());
-			ret = abs.log().div(3).exp().round(mc);
-			BigDecimal.popDefaultContext();
-		}
-		else {
-			// ニュートン法によって求める
-			// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
-			const x0 = abs.compareTo(BigDecimal.ONE) === 1 ? abs : BigDecimal.ONE;
-			let xn = x0;
-			for(let i = 0; i < 1000; i++) {
-				const xn_2 = xn.mul(xn);
-				const xn1 = xn.mul(2).add(abs.div(xn_2)).div(3);
-				const delta = xn1.sub(xn);
-				if(delta.isZero()) {
-					break;
-				}
-				xn = xn1;
-			}
-			ret = xn;
-		}
-		return sign === 1 ? ret : ret.negate();
-	}
-	
-	/**
-	 * Reciprocal square root.
-	 * @returns {BigDecimal} rsqrt(A)
-	 */
-	rsqrt() {
-		{
-			if(this.isZero()) {
-				return BigDecimal.POSITIVE_INFINITY;
-			}
-			else if(this.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			else if(this.isInfinite()) {
-				return BigDecimal.ZERO;
-			}
-			else if(this.isNegative()) {
-				return BigDecimal.NaN; // 複素数
-			}
-		}
-		/**
-		 * @type {BigDecimal}
-		 */
-		const A = this;
-		// 4次収束のニュートン・ラフソン法で求める
-		// 使用する固定値を列挙
-		const B1 = BigDecimal.create(1);
-		const B5 = BigDecimal.create(5);
-		const B6 = BigDecimal.create(6);
-		const B8 = BigDecimal.create(8);
-		const B16 = BigDecimal.create(16);
-		const B16r = B16.inv();
-		// 初期値
-		const x0 = A.inv();
-		if(x0.isZero()) {
-			throw "ArithmeticException";
-		}
-		let xn = x0;
-		for(let i = 0; i < 50; i++) {
-			const h = B1.sub(A.mul(xn.square()));
-			if(h.isZero()) {
-				break;
-			}
-			xn = xn.mul(B1.add(h.mul(B8.add(h.mul(B6.add(B5.mul(h))))).mul(B16r)));
-		}
-		// 参考
-		// Lyuka - 逆数と平方根を求める高次収束アルゴリズム
-		// http://www.finetune.co.jp/~lyuka/technote/fract/sqrt.html
-		return xn;
-	}
-	
-	/**
-	 * Logarithmic function.
-	 * @returns {BigDecimal} log(A)
-	 */
-	log() {
-		{
-			if(this.isZero()) {
-				return BigDecimal.NEGATIVE_INFINITY;
-			}
-			else if(this.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			else if(this.isNegative()) {
-				return BigDecimal.NaN; // 複素数
-			}
-			else if(this.isInfinite()) {
-				return BigDecimal.POSITIVE_INFINITY;
-			}
-		}
-		if(this.isOne()) {
-			return BigDecimal.ZERO;
-		}
-		const mc = BigDecimal.getDefaultContext();
-		// log(x)
-		// -> x = a * E -> log(a * E) = log(a) + log(E)
-		// -> x = a / E -> log(a / E) = log(E) - log(a)
-		// 上記の式を使用して、適切な値の範囲で計算できるように調整する
-		const scale = - this.scale() + (this.precision() - 1) + 1;
-		BigDecimal.pushDefaultContext(new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP));
-		/**
-		 * @type {BigDecimal}
-		 */
-		let a = this;
-		let b = 0;
-		{
-			// 範囲を 1 < x <= e の間に収める
-			const e = BigDecimal.E;
-			const compare_to_e = a.compareTo(e);
-			if(compare_to_e === 0) {
-				BigDecimal.popDefaultContext();
-				return BigDecimal.ONE;
-			}
-			// 内部の値が大きすぎるので小さくする
-			else if(compare_to_e > 0) {
-				for(; b < 300; b++) {
-					if(a.compareTo(e) <= 0) {
-						break;
-					}
-					a = a.div(e);
-				}
-			}
-			// 内部の値が小さすぎるので大きくする
-			else {
-				const B1 = new BigDecimal(1);
-				if(a.compareTo(B1) < 0) {
-					for(; b > -300; b--) {
-						if(a.compareTo(B1) > 0) {
-							break;
-						}
-						a = a.mul(e);
-					}
-				}
-			}
-		}
-		BigDecimal.popDefaultContext();
-		a = a.round(BigDecimal.getDefaultContext());
-		// この時点で 1 < x <= e となる
-		// log((1+u)/(1-u)) = 2 * (u + u^3/3 + u^5/5 + ...) の式を使用する
-		// solve((1+u)/(1-u)-x=0,[u]);->u=(x-1)/(x+1)
-		const u = a.sub(BigDecimal.ONE).div(a.add(BigDecimal.ONE));
-		const u_x2 = u.mul(u);
-		{
-			// 初期値
-			let x = u;
-			let n0 = u;
-			let k = BigDecimal.ONE;
-			// 繰り返し求める
-			for(let i = 0; i < 300; i++) {
-				k = k.add(BigDecimal.TWO);
-				x = x.mul(u_x2);
-				const n1 = n0.add(x.div(k));
-				const delta = n1.sub(n0);
-				n0 = n1;
-				if(delta.isZero()) {
-					break;
-				}
-			}
-			a = n0.mul(BigDecimal.TWO);
-		}
-		// 最終結果
-		const y = a.add(b);
-		return y;
-	}
-
-	/**
-	 * Exponential function.
-	 * @returns {BigDecimal} exp(A)
-	 */
-	exp() {
-		{
-			if(this.isZero()) {
-				return BigDecimal.ONE;
-			}
-			else if(this.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			else if(this.isNegativeInfinity()) {
-				return BigDecimal.ZERO;
-			}
-			else if(this.isPositiveInfinity()) {
-				return BigDecimal.POSITIVE_INFINITY;
-			}
-		}
-		const is_negative = this.isNegative();
-		/**
-		 * @type {BigDecimal}
-		 */
-		let number = this;
-		// 負の値でマクローリン展開すると振動して桁落ちする可能性があるため正の値にしておく
-		if(is_negative) {
-			number = number.negate();
-		}
-		// X = exp(x) とすると X = exp(x/A)^A である。
-		// そのため、収束を早くするためにexpの中を小さくしておき、最後にpowを行う。
-		// scale > (10^a) = b ≒ this
-		// 小さな値で計算するため精度をあげる
-		const scale = - number.scale() + (number.precision() - 1) + 1;
-		const mc = BigDecimal.getDefaultContext();
-		BigDecimal.pushDefaultContext(new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP));
-		let a = 0;
-		let b = 1;
-		{
-			const val = number.doubleValue;
-			if(val >= 10) {
-				a = Math.floor(Math.log(Math.floor(val)) / Math.log(10));
-				b = Math.pow(10, a);
-			}
-		}
-		// ここでターゲットの数値を割ってしまう
-		const target = number.div(b, mc);
-		// 小さくなった値に対してexpを計算する
-		let y;
-		{
-			// マクローリン展開で計算する
-			// 初期値
-			let x = target;
-			let n0 = BigDecimal.ONE.add(target);
-			let k = BigDecimal.ONE;
-			// 繰り返し求める
-			for(let i = 2; i < 300; i++) {
-				k = k.mul(i);
-				x = x.mul(target);
-				const n1 = n0.add(x.div(k));
-				const delta = n1.sub(n0);
-				n0 = n1;
-				if(delta.isZero()) {
-					break;
-				}
-			}
-			y = n0;
-		}
-		// exp(x) = pow(y, b)である。
-		y = y.pow(b);
-		BigDecimal.popDefaultContext();
-		y = y.round(BigDecimal.getDefaultContext());
-		// 負の値だったら 1/(x^2) にして戻す
-		if(is_negative) {
-			return y.inv();
-		}
-		else {
-			return y;
-		}
-	}
-
-	/**
-	 * e^x - 1
-	 * @returns {BigDecimal} expm1(A)
-	 */
-	expm1() {
-		return this.exp().sub(1);
-	}
-
-	/**
-	 * ln(1 + x)
-	 * @returns {BigDecimal} log1p(A)
-	 */
-	log1p() {
-		return this.add(1).log();
-	}
-	
-	/**
-	 * log_2(x)
-	 * @returns {BigDecimal} log2(A)
-	 */
-	log2() {
-		return this.log().div(BigDecimal.LN2);
-		
-	}
-
-	/**
-	 * log_10(x)
-	 * @returns {BigDecimal} log10(A)
-	 */
-	log10() {
-		return this.log().div(BigDecimal.LN10);
-	}
-	
-	// ----------------------
-	// 三角関数
-	// ----------------------
-
-	/**
-	 * Sine function.
-	 * @returns {BigDecimal} sin(A)
-	 */
-	sin() {
-		if(!this.isFinite()) {
-			return BigDecimal.NaN;
-		}
-		// 2PIの余りを実際の計算で使用する。
-		const scale = - this.scale() + (this.precision() - 1) + 1;
-		const new_mc = new MathContext(BigDecimal.getDefaultContext().getPrecision() + scale, RoundingMode.HALF_UP);
-		BigDecimal.pushDefaultContext(new_mc);
-		const target = this.mod(BigDecimal.TWO_PI);
-		BigDecimal.popDefaultContext();
-		// マクローリン展開で計算する
-		// 初期値
-		let n0 = target;
-		{
-			const t_x2 = target.mul(target);
-			let x = target;
-			let k = BigDecimal.ONE;
-			let sign = -1;
-			// 繰り返し求める
-			for(let i = 2; i < 300; i++) {
-				k = k.mul(i);
-				if((i % 2) === 1) {
-					x = x.mul(t_x2);
-					let n1;
-					if(sign < 0) {
-						n1 = n0.sub(x.div(k));
-						sign = 1;
-					}
-					else {
-						n1 = n0.add(x.div(k));
-						sign = -1;
-					}
-					const delta = n1.sub(n0);
-					n0 = n1;
-					if(delta.isZero()) {
-						break;
-					}
-				}
-			}
-		}
-		return n0;
-	}
-
-	/**
-	 * Cosine function.
-	 * @returns {BigDecimal} cos(A)
-	 */
-	cos() {
-		if(!this.isFinite()) {
-			return BigDecimal.NaN;
-		}
-		const scale = - this.scale() + (this.precision() - 1) + 1;
-		const new_mc = new MathContext(BigDecimal.getDefaultContext().getPrecision() + scale, RoundingMode.HALF_UP);
-		BigDecimal.pushDefaultContext(new_mc);
-		const target = this.mod(BigDecimal.TWO_PI);
-		BigDecimal.popDefaultContext();
-		// マクローリン展開で計算する
-		// 初期値
-		let n0 = BigDecimal.ONE;
-		{
-			let x = BigDecimal.ONE;
-			const t_x2 = target.mul(target);
-			let k = BigDecimal.ONE;
-			let sign = -1;
-			// 繰り返し求める
-			for(let i = 2; i < 300; i++) {
-				k = k.mul(i);
-				if((i % 2) === 0) {
-					x = x.mul(t_x2);
-					let n1;
-					if(sign < 0) {
-						n1 = n0.sub(x.div(k));
-						sign = 1;
-					}
-					else {
-						n1 = n0.add(x.div(k));
-						sign = -1;
-					}
-					const delta = n1.sub(n0);
-					n0 = n1;
-					if(delta.isZero()) {
-						break;
-					}
-				}
-			}
-		}
-		return n0;
-	}
-
-	/**
-	 * Tangent function.
-	 * @returns {BigDecimal} tan(A)
-	 */
-	tan() {
-		if(!this.isFinite()) {
-			return BigDecimal.NaN;
-		}
-		return this.sin().div(this.cos());
-	}
-
-	/**
-	 * Atan (arc tangent) function.
-	 * - Return the values of [-PI/2, PI/2].
-	 * @returns {BigDecimal} atan(A)
-	 */
-	atan() {
-		if(!this.isFinite()) {
-			if(this.isNaN()) {
-				return BigDecimal.NaN;
-			}
-			else if(this.isPositiveInfinity()) {
-				return BigDecimal.HALF_PI;
-			}
-			else {
-				return BigDecimal.HALF_PI.negate();
-			}
-		}
-		if(this.isZero()) {
-			const y = BigDecimal.ZERO;
-			return y;
-		}
-		else if(this.compareTo(BigDecimal.ONE) === 0) {
-			const y = BigDecimal.QUARTER_PI;
-			return y;
-		}
-		else if(this.compareTo(BigDecimal.MINUS_ONE) === 0) {
-			const y = BigDecimal.QUARTER_PI.negate();
-			return y;
-		}
-		// x を 0 <= x <= 0.5 に収める
-		const target_sign = this.sign();
-		let target = this.abs();
-		let type;
-		if(target.compareTo(BigDecimal.TWO) === 1) {
-			// atan(x) = pi/2-atan(1/x)
-			type = 1;
-			target = target.inv();
-		}
-		else if(target.compareTo(BigDecimal.HALF) === 1) {
-			// atan(x) = pi/4-atan((1-x)/(1+x))
-			type = 2;
-			target = BigDecimal.ONE.sub(target).div(BigDecimal.ONE.add(target));
-		}
-		else {
-			type = 3;
-		}
-		// グレゴリー級数
-		// 初期値
-		let n0 = target;
-		{
-			const t_x2 = target.mul(target);
-			let x = target;
-			let k = BigDecimal.ONE;
-			let sign = -1;
-			// 繰り返し求める
-			for(let i = 0; i < 300; i++) {
-				x = x.mul(t_x2);
-				k = k.add(BigDecimal.TWO);
-				let n1;
-				if(sign < 0) {
-					n1 = n0.sub(x.div(k));
-					sign = 1;
-				}
-				else {
-					n1 = n0.add(x.div(k));
-					sign = -1;
-				}
-				const delta = n1.sub(n0);
-				n0 = n1;
-				if(delta.isZero()) {
-					break;
-				}
-			}
-		}
-		if(type === 1) {
-			n0 = BigDecimal.HALF_PI.sub(n0);
-		}
-		else if(type === 2) {
-			n0 = BigDecimal.QUARTER_PI.sub(n0);
-		}
-		if(target_sign < 0) {
-			n0 = n0.negate();
-		}
-		return n0;
-	}
-
-	/**
-	 * Atan (arc tangent) function.
-	 * Return the values of [-PI, PI] .
-	 * Supports only real numbers.
-	 * @param {KBigDecimalInputData} number 
-	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
-	 * @returns {BigDecimal} atan2(Y, X)
-	 */
-	atan2(number, context) {
-		const default_context = BigDecimal.getDefaultContext();
-		// y.atan2(x) とする。
-		const y = this.round(context);
-		const x = new BigDecimal([number, context]);
-		if(x.isNaN() || y.isNaN()) {
-			return BigDecimal.NaN;
-		}
-		// 参考: https://en.wikipedia.org/wiki/Inverse_trigonometric_functions
-		let ret;
-		if(x.isPositive()) {
-			ret = y.div(x).atan();
-		}
-		else if(y.isNotNegative() && x.isNegative()) {
-			ret = y.div(x).atan().add(BigDecimal.PI);
-		}
-		else if(y.isNegative() && x.isNegative()) {
-			ret = y.div(x).atan().sub(BigDecimal.PI);
-		}
-		else if(y.isPositive()) {
-			ret = BigDecimal.HALF_PI;
-		}
-		else if(y.isNegative()) {
-			ret = BigDecimal.HALF_PI.negate();
-		}
-		else {
-			throw "ArithmeticException";
-		}
-		BigDecimal.setDefaultContext(default_context);
-		return ret;
-	}
-
-	// ----------------------
-	// 双曲線関数
-	// ----------------------
-	
-	/**
-	 * Arc sine function.
-	 * @returns {BigDecimal} asin(A)
-	 */
-	asin() {
-		// 逆正弦
-		// 複素数
-		const re_1 = this.square().negate().add(1).sqrt();
-		const im_1 = this;
-		// 複素数のログ
-		const norm = re_1.square().add(im_1.square()).sqrt();
-		const arg  = im_1.atan2(re_1);
-		const re_2 = norm.log();
-		const im_2 = arg;
-		// -i を掛け算する
-		return re_2.add(im_2);
-	}
-
-	/**
-	 * Arc cosine function.
-	 * @returns {BigDecimal} acos(A)
-	 */
-	acos() {
-		// 逆余弦
-		// 複素数
-		const re_1 = this;
-		const im_1 = this.square().negate().add(1).sqrt();
-		// 複素数のログ
-		const norm = re_1.square().add(im_1.square()).sqrt();
-		const arg  = im_1.atan2(re_1);
-		const re_2 = norm.log();
-		const im_2 = arg;
-		// -i を掛け算する
-		return re_2.add(im_2);
-	}
-	
-
-	/**
-	 * Hyperbolic sine function.
-	 * @returns {BigDecimal} sinh(A)
-	 */
-	sinh() {
-		// 双曲線正弦
-		if(this.isInfinite()) {
-			return this;
-		}
-		const y = this.exp();
-		return y.sub(y.inv()).mul(0.5);
-	}
-
-	/**
-	 * Inverse hyperbolic sine function.
-	 * @returns {BigDecimal} asinh(A)
-	 */
-	asinh() {
-		if(this.isInfinite()) {
-			return this;
-		}
-		return this.add(this.mul(this).add(1).sqrt()).log();
-	}
-
-	/**
-	 * Hyperbolic cosine function.
-	 * @returns {BigDecimal} cosh(A)
-	 */
-	cosh() {
-		// 双曲線余弦
-		if(this.isInfinite()) {
-			return BigDecimal.POSITIVE_INFINITY;
-		}
-		return this.exp().add(this.negate().exp()).mul(0.5);
-	}
-
-	/**
-	 * Inverse hyperbolic cosine function.
-	 * @returns {BigDecimal} acosh(A)
-	 */
-	acosh() {
-		// 逆双曲線余弦 Math.log(x + Math.sqrt(x * x - 1));
-		if(this.isInfinite()) {
-			return BigDecimal.NaN;
-		}
-		return this.add(this.mul(this).sub(1).sqrt()).log();
-	}
-
-	/**
-	 * Hyperbolic tangent function.
-	 * @returns {BigDecimal} tanh(A)
-	 */
-	tanh() {
-		// 双曲線正接
-		if(this.isInfinite()) {
-			return BigDecimal.create(this.sign());
-		}
-		const y =  this.mul(2).exp();
-		return y.sub(1).div(y.add(1));
-	}
-	
-	/**
-	 * Inverse hyperbolic tangent function.
-	 * @returns {BigDecimal} atanh(A)
-	 */
-	atanh() {
-		// 逆双曲線正接
-		return this.add(1).div(this.negate().add(1)).log().mul(0.5);
-	}
-
-	/**
-	 * Secant function.
-	 * @returns {BigDecimal} sec(A)
-	 */
-	sec() {
-		// 正割
-		return this.cos().inv();
-	}
-
-	/**
-	 * Reverse secant function.
-	 * @returns {BigDecimal} asec(A)
-	 */
-	asec() {
-		// 逆正割
-		return this.inv().acos();
-	}
-
-	/**
-	 * Hyperbolic secant function.
-	 * @returns {BigDecimal} sech(A)
-	 */
-	sech() {
-		// 双曲線正割
-		if(this.isNegativeInfinity()) {
-			return BigDecimal.ZERO;
-		}
-		return this.exp().add(this.negate().exp()).inv().mul(2);
-	}
-
-	/**
-	 * Inverse hyperbolic secant function.
-	 * @returns {BigDecimal} asech(A)
-	 */
-	asech() {
-		// 逆双曲線正割
-		return this.inv().add(this.square().inv().sub(1).sqrt()).log();
-	}
-
-	/**
-	 * Cotangent function.
-	 * @returns {BigDecimal} cot(A)
-	 */
-	cot() {
-		// 余接
-		if(this.isZero()) {
-			return BigDecimal.POSITIVE_INFINITY;
-		}
-		return this.tan().inv();
-	}
-
-	/**
-	 * Inverse cotangent function.
-	 * @returns {BigDecimal} acot(A)
-	 */
-	acot() {
-		// 逆余接
-		if(this.isZero()) {
-			return BigDecimal.HALF_PI;
-		}
-		return this.inv().atan();
-	}
-
-	/**
-	 * Hyperbolic cotangent function.
-	 * @returns {BigDecimal} coth(A)
-	 */
-	coth() {
-		// 双曲線余接
-		if(this.isInfinite()) {
-			return BigDecimal.create(this.sign());
-		}
-		const y =  this.mul(2).exp();
-		return y.add(1).div(y.sub(1));
-	}
-
-	/**
-	 * Inverse hyperbolic cotangent function.
-	 * @returns {BigDecimal} acoth(A)
-	 */
-	acoth() {
-		// 逆双曲線余接
-		if(this.isInfinite()) {
-			return BigDecimal.ZERO;
-		}
-		return this.add(1).div(this.sub(1)).log().mul(0.5);
-	}
-
-	/**
-	 * Cosecant function.
-	 * @returns {BigDecimal} csc(A)
-	 */
-	csc() {
-		// 余割
-		if(this.isZero()) {
-			return BigDecimal.POSITIVE_INFINITY;
-		}
-		return this.sin().inv();
-	}
-
-	/**
-	 * Inverse cosecant function.
-	 * @returns {BigDecimal} acsc(A)
-	 */
-	acsc() {
-		// 逆余割
-		return this.inv().asin();
-	}
-
-	/**
-	 * Hyperbolic cosecant function.
-	 * @returns {BigDecimal} csch(A)
-	 */
-	csch() {
-		if(this.isInfinite()) {
-			return BigDecimal.ZERO;
-		}
-		else if(this.isZero()) {
-			return BigDecimal.POSITIVE_INFINITY;
-		}
-		// 双曲線余割
-		return this.exp().sub(this.negate().exp()).inv().mul(2);
-	}
-
-	/**
-	 * Inverse hyperbolic cosecant function.
-	 * @returns {BigDecimal} acsch(A)
-	 */
-	acsch() {
-		if(this.isZero()) {
-			return BigDecimal.POSITIVE_INFINITY;
-		}
-		// 逆双曲線余割
-		return this.inv().add(this.square().inv().add(1).sqrt()).log();
-	}
-
-	// ----------------------
-	// 信号処理系
-	// ----------------------
-	
-	/**
-	 * Normalized sinc function.
-	 * @returns {BigDecimal} sinc(A)
-	 */
-	sinc() {
-		if(this.isZero()) {
-			return(BigDecimal.ONE);
-		}
-		const x = BigDecimal.PI.mul(this);
-		return x.sin().div(x);
-	}
-
-	// ----------------------
-	// 乱数
-	// ----------------------
-	
-	/**
-	 * Create random values with uniform random numbers.
-	 * @param {Random} [random] - Class for creating random numbers.
-	 * @returns {BigDecimal}
-	 */
-	static rand(random) {
-		let precision = BigDecimal.getDefaultContext().getPrecision();
-		if(precision <= 0) {
-			precision = 100;
-		}
-		const keta = Math.ceil(precision * Math.log(10) / Math.log(2));
-		const a = BigInteger.ONE.shiftLeft(keta);
-		const b = BigInteger.createRandomBigInteger(keta, random);
-		return (new BigDecimal(b)).div(a);
-	}
-
-	/**
-	 * Create random values with normal distribution.
-	 * @param {Random} [random] - Class for creating random numbers.
-	 * @returns {BigDecimal}
-	 */
-	static randn(random) {
-		// Box-Muller法
-		const a = BigDecimal.rand(random).log().mul(-2).sqrt();
-		const b = BigDecimal.rand(random).mul(2).mul(BigDecimal.PI);
-		const y = a.mul(b.sin());
-		return y;
-	}
-
-	// ----------------------
-	// テスト系
-	// ----------------------
-	
-	/**
-	 * Return true if the value is integer.
-	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
-	 * @returns {boolean}
-	 */
-	isInteger(tolerance) {
-		if(!this.isFinite()) {
-			return false;
-		}
-		return this.sub(this.fix()).isZero(tolerance);
-	}
-
-	/**
-	 * this === 0
-	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
-	 * @returns {boolean}
-	 */
-	isZero(tolerance) {
-		if(!this.isFinite()) {
-			return false;
-		}
-		if(tolerance) {
-			return this.equals(BigDecimal.ZERO, tolerance);
-		}
-		else {
-			return this.integer.isZero();
-		}
-	}
-	
-	/**
-	 * this === 1
-	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
-	 * @returns {boolean}
-	 */
-	isOne(tolerance) {
-		if(!this.isFinite()) {
-			return false;
-		}
-		return this.compareTo(BigDecimal.ONE, tolerance) === 0;
-	}
-
-	/**
-	 * this > 0
-	 * @returns {boolean}
-	 */
-	isPositive() {
-		return this.integer.isPositive();
-	}
-
-	/**
-	 * this < 0
-	 * @returns {boolean}
-	 */
-	isNegative() {
-		return this.integer.isNegative();
-	}
-
-	/**
-	 * this >= 0
-	 * @returns {boolean}
-	 */
-	isNotNegative() {
-		return this.integer.isNotNegative();
-	}
-	
-	/**
-	 * this === NaN
-	 * @returns {boolean} isNaN(A)
-	 */
-	isNaN() {
-		return this.integer.isNaN();
-	}
-	
-	/**
-	 * this === Infinity
-	 * @returns {boolean} isPositiveInfinity(A)
-	 */
-	isPositiveInfinity() {
-		return this.integer.isPositiveInfinity();
-	}
-
-	/**
-	 * this === -Infinity
-	 * @returns {boolean} isNegativeInfinity(A)
-	 */
-	isNegativeInfinity() {
-		return this.integer.isNegativeInfinity();
-	}
-
-	/**
-	 * this === Infinity or -Infinity
-	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
-	 */
-	isInfinite() {
-		return this.integer.isInfinite();
-	}
-	
-	/**
-	 * Return true if the value is finite number.
-	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
-	 */
-	isFinite() {
-		return this.integer.isFinite();
-	}
-
-	// ----------------------
-	// ビット演算系
-	// ----------------------
-	
-	/**
-	 * Logical AND.
-	 * - Calculated as an integer.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {BigDecimal} A & B
-	 */
-	and(number) {
-		const n_src = this;
-		const n_tgt = BigDecimal._toBigDecimal(number);
-		const src	= n_src.round().toBigInteger();
-		const tgt	= n_tgt.round().toBigInteger();
-		return new BigDecimal(src.and(tgt));
-	}
-
-	/**
-	 * Logical OR.
-	 * - Calculated as an integer.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {BigDecimal} A | B
-	 */
-	or(number) {
-		const n_src = this;
-		const n_tgt = BigDecimal._toBigDecimal(number);
-		const src	= n_src.round().toBigInteger();
-		const tgt	= n_tgt.round().toBigInteger();
-		return new BigDecimal(src.or(tgt));
-	}
-
-	/**
-	 * Logical Exclusive-OR.
-	 * - Calculated as an integer.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {BigDecimal} A ^ B
-	 */
-	xor(number) {
-		const n_src = this;
-		const n_tgt = BigDecimal._toBigDecimal(number);
-		const src	= n_src.round().toBigInteger();
-		const tgt	= n_tgt.round().toBigInteger();
-		return new BigDecimal(src.xor(tgt));
-	}
-
-	/**
-	 * Logical Not. (mutable)
-	 * - Calculated as an integer.
-	 * @returns {BigDecimal} !A
-	 */
-	not() {
-		const n_src = this;
-		const src	= n_src.round().toBigInteger();
-		return new BigDecimal(src.not());
-	}
-	
-	/**
-	 * this << n
-	 * - Calculated as an integer.
-	 * @param {KBigDecimalInputData} n
-	 * @returns {BigDecimal} A << n
-	 */
-	shift(n) {
-		const src		= this.round().toBigInteger();
-		const number	= BigDecimal._toInteger(n);
-		return new BigDecimal(src.shift(number));
-	}
-
-	// ----------------------
-	// gcd, lcm
-	// ----------------------
-	
-	/**
-	 * Euclidean algorithm.
-	 * - Calculated as an integer.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {BigDecimal} gcd(x, y)
-	 */
-	gcd(number) {
-		const x = this.round().toBigInteger();
-		const y = BigDecimal._toBigDecimal(number).toBigInteger();
-		const result = x.gcd(y);
-		return new BigDecimal(result);
-	}
-
-	/**
-	 * Extended Euclidean algorithm.
-	 * - Calculated as an integer.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {Array<BigDecimal>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
-	 */
-	extgcd(number) {
-		const x = this.round().toBigInteger();
-		const y = BigDecimal._toBigDecimal(number).toBigInteger();
-		const result = x.extgcd(y);
-		return [new BigDecimal(result[0]), new BigDecimal(result[1]), new BigDecimal(result[2])];
-	}
-
-	/**
-	 * Least common multiple.
-	 * - Calculated as an integer.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {BigDecimal} lcm(x, y)
-	 */
-	lcm(number) {
-		const x = this.round().toBigInteger();
-		const y = BigDecimal._toBigDecimal(number).toBigInteger();
-		const result = x.lcm(y);
-		return new BigDecimal(result);
-	}
-
-	// ----------------------
-	// mod
-	// ----------------------
-
-	/**
-	 * Modular exponentiation.
-	 * - Calculated as an integer.
-	 * @param {KBigDecimalInputData} exponent
-	 * @param {KBigDecimalInputData} m 
-	 * @returns {BigDecimal} A^B mod m
-	 */
-	modPow(exponent, m) {
-		const A = this.round().toBigInteger();
-		const B = BigDecimal._toBigDecimal(exponent).toBigInteger();
-		const m_ = BigDecimal._toBigDecimal(m).toBigInteger();
-		const result = A.modPow(B, m_);
-		return new BigDecimal(result);
-	}
-
-	/**
-	 * Modular multiplicative inverse.
-	 * - Calculated as an integer.
-	 * @param {KBigDecimalInputData} m
-	 * @returns {BigDecimal} A^(-1) mod m
-	 */
-	modInverse(m) {
-		const A = this.round().toBigInteger();
-		const m_ = BigDecimal._toBigDecimal(m).toBigInteger();
-		const result = A.modInverse(m_);
-		return new BigDecimal(result);
-	}
-	
-	// ----------------------
-	// 素数
-	// ----------------------
-	
-	/**
-	 * Return true if the value is prime number.
-	 * - Calculated as an integer.
-	 * - Calculate up to `2251799813685248(=2^51)`.
-	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
-	 */
-	isPrime() {
-		const src = this.round().toBigInteger();
-		return src.isPrime();
-	}
-	
-	/**
-	 * Return true if the value is prime number by Miller-Labin prime number determination method.
-	 * 
-	 * Attention : it takes a very long time to process.
-	 * - Calculated as an integer.
-	 * @param {KBigDecimalInputData} [certainty=100] - Repeat count (prime precision).
-	 * @returns {boolean}
-	 */
-	isProbablePrime(certainty) {
-		const src = this.round().toBigInteger();
-		return src.isProbablePrime(certainty !== undefined ? BigDecimal._toInteger(certainty) : undefined);
-	}
-
-	/**
-	 * Next prime.
-	 * @param {KBigDecimalInputData} [certainty=100] - Repeat count (prime precision).
-	 * @param {KBigDecimalInputData} [search_max=100000] - Search range of next prime.
-	 * @returns {BigDecimal}
-	 */
-	nextProbablePrime(certainty, search_max) {
-		const src = this.round().toBigInteger();
-		const p1 = certainty !== undefined ? BigDecimal._toInteger(certainty) : undefined;
-		const p2 = search_max !== undefined ? BigDecimal._toInteger(search_max) : undefined;
-		return BigDecimal.create(src.nextProbablePrime(p1, p2));
-	}
-
-	// ----------------------
-	// 定数
-	// ----------------------
-	
-	/**
-	 * -1
-	 * @returns {BigDecimal} -1
-	 */
-	static get MINUS_ONE() {
-		return CACHED_DATA.MINUS_ONE.get();
-	}
-
-	/**
-	 * 0
-	 * @returns {BigDecimal} 0
-	 */
-	static get ZERO() {
-		return CACHED_DATA.ZERO.get();
-	}
-	
-	/**
-	 * 0.5
-	 * @returns {BigDecimal} 0.5
-	 */
-	static get HALF() {
-		return CACHED_DATA.HALF.get();
-	}
-	
-	/**
-	 * 1
-	 * @returns {BigDecimal} 1
-	 */
-	static get ONE() {
-		return CACHED_DATA.ONE.get();
-	}
-	
-	/**
-	 * 2
-	 * @returns {BigDecimal} 2
-	 */
-	static get TWO() {
-		return CACHED_DATA.TWO.get();
-	}
-	
-	/**
-	 * 10
-	 * @returns {BigDecimal} 10
-	 */
-	static get TEN() {
-		return CACHED_DATA.TEN.get();
-	}
-
-	/**
-	 * PI
-	 * @returns {BigDecimal} 3.14...
-	 */
-	static get PI() {
-		return CACHED_DATA.PI.get();
-	}
-
-	/**
-	 * 0.25 * PI.
-	 * @returns {BigDecimal} 0.78...
-	 */
-	static get QUARTER_PI() {
-		return CACHED_DATA.QUARTER_PI.get();
-	}
-
-	/**
-	 * 0.5 * PI.
-	 * @returns {BigDecimal} 1.57...
-	 */
-	static get HALF_PI() {
-		return CACHED_DATA.HALF_PI.get();
-	}
-
-	/**
-	 * 2 * PI.
-	 * @returns {BigDecimal} 6.28...
-	 */
-	static get TWO_PI() {
-		return CACHED_DATA.TWO_PI.get();
-	}
-
-	/**
-	 * E, Napier's constant.
-	 * @returns {BigDecimal} E
-	 */
-	static get E() {
-		return CACHED_DATA.E.get();
-	}
-
-	/**
-	 * log_e(2)
-	 * @returns {BigDecimal} ln(2)
-	 */
-	static get LN2() {
-		return CACHED_DATA.LN2.get();
-	}
-
-	/**
-	 * log_e(10)
-	 * @returns {BigDecimal} ln(10)
-	 */
-	static get LN10() {
-		return CACHED_DATA.LN10.get();
-	}
-
-	/**
-	 * log_2(e)
-	 * @returns {BigDecimal} log_2(e)
-	 */
-	static get LOG2E() {
-		return CACHED_DATA.LOG2E.get();
-	}
-	
-	/**
-	 * log_10(e)
-	 * @returns {BigDecimal} log_10(e)
-	 */
-	static get LOG10E() {
-		return CACHED_DATA.LOG10E.get();
-	}
-	
-	/**
-	 * sqrt(2)
-	 * @returns {BigDecimal} sqrt(2)
-	 */
-	static get SQRT2() {
-		return CACHED_DATA.SQRT2.get();
-	}
-	
-	/**
-	 * sqrt(0.5)
-	 * @returns {BigDecimal} sqrt(0.5)
-	 */
-	static get SQRT1_2() {
-		return CACHED_DATA.SQRT1_2.get();
-	}
-
-	/**
-	 * Positive infinity.
-	 * @returns {BigDecimal} Infinity
-	 */
-	static get POSITIVE_INFINITY() {
-		return DEFINE$2.POSITIVE_INFINITY;
-	}
-	
-	/**
-	 * Negative Infinity.
-	 * @returns {BigDecimal} -Infinity
-	 */
-	static get NEGATIVE_INFINITY() {
-		return DEFINE$2.NEGATIVE_INFINITY;
-	}
-
-	/**
-	 * Not a Number.
-	 * @returns {BigDecimal} NaN
-	 */
-	static get NaN() {
-		return DEFINE$2.NaN;
-	}
-
-	// ----------------------
-	// 互換性
-	// ----------------------
-	
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number}
-	 */
-	signum() {
-		return this.sign();
-	}
-
-	/**
-	 * Subtract.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {BigDecimal} A - B
-	 */
-	subtract(number) {
-		return this.sub(number);
-	}
-
-	/**
-	 * Multiply.
-	 * @param {KBigDecimalInputData} number
-	 * @returns {BigDecimal} A * B
-	 */
-	multiply(number) {
-		return this.mul(number);
-	}
-
-	/**
-	 * Divide.
-	 * - The argument can specify the scale after calculation.
-	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
-	 * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
-	 * - When null is specified for the argument, it is calculated on the scale of "divisor.context".
-	 * @param {KBigDecimalInputData} number
-	 * @param {MathContext|KBigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
-	 * @returns {BigDecimal} A / B
-	 */
-	divide(number, type) {
-		return this.div(number, type);
-	}
-
-	/**
-	 * Remainder of division.
-	 * - Result has same sign as the Dividend.
-	 * @param {KBigDecimalInputData} number
-	 * @returns {BigDecimal} A % B
-	 */
-	remainder(number) {
-		return this.rem(number);
-	}
-	
-	/**
-	 * To integer rounded down to the nearest.
-	 * @returns {BigDecimal} fix(A), trunc(A)
-	 */
-	trunc() {
-		return this.fix();
-	}
-
-}
-
-BigDecimal.RoundingMode = RoundingMode;
-BigDecimal.MathContext = MathContext;
-
-/**
- * Collection of constant values used in the class.
- * @ignore
- */
-const DEFINE$2 = {
-
-	/**
-	 * -1
-	 * @returns {BigDecimal} -1
-	 */
-	MINUS_ONE : function() {
-		return new BigDecimal(-1);
-	},
-
-	/**
-	 * 0
-	 * @returns {BigDecimal} 0
-	 */
-	ZERO : function() {
-		return new BigDecimal(0);
-	},
-	
-	/**
-	 * 0.5
-	 * @returns {BigDecimal} 0.5
-	 */
-	HALF : function() {
-		return new BigDecimal(0.5);
-	},
-	
-	/**
-	 * 1
-	 * @returns {BigDecimal} 1
-	 */
-	ONE : function() {
-		return new BigDecimal(1);
-	},
-	
-	/**
-	 * 2
-	 * @returns {BigDecimal} 2
-	 */
-	TWO : function() {
-		return new BigDecimal(2);
-	},
-	
-	/**
-	 * 10
-	 * @returns {BigDecimal} 10
-	 */
-	TEN : function() {
-		return new BigDecimal(10);
-	},
-
-	/**
-	 * PI
-	 * @returns {BigDecimal} 3.14...
-	 */
-	PI : function() {
-		// DECIMAL256 でも精度は72桁ほどである。
-		// 従って、79桁のPIをすでにデータとして持っておく。
-		const PI79 = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862";
-		const context = BigDecimal.getDefaultContext();
-		if(context.getPrecision() <= 78) {
-			return new BigDecimal(PI79).round(context);
-		}
-		else {
-			// ガウス＝ルジャンドルのアルゴリズム
-			// 使用する固定値を列挙
-			const B1		= BigDecimal.create(1);
-			const B2		= BigDecimal.create(2);
-			const B4		= BigDecimal.create(4);
-			// 初期値
-			let a = B1;
-			let b = B2.sqrt().inv();
-			let t = B4.inv();
-			let p = B1;
-			let pi = B1;
-			// 繰り返し求める
-			for(let i = 0; i < 10; i++) {
-				const a1 = a.add(b).div(B2);
-				const b1 = a.mul(b).sqrt();
-				const t1 = t.sub(p.mul(a.sub(a1).square()));
-				const p1 = p.mul(B2);
-				const pi1 = a1.add(b1).square().div(t1.mul(B4));
-				const delta = pi1.sub(pi);
-				pi = pi1;
-				if(delta.isZero()) {
-					break;
-				}
-				a = a1;
-				b = b1;
-				t = t1;
-				p = p1;
-			}
-			return pi;
-		}
-	},
-
-	/**
-	 * 0.25 * PI.
-	 * @returns {BigDecimal} 0.78...
-	 */
-	QUARTER_PI : function() {
-		return DEFINE$2.PI().div(4);
-	},
-
-	/**
-	 * 0.5 * PI.
-	 * @returns {BigDecimal} 1.57...
-	 */
-	HALF_PI : function() {
-		return DEFINE$2.PI().div(2);
-	},
-
-	/**
-	 * 2 * PI.
-	 * @returns {BigDecimal} 6.28...
-	 */
-	TWO_PI : function() {
-		return DEFINE$2.PI().mul(2);
-	},
-	
-	/**
-	 * E, Napier's constant.
-	 * @returns {BigDecimal} E
-	 */
-	E : function() {
-		// DECIMAL256 でも精度は72桁ほどである。
-		// 従って、84桁のEをすでにデータとして持っておく。
-		const E84 = "2.71828182845904523536028747135266249775724709369995957496696762772407663035354759";
-		const context = BigDecimal.getDefaultContext();
-		if(context.getPrecision() <= 83) {
-			return new BigDecimal(E84).round(context);
-		}
-		else {
-			// 初期値
-			let n0 = BigDecimal.create(2);
-			let k = BigDecimal.create(1);
-			// 繰り返し求める
-			for(let i = 2; i < 300; i++) {
-				k = k.mul(i);
-				const n1 = n0.add(k.inv());
-				const delta = n1.sub(n0);
-				n0 = n1;
-				if(delta.isZero()) {
-					break;
-				}
-			}
-			return n0;
-		}
-	},
-
-	/**
-	 * log_e(2)
-	 * @returns {BigDecimal} ln(2)
-	 */
-	LN2 : function() {
-		return (new BigDecimal(2)).log();
-	},
-
-	/**
-	 * log_e(10)
-	 * @returns {BigDecimal} ln(10)
-	 */
-	LN10 : function() {
-		return (new BigDecimal(10)).log();
-	},
-
-	/**
-	 * log_2(e)
-	 * @returns {BigDecimal} log_2(e)
-	 */
-	LOG2E : function() {
-		return (new BigDecimal(2)).log().inv();
-	},
-	
-	/**
-	 * log_10(e)
-	 * @returns {BigDecimal} log_10(e)
-	 */
-	LOG10E : function() {
-		return (new BigDecimal(10)).log().inv();
-	},
-	
-	/**
-	 * sqrt(2)
-	 * @returns {BigDecimal} sqrt(2)
-	 */
-	SQRT2 : function() {
-		return (new BigDecimal(2)).sqrt();
-	},
-	
-	/**
-	 * sqrt(0.5)
-	 * @returns {BigDecimal} sqrt(0.5)
-	 */
-	SQRT1_2 : function() {
-		return (new BigDecimal(0.5)).sqrt();
-	},
-	
-	/**
-	 * Positive infinity.
-	 */
-	POSITIVE_INFINITY : new BigDecimal(Number.POSITIVE_INFINITY),
-
-	/**
-	 * Negative Infinity.
-	 */
-	NEGATIVE_INFINITY : new BigDecimal(Number.NEGATIVE_INFINITY),
-
-	/**
-	 * Not a Number.
-	 */
-	NaN : new BigDecimal(Number.NaN)
-	
-};
-
-/**
- * Simple cache class.
- * @ignore
- */
-class BigDecimalCache {
-	
-	/**
-	 * Create Cache.
-	 * @param {string} method_name - Method name in the DEFINE.
-	 * @param {number} cache_size - Maximum number of caches.
-	 */
-	constructor(method_name, cache_size) {
-
-		/**
-		 * Method name in the DEFINE.
-		 * @type {string}
-		 */
-		this.method_name = method_name;
-		
-		/**
-		 * @type {Array<{name:string, number:BigDecimal}>}
-		 */
-		this.table = [];
-
-		/**
-		 * Maximum number of caches.
-		 * @type {number}
-		 */
-		this.table_max = cache_size;
-
-	}
-
-	/**
-	 * Use from cache if it exists in cache.
-	 * @returns {BigDecimal}
-	 */
-	get() {
-		const name = BigDecimal.getDefaultContext().toString();
-
-		for(let index = 0; index < this.table.length; index++) {
-			if(this.table[index].name === name) {
-				// 先頭にもってくる
-				const object = this.table.splice(index, 1)[0];
-				this.table.unshift(object);
-				return object.number;
-			}
-		}
-		// @ts-ignore
-		const new_number = DEFINE$2[this.method_name]();
-		if(this.table.length === this.table_max) {
-			// 後ろのデータを消去
-			this.table.pop();
-		}
-		// 前方に追加
-		this.table.unshift({
-			name : name,
-			number : new_number
-		});
-		return new_number;
-	}
-
-}
-
-/**
- * Simple cache class.
- * @ignore
- */
-class BigDecimalConst {
-	/**
-	 * Constructor
-	 */
-	constructor() {
-		/**
-		 * -1
-		 */
-		this.MINUS_ONE = new BigDecimalCache("MINUS_ONE", 10);
-
-		/**
-		 * 0
-		 */
-		this.ZERO = new BigDecimalCache("ZERO", 10);
-
-		/**
-		 * 0.5
-		 */
-		this.HALF = new BigDecimalCache("HALF", 10);
-
-		/**
-		 * 1
-		 */
-		this.ONE = new BigDecimalCache("ONE", 10);
-
-		/**
-		 * 2
-		 */
-		this.TWO = new BigDecimalCache("TWO", 10);
-
-		/**
-		 * 10
-		 */
-		this.TEN = new BigDecimalCache("TEN", 10);
-
-		/**
-		 * PI
-		 */
-		this.PI = new BigDecimalCache("PI", 10);
-
-		/**
-		 * QUARTER_PI
-		 */
-		this.QUARTER_PI = new BigDecimalCache("QUARTER_PI", 10);
-
-		/**
-		 * HALF_PI
-		 */
-		this.HALF_PI = new BigDecimalCache("HALF_PI", 10);
-
-		/**
-		 * TWO_PI
-		 */
-		this.TWO_PI = new BigDecimalCache("TWO_PI", 10);
-
-		/**
-		 * E
-		 */
-		this.E = new BigDecimalCache("E", 10);
-
-		/**
-		 * LN2
-		 */
-		this.LN2 = new BigDecimalCache("LN2", 10);
-
-		/**
-		 * LN10
-		 */
-		this.LN10 = new BigDecimalCache("LN10", 10);
-
-		/**
-		 * LOG2E
-		 */
-		this.LOG2E = new BigDecimalCache("LOG2E", 10);
-		
-		/**
-		 * LOG10E
-		 */
-		this.LOG10E = new BigDecimalCache("LOG10E", 10);
-		
-		/**
-		 * SQRT2
-		 */
-		this.SQRT2 = new BigDecimalCache("SQRT2", 10);
-		
-		/**
-		 * SQRT1_2
-		 */
-		this.SQRT1_2 = new BigDecimalCache("SQRT1_2", 10);
-	}
-}
-
-/**
- * Cache of the constant.
- * @ignore
- */
-const CACHED_DATA = new BigDecimalConst();
-
-/**
- * The script is part of konpeito.
- * 
- * AUTHOR:
- *  natade (http://twitter.com/natadea)
- * 
- * LICENSE:
- *  The MIT license https://opensource.org/licenses/MIT
- */
-
-/**
- * Fraction type argument.
- * - Fraction
- * - BigInteger
- * - BigDecimal
- * - number
- * - boolean
- * - string
- * - Array<KBigIntegerInputData>
- * - {numerator:KBigIntegerInputData,denominator:KBigIntegerInputData}
- * - {doubleValue:number}
- * - {toString:function}
- * 
- * Initialization can be performed as follows.
- * - 10, "10", "10/1", "10.0/1.0", ["10", "1"], [10, 1]
- * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
- * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
- * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
- * @typedef {Fraction|BigInteger|BigDecimal|number|boolean|string|Array<import("./BigInteger.js").KBigIntegerInputData>|{numerator:import("./BigInteger.js").KBigIntegerInputData,denominator:import("./BigInteger.js").KBigIntegerInputData}|{doubleValue:number}|{toString:function}} KFractionInputData
- */
-
-/**
- * Collection of functions used in Fraction.
- * @ignore
- */
-class FractionTool {
-
-	/**
-	 * Create data for Fraction from strings.
-	 * @param ntext {string}
-	 * @return {Fraction}
-	 */
-	static to_fraction_data_from_number_string(ntext) {
-		let scale = 0;
-		let buff;
-		let is_negate = false;
-		// 正規化
-		let text = ntext.replace(/\s/g, "").toLowerCase();
-		// +-の符号があるか
-		const number_text = [];
-		buff = text.match(/^[+-]+/);
-		if(buff !== null) {
-			buff = buff[0];
-			text = text.substr(buff.length);
-			if(buff.indexOf("-") !== -1) {
-				is_negate = true;
-				number_text.push("-");
-			}
-		}
-		// 整数部があるか
-		buff = text.match(/^[0-9]+/);
-		if(buff !== null) {
-			buff = buff[0];
-			text = text.substr(buff.length);
-			number_text.push(buff);
-		}
-		// 浮動小数点の計算がない場合はここで完了
-		if(text.length === 0) {
-			return new Fraction([new BigInteger([number_text.join(""), 10]), BigInteger.ONE]);
-		}
-		// 巡回小数点指定があるか
-		let cyclic_decimal = null;
-		if(/[()'"[\]]/.test(text)) {
-			const match_data = text.match(/([^.]*)\.(\d*)[(['"](\d+)[)\]'"](.*)/);
-			if(match_data === null) {
-				throw "Fraction Unsupported argument " + text;
-			}
-			// 巡回少数の場所
-			const cyclic_decimal_scale = match_data[2].length;
-			const cyclic_decimal_text = match_data[3];
-			// 巡回少数以外を抽出
-			if(cyclic_decimal_scale === 0) {
-				text = match_data[1] + match_data[4];
-			}
-			else {
-				text = match_data[1] + "." + match_data[2] + match_data[4];
-			}
-
-			const numerator = new BigInteger([cyclic_decimal_text, 10]);
-			const denominator_string = [];
-			for(let i = 0; i < cyclic_decimal_text.length; i++) {
-				denominator_string.push("9");
-			}
-			const denominator = new BigInteger([denominator_string.join(""), 10]);
-			cyclic_decimal = new Fraction([numerator, denominator]);
-			cyclic_decimal = cyclic_decimal.scaleByPowerOfTen(-cyclic_decimal_scale);
-		}
-		// 小数部があるか
-		buff = text.match(/^\.[0-9]+/);
-		if(buff !== null) {
-			buff = buff[0];
-			text = text.substr(buff.length);
-			buff = buff.substr(1);
-			scale = scale + buff.length;
-			number_text.push(buff);
-		}
-		// 指数表記があるか
-		buff = text.match(/^e[+-]?[0-9]+/);
-		if(buff !== null) {
-			buff = buff[0].substr(1);
-			scale = scale - parseInt(buff, 10);
-		}
-
-		let f = null;
-		{
-			let numerator = null;
-			let denominator = null;
-			// 出力用の文字を作成
-			if(scale === 0) {
-				numerator = new BigInteger([number_text.join(""), 10]);
-				denominator = BigInteger.ONE;
-			}
-			if(scale < 0) {
-				for(let i = 0; i < -scale; i++) {
-					number_text.push("0");
-				}
-				numerator = new BigInteger([number_text.join(""), 10]);
-				denominator = BigInteger.ONE;
-			}
-			else if(scale > 0) {
-				numerator = new BigInteger([number_text.join(""), 10]);
-				const denominator_string = ["1"];
-				for(let i = 0; i < scale; i++) {
-					denominator_string.push("0");
-				}
-				denominator = new BigInteger([denominator_string.join(""), 10]);
-			}
-			f = new Fraction([numerator, denominator]);
-		}
-		if(cyclic_decimal) {
-			if(!is_negate) {
-				f = f.add(cyclic_decimal);
-			}
-			else {
-				f = f.sub(cyclic_decimal);
-			}
-		}
-		return f;
-	}
-
-	/**
-	 * Create data for Fraction from fractional string.
-	 * @param ntext {string}
-	 * @return {Fraction}
-	 */
-	static to_fraction_data_from_fraction_string(ntext) {
-		// 特殊な状態
-		if(/nan|inf/i.test(ntext)) {
-			const ret = new Fraction();
-			ret.denominator = BigInteger.ONE;
-			if(/nan/i.test(ntext)) {
-				ret.numerator = BigInteger.NaN;
-			}
-			else if(!/-/.test(ntext)) {
-				ret.numerator = BigInteger.POSITIVE_INFINITY;
-			}
-			else {
-				ret.numerator = BigInteger.NEGATIVE_INFINITY;
-			}
-			return ret;
-		}
-		if(ntext.indexOf("/") === -1) {
-			return FractionTool.to_fraction_data_from_number_string(ntext);
-		}
-		else {
-			const fraction_value = ntext.split("/");
-			const numerator_value = FractionTool.to_fraction_data_from_number_string(fraction_value[0]);
-			const denominator_value = FractionTool.to_fraction_data_from_number_string(fraction_value[1]);
-			return numerator_value.div(denominator_value);
-		}
-	}
-
-	/**
-	 * Create data for Fraction from number.
-	 * @param number {number|boolean}
-	 * @return {Fraction}
-	 */
-	static to_fraction_data_from_number(number) {
-		const value = typeof number !== "boolean" ? number : (number ? 1 : 0);
-		let numerator = null;
-		let denominator = null;
-		if(!isFinite(value)) {
-			const ret = new Fraction();
-			ret.denominator = BigInteger.ONE;
-			if(value === Infinity) {
-				ret.numerator = BigInteger.POSITIVE_INFINITY;
-			}
-			else if(value === - Infinity) {
-				ret.numerator = BigInteger.NEGATIVE_INFINITY;
-			}
-			else {
-				ret.numerator = BigInteger.NaN;
-			}
-			return ret;
-		}
-		// 整数
-		else if(value === Math.floor(value)) {
-			numerator = new BigInteger(value);
-			denominator = BigInteger.ONE;
-		}
-		// 浮動小数
-		else {
-			let scale = Math.trunc(Math.log(Math.abs(value)) / Math.log(10));
-			let x = value / Math.pow(10, scale);
-			// スケールを逆にする
-			scale = - scale;
-			for(let i = 0; i < 14; i++) {
-				x = x * 10;
-				scale = scale + 1;
-				if(Math.abs(x - Math.round(x)) <= Number.EPSILON) {
-					break;
-				}
-			}
-			// 最も下の桁は四捨五入する
-			x = Math.round(x * 1e14) / 1e14;
-			if(scale <= 0) {
-				numerator = new BigInteger(value);
-				denominator = BigInteger.ONE;
-			}
-			else {
-				numerator = new BigInteger(x);
-				const denominator_string = ["1"];
-				for(let i = 0; i < scale; i++) {
-					denominator_string.push("0");
-				}
-				denominator = new BigInteger([denominator_string.join(""), 10]);
-			}
-		}
-		return new Fraction([numerator, denominator]);
-	}
-
-	/**
-	 * Normalization.
-	 * - Reduce fraction using gcd.
-	 * - Add the sign to the numerator.
-	 * - If the number is zero, the denominator is one.
-	 * @param value {Fraction}
-	 * @returns {void}
-	 */
-	static normalization(value) {
-		if(value.denominator.equals(BigInteger.ONE)) {
-			return;
-		}
-		if(value.denominator.equals(BigInteger.MINUS_ONE)) {
-			value.numerator = value.numerator.negate();
-			value.denominator = BigInteger.ONE;
-			return;
-		}
-		if(value.numerator.equals(BigInteger.ZERO)) {
-			value.denominator = BigInteger.ONE;
-			return;
-		}
-		const gcd = value.numerator.gcd(value.denominator);
-		let numerator = value.numerator.div(gcd);
-		let denominator = value.denominator.div(gcd);
-		if(denominator.sign() < 0) {
-			numerator = numerator.negate();
-			denominator = denominator.negate();
-		}
-		value.numerator = numerator;
-		value.denominator = denominator;
-	}
-
-}
-
-/**
- * Fraction class (immutable).
- */
-class Fraction {
-
-	/**
-	 * Create an fraction.
-	 * 
-	 * Initialization can be performed as follows.
-	 * - 10, "10", "10/1", "10.0/1.0", ["10", "1"], [10, 1]
-	 * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
-	 * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
-	 * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
-	 * @param {KFractionInputData} [number] - Fraction data. See how to use the function.
-	 */
-	constructor(number) {
-		
-		// 分子
-		/**
-		 * numerator
-		 * @type {BigInteger}
-		 */
-		this.numerator = null;
-
-		// 分母
-		/**
-		 * denominator
-		 * @type {BigInteger}
-		 */
-		this.denominator = null;
-
-		if(arguments.length === 0) {
-			this.numerator = BigInteger.ZERO;
-			this.denominator = BigInteger.ONE;
-		}
-		else if(arguments.length === 1) {
-			let is_normalization = false;
-			if((typeof number === "number") || (typeof number === "boolean")) {
-				const x = FractionTool.to_fraction_data_from_number(number);
-				this.numerator = x.numerator;
-				this.denominator = x.denominator;
-			}
-			else if(typeof number === "string") {
-				const x = FractionTool.to_fraction_data_from_fraction_string(number);
-				this.numerator = x.numerator;
-				this.denominator = x.denominator;
-			}
-			else if(number instanceof BigInteger) {
-				this.numerator = number;
-				this.denominator = BigInteger.ONE;
-			}
-			else if(number instanceof Fraction) {
-				this.numerator = number.numerator;
-				this.denominator = number.denominator;
-			}
-			else if((number instanceof Array) && (number.length === 2)) {
-				this.numerator = (number[0] instanceof BigInteger) ? number[0] : new BigInteger(number[0]);
-				this.denominator = (number[1] instanceof BigInteger) ? number[1] : new BigInteger(number[1]);
-				is_normalization = true;
-			}
-			else if(number instanceof BigDecimal) {
-				const bigint = number.unscaledValue();
-				if(!bigint.isFinite()) {
-					this.numerator = bigint;
-					this.denominator = BigInteger.ONE;
-				}
-				else {
-					const value = new Fraction(number.unscaledValue());
-					const x = value.scaleByPowerOfTen(-number.scale());
-					this.numerator = x.numerator;
-					this.denominator = x.denominator;
-				}
-			}
-			else if(typeof number === "object") {
-				if("doubleValue" in number) {
-					const x = FractionTool.to_fraction_data_from_number(number.doubleValue);
-					this.numerator = x.numerator;
-					this.denominator = x.denominator;
-				}
-				else if(("numerator" in number) && ("denominator" in number)) {
-					this.numerator = (number.numerator instanceof BigInteger) ? number.numerator : new BigInteger(number.numerator);
-					this.denominator = (number.denominator instanceof BigInteger) ? number.denominator : new BigInteger(number.denominator);
-					is_normalization = true;
-				}
-				else {
-					const x1 = FractionTool.to_fraction_data_from_fraction_string(number.toString());
-					this.numerator = x1.numerator;
-					this.denominator = x1.denominator;
-				}
-			}
-			else {
-				throw "Fraction Unsupported argument " + number;
-			}
-			if(is_normalization) {
-				FractionTool.normalization(this);
-			}
-		}
-		else {
-			throw "Fraction Unsupported argument " + number;
-		}
-	}
-
-	/**
-	 * Create an entity object of this class.
-	 * @param {KFractionInputData} number 
-	 * @returns {Fraction}
-	 */
-	static create(number) {
-		if(number instanceof Fraction) {
-			return number;
-		}
-		else {
-			return new Fraction(number);
-		}
-	}
-
-	/**
-	 * Convert number to Fraction type.
-	 * @param {KFractionInputData} number 
-	 * @returns {Fraction}
-	 */
-	static valueOf(number) {
-		return Fraction.create(number);
-	}
-
-	/**
-	 * Convert to Fraction.
-	 * @param {KFractionInputData} number 
-	 * @returns {Fraction}
-	 * @private
-	 */
-	static _toFraction(number) {
-		if(number instanceof Fraction) {
-			return number;
-		}
-		else {
-			return new Fraction(number);
-		}
-	}
-
-	/**
-	 * Convert to real number.
-	 * @param {KFractionInputData} number 
-	 * @returns {number}
-	 * @private
-	 */
-	static _toFloat(number) {
-		if(typeof number === "number") {
-			return number;
-		}
-		else if(number instanceof Fraction) {
-			return number.doubleValue;
-		}
-		else {
-			return (new Fraction(number)).doubleValue;
-		}
-	}
-
-	/**
-	 * Convert to integer.
-	 * @param {KFractionInputData} number 
-	 * @returns {number}
-	 * @private
-	 */
-	static _toInteger(number) {
-		if(typeof number === "number") {
-			return Math.trunc(number);
-		}
-		else if(number instanceof Fraction) {
-			return number.intValue;
-		}
-		else {
-			return (new Fraction(number)).intValue;
-		}
-	}
-
-	/**
-	 * Deep copy.
-	 * @returns {Fraction} 
-	 */
-	clone() {
-		return new Fraction(this);
-	}
-
-	/**
-	 * Absolute value.
-	 * @returns {Fraction} abs(A)
-	 */
-	abs() {
-		if(!this.isFinite()) {
-			return this.isNegativeInfinity() ? Fraction.POSITIVE_INFINITY : this;
-		}
-		if(this.sign() >= 0) {
-			return this;
-		}
-		return this.negate();
-	}
-
-	/**
-	 * this * -1
-	 * @returns {Fraction} -A
-	 */
-	negate() {
-		if(!this.isFinite()) {
-			if(this.isPositiveInfinity()) {
-				return Fraction.NEGATIVE_INFINITY;
-			}
-			else if(this.isNegativeInfinity()) {
-				return Fraction.POSITIVE_INFINITY;
-			}
-			else {
-				return this;
-			}
-		}
-		return new Fraction([this.numerator.negate(), this.denominator]);
-	}
-
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number}
-	 */
-	sign() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? 1 : -1);
-		}
-		return this.numerator.sign();
-	}
-	
-	/**
-	 * Convert to string.
-	 * @returns {string} 
-	 */
-	toString() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
-		}
-		return this.numerator.toString() + " / " + this.denominator.toString();
-	}
-
-	// ----------------------
-	// 四則演算
-	// ----------------------
-	
-	/**
-	 * Add.
-	 * @param {KFractionInputData} num
-	 * @return {Fraction} A + B
-	 */
-	add(num) {
-		const x = this;
-		const y = Fraction._toFraction(num);
-		if(!x.isFinite() || !y.isFinite()) {
-			if(x.isNaN() || y.isNaN() || (x.isInfinite() && y.isInfinite() && !x.equalsState(y))) {
-				return Fraction.NaN;
-			}
-			else if(x.isPositiveInfinity() || y.isPositiveInfinity()) {
-				return Fraction.POSITIVE_INFINITY;
-			}
-			else {
-				return Fraction.NEGATIVE_INFINITY;
-			}
-		}
-		let f;
-		if(x.isInteger() && y.isInteger()) {
-			f = new Fraction([ x.numerator.add(y.numerator), BigInteger.ONE]);
-		}
-		else {
-			f = new Fraction([
-				x.numerator.mul(y.denominator).add(y.numerator.mul(x.denominator)),
-				x.denominator.mul(y.denominator)
-			]);
-		}
-		return f;
-	}
-
-	/**
-	 * Subtract.
-	 * @param {KFractionInputData} num
-	 * @return {Fraction} A - B
-	 */
-	sub(num) {
-		const x = this;
-		const y = Fraction._toFraction(num);
-		if(!x.isFinite() || !y.isFinite()) {
-			if(x.isNaN() || y.isNaN() || x.equalsState(y)) {
-				return Fraction.NaN;
-			}
-			else if(x.isNegativeInfinity() || y.isPositiveInfinity()) {
-				return Fraction.NEGATIVE_INFINITY;
-			}
-			else {
-				return Fraction.POSITIVE_INFINITY;
-			}
-		}
-		let f;
-		if(x.isInteger() && y.isInteger()) {
-			f = new Fraction([ x.numerator.sub(y.numerator), BigInteger.ONE]);
-		}
-		else {
-			f = new Fraction([
-				x.numerator.mul(y.denominator).sub(y.numerator.mul(x.denominator)),
-				x.denominator.mul(y.denominator)
-			]);
-		}
-		return f;
-	}
-
-	/**
-	 * Multiply.
-	 * @param {KFractionInputData} num
-	 * @return {Fraction} A * B
-	 */
-	mul(num) {
-		const x = this;
-		const y = Fraction._toFraction(num);
-		if(!x.isFinite() || !y.isFinite()) {
-			if(x.isNaN() || y.isNaN() || (x.isZero() || y.isZero())) {
-				return Fraction.NaN;
-			}
-			else if(x.sign() * y.sign() > 0) {
-				return Fraction.POSITIVE_INFINITY;
-			}
-			else {
-				return Fraction.NEGATIVE_INFINITY;
-			}
-		}
-		let f;
-		if(x.isInteger() && y.isInteger()) {
-			f = new Fraction([ x.numerator.mul(y.numerator), BigInteger.ONE]);
-		}
-		else {
-			f = new Fraction([ x.numerator.mul(y.numerator), x.denominator.mul(y.denominator) ]);
-		}
-		return f;
-	}
-
-	/**
-	 * Divide.
-	 * @param {KFractionInputData} num
-	 * @return {Fraction} A / B
-	 */
-	div(num) {
-		const x = this;
-		const y = Fraction._toFraction(num);
-		if(!x.isFinite() || !y.isFinite()) {
-			if(x.isNaN() || y.isNaN() || (x.isInfinite() && y.isInfinite())) {
-				return Fraction.NaN;
-			}
-			else if(x.isInfinite()) {
-				if(x.sign() * y.sign() >= 0) {
-					return Fraction.POSITIVE_INFINITY;
-				}
-				else {
-					return Fraction.NEGATIVE_INFINITY;
-				}
-			}
-			else {
-				return Fraction.ZERO;
-			}
-		}
-		else if(y.isZero()) {
-			if(x.isZero()) {
-				return Fraction.NaN;
-			}
-			else {
-				return x.sign() >= 0 ? Fraction.POSITIVE_INFINITY : Fraction.NEGATIVE_INFINITY;
-			}
-		}
-		let f;
-		if(x.isInteger() && y.isInteger()) {
-			f = new Fraction([ x.numerator, y.numerator]);
-		}
-		else {
-			f = new Fraction([ x.numerator.mul(y.denominator), y.numerator.mul(x.denominator)]);
-		}
-		return f;
-	}
-
-	/**
-	 * Inverse number of this value.
-	 * @return {Fraction} 1 / A
-	 */
-	inv() {
-		{
-			if(!this.isFinite()) {
-				return this.isNaN() ? Fraction.NaN : Fraction.ZERO;
-			}
-			if(this.isZero()) {
-				return Fraction.NaN;
-			}
-		}
-		return new Fraction([ this.denominator, this.numerator]);
-	}
-
-	/**
-	 * Modulo, positive remainder of division.
-	 * - Result has same sign as the Dividend.
-	 * @param {KFractionInputData} num
-	 * @return {Fraction} A rem B
-	 */
-	rem(num) {
-		const x = this;
-		const y = Fraction._toFraction(num);
-		if(!x.isFinite() || !y.isFinite() || y.isZero()) {
-			return Fraction.NaN;
-		}
-		// x - y * fix(x/y)
-		return x.sub(y.mul(x.div(y).fix()));
-	}
-
-	/**
-	 * Modulo, positive remainder of division.
-	 * - Result has same sign as the Divisor.
-	 * @param {KFractionInputData} num
-	 * @returns {Fraction} A mod B
-	 */
-	mod(num) {
-		const x = this;
-		const y = Fraction._toFraction(num);
-		if(y.isZero()) {
-			return x;
-		}
-		const ret = x.rem(y);
-		if(!x.equalsState(y)) {
-			return ret.add(y);
-		}
-		else {
-			return ret;
-		}
-	}
-
-	/**
-	 * Power function.
-	 * - Supports only integers.
-	 * @param {KFractionInputData} num
-	 * @returns {Fraction} pow(A, B)
-	 */
-	pow(num) {
-		const x = this;
-		const y = Fraction._toFraction(num);
-		{
-			if(x.isNaN() || y.isNaN()) {
-				return Fraction.NaN;
-			}
-			if(y.isZero()) {
-				return Fraction.ONE;
-			}
-			else if(x.isZero()) {
-				return Fraction.ZERO;
-			}
-			else if(x.isOne()) {
-				return Fraction.ONE;
-			}
-			else if(x.isInfinite()) {
-				if(x.isPositiveInfinity()) {
-					return Fraction.POSITIVE_INFINITY;
-				}
-				else {
-					if(y.isPositiveInfinity()) {
-						return Fraction.NaN;
-					}
-					else {
-						return new Fraction(Infinity * Math.pow(-1, Math.round(y.doubleValue)));
-					}
-				}
-			}
-			else if(y.isInfinite()) {
-				if(x.isNegative()) {
-					// 複素数
-					return Fraction.NaN;
-				}
-				if(x.compareTo(Fraction.ONE) < 0) {
-					if(y.isPositiveInfinity()) {
-						return Fraction.ZERO;
-					}
-					else if(y.isNegativeInfinity()) {
-						return Fraction.POSITIVE_INFINITY;
-					}
-				}
-				else {
-					if(y.isPositiveInfinity()) {
-						return Fraction.POSITIVE_INFINITY;
-					}
-					else if(y.isNegativeInfinity()) {
-						return Fraction.ZERO;
-					}
-				}
-			}
-		}
-		const numerator = x.numerator.pow(y.intValue);
-		const denominator = x.denominator.pow(y.intValue);
-		return new Fraction([ numerator, denominator ]);
-	}
-
-	// ----------------------
-	// その他の演算
-	// ----------------------
-	
-	/**
-	 * Factorial function, x!.
-	 * - Supports only integers.
-	 * @returns {Fraction} n!
-	 */
-	factorial() {
-		if(!this.isFinite()) {
-			return this;
-		}
-		return new Fraction([this.toBigInteger().factorial(), Fraction.ONE]);
-	}
-
-	/**
-	 * Multiply a multiple of ten.
-	 * - Supports only integers.
-	 * @param {KFractionInputData} n
-	 * @returns {Fraction}
-	 */
-	scaleByPowerOfTen(n) {
-		if(!this.isFinite()) {
-			return this;
-		}
-		const scale = Fraction._toInteger(n);
-		if(scale === 0) {
-			return this;
-		}
-		let f;
-		if(scale > 0) {
-			f = new Fraction([ this.numerator.scaleByPowerOfTen(scale), this.denominator]);
-		}
-		else if(scale < 0) {
-			f = new Fraction([ this.numerator, this.denominator.scaleByPowerOfTen(-scale)]);
-		}
-		return f;
-	}
-
-	// ----------------------
-	// 他の型に変換用
-	// ----------------------
-	
-	/**
-	 * boolean value.
-	 * @returns {boolean}
-	 */
-	get booleanValue() {
-		return this.numerator.booleanValue;
-	}
-
-	/**
-	 * integer value.
-	 * @returns {number}
-	 */
-	get intValue() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
-		}
-		if(this.isInteger()) {
-			return Math.trunc(this.numerator.doubleValue);
-		}
-		return Math.trunc(this.doubleValue);
-	}
-
-	/**
-	 * floating point.
-	 * @returns {number}
-	 */
-	get doubleValue() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
-		}
-		if(this.isInteger()) {
-			return this.numerator.doubleValue;
-		}
-		const x = new BigDecimal([this.numerator, MathContext.UNLIMITED]);
-		const y = new BigDecimal([this.denominator, MathContext.UNLIMITED]);
-		return x.div(y, {context : MathContext.DECIMAL64}).doubleValue;
-	}
-
-	/**
-	 * return BigInteger.
-	 * @returns {BigInteger}
-	 */
-	toBigInteger() {
-		return new BigInteger(this.fix().numerator);
-	}
-	
-	/**
-	 * return BigDecimal.
-	 * @param {MathContext} [mc] - MathContext setting after calculation. 
-	 * @returns {BigDecimal}
-	 */
-	toBigDecimal(mc) {
-		if(!this.isFinite()) {
-			return new BigDecimal(this.doubleValue);
-		}
-		if(this.isInteger()) {
-			return new BigDecimal(this.numerator);
-		}
-		const x = new BigDecimal([this.numerator, MathContext.UNLIMITED]);
-		const y = new BigDecimal([this.denominator, MathContext.UNLIMITED]);
-		if(mc) {
-			return x.div(y, {context: mc});
-		}
-		else {
-			return x.div(y, {context: BigDecimal.getDefaultContext()});
-		}
-	}
-
-	// ----------------------
-	// 比較
-	// ----------------------
-	
-	/**
-	 * Equals.
-	 * @param {KFractionInputData} num
-	 * @returns {boolean} A === B
-	 */
-	equals(num) {
-		const x = this;
-		const y = Fraction._toFraction(num);
-		if(!x.isFinite() || !y.isFinite()) {
-			if(x.isNaN() || y.isNaN()) {
-				return false;
-			}
-			else if(x.equalsState(y)) {
-				return true;
-			}
-			else {
-				return false;
-			}
-		}
-		return x.numerator.equals(y.numerator) && x.denominator.equals(y.denominator);
-	}
-
-	/**
-	 * Numeric type match.
-	 * @param {KFractionInputData} number 
-	 * @returns {boolean}
-	 */
-	equalsState(number) {
-		const x = this;
-		const y = Fraction._toFraction(number);
-		return x.numerator.equalsState(y.numerator);
-	}
-
-	/**
-	 * Compare values.
-	 * @param {KFractionInputData} num
-	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
-	 */
-	compareTo(num) {
-		const x = this;
-		const y = Fraction._toFraction(num);
-		if(!x.isFinite() || !y.isFinite()) {
-			return x.numerator.compareTo(y.numerator);
-		}
-		return x.sub(y).sign();
-	}
-
-	/**
-	 * Maximum number.
-	 * @param {KFractionInputData} number
-	 * @returns {Fraction} max([A, B])
-	 */
-	max(number) {
-		const val = Fraction._toFraction(number);
-		if(this.isNaN() || val.isNaN()) {
-			return Fraction.NaN;
-		}
-		if(this.compareTo(val) >= 0) {
-			return this;
-		}
-		else {
-			return val;
-		}
-	}
-
-	/**
-	 * Minimum number.
-	 * @param {KFractionInputData} number
-	 * @returns {Fraction} min([A, B])
-	 */
-	min(number) {
-		const val = Fraction._toFraction(number);
-		if(this.isNaN() || val.isNaN()) {
-			return Fraction.NaN;
-		}
-		if(this.compareTo(val) >= 0) {
-			return val;
-		}
-		else {
-			return this;
-		}
-	}
-
-	/**
-	 * Clip number within range.
-	 * @param {KFractionInputData} min 
-	 * @param {KFractionInputData} max
-	 * @returns {Fraction} min(max(x, min), max)
-	 */
-	clip(min, max) {
-		const min_ = Fraction._toFraction(min);
-		const max_ = Fraction._toFraction(max);
-		if(this.isNaN() || min_.isNaN() || max_.isNaN()) {
-			return Fraction.NaN;
-		}
-		const arg_check = min_.compareTo(max_);
-		if(arg_check === 1) {
-			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
-		}
-		else if(arg_check === 0) {
-			return min_;
-		}
-		if(this.compareTo(max_) === 1) {
-			return max_;
-		}
-		else if(this.compareTo(min_) === -1) {
-			return min_;
-		}
-		return this;
-	}
-
-	// ----------------------
-	// 丸め
-	// ----------------------
-	
-	/**
-	 * Floor.
-	 * @returns {Fraction} floor(A)
-	 */
-	floor() {
-		if(this.isInteger() || !this.isFinite()) {
-			return this;
-		}
-		const x = this.fix();
-		if(this.sign() > 0) {
-			return x;
-		}
-		else {
-			return new Fraction([x.numerator.sub(BigInteger.ONE), Fraction.ONE]);
-		}
-	}
-
-	/**
-	 * Ceil.
-	 * @returns {Fraction} ceil(A)
-	 */
-	ceil() {
-		if(this.isInteger() || !this.isFinite()) {
-			return this;
-		}
-		const x = this.fix();
-		if(this.sign() > 0) {
-			return new Fraction([x.numerator.add(BigInteger.ONE), Fraction.ONE]);
-		}
-		else {
-			return x;
-		}
-	}
-	
-	/**
-	 * Rounding to the nearest integer.
-	 * @returns {Fraction} round(A)
-	 */
-	round() {
-		if(this.isInteger() || !this.isFinite()) {
-			return this;
-		}
-		const x = this.floor();
-		const fract = this.sub(x);
-		if(fract.compareTo(Fraction.HALF) >= 0) {
-			return new Fraction([x.numerator.add(BigInteger.ONE), Fraction.ONE]);
-		}
-		else {
-			return x;
-		}
-	}
-
-	/**
-	 * To integer rounded down to the nearest.
-	 * @returns {Fraction} fix(A), trunc(A)
-	 */
-	fix() {
-		if(this.isInteger() || !this.isFinite()) {
-			return this;
-		}
-		return new Fraction([this.numerator.div(this.denominator), Fraction.ONE]);
-	}
-
-	/**
-	 * Fraction.
-	 * @returns {Fraction} fract(A)
-	 */
-	fract() {
-		if(!this.isFinite()) {
-			return Fraction.NaN;
-		}
-		if(this.isInteger()) {
-			return Fraction.ZERO;
-		}
-		return this.sub(this.floor());
-	}
-
-	// ----------------------
-	// テスト系
-	// ----------------------
-	
-	/**
-	 * Return true if the value is integer.
-	 * @return {boolean}
-	 */
-	isInteger() {
-		if(!this.isFinite()) {
-			return false;
-		}
-		return this.denominator.equals(BigInteger.ONE);
-	}
-
-	/**
-	 * this === 0
-	 * @return {boolean} A === 0
-	 */
-	isZero() {
-		if(!this.isFinite()) {
-			return false;
-		}
-		return this.numerator.isZero();
-	}
-
-	/**
-	 * this === 1
-	 * @return {boolean} A === 1
-	 */
-	isOne() {
-		if(!this.isFinite()) {
-			return false;
-		}
-		return this.numerator.equals(BigInteger.ONE) && this.denominator.equals(BigInteger.ONE);
-	}
-
-	/**
-	 * this > 0
-	 * @returns {boolean}
-	 */
-	isPositive() {
-		return this.numerator.isPositive();
-	}
-
-	/**
-	 * this < 0
-	 * @returns {boolean}
-	 */
-	isNegative() {
-		return this.numerator.isNegative();
-	}
-
-	/**
-	 * this >= 0
-	 * @returns {boolean}
-	 */
-	isNotNegative() {
-		return this.numerator.isNotNegative();
-	}
-	
-	/**
-	 * this === NaN
-	 * @returns {boolean} isNaN(A)
-	 */
-	isNaN() {
-		return this.numerator.isNaN();
-	}
-	
-	/**
-	 * this === Infinity
-	 * @returns {boolean} isPositiveInfinity(A)
-	 */
-	isPositiveInfinity() {
-		return this.numerator.isPositiveInfinity();
-	}
-
-	/**
-	 * this === -Infinity
-	 * @returns {boolean} isNegativeInfinity(A)
-	 */
-	isNegativeInfinity() {
-		return this.numerator.isNegativeInfinity();
-	}
-
-	/**
-	 * this === Infinity or -Infinity
-	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
-	 */
-	isInfinite() {
-		return this.numerator.isInfinite();
-	}
-	
-	/**
-	 * Return true if the value is finite number.
-	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
-	 */
-	isFinite() {
-		return this.numerator.isFinite();
-	}
-
-	// ----------------------
-	// ビット演算系
-	// ----------------------
-	
-	/**
-	 * Logical AND.
-	 * - Calculated as an integer.
-	 * @param {KFractionInputData} number 
-	 * @returns {Fraction} A & B
-	 */
-	and(number) {
-		const n_src = this;
-		const n_tgt = Fraction._toFraction(number);
-		const src	= n_src.round().toBigInteger();
-		const tgt	= n_tgt.round().toBigInteger();
-		return new Fraction(src.and(tgt));
-	}
-
-	/**
-	 * Logical OR.
-	 * - Calculated as an integer.
-	 * @param {KFractionInputData} number 
-	 * @returns {Fraction} A | B
-	 */
-	or(number) {
-		const n_src = this;
-		const n_tgt = Fraction._toFraction(number);
-		const src	= n_src.round().toBigInteger();
-		const tgt	= n_tgt.round().toBigInteger();
-		return new Fraction(src.or(tgt));
-	}
-
-	/**
-	 * Logical Exclusive-OR.
-	 * - Calculated as an integer.
-	 * @param {KFractionInputData} number 
-	 * @returns {Fraction} A ^ B
-	 */
-	xor(number) {
-		const n_src = this;
-		const n_tgt = Fraction._toFraction(number);
-		const src	= n_src.round().toBigInteger();
-		const tgt	= n_tgt.round().toBigInteger();
-		return new Fraction(src.xor(tgt));
-	}
-
-	/**
-	 * Logical Not. (mutable)
-	 * - Calculated as an integer.
-	 * @returns {Fraction} !A
-	 */
-	not() {
-		const n_src = this;
-		const src	= n_src.round().toBigInteger();
-		return new Fraction(src.not());
-	}
-	
-	/**
-	 * this << n
-	 * - Calculated as an integer.
-	 * @param {KFractionInputData} n
-	 * @returns {Fraction} A << n
-	 */
-	shift(n) {
-		const src		= this.round().toBigInteger();
-		const number	= BigDecimal._toInteger(n);
-		return new Fraction(src.shift(number));
-	}
-
-	// ----------------------
-	// gcd, lcm
-	// ----------------------
-	
-	/**
-	 * Euclidean algorithm.
-	 * - Calculated as an integer.
-	 * @param {KFractionInputData} number 
-	 * @returns {Fraction} gcd(x, y)
-	 */
-	gcd(number) {
-		const x = this.round().toBigInteger();
-		const y = Fraction._toFraction(number).toBigInteger();
-		const result = x.gcd(y);
-		return new Fraction(result);
-	}
-
-	/**
-	 * Extended Euclidean algorithm.
-	 * - Calculated as an integer.
-	 * @param {KFractionInputData} number 
-	 * @returns {Array<Fraction>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
-	 */
-	extgcd(number) {
-		const x = this.round().toBigInteger();
-		const y = Fraction._toFraction(number).toBigInteger();
-		const result = x.extgcd(y);
-		return [new Fraction(result[0]), new Fraction(result[1]), new Fraction(result[2])];
-	}
-
-	/**
-	 * Least common multiple.
-	 * - Calculated as an integer.
-	 * @param {KFractionInputData} number 
-	 * @returns {Fraction} lcm(x, y)
-	 */
-	lcm(number) {
-		const x = this.round().toBigInteger();
-		const y = Fraction._toFraction(number).toBigInteger();
-		const result = x.lcm(y);
-		return new Fraction(result);
-	}
-
-	// ----------------------
-	// mod
-	// ----------------------
-
-	/**
-	 * Modular exponentiation.
-	 * - Calculated as an integer.
-	 * @param {KFractionInputData} exponent
-	 * @param {KFractionInputData} m 
-	 * @returns {Fraction} A^B mod m
-	 */
-	modPow(exponent, m) {
-		const A = this.round().toBigInteger();
-		const B = Fraction._toFraction(exponent).toBigInteger();
-		const m_ = Fraction._toFraction(m).toBigInteger();
-		const result = A.modPow(B, m_);
-		return new Fraction(result);
-	}
-
-	/**
-	 * Modular multiplicative inverse.
-	 * - Calculated as an integer.
-	 * @param {KFractionInputData} m
-	 * @returns {Fraction} A^(-1) mod m
-	 */
-	modInverse(m) {
-		const A = this.round().toBigInteger();
-		const m_ = Fraction._toFraction(m).toBigInteger();
-		const result = A.modInverse(m_);
-		return new Fraction(result);
-	}
-	
-	// ----------------------
-	// 素数
-	// ----------------------
-	
-	/**
-	 * Return true if the value is prime number.
-	 * - Calculated as an integer.
-	 * - Calculate up to `2251799813685248(=2^51)`.
-	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
-	 */
-	isPrime() {
-		const src = this.round().toBigInteger();
-		return src.isPrime();
-	}
-	
-	/**
-	 * Return true if the value is prime number by Miller-Labin prime number determination method.
-	 * 
-	 * Attention : it takes a very long time to process.
-	 * - Calculated as an integer.
-	 * @param {KFractionInputData} [certainty=100] - Repeat count (prime precision).
-	 * @returns {boolean}
-	 */
-	isProbablePrime(certainty) {
-		const src = this.round().toBigInteger();
-		return src.isProbablePrime(certainty !== undefined ? BigDecimal._toInteger(certainty) : undefined);
-	}
-
-	/**
-	 * Next prime.
-	 * @param {KFractionInputData} [certainty=100] - Repeat count (prime precision).
-	 * @param {KFractionInputData} [search_max=100000] - Search range of next prime.
-	 * @returns {Fraction}
-	 */
-	nextProbablePrime(certainty, search_max) {
-		const src = this.round().toBigInteger();
-		const p1 = certainty !== undefined ? Fraction._toInteger(certainty) : undefined;
-		const p2 = search_max !== undefined ? Fraction._toInteger(search_max) : undefined;
-		return new Fraction(src.nextProbablePrime(p1, p2));
-	}
-
-	// ----------------------
-	// 定数
-	// ----------------------
-	
-	/**
-	 * -1
-	 * @returns {Fraction} -1
-	 */
-	static get MINUS_ONE() {
-		return DEFINE$3.MINUS_ONE;
-	}
-
-	/**
-	 * 0
-	 * @returns {Fraction} 0
-	 */
-	static get ZERO() {
-		return DEFINE$3.ZERO;
-	}
-
-	/**
-	 * 0.5
-	 * @returns {Fraction} 0.5
-	 */
-	static get HALF() {
-		return DEFINE$3.HALF;
-	}
-	
-	/**
-	 * 1
-	 * @returns {Fraction} 1
-	 */
-	static get ONE() {
-		return DEFINE$3.ONE;
-	}
-	
-	/**
-	 * 2
-	 * @returns {Fraction} 2
-	 */
-	static get TWO() {
-		return DEFINE$3.TWO;
-	}
-	
-	/**
-	 * 10
-	 * @returns {Fraction} 10
-	 */
-	static get TEN() {
-		return DEFINE$3.TEN;
-	}
-
-	/**
-	 * Positive infinity.
-	 * @returns {Fraction} Infinity
-	 */
-	static get POSITIVE_INFINITY() {
-		return DEFINE$3.POSITIVE_INFINITY;
-	}
-	
-	/**
-	 * Negative Infinity.
-	 * @returns {Fraction} -Infinity
-	 */
-	static get NEGATIVE_INFINITY() {
-		return DEFINE$3.NEGATIVE_INFINITY;
-	}
-
-	/**
-	 * Not a Number.
-	 * @returns {Fraction} NaN
-	 */
-	static get NaN() {
-		return DEFINE$3.NaN;
-	}
-	
-	// ----------------------
-	// 互換性
-	// ----------------------
-	
-	/**
-	 * The positive or negative sign of this number.
-	 * - +1 if positive, -1 if negative, 0 if 0.
-	 * @returns {number}
-	 */
-	signum() {
-		return this.sign();
-	}
-
-	/**
-	 * Subtract.
-	 * @param {KFractionInputData} number
-	 * @returns {Fraction} A - B
-	 */
-	subtract(number) {
-		return this.sub(number);
-	}
-
-	/**
-	 * Multiply.
-	 * @param {KFractionInputData} number
-	 * @returns {Fraction} A * B
-	 */
-	multiply(number) {
-		return this.mul(number);
-	}
-
-	/**
-	 * Divide.
-	 * @param {KFractionInputData} number
-	 * @returns {Fraction} fix(A / B)
-	 */
-	divide(number) {
-		return this.div(number);
-	}
-
-	/**
-	 * Remainder of division.
-	 * - Result has same sign as the Dividend.
-	 * @param {KFractionInputData} number
-	 * @returns {Fraction} A % B
-	 */
-	remainder(number) {
-		return this.rem(number);
-	}
-
-}
-
-/**
- * Collection of constant values used in the class.
- * @ignore
- */
-const DEFINE$3 = {
-
-	/**
-	 * -1
-	 */
-	MINUS_ONE : new Fraction([BigInteger.MINUS_ONE, BigInteger.ONE]),
-
-	/**
-	 * 0
-	 */
-	ZERO : new Fraction([BigInteger.ZERO, BigInteger.ONE]),
-	
-	/**
-	 * 1
-	 */
-	ONE : new Fraction([BigInteger.ONE, BigInteger.ONE]),
-
-	/**
-	 * 0.5
-	 */
-	HALF : new Fraction([BigInteger.ONE, BigInteger.TWO]),
-
-	/**
-	 * 2
-	 */
-	TWO : new Fraction([BigInteger.TWO, BigInteger.ONE]),
-
-	/**
-	 * 10
-	 */
-	TEN : new Fraction([BigInteger.TEN, BigInteger.ONE]),
-	
-	/**
-	 * Positive infinity.
-	 */
-	POSITIVE_INFINITY : new Fraction(Number.POSITIVE_INFINITY),
-
-	/**
-	 * Negative Infinity.
-	 */
-	NEGATIVE_INFINITY : new Fraction(Number.NEGATIVE_INFINITY),
-
-	/**
-	 * Not a Number.
-	 */
-	NaN : new Fraction(Number.NaN)
-
-};
 
 /**
  * The script is part of konpeito.
@@ -13118,6 +5316,7 @@ class MatrixTool {
 		}
 		let t_data = data;
 		if(!(t_data instanceof Matrix) && !(t_data instanceof Complex) && !((typeof t_data === "number"))) {
+			// @ts-ignore
 			t_data = Matrix._toMatrix(t_data);
 		}
 		if(t_data instanceof Matrix) {
@@ -13128,16 +5327,19 @@ class MatrixTool {
 			const y = new Array(t_data.length);
 			if(t_data.isRow()) {
 				for(let i = 0; i < len; i++) {
+					// @ts-ignore
 					y[i] = Math.trunc(t_data.matrix_array[0][i].real);
 				}
 			}
 			else if(t_data.isColumn()) {
 				for(let i = 0; i < len; i++) {
+					// @ts-ignore
 					y[i] = Math.trunc(t_data.matrix_array[i][0].real);
 				}
 			}
 			return y;
 		}
+		// @ts-ignore
 		return [ Matrix._toInteger(t_data) ];
 	}
 
@@ -13385,6 +5587,7 @@ class MatrixTool {
 			let array_data = MatrixTool.toMatrixArrayFromStringInBracket(withoutBracket.text);
 			// 転置が必要なら転置させる
 			if(withoutBracket.is_transpose) {
+				// @ts-ignore
 				array_data = (new Matrix(array_data)).T().matrix_array;
 			}
 			return array_data;
@@ -14182,7 +6385,7 @@ class Matrix {
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
-	// 行列の基本操作、基本情報の取得
+	// 他の型に変換用
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	
 	/**
@@ -14198,7 +6401,7 @@ class Matrix {
 	 * @returns {number}
 	 */
 	get intValue() {
-		return Math.trunc(this.matrix_array[0][0].real);
+		return this.matrix_array[0][0].intValue;
 	}
 
 	/**
@@ -14206,8 +6409,62 @@ class Matrix {
 	 * @returns {number}
 	 */
 	get doubleValue() {
-		return this.matrix_array[0][0].real;
+		return this.matrix_array[0][0].doubleValue;
 	}
+
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// konpeito で扱う数値型へ変換
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return new BigInteger(this.intValue);
+	}
+	
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		if(mc) {
+			return new BigDecimal([this.doubleValue, mc]);
+		}
+		else {
+			return new BigDecimal(this.doubleValue);
+		}
+	}
+	
+	/**
+	 * return Fraction.
+	 * @returns {Fraction}
+	 */
+	toFraction() {
+		return new Fraction(this.doubleValue);
+	}
+	
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return this.scalar;
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return this;
+	}
+	
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// 行列の基本操作、基本情報の取得
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	
 	/**
 	 * First element of this matrix.
@@ -17157,7 +9414,7 @@ class Matrix {
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testProbablePrime(certainty) {
-		const p1 = certainty !== undefined ? Math.round(Complex._toDouble(certainty)) : undefined;
+		const p1 = certainty !== undefined ? Math.round(Matrix._toDouble(certainty)) : undefined;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.isProbablePrime(p1) ? Complex.ONE : Complex.ZERO;
 		});
@@ -17926,6 +10183,7 @@ class Complex {
 			return number;
 		}
 		else if(number instanceof Matrix) {
+			// @ts-ignore
 			return Matrix._toComplex(number);
 		}
 		else {
@@ -17960,30 +10218,6 @@ class Complex {
 	 */
 	static _toInteger(number) {
 		return Math.trunc(Complex._toDouble(number));
-	}
-
-	/**
-	 * boolean value.
-	 * @returns {boolean}
-	 */
-	get booleanValue() {
-		return this._re !== 0 || this._im !== 0;
-	}
-
-	/**
-	 * integer value.
-	 * @returns {number}
-	 */
-	get intValue() {
-		return Math.trunc(this._re);
-	}
-
-	/**
-	 * floating point.
-	 * @returns {number}
-	 */
-	get doubleValue() {
-		return this._re;
 	}
 
 	/**
@@ -18304,6 +10538,104 @@ class Complex {
 			return new Complex([0, - 1.0 / this._im]);
 		}
 		return Complex.ONE.div(this);
+	}
+
+	// ----------------------
+	// 他の型に変換用
+	// ----------------------
+	
+	/**
+	 * boolean value.
+	 * @returns {boolean}
+	 */
+	get booleanValue() {
+		return !this.isZero() && !this.isNaN();
+	}
+
+	/**
+	 * integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		const value = this._re;
+		const delta = Math.abs(value - Math.trunc(value));
+		if(delta < Number.EPSILON) {
+			return Math.round(value);
+		}
+		else {
+			return Math.trunc(value);
+		}
+	}
+
+	/**
+	 * floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		const value = this._re;
+		const delta = Math.abs(value - Math.trunc(value));
+		if(delta < Number.EPSILON) {
+			return Math.round(value);
+		}
+		else {
+			return value;
+		}
+	}
+
+	// ----------------------
+	// konpeito で扱う数値型へ変換
+	// ----------------------
+	
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return new BigInteger(this.intValue);
+	}
+	
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		if(mc) {
+			return new BigDecimal([this.doubleValue, mc]);
+		}
+		else {
+			return new BigDecimal(this.doubleValue);
+		}
+	}
+	
+	/**
+	 * return Fraction.
+	 * @returns {Fraction}
+	 */
+	toFraction() {
+		return new Fraction(this.doubleValue);
+	}
+	
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return this;
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return new Matrix(this);
 	}
 
 	// ----------------------
@@ -19795,7 +12127,7 @@ class Complex {
 	 * @returns {Complex} 1
 	 */
 	static get ONE() {
-		return DEFINE$4.ONE;
+		return DEFINE$1.ONE;
 	}
 	
 	/**
@@ -19803,7 +12135,7 @@ class Complex {
 	 * @returns {Complex} 2
 	 */
 	static get TWO() {
-		return DEFINE$4.TWO;
+		return DEFINE$1.TWO;
 	}
 	
 	/**
@@ -19811,7 +12143,7 @@ class Complex {
 	 * @returns {Complex} 10
 	 */
 	static get TEN() {
-		return DEFINE$4.TEN;
+		return DEFINE$1.TEN;
 	}
 	
 	/**
@@ -19819,7 +12151,7 @@ class Complex {
 	 * @returns {Complex} 0
 	 */
 	static get ZERO() {
-		return DEFINE$4.ZERO;
+		return DEFINE$1.ZERO;
 	}
 
 	/**
@@ -19827,7 +12159,7 @@ class Complex {
 	 * @returns {Complex} -1
 	 */
 	static get MINUS_ONE() {
-		return DEFINE$4.MINUS_ONE;
+		return DEFINE$1.MINUS_ONE;
 	}
 
 	/**
@@ -19835,7 +12167,7 @@ class Complex {
 	 * @returns {Complex} i
 	 */
 	static get I() {
-		return DEFINE$4.I;
+		return DEFINE$1.I;
 	}
 
 	/**
@@ -19843,7 +12175,7 @@ class Complex {
 	 * @returns {Complex} - i
 	 */
 	static get MINUS_I() {
-		return DEFINE$4.MINUS_I;
+		return DEFINE$1.MINUS_I;
 	}
 
 	/**
@@ -19851,7 +12183,7 @@ class Complex {
 	 * @returns {Complex} 3.14...
 	 */
 	static get PI() {
-		return DEFINE$4.PI;
+		return DEFINE$1.PI;
 	}
 
 	/**
@@ -19859,7 +12191,7 @@ class Complex {
 	 * @returns {Complex} 0.78...
 	 */
 	static get QUARTER_PI() {
-		return DEFINE$4.QUARTER_PI;
+		return DEFINE$1.QUARTER_PI;
 	}
 
 	/**
@@ -19867,7 +12199,7 @@ class Complex {
 	 * @returns {Complex} 1.57...
 	 */
 	static get HALF_PI() {
-		return DEFINE$4.HALF_PI;
+		return DEFINE$1.HALF_PI;
 	}
 
 	/**
@@ -19875,7 +12207,7 @@ class Complex {
 	 * @returns {Complex} 6.28...
 	 */
 	static get TWO_PI() {
-		return DEFINE$4.TWO_PI;
+		return DEFINE$1.TWO_PI;
 	}
 
 	/**
@@ -19883,7 +12215,7 @@ class Complex {
 	 * @returns {Complex} 2.71...
 	 */
 	static get E() {
-		return DEFINE$4.E;
+		return DEFINE$1.E;
 	}
 
 	/**
@@ -19891,7 +12223,7 @@ class Complex {
 	 * @returns {Complex} ln(2)
 	 */
 	static get LN2() {
-		return DEFINE$4.LN2;
+		return DEFINE$1.LN2;
 	}
 
 	/**
@@ -19899,7 +12231,7 @@ class Complex {
 	 * @returns {Complex} ln(10)
 	 */
 	static get LN10() {
-		return DEFINE$4.LN10;
+		return DEFINE$1.LN10;
 	}
 
 	/**
@@ -19907,7 +12239,7 @@ class Complex {
 	 * @returns {Complex} log_2(e)
 	 */
 	static get LOG2E() {
-		return DEFINE$4.LOG2E;
+		return DEFINE$1.LOG2E;
 	}
 	
 	/**
@@ -19915,7 +12247,7 @@ class Complex {
 	 * @returns {Complex} log_10(e)
 	 */
 	static get LOG10E() {
-		return DEFINE$4.LOG10E;
+		return DEFINE$1.LOG10E;
 	}
 	
 	/**
@@ -19923,7 +12255,7 @@ class Complex {
 	 * @returns {Complex} sqrt(2)
 	 */
 	static get SQRT2() {
-		return DEFINE$4.SQRT2;
+		return DEFINE$1.SQRT2;
 	}
 	
 	/**
@@ -19931,7 +12263,7 @@ class Complex {
 	 * @returns {Complex} sqrt(0.5)
 	 */
 	static get SQRT1_2() {
-		return DEFINE$4.SQRT1_2;
+		return DEFINE$1.SQRT1_2;
 	}
 	
 	/**
@@ -19939,7 +12271,7 @@ class Complex {
 	 * @returns {Complex} 0.5
 	 */
 	static get HALF() {
-		return DEFINE$4.HALF;
+		return DEFINE$1.HALF;
 	}
 
 	/**
@@ -19947,7 +12279,7 @@ class Complex {
 	 * @returns {Complex} Infinity
 	 */
 	static get POSITIVE_INFINITY() {
-		return DEFINE$4.POSITIVE_INFINITY;
+		return DEFINE$1.POSITIVE_INFINITY;
 	}
 	
 	/**
@@ -19955,7 +12287,7 @@ class Complex {
 	 * @returns {Complex} -Infinity
 	 */
 	static get NEGATIVE_INFINITY() {
-		return DEFINE$4.NEGATIVE_INFINITY;
+		return DEFINE$1.NEGATIVE_INFINITY;
 	}
 
 	/**
@@ -19963,7 +12295,7 @@ class Complex {
 	 * @returns {Complex} NaN
 	 */
 	static get NaN() {
-		return DEFINE$4.NaN;
+		return DEFINE$1.NaN;
 	}
 
 	// ----------------------
@@ -20030,7 +12362,7 @@ class Complex {
  * Collection of constant values used in the class.
  * @ignore
  */
-const DEFINE$4 = {
+const DEFINE$1 = {
 
 	/**
 	 * 0
@@ -20142,6 +12474,7978 @@ const DEFINE$4 = {
 	 */
 	NaN : new Complex(Number.NaN)
 };
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Fraction type argument.
+ * - Fraction
+ * - BigInteger
+ * - BigDecimal
+ * - number
+ * - boolean
+ * - string
+ * - Array<KBigIntegerInputData>
+ * - {numerator:KBigIntegerInputData,denominator:KBigIntegerInputData}
+ * - {doubleValue:number}
+ * - {toString:function}
+ * 
+ * Initialization can be performed as follows.
+ * - 10, "10", "10/1", "10.0/1.0", ["10", "1"], [10, 1]
+ * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
+ * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
+ * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
+ * @typedef {Fraction|BigInteger|BigDecimal|number|boolean|string|Array<import("./BigInteger.js").KBigIntegerInputData>|{numerator:import("./BigInteger.js").KBigIntegerInputData,denominator:import("./BigInteger.js").KBigIntegerInputData}|{doubleValue:number}|{toString:function}} KFractionInputData
+ */
+
+/**
+ * Collection of functions used in Fraction.
+ * @ignore
+ */
+class FractionTool {
+
+	/**
+	 * Create data for Fraction from strings.
+	 * @param ntext {string}
+	 * @return {Fraction}
+	 */
+	static to_fraction_data_from_number_string(ntext) {
+		let scale = 0;
+		let buff;
+		let is_negate = false;
+		// 正規化
+		let text = ntext.replace(/\s/g, "").toLowerCase();
+		// +-の符号があるか
+		const number_text = [];
+		buff = text.match(/^[+-]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			if(buff.indexOf("-") !== -1) {
+				is_negate = true;
+				number_text.push("-");
+			}
+		}
+		// 整数部があるか
+		buff = text.match(/^[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			number_text.push(buff);
+		}
+		// 浮動小数点の計算がない場合はここで完了
+		if(text.length === 0) {
+			return new Fraction([new BigInteger([number_text.join(""), 10]), BigInteger.ONE]);
+		}
+		// 巡回小数点指定があるか
+		let cyclic_decimal = null;
+		if(/[()'"[\]]/.test(text)) {
+			const match_data = text.match(/([^.]*)\.(\d*)[(['"](\d+)[)\]'"](.*)/);
+			if(match_data === null) {
+				throw "Fraction Unsupported argument " + text;
+			}
+			// 巡回少数の場所
+			const cyclic_decimal_scale = match_data[2].length;
+			const cyclic_decimal_text = match_data[3];
+			// 巡回少数以外を抽出
+			if(cyclic_decimal_scale === 0) {
+				text = match_data[1] + match_data[4];
+			}
+			else {
+				text = match_data[1] + "." + match_data[2] + match_data[4];
+			}
+
+			const numerator = new BigInteger([cyclic_decimal_text, 10]);
+			const denominator_string = [];
+			for(let i = 0; i < cyclic_decimal_text.length; i++) {
+				denominator_string.push("9");
+			}
+			const denominator = new BigInteger([denominator_string.join(""), 10]);
+			cyclic_decimal = new Fraction([numerator, denominator]);
+			cyclic_decimal = cyclic_decimal.scaleByPowerOfTen(-cyclic_decimal_scale);
+		}
+		// 小数部があるか
+		buff = text.match(/^\.[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			buff = buff.substr(1);
+			scale = scale + buff.length;
+			number_text.push(buff);
+		}
+		// 指数表記があるか
+		buff = text.match(/^e[+-]?[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0].substr(1);
+			scale = scale - parseInt(buff, 10);
+		}
+
+		let f = null;
+		{
+			let numerator = null;
+			let denominator = null;
+			// 出力用の文字を作成
+			if(scale === 0) {
+				numerator = new BigInteger([number_text.join(""), 10]);
+				denominator = BigInteger.ONE;
+			}
+			if(scale < 0) {
+				for(let i = 0; i < -scale; i++) {
+					number_text.push("0");
+				}
+				numerator = new BigInteger([number_text.join(""), 10]);
+				denominator = BigInteger.ONE;
+			}
+			else if(scale > 0) {
+				numerator = new BigInteger([number_text.join(""), 10]);
+				const denominator_string = ["1"];
+				for(let i = 0; i < scale; i++) {
+					denominator_string.push("0");
+				}
+				denominator = new BigInteger([denominator_string.join(""), 10]);
+			}
+			f = new Fraction([numerator, denominator]);
+		}
+		if(cyclic_decimal) {
+			if(!is_negate) {
+				f = f.add(cyclic_decimal);
+			}
+			else {
+				f = f.sub(cyclic_decimal);
+			}
+		}
+		return f;
+	}
+
+	/**
+	 * Create data for Fraction from fractional string.
+	 * @param ntext {string}
+	 * @return {Fraction}
+	 */
+	static to_fraction_data_from_fraction_string(ntext) {
+		// 特殊な状態
+		if(/nan|inf/i.test(ntext)) {
+			const ret = new Fraction();
+			ret.denominator = BigInteger.ONE;
+			if(/nan/i.test(ntext)) {
+				ret.numerator = BigInteger.NaN;
+			}
+			else if(!/-/.test(ntext)) {
+				ret.numerator = BigInteger.POSITIVE_INFINITY;
+			}
+			else {
+				ret.numerator = BigInteger.NEGATIVE_INFINITY;
+			}
+			return ret;
+		}
+		if(ntext.indexOf("/") === -1) {
+			return FractionTool.to_fraction_data_from_number_string(ntext);
+		}
+		else {
+			const fraction_value = ntext.split("/");
+			const numerator_value = FractionTool.to_fraction_data_from_number_string(fraction_value[0]);
+			const denominator_value = FractionTool.to_fraction_data_from_number_string(fraction_value[1]);
+			return numerator_value.div(denominator_value);
+		}
+	}
+
+	/**
+	 * Create data for Fraction from number.
+	 * @param number {number|boolean}
+	 * @return {Fraction}
+	 */
+	static to_fraction_data_from_number(number) {
+		const value = typeof number !== "boolean" ? number : (number ? 1 : 0);
+		let numerator = null;
+		let denominator = null;
+		if(!isFinite(value)) {
+			const ret = new Fraction();
+			ret.denominator = BigInteger.ONE;
+			if(value === Infinity) {
+				ret.numerator = BigInteger.POSITIVE_INFINITY;
+			}
+			else if(value === - Infinity) {
+				ret.numerator = BigInteger.NEGATIVE_INFINITY;
+			}
+			else {
+				ret.numerator = BigInteger.NaN;
+			}
+			return ret;
+		}
+		// 整数
+		else if(value === Math.floor(value)) {
+			numerator = new BigInteger(value);
+			denominator = BigInteger.ONE;
+		}
+		// 浮動小数
+		else {
+			let scale = Math.trunc(Math.log(Math.abs(value)) / Math.log(10));
+			let x = value / Math.pow(10, scale);
+			// スケールを逆にする
+			scale = - scale;
+			for(let i = 0; i < 14; i++) {
+				x = x * 10;
+				scale = scale + 1;
+				if(Math.abs(x - Math.round(x)) <= Number.EPSILON) {
+					break;
+				}
+			}
+			// 最も下の桁は四捨五入する
+			x = Math.round(x * 1e14) / 1e14;
+			if(scale <= 0) {
+				numerator = new BigInteger(value);
+				denominator = BigInteger.ONE;
+			}
+			else {
+				numerator = new BigInteger(x);
+				const denominator_string = ["1"];
+				for(let i = 0; i < scale; i++) {
+					denominator_string.push("0");
+				}
+				denominator = new BigInteger([denominator_string.join(""), 10]);
+			}
+		}
+		return new Fraction([numerator, denominator]);
+	}
+
+	/**
+	 * Normalization.
+	 * - Reduce fraction using gcd.
+	 * - Add the sign to the numerator.
+	 * - If the number is zero, the denominator is one.
+	 * @param value {Fraction}
+	 * @returns {void}
+	 */
+	static normalization(value) {
+		if(value.denominator.equals(BigInteger.ONE)) {
+			return;
+		}
+		if(value.denominator.equals(BigInteger.MINUS_ONE)) {
+			value.numerator = value.numerator.negate();
+			value.denominator = BigInteger.ONE;
+			return;
+		}
+		if(value.numerator.equals(BigInteger.ZERO)) {
+			value.denominator = BigInteger.ONE;
+			return;
+		}
+		const gcd = value.numerator.gcd(value.denominator);
+		let numerator = value.numerator.div(gcd);
+		let denominator = value.denominator.div(gcd);
+		if(denominator.sign() < 0) {
+			numerator = numerator.negate();
+			denominator = denominator.negate();
+		}
+		value.numerator = numerator;
+		value.denominator = denominator;
+	}
+
+}
+
+/**
+ * Fraction class (immutable).
+ */
+class Fraction {
+
+	/**
+	 * Create an fraction.
+	 * 
+	 * Initialization can be performed as follows.
+	 * - 10, "10", "10/1", "10.0/1.0", ["10", "1"], [10, 1]
+	 * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
+	 * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
+	 * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
+	 * @param {KFractionInputData} [number] - Fraction data. See how to use the function.
+	 */
+	constructor(number) {
+		
+		// 分子
+		/**
+		 * numerator
+		 * @type {BigInteger}
+		 */
+		this.numerator = null;
+
+		// 分母
+		/**
+		 * denominator
+		 * @type {BigInteger}
+		 */
+		this.denominator = null;
+
+		if(arguments.length === 0) {
+			this.numerator = BigInteger.ZERO;
+			this.denominator = BigInteger.ONE;
+		}
+		else if(arguments.length === 1) {
+			let is_normalization = false;
+			if((typeof number === "number") || (typeof number === "boolean")) {
+				const x = FractionTool.to_fraction_data_from_number(number);
+				this.numerator = x.numerator;
+				this.denominator = x.denominator;
+			}
+			else if(typeof number === "string") {
+				const x = FractionTool.to_fraction_data_from_fraction_string(number);
+				this.numerator = x.numerator;
+				this.denominator = x.denominator;
+			}
+			else if(number instanceof BigInteger) {
+				this.numerator = number;
+				this.denominator = BigInteger.ONE;
+			}
+			else if(number instanceof Fraction) {
+				this.numerator = number.numerator;
+				this.denominator = number.denominator;
+			}
+			else if((number instanceof Array) && (number.length === 2)) {
+				this.numerator = (number[0] instanceof BigInteger) ? number[0] : new BigInteger(number[0]);
+				this.denominator = (number[1] instanceof BigInteger) ? number[1] : new BigInteger(number[1]);
+				is_normalization = true;
+			}
+			else if(number instanceof BigDecimal) {
+				const bigint = number.unscaledValue();
+				if(!bigint.isFinite()) {
+					this.numerator = bigint;
+					this.denominator = BigInteger.ONE;
+				}
+				else {
+					const value = new Fraction(number.unscaledValue());
+					const x = value.scaleByPowerOfTen(-number.scale());
+					this.numerator = x.numerator;
+					this.denominator = x.denominator;
+				}
+			}
+			else if(typeof number === "object") {
+				if("doubleValue" in number) {
+					const x = FractionTool.to_fraction_data_from_number(number.doubleValue);
+					this.numerator = x.numerator;
+					this.denominator = x.denominator;
+				}
+				else if(("numerator" in number) && ("denominator" in number)) {
+					this.numerator = (number.numerator instanceof BigInteger) ? number.numerator : new BigInteger(number.numerator);
+					this.denominator = (number.denominator instanceof BigInteger) ? number.denominator : new BigInteger(number.denominator);
+					is_normalization = true;
+				}
+				else {
+					const x1 = FractionTool.to_fraction_data_from_fraction_string(number.toString());
+					this.numerator = x1.numerator;
+					this.denominator = x1.denominator;
+				}
+			}
+			else {
+				throw "Fraction Unsupported argument " + number;
+			}
+			if(is_normalization) {
+				FractionTool.normalization(this);
+			}
+		}
+		else {
+			throw "Fraction Unsupported argument " + number;
+		}
+	}
+
+	/**
+	 * Create an entity object of this class.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction}
+	 */
+	static create(number) {
+		if(number instanceof Fraction) {
+			return number;
+		}
+		else {
+			return new Fraction(number);
+		}
+	}
+
+	/**
+	 * Convert number to Fraction type.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction}
+	 */
+	static valueOf(number) {
+		return Fraction.create(number);
+	}
+
+	/**
+	 * Convert to Fraction.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction}
+	 * @private
+	 */
+	static _toFraction(number) {
+		if(number instanceof Fraction) {
+			return number;
+		}
+		else {
+			return new Fraction(number);
+		}
+	}
+
+	/**
+	 * Convert to real number.
+	 * @param {KFractionInputData} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toFloat(number) {
+		if(typeof number === "number") {
+			return number;
+		}
+		else if(number instanceof Fraction) {
+			return number.doubleValue;
+		}
+		else {
+			return (new Fraction(number)).doubleValue;
+		}
+	}
+
+	/**
+	 * Convert to integer.
+	 * @param {KFractionInputData} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		if(typeof number === "number") {
+			return Math.trunc(number);
+		}
+		else if(number instanceof Fraction) {
+			return number.intValue;
+		}
+		else {
+			return (new Fraction(number)).intValue;
+		}
+	}
+
+	/**
+	 * Deep copy.
+	 * @returns {Fraction} 
+	 */
+	clone() {
+		return new Fraction(this);
+	}
+
+	/**
+	 * Absolute value.
+	 * @returns {Fraction} abs(A)
+	 */
+	abs() {
+		if(!this.isFinite()) {
+			return this.isNegativeInfinity() ? Fraction.POSITIVE_INFINITY : this;
+		}
+		if(this.sign() >= 0) {
+			return this;
+		}
+		return this.negate();
+	}
+
+	/**
+	 * this * -1
+	 * @returns {Fraction} -A
+	 */
+	negate() {
+		if(!this.isFinite()) {
+			if(this.isPositiveInfinity()) {
+				return Fraction.NEGATIVE_INFINITY;
+			}
+			else if(this.isNegativeInfinity()) {
+				return Fraction.POSITIVE_INFINITY;
+			}
+			else {
+				return this;
+			}
+		}
+		return new Fraction([this.numerator.negate(), this.denominator]);
+	}
+
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	sign() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? 1 : -1);
+		}
+		return this.numerator.sign();
+	}
+	
+	/**
+	 * Convert to string.
+	 * @returns {string} 
+	 */
+	toString() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
+		return this.numerator.toString() + " / " + this.denominator.toString();
+	}
+
+	// ----------------------
+	// 四則演算
+	// ----------------------
+	
+	/**
+	 * Add.
+	 * @param {KFractionInputData} num
+	 * @return {Fraction} A + B
+	 */
+	add(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN() || (x.isInfinite() && y.isInfinite() && !x.equalsState(y))) {
+				return Fraction.NaN;
+			}
+			else if(x.isPositiveInfinity() || y.isPositiveInfinity()) {
+				return Fraction.POSITIVE_INFINITY;
+			}
+			else {
+				return Fraction.NEGATIVE_INFINITY;
+			}
+		}
+		let f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator.add(y.numerator), BigInteger.ONE]);
+		}
+		else {
+			f = new Fraction([
+				x.numerator.mul(y.denominator).add(y.numerator.mul(x.denominator)),
+				x.denominator.mul(y.denominator)
+			]);
+		}
+		return f;
+	}
+
+	/**
+	 * Subtract.
+	 * @param {KFractionInputData} num
+	 * @return {Fraction} A - B
+	 */
+	sub(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN() || x.equalsState(y)) {
+				return Fraction.NaN;
+			}
+			else if(x.isNegativeInfinity() || y.isPositiveInfinity()) {
+				return Fraction.NEGATIVE_INFINITY;
+			}
+			else {
+				return Fraction.POSITIVE_INFINITY;
+			}
+		}
+		let f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator.sub(y.numerator), BigInteger.ONE]);
+		}
+		else {
+			f = new Fraction([
+				x.numerator.mul(y.denominator).sub(y.numerator.mul(x.denominator)),
+				x.denominator.mul(y.denominator)
+			]);
+		}
+		return f;
+	}
+
+	/**
+	 * Multiply.
+	 * @param {KFractionInputData} num
+	 * @return {Fraction} A * B
+	 */
+	mul(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN() || (x.isZero() || y.isZero())) {
+				return Fraction.NaN;
+			}
+			else if(x.sign() * y.sign() > 0) {
+				return Fraction.POSITIVE_INFINITY;
+			}
+			else {
+				return Fraction.NEGATIVE_INFINITY;
+			}
+		}
+		let f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator.mul(y.numerator), BigInteger.ONE]);
+		}
+		else {
+			f = new Fraction([ x.numerator.mul(y.numerator), x.denominator.mul(y.denominator) ]);
+		}
+		return f;
+	}
+
+	/**
+	 * Divide.
+	 * @param {KFractionInputData} num
+	 * @return {Fraction} A / B
+	 */
+	div(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN() || (x.isInfinite() && y.isInfinite())) {
+				return Fraction.NaN;
+			}
+			else if(x.isInfinite()) {
+				if(x.sign() * y.sign() >= 0) {
+					return Fraction.POSITIVE_INFINITY;
+				}
+				else {
+					return Fraction.NEGATIVE_INFINITY;
+				}
+			}
+			else {
+				return Fraction.ZERO;
+			}
+		}
+		else if(y.isZero()) {
+			if(x.isZero()) {
+				return Fraction.NaN;
+			}
+			else {
+				return x.sign() >= 0 ? Fraction.POSITIVE_INFINITY : Fraction.NEGATIVE_INFINITY;
+			}
+		}
+		let f;
+		if(x.isInteger() && y.isInteger()) {
+			f = new Fraction([ x.numerator, y.numerator]);
+		}
+		else {
+			f = new Fraction([ x.numerator.mul(y.denominator), y.numerator.mul(x.denominator)]);
+		}
+		return f;
+	}
+
+	/**
+	 * Inverse number of this value.
+	 * @return {Fraction} 1 / A
+	 */
+	inv() {
+		{
+			if(!this.isFinite()) {
+				return this.isNaN() ? Fraction.NaN : Fraction.ZERO;
+			}
+			if(this.isZero()) {
+				return Fraction.NaN;
+			}
+		}
+		return new Fraction([ this.denominator, this.numerator]);
+	}
+
+	/**
+	 * Modulo, positive remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {KFractionInputData} num
+	 * @return {Fraction} A rem B
+	 */
+	rem(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite() || y.isZero()) {
+			return Fraction.NaN;
+		}
+		// x - y * fix(x/y)
+		return x.sub(y.mul(x.div(y).fix()));
+	}
+
+	/**
+	 * Modulo, positive remainder of division.
+	 * - Result has same sign as the Divisor.
+	 * @param {KFractionInputData} num
+	 * @returns {Fraction} A mod B
+	 */
+	mod(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(y.isZero()) {
+			return x;
+		}
+		const ret = x.rem(y);
+		if(!x.equalsState(y)) {
+			return ret.add(y);
+		}
+		else {
+			return ret;
+		}
+	}
+
+	/**
+	 * Power function.
+	 * - Supports only integers.
+	 * @param {KFractionInputData} num
+	 * @returns {Fraction} pow(A, B)
+	 */
+	pow(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		{
+			if(x.isNaN() || y.isNaN()) {
+				return Fraction.NaN;
+			}
+			if(y.isZero()) {
+				return Fraction.ONE;
+			}
+			else if(x.isZero()) {
+				return Fraction.ZERO;
+			}
+			else if(x.isOne()) {
+				return Fraction.ONE;
+			}
+			else if(x.isInfinite()) {
+				if(x.isPositiveInfinity()) {
+					return Fraction.POSITIVE_INFINITY;
+				}
+				else {
+					if(y.isPositiveInfinity()) {
+						return Fraction.NaN;
+					}
+					else {
+						return new Fraction(Infinity * Math.pow(-1, Math.round(y.doubleValue)));
+					}
+				}
+			}
+			else if(y.isInfinite()) {
+				if(x.isNegative()) {
+					// 複素数
+					return Fraction.NaN;
+				}
+				if(x.compareTo(Fraction.ONE) < 0) {
+					if(y.isPositiveInfinity()) {
+						return Fraction.ZERO;
+					}
+					else if(y.isNegativeInfinity()) {
+						return Fraction.POSITIVE_INFINITY;
+					}
+				}
+				else {
+					if(y.isPositiveInfinity()) {
+						return Fraction.POSITIVE_INFINITY;
+					}
+					else if(y.isNegativeInfinity()) {
+						return Fraction.ZERO;
+					}
+				}
+			}
+		}
+		const numerator = x.numerator.pow(y.intValue);
+		const denominator = x.denominator.pow(y.intValue);
+		return new Fraction([ numerator, denominator ]);
+	}
+
+	// ----------------------
+	// その他の演算
+	// ----------------------
+	
+	/**
+	 * Factorial function, x!.
+	 * - Supports only integers.
+	 * @returns {Fraction} n!
+	 */
+	factorial() {
+		if(!this.isFinite()) {
+			return this;
+		}
+		return new Fraction([this.toBigInteger().factorial(), Fraction.ONE]);
+	}
+
+	/**
+	 * Multiply a multiple of ten.
+	 * - Supports only integers.
+	 * @param {KFractionInputData} n
+	 * @returns {Fraction}
+	 */
+	scaleByPowerOfTen(n) {
+		if(!this.isFinite()) {
+			return this;
+		}
+		const scale = Fraction._toInteger(n);
+		if(scale === 0) {
+			return this;
+		}
+		let f;
+		if(scale > 0) {
+			f = new Fraction([ this.numerator.scaleByPowerOfTen(scale), this.denominator]);
+		}
+		else if(scale < 0) {
+			f = new Fraction([ this.numerator, this.denominator.scaleByPowerOfTen(-scale)]);
+		}
+		return f;
+	}
+
+	// ----------------------
+	// 他の型に変換用
+	// ----------------------
+	
+	/**
+	 * boolean value.
+	 * @returns {boolean}
+	 */
+	get booleanValue() {
+		return this.numerator.booleanValue;
+	}
+
+	/**
+	 * integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		if(this.isInteger()) {
+			return Math.trunc(this.numerator.doubleValue);
+		}
+		return Math.trunc(this.doubleValue);
+	}
+
+	/**
+	 * floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		if(this.isInteger()) {
+			return this.numerator.doubleValue;
+		}
+		const x = new BigDecimal([this.numerator, MathContext.UNLIMITED]);
+		const y = new BigDecimal([this.denominator, MathContext.UNLIMITED]);
+		return x.div(y, {context : MathContext.DECIMAL64}).doubleValue;
+	}
+
+	// ----------------------
+	// konpeito で扱う数値型へ変換
+	// ----------------------
+	
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return new BigInteger(this.fix().numerator);
+	}
+	
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		if(!this.isFinite()) {
+			return new BigDecimal(this.doubleValue);
+		}
+		if(this.isInteger()) {
+			return new BigDecimal(this.numerator);
+		}
+		const x = new BigDecimal([this.numerator, MathContext.UNLIMITED]);
+		const y = new BigDecimal([this.denominator, MathContext.UNLIMITED]);
+		if(mc) {
+			return x.div(y, {context: mc});
+		}
+		else {
+			return x.div(y, {context: BigDecimal.getDefaultContext()});
+		}
+	}
+	
+	/**
+	 * return Fraction.
+	 * @returns {Fraction}
+	 */
+	toFraction() {
+		return this;
+	}
+	
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return new Complex(this);
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return new Matrix(this);
+	}
+
+	// ----------------------
+	// 比較
+	// ----------------------
+	
+	/**
+	 * Equals.
+	 * @param {KFractionInputData} num
+	 * @returns {boolean} A === B
+	 */
+	equals(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN()) {
+				return false;
+			}
+			else if(x.equalsState(y)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		return x.numerator.equals(y.numerator) && x.denominator.equals(y.denominator);
+	}
+
+	/**
+	 * Numeric type match.
+	 * @param {KFractionInputData} number 
+	 * @returns {boolean}
+	 */
+	equalsState(number) {
+		const x = this;
+		const y = Fraction._toFraction(number);
+		return x.numerator.equalsState(y.numerator);
+	}
+
+	/**
+	 * Compare values.
+	 * @param {KFractionInputData} num
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(num) {
+		const x = this;
+		const y = Fraction._toFraction(num);
+		if(!x.isFinite() || !y.isFinite()) {
+			return x.numerator.compareTo(y.numerator);
+		}
+		return x.sub(y).sign();
+	}
+
+	/**
+	 * Maximum number.
+	 * @param {KFractionInputData} number
+	 * @returns {Fraction} max([A, B])
+	 */
+	max(number) {
+		const val = Fraction._toFraction(number);
+		if(this.isNaN() || val.isNaN()) {
+			return Fraction.NaN;
+		}
+		if(this.compareTo(val) >= 0) {
+			return this;
+		}
+		else {
+			return val;
+		}
+	}
+
+	/**
+	 * Minimum number.
+	 * @param {KFractionInputData} number
+	 * @returns {Fraction} min([A, B])
+	 */
+	min(number) {
+		const val = Fraction._toFraction(number);
+		if(this.isNaN() || val.isNaN()) {
+			return Fraction.NaN;
+		}
+		if(this.compareTo(val) >= 0) {
+			return val;
+		}
+		else {
+			return this;
+		}
+	}
+
+	/**
+	 * Clip number within range.
+	 * @param {KFractionInputData} min 
+	 * @param {KFractionInputData} max
+	 * @returns {Fraction} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = Fraction._toFraction(min);
+		const max_ = Fraction._toFraction(max);
+		if(this.isNaN() || min_.isNaN() || max_.isNaN()) {
+			return Fraction.NaN;
+		}
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	}
+
+	// ----------------------
+	// 丸め
+	// ----------------------
+	
+	/**
+	 * Floor.
+	 * @returns {Fraction} floor(A)
+	 */
+	floor() {
+		if(this.isInteger() || !this.isFinite()) {
+			return this;
+		}
+		const x = this.fix();
+		if(this.sign() > 0) {
+			return x;
+		}
+		else {
+			return new Fraction([x.numerator.sub(BigInteger.ONE), Fraction.ONE]);
+		}
+	}
+
+	/**
+	 * Ceil.
+	 * @returns {Fraction} ceil(A)
+	 */
+	ceil() {
+		if(this.isInteger() || !this.isFinite()) {
+			return this;
+		}
+		const x = this.fix();
+		if(this.sign() > 0) {
+			return new Fraction([x.numerator.add(BigInteger.ONE), Fraction.ONE]);
+		}
+		else {
+			return x;
+		}
+	}
+	
+	/**
+	 * Rounding to the nearest integer.
+	 * @returns {Fraction} round(A)
+	 */
+	round() {
+		if(this.isInteger() || !this.isFinite()) {
+			return this;
+		}
+		const x = this.floor();
+		const fract = this.sub(x);
+		if(fract.compareTo(Fraction.HALF) >= 0) {
+			return new Fraction([x.numerator.add(BigInteger.ONE), Fraction.ONE]);
+		}
+		else {
+			return x;
+		}
+	}
+
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {Fraction} fix(A), trunc(A)
+	 */
+	fix() {
+		if(this.isInteger() || !this.isFinite()) {
+			return this;
+		}
+		return new Fraction([this.numerator.div(this.denominator), Fraction.ONE]);
+	}
+
+	/**
+	 * Fraction.
+	 * @returns {Fraction} fract(A)
+	 */
+	fract() {
+		if(!this.isFinite()) {
+			return Fraction.NaN;
+		}
+		if(this.isInteger()) {
+			return Fraction.ZERO;
+		}
+		return this.sub(this.floor());
+	}
+
+	// ----------------------
+	// テスト系
+	// ----------------------
+	
+	/**
+	 * Return true if the value is integer.
+	 * @return {boolean}
+	 */
+	isInteger() {
+		if(!this.isFinite()) {
+			return false;
+		}
+		return this.denominator.equals(BigInteger.ONE);
+	}
+
+	/**
+	 * this === 0
+	 * @return {boolean} A === 0
+	 */
+	isZero() {
+		if(!this.isFinite()) {
+			return false;
+		}
+		return this.numerator.isZero();
+	}
+
+	/**
+	 * this === 1
+	 * @return {boolean} A === 1
+	 */
+	isOne() {
+		if(!this.isFinite()) {
+			return false;
+		}
+		return this.numerator.equals(BigInteger.ONE) && this.denominator.equals(BigInteger.ONE);
+	}
+
+	/**
+	 * this > 0
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		return this.numerator.isPositive();
+	}
+
+	/**
+	 * this < 0
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return this.numerator.isNegative();
+	}
+
+	/**
+	 * this >= 0
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return this.numerator.isNotNegative();
+	}
+	
+	/**
+	 * this === NaN
+	 * @returns {boolean} isNaN(A)
+	 */
+	isNaN() {
+		return this.numerator.isNaN();
+	}
+	
+	/**
+	 * this === Infinity
+	 * @returns {boolean} isPositiveInfinity(A)
+	 */
+	isPositiveInfinity() {
+		return this.numerator.isPositiveInfinity();
+	}
+
+	/**
+	 * this === -Infinity
+	 * @returns {boolean} isNegativeInfinity(A)
+	 */
+	isNegativeInfinity() {
+		return this.numerator.isNegativeInfinity();
+	}
+
+	/**
+	 * this === Infinity or -Infinity
+	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+	 */
+	isInfinite() {
+		return this.numerator.isInfinite();
+	}
+	
+	/**
+	 * Return true if the value is finite number.
+	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
+	 */
+	isFinite() {
+		return this.numerator.isFinite();
+	}
+
+	// ----------------------
+	// ビット演算系
+	// ----------------------
+	
+	/**
+	 * Logical AND.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction} A & B
+	 */
+	and(number) {
+		const n_src = this;
+		const n_tgt = Fraction._toFraction(number);
+		const src	= n_src.round().toBigInteger();
+		const tgt	= n_tgt.round().toBigInteger();
+		return new Fraction(src.and(tgt));
+	}
+
+	/**
+	 * Logical OR.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction} A | B
+	 */
+	or(number) {
+		const n_src = this;
+		const n_tgt = Fraction._toFraction(number);
+		const src	= n_src.round().toBigInteger();
+		const tgt	= n_tgt.round().toBigInteger();
+		return new Fraction(src.or(tgt));
+	}
+
+	/**
+	 * Logical Exclusive-OR.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction} A ^ B
+	 */
+	xor(number) {
+		const n_src = this;
+		const n_tgt = Fraction._toFraction(number);
+		const src	= n_src.round().toBigInteger();
+		const tgt	= n_tgt.round().toBigInteger();
+		return new Fraction(src.xor(tgt));
+	}
+
+	/**
+	 * Logical Not. (mutable)
+	 * - Calculated as an integer.
+	 * @returns {Fraction} !A
+	 */
+	not() {
+		const n_src = this;
+		const src	= n_src.round().toBigInteger();
+		return new Fraction(src.not());
+	}
+	
+	/**
+	 * this << n
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} n
+	 * @returns {Fraction} A << n
+	 */
+	shift(n) {
+		const src		= this.round().toBigInteger();
+		const number	= Fraction._toInteger(n);
+		return new Fraction(src.shift(number));
+	}
+
+	// ----------------------
+	// gcd, lcm
+	// ----------------------
+	
+	/**
+	 * Euclidean algorithm.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction} gcd(x, y)
+	 */
+	gcd(number) {
+		const x = this.round().toBigInteger();
+		const y = Fraction._toFraction(number).toBigInteger();
+		const result = x.gcd(y);
+		return new Fraction(result);
+	}
+
+	/**
+	 * Extended Euclidean algorithm.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} number 
+	 * @returns {Array<Fraction>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 */
+	extgcd(number) {
+		const x = this.round().toBigInteger();
+		const y = Fraction._toFraction(number).toBigInteger();
+		const result = x.extgcd(y);
+		return [new Fraction(result[0]), new Fraction(result[1]), new Fraction(result[2])];
+	}
+
+	/**
+	 * Least common multiple.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} number 
+	 * @returns {Fraction} lcm(x, y)
+	 */
+	lcm(number) {
+		const x = this.round().toBigInteger();
+		const y = Fraction._toFraction(number).toBigInteger();
+		const result = x.lcm(y);
+		return new Fraction(result);
+	}
+
+	// ----------------------
+	// mod
+	// ----------------------
+
+	/**
+	 * Modular exponentiation.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} exponent
+	 * @param {KFractionInputData} m 
+	 * @returns {Fraction} A^B mod m
+	 */
+	modPow(exponent, m) {
+		const A = this.round().toBigInteger();
+		const B = Fraction._toFraction(exponent).toBigInteger();
+		const m_ = Fraction._toFraction(m).toBigInteger();
+		const result = A.modPow(B, m_);
+		return new Fraction(result);
+	}
+
+	/**
+	 * Modular multiplicative inverse.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} m
+	 * @returns {Fraction} A^(-1) mod m
+	 */
+	modInverse(m) {
+		const A = this.round().toBigInteger();
+		const m_ = Fraction._toFraction(m).toBigInteger();
+		const result = A.modInverse(m_);
+		return new Fraction(result);
+	}
+	
+	// ----------------------
+	// 素数
+	// ----------------------
+	
+	/**
+	 * Return true if the value is prime number.
+	 * - Calculated as an integer.
+	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
+	 */
+	isPrime() {
+		const src = this.round().toBigInteger();
+		return src.isPrime();
+	}
+	
+	/**
+	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * 
+	 * Attention : it takes a very long time to process.
+	 * - Calculated as an integer.
+	 * @param {KFractionInputData} [certainty=100] - Repeat count (prime precision).
+	 * @returns {boolean}
+	 */
+	isProbablePrime(certainty) {
+		const src = this.round().toBigInteger();
+		return src.isProbablePrime(certainty !== undefined ? Fraction._toInteger(certainty) : undefined);
+	}
+
+	/**
+	 * Next prime.
+	 * @param {KFractionInputData} [certainty=100] - Repeat count (prime precision).
+	 * @param {KFractionInputData} [search_max=100000] - Search range of next prime.
+	 * @returns {Fraction}
+	 */
+	nextProbablePrime(certainty, search_max) {
+		const src = this.round().toBigInteger();
+		const p1 = certainty !== undefined ? Fraction._toInteger(certainty) : undefined;
+		const p2 = search_max !== undefined ? Fraction._toInteger(search_max) : undefined;
+		return new Fraction(src.nextProbablePrime(p1, p2));
+	}
+
+	// ----------------------
+	// 定数
+	// ----------------------
+	
+	/**
+	 * -1
+	 * @returns {Fraction} -1
+	 */
+	static get MINUS_ONE() {
+		if(DEFINE$2.MINUS_ONE === null) {
+			DEFINE$2.MINUS_ONE = new Fraction([BigInteger.MINUS_ONE, BigInteger.ONE]);
+		}
+		return DEFINE$2.MINUS_ONE;
+	}
+
+	/**
+	 * 0
+	 * @returns {Fraction} 0
+	 */
+	static get ZERO() {
+		if(DEFINE$2.ZERO === null) {
+			DEFINE$2.ZERO = new Fraction([BigInteger.ZERO, BigInteger.ONE]);
+		}
+		return DEFINE$2.ZERO;
+	}
+
+	/**
+	 * 0.5
+	 * @returns {Fraction} 0.5
+	 */
+	static get HALF() {
+		if(DEFINE$2.HALF === null) {
+			DEFINE$2.HALF = new Fraction([BigInteger.ONE, BigInteger.TWO]);
+		}
+		return DEFINE$2.HALF;
+	}
+	
+	/**
+	 * 1
+	 * @returns {Fraction} 1
+	 */
+	static get ONE() {
+		if(DEFINE$2.ONE === null) {
+			DEFINE$2.ONE = new Fraction([BigInteger.ONE, BigInteger.ONE]);
+		}
+		return DEFINE$2.ONE;
+	}
+	
+	/**
+	 * 2
+	 * @returns {Fraction} 2
+	 */
+	static get TWO() {
+		if(DEFINE$2.TWO === null) {
+			DEFINE$2.TWO = new Fraction([BigInteger.TWO, BigInteger.ONE]);
+		}
+		return DEFINE$2.TWO;
+	}
+	
+	/**
+	 * 10
+	 * @returns {Fraction} 10
+	 */
+	static get TEN() {
+		if(DEFINE$2.TEN === null) {
+			DEFINE$2.TEN = new Fraction([BigInteger.TEN, BigInteger.ONE]);
+		}
+		return DEFINE$2.TEN;
+	}
+
+	/**
+	 * Positive infinity.
+	 * @returns {Fraction} Infinity
+	 */
+	static get POSITIVE_INFINITY() {
+		if(DEFINE$2.POSITIVE_INFINITY === null) {
+			DEFINE$2.POSITIVE_INFINITY = new Fraction(Number.POSITIVE_INFINITY);
+		}
+		return DEFINE$2.POSITIVE_INFINITY;
+	}
+	
+	/**
+	 * Negative Infinity.
+	 * @returns {Fraction} -Infinity
+	 */
+	static get NEGATIVE_INFINITY() {
+		if(DEFINE$2.NEGATIVE_INFINITY === null) {
+			DEFINE$2.NEGATIVE_INFINITY = new Fraction(Number.NEGATIVE_INFINITY);
+		}
+		return DEFINE$2.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * Not a Number.
+	 * @returns {Fraction} NaN
+	 */
+	static get NaN() {
+		if(DEFINE$2.NaN === null) {
+			DEFINE$2.NaN = new Fraction(Number.NaN);
+		}
+		return DEFINE$2.NaN;
+	}
+	
+	// ----------------------
+	// 互換性
+	// ----------------------
+	
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	signum() {
+		return this.sign();
+	}
+
+	/**
+	 * Subtract.
+	 * @param {KFractionInputData} number
+	 * @returns {Fraction} A - B
+	 */
+	subtract(number) {
+		return this.sub(number);
+	}
+
+	/**
+	 * Multiply.
+	 * @param {KFractionInputData} number
+	 * @returns {Fraction} A * B
+	 */
+	multiply(number) {
+		return this.mul(number);
+	}
+
+	/**
+	 * Divide.
+	 * @param {KFractionInputData} number
+	 * @returns {Fraction} fix(A / B)
+	 */
+	divide(number) {
+		return this.div(number);
+	}
+
+	/**
+	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {KFractionInputData} number
+	 * @returns {Fraction} A % B
+	 */
+	remainder(number) {
+		return this.rem(number);
+	}
+
+}
+
+/**
+ * Collection of constant values used in the class.
+ * @ignore
+ */
+const DEFINE$2 = {
+
+	/**
+	 * -1
+	 * @type {any}
+	 */
+	MINUS_ONE : null,
+
+	/**
+	 * 0
+	 * @type {any}
+	 */
+	ZERO : null,
+	
+	/**
+	 * 1
+	 * @type {any}
+	 */
+	ONE : null,
+
+	/**
+	 * 0.5
+	 * @type {any}
+	 */
+	HALF : null,
+
+	/**
+	 * 2
+	 * @type {any}
+	 */
+	TWO : null,
+
+	/**
+	 * 10
+	 * @type {any}
+	 */
+	TEN : null,
+	
+	/**
+	 * Positive infinity.
+	 * @type {any}
+	 */
+	POSITIVE_INFINITY : null,
+
+	/**
+	 * Negative Infinity.
+	 * @type {any}
+	 */
+	NEGATIVE_INFINITY : null,
+
+	/**
+	 * Not a Number.
+	 * @type {any}
+	 */
+	NaN : null,
+
+};
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * BigInteger type argument.
+ * - BigInteger
+ * - number
+ * - string
+ * - Array<string|number>
+ * - {toBigInteger:function}
+ * - {intValue:number}
+ * - {toString:function}
+ * 
+ * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3", ["1200", 10]
+ * - "0xff", ["ff", 16]
+ * - "0o01234567", ["01234567", 8]
+ * - "0b0110101", ["0110101", 2]
+ * @typedef {BigInteger|number|boolean|string|Array<string|number>|{toBigInteger:function}|{intValue:number}|{toString:function}} KBigIntegerInputData
+ */
+
+/**
+ * Random number class to be used when the random number class is not set.
+ * @type {Random}
+ * @ignore
+ */
+let DEFAULT_RANDOM = new Random();
+
+/**
+ * Collection of functions used in BigInteger.
+ * @ignore
+ */
+class BigIntegerTool {
+
+	/**
+	 * Return a hex array from a string containing numbers.
+	 * @param {string} text - String containing a number (remove the negative sign).
+	 * @param {number} radix - Base number.
+	 * @returns {Array<number>} Hex array.
+	 */
+	static toHexadecimalArrayFromPlainString(text, radix) {
+		// 下の変換をすることで、2進数での変換時に内部のforの繰り返す回数が減る
+		// v0.03 出来る限りまとめてn進数変換する
+		const max_num = 0x3FFFFFFF;
+		const keta = Math.floor( Math.log(max_num) / Math.log(radix) );
+
+		/**
+		 * @type {Array<number>}
+		 */
+		let x = [];
+		
+		/**
+		 * @type {Array<number>}
+		 */
+		const y = [];
+		const len = Math.ceil(text.length / keta);
+		let offset = text.length;
+		for(let i = 0; i < len; i++ ) {
+			offset -= keta;
+			if(offset >= 0) {
+				x[i] = parseInt(text.substring(offset, offset + keta), radix);
+			}
+			else {
+				x[i] = parseInt(text.substring(0, offset + keta), radix);
+			}
+		}
+		const calcradix = Math.round(Math.pow(radix, keta));
+		// v0.03ここまで
+		// 2で割っていくアルゴリズムで2進数に変換する
+		while(x.length !==  0) {
+			// 2で割っていく
+			// 隣の桁でたcarryはradix進数をかけて桁上げしてる
+			let carry = 0;
+			for(let i = x.length - 1; i >= 0; i--) {
+				const a = x[i] + carry * calcradix;
+				x[i]  = a >>> 1;
+				carry = a & 1;
+			}
+			// 1余るかどうかをテストする
+			y[y.length] = carry;
+			// xが0になっている部分は削除していく
+			if(x[x.length - 1] === 0) {
+				x.pop();
+			}
+		}
+		// メモリ節約のため1つの変数（16ビット）に収めるだけ収めていく
+		x = [];
+		for(let i = 0; i < y.length; i++) {
+			x[i >>> 4] |= y[i] << (i & 0xF);
+		}
+		return x;
+	}
+
+	/**
+	 * Remove exponent notation in strings representing unsigned numbers.
+	 * @param {string} ntext 
+	 * @returns {string}
+	 */
+	static toPlainStringFromString(ntext) {
+		let scale = 0;
+		let buff;
+		// 正規化
+		let text = ntext.replace(/\s/g, "").toLowerCase();
+
+		/**
+		 * @type {Array<string>}
+		 */
+		const number_text = [];
+		// 整数部を抽出
+		buff = text.match(/^[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			number_text.push(buff);
+		}
+		// 小数部があるか
+		buff = text.match(/^\.[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			buff = buff.substr(1);
+			scale = scale + buff.length;
+			number_text.push(buff);
+		}
+		// 指数表記があるか
+		buff = text.match(/^e[+-]?[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0].substr(1);
+			scale -= parseInt(buff, 10);
+		}
+		// 出力用の文字を作成
+		let output_string;
+		if(scale === 0) {
+			output_string = number_text.join("");
+		}
+		if(scale < 0) {
+			for(let i = 0; i < -scale; i++) {
+				number_text.push("0");
+			}
+			output_string = number_text.join("");
+		}
+		else if(scale > 0) {
+			output_string = number_text.join("");
+			output_string = output_string.substring(0, output_string.length - scale);
+			output_string = output_string.length !== 0 ? output_string : "0";
+		}
+		return output_string;
+	}
+
+	/**
+	 * Return a hexadecimal array from the number.
+	 * @param {number} num - Target number.
+	 * @returns {{element : Array<number>, state : number}} Data for BigInteger.
+	 */
+	static toBigIntegerFromNumber(num) {
+		if(!isFinite(num)) {
+			if(num === Number.POSITIVE_INFINITY) {
+				return {
+					state : BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY,
+					element : []
+				};
+			}
+			if(num === Number.NEGATIVE_INFINITY) {
+				return {
+					state : BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY,
+					element : []
+				};
+			}
+			else {
+				return {
+					state : BIGINTEGER_NUMBER_STATE.NOT_A_NUMBER,
+					element : []
+				};
+			}
+		}
+		let x;
+		let state;
+		if(num === 0) {
+			state = BIGINTEGER_NUMBER_STATE.ZERO;
+			x = 0;
+		}
+		else if(num > 0) {
+			state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
+			x = num;
+		}
+		else {
+			state = BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
+			x = -num;
+		}
+		if(x > 0xFFFFFFFF) {
+			return {
+				element : BigIntegerTool.toHexadecimalArrayFromPlainString(BigIntegerTool.toPlainStringFromString(x.toFixed()), 10),
+				state : state
+			};
+		}
+		/**
+		 * @type {Array<number>}
+		 */
+		const y = [];
+		while(x !==  0) {
+			y[y.length] = x & 1;
+			x >>>= 1;
+		}
+		/**
+		 * @type {Array<number>}
+		 */
+		const z = [];
+		for(let i = 0; i < y.length; i++) {
+			z[i >>> 4] |= y[i] << (i & 0xF);
+		}
+		
+		return {
+			element : z,
+			state : state
+		};
+	}
+
+	/**
+	 * Return string of number from a hexadecimal array.
+	 * @param {Array<number>} binary - Hex array.
+	 * @param {number} radix - Base number.
+	 * @returns {Array<number>} Numeric array for each digit in the specified base number.
+	 */
+	static toPlainStringFromHexadecimalArray(binary, radix) {
+
+		/**
+		 * @param {Array<number>} x1 
+		 * @param {Array<number>} x2 
+		 * @param {Array<number>} y 
+		 */
+		const add = function(x1, x2, y) {
+			const size = x1.length;
+			let carry = 0;
+			for(let i = 0; i < size; i++) {
+				y[i] = x1[i] + ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
+				if(y[i] >= radix) {
+					carry = 1;
+					y[i] -= radix;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry === 1) {
+				y[size] = 1;
+			}
+		};
+		const y = [0];
+		const t = [1];
+		for(let i = 0;i < binary.length;i++) {
+			for(let j = 0; j < 16; j++) {
+				if((binary[i] >>> j) & 1) {
+					add(t, y, y);
+				}
+				add(t, t, t);
+			}
+		}
+		return y;
+	}
+
+	/**
+	 * @param {number[]} element
+	 * @returns {boolean}
+	 * @ignore
+	 */
+	static isZeroElement(element) {
+		if(element.length === 0) {
+			return true;
+		}
+		if((element.length === 1 && element[0] === 0)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Return data to represent multi-precision numbers from strings.
+	 * @param {string} text - String containing a number.
+	 * @param {number} [radix=10] - Base number.
+	 * @returns {{element : Array<number>, state : number}} Data for BigInteger.
+	 */
+	static toBigIntegerFromString(text, radix) {
+		let x = text.replace(/\s/g, "").toLowerCase();
+		// 特殊な状態
+		{
+			if(/nan/.test(text)) {
+				return {
+					state : BIGINTEGER_NUMBER_STATE.NOT_A_NUMBER,
+					element : []
+				};
+			}
+			else if(/inf/.test(text)) {
+				if(!/-/.test(text)) {
+					return {
+						state : BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY,
+						element : []
+					};
+				}
+				else {
+					return {
+						state : BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY,
+						element : []
+					};
+				}
+			}
+		}
+		const sign_text = x.match(/^[-+]+/);
+
+		/**
+		 * @type {Array<number>}
+		 */
+		let element     = [];
+		let state       = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
+
+		if(sign_text !== null) {
+			const hit_text = sign_text[0];
+			x = x.substring(hit_text.length, x.length);
+			if(hit_text.indexOf("-") !== -1) {
+				state = BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
+			}
+		}
+
+		if(radix) {
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x, radix);
+		}
+		else if(/^0x/.test(x)) {
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 16);
+		}
+		else if(/^0b/.test(x)) {
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 2);
+		}
+		else if(/^0o/.test(x)) {
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x.substring(2, x.length), 8);
+		}
+		else {
+			x = BigIntegerTool.toPlainStringFromString(x);
+			element = BigIntegerTool.toHexadecimalArrayFromPlainString(x, 10);
+		}
+		// "0"の場合がある為
+		if(BigIntegerTool.isZeroElement(element)) {
+			element = [];
+			state = BIGINTEGER_NUMBER_STATE.ZERO;
+		}
+
+		return {
+			element : element,
+			state : state
+		};
+	}
+}
+
+/**
+ * Numeric state.
+ * @type {{ZERO:number, POSITIVE_NUMBER:number, NEGATIVE_NUMBER:number, NOT_A_NUMBER:number, POSITIVE_INFINITY:number, NEGATIVE_INFINITY:number}}
+ * @ignore
+ */
+const BIGINTEGER_NUMBER_STATE = {
+	ZERO : 0,
+	POSITIVE_NUMBER : 1,
+	NEGATIVE_NUMBER : 2,
+	NOT_A_NUMBER : 3,
+	POSITIVE_INFINITY : 4,
+	NEGATIVE_INFINITY : 5
+};
+
+// 内部では1変数内の中の16ビットごとに管理
+// 2変数で16ビット*16ビットで32ビットを表す
+// this.element	...	16ビットごとに管理
+//
+// 本クラスはイミュータブルです。
+// 内部の「_」から始まるメソッドは内部計算用で非公開です。またミュータブルです。
+
+/**
+ * Arbitrary-precision integer class (immutable).
+ */
+class BigInteger {
+
+	/**
+	 * Create an arbitrary-precision integer.
+	 * 
+	 * Initialization can be performed as follows.
+	 * - 1200, "1200", "12e2", "1.2e3", ["1200", 10]
+	 * - "0xff", ["ff", 16]
+	 * - "0o01234567", ["01234567", 8]
+	 * - "0b0110101", ["0110101", 2]
+	 * @param {KBigIntegerInputData} [number] - Numeric data. See how to use the function.
+	 */
+	constructor(number) {
+		
+		/**
+		 * Numeric state.
+		 * @private
+		 * @type {number}
+		 */
+		this.state = BIGINTEGER_NUMBER_STATE.ZERO;
+
+		if(arguments.length === 0) {
+
+			/**
+			 * An integer consisting of 16 bits per element of the array.
+			 * @private
+			 * @type {Array<number>}
+			 */
+			this.element     = [];
+
+		}
+		else if(arguments.length === 1) {
+			if(number instanceof BigInteger) {
+				this.element = number.element.slice(0);
+				this.state = number.state;
+			}
+			else if(typeof number === "number") {
+				const x = BigIntegerTool.toBigIntegerFromNumber(number);
+				this.element = x.element;
+				this.state = x.state;
+			}
+			else if(typeof number === "string") {
+				const x = BigIntegerTool.toBigIntegerFromString(number);
+				this.element = x.element;
+				this.state = x.state;
+			}
+			else if(number instanceof Array) {
+				if((number.length === 2) && (typeof number[0] === "string" && (typeof number[1] === "number"))) {
+					const x = BigIntegerTool.toBigIntegerFromString(number[0], number[1]);
+					this.element = x.element;
+					this.state = x.state;
+				}
+				else {
+					throw "BigInteger Unsupported argument " + arguments;
+				}
+			}
+			else if(typeof number === "object") {
+				if("toBigInteger" in number) {
+					const x = number.toBigInteger();
+					this.element = x.element;
+					this.state = x.state;
+				}
+				else if("intValue" in number) {
+					const x = BigIntegerTool.toBigIntegerFromNumber(number.intValue);
+					this.element = x.element;
+					this.state = x.state;
+				}
+				else {
+					const x = BigIntegerTool.toBigIntegerFromString(number.toString());
+					this.element = x.element;
+					this.state = x.state;
+				}
+			}
+			else if(typeof number === "boolean") {
+				const x = BigIntegerTool.toBigIntegerFromNumber(number ? 1 : 0);
+				this.element = x.element;
+				this.state = x.state;
+			}
+			else {
+				throw "BigInteger Unsupported argument " + number;
+			}
+		}
+		else {
+			throw "BigInteger Unsupported argument " + number;
+		}
+	}
+
+	/**
+	 * Create an entity object of this class.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {BigInteger}
+	 */
+	static create(number) {
+		if(number instanceof BigInteger) {
+			return number;
+		}
+		else {
+			return new BigInteger(number);
+		}
+	}
+
+	/**
+	 * Create an arbitrary-precision integer.
+	 * - Does not support strings using exponential notation.
+	 * - If you want to initialize with the specified base number, please set up with an array ["ff", 16].
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {BigInteger}
+	 */
+	static valueOf(number) {
+		return BigInteger.create(number);
+	}
+
+	/**
+	 * Convert to BigInteger.
+	 * If type conversion is unnecessary, return the value as it is.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {BigInteger}
+	 * @private
+	 */
+	static _toBigInteger(number) {
+		if(number instanceof BigInteger) {
+			return number;
+		}
+		else {
+			return new BigInteger(number);
+		}
+	}
+
+	/**
+	 * Convert to real number.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toFloat(number) {
+		if(typeof number === "number") {
+			return number;
+		}
+		else if(number instanceof BigInteger) {
+			return number.doubleValue;
+		}
+		else {
+			return (new BigInteger(number)).doubleValue;
+		}
+	}
+
+	/**
+	 * Convert to integer.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		if(typeof number === "number") {
+			return Math.trunc(number);
+		}
+		else if(number instanceof BigInteger) {
+			return number.intValue;
+		}
+		else {
+			return (new BigInteger(number)).intValue;
+		}
+	}
+
+	/**
+	 * Random number of specified bit length.
+	 * @param {KBigIntegerInputData} bitsize - Bit length.
+	 * @param {Random} [random] - Class for creating random numbers.
+	 * @returns {BigInteger}
+	 */
+	static createRandomBigInteger(bitsize, random) {
+		const rand = (random !== undefined && random instanceof Random) ? random : DEFAULT_RANDOM;
+		const x = new BigInteger();
+		const bits = BigInteger._toInteger(bitsize);
+		const size = ((bits - 1) >> 4) + 1;
+		if(bits === 0) {
+			return BigInteger.ZERO;
+		}
+		let r;
+		for(let i = 0, j = 0; i < size; i++) {
+			if(j === 0) {
+				r = rand.nextInt(); // 32ビットずつ作成する
+				x.element[i] = r & 0xFFFF;
+				j = 1;
+			}
+			else {
+				x.element[i] = (r >>> 16) & 0xFFFF;
+				j = 0;
+			}
+		}
+		// 1～15ビット余る場合は、16ビットずつ作成しているので削る
+		if((bits % 16) !== 0) {
+			x.element[x.element.length - 1] &= (1 << (bits % 16)) - 1;
+		}
+		// 最後のビットに 0 をたくさん作成していると、
+		// 0のみのデータになる可能性があるためメモリを修正
+		x.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
+		x._memory_reduction();
+		return x;
+	}
+
+	/**
+	 * Convert to string.
+	 * @param {KBigIntegerInputData} [radix=10] - Base number.
+	 * @returns {string}
+	 */
+	toString(radix) {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
+		const radix_ = radix ? BigInteger._toInteger(radix) : 10;
+
+		// int型で扱える数値で toString が可能なので、
+		// せっかくだからより大きな進数で計算していけば、あとでtoStringする回数が減るテクニック
+		// 2進数であれば、2^n乗で計算しても問題がない 4進数や8進数で計算して、2進数に戻せば巡回少数なし
+		// v0.03 出来る限りまとめてn進数変換する
+		const max_num = 0x3FFFFFFF;
+		//                        max_num > radix^x
+		// floor(log max_num / log radix) = x
+		const keta = Math.floor( Math.log(max_num) / Math.log(radix_) );
+		const calcradix = Math.round(Math.pow(radix_, keta));
+		// zeros = "00000000...."
+		const zeros_array = [];
+		for(let i = 0; i < keta; i++) {
+			zeros_array[i] = "0";
+		}
+		const zeros_string = zeros_array.join("");
+		// v0.03ここまで
+		const x = BigIntegerTool.toPlainStringFromHexadecimalArray(this.element, calcradix);
+		const y = [];
+		let z = "";
+		if(this.sign() < 0) {
+			y[y.length] = "-";
+		}
+		for(let i = x.length - 1; i >= 0; i--) {
+			z = x[i].toString(radix_);
+			if(i < (x.length - 1)) {
+				y[y.length] = zeros_string.substring(0, keta - z.length);
+			}
+			y[y.length] = z;
+		}
+		return y.join("");
+	}
+
+	/**
+	 * Deep copy.
+	 * @returns {BigInteger}
+	 */
+	clone() {
+		return new BigInteger(this);
+	}
+
+	/**
+	 * Create a numerical value for addition. If negative, two's complement.
+	 * @param {number} [bit_length] - Bit length. If not set, it will be calculated automatically.
+	 * @returns {BigInteger}
+	 * @private
+	 */
+	getTwosComplement(bit_length) {
+		const y = this.clone();
+		if(!this.isFinite()) {
+			return y;
+		}
+		if(y.isNotNegative()) {
+			return y;
+		}
+		else {
+			// 正にする
+			y.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
+			// ビットの数が存在しない場合は数える
+			const len = (bit_length !== undefined) ? bit_length : y.bitLength();
+			const e = y.element;
+			// ビット反転後
+			for(let i = 0; i < e.length; i++) {
+				e[i] ^= 0xFFFF;
+			}
+			// 1～15ビット余る場合は、16ビットずつ作成しているので削る
+			// nビットのマスク（なお負の値を表す最上位ビットは削除する）
+			if((len % 16) !== 0) {
+				e[e.length - 1] &= (1 << (len % 16)) - 1;
+			}
+			// 1を加算
+			y._add(new BigInteger(1));
+			return y;
+		}
+	}
+
+	/**
+	 * Expand memory to specified bit length. (mutable)
+	 * @param {number} bit_length - Bit length.
+	 * @private
+	 */
+	_memory_allocation(bit_length) {
+		if(!this.isFinite()) {
+			return;
+		}
+		const n = BigInteger._toInteger(bit_length);
+		const elementsize = this.element.length << 4;
+		if(elementsize < n) {
+			const addsize = (((n - elementsize - 1) & 0xFFFFFFF0) >>> 4) + 1;
+			for(let i = 0;i < addsize;i++) {
+				this.element[this.element.length] = 0;
+			}
+		}
+	}
+
+	/**
+	 * Normalization of the internal data. (mutable)
+	 * @private
+	 */
+	_memory_reduction() {
+		if(!this.isFinite()) {
+			return;
+		}
+		for(let i = this.element.length - 1;i >= 0;i--) {
+			if(this.element[i] !==  0) {
+				// 最終行以外で見つかったら、上の領域を削除する
+				if(i < this.element.length - 1) {
+					this.element.splice(i + 1, this.element.length - i - 1);
+				}
+				return;
+			}
+		}
+		// 全て0だった場合
+		this.state = BIGINTEGER_NUMBER_STATE.ZERO;
+		this.element = [];
+	}
+
+	/**
+	 * Absolute value. (mutable)
+	 * @returns {BigInteger} A = abs(A)
+	 * @private
+	 */
+	_abs() {
+		// -1 -> 1, 0 -> 0, 1 -> 1
+		if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
+			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
+		}
+		else if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY) {
+			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
+		}
+		return this;
+	}
+
+	/**
+	 * Absolute value.
+	 * @returns {BigInteger} abs(A)
+	 */
+	abs() {
+		return this.clone()._abs();
+	}
+
+	/**
+	 * this *= -1
+	 * @returns {BigInteger} A = -A
+	 * @private
+	 */
+	_negate() {
+		if(this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER) {
+			this.state = BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
+		}
+		else if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
+			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
+		}
+		else if(this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY) {
+			this.state = BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY;
+		}
+		else if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY) {
+			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
+		}
+		return this;
+	}
+
+	/**
+	 * this * -1
+	 * @returns {BigInteger} -A
+	 */
+	negate() {
+		return this.clone()._negate();
+	}
+
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	sign() {
+		if(this.isNaN()) {
+			return NaN;
+		}
+		else if(this.isZero()) {
+			return 0;
+		}
+		else if(this.isPositive()) {
+			return 1;
+		}
+		else {
+			return -1;
+		}
+	}
+
+	// ----------------------
+	// 四則演算
+	// ----------------------
+	
+	/**
+	 * Add. (mutable)
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A += B
+	 * @private
+	 */
+	_add(number) {
+		const val = BigInteger._toBigInteger(number);
+		const o1 = this;
+		const o2 = val;
+		if(!o1.isFinite() || !o2.isFinite()) {
+			let ret;
+			if(o1.isNaN() || o2.isNaN() || (o1.isInfinite() && o2.isInfinite() && !o1.equalsState(o2))) {
+				ret = BigInteger.NaN.clone();
+			}
+			else if(o1.isPositiveInfinity() || o2.isPositiveInfinity()) {
+				ret = BigInteger.POSITIVE_INFINITY.clone();
+			}
+			else {
+				ret = BigInteger.NEGATIVE_INFINITY.clone();
+			}
+			this.element = ret.element;
+			this.state = ret.state;
+			return this;
+		}
+		let x1 = o1.element;
+		let x2 = o2.element;
+		if(o1.sign() === o2.sign()) {
+			//足し算
+			this._memory_allocation(x2.length << 4);
+			let carry = 0;
+			for(let i = 0; i < x1.length; i++) {
+				x1[i] += ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
+				if(x1[i] > 0xFFFF) {
+					carry = 1;
+					x1[i] &= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				x1[x1.length] = carry;
+			}
+		}
+		else {
+			// 引き算
+			const compare = o1.compareToAbs(o2);
+			if(compare === 0) {
+				this.element = [];
+				this.state = BIGINTEGER_NUMBER_STATE.ZERO;
+				return this;
+			}
+			else if(compare === -1) {
+				this.state = o2.state;
+				const swap = x1;
+				x1 = x2.slice(0);
+				x2 = swap;
+			}
+			let carry = 0;
+			for(let i = 0; i < x1.length; i++) {
+				x1[i] -= ((x2.length >= (i + 1)) ? x2[i] : 0) + carry;
+				if(x1[i] < 0) {
+					x1[i] += 0x10000;
+					carry  = 1;
+				}
+				else {
+					carry  = 0;
+				}
+			}
+			this.element = x1;
+			this._memory_reduction();
+		}
+		return this;
+	}
+
+	/**
+	 * Add.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A + B
+	 */
+	add(number) {
+		return this.clone()._add(number);
+	}
+
+	/**
+	 * Subtract. (mutable)
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A -= B
+	 * @private
+	 */
+	_sub(number) {
+		// 一時的に記録しておいて引数の情報は書き換えないようにする
+		const val = BigInteger._toBigInteger(number);
+		const state = val.state;
+		const out  = this._add(val._negate());
+		val.state = state;
+		return out;
+	}
+
+	/**
+	 * Subtract.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A - B
+	 */
+	sub(number) {
+		return this.clone()._sub(number);
+	}
+
+	/**
+	 * Multiply. (mutable)
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A *= B
+	 * @private
+	 */
+	_mul(number) {
+		const x = this.mul(number);
+		this.element = x.element;
+		this.state   = x.state;
+		return this;
+	}
+
+	/**
+	 * Multiply.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A * B
+	 */
+	mul(number) {
+		const val = BigInteger._toBigInteger(number);
+		const o1 = this;
+		const o2 = val;
+		if(!o1.isFinite() || !o2.isFinite()) {
+			if(o1.isNaN() || o2.isNaN() || (o1.isZero() || o2.isZero())) {
+				return BigInteger.NaN.clone();
+			}
+			else if(o1.sign() * o2.sign() > 0) {
+				return BigInteger.POSITIVE_INFINITY.clone();
+			}
+			else {
+				return BigInteger.NEGATIVE_INFINITY.clone();
+			}
+		}
+		const x1 = o1.element;
+		const x2 = o2.element;
+		const out  = new BigInteger();
+		const buff = new BigInteger();
+		const y  = out.element;
+		for(let i = 0; i < x1.length; i++) {
+			buff.element = [];
+			// x3 = x1[i] * x2
+			const x3 = buff.element;
+			let carry = 0;
+			for(let j = 0; j < x2.length; j++) {
+				x3[j] = x1[i] * x2[j] + carry;
+				if(x3[j] > 0xFFFF) {
+					carry = x3[j] >>> 16;
+					x3[j] &= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				x3[x3.length] = carry;
+			}
+			// x3 = x3 << (i * 16)
+			//buff._shift(i << 4);
+			for(let j = x3.length - 1; j >= 0; j--) {
+				x3[j + i] = x3[j];
+			}
+			for(let j = i - 1; j >= 0; j--) {
+				x3[j] = 0;
+			}
+			// y = y + x3 (out._add(buff))
+			//out._add(buff);
+			carry = 0;
+			out._memory_allocation(x3.length << 4);
+			for(let j = i; j < y.length; j++) {
+				y[j] += ((x3.length >= (j + 1)) ? x3[j] : 0) + carry;
+				if(y[j] > 0xFFFF) {
+					carry = 1;
+					y[j] &= 0xFFFF;
+				}
+				else {
+					carry = 0;
+				}
+			}
+			if(carry !== 0) {
+				y[y.length] = carry;
+			}
+		}
+		const sign = this.sign() * val.sign();
+		out.state = sign === 0 ? BIGINTEGER_NUMBER_STATE.ZERO :	(sign === 1 ? BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER : BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER);
+		return out;
+	}
+
+	/**
+	 * Divide and rem. (mutable)
+	 * @param {KBigIntegerInputData} number
+	 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
+	 * @private
+	 */
+	_divideAndRemainder(number) {
+		const o1 = this;
+		const o2 = BigInteger._toBigInteger(number);
+		if(!o1.isFinite() || !o2.isFinite()) {
+			if(o1.isNaN() || o2.isNaN() || (o1.isInfinite() && o2.isInfinite())) {
+				return [BigInteger.NaN, BigInteger.NaN];
+			}
+			else if(o1.isInfinite()) {
+				if(o1.sign() * o2.sign() >= 0) {
+					return [BigInteger.POSITIVE_INFINITY, BigInteger.NaN];
+				}
+				else {
+					return [BigInteger.NEGATIVE_INFINITY, BigInteger.NaN];
+				}
+			}
+			else {
+				return [BigInteger.ZERO, BigInteger.NaN];
+			}
+		}
+		else if(o2.isZero()) {
+			if(o1.isZero()) {
+				return [BigInteger.NaN, BigInteger.NaN];
+			}
+			else {
+				return [o1.sign() >= 0 ? BigInteger.POSITIVE_INFINITY : BigInteger.NEGATIVE_INFINITY, BigInteger.NaN];
+			}
+		}
+		const out = [];
+		const compare = o1.compareToAbs(o2);
+		const sign = o1.sign() * o2.sign();
+		if(compare < 0) {
+			out[0] = new BigInteger(0);
+			out[1] = o1.clone();
+			return out;
+		}
+		else if(compare === 0) {
+			out[0] = new BigInteger(1);
+			out[0].state = sign === 1 ? BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER : BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
+			out[1] = new BigInteger(0);
+			return out;
+		}
+		const ONE = new BigInteger(1);
+		const size = o1.bitLength() - o2.bitLength();
+		const x1 = o1.clone()._abs();
+		const x2 = o2.shift(size)._abs();
+		const y  = new BigInteger();
+		for(let i = 0; i <= size; i++) {
+			if(x1.compareToAbs(x2) >= 0) {
+				x1._sub(x2);
+				y._add(ONE);
+			}
+			if(i === size) {
+				break;
+			}
+			x2._shift(-1);
+			y._shift(1);
+		}
+		out[0] = y;
+		out[0].state = sign === 1 ? BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER : BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER;
+		out[1] = x1;
+		out[1].state = x1.state !== BIGINTEGER_NUMBER_STATE.ZERO ? o1.state : x1.state;
+		return out;
+	}
+
+	/**
+	 * Divide and rem.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
+	 */
+	divideAndRemainder(number) {
+		return this.clone()._divideAndRemainder(number);
+	}
+
+	/**
+	 * Divide. (mutable)
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} fix(A / B)
+	 * @private
+	 */
+	_div(number) {
+		return this._divideAndRemainder(number)[0];
+	}
+
+	/**
+	 * Divide.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} fix(A / B)
+	 */
+	div(number) {
+		return this.clone()._div(number);
+	}
+
+	/**
+	 * Remainder of division. (mutable)
+	 * - Result has same sign as the Dividend.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A %= B
+	 * @private
+	 */
+	_rem(number) {
+		const y = this._divideAndRemainder(number)[1];
+		this.element = y.element;
+		this.state = y.state;
+		return this;
+	}
+
+	/**
+	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A % B
+	 */
+	rem(number) {
+		return this.clone()._rem(number);
+	}
+
+	/**
+	 * Modulo, positive rem of division. (mutable)
+	 * - Result has same sign as the Divisor.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A = A mod B
+	 * @private
+	 */
+	_mod(number) {
+		const o1 = this;
+		const o2 = BigInteger._toBigInteger(number);
+		if(o2.isZero()) {
+			return o1;
+		}
+		const y = o1._divideAndRemainder(o2)[1];
+		if(o1.state !== o2.state) {
+			y._add(o2);
+		}
+		this.element = y.element;
+		this.state = y.state;
+		return this;
+	}
+
+	/**
+	 * Modulo, positive rem of division.
+	 * - Result has same sign as the Divisor.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A mod B
+	 */
+	mod(number) {
+		return this.clone()._mod(number);
+	}
+
+	/**
+	 * Modular exponentiation.
+	 * @param {KBigIntegerInputData} exponent
+	 * @param {KBigIntegerInputData} m 
+	 * @returns {BigInteger} A^B mod m
+	 */
+	modPow(exponent, m) {
+		const m_ = BigInteger._toBigInteger(m);
+		let x = new BigInteger(this);
+		let y = new BigInteger(1);
+		const e = new BigInteger(exponent);
+		if(!x.isFinite() || !e.isFinite()) {
+			return BigInteger.NaN;
+		}
+		while(e.element.length !== 0) {
+			if((e.element[0] & 1) !== 0) {
+				y = y.multiply(x).mod(m_);
+			}
+			x = x.multiply(x).mod(m_);
+			e._shift(-1);
+		}
+		return y;
+	}
+
+	/**
+	 * Modular multiplicative inverse.
+	 * @param {KBigIntegerInputData} m
+	 * @returns {BigInteger} A^(-1) mod m
+	 */
+	modInverse(m) {
+		const m_ = BigInteger._toBigInteger(m);
+		if(!this.isFinite() || !m_.isFinite()) {
+			return BigInteger.NaN;
+		}
+		const y = this.extgcd(m);
+		const ONE  = new BigInteger(1);
+		if(y[2].compareTo(ONE) !== 0) {
+			return BigInteger.NaN;
+		}
+		// 正にするため rem ではなく mod を使用する
+		return y[0]._add(m_).rem(m_);
+	}
+
+	// ----------------------
+	// その他の演算
+	// ----------------------
+	
+	/**
+	 * Factorial function, x!.
+	 * @returns {BigInteger} n!
+	 */
+	factorial() {
+		{
+			if(!this.isFinite()) {
+				return this;
+			}
+			else if(this.isNegative()) {
+				return BigInteger.NaN;
+			}
+		}
+		const loop_max = BigInteger._toInteger(this);
+		let x = BigInteger.ONE;
+		for(let i = 2; i <= loop_max; i++) {
+			x = x.multiply(i);
+		}
+		return x;
+	}
+
+	/**
+	 * Multiply a multiple of ten.
+	 * @param {KBigIntegerInputData} n
+	 * @returns {BigInteger} x * 10^n
+	 */
+	scaleByPowerOfTen(n) {
+		const x = BigInteger._toInteger(n);
+		if(x === 0) {
+			return this;
+		}
+		if(x > 0) {
+			return this.mul(BigInteger.TEN.pow(x));
+		}
+		else {
+			return this.div(BigInteger.TEN.pow(x));
+		}
+	}
+
+	// ----------------------
+	// 指数
+	// ----------------------
+	
+	/**
+	 * Power function.
+	 * @param {KBigIntegerInputData} exponent
+	 * @returns {BigInteger} pow(A, B)
+	 */
+	pow(exponent) {
+		const e = new BigInteger(exponent);
+		{
+			if(this.isNaN() || e.isNaN()) {
+				return BigInteger.NaN;
+			}
+			if(e.isZero()) {
+				return BigInteger.ONE;
+			}
+			else if(this.isZero()) {
+				if(e.isNegativeInfinity()) {
+					return BigInteger.POSITIVE_INFINITY;
+				}
+				else {
+					return BigInteger.ZERO;
+				}
+			}
+			else if(this.isOne()) {
+				return this;
+			}
+			else if(this.isInfinite()) {
+				if(this.isPositiveInfinity()) {
+					return BigInteger.POSITIVE_INFINITY;
+				}
+				else {
+					if(e.isPositiveInfinity()) {
+						return BigInteger.NaN;
+					}
+					else {
+						return BigInteger.create(Infinity * Math.pow(-1, Math.round(e.doubleValue)));
+					}
+				}
+			}
+			else if(e.isInfinite()) {
+				if(this.isNegative()) {
+					// 複素数
+					return BigInteger.NaN;
+				}
+				if(this.compareTo(BigInteger.ONE) < 0) {
+					if(e.isPositiveInfinity()) {
+						return BigInteger.ZERO;
+					}
+					else if(e.isNegativeInfinity()) {
+						return BigInteger.POSITIVE_INFINITY;
+					}
+				}
+				else {
+					if(e.isPositiveInfinity()) {
+						return BigInteger.POSITIVE_INFINITY;
+					}
+					else if(e.isNegativeInfinity()) {
+						return BigInteger.ZERO;
+					}
+				}
+			}
+		}
+		let x = BigInteger._toBigInteger(this);
+		let y = BigInteger._toBigInteger(1);
+		while(e.element.length !== 0) {
+			if((e.element[0] & 1) !== 0) {
+				y = y.multiply(x);
+			}
+			x = x.multiply(x);
+			e._shift(-1);
+		}
+		return y;
+	}
+
+	/**
+	 * Square.
+	 * @returns {BigInteger} A^2
+	 */
+	square() {
+		return this.mul(this);
+	}
+
+	/**
+	 * Square root.
+	 * @returns {BigInteger} floor(sqrt(A))
+	 */
+	sqrt() {
+		{
+			if(this.isZero()) {
+				return BigInteger.ZERO;
+			}
+			else if(this.isNaN()) {
+				return BigInteger.NaN;
+			}
+			else if(this.isNegative()) {
+				return BigInteger.NaN; // 複素数
+			}
+			else if(this.isInfinite()) {
+				return BigInteger.POSITIVE_INFINITY;
+			}
+		}
+		// ニュートン法によって求める
+		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
+		// A^0.5  = x
+		//     A  = x^2
+		//     0  = x^2 - A
+		//   f(x) = x^2 - A
+		//   f'(x) = 2x
+		// x_(n+1) = x_n - f(x_n)/f'(x_n)
+		//         = x_n - (x_n^2 - A)/2x_n
+		//         = (2*x_n^2 - x_n^2 + A)/2x_n
+		//         = (x_n^2 + A)/2x_n
+		//         = (x_n + (A/x_n)) / 2
+		let s = BigInteger.ONE;
+		/**
+		 * @type {BigInteger}
+		 */
+		let t = this;
+		while(s.compareToAbs(t) === -1) {
+			s = s.shiftLeft(1);
+			t = t.shiftRight(1);
+		}
+		const x0 = t;
+		let xn = x0;
+		for(let i = 0; i < 300; i++) {
+			const xn1 = xn.add(this.div(xn)).shiftRight(1);
+			const delta = xn1.sub(xn);
+			if(delta.isZero()) {
+				break;
+			}
+			xn = xn1;
+		}
+		return xn;
+	}
+	
+	/**
+	 * Cube root.
+	 * @returns {BigInteger} floor(cbrt(A))
+	 */
+	cbrt() {
+		{
+			if(this.isZero()) {
+				return BigInteger.ZERO;
+			}
+			else if(this.isNaN()) {
+				return BigInteger.NaN;
+			}
+			else if(this.isInfinite()) {
+				return this;
+			}
+		}
+		// ニュートン法によって求める
+		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
+		let s = BigInteger.ONE;
+		/**
+		 * @type {BigInteger}
+		 */
+		let t = this;
+		while(s.compareToAbs(t) === -1) {
+			s = s.shiftLeft(1);
+			t = t.shiftRight(2);
+		}
+		const x0 = t;
+		let xn = x0;
+		for(let i = 0; i < 300; i++) {
+			const xn_2 = xn.mul(xn);
+			const xn1 = xn.shiftLeft(1).add(this.div(xn_2)).div(3);
+			const delta = xn1.sub(xn);
+			if(delta.isZero()) {
+				break;
+			}
+			xn = xn1;
+		}
+		return xn;
+	}
+
+	/**
+	 * log_2(x)
+	 * @returns {BigInteger} log2(A)
+	 */
+	log2() {
+		{
+			if(this.isZero()) {
+				return BigInteger.ZERO;
+			}
+			else if(this.isNaN()) {
+				return BigInteger.NaN;
+			}
+			else if(this.isNegative()) {
+				return BigInteger.NaN;
+			}
+			else if(this.isInfinite()) {
+				return BigInteger.POSITIVE_INFINITY;
+			}
+		}
+		return BigInteger.create(this.bitLength() - 1);
+	}
+
+	/**
+	 * log_10(x)
+	 * @returns {BigInteger} log10(A)
+	 */
+	log10() {
+		{
+			if(this.isZero()) {
+				return BigInteger.ZERO;
+			}
+			else if(this.isNaN()) {
+				return BigInteger.NaN;
+			}
+			else if(this.isNegative()) {
+				return BigInteger.NaN;
+			}
+			else if(this.isInfinite()) {
+				return BigInteger.POSITIVE_INFINITY;
+			}
+		}
+		return BigInteger.create(this.toString(10).length - 1);
+	}
+
+	// ----------------------
+	// 環境設定用
+	// ----------------------
+	
+	/**
+	 * Set default class of random.
+	 * This is used if you do not specify a random number.
+	 * @param {Random} random
+	 */
+	static setDefaultRandom(random) {
+		DEFAULT_RANDOM = random;
+	}
+
+	/**
+	 * Return default Random class.
+	 * Used when Random not specified explicitly.
+	 * @returns {Random}
+	 */
+	static getDefaultRandom() {
+		return DEFAULT_RANDOM;
+	}
+
+	// ----------------------
+	// 他の型に変換用
+	// ----------------------
+	
+	/**
+	 * Value at the specified position of the internally used array that composed of hexadecimal numbers.
+	 * @param {KBigIntegerInputData} point - Array address.
+	 * @returns {number}
+	 */
+	getShort(point) {
+		if(this.isZero()) {
+			return 0;
+		}
+		const n = BigInteger._toInteger(point);
+		return ((0 <= n) && (n <= this.element.length)) ? this.element[n] : NaN;
+	}
+
+	/**
+	 * boolean value.
+	 * @returns {boolean}
+	 */
+	get booleanValue() {
+		return !this.isZero() && !this.isNaN();
+	}
+
+	/**
+	 * 32-bit integer value.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * @returns {number}
+	 */
+	get intValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		let x = this.getShort(0) + (this.getShort(1) << 16);
+		x &= 0xFFFFFFFF;
+		if((x > 0) && this.isNegative()) {
+			x = -x;
+		}
+		return x;
+	}
+
+	/**
+	 * 64-bit integer value.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * @returns {number}
+	 * @deprecated
+	 */
+	get longValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		let x = 0;
+		for(let i = Math.min(3, this.element.length - 1); i >= 0; i--) {
+			x *= 65536;
+			x += this.getShort(i);
+		}
+		if(this.isNegative()) {
+			x = -x;
+		}
+		return x;
+	}
+
+	/**
+	 * 64-bit floating point.
+	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		return parseFloat(this.toString());
+	}
+	
+	// ----------------------
+	// konpeito で扱う数値型へ変換
+	// ----------------------
+	
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return this;
+	}
+
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		if(mc) {
+			return new BigDecimal([this, mc]);
+		}
+		else {
+			return new BigDecimal(this);
+		}
+	}
+	
+	/**
+	 * return Fraction.
+	 * @returns {Fraction}
+	 */
+	toFraction() {
+		return new Fraction(this);
+	}
+	
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return new Complex(this);
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return new Matrix(this);
+	}
+
+	// ----------------------
+	// 比較
+	// ----------------------
+	
+	/**
+	 * Equals.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {boolean} A === B
+	 */
+	equals(number) {
+		const x = this;
+		const y = BigInteger._toBigInteger(number);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN()) {
+				return false;
+			}
+			else if(x.state === y.state) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		if(x.state !== y.state) {
+			return false;
+		}
+		if(x.element.length !== y.element.length) {
+			return false;
+		}
+		for(let i = 0; i < y.element.length; i++) {
+			if(x.element[i] !==  y.element[i]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Compare values without sign.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {number} abs(A) > abs(B) ? 1 : (abs(A) === abs(B) ? 0 : -1)
+	 */
+	compareToAbs(number) {
+		const x = this;
+		const y = BigInteger._toBigInteger(number);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN()) {
+				return NaN;
+			}
+			else if(x.isInfinite() || y.isInfinite()) {
+				return 0;
+			}
+			else if(y.isInfinite()) {
+				return -1;
+			}
+			else {
+				return 1;
+			}
+		}
+		if(x.element.length < y.element.length) {
+			return -1;
+		}
+		else if(x.element.length > y.element.length) {
+			return 1;
+		}
+		for(let i = x.element.length - 1;i >= 0;i--) {
+			if(x.element[i] !== y.element[i]) {
+				const val = x.element[i] - y.element[i];
+				return ( (val === 0) ? 0 : ((val > 0) ? 1 : -1) );
+			}
+		}
+		return 0;
+	}
+
+	/**
+	 * Compare values.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number) {
+		const x = this;
+		const y = BigInteger._toBigInteger(number);
+		if(!x.isFinite() || !y.isFinite()) {
+			if(x.isNaN() || y.isNaN()) {
+				return NaN;
+			}
+			if(x.state === y.state) {
+				return 0;
+			}
+			if(x.isPositiveInfinity() || y.isNegativeInfinity()) {
+				return 1;
+			}
+			else {
+				return -1;
+			}
+		}
+		const x_sign = x.sign();
+		const y_sign = y.sign();
+		if(x_sign !== y_sign) {
+			if(x_sign > y_sign) {
+				return 1;
+			}
+			else {
+				return -1;
+			}
+		}
+		else if(x_sign === 0) {
+			return 0;
+		}
+		return x.compareToAbs(y) * x_sign;
+	}
+
+	/**
+	 * Numeric type match.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {boolean}
+	 */
+	equalsState(number) {
+		const x = this;
+		const y = BigInteger._toBigInteger(number);
+		return x.state === y.state;
+	}
+
+	/**
+	 * Maximum number.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} max([A, B])
+	 */
+	max(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(this.compareTo(val) >= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * Minimum number.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} min([A, B])
+	 */
+	min(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(this.compareTo(val) >= 0) {
+			return val.clone();
+		}
+		else {
+			return this.clone();
+		}
+	}
+
+	/**
+	 * Clip number within range.
+	 * @param {KBigIntegerInputData} min 
+	 * @param {KBigIntegerInputData} max
+	 * @returns {BigInteger} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = BigInteger._toBigInteger(min);
+		const max_ = BigInteger._toBigInteger(max);
+		if(this.isNaN() || min_.isNaN() || max_.isNaN()) {
+			return BigInteger.NaN;
+		}
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	}
+
+	// ----------------------
+	// gcd, lcm
+	// ----------------------
+	
+	/**
+	 * Euclidean algorithm.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {BigInteger} gcd(x, y)
+	 */
+	gcd(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(!this.isFinite() || !val.isFinite()) {
+			return BigInteger.NaN;
+		}
+		/**
+		 * @type {any}
+		 */
+		let x = this, y = val, z;
+		let i = 10;
+		while(y.sign() !== 0 && i) {
+			z = x.rem(y);
+			x = y;
+			y = z;
+			i--;
+		}
+		return x;
+	}
+
+	/**
+	 * Extended Euclidean algorithm.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 */
+	extgcd(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(!this.isFinite() || !val.isFinite()) {
+			return [BigInteger.NaN, BigInteger.NaN, BigInteger.NaN];
+		}
+		// 非再帰
+		const ONE  = new BigInteger(1);
+		const ZERO = new BigInteger(0);
+		/**
+		 * @type {any}
+		 */
+		let r0 = this, r1 = val, r2, q1;
+		let a0 = ONE,  a1 = ZERO, a2;
+		let b0 = ZERO, b1 = ONE,  b2;
+		while(r1.sign() !== 0) {
+			const y = r0.divideAndRemainder(r1);
+			q1 = y[0];
+			r2 = y[1];
+			a2 = a0.subtract(q1.multiply(a1));
+			b2 = b0.subtract(q1.multiply(b1));
+			a0 = a1;
+			a1 = a2;
+			b0 = b1;
+			b1 = b2;
+			r0 = r1;
+			r1 = r2;
+		}
+		return [a0, b0, r0];
+	}
+
+	/**
+	 * Least common multiple.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {BigInteger} lcm(x, y)
+	 */
+	lcm(number) {
+		const val = BigInteger._toBigInteger(number);
+		if(!this.isFinite() || !val.isFinite()) {
+			return BigInteger.NaN;
+		}
+		return this.mul(val).div(this.gcd(val));
+	}
+
+	// ----------------------
+	// 素数系
+	// ----------------------
+	
+	/**
+	 * Prime represented within the specified bit length.
+	 * @param {KBigIntegerInputData} bits - Bit length.
+	 * @param {Random} [random] - Class for creating random numbers.
+	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
+	 * @param {KBigIntegerInputData} [create_count=500] - Number of times to retry if prime generation fails.
+	 * @returns {BigInteger}
+	 */
+	static probablePrime(bits, random, certainty, create_count ) {
+		const certainty_ = certainty ? BigInteger._toInteger(certainty) : 100;
+		const create_count_ = create_count ? BigInteger._toInteger(create_count) : 500;
+		for(let i = 0; i < create_count_; i++) {
+			const x = BigInteger.createRandomBigInteger(bits, random);
+			if(x.isProbablePrime(certainty_)) {
+				return x;
+			}
+		}
+		console.log("probablePrime " + create_count);
+		return BigInteger.NaN;
+	}
+
+	/**
+	 * Return true if the value is prime number.
+	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
+	 */
+	isPrime() {
+		if(!this.isFinite()) {
+			return false;
+		}
+		// 0や負の値は、素数ではない
+		if(this.sign() <= 0) {
+			return false;
+		}
+		// 47453132.81212578 = Math.sqrt(Number.MAX_SAFE_INTEGER)
+		const limit = Math.sqrt(Math.pow(2, 51));
+		const target_number = this.doubleValue;
+		const count_max = Math.ceil(Math.sqrt(target_number));
+		// 1, 2 -> true
+		if(target_number <= 2) {
+			return true;
+		}
+		// 指定した値より大きい場合は計算不可能として false を返す
+		if(count_max > limit) {
+			return null;
+		}
+		for(let i = 2; i <= count_max; i++) {
+			if((target_number % i) === 0) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * 
+	 * Attention : it takes a very long time to process.
+	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
+	 * @returns {boolean}
+	 */
+	isProbablePrime(certainty) {
+		if(!this.isFinite()) {
+			return false;
+		}
+		const e = this.element;
+		// 0や負の値は、素数ではない
+		if(this.sign() <= 0) {
+			return false;
+		}
+		// 1, 2 -> true
+		if((e.length === 1)&&(e[0] <= 2)) {
+			return true;
+		}
+		// even number -> false
+		else if((e[0] & 1) === 0) {
+			return false;
+		}
+		// ミラーラビン素数判定法
+		// かなり処理が重たいです。まあお遊び程度に使用という感じで。
+		const loop	= certainty !== undefined ? BigInteger._toInteger(certainty) : 100;
+		const ZERO	= BigInteger.ZERO;
+		const ONE	= BigInteger.ONE;
+		const n		= this;
+		const LEN	= n.bitLength();
+		const n_1	= n.subtract(ONE);
+		const s 	= n_1.getLowestSetBit();
+		const d 	= n_1.shift(-s);
+
+		if(loop <= 0) {
+			return false;
+		}
+
+		for(let i = 0; i < loop; i++ ) {
+			//[ 1, n - 1] の範囲から a を選択
+			let a;
+			do {
+				a = BigInteger.createRandomBigInteger(LEN);
+			} while(( a.compareTo(ZERO) === 0 )||( a.compareTo(n) !== -1 ));
+
+			let t = d;
+			// a^t != 1 mod n
+			let y = a.modPow(t, n);
+			
+			while(true) {
+				if((t.equals(n_1)) || (y.equals(ONE)) || (y.equals(n_1))) {
+					break;
+				}
+				y = y.mul(y)._mod(n);
+				t = t.shiftLeft(1);
+			}
+
+			if((!y.equals(n_1)) && ((t.element[0] & 1) === 0)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * Next prime.
+	 * @param {KBigIntegerInputData} [certainty=100] - Repeat count (prime precision).
+	 * @param {KBigIntegerInputData} [search_max=100000] - Search range of next prime.
+	 * @returns {BigInteger}
+	 */
+	nextProbablePrime(certainty, search_max) {
+		if(!this.isFinite()) {
+			return BigInteger.NaN;
+		}
+		const loop	= certainty !== undefined ? (BigInteger._toInteger(certainty) >> 1) : 100 / 2;
+		const search_max_ = search_max !== undefined ? BigInteger._toInteger(search_max) : 100000;
+		const x = this.clone();
+		for(let i = 0; i < search_max_; i++) {
+			x._add(BigInteger.ONE);
+			if(x.isProbablePrime(loop)) {
+				return x;
+			}
+		}
+		throw "nextProbablePrime [" + search_max_ +"]";
+	}
+
+	// ----------------------
+	// シフト演算系
+	// ----------------------
+	
+	/**
+	 * this <<= n
+	 * @param {KBigIntegerInputData} shift_length - Bit shift size.
+	 * @returns {BigInteger} A <<= n
+	 * @private
+	 */
+	_shift(shift_length) {
+		if(!this.isFinite()) {
+			return this;
+		}
+		let n = BigInteger._toInteger(shift_length);
+		if(n === 0) {
+			return this;
+		}
+		const x = this.element;
+		// 1ビットなら専用コードで高速計算
+		if(n === 1) {
+			let i = x.length - 1;
+			if((x[i] & 0x8000) !==  0) {
+				x[x.length] = 1;
+			}
+			for(;i >= 0;i--) {
+				x[i] <<= 1;
+				x[i]  &= 0xFFFF;
+				if((i > 0) && ((x[i - 1] & 0x8000) !==  0)) {
+					x[i] += 1;
+				}
+			}
+		}
+		else if(n === -1) {
+			for(let i = 0;i < x.length;i++) {
+				x[i] >>>= 1;
+				if((i < x.length - 1) && ((x[i + 1] & 1) !==  0)) {
+					x[i] |= 0x8000;
+				}
+			}
+			if(x[x.length - 1] === 0) {
+				x.pop();
+			}
+		}
+		else {
+			// 16ビット単位なら配列を追加削除する高速計算
+			if(n >= 16) {
+				const m = n >>> 4;
+				for(let i = x.length - 1; i >= 0; i--) {
+					x[i + m] = x[i];
+				}
+				for(let i = m - 1; i >= 0; i--) {
+					x[i] = 0;
+				}
+				n &= 0xF;
+			}
+			else if(n <= -16){
+				const m = (-n) >>> 4;
+				x.splice(0, m);
+				n += m << 4;
+			}
+			if(n !== 0) {
+				// 15ビット以内ならビット演算でまとめて操作
+				if(0 < n) {
+					let carry = 0;
+					for(let i = 0; i < x.length; i++) {
+						x[i] = (x[i] << n) + carry;
+						if(x[i] > 0xFFFF) {
+							carry = x[i] >>> 16;
+							x[i] &= 0xFFFF;
+						}
+						else {
+							carry = 0;
+						}
+					}
+					if(carry !== 0) {
+						x[x.length] = carry;
+					}
+				}
+				else {
+					n = -n;
+					for(let i = 0; i < x.length; i++) {
+						if(i !== x.length - 1) {
+							x[i] += x[i + 1] << 16;
+							x[i] >>>= n;
+							x[i] &= 0xFFFF;
+						}
+						else {
+							x[i] >>>= n;
+						}
+					}
+					if(x[x.length - 1] === 0) {
+						x.pop();
+					}
+				}
+			}
+		}
+		return this;
+	}
+
+	/**
+	 * this << n
+	 * @param {KBigIntegerInputData} n
+	 * @returns {BigInteger} A << n
+	 */
+	shift(n) {
+		return this.clone()._shift(n);
+	}
+
+	/**
+	 * this << n
+	 * @param {KBigIntegerInputData} n
+	 * @returns {BigInteger} A << n
+	 */
+	shiftLeft(n) {
+		return this.shift(n);
+	}
+
+	/**
+	 * this >> n
+	 * @param {KBigIntegerInputData} n
+	 * @returns {BigInteger} A >> n
+	 */
+	shiftRight(n) {
+		return this.shift(-n);
+	}
+
+	// ----------------------
+	// ビット演算系
+	// ----------------------
+	
+	/**
+	 * Number of digits in which the number "1" appears first when expressed in binary.
+	 * - Return -1 If 1 is not found it.
+	 * @returns {number}
+	 */
+	getLowestSetBit() {
+		if(!this.isFinite()) {
+			return NaN;
+		}
+		for(let i = 0; i < this.element.length; i++) {
+			if(this.element[i] !==  0) {
+				const x = this.element[i];
+				for(let j = 0; j < 16; j++) {
+					if(((x >>> j) & 1) !==  0) {
+						return i * 16 + j;
+					}
+				}
+			}
+		}
+		return -1;
+	}
+
+	/**
+	 * Length when the number is binary.
+	 * @returns {number}
+	 */
+	bitLength() {
+		if(!this.isFinite()) {
+			return NaN;
+		}
+		for(let i = this.element.length - 1; i >= 0; i--) {
+			if(this.element[i] !==  0) {
+				const x = this.element[i];
+				for(let j = 15; j >= 0; j--) {
+					if(((x >>> j) & 1) !==  0) {
+						return i * 16 + j + 1;
+					}
+				}
+			}
+		}
+		return 0;
+	}
+
+	/**
+	 * Sum that the bit is 1 when represented in the two's complement.
+	 * @returns {number}
+	 */
+	bitCount() {
+		if(!this.isFinite()) {
+			return NaN;
+		}
+		let target;
+		if(this.sign() >= 0) {
+			target = this;
+		}
+		else {
+			target = this.add(new BigInteger(1));
+		}
+		const len = target.bitLength();
+		let bit = 0;
+		let count = 0;
+		for(let i = 0;bit < len;i++) {
+			const x = target.element[i];
+			for(let j = 0;((j < 16) && (bit < len));j++, bit++) {
+				if(((x >>> j) & 1) !==  0) {
+					count = count + 1;
+				}
+			}
+		}
+		return count;
+	}
+
+	/**
+	 * Logical AND. (mutable)
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {BigInteger} A &= B
+	 * @private
+	 */
+	_and(number) {
+		const val = BigInteger._toBigInteger(number);
+		const e1 = this;
+		const e2 = val;
+		if((!e1.isFinite()) || (!e2.isFinite())) {
+			let ret;
+			if(e1.isNaN() || e2.isNaN()) {
+				ret = BigInteger.NaN;
+			}
+			else {
+				ret = BigInteger.ZERO;
+			}
+			ret = ret.clone();
+			this.element = ret.element;
+			this.state = ret.state;
+			return this;
+		}
+		const s1  = e1.sign(), s2 = e2.sign();
+		const len = Math.max(e1.bitLength(), e2.bitLength());
+		// 引数が負の場合は、2の補数
+		const e1_array = e1.getTwosComplement(len).element;
+		const e2_array = e2.getTwosComplement(len).element;
+		const size = Math.max(e1_array.length, e2_array.length);
+		this.element = [];
+		for(let i = 0;i < size;i++) {
+			const x1 = (i >= e1_array.length) ? 0 : e1_array[i];
+			const x2 = (i >= e2_array.length) ? 0 : e2_array[i];
+			this.element[i] = x1 & x2;
+		}
+		// 配列の上位が空になる可能性があるためノーマライズが必要
+		this._memory_reduction();
+		// 符号を計算
+		if((s1 === 1)||(s2 === 1)) {
+			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
+		}
+		// 出力が負の場合は、2の補数
+		else if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
+			this.element = this.getTwosComplement(len).element;
+			// 反転させたことで配列の上位が空になる可能性があるためノーマライズが必要
+			this._memory_reduction();
+		}
+		return this;
+	}
+
+	/**
+	 * Logical AND.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {BigInteger} A & B
+	 */
+	and(number) {
+		return this.clone()._and(number);
+	}
+
+	/**
+	 * Logical OR. (mutable)
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {BigInteger} A |= B
+	 * @private
+	 */
+	_or(number) {
+		const val = BigInteger._toBigInteger(number);
+		const e1 = this;
+		const e2 = val;
+		if((!e1.isFinite()) || (!e2.isFinite())) {
+			let ret;
+			if(e1.isNaN() || e2.isNaN()) {
+				ret = BigInteger.NaN.clone();
+			}
+			else if(e1.isInfinite() || e2.isInfinite()) {
+				ret = BigInteger.ZERO;
+			}
+			else {
+				ret = e1.isInfinite() ? e2 : e1;
+			}
+			ret = ret.clone();
+			this.element = ret.element;
+			this.state = ret.state;
+			return this;
+		}
+
+		const s1  = e1.sign(), s2 = e2.sign();
+		const len = Math.max(e1.bitLength(), e2.bitLength());
+		// 引数が負の場合は、2の補数
+		const e1_array = e1.getTwosComplement(len).element;
+		const e2_array = e2.getTwosComplement(len).element;
+		const size = Math.max(e1_array.length, e2_array.length);
+		this.element = [];
+		for(let i = 0;i < size;i++) {
+			const x1 = (i >= e1_array.length) ? 0 : e1_array[i];
+			const x2 = (i >= e2_array.length) ? 0 : e2_array[i];
+			this.element[i] = x1 | x2;
+		}
+		// 符号を計算
+		this.state = ((s1 === -1)||(s2 === -1)) ?
+			BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER :
+			(Math.max(s1, s2) === 0 ? BIGINTEGER_NUMBER_STATE.ZERO : BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER);
+		// 出力が負の場合は、2の補数
+		if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
+			this.element = this.getTwosComplement(len).element;
+			// 反転させたことで配列の上位が空になる可能性があるためノーマライズが必要
+			this._memory_reduction();
+		}
+		return this;
+	}
+
+	/**
+	 * Logical OR.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {BigInteger} A | B
+	 */
+	or(number) {
+		return this.clone()._or(number);
+	}
+
+	/**
+	 * Logical Exclusive-OR. (mutable)
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {BigInteger} A ^= B
+	 * @private
+	 */
+	_xor(number) {
+		const val = BigInteger._toBigInteger(number);
+		const e1 = this;
+		const e2 = val;
+		if((!e1.isFinite()) || (!e2.isFinite())) {
+			let ret;
+			if(e1.isNaN() || e2.isNaN()) {
+				ret = BigInteger.NaN;
+			}
+			else if(e1.isInfinite() || e2.isInfinite()) {
+				ret = BigInteger.ZERO;
+			}
+			else {
+				ret = e1.isInfinite() ? e2 : e1; 
+			}
+			ret = ret.clone();
+			this.element = ret.element;
+			this.state = ret.state;
+			return this;
+		}
+		const s1  = e1.sign(), s2 = e2.sign();
+		const len = Math.max(e1.bitLength(), e2.bitLength());
+		// 引数が負の場合は、2の補数
+		const e1_array = e1.getTwosComplement(len).element;
+		const e2_array = e2.getTwosComplement(len).element;
+		const size = Math.max(e1_array.length, e2_array.length);
+		this.element = [];
+		for(let i = 0;i < size;i++) {
+			const x1 = (i >= e1_array.length) ? 0 : e1_array[i];
+			const x2 = (i >= e2_array.length) ? 0 : e2_array[i];
+			this.element[i] = x1 ^ x2;
+		}
+		// 配列の上位が空になる可能性があるためノーマライズが必要
+		this._memory_reduction();
+		// 符号を計算
+		this.state = ((s1 !== 0)&&(s1 !== s2)) ? BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER : BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
+		// 出力が負の場合は、2の補数
+		if(this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER) {
+			this.element = this.getTwosComplement(len).element;
+			// 反転したことでさらに空になる可能性がある
+			this._memory_reduction();
+		}
+		return this;
+	}
+
+	/**
+	 * Logical Exclusive-OR.
+	 * @param {KBigIntegerInputData} number 
+	 * @returns {BigInteger} A ^ B
+	 */
+	xor(number) {
+		return(this.clone()._xor(number));
+	}
+
+	/**
+	 * Logical Not.
+	 * @returns {BigInteger} A = !A
+	 * @private
+	 */
+	_not() {
+		return(this._add(new BigInteger(1))._negate());
+	}
+
+	/**
+	 * Logical Not. (mutable)
+	 * @returns {BigInteger} !A
+	 */
+	not() {
+		return(this.clone()._not());
+	}
+
+	/**
+	 * this | (1 << n) (mutable)
+	 * @param {KBigIntegerInputData} bit
+	 * @returns {BigInteger}
+	 * @private
+	 */
+	_setBit(bit) {
+		const n = BigInteger._toInteger(bit);
+		this._memory_allocation(n + 1);
+		this.element[n >>> 4] |= 1 << (n & 0xF);
+		this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
+		return this;
+	}
+
+	/**
+	 * this | (1 << n)
+	 * @param {KBigIntegerInputData} bit
+	 * @returns {BigInteger}
+	 */
+	setBit(bit) {
+		const n = BigInteger._toInteger(bit);
+		return this.clone()._setBit(n);
+	}
+
+	/**
+	 * Invert a specific bit.) (mutable)
+	 * @param {KBigIntegerInputData} bit
+	 * @returns {BigInteger}
+	 * @private
+	 */
+	_flipBit(bit) {
+		const n = BigInteger._toInteger(bit);
+		this._memory_allocation(n + 1);
+		this.element[n >>> 4] ^= 1 << (n & 0xF);
+		this._memory_reduction();
+		return this;
+	}
+
+	/**
+	 * Invert a specific bit.
+	 * @param {KBigIntegerInputData} bit
+	 * @returns {BigInteger}
+	 */
+	flipBit(bit) {
+		const n = BigInteger._toInteger(bit);
+		return this.clone()._flipBit(n);
+	}
+
+	/**
+	 * Lower a specific bit.
+	 * @param {KBigIntegerInputData} bit 
+	 * @returns {BigInteger}
+	 */
+	clearBit(bit) {
+		const n = BigInteger._toInteger(bit);
+		const y = this.clone();
+		y.element[n >>> 4] &= ~(1 << (n & 0xF));
+		y._memory_reduction();
+		return y;
+	}
+
+	/**
+	 * Test if a particular bit is on.
+	 * @param {KBigIntegerInputData} bit
+	 * @returns {boolean}
+	 */
+	testBit(bit) {
+		const n = BigInteger._toInteger(bit);
+		return ((this.element[n >>> 4] >>> (n & 0xF)) & 1) !== 0;
+	}
+
+	// ----------------------
+	// テスト系
+	// ----------------------
+	
+	/**
+	 * this === 0
+	 * @returns {boolean}
+	 */
+	isZero() {
+		return this.state === BIGINTEGER_NUMBER_STATE.ZERO;
+	}
+	
+	/**
+	 * this === 1
+	 * @returns {boolean}
+	 */
+	isOne() {
+		return this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER && this.element.length === 1 && this.element[0] === 1;
+	}
+	
+	/**
+	 * this > 0
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		return this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER || this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
+	}
+
+	/**
+	 * this < 0
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_NUMBER || this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * this >= 0
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return this.state === BIGINTEGER_NUMBER_STATE.ZERO || this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER || this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
+	}
+	
+	/**
+	 * this === NaN
+	 * @returns {boolean} isNaN(A)
+	 */
+	isNaN() {
+		return this.state === BIGINTEGER_NUMBER_STATE.NOT_A_NUMBER;
+	}
+	
+	/**
+	 * this === Infinity
+	 * @returns {boolean} isPositiveInfinity(A)
+	 */
+	isPositiveInfinity() {
+		return this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_INFINITY;
+	}
+
+	/**
+	 * this === -Infinity
+	 * @returns {boolean} isNegativeInfinity(A)
+	 */
+	isNegativeInfinity() {
+		return this.state === BIGINTEGER_NUMBER_STATE.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * this === Infinity or -Infinity
+	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+	 */
+	isInfinite() {
+		return this.isPositiveInfinity() || this.isNegativeInfinity();
+	}
+	
+	/**
+	 * Return true if the value is finite number.
+	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
+	 */
+	isFinite() {
+		return !this.isNaN() && !this.isInfinite();
+	}
+
+	// ----------------------
+	// 定数
+	// ----------------------
+	
+	/**
+	 * -1
+	 * @returns {BigInteger} -1
+	 */
+	static get MINUS_ONE() {
+		return DEFINE$3.MINUS_ONE;
+	}
+	
+	/**
+	 * 0
+	 * @returns {BigInteger} 0
+	 */
+	static get ZERO() {
+		return DEFINE$3.ZERO;
+	}
+
+	/**
+	 * 1
+	 * @returns {BigInteger} 1
+	 */
+	static get ONE() {
+		return DEFINE$3.ONE;
+	}
+	
+	/**
+	 * 2
+	 * @returns {BigInteger} 2
+	 */
+	static get TWO() {
+		return DEFINE$3.TWO;
+	}
+	
+	/**
+	 * 10
+	 * @returns {BigInteger} 10
+	 */
+	static get TEN() {
+		return DEFINE$3.TEN;
+	}
+
+	/**
+	 * Positive infinity.
+	 * @returns {BigInteger} Infinity
+	 */
+	static get POSITIVE_INFINITY() {
+		return DEFINE$3.POSITIVE_INFINITY;
+	}
+	
+	/**
+	 * Negative Infinity.
+	 * @returns {BigInteger} -Infinity
+	 */
+	static get NEGATIVE_INFINITY() {
+		return DEFINE$3.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * Not a Number.
+	 * @returns {BigInteger} NaN
+	 */
+	static get NaN() {
+		return DEFINE$3.NaN;
+	}
+
+	// ----------------------
+	// 互換性
+	// ----------------------
+	
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	signum() {
+		return this.sign();
+	}
+
+	/**
+	 * Subtract.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A - B
+	 */
+	subtract(number) {
+		return this.sub(number);
+	}
+
+	/**
+	 * Multiply.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A * B
+	 */
+	multiply(number) {
+		return this.mul(number);
+	}
+
+	/**
+	 * Divide.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} fix(A / B)
+	 */
+	divide(number) {
+		return this.div(number);
+	}
+
+	/**
+	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {KBigIntegerInputData} number
+	 * @returns {BigInteger} A % B
+	 */
+	remainder(number) {
+		return this.rem(number);
+	}
+
+}
+
+/**
+ * Collection of constant values used in the class.
+ * @ignore
+ */
+const DEFINE$3 = {
+
+	/**
+	 * -1
+	 */
+	MINUS_ONE : new BigInteger(-1),
+
+	/**
+	 * 0
+	 */
+	ZERO : new BigInteger(0),
+	
+	/**
+	 * 1
+	 */
+	ONE : new BigInteger(1),
+
+	/**
+	 * 2
+	 */
+	TWO : new BigInteger(2),
+
+	/**
+	 * 10
+	 */
+	TEN : new BigInteger(10),
+
+	/**
+	 * Positive infinity.
+	 */
+	POSITIVE_INFINITY : new BigInteger(Number.POSITIVE_INFINITY),
+
+	/**
+	 * Negative Infinity.
+	 */
+	NEGATIVE_INFINITY : new BigInteger(Number.NEGATIVE_INFINITY),
+
+	/**
+	 * Not a Number.
+	 */
+	NaN : new BigInteger(Number.NaN)
+};
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+
+/**
+ * BigDecimal type argument.(local)
+ * - number
+ * - boolean
+ * - string
+ * - BigDecimal
+ * - BigInteger
+ * - {toBigDecimal:function}
+ * - {doubleValue:number}
+ * - {toString:function}
+ * @typedef {number|boolean|string|BigDecimal|BigInteger|{toBigDecimal:function}|{doubleValue:number}|{toString:function}} KBigDecimalLocalInputData
+ */
+
+/**
+ * ScaleData for argument of BigDecimal.
+ * - {integer:BigInteger,scale:?number,context:?MathContext}
+ * @typedef {{integer:BigInteger,scale:?number,context:?MathContext}} KBigDecimalScaleData
+ */
+
+/**
+ * BigDecimal type argument.
+ * - KBigDecimalLocalInputData
+ * - Array<KBigDecimalLocalInputData|MathContext>
+ * - KBigDecimalScaleData
+ * 
+ * Initialization can be performed as follows.
+ * - 1200, "1200", "12e2", "1.2e3"
+ * - When initializing with array. [ integer, [scale = 0], [context=default]].
+ * - When initializing with object. { integer, [scale = 0], [context=default]}.
+ * 
+ * Description of the settings are as follows, you can also omitted.
+ * - The "scale" is an integer scale factor.
+ * - The "context" is used to normalize the created floating point.
+ * 
+ * If "context" is not specified, the "default_context" set for the class is used.
+ * The "context" is the used when no environment settings are specified during calculation.
+ * @typedef {KBigDecimalLocalInputData|Array<KBigDecimalLocalInputData|MathContext>|KBigDecimalScaleData} KBigDecimalInputData
+ */
+
+/**
+ * Setting of calculation result of division.
+ * @typedef {Object} KBigDecimalDivideType
+ * @property {number} [scale] Scale of rounding.
+ * @property {RoundingModeEntity} [roundingMode] Rounding mode.
+ * @property {MathContext} [context] Configuration.(scale and roundingMode are unnecessary.)
+ */
+
+/**
+ * Default MathContext class.
+ * Used when MathContext not specified explicitly.
+ * @type {MathContext[]}
+ * @ignore
+ */
+const DEFAULT_CONTEXT_ = [];
+DEFAULT_CONTEXT_[0] = MathContext.DECIMAL128;
+
+/**
+ * Collection of functions used in BigDecimal.
+ * @ignore
+ */
+class BigDecimalTool {
+
+	/**
+	 * Create data for BigDecimal from strings.
+	 * @param {string} ntext 
+	 * @returns {{scale : number, integer : BigInteger}}
+	 */
+	static ToBigDecimalFromString(ntext) {
+		let scale = 0;
+		let buff;
+		// 正規化
+		let text = ntext.replace(/\s/g, "").toLowerCase();
+		// 特殊な状態
+		{
+			if(/nan/.test(text)) {
+				return {
+					scale : 0,
+					integer : BigInteger.NaN
+				};
+			}
+			else if(/inf/.test(text)) {
+				if(!/-/.test(text)) {
+					return {
+						scale : 0,
+						integer : BigInteger.POSITIVE_INFINITY
+					};
+				}
+				else {
+					return {
+						scale : 0,
+						integer : BigInteger.NEGATIVE_INFINITY
+					};
+				}
+			}
+		}
+		// +-の符号があるか
+		let number_text = "";
+		buff = text.match(/^[+-]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			if(buff.indexOf("-") !== -1) {
+				number_text += "-";
+			}
+		}
+		// 整数部があるか
+		buff = text.match(/^[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			number_text += buff;
+		}
+		// 小数部があるか
+		buff = text.match(/^\.[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0];
+			text = text.substr(buff.length);
+			buff = buff.substr(1);
+			scale = scale + buff.length;
+			number_text += buff;
+		}
+		// 指数表記があるか
+		buff = text.match(/^e[+-]?[0-9]+/);
+		if(buff !== null) {
+			buff = buff[0].substr(1);
+			scale   = scale - parseInt(buff, 10);
+		}
+		return {
+			scale : scale,
+			integer : new BigInteger([number_text, 10])
+		};
+	}
+
+	/**
+	 * Create data for BigDecimal from number.
+	 * @param {number|boolean} number 
+	 * @returns {{scale : number, integer : BigInteger}}
+	 */
+	static ToBigDecimalFromNumber(number) {
+		const value = typeof number !== "boolean" ? number : (number ? 1 : 0);
+		if(!isFinite(value)) {
+			if(value === Infinity) {
+				return {
+					scale : 0,
+					integer : BigInteger.POSITIVE_INFINITY
+				};
+			}
+			else if(value === - Infinity) {
+				return {
+					scale : 0,
+					integer : BigInteger.NEGATIVE_INFINITY
+				};
+			}
+			else {
+				return {
+					scale : 0,
+					integer : BigInteger.NaN
+				};
+			}
+		}
+		// 整数
+		if(value === Math.floor(value)) {
+			return {
+				scale : 0,
+				integer : new BigInteger(Math.round(value))
+			};
+		}
+		// 浮動小数
+		else {
+			let scale = Math.trunc(Math.log(Math.abs(value)) / Math.log(10));
+			let x = value / Math.pow(10, scale);
+			// スケールを逆にする
+			scale = - scale;
+			for(let i = 0; i < 14; i++) {
+				x = x * 10;
+				scale = scale + 1;
+				if(Math.abs(x - Math.round(x)) <= Number.EPSILON) {
+					break;
+				}
+			}
+			// 最も下の桁は四捨五入する
+			x = Math.round(x * 1e14) / 1e14;
+			return {
+				scale : scale,
+				integer : new BigInteger(x)
+			};
+			// 64ビットの実数型は15桁程度まで正しい
+			// 余裕をもって12桁程度までを抜き出すのが良いかと思われる。
+		}
+	}
+}
+
+/**
+ * Arbitrary-precision floating-point number class (immutable).
+ */
+class BigDecimal {
+	
+	/**
+	 * Create an arbitrary-precision floating-point number.
+	 * 
+	 * Initialization can be performed as follows.
+	 * - 1200, "1200", "12e2", "1.2e3"
+	 * - When initializing with array. [ integer, [scale = 0], [context=default]].
+	 * - When initializing with object. { integer, [scale = 0], [context=default]}.
+	 * 
+	 * Description of the settings are as follows, you can also omitted.
+	 * - The "scale" is an integer scale factor.
+	 * - The "context" is used to normalize the created floating point.
+	 * 
+	 * If "context" is not specified, the "default_context" set for the class is used.
+	 * The "context" is the used when no environment settings are specified during calculation.
+	 * @param {KBigDecimalInputData} number - Real data.
+	 */
+	constructor(number) {
+
+		/**
+		 * The scale of this BigDecimal.
+		 * @private
+		 * @ignore
+		 * @type {number}
+		 */
+		this._scale	= 0;
+		
+		/**
+		 * Context used during initialization.
+		 * @private
+		 * @ignore
+		 * @type {MathContext}
+		 */
+		this.context = BigDecimal.getDefaultContext();
+
+		// この値がtrueの場合は最後に正規化を実行する
+		let is_set_context = false;
+
+		if(arguments.length > 1) {
+			throw "BigDecimal Unsupported argument[" + arguments.length + "]";
+		}
+		if(number instanceof BigDecimal) {
+
+			/**
+			 * Integer part.
+			 * @private
+			 * @ignore
+			 * @type {BigInteger}
+			 */
+			this.integer			= number.integer.clone();
+
+			/**
+			 * Integer part of string (for cache).
+			 * @private
+			 * @ignore
+			 * @type {string}
+			 */
+			this.int_string			= number.int_string;
+
+			this._scale				= number._scale;
+			this.context			= number.context;
+
+		}
+		else if((typeof number === "number") || (typeof number === "boolean")) {
+			const data = BigDecimalTool.ToBigDecimalFromNumber(number);
+			this.integer	= data.integer;
+			this._scale		= data.scale;
+		}
+		else if(typeof number === "string") {
+			const data = BigDecimalTool.ToBigDecimalFromString(number);
+			this.integer	= data.integer;
+			this._scale		= data.scale;
+		}
+		else if(number instanceof Array) {
+			if(number.length >= 1) {
+				const prm1 = number[0];
+				if((typeof prm1 === "number") || (typeof prm1 === "boolean")) {
+					const data		= BigDecimalTool.ToBigDecimalFromNumber(prm1);
+					this.integer	= data.integer;
+					this._scale		= data.scale;
+				}
+				else if(typeof prm1 === "string") {
+					const data		= BigDecimalTool.ToBigDecimalFromString(prm1);
+					this.integer	= data.integer;
+					this._scale		= data.scale;
+				}
+				else if(prm1 instanceof BigDecimal) {
+					this.integer	= prm1.integer.clone();
+					this._scale		= prm1._scale;
+				}
+				else if(prm1 instanceof BigInteger) {
+					this.integer			= prm1.clone();
+				}
+				else if(typeof prm1 === "object") {
+					if("toBigDecimal" in prm1) {
+						const data		= prm1.toBigDecimal();
+						this.integer	= data.integer;
+						this._scale		= data._scale;
+					}
+					else if("doubleValue" in prm1) {
+						const data = BigDecimalTool.ToBigDecimalFromNumber(prm1.doubleValue);
+						this.integer	= data.integer;
+						this._scale		= data.scale;
+					}
+					else {
+						const data = BigDecimalTool.ToBigDecimalFromString(prm1.toString());
+						this.integer	= data.integer;
+						this._scale		= data.scale;
+					}
+				}
+				else {
+					throw "BigDecimal Unsupported argument " + prm1 + "(" + (typeof prm1) + ")";
+				}
+			}
+			if(number.length >= 2) {
+				// スケール値を省略しているかどうかを、数値かどうかで判定している。
+				if(typeof number[1] === "number") {
+					// 2つめが数値の場合は、2つ目をスケール値として使用する
+					this._scale	= number[1];
+					if(number.length >= 3) {
+						this.context = ((number[2] !== undefined) && (number[2] instanceof MathContext)) ? number[2] : BigDecimal.getDefaultContext();
+						is_set_context = true;
+					}
+				}
+				else {
+					if(number.length >= 2) {
+						this.context = ((number[1] !== undefined) && (number[1] instanceof MathContext)) ? number[1] : BigDecimal.getDefaultContext();
+						is_set_context = true;
+					}
+				}
+			}
+		}
+		else if(number instanceof BigInteger) {
+			this.integer	= number.clone();
+		}
+		else if(typeof number === "object") {
+			if("toBigDecimal" in number) {
+				const data		= number.toBigDecimal();
+				this.integer	= data.integer;
+				this._scale		= data._scale;
+				this.context	= data.context;
+			}
+			else if("doubleValue" in number) {
+				const data = BigDecimalTool.ToBigDecimalFromNumber(number.doubleValue);
+				this.integer	= data.integer;
+				this._scale		= data.scale;
+			}
+			else if(("integer" in number) && ("scale" in number) && ("context" in number)) {
+				this.integer	= new BigInteger(number.integer);
+				if(number.scale) {
+					this._scale = number.scale;
+				}
+				if(number.context) {
+					this.context = number.context;
+					is_set_context = true;
+				}
+			}
+			else if(number instanceof Object) {
+				const data = BigDecimalTool.ToBigDecimalFromString(number.toString());
+				this.integer	= data.integer;
+				this._scale		= data.scale;
+			}
+		}
+		else {
+			throw "BigDecimal Unsupported argument " + arguments;
+		}
+		// データを正規化
+		if(is_set_context) {
+			const newbigdecimal = this.round(this.context);
+			this.integer	= newbigdecimal.integer;
+			this._scale		= newbigdecimal._scale;
+			delete this.int_string;
+		}
+		// データが正しいかチェックする
+		if((!(this.integer instanceof BigInteger)) || (!(this.context instanceof MathContext))) {
+			throw "BigDecimal Unsupported argument " + arguments;
+		}
+	}
+
+	/**
+	 * Create an arbitrary-precision floating-point number.
+	 * 
+	 * Initialization can be performed as follows.
+	 * - 1200, "1200", "12e2", "1.2e3"
+	 * - When initializing with array. [ integer, [scale = 0], [context=default]].
+	 * - When initializing with object. { integer, [scale = 0], [context=default]}.
+	 * 
+	 * Description of the settings are as follows, you can also omitted.
+	 * - The "scale" is an integer scale factor.
+	 * - The "context" is used to normalize the created floating point.
+	 * 
+	 * If "context" is not specified, the "default_context" set for the class is used.
+	 * The "context" is the used when no environment settings are specified during calculation.
+	 * @param {KBigDecimalInputData} number - Real data.
+	 * @returns {BigDecimal}
+	 */
+	static create(number) {
+		if(number instanceof BigDecimal) {
+			return number;
+		}
+		else {
+			return new BigDecimal(number);
+		}
+	}
+
+	/**
+	 * Convert number to BigDecimal type.
+	 * @param {KBigDecimalLocalInputData} x 
+	 * @param {MathContext} [scale] 
+	 * @returns {BigDecimal}
+	 */
+	static valueOf(x, scale) {
+		if(arguments.length === 1) {
+			return new BigDecimal(x);
+		}
+		else {
+			return new BigDecimal([x, scale]);
+		}
+	}
+
+	/**
+	 * Convert to BigDecimal.
+	 * If type conversion is unnecessary, return the value as it is.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {BigDecimal}
+	 * @private
+	 */
+	static _toBigDecimal(number) {
+		if(number instanceof BigDecimal) {
+			return number;
+		}
+		else {
+			return new BigDecimal(number);
+		}
+	}
+
+	/**
+	 * Convert to BigInteger.
+	 * If type conversion is unnecessary, return the value as it is.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {BigInteger}
+	 * @private
+	 */
+	static _toBigInteger(number) {
+		if(number instanceof BigInteger) {
+			return number;
+		}
+		else if(number instanceof BigDecimal) {
+			return number.toBigInteger();
+		}
+		else {
+			// @ts-ignore
+			return new BigInteger(number);
+		}
+	}
+
+	/**
+	 * Convert to real number.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toFloat(number) {
+		if(typeof number === "number") {
+			return number;
+		}
+		else if(number instanceof BigDecimal) {
+			return number.doubleValue;
+		}
+		else {
+			return (new BigDecimal(number)).doubleValue;
+		}
+	}
+
+	/**
+	 * Convert to integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {number}
+	 * @private
+	 */
+	static _toInteger(number) {
+		if(typeof number === "number") {
+			return Math.trunc(number);
+		}
+		else if(number instanceof BigInteger) {
+			return number.intValue;
+		}
+		else {
+			// @ts-ignore
+			return (new BigInteger(number)).intValue;
+		}
+	}
+
+	/**
+	 * Return string of this number without sign.
+	 * If cache is already created, return cache.
+	 * @returns {string} 
+	 */
+	_getUnsignedIntegerString() {
+		// キャッシュする
+		if(typeof this.int_string === "undefined") {
+			this.int_string = this.integer.toString(10).replace(/^-/, "");
+		}
+		return this.int_string;
+	}
+
+	/**
+	 * Deep copy.
+	 * @returns {BigDecimal} 
+	 */
+	clone() {
+		return new BigDecimal(this);
+	}
+	
+	/**
+	 * The scale of this BigDecimal.
+	 * @returns {number} 
+	 */
+	scale() {
+		return this._scale;
+	}
+
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	sign() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? 1 : -1);
+		}
+		return this.integer.sign();
+	}
+
+	/**
+	 * Precision.
+	 * @returns {number} 
+	 */
+	precision() {
+		return this._getUnsignedIntegerString().length;
+	}
+
+	/**
+	 * An integer with the exponent part removed.
+	 * @returns {BigInteger} 
+	 */
+	unscaledValue() {
+		return new BigInteger(this.integer);
+	}
+
+	/**
+	 * The smallest value that can be represented with the set precision.
+	 * @returns {BigDecimal} 
+	 */
+	ulp() {
+		return new BigDecimal([BigInteger.ONE, this.scale()]);
+	}
+
+	/**
+	 * Absolute value.
+	 * @returns {BigDecimal} abs(A)
+	 */
+	abs() {
+		const output = this.clone();
+		output.integer = output.integer.abs();
+		return output;
+	}
+
+	/**
+	 * this * 1
+	 * @returns {BigDecimal} +A
+	 */
+	plus() {
+		return this;
+	}
+
+	/**
+	 * this * -1
+	 * @returns {BigDecimal} -A
+	 */
+	negate() {
+		const output = this.clone();
+		output.integer = output.integer.negate();
+		return output;
+	}
+
+	/**
+	 * Move the decimal point to the left.
+	 * @param {KBigDecimalInputData} n 
+	 * @returns {BigDecimal} 
+	 */
+	movePointLeft(n) {
+		if(!this.isFinite()) {
+			return this;
+		}
+		const x = BigDecimal._toInteger(n);
+		let output = this.scaleByPowerOfTen( -x );
+		output = output.setScale(Math.max(this.scale() + x, 0));
+		return output;
+	}
+
+	/**
+	 * Move the decimal point to the right.
+	 * @param {KBigDecimalInputData} n 
+	 * @returns {BigDecimal} 
+	 */
+	movePointRight(n) {
+		return this.movePointLeft(-n);
+	}
+
+	/**
+	 * Remove the 0 to the right of the numbers and normalize the scale.
+	 * @returns {BigDecimal} 
+	 */
+	stripTrailingZeros() {
+		if(!this.isFinite()) {
+			return this;
+		}
+		// 0をできる限り取り除く
+		const sign		= this.sign();
+		const sign_text	= sign >= 0 ? "" : "-";
+		const text		= this.integer.toString(10).replace(/^-/, "");
+		const zeros		= text.match(/0+$/);
+		let zero_length	= (zeros !== null) ? zeros[0].length : 0;
+		if(zero_length === text.length) {
+			// 全て 0 なら 1 ケタ残す
+			zero_length = text.length - 1;
+		}
+		const newScale	= this.scale() - zero_length;
+		return new BigDecimal([new BigInteger(sign_text + text.substring(0, text.length - zero_length)), newScale]);
+	}
+
+	// ----------------------
+	// 四則演算
+	// ----------------------
+	
+	/**
+	 * Add.
+	 * @param {KBigDecimalInputData} number
+	 * @returns {BigDecimal} A + B
+	 */
+	add(number) {
+		const augend = BigDecimal._toBigDecimal(number);
+		const src			= this;
+		const tgt			= augend;
+		if(!src.isFinite() || !tgt.isFinite()) {
+			if(src.isNaN() || tgt.isNaN() || (src.isInfinite() && tgt.isInfinite() && !src.equalsState(tgt))) {
+				return BigDecimal.NaN;
+			}
+			else if(src.isPositiveInfinity() || tgt.isPositiveInfinity()) {
+				return BigDecimal.POSITIVE_INFINITY;
+			}
+			else {
+				return BigDecimal.NEGATIVE_INFINITY;
+			}
+		}
+		const mc = BigDecimal.getDefaultContext();
+		const newscale	= Math.max(src._scale, tgt._scale);
+		if(src._scale === tgt._scale) {
+			// 1 e1 + 1 e1 = 1
+			return new BigDecimal([src.integer.add(tgt.integer), newscale, mc]);
+		}
+		else if(src._scale > tgt._scale) {
+			// 1 e-2 + 1 e-1
+			const newdst = tgt.setScale(src._scale);
+			// 0.01 + 0.10 = 0.11 = 11 e-2
+			return new BigDecimal([src.integer.add(newdst.integer), newscale, mc]);
+		}
+		else {
+			// 1 e-1 + 1 e-2
+			const newsrc = src.setScale(tgt._scale);
+			// 0.1 + 0.01 = 0.11 = 11 e-2
+			return new BigDecimal([newsrc.integer.add(tgt.integer), newscale, mc]);
+		}
+	}
+
+	/**
+	 * Subtract.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {BigDecimal} A - B
+	 */
+	sub(number) {
+		const subtrahend = BigDecimal._toBigDecimal(number);
+		return this.add(subtrahend.negate());
+	}
+
+	/**
+	 * Multiply.
+	 * @param {KBigDecimalInputData} number
+	 * @returns {BigDecimal} A * B
+	 */
+	mul(number) {
+		const multiplicand = BigDecimal._toBigDecimal(number);
+		const src			= this;
+		const tgt			= multiplicand;
+		if(!src.isFinite() || !tgt.isFinite()) {
+			if(src.isNaN() || tgt.isNaN() || (src.isZero() || tgt.isZero())) {
+				return BigDecimal.NaN;
+			}
+			else if(src.sign() * tgt.sign() > 0) {
+				return BigDecimal.POSITIVE_INFINITY;
+			}
+			else {
+				return BigDecimal.NEGATIVE_INFINITY;
+			}
+		}
+		const mc = BigDecimal.getDefaultContext();
+		const newinteger	= src.integer.mul(tgt.integer);
+		// 0.1 * 0.01 = 0.001
+		const newscale	= src._scale + tgt._scale;
+		return new BigDecimal([newinteger, newscale, mc]);
+	}
+
+	/**
+	 * Divide not calculated to the decimal point.
+	 * @param {KBigDecimalInputData} number
+	 * @returns {BigDecimal} (int)(A / B)
+	 */
+	divideToIntegralValue(number) {
+		const divisor = BigDecimal._toBigDecimal(number);
+		const src		= this;
+		const tgt		= divisor;
+		if(!src.isFinite() || !tgt.isFinite()) {
+			if(src.isNaN() || tgt.isNaN() || (src.isInfinite() && tgt.isInfinite())) {
+				return BigDecimal.NaN;
+			}
+			else if(src.isInfinite()) {
+				if(src.sign() * tgt.sign() >= 0) {
+					return BigDecimal.POSITIVE_INFINITY;
+				}
+				else {
+					return BigDecimal.NEGATIVE_INFINITY;
+				}
+			}
+			else {
+				return BigDecimal.ZERO;
+			}
+		}
+		else if(tgt.isZero()) {
+			if(src.isZero()) {
+				return BigDecimal.NaN;
+			}
+			else {
+				return src.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY;
+			}
+		}
+		const mc = BigDecimal.getDefaultContext();
+		/**
+		 * @param {number} num 
+		 * @returns {BigInteger}
+		 */
+		const getDigit  = function( num ) {
+			let i;
+			let text = "1";
+			for(i = 0; i < num; i++) {
+				text = text + "0";
+			}
+			return new BigInteger(text);
+		};
+		if(tgt.compareTo(BigDecimal.ZERO) === 0) {
+			throw "ArithmeticException";
+		}
+
+		// 1000e0		/	1e2				=	1000e-2
+		// 1000e0		/	10e1			=	100e-1
+		// 1000e0		/	100e0			=	10e0
+		// 1000e0		/	1000e-1			=	1e1
+		// 1000e0		/	10000e-2		=	1e1
+		// 1000e0		/	100000e-3		=	1e1
+
+		// 10e2			/	100e0			=	1e1
+		// 100e1		/	100e0			=	1e1
+		// 1000e0		/	100e0			=	10e0
+		// 10000e-1		/	100e0			=	100e-1	
+		// 100000e-2	/	100e0			=	1000e-2
+		let src_integer	= src.integer;
+		let tgt_integer	= tgt.integer;
+		const newScale	= src._scale - tgt._scale;
+
+		// 100e-2 / 3e-1 = 1 / 0.3 -> 100 / 30
+		if(src._scale > tgt._scale) {
+			// src._scale に合わせる
+			tgt_integer = tgt_integer.mul(getDigit(  newScale ));
+		}
+		// 1e-1 / 3e-2 = 0.1 / 0.03 -> 10 / 3
+		else if(src._scale < tgt._scale) {
+			// tgt._scale に合わせる
+			src_integer = src_integer.mul(getDigit( -newScale ));
+		}
+
+		// とりあえず計算結果だけ作ってしまう
+		const new_integer	= src_integer.div(tgt_integer);
+		const sign			= new_integer.sign();
+		if(sign !== 0) {
+			const text	= new_integer.toString(10).replace(/^-/, "");
+			// 指定した桁では表すことができない
+			if((mc.getPrecision() !== 0) && (text.length > mc.getPrecision())) {
+				throw "ArithmeticException";
+			}
+			// 結果の優先スケール に合わせる (this.scale() - divisor.scale())
+			if(text.length <= (-newScale)) {
+				// 合わせることができないので、0をできる限り削る = stripTrailingZerosメソッド
+				const zeros			= text.match(/0+$/);
+				const zero_length	= (zeros !== null) ? zeros[0].length : 0;
+				const sign_text		= sign >= 0 ? "" : "-";
+				return new BigDecimal([new BigInteger(sign_text + text.substring(0, text.length - zero_length)), -zero_length, mc]);
+			}
+		}
+
+		let output = new BigDecimal(new_integer);
+		output = output.setScale(newScale, RoundingMode.UP);
+		output = output.round(mc);
+		output.context = mc;
+		return output;
+	}
+
+	/**
+	 * Divide and remainder.
+	 * @param {KBigDecimalInputData} number
+	 * @returns {Array<BigDecimal>} [C = (int)(A / B), A - C * B]
+	 */
+	divideAndRemainder(number) {
+		const divisor = BigDecimal._toBigDecimal(number);
+		if(!this.isFinite() || !divisor.isFinite()) {
+			if(this.isNaN() || divisor.isNaN() || (this.isInfinite() && divisor.isInfinite())) {
+				return [BigDecimal.NaN, BigDecimal.NaN];
+			}
+			else if(this.isInfinite()) {
+				if(this.sign() * divisor.sign() >= 0) {
+					return [BigDecimal.POSITIVE_INFINITY, BigDecimal.NaN];
+				}
+				else {
+					return [BigDecimal.NEGATIVE_INFINITY, BigDecimal.NaN];
+				}
+			}
+			else {
+				return [BigDecimal.ZERO, BigDecimal.NaN];
+			}
+		}
+		else if(divisor.isZero()) {
+			if(this.isZero()) {
+				return [BigDecimal.NaN, BigDecimal.NaN];
+			}
+			else {
+				return [this.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY, BigDecimal.NaN];
+			}
+		}
+		// 1000e0		/	1e2				=	1000e-2	... 0e0
+		// 1000e0		/	10e1			=	100e-1	... 0e0
+		// 1000e0		/	100e0			=	10e0	... 0e0
+		// 1000e0		/	1000e-1			=	1e1		... 0e0
+		// 1000e0		/	10000e-2		=	1e1		... 0e-1
+		// 1000e0		/	100000e-3		=	1e1		... 0e-2
+
+		// 10e2			/	100e0			=	1e1		... 0e1
+		// 100e1		/	100e0			=	1e1		... 0e1
+		// 1000e0		/	100e0			=	10e0	... 0e0
+		// 10000e-1		/	100e0			=	100e-1	... 0e-1
+		// 100000e-2	/	100e0			=	1000e-2	... 0e-2
+
+		const result_divide	= this.divideToIntegralValue(divisor);
+		const result_remaind	= this.sub(result_divide.mul(divisor));
+
+		const output = [result_divide, result_remaind];
+		return output;
+	}
+
+	/**
+	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {KBigDecimalInputData} number
+	 * @returns {BigDecimal} A % B
+	 */
+	rem(number) {
+		return this.divideAndRemainder(number)[1];
+	}
+
+	/**
+	 * Modulo, positive remainder of division.
+	 * - Result has same sign as the Divisor.
+	 * @param {KBigDecimalInputData} number
+	 * @returns {BigDecimal} A mod B
+	 */
+	mod(number) {
+		const src = this;
+		const tgt = BigDecimal._toBigDecimal(number);
+		if(tgt.isZero()) {
+			return src;
+		}
+		const x = src.rem(tgt);
+		if(!src.equalsState(tgt)) {
+			return x.add(tgt);
+		}
+		else {
+			return x;
+		}
+	}
+
+	/**
+	 * Divide.
+	 * - The argument can specify the scale after calculation.
+	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
+	 * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
+	 * - When null is specified for the argument, it is calculated on the scale of "divisor.context".
+	 * @param {KBigDecimalInputData} number
+	 * @param {MathContext|KBigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @returns {BigDecimal}
+	 */
+	div(number, type) {
+		const divisor = BigDecimal._toBigDecimal(number);
+		const src			= this;
+		const tgt			= divisor;
+		if(!src.isFinite() || !tgt.isFinite()) {
+			if(src.isNaN() || tgt.isNaN() || (src.isInfinite() && tgt.isInfinite())) {
+				return BigDecimal.NaN;
+			}
+			else if(src.isInfinite()) {
+				if(src.sign() * tgt.sign() >= 0) {
+					return BigDecimal.POSITIVE_INFINITY;
+				}
+				else {
+					return BigDecimal.NEGATIVE_INFINITY;
+				}
+			}
+			else {
+				return BigDecimal.ZERO;
+			}
+		}
+		else if(tgt.isZero()) {
+			if(src.isZero()) {
+				return BigDecimal.NaN;
+			}
+			else {
+				return src.sign() >= 0 ? BigDecimal.POSITIVE_INFINITY : BigDecimal.NEGATIVE_INFINITY;
+			}
+		}
+		let roundingMode	= null;
+		let mc				= null;
+		let newScale		= 0;
+		let isPriorityScale	= false;
+
+		// 設定をロードする
+		if(!type) {
+			mc = BigDecimal.getDefaultContext();
+			roundingMode = mc.getRoundingMode();
+			newScale = mc.getPrecision();
+		}
+		else if(type instanceof MathContext) {
+			mc = type;
+			roundingMode = mc.getRoundingMode();
+			newScale = mc.getPrecision();
+		}
+		else {
+			if(type && type.scale) {
+				newScale = type.scale;
+			}
+			else {
+				isPriorityScale	= true;
+				if(type && (type.roundingMode || type.context)) {
+					newScale = src.scale();
+				}
+				else {
+					newScale = src.scale() - tgt.scale();
+				}
+			}
+			if(type && type.context) {
+				mc = type.context;
+				roundingMode = mc.getRoundingMode();
+				newScale = mc.getPrecision();
+			}
+			else {
+				mc = this.context;
+			}
+			if(type && type.roundingMode) {
+				roundingMode = type.roundingMode;
+			}
+			else {
+				roundingMode = mc.getRoundingMode();
+			}
+		}
+		
+		if(tgt.compareTo(BigDecimal.ZERO) === 0) {
+			throw "ArithmeticException";
+		}
+
+		const precision = mc.getPrecision();
+
+		let all_result;
+		// 無限精度か、精度が小さい場合は厳密に求める
+		if((precision === 0) || (precision <= 100)) {
+			let newsrc;
+			/**
+			 * @type {any}
+			 */
+			const result_map = {};
+			let result, result_divide, result_remaind;
+			all_result = BigDecimal.ZERO;
+			const check_max = precision !== 0 ? (precision + 8) : 0x3FFFF;
+			newsrc = src;
+			BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
+			let is_error = false;
+			let error_message;
+			for(let i = 0; i < check_max; i++) {
+				result = newsrc.divideAndRemainder(tgt);
+				result_divide	= result[0];
+				result_remaind	= result[1];
+				all_result = all_result.add(result_divide.scaleByPowerOfTen(-i));
+				if(result_remaind.compareTo(BigDecimal.ZERO) !== 0) {
+					if(precision === 0) {	// 精度無限大の場合は、循環小数のチェックが必要
+						if(result_map[result_remaind._getUnsignedIntegerString()]) {
+							is_error = true;
+							error_message = "ArithmeticException " + all_result + "[" + result_remaind._getUnsignedIntegerString() + "]";
+							break;
+						}
+						else {
+							result_map[result_remaind._getUnsignedIntegerString()] = true;
+						}
+					}
+					newsrc = result_remaind.scaleByPowerOfTen(1);
+				}
+				else {
+					break;
+				}
+			}
+			BigDecimal.popDefaultContext();
+			if(is_error) {
+				throw error_message;
+			}
+		}
+		else {
+			// 巨大な値は繰り返しで求める
+			BigDecimal.pushDefaultContext(new MathContext(precision + 4, RoundingMode.HALF_UP));
+			all_result = this.mul(tgt.inv());
+			BigDecimal.popDefaultContext();
+		}
+	
+		all_result.context = mc;
+		if(isPriorityScale) {
+			// 優先スケールの場合は、スケールの変更に失敗する可能性あり
+			try {
+				all_result = all_result.setScale(newScale, roundingMode);
+			}
+			catch(e) {
+				// falls through
+			}
+		}
+		else {
+			all_result = all_result.setScale(newScale, roundingMode);
+		}
+		all_result = all_result.round(BigDecimal.getDefaultContext());
+		return all_result;
+	}
+
+	/**
+	 * Inverse number of this value.
+	 * @returns {BigDecimal} 1 / A
+	 */
+	inv() {
+		if(BigDecimal.getDefaultContext().equals(MathContext.UNLIMITED)) {
+			return BigDecimal.ONE.div(this);
+		}
+		{
+			if(!this.isFinite()) {
+				return this.isNaN() ? BigDecimal.NaN : BigDecimal.ZERO;
+			}
+			if(this.isZero()) {
+				return BigDecimal.NaN;
+			}
+		}
+		// 通常の割り算を行うと、「1」÷巨大な数を計算したときに、
+		// 1 の仮数部の精度によってしまい、結果が0になってしまう場合がある
+		// const mc = context ? context : this.context;
+		// const b1 = this.createUsingThisSettings(1, mc);
+		// return b1.div(this, mc);
+		// 計算は絶対値を用いて行う
+		const is_negative = this.isNegative();
+		const A = !is_negative ? this: this.negate();
+		// 3次のニュートン・ラフソン法で求める
+		const B1 = BigDecimal.create(1);
+		// 初期値は、指数部の情報を使用する
+		const scale = - A.scale() + (A.precision() - 1);
+		const x0 = new BigDecimal([1, scale + 1]);
+		if(x0.isZero()) {
+			return null;
+		}
+		let xn = x0;
+		for(let i = 0; i < 20; i++) {
+			const h = B1.sub(A.mul(xn));
+			if(h.isZero()) {
+				break;
+			}
+			xn = xn.mul(B1.add(h).add(h.square()));
+		}
+		// 参考
+		// Lyuka - 逆数と平方根を求める高次収束アルゴリズム
+		// http://www.finetune.co.jp/~lyuka/technote/fract/sqrt.html
+		return !is_negative ? xn : xn.negate();
+	}
+
+	// ----------------------
+	// その他の演算
+	// ----------------------
+	
+	/**
+	 * Factorial function, x!.
+	 * - Supports only integers.
+	 * @returns {BigDecimal} n!
+	 */
+	factorial() {
+		if(!this.isFinite()) {
+			return this;
+		}
+		const output = new BigDecimal((new BigInteger(this)).factorial());
+		return output;
+	}
+
+	/**
+	 * Multiply a multiple of ten.
+	 * - Supports only integers.
+	 * - Only the scale is changed without changing the precision.
+	 * @param {KBigDecimalInputData} n 
+	 * @returns {BigDecimal} A * 10^floor(n)
+	 */
+	scaleByPowerOfTen(n) {
+		if(!this.isFinite()) {
+			return this;
+		}
+		const x = BigDecimal._toInteger(n);
+		const output = this.clone();
+		output._scale = this.scale() - x;
+		return output;
+	}
+
+	// ----------------------
+	// 環境設定用
+	// ----------------------
+	
+	/**
+	 * Set default the MathContext.
+	 * - This is used if you do not specify MathContext when creating a new object.
+	 * @param {MathContext} [context=MathContext.DECIMAL128]
+	 */
+	static setDefaultContext(context) {
+		DEFAULT_CONTEXT_[DEFAULT_CONTEXT_.length - 1] = context ? context : MathContext.DECIMAL128;
+	}
+
+	/**
+	 * Return default MathContext class.
+	 * - Used when MathContext not specified explicitly.
+	 * @returns {MathContext}
+	 */
+	static getDefaultContext() {
+		return DEFAULT_CONTEXT_[DEFAULT_CONTEXT_.length - 1];
+	}
+
+	/**
+	 * Push default the MathContext.
+	 * - Use with `popDefaultContext` when you want to switch settings temporarily.
+	 * @param {MathContext} [context]
+	 */
+	static pushDefaultContext(context) {
+		DEFAULT_CONTEXT_.push(context);
+	}
+
+	/**
+	 * Pop default the MathContext.
+	 * - Use with `pushDefaultContext` when you want to switch settings temporarily.
+	 */
+	static popDefaultContext() {
+		DEFAULT_CONTEXT_.pop();
+	}
+
+	// ----------------------
+	// 他の型に変換用
+	// ----------------------
+	
+	/**
+	 * boolean value.
+	 * @returns {boolean}
+	 */
+	get booleanValue() {
+		return this.integer.booleanValue;
+	}
+
+	/**
+	 * 32-bit integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		const bigintdata = this.toBigInteger();
+		const x = bigintdata.intValue;
+		return x & 0xFFFFFFFF;
+	}
+
+	/**
+	 * 32-bit integer value.
+	 * An error occurs if conversion fails.
+	 * @returns {number}
+	 */
+	get intValueExact() {
+		if(!this.isFinite()) {
+			throw "ArithmeticException";
+		}
+		const bigintdata = this.toBigInteger();
+		const x = bigintdata.intValue;
+		if((x < -2147483648) || (2147483647 < x)) {
+			throw "ArithmeticException";
+		}
+		return x;
+	}
+
+	/**
+	 * 32-bit floating point.
+	 * @returns {number}
+	 */
+	get floatValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		const p = this.precision();
+		if(MathContext.DECIMAL32.getPrecision() < p) {
+			return(this.sign() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
+		}
+		return parseFloat(this.toEngineeringString());
+	}
+
+	/**
+	 * 64-bit floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		return parseFloat(this.toEngineeringString());
+	}
+
+	// ----------------------
+	// konpeito で扱う数値型へ変換
+	// ----------------------
+	
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return this.integer.scaleByPowerOfTen(-this.scale());
+	}
+
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		if(mc) {
+			return this.round(mc);
+		}
+		else {
+			return this;
+		}
+	}
+	
+	/**
+	 * return Fraction.
+	 * @returns {Fraction}
+	 */
+	toFraction() {
+		return new Fraction(this);
+	}
+
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return new Complex(this);
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return new Matrix(this);
+	}
+
+	// ----------------------
+	// 比較
+	// ----------------------
+	
+	/**
+	 * Equals.
+	 * - Attention : Test for equality, including the precision and the scale. 
+	 * - Use the "compareTo" if you only want to find out whether they are also mathematically equal.
+	 * - If you specify a "tolerance", it is calculated by ignoring the test of the precision and the scale.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {KBigDecimalInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {boolean} A === B
+	 */
+	equals(number, tolerance) {
+		// 誤差を指定しない場合は、厳密に調査
+		if(!tolerance) {
+			if((number instanceof BigDecimal) || (typeof number === "string")) {
+				const val = number instanceof BigDecimal ? number : BigDecimal._toBigDecimal(number);
+				if(this.isNaN() || val.isNaN()) {
+					return false;
+				}
+				else {
+					return (this.equalsState(val) && (this._scale === val._scale) && this.integer.equals(val.integer));
+				}
+			}
+			else {
+				return this.compareTo(number) === 0;
+			}
+		}
+		else {
+			return this.compareTo(number, tolerance) === 0;
+		}
+	}
+
+	/**
+	 * Numeric type match.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {boolean}
+	 */
+	equalsState(number) {
+		const x = this;
+		const y = BigDecimal._toBigDecimal(number);
+		return x.integer.equalsState(y.integer);
+	}
+
+	/**
+	 * Compare values.
+	 * @param {KBigDecimalInputData} number
+	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number, tolerance) {
+		const src = this;
+		const tgt = BigDecimal._toBigDecimal(number);
+		// 特殊な条件
+		if(!src.isFinite() || !tgt.isFinite()) {
+			return src.integer.compareTo(tgt.integer);
+		}
+		// 通常の条件
+		if(!tolerance) {
+			// 誤差の指定がない場合
+			// 簡易計算
+			{
+				const src_sign	= src.sign();
+				const tgt_sign	= tgt.sign();
+				if((src_sign === 0) && (src_sign === tgt_sign)) {
+					return 0;
+				}
+				else if(src_sign === 0) {
+					return - tgt_sign;
+				}
+				else if(tgt_sign === 0) {
+					return src_sign;
+				}
+			}
+			// 実際に計算する
+			if(src._scale === tgt._scale) {
+				return src.integer.compareTo(tgt.integer);
+			}
+			else if(src._scale > tgt._scale) {
+				const newdst = tgt.setScale(src._scale);
+				return src.integer.compareTo(newdst.integer);
+			}
+			else {
+				const newsrc = src.setScale(tgt._scale);
+				return newsrc.integer.compareTo(tgt.integer);
+			}
+		}
+		else {
+			const tolerance_ = BigDecimal._toBigDecimal(tolerance);
+			BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
+			const delta = src.sub(tgt);
+			BigDecimal.popDefaultContext();
+			const delta_abs = delta.abs();
+			if(delta_abs.compareTo(tolerance_) <= 0) {
+				return 0;
+			}
+			else {
+				return delta.sign();
+			}
+		}
+	}
+
+	/**
+	 * Maximum number.
+	 * @param {KBigDecimalInputData} number
+	 * @returns {BigDecimal} max([A, B])
+	 */
+	max(number) {
+		const val = BigDecimal._toBigDecimal(number);
+		if(this.isNaN() || val.isNaN()) {
+			return BigDecimal.NaN;
+		}
+		if(this.compareTo(val) >= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * Minimum number.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {BigDecimal} min([A, B])
+	 */
+	min(number) {
+		const val = BigDecimal._toBigDecimal(number);
+		if(this.isNaN() || val.isNaN()) {
+			return BigDecimal.NaN;
+		}
+		if(this.compareTo(val) <= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * Clip number within range.
+	 * @param {KBigDecimalInputData} min
+	 * @param {KBigDecimalInputData} max
+	 * @returns {BigDecimal} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = BigDecimal._toBigDecimal(min);
+		const max_ = BigDecimal._toBigDecimal(max);
+		if(this.isNaN() || min_.isNaN() || max_.isNaN()) {
+			return BigDecimal.NaN;
+		}
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	}
+
+	// ----------------------
+	// 文字列化
+	// ----------------------
+	
+	/**
+	 * Convert to string.
+	 * @returns {string} 
+	 */
+	toString() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
+		// 「調整された指数」
+		const x = - this.scale() + (this.precision() - 1);
+		// スケールが 0 以上で、「調整された指数」が -6 以上
+		if((this.scale() >= 0) && (x >= -6)) {
+			return this.toPlainString();
+		}
+		else {
+			return this.toScientificNotation(x);
+		}
+	}
+
+	/**
+	 * Convert to string using scientific notation.
+	 * @param {KBigDecimalInputData} e_len - Number of digits in exponent part.
+	 * @returns {string} 
+	 */
+	toScientificNotation(e_len) {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
+		const e		= BigDecimal._toInteger(e_len);
+		const text	= this._getUnsignedIntegerString();
+		let s		= this.scale();
+		const x		= [];
+		let i, k;
+		// -
+		if(this.sign() === -1) {
+			x[x.length] = "-";
+		}
+		// 表示上の桁数
+		s = - e - s;
+		// 小数点が付かない
+		if(s >= 0) {
+			x[x.length] = text;
+			for(i = 0; i < s; i++) {
+				x[x.length] = "0";
+			}
+		}
+		// 小数点が付く
+		else {
+			k = this.precision() + s;
+			if(0 < k) {
+				x[x.length] = text.substring(0, k);
+				x[x.length] = ".";
+				x[x.length] = text.substring(k, text.length);
+			}
+			else {
+				k = - k;
+				x[x.length] = "0.";
+				for(i = 0; i < k; i++) {
+					x[x.length] = "0";
+				}
+				x[x.length] = text;
+			}
+		}
+		x[x.length] = "E";
+		if(e >= 0) {
+			x[x.length] = "+";
+		}
+		x[x.length] = e;
+		return x.join("");
+	}
+
+	/**
+	 * Convert to string usding technical notation.
+	 * @returns {string} 
+	 */
+	toEngineeringString() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
+		// 「調整された指数」
+		const x = - this.scale() + (this.precision() - 1);
+		// スケールが 0 以上で、「調整された指数」が -6 以上
+		if((this.scale() >= 0) && (x >= -6)) {
+			return this.toPlainString();
+		}
+		else {
+			// 0 でない値の整数部が 1 〜 999 の範囲に収まるように調整
+			return this.toScientificNotation(Math.floor(x / 3) * 3);
+		}
+	}
+
+	/**
+	 * Convert to string without exponential notation.
+	 * @returns {string} 
+	 */
+	toPlainString() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
+		// スケールの変換なし
+		if(this.scale() === 0) {
+			if(this.sign() < 0) {
+				return "-" + this._getUnsignedIntegerString();
+			}
+			else {
+				return this._getUnsignedIntegerString();
+			}
+		}
+		// 指数0で文字列を作成後、Eの後ろの部分をとっぱらう
+		const text = this.toScientificNotation(0);
+		return text.match(/^[^E]*/)[0];
+	}
+
+	// ----------------------
+	// 丸め
+	// ----------------------
+	
+	/**
+	 * Change the scale.
+	 * @param {KBigDecimalInputData} new_scale - New scale.
+	 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
+	 * @returns {BigDecimal} 
+	 */
+	setScale(new_scale, rounding_mode) {
+		if(!this.isFinite()) {
+			return this;
+		}
+		const newScale = BigDecimal._toInteger(new_scale);
+		if(this.scale() === newScale) {
+			// scaleが同一なので処理の必要なし
+			return(this.clone());
+		}
+		const roundingMode = (rounding_mode !== undefined) ? RoundingMode.valueOf(rounding_mode) : RoundingMode.UNNECESSARY;
+		// 文字列を扱ううえで、符号があるとやりにくいので外しておく
+		let text		= this._getUnsignedIntegerString();
+		const sign		= this.sign();
+		const sign_text	= sign >= 0 ? "" : "-";
+		// scale の誤差
+		// 0 以上なら 0 を加えればいい。0未満なら0を削るか、四捨五入など丸めを行う
+		const delta		= newScale - this.scale();	// この桁分増やすといい
+		if(0 <= delta) {
+			// 0を加える
+			let i;
+			for(i = 0; i < delta; i++) {
+				text = text + "0";
+			}
+			return new BigDecimal([new BigInteger(sign_text + text), newScale]);
+		}
+		const keta = text.length + delta;		// 最終的な桁数
+		const keta_marume = keta + 1;
+		if(keta <= 0) {
+			// 指定した scale では設定できない場合
+			// 例えば "0.1".setScale(-2), "10".setScale(-3) としても表すことは不可能であるため、
+			// sign（-1, 0, +1）のどれかの数値を使用して丸める
+			const outdata = (sign + roundingMode.getAddNumber(sign)) / 10;
+			// 上記の式は、CEILINGなら必ず1、正でCEILINGなら1、負でFLOORなら1、それ以外は0となり、
+			// さらに元々の数値が 0 なら 0、切り捨て不能なら例外が返る計算式である。
+			// これは Java の動作をまねています。
+			return new BigDecimal([new BigInteger(outdata), newScale]);
+		}
+		{
+			// 0を削るだけで解決する場合
+			// 単純な切捨て(0を削るのみ)
+			const zeros			= text.match(/0+$/);
+			const zero_length		= (zeros !== null) ? zeros[0].length : 0;
+			if(( (zero_length + delta) >= 0 ) || (roundingMode === RoundingMode.DOWN)) {
+				return new BigDecimal([new BigInteger(sign_text + text.substring(0, keta)), newScale]);
+			}
+		}
+		{
+			// 丸め計算で解決する場合
+			// 12345 -> '123'45
+			text = text.substring(0, keta_marume);
+			// 丸め計算に必要な切り取る桁数(後ろの1～2桁を取得)
+			const cutsize = text.length > 1 ? 2 : 1;
+			// '123'45 -> 1'23'4
+			const number = parseInt(text.substring(text.length - cutsize, text.length)) * sign;
+			// 「元の数」と「丸めに必要な数」を足す
+			const x1 = new BigInteger(sign_text + text);
+			const x2 = new BigInteger(roundingMode.getAddNumber(number));
+			text = x1.add(x2).toString();
+			// 丸め後の桁数に戻して
+			return new BigDecimal([new BigInteger(text.substring(0, text.length - 1)), newScale]);
+		}
+	}
+
+	/**
+	 * Round with specified settings.
+	 * 
+	 * - This method is not a method round the decimal point.
+	 * - This method converts numbers in the specified Context and rounds unconvertible digits.
+	 * 
+	 * Use `this.setScale(0, RoundingMode.HALF_UP)` if you want to round the decimal point.
+	 * When the argument is omitted, such decimal point rounding operation is performed.
+	 * @param {MathContext} [mc] - New setting.
+	 * @returns {BigDecimal} 
+	 */
+	round(mc) {
+		if(!this.isFinite()) {
+			return this;
+		}
+		if(arguments.length === 1) {
+			if(mc !== undefined) {
+				// MathContext を設定した場合
+				if(!(mc instanceof MathContext)) {
+					throw "not MathContext";
+				}
+				const newPrecision	= mc.getPrecision();
+				const delta			= newPrecision - this.precision();
+				if((delta === 0)||(newPrecision === 0)) {
+					return this.clone();
+				}
+				const newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode());
+				/* 精度を上げる必要があるため、0を加えた場合 */
+				if(delta > 0) {
+					return newBigDecimal;
+				}
+				/* 精度を下げる必要があるため、丸めた場合は、桁の数が正しいか調べる */
+				if(newBigDecimal.precision() === mc.getPrecision()) {
+					return newBigDecimal;
+				}
+				/* 切り上げなどで桁数が１つ増えた場合 */
+				const sign_text	= newBigDecimal.integer.sign() >= 0 ? "" : "-";
+				const abs_text	= newBigDecimal._getUnsignedIntegerString();
+				const inte_text	= sign_text + abs_text.substring(0, abs_text.length - 1);
+				return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1]);
+			}
+			else {
+				return this;
+			}
+		}
+		else {
+			// 小数点以下を四捨五入する
+			return this.setScale(0, RoundingMode.HALF_UP);
+		}
+	}
+
+	/**
+	 * Floor.
+	 * @returns {BigDecimal} floor(A)
+	 */
+	floor() {
+		if(!this.isFinite()) {
+			return this;
+		}
+		return this.setScale(0, RoundingMode.FLOOR);
+	}
+
+	/**
+	 * Ceil.
+	 * @returns {BigDecimal} ceil(A)
+	 */
+	ceil() {
+		if(!this.isFinite()) {
+			return this;
+		}
+		return this.setScale(0, RoundingMode.CEILING);
+	}
+	
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {BigDecimal} fix(A), trunc(A)
+	 */
+	fix() {
+		if(!this.isFinite()) {
+			return this;
+		}
+		return this.setScale(0, RoundingMode.DOWN);
+	}
+
+	/**
+	 * Fraction.
+	 * @returns {BigDecimal} fract(A)
+	 */
+	fract() {
+		if(!this.isFinite()) {
+			return BigDecimal.NaN;
+		}
+		return this.sub(this.floor());
+	}
+
+	// ----------------------
+	// 指数
+	// ----------------------
+	
+	/**
+	 * Power function.
+	 * - An exception occurs when doing a huge multiplication.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {BigDecimal} pow(A, B)
+	 */
+	pow(number) {
+		const num = BigDecimal._toBigDecimal(number);
+		const src = this;
+		const tgt = num;
+		{
+			if(src.isNaN() || tgt.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			if(tgt.isZero()) {
+				return BigDecimal.ONE;
+			}
+			else if(src.isZero()) {
+				return BigDecimal.ZERO;
+			}
+			else if(src.isOne()) {
+				return src;
+			}
+			else if(src.isInfinite()) {
+				if(src.isPositiveInfinity()) {
+					return BigDecimal.POSITIVE_INFINITY;
+				}
+				else {
+					if(tgt.isPositiveInfinity()) {
+						return BigDecimal.NaN;
+					}
+					else {
+						return BigDecimal.create(Infinity * Math.pow(-1, Math.round(tgt.doubleValue)));
+					}
+				}
+			}
+			else if(tgt.isInfinite()) {
+				if(src.isNegative()) {
+					// 複素数
+					return BigDecimal.NaN;
+				}
+				if(src.compareTo(BigDecimal.ONE) < 0) {
+					if(tgt.isPositiveInfinity()) {
+						return BigDecimal.ZERO;
+					}
+					else if(tgt.isNegativeInfinity()) {
+						return BigDecimal.POSITIVE_INFINITY;
+					}
+				}
+				else {
+					if(tgt.isPositiveInfinity()) {
+						return BigDecimal.POSITIVE_INFINITY;
+					}
+					else if(tgt.isNegativeInfinity()) {
+						return BigDecimal.ZERO;
+					}
+				}
+			}
+		}
+		const mc = BigDecimal.getDefaultContext();
+		const integer = tgt.intValue;
+		if(Math.abs(integer) > 1000) {
+			throw BigDecimal.POSITIVE_INFINITY;
+		}
+		else if((mc.getPrecision() === 0) && (tgt.isNegative())) {
+			return BigDecimal.NaN; // 複素数
+		}
+		if(tgt.isInteger()) {
+			const is_negative = tgt.isNegative();
+			let n = Math.round(Math.abs(integer));
+			let x, y;
+			x = this.clone();
+			y = BigDecimal.ONE;
+			BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
+			while(n !== 0) {
+				if((n & 1) !== 0) {
+					y = y.mul(x);
+				}
+				x = x.square();
+				n >>>= 1;
+			}
+			BigDecimal.popDefaultContext();
+			// コンテキストの状態が変わっているので元に戻す
+			y.context = mc;
+			if(is_negative) {
+				y = y.inv();
+			}
+			y = y.round(mc);
+			return y;
+		}
+		else {
+			const mc = BigDecimal.getDefaultContext();
+			BigDecimal.pushDefaultContext(BigDecimal.getDefaultContext().increasePrecision());
+			const ret = this.log().mul(number).exp().round(mc);
+			BigDecimal.popDefaultContext();
+			return ret;
+		}
+	}
+	
+	/**
+	 * Square.
+	 * @returns {BigDecimal} A^2
+	 */
+	square() {
+		return this.mul(this);
+	}
+
+	/**
+	 * Square root.
+	 * @returns {BigDecimal} sqrt(A)
+	 */
+	sqrt() {
+		{
+			if(this.isZero()) {
+				return BigDecimal.ZERO;
+			}
+			else if(this.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isNegative()) {
+				return BigDecimal.NaN; // 複素数
+			}
+			else if(this.isInfinite()) {
+				return BigDecimal.POSITIVE_INFINITY;
+			}
+		}
+		if(this.isZero()) {
+			return BigDecimal.ZERO;
+		}
+		// ニュートンラフソン法は割り算があり速度が遅いので、以下の計算で求める。
+		{
+			const mc = BigDecimal.getDefaultContext();
+			BigDecimal.pushDefaultContext(BigDecimal.getDefaultContext().increasePrecision());
+			const ret = this.rsqrt().inv().round(mc);
+			BigDecimal.popDefaultContext();
+			return ret;
+		}
+	}
+
+	/**
+	 * Cube root.
+	 * @returns {BigDecimal} cbrt(A)
+	 */
+	cbrt() {
+		{
+			if(this.isZero()) {
+				return BigDecimal.ZERO;
+			}
+			else if(this.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isInfinite()) {
+				return this;
+			}
+		}
+		const scale = - this.scale() + (this.precision() - 1) + 1;
+		const sign = this.sign();
+		const abs = this.abs();
+		let ret;
+		// 小さい数値はpowを使ったほうが早く計算できる
+		if(scale < 30) {
+			const mc = BigDecimal.getDefaultContext();
+			BigDecimal.pushDefaultContext(BigDecimal.getDefaultContext().increasePrecision());
+			ret = abs.log().div(3).exp().round(mc);
+			BigDecimal.popDefaultContext();
+		}
+		else {
+			// ニュートン法によって求める
+			// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
+			const x0 = abs.compareTo(BigDecimal.ONE) === 1 ? abs : BigDecimal.ONE;
+			let xn = x0;
+			for(let i = 0; i < 1000; i++) {
+				const xn_2 = xn.mul(xn);
+				const xn1 = xn.mul(2).add(abs.div(xn_2)).div(3);
+				const delta = xn1.sub(xn);
+				if(delta.isZero()) {
+					break;
+				}
+				xn = xn1;
+			}
+			ret = xn;
+		}
+		return sign === 1 ? ret : ret.negate();
+	}
+	
+	/**
+	 * Reciprocal square root.
+	 * @returns {BigDecimal} rsqrt(A)
+	 */
+	rsqrt() {
+		{
+			if(this.isZero()) {
+				return BigDecimal.POSITIVE_INFINITY;
+			}
+			else if(this.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isInfinite()) {
+				return BigDecimal.ZERO;
+			}
+			else if(this.isNegative()) {
+				return BigDecimal.NaN; // 複素数
+			}
+		}
+		/**
+		 * @type {BigDecimal}
+		 */
+		const A = this;
+		// 4次収束のニュートン・ラフソン法で求める
+		// 使用する固定値を列挙
+		const B1 = BigDecimal.create(1);
+		const B5 = BigDecimal.create(5);
+		const B6 = BigDecimal.create(6);
+		const B8 = BigDecimal.create(8);
+		const B16 = BigDecimal.create(16);
+		const B16r = B16.inv();
+		// 初期値
+		const x0 = A.inv();
+		if(x0.isZero()) {
+			throw "ArithmeticException";
+		}
+		let xn = x0;
+		for(let i = 0; i < 50; i++) {
+			const h = B1.sub(A.mul(xn.square()));
+			if(h.isZero()) {
+				break;
+			}
+			xn = xn.mul(B1.add(h.mul(B8.add(h.mul(B6.add(B5.mul(h))))).mul(B16r)));
+		}
+		// 参考
+		// Lyuka - 逆数と平方根を求める高次収束アルゴリズム
+		// http://www.finetune.co.jp/~lyuka/technote/fract/sqrt.html
+		return xn;
+	}
+	
+	/**
+	 * Logarithmic function.
+	 * @returns {BigDecimal} log(A)
+	 */
+	log() {
+		{
+			if(this.isZero()) {
+				return BigDecimal.NEGATIVE_INFINITY;
+			}
+			else if(this.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isNegative()) {
+				return BigDecimal.NaN; // 複素数
+			}
+			else if(this.isInfinite()) {
+				return BigDecimal.POSITIVE_INFINITY;
+			}
+		}
+		if(this.isOne()) {
+			return BigDecimal.ZERO;
+		}
+		const mc = BigDecimal.getDefaultContext();
+		// log(x)
+		// -> x = a * E -> log(a * E) = log(a) + log(E)
+		// -> x = a / E -> log(a / E) = log(E) - log(a)
+		// 上記の式を使用して、適切な値の範囲で計算できるように調整する
+		const scale = - this.scale() + (this.precision() - 1) + 1;
+		BigDecimal.pushDefaultContext(new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP));
+		/**
+		 * @type {BigDecimal}
+		 */
+		let a = this;
+		let b = 0;
+		{
+			// 範囲を 1 < x <= e の間に収める
+			const e = BigDecimal.E;
+			const compare_to_e = a.compareTo(e);
+			if(compare_to_e === 0) {
+				BigDecimal.popDefaultContext();
+				return BigDecimal.ONE;
+			}
+			// 内部の値が大きすぎるので小さくする
+			else if(compare_to_e > 0) {
+				for(; b < 300; b++) {
+					if(a.compareTo(e) <= 0) {
+						break;
+					}
+					a = a.div(e);
+				}
+			}
+			// 内部の値が小さすぎるので大きくする
+			else {
+				const B1 = new BigDecimal(1);
+				if(a.compareTo(B1) < 0) {
+					for(; b > -300; b--) {
+						if(a.compareTo(B1) > 0) {
+							break;
+						}
+						a = a.mul(e);
+					}
+				}
+			}
+		}
+		BigDecimal.popDefaultContext();
+		a = a.round(BigDecimal.getDefaultContext());
+		// この時点で 1 < x <= e となる
+		// log((1+u)/(1-u)) = 2 * (u + u^3/3 + u^5/5 + ...) の式を使用する
+		// solve((1+u)/(1-u)-x=0,[u]);->u=(x-1)/(x+1)
+		const u = a.sub(BigDecimal.ONE).div(a.add(BigDecimal.ONE));
+		const u_x2 = u.mul(u);
+		{
+			// 初期値
+			let x = u;
+			let n0 = u;
+			let k = BigDecimal.ONE;
+			// 繰り返し求める
+			for(let i = 0; i < 300; i++) {
+				k = k.add(BigDecimal.TWO);
+				x = x.mul(u_x2);
+				const n1 = n0.add(x.div(k));
+				const delta = n1.sub(n0);
+				n0 = n1;
+				if(delta.isZero()) {
+					break;
+				}
+			}
+			a = n0.mul(BigDecimal.TWO);
+		}
+		// 最終結果
+		const y = a.add(b);
+		return y;
+	}
+
+	/**
+	 * Exponential function.
+	 * @returns {BigDecimal} exp(A)
+	 */
+	exp() {
+		{
+			if(this.isZero()) {
+				return BigDecimal.ONE;
+			}
+			else if(this.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isNegativeInfinity()) {
+				return BigDecimal.ZERO;
+			}
+			else if(this.isPositiveInfinity()) {
+				return BigDecimal.POSITIVE_INFINITY;
+			}
+		}
+		const is_negative = this.isNegative();
+		/**
+		 * @type {BigDecimal}
+		 */
+		let number = this;
+		// 負の値でマクローリン展開すると振動して桁落ちする可能性があるため正の値にしておく
+		if(is_negative) {
+			number = number.negate();
+		}
+		// X = exp(x) とすると X = exp(x/A)^A である。
+		// そのため、収束を早くするためにexpの中を小さくしておき、最後にpowを行う。
+		// scale > (10^a) = b ≒ this
+		// 小さな値で計算するため精度をあげる
+		const scale = - number.scale() + (number.precision() - 1) + 1;
+		const mc = BigDecimal.getDefaultContext();
+		BigDecimal.pushDefaultContext(new MathContext(mc.getPrecision() + scale, RoundingMode.HALF_UP));
+		let a = 0;
+		let b = 1;
+		{
+			const val = number.doubleValue;
+			if(val >= 10) {
+				a = Math.floor(Math.log(Math.floor(val)) / Math.log(10));
+				b = Math.pow(10, a);
+			}
+		}
+		// ここでターゲットの数値を割ってしまう
+		const target = number.div(b, mc);
+		// 小さくなった値に対してexpを計算する
+		let y;
+		{
+			// マクローリン展開で計算する
+			// 初期値
+			let x = target;
+			let n0 = BigDecimal.ONE.add(target);
+			let k = BigDecimal.ONE;
+			// 繰り返し求める
+			for(let i = 2; i < 300; i++) {
+				k = k.mul(i);
+				x = x.mul(target);
+				const n1 = n0.add(x.div(k));
+				const delta = n1.sub(n0);
+				n0 = n1;
+				if(delta.isZero()) {
+					break;
+				}
+			}
+			y = n0;
+		}
+		// exp(x) = pow(y, b)である。
+		y = y.pow(b);
+		BigDecimal.popDefaultContext();
+		y = y.round(BigDecimal.getDefaultContext());
+		// 負の値だったら 1/(x^2) にして戻す
+		if(is_negative) {
+			return y.inv();
+		}
+		else {
+			return y;
+		}
+	}
+
+	/**
+	 * e^x - 1
+	 * @returns {BigDecimal} expm1(A)
+	 */
+	expm1() {
+		return this.exp().sub(1);
+	}
+
+	/**
+	 * ln(1 + x)
+	 * @returns {BigDecimal} log1p(A)
+	 */
+	log1p() {
+		return this.add(1).log();
+	}
+	
+	/**
+	 * log_2(x)
+	 * @returns {BigDecimal} log2(A)
+	 */
+	log2() {
+		return this.log().div(BigDecimal.LN2);
+		
+	}
+
+	/**
+	 * log_10(x)
+	 * @returns {BigDecimal} log10(A)
+	 */
+	log10() {
+		return this.log().div(BigDecimal.LN10);
+	}
+	
+	// ----------------------
+	// 三角関数
+	// ----------------------
+
+	/**
+	 * Sine function.
+	 * @returns {BigDecimal} sin(A)
+	 */
+	sin() {
+		if(!this.isFinite()) {
+			return BigDecimal.NaN;
+		}
+		// 2PIの余りを実際の計算で使用する。
+		const scale = - this.scale() + (this.precision() - 1) + 1;
+		const new_mc = new MathContext(BigDecimal.getDefaultContext().getPrecision() + scale, RoundingMode.HALF_UP);
+		BigDecimal.pushDefaultContext(new_mc);
+		const target = this.mod(BigDecimal.TWO_PI);
+		BigDecimal.popDefaultContext();
+		// マクローリン展開で計算する
+		// 初期値
+		let n0 = target;
+		{
+			const t_x2 = target.mul(target);
+			let x = target;
+			let k = BigDecimal.ONE;
+			let sign = -1;
+			// 繰り返し求める
+			for(let i = 2; i < 300; i++) {
+				k = k.mul(i);
+				if((i % 2) === 1) {
+					x = x.mul(t_x2);
+					let n1;
+					if(sign < 0) {
+						n1 = n0.sub(x.div(k));
+						sign = 1;
+					}
+					else {
+						n1 = n0.add(x.div(k));
+						sign = -1;
+					}
+					const delta = n1.sub(n0);
+					n0 = n1;
+					if(delta.isZero()) {
+						break;
+					}
+				}
+			}
+		}
+		return n0;
+	}
+
+	/**
+	 * Cosine function.
+	 * @returns {BigDecimal} cos(A)
+	 */
+	cos() {
+		if(!this.isFinite()) {
+			return BigDecimal.NaN;
+		}
+		const scale = - this.scale() + (this.precision() - 1) + 1;
+		const new_mc = new MathContext(BigDecimal.getDefaultContext().getPrecision() + scale, RoundingMode.HALF_UP);
+		BigDecimal.pushDefaultContext(new_mc);
+		const target = this.mod(BigDecimal.TWO_PI);
+		BigDecimal.popDefaultContext();
+		// マクローリン展開で計算する
+		// 初期値
+		let n0 = BigDecimal.ONE;
+		{
+			let x = BigDecimal.ONE;
+			const t_x2 = target.mul(target);
+			let k = BigDecimal.ONE;
+			let sign = -1;
+			// 繰り返し求める
+			for(let i = 2; i < 300; i++) {
+				k = k.mul(i);
+				if((i % 2) === 0) {
+					x = x.mul(t_x2);
+					let n1;
+					if(sign < 0) {
+						n1 = n0.sub(x.div(k));
+						sign = 1;
+					}
+					else {
+						n1 = n0.add(x.div(k));
+						sign = -1;
+					}
+					const delta = n1.sub(n0);
+					n0 = n1;
+					if(delta.isZero()) {
+						break;
+					}
+				}
+			}
+		}
+		return n0;
+	}
+
+	/**
+	 * Tangent function.
+	 * @returns {BigDecimal} tan(A)
+	 */
+	tan() {
+		if(!this.isFinite()) {
+			return BigDecimal.NaN;
+		}
+		return this.sin().div(this.cos());
+	}
+
+	/**
+	 * Atan (arc tangent) function.
+	 * - Return the values of [-PI/2, PI/2].
+	 * @returns {BigDecimal} atan(A)
+	 */
+	atan() {
+		if(!this.isFinite()) {
+			if(this.isNaN()) {
+				return BigDecimal.NaN;
+			}
+			else if(this.isPositiveInfinity()) {
+				return BigDecimal.HALF_PI;
+			}
+			else {
+				return BigDecimal.HALF_PI.negate();
+			}
+		}
+		if(this.isZero()) {
+			const y = BigDecimal.ZERO;
+			return y;
+		}
+		else if(this.compareTo(BigDecimal.ONE) === 0) {
+			const y = BigDecimal.QUARTER_PI;
+			return y;
+		}
+		else if(this.compareTo(BigDecimal.MINUS_ONE) === 0) {
+			const y = BigDecimal.QUARTER_PI.negate();
+			return y;
+		}
+		// x を 0 <= x <= 0.5 に収める
+		const target_sign = this.sign();
+		let target = this.abs();
+		let type;
+		if(target.compareTo(BigDecimal.TWO) === 1) {
+			// atan(x) = pi/2-atan(1/x)
+			type = 1;
+			target = target.inv();
+		}
+		else if(target.compareTo(BigDecimal.HALF) === 1) {
+			// atan(x) = pi/4-atan((1-x)/(1+x))
+			type = 2;
+			target = BigDecimal.ONE.sub(target).div(BigDecimal.ONE.add(target));
+		}
+		else {
+			type = 3;
+		}
+		// グレゴリー級数
+		// 初期値
+		let n0 = target;
+		{
+			const t_x2 = target.mul(target);
+			let x = target;
+			let k = BigDecimal.ONE;
+			let sign = -1;
+			// 繰り返し求める
+			for(let i = 0; i < 300; i++) {
+				x = x.mul(t_x2);
+				k = k.add(BigDecimal.TWO);
+				let n1;
+				if(sign < 0) {
+					n1 = n0.sub(x.div(k));
+					sign = 1;
+				}
+				else {
+					n1 = n0.add(x.div(k));
+					sign = -1;
+				}
+				const delta = n1.sub(n0);
+				n0 = n1;
+				if(delta.isZero()) {
+					break;
+				}
+			}
+		}
+		if(type === 1) {
+			n0 = BigDecimal.HALF_PI.sub(n0);
+		}
+		else if(type === 2) {
+			n0 = BigDecimal.QUARTER_PI.sub(n0);
+		}
+		if(target_sign < 0) {
+			n0 = n0.negate();
+		}
+		return n0;
+	}
+
+	/**
+	 * Atan (arc tangent) function.
+	 * Return the values of [-PI, PI] .
+	 * Supports only real numbers.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {MathContext} [context] - MathContext setting after calculation. If omitted, use the MathContext of the B.
+	 * @returns {BigDecimal} atan2(Y, X)
+	 */
+	atan2(number, context) {
+		const default_context = BigDecimal.getDefaultContext();
+		// y.atan2(x) とする。
+		const y = this.round(context);
+		const x = new BigDecimal([number, context]);
+		if(x.isNaN() || y.isNaN()) {
+			return BigDecimal.NaN;
+		}
+		// 参考: https://en.wikipedia.org/wiki/Inverse_trigonometric_functions
+		let ret;
+		if(x.isPositive()) {
+			ret = y.div(x).atan();
+		}
+		else if(y.isNotNegative() && x.isNegative()) {
+			ret = y.div(x).atan().add(BigDecimal.PI);
+		}
+		else if(y.isNegative() && x.isNegative()) {
+			ret = y.div(x).atan().sub(BigDecimal.PI);
+		}
+		else if(y.isPositive()) {
+			ret = BigDecimal.HALF_PI;
+		}
+		else if(y.isNegative()) {
+			ret = BigDecimal.HALF_PI.negate();
+		}
+		else {
+			throw "ArithmeticException";
+		}
+		BigDecimal.setDefaultContext(default_context);
+		return ret;
+	}
+
+	// ----------------------
+	// 双曲線関数
+	// ----------------------
+	
+	/**
+	 * Arc sine function.
+	 * @returns {BigDecimal} asin(A)
+	 */
+	asin() {
+		// 逆正弦
+		// 複素数
+		const re_1 = this.square().negate().add(1).sqrt();
+		const im_1 = this;
+		// 複素数のログ
+		const norm = re_1.square().add(im_1.square()).sqrt();
+		const arg  = im_1.atan2(re_1);
+		const re_2 = norm.log();
+		const im_2 = arg;
+		// -i を掛け算する
+		return re_2.add(im_2);
+	}
+
+	/**
+	 * Arc cosine function.
+	 * @returns {BigDecimal} acos(A)
+	 */
+	acos() {
+		// 逆余弦
+		// 複素数
+		const re_1 = this;
+		const im_1 = this.square().negate().add(1).sqrt();
+		// 複素数のログ
+		const norm = re_1.square().add(im_1.square()).sqrt();
+		const arg  = im_1.atan2(re_1);
+		const re_2 = norm.log();
+		const im_2 = arg;
+		// -i を掛け算する
+		return re_2.add(im_2);
+	}
+	
+
+	/**
+	 * Hyperbolic sine function.
+	 * @returns {BigDecimal} sinh(A)
+	 */
+	sinh() {
+		// 双曲線正弦
+		if(this.isInfinite()) {
+			return this;
+		}
+		const y = this.exp();
+		return y.sub(y.inv()).mul(0.5);
+	}
+
+	/**
+	 * Inverse hyperbolic sine function.
+	 * @returns {BigDecimal} asinh(A)
+	 */
+	asinh() {
+		if(this.isInfinite()) {
+			return this;
+		}
+		return this.add(this.mul(this).add(1).sqrt()).log();
+	}
+
+	/**
+	 * Hyperbolic cosine function.
+	 * @returns {BigDecimal} cosh(A)
+	 */
+	cosh() {
+		// 双曲線余弦
+		if(this.isInfinite()) {
+			return BigDecimal.POSITIVE_INFINITY;
+		}
+		return this.exp().add(this.negate().exp()).mul(0.5);
+	}
+
+	/**
+	 * Inverse hyperbolic cosine function.
+	 * @returns {BigDecimal} acosh(A)
+	 */
+	acosh() {
+		// 逆双曲線余弦 Math.log(x + Math.sqrt(x * x - 1));
+		if(this.isInfinite()) {
+			return BigDecimal.NaN;
+		}
+		return this.add(this.mul(this).sub(1).sqrt()).log();
+	}
+
+	/**
+	 * Hyperbolic tangent function.
+	 * @returns {BigDecimal} tanh(A)
+	 */
+	tanh() {
+		// 双曲線正接
+		if(this.isInfinite()) {
+			return BigDecimal.create(this.sign());
+		}
+		const y =  this.mul(2).exp();
+		return y.sub(1).div(y.add(1));
+	}
+	
+	/**
+	 * Inverse hyperbolic tangent function.
+	 * @returns {BigDecimal} atanh(A)
+	 */
+	atanh() {
+		// 逆双曲線正接
+		return this.add(1).div(this.negate().add(1)).log().mul(0.5);
+	}
+
+	/**
+	 * Secant function.
+	 * @returns {BigDecimal} sec(A)
+	 */
+	sec() {
+		// 正割
+		return this.cos().inv();
+	}
+
+	/**
+	 * Reverse secant function.
+	 * @returns {BigDecimal} asec(A)
+	 */
+	asec() {
+		// 逆正割
+		return this.inv().acos();
+	}
+
+	/**
+	 * Hyperbolic secant function.
+	 * @returns {BigDecimal} sech(A)
+	 */
+	sech() {
+		// 双曲線正割
+		if(this.isNegativeInfinity()) {
+			return BigDecimal.ZERO;
+		}
+		return this.exp().add(this.negate().exp()).inv().mul(2);
+	}
+
+	/**
+	 * Inverse hyperbolic secant function.
+	 * @returns {BigDecimal} asech(A)
+	 */
+	asech() {
+		// 逆双曲線正割
+		return this.inv().add(this.square().inv().sub(1).sqrt()).log();
+	}
+
+	/**
+	 * Cotangent function.
+	 * @returns {BigDecimal} cot(A)
+	 */
+	cot() {
+		// 余接
+		if(this.isZero()) {
+			return BigDecimal.POSITIVE_INFINITY;
+		}
+		return this.tan().inv();
+	}
+
+	/**
+	 * Inverse cotangent function.
+	 * @returns {BigDecimal} acot(A)
+	 */
+	acot() {
+		// 逆余接
+		if(this.isZero()) {
+			return BigDecimal.HALF_PI;
+		}
+		return this.inv().atan();
+	}
+
+	/**
+	 * Hyperbolic cotangent function.
+	 * @returns {BigDecimal} coth(A)
+	 */
+	coth() {
+		// 双曲線余接
+		if(this.isInfinite()) {
+			return BigDecimal.create(this.sign());
+		}
+		const y =  this.mul(2).exp();
+		return y.add(1).div(y.sub(1));
+	}
+
+	/**
+	 * Inverse hyperbolic cotangent function.
+	 * @returns {BigDecimal} acoth(A)
+	 */
+	acoth() {
+		// 逆双曲線余接
+		if(this.isInfinite()) {
+			return BigDecimal.ZERO;
+		}
+		return this.add(1).div(this.sub(1)).log().mul(0.5);
+	}
+
+	/**
+	 * Cosecant function.
+	 * @returns {BigDecimal} csc(A)
+	 */
+	csc() {
+		// 余割
+		if(this.isZero()) {
+			return BigDecimal.POSITIVE_INFINITY;
+		}
+		return this.sin().inv();
+	}
+
+	/**
+	 * Inverse cosecant function.
+	 * @returns {BigDecimal} acsc(A)
+	 */
+	acsc() {
+		// 逆余割
+		return this.inv().asin();
+	}
+
+	/**
+	 * Hyperbolic cosecant function.
+	 * @returns {BigDecimal} csch(A)
+	 */
+	csch() {
+		if(this.isInfinite()) {
+			return BigDecimal.ZERO;
+		}
+		else if(this.isZero()) {
+			return BigDecimal.POSITIVE_INFINITY;
+		}
+		// 双曲線余割
+		return this.exp().sub(this.negate().exp()).inv().mul(2);
+	}
+
+	/**
+	 * Inverse hyperbolic cosecant function.
+	 * @returns {BigDecimal} acsch(A)
+	 */
+	acsch() {
+		if(this.isZero()) {
+			return BigDecimal.POSITIVE_INFINITY;
+		}
+		// 逆双曲線余割
+		return this.inv().add(this.square().inv().add(1).sqrt()).log();
+	}
+
+	// ----------------------
+	// 信号処理系
+	// ----------------------
+	
+	/**
+	 * Normalized sinc function.
+	 * @returns {BigDecimal} sinc(A)
+	 */
+	sinc() {
+		if(this.isZero()) {
+			return(BigDecimal.ONE);
+		}
+		const x = BigDecimal.PI.mul(this);
+		return x.sin().div(x);
+	}
+
+	// ----------------------
+	// 乱数
+	// ----------------------
+	
+	/**
+	 * Create random values with uniform random numbers.
+	 * @param {Random} [random] - Class for creating random numbers.
+	 * @returns {BigDecimal}
+	 */
+	static rand(random) {
+		let precision = BigDecimal.getDefaultContext().getPrecision();
+		if(precision <= 0) {
+			precision = 100;
+		}
+		const keta = Math.ceil(precision * Math.log(10) / Math.log(2));
+		const a = BigInteger.ONE.shiftLeft(keta);
+		const b = BigInteger.createRandomBigInteger(keta, random);
+		return (new BigDecimal(b)).div(a);
+	}
+
+	/**
+	 * Create random values with normal distribution.
+	 * @param {Random} [random] - Class for creating random numbers.
+	 * @returns {BigDecimal}
+	 */
+	static randn(random) {
+		// Box-Muller法
+		const a = BigDecimal.rand(random).log().mul(-2).sqrt();
+		const b = BigDecimal.rand(random).mul(2).mul(BigDecimal.PI);
+		const y = a.mul(b.sin());
+		return y;
+	}
+
+	// ----------------------
+	// テスト系
+	// ----------------------
+	
+	/**
+	 * Return true if the value is integer.
+	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
+	 * @returns {boolean}
+	 */
+	isInteger(tolerance) {
+		if(!this.isFinite()) {
+			return false;
+		}
+		return this.sub(this.fix()).isZero(tolerance);
+	}
+
+	/**
+	 * this === 0
+	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
+	 * @returns {boolean}
+	 */
+	isZero(tolerance) {
+		if(!this.isFinite()) {
+			return false;
+		}
+		if(tolerance) {
+			return this.equals(BigDecimal.ZERO, tolerance);
+		}
+		else {
+			return this.integer.isZero();
+		}
+	}
+	
+	/**
+	 * this === 1
+	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
+	 * @returns {boolean}
+	 */
+	isOne(tolerance) {
+		if(!this.isFinite()) {
+			return false;
+		}
+		return this.compareTo(BigDecimal.ONE, tolerance) === 0;
+	}
+
+	/**
+	 * this > 0
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		return this.integer.isPositive();
+	}
+
+	/**
+	 * this < 0
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return this.integer.isNegative();
+	}
+
+	/**
+	 * this >= 0
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return this.integer.isNotNegative();
+	}
+	
+	/**
+	 * this === NaN
+	 * @returns {boolean} isNaN(A)
+	 */
+	isNaN() {
+		return this.integer.isNaN();
+	}
+	
+	/**
+	 * this === Infinity
+	 * @returns {boolean} isPositiveInfinity(A)
+	 */
+	isPositiveInfinity() {
+		return this.integer.isPositiveInfinity();
+	}
+
+	/**
+	 * this === -Infinity
+	 * @returns {boolean} isNegativeInfinity(A)
+	 */
+	isNegativeInfinity() {
+		return this.integer.isNegativeInfinity();
+	}
+
+	/**
+	 * this === Infinity or -Infinity
+	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+	 */
+	isInfinite() {
+		return this.integer.isInfinite();
+	}
+	
+	/**
+	 * Return true if the value is finite number.
+	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
+	 */
+	isFinite() {
+		return this.integer.isFinite();
+	}
+
+	// ----------------------
+	// ビット演算系
+	// ----------------------
+	
+	/**
+	 * Logical AND.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {BigDecimal} A & B
+	 */
+	and(number) {
+		const n_src = this;
+		const n_tgt = BigDecimal._toBigDecimal(number);
+		const src	= n_src.round().toBigInteger();
+		const tgt	= n_tgt.round().toBigInteger();
+		return new BigDecimal(src.and(tgt));
+	}
+
+	/**
+	 * Logical OR.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {BigDecimal} A | B
+	 */
+	or(number) {
+		const n_src = this;
+		const n_tgt = BigDecimal._toBigDecimal(number);
+		const src	= n_src.round().toBigInteger();
+		const tgt	= n_tgt.round().toBigInteger();
+		return new BigDecimal(src.or(tgt));
+	}
+
+	/**
+	 * Logical Exclusive-OR.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {BigDecimal} A ^ B
+	 */
+	xor(number) {
+		const n_src = this;
+		const n_tgt = BigDecimal._toBigDecimal(number);
+		const src	= n_src.round().toBigInteger();
+		const tgt	= n_tgt.round().toBigInteger();
+		return new BigDecimal(src.xor(tgt));
+	}
+
+	/**
+	 * Logical Not. (mutable)
+	 * - Calculated as an integer.
+	 * @returns {BigDecimal} !A
+	 */
+	not() {
+		const n_src = this;
+		const src	= n_src.round().toBigInteger();
+		return new BigDecimal(src.not());
+	}
+	
+	/**
+	 * this << n
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} n
+	 * @returns {BigDecimal} A << n
+	 */
+	shift(n) {
+		const src		= this.round().toBigInteger();
+		const number	= BigDecimal._toInteger(n);
+		return new BigDecimal(src.shift(number));
+	}
+
+	// ----------------------
+	// gcd, lcm
+	// ----------------------
+	
+	/**
+	 * Euclidean algorithm.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {BigDecimal} gcd(x, y)
+	 */
+	gcd(number) {
+		const x = this.round().toBigInteger();
+		const y = BigDecimal._toBigDecimal(number).toBigInteger();
+		const result = x.gcd(y);
+		return new BigDecimal(result);
+	}
+
+	/**
+	 * Extended Euclidean algorithm.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {Array<BigDecimal>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 */
+	extgcd(number) {
+		const x = this.round().toBigInteger();
+		const y = BigDecimal._toBigDecimal(number).toBigInteger();
+		const result = x.extgcd(y);
+		return [new BigDecimal(result[0]), new BigDecimal(result[1]), new BigDecimal(result[2])];
+	}
+
+	/**
+	 * Least common multiple.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {BigDecimal} lcm(x, y)
+	 */
+	lcm(number) {
+		const x = this.round().toBigInteger();
+		const y = BigDecimal._toBigDecimal(number).toBigInteger();
+		const result = x.lcm(y);
+		return new BigDecimal(result);
+	}
+
+	// ----------------------
+	// mod
+	// ----------------------
+
+	/**
+	 * Modular exponentiation.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} exponent
+	 * @param {KBigDecimalInputData} m 
+	 * @returns {BigDecimal} A^B mod m
+	 */
+	modPow(exponent, m) {
+		const A = this.round().toBigInteger();
+		const B = BigDecimal._toBigDecimal(exponent).toBigInteger();
+		const m_ = BigDecimal._toBigDecimal(m).toBigInteger();
+		const result = A.modPow(B, m_);
+		return new BigDecimal(result);
+	}
+
+	/**
+	 * Modular multiplicative inverse.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} m
+	 * @returns {BigDecimal} A^(-1) mod m
+	 */
+	modInverse(m) {
+		const A = this.round().toBigInteger();
+		const m_ = BigDecimal._toBigDecimal(m).toBigInteger();
+		const result = A.modInverse(m_);
+		return new BigDecimal(result);
+	}
+	
+	// ----------------------
+	// 素数
+	// ----------------------
+	
+	/**
+	 * Return true if the value is prime number.
+	 * - Calculated as an integer.
+	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
+	 */
+	isPrime() {
+		const src = this.round().toBigInteger();
+		return src.isPrime();
+	}
+	
+	/**
+	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * 
+	 * Attention : it takes a very long time to process.
+	 * - Calculated as an integer.
+	 * @param {KBigDecimalInputData} [certainty=100] - Repeat count (prime precision).
+	 * @returns {boolean}
+	 */
+	isProbablePrime(certainty) {
+		const src = this.round().toBigInteger();
+		return src.isProbablePrime(certainty !== undefined ? BigDecimal._toInteger(certainty) : undefined);
+	}
+
+	/**
+	 * Next prime.
+	 * @param {KBigDecimalInputData} [certainty=100] - Repeat count (prime precision).
+	 * @param {KBigDecimalInputData} [search_max=100000] - Search range of next prime.
+	 * @returns {BigDecimal}
+	 */
+	nextProbablePrime(certainty, search_max) {
+		const src = this.round().toBigInteger();
+		const p1 = certainty !== undefined ? BigDecimal._toInteger(certainty) : undefined;
+		const p2 = search_max !== undefined ? BigDecimal._toInteger(search_max) : undefined;
+		return BigDecimal.create(src.nextProbablePrime(p1, p2));
+	}
+
+	// ----------------------
+	// 定数
+	// ----------------------
+	
+	/**
+	 * -1
+	 * @returns {BigDecimal} -1
+	 */
+	static get MINUS_ONE() {
+		return CACHED_DATA.MINUS_ONE.get();
+	}
+
+	/**
+	 * 0
+	 * @returns {BigDecimal} 0
+	 */
+	static get ZERO() {
+		return CACHED_DATA.ZERO.get();
+	}
+	
+	/**
+	 * 0.5
+	 * @returns {BigDecimal} 0.5
+	 */
+	static get HALF() {
+		return CACHED_DATA.HALF.get();
+	}
+	
+	/**
+	 * 1
+	 * @returns {BigDecimal} 1
+	 */
+	static get ONE() {
+		return CACHED_DATA.ONE.get();
+	}
+	
+	/**
+	 * 2
+	 * @returns {BigDecimal} 2
+	 */
+	static get TWO() {
+		return CACHED_DATA.TWO.get();
+	}
+	
+	/**
+	 * 10
+	 * @returns {BigDecimal} 10
+	 */
+	static get TEN() {
+		return CACHED_DATA.TEN.get();
+	}
+
+	/**
+	 * PI
+	 * @returns {BigDecimal} 3.14...
+	 */
+	static get PI() {
+		return CACHED_DATA.PI.get();
+	}
+
+	/**
+	 * 0.25 * PI.
+	 * @returns {BigDecimal} 0.78...
+	 */
+	static get QUARTER_PI() {
+		return CACHED_DATA.QUARTER_PI.get();
+	}
+
+	/**
+	 * 0.5 * PI.
+	 * @returns {BigDecimal} 1.57...
+	 */
+	static get HALF_PI() {
+		return CACHED_DATA.HALF_PI.get();
+	}
+
+	/**
+	 * 2 * PI.
+	 * @returns {BigDecimal} 6.28...
+	 */
+	static get TWO_PI() {
+		return CACHED_DATA.TWO_PI.get();
+	}
+
+	/**
+	 * E, Napier's constant.
+	 * @returns {BigDecimal} E
+	 */
+	static get E() {
+		return CACHED_DATA.E.get();
+	}
+
+	/**
+	 * log_e(2)
+	 * @returns {BigDecimal} ln(2)
+	 */
+	static get LN2() {
+		return CACHED_DATA.LN2.get();
+	}
+
+	/**
+	 * log_e(10)
+	 * @returns {BigDecimal} ln(10)
+	 */
+	static get LN10() {
+		return CACHED_DATA.LN10.get();
+	}
+
+	/**
+	 * log_2(e)
+	 * @returns {BigDecimal} log_2(e)
+	 */
+	static get LOG2E() {
+		return CACHED_DATA.LOG2E.get();
+	}
+	
+	/**
+	 * log_10(e)
+	 * @returns {BigDecimal} log_10(e)
+	 */
+	static get LOG10E() {
+		return CACHED_DATA.LOG10E.get();
+	}
+	
+	/**
+	 * sqrt(2)
+	 * @returns {BigDecimal} sqrt(2)
+	 */
+	static get SQRT2() {
+		return CACHED_DATA.SQRT2.get();
+	}
+	
+	/**
+	 * sqrt(0.5)
+	 * @returns {BigDecimal} sqrt(0.5)
+	 */
+	static get SQRT1_2() {
+		return CACHED_DATA.SQRT1_2.get();
+	}
+
+	/**
+	 * Positive infinity.
+	 * @returns {BigDecimal} Infinity
+	 */
+	static get POSITIVE_INFINITY() {
+		if(DEFINE$4.POSITIVE_INFINITY === null) {
+			DEFINE$4.POSITIVE_INFINITY = new BigDecimal(Number.POSITIVE_INFINITY);
+		}
+		return DEFINE$4.POSITIVE_INFINITY;
+	}
+	
+	/**
+	 * Negative Infinity.
+	 * @returns {BigDecimal} -Infinity
+	 */
+	static get NEGATIVE_INFINITY() {
+		if(DEFINE$4.NEGATIVE_INFINITY === null) {
+			DEFINE$4.NEGATIVE_INFINITY = new BigDecimal(Number.NEGATIVE_INFINITY);
+		}
+		return DEFINE$4.NEGATIVE_INFINITY;
+	}
+
+	/**
+	 * Not a Number.
+	 * @returns {BigDecimal} NaN
+	 */
+	static get NaN() {
+		if(DEFINE$4.NaN === null) {
+			DEFINE$4.NaN = new BigDecimal(Number.NaN);
+		}
+		return DEFINE$4.NaN;
+	}
+
+	// ----------------------
+	// 互換性
+	// ----------------------
+	
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {number}
+	 */
+	signum() {
+		return this.sign();
+	}
+
+	/**
+	 * Subtract.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {BigDecimal} A - B
+	 */
+	subtract(number) {
+		return this.sub(number);
+	}
+
+	/**
+	 * Multiply.
+	 * @param {KBigDecimalInputData} number
+	 * @returns {BigDecimal} A * B
+	 */
+	multiply(number) {
+		return this.mul(number);
+	}
+
+	/**
+	 * Divide.
+	 * - The argument can specify the scale after calculation.
+	 * - In the case of precision infinity, it may generate an error by a repeating decimal.
+	 * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
+	 * - When null is specified for the argument, it is calculated on the scale of "divisor.context".
+	 * @param {KBigDecimalInputData} number
+	 * @param {MathContext|KBigDecimalDivideType} [type] - Scale, MathContext, RoundingMode used for the calculation.
+	 * @returns {BigDecimal} A / B
+	 */
+	divide(number, type) {
+		return this.div(number, type);
+	}
+
+	/**
+	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {KBigDecimalInputData} number
+	 * @returns {BigDecimal} A % B
+	 */
+	remainder(number) {
+		return this.rem(number);
+	}
+	
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {BigDecimal} fix(A), trunc(A)
+	 */
+	trunc() {
+		return this.fix();
+	}
+
+}
+
+BigDecimal.RoundingMode = RoundingMode;
+BigDecimal.MathContext = MathContext;
+
+/**
+ * Collection of constant values used in the class.
+ * @ignore
+ */
+const DEFINE$4 = {
+
+	/**
+	 * -1
+	 * @returns {BigDecimal} -1
+	 */
+	MINUS_ONE : function() {
+		return new BigDecimal(-1);
+	},
+
+	/**
+	 * 0
+	 * @returns {BigDecimal} 0
+	 */
+	ZERO : function() {
+		return new BigDecimal(0);
+	},
+	
+	/**
+	 * 0.5
+	 * @returns {BigDecimal} 0.5
+	 */
+	HALF : function() {
+		return new BigDecimal(0.5);
+	},
+	
+	/**
+	 * 1
+	 * @returns {BigDecimal} 1
+	 */
+	ONE : function() {
+		return new BigDecimal(1);
+	},
+	
+	/**
+	 * 2
+	 * @returns {BigDecimal} 2
+	 */
+	TWO : function() {
+		return new BigDecimal(2);
+	},
+	
+	/**
+	 * 10
+	 * @returns {BigDecimal} 10
+	 */
+	TEN : function() {
+		return new BigDecimal(10);
+	},
+
+	/**
+	 * PI
+	 * @returns {BigDecimal} 3.14...
+	 */
+	PI : function() {
+		// DECIMAL256 でも精度は72桁ほどである。
+		// 従って、79桁のPIをすでにデータとして持っておく。
+		const PI79 = "3.1415926535897932384626433832795028841971693993751058209749445923078164062862";
+		const context = BigDecimal.getDefaultContext();
+		if(context.getPrecision() <= 78) {
+			return new BigDecimal(PI79).round(context);
+		}
+		else {
+			// ガウス＝ルジャンドルのアルゴリズム
+			// 使用する固定値を列挙
+			const B1		= BigDecimal.create(1);
+			const B2		= BigDecimal.create(2);
+			const B4		= BigDecimal.create(4);
+			// 初期値
+			let a = B1;
+			let b = B2.sqrt().inv();
+			let t = B4.inv();
+			let p = B1;
+			let pi = B1;
+			// 繰り返し求める
+			for(let i = 0; i < 10; i++) {
+				const a1 = a.add(b).div(B2);
+				const b1 = a.mul(b).sqrt();
+				const t1 = t.sub(p.mul(a.sub(a1).square()));
+				const p1 = p.mul(B2);
+				const pi1 = a1.add(b1).square().div(t1.mul(B4));
+				const delta = pi1.sub(pi);
+				pi = pi1;
+				if(delta.isZero()) {
+					break;
+				}
+				a = a1;
+				b = b1;
+				t = t1;
+				p = p1;
+			}
+			return pi;
+		}
+	},
+
+	/**
+	 * 0.25 * PI.
+	 * @returns {BigDecimal} 0.78...
+	 */
+	QUARTER_PI : function() {
+		return DEFINE$4.PI().div(4);
+	},
+
+	/**
+	 * 0.5 * PI.
+	 * @returns {BigDecimal} 1.57...
+	 */
+	HALF_PI : function() {
+		return DEFINE$4.PI().div(2);
+	},
+
+	/**
+	 * 2 * PI.
+	 * @returns {BigDecimal} 6.28...
+	 */
+	TWO_PI : function() {
+		return DEFINE$4.PI().mul(2);
+	},
+	
+	/**
+	 * E, Napier's constant.
+	 * @returns {BigDecimal} E
+	 */
+	E : function() {
+		// DECIMAL256 でも精度は72桁ほどである。
+		// 従って、84桁のEをすでにデータとして持っておく。
+		const E84 = "2.71828182845904523536028747135266249775724709369995957496696762772407663035354759";
+		const context = BigDecimal.getDefaultContext();
+		if(context.getPrecision() <= 83) {
+			return new BigDecimal(E84).round(context);
+		}
+		else {
+			// 初期値
+			let n0 = BigDecimal.create(2);
+			let k = BigDecimal.create(1);
+			// 繰り返し求める
+			for(let i = 2; i < 300; i++) {
+				k = k.mul(i);
+				const n1 = n0.add(k.inv());
+				const delta = n1.sub(n0);
+				n0 = n1;
+				if(delta.isZero()) {
+					break;
+				}
+			}
+			return n0;
+		}
+	},
+
+	/**
+	 * log_e(2)
+	 * @returns {BigDecimal} ln(2)
+	 */
+	LN2 : function() {
+		return (new BigDecimal(2)).log();
+	},
+
+	/**
+	 * log_e(10)
+	 * @returns {BigDecimal} ln(10)
+	 */
+	LN10 : function() {
+		return (new BigDecimal(10)).log();
+	},
+
+	/**
+	 * log_2(e)
+	 * @returns {BigDecimal} log_2(e)
+	 */
+	LOG2E : function() {
+		return (new BigDecimal(2)).log().inv();
+	},
+	
+	/**
+	 * log_10(e)
+	 * @returns {BigDecimal} log_10(e)
+	 */
+	LOG10E : function() {
+		return (new BigDecimal(10)).log().inv();
+	},
+	
+	/**
+	 * sqrt(2)
+	 * @returns {BigDecimal} sqrt(2)
+	 */
+	SQRT2 : function() {
+		return (new BigDecimal(2)).sqrt();
+	},
+	
+	/**
+	 * sqrt(0.5)
+	 * @returns {BigDecimal} sqrt(0.5)
+	 */
+	SQRT1_2 : function() {
+		return (new BigDecimal(0.5)).sqrt();
+	},
+	
+	/**
+	 * Positive infinity.
+	 * @type {any}
+	 */
+	POSITIVE_INFINITY : null,
+
+	/**
+	 * Negative Infinity.
+	 * @type {any}
+	 */
+	NEGATIVE_INFINITY : null,
+
+	/**
+	 * Not a Number.
+	 * @type {any}
+	 */
+	NaN : null
+	
+};
+
+/**
+ * Simple cache class.
+ * @ignore
+ */
+class BigDecimalCache {
+	
+	/**
+	 * Create Cache.
+	 * @param {string} method_name - Method name in the DEFINE.
+	 * @param {number} cache_size - Maximum number of caches.
+	 */
+	constructor(method_name, cache_size) {
+
+		/**
+		 * Method name in the DEFINE.
+		 * @type {string}
+		 */
+		this.method_name = method_name;
+		
+		/**
+		 * @type {Array<{name:string, number:BigDecimal}>}
+		 */
+		this.table = [];
+
+		/**
+		 * Maximum number of caches.
+		 * @type {number}
+		 */
+		this.table_max = cache_size;
+
+	}
+
+	/**
+	 * Use from cache if it exists in cache.
+	 * @returns {BigDecimal}
+	 */
+	get() {
+		const name = BigDecimal.getDefaultContext().toString();
+
+		for(let index = 0; index < this.table.length; index++) {
+			if(this.table[index].name === name) {
+				// 先頭にもってくる
+				const object = this.table.splice(index, 1)[0];
+				this.table.unshift(object);
+				return object.number;
+			}
+		}
+		// @ts-ignore
+		const new_number = DEFINE$4[this.method_name]();
+		if(this.table.length === this.table_max) {
+			// 後ろのデータを消去
+			this.table.pop();
+		}
+		// 前方に追加
+		this.table.unshift({
+			name : name,
+			number : new_number
+		});
+		return new_number;
+	}
+
+}
+
+/**
+ * Simple cache class.
+ * @ignore
+ */
+class BigDecimalConst {
+	/**
+	 * Constructor
+	 */
+	constructor() {
+		/**
+		 * -1
+		 */
+		this.MINUS_ONE = new BigDecimalCache("MINUS_ONE", 10);
+
+		/**
+		 * 0
+		 */
+		this.ZERO = new BigDecimalCache("ZERO", 10);
+
+		/**
+		 * 0.5
+		 */
+		this.HALF = new BigDecimalCache("HALF", 10);
+
+		/**
+		 * 1
+		 */
+		this.ONE = new BigDecimalCache("ONE", 10);
+
+		/**
+		 * 2
+		 */
+		this.TWO = new BigDecimalCache("TWO", 10);
+
+		/**
+		 * 10
+		 */
+		this.TEN = new BigDecimalCache("TEN", 10);
+
+		/**
+		 * PI
+		 */
+		this.PI = new BigDecimalCache("PI", 10);
+
+		/**
+		 * QUARTER_PI
+		 */
+		this.QUARTER_PI = new BigDecimalCache("QUARTER_PI", 10);
+
+		/**
+		 * HALF_PI
+		 */
+		this.HALF_PI = new BigDecimalCache("HALF_PI", 10);
+
+		/**
+		 * TWO_PI
+		 */
+		this.TWO_PI = new BigDecimalCache("TWO_PI", 10);
+
+		/**
+		 * E
+		 */
+		this.E = new BigDecimalCache("E", 10);
+
+		/**
+		 * LN2
+		 */
+		this.LN2 = new BigDecimalCache("LN2", 10);
+
+		/**
+		 * LN10
+		 */
+		this.LN10 = new BigDecimalCache("LN10", 10);
+
+		/**
+		 * LOG2E
+		 */
+		this.LOG2E = new BigDecimalCache("LOG2E", 10);
+		
+		/**
+		 * LOG10E
+		 */
+		this.LOG10E = new BigDecimalCache("LOG10E", 10);
+		
+		/**
+		 * SQRT2
+		 */
+		this.SQRT2 = new BigDecimalCache("SQRT2", 10);
+		
+		/**
+		 * SQRT1_2
+		 */
+		this.SQRT1_2 = new BigDecimalCache("SQRT1_2", 10);
+	}
+}
+
+/**
+ * Cache of the constant.
+ * @ignore
+ */
+const CACHED_DATA = new BigDecimalConst();
 
 /**
  * The script is part of konpeito.

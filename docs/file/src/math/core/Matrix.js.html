@@ -84,6 +84,10 @@ import Statistics from &quot;./tools/Statistics.js&quot;;
 import Signal from &quot;./tools/Signal.js&quot;;
 import Complex from &quot;./Complex.js&quot;;
 import Random from &quot;./tools/Random.js&quot;;
+import BigInteger from &quot;./BigInteger.js&quot;;
+import BigDecimal from &quot;./BigDecimal.js&quot;;
+import Fraction from &quot;./Fraction.js&quot;;
+import MathContext from &quot;./context/MathContext.js&quot;;
 
 /**
  * Matrix type argument.
@@ -150,6 +154,7 @@ class MatrixTool {
 		}
 		let t_data = data;
 		if(!(t_data instanceof Matrix) &amp;&amp; !(t_data instanceof Complex) &amp;&amp; !((typeof t_data === &quot;number&quot;))) {
+			// @ts-ignore
 			t_data = Matrix._toMatrix(t_data);
 		}
 		if(t_data instanceof Matrix) {
@@ -160,16 +165,19 @@ class MatrixTool {
 			const y = new Array(t_data.length);
 			if(t_data.isRow()) {
 				for(let i = 0; i &lt; len; i++) {
+					// @ts-ignore
 					y[i] = Math.trunc(t_data.matrix_array[0][i].real);
 				}
 			}
 			else if(t_data.isColumn()) {
 				for(let i = 0; i &lt; len; i++) {
+					// @ts-ignore
 					y[i] = Math.trunc(t_data.matrix_array[i][0].real);
 				}
 			}
 			return y;
 		}
+		// @ts-ignore
 		return [ Matrix._toInteger(t_data) ];
 	}
 
@@ -417,6 +425,7 @@ class MatrixTool {
 			let array_data = MatrixTool.toMatrixArrayFromStringInBracket(withoutBracket.text);
 			// &#x8EE2;&#x7F6E;&#x304C;&#x5FC5;&#x8981;&#x306A;&#x3089;&#x8EE2;&#x7F6E;&#x3055;&#x305B;&#x308B;
 			if(withoutBracket.is_transpose) {
+				// @ts-ignore
 				array_data = (new Matrix(array_data)).T().matrix_array;
 			}
 			return array_data;
@@ -1214,7 +1223,7 @@ export default class Matrix {
 	}
 
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
-	// &#x884C;&#x5217;&#x306E;&#x57FA;&#x672C;&#x64CD;&#x4F5C;&#x3001;&#x57FA;&#x672C;&#x60C5;&#x5831;&#x306E;&#x53D6;&#x5F97;
+	// &#x4ED6;&#x306E;&#x578B;&#x306B;&#x5909;&#x63DB;&#x7528;
 	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 	
 	/**
@@ -1230,7 +1239,7 @@ export default class Matrix {
 	 * @returns {number}
 	 */
 	get intValue() {
-		return Math.trunc(this.matrix_array[0][0].real);
+		return this.matrix_array[0][0].intValue;
 	}
 
 	/**
@@ -1238,8 +1247,62 @@ export default class Matrix {
 	 * @returns {number}
 	 */
 	get doubleValue() {
-		return this.matrix_array[0][0].real;
+		return this.matrix_array[0][0].doubleValue;
 	}
+
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+	// konpeito &#x3067;&#x6271;&#x3046;&#x6570;&#x5024;&#x578B;&#x3078;&#x5909;&#x63DB;
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return new BigInteger(this.intValue);
+	}
+	
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		if(mc) {
+			return new BigDecimal([this.doubleValue, mc]);
+		}
+		else {
+			return new BigDecimal(this.doubleValue);
+		}
+	}
+	
+	/**
+	 * return Fraction.
+	 * @returns {Fraction}
+	 */
+	toFraction() {
+		return new Fraction(this.doubleValue);
+	}
+	
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return this.scalar;
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return this;
+	}
+	
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
+	// &#x884C;&#x5217;&#x306E;&#x57FA;&#x672C;&#x64CD;&#x4F5C;&#x3001;&#x57FA;&#x672C;&#x60C5;&#x5831;&#x306E;&#x53D6;&#x5F97;
+	// &#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;&#x25C6;
 	
 	/**
 	 * First element of this matrix.
@@ -4189,7 +4252,7 @@ export default class Matrix {
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testProbablePrime(certainty) {
-		const p1 = certainty !== undefined ? Math.round(Complex._toDouble(certainty)) : undefined;
+		const p1 = certainty !== undefined ? Math.round(Matrix._toDouble(certainty)) : undefined;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.isProbablePrime(p1) ? Complex.ONE : Complex.ZERO;
 		});

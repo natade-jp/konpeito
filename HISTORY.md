@@ -1,5 +1,14 @@
 # History
 
+## v5.2.0
+### 機能追加
+- `BigInteger`, `BigDecimal`, `Fraction`, `Complex`, `Matrix` 間で値の変更ができる共通メソッドを追加
+### 改善
+- `BigInteger` の`longValue`が需要がないと思うためを非推奨
+- `Complex`, `Matrix` から数値へ変換した場合に計算誤差を除去する動作へ変更
+### 不具合
+- `Matrix`, `Complex` にて、`Tool`クラスから`private`メソッドを呼んでエラーが出ていたのを修正
+
 ## v5.1.0
 ### 機能追加
 - `Probability` に二項分布とポアソン分布の分布関数、密度関数、逆密度関数を追加

@@ -79,10 +79,13 @@
  */
 
 import Polyfill from &quot;../tools/Polyfill.js&quot;;
+import Probability from &quot;./tools/Probability.js&quot;;
 import Random from &quot;./tools/Random.js&quot;;
 import Matrix from &quot;./Matrix.js&quot;;
 import BigInteger from &quot;./BigInteger.js&quot;;
-import Probability from &quot;./tools/Probability.js&quot;;
+import BigDecimal from &quot;./BigDecimal.js&quot;;
+import Fraction from &quot;./Fraction.js&quot;;
+import MathContext from &quot;./context/MathContext.js&quot;;
 
 /**
  * Complex type argument.
@@ -271,6 +274,7 @@ export default class Complex {
 			return number;
 		}
 		else if(number instanceof Matrix) {
+			// @ts-ignore
 			return Matrix._toComplex(number);
 		}
 		else {
@@ -305,30 +309,6 @@ export default class Complex {
 	 */
 	static _toInteger(number) {
 		return Math.trunc(Complex._toDouble(number));
-	}
-
-	/**
-	 * boolean value.
-	 * @returns {boolean}
-	 */
-	get booleanValue() {
-		return this._re !== 0 || this._im !== 0;
-	}
-
-	/**
-	 * integer value.
-	 * @returns {number}
-	 */
-	get intValue() {
-		return Math.trunc(this._re);
-	}
-
-	/**
-	 * floating point.
-	 * @returns {number}
-	 */
-	get doubleValue() {
-		return this._re;
 	}
 
 	/**
@@ -649,6 +629,104 @@ export default class Complex {
 			return new Complex([0, - 1.0 / this._im]);
 		}
 		return Complex.ONE.div(this);
+	}
+
+	// ----------------------
+	// &#x4ED6;&#x306E;&#x578B;&#x306B;&#x5909;&#x63DB;&#x7528;
+	// ----------------------
+	
+	/**
+	 * boolean value.
+	 * @returns {boolean}
+	 */
+	get booleanValue() {
+		return !this.isZero() &amp;&amp; !this.isNaN();
+	}
+
+	/**
+	 * integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		const value = this._re;
+		const delta = Math.abs(value - Math.trunc(value));
+		if(delta &lt; Number.EPSILON) {
+			return Math.round(value);
+		}
+		else {
+			return Math.trunc(value);
+		}
+	}
+
+	/**
+	 * floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		const value = this._re;
+		const delta = Math.abs(value - Math.trunc(value));
+		if(delta &lt; Number.EPSILON) {
+			return Math.round(value);
+		}
+		else {
+			return value;
+		}
+	}
+
+	// ----------------------
+	// konpeito &#x3067;&#x6271;&#x3046;&#x6570;&#x5024;&#x578B;&#x3078;&#x5909;&#x63DB;
+	// ----------------------
+	
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return new BigInteger(this.intValue);
+	}
+	
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		if(mc) {
+			return new BigDecimal([this.doubleValue, mc]);
+		}
+		else {
+			return new BigDecimal(this.doubleValue);
+		}
+	}
+	
+	/**
+	 * return Fraction.
+	 * @returns {Fraction}
+	 */
+	toFraction() {
+		return new Fraction(this.doubleValue);
+	}
+	
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return this;
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return new Matrix(this);
 	}
 
 	// ----------------------

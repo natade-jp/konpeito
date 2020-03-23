@@ -13,6 +13,10 @@ import BigInteger from "./BigInteger.js";
 import RoundingMode, {RoundingModeEntity} from "./context/RoundingMode.js";
 import MathContext from "./context/MathContext.js";
 import Random from "./tools/Random.js";
+import Fraction from "./Fraction.js";
+import Complex from "./Complex.js";
+import Matrix from "./Matrix.js";
+
 
 /**
  * BigDecimal type argument.(local)
@@ -1250,12 +1254,54 @@ export default class BigDecimal {
 		return parseFloat(this.toEngineeringString());
 	}
 
+	// ----------------------
+	// konpeito で扱う数値型へ変換
+	// ----------------------
+	
 	/**
-	 * Get as a BigInteger.
+	 * return BigInteger.
 	 * @returns {BigInteger}
 	 */
 	toBigInteger() {
 		return this.integer.scaleByPowerOfTen(-this.scale());
+	}
+
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		if(mc) {
+			return this.round(mc);
+		}
+		else {
+			return this;
+		}
+	}
+	
+	/**
+	 * return Fraction.
+	 * @returns {Fraction}
+	 */
+	toFraction() {
+		return new Fraction(this);
+	}
+
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return new Complex(this);
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return new Matrix(this);
 	}
 
 	// ----------------------
@@ -3125,6 +3171,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} Infinity
 	 */
 	static get POSITIVE_INFINITY() {
+		if(DEFINE.POSITIVE_INFINITY === null) {
+			DEFINE.POSITIVE_INFINITY = new BigDecimal(Number.POSITIVE_INFINITY);
+		}
 		return DEFINE.POSITIVE_INFINITY;
 	}
 	
@@ -3133,6 +3182,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} -Infinity
 	 */
 	static get NEGATIVE_INFINITY() {
+		if(DEFINE.NEGATIVE_INFINITY === null) {
+			DEFINE.NEGATIVE_INFINITY = new BigDecimal(Number.NEGATIVE_INFINITY);
+		}
 		return DEFINE.NEGATIVE_INFINITY;
 	}
 
@@ -3141,6 +3193,9 @@ export default class BigDecimal {
 	 * @returns {BigDecimal} NaN
 	 */
 	static get NaN() {
+		if(DEFINE.NaN === null) {
+			DEFINE.NaN = new BigDecimal(Number.NaN);
+		}
 		return DEFINE.NaN;
 	}
 
@@ -3415,18 +3470,21 @@ const DEFINE = {
 	
 	/**
 	 * Positive infinity.
+	 * @type {any}
 	 */
-	POSITIVE_INFINITY : new BigDecimal(Number.POSITIVE_INFINITY),
+	POSITIVE_INFINITY : null,
 
 	/**
 	 * Negative Infinity.
+	 * @type {any}
 	 */
-	NEGATIVE_INFINITY : new BigDecimal(Number.NEGATIVE_INFINITY),
+	NEGATIVE_INFINITY : null,
 
 	/**
 	 * Not a Number.
+	 * @type {any}
 	 */
-	NaN : new BigDecimal(Number.NaN)
+	NaN : null
 	
 };
 
@@ -3594,4 +3652,3 @@ class BigDecimalConst {
  * @ignore
  */
 const CACHED_DATA = new BigDecimalConst();
-

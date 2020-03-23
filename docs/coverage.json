@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 1122,
-  "actualCount": 1122,
+  "expectCount": 1144,
+  "actualCount": 1144,
   "files": {
     "src/konpeito.js": {
       "expectCount": 11,
@@ -9,18 +9,18 @@
       "undocumentLines": []
     },
     "src/math/core/BigDecimal.js": {
-      "expectCount": 182,
-      "actualCount": 182,
+      "expectCount": 186,
+      "actualCount": 186,
       "undocumentLines": []
     },
     "src/math/core/BigInteger.js": {
-      "expectCount": 119,
-      "actualCount": 119,
+      "expectCount": 124,
+      "actualCount": 124,
       "undocumentLines": []
     },
     "src/math/core/Complex.js": {
-      "expectCount": 177,
-      "actualCount": 177,
+      "expectCount": 182,
+      "actualCount": 182,
       "undocumentLines": []
     },
     "src/math/core/context/MathContext.js": {
@@ -34,13 +34,13 @@
       "undocumentLines": []
     },
     "src/math/core/Fraction.js": {
-      "expectCount": 84,
-      "actualCount": 84,
+      "expectCount": 87,
+      "actualCount": 87,
       "undocumentLines": []
     },
     "src/math/core/Matrix.js": {
-      "expectCount": 309,
-      "actualCount": 309,
+      "expectCount": 314,
+      "actualCount": 314,
       "undocumentLines": []
     },
     "src/math/core/tools/LinearAlgebra.js": {

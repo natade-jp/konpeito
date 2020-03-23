@@ -9,10 +9,13 @@
  */
 
 import Polyfill from "../tools/Polyfill.js";
+import Probability from "./tools/Probability.js";
 import Random from "./tools/Random.js";
 import Matrix from "./Matrix.js";
 import BigInteger from "./BigInteger.js";
-import Probability from "./tools/Probability.js";
+import BigDecimal from "./BigDecimal.js";
+import Fraction from "./Fraction.js";
+import MathContext from "./context/MathContext.js";
 
 /**
  * Complex type argument.
@@ -201,6 +204,7 @@ export default class Complex {
 			return number;
 		}
 		else if(number instanceof Matrix) {
+			// @ts-ignore
 			return Matrix._toComplex(number);
 		}
 		else {
@@ -235,30 +239,6 @@ export default class Complex {
 	 */
 	static _toInteger(number) {
 		return Math.trunc(Complex._toDouble(number));
-	}
-
-	/**
-	 * boolean value.
-	 * @returns {boolean}
-	 */
-	get booleanValue() {
-		return this._re !== 0 || this._im !== 0;
-	}
-
-	/**
-	 * integer value.
-	 * @returns {number}
-	 */
-	get intValue() {
-		return Math.trunc(this._re);
-	}
-
-	/**
-	 * floating point.
-	 * @returns {number}
-	 */
-	get doubleValue() {
-		return this._re;
 	}
 
 	/**
@@ -579,6 +559,104 @@ export default class Complex {
 			return new Complex([0, - 1.0 / this._im]);
 		}
 		return Complex.ONE.div(this);
+	}
+
+	// ----------------------
+	// 他の型に変換用
+	// ----------------------
+	
+	/**
+	 * boolean value.
+	 * @returns {boolean}
+	 */
+	get booleanValue() {
+		return !this.isZero() && !this.isNaN();
+	}
+
+	/**
+	 * integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		const value = this._re;
+		const delta = Math.abs(value - Math.trunc(value));
+		if(delta < Number.EPSILON) {
+			return Math.round(value);
+		}
+		else {
+			return Math.trunc(value);
+		}
+	}
+
+	/**
+	 * floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		const value = this._re;
+		const delta = Math.abs(value - Math.trunc(value));
+		if(delta < Number.EPSILON) {
+			return Math.round(value);
+		}
+		else {
+			return value;
+		}
+	}
+
+	// ----------------------
+	// konpeito で扱う数値型へ変換
+	// ----------------------
+	
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return new BigInteger(this.intValue);
+	}
+	
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		if(mc) {
+			return new BigDecimal([this.doubleValue, mc]);
+		}
+		else {
+			return new BigDecimal(this.doubleValue);
+		}
+	}
+	
+	/**
+	 * return Fraction.
+	 * @returns {Fraction}
+	 */
+	toFraction() {
+		return new Fraction(this.doubleValue);
+	}
+	
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return this;
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return new Matrix(this);
 	}
 
 	// ----------------------

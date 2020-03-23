@@ -14,6 +14,10 @@ import Statistics from "./tools/Statistics.js";
 import Signal from "./tools/Signal.js";
 import Complex from "./Complex.js";
 import Random from "./tools/Random.js";
+import BigInteger from "./BigInteger.js";
+import BigDecimal from "./BigDecimal.js";
+import Fraction from "./Fraction.js";
+import MathContext from "./context/MathContext.js";
 
 /**
  * Matrix type argument.
@@ -80,6 +84,7 @@ class MatrixTool {
 		}
 		let t_data = data;
 		if(!(t_data instanceof Matrix) && !(t_data instanceof Complex) && !((typeof t_data === "number"))) {
+			// @ts-ignore
 			t_data = Matrix._toMatrix(t_data);
 		}
 		if(t_data instanceof Matrix) {
@@ -90,16 +95,19 @@ class MatrixTool {
 			const y = new Array(t_data.length);
 			if(t_data.isRow()) {
 				for(let i = 0; i < len; i++) {
+					// @ts-ignore
 					y[i] = Math.trunc(t_data.matrix_array[0][i].real);
 				}
 			}
 			else if(t_data.isColumn()) {
 				for(let i = 0; i < len; i++) {
+					// @ts-ignore
 					y[i] = Math.trunc(t_data.matrix_array[i][0].real);
 				}
 			}
 			return y;
 		}
+		// @ts-ignore
 		return [ Matrix._toInteger(t_data) ];
 	}
 
@@ -347,6 +355,7 @@ class MatrixTool {
 			let array_data = MatrixTool.toMatrixArrayFromStringInBracket(withoutBracket.text);
 			// 転置が必要なら転置させる
 			if(withoutBracket.is_transpose) {
+				// @ts-ignore
 				array_data = (new Matrix(array_data)).T().matrix_array;
 			}
 			return array_data;
@@ -1144,7 +1153,7 @@ export default class Matrix {
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
-	// 行列の基本操作、基本情報の取得
+	// 他の型に変換用
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	
 	/**
@@ -1160,7 +1169,7 @@ export default class Matrix {
 	 * @returns {number}
 	 */
 	get intValue() {
-		return Math.trunc(this.matrix_array[0][0].real);
+		return this.matrix_array[0][0].intValue;
 	}
 
 	/**
@@ -1168,8 +1177,62 @@ export default class Matrix {
 	 * @returns {number}
 	 */
 	get doubleValue() {
-		return this.matrix_array[0][0].real;
+		return this.matrix_array[0][0].doubleValue;
 	}
+
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// konpeito で扱う数値型へ変換
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return new BigInteger(this.intValue);
+	}
+	
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		if(mc) {
+			return new BigDecimal([this.doubleValue, mc]);
+		}
+		else {
+			return new BigDecimal(this.doubleValue);
+		}
+	}
+	
+	/**
+	 * return Fraction.
+	 * @returns {Fraction}
+	 */
+	toFraction() {
+		return new Fraction(this.doubleValue);
+	}
+	
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return this.scalar;
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return this;
+	}
+	
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
+	// 行列の基本操作、基本情報の取得
+	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	
 	/**
 	 * First element of this matrix.
@@ -4119,7 +4182,7 @@ export default class Matrix {
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testProbablePrime(certainty) {
-		const p1 = certainty !== undefined ? Math.round(Complex._toDouble(certainty)) : undefined;
+		const p1 = certainty !== undefined ? Math.round(Matrix._toDouble(certainty)) : undefined;
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.isProbablePrime(p1) ? Complex.ONE : Complex.ZERO;
 		});

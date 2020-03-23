@@ -12,6 +12,8 @@ import Polyfill from "../tools/Polyfill.js";
 import BigInteger from "./BigInteger.js";
 import BigDecimal from "./BigDecimal.js";
 import MathContext from "./context/MathContext.js";
+import Complex from "./Complex.js";
+import Matrix from "./Matrix.js";
 
 /**
  * Fraction type argument.
@@ -855,6 +857,10 @@ export default class Fraction {
 		return x.div(y, {context : MathContext.DECIMAL64}).doubleValue;
 	}
 
+	// ----------------------
+	// konpeito で扱う数値型へ変換
+	// ----------------------
+	
 	/**
 	 * return BigInteger.
 	 * @returns {BigInteger}
@@ -883,6 +889,30 @@ export default class Fraction {
 		else {
 			return x.div(y, {context: BigDecimal.getDefaultContext()});
 		}
+	}
+	
+	/**
+	 * return Fraction.
+	 * @returns {Fraction}
+	 */
+	toFraction() {
+		return this;
+	}
+	
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return new Complex(this);
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return new Matrix(this);
 	}
 
 	// ----------------------
@@ -1247,7 +1277,7 @@ export default class Fraction {
 	 */
 	shift(n) {
 		const src		= this.round().toBigInteger();
-		const number	= BigDecimal._toInteger(n);
+		const number	= Fraction._toInteger(n);
 		return new Fraction(src.shift(number));
 	}
 
@@ -1351,7 +1381,7 @@ export default class Fraction {
 	 */
 	isProbablePrime(certainty) {
 		const src = this.round().toBigInteger();
-		return src.isProbablePrime(certainty !== undefined ? BigDecimal._toInteger(certainty) : undefined);
+		return src.isProbablePrime(certainty !== undefined ? Fraction._toInteger(certainty) : undefined);
 	}
 
 	/**
@@ -1376,6 +1406,9 @@ export default class Fraction {
 	 * @returns {Fraction} -1
 	 */
 	static get MINUS_ONE() {
+		if(DEFINE.MINUS_ONE === null) {
+			DEFINE.MINUS_ONE = new Fraction([BigInteger.MINUS_ONE, BigInteger.ONE]);
+		}
 		return DEFINE.MINUS_ONE;
 	}
 
@@ -1384,6 +1417,9 @@ export default class Fraction {
 	 * @returns {Fraction} 0
 	 */
 	static get ZERO() {
+		if(DEFINE.ZERO === null) {
+			DEFINE.ZERO = new Fraction([BigInteger.ZERO, BigInteger.ONE]);
+		}
 		return DEFINE.ZERO;
 	}
 
@@ -1392,6 +1428,9 @@ export default class Fraction {
 	 * @returns {Fraction} 0.5
 	 */
 	static get HALF() {
+		if(DEFINE.HALF === null) {
+			DEFINE.HALF = new Fraction([BigInteger.ONE, BigInteger.TWO]);
+		}
 		return DEFINE.HALF;
 	}
 	
@@ -1400,6 +1439,9 @@ export default class Fraction {
 	 * @returns {Fraction} 1
 	 */
 	static get ONE() {
+		if(DEFINE.ONE === null) {
+			DEFINE.ONE = new Fraction([BigInteger.ONE, BigInteger.ONE]);
+		}
 		return DEFINE.ONE;
 	}
 	
@@ -1408,6 +1450,9 @@ export default class Fraction {
 	 * @returns {Fraction} 2
 	 */
 	static get TWO() {
+		if(DEFINE.TWO === null) {
+			DEFINE.TWO = new Fraction([BigInteger.TWO, BigInteger.ONE]);
+		}
 		return DEFINE.TWO;
 	}
 	
@@ -1416,6 +1461,9 @@ export default class Fraction {
 	 * @returns {Fraction} 10
 	 */
 	static get TEN() {
+		if(DEFINE.TEN === null) {
+			DEFINE.TEN = new Fraction([BigInteger.TEN, BigInteger.ONE]);
+		}
 		return DEFINE.TEN;
 	}
 
@@ -1424,6 +1472,9 @@ export default class Fraction {
 	 * @returns {Fraction} Infinity
 	 */
 	static get POSITIVE_INFINITY() {
+		if(DEFINE.POSITIVE_INFINITY === null) {
+			DEFINE.POSITIVE_INFINITY = new Fraction(Number.POSITIVE_INFINITY);
+		}
 		return DEFINE.POSITIVE_INFINITY;
 	}
 	
@@ -1432,6 +1483,9 @@ export default class Fraction {
 	 * @returns {Fraction} -Infinity
 	 */
 	static get NEGATIVE_INFINITY() {
+		if(DEFINE.NEGATIVE_INFINITY === null) {
+			DEFINE.NEGATIVE_INFINITY = new Fraction(Number.NEGATIVE_INFINITY);
+		}
 		return DEFINE.NEGATIVE_INFINITY;
 	}
 
@@ -1440,6 +1494,9 @@ export default class Fraction {
 	 * @returns {Fraction} NaN
 	 */
 	static get NaN() {
+		if(DEFINE.NaN === null) {
+			DEFINE.NaN = new Fraction(Number.NaN);
+		}
 		return DEFINE.NaN;
 	}
 	
@@ -1503,47 +1560,56 @@ const DEFINE = {
 
 	/**
 	 * -1
+	 * @type {any}
 	 */
-	MINUS_ONE : new Fraction([BigInteger.MINUS_ONE, BigInteger.ONE]),
+	MINUS_ONE : null,
 
 	/**
 	 * 0
+	 * @type {any}
 	 */
-	ZERO : new Fraction([BigInteger.ZERO, BigInteger.ONE]),
+	ZERO : null,
 	
 	/**
 	 * 1
+	 * @type {any}
 	 */
-	ONE : new Fraction([BigInteger.ONE, BigInteger.ONE]),
+	ONE : null,
 
 	/**
 	 * 0.5
+	 * @type {any}
 	 */
-	HALF : new Fraction([BigInteger.ONE, BigInteger.TWO]),
+	HALF : null,
 
 	/**
 	 * 2
+	 * @type {any}
 	 */
-	TWO : new Fraction([BigInteger.TWO, BigInteger.ONE]),
+	TWO : null,
 
 	/**
 	 * 10
+	 * @type {any}
 	 */
-	TEN : new Fraction([BigInteger.TEN, BigInteger.ONE]),
+	TEN : null,
 	
 	/**
 	 * Positive infinity.
+	 * @type {any}
 	 */
-	POSITIVE_INFINITY : new Fraction(Number.POSITIVE_INFINITY),
+	POSITIVE_INFINITY : null,
 
 	/**
 	 * Negative Infinity.
+	 * @type {any}
 	 */
-	NEGATIVE_INFINITY : new Fraction(Number.NEGATIVE_INFINITY),
+	NEGATIVE_INFINITY : null,
 
 	/**
 	 * Not a Number.
+	 * @type {any}
 	 */
-	NaN : new Fraction(Number.NaN)
+	NaN : null,
 
 };

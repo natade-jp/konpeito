@@ -353,10 +353,31 @@ declare class _BigDecimal_ {
      */
     doubleValue: number;
     /**
-     * Get as a _BigInteger_.
+     * return _BigInteger_.
      * @returns {_BigInteger_}
      */
     toBigInteger(): _BigInteger_;
+    /**
+     * return _BigDecimal_.
+     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation.
+     * @returns {_BigDecimal_}
+     */
+    toBigDecimal(mc?: _MathContext_): _BigDecimal_;
+    /**
+     * return _Fraction_.
+     * @returns {_Fraction_}
+     */
+    toFraction(): _Fraction_;
+    /**
+     * return _Complex_.
+     * @returns {_Complex_}
+     */
+    toComplex(): _Complex_;
+    /**
+     * return _Matrix_.
+     * @returns {_Matrix_}
+     */
+    toMatrix(): _Matrix_;
     /**
      * Equals.
      * - Attention : Test for equality, including the precision and the scale.
@@ -1169,6 +1190,7 @@ declare class _BigInteger_ {
      * 64-bit integer value.
      * - If it is outside the range of JavaScript Number, it will not be an accurate number.
      * @returns {number}
+     * @deprecated
      */
     longValue: number;
     /**
@@ -1178,23 +1200,31 @@ declare class _BigInteger_ {
      */
     doubleValue: number;
     /**
-     * Euclidean algorithm.
-     * @param {KBigIntegerInputData} number
-     * @returns {_BigInteger_} gcd(x, y)
+     * return _BigInteger_.
+     * @returns {_BigInteger_}
      */
-    gcd(number: KBigIntegerInputData): _BigInteger_;
+    toBigInteger(): _BigInteger_;
     /**
-     * Extended Euclidean algorithm.
-     * @param {KBigIntegerInputData} number
-     * @returns {Array<_BigInteger_>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+     * return _BigDecimal_.
+     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation.
+     * @returns {_BigDecimal_}
      */
-    extgcd(number: KBigIntegerInputData): _BigInteger_[];
+    toBigDecimal(mc?: _MathContext_): _BigDecimal_;
     /**
-     * Least common multiple.
-     * @param {KBigIntegerInputData} number
-     * @returns {_BigInteger_} lcm(x, y)
+     * return _Fraction_.
+     * @returns {_Fraction_}
      */
-    lcm(number: KBigIntegerInputData): _BigInteger_;
+    toFraction(): _Fraction_;
+    /**
+     * return _Complex_.
+     * @returns {_Complex_}
+     */
+    toComplex(): _Complex_;
+    /**
+     * return _Matrix_.
+     * @returns {_Matrix_}
+     */
+    toMatrix(): _Matrix_;
     /**
      * Equals.
      * @param {KBigIntegerInputData} number
@@ -1238,6 +1268,24 @@ declare class _BigInteger_ {
      * @returns {_BigInteger_} min(max(x, min), max)
      */
     clip(min: KBigIntegerInputData, max: KBigIntegerInputData): _BigInteger_;
+    /**
+     * Euclidean algorithm.
+     * @param {KBigIntegerInputData} number
+     * @returns {_BigInteger_} gcd(x, y)
+     */
+    gcd(number: KBigIntegerInputData): _BigInteger_;
+    /**
+     * Extended Euclidean algorithm.
+     * @param {KBigIntegerInputData} number
+     * @returns {Array<_BigInteger_>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+     */
+    extgcd(number: KBigIntegerInputData): _BigInteger_[];
+    /**
+     * Least common multiple.
+     * @param {KBigIntegerInputData} number
+     * @returns {_BigInteger_} lcm(x, y)
+     */
+    lcm(number: KBigIntegerInputData): _BigInteger_;
     /**
      * Prime represented within the specified bit length.
      * @param {KBigIntegerInputData} bits - Bit length.
@@ -1514,21 +1562,6 @@ declare class _Complex_ {
      */
     static valueOf(number: KComplexInputData): _Complex_;
     /**
-     * boolean value.
-     * @returns {boolean}
-     */
-    booleanValue: boolean;
-    /**
-     * integer value.
-     * @returns {number}
-     */
-    intValue: number;
-    /**
-     * floating point.
-     * @returns {number}
-     */
-    doubleValue: number;
-    /**
      * Deep copy.
      * @returns {_Complex_}
      */
@@ -1619,6 +1652,47 @@ declare class _Complex_ {
      * @returns {_Complex_} 1 / A
      */
     inv(): _Complex_;
+    /**
+     * boolean value.
+     * @returns {boolean}
+     */
+    booleanValue: boolean;
+    /**
+     * integer value.
+     * @returns {number}
+     */
+    intValue: number;
+    /**
+     * floating point.
+     * @returns {number}
+     */
+    doubleValue: number;
+    /**
+     * return _BigInteger_.
+     * @returns {_BigInteger_}
+     */
+    toBigInteger(): _BigInteger_;
+    /**
+     * return _BigDecimal_.
+     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation.
+     * @returns {_BigDecimal_}
+     */
+    toBigDecimal(mc?: _MathContext_): _BigDecimal_;
+    /**
+     * return _Fraction_.
+     * @returns {_Fraction_}
+     */
+    toFraction(): _Fraction_;
+    /**
+     * return _Complex_.
+     * @returns {_Complex_}
+     */
+    toComplex(): _Complex_;
+    /**
+     * return _Matrix_.
+     * @returns {_Matrix_}
+     */
+    toMatrix(): _Matrix_;
     /**
      * Equals.
      * @param {KComplexInputData} number
@@ -2986,6 +3060,21 @@ declare class _Fraction_ {
      */
     toBigDecimal(mc?: _MathContext_): _BigDecimal_;
     /**
+     * return _Fraction_.
+     * @returns {_Fraction_}
+     */
+    toFraction(): _Fraction_;
+    /**
+     * return _Complex_.
+     * @returns {_Complex_}
+     */
+    toComplex(): _Complex_;
+    /**
+     * return _Matrix_.
+     * @returns {_Matrix_}
+     */
+    toMatrix(): _Matrix_;
+    /**
      * Equals.
      * @param {KFractionInputData} num
      * @returns {boolean} A === B
@@ -3452,6 +3541,32 @@ declare class _Matrix_ {
      * @returns {number}
      */
     doubleValue: number;
+    /**
+     * return _BigInteger_.
+     * @returns {_BigInteger_}
+     */
+    toBigInteger(): _BigInteger_;
+    /**
+     * return _BigDecimal_.
+     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation.
+     * @returns {_BigDecimal_}
+     */
+    toBigDecimal(mc?: _MathContext_): _BigDecimal_;
+    /**
+     * return _Fraction_.
+     * @returns {_Fraction_}
+     */
+    toFraction(): _Fraction_;
+    /**
+     * return _Complex_.
+     * @returns {_Complex_}
+     */
+    toComplex(): _Complex_;
+    /**
+     * return _Matrix_.
+     * @returns {_Matrix_}
+     */
+    toMatrix(): _Matrix_;
     /**
      * First element of this matrix.
      * @returns {_Complex_}

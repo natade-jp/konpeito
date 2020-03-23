@@ -1080,15 +1080,39 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/bigdecimal.js~bigdecimal#tobigdecimal",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-toBigDecimal",
+    "src/math/core/BigDecimal.js~BigDecimal#toBigDecimal",
+    "method"
+  ],
+  [
     "src/math/core/bigdecimal.js~bigdecimal#tobiginteger",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-toBigInteger",
     "src/math/core/BigDecimal.js~BigDecimal#toBigInteger",
     "method"
   ],
   [
+    "src/math/core/bigdecimal.js~bigdecimal#tocomplex",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-toComplex",
+    "src/math/core/BigDecimal.js~BigDecimal#toComplex",
+    "method"
+  ],
+  [
     "src/math/core/bigdecimal.js~bigdecimal#toengineeringstring",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-toEngineeringString",
     "src/math/core/BigDecimal.js~BigDecimal#toEngineeringString",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#tofraction",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-toFraction",
+    "src/math/core/BigDecimal.js~BigDecimal#toFraction",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#tomatrix",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-toMatrix",
+    "src/math/core/BigDecimal.js~BigDecimal#toMatrix",
     "method"
   ],
   [
@@ -1887,6 +1911,36 @@ window.esdocSearchIndex = [
     "src/math/core/biginteger.js~biginteger#testbit",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-testBit",
     "src/math/core/BigInteger.js~BigInteger#testBit",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#tobigdecimal",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-toBigDecimal",
+    "src/math/core/BigInteger.js~BigInteger#toBigDecimal",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#tobiginteger",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-toBigInteger",
+    "src/math/core/BigInteger.js~BigInteger#toBigInteger",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#tocomplex",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-toComplex",
+    "src/math/core/BigInteger.js~BigInteger#toComplex",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#tofraction",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-toFraction",
+    "src/math/core/BigInteger.js~BigInteger#toFraction",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#tomatrix",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-toMatrix",
+    "src/math/core/BigInteger.js~BigInteger#toMatrix",
     "method"
   ],
   [
@@ -2850,6 +2904,36 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#tobigdecimal",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-toBigDecimal",
+    "src/math/core/Complex.js~Complex#toBigDecimal",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#tobiginteger",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-toBigInteger",
+    "src/math/core/Complex.js~Complex#toBigInteger",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#tocomplex",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-toComplex",
+    "src/math/core/Complex.js~Complex#toComplex",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#tofraction",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-toFraction",
+    "src/math/core/Complex.js~Complex#toFraction",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#tomatrix",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-toMatrix",
+    "src/math/core/Complex.js~Complex#toMatrix",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#tostring",
     "class/src/math/core/Complex.js~Complex.html#instance-method-toString",
     "src/math/core/Complex.js~Complex#toString",
@@ -3423,6 +3507,24 @@ window.esdocSearchIndex = [
     "src/math/core/fraction.js~fraction#tobiginteger",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-toBigInteger",
     "src/math/core/Fraction.js~Fraction#toBigInteger",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#tocomplex",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-toComplex",
+    "src/math/core/Fraction.js~Fraction#toComplex",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#tofraction",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-toFraction",
+    "src/math/core/Fraction.js~Fraction#toFraction",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#tomatrix",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-toMatrix",
+    "src/math/core/Fraction.js~Fraction#toMatrix",
     "method"
   ],
   [
@@ -5025,6 +5127,36 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#tinv2",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-tinv2",
     "src/math/core/Matrix.js~Matrix#tinv2",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#tobigdecimal",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-toBigDecimal",
+    "src/math/core/Matrix.js~Matrix#toBigDecimal",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#tobiginteger",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-toBigInteger",
+    "src/math/core/Matrix.js~Matrix#toBigInteger",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#tocomplex",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-toComplex",
+    "src/math/core/Matrix.js~Matrix#toComplex",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#tofraction",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-toFraction",
+    "src/math/core/Matrix.js~Matrix#toFraction",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#tomatrix",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-toMatrix",
+    "src/math/core/Matrix.js~Matrix#toMatrix",
     "method"
   ],
   [
