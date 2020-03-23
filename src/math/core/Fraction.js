@@ -14,6 +14,7 @@ import BigDecimal from "./BigDecimal.js";
 import MathContext from "./context/MathContext.js";
 import Complex from "./Complex.js";
 import Matrix from "./Matrix.js";
+import KonpeitoInteger from "./base/KonpeitoInteger.js";
 
 /**
  * Fraction type argument.
@@ -283,7 +284,7 @@ class FractionTool {
 /**
  * Fraction class (immutable).
  */
-export default class Fraction {
+export default class Fraction extends KonpeitoInteger {
 
 	/**
 	 * Create an fraction.
@@ -296,6 +297,7 @@ export default class Fraction {
 	 * @param {KFractionInputData} [number] - Fraction data. See how to use the function.
 	 */
 	constructor(number) {
+		super();
 		
 		// 分子
 		/**
@@ -712,6 +714,10 @@ export default class Fraction {
 		}
 	}
 
+	// ----------------------
+	// 指数
+	// ----------------------
+	
 	/**
 	 * Power function.
 	 * - Supports only integers.
@@ -773,6 +779,14 @@ export default class Fraction {
 		const numerator = x.numerator.pow(y.intValue);
 		const denominator = x.denominator.pow(y.intValue);
 		return new Fraction([ numerator, denominator ]);
+	}
+
+	/**
+	 * Square.
+	 * @returns {Fraction} pow(A, 2)
+	 */
+	square() {
+		return this.mul(this);
 	}
 
 	// ----------------------

@@ -15,6 +15,7 @@ import BigDecimal from "./BigDecimal.js";
 import Complex from "./Complex.js";
 import Matrix from "./Matrix.js";
 import MathContext from "./context/MathContext.js";
+import KonpeitoInteger from "./base/KonpeitoInteger.js";
 
 /**
  * BigInteger type argument.
@@ -190,7 +191,7 @@ class BigIntegerTool {
 		}
 		let x;
 		let state;
-		if(num === 0) {
+		if((num | 0) === 0) {
 			state = BIGINTEGER_NUMBER_STATE.ZERO;
 			x = 0;
 		}
@@ -388,7 +389,7 @@ const BIGINTEGER_NUMBER_STATE = {
 /**
  * Arbitrary-precision integer class (immutable).
  */
-export default class BigInteger {
+export default class BigInteger extends KonpeitoInteger {
 
 	/**
 	 * Create an arbitrary-precision integer.
@@ -401,6 +402,7 @@ export default class BigInteger {
 	 * @param {KBigIntegerInputData} [number] - Numeric data. See how to use the function.
 	 */
 	constructor(number) {
+		super();
 		
 		/**
 		 * Numeric state.
@@ -1085,6 +1087,22 @@ export default class BigInteger {
 	 */
 	div(number) {
 		return this.clone()._div(number);
+	}
+
+	/**
+	 * Inverse number of this value.
+	 * @returns {BigInteger} 1 / A
+	 */
+	inv() {
+		{
+			if(!this.isFinite()) {
+				return this.isNaN() ? BigInteger.NaN : BigInteger.ZERO;
+			}
+			if(this.isZero()) {
+				return BigInteger.NaN;
+			}
+		}
+		return BigInteger.ZERO;
 	}
 
 	/**
@@ -1781,6 +1799,50 @@ export default class BigInteger {
 	}
 
 	// ----------------------
+	// 丸め
+	// ----------------------
+	
+	/**
+	 * Floor.
+	 * @returns {BigInteger} floor(A)
+	 */
+	floor() {
+		return this;
+	}
+
+	/**
+	 * Ceil.
+	 * @returns {BigInteger} ceil(A)
+	 */
+	ceil() {
+		return this;
+	}
+	
+	/**
+	 * Rounding to the nearest integer.
+	 * @returns {BigInteger} round(A)
+	 */
+	round() {
+		return this;
+	}
+
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {BigInteger} fix(A), trunc(A)
+	 */
+	fix() {
+		return this;
+	}
+
+	/**
+	 * Fraction.
+	 * @returns {BigInteger} fract(A)
+	 */
+	fract() {
+		return BigInteger.ZERO;
+	}
+
+	// ----------------------
 	// gcd, lcm
 	// ----------------------
 	
@@ -2242,7 +2304,7 @@ export default class BigInteger {
 		// 配列の上位が空になる可能性があるためノーマライズが必要
 		this._memory_reduction();
 		// 符号を計算
-		if((s1 === 1)||(s2 === 1)) {
+		if(this.state !== BIGINTEGER_NUMBER_STATE.ZERO && ((s1 === 1)||(s2 === 1))) {
 			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
 		}
 		// 出力が負の場合は、2の補数

@@ -1,5 +1,5 @@
 /*!
- * konpeito.js (version 5.2.0, 2020/3/23)
+ * konpeito.js (version 5.2.1, 2020/3/23)
  * https://github.com/natade-jp/konpeito
  * Copyright 2013-2020 natade < https://github.com/natade-jp >
  *
@@ -5252,6 +5252,1105 @@ class Signal {
  */
 
 /**
+ * Base class for numbers (immutable).
+ */
+class KonpeitoInteger {
+
+	/**
+	 * Create an number.
+	 * @param {any} [number] - Numeric data. See how to use the function.
+	 */
+	constructor(number) {
+	}
+
+	/**
+	 * Create an entity object of this class.
+	 * @param {any} number 
+	 * @returns {KonpeitoInteger}
+	 */
+	static create(number) {
+		return null;
+	}
+
+	/**
+	 * Create number.
+	 * @param {any} number 
+	 * @returns {KonpeitoInteger}
+	 */
+	static valueOf(number) {
+		return null;
+	}
+
+	/**
+	 * Convert to string.
+	 * @returns {string}
+	 */
+	toString() {
+		return "no";
+	}
+
+	/**
+	 * Deep copy.
+	 * @returns {KonpeitoInteger}
+	 */
+	clone() {
+		return null;
+	}
+
+	/**
+	 * Absolute value.
+	 * @returns {KonpeitoInteger} abs(A)
+	 */
+	abs() {
+		return null;
+	}
+
+	/**
+	 * this * -1
+	 * @returns {KonpeitoInteger} -A
+	 */
+	negate() {
+		return null;
+	}
+
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {any}
+	 */
+	sign() {
+		return null;
+	}
+
+	// ----------------------
+	// 四則演算
+	// ----------------------
+	
+	/**
+	 * Add.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A + B
+	 */
+	add(number) {
+		return null;
+	}
+
+	/**
+	 * Subtract.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A - B
+	 */
+	sub(number) {
+		return null;
+	}
+
+	/**
+	 * Multiply.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A * B
+	 */
+	mul(number) {
+		return null;
+	}
+
+	/**
+	 * Divide.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} fix(A / B)
+	 */
+	div(number) {
+		return null;
+	}
+
+	/**
+	 * Inverse number of this value.
+	 * @returns {KonpeitoInteger} 1 / A
+	 */
+	inv() {
+		return null;
+	}
+
+	/**
+	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A % B
+	 */
+	rem(number) {
+		return null;
+	}
+
+	/**
+	 * Modulo, positive rem of division.
+	 * - Result has same sign as the Divisor.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A mod B
+	 */
+	mod(number) {
+		return null;
+	}
+
+	/**
+	 * Modular exponentiation.
+	 * @param {any} exponent
+	 * @param {any} m 
+	 * @returns {KonpeitoInteger} A^B mod m
+	 */
+	modPow(exponent, m) {
+		return null;
+	}
+
+	/**
+	 * Modular multiplicative inverse.
+	 * @param {any} m
+	 * @returns {KonpeitoInteger} A^(-1) mod m
+	 */
+	modInverse(m) {
+		return null;
+	}
+
+	// ----------------------
+	// その他の演算
+	// ----------------------
+	
+	/**
+	 * Factorial function, x!.
+	 * @returns {KonpeitoInteger} n!
+	 */
+	factorial() {
+		return null;
+	}
+
+	/**
+	 * Multiply a multiple of ten.
+	 * @param {any} n
+	 * @returns {KonpeitoInteger} x * 10^n
+	 */
+	scaleByPowerOfTen(n) {
+		return null;
+	}
+
+	// ----------------------
+	// 指数
+	// ----------------------
+	
+	/**
+	 * Power function.
+	 * @param {any} exponent
+	 * @returns {KonpeitoInteger} pow(A, B)
+	 */
+	pow(exponent) {
+		return null;
+	}
+
+	/**
+	 * Square.
+	 * @returns {KonpeitoInteger} pow(A, 2)
+	 */
+	square() {
+		return null;
+	}
+
+	// ----------------------
+	// 他の型に変換用
+	// ----------------------
+	
+	/**
+	 * boolean value.
+	 * @returns {boolean}
+	 */
+	get booleanValue() {
+		return null;
+	}
+
+	/**
+	 * integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		return null;
+	}
+
+	/**
+	 * floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		return null;
+	}
+	
+	// ----------------------
+	// konpeito で扱う数値型へ変換
+	// ----------------------
+	
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return null;
+	}
+
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		return null;
+	}
+	
+	/**
+	 * return Fraction.
+	 * @returns {Fraction}
+	 */
+	toFraction() {
+		return null;
+	}
+	
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return null;
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return null;
+	}
+
+	// ----------------------
+	// 比較
+	// ----------------------
+	
+	/**
+	 * Equals.
+	 * @param {any} number
+	 * @returns {boolean} A === B
+	 */
+	equals(number) {
+		return null;
+	}
+
+	/**
+	 * Compare values.
+	 * @param {any} number 
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number) {
+		return null;
+	}
+
+	// max, min, clip などは行列だと意味が違うため外す
+
+	// ----------------------
+	// 丸め
+	// ----------------------
+	
+	/**
+	 * Floor.
+	 * @returns {KonpeitoInteger} floor(A)
+	 */
+	floor() {
+		return null;
+	}
+
+	/**
+	 * Ceil.
+	 * @returns {KonpeitoInteger} ceil(A)
+	 */
+	ceil() {
+		return null;
+	}
+	
+	/**
+	 * Rounding to the nearest integer.
+	 * @returns {KonpeitoInteger} round(A)
+	 */
+	round() {
+		return null;
+	}
+
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {KonpeitoInteger} fix(A), trunc(A)
+	 */
+	fix() {
+		return null;
+	}
+
+	/**
+	 * Fraction.
+	 * @returns {KonpeitoInteger} fract(A)
+	 */
+	fract() {
+		return BigInteger.ZERO;
+	}
+
+	// ----------------------
+	// gcd, lcm
+	// ----------------------
+	
+	/**
+	 * Euclidean algorithm.
+	 * @param {any} number 
+	 * @returns {KonpeitoInteger} gcd(x, y)
+	 */
+	gcd(number) {
+		return null;
+	}
+
+	/**
+	 * Extended Euclidean algorithm.
+	 * @param {any} number 
+	 * @returns {Array<KonpeitoInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 */
+	extgcd(number) {
+		return null;
+	}
+
+	/**
+	 * Least common multiple.
+	 * @param {any} number 
+	 * @returns {KonpeitoInteger} lcm(x, y)
+	 */
+	lcm(number) {
+		return null;
+	}
+
+	// ----------------------
+	// 素数系
+	// ----------------------
+	
+	/**
+	 * Return true if the value is prime number.
+	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
+	 */
+	isPrime() {
+		return null;
+	}
+
+	/**
+	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * 
+	 * Attention : it takes a very long time to process.
+	 * @param {any} [certainty=100] - Repeat count (prime precision).
+	 * @returns {boolean}
+	 */
+	isProbablePrime(certainty) {
+		return null;
+	}
+
+	/**
+	 * Next prime.
+	 * @param {any} [certainty=100] - Repeat count (prime precision).
+	 * @param {any} [search_max=100000] - Search range of next prime.
+	 * @returns {KonpeitoInteger}
+	 */
+	nextProbablePrime(certainty, search_max) {
+		return null;
+	}
+
+	// ----------------------
+	// シフト演算系
+	// ----------------------
+	
+	/**
+	 * this << n
+	 * @param {any} n
+	 * @returns {KonpeitoInteger} A << n
+	 */
+	shift(n) {
+		return null;
+	}
+
+	// ----------------------
+	// ビット演算系
+	// ----------------------
+	
+	/**
+	 * Logical AND.
+	 * @param {any} number 
+	 * @returns {KonpeitoInteger} A & B
+	 */
+	and(number) {
+		return null;
+	}
+
+	/**
+	 * Logical OR.
+	 * @param {any} number 
+	 * @returns {KonpeitoInteger} A | B
+	 */
+	or(number) {
+		return null;
+	}
+
+	/**
+	 * Logical Exclusive-OR.
+	 * @param {any} number 
+	 * @returns {KonpeitoInteger} A ^ B
+	 */
+	xor(number) {
+		return null;
+	}
+
+	/**
+	 * Logical Not. (mutable)
+	 * @returns {KonpeitoInteger} !A
+	 */
+	not() {
+		return null;
+	}
+
+	// ----------------------
+	// テスト系
+	// ----------------------
+	
+	/**
+	 * this === 0
+	 * @returns {boolean}
+	 */
+	isZero() {
+		return null;
+	}
+	
+	/**
+	 * this === 1
+	 * @returns {boolean}
+	 */
+	isOne() {
+		return null;
+	}
+	
+	/**
+	 * this > 0
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		return null;
+	}
+
+	/**
+	 * this < 0
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return null;
+	}
+
+	/**
+	 * this >= 0
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return null;
+	}
+	
+	/**
+	 * this === NaN
+	 * @returns {boolean} isNaN(A)
+	 */
+	isNaN() {
+		return null;
+	}
+	
+	/**
+	 * this === Infinity
+	 * @returns {boolean} isPositiveInfinity(A)
+	 */
+	isPositiveInfinity() {
+		return null;
+	}
+
+	/**
+	 * this === -Infinity
+	 * @returns {boolean} isNegativeInfinity(A)
+	 */
+	isNegativeInfinity() {
+		return null;
+	}
+
+	/**
+	 * this === Infinity or -Infinity
+	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+	 */
+	isInfinite() {
+		return null;
+	}
+	
+	/**
+	 * Return true if the value is finite number.
+	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
+	 */
+	isFinite() {
+		return null;
+	}
+
+	// ----------------------
+	// 定数
+	// ----------------------
+	
+	/**
+	 * -1
+	 * @returns {KonpeitoInteger} -1
+	 */
+	static get MINUS_ONE() {
+		return null;
+	}
+	
+	/**
+	 * 0
+	 * @returns {KonpeitoInteger} 0
+	 */
+	static get ZERO() {
+		return null;
+	}
+
+	/**
+	 * 1
+	 * @returns {KonpeitoInteger} 1
+	 */
+	static get ONE() {
+		return null;
+	}
+	
+	/**
+	 * 2
+	 * @returns {KonpeitoInteger} 2
+	 */
+	static get TWO() {
+		return null;
+	}
+	
+	/**
+	 * 10
+	 * @returns {KonpeitoInteger} 10
+	 */
+	static get TEN() {
+		return null;
+	}
+
+	/**
+	 * Positive infinity.
+	 * @returns {KonpeitoInteger} Infinity
+	 */
+	static get POSITIVE_INFINITY() {
+		return null;
+	}
+	
+	/**
+	 * Negative Infinity.
+	 * @returns {KonpeitoInteger} -Infinity
+	 */
+	static get NEGATIVE_INFINITY() {
+		return null;
+	}
+
+	/**
+	 * Not a Number.
+	 * @returns {KonpeitoInteger} NaN
+	 */
+	static get NaN() {
+		return null;
+	}
+
+	// ----------------------
+	// 互換性
+	// ----------------------
+	
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {any}
+	 */
+	signum() {
+		return this.sign();
+	}
+
+	/**
+	 * Subtract.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A - B
+	 */
+	subtract(number) {
+		return this.sub(number);
+	}
+
+	/**
+	 * Multiply.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A * B
+	 */
+	multiply(number) {
+		return this.mul(number);
+	}
+
+	/**
+	 * Divide.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} fix(A / B)
+	 */
+	divide(number) {
+		return this.div(number);
+	}
+
+	/**
+	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A % B
+	 */
+	remainder(number) {
+		return this.rem(number);
+	}
+}
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Base class for numbers (immutable).
+ */
+class KonpeitoFloat extends KonpeitoInteger {
+
+	/**
+	 * Create an number.
+	 * @param {any} [number] - Numeric data. See how to use the function.
+	 */
+	constructor(number) {
+		super();
+	}
+
+	// ----------------------
+	// 指数
+	// ----------------------
+	
+	/**
+	 * Square root.
+	 * @returns {KonpeitoFloat} sqrt(A)
+	 */
+	sqrt() {
+		return null;
+	}
+
+	/**
+	 * Cube root.
+	 * @returns {KonpeitoFloat} cbrt(A)
+	 */
+	cbrt() {
+		return null;
+	}
+
+	/**
+	 * Reciprocal square root.
+	 * @returns {KonpeitoFloat} rsqrt(A)
+	 */
+	rsqrt() {
+		return null;
+	}
+
+	/**
+	 * Logarithmic function.
+	 * @returns {KonpeitoFloat} log(A)
+	 */
+	log() {
+		return null;
+	}
+
+	/**
+	 * Exponential function.
+	 * @returns {KonpeitoFloat} exp(A)
+	 */
+	exp() {
+		return null;
+	}
+
+	/**
+	 * e^x - 1
+	 * @returns {KonpeitoFloat} expm1(A)
+	 */
+	expm1() {
+		return null;
+	}
+
+	/**
+	 * ln(1 + x)
+	 * @returns {KonpeitoFloat} log1p(A)
+	 */
+	log1p() {
+		return null;
+	}
+	
+	/**
+	 * log_2(x)
+	 * @returns {KonpeitoFloat} log2(A)
+	 */
+	log2() {
+		return null;
+	}
+
+	/**
+	 * log_10(x)
+	 * @returns {KonpeitoFloat} log10(A)
+	 */
+	log10() {
+		return null;
+	}
+
+	// ----------------------
+	// 三角関数
+	// ----------------------
+	
+	/**
+	 * Sine function.
+	 * @returns {KonpeitoFloat} sin(A)
+	 */
+	sin() {
+		return null;
+	}
+
+	/**
+	 * Cosine function.
+	 * @returns {KonpeitoFloat} cos(A)
+	 */
+	cos() {
+		return null;
+	}
+
+	/**
+	 * Tangent function.
+	 * @returns {KonpeitoFloat} tan(A)
+	 */
+	tan() {
+		return null;
+	}
+
+	/**
+	 * Atan (arc tangent) function.
+	 * - Return the values of [-PI/2, PI/2].
+	 * @returns {KonpeitoFloat} atan(A)
+	 */
+	atan() {
+		return null;
+	}
+
+	/**
+	 * Atan (arc tangent) function.
+	 * Return the values of [-PI, PI] .
+	 * Supports only real numbers.
+	 * @param {any} [number] - X
+	 * @returns {KonpeitoFloat} atan2(Y, X)
+	 */
+	atan2(number) {
+		return null;
+	}
+	
+	// ----------------------
+	// 双曲線関数
+	// ----------------------
+	
+	/**
+	 * Arc sine function.
+	 * @returns {KonpeitoFloat} asin(A)
+	 */
+	asin() {
+		return null;
+	}
+
+	/**
+	 * Arc cosine function.
+	 * @returns {KonpeitoFloat} acos(A)
+	 */
+	acos() {
+		return null;
+	}
+	
+
+	/**
+	 * Hyperbolic sine function.
+	 * @returns {KonpeitoFloat} sinh(A)
+	 */
+	sinh() {
+		return null;
+	}
+
+	/**
+	 * Inverse hyperbolic sine function.
+	 * @returns {KonpeitoFloat} asinh(A)
+	 */
+	asinh() {
+		return null;
+	}
+
+	/**
+	 * Hyperbolic cosine function.
+	 * @returns {KonpeitoFloat} cosh(A)
+	 */
+	cosh() {
+		return null;
+	}
+
+	/**
+	 * Inverse hyperbolic cosine function.
+	 * @returns {KonpeitoFloat} acosh(A)
+	 */
+	acosh() {
+		return null;
+	}
+
+	/**
+	 * Hyperbolic tangent function.
+	 * @returns {KonpeitoFloat} tanh(A)
+	 */
+	tanh() {
+		return null;
+	}
+	
+	/**
+	 * Inverse hyperbolic tangent function.
+	 * @returns {KonpeitoFloat} atanh(A)
+	 */
+	atanh() {
+		return null;
+	}
+
+	/**
+	 * Secant function.
+	 * @returns {KonpeitoFloat} sec(A)
+	 */
+	sec() {
+		return null;
+	}
+
+	/**
+	 * Reverse secant function.
+	 * @returns {KonpeitoFloat} asec(A)
+	 */
+	asec() {
+		return null;
+	}
+
+	/**
+	 * Hyperbolic secant function.
+	 * @returns {KonpeitoFloat} sech(A)
+	 */
+	sech() {
+		return null;
+	}
+
+	/**
+	 * Inverse hyperbolic secant function.
+	 * @returns {KonpeitoFloat} asech(A)
+	 */
+	asech() {
+		return null;
+	}
+
+	/**
+	 * Cotangent function.
+	 * @returns {KonpeitoFloat} cot(A)
+	 */
+	cot() {
+		return null;
+	}
+
+	/**
+	 * Inverse cotangent function.
+	 * @returns {KonpeitoFloat} acot(A)
+	 */
+	acot() {
+		return null;
+	}
+
+	/**
+	 * Hyperbolic cotangent function.
+	 * @returns {KonpeitoFloat} coth(A)
+	 */
+	coth() {
+		return null;
+	}
+
+	/**
+	 * Inverse hyperbolic cotangent function.
+	 * @returns {KonpeitoFloat} acoth(A)
+	 */
+	acoth() {
+		return null;
+	}
+
+	/**
+	 * Cosecant function.
+	 * @returns {KonpeitoFloat} csc(A)
+	 */
+	csc() {
+		return null;
+	}
+
+	/**
+	 * Inverse cosecant function.
+	 * @returns {KonpeitoFloat} acsc(A)
+	 */
+	acsc() {
+		return null;
+	}
+
+	/**
+	 * Hyperbolic cosecant function.
+	 * @returns {KonpeitoFloat} csch(A)
+	 */
+	csch() {
+		return null;
+	}
+
+	/**
+	 * Inverse hyperbolic cosecant function.
+	 * @returns {KonpeitoFloat} acsch(A)
+	 */
+	acsch() {
+		return null;
+	}
+
+	// ----------------------
+	// 信号処理系
+	// ----------------------
+	
+	/**
+	 * Normalized sinc function.
+	 * @returns {KonpeitoFloat} sinc(A)
+	 */
+	sinc() {
+		return null;
+	}
+
+	// ----------------------
+	// 定数
+	// ----------------------
+	
+	/**
+	 * PI.
+	 * @returns {KonpeitoFloat} 3.14...
+	 */
+	static get PI() {
+		return null;
+	}
+
+	/**
+	 * 0.25 * PI.
+	 * @returns {KonpeitoFloat} 0.78...
+	 */
+	static get QUARTER_PI() {
+		return null;
+	}
+
+	/**
+	 * 0.5 * PI.
+	 * @returns {KonpeitoFloat} 1.57...
+	 */
+	static get HALF_PI() {
+		return null;
+	}
+
+	/**
+	 * 2 * PI.
+	 * @returns {KonpeitoFloat} 6.28...
+	 */
+	static get TWO_PI() {
+		return null;
+	}
+
+	/**
+	 * E, Napier's constant.
+	 * @returns {KonpeitoFloat} 2.71...
+	 */
+	static get E() {
+		return null;
+	}
+
+	/**
+	 * log_e(2)
+	 * @returns {KonpeitoFloat} ln(2)
+	 */
+	static get LN2() {
+		return null;
+	}
+
+	/**
+	 * log_e(10)
+	 * @returns {KonpeitoFloat} ln(10)
+	 */
+	static get LN10() {
+		return null;
+	}
+
+	/**
+	 * log_2(e)
+	 * @returns {KonpeitoFloat} log_2(e)
+	 */
+	static get LOG2E() {
+		return null;
+	}
+	
+	/**
+	 * log_10(e)
+	 * @returns {KonpeitoFloat} log_10(e)
+	 */
+	static get LOG10E() {
+		return null;
+	}
+	
+	/**
+	 * sqrt(2)
+	 * @returns {KonpeitoFloat} sqrt(2)
+	 */
+	static get SQRT2() {
+		return null;
+	}
+	
+	/**
+	 * sqrt(0.5)
+	 * @returns {KonpeitoFloat} sqrt(0.5)
+	 */
+	static get SQRT1_2() {
+		return null;
+	}
+	
+	/**
+	 * 0.5
+	 * @returns {KonpeitoFloat} 0.5
+	 */
+	static get HALF() {
+		return null;
+	}
+
+
+
+}
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
  * Matrix type argument.
  * - Matrix
  * - Complex
@@ -5623,7 +6722,7 @@ class MatrixTool {
 /**
  * Complex matrix class. (immutable)
  */
-class Matrix {
+class Matrix extends KonpeitoFloat {
 	
 	/**
 	 * Create a complex matrix.
@@ -5634,6 +6733,8 @@ class Matrix {
 	 * @param {KMatrixInputData} number - Complex matrix. See how to use the function.
 	 */
 	constructor(number) {
+		super();
+
 		let matrix_array = null;
 		let is_check_string = false;
 		if(arguments.length === 1) {
@@ -6998,11 +8099,10 @@ class Matrix {
 
 	/**
 	 * Compare values.
-	 * - Return value between scalars is of type Number.
-	 * - Return value between matrices is type Matrix.
+	 * - Use `compareToMatrix` if you want to compare matrices.
 	 * @param {KMatrixInputData} number 
 	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
-	 * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, tolerance) {
 		const M1 = this;
@@ -7011,12 +8111,25 @@ class Matrix {
 		if(M1.isScalar() && M2.isScalar()) {
 			return M1.scalar.compareTo(M2.scalar, tolerance);
 		}
+		throw "IllegalArgumentException";
+	}
+
+	/**
+	 * Compare values.
+	 * - Use `compareTo` if you want to compare scalar values.
+	 * @param {KMatrixInputData} number 
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {Matrix} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareToMatrix(number, tolerance) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
 		const x1 = M1.matrix_array;
 		const x2 = M2.matrix_array;
 		const y_row_length = Math.max(M1.row_length, M2.row_length);
 		const y_column_length = Math.max(M1.column_length, M2.column_length);
 		return Matrix.createMatrixDoEachCalculation(function(row, col) {
-			return x1[row % M1.row_length][col % M1.column_length].compareTo(x2[row % M2.row_length][col % M2.column_length]);
+			return x1[row % M1.row_length][col % M1.column_length].compareTo(x2[row % M2.row_length][col % M2.column_length], tolerance);
 		}, y_row_length, y_column_length);
 	}
 
@@ -7437,7 +8550,7 @@ class Matrix {
 	 * Power function.
 	 * - Unless the matrix is a scalar value, only integers are supported.
 	 * - Use `dotpow` if you want to use `pow` for each element. A real number can be specified.
-	 * @param {KMatrixInputData} number - 整数
+	 * @param {KMatrixInputData} number
 	 * @returns {Matrix} pow(A, B)
 	 */
 	pow(number) {
@@ -7484,6 +8597,15 @@ class Matrix {
 		return Matrix.createMatrixDoEachCalculation(function(row, col) {
 			return x1[row % M1.row_length][col % M1.column_length].pow(x2[row % M2.row_length][col % M2.column_length]);
 		}, y_row_length, y_column_length);
+	}
+
+	/**
+	 * Square.
+	 * - Unless the matrix is a scalar value, only integers are supported.
+	 * @returns {Matrix} pow(A, 2)
+	 */
+	square() {
+		return this.pow(2);
 	}
 
 	/**
@@ -7890,6 +9012,7 @@ class Matrix {
 	/**
 	 * Test if each element of the matrix is integer.
 	 * - 1 if true, 0 if false.
+	 * - Use `isInteger` if you want to test first element.
 	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -7902,6 +9025,7 @@ class Matrix {
 	/**
 	 * Test if each element of the matrix is complex integer.
 	 * - 1 if true, 0 if false.
+	 * - Use `isComplexInteger` if you want to test first element.
 	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -7914,6 +9038,8 @@ class Matrix {
 	/**
 	 * real(this) === 0
 	 * - 1 if true, 0 if false.
+	 * - Use `isZero` if you want to test first element.
+	 * - Use `isZeros` to check for a zero matrix.
 	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -7926,6 +9052,7 @@ class Matrix {
 	/**
 	 * real(this) === 1
 	 * - 1 if true, 0 if false.
+	 * - Use `isOne` if you want to test first element.
 	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -7938,6 +9065,7 @@ class Matrix {
 	/**
 	 * Test if each element of the matrix is complex.
 	 * - 1 if true, 0 if false.
+	 * - Use `isComplex` to test whether a matrix contains complex numbers.
 	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -7950,6 +9078,7 @@ class Matrix {
 	/**
 	 * Test if each element of the matrix is real.
 	 * - 1 if true, 0 if false.
+	 * - Use `isReal` to test for complex numbers in matrices.
 	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -7962,6 +9091,7 @@ class Matrix {
 	/**
 	 * Test if each element of the matrix is NaN.
 	 * - 1 if true, 0 if false.
+	 * - Use `isNaN` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNaN() {
@@ -7973,6 +9103,7 @@ class Matrix {
 	/**
 	 * real(this) > 0
 	 * - 1 if true, 0 if false.
+	 * - Use `isPositive` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testPositive() {
@@ -7984,6 +9115,7 @@ class Matrix {
 	/**
 	 * real(this) < 0
 	 * - 1 if true, 0 if false.
+	 * - Use `isNegative` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNegative() {
@@ -7995,6 +9127,7 @@ class Matrix {
 	/**
 	 * real(this) >= 0
 	 * - 1 if true, 0 if false.
+	 * - Use `isNotNegative` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNotNegative() {
@@ -8006,6 +9139,7 @@ class Matrix {
 	/**
 	 * Test if each element of the matrix is positive infinite.
 	 * - 1 if true, 0 if false.
+	 * - Use `isPositiveInfinity` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testPositiveInfinity() {
@@ -8017,6 +9151,7 @@ class Matrix {
 	/**
 	 * Test if each element of the matrix is negative infinite.
 	 * - 1 if true, 0 if false.
+	 * - Use `isNegativeInfinity` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNegativeInfinity() {
@@ -8028,6 +9163,7 @@ class Matrix {
 	/**
 	 * Test if each element of the matrix is infinite.
 	 * - 1 if true, 0 if false.
+	 * - Use `isInfinite` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testInfinite() {
@@ -8039,12 +9175,143 @@ class Matrix {
 	/**
 	 * Test if each element of the matrix is finite.
 	 * - 1 if true, 0 if false.
+	 * - Use `isFinite` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testFinite() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.isFinite() ? Complex.ONE : Complex.ZERO;
 		});
+	}
+
+
+	// ----------------------
+	// 1要素のみのテスト
+	// ----------------------
+	
+	/**
+	 * this === 0
+	 * - Use only the first element.
+	 * - Use `testZero` if you want to test the elements of a matrix.
+	 * - Use `isZeros` to check for a zero matrix.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {boolean}
+	 */
+	isZero(tolerance) {
+		return this.scalar.isZero(tolerance);
+	}
+	
+	/**
+	 * this === 1
+	 * - Use only the first element.
+	 * - Use `testOne` if you want to test the elements of a matrix.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {boolean}
+	 */
+	isOne(tolerance) {
+		return this.scalar.isOne(tolerance);
+	}
+	
+	/**
+	 * this > 0
+	 * - Use only the first element.
+	 * - Use `testPositive` if you want to test the elements of a matrix.
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		return this.scalar.isPositive();
+	}
+
+	/**
+	 * this < 0
+	 * - Use only the first element.
+	 * - Use `testNegative` if you want to test the elements of a matrix.
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return this.scalar.isNegative();
+	}
+
+	/**
+	 * this >= 0
+	 * - Use only the first element.
+	 * - Use `testNotNegative` if you want to test the elements of a matrix.
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return this.scalar.isNotNegative();
+	}
+	
+	/**
+	 * this === NaN
+	 * - Use only the first element.
+	 * - Use `testNaN` if you want to test the elements of a matrix.
+	 * @returns {boolean} isNaN(A)
+	 */
+	isNaN() {
+		return this.scalar.isNaN();
+	}
+	
+	/**
+	 * this === Infinity
+	 * - Use only the first element.
+	 * - Use `testPositiveInfinity` if you want to test the elements of a matrix.
+	 * @returns {boolean} isPositiveInfinity(A)
+	 */
+	isPositiveInfinity() {
+		return this.scalar.isPositiveInfinity();
+	}
+
+	/**
+	 * this === -Infinity
+	 * - Use only the first element.
+	 * - Use `testNegativeInfinity` if you want to test the elements of a matrix.
+	 * @returns {boolean} isNegativeInfinity(A)
+	 */
+	isNegativeInfinity() {
+		return this.scalar.isNegativeInfinity();
+	}
+
+	/**
+	 * this === Infinity or -Infinity
+	 * - Use only the first element.
+	 * - Use `testInfinite` if you want to test the elements of a matrix.
+	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+	 */
+	isInfinite() {
+		return this.scalar.isInfinite();
+	}
+	
+	/**
+	 * Return true if the value is finite number.
+	 * - Use only the first element.
+	 * - Use `testFinite` if you want to test the elements of a matrix.
+	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
+	 */
+	isFinite() {
+		return this.scalar.isFinite();
+	}
+
+	/**
+	 * Return true if the value is integer.
+	 * - Use only the first element.
+	 * - Use `testFinite` if you want to test the elements of a matrix.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {boolean}
+	 */
+	isInteger(tolerance) {
+		return this.scalar.isInteger(tolerance);
+	}
+
+	/**
+	 * Returns true if the vallue is complex integer (including normal integer).
+	 * - Use only the first element.
+	 * - Use `testFinite` if you want to test the elements of a matrix.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {boolean} real(A) === integer && imag(A) === integer
+	 */
+	isComplexInteger(tolerance) {
+		return this.scalar.isComplexInteger(tolerance);
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
@@ -9389,6 +10656,21 @@ class Matrix {
 	}
 	
 	// ----------------------
+	// その他の演算
+	// ----------------------
+	
+	/**
+	 * Multiply a multiple of ten.
+	 * @param {KMatrixInputData} n
+	 * @returns {Matrix} x * 10^n
+	 */
+	scaleByPowerOfTen(n) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.scaleByPowerOfTen(Matrix._toComplex(n));
+		});
+	}
+
+	// ----------------------
 	// 素数
 	// ----------------------
 	
@@ -9397,6 +10679,7 @@ class Matrix {
 	 * - 1 if true, 0 if false.
 	 * - Calculated as an integer.
 	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * - Use `isPrime` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testPrime() {
@@ -9408,6 +10691,8 @@ class Matrix {
 	/**
 	 * Test if each element of the matrix is prime number by Miller-Labin prime number determination method.
 	 * - 1 if true, 0 if false.
+	 * - Use `isProbablePrime` if you want to test first element.
+	 * 
 	 * Attention : it takes a very long time to process.
 	 * - Calculated as an integer.
 	 * @param {KMatrixInputData} [certainty=100] - Repeat count (prime precision).
@@ -9434,6 +10719,32 @@ class Matrix {
 		});
 	}
 	
+	/**
+	 * Return true if the value is prime number.
+	 * - Calculated as an integer.
+	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * - Use only the first element.
+	 * - Use `testPrime` if you want to test the elements of a matrix.
+	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
+	 */
+	isPrime() {
+		return this.scalar.isPrime();
+	}
+	
+	/**
+	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * - Use only the first element.
+	 * - Use `testProbablePrime` if you want to test the elements of a matrix.
+	 * 
+	 * Attention : it takes a very long time to process.
+	 * - Calculated as an integer.
+	 * @param {KMatrixInputData} [certainty=100] - Repeat count (prime precision).
+	 * @returns {boolean}
+	 */
+	isProbablePrime(certainty) {
+		return this.scalar.isProbablePrime(certainty);
+	}
+
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	// statistics 統計計算用
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
@@ -10074,7 +11385,7 @@ class ComplexTool {
 /**
  * Complex number class. (immutable)
  */
-class Complex {
+class Complex extends KonpeitoFloat {
 
 	/**
 	 * Create a complex number.
@@ -10085,6 +11396,8 @@ class Complex {
 	 * @param {KComplexInputData} number - Complex number. See how to use the function.
 	 */
 	constructor(number) {
+		super();
+		
 		// 行列で使うためイミュータブルは必ず守ること。
 		if(arguments.length === 1) {
 			const obj = number;
@@ -12078,6 +13391,19 @@ class Complex {
 	}
 	
 	// ----------------------
+	// その他の演算
+	// ----------------------
+	
+	/**
+	 * Multiply a multiple of ten.
+	 * @param {KComplexInputData} n
+	 * @returns {Complex} x * 10^n
+	 */
+	scaleByPowerOfTen(n) {
+		return this.mul(Complex.TEN.pow(n));
+	}
+
+	// ----------------------
 	// 素数
 	// ----------------------
 	
@@ -12753,7 +14079,7 @@ class FractionTool {
 /**
  * Fraction class (immutable).
  */
-class Fraction {
+class Fraction extends KonpeitoInteger {
 
 	/**
 	 * Create an fraction.
@@ -12766,6 +14092,7 @@ class Fraction {
 	 * @param {KFractionInputData} [number] - Fraction data. See how to use the function.
 	 */
 	constructor(number) {
+		super();
 		
 		// 分子
 		/**
@@ -13182,6 +14509,10 @@ class Fraction {
 		}
 	}
 
+	// ----------------------
+	// 指数
+	// ----------------------
+	
 	/**
 	 * Power function.
 	 * - Supports only integers.
@@ -13243,6 +14574,14 @@ class Fraction {
 		const numerator = x.numerator.pow(y.intValue);
 		const denominator = x.denominator.pow(y.intValue);
 		return new Fraction([ numerator, denominator ]);
+	}
+
+	/**
+	 * Square.
+	 * @returns {Fraction} pow(A, 2)
+	 */
+	square() {
+		return this.mul(this);
 	}
 
 	// ----------------------
@@ -14268,7 +15607,7 @@ class BigIntegerTool {
 		}
 		let x;
 		let state;
-		if(num === 0) {
+		if((num | 0) === 0) {
 			state = BIGINTEGER_NUMBER_STATE.ZERO;
 			x = 0;
 		}
@@ -14466,7 +15805,7 @@ const BIGINTEGER_NUMBER_STATE = {
 /**
  * Arbitrary-precision integer class (immutable).
  */
-class BigInteger {
+class BigInteger extends KonpeitoInteger {
 
 	/**
 	 * Create an arbitrary-precision integer.
@@ -14479,6 +15818,7 @@ class BigInteger {
 	 * @param {KBigIntegerInputData} [number] - Numeric data. See how to use the function.
 	 */
 	constructor(number) {
+		super();
 		
 		/**
 		 * Numeric state.
@@ -15163,6 +16503,22 @@ class BigInteger {
 	 */
 	div(number) {
 		return this.clone()._div(number);
+	}
+
+	/**
+	 * Inverse number of this value.
+	 * @returns {BigInteger} 1 / A
+	 */
+	inv() {
+		{
+			if(!this.isFinite()) {
+				return this.isNaN() ? BigInteger.NaN : BigInteger.ZERO;
+			}
+			if(this.isZero()) {
+				return BigInteger.NaN;
+			}
+		}
+		return BigInteger.ZERO;
 	}
 
 	/**
@@ -15859,6 +17215,50 @@ class BigInteger {
 	}
 
 	// ----------------------
+	// 丸め
+	// ----------------------
+	
+	/**
+	 * Floor.
+	 * @returns {BigInteger} floor(A)
+	 */
+	floor() {
+		return this;
+	}
+
+	/**
+	 * Ceil.
+	 * @returns {BigInteger} ceil(A)
+	 */
+	ceil() {
+		return this;
+	}
+	
+	/**
+	 * Rounding to the nearest integer.
+	 * @returns {BigInteger} round(A)
+	 */
+	round() {
+		return this;
+	}
+
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {BigInteger} fix(A), trunc(A)
+	 */
+	fix() {
+		return this;
+	}
+
+	/**
+	 * Fraction.
+	 * @returns {BigInteger} fract(A)
+	 */
+	fract() {
+		return BigInteger.ZERO;
+	}
+
+	// ----------------------
 	// gcd, lcm
 	// ----------------------
 	
@@ -16320,7 +17720,7 @@ class BigInteger {
 		// 配列の上位が空になる可能性があるためノーマライズが必要
 		this._memory_reduction();
 		// 符号を計算
-		if((s1 === 1)||(s2 === 1)) {
+		if(this.state !== BIGINTEGER_NUMBER_STATE.ZERO && ((s1 === 1)||(s2 === 1))) {
 			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
 		}
 		// 出力が負の場合は、2の補数
@@ -17007,7 +18407,7 @@ class BigDecimalTool {
 /**
  * Arbitrary-precision floating-point number class (immutable).
  */
-class BigDecimal {
+class BigDecimal extends KonpeitoFloat {
 	
 	/**
 	 * Create an arbitrary-precision floating-point number.
@@ -17026,6 +18426,7 @@ class BigDecimal {
 	 * @param {KBigDecimalInputData} number - Real data.
 	 */
 	constructor(number) {
+		super();
 
 		/**
 		 * The scale of this BigDecimal.

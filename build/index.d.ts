@@ -60,6 +60,652 @@ declare class konpeito {
 }
 
 /**
+ * Base class for numbers (immutable).
+ */
+declare class KonpeitoFloat {
+    /**
+     * Square root.
+     * @returns {KonpeitoFloat} sqrt(A)
+     */
+    sqrt(): KonpeitoFloat;
+    /**
+     * Cube root.
+     * @returns {KonpeitoFloat} cbrt(A)
+     */
+    cbrt(): KonpeitoFloat;
+    /**
+     * Reciprocal square root.
+     * @returns {KonpeitoFloat} rsqrt(A)
+     */
+    rsqrt(): KonpeitoFloat;
+    /**
+     * Logarithmic function.
+     * @returns {KonpeitoFloat} log(A)
+     */
+    log(): KonpeitoFloat;
+    /**
+     * Exponential function.
+     * @returns {KonpeitoFloat} exp(A)
+     */
+    exp(): KonpeitoFloat;
+    /**
+     * e^x - 1
+     * @returns {KonpeitoFloat} expm1(A)
+     */
+    expm1(): KonpeitoFloat;
+    /**
+     * ln(1 + x)
+     * @returns {KonpeitoFloat} log1p(A)
+     */
+    log1p(): KonpeitoFloat;
+    /**
+     * log_2(x)
+     * @returns {KonpeitoFloat} log2(A)
+     */
+    log2(): KonpeitoFloat;
+    /**
+     * log_10(x)
+     * @returns {KonpeitoFloat} log10(A)
+     */
+    log10(): KonpeitoFloat;
+    /**
+     * Sine function.
+     * @returns {KonpeitoFloat} sin(A)
+     */
+    sin(): KonpeitoFloat;
+    /**
+     * Cosine function.
+     * @returns {KonpeitoFloat} cos(A)
+     */
+    cos(): KonpeitoFloat;
+    /**
+     * Tangent function.
+     * @returns {KonpeitoFloat} tan(A)
+     */
+    tan(): KonpeitoFloat;
+    /**
+     * Atan (arc tangent) function.
+     * - Return the values of [-PI/2, PI/2].
+     * @returns {KonpeitoFloat} atan(A)
+     */
+    atan(): KonpeitoFloat;
+    /**
+     * Atan (arc tangent) function.
+     * Return the values of [-PI, PI] .
+     * Supports only real numbers.
+     * @param {any} [number] - X
+     * @returns {KonpeitoFloat} atan2(Y, X)
+     */
+    atan2(number?: any): KonpeitoFloat;
+    /**
+     * Arc sine function.
+     * @returns {KonpeitoFloat} asin(A)
+     */
+    asin(): KonpeitoFloat;
+    /**
+     * Arc cosine function.
+     * @returns {KonpeitoFloat} acos(A)
+     */
+    acos(): KonpeitoFloat;
+    /**
+     * Hyperbolic sine function.
+     * @returns {KonpeitoFloat} sinh(A)
+     */
+    sinh(): KonpeitoFloat;
+    /**
+     * Inverse hyperbolic sine function.
+     * @returns {KonpeitoFloat} asinh(A)
+     */
+    asinh(): KonpeitoFloat;
+    /**
+     * Hyperbolic cosine function.
+     * @returns {KonpeitoFloat} cosh(A)
+     */
+    cosh(): KonpeitoFloat;
+    /**
+     * Inverse hyperbolic cosine function.
+     * @returns {KonpeitoFloat} acosh(A)
+     */
+    acosh(): KonpeitoFloat;
+    /**
+     * Hyperbolic tangent function.
+     * @returns {KonpeitoFloat} tanh(A)
+     */
+    tanh(): KonpeitoFloat;
+    /**
+     * Inverse hyperbolic tangent function.
+     * @returns {KonpeitoFloat} atanh(A)
+     */
+    atanh(): KonpeitoFloat;
+    /**
+     * Secant function.
+     * @returns {KonpeitoFloat} sec(A)
+     */
+    sec(): KonpeitoFloat;
+    /**
+     * Reverse secant function.
+     * @returns {KonpeitoFloat} asec(A)
+     */
+    asec(): KonpeitoFloat;
+    /**
+     * Hyperbolic secant function.
+     * @returns {KonpeitoFloat} sech(A)
+     */
+    sech(): KonpeitoFloat;
+    /**
+     * Inverse hyperbolic secant function.
+     * @returns {KonpeitoFloat} asech(A)
+     */
+    asech(): KonpeitoFloat;
+    /**
+     * Cotangent function.
+     * @returns {KonpeitoFloat} cot(A)
+     */
+    cot(): KonpeitoFloat;
+    /**
+     * Inverse cotangent function.
+     * @returns {KonpeitoFloat} acot(A)
+     */
+    acot(): KonpeitoFloat;
+    /**
+     * Hyperbolic cotangent function.
+     * @returns {KonpeitoFloat} coth(A)
+     */
+    coth(): KonpeitoFloat;
+    /**
+     * Inverse hyperbolic cotangent function.
+     * @returns {KonpeitoFloat} acoth(A)
+     */
+    acoth(): KonpeitoFloat;
+    /**
+     * Cosecant function.
+     * @returns {KonpeitoFloat} csc(A)
+     */
+    csc(): KonpeitoFloat;
+    /**
+     * Inverse cosecant function.
+     * @returns {KonpeitoFloat} acsc(A)
+     */
+    acsc(): KonpeitoFloat;
+    /**
+     * Hyperbolic cosecant function.
+     * @returns {KonpeitoFloat} csch(A)
+     */
+    csch(): KonpeitoFloat;
+    /**
+     * Inverse hyperbolic cosecant function.
+     * @returns {KonpeitoFloat} acsch(A)
+     */
+    acsch(): KonpeitoFloat;
+    /**
+     * Normalized sinc function.
+     * @returns {KonpeitoFloat} sinc(A)
+     */
+    sinc(): KonpeitoFloat;
+    /**
+     * PI.
+     * @returns {KonpeitoFloat} 3.14...
+     */
+    static PI: KonpeitoFloat;
+    /**
+     * 0.25 * PI.
+     * @returns {KonpeitoFloat} 0.78...
+     */
+    static QUARTER_PI: KonpeitoFloat;
+    /**
+     * 0.5 * PI.
+     * @returns {KonpeitoFloat} 1.57...
+     */
+    static HALF_PI: KonpeitoFloat;
+    /**
+     * 2 * PI.
+     * @returns {KonpeitoFloat} 6.28...
+     */
+    static TWO_PI: KonpeitoFloat;
+    /**
+     * E, Napier's constant.
+     * @returns {KonpeitoFloat} 2.71...
+     */
+    static E: KonpeitoFloat;
+    /**
+     * log_e(2)
+     * @returns {KonpeitoFloat} ln(2)
+     */
+    static LN2: KonpeitoFloat;
+    /**
+     * log_e(10)
+     * @returns {KonpeitoFloat} ln(10)
+     */
+    static LN10: KonpeitoFloat;
+    /**
+     * log_2(e)
+     * @returns {KonpeitoFloat} log_2(e)
+     */
+    static LOG2E: KonpeitoFloat;
+    /**
+     * log_10(e)
+     * @returns {KonpeitoFloat} log_10(e)
+     */
+    static LOG10E: KonpeitoFloat;
+    /**
+     * sqrt(2)
+     * @returns {KonpeitoFloat} sqrt(2)
+     */
+    static SQRT2: KonpeitoFloat;
+    /**
+     * sqrt(0.5)
+     * @returns {KonpeitoFloat} sqrt(0.5)
+     */
+    static SQRT1_2: KonpeitoFloat;
+    /**
+     * 0.5
+     * @returns {KonpeitoFloat} 0.5
+     */
+    static HALF: KonpeitoFloat;
+}
+
+declare namespace KonpeitoFloat {
+    /**
+     * Create an number.
+     * @param {any} [number] - Numeric data. See how to use the function.
+     */
+    class KonpeitoFloat {
+        constructor(number?: any);
+    }
+}
+
+/**
+ * Create an number.
+ * @param {any} [number] - Numeric data. See how to use the function.
+ */
+declare class KonpeitoInteger {
+    constructor(number?: any);
+    /**
+     * Create an entity object of this class.
+     * @param {any} number
+     * @returns {KonpeitoInteger}
+     */
+    static create(number: any): KonpeitoInteger;
+    /**
+     * Create number.
+     * @param {any} number
+     * @returns {KonpeitoInteger}
+     */
+    static valueOf(number: any): KonpeitoInteger;
+    /**
+     * Convert to string.
+     * @returns {string}
+     */
+    toString(): string;
+    /**
+     * Deep copy.
+     * @returns {KonpeitoInteger}
+     */
+    clone(): KonpeitoInteger;
+    /**
+     * Absolute value.
+     * @returns {KonpeitoInteger} abs(A)
+     */
+    abs(): KonpeitoInteger;
+    /**
+     * this * -1
+     * @returns {KonpeitoInteger} -A
+     */
+    negate(): KonpeitoInteger;
+    /**
+     * The positive or negative sign of this number.
+     * - +1 if positive, -1 if negative, 0 if 0.
+     * @returns {any}
+     */
+    sign(): any;
+    /**
+     * Add.
+     * @param {any} number
+     * @returns {KonpeitoInteger} A + B
+     */
+    add(number: any): KonpeitoInteger;
+    /**
+     * Subtract.
+     * @param {any} number
+     * @returns {KonpeitoInteger} A - B
+     */
+    sub(number: any): KonpeitoInteger;
+    /**
+     * Multiply.
+     * @param {any} number
+     * @returns {KonpeitoInteger} A * B
+     */
+    mul(number: any): KonpeitoInteger;
+    /**
+     * Divide.
+     * @param {any} number
+     * @returns {KonpeitoInteger} fix(A / B)
+     */
+    div(number: any): KonpeitoInteger;
+    /**
+     * Inverse number of this value.
+     * @returns {KonpeitoInteger} 1 / A
+     */
+    inv(): KonpeitoInteger;
+    /**
+     * Remainder of division.
+     * - Result has same sign as the Dividend.
+     * @param {any} number
+     * @returns {KonpeitoInteger} A % B
+     */
+    rem(number: any): KonpeitoInteger;
+    /**
+     * Modulo, positive rem of division.
+     * - Result has same sign as the Divisor.
+     * @param {any} number
+     * @returns {KonpeitoInteger} A mod B
+     */
+    mod(number: any): KonpeitoInteger;
+    /**
+     * Modular exponentiation.
+     * @param {any} exponent
+     * @param {any} m
+     * @returns {KonpeitoInteger} A^B mod m
+     */
+    modPow(exponent: any, m: any): KonpeitoInteger;
+    /**
+     * Modular multiplicative inverse.
+     * @param {any} m
+     * @returns {KonpeitoInteger} A^(-1) mod m
+     */
+    modInverse(m: any): KonpeitoInteger;
+    /**
+     * Factorial function, x!.
+     * @returns {KonpeitoInteger} n!
+     */
+    factorial(): KonpeitoInteger;
+    /**
+     * Multiply a multiple of ten.
+     * @param {any} n
+     * @returns {KonpeitoInteger} x * 10^n
+     */
+    scaleByPowerOfTen(n: any): KonpeitoInteger;
+    /**
+     * Power function.
+     * @param {any} exponent
+     * @returns {KonpeitoInteger} pow(A, B)
+     */
+    pow(exponent: any): KonpeitoInteger;
+    /**
+     * Square.
+     * @returns {KonpeitoInteger} pow(A, 2)
+     */
+    square(): KonpeitoInteger;
+    /**
+     * boolean value.
+     * @returns {boolean}
+     */
+    booleanValue: boolean;
+    /**
+     * integer value.
+     * @returns {number}
+     */
+    intValue: number;
+    /**
+     * floating point.
+     * @returns {number}
+     */
+    doubleValue: number;
+    /**
+     * return _BigInteger_.
+     * @returns {_BigInteger_}
+     */
+    toBigInteger(): _BigInteger_;
+    /**
+     * return _BigDecimal_.
+     * @param {_MathContext_} [mc] - _MathContext_ setting after calculation.
+     * @returns {_BigDecimal_}
+     */
+    toBigDecimal(mc?: _MathContext_): _BigDecimal_;
+    /**
+     * return _Fraction_.
+     * @returns {_Fraction_}
+     */
+    toFraction(): _Fraction_;
+    /**
+     * return _Complex_.
+     * @returns {_Complex_}
+     */
+    toComplex(): _Complex_;
+    /**
+     * return _Matrix_.
+     * @returns {_Matrix_}
+     */
+    toMatrix(): _Matrix_;
+    /**
+     * Equals.
+     * @param {any} number
+     * @returns {boolean} A === B
+     */
+    equals(number: any): boolean;
+    /**
+     * Compare values.
+     * @param {any} number
+     * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+     */
+    compareTo(number: any): number;
+    /**
+     * Floor.
+     * @returns {KonpeitoInteger} floor(A)
+     */
+    floor(): KonpeitoInteger;
+    /**
+     * Ceil.
+     * @returns {KonpeitoInteger} ceil(A)
+     */
+    ceil(): KonpeitoInteger;
+    /**
+     * Rounding to the nearest integer.
+     * @returns {KonpeitoInteger} round(A)
+     */
+    round(): KonpeitoInteger;
+    /**
+     * To integer rounded down to the nearest.
+     * @returns {KonpeitoInteger} fix(A), trunc(A)
+     */
+    fix(): KonpeitoInteger;
+    /**
+     * _Fraction_.
+     * @returns {KonpeitoInteger} fract(A)
+     */
+    fract(): KonpeitoInteger;
+    /**
+     * Euclidean algorithm.
+     * @param {any} number
+     * @returns {KonpeitoInteger} gcd(x, y)
+     */
+    gcd(number: any): KonpeitoInteger;
+    /**
+     * Extended Euclidean algorithm.
+     * @param {any} number
+     * @returns {Array<KonpeitoInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+     */
+    extgcd(number: any): KonpeitoInteger[];
+    /**
+     * Least common multiple.
+     * @param {any} number
+     * @returns {KonpeitoInteger} lcm(x, y)
+     */
+    lcm(number: any): KonpeitoInteger;
+    /**
+     * Return true if the value is prime number.
+     * - Calculate up to `2251799813685248(=2^51)`.
+     * @returns {boolean} - If the calculation range is exceeded, null is returned.
+     */
+    isPrime(): boolean;
+    /**
+     * Return true if the value is prime number by Miller-Labin prime number determination method.
+     *
+     * Attention : it takes a very long time to process.
+     * @param {any} [certainty=100] - Repeat count (prime precision).
+     * @returns {boolean}
+     */
+    isProbablePrime(certainty?: any): boolean;
+    /**
+     * Next prime.
+     * @param {any} [certainty=100] - Repeat count (prime precision).
+     * @param {any} [search_max=100000] - Search range of next prime.
+     * @returns {KonpeitoInteger}
+     */
+    nextProbablePrime(certainty?: any, search_max?: any): KonpeitoInteger;
+    /**
+     * this << n
+     * @param {any} n
+     * @returns {KonpeitoInteger} A << n
+     */
+    shift(n: any): KonpeitoInteger;
+    /**
+     * Logical AND.
+     * @param {any} number
+     * @returns {KonpeitoInteger} A & B
+     */
+    and(number: any): KonpeitoInteger;
+    /**
+     * Logical OR.
+     * @param {any} number
+     * @returns {KonpeitoInteger} A | B
+     */
+    or(number: any): KonpeitoInteger;
+    /**
+     * Logical Exclusive-OR.
+     * @param {any} number
+     * @returns {KonpeitoInteger} A ^ B
+     */
+    xor(number: any): KonpeitoInteger;
+    /**
+     * Logical Not. (mutable)
+     * @returns {KonpeitoInteger} !A
+     */
+    not(): KonpeitoInteger;
+    /**
+     * this === 0
+     * @returns {boolean}
+     */
+    isZero(): boolean;
+    /**
+     * this === 1
+     * @returns {boolean}
+     */
+    isOne(): boolean;
+    /**
+     * this > 0
+     * @returns {boolean}
+     */
+    isPositive(): boolean;
+    /**
+     * this < 0
+     * @returns {boolean}
+     */
+    isNegative(): boolean;
+    /**
+     * this >= 0
+     * @returns {boolean}
+     */
+    isNotNegative(): boolean;
+    /**
+     * this === NaN
+     * @returns {boolean} isNaN(A)
+     */
+    isNaN(): boolean;
+    /**
+     * this === Infinity
+     * @returns {boolean} isPositiveInfinity(A)
+     */
+    isPositiveInfinity(): boolean;
+    /**
+     * this === -Infinity
+     * @returns {boolean} isNegativeInfinity(A)
+     */
+    isNegativeInfinity(): boolean;
+    /**
+     * this === Infinity or -Infinity
+     * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+     */
+    isInfinite(): boolean;
+    /**
+     * Return true if the value is finite number.
+     * @returns {boolean} !isNaN(A) && !isInfinite(A)
+     */
+    isFinite(): boolean;
+    /**
+     * -1
+     * @returns {KonpeitoInteger} -1
+     */
+    static MINUS_ONE: KonpeitoInteger;
+    /**
+     * 0
+     * @returns {KonpeitoInteger} 0
+     */
+    static ZERO: KonpeitoInteger;
+    /**
+     * 1
+     * @returns {KonpeitoInteger} 1
+     */
+    static ONE: KonpeitoInteger;
+    /**
+     * 2
+     * @returns {KonpeitoInteger} 2
+     */
+    static TWO: KonpeitoInteger;
+    /**
+     * 10
+     * @returns {KonpeitoInteger} 10
+     */
+    static TEN: KonpeitoInteger;
+    /**
+     * Positive infinity.
+     * @returns {KonpeitoInteger} Infinity
+     */
+    static POSITIVE_INFINITY: KonpeitoInteger;
+    /**
+     * Negative Infinity.
+     * @returns {KonpeitoInteger} -Infinity
+     */
+    static NEGATIVE_INFINITY: KonpeitoInteger;
+    /**
+     * Not a Number.
+     * @returns {KonpeitoInteger} NaN
+     */
+    static NaN: KonpeitoInteger;
+    /**
+     * The positive or negative sign of this number.
+     * - +1 if positive, -1 if negative, 0 if 0.
+     * @returns {any}
+     */
+    signum(): any;
+    /**
+     * Subtract.
+     * @param {any} number
+     * @returns {KonpeitoInteger} A - B
+     */
+    subtract(number: any): KonpeitoInteger;
+    /**
+     * Multiply.
+     * @param {any} number
+     * @returns {KonpeitoInteger} A * B
+     */
+    multiply(number: any): KonpeitoInteger;
+    /**
+     * Divide.
+     * @param {any} number
+     * @returns {KonpeitoInteger} fix(A / B)
+     */
+    divide(number: any): KonpeitoInteger;
+    /**
+     * Remainder of division.
+     * - Result has same sign as the Dividend.
+     * @param {any} number
+     * @returns {KonpeitoInteger} A % B
+     */
+    remainder(number: any): KonpeitoInteger;
+}
+
+/**
  * _BigDecimal_ type argument.(local)
  * - number
  * - boolean
@@ -118,23 +764,9 @@ declare type KBigDecimalDivideType = {
 };
 
 /**
- * Create an arbitrary-precision floating-point number.
- *
- * Initialization can be performed as follows.
- * - 1200, "1200", "12e2", "1.2e3"
- * - When initializing with array. [ integer, [scale = 0], [context=default]].
- * - When initializing with object. { integer, [scale = 0], [context=default]}.
- *
- * Description of the settings are as follows, you can also omitted.
- * - The "scale" is an integer scale factor.
- * - The "context" is used to normalize the created floating point.
- *
- * If "context" is not specified, the "default_context" set for the class is used.
- * The "context" is the used when no environment settings are specified during calculation.
- * @param {KBigDecimalInputData} number - Real data.
+ * Arbitrary-precision floating-point number class (immutable).
  */
 declare class _BigDecimal_ {
-    constructor(number: KBigDecimalInputData);
     /**
      * Create an arbitrary-precision floating-point number.
      *
@@ -978,6 +1610,28 @@ declare class _BigDecimal_ {
     trunc(): _BigDecimal_;
 }
 
+declare namespace _BigDecimal_ {
+    /**
+     * Create an arbitrary-precision floating-point number.
+     *
+     * Initialization can be performed as follows.
+     * - 1200, "1200", "12e2", "1.2e3"
+     * - When initializing with array. [ integer, [scale = 0], [context=default]].
+     * - When initializing with object. { integer, [scale = 0], [context=default]}.
+     *
+     * Description of the settings are as follows, you can also omitted.
+     * - The "scale" is an integer scale factor.
+     * - The "context" is used to normalize the created floating point.
+     *
+     * If "context" is not specified, the "default_context" set for the class is used.
+     * The "context" is the used when no environment settings are specified during calculation.
+     * @param {KBigDecimalInputData} number - Real data.
+     */
+    class _BigDecimal_ {
+        constructor(number: KBigDecimalInputData);
+    }
+}
+
 /**
  * _BigInteger_ type argument.
  * - _BigInteger_
@@ -999,17 +1653,9 @@ declare type KBigIntegerInputData = _BigInteger_|number|boolean|string|Array<str
 
 
 /**
- * Create an arbitrary-precision integer.
- *
- * Initialization can be performed as follows.
- * - 1200, "1200", "12e2", "1.2e3", ["1200", 10]
- * - "0xff", ["ff", 16]
- * - "0o01234567", ["01234567", 8]
- * - "0b0110101", ["0110101", 2]
- * @param {KBigIntegerInputData} [number] - Numeric data. See how to use the function.
+ * Arbitrary-precision integer class (immutable).
  */
 declare class _BigInteger_ {
-    constructor(number?: KBigIntegerInputData);
     /**
      * Create an entity object of this class.
      * @param {KBigIntegerInputData} number
@@ -1088,6 +1734,11 @@ declare class _BigInteger_ {
      * @returns {_BigInteger_} fix(A / B)
      */
     div(number: KBigIntegerInputData): _BigInteger_;
+    /**
+     * Inverse number of this value.
+     * @returns {_BigInteger_} 1 / A
+     */
+    inv(): _BigInteger_;
     /**
      * Remainder of division.
      * - Result has same sign as the Dividend.
@@ -1268,6 +1919,31 @@ declare class _BigInteger_ {
      * @returns {_BigInteger_} min(max(x, min), max)
      */
     clip(min: KBigIntegerInputData, max: KBigIntegerInputData): _BigInteger_;
+    /**
+     * Floor.
+     * @returns {_BigInteger_} floor(A)
+     */
+    floor(): _BigInteger_;
+    /**
+     * Ceil.
+     * @returns {_BigInteger_} ceil(A)
+     */
+    ceil(): _BigInteger_;
+    /**
+     * Rounding to the nearest integer.
+     * @returns {_BigInteger_} round(A)
+     */
+    round(): _BigInteger_;
+    /**
+     * To integer rounded down to the nearest.
+     * @returns {_BigInteger_} fix(A), trunc(A)
+     */
+    fix(): _BigInteger_;
+    /**
+     * _Fraction_.
+     * @returns {_BigInteger_} fract(A)
+     */
+    fract(): _BigInteger_;
     /**
      * Euclidean algorithm.
      * @param {KBigIntegerInputData} number
@@ -1520,6 +2196,22 @@ declare class _BigInteger_ {
     remainder(number: KBigIntegerInputData): _BigInteger_;
 }
 
+declare namespace _BigInteger_ {
+    /**
+     * Create an arbitrary-precision integer.
+     *
+     * Initialization can be performed as follows.
+     * - 1200, "1200", "12e2", "1.2e3", ["1200", 10]
+     * - "0xff", ["ff", 16]
+     * - "0o01234567", ["01234567", 8]
+     * - "0b0110101", ["0110101", 2]
+     * @param {KBigIntegerInputData} [number] - Numeric data. See how to use the function.
+     */
+    class _BigInteger_ {
+        constructor(number?: KBigIntegerInputData);
+    }
+}
+
 /**
  * _Complex_ type argument.
  * - _Complex_
@@ -1540,15 +2232,9 @@ declare type KComplexInputData = _Complex_|number|boolean|string|Array<number>|{
 
 
 /**
- * Create a complex number.
- *
- * Initialization can be performed as follows.
- * - 1200, "1200", "12e2", "1.2e3"
- * - "3 + 4i", "4j + 3", [3, 4].
- * @param {KComplexInputData} number - _Complex_ number. See how to use the function.
+ * _Complex_ number class. (immutable)
  */
 declare class _Complex_ {
-    constructor(number: KComplexInputData);
     /**
      * Create an entity object of this class.
      * @param {KComplexInputData} number
@@ -2394,6 +3080,12 @@ declare class _Complex_ {
      */
     modInverse(m: KComplexInputData): _Complex_;
     /**
+     * Multiply a multiple of ten.
+     * @param {KComplexInputData} n
+     * @returns {_Complex_} x * 10^n
+     */
+    scaleByPowerOfTen(n: KComplexInputData): _Complex_;
+    /**
      * Return true if the value is prime number.
      * - Calculated as an integer.
      * - Calculate up to `2251799813685248(=2^51)`.
@@ -2562,6 +3254,20 @@ declare class _Complex_ {
      * @returns {_Complex_} fix(A), trunc(A)
      */
     trunc(): _Complex_;
+}
+
+declare namespace _Complex_ {
+    /**
+     * Create a complex number.
+     *
+     * Initialization can be performed as follows.
+     * - 1200, "1200", "12e2", "1.2e3"
+     * - "3 + 4i", "4j + 3", [3, 4].
+     * @param {KComplexInputData} number - _Complex_ number. See how to use the function.
+     */
+    class _Complex_ {
+        constructor(number: KComplexInputData);
+    }
 }
 
 /**
@@ -2911,17 +3617,9 @@ declare class _RoundingMode_ {
 }
 
 /**
- * Create an fraction.
- *
- * Initialization can be performed as follows.
- * - 10, "10", "10/1", "10.0/1.0", ["10", "1"], [10, 1]
- * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
- * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
- * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
- * @param {KFractionInputData} [number] - _Fraction_ data. See how to use the function.
+ * _Fraction_ class (immutable).
  */
 declare class _Fraction_ {
-    constructor(number?: KFractionInputData);
     /**
      * numerator
      * @type {_BigInteger_}
@@ -3020,6 +3718,11 @@ declare class _Fraction_ {
      * @returns {_Fraction_} pow(A, B)
      */
     pow(num: KFractionInputData): _Fraction_;
+    /**
+     * Square.
+     * @returns {_Fraction_} pow(A, 2)
+     */
+    square(): _Fraction_;
     /**
      * Factorial function, x!.
      * - Supports only integers.
@@ -3362,6 +4065,22 @@ declare class _Fraction_ {
     remainder(number: KFractionInputData): _Fraction_;
 }
 
+declare namespace _Fraction_ {
+    /**
+     * Create an fraction.
+     *
+     * Initialization can be performed as follows.
+     * - 10, "10", "10/1", "10.0/1.0", ["10", "1"], [10, 1]
+     * - 0.01, "0.01", "0.1e-1", "1/100", [1, 100], [2, 200], ["2", "200"]
+     * - "1/3", "0.[3]", "0.(3)", "0.'3'", "0."3"", [1, 3], [2, 6]
+     * - "3.555(123)" = 3.555123123123..., "147982 / 41625"
+     * @param {KFractionInputData} [number] - _Fraction_ data. See how to use the function.
+     */
+    class _Fraction_ {
+        constructor(number?: KFractionInputData);
+    }
+}
+
 /**
  * _Matrix_ type argument.
  * - _Matrix_
@@ -3395,15 +4114,9 @@ declare type KMatrixSettings = {
 };
 
 /**
- * Create a complex matrix.
- * Initialization can be performed as follows.
- * - 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
- * - [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
- * - "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
- * @param {KMatrixInputData} number - _Complex_ matrix. See how to use the function.
+ * _Complex_ matrix class. (immutable)
  */
 declare class _Matrix_ {
-    constructor(number: KMatrixInputData);
     /**
      * Create an entity object of this class.
      * @param {KMatrixInputData} number
@@ -3788,13 +4501,20 @@ declare class _Matrix_ {
     size(dimension?: string | number): _Matrix_;
     /**
      * Compare values.
-     * - Return value between scalars is of type Number.
-     * - Return value between matrices is type _Matrix_.
+     * - Use `compareToMatrix` if you want to compare matrices.
      * @param {KMatrixInputData} number
      * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
-     * @returns {number|_Matrix_} A > B ? 1 : (A === B ? 0 : -1)
+     * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
      */
-    compareTo(number: KMatrixInputData, tolerance?: KMatrixInputData): number | _Matrix_;
+    compareTo(number: KMatrixInputData, tolerance?: KMatrixInputData): number;
+    /**
+     * Compare values.
+     * - Use `compareTo` if you want to compare scalar values.
+     * @param {KMatrixInputData} number
+     * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+     * @returns {_Matrix_} A > B ? 1 : (A === B ? 0 : -1)
+     */
+    compareToMatrix(number: KMatrixInputData, tolerance?: KMatrixInputData): _Matrix_;
     /**
      * Add.
      * @param {KMatrixInputData} number
@@ -3950,7 +4670,7 @@ declare class _Matrix_ {
      * Power function.
      * - Unless the matrix is a scalar value, only integers are supported.
      * - Use `dotpow` if you want to use `pow` for each element. A real number can be specified.
-     * @param {KMatrixInputData} number - 整数
+     * @param {KMatrixInputData} number
      * @returns {_Matrix_} pow(A, B)
      */
     pow(number: KMatrixInputData): _Matrix_;
@@ -3960,6 +4680,12 @@ declare class _Matrix_ {
      * @returns {_Matrix_} A .^ B
      */
     dotpow(number: KMatrixInputData): _Matrix_;
+    /**
+     * Square.
+     * - Unless the matrix is a scalar value, only integers are supported.
+     * @returns {_Matrix_} pow(A, 2)
+     */
+    square(): _Matrix_;
     /**
      * Square root.
      * @returns {_Matrix_} sqrt(A)
@@ -4158,6 +4884,7 @@ declare class _Matrix_ {
     /**
      * Test if each element of the matrix is integer.
      * - 1 if true, 0 if false.
+     * - Use `isInteger` if you want to test first element.
      * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
@@ -4165,6 +4892,7 @@ declare class _Matrix_ {
     /**
      * Test if each element of the matrix is complex integer.
      * - 1 if true, 0 if false.
+     * - Use `isComplexInteger` if you want to test first element.
      * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
@@ -4172,6 +4900,8 @@ declare class _Matrix_ {
     /**
      * real(this) === 0
      * - 1 if true, 0 if false.
+     * - Use `isZero` if you want to test first element.
+     * - Use `isZeros` to check for a zero matrix.
      * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
@@ -4179,6 +4909,7 @@ declare class _Matrix_ {
     /**
      * real(this) === 1
      * - 1 if true, 0 if false.
+     * - Use `isOne` if you want to test first element.
      * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
@@ -4186,6 +4917,7 @@ declare class _Matrix_ {
     /**
      * Test if each element of the matrix is complex.
      * - 1 if true, 0 if false.
+     * - Use `isComplex` to test whether a matrix contains complex numbers.
      * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
@@ -4193,6 +4925,7 @@ declare class _Matrix_ {
     /**
      * Test if each element of the matrix is real.
      * - 1 if true, 0 if false.
+     * - Use `isReal` to test for complex numbers in matrices.
      * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
@@ -4200,51 +4933,148 @@ declare class _Matrix_ {
     /**
      * Test if each element of the matrix is NaN.
      * - 1 if true, 0 if false.
+     * - Use `isNaN` if you want to test first element.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
     testNaN(): _Matrix_;
     /**
      * real(this) > 0
      * - 1 if true, 0 if false.
+     * - Use `isPositive` if you want to test first element.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
     testPositive(): _Matrix_;
     /**
      * real(this) < 0
      * - 1 if true, 0 if false.
+     * - Use `isNegative` if you want to test first element.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
     testNegative(): _Matrix_;
     /**
      * real(this) >= 0
      * - 1 if true, 0 if false.
+     * - Use `isNotNegative` if you want to test first element.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
     testNotNegative(): _Matrix_;
     /**
      * Test if each element of the matrix is positive infinite.
      * - 1 if true, 0 if false.
+     * - Use `isPositiveInfinity` if you want to test first element.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
     testPositiveInfinity(): _Matrix_;
     /**
      * Test if each element of the matrix is negative infinite.
      * - 1 if true, 0 if false.
+     * - Use `isNegativeInfinity` if you want to test first element.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
     testNegativeInfinity(): _Matrix_;
     /**
      * Test if each element of the matrix is infinite.
      * - 1 if true, 0 if false.
+     * - Use `isInfinite` if you want to test first element.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
     testInfinite(): _Matrix_;
     /**
      * Test if each element of the matrix is finite.
      * - 1 if true, 0 if false.
+     * - Use `isFinite` if you want to test first element.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
     testFinite(): _Matrix_;
+    /**
+     * this === 0
+     * - Use only the first element.
+     * - Use `testZero` if you want to test the elements of a matrix.
+     * - Use `isZeros` to check for a zero matrix.
+     * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+     * @returns {boolean}
+     */
+    isZero(tolerance?: KMatrixInputData): boolean;
+    /**
+     * this === 1
+     * - Use only the first element.
+     * - Use `testOne` if you want to test the elements of a matrix.
+     * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+     * @returns {boolean}
+     */
+    isOne(tolerance?: KMatrixInputData): boolean;
+    /**
+     * this > 0
+     * - Use only the first element.
+     * - Use `testPositive` if you want to test the elements of a matrix.
+     * @returns {boolean}
+     */
+    isPositive(): boolean;
+    /**
+     * this < 0
+     * - Use only the first element.
+     * - Use `testNegative` if you want to test the elements of a matrix.
+     * @returns {boolean}
+     */
+    isNegative(): boolean;
+    /**
+     * this >= 0
+     * - Use only the first element.
+     * - Use `testNotNegative` if you want to test the elements of a matrix.
+     * @returns {boolean}
+     */
+    isNotNegative(): boolean;
+    /**
+     * this === NaN
+     * - Use only the first element.
+     * - Use `testNaN` if you want to test the elements of a matrix.
+     * @returns {boolean} isNaN(A)
+     */
+    isNaN(): boolean;
+    /**
+     * this === Infinity
+     * - Use only the first element.
+     * - Use `testPositiveInfinity` if you want to test the elements of a matrix.
+     * @returns {boolean} isPositiveInfinity(A)
+     */
+    isPositiveInfinity(): boolean;
+    /**
+     * this === -Infinity
+     * - Use only the first element.
+     * - Use `testNegativeInfinity` if you want to test the elements of a matrix.
+     * @returns {boolean} isNegativeInfinity(A)
+     */
+    isNegativeInfinity(): boolean;
+    /**
+     * this === Infinity or -Infinity
+     * - Use only the first element.
+     * - Use `testInfinite` if you want to test the elements of a matrix.
+     * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+     */
+    isInfinite(): boolean;
+    /**
+     * Return true if the value is finite number.
+     * - Use only the first element.
+     * - Use `testFinite` if you want to test the elements of a matrix.
+     * @returns {boolean} !isNaN(A) && !isInfinite(A)
+     */
+    isFinite(): boolean;
+    /**
+     * Return true if the value is integer.
+     * - Use only the first element.
+     * - Use `testFinite` if you want to test the elements of a matrix.
+     * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+     * @returns {boolean}
+     */
+    isInteger(tolerance?: KMatrixInputData): boolean;
+    /**
+     * Returns true if the vallue is complex integer (including normal integer).
+     * - Use only the first element.
+     * - Use `testFinite` if you want to test the elements of a matrix.
+     * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+     * @returns {boolean} real(A) === integer && imag(A) === integer
+     */
+    isComplexInteger(tolerance?: KMatrixInputData): boolean;
     /**
      * Rotate matrix 90 degrees clockwise.
      * @param {KMatrixInputData} rot_90_count - Number of times rotated by 90 degrees.
@@ -4786,16 +5616,25 @@ declare class _Matrix_ {
      */
     modInverse(m: KMatrixInputData): _Matrix_;
     /**
+     * Multiply a multiple of ten.
+     * @param {KMatrixInputData} n
+     * @returns {_Matrix_} x * 10^n
+     */
+    scaleByPowerOfTen(n: KMatrixInputData): _Matrix_;
+    /**
      * Test if each element of the matrix is prime number.
      * - 1 if true, 0 if false.
      * - Calculated as an integer.
      * - Calculate up to `2251799813685248(=2^51)`.
+     * - Use `isPrime` if you want to test first element.
      * @returns {_Matrix_} _Matrix_ with elements of the numerical value of 1 or 0.
      */
     testPrime(): _Matrix_;
     /**
      * Test if each element of the matrix is prime number by Miller-Labin prime number determination method.
      * - 1 if true, 0 if false.
+     * - Use `isProbablePrime` if you want to test first element.
+     *
      * Attention : it takes a very long time to process.
      * - Calculated as an integer.
      * @param {KMatrixInputData} [certainty=100] - Repeat count (prime precision).
@@ -4809,6 +5648,26 @@ declare class _Matrix_ {
      * @returns {_Matrix_}
      */
     nextProbablePrime(certainty?: KMatrixInputData, search_max?: KMatrixInputData): _Matrix_;
+    /**
+     * Return true if the value is prime number.
+     * - Calculated as an integer.
+     * - Calculate up to `2251799813685248(=2^51)`.
+     * - Use only the first element.
+     * - Use `testPrime` if you want to test the elements of a matrix.
+     * @returns {boolean} - If the calculation range is exceeded, null is returned.
+     */
+    isPrime(): boolean;
+    /**
+     * Return true if the value is prime number by Miller-Labin prime number determination method.
+     * - Use only the first element.
+     * - Use `testProbablePrime` if you want to test the elements of a matrix.
+     *
+     * Attention : it takes a very long time to process.
+     * - Calculated as an integer.
+     * @param {KMatrixInputData} [certainty=100] - Repeat count (prime precision).
+     * @returns {boolean}
+     */
+    isProbablePrime(certainty?: KMatrixInputData): boolean;
     /**
      * Maximum number.
      * @param {KMatrixSettings} [type]
@@ -5166,6 +6025,20 @@ declare class _Matrix_ {
      * @returns {_Matrix_} fix(A), trunc(A)
      */
     trunc(): _Matrix_;
+}
+
+declare namespace _Matrix_ {
+    /**
+     * Create a complex matrix.
+     * Initialization can be performed as follows.
+     * - 10, "10", "3 + 4j", "[ 1 ]", "[1, 2, 3]", "[1 2 3]", [1, 2, 3],
+     * - [[1, 2], [3, 4]], "[1 2; 3 4]", "[1+2i 3+4i]",
+     * - "[1:10]", "[1:2:3]" (MATLAB / Octave / Scilab compatible).
+     * @param {KMatrixInputData} number - _Complex_ matrix. See how to use the function.
+     */
+    class _Matrix_ {
+        constructor(number: KMatrixInputData);
+    }
 }
 
 /**

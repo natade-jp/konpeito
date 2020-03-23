@@ -30,6 +30,18 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "konpeito/src/math/core/base/konpeitofloat.js~konpeitofloat",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html",
+    "<span>KonpeitoFloat</span> <span class=\"search-result-import-path\">konpeito/src/math/core/base/KonpeitoFloat.js</span>",
+    "class"
+  ],
+  [
+    "konpeito/src/math/core/base/konpeitointeger.js~konpeitointeger",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html",
+    "<span>KonpeitoInteger</span> <span class=\"search-result-import-path\">konpeito/src/math/core/base/KonpeitoInteger.js</span>",
+    "class"
+  ],
+  [
     "konpeito/src/math/core/tools/linearalgebra.js~linearalgebra",
     "class/src/math/core/tools/LinearAlgebra.js~LinearAlgebra.html",
     "<span>LinearAlgebra</span> <span class=\"search-result-import-path\">konpeito/src/math/core/tools/LinearAlgebra.js</span>",
@@ -1530,6 +1542,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/biginteger.js~biginteger#ceil",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-ceil",
+    "src/math/core/BigInteger.js~BigInteger#ceil",
+    "method"
+  ],
+  [
     "src/math/core/biginteger.js~biginteger#clearbit",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-clearBit",
     "src/math/core/BigInteger.js~BigInteger#clearBit",
@@ -1620,9 +1638,27 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/biginteger.js~biginteger#fix",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-fix",
+    "src/math/core/BigInteger.js~BigInteger#fix",
+    "method"
+  ],
+  [
     "src/math/core/biginteger.js~biginteger#flipbit",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-flipBit",
     "src/math/core/BigInteger.js~BigInteger#flipBit",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#floor",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-floor",
+    "src/math/core/BigInteger.js~BigInteger#floor",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#fract",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-fract",
+    "src/math/core/BigInteger.js~BigInteger#fract",
     "method"
   ],
   [
@@ -1654,6 +1690,12 @@ window.esdocSearchIndex = [
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-get-intValue",
     "src/math/core/BigInteger.js~BigInteger#intValue",
     "member"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#inv",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-inv",
+    "src/math/core/BigInteger.js~BigInteger#inv",
+    "method"
   ],
   [
     "src/math/core/biginteger.js~biginteger#isfinite",
@@ -1833,6 +1875,12 @@ window.esdocSearchIndex = [
     "src/math/core/biginteger.js~biginteger#remainder",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-remainder",
     "src/math/core/BigInteger.js~BigInteger#remainder",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#round",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-round",
+    "src/math/core/BigInteger.js~BigInteger#round",
     "method"
   ],
   [
@@ -2796,6 +2844,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#scalebypoweroften",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-scaleByPowerOfTen",
+    "src/math/core/Complex.js~Complex#scaleByPowerOfTen",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#sec",
     "class/src/math/core/Complex.js~Complex.html#instance-method-sec",
     "src/math/core/Complex.js~Complex#sec",
@@ -3486,6 +3540,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#square",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-square",
+    "src/math/core/Fraction.js~Fraction#square",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#sub",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-sub",
     "src/math/core/Fraction.js~Fraction#sub",
@@ -3933,6 +3993,12 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#compareto",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-compareTo",
     "src/math/core/Matrix.js~Matrix#compareTo",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#comparetomatrix",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-compareToMatrix",
+    "src/math/core/Matrix.js~Matrix#compareToMatrix",
     "method"
   ],
   [
@@ -4422,9 +4488,21 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#iscomplexinteger",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-isComplexInteger",
+    "src/math/core/Matrix.js~Matrix#isComplexInteger",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#isdiagonal",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-isDiagonal",
     "src/math/core/Matrix.js~Matrix#isDiagonal",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#isfinite",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-isFinite",
+    "src/math/core/Matrix.js~Matrix#isFinite",
     "method"
   ],
   [
@@ -4440,9 +4518,51 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#isinfinite",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-isInfinite",
+    "src/math/core/Matrix.js~Matrix#isInfinite",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#isinteger",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-isInteger",
+    "src/math/core/Matrix.js~Matrix#isInteger",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#ismatrix",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-isMatrix",
     "src/math/core/Matrix.js~Matrix#isMatrix",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#isnan",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-isNaN",
+    "src/math/core/Matrix.js~Matrix#isNaN",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#isnegative",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-isNegative",
+    "src/math/core/Matrix.js~Matrix#isNegative",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#isnegativeinfinity",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-isNegativeInfinity",
+    "src/math/core/Matrix.js~Matrix#isNegativeInfinity",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#isnotnegative",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-isNotNegative",
+    "src/math/core/Matrix.js~Matrix#isNotNegative",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#isone",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-isOne",
+    "src/math/core/Matrix.js~Matrix#isOne",
     "method"
   ],
   [
@@ -4455,6 +4575,30 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#ispermutation",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-isPermutation",
     "src/math/core/Matrix.js~Matrix#isPermutation",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#ispositive",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-isPositive",
+    "src/math/core/Matrix.js~Matrix#isPositive",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#ispositiveinfinity",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-isPositiveInfinity",
+    "src/math/core/Matrix.js~Matrix#isPositiveInfinity",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#isprime",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-isPrime",
+    "src/math/core/Matrix.js~Matrix#isPrime",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#isprobableprime",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-isProbablePrime",
+    "src/math/core/Matrix.js~Matrix#isProbablePrime",
     "method"
   ],
   [
@@ -4521,6 +4665,12 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#isvector",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-isVector",
     "src/math/core/Matrix.js~Matrix#isVector",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#iszero",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-isZero",
+    "src/math/core/Matrix.js~Matrix#isZero",
     "method"
   ],
   [
@@ -4878,6 +5028,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/math/core/matrix.js~matrix#scalebypoweroften",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-scaleByPowerOfTen",
+    "src/math/core/Matrix.js~Matrix#scaleByPowerOfTen",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#sec",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-sec",
     "src/math/core/Matrix.js~Matrix#sec",
@@ -4953,6 +5109,12 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#sqrt",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-sqrt",
     "src/math/core/Matrix.js~Matrix#sqrt",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#square",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-square",
+    "src/math/core/Matrix.js~Matrix#square",
     "method"
   ],
   [
@@ -5451,6 +5613,726 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix.zeros",
     "class/src/math/core/Matrix.js~Matrix.html#static-method-zeros",
     "src/math/core/Matrix.js~Matrix.zeros",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js",
+    "file/src/math/core/base/KonpeitoFloat.js.html",
+    "src/math/core/base/KonpeitoFloat.js",
+    "file"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#acos",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-acos",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#acos",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#acosh",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-acosh",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#acosh",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#acot",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-acot",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#acot",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#acoth",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-acoth",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#acoth",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#acsc",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-acsc",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#acsc",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#acsch",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-acsch",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#acsch",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#asec",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-asec",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#asec",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#asech",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-asech",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#asech",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#asin",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-asin",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#asin",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#asinh",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-asinh",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#asinh",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#atan",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-atan",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#atan",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#atan2",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-atan2",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#atan2",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#atanh",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-atanh",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#atanh",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#cbrt",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-cbrt",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#cbrt",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#constructor",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-constructor-constructor",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#constructor",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#cos",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-cos",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#cos",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#cosh",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-cosh",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#cosh",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#cot",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-cot",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#cot",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#coth",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-coth",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#coth",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#csc",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-csc",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#csc",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#csch",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-csch",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#csch",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#exp",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-exp",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#exp",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#expm1",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-expm1",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#expm1",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#log",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-log",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#log",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#log10",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-log10",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#log10",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#log1p",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-log1p",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#log1p",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#log2",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-log2",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#log2",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#rsqrt",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-rsqrt",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#rsqrt",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#sec",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-sec",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#sec",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#sech",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-sech",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#sech",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#sin",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-sin",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#sin",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#sinc",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-sinc",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#sinc",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#sinh",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-sinh",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#sinh",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#sqrt",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-sqrt",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#sqrt",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#tan",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-tan",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#tan",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#tanh",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-tanh",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#tanh",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat.e",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-E",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.E",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat.half",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-HALF",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.HALF",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat.half_pi",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-HALF_PI",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.HALF_PI",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat.ln10",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-LN10",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.LN10",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat.ln2",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-LN2",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.LN2",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat.log10e",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-LOG10E",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.LOG10E",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat.log2e",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-LOG2E",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.LOG2E",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat.pi",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-PI",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.PI",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat.quarter_pi",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-QUARTER_PI",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.QUARTER_PI",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat.sqrt1_2",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-SQRT1_2",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.SQRT1_2",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat.sqrt2",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-SQRT2",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.SQRT2",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat.two_pi",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-TWO_PI",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.TWO_PI",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js",
+    "file/src/math/core/base/KonpeitoInteger.js.html",
+    "src/math/core/base/KonpeitoInteger.js",
+    "file"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#abs",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-abs",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#abs",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#add",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-add",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#add",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#and",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-and",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#and",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#booleanvalue",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-get-booleanValue",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#booleanValue",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#ceil",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-ceil",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#ceil",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#clone",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-clone",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#clone",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#compareto",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-compareTo",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#compareTo",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#constructor",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-constructor-constructor",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#constructor",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#div",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-div",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#div",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#divide",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-divide",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#divide",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#doublevalue",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-get-doubleValue",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#doubleValue",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#equals",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-equals",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#equals",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#extgcd",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-extgcd",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#extgcd",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#factorial",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-factorial",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#factorial",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#fix",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-fix",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#fix",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#floor",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-floor",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#floor",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#fract",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-fract",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#fract",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#gcd",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-gcd",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#gcd",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#intvalue",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-get-intValue",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#intValue",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#inv",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-inv",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#inv",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#isfinite",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isFinite",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#isFinite",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#isinfinite",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isInfinite",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#isInfinite",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#isnan",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isNaN",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#isNaN",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#isnegative",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isNegative",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#isNegative",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#isnegativeinfinity",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isNegativeInfinity",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#isNegativeInfinity",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#isnotnegative",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isNotNegative",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#isNotNegative",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#isone",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isOne",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#isOne",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#ispositive",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isPositive",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#isPositive",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#ispositiveinfinity",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isPositiveInfinity",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#isPositiveInfinity",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#isprime",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isPrime",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#isPrime",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#isprobableprime",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isProbablePrime",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#isProbablePrime",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#iszero",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isZero",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#isZero",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#lcm",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-lcm",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#lcm",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#mod",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-mod",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#mod",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#modinverse",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-modInverse",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#modInverse",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#modpow",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-modPow",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#modPow",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#mul",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-mul",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#mul",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#multiply",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-multiply",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#multiply",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#negate",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-negate",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#negate",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#nextprobableprime",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-nextProbablePrime",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#nextProbablePrime",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#not",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-not",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#not",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#or",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-or",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#or",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#pow",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-pow",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#pow",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#rem",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-rem",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#rem",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#remainder",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-remainder",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#remainder",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#round",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-round",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#round",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#scalebypoweroften",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-scaleByPowerOfTen",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#scaleByPowerOfTen",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#shift",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-shift",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#shift",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#sign",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-sign",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#sign",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#signum",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-signum",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#signum",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#square",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-square",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#square",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#sub",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-sub",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#sub",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#subtract",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-subtract",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#subtract",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#tobigdecimal",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-toBigDecimal",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#toBigDecimal",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#tobiginteger",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-toBigInteger",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#toBigInteger",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#tocomplex",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-toComplex",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#toComplex",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#tofraction",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-toFraction",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#toFraction",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#tomatrix",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-toMatrix",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#toMatrix",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#tostring",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-toString",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#toString",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#xor",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-xor",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#xor",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger.minus_one",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-MINUS_ONE",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.MINUS_ONE",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger.negative_infinity",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-NEGATIVE_INFINITY",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.NEGATIVE_INFINITY",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger.nan",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-NaN",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.NaN",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger.one",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-ONE",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.ONE",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger.positive_infinity",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-POSITIVE_INFINITY",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.POSITIVE_INFINITY",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger.ten",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-TEN",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.TEN",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger.two",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-TWO",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.TWO",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger.zero",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-ZERO",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.ZERO",
+    "member"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger.create",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-method-create",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.create",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger.valueof",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-method-valueOf",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.valueOf",
     "method"
   ],
   [

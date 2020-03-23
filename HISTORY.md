@@ -1,5 +1,13 @@
 # History
 
+## v5.2.1
+### 改善
+- `BigInteger`, `BigDecimal`, `Fraction`, `Complex`, `Matrix` 用の基底クラスを作りリファクタリング
+- `Matrix` の `compareTo` の戻り値がスカラーか行列か安定せず使いにくいためメソッドを分けました
+### 不具合
+- `BigInteger` 結果が0になる`and`計算をしたときに、内部の符号変数が異常になる不具合を修正
+- `BigInteger` で絶対値が0より大きいかつ1未満の実数値を設定すると、内部の符号変数が異常になる不具合を修正
+
 ## v5.2.0
 ### 機能追加
 - `BigInteger`, `BigDecimal`, `Fraction`, `Complex`, `Matrix` 間で値の変更ができる共通メソッドを追加

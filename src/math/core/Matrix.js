@@ -18,6 +18,7 @@ import BigInteger from "./BigInteger.js";
 import BigDecimal from "./BigDecimal.js";
 import Fraction from "./Fraction.js";
 import MathContext from "./context/MathContext.js";
+import KonpeitoFloat from "./base/KonpeitoFloat.js";
 
 /**
  * Matrix type argument.
@@ -391,7 +392,7 @@ class MatrixTool {
 /**
  * Complex matrix class. (immutable)
  */
-export default class Matrix {
+export default class Matrix extends KonpeitoFloat {
 	
 	/**
 	 * Create a complex matrix.
@@ -402,6 +403,8 @@ export default class Matrix {
 	 * @param {KMatrixInputData} number - Complex matrix. See how to use the function.
 	 */
 	constructor(number) {
+		super();
+
 		let matrix_array = null;
 		let is_check_string = false;
 		if(arguments.length === 1) {
@@ -1766,11 +1769,10 @@ export default class Matrix {
 
 	/**
 	 * Compare values.
-	 * - Return value between scalars is of type Number.
-	 * - Return value between matrices is type Matrix.
+	 * - Use `compareToMatrix` if you want to compare matrices.
 	 * @param {KMatrixInputData} number 
 	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
-	 * @returns {number|Matrix} A > B ? 1 : (A === B ? 0 : -1)
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
 	 */
 	compareTo(number, tolerance) {
 		const M1 = this;
@@ -1779,12 +1781,25 @@ export default class Matrix {
 		if(M1.isScalar() && M2.isScalar()) {
 			return M1.scalar.compareTo(M2.scalar, tolerance);
 		}
+		throw "IllegalArgumentException";
+	}
+
+	/**
+	 * Compare values.
+	 * - Use `compareTo` if you want to compare scalar values.
+	 * @param {KMatrixInputData} number 
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {Matrix} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareToMatrix(number, tolerance) {
+		const M1 = this;
+		const M2 = Matrix._toMatrix(number);
 		const x1 = M1.matrix_array;
 		const x2 = M2.matrix_array;
 		const y_row_length = Math.max(M1.row_length, M2.row_length);
 		const y_column_length = Math.max(M1.column_length, M2.column_length);
 		return Matrix.createMatrixDoEachCalculation(function(row, col) {
-			return x1[row % M1.row_length][col % M1.column_length].compareTo(x2[row % M2.row_length][col % M2.column_length]);
+			return x1[row % M1.row_length][col % M1.column_length].compareTo(x2[row % M2.row_length][col % M2.column_length], tolerance);
 		}, y_row_length, y_column_length);
 	}
 
@@ -2205,7 +2220,7 @@ export default class Matrix {
 	 * Power function.
 	 * - Unless the matrix is a scalar value, only integers are supported.
 	 * - Use `dotpow` if you want to use `pow` for each element. A real number can be specified.
-	 * @param {KMatrixInputData} number - 整数
+	 * @param {KMatrixInputData} number
 	 * @returns {Matrix} pow(A, B)
 	 */
 	pow(number) {
@@ -2252,6 +2267,15 @@ export default class Matrix {
 		return Matrix.createMatrixDoEachCalculation(function(row, col) {
 			return x1[row % M1.row_length][col % M1.column_length].pow(x2[row % M2.row_length][col % M2.column_length]);
 		}, y_row_length, y_column_length);
+	}
+
+	/**
+	 * Square.
+	 * - Unless the matrix is a scalar value, only integers are supported.
+	 * @returns {Matrix} pow(A, 2)
+	 */
+	square() {
+		return this.pow(2);
 	}
 
 	/**
@@ -2658,6 +2682,7 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is integer.
 	 * - 1 if true, 0 if false.
+	 * - Use `isInteger` if you want to test first element.
 	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -2670,6 +2695,7 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is complex integer.
 	 * - 1 if true, 0 if false.
+	 * - Use `isComplexInteger` if you want to test first element.
 	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -2682,6 +2708,8 @@ export default class Matrix {
 	/**
 	 * real(this) === 0
 	 * - 1 if true, 0 if false.
+	 * - Use `isZero` if you want to test first element.
+	 * - Use `isZeros` to check for a zero matrix.
 	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -2694,6 +2722,7 @@ export default class Matrix {
 	/**
 	 * real(this) === 1
 	 * - 1 if true, 0 if false.
+	 * - Use `isOne` if you want to test first element.
 	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -2706,6 +2735,7 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is complex.
 	 * - 1 if true, 0 if false.
+	 * - Use `isComplex` to test whether a matrix contains complex numbers.
 	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -2718,6 +2748,7 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is real.
 	 * - 1 if true, 0 if false.
+	 * - Use `isReal` to test for complex numbers in matrices.
 	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
@@ -2730,6 +2761,7 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is NaN.
 	 * - 1 if true, 0 if false.
+	 * - Use `isNaN` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNaN() {
@@ -2741,6 +2773,7 @@ export default class Matrix {
 	/**
 	 * real(this) > 0
 	 * - 1 if true, 0 if false.
+	 * - Use `isPositive` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testPositive() {
@@ -2752,6 +2785,7 @@ export default class Matrix {
 	/**
 	 * real(this) < 0
 	 * - 1 if true, 0 if false.
+	 * - Use `isNegative` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNegative() {
@@ -2763,6 +2797,7 @@ export default class Matrix {
 	/**
 	 * real(this) >= 0
 	 * - 1 if true, 0 if false.
+	 * - Use `isNotNegative` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNotNegative() {
@@ -2774,6 +2809,7 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is positive infinite.
 	 * - 1 if true, 0 if false.
+	 * - Use `isPositiveInfinity` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testPositiveInfinity() {
@@ -2785,6 +2821,7 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is negative infinite.
 	 * - 1 if true, 0 if false.
+	 * - Use `isNegativeInfinity` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testNegativeInfinity() {
@@ -2796,6 +2833,7 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is infinite.
 	 * - 1 if true, 0 if false.
+	 * - Use `isInfinite` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testInfinite() {
@@ -2807,12 +2845,143 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is finite.
 	 * - 1 if true, 0 if false.
+	 * - Use `isFinite` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testFinite() {
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.isFinite() ? Complex.ONE : Complex.ZERO;
 		});
+	}
+
+
+	// ----------------------
+	// 1要素のみのテスト
+	// ----------------------
+	
+	/**
+	 * this === 0
+	 * - Use only the first element.
+	 * - Use `testZero` if you want to test the elements of a matrix.
+	 * - Use `isZeros` to check for a zero matrix.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {boolean}
+	 */
+	isZero(tolerance) {
+		return this.scalar.isZero(tolerance);
+	}
+	
+	/**
+	 * this === 1
+	 * - Use only the first element.
+	 * - Use `testOne` if you want to test the elements of a matrix.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {boolean}
+	 */
+	isOne(tolerance) {
+		return this.scalar.isOne(tolerance);
+	}
+	
+	/**
+	 * this > 0
+	 * - Use only the first element.
+	 * - Use `testPositive` if you want to test the elements of a matrix.
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		return this.scalar.isPositive();
+	}
+
+	/**
+	 * this < 0
+	 * - Use only the first element.
+	 * - Use `testNegative` if you want to test the elements of a matrix.
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return this.scalar.isNegative();
+	}
+
+	/**
+	 * this >= 0
+	 * - Use only the first element.
+	 * - Use `testNotNegative` if you want to test the elements of a matrix.
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return this.scalar.isNotNegative();
+	}
+	
+	/**
+	 * this === NaN
+	 * - Use only the first element.
+	 * - Use `testNaN` if you want to test the elements of a matrix.
+	 * @returns {boolean} isNaN(A)
+	 */
+	isNaN() {
+		return this.scalar.isNaN();
+	}
+	
+	/**
+	 * this === Infinity
+	 * - Use only the first element.
+	 * - Use `testPositiveInfinity` if you want to test the elements of a matrix.
+	 * @returns {boolean} isPositiveInfinity(A)
+	 */
+	isPositiveInfinity() {
+		return this.scalar.isPositiveInfinity();
+	}
+
+	/**
+	 * this === -Infinity
+	 * - Use only the first element.
+	 * - Use `testNegativeInfinity` if you want to test the elements of a matrix.
+	 * @returns {boolean} isNegativeInfinity(A)
+	 */
+	isNegativeInfinity() {
+		return this.scalar.isNegativeInfinity();
+	}
+
+	/**
+	 * this === Infinity or -Infinity
+	 * - Use only the first element.
+	 * - Use `testInfinite` if you want to test the elements of a matrix.
+	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+	 */
+	isInfinite() {
+		return this.scalar.isInfinite();
+	}
+	
+	/**
+	 * Return true if the value is finite number.
+	 * - Use only the first element.
+	 * - Use `testFinite` if you want to test the elements of a matrix.
+	 * @returns {boolean} !isNaN(A) && !isInfinite(A)
+	 */
+	isFinite() {
+		return this.scalar.isFinite();
+	}
+
+	/**
+	 * Return true if the value is integer.
+	 * - Use only the first element.
+	 * - Use `testFinite` if you want to test the elements of a matrix.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {boolean}
+	 */
+	isInteger(tolerance) {
+		return this.scalar.isInteger(tolerance);
+	}
+
+	/**
+	 * Returns true if the vallue is complex integer (including normal integer).
+	 * - Use only the first element.
+	 * - Use `testFinite` if you want to test the elements of a matrix.
+	 * @param {KMatrixInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {boolean} real(A) === integer && imag(A) === integer
+	 */
+	isComplexInteger(tolerance) {
+		return this.scalar.isComplexInteger(tolerance);
 	}
 
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
@@ -4157,6 +4326,21 @@ export default class Matrix {
 	}
 	
 	// ----------------------
+	// その他の演算
+	// ----------------------
+	
+	/**
+	 * Multiply a multiple of ten.
+	 * @param {KMatrixInputData} n
+	 * @returns {Matrix} x * 10^n
+	 */
+	scaleByPowerOfTen(n) {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.scaleByPowerOfTen(Matrix._toComplex(n));
+		});
+	}
+
+	// ----------------------
 	// 素数
 	// ----------------------
 	
@@ -4165,6 +4349,7 @@ export default class Matrix {
 	 * - 1 if true, 0 if false.
 	 * - Calculated as an integer.
 	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * - Use `isPrime` if you want to test first element.
 	 * @returns {Matrix} Matrix with elements of the numerical value of 1 or 0.
 	 */
 	testPrime() {
@@ -4176,6 +4361,8 @@ export default class Matrix {
 	/**
 	 * Test if each element of the matrix is prime number by Miller-Labin prime number determination method.
 	 * - 1 if true, 0 if false.
+	 * - Use `isProbablePrime` if you want to test first element.
+	 * 
 	 * Attention : it takes a very long time to process.
 	 * - Calculated as an integer.
 	 * @param {KMatrixInputData} [certainty=100] - Repeat count (prime precision).
@@ -4202,6 +4389,32 @@ export default class Matrix {
 		});
 	}
 	
+	/**
+	 * Return true if the value is prime number.
+	 * - Calculated as an integer.
+	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * - Use only the first element.
+	 * - Use `testPrime` if you want to test the elements of a matrix.
+	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
+	 */
+	isPrime() {
+		return this.scalar.isPrime();
+	}
+	
+	/**
+	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * - Use only the first element.
+	 * - Use `testProbablePrime` if you want to test the elements of a matrix.
+	 * 
+	 * Attention : it takes a very long time to process.
+	 * - Calculated as an integer.
+	 * @param {KMatrixInputData} [certainty=100] - Repeat count (prime precision).
+	 * @returns {boolean}
+	 */
+	isProbablePrime(certainty) {
+		return this.scalar.isProbablePrime(certainty);
+	}
+
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆
 	// statistics 統計計算用
 	// ◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆◆

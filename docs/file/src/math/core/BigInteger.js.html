@@ -44,6 +44,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixSettings">KMatrixSettings</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-core-base">math/core/base</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-core-context">math/core/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -85,6 +87,7 @@ import BigDecimal from &quot;./BigDecimal.js&quot;;
 import Complex from &quot;./Complex.js&quot;;
 import Matrix from &quot;./Matrix.js&quot;;
 import MathContext from &quot;./context/MathContext.js&quot;;
+import KonpeitoInteger from &quot;./base/KonpeitoInteger.js&quot;;
 
 /**
  * BigInteger type argument.
@@ -260,7 +263,7 @@ class BigIntegerTool {
 		}
 		let x;
 		let state;
-		if(num === 0) {
+		if((num | 0) === 0) {
 			state = BIGINTEGER_NUMBER_STATE.ZERO;
 			x = 0;
 		}
@@ -458,7 +461,7 @@ const BIGINTEGER_NUMBER_STATE = {
 /**
  * Arbitrary-precision integer class (immutable).
  */
-export default class BigInteger {
+export default class BigInteger extends KonpeitoInteger {
 
 	/**
 	 * Create an arbitrary-precision integer.
@@ -471,6 +474,7 @@ export default class BigInteger {
 	 * @param {KBigIntegerInputData} [number] - Numeric data. See how to use the function.
 	 */
 	constructor(number) {
+		super();
 		
 		/**
 		 * Numeric state.
@@ -1155,6 +1159,22 @@ export default class BigInteger {
 	 */
 	div(number) {
 		return this.clone()._div(number);
+	}
+
+	/**
+	 * Inverse number of this value.
+	 * @returns {BigInteger} 1 / A
+	 */
+	inv() {
+		{
+			if(!this.isFinite()) {
+				return this.isNaN() ? BigInteger.NaN : BigInteger.ZERO;
+			}
+			if(this.isZero()) {
+				return BigInteger.NaN;
+			}
+		}
+		return BigInteger.ZERO;
 	}
 
 	/**
@@ -1851,6 +1871,50 @@ export default class BigInteger {
 	}
 
 	// ----------------------
+	// &#x4E38;&#x3081;
+	// ----------------------
+	
+	/**
+	 * Floor.
+	 * @returns {BigInteger} floor(A)
+	 */
+	floor() {
+		return this;
+	}
+
+	/**
+	 * Ceil.
+	 * @returns {BigInteger} ceil(A)
+	 */
+	ceil() {
+		return this;
+	}
+	
+	/**
+	 * Rounding to the nearest integer.
+	 * @returns {BigInteger} round(A)
+	 */
+	round() {
+		return this;
+	}
+
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {BigInteger} fix(A), trunc(A)
+	 */
+	fix() {
+		return this;
+	}
+
+	/**
+	 * Fraction.
+	 * @returns {BigInteger} fract(A)
+	 */
+	fract() {
+		return BigInteger.ZERO;
+	}
+
+	// ----------------------
 	// gcd, lcm
 	// ----------------------
 	
@@ -2312,7 +2376,7 @@ export default class BigInteger {
 		// &#x914D;&#x5217;&#x306E;&#x4E0A;&#x4F4D;&#x304C;&#x7A7A;&#x306B;&#x306A;&#x308B;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#x305F;&#x3081;&#x30CE;&#x30FC;&#x30DE;&#x30E9;&#x30A4;&#x30BA;&#x304C;&#x5FC5;&#x8981;
 		this._memory_reduction();
 		// &#x7B26;&#x53F7;&#x3092;&#x8A08;&#x7B97;
-		if((s1 === 1)||(s2 === 1)) {
+		if(this.state !== BIGINTEGER_NUMBER_STATE.ZERO &amp;&amp; ((s1 === 1)||(s2 === 1))) {
 			this.state = BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER;
 		}
 		// &#x51FA;&#x529B;&#x304C;&#x8CA0;&#x306E;&#x5834;&#x5408;&#x306F;&#x3001;2&#x306E;&#x88DC;&#x6570;

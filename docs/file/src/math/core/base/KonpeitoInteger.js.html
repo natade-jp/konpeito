@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <base data-ice="baseUrl" href="../../../../../">
-  <title data-ice="title">src/math/core/context/RoundingMode.js | konpeito</title>
+  <title data-ice="title">src/math/core/base/KonpeitoInteger.js | konpeito</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -69,7 +69,7 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/math/core/context/RoundingMode.js</h1>
+<div class="content" data-ice="content"><h1 data-ice="title">src/math/core/base/KonpeitoInteger.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
  * The script is part of konpeito.
  * 
@@ -80,355 +80,554 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+import Random from &quot;../tools/Random.js&quot;;
+import MathContext from &quot;../context/MathContext.js&quot;;
+import BigInteger from &quot;../BigInteger.js&quot;;
+import BigDecimal from &quot;../BigDecimal.js&quot;;
+import Fraction from &quot;../Fraction.js&quot;;
+import Complex from &quot;../Complex.js&quot;;
+import Matrix from &quot;../Matrix.js&quot;;
+
 /**
- * Base class for rounding mode for BigDecimal.
+ * Base class for numbers (immutable).
  */
-export class RoundingModeEntity {
+export default class KonpeitoInteger {
+
+	/**
+	 * Create an number.
+	 * @param {any} [number] - Numeric data. See how to use the function.
+	 */
+	constructor(number) {
+	}
+
+	/**
+	 * Create an entity object of this class.
+	 * @param {any} number 
+	 * @returns {KonpeitoInteger}
+	 */
+	static create(number) {
+		return null;
+	}
+
+	/**
+	 * Create number.
+	 * @param {any} number 
+	 * @returns {KonpeitoInteger}
+	 */
+	static valueOf(number) {
+		return null;
+	}
+
+	/**
+	 * Convert to string.
+	 * @returns {string}
+	 */
+	toString() {
+		return &quot;no&quot;;
+	}
+
+	/**
+	 * Deep copy.
+	 * @returns {KonpeitoInteger}
+	 */
+	clone() {
+		return null;
+	}
+
+	/**
+	 * Absolute value.
+	 * @returns {KonpeitoInteger} abs(A)
+	 */
+	abs() {
+		return null;
+	}
+
+	/**
+	 * this * -1
+	 * @returns {KonpeitoInteger} -A
+	 */
+	negate() {
+		return null;
+	}
+
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {any}
+	 */
+	sign() {
+		return null;
+	}
+
+	// ----------------------
+	// &#x56DB;&#x5247;&#x6F14;&#x7B97;
+	// ----------------------
 	
 	/**
-	 * Get rounding mode name in upper case English.
-	 * @returns {string} Rounding method name.
+	 * Add.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A + B
 	 */
-	static toString() {
-		return &quot;NONE&quot;;
+	add(number) {
+		return null;
 	}
 
 	/**
-	 * Numeric value to add.
-	 * It is rounded when this value is added.
-	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
-	 * @returns {number} Numeric value to add.
+	 * Subtract.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A - B
 	 */
-	static getAddNumber(x) {
-		return 0;
-	}
-
-}
-
-/**
- * Directed rounding to an integer.
- * Round towards positive infinity if positive, negative infinity if negative.
- * @implements {RoundingModeEntity}
- */
-class RoundingMode_UP extends RoundingModeEntity {
-
-	/**
-	 * Get rounding mode name in upper case English.
-	 * @returns {string} Rounding method name.
-	 */
-	static toString() {
-		return &quot;UP&quot;;
+	sub(number) {
+		return null;
 	}
 
 	/**
-	 * Numeric value to add.
-	 * It is rounded when this value is added.
-	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
-	 * @returns {number} Numeric value to add.
+	 * Multiply.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A * B
 	 */
-	static getAddNumber(x) {
-		const y = x % 10;
-		if(y === 0) {
-			return 0;
-		}
-		else if(y &gt; 0) {
-			return 10 - y;
-		}
-		else {
-			return (-(10 + y));
-		}
-	}
-
-}
-
-/**
- * Directed rounding to an integer.
- * Round towards 0.
- * @implements {RoundingModeEntity}
- */
-class RoundingMode_DOWN extends RoundingModeEntity {
-
-	/**
-	 * Get rounding mode name in upper case English.
-	 * @returns {string} Rounding method name.
-	 */
-	static toString() {
-		return &quot;DOWN&quot;;
+	mul(number) {
+		return null;
 	}
 
 	/**
-	 * Numeric value to add.
-	 * It is rounded when this value is added.
-	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
-	 * @returns {number} Numeric value to add.
+	 * Divide.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} fix(A / B)
 	 */
-	static getAddNumber(x) {
-		return -(x % 10);
-	}
-
-}
-
-/**
- * Directed rounding to an integer.
- * Round up to positive infinity.
- * @implements {RoundingModeEntity}
- */
-class RoundingMode_CEILING extends RoundingModeEntity {
-
-	/**
-	 * Get rounding mode name in upper case English.
-	 * @returns {string} Rounding method name.
-	 */
-	static toString() {
-		return &quot;CEILING&quot;;
+	div(number) {
+		return null;
 	}
 
 	/**
-	 * Numeric value to add.
-	 * It is rounded when this value is added.
-	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
-	 * @returns {number} Numeric value to add.
+	 * Inverse number of this value.
+	 * @returns {KonpeitoInteger} 1 / A
 	 */
-	static getAddNumber(x) {
-		const y = x % 10;
-		if(y === 0) {
-			return 0;
-		}
-		else if(y &gt; 0) {
-			return 10 - y;
-		}
-		else {
-			return -y;
-		}
-	}
-
-}
-
-/**
- * Directed rounding to an integer.
- * Round down to negative infinity.
- * @implements {RoundingModeEntity}
- */
-class RoundingMode_FLOOR extends RoundingModeEntity {
-
-	/**
-	 * Get rounding mode name in upper case English.
-	 * @returns {string} Rounding method name.
-	 */
-	static toString() {
-		return &quot;FLOOR&quot;;
+	inv() {
+		return null;
 	}
 
 	/**
-	 * Numeric value to add.
-	 * It is rounded when this value is added.
-	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
-	 * @returns {number} Numeric value to add.
+	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A % B
 	 */
-	static getAddNumber(x) {
-		const y = x % 10;
-		if(y === 0) {
-			return 0;
-		}
-		else if(y &gt; 0) {
-			return -y;
-		}
-		else {
-			return(-(10 + y));
-		}
-	}
-
-}
-
-/**
- * Rounding to the nearest integer.
- * Round half towards positive infinity.
- * @implements {RoundingModeEntity}
- */
-class RoundingMode_HALF_UP extends RoundingModeEntity {
-
-	/**
-	 * Get rounding mode name in upper case English.
-	 * @returns {string} Rounding method name.
-	 */
-	static toString() {
-		return &quot;HALF_UP&quot;;
+	rem(number) {
+		return null;
 	}
 
 	/**
-	 * Numeric value to add.
-	 * It is rounded when this value is added.
-	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
-	 * @returns {number} Numeric value to add.
+	 * Modulo, positive rem of division.
+	 * - Result has same sign as the Divisor.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A mod B
 	 */
-	static getAddNumber(x) {
-		const y = x % 10;
-		const sign = y &gt;= 0 ? 1 : -1;
-		if(Math.abs(y) &lt; 5) {
-			return (y * -1);
-		}
-		else {
-			return (sign * (10 - Math.abs(y)));
-		}
-	}
-
-}
-
-/**
- * Rounding to the nearest integer.
- * Round half towards negative infinity.
- * @implements {RoundingModeEntity}
- */
-class RoundingMode_HALF_DOWN extends RoundingModeEntity {
-
-	/**
-	 * Get rounding mode name in upper case English.
-	 * @returns {string} Rounding method name.
-	 */
-	static toString() {
-		return &quot;HALF_DOWN&quot;;
+	mod(number) {
+		return null;
 	}
 
 	/**
-	 * Numeric value to add.
-	 * It is rounded when this value is added.
-	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
-	 * @returns {number} Numeric value to add.
+	 * Modular exponentiation.
+	 * @param {any} exponent
+	 * @param {any} m 
+	 * @returns {KonpeitoInteger} A^B mod m
 	 */
-	static getAddNumber(x) {
-		const y = x % 10;
-		const sign = y &gt;= 0 ? 1 : -1;
-		if(Math.abs(y) &lt; 6) {
-			return (y * -1);
-		}
-		else {
-			return (sign * (10 - Math.abs(y)));
-		}
-	}
-
-}
-
-/**
- * Rounding to the nearest integer
- * Round to the nearest side. If the median, round to the even side.
- * @implements {RoundingModeEntity}
- */
-class RoundingMode_HALF_EVEN extends RoundingModeEntity {
-
-	/**
-	 * Get rounding mode name in upper case English.
-	 * @returns {string} Rounding method name.
-	 */
-	static toString() {
-		return &quot;HALF_EVEN&quot;;
+	modPow(exponent, m) {
+		return null;
 	}
 
 	/**
-	 * Numeric value to add.
-	 * It is rounded when this value is added.
-	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
-	 * @returns {number} Numeric value to add.
+	 * Modular multiplicative inverse.
+	 * @param {any} m
+	 * @returns {KonpeitoInteger} A^(-1) mod m
 	 */
-	static getAddNumber(x) {
-		let y = x % 100;
-		let sign, even;
-		if(y &lt; 0) {
-			sign = -1;
-			even = Math.ceil(y / 10) &amp; 1;
-		}
-		else {
-			sign = 1;
-			even = Math.floor(y / 10) &amp; 1;
-		}
-		let center;
-		if(even === 1) {
-			center = 5;
-		}
-		else {
-			center = 6;
-		}
-		y = y % 10;
-		if(Math.abs(y) &lt; center) {
-			return (y * -1);
-		}
-		else {
-			return (sign * (10 - Math.abs(y)));
-		}
+	modInverse(m) {
+		return null;
 	}
 
-}
-
-/**
- * Do not round.
- * Error if you need to round it.
- * @implements {RoundingModeEntity}
- */
-class RoundingMode_UNNECESSARY extends RoundingModeEntity {
-
+	// ----------------------
+	// &#x305D;&#x306E;&#x4ED6;&#x306E;&#x6F14;&#x7B97;
+	// ----------------------
+	
 	/**
-	 * Get rounding mode name in upper case English.
-	 * @returns {string} Rounding method name.
+	 * Factorial function, x!.
+	 * @returns {KonpeitoInteger} n!
 	 */
-	static toString() {
-		return &quot;UNNECESSARY&quot;;
+	factorial() {
+		return null;
 	}
 
 	/**
-	 * Numeric value to add.
-	 * It is rounded when this value is added.
-	 * @param {number} x - Rounding value. When specified as an integer, the first digit is rounded.
-	 * @returns {number} Numeric value to add.
+	 * Multiply a multiple of ten.
+	 * @param {any} n
+	 * @returns {KonpeitoInteger} x * 10^n
 	 */
-	static getAddNumber(x) {
-		const y = x % 10;
-		if(y === 0) {
-			return 0;
-		}
-		else {
-			throw &quot;ArithmeticException&quot;;
-		}
+	scaleByPowerOfTen(n) {
+		return null;
 	}
 
-}
-
-/**
- * Rounding mode class for BigDecimal.
- */
-export default class RoundingMode {
+	// ----------------------
+	// &#x6307;&#x6570;
+	// ----------------------
+	
+	/**
+	 * Power function.
+	 * @param {any} exponent
+	 * @returns {KonpeitoInteger} pow(A, B)
+	 */
+	pow(exponent) {
+		return null;
+	}
 
 	/**
-	 * Get rounding class represented by specified string.
-	 * @param {string|RoundingModeEntity|Object} name - Mode name.
-	 * @returns {typeof RoundingModeEntity}
+	 * Square.
+	 * @returns {KonpeitoInteger} pow(A, 2)
 	 */
-	static valueOf(name) {
-		let check_string;
-		if(typeof name === &quot;string&quot;) {
-			check_string = name;
-		}
-		else if(name instanceof Object) {
-			check_string = name.toString();
-		}
-		else {
-			throw &quot;Unsupported argument &quot; + name;
-		}
-		const modetype = [
-			RoundingMode_UP,
-			RoundingMode_DOWN,
-			RoundingMode_FLOOR,
-			RoundingMode_CEILING,
-			RoundingMode_HALF_UP,
-			RoundingMode_HALF_DOWN,
-			RoundingMode_HALF_EVEN,
-			RoundingMode_UNNECESSARY
-		];
-		const upper_name = check_string.toUpperCase();
-		for(let i = 0; i &lt; modetype.length; i++) {
-			if(modetype[i].toString() === upper_name) {
-				return modetype[i];
-			}
-		}
-		throw &quot;IllegalArgumentException : &quot; + check_string;
+	square() {
+		return null;
+	}
+
+	// ----------------------
+	// &#x4ED6;&#x306E;&#x578B;&#x306B;&#x5909;&#x63DB;&#x7528;
+	// ----------------------
+	
+	/**
+	 * boolean value.
+	 * @returns {boolean}
+	 */
+	get booleanValue() {
+		return null;
+	}
+
+	/**
+	 * integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		return null;
+	}
+
+	/**
+	 * floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		return null;
+	}
+	
+	// ----------------------
+	// konpeito &#x3067;&#x6271;&#x3046;&#x6570;&#x5024;&#x578B;&#x3078;&#x5909;&#x63DB;
+	// ----------------------
+	
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return null;
+	}
+
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		return null;
+	}
+	
+	/**
+	 * return Fraction.
+	 * @returns {Fraction}
+	 */
+	toFraction() {
+		return null;
+	}
+	
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return null;
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return null;
+	}
+
+	// ----------------------
+	// &#x6BD4;&#x8F03;
+	// ----------------------
+	
+	/**
+	 * Equals.
+	 * @param {any} number
+	 * @returns {boolean} A === B
+	 */
+	equals(number) {
+		return null;
+	}
+
+	/**
+	 * Compare values.
+	 * @param {any} number 
+	 * @returns {number} A &gt; B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number) {
+		return null;
+	}
+
+	// max, min, clip &#x306A;&#x3069;&#x306F;&#x884C;&#x5217;&#x3060;&#x3068;&#x610F;&#x5473;&#x304C;&#x9055;&#x3046;&#x305F;&#x3081;&#x5916;&#x3059;
+
+	// ----------------------
+	// &#x4E38;&#x3081;
+	// ----------------------
+	
+	/**
+	 * Floor.
+	 * @returns {KonpeitoInteger} floor(A)
+	 */
+	floor() {
+		return null;
+	}
+
+	/**
+	 * Ceil.
+	 * @returns {KonpeitoInteger} ceil(A)
+	 */
+	ceil() {
+		return null;
+	}
+	
+	/**
+	 * Rounding to the nearest integer.
+	 * @returns {KonpeitoInteger} round(A)
+	 */
+	round() {
+		return null;
+	}
+
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {KonpeitoInteger} fix(A), trunc(A)
+	 */
+	fix() {
+		return null;
+	}
+
+	/**
+	 * Fraction.
+	 * @returns {KonpeitoInteger} fract(A)
+	 */
+	fract() {
+		return BigInteger.ZERO;
+	}
+
+	// ----------------------
+	// gcd, lcm
+	// ----------------------
+	
+	/**
+	 * Euclidean algorithm.
+	 * @param {any} number 
+	 * @returns {KonpeitoInteger} gcd(x, y)
+	 */
+	gcd(number) {
+		return null;
+	}
+
+	/**
+	 * Extended Euclidean algorithm.
+	 * @param {any} number 
+	 * @returns {Array&lt;KonpeitoInteger&gt;} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 */
+	extgcd(number) {
+		return null;
+	}
+
+	/**
+	 * Least common multiple.
+	 * @param {any} number 
+	 * @returns {KonpeitoInteger} lcm(x, y)
+	 */
+	lcm(number) {
+		return null;
+	}
+
+	// ----------------------
+	// &#x7D20;&#x6570;&#x7CFB;
+	// ----------------------
+	
+	/**
+	 * Return true if the value is prime number.
+	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
+	 */
+	isPrime() {
+		return null;
+	}
+
+	/**
+	 * Return true if the value is prime number by Miller-Labin prime number determination method.
+	 * 
+	 * Attention : it takes a very long time to process.
+	 * @param {any} [certainty=100] - Repeat count (prime precision).
+	 * @returns {boolean}
+	 */
+	isProbablePrime(certainty) {
+		return null;
+	}
+
+	/**
+	 * Next prime.
+	 * @param {any} [certainty=100] - Repeat count (prime precision).
+	 * @param {any} [search_max=100000] - Search range of next prime.
+	 * @returns {KonpeitoInteger}
+	 */
+	nextProbablePrime(certainty, search_max) {
+		return null;
+	}
+
+	// ----------------------
+	// &#x30B7;&#x30D5;&#x30C8;&#x6F14;&#x7B97;&#x7CFB;
+	// ----------------------
+	
+	/**
+	 * this &lt;&lt; n
+	 * @param {any} n
+	 * @returns {KonpeitoInteger} A &lt;&lt; n
+	 */
+	shift(n) {
+		return null;
+	}
+
+	// ----------------------
+	// &#x30D3;&#x30C3;&#x30C8;&#x6F14;&#x7B97;&#x7CFB;
+	// ----------------------
+	
+	/**
+	 * Logical AND.
+	 * @param {any} number 
+	 * @returns {KonpeitoInteger} A &amp; B
+	 */
+	and(number) {
+		return null;
+	}
+
+	/**
+	 * Logical OR.
+	 * @param {any} number 
+	 * @returns {KonpeitoInteger} A | B
+	 */
+	or(number) {
+		return null;
+	}
+
+	/**
+	 * Logical Exclusive-OR.
+	 * @param {any} number 
+	 * @returns {KonpeitoInteger} A ^ B
+	 */
+	xor(number) {
+		return null;
+	}
+
+	/**
+	 * Logical Not. (mutable)
+	 * @returns {KonpeitoInteger} !A
+	 */
+	not() {
+		return null;
+	}
+
+	// ----------------------
+	// &#x30C6;&#x30B9;&#x30C8;&#x7CFB;
+	// ----------------------
+	
+	/**
+	 * this === 0
+	 * @returns {boolean}
+	 */
+	isZero() {
+		return null;
+	}
+	
+	/**
+	 * this === 1
+	 * @returns {boolean}
+	 */
+	isOne() {
+		return null;
+	}
+	
+	/**
+	 * this &gt; 0
+	 * @returns {boolean}
+	 */
+	isPositive() {
+		return null;
+	}
+
+	/**
+	 * this &lt; 0
+	 * @returns {boolean}
+	 */
+	isNegative() {
+		return null;
+	}
+
+	/**
+	 * this &gt;= 0
+	 * @returns {boolean}
+	 */
+	isNotNegative() {
+		return null;
+	}
+	
+	/**
+	 * this === NaN
+	 * @returns {boolean} isNaN(A)
+	 */
+	isNaN() {
+		return null;
+	}
+	
+	/**
+	 * this === Infinity
+	 * @returns {boolean} isPositiveInfinity(A)
+	 */
+	isPositiveInfinity() {
+		return null;
+	}
+
+	/**
+	 * this === -Infinity
+	 * @returns {boolean} isNegativeInfinity(A)
+	 */
+	isNegativeInfinity() {
+		return null;
+	}
+
+	/**
+	 * this === Infinity or -Infinity
+	 * @returns {boolean} isPositiveInfinity(A) || isNegativeInfinity(A)
+	 */
+	isInfinite() {
+		return null;
+	}
+	
+	/**
+	 * Return true if the value is finite number.
+	 * @returns {boolean} !isNaN(A) &amp;&amp; !isInfinite(A)
+	 */
+	isFinite() {
+		return null;
 	}
 
 	// ----------------------
@@ -436,77 +635,118 @@ export default class RoundingMode {
 	// ----------------------
 	
 	/**
-	 * Directed rounding to an integer.
-	 * Round towards positive infinity if positive, negative infinity if negative.
-	 * @returns {typeof RoundingModeEntity}
+	 * -1
+	 * @returns {KonpeitoInteger} -1
 	 */
-	static get UP() {
-		return RoundingMode_UP;
+	static get MINUS_ONE() {
+		return null;
+	}
+	
+	/**
+	 * 0
+	 * @returns {KonpeitoInteger} 0
+	 */
+	static get ZERO() {
+		return null;
 	}
 
 	/**
-	 * Directed rounding to an integer.
-	 * Round towards 0.
-	 * @returns {typeof RoundingModeEntity}
+	 * 1
+	 * @returns {KonpeitoInteger} 1
 	 */
-	static get DOWN() {
-		return RoundingMode_DOWN;
+	static get ONE() {
+		return null;
+	}
+	
+	/**
+	 * 2
+	 * @returns {KonpeitoInteger} 2
+	 */
+	static get TWO() {
+		return null;
+	}
+	
+	/**
+	 * 10
+	 * @returns {KonpeitoInteger} 10
+	 */
+	static get TEN() {
+		return null;
 	}
 
 	/**
-	 * Directed rounding to an integer.
-	 * Round up to positive infinity.
-	 * @returns {typeof RoundingModeEntity}
+	 * Positive infinity.
+	 * @returns {KonpeitoInteger} Infinity
 	 */
-	static get CEILING() {
-		return RoundingMode_CEILING;
+	static get POSITIVE_INFINITY() {
+		return null;
+	}
+	
+	/**
+	 * Negative Infinity.
+	 * @returns {KonpeitoInteger} -Infinity
+	 */
+	static get NEGATIVE_INFINITY() {
+		return null;
 	}
 
 	/**
-	 * Directed rounding to an integer.
-	 * Round down to negative infinity.
-	 * @returns {typeof RoundingModeEntity}
+	 * Not a Number.
+	 * @returns {KonpeitoInteger} NaN
 	 */
-	static get FLOOR() {
-		return RoundingMode_FLOOR;
+	static get NaN() {
+		return null;
+	}
+
+	// ----------------------
+	// &#x4E92;&#x63DB;&#x6027;
+	// ----------------------
+	
+	/**
+	 * The positive or negative sign of this number.
+	 * - +1 if positive, -1 if negative, 0 if 0.
+	 * @returns {any}
+	 */
+	signum() {
+		return this.sign();
 	}
 
 	/**
-	 * Rounding to the nearest integer.
-	 * Round half towards positive infinity.
-	 * @returns {typeof RoundingModeEntity}
+	 * Subtract.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A - B
 	 */
-	static get HALF_UP() {
-		return RoundingMode_HALF_UP;
+	subtract(number) {
+		return this.sub(number);
 	}
 
 	/**
-	 * Rounding to the nearest integer.
-	 * Round half towards negative infinity.
-	 * @returns {typeof RoundingModeEntity}
+	 * Multiply.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A * B
 	 */
-	static get HALF_DOWN() {
-		return RoundingMode_HALF_DOWN;
+	multiply(number) {
+		return this.mul(number);
 	}
 
 	/**
-	 * Rounding to the nearest integer
-	 * Round to the nearest side. If the median, round to the even side.
-	 * @returns {typeof RoundingModeEntity}
+	 * Divide.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} fix(A / B)
 	 */
-	static get HALF_EVEN() {
-		return RoundingMode_HALF_EVEN;
+	divide(number) {
+		return this.div(number);
 	}
 
 	/**
-	 * Do not round.
-	 * Error if you need to round it.
-	 * @returns {typeof RoundingModeEntity}
+	 * Remainder of division.
+	 * - Result has same sign as the Dividend.
+	 * @param {any} number
+	 * @returns {KonpeitoInteger} A % B
 	 */
-	static get UNNECESSARY() {
-		return RoundingMode_UNNECESSARY;
+	remainder(number) {
+		return this.rem(number);
 	}
-
 }
 
 

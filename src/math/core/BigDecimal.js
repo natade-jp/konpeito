@@ -16,6 +16,7 @@ import Random from "./tools/Random.js";
 import Fraction from "./Fraction.js";
 import Complex from "./Complex.js";
 import Matrix from "./Matrix.js";
+import KonpeitoFloat from "./base/KonpeitoFloat.js";
 
 
 /**
@@ -213,7 +214,7 @@ class BigDecimalTool {
 /**
  * Arbitrary-precision floating-point number class (immutable).
  */
-export default class BigDecimal {
+export default class BigDecimal extends KonpeitoFloat {
 	
 	/**
 	 * Create an arbitrary-precision floating-point number.
@@ -232,6 +233,7 @@ export default class BigDecimal {
 	 * @param {KBigDecimalInputData} number - Real data.
 	 */
 	constructor(number) {
+		super();
 
 		/**
 		 * The scale of this BigDecimal.

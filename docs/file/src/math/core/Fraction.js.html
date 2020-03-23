@@ -44,6 +44,8 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixSettings">KMatrixSettings</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-core-base">math/core/base</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-core-context">math/core/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
@@ -84,6 +86,7 @@ import BigDecimal from &quot;./BigDecimal.js&quot;;
 import MathContext from &quot;./context/MathContext.js&quot;;
 import Complex from &quot;./Complex.js&quot;;
 import Matrix from &quot;./Matrix.js&quot;;
+import KonpeitoInteger from &quot;./base/KonpeitoInteger.js&quot;;
 
 /**
  * Fraction type argument.
@@ -353,7 +356,7 @@ class FractionTool {
 /**
  * Fraction class (immutable).
  */
-export default class Fraction {
+export default class Fraction extends KonpeitoInteger {
 
 	/**
 	 * Create an fraction.
@@ -366,6 +369,7 @@ export default class Fraction {
 	 * @param {KFractionInputData} [number] - Fraction data. See how to use the function.
 	 */
 	constructor(number) {
+		super();
 		
 		// &#x5206;&#x5B50;
 		/**
@@ -782,6 +786,10 @@ export default class Fraction {
 		}
 	}
 
+	// ----------------------
+	// &#x6307;&#x6570;
+	// ----------------------
+	
 	/**
 	 * Power function.
 	 * - Supports only integers.
@@ -843,6 +851,14 @@ export default class Fraction {
 		const numerator = x.numerator.pow(y.intValue);
 		const denominator = x.denominator.pow(y.intValue);
 		return new Fraction([ numerator, denominator ]);
+	}
+
+	/**
+	 * Square.
+	 * @returns {Fraction} pow(A, 2)
+	 */
+	square() {
+		return this.mul(this);
 	}
 
 	// ----------------------

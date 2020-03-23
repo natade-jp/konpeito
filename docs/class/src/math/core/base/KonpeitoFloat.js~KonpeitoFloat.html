@@ -1,0 +1,6324 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../../">
+  <title data-ice="title">KonpeitoFloat | konpeito</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="The collection of javascirpt library such as numerical calculation."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="konpeito"><meta property="twitter:description" content="The collection of javascirpt library such as numerical calculation."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/natade-jp/konpeito.git"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/konpeito.js~konpeito.html">konpeito</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-core">math/core</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/BigDecimal.js~BigDecimal.html">BigDecimal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/BigInteger.js~BigInteger.html">BigInteger</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/Complex.js~Complex.html">Complex</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/Fraction.js~Fraction.html">Fraction</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/Matrix.js~Matrix.html">Matrix</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalDivideType">KBigDecimalDivideType</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalInputData">KBigDecimalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalLocalInputData">KBigDecimalLocalInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigDecimalScaleData">KBigDecimalScaleData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KBigIntegerInputData">KBigIntegerInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KComplexInputData">KComplexInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KFractionInputData">KFractionInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixInputData">KMatrixInputData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMatrixSettings">KMatrixSettings</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-core-base">math/core/base</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-core-context">math/core/context</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/context/MathContext.js~MathContext.html">MathContext</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/context/RoundingMode.js~RoundingMode.html">RoundingMode</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/context/RoundingMode.js~RoundingModeEntity.html">RoundingModeEntity</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-core-tools">math/core/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/tools/LinearAlgebra.js~LinearAlgebra.html">LinearAlgebra</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/tools/Probability.js~Probability.html">Probability</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/tools/Random.js~Random.html">Random</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/tools/Signal.js~Signal.html">Signal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/core/tools/Statistics.js~Statistics.html">Statistics</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KRandomSettings">KRandomSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KSignalSettings">KSignalSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis.js~DataAnalysis.html">DataAnalysis</a></span></span></li>
+<li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools-dataanalysis">math/tools/DataAnalysis</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.html">MultipleRegressionAnalysis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisAnova">KMultipleRegressionAnalysisAnova</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisOutput">KMultipleRegressionAnalysisOutput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegression">KMultipleRegressionAnalysisPartialRegression</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegressionData">KMultipleRegressionAnalysisPartialRegressionData</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisSettings">KMultipleRegressionAnalysisSettings</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisVectorState">KMultipleRegressionAnalysisVectorState</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div class="header-notice">
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import KonpeitoFloat from &apos;<span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber16">konpeito/src/math/core/base/KonpeitoFloat.js</a></span>&apos;</code></pre></div>
+  <span data-ice="access">public</span>
+  <span data-ice="kind">class</span>
+  
+  
+  
+  <span data-ice="source">| <span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber16">source</a></span></span>
+</div>
+
+<div class="self-detail detail">
+  <h1 data-ice="name">KonpeitoFloat</h1>
+
+  
+
+  
+  
+  <div class="flat-list" data-ice="extendsChain"><h4>Extends:</h4><div><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span> &#x2192; KonpeitoFloat</div></div>
+  <div class="flat-list" data-ice="directSubclass"><h4>Direct Subclass:</h4><div><span><a href="class/src/math/core/BigDecimal.js~BigDecimal.html">BigDecimal</a></span>, <span><a href="class/src/math/core/Complex.js~Complex.html">Complex</a></span>, <span><a href="class/src/math/core/Matrix.js~Matrix.html">Matrix</a></span></div></div>
+  
+  
+  
+  
+  
+
+  
+  
+  <div class="description" data-ice="description"><p>Base class for numbers (immutable).</p>
+</div>
+  
+
+  
+
+  
+
+  
+
+  
+</div>
+
+<div data-ice="staticMemberSummary"><h2>Static Member Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Static Public Members</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-E">E</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>E, Napier&apos;s constant.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-HALF">HALF</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>0.5</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-HALF_PI">HALF_PI</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>0.5 * PI.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-LN10">LN10</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>log_e(10)</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-LN2">LN2</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>log_e(2)</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-LOG10E">LOG10E</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>log_10(e)</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-LOG2E">LOG2E</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>log_2(e)</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-PI">PI</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>PI.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-QUARTER_PI">QUARTER_PI</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>0.25 * PI.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-SQRT1_2">SQRT1_2</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>sqrt(0.5)</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-SQRT2">SQRT2</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>sqrt(2)</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#static-get-TWO_PI">TWO_PI</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>2 * PI.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<div data-ice="constructorSummary"><h2>Constructor Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Constructor</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>)</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Create an number.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<div data-ice="methodSummary"><h2>Method Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3">Public Methods</td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-acos">acos</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Arc cosine function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-acosh">acosh</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Inverse hyperbolic cosine function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-acot">acot</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Inverse cotangent function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-acoth">acoth</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Inverse hyperbolic cotangent function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-acsc">acsc</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Inverse cosecant function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-acsch">acsch</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Inverse hyperbolic cosecant function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-asec">asec</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Reverse secant function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-asech">asech</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Inverse hyperbolic secant function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-asin">asin</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Arc sine function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-asinh">asinh</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Inverse hyperbolic sine function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-atan">atan</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Atan (arc tangent) function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-atan2">atan2</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Atan (arc tangent) function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-atanh">atanh</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Inverse hyperbolic tangent function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-cbrt">cbrt</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Cube root.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-cos">cos</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Cosine function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-cosh">cosh</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Hyperbolic cosine function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-cot">cot</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Cotangent function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-coth">coth</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Hyperbolic cotangent function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-csc">csc</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Cosecant function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-csch">csch</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Hyperbolic cosecant function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-exp">exp</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Exponential function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-expm1">expm1</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>e^x - 1</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-log">log</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Logarithmic function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-log10">log10</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>log_10(x)</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-log1p">log1p</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>ln(1 + x)</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-log2">log2</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>log_2(x)</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-rsqrt">rsqrt</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Reciprocal square root.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-sec">sec</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Secant function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-sech">sech</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Hyperbolic secant function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-sin">sin</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Sine function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-sinc">sinc</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Normalized sinc function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-sinh">sinh</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Hyperbolic sine function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-sqrt">sqrt</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Square root.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-tan">tan</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Tangent function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-tanh">tanh</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Hyperbolic tangent function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<div class="inherited-summary" data-ice="inheritedSummary"><h2>Inherited Summary</h2><table class="summary" data-ice="summary">
+  <thead><tr><td data-ice="title" colspan="3"><span class="toggle closed"></span> From class <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></td></tr></thead>
+  <tbody>
+  
+  <tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-MINUS_ONE">MINUS_ONE</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>-1</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-NEGATIVE_INFINITY">NEGATIVE_INFINITY</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Negative Infinity.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-NaN">NaN</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Not a Number.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-ONE">ONE</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>1</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-POSITIVE_INFINITY">POSITIVE_INFINITY</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Positive infinity.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-TEN">TEN</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>10</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-TWO">TWO</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>2</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-get-ZERO">ZERO</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>0</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-method-create">create</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Create an entity object of this class.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      <span data-ice="static">static</span>
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#static-method-valueOf">valueOf</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Create number.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-get-booleanValue">booleanValue</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>boolean value.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-get-doubleValue">doubleValue</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>floating point.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      <span class="kind" data-ice="kind">get</span>
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-get-intValue">intValue</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span>: <span>*</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>integer value.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-abs">abs</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Absolute value.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-add">add</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Add.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-and">and</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Logical AND.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-ceil">ceil</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Ceil.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-clone">clone</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Deep copy.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-compareTo">compareTo</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Compare values.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-div">div</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Divide.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-divide">divide</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Divide.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-equals">equals</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Equals.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-extgcd">extgcd</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a></span>&lt;<span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span>&gt;</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Extended Euclidean algorithm.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-factorial">factorial</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Factorial function, x!.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-fix">fix</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>To integer rounded down to the nearest.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-floor">floor</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Floor.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-fract">fract</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Fraction.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-gcd">gcd</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Euclidean algorithm.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-inv">inv</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Inverse number of this value.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isFinite">isFinite</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Return true if the value is finite number.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isInfinite">isInfinite</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this === Infinity or -Infinity</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isNaN">isNaN</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this === NaN</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isNegative">isNegative</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this &lt; 0</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isNegativeInfinity">isNegativeInfinity</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this === -Infinity</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isNotNegative">isNotNegative</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this &gt;= 0</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isOne">isOne</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this === 1</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isPositive">isPositive</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this &gt; 0</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isPositiveInfinity">isPositiveInfinity</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this === Infinity</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isPrime">isPrime</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Return true if the value is prime number.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isProbablePrime">isProbablePrime</a></span></span><span class="code" data-ice="signature">(certainty: <span>any</span>): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Return true if the value is prime number by Miller-Labin prime number determination method.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-isZero">isZero</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this === 0</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-lcm">lcm</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Least common multiple.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-mod">mod</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Modulo, positive rem of division.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-modInverse">modInverse</a></span></span><span class="code" data-ice="signature">(m: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Modular multiplicative inverse.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-modPow">modPow</a></span></span><span class="code" data-ice="signature">(exponent: <span>any</span>, m: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Modular exponentiation.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-mul">mul</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Multiply.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-multiply">multiply</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Multiply.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-negate">negate</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this * -1</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-nextProbablePrime">nextProbablePrime</a></span></span><span class="code" data-ice="signature">(certainty: <span>any</span>, search_max: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Next prime.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-not">not</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Logical Not.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-or">or</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Logical OR.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-pow">pow</a></span></span><span class="code" data-ice="signature">(exponent: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Power function.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-rem">rem</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Remainder of division.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-remainder">remainder</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Remainder of division.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-round">round</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Rounding to the nearest integer.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-scaleByPowerOfTen">scaleByPowerOfTen</a></span></span><span class="code" data-ice="signature">(n: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Multiply a multiple of ten.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-shift">shift</a></span></span><span class="code" data-ice="signature">(n: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>this &lt;&lt; n</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-sign">sign</a></span></span><span class="code" data-ice="signature">(): <span>any</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The positive or negative sign of this number.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-signum">signum</a></span></span><span class="code" data-ice="signature">(): <span>any</span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>The positive or negative sign of this number.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-square">square</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Square.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-sub">sub</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Subtract.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-subtract">subtract</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Subtract.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-toBigDecimal">toBigDecimal</a></span></span><span class="code" data-ice="signature">(mc: <span><a href="class/src/konpeito.js~konpeito.html#static-get-MathContext">MathContext</a></span>): <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigDecimal">BigDecimal</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>return BigDecimal.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-toBigInteger">toBigInteger</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.js~konpeito.html#static-get-BigInteger">BigInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>return BigInteger.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-toComplex">toComplex</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Complex">Complex</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>return Complex.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-toFraction">toFraction</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Fraction">Fraction</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>return Fraction.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-toMatrix">toMatrix</a></span></span><span class="code" data-ice="signature">(): <span><a href="class/src/konpeito.js~konpeito.html#static-get-Matrix">Matrix</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>return Matrix.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-toString">toString</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Convert to string.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-xor">xor</a></span></span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html">KonpeitoInteger</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Logical Exclusive-OR.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+</tbody>
+</table>
+</div>
+
+<div data-ice="staticMemberDetails"><h2 data-ice="title">Static Public Members</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-E">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">E</span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber367">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>E, Napier&apos;s constant.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>2.71...</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-HALF">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">HALF</span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber423">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>0.5</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>0.5</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-HALF_PI">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">HALF_PI</span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber351">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>0.5 * PI.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>1.57...</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-LN10">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">LN10</span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber383">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>log_e(10)</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>ln(10)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-LN2">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">LN2</span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber375">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>log_e(2)</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>ln(2)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-LOG10E">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">LOG10E</span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber399">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>log_10(e)</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>log_10(e)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-LOG2E">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">LOG2E</span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber391">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>log_2(e)</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>log_2(e)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-PI">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">PI</span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber335">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>PI.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>3.14...</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-QUARTER_PI">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">QUARTER_PI</span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber343">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>0.25 * PI.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>0.78...</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-SQRT1_2">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">SQRT1_2</span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber415">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>sqrt(0.5)</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>sqrt(0.5)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-SQRT2">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">SQRT2</span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber407">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>sqrt(2)</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>sqrt(2)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="static-get-TWO_PI">
+    <span class="access" data-ice="access">public</span>
+    <span data-ice="static">static</span>
+    <span class="kind" data-ice="kind">get</span>
+    
+    
+    
+    <span class="code" data-ice="name">TWO_PI</span><span class="code" data-ice="signature">: <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span>: <span>*</span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber359">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>2 * PI.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>6.28...</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+
+<div data-ice="constructorDetails"><h2 data-ice="title">Public Constructors</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-constructor-constructor">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(number: <span>any</span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber22">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Create an number.</p>
+</div>
+
+  <div data-ice="override"><h4>Override:</h4><span><a href="class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-constructor-constructor">KonpeitoInteger#constructor</a></span></div>
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span>any</span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>Numeric data. See how to use the function.</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+
+<div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
+
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-acos">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">acos</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber166">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Arc cosine function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>acos(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-acosh">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">acosh</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber199">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Inverse hyperbolic cosine function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>acosh(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-acot">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">acot</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber263">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Inverse cotangent function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>acot(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-acoth">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">acoth</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber279">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Inverse hyperbolic cotangent function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>acoth(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-acsc">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">acsc</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber295">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Inverse cosecant function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>acsc(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-acsch">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">acsch</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber311">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Inverse hyperbolic cosecant function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>acsch(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-asec">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">asec</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber231">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Reverse secant function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>asec(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-asech">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">asech</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber247">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Inverse hyperbolic secant function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>asech(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-asin">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">asin</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber158">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Arc sine function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>asin(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-asinh">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">asinh</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber183">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Inverse hyperbolic sine function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>asinh(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-atan">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">atan</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber135">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Atan (arc tangent) function.</p>
+<ul>
+<li>Return the values of [-PI/2, PI/2].</li>
+</ul>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>atan(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-atan2">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">atan2</span><span class="code" data-ice="signature">(number: <span>any</span>): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber146">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Atan (arc tangent) function.
+Return the values of [-PI, PI] .
+Supports only real numbers.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">number</td>
+      <td data-ice="type" class="code"><span>any</span></td>
+      <td data-ice="appendix"><ul><li>optional</li></ul></td>
+      <td data-ice="description"><p>X</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>atan2(Y, X)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-atanh">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">atanh</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber215">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Inverse hyperbolic tangent function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>atanh(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-cbrt">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">cbrt</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber42">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Cube root.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>cbrt(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-cos">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">cos</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber118">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Cosine function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>cos(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-cosh">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">cosh</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber191">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Hyperbolic cosine function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>cosh(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-cot">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">cot</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber255">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Cotangent function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>cot(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-coth">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">coth</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber271">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Hyperbolic cotangent function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>coth(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-csc">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">csc</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber287">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Cosecant function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>csc(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-csch">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">csch</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber303">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Hyperbolic cosecant function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>csch(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-exp">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">exp</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber66">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Exponential function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>exp(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-expm1">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">expm1</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber74">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>e^x - 1</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>expm1(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-log">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">log</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber58">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Logarithmic function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>log(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-log10">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">log10</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber98">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>log_10(x)</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>log10(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-log1p">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">log1p</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber82">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>ln(1 + x)</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>log1p(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-log2">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">log2</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber90">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>log_2(x)</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>log2(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-rsqrt">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">rsqrt</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber50">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Reciprocal square root.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>rsqrt(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-sec">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">sec</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber223">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Secant function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>sec(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-sech">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">sech</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber239">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Hyperbolic secant function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>sech(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-sin">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">sin</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber110">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Sine function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>sin(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-sinc">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">sinc</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber323">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Normalized sinc function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>sinc(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-sinh">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">sinh</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber175">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Hyperbolic sine function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>sinh(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-sqrt">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">sqrt</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber34">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Square root.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>sqrt(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-tan">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">tan</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber126">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Tangent function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>tan(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-tanh">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">tanh</span><span class="code" data-ice="signature">(): <span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/math/core/base/KonpeitoFloat.js.html#lineNumber207">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Hyperbolic tangent function.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html">KonpeitoFloat</a></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>tanh(A)</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

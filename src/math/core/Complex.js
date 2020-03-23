@@ -16,6 +16,7 @@ import BigInteger from "./BigInteger.js";
 import BigDecimal from "./BigDecimal.js";
 import Fraction from "./Fraction.js";
 import MathContext from "./context/MathContext.js";
+import KonpeitoFloat from "./base/KonpeitoFloat.js";
 
 /**
  * Complex type argument.
@@ -95,7 +96,7 @@ class ComplexTool {
 /**
  * Complex number class. (immutable)
  */
-export default class Complex {
+export default class Complex extends KonpeitoFloat {
 
 	/**
 	 * Create a complex number.
@@ -106,6 +107,8 @@ export default class Complex {
 	 * @param {KComplexInputData} number - Complex number. See how to use the function.
 	 */
 	constructor(number) {
+		super();
+		
 		// 行列で使うためイミュータブルは必ず守ること。
 		if(arguments.length === 1) {
 			const obj = number;
@@ -2098,6 +2101,19 @@ export default class Complex {
 		return new Complex(result);
 	}
 	
+	// ----------------------
+	// その他の演算
+	// ----------------------
+	
+	/**
+	 * Multiply a multiple of ten.
+	 * @param {KComplexInputData} n
+	 * @returns {Complex} x * 10^n
+	 */
+	scaleByPowerOfTen(n) {
+		return this.mul(Complex.TEN.pow(n));
+	}
+
 	// ----------------------
 	// 素数
 	// ----------------------
