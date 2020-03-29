@@ -59,12 +59,16 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis.js~DataAnalysis.html">DataAnalysis</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools-dataanalysis">math/tools/DataAnalysis</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.html">MultipleRegressionAnalysis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js~PrincipalComponentAnalysis.html">PrincipalComponentAnalysis</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisAnova">KMultipleRegressionAnalysisAnova</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisOutput">KMultipleRegressionAnalysisOutput</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegression">KMultipleRegressionAnalysisPartialRegression</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegressionData">KMultipleRegressionAnalysisPartialRegressionData</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisSettings">KMultipleRegressionAnalysisSettings</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisVectorState">KMultipleRegressionAnalysisVectorState</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KPrincipalComponent">KPrincipalComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KPrincipalComponentAnalysisOutput">KPrincipalComponentAnalysisOutput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KPrincipalComponentAnalysisSettings">KPrincipalComponentAnalysisSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -590,7 +594,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger}
-	 * @private
+	 * @ignore
 	 */
 	static _toBigInteger(number) {
 		if(number instanceof BigInteger) {
@@ -605,7 +609,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Convert to real number.
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toFloat(number) {
 		if(typeof number === &quot;number&quot;) {
@@ -623,7 +627,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Convert to integer.
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toInteger(number) {
 		if(typeof number === &quot;number&quot;) {
@@ -763,7 +767,7 @@ export default class BigInteger extends KonpeitoInteger {
 	/**
 	 * Expand memory to specified bit length. (mutable)
 	 * @param {number} bit_length - Bit length.
-	 * @private
+	 * @ignore
 	 */
 	_memory_allocation(bit_length) {
 		if(!this.isFinite()) {
@@ -781,7 +785,7 @@ export default class BigInteger extends KonpeitoInteger {
 
 	/**
 	 * Normalization of the internal data. (mutable)
-	 * @private
+	 * @ignore
 	 */
 	_memory_reduction() {
 		if(!this.isFinite()) {
@@ -804,7 +808,7 @@ export default class BigInteger extends KonpeitoInteger {
 	/**
 	 * Absolute value. (mutable)
 	 * @returns {BigInteger} A = abs(A)
-	 * @private
+	 * @ignore
 	 */
 	_abs() {
 		// -1 -&gt; 1, 0 -&gt; 0, 1 -&gt; 1
@@ -828,7 +832,7 @@ export default class BigInteger extends KonpeitoInteger {
 	/**
 	 * this *= -1
 	 * @returns {BigInteger} A = -A
-	 * @private
+	 * @ignore
 	 */
 	_negate() {
 		if(this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER) {
@@ -882,7 +886,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Add. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A += B
-	 * @private
+	 * @ignore
 	 */
 	_add(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -967,7 +971,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Subtract. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A -= B
-	 * @private
+	 * @ignore
 	 */
 	_sub(number) {
 		// &#x4E00;&#x6642;&#x7684;&#x306B;&#x8A18;&#x9332;&#x3057;&#x3066;&#x304A;&#x3044;&#x3066;&#x5F15;&#x6570;&#x306E;&#x60C5;&#x5831;&#x306F;&#x66F8;&#x304D;&#x63DB;&#x3048;&#x306A;&#x3044;&#x3088;&#x3046;&#x306B;&#x3059;&#x308B;
@@ -991,7 +995,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Multiply. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A *= B
-	 * @private
+	 * @ignore
 	 */
 	_mul(number) {
 		const x = this.mul(number);
@@ -1078,7 +1082,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Divide and rem. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {Array&lt;BigInteger&gt;} [C = fix(A / B), A - C * B]
-	 * @private
+	 * @ignore
 	 */
 	_divideAndRemainder(number) {
 		const o1 = this;
@@ -1157,7 +1161,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Divide. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} fix(A / B)
-	 * @private
+	 * @ignore
 	 */
 	_div(number) {
 		return this._divideAndRemainder(number)[0];
@@ -1193,7 +1197,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * - Result has same sign as the Dividend.
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A %= B
-	 * @private
+	 * @ignore
 	 */
 	_rem(number) {
 		const y = this._divideAndRemainder(number)[1];
@@ -1217,7 +1221,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * - Result has same sign as the Divisor.
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A = A mod B
-	 * @private
+	 * @ignore
 	 */
 	_mod(number) {
 		const o1 = this;
@@ -2353,7 +2357,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Logical AND. (mutable)
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A &amp;= B
-	 * @private
+	 * @ignore
 	 */
 	_and(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -2412,7 +2416,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Logical OR. (mutable)
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A |= B
-	 * @private
+	 * @ignore
 	 */
 	_or(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -2473,7 +2477,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Logical Exclusive-OR. (mutable)
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A ^= B
-	 * @private
+	 * @ignore
 	 */
 	_xor(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -2532,7 +2536,7 @@ export default class BigInteger extends KonpeitoInteger {
 	/**
 	 * Logical Not.
 	 * @returns {BigInteger} A = !A
-	 * @private
+	 * @ignore
 	 */
 	_not() {
 		return(this._add(new BigInteger(1))._negate());
@@ -2550,7 +2554,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * this | (1 &lt;&lt; n) (mutable)
 	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
-	 * @private
+	 * @ignore
 	 */
 	_setBit(bit) {
 		const n = BigInteger._toInteger(bit);
@@ -2574,7 +2578,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Invert a specific bit.) (mutable)
 	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
-	 * @private
+	 * @ignore
 	 */
 	_flipBit(bit) {
 		const n = BigInteger._toInteger(bit);

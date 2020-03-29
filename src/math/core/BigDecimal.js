@@ -449,7 +449,7 @@ export default class BigDecimal extends KonpeitoFloat {
 	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {KBigDecimalInputData} number 
 	 * @returns {BigDecimal}
-	 * @private
+	 * @ignore
 	 */
 	static _toBigDecimal(number) {
 		if(number instanceof BigDecimal) {
@@ -465,7 +465,7 @@ export default class BigDecimal extends KonpeitoFloat {
 	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {KBigDecimalInputData} number 
 	 * @returns {BigInteger}
-	 * @private
+	 * @ignore
 	 */
 	static _toBigInteger(number) {
 		if(number instanceof BigInteger) {
@@ -475,7 +475,6 @@ export default class BigDecimal extends KonpeitoFloat {
 			return number.toBigInteger();
 		}
 		else {
-			// @ts-ignore
 			return new BigInteger(number);
 		}
 	}
@@ -484,7 +483,7 @@ export default class BigDecimal extends KonpeitoFloat {
 	 * Convert to real number.
 	 * @param {KBigDecimalInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toFloat(number) {
 		if(typeof number === "number") {
@@ -502,7 +501,7 @@ export default class BigDecimal extends KonpeitoFloat {
 	 * Convert to integer.
 	 * @param {KBigDecimalInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toInteger(number) {
 		if(typeof number === "number") {
@@ -512,7 +511,6 @@ export default class BigDecimal extends KonpeitoFloat {
 			return number.intValue;
 		}
 		else {
-			// @ts-ignore
 			return (new BigInteger(number)).intValue;
 		}
 	}

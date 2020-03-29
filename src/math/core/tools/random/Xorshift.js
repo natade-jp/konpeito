@@ -9,19 +9,21 @@
  */
 
 import Polyfill from "../../../tools/Polyfill.js";
+import RandomBase from "./RandomBase.js";
 
 /**
  * Random number class.
  * @private
  * @ignore
  */
-export default class Xorshift {
+export default class Xorshift extends RandomBase {
 	
 	/**
 	 * Create Random.
 	 * @param {number} [seed] - Seed number for random number generation. If not specified, create from time.
 	 */
 	constructor(seed) {
+		super();
 
 		/**
 		 * @type {number}
@@ -91,8 +93,8 @@ export default class Xorshift {
 
 	/**
 	 * 32-bit random number.
-	 * @returns {number} - 32ビットの乱数
-	 * @private
+	 * @returns {number} - 32-bit random number
+	 * @ignore
 	 */
 	genrand_int32() {
 		const t = this.x ^ (this.x << 11);

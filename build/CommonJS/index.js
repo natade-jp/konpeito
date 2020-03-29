@@ -1,5 +1,5 @@
 /*!
- * konpeito.js (version 5.2.2, 2020/3/23)
+ * konpeito.js (version 5.3.0, 2020/3/30)
  * https://github.com/natade-jp/konpeito
  * Copyright 2013-2020 natade < https://github.com/natade-jp >
  *
@@ -96,17 +96,60 @@ Polyfill.run();
  */
 
 /**
- * Random number class.
+ * Random number base class.
  * @private
  * @ignore
  */
-class MaximumLengthSequence {
+class RandomBase {
 	
 	/**
 	 * Create Random.
 	 * @param {number} [seed] - Seed number for random number generation. If not specified, create from time.
 	 */
 	constructor(seed) {
+	}
+
+	/**
+	 * Initialize random seed.
+	 * @param {number} seed
+	 */
+	setSeed(seed) {
+	}
+
+	/**
+	 * 32-bit random number.
+	 * @returns {number} - 32-bit random number
+	 */
+	genrand_int32() {
+		return 0;
+	}
+
+}
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
+ * Random number class.
+ * @private
+ * @ignore
+ */
+class MaximumLengthSequence extends RandomBase {
+	
+	/**
+	 * Create Random.
+	 * @param {number} [seed] - Seed number for random number generation. If not specified, create from time.
+	 */
+	constructor(seed) {
+		super();
+
 		// 「M系列乱数」で乱数を作成します。
 		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
 		// 比較的長い 2^521 - 1通りを出力します。
@@ -134,6 +177,7 @@ class MaximumLengthSequence {
 
 	/**
 	 * 内部データをシャッフル
+	 * @ignore
 	 */
 	_rnd521() {
 		const x = this.x;
@@ -196,7 +240,8 @@ class MaximumLengthSequence {
 
 	/**
 	 * 32-bit random number.
-	 * @returns {number} - 32ビットの乱数
+	 * @returns {number} - 32-bit random number
+	 * @ignore
 	 */
 	genrand_int32() {
 		// 全て使用したら、再び混ぜる
@@ -233,13 +278,14 @@ MaximumLengthSequence.seedUniquifier = 0x87654321;
  * @private
  * @ignore
  */
-class Xorshift {
+class Xorshift extends RandomBase {
 	
 	/**
 	 * Create Random.
 	 * @param {number} [seed] - Seed number for random number generation. If not specified, create from time.
 	 */
 	constructor(seed) {
+		super();
 
 		/**
 		 * @type {number}
@@ -309,8 +355,8 @@ class Xorshift {
 
 	/**
 	 * 32-bit random number.
-	 * @returns {number} - 32ビットの乱数
-	 * @private
+	 * @returns {number} - 32-bit random number
+	 * @ignore
 	 */
 	genrand_int32() {
 		const t = this.x ^ (this.x << 11);
@@ -364,7 +410,7 @@ class Random {
 		/**
 		 * Random Number Generator.
 		 * @private
-		 * @type {Xorshift|MaximumLengthSequence}
+		 * @type {RandomBase}
 		 */
 		this.rand = null;
 		
@@ -423,6 +469,8 @@ class Random {
 	/**
 	 * 32-bit random number.
 	 * @returns {number} - 32-bit random number
+	 * @private
+	 * @ignore
 	 */
 	genrand_int32() {
 		return this.rand.genrand_int32();
@@ -2595,7 +2643,6 @@ class LinearAlgebraTool {
 	 * @param {number} [row_index_offset=0] - Offset of the position of the vector to be calculated.
 	 * @param {number} [row_index_max] - Maximum value of position of vector to be calculated (do not include this value).
 	 * @returns {{index: number, max: number}} Matrix row number.
-	 * @private
 	 */
 	static getMaxRowNumber(mat, column_index, row_index_offset, row_index_max) {
 		const M = Matrix._toMatrix(mat);
@@ -2622,7 +2669,6 @@ class LinearAlgebraTool {
 	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @param {number} [tolerance=1.0e-10] - Calculation tolerance of calculation.
 	 * @returns {Array<number>} Array of matrix row numbers in ascending order.
-	 * @private
 	 */
 	static getLinearDependenceVector(mat, tolerance) {
 		const M = new Matrix(mat);
@@ -6415,7 +6461,6 @@ class MatrixTool {
 		}
 		let t_data = data;
 		if(!(t_data instanceof Matrix) && !(t_data instanceof Complex) && !((typeof t_data === "number"))) {
-			// @ts-ignore
 			t_data = Matrix._toMatrix(t_data);
 		}
 		if(t_data instanceof Matrix) {
@@ -6426,19 +6471,16 @@ class MatrixTool {
 			const y = new Array(t_data.length);
 			if(t_data.isRow()) {
 				for(let i = 0; i < len; i++) {
-					// @ts-ignore
 					y[i] = Math.trunc(t_data.matrix_array[0][i].real);
 				}
 			}
 			else if(t_data.isColumn()) {
 				for(let i = 0; i < len; i++) {
-					// @ts-ignore
 					y[i] = Math.trunc(t_data.matrix_array[i][0].real);
 				}
 			}
 			return y;
 		}
-		// @ts-ignore
 		return [ Matrix._toInteger(t_data) ];
 	}
 
@@ -6686,7 +6728,6 @@ class MatrixTool {
 			let array_data = MatrixTool.toMatrixArrayFromStringInBracket(withoutBracket.text);
 			// 転置が必要なら転置させる
 			if(withoutBracket.is_transpose) {
-				// @ts-ignore
 				array_data = (new Matrix(array_data)).T().matrix_array;
 			}
 			return array_data;
@@ -6845,21 +6886,21 @@ class Matrix extends KonpeitoFloat {
 		
 		/**
 		 * An array of elements in the matrix.
-		 * @private
+		 * @ignore
 		 * @type {Array<Array<Complex>>}
 		 */
 		this.matrix_array = matrix_array;
 
 		/**
 		 * The number of rows in a matrix.
-		 * @private
+		 * @ignore
 		 * @type {number}
 		 */
 		this.row_length = this.matrix_array.length;
 		
 		/**
 		 * The number of columns in a matrix.
-		 * @private
+		 * @ignore
 		 * @type {number}
 		 */
 		this.column_length = this.matrix_array[0].length;
@@ -6867,6 +6908,7 @@ class Matrix extends KonpeitoFloat {
 		/**
 		 * A cache that records data converted to a string.
 		 * @private
+		 * @ignore
 		 * @type {string}
 		 */
 		this.string_cash = null;
@@ -6900,7 +6942,7 @@ class Matrix extends KonpeitoFloat {
 	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix}
-	 * @private
+	 * @ignore
 	 */
 	static _toMatrix(number) {
 		if(number instanceof Matrix) {
@@ -6916,7 +6958,7 @@ class Matrix extends KonpeitoFloat {
 	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {KMatrixInputData} number 
 	 * @returns {Complex}
-	 * @private
+	 * @ignore
 	 */
 	static _toComplex(number) {
 		if(number instanceof Complex) {
@@ -6935,7 +6977,7 @@ class Matrix extends KonpeitoFloat {
 	 * Convert to real number.
 	 * @param {KMatrixInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toDouble(number) {
 		if(typeof number === "number") {
@@ -6954,7 +6996,7 @@ class Matrix extends KonpeitoFloat {
 	 * Convert to integer.
 	 * @param {KMatrixInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toInteger(number) {
 		return Math.trunc(Matrix._toDouble(number));
@@ -7192,7 +7234,7 @@ class Matrix extends KonpeitoFloat {
 	 * Perform the same process on all elements in the matrix. (mutable)
 	 * @param {function(Complex, number, number): any } eachfunc - Function(num, row, col)
 	 * @returns {Matrix} Matrix after function processing. (this)
-	 * @private
+	 * @ignore
 	 */
 	_each(eachfunc) {
 		let isclearcash = false;
@@ -9404,7 +9446,7 @@ class Matrix extends KonpeitoFloat {
 	 * @param {KMatrixInputData} new_row_length - Number of rows of matrix to resize.
 	 * @param {KMatrixInputData} new_column_length - Number of columns of matrix to resize.
 	 * @returns {Matrix} Matrix after function processing. (this)
-	 * @private
+	 * @ignore
 	 */
 	_resize(new_row_length, new_column_length) {
 		const row_length	= Matrix._toInteger(new_row_length);
@@ -9514,7 +9556,7 @@ class Matrix extends KonpeitoFloat {
 	 * @param {KMatrixInputData} exchange_row_index1 - Number 1 of row of matrix to exchange.
 	 * @param {KMatrixInputData} exchange_row_index2 - Number 2 of row of matrix to exchange.
 	 * @returns {Matrix} Matrix after function processing. (this)
-	 * @private
+	 * @ignore
 	 */
 	_exchangeRow(exchange_row_index1, exchange_row_index2) {
 		const row_index1	= Matrix._toInteger(exchange_row_index1);
@@ -9537,7 +9579,7 @@ class Matrix extends KonpeitoFloat {
 	 * @param {KMatrixInputData} exchange_column_index1 - Number 1 of column of matrix to exchange.
 	 * @param {KMatrixInputData} exchange_column_index2 - Number 2 of column of matrix to exchange.
 	 * @returns {Matrix} Matrix after function processing. (this)
-	 * @private
+	 * @ignore
 	 */
 	_exchangeColumn(exchange_column_index1, exchange_column_index2) {
 		const column_index1	= Matrix._toInteger(exchange_column_index1);
@@ -9581,7 +9623,7 @@ class Matrix extends KonpeitoFloat {
 	 * Combine matrix to the right of this matrix. (mutable)
 	 * @param {KMatrixInputData} left_matrix - Matrix to combine.
 	 * @returns {Matrix} Matrix after function processing. (this)
-	 * @private
+	 * @ignore
 	 */
 	_concatRight(left_matrix) {
 		const M = Matrix._toMatrix(left_matrix);
@@ -11489,14 +11531,13 @@ class Complex extends KonpeitoFloat {
 	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {KComplexInputData} number 
 	 * @returns {Complex}
-	 * @private
+	 * @ignore
 	 */
 	static _toComplex(number) {
 		if(number instanceof Complex) {
 			return number;
 		}
 		else if(number instanceof Matrix) {
-			// @ts-ignore
 			return Matrix._toComplex(number);
 		}
 		else {
@@ -11508,7 +11549,7 @@ class Complex extends KonpeitoFloat {
 	 * Convert to real number.
 	 * @param {KComplexInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toDouble(number) {
 		if(typeof number === "number") {
@@ -11527,7 +11568,7 @@ class Complex extends KonpeitoFloat {
 	 * Convert to integer.
 	 * @param {KComplexInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toInteger(number) {
 		return Math.trunc(Complex._toDouble(number));
@@ -14213,7 +14254,7 @@ class Fraction extends KonpeitoInteger {
 	 * Convert to Fraction.
 	 * @param {KFractionInputData} number 
 	 * @returns {Fraction}
-	 * @private
+	 * @ignore
 	 */
 	static _toFraction(number) {
 		if(number instanceof Fraction) {
@@ -14228,7 +14269,7 @@ class Fraction extends KonpeitoInteger {
 	 * Convert to real number.
 	 * @param {KFractionInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toFloat(number) {
 		if(typeof number === "number") {
@@ -14246,7 +14287,7 @@ class Fraction extends KonpeitoInteger {
 	 * Convert to integer.
 	 * @param {KFractionInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toInteger(number) {
 		if(typeof number === "number") {
@@ -15941,7 +15982,7 @@ class BigInteger extends KonpeitoInteger {
 	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger}
-	 * @private
+	 * @ignore
 	 */
 	static _toBigInteger(number) {
 		if(number instanceof BigInteger) {
@@ -15956,7 +15997,7 @@ class BigInteger extends KonpeitoInteger {
 	 * Convert to real number.
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toFloat(number) {
 		if(typeof number === "number") {
@@ -15974,7 +16015,7 @@ class BigInteger extends KonpeitoInteger {
 	 * Convert to integer.
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toInteger(number) {
 		if(typeof number === "number") {
@@ -16114,7 +16155,7 @@ class BigInteger extends KonpeitoInteger {
 	/**
 	 * Expand memory to specified bit length. (mutable)
 	 * @param {number} bit_length - Bit length.
-	 * @private
+	 * @ignore
 	 */
 	_memory_allocation(bit_length) {
 		if(!this.isFinite()) {
@@ -16132,7 +16173,7 @@ class BigInteger extends KonpeitoInteger {
 
 	/**
 	 * Normalization of the internal data. (mutable)
-	 * @private
+	 * @ignore
 	 */
 	_memory_reduction() {
 		if(!this.isFinite()) {
@@ -16155,7 +16196,7 @@ class BigInteger extends KonpeitoInteger {
 	/**
 	 * Absolute value. (mutable)
 	 * @returns {BigInteger} A = abs(A)
-	 * @private
+	 * @ignore
 	 */
 	_abs() {
 		// -1 -> 1, 0 -> 0, 1 -> 1
@@ -16179,7 +16220,7 @@ class BigInteger extends KonpeitoInteger {
 	/**
 	 * this *= -1
 	 * @returns {BigInteger} A = -A
-	 * @private
+	 * @ignore
 	 */
 	_negate() {
 		if(this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER) {
@@ -16233,7 +16274,7 @@ class BigInteger extends KonpeitoInteger {
 	 * Add. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A += B
-	 * @private
+	 * @ignore
 	 */
 	_add(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -16318,7 +16359,7 @@ class BigInteger extends KonpeitoInteger {
 	 * Subtract. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A -= B
-	 * @private
+	 * @ignore
 	 */
 	_sub(number) {
 		// 一時的に記録しておいて引数の情報は書き換えないようにする
@@ -16342,7 +16383,7 @@ class BigInteger extends KonpeitoInteger {
 	 * Multiply. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A *= B
-	 * @private
+	 * @ignore
 	 */
 	_mul(number) {
 		const x = this.mul(number);
@@ -16429,7 +16470,7 @@ class BigInteger extends KonpeitoInteger {
 	 * Divide and rem. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
-	 * @private
+	 * @ignore
 	 */
 	_divideAndRemainder(number) {
 		const o1 = this;
@@ -16508,7 +16549,7 @@ class BigInteger extends KonpeitoInteger {
 	 * Divide. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} fix(A / B)
-	 * @private
+	 * @ignore
 	 */
 	_div(number) {
 		return this._divideAndRemainder(number)[0];
@@ -16544,7 +16585,7 @@ class BigInteger extends KonpeitoInteger {
 	 * - Result has same sign as the Dividend.
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A %= B
-	 * @private
+	 * @ignore
 	 */
 	_rem(number) {
 		const y = this._divideAndRemainder(number)[1];
@@ -16568,7 +16609,7 @@ class BigInteger extends KonpeitoInteger {
 	 * - Result has same sign as the Divisor.
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A = A mod B
-	 * @private
+	 * @ignore
 	 */
 	_mod(number) {
 		const o1 = this;
@@ -17704,7 +17745,7 @@ class BigInteger extends KonpeitoInteger {
 	 * Logical AND. (mutable)
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A &= B
-	 * @private
+	 * @ignore
 	 */
 	_and(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -17763,7 +17804,7 @@ class BigInteger extends KonpeitoInteger {
 	 * Logical OR. (mutable)
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A |= B
-	 * @private
+	 * @ignore
 	 */
 	_or(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -17824,7 +17865,7 @@ class BigInteger extends KonpeitoInteger {
 	 * Logical Exclusive-OR. (mutable)
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A ^= B
-	 * @private
+	 * @ignore
 	 */
 	_xor(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -17883,7 +17924,7 @@ class BigInteger extends KonpeitoInteger {
 	/**
 	 * Logical Not.
 	 * @returns {BigInteger} A = !A
-	 * @private
+	 * @ignore
 	 */
 	_not() {
 		return(this._add(new BigInteger(1))._negate());
@@ -17901,7 +17942,7 @@ class BigInteger extends KonpeitoInteger {
 	 * this | (1 << n) (mutable)
 	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
-	 * @private
+	 * @ignore
 	 */
 	_setBit(bit) {
 		const n = BigInteger._toInteger(bit);
@@ -17925,7 +17966,7 @@ class BigInteger extends KonpeitoInteger {
 	 * Invert a specific bit.) (mutable)
 	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
-	 * @private
+	 * @ignore
 	 */
 	_flipBit(bit) {
 		const n = BigInteger._toInteger(bit);
@@ -18660,7 +18701,7 @@ class BigDecimal extends KonpeitoFloat {
 	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {KBigDecimalInputData} number 
 	 * @returns {BigDecimal}
-	 * @private
+	 * @ignore
 	 */
 	static _toBigDecimal(number) {
 		if(number instanceof BigDecimal) {
@@ -18676,7 +18717,7 @@ class BigDecimal extends KonpeitoFloat {
 	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {KBigDecimalInputData} number 
 	 * @returns {BigInteger}
-	 * @private
+	 * @ignore
 	 */
 	static _toBigInteger(number) {
 		if(number instanceof BigInteger) {
@@ -18686,7 +18727,6 @@ class BigDecimal extends KonpeitoFloat {
 			return number.toBigInteger();
 		}
 		else {
-			// @ts-ignore
 			return new BigInteger(number);
 		}
 	}
@@ -18695,7 +18735,7 @@ class BigDecimal extends KonpeitoFloat {
 	 * Convert to real number.
 	 * @param {KBigDecimalInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toFloat(number) {
 		if(typeof number === "number") {
@@ -18713,7 +18753,7 @@ class BigDecimal extends KonpeitoFloat {
 	 * Convert to integer.
 	 * @param {KBigDecimalInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toInteger(number) {
 		if(typeof number === "number") {
@@ -18723,7 +18763,6 @@ class BigDecimal extends KonpeitoFloat {
 			return number.intValue;
 		}
 		else {
-			// @ts-ignore
 			return (new BigInteger(number)).intValue;
 		}
 	}
@@ -21885,6 +21924,130 @@ const CACHED_DATA = new BigDecimalConst();
  */
 
 /**
+ * Settings for principal component analysis.
+ * @typedef {Object} KPrincipalComponentAnalysisSettings
+ * @property {import("../../core/Matrix.js").KMatrixInputData} samples explanatory variable. (Each column is a parameters and each row is a samples.)
+ * @property {boolean} [is_unbiased=true] Use unbiased variance when calculating variance from samples.
+ * @property {boolean} [is_standardised=false] Use standardized explanatory variables. Use the correlation matrix instead of the covariance matrix.
+ */
+
+/**
+ * @typedef {Object} KPrincipalComponent
+ * @property {number} eigen_value Contribution. Eigen value. Variance of principal components.
+ * @property {number[]} factor_loading Factor loading. Eigen vector. Principal component coefficients.
+ * @property {number[]} factor_loading_contribution_rate Factor loading contribution rate.
+ * @property {number} cumulative_contribution_ratio Cumulative contribution ratio.
+ * @property {number} contribution_ratio Contribution ratio.
+ * @property {number[]} score Principal component score.
+ */
+
+/**
+ * Output for principal component analysis.
+ * @typedef {Object} KPrincipalComponentAnalysisOutput
+ * @property {KPrincipalComponent[]} principal_component Principal component.
+ */
+
+/**
+ * Principal component analysis.
+ */
+class PrincipalComponentAnalysis {
+
+	/**
+	 * Principal component analysis.
+	 * @param {KPrincipalComponentAnalysisSettings} settings - input data
+	 * @returns {KPrincipalComponentAnalysisOutput} analyzed data
+	 */
+	static runPrincipalComponentAnalysis(settings) {
+		// 主成分分析を行う
+		// 参考文献
+		// [1] 図解でわかる多変量解析―データの山から本質を見抜く科学的分析ツール
+		//     涌井 良幸, 涌井 貞美, 日本実業出版社 (2001/01)
+		
+		// samples 説明変量。行がサンプル。列が各値。
+		let samples = Matrix.create(settings.samples);
+		const is_unbiased = settings.is_unbiased === undefined ? false : settings.is_unbiased;
+		const correction = {correction : is_unbiased ? 1 : 0};
+
+		// true になっている場合は標準化を行う。
+		// つまり、共分散行列ではなく、相関行列で主成分分析することと同等である。
+		if(settings.is_standardised) {
+			samples = samples.standardization(correction);
+		}
+
+		// 共分散行列、あるいは相関行列を求める
+		const r = samples.cov(correction);
+
+		// 固有値(特異値)ベクトルを求める
+		const svd = r.svd();
+		// 固有値 = 主成分の分散 = 寄与度
+		const eigen_value = svd.S.diag();
+		// 固有ベクトル = 行ごとに、第○主成分の係数。= 因子負荷量
+		// 行が各主成分に相当し、各列にそのパラメータの係数
+		const factor_loading = svd.U.T().negate();
+		// 固有ベクトルの寄与率 = 行ごとに、第○主成分の係数の寄与率
+		// 行が各主成分に相当し、各列にそのパラメータの係数の寄与率
+		const factor_loading_contribution_rate = factor_loading.dotpow(2);
+
+		// 寄与率
+		const eigen_sum = eigen_value.sum();
+		const contribution_ratio = eigen_value.dotdiv(eigen_sum);
+
+		// 累積寄与率
+		let x = Complex.ZERO;
+		const cumulative_contribution_ratio = Matrix.createMatrixDoEachCalculation(function(row, col) {
+			x = x.add(contribution_ratio.getComplex(row + col));
+			return x;
+		}, contribution_ratio.column_length, contribution_ratio.row_length);
+
+		// 主成分得点
+		// 行が各主成分に相当し、各列にそのレコードの主成分の得点
+		samples = samples.sub(samples.mean({dimension : "column"}));	// 平均を0にする
+		const principal_component_score = Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return samples.getMatrix(col, ":").dotmul(factor_loading.getMatrix(row, ":")).sum();
+		}, eigen_value.length, samples.size(1));
+
+		{
+			const array_eigen_value = eigen_value.T().getNumberMatrixArray()[0];
+			const array_factor_loading = factor_loading.getNumberMatrixArray();
+			const array_factor_loading_contribution_rate = factor_loading_contribution_rate.getNumberMatrixArray();
+			const array_cumulative_contribution_ratio = cumulative_contribution_ratio.getNumberMatrixArray()[0];
+			const array_contribution_ratio = contribution_ratio.T().getNumberMatrixArray()[0];
+			const array_score = principal_component_score.getNumberMatrixArray();
+
+			/**
+			 * @type {KPrincipalComponent[]}
+			 */
+			const principal_component = [];
+			for(let i = 0; i < eigen_value.length; i++) {
+				principal_component.push({
+					eigen_value : array_eigen_value[i],
+					factor_loading : array_factor_loading[i],
+					factor_loading_contribution_rate : array_factor_loading_contribution_rate[i],
+					cumulative_contribution_ratio : array_cumulative_contribution_ratio[i],
+					contribution_ratio : array_contribution_ratio[i],
+					score : array_score[i]
+				});
+			}
+
+			return {
+				principal_component : principal_component
+			};
+		}
+	}
+
+}
+
+/**
+ * The script is part of konpeito.
+ * 
+ * AUTHOR:
+ *  natade (http://twitter.com/natadea)
+ * 
+ * LICENSE:
+ *  The MIT license https://opensource.org/licenses/MIT
+ */
+
+/**
  * Settings for multiple regression analysis
  * @typedef {Object} KMultipleRegressionAnalysisSettings
  * @property {import("../../core/Matrix.js").KMatrixInputData} samples explanatory variable. (Each column is a parameters and each row is a samples.)
@@ -21957,16 +22120,16 @@ class MultipleRegressionAnalysis {
 	 * @returns {KMultipleRegressionAnalysisOutput} analyzed data
 	 */
 	static runMultipleRegressionAnalysis(settings) {
-		//最小二乗法により重回帰分析する。
-		//参考文献
-		//[1] 図解でわかる多変量解析―データの山から本質を見抜く科学的分析ツール
-		//    涌井 良幸, 涌井 貞美, 日本実業出版社 (2001/01)
-		//[2] これならわかる Excelで楽に学ぶ多変量解析
-		//    長谷川 勝也, 技術評論社 (2002/07)
-		//[3] ど素人の「Excel 回帰分析」表の見方 (単回帰分析)
-		//   http://atiboh.sub.jp/t07kaikibunseki.html
-		//[4] 赤池の情報量基準（AIC）の計算方法
-		//   http://software.ssri.co.jp/statweb2/tips/tips_10.html
+		// 最小二乗法により重回帰分析する。
+		// 参考文献
+		// [1] 図解でわかる多変量解析―データの山から本質を見抜く科学的分析ツール
+		//     涌井 良幸, 涌井 貞美, 日本実業出版社 (2001/01)
+		// [2] これならわかる Excelで楽に学ぶ多変量解析
+		//     長谷川 勝也, 技術評論社 (2002/07)
+		// [3] ど素人の「Excel 回帰分析」表の見方 (単回帰分析)
+		//     http://atiboh.sub.jp/t07kaikibunseki.html
+		// [4] 赤池の情報量基準（AIC）の計算方法
+		//     http://software.ssri.co.jp/statweb2/tips/tips_10.html
 
 		// samples 説明変量。行がサンプル。列が各値。
 		// target  目的変量・実測値。縦ベクトル。
@@ -22242,6 +22405,15 @@ class MultipleRegressionAnalysis {
 class DataAnalysis {
 
 	/**
+	 * Principal component analysis.
+	 * @param {import("./DataAnalysis/PrincipalComponentAnalysis.js").KPrincipalComponentAnalysisSettings} settings - input data
+	 * @returns {import("./DataAnalysis/PrincipalComponentAnalysis.js").KPrincipalComponentAnalysisOutput} analyzed data
+	 */
+	static runPrincipalComponentAnalysis(settings) {
+		return PrincipalComponentAnalysis.runPrincipalComponentAnalysis(settings);
+	}
+
+	/**
 	 * Multiple regression analysis
 	 * @param {import("./DataAnalysis/MultipleRegressionAnalysis.js").KMultipleRegressionAnalysisSettings} settings - input data
 	 * @returns {import("./DataAnalysis/MultipleRegressionAnalysis.js").KMultipleRegressionAnalysisOutput} analyzed data
@@ -22264,11 +22436,16 @@ class DataAnalysis {
 
 /**
  * Class collection of numerical calculation processing.
- * These classes are classified into a BigInteger, BigDecimal, Fraction, Matrix.
+ * 
+ * Type classes are classified into a BigInteger, BigDecimal, Fraction, Complex, Matrix.
  * - BigInteger is a calculation class for arbitrary-precision integer arithmetic.
  * - BigDecimal is a calculation class for arbitrary-precision floating point arithmetic.
  * - Fraction is a calculation class for fractions with infinite precision.
+ * - Complex is a calculation class for complex numbers.
  * - Matrix is a general-purpose calculation class with signal processing and statistical processing.
+ * 
+ * There are also classes for specific calculations such as numerical analysis.
+ * - DataAnalysis is a class that can analyze information from a large sample. 
  */
 class konpeito {
 
@@ -22347,6 +22524,7 @@ class konpeito {
 	/**
 	 * Return typedef Probability.
 	 * @returns {typeof Probability}
+	 * @ignore
 	 */
 	static get Probability() {
 		return Probability;

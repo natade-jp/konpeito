@@ -200,14 +200,13 @@ export default class Complex extends KonpeitoFloat {
 	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {KComplexInputData} number 
 	 * @returns {Complex}
-	 * @private
+	 * @ignore
 	 */
 	static _toComplex(number) {
 		if(number instanceof Complex) {
 			return number;
 		}
 		else if(number instanceof Matrix) {
-			// @ts-ignore
 			return Matrix._toComplex(number);
 		}
 		else {
@@ -219,7 +218,7 @@ export default class Complex extends KonpeitoFloat {
 	 * Convert to real number.
 	 * @param {KComplexInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toDouble(number) {
 		if(typeof number === "number") {
@@ -238,7 +237,7 @@ export default class Complex extends KonpeitoFloat {
 	 * Convert to integer.
 	 * @param {KComplexInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toInteger(number) {
 		return Math.trunc(Complex._toDouble(number));

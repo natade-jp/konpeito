@@ -418,7 +418,7 @@ export default class Fraction extends KonpeitoInteger {
 	 * Convert to Fraction.
 	 * @param {KFractionInputData} number 
 	 * @returns {Fraction}
-	 * @private
+	 * @ignore
 	 */
 	static _toFraction(number) {
 		if(number instanceof Fraction) {
@@ -433,7 +433,7 @@ export default class Fraction extends KonpeitoInteger {
 	 * Convert to real number.
 	 * @param {KFractionInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toFloat(number) {
 		if(typeof number === "number") {
@@ -451,7 +451,7 @@ export default class Fraction extends KonpeitoInteger {
 	 * Convert to integer.
 	 * @param {KFractionInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toInteger(number) {
 		if(typeof number === "number") {

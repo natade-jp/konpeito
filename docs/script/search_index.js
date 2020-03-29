@@ -66,6 +66,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "konpeito/src/math/tools/dataanalysis/principalcomponentanalysis.js~principalcomponentanalysis",
+    "class/src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js~PrincipalComponentAnalysis.html",
+    "<span>PrincipalComponentAnalysis</span> <span class=\"search-result-import-path\">konpeito/src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js</span>",
+    "class"
+  ],
+  [
     "konpeito/src/math/core/tools/probability.js~probability",
     "class/src/math/core/tools/Probability.js~Probability.html",
     "<span>Probability</span> <span class=\"search-result-import-path\">konpeito/src/math/core/tools/Probability.js</span>",
@@ -435,12 +441,6 @@ window.esdocSearchIndex = [
     "src/konpeito.js~konpeito.matrix",
     "class/src/konpeito.js~konpeito.html#static-get-Matrix",
     "src/konpeito.js~konpeito.Matrix",
-    "member"
-  ],
-  [
-    "src/konpeito.js~konpeito.probability",
-    "class/src/konpeito.js~konpeito.html#static-get-Probability",
-    "src/konpeito.js~konpeito.Probability",
     "member"
   ],
   [
@@ -1290,30 +1290,6 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/math/core/bigdecimal.js~bigdecimal._tobigdecimal",
-    "class/src/math/core/BigDecimal.js~BigDecimal.html#static-method-_toBigDecimal",
-    "src/math/core/BigDecimal.js~BigDecimal._toBigDecimal",
-    "method"
-  ],
-  [
-    "src/math/core/bigdecimal.js~bigdecimal._tobiginteger",
-    "class/src/math/core/BigDecimal.js~BigDecimal.html#static-method-_toBigInteger",
-    "src/math/core/BigDecimal.js~BigDecimal._toBigInteger",
-    "method"
-  ],
-  [
-    "src/math/core/bigdecimal.js~bigdecimal._tofloat",
-    "class/src/math/core/BigDecimal.js~BigDecimal.html#static-method-_toFloat",
-    "src/math/core/BigDecimal.js~BigDecimal._toFloat",
-    "method"
-  ],
-  [
-    "src/math/core/bigdecimal.js~bigdecimal._tointeger",
-    "class/src/math/core/BigDecimal.js~BigDecimal.html#static-method-_toInteger",
-    "src/math/core/BigDecimal.js~BigDecimal._toInteger",
-    "method"
-  ],
-  [
     "src/math/core/bigdecimal.js~bigdecimal.create",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#static-method-create",
     "src/math/core/BigDecimal.js~BigDecimal.create",
@@ -1392,111 +1368,9 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
-    "src/math/core/biginteger.js~biginteger#_abs",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_abs",
-    "src/math/core/BigInteger.js~BigInteger#_abs",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_add",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_add",
-    "src/math/core/BigInteger.js~BigInteger#_add",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_and",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_and",
-    "src/math/core/BigInteger.js~BigInteger#_and",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_div",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_div",
-    "src/math/core/BigInteger.js~BigInteger#_div",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_divideandremainder",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_divideAndRemainder",
-    "src/math/core/BigInteger.js~BigInteger#_divideAndRemainder",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_flipbit",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_flipBit",
-    "src/math/core/BigInteger.js~BigInteger#_flipBit",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_memory_allocation",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_memory_allocation",
-    "src/math/core/BigInteger.js~BigInteger#_memory_allocation",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_memory_reduction",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_memory_reduction",
-    "src/math/core/BigInteger.js~BigInteger#_memory_reduction",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_mod",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_mod",
-    "src/math/core/BigInteger.js~BigInteger#_mod",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_mul",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_mul",
-    "src/math/core/BigInteger.js~BigInteger#_mul",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_negate",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_negate",
-    "src/math/core/BigInteger.js~BigInteger#_negate",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_not",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_not",
-    "src/math/core/BigInteger.js~BigInteger#_not",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_or",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_or",
-    "src/math/core/BigInteger.js~BigInteger#_or",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_rem",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_rem",
-    "src/math/core/BigInteger.js~BigInteger#_rem",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_setbit",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_setBit",
-    "src/math/core/BigInteger.js~BigInteger#_setBit",
-    "method"
-  ],
-  [
     "src/math/core/biginteger.js~biginteger#_shift",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_shift",
     "src/math/core/BigInteger.js~BigInteger#_shift",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_sub",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_sub",
-    "src/math/core/BigInteger.js~BigInteger#_sub",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#_xor",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-_xor",
-    "src/math/core/BigInteger.js~BigInteger#_xor",
     "method"
   ],
   [
@@ -2050,24 +1924,6 @@ window.esdocSearchIndex = [
     "class/src/math/core/BigInteger.js~BigInteger.html#static-get-ZERO",
     "src/math/core/BigInteger.js~BigInteger.ZERO",
     "member"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger._tobiginteger",
-    "class/src/math/core/BigInteger.js~BigInteger.html#static-method-_toBigInteger",
-    "src/math/core/BigInteger.js~BigInteger._toBigInteger",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger._tofloat",
-    "class/src/math/core/BigInteger.js~BigInteger.html#static-method-_toFloat",
-    "src/math/core/BigInteger.js~BigInteger._toFloat",
-    "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger._tointeger",
-    "class/src/math/core/BigInteger.js~BigInteger.html#static-method-_toInteger",
-    "src/math/core/BigInteger.js~BigInteger._toInteger",
-    "method"
   ],
   [
     "src/math/core/biginteger.js~biginteger.create",
@@ -3144,24 +3000,6 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/math/core/complex.js~complex._tocomplex",
-    "class/src/math/core/Complex.js~Complex.html#static-method-_toComplex",
-    "src/math/core/Complex.js~Complex._toComplex",
-    "method"
-  ],
-  [
-    "src/math/core/complex.js~complex._todouble",
-    "class/src/math/core/Complex.js~Complex.html#static-method-_toDouble",
-    "src/math/core/Complex.js~Complex._toDouble",
-    "method"
-  ],
-  [
-    "src/math/core/complex.js~complex._tointeger",
-    "class/src/math/core/Complex.js~Complex.html#static-method-_toInteger",
-    "src/math/core/Complex.js~Complex._toInteger",
-    "method"
-  ],
-  [
     "src/math/core/complex.js~complex.create",
     "class/src/math/core/Complex.js~Complex.html#static-method-create",
     "src/math/core/Complex.js~Complex.create",
@@ -3654,24 +3492,6 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/math/core/fraction.js~fraction._tofloat",
-    "class/src/math/core/Fraction.js~Fraction.html#static-method-_toFloat",
-    "src/math/core/Fraction.js~Fraction._toFloat",
-    "method"
-  ],
-  [
-    "src/math/core/fraction.js~fraction._tofraction",
-    "class/src/math/core/Fraction.js~Fraction.html#static-method-_toFraction",
-    "src/math/core/Fraction.js~Fraction._toFraction",
-    "method"
-  ],
-  [
-    "src/math/core/fraction.js~fraction._tointeger",
-    "class/src/math/core/Fraction.js~Fraction.html#static-method-_toInteger",
-    "src/math/core/Fraction.js~Fraction._toInteger",
-    "method"
-  ],
-  [
     "src/math/core/fraction.js~fraction.create",
     "class/src/math/core/Fraction.js~Fraction.html#static-method-create",
     "src/math/core/Fraction.js~Fraction.create",
@@ -3726,12 +3546,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/matrix.js~matrix#_concatright",
-    "class/src/math/core/Matrix.js~Matrix.html#instance-method-_concatRight",
-    "src/math/core/Matrix.js~Matrix#_concatRight",
-    "method"
-  ],
-  [
     "src/math/core/matrix.js~matrix#_deletecolumn",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-_deleteColumn",
     "src/math/core/Matrix.js~Matrix#_deleteColumn",
@@ -3741,30 +3555,6 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#_deleterow",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-_deleteRow",
     "src/math/core/Matrix.js~Matrix#_deleteRow",
-    "method"
-  ],
-  [
-    "src/math/core/matrix.js~matrix#_each",
-    "class/src/math/core/Matrix.js~Matrix.html#instance-method-_each",
-    "src/math/core/Matrix.js~Matrix#_each",
-    "method"
-  ],
-  [
-    "src/math/core/matrix.js~matrix#_exchangecolumn",
-    "class/src/math/core/Matrix.js~Matrix.html#instance-method-_exchangeColumn",
-    "src/math/core/Matrix.js~Matrix#_exchangeColumn",
-    "method"
-  ],
-  [
-    "src/math/core/matrix.js~matrix#_exchangerow",
-    "class/src/math/core/Matrix.js~Matrix.html#instance-method-_exchangeRow",
-    "src/math/core/Matrix.js~Matrix#_exchangeRow",
-    "method"
-  ],
-  [
-    "src/math/core/matrix.js~matrix#_resize",
-    "class/src/math/core/Matrix.js~Matrix.html#instance-method-_resize",
-    "src/math/core/Matrix.js~Matrix#_resize",
     "method"
   ],
   [
@@ -3982,12 +3772,6 @@ window.esdocSearchIndex = [
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-cloneMatrixDoEachCalculation",
     "src/math/core/Matrix.js~Matrix#cloneMatrixDoEachCalculation",
     "method"
-  ],
-  [
-    "src/math/core/matrix.js~matrix#column_length",
-    "class/src/math/core/Matrix.js~Matrix.html#instance-member-column_length",
-    "src/math/core/Matrix.js~Matrix#column_length",
-    "member"
   ],
   [
     "src/math/core/matrix.js~matrix#compareto",
@@ -4740,12 +4524,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/matrix.js~matrix#matrix_array",
-    "class/src/math/core/Matrix.js~Matrix.html#instance-member-matrix_array",
-    "src/math/core/Matrix.js~Matrix#matrix_array",
-    "member"
-  ],
-  [
     "src/math/core/matrix.js~matrix#max",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-max",
     "src/math/core/Matrix.js~Matrix#max",
@@ -5010,12 +4788,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/matrix.js~matrix#row_length",
-    "class/src/math/core/Matrix.js~Matrix.html#instance-member-row_length",
-    "src/math/core/Matrix.js~Matrix#row_length",
-    "member"
-  ],
-  [
     "src/math/core/matrix.js~matrix#rsqrt",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-rsqrt",
     "src/math/core/Matrix.js~Matrix#rsqrt",
@@ -5128,12 +4900,6 @@ window.esdocSearchIndex = [
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-std",
     "src/math/core/Matrix.js~Matrix#std",
     "method"
-  ],
-  [
-    "src/math/core/matrix.js~matrix#string_cash",
-    "class/src/math/core/Matrix.js~Matrix.html#instance-member-string_cash",
-    "src/math/core/Matrix.js~Matrix#string_cash",
-    "member"
   ],
   [
     "src/math/core/matrix.js~matrix#sub",
@@ -5512,30 +5278,6 @@ window.esdocSearchIndex = [
     "class/src/math/core/Matrix.js~Matrix.html#static-get-ZERO",
     "src/math/core/Matrix.js~Matrix.ZERO",
     "member"
-  ],
-  [
-    "src/math/core/matrix.js~matrix._tocomplex",
-    "class/src/math/core/Matrix.js~Matrix.html#static-method-_toComplex",
-    "src/math/core/Matrix.js~Matrix._toComplex",
-    "method"
-  ],
-  [
-    "src/math/core/matrix.js~matrix._todouble",
-    "class/src/math/core/Matrix.js~Matrix.html#static-method-_toDouble",
-    "src/math/core/Matrix.js~Matrix._toDouble",
-    "method"
-  ],
-  [
-    "src/math/core/matrix.js~matrix._tointeger",
-    "class/src/math/core/Matrix.js~Matrix.html#static-method-_toInteger",
-    "src/math/core/Matrix.js~Matrix._toInteger",
-    "method"
-  ],
-  [
-    "src/math/core/matrix.js~matrix._tomatrix",
-    "class/src/math/core/Matrix.js~Matrix.html#static-method-_toMatrix",
-    "src/math/core/Matrix.js~Matrix._toMatrix",
-    "method"
   ],
   [
     "src/math/core/matrix.js~matrix.arange",
@@ -6876,12 +6618,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/tools/random.js~random#genrand_int32",
-    "class/src/math/core/tools/Random.js~Random.html#instance-method-genrand_int32",
-    "src/math/core/tools/Random.js~Random#genrand_int32",
-    "method"
-  ],
-  [
     "src/math/core/tools/random.js~random#havenextnextgaussian",
     "class/src/math/core/tools/Random.js~Random.html#instance-member-haveNextNextGaussian",
     "src/math/core/tools/Random.js~Random#haveNextNextGaussian",
@@ -7188,6 +6924,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/math/core/tools/random/randombase.js",
+    "file/src/math/core/tools/random/RandomBase.js.html",
+    "src/math/core/tools/random/RandomBase.js",
+    "file"
+  ],
+  [
     "src/math/core/tools/random/xorshift.js",
     "file/src/math/core/tools/random/Xorshift.js.html",
     "src/math/core/tools/random/Xorshift.js",
@@ -7203,6 +6945,12 @@ window.esdocSearchIndex = [
     "src/math/tools/dataanalysis.js~dataanalysis.runmultipleregressionanalysis",
     "class/src/math/tools/DataAnalysis.js~DataAnalysis.html#static-method-runMultipleRegressionAnalysis",
     "src/math/tools/DataAnalysis.js~DataAnalysis.runMultipleRegressionAnalysis",
+    "method"
+  ],
+  [
+    "src/math/tools/dataanalysis.js~dataanalysis.runprincipalcomponentanalysis",
+    "class/src/math/tools/DataAnalysis.js~DataAnalysis.html#static-method-runPrincipalComponentAnalysis",
+    "src/math/tools/DataAnalysis.js~DataAnalysis.runPrincipalComponentAnalysis",
     "method"
   ],
   [
@@ -7251,6 +6999,36 @@ window.esdocSearchIndex = [
     "src/math/tools/dataanalysis/multipleregressionanalysis.js~multipleregressionanalysis.runmultipleregressionanalysis",
     "class/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.html#static-method-runMultipleRegressionAnalysis",
     "src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.runMultipleRegressionAnalysis",
+    "method"
+  ],
+  [
+    "src/math/tools/dataanalysis/principalcomponentanalysis.js",
+    "file/src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js.html",
+    "src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js",
+    "file"
+  ],
+  [
+    "src/math/tools/dataanalysis/principalcomponentanalysis.js~kprincipalcomponent",
+    "typedef/index.html#static-typedef-KPrincipalComponent",
+    "src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js~KPrincipalComponent",
+    "typedef"
+  ],
+  [
+    "src/math/tools/dataanalysis/principalcomponentanalysis.js~kprincipalcomponentanalysisoutput",
+    "typedef/index.html#static-typedef-KPrincipalComponentAnalysisOutput",
+    "src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js~KPrincipalComponentAnalysisOutput",
+    "typedef"
+  ],
+  [
+    "src/math/tools/dataanalysis/principalcomponentanalysis.js~kprincipalcomponentanalysissettings",
+    "typedef/index.html#static-typedef-KPrincipalComponentAnalysisSettings",
+    "src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js~KPrincipalComponentAnalysisSettings",
+    "typedef"
+  ],
+  [
+    "src/math/tools/dataanalysis/principalcomponentanalysis.js~principalcomponentanalysis.runprincipalcomponentanalysis",
+    "class/src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js~PrincipalComponentAnalysis.html#static-method-runPrincipalComponentAnalysis",
+    "src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js~PrincipalComponentAnalysis.runPrincipalComponentAnalysis",
     "method"
   ],
   [

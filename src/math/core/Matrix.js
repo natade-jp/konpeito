@@ -85,7 +85,6 @@ class MatrixTool {
 		}
 		let t_data = data;
 		if(!(t_data instanceof Matrix) && !(t_data instanceof Complex) && !((typeof t_data === "number"))) {
-			// @ts-ignore
 			t_data = Matrix._toMatrix(t_data);
 		}
 		if(t_data instanceof Matrix) {
@@ -96,19 +95,16 @@ class MatrixTool {
 			const y = new Array(t_data.length);
 			if(t_data.isRow()) {
 				for(let i = 0; i < len; i++) {
-					// @ts-ignore
 					y[i] = Math.trunc(t_data.matrix_array[0][i].real);
 				}
 			}
 			else if(t_data.isColumn()) {
 				for(let i = 0; i < len; i++) {
-					// @ts-ignore
 					y[i] = Math.trunc(t_data.matrix_array[i][0].real);
 				}
 			}
 			return y;
 		}
-		// @ts-ignore
 		return [ Matrix._toInteger(t_data) ];
 	}
 
@@ -356,7 +352,6 @@ class MatrixTool {
 			let array_data = MatrixTool.toMatrixArrayFromStringInBracket(withoutBracket.text);
 			// 転置が必要なら転置させる
 			if(withoutBracket.is_transpose) {
-				// @ts-ignore
 				array_data = (new Matrix(array_data)).T().matrix_array;
 			}
 			return array_data;
@@ -515,21 +510,21 @@ export default class Matrix extends KonpeitoFloat {
 		
 		/**
 		 * An array of elements in the matrix.
-		 * @private
+		 * @ignore
 		 * @type {Array<Array<Complex>>}
 		 */
 		this.matrix_array = matrix_array;
 
 		/**
 		 * The number of rows in a matrix.
-		 * @private
+		 * @ignore
 		 * @type {number}
 		 */
 		this.row_length = this.matrix_array.length;
 		
 		/**
 		 * The number of columns in a matrix.
-		 * @private
+		 * @ignore
 		 * @type {number}
 		 */
 		this.column_length = this.matrix_array[0].length;
@@ -537,6 +532,7 @@ export default class Matrix extends KonpeitoFloat {
 		/**
 		 * A cache that records data converted to a string.
 		 * @private
+		 * @ignore
 		 * @type {string}
 		 */
 		this.string_cash = null;
@@ -570,7 +566,7 @@ export default class Matrix extends KonpeitoFloat {
 	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {KMatrixInputData} number 
 	 * @returns {Matrix}
-	 * @private
+	 * @ignore
 	 */
 	static _toMatrix(number) {
 		if(number instanceof Matrix) {
@@ -586,7 +582,7 @@ export default class Matrix extends KonpeitoFloat {
 	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {KMatrixInputData} number 
 	 * @returns {Complex}
-	 * @private
+	 * @ignore
 	 */
 	static _toComplex(number) {
 		if(number instanceof Complex) {
@@ -605,7 +601,7 @@ export default class Matrix extends KonpeitoFloat {
 	 * Convert to real number.
 	 * @param {KMatrixInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toDouble(number) {
 		if(typeof number === "number") {
@@ -624,7 +620,7 @@ export default class Matrix extends KonpeitoFloat {
 	 * Convert to integer.
 	 * @param {KMatrixInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toInteger(number) {
 		return Math.trunc(Matrix._toDouble(number));
@@ -862,7 +858,7 @@ export default class Matrix extends KonpeitoFloat {
 	 * Perform the same process on all elements in the matrix. (mutable)
 	 * @param {function(Complex, number, number): any } eachfunc - Function(num, row, col)
 	 * @returns {Matrix} Matrix after function processing. (this)
-	 * @private
+	 * @ignore
 	 */
 	_each(eachfunc) {
 		let isclearcash = false;
@@ -3074,7 +3070,7 @@ export default class Matrix extends KonpeitoFloat {
 	 * @param {KMatrixInputData} new_row_length - Number of rows of matrix to resize.
 	 * @param {KMatrixInputData} new_column_length - Number of columns of matrix to resize.
 	 * @returns {Matrix} Matrix after function processing. (this)
-	 * @private
+	 * @ignore
 	 */
 	_resize(new_row_length, new_column_length) {
 		const row_length	= Matrix._toInteger(new_row_length);
@@ -3184,7 +3180,7 @@ export default class Matrix extends KonpeitoFloat {
 	 * @param {KMatrixInputData} exchange_row_index1 - Number 1 of row of matrix to exchange.
 	 * @param {KMatrixInputData} exchange_row_index2 - Number 2 of row of matrix to exchange.
 	 * @returns {Matrix} Matrix after function processing. (this)
-	 * @private
+	 * @ignore
 	 */
 	_exchangeRow(exchange_row_index1, exchange_row_index2) {
 		const row_index1	= Matrix._toInteger(exchange_row_index1);
@@ -3207,7 +3203,7 @@ export default class Matrix extends KonpeitoFloat {
 	 * @param {KMatrixInputData} exchange_column_index1 - Number 1 of column of matrix to exchange.
 	 * @param {KMatrixInputData} exchange_column_index2 - Number 2 of column of matrix to exchange.
 	 * @returns {Matrix} Matrix after function processing. (this)
-	 * @private
+	 * @ignore
 	 */
 	_exchangeColumn(exchange_column_index1, exchange_column_index2) {
 		const column_index1	= Matrix._toInteger(exchange_column_index1);
@@ -3251,7 +3247,7 @@ export default class Matrix extends KonpeitoFloat {
 	 * Combine matrix to the right of this matrix. (mutable)
 	 * @param {KMatrixInputData} left_matrix - Matrix to combine.
 	 * @returns {Matrix} Matrix after function processing. (this)
-	 * @private
+	 * @ignore
 	 */
 	_concatRight(left_matrix) {
 		const M = Matrix._toMatrix(left_matrix);

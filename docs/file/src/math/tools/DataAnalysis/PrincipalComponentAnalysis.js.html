@@ -2,8 +2,8 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <base data-ice="baseUrl" href="../../../../../../">
-  <title data-ice="title">src/math/core/tools/random/MaximumLengthSequence.js | konpeito</title>
+  <base data-ice="baseUrl" href="../../../../../">
+  <title data-ice="title">src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js | konpeito</title>
   <link type="text/css" rel="stylesheet" href="css/style.css">
   <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
   <script src="script/prettify/prettify.js"></script>
@@ -73,7 +73,7 @@
 </div>
 </nav>
 
-<div class="content" data-ice="content"><h1 data-ice="title">src/math/core/tools/random/MaximumLengthSequence.js</h1>
+<div class="content" data-ice="content"><h1 data-ice="title">src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">&#xFEFF;/**
  * The script is part of konpeito.
  * 
@@ -84,136 +84,122 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
-import Polyfill from &quot;../../../tools/Polyfill.js&quot;;
-import RandomBase from &quot;./RandomBase.js&quot;;
+import Matrix from &quot;../../core/Matrix.js&quot;;
+import Complex from &quot;../../core/Complex.js&quot;;
 
 /**
- * Random number class.
- * @private
- * @ignore
+ * Settings for principal component analysis.
+ * @typedef {Object} KPrincipalComponentAnalysisSettings
+ * @property {import(&quot;../../core/Matrix.js&quot;).KMatrixInputData} samples explanatory variable. (Each column is a parameters and each row is a samples.)
+ * @property {boolean} [is_unbiased=true] Use unbiased variance when calculating variance from samples.
+ * @property {boolean} [is_standardised=false] Use standardized explanatory variables. Use the correlation matrix instead of the covariance matrix.
  */
-export default class MaximumLengthSequence extends RandomBase {
-	
-	/**
-	 * Create Random.
-	 * @param {number} [seed] - Seed number for random number generation. If not specified, create from time.
-	 */
-	constructor(seed) {
-		super();
 
-		// &#x300C;M&#x7CFB;&#x5217;&#x4E71;&#x6570;&#x300D;&#x3067;&#x4E71;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3057;&#x307E;&#x3059;&#x3002;
-		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;&#x6674;&#x5F66; (1991). C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;.
-		// &#x6BD4;&#x8F03;&#x7684;&#x9577;&#x3044; 2^521 - 1&#x901A;&#x308A;&#x3092;&#x51FA;&#x529B;&#x3057;&#x307E;&#x3059;&#x3002;
-		// &#x4E71;&#x6570;&#x306F;C&#x3067;&#x306E;&#x52D5;&#x4F5C;&#x3068;&#x540C;&#x3058;&#x5024;&#x304C;&#x51FA;&#x308B;&#x3053;&#x3068;&#x3092;&#x78BA;&#x8A8D;&#x3002;(seed = 1&#x3068;&#x3057;&#x3066;1000&#x756A;&#x76EE;&#x306E;&#x5024;&#x304C;&#x7B49;&#x3057;&#x3044;&#x3053;&#x3068;&#x3092;&#x78BA;&#x8A8D;)
+/**
+ * @typedef {Object} KPrincipalComponent
+ * @property {number} eigen_value Contribution. Eigen value. Variance of principal components.
+ * @property {number[]} factor_loading Factor loading. Eigen vector. Principal component coefficients.
+ * @property {number[]} factor_loading_contribution_rate Factor loading contribution rate.
+ * @property {number} cumulative_contribution_ratio Cumulative contribution ratio.
+ * @property {number} contribution_ratio Contribution ratio.
+ * @property {number[]} score Principal component score.
+ */
 
-		/**
-		 * Random number array.
-		 * @private
-		 * @type {Array&lt;number&gt;}
-		 */
-		this.x = [];
-		for(let i = 0;i &lt; 521;i++) {
-			this.x[i] = 0;
-		}
-		if(seed !== undefined) {
-			this.setSeed(seed);
-		}
-		else {
-			// &#x7DDA;&#x5F62;&#x5408;&#x540C;&#x6CD5;&#x3067;&#x9069;&#x5F53;&#x306B;&#x4E71;&#x6570;&#x3092;&#x4F5C;&#x6210;&#x3059;&#x308B;
-			const seed = ((new Date()).getTime() + MaximumLengthSequence.seedUniquifier) &amp; 0xFFFFFFFF;
-			MaximumLengthSequence.seedUniquifier = (MaximumLengthSequence.seedUniquifier + 1) &amp; 0xFFFFFFFF;
-			this.setSeed(seed);
-		}
-	}
+/**
+ * Output for principal component analysis.
+ * @typedef {Object} KPrincipalComponentAnalysisOutput
+ * @property {KPrincipalComponent[]} principal_component Principal component.
+ */
+
+/**
+ * Principal component analysis.
+ */
+export default class PrincipalComponentAnalysis {
 
 	/**
-	 * &#x5185;&#x90E8;&#x30C7;&#x30FC;&#x30BF;&#x3092;&#x30B7;&#x30E3;&#x30C3;&#x30D5;&#x30EB;
-	 * @ignore
+	 * Principal component analysis.
+	 * @param {KPrincipalComponentAnalysisSettings} settings - input data
+	 * @returns {KPrincipalComponentAnalysisOutput} analyzed data
 	 */
-	_rnd521() {
-		const x = this.x;
-		for(let i = 0; i &lt; 32; i++) {
-			x[i] ^= x[i + 489];
-		}
-		for(let i = 32; i &lt; 521; i++) {
-			x[i] ^= x[i - 32];
-		}
-	}
+	static runPrincipalComponentAnalysis(settings) {
+		// &#x4E3B;&#x6210;&#x5206;&#x5206;&#x6790;&#x3092;&#x884C;&#x3046;
+		// &#x53C2;&#x8003;&#x6587;&#x732E;
+		// [1] &#x56F3;&#x89E3;&#x3067;&#x308F;&#x304B;&#x308B;&#x591A;&#x5909;&#x91CF;&#x89E3;&#x6790;&#x2015;&#x30C7;&#x30FC;&#x30BF;&#x306E;&#x5C71;&#x304B;&#x3089;&#x672C;&#x8CEA;&#x3092;&#x898B;&#x629C;&#x304F;&#x79D1;&#x5B66;&#x7684;&#x5206;&#x6790;&#x30C4;&#x30FC;&#x30EB;
+		//     &#x6D8C;&#x4E95; &#x826F;&#x5E78;, &#x6D8C;&#x4E95; &#x8C9E;&#x7F8E;, &#x65E5;&#x672C;&#x5B9F;&#x696D;&#x51FA;&#x7248;&#x793E; (2001/01)
+		
+		// samples &#x8AAC;&#x660E;&#x5909;&#x91CF;&#x3002;&#x884C;&#x304C;&#x30B5;&#x30F3;&#x30D7;&#x30EB;&#x3002;&#x5217;&#x304C;&#x5404;&#x5024;&#x3002;
+		let samples = Matrix.create(settings.samples);
+		const is_unbiased = settings.is_unbiased === undefined ? false : settings.is_unbiased;
+		const correction = {correction : is_unbiased ? 1 : 0};
 
-	/**
-	 * Initialize random seed.
-	 * @param {number} seed
-	 */
-	setSeed(seed) {
-		// &#x4F0F;&#x898B;&#x300C;&#x4E71;&#x6570;&#x300D;&#x6771;&#x4EAC;&#x5927;&#x5B66;&#x51FA;&#x7248;&#x4F1A;,1989 &#x306E;&#x65B9;&#x6CD5;&#x306B;&#x3088;&#x308A;&#x521D;&#x671F;&#x5024;&#x3092;&#x8A2D;&#x5B9A;
-		let u = 0;
-		const x = this.x;
-		// seed&#x3092;&#x4F7F;&#x7528;&#x3057;&#x3066;&#x7DDA;&#x5F62;&#x5408;&#x540C;&#x6CD5;&#x3067;x[0-16]&#x307E;&#x3067;&#x521D;&#x671F;&#x5024;&#x3092;&#x8A2D;&#x5B9A;
-		let random_seed = seed;
-		for(let i = 0; i &lt;= 16; i++) {
-			for(let j = 0; j &lt; 32; j++) {
-				random_seed = Math.imul(random_seed, 0x5D588B65) + 1;
-				u = (u &gt;&gt;&gt; 1) + ((random_seed &lt; 0) ? 0x80000000 : 0);
+		// true &#x306B;&#x306A;&#x3063;&#x3066;&#x3044;&#x308B;&#x5834;&#x5408;&#x306F;&#x6A19;&#x6E96;&#x5316;&#x3092;&#x884C;&#x3046;&#x3002;
+		// &#x3064;&#x307E;&#x308A;&#x3001;&#x5171;&#x5206;&#x6563;&#x884C;&#x5217;&#x3067;&#x306F;&#x306A;&#x304F;&#x3001;&#x76F8;&#x95A2;&#x884C;&#x5217;&#x3067;&#x4E3B;&#x6210;&#x5206;&#x5206;&#x6790;&#x3059;&#x308B;&#x3053;&#x3068;&#x3068;&#x540C;&#x7B49;&#x3067;&#x3042;&#x308B;&#x3002;
+		if(settings.is_standardised) {
+			samples = samples.standardization(correction);
+		}
+
+		// &#x5171;&#x5206;&#x6563;&#x884C;&#x5217;&#x3001;&#x3042;&#x308B;&#x3044;&#x306F;&#x76F8;&#x95A2;&#x884C;&#x5217;&#x3092;&#x6C42;&#x3081;&#x308B;
+		const r = samples.cov(correction);
+
+		// &#x56FA;&#x6709;&#x5024;(&#x7279;&#x7570;&#x5024;)&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x3092;&#x6C42;&#x3081;&#x308B;
+		const svd = r.svd();
+		// &#x56FA;&#x6709;&#x5024; = &#x4E3B;&#x6210;&#x5206;&#x306E;&#x5206;&#x6563; = &#x5BC4;&#x4E0E;&#x5EA6;
+		const eigen_value = svd.S.diag();
+		// &#x56FA;&#x6709;&#x30D9;&#x30AF;&#x30C8;&#x30EB; = &#x884C;&#x3054;&#x3068;&#x306B;&#x3001;&#x7B2C;&#x25CB;&#x4E3B;&#x6210;&#x5206;&#x306E;&#x4FC2;&#x6570;&#x3002;= &#x56E0;&#x5B50;&#x8CA0;&#x8377;&#x91CF;
+		// &#x884C;&#x304C;&#x5404;&#x4E3B;&#x6210;&#x5206;&#x306B;&#x76F8;&#x5F53;&#x3057;&#x3001;&#x5404;&#x5217;&#x306B;&#x305D;&#x306E;&#x30D1;&#x30E9;&#x30E1;&#x30FC;&#x30BF;&#x306E;&#x4FC2;&#x6570;
+		const factor_loading = svd.U.T().negate();
+		// &#x56FA;&#x6709;&#x30D9;&#x30AF;&#x30C8;&#x30EB;&#x306E;&#x5BC4;&#x4E0E;&#x7387; = &#x884C;&#x3054;&#x3068;&#x306B;&#x3001;&#x7B2C;&#x25CB;&#x4E3B;&#x6210;&#x5206;&#x306E;&#x4FC2;&#x6570;&#x306E;&#x5BC4;&#x4E0E;&#x7387;
+		// &#x884C;&#x304C;&#x5404;&#x4E3B;&#x6210;&#x5206;&#x306B;&#x76F8;&#x5F53;&#x3057;&#x3001;&#x5404;&#x5217;&#x306B;&#x305D;&#x306E;&#x30D1;&#x30E9;&#x30E1;&#x30FC;&#x30BF;&#x306E;&#x4FC2;&#x6570;&#x306E;&#x5BC4;&#x4E0E;&#x7387;
+		const factor_loading_contribution_rate = factor_loading.dotpow(2);
+
+		// &#x5BC4;&#x4E0E;&#x7387;
+		const eigen_sum = eigen_value.sum();
+		const contribution_ratio = eigen_value.dotdiv(eigen_sum);
+
+		// &#x7D2F;&#x7A4D;&#x5BC4;&#x4E0E;&#x7387;
+		let x = Complex.ZERO;
+		const cumulative_contribution_ratio = Matrix.createMatrixDoEachCalculation(function(row, col) {
+			x = x.add(contribution_ratio.getComplex(row + col));
+			return x;
+		}, contribution_ratio.column_length, contribution_ratio.row_length);
+
+		// &#x4E3B;&#x6210;&#x5206;&#x5F97;&#x70B9;
+		// &#x884C;&#x304C;&#x5404;&#x4E3B;&#x6210;&#x5206;&#x306B;&#x76F8;&#x5F53;&#x3057;&#x3001;&#x5404;&#x5217;&#x306B;&#x305D;&#x306E;&#x30EC;&#x30B3;&#x30FC;&#x30C9;&#x306E;&#x4E3B;&#x6210;&#x5206;&#x306E;&#x5F97;&#x70B9;
+		samples = samples.sub(samples.mean({dimension : &quot;column&quot;}));	// &#x5E73;&#x5747;&#x3092;0&#x306B;&#x3059;&#x308B;
+		const principal_component_score = Matrix.createMatrixDoEachCalculation(function(row, col) {
+			return samples.getMatrix(col, &quot;:&quot;).dotmul(factor_loading.getMatrix(row, &quot;:&quot;)).sum();
+		}, eigen_value.length, samples.size(1));
+
+		{
+			const array_eigen_value = eigen_value.T().getNumberMatrixArray()[0];
+			const array_factor_loading = factor_loading.getNumberMatrixArray();
+			const array_factor_loading_contribution_rate = factor_loading_contribution_rate.getNumberMatrixArray();
+			const array_cumulative_contribution_ratio = cumulative_contribution_ratio.getNumberMatrixArray()[0];
+			const array_contribution_ratio = contribution_ratio.T().getNumberMatrixArray()[0];
+			const array_score = principal_component_score.getNumberMatrixArray();
+
+			/**
+			 * @type {KPrincipalComponent[]}
+			 */
+			const principal_component = [];
+			for(let i = 0; i &lt; eigen_value.length; i++) {
+				principal_component.push({
+					eigen_value : array_eigen_value[i],
+					factor_loading : array_factor_loading[i],
+					factor_loading_contribution_rate : array_factor_loading_contribution_rate[i],
+					cumulative_contribution_ratio : array_cumulative_contribution_ratio[i],
+					contribution_ratio : array_contribution_ratio[i],
+					score : array_score[i]
+				});
 			}
-			x[i] = u;
-		}
-		// &#x6B8B;&#x308A;&#x306E;&#x30D3;&#x30C3;&#x30C8;&#x306F;x[i] = x[i-32] ^ x[i-521]&#x3067;&#x751F;&#x6210;
-		for(let i = 16; i &lt; 521; i++) {
-			u = (i === 16) ? i : (i - 17);
-			x[i] = ((x[u] &lt;&lt; 23) &amp; 0xFFFFFFFF) ^ (x[i - 16] &gt;&gt;&gt; 9) ^ x[i - 1];
-		}
-		// &#x30D3;&#x30C3;&#x30C8;&#x3092;&#x30B7;&#x30E3;&#x30C3;&#x30D5;&#x30EB;
-		for(let i = 0; i &lt; 4; i++) {
-			this._rnd521();
-		}
-		
-		/**
-		 * Number of random number array to use.
-		 * @private
-		 * @type {number}
-		 */
-		this.xi = 0;
-		
-		/**
-		 * Is keep random numbers based on Gaussian distribution.
-		 * @private
-		 * @type {boolean}
-		 */
-		this.haveNextNextGaussian = false;
-		
-		/**
-		 * Next random number based on Gaussian distribution.
-		 * @private
-		 * @type {number}
-		 */
-		this.nextNextGaussian = 0;
-	}
 
-	/**
-	 * 32-bit random number.
-	 * @returns {number} - 32-bit random number
-	 * @ignore
-	 */
-	genrand_int32() {
-		// &#x5168;&#x3066;&#x4F7F;&#x7528;&#x3057;&#x305F;&#x3089;&#x3001;&#x518D;&#x3073;&#x6DF7;&#x305C;&#x308B;
-		if(this.xi === 521) {
-			this._rnd521();
-			this.xi = 0;
+			return {
+				principal_component : principal_component
+			};
 		}
-		const y = this.x[this.xi] &gt;&gt;&gt; 0; // Create a 32-bit nonnegative integer.
-		this.xi = this.xi + 1;
-		return y;
 	}
 
 }
-
-/**
- * Random number creation integer when no seed is set.
- * @type {number}
- * @ignore
- */
-MaximumLengthSequence.seedUniquifier = 0x87654321;
-
 </code></pre>
 
 </div>

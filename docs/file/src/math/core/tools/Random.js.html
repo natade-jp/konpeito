@@ -59,12 +59,16 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis.js~DataAnalysis.html">DataAnalysis</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools-dataanalysis">math/tools/DataAnalysis</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.html">MultipleRegressionAnalysis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js~PrincipalComponentAnalysis.html">PrincipalComponentAnalysis</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisAnova">KMultipleRegressionAnalysisAnova</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisOutput">KMultipleRegressionAnalysisOutput</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegression">KMultipleRegressionAnalysisPartialRegression</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegressionData">KMultipleRegressionAnalysisPartialRegressionData</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisSettings">KMultipleRegressionAnalysisSettings</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisVectorState">KMultipleRegressionAnalysisVectorState</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KPrincipalComponent">KPrincipalComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KPrincipalComponentAnalysisOutput">KPrincipalComponentAnalysisOutput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KPrincipalComponentAnalysisSettings">KPrincipalComponentAnalysisSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -83,6 +87,7 @@
 import Polyfill from &quot;../../tools/Polyfill.js&quot;;
 import MaximumLengthSequence from &quot;./random/MaximumLengthSequence.js&quot;;
 import Xorshift from &quot;./random/Xorshift.js&quot;;
+import RandomBase from &quot;./random/RandomBase.js&quot;;
 
 /**
  * Setting random numbers
@@ -108,7 +113,7 @@ export default class Random {
 		/**
 		 * Random Number Generator.
 		 * @private
-		 * @type {Xorshift|MaximumLengthSequence}
+		 * @type {RandomBase}
 		 */
 		this.rand = null;
 		
@@ -167,6 +172,8 @@ export default class Random {
 	/**
 	 * 32-bit random number.
 	 * @returns {number} - 32-bit random number
+	 * @private
+	 * @ignore
 	 */
 	genrand_int32() {
 		return this.rand.genrand_int32();

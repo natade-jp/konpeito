@@ -1,5 +1,13 @@
 # History
 
+## v5.3.0
+### 機能追加
+- 主成分分析が行える`PrincipalComponentAnalysis`を追加
+### 改善
+- 乱数用の基底クラスを作りリファクタリング
+### 不具合
+- JSDoc で`@ignore`とするべきところを、`@private`になっていたのを修正
+
 ## v5.2.2
 ### 改善
 - `BigInteger`, `BigDecimal`, `Fraction` で数値を引数としたときに計算誤差を除去する動作へ変更

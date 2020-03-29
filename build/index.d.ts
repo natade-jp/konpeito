@@ -1,10 +1,15 @@
 /**
  * Class collection of numerical calculation processing.
- * These classes are classified into a _BigInteger_, _BigDecimal_, _Fraction_, _Matrix_.
+ *
+ * Type classes are classified into a _BigInteger_, _BigDecimal_, _Fraction_, _Complex_, _Matrix_.
  * - _BigInteger_ is a calculation class for arbitrary-precision integer arithmetic.
  * - _BigDecimal_ is a calculation class for arbitrary-precision floating point arithmetic.
  * - _Fraction_ is a calculation class for fractions with infinite precision.
+ * - _Complex_ is a calculation class for complex numbers.
  * - _Matrix_ is a general-purpose calculation class with signal processing and statistical processing.
+ *
+ * There are also classes for specific calculations such as numerical analysis.
+ * - _DataAnalysis_ is a class that can analyze information from a large sample.
  */
 declare class konpeito {
     /**
@@ -52,11 +57,6 @@ declare class konpeito {
      * @returns {typeof _DataAnalysis_}
      */
     static DataAnalysis: typeof _DataAnalysis_;
-    /**
-     * Return typedef _Probability_.
-     * @returns {typeof _Probability_}
-     */
-    static Probability: typeof _Probability_;
 }
 
 /**
@@ -6518,11 +6518,6 @@ declare class _Random_ {
      */
     setSeed(seed: number): void;
     /**
-     * 32-bit random number.
-     * @returns {number} - 32-bit random number
-     */
-    genrand_int32(): number;
-    /**
      * _Random_ number of specified bit length.
      * @param {number} bits - Required number of bits (up to 64 possible).
      * @returns {number}
@@ -6963,7 +6958,7 @@ declare type KMultipleRegressionAnalysisOutput = {
 /**
  * Multiple regression analysis.
  */
-declare class MultipleRegressionAnalysis {
+declare class _MultipleRegressionAnalysis_ {
     /**
      * Multiple regression analysis
      * @param {KMultipleRegressionAnalysisSettings} settings - input data
@@ -6973,9 +6968,66 @@ declare class MultipleRegressionAnalysis {
 }
 
 /**
+ * Settings for principal component analysis.
+ * @typedef {Object} KPrincipalComponentAnalysisSettings
+ * @property {KMatrixInputData} samples explanatory variable. (Each column is a parameters and each row is a samples.)
+ * @property {boolean} [is_unbiased=true] Use unbiased variance when calculating variance from samples.
+ * @property {boolean} [is_standardised=false] Use standardized explanatory variables. Use the correlation matrix instead of the covariance matrix.
+ */
+declare type KPrincipalComponentAnalysisSettings = {
+    is_unbiased?: boolean;
+    is_standardised?: boolean;
+};
+
+/**
+ * @typedef {Object} KPrincipalComponent
+ * @property {number} eigen_value Contribution. Eigen value. Variance of principal components.
+ * @property {number[]} factor_loading Factor loading. Eigen vector. Principal component coefficients.
+ * @property {number[]} factor_loading_contribution_rate Factor loading contribution rate.
+ * @property {number} cumulative_contribution_ratio Cumulative contribution ratio.
+ * @property {number} contribution_ratio Contribution ratio.
+ * @property {number[]} score Principal component score.
+ */
+declare type KPrincipalComponent = {
+    eigen_value: number;
+    factor_loading: number[];
+    factor_loading_contribution_rate: number[];
+    cumulative_contribution_ratio: number;
+    contribution_ratio: number;
+    score: number[];
+};
+
+/**
+ * Output for principal component analysis.
+ * @typedef {Object} KPrincipalComponentAnalysisOutput
+ * @property {KPrincipalComponent[]} principal_component Principal component.
+ */
+declare type KPrincipalComponentAnalysisOutput = {
+    principal_component: KPrincipalComponent[];
+};
+
+/**
+ * Principal component analysis.
+ */
+declare class _PrincipalComponentAnalysis_ {
+    /**
+     * Principal component analysis.
+     * @param {KPrincipalComponentAnalysisSettings} settings - input data
+     * @returns {KPrincipalComponentAnalysisOutput} analyzed data
+     */
+    static runPrincipalComponentAnalysis(settings: KPrincipalComponentAnalysisSettings): KPrincipalComponentAnalysisOutput;
+}
+
+/**
  * Tools for analyzing data.
  */
 declare class _DataAnalysis_ {
+    /**
+     * Principal component analysis.
+     * @param {KPrincipalComponentAnalysisSettings} settings - input data
+     * @returns {KPrincipalComponentAnalysisOutput} analyzed data
+     */
+    static runPrincipalComponentAnalysis(settings: any): KPrincipalComponentAnalysisOutput;
     /**
      * Multiple regression analysis
      * @param {KMultipleRegressionAnalysisSettings} settings - input data

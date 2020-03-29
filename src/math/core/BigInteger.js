@@ -518,7 +518,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * If type conversion is unnecessary, return the value as it is.
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger}
-	 * @private
+	 * @ignore
 	 */
 	static _toBigInteger(number) {
 		if(number instanceof BigInteger) {
@@ -533,7 +533,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Convert to real number.
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toFloat(number) {
 		if(typeof number === "number") {
@@ -551,7 +551,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Convert to integer.
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {number}
-	 * @private
+	 * @ignore
 	 */
 	static _toInteger(number) {
 		if(typeof number === "number") {
@@ -691,7 +691,7 @@ export default class BigInteger extends KonpeitoInteger {
 	/**
 	 * Expand memory to specified bit length. (mutable)
 	 * @param {number} bit_length - Bit length.
-	 * @private
+	 * @ignore
 	 */
 	_memory_allocation(bit_length) {
 		if(!this.isFinite()) {
@@ -709,7 +709,7 @@ export default class BigInteger extends KonpeitoInteger {
 
 	/**
 	 * Normalization of the internal data. (mutable)
-	 * @private
+	 * @ignore
 	 */
 	_memory_reduction() {
 		if(!this.isFinite()) {
@@ -732,7 +732,7 @@ export default class BigInteger extends KonpeitoInteger {
 	/**
 	 * Absolute value. (mutable)
 	 * @returns {BigInteger} A = abs(A)
-	 * @private
+	 * @ignore
 	 */
 	_abs() {
 		// -1 -> 1, 0 -> 0, 1 -> 1
@@ -756,7 +756,7 @@ export default class BigInteger extends KonpeitoInteger {
 	/**
 	 * this *= -1
 	 * @returns {BigInteger} A = -A
-	 * @private
+	 * @ignore
 	 */
 	_negate() {
 		if(this.state === BIGINTEGER_NUMBER_STATE.POSITIVE_NUMBER) {
@@ -810,7 +810,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Add. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A += B
-	 * @private
+	 * @ignore
 	 */
 	_add(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -895,7 +895,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Subtract. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A -= B
-	 * @private
+	 * @ignore
 	 */
 	_sub(number) {
 		// 一時的に記録しておいて引数の情報は書き換えないようにする
@@ -919,7 +919,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Multiply. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A *= B
-	 * @private
+	 * @ignore
 	 */
 	_mul(number) {
 		const x = this.mul(number);
@@ -1006,7 +1006,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Divide and rem. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {Array<BigInteger>} [C = fix(A / B), A - C * B]
-	 * @private
+	 * @ignore
 	 */
 	_divideAndRemainder(number) {
 		const o1 = this;
@@ -1085,7 +1085,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Divide. (mutable)
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} fix(A / B)
-	 * @private
+	 * @ignore
 	 */
 	_div(number) {
 		return this._divideAndRemainder(number)[0];
@@ -1121,7 +1121,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * - Result has same sign as the Dividend.
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A %= B
-	 * @private
+	 * @ignore
 	 */
 	_rem(number) {
 		const y = this._divideAndRemainder(number)[1];
@@ -1145,7 +1145,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * - Result has same sign as the Divisor.
 	 * @param {KBigIntegerInputData} number
 	 * @returns {BigInteger} A = A mod B
-	 * @private
+	 * @ignore
 	 */
 	_mod(number) {
 		const o1 = this;
@@ -2281,7 +2281,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Logical AND. (mutable)
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A &= B
-	 * @private
+	 * @ignore
 	 */
 	_and(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -2340,7 +2340,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Logical OR. (mutable)
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A |= B
-	 * @private
+	 * @ignore
 	 */
 	_or(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -2401,7 +2401,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Logical Exclusive-OR. (mutable)
 	 * @param {KBigIntegerInputData} number 
 	 * @returns {BigInteger} A ^= B
-	 * @private
+	 * @ignore
 	 */
 	_xor(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -2460,7 +2460,7 @@ export default class BigInteger extends KonpeitoInteger {
 	/**
 	 * Logical Not.
 	 * @returns {BigInteger} A = !A
-	 * @private
+	 * @ignore
 	 */
 	_not() {
 		return(this._add(new BigInteger(1))._negate());
@@ -2478,7 +2478,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * this | (1 << n) (mutable)
 	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
-	 * @private
+	 * @ignore
 	 */
 	_setBit(bit) {
 		const n = BigInteger._toInteger(bit);
@@ -2502,7 +2502,7 @@ export default class BigInteger extends KonpeitoInteger {
 	 * Invert a specific bit.) (mutable)
 	 * @param {KBigIntegerInputData} bit
 	 * @returns {BigInteger}
-	 * @private
+	 * @ignore
 	 */
 	_flipBit(bit) {
 		const n = BigInteger._toInteger(bit);

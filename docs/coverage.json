@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 1289,
-  "actualCount": 1289,
+  "expectCount": 1296,
+  "actualCount": 1296,
   "files": {
     "src/konpeito.js": {
       "expectCount": 11,
@@ -68,6 +68,11 @@
       "actualCount": 9,
       "undocumentLines": []
     },
+    "src/math/core/tools/random/RandomBase.js": {
+      "expectCount": 4,
+      "actualCount": 4,
+      "undocumentLines": []
+    },
     "src/math/core/tools/random/Xorshift.js": {
       "expectCount": 10,
       "actualCount": 10,
@@ -93,9 +98,14 @@
       "actualCount": 2,
       "undocumentLines": []
     },
-    "src/math/tools/DataAnalysis.js": {
+    "src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js": {
       "expectCount": 2,
       "actualCount": 2,
+      "undocumentLines": []
+    },
+    "src/math/tools/DataAnalysis.js": {
+      "expectCount": 3,
+      "actualCount": 3,
       "undocumentLines": []
     },
     "src/math/tools/Polyfill.js": {

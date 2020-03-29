@@ -59,12 +59,16 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KStatisticsSettings">KStatisticsSettings</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools">math/tools</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis.js~DataAnalysis.html">DataAnalysis</a></span></span></li>
 <li data-ice="doc"><a data-ice="dirPath" class="nav-dir-path" href="identifiers.html#math-tools-dataanalysis">math/tools/DataAnalysis</a><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis/MultipleRegressionAnalysis.js~MultipleRegressionAnalysis.html">MultipleRegressionAnalysis</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/math/tools/DataAnalysis/PrincipalComponentAnalysis.js~PrincipalComponentAnalysis.html">PrincipalComponentAnalysis</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisAnova">KMultipleRegressionAnalysisAnova</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisOutput">KMultipleRegressionAnalysisOutput</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegression">KMultipleRegressionAnalysisPartialRegression</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisPartialRegressionData">KMultipleRegressionAnalysisPartialRegressionData</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisSettings">KMultipleRegressionAnalysisSettings</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KMultipleRegressionAnalysisVectorState">KMultipleRegressionAnalysisVectorState</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KPrincipalComponent">KPrincipalComponent</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KPrincipalComponentAnalysisOutput">KPrincipalComponentAnalysisOutput</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-typedef">T</span><span data-ice="name"><span><a href="typedef/index.html#static-typedef-KPrincipalComponentAnalysisSettings">KPrincipalComponentAnalysisSettings</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -93,11 +97,16 @@ import DataAnalysis from &quot;./math/tools/DataAnalysis.js&quot;;
 
 /**
  * Class collection of numerical calculation processing.
- * These classes are classified into a BigInteger, BigDecimal, Fraction, Matrix.
+ * 
+ * Type classes are classified into a BigInteger, BigDecimal, Fraction, Complex, Matrix.
  * - BigInteger is a calculation class for arbitrary-precision integer arithmetic.
  * - BigDecimal is a calculation class for arbitrary-precision floating point arithmetic.
  * - Fraction is a calculation class for fractions with infinite precision.
+ * - Complex is a calculation class for complex numbers.
  * - Matrix is a general-purpose calculation class with signal processing and statistical processing.
+ * 
+ * There are also classes for specific calculations such as numerical analysis.
+ * - DataAnalysis is a class that can analyze information from a large sample. 
  */
 export default class konpeito {
 
@@ -176,6 +185,7 @@ export default class konpeito {
 	/**
 	 * Return typedef Probability.
 	 * @returns {typeof Probability}
+	 * @ignore
 	 */
 	static get Probability() {
 		return Probability;

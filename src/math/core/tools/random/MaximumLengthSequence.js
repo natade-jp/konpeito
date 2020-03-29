@@ -9,19 +9,22 @@
  */
 
 import Polyfill from "../../../tools/Polyfill.js";
+import RandomBase from "./RandomBase.js";
 
 /**
  * Random number class.
  * @private
  * @ignore
  */
-export default class MaximumLengthSequence {
+export default class MaximumLengthSequence extends RandomBase {
 	
 	/**
 	 * Create Random.
 	 * @param {number} [seed] - Seed number for random number generation. If not specified, create from time.
 	 */
 	constructor(seed) {
+		super();
+
 		// 「M系列乱数」で乱数を作成します。
 		// 参考：奥村晴彦 (1991). C言語による最新アルゴリズム事典.
 		// 比較的長い 2^521 - 1通りを出力します。
@@ -49,6 +52,7 @@ export default class MaximumLengthSequence {
 
 	/**
 	 * 内部データをシャッフル
+	 * @ignore
 	 */
 	_rnd521() {
 		const x = this.x;
@@ -111,7 +115,8 @@ export default class MaximumLengthSequence {
 
 	/**
 	 * 32-bit random number.
-	 * @returns {number} - 32ビットの乱数
+	 * @returns {number} - 32-bit random number
+	 * @ignore
 	 */
 	genrand_int32() {
 		// 全て使用したら、再び混ぜる

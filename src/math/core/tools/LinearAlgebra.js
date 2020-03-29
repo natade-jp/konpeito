@@ -467,7 +467,6 @@ class LinearAlgebraTool {
 	 * @param {number} [row_index_offset=0] - Offset of the position of the vector to be calculated.
 	 * @param {number} [row_index_max] - Maximum value of position of vector to be calculated (do not include this value).
 	 * @returns {{index: number, max: number}} Matrix row number.
-	 * @private
 	 */
 	static getMaxRowNumber(mat, column_index, row_index_offset, row_index_max) {
 		const M = Matrix._toMatrix(mat);
@@ -494,7 +493,6 @@ class LinearAlgebraTool {
 	 * @param {import("../Matrix.js").KMatrixInputData} mat
 	 * @param {number} [tolerance=1.0e-10] - Calculation tolerance of calculation.
 	 * @returns {Array<number>} Array of matrix row numbers in ascending order.
-	 * @private
 	 */
 	static getLinearDependenceVector(mat, tolerance) {
 		const M = new Matrix(mat);

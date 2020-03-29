@@ -11,6 +11,7 @@
 import Polyfill from "../../tools/Polyfill.js";
 import MaximumLengthSequence from "./random/MaximumLengthSequence.js";
 import Xorshift from "./random/Xorshift.js";
+import RandomBase from "./random/RandomBase.js";
 
 /**
  * Setting random numbers
@@ -36,7 +37,7 @@ export default class Random {
 		/**
 		 * Random Number Generator.
 		 * @private
-		 * @type {Xorshift|MaximumLengthSequence}
+		 * @type {RandomBase}
 		 */
 		this.rand = null;
 		
@@ -95,6 +96,8 @@ export default class Random {
 	/**
 	 * 32-bit random number.
 	 * @returns {number} - 32-bit random number
+	 * @private
+	 * @ignore
 	 */
 	genrand_int32() {
 		return this.rand.genrand_int32();

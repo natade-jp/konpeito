@@ -21,11 +21,16 @@ import DataAnalysis from "./math/tools/DataAnalysis.js";
 
 /**
  * Class collection of numerical calculation processing.
- * These classes are classified into a BigInteger, BigDecimal, Fraction, Matrix.
+ * 
+ * Type classes are classified into a BigInteger, BigDecimal, Fraction, Complex, Matrix.
  * - BigInteger is a calculation class for arbitrary-precision integer arithmetic.
  * - BigDecimal is a calculation class for arbitrary-precision floating point arithmetic.
  * - Fraction is a calculation class for fractions with infinite precision.
+ * - Complex is a calculation class for complex numbers.
  * - Matrix is a general-purpose calculation class with signal processing and statistical processing.
+ * 
+ * There are also classes for specific calculations such as numerical analysis.
+ * - DataAnalysis is a class that can analyze information from a large sample. 
  */
 export default class konpeito {
 
@@ -104,6 +109,7 @@ export default class konpeito {
 	/**
 	 * Return typedef Probability.
 	 * @returns {typeof Probability}
+	 * @ignore
 	 */
 	static get Probability() {
 		return Probability;

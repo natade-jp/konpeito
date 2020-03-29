@@ -83,16 +83,16 @@ export default class MultipleRegressionAnalysis {
 	 * @returns {KMultipleRegressionAnalysisOutput} analyzed data
 	 */
 	static runMultipleRegressionAnalysis(settings) {
-		//最小二乗法により重回帰分析する。
-		//参考文献
-		//[1] 図解でわかる多変量解析―データの山から本質を見抜く科学的分析ツール
-		//    涌井 良幸, 涌井 貞美, 日本実業出版社 (2001/01)
-		//[2] これならわかる Excelで楽に学ぶ多変量解析
-		//    長谷川 勝也, 技術評論社 (2002/07)
-		//[3] ど素人の「Excel 回帰分析」表の見方 (単回帰分析)
-		//   http://atiboh.sub.jp/t07kaikibunseki.html
-		//[4] 赤池の情報量基準（AIC）の計算方法
-		//   http://software.ssri.co.jp/statweb2/tips/tips_10.html
+		// 最小二乗法により重回帰分析する。
+		// 参考文献
+		// [1] 図解でわかる多変量解析―データの山から本質を見抜く科学的分析ツール
+		//     涌井 良幸, 涌井 貞美, 日本実業出版社 (2001/01)
+		// [2] これならわかる Excelで楽に学ぶ多変量解析
+		//     長谷川 勝也, 技術評論社 (2002/07)
+		// [3] ど素人の「Excel 回帰分析」表の見方 (単回帰分析)
+		//     http://atiboh.sub.jp/t07kaikibunseki.html
+		// [4] 赤池の情報量基準（AIC）の計算方法
+		//     http://software.ssri.co.jp/statweb2/tips/tips_10.html
 
 		// samples 説明変量。行がサンプル。列が各値。
 		// target  目的変量・実測値。縦ベクトル。
