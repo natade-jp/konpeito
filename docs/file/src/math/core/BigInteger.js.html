@@ -722,6 +722,14 @@ export default class BigInteger extends KonpeitoInteger {
 	}
 
 	/**
+	 * Convert to JSON.
+	 * @returns {string} 
+	 */
+	toJSON() {
+		return this.toString(10);
+	}
+
+	/**
 	 * Deep copy.
 	 * @returns {BigInteger}
 	 */
@@ -1605,7 +1613,7 @@ export default class BigInteger extends KonpeitoInteger {
 	}
 
 	/**
-	 * 32-bit integer value.
+	 * 64-bit integer value.
 	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
 	 * @returns {number}
 	 */
@@ -1613,28 +1621,11 @@ export default class BigInteger extends KonpeitoInteger {
 		if(!this.isFinite()) {
 			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
 		}
-		let x = this.getShort(0) + (this.getShort(1) &lt;&lt; 16);
-		x &amp;= 0xFFFFFFFF;
-		if((x &gt; 0) &amp;&amp; this.isNegative()) {
-			x = -x;
-		}
-		return x;
-	}
-
-	/**
-	 * 64-bit integer value.
-	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-	 * @returns {number}
-	 * @deprecated
-	 */
-	get longValue() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
-		}
 		let x = 0;
 		for(let i = Math.min(3, this.element.length - 1); i &gt;= 0; i--) {
+			// &#x30D3;&#x30C3;&#x30C8;&#x6F14;&#x7B97;&#x306B;&#x3059;&#x308B;&#x3068;&#x3001;32&#x30D3;&#x30C3;&#x30C8;&#x306B;&#x53CE;&#x307E;&#x308B;&#x53EF;&#x80FD;&#x6027;&#x304C;&#x3042;&#x308B;&#x305F;&#x3081;&#x639B;&#x3051;&#x7B97;&#x3067;&#x8A08;&#x7B97;&#x3057;&#x3066;&#x3044;&#x308B;
 			x *= 65536;
-			x += this.getShort(i);
+			x += this.element[i];
 		}
 		if(this.isNegative()) {
 			x = -x;
@@ -1930,6 +1921,54 @@ export default class BigInteger extends KonpeitoInteger {
 	}
 
 	// ----------------------
+	// factor
+	// ----------------------
+
+	/**
+	 * Factorization.
+	 * - Calculate up to `9007199254740991`.
+	 * @returns {BigInteger[]} factor
+	 */
+	factor() {
+		// &#x53C2;&#x8003;&#xFF1A;&#x5965;&#x6751;,&quot;C&#x8A00;&#x8A9E;&#x306B;&#x3088;&#x308B;&#x6700;&#x65B0;&#x30A2;&#x30EB;&#x30B4;&#x30EA;&#x30BA;&#x30E0;&#x4E8B;&#x5178;&quot;,p154,&#x6280;&#x8853;&#x8A55;&#x8AD6;&#x793E;,1991
+		if(!this.isFinite()) {
+			return [BigInteger.NaN];
+		}
+		if(this.isZero()) {
+			return [BigInteger.ZERO];
+		}
+		if(this.isNegative()) {
+			return [this];
+		}
+		/**
+		 * @type {BigInteger[]}
+		 */
+		const output = [];
+		let x = this.intValue;
+		if(x &gt; Number.MAX_SAFE_INTEGER) {
+			return [];
+		}
+		while(x &gt;= 4 &amp;&amp; x % 2 === 0) {
+			output.push(BigInteger.TWO);
+			x = Math.floor(x / 2);
+		}
+		let d = 3;
+		let q = Math.floor(x / d);
+		while(q &gt;= d) {
+			if(x % d === 0) {
+				output.push(BigInteger.create(d));
+				x = q;
+			}
+			else {
+				d += 2;
+			}
+			q = Math.floor(x / d);
+		}
+		output.push(BigInteger.create(x));
+		return output;
+	}
+
+	// ----------------------
 	// gcd, lcm
 	// ----------------------
 	
@@ -1960,7 +1999,7 @@ export default class BigInteger extends KonpeitoInteger {
 	/**
 	 * Extended Euclidean algorithm.
 	 * @param {KBigIntegerInputData} number 
-	 * @returns {Array&lt;BigInteger&gt;} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 * @returns {BigInteger[]} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
 	 */
 	extgcd(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -2032,7 +2071,7 @@ export default class BigInteger extends KonpeitoInteger {
 
 	/**
 	 * Return true if the value is prime number.
-	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * - Calculate up to `9007199254740991`.
 	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
 	 */
 	isPrime() {
@@ -2043,16 +2082,15 @@ export default class BigInteger extends KonpeitoInteger {
 		if(this.sign() &lt;= 0) {
 			return false;
 		}
-		// 47453132.81212578 = Math.sqrt(Number.MAX_SAFE_INTEGER)
-		const limit = Math.sqrt(Math.pow(2, 51));
+		const limit = Math.sqrt(Number.MAX_SAFE_INTEGER);
 		const target_number = this.doubleValue;
 		const count_max = Math.ceil(Math.sqrt(target_number));
 		// 1, 2 -&gt; true
 		if(target_number &lt;= 2) {
 			return true;
 		}
-		// &#x6307;&#x5B9A;&#x3057;&#x305F;&#x5024;&#x3088;&#x308A;&#x5927;&#x304D;&#x3044;&#x5834;&#x5408;&#x306F;&#x8A08;&#x7B97;&#x4E0D;&#x53EF;&#x80FD;&#x3068;&#x3057;&#x3066; false &#x3092;&#x8FD4;&#x3059;
-		if(count_max &gt; limit) {
+		// &#x6307;&#x5B9A;&#x3057;&#x305F;&#x5024;&#x3088;&#x308A;&#x5927;&#x304D;&#x3044;&#x5834;&#x5408;&#x306F;&#x8A08;&#x7B97;&#x4E0D;&#x53EF;&#x80FD;&#x3068;&#x3057;&#x3066; null &#x3092;&#x8FD4;&#x3059;
+		if(count_max &gt;= limit) {
 			return null;
 		}
 		for(let i = 2; i &lt;= count_max; i++) {
@@ -2246,6 +2284,9 @@ export default class BigInteger extends KonpeitoInteger {
 					}
 				}
 			}
+		}
+		if(x.length === 0) {
+			this.state = BIGINTEGER_NUMBER_STATE.ZERO;
 		}
 		return this;
 	}

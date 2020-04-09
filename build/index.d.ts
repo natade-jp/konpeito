@@ -238,6 +238,11 @@ declare class KonpeitoFloat {
      */
     acsch(): KonpeitoFloat;
     /**
+     * Logit function.
+     * @returns {KonpeitoFloat} logit(A)
+     */
+    logit(): KonpeitoFloat;
+    /**
      * Normalized sinc function.
      * @returns {KonpeitoFloat} sinc(A)
      */
@@ -337,6 +342,11 @@ declare class KonpeitoInteger {
      * @returns {string}
      */
     toString(): string;
+    /**
+     * Convert to JSON.
+     * @returns {string}
+     */
+    toJSON(): string;
     /**
      * Deep copy.
      * @returns {KonpeitoInteger}
@@ -515,6 +525,12 @@ declare class KonpeitoInteger {
      */
     fract(): KonpeitoInteger;
     /**
+     * Factorization.
+     * - Calculate up to `9007199254740991`.
+     * @returns {KonpeitoInteger[]} factor
+     */
+    factor(): KonpeitoInteger[];
+    /**
      * Euclidean algorithm.
      * @param {any} number
      * @returns {KonpeitoInteger} gcd(x, y)
@@ -523,7 +539,7 @@ declare class KonpeitoInteger {
     /**
      * Extended Euclidean algorithm.
      * @param {any} number
-     * @returns {Array<KonpeitoInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+     * @returns {KonpeitoInteger[]} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
      */
     extgcd(number: any): KonpeitoInteger[];
     /**
@@ -534,7 +550,7 @@ declare class KonpeitoInteger {
     lcm(number: any): KonpeitoInteger;
     /**
      * Return true if the value is prime number.
-     * - Calculate up to `2251799813685248(=2^51)`.
+     * - Calculate up to `9007199254740991`.
      * @returns {boolean} - If the calculation range is exceeded, null is returned.
      */
     isPrime(): boolean;
@@ -862,80 +878,6 @@ declare class _BigDecimal_ {
      */
     stripTrailingZeros(): _BigDecimal_;
     /**
-     * Add.
-     * @param {KBigDecimalInputData} number
-     * @returns {_BigDecimal_} A + B
-     */
-    add(number: KBigDecimalInputData): _BigDecimal_;
-    /**
-     * Subtract.
-     * @param {KBigDecimalInputData} number
-     * @returns {_BigDecimal_} A - B
-     */
-    sub(number: KBigDecimalInputData): _BigDecimal_;
-    /**
-     * Multiply.
-     * @param {KBigDecimalInputData} number
-     * @returns {_BigDecimal_} A * B
-     */
-    mul(number: KBigDecimalInputData): _BigDecimal_;
-    /**
-     * Divide not calculated to the decimal point.
-     * @param {KBigDecimalInputData} number
-     * @returns {_BigDecimal_} (int)(A / B)
-     */
-    divideToIntegralValue(number: KBigDecimalInputData): _BigDecimal_;
-    /**
-     * Divide and remainder.
-     * @param {KBigDecimalInputData} number
-     * @returns {Array<_BigDecimal_>} [C = (int)(A / B), A - C * B]
-     */
-    divideAndRemainder(number: KBigDecimalInputData): _BigDecimal_[];
-    /**
-     * Remainder of division.
-     * - Result has same sign as the Dividend.
-     * @param {KBigDecimalInputData} number
-     * @returns {_BigDecimal_} A % B
-     */
-    rem(number: KBigDecimalInputData): _BigDecimal_;
-    /**
-     * Modulo, positive remainder of division.
-     * - Result has same sign as the Divisor.
-     * @param {KBigDecimalInputData} number
-     * @returns {_BigDecimal_} A mod B
-     */
-    mod(number: KBigDecimalInputData): _BigDecimal_;
-    /**
-     * Divide.
-     * - The argument can specify the scale after calculation.
-     * - In the case of precision infinity, it may generate an error by a repeating decimal.
-     * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
-     * - When null is specified for the argument, it is calculated on the scale of "divisor.context".
-     * @param {KBigDecimalInputData} number
-     * @param {_MathContext_|KBigDecimalDivideType} [type] - Scale, _MathContext_, _RoundingMode_ used for the calculation.
-     * @returns {_BigDecimal_}
-     */
-    div(number: KBigDecimalInputData, type?: _MathContext_ | KBigDecimalDivideType): _BigDecimal_;
-    /**
-     * Inverse number of this value.
-     * @returns {_BigDecimal_} 1 / A
-     */
-    inv(): _BigDecimal_;
-    /**
-     * Factorial function, x!.
-     * - Supports only integers.
-     * @returns {_BigDecimal_} n!
-     */
-    factorial(): _BigDecimal_;
-    /**
-     * Multiply a multiple of ten.
-     * - Supports only integers.
-     * - Only the scale is changed without changing the precision.
-     * @param {KBigDecimalInputData} n
-     * @returns {_BigDecimal_} A * 10^floor(n)
-     */
-    scaleByPowerOfTen(n: KBigDecimalInputData): _BigDecimal_;
-    /**
      * Set default the _MathContext_.
      * - This is used if you do not specify _MathContext_ when creating a new object.
      * @param {_MathContext_} [context=_MathContext_.DECIMAL128]
@@ -1011,6 +953,32 @@ declare class _BigDecimal_ {
      */
     toMatrix(): _Matrix_;
     /**
+     * Convert to string.
+     * @returns {string}
+     */
+    toString(): string;
+    /**
+     * Convert to JSON.
+     * @returns {string}
+     */
+    toJSON(): string;
+    /**
+     * Convert to string using scientific notation.
+     * @param {KBigDecimalInputData} e_len - Number of digits in exponent part.
+     * @returns {string}
+     */
+    toScientificNotation(e_len: KBigDecimalInputData): string;
+    /**
+     * Convert to string usding technical notation.
+     * @returns {string}
+     */
+    toEngineeringString(): string;
+    /**
+     * Convert to string without exponential notation.
+     * @returns {string}
+     */
+    toPlainString(): string;
+    /**
      * Equals.
      * - Attention : Test for equality, including the precision and the scale.
      * - Use the "compareTo" if you only want to find out whether they are also mathematically equal.
@@ -1053,27 +1021,6 @@ declare class _BigDecimal_ {
      */
     clip(min: KBigDecimalInputData, max: KBigDecimalInputData): _BigDecimal_;
     /**
-     * Convert to string.
-     * @returns {string}
-     */
-    toString(): string;
-    /**
-     * Convert to string using scientific notation.
-     * @param {KBigDecimalInputData} e_len - Number of digits in exponent part.
-     * @returns {string}
-     */
-    toScientificNotation(e_len: KBigDecimalInputData): string;
-    /**
-     * Convert to string usding technical notation.
-     * @returns {string}
-     */
-    toEngineeringString(): string;
-    /**
-     * Convert to string without exponential notation.
-     * @returns {string}
-     */
-    toPlainString(): string;
-    /**
      * Change the scale.
      * @param {KBigDecimalInputData} new_scale - New scale.
      * @param {_RoundingModeEntity_} [rounding_mode=_RoundingMode_.UNNECESSARY] - Rounding method when converting precision.
@@ -1112,6 +1059,80 @@ declare class _BigDecimal_ {
      * @returns {_BigDecimal_} fract(A)
      */
     fract(): _BigDecimal_;
+    /**
+     * Add.
+     * @param {KBigDecimalInputData} number
+     * @returns {_BigDecimal_} A + B
+     */
+    add(number: KBigDecimalInputData): _BigDecimal_;
+    /**
+     * Subtract.
+     * @param {KBigDecimalInputData} number
+     * @returns {_BigDecimal_} A - B
+     */
+    sub(number: KBigDecimalInputData): _BigDecimal_;
+    /**
+     * Multiply.
+     * @param {KBigDecimalInputData} number
+     * @returns {_BigDecimal_} A * B
+     */
+    mul(number: KBigDecimalInputData): _BigDecimal_;
+    /**
+     * Divide not calculated to the decimal point.
+     * @param {KBigDecimalInputData} number
+     * @returns {_BigDecimal_} (int)(A / B)
+     */
+    divideToIntegralValue(number: KBigDecimalInputData): _BigDecimal_;
+    /**
+     * Divide and remainder.
+     * @param {KBigDecimalInputData} number
+     * @returns {Array<_BigDecimal_>} [C = (int)(A / B), A - C * B]
+     */
+    divideAndRemainder(number: KBigDecimalInputData): _BigDecimal_[];
+    /**
+     * Remainder of division.
+     * - Result has same sign as the Dividend.
+     * @param {KBigDecimalInputData} number
+     * @returns {_BigDecimal_} A % B
+     */
+    rem(number: KBigDecimalInputData): _BigDecimal_;
+    /**
+     * Modulo, positive remainder of division.
+     * - Result has same sign as the Divisor.
+     * @param {KBigDecimalInputData} number
+     * @returns {_BigDecimal_} A mod B
+     */
+    mod(number: KBigDecimalInputData): _BigDecimal_;
+    /**
+     * Divide.
+     * - The argument can specify the scale after calculation.
+     * - In the case of precision infinity, it may generate an error by a repeating decimal.
+     * - When "{}" is specified for the argument, it is calculated on the scale of "this.scale() - divisor.scale()".
+     * - When null is specified for the argument, it is calculated on the scale of "divisor.context".
+     * @param {KBigDecimalInputData} number
+     * @param {_MathContext_|KBigDecimalDivideType} [type] - Scale, _MathContext_, _RoundingMode_ used for the calculation.
+     * @returns {_BigDecimal_}
+     */
+    div(number: KBigDecimalInputData, type?: _MathContext_ | KBigDecimalDivideType): _BigDecimal_;
+    /**
+     * Inverse number of this value.
+     * @returns {_BigDecimal_} 1 / A
+     */
+    inv(): _BigDecimal_;
+    /**
+     * Factorial function, x!.
+     * - Supports only integers.
+     * @returns {_BigDecimal_} n!
+     */
+    factorial(): _BigDecimal_;
+    /**
+     * Multiply a multiple of ten.
+     * - Supports only integers.
+     * - Only the scale is changed without changing the precision.
+     * @param {KBigDecimalInputData} n
+     * @returns {_BigDecimal_} A * 10^floor(n)
+     */
+    scaleByPowerOfTen(n: KBigDecimalInputData): _BigDecimal_;
     /**
      * Power function.
      * - An exception occurs when doing a huge multiplication.
@@ -1300,6 +1321,11 @@ declare class _BigDecimal_ {
      */
     acsch(): _BigDecimal_;
     /**
+     * Logit function.
+     * @returns {_BigDecimal_} logit(A)
+     */
+    logit(): _BigDecimal_;
+    /**
      * Normalized sinc function.
      * @returns {_BigDecimal_} sinc(A)
      */
@@ -1408,6 +1434,13 @@ declare class _BigDecimal_ {
      * @returns {_BigDecimal_} A << n
      */
     shift(n: KBigDecimalInputData): _BigDecimal_;
+    /**
+     * Factorization.
+     * - Calculated as an integer.
+     * - Calculate up to `9007199254740991`.
+     * @returns {_BigDecimal_[]} factor
+     */
+    factor(): _BigDecimal_[];
     /**
      * Euclidean algorithm.
      * - Calculated as an integer.
@@ -1684,6 +1717,11 @@ declare class _BigInteger_ {
      */
     toString(radix?: KBigIntegerInputData): string;
     /**
+     * Convert to JSON.
+     * @returns {string}
+     */
+    toJSON(): string;
+    /**
      * Deep copy.
      * @returns {_BigInteger_}
      */
@@ -1832,18 +1870,11 @@ declare class _BigInteger_ {
      */
     booleanValue: boolean;
     /**
-     * 32-bit integer value.
+     * 64-bit integer value.
      * - If it is outside the range of JavaScript Number, it will not be an accurate number.
      * @returns {number}
      */
     intValue: number;
-    /**
-     * 64-bit integer value.
-     * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-     * @returns {number}
-     * @deprecated
-     */
-    longValue: number;
     /**
      * 64-bit floating point.
      * - If it is outside the range of JavaScript Number, it will not be an accurate number.
@@ -1945,6 +1976,12 @@ declare class _BigInteger_ {
      */
     fract(): _BigInteger_;
     /**
+     * Factorization.
+     * - Calculate up to `9007199254740991`.
+     * @returns {_BigInteger_[]} factor
+     */
+    factor(): _BigInteger_[];
+    /**
      * Euclidean algorithm.
      * @param {KBigIntegerInputData} number
      * @returns {_BigInteger_} gcd(x, y)
@@ -1953,7 +1990,7 @@ declare class _BigInteger_ {
     /**
      * Extended Euclidean algorithm.
      * @param {KBigIntegerInputData} number
-     * @returns {Array<_BigInteger_>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+     * @returns {_BigInteger_[]} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
      */
     extgcd(number: KBigIntegerInputData): _BigInteger_[];
     /**
@@ -1973,7 +2010,7 @@ declare class _BigInteger_ {
     static probablePrime(bits: KBigIntegerInputData, random?: _Random_, certainty?: KBigIntegerInputData, create_count?: KBigIntegerInputData): _BigInteger_;
     /**
      * Return true if the value is prime number.
-     * - Calculate up to `2251799813685248(=2^51)`.
+     * - Calculate up to `9007199254740991`.
      * @returns {boolean} - If the calculation range is exceeded, null is returned.
      */
     isPrime(): boolean;
@@ -2257,6 +2294,11 @@ declare class _Complex_ {
      * @returns {string}
      */
     toString(): string;
+    /**
+     * Convert to JSON.
+     * @returns {string}
+     */
+    toJSON(): string;
     /**
      * The real part of this Comlex.
      * @returns {number} real(A)
@@ -2645,12 +2687,17 @@ declare class _Complex_ {
      */
     acsch(): _Complex_;
     /**
+     * Logit function.
+     * @returns {_Complex_} logit(A)
+     */
+    logit(): _Complex_;
+    /**
      * Normalized sinc function.
      * @returns {_Complex_} sinc(A)
      */
     sinc(): _Complex_;
     /**
-     * Create random values with uniform random numbers.
+     * Create random values [0, 1) with uniform random numbers.
      * @param {_Random_} [random] - Class for creating random numbers.
      * @returns {_Complex_}
      */
@@ -3044,6 +3091,13 @@ declare class _Complex_ {
      */
     shift(n: KComplexInputData): _Complex_;
     /**
+     * Factorization.
+     * - Calculated as an integer.
+     * - Calculate up to `9007199254740991`.
+     * @returns {_Complex_[]} factor
+     */
+    factor(): _Complex_[];
+    /**
      * Euclidean algorithm.
      * - Calculated as an integer.
      * @param {KComplexInputData} number
@@ -3088,7 +3142,7 @@ declare class _Complex_ {
     /**
      * Return true if the value is prime number.
      * - Calculated as an integer.
-     * - Calculate up to `2251799813685248(=2^51)`.
+     * - Calculate up to `9007199254740991`.
      * @returns {boolean} - If the calculation range is exceeded, null is returned.
      */
     isPrime(): boolean;
@@ -3669,6 +3723,22 @@ declare class _Fraction_ {
      */
     toString(): string;
     /**
+     * Convert to JSON.
+     * @returns {string}
+     */
+    toJSON(): string;
+    /**
+     * Convert to string. For example, output `1/3` if `0.333...`.
+     * @returns {string}
+     */
+    toFractionString(): string;
+    /**
+     * Convert to string. For example, output `0.(3)` if `0.333...`.
+     * @param {KFractionInputData} [depth_max] - Maximum number of divisions.
+     * @returns {string}
+     */
+    toPlainString(depth_max?: KFractionInputData): string;
+    /**
      * Add.
      * @param {KFractionInputData} num
      * @return {_Fraction_} A + B
@@ -3895,6 +3965,11 @@ declare class _Fraction_ {
      */
     isFinite(): boolean;
     /**
+     * Return true if the value is repeating decimal.
+     * @returns {boolean}
+     */
+    isRepeatingDecimal(): boolean;
+    /**
      * Logical AND.
      * - Calculated as an integer.
      * @param {KFractionInputData} number
@@ -3928,6 +4003,13 @@ declare class _Fraction_ {
      * @returns {_Fraction_} A << n
      */
     shift(n: KFractionInputData): _Fraction_;
+    /**
+     * Factorization.
+     * - Calculated as an integer.
+     * - Calculate up to `9007199254740991`.
+     * @returns {_Fraction_[]} factor
+     */
+    factor(): _Fraction_[];
     /**
      * Euclidean algorithm.
      * - Calculated as an integer.
@@ -3967,7 +4049,7 @@ declare class _Fraction_ {
     /**
      * Return true if the value is prime number.
      * - Calculated as an integer.
-     * - Calculate up to `2251799813685248(=2^51)`.
+     * - Calculate up to `9007199254740991`.
      * @returns {boolean} - If the calculation range is exceeded, null is returned.
      */
     isPrime(): boolean;
@@ -4148,6 +4230,11 @@ declare class _Matrix_ {
      * @returns {string}
      */
     toOneLineString(): string;
+    /**
+     * Convert to JSON.
+     * @returns {string}
+     */
+    toJSON(): string;
     /**
      * Equals.
      * @param {KMatrixInputData} number
@@ -4861,12 +4948,17 @@ declare class _Matrix_ {
      */
     acsch(): _Matrix_;
     /**
+     * Logit function.
+     * @returns {_Matrix_} logit(A)
+     */
+    logit(): _Matrix_;
+    /**
      * Normalized sinc function.
      * @returns {_Matrix_} sinc(A)
      */
     sinc(): _Matrix_;
     /**
-     * Generate a matrix composed of random values with uniform random numbers.
+     * Generate a matrix composed of random values [0, 1) with uniform random numbers.
      * @param {KMatrixInputData} dimension - Number of dimensions or rows.
      * @param {KMatrixInputData} [column_length] - Number of columns.
      * @param {_Random_} [random] - Class for creating random numbers.
@@ -5579,6 +5671,14 @@ declare class _Matrix_ {
      * @returns {_Matrix_} A << n
      */
     shift(n: KMatrixInputData): _Matrix_;
+    /**
+     * Factorization.
+     * - Use only the first element.
+     * - Calculated as an integer.
+     * - Calculate up to `9007199254740991`.
+     * @returns {_Matrix_[]} factor
+     */
+    factor(): _Matrix_[];
     /**
      * Euclidean algorithm.
      * - Calculated as an integer.
@@ -6530,31 +6630,16 @@ declare class _Random_ {
      */
     nextBytes(size: number): number[];
     /**
-     * 16-bit random number.
-     * @returns {number}
-     */
-    nextShort(): number;
-    /**
      * 32-bit random number.
      * @param {number} [x] - 指定した値未満の数値を作る
      * @returns {number}
      */
     nextInt(x?: number): number;
     /**
-     * 64-bit random number.
-     * @returns {number}
-     */
-    nextLong(): number;
-    /**
      * _Random_ boolean.
      * @returns {boolean}
      */
     nextBoolean(): boolean;
-    /**
-     * Float type random number in the range of [0, 1).
-     * @returns {number}
-     */
-    nextFloat(): number;
     /**
      * Double type random number in the range of [0, 1).
      * @returns {number}

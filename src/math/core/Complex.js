@@ -293,6 +293,27 @@ export default class Complex extends KonpeitoFloat {
 			return formatG(this._re);
 		}
 	}
+
+	/**
+	 * Convert to JSON.
+	 * @returns {string} 
+	 */
+	toJSON() {
+		if(!this.isReal()) {
+			if(this._re === 0) {
+				return this._im.toString() + "i";
+			}
+			else if((this._im >= 0) || (Number.isNaN(this._im))) {
+				return this._re.toString() + "+" + this._im.toString() + "i";
+			}
+			else {
+				return this._re.toString() + this._im.toString() + "i";
+			}
+		}
+		else {
+			return this._re.toString();
+		}
+	}
 	
 	/**
 	 * The real part of this Comlex.
@@ -1354,6 +1375,18 @@ export default class Complex extends KonpeitoFloat {
 	}
 
 	// ----------------------
+	// 確率・統計系
+	// ----------------------
+	
+	/**
+	 * Logit function.
+	 * @returns {Complex} logit(A)
+	 */
+	logit() {
+		return this.log().sub(Complex.ONE.sub(this).log());
+	}
+
+	// ----------------------
 	// 信号処理系
 	// ----------------------
 	
@@ -1378,7 +1411,7 @@ export default class Complex extends KonpeitoFloat {
 	// ----------------------
 	
 	/**
-	 * Create random values with uniform random numbers.
+	 * Create random values [0, 1) with uniform random numbers.
 	 * @param {Random} [random] - Class for creating random numbers.
 	 * @returns {Complex}
 	 */
@@ -2026,6 +2059,25 @@ export default class Complex extends KonpeitoFloat {
 	}
 
 	// ----------------------
+	// factor
+	// ----------------------
+
+	/**
+	 * Factorization.
+	 * - Calculated as an integer.
+	 * - Calculate up to `9007199254740991`.
+	 * @returns {Complex[]} factor
+	 */
+	factor() {
+		const x = this.round().toBigInteger().factor();
+		const y = [];
+		for(let i = 0; i < x.length; i++) {
+			y.push(new Complex(x[i]));
+		}
+		return y;
+	}
+
+	// ----------------------
 	// gcd, lcm
 	// ----------------------
 	
@@ -2120,7 +2172,7 @@ export default class Complex extends KonpeitoFloat {
 	/**
 	 * Return true if the value is prime number.
 	 * - Calculated as an integer.
-	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * - Calculate up to `9007199254740991`.
 	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
 	 */
 	isPrime() {

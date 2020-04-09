@@ -224,15 +224,7 @@ export default class Random {
 		}
 		return y;
 	}
-
-	/**
-	 * 16-bit random number.
-	 * @returns {number}
-	 */
-	nextShort() {
-		return (this.next(16));
-	}
-
+	
 	/**
 	 * 32-bit random number.
 	 * @param {number} [x] - &#x6307;&#x5B9A;&#x3057;&#x305F;&#x5024;&#x672A;&#x6E80;&#x306E;&#x6570;&#x5024;&#x3092;&#x4F5C;&#x308B;
@@ -251,28 +243,12 @@ export default class Random {
 	}
 
 	/**
-	 * 64-bit random number.
-	 * @returns {number}
-	 */
-	nextLong() {
-		return this.next(64);
-	}
-
-	/**
 	 * Random boolean.
 	 * @returns {boolean}
 	 */
 	nextBoolean() {
 		// 1&#x30D3;&#x30C3;&#x30C8;&#x306E;&#x305F;&#x3081;&#x306B;&#x3001;32&#x30D3;&#x30C3;&#x30C8;&#x4E71;&#x6570;&#x3092;1&#x56DE;&#x56DE;&#x3059;&#x306E;&#x306F;&#x3082;&#x3063;&#x305F;&#x3044;&#x306A;&#x3044;
 		return (this.next(1) !== 0);
-	}
-
-	/**
-	 * Float type random number in the range of [0, 1).
-	 * @returns {number}
-	 */
-	nextFloat() {
-		return (this.next(24) / 0x1000000);
 	}
 
 	/**

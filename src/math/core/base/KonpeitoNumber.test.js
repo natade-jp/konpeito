@@ -15,6 +15,20 @@ let test_count = 0;
  * @param {*} x 
  * @param {*} y 
  */
+const testEQString = function(operator, x, y) {
+	test_count++;
+	// @ts-ignore
+	const X = $(x)[operator]();
+	const testname = operator + " " + test_count + " $(" + x + ")." + operator + "===" + y;
+	const out = X.toString() === y;
+	test(testname, () => { expect(out).toBe(true); });
+};
+
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} y 
+ */
 const testEQ = function(operator, x, y) {
 	test_count++;
 	const X = $(x);
@@ -143,6 +157,8 @@ const testClass = function(class_type) {
 		testOperator1("fix", -3.8, -3);
 		testOperator1("fract", 3.0, 0.0);
 
+		testEQString("factor", 13244, "2,2,7,11,43");
+		
 		testOperator2("gcd", 12, 18, 6);
 		// extgcd 省略
 		testOperator2("lcm", 63, 30, 630);

@@ -143,8 +143,8 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 
 {
 	test_count = 0;
-	testEQ("longValue", $(1234567890).longValue, 1234567890);
-	testEQ("longValue", $(-1234567890).longValue, -1234567890);
+	testEQ("intValue", $(1234567890).intValue, 1234567890);
+	testEQ("intValue", $(-1234567890).intValue, -1234567890);
 }
 
 {
@@ -544,13 +544,7 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 {
 	test("intValue", () => {
 		expect(
-			$("0x3334342423423").intValue.toString(16) === "42423423"
-		).toBe(true);
-	});
-
-	test("longValue", () => {
-		expect(
-			$("0x3334342423423").longValue.toString(16) === "3334342423423"
+			$("0x3334342423423").intValue.toString(16) === "3334342423423"
 		).toBe(true);
 	});
 
@@ -724,19 +718,19 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	
 	test("nextProbablePrime 1", () => {
 		expect(
-			$(100000).nextProbablePrime().longValue === 100003
+			$(100000).nextProbablePrime().intValue === 100003
 		).toBe(true);
 	});
 
 	test("nextProbablePrime 2", () => {
 		expect(
-			$(100003).nextProbablePrime().longValue === 100019
+			$(100003).nextProbablePrime().intValue === 100019
 		).toBe(true);
 	});
 	
 	test("nextProbablePrime 3", () => {
 		expect(
-			$(100019).nextProbablePrime().longValue === 100043
+			$(100019).nextProbablePrime().intValue === 100043
 		).toBe(true);
 	});
 

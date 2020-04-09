@@ -1,5 +1,23 @@
 # History
 
+## v6.0.0
+### 仕様変更
+- `Matrix` の`toString`がスカラーの場合は、1行で結果を出力するように変更
+- `Fraction` の`toString`が整数の場合は、分数表示しないように変更
+- `Fraction` の`toString`が分数の場合に、`1 / 3`としていたところを`1/3`のようにスペースをなしに変更
+- `BigInteger` の `longValue` を削除して、`intValue` がその役割を持つように修正
+- `Random` の`nextShort`, `nextLong`, `nextFloat` はJavaScriptの型として不要のため仕様簡素化のため削除
+### 機能追加
+- `BigInteger`, `BigDecimal`, `Fraction`, `Complex`, `Matrix` に `toJSON` メソッドを追加
+- `BigInteger`, `BigDecimal`, `Fraction`, `Complex`, `Matrix` に `factor` メソッドを追加
+- `Fraction` に `toFractionString`, `toPlainString`, `isRepeatingDecimal` のメソッドを追加
+- `BigDecimal`, `Complex`, `Matrix` に `logit` を追加
+### 改善
+- `BigDecimal` のメソッドの定義順を整備
+- `Matrix` の初期化宣言時に`[]`で括っていなくても、`[;,]`があれば行列として認識するように変更
+### 不具合
+- `BigInteger`のシフト演算の結果が0になっても`isZero`メソッドの結果が`False`のままだったのを修正
+
 ## v5.3.0
 ### 機能追加
 - 主成分分析が行える`PrincipalComponentAnalysis`を追加

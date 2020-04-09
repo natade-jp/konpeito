@@ -655,6 +655,623 @@ export default class BigDecimal extends KonpeitoFloat {
 	}
 
 	// ----------------------
+	// 環境設定用
+	// ----------------------
+	
+	/**
+	 * Set default the MathContext.
+	 * - This is used if you do not specify MathContext when creating a new object.
+	 * @param {MathContext} [context=MathContext.DECIMAL128]
+	 */
+	static setDefaultContext(context) {
+		DEFAULT_CONTEXT_[DEFAULT_CONTEXT_.length - 1] = context ? context : MathContext.DECIMAL128;
+	}
+
+	/**
+	 * Return default MathContext class.
+	 * - Used when MathContext not specified explicitly.
+	 * @returns {MathContext}
+	 */
+	static getDefaultContext() {
+		return DEFAULT_CONTEXT_[DEFAULT_CONTEXT_.length - 1];
+	}
+
+	/**
+	 * Push default the MathContext.
+	 * - Use with `popDefaultContext` when you want to switch settings temporarily.
+	 * @param {MathContext} [context]
+	 */
+	static pushDefaultContext(context) {
+		DEFAULT_CONTEXT_.push(context);
+	}
+
+	/**
+	 * Pop default the MathContext.
+	 * - Use with `pushDefaultContext` when you want to switch settings temporarily.
+	 */
+	static popDefaultContext() {
+		DEFAULT_CONTEXT_.pop();
+	}
+
+	// ----------------------
+	// 他の型に変換用
+	// ----------------------
+	
+	/**
+	 * boolean value.
+	 * @returns {boolean}
+	 */
+	get booleanValue() {
+		return this.integer.booleanValue;
+	}
+
+	/**
+	 * 32-bit integer value.
+	 * @returns {number}
+	 */
+	get intValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		const bigintdata = this.toBigInteger();
+		const x = bigintdata.intValue;
+		return x & 0xFFFFFFFF;
+	}
+
+	/**
+	 * 32-bit integer value.
+	 * An error occurs if conversion fails.
+	 * @returns {number}
+	 */
+	get intValueExact() {
+		if(!this.isFinite()) {
+			throw "ArithmeticException";
+		}
+		const bigintdata = this.toBigInteger();
+		const x = bigintdata.intValue;
+		if((x < -2147483648) || (2147483647 < x)) {
+			throw "ArithmeticException";
+		}
+		return x;
+	}
+
+	/**
+	 * 32-bit floating point.
+	 * @returns {number}
+	 */
+	get floatValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		const p = this.precision();
+		if(MathContext.DECIMAL32.getPrecision() < p) {
+			return(this.sign() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
+		}
+		return parseFloat(this.toEngineeringString());
+	}
+
+	/**
+	 * 64-bit floating point.
+	 * @returns {number}
+	 */
+	get doubleValue() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
+		}
+		return parseFloat(this.toEngineeringString());
+	}
+
+	// ----------------------
+	// konpeito で扱う数値型へ変換
+	// ----------------------
+	
+	/**
+	 * return BigInteger.
+	 * @returns {BigInteger}
+	 */
+	toBigInteger() {
+		return this.integer.scaleByPowerOfTen(-this.scale());
+	}
+
+	/**
+	 * return BigDecimal.
+	 * @param {MathContext} [mc] - MathContext setting after calculation. 
+	 * @returns {BigDecimal}
+	 */
+	toBigDecimal(mc) {
+		if(mc) {
+			return this.round(mc);
+		}
+		else {
+			return this;
+		}
+	}
+	
+	/**
+	 * return Fraction.
+	 * @returns {Fraction}
+	 */
+	toFraction() {
+		return new Fraction(this);
+	}
+
+	/**
+	 * return Complex.
+	 * @returns {Complex}
+	 */
+	toComplex() {
+		return new Complex(this);
+	}
+	
+	/**
+	 * return Matrix.
+	 * @returns {Matrix}
+	 */
+	toMatrix() {
+		return new Matrix(this);
+	}
+
+	// ----------------------
+	// 文字列化
+	// ----------------------
+	
+	/**
+	 * Convert to string.
+	 * @returns {string} 
+	 */
+	toString() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
+		// 「調整された指数」
+		const x = - this.scale() + (this.precision() - 1);
+		// スケールが 0 以上で、「調整された指数」が -6 以上
+		if((this.scale() >= 0) && (x >= -6)) {
+			return this.toPlainString();
+		}
+		else {
+			return this.toScientificNotation(x);
+		}
+	}
+
+	/**
+	 * Convert to JSON.
+	 * @returns {string} 
+	 */
+	toJSON() {
+		return this.toString();
+	}
+
+	/**
+	 * Convert to string using scientific notation.
+	 * @param {KBigDecimalInputData} e_len - Number of digits in exponent part.
+	 * @returns {string} 
+	 */
+	toScientificNotation(e_len) {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
+		const e		= BigDecimal._toInteger(e_len);
+		const text	= this._getUnsignedIntegerString();
+		let s		= this.scale();
+		const x		= [];
+		let i, k;
+		// -
+		if(this.sign() === -1) {
+			x[x.length] = "-";
+		}
+		// 表示上の桁数
+		s = - e - s;
+		// 小数点が付かない
+		if(s >= 0) {
+			x[x.length] = text;
+			for(i = 0; i < s; i++) {
+				x[x.length] = "0";
+			}
+		}
+		// 小数点が付く
+		else {
+			k = this.precision() + s;
+			if(0 < k) {
+				x[x.length] = text.substring(0, k);
+				x[x.length] = ".";
+				x[x.length] = text.substring(k, text.length);
+			}
+			else {
+				k = - k;
+				x[x.length] = "0.";
+				for(i = 0; i < k; i++) {
+					x[x.length] = "0";
+				}
+				x[x.length] = text;
+			}
+		}
+		x[x.length] = "E";
+		if(e >= 0) {
+			x[x.length] = "+";
+		}
+		x[x.length] = e;
+		return x.join("");
+	}
+
+	/**
+	 * Convert to string usding technical notation.
+	 * @returns {string} 
+	 */
+	toEngineeringString() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
+		// 「調整された指数」
+		const x = - this.scale() + (this.precision() - 1);
+		// スケールが 0 以上で、「調整された指数」が -6 以上
+		if((this.scale() >= 0) && (x >= -6)) {
+			return this.toPlainString();
+		}
+		else {
+			// 0 でない値の整数部が 1 〜 999 の範囲に収まるように調整
+			return this.toScientificNotation(Math.floor(x / 3) * 3);
+		}
+	}
+
+	/**
+	 * Convert to string without exponential notation.
+	 * @returns {string} 
+	 */
+	toPlainString() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
+		// スケールの変換なし
+		if(this.scale() === 0) {
+			if(this.sign() < 0) {
+				return "-" + this._getUnsignedIntegerString();
+			}
+			else {
+				return this._getUnsignedIntegerString();
+			}
+		}
+		// 指数0で文字列を作成後、Eの後ろの部分をとっぱらう
+		const text = this.toScientificNotation(0);
+		return text.match(/^[^E]*/)[0];
+	}
+
+	// ----------------------
+	// 比較
+	// ----------------------
+	
+	/**
+	 * Equals.
+	 * - Attention : Test for equality, including the precision and the scale. 
+	 * - Use the "compareTo" if you only want to find out whether they are also mathematically equal.
+	 * - If you specify a "tolerance", it is calculated by ignoring the test of the precision and the scale.
+	 * @param {KBigDecimalInputData} number 
+	 * @param {KBigDecimalInputData} [tolerance] - Calculation tolerance of calculation.
+	 * @returns {boolean} A === B
+	 */
+	equals(number, tolerance) {
+		// 誤差を指定しない場合は、厳密に調査
+		if(!tolerance) {
+			if((number instanceof BigDecimal) || (typeof number === "string")) {
+				const val = number instanceof BigDecimal ? number : BigDecimal._toBigDecimal(number);
+				if(this.isNaN() || val.isNaN()) {
+					return false;
+				}
+				else {
+					return (this.equalsState(val) && (this._scale === val._scale) && this.integer.equals(val.integer));
+				}
+			}
+			else {
+				return this.compareTo(number) === 0;
+			}
+		}
+		else {
+			return this.compareTo(number, tolerance) === 0;
+		}
+	}
+
+	/**
+	 * Numeric type match.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {boolean}
+	 */
+	equalsState(number) {
+		const x = this;
+		const y = BigDecimal._toBigDecimal(number);
+		return x.integer.equalsState(y.integer);
+	}
+
+	/**
+	 * Compare values.
+	 * @param {KBigDecimalInputData} number
+	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
+	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
+	 */
+	compareTo(number, tolerance) {
+		const src = this;
+		const tgt = BigDecimal._toBigDecimal(number);
+		// 特殊な条件
+		if(!src.isFinite() || !tgt.isFinite()) {
+			return src.integer.compareTo(tgt.integer);
+		}
+		// 通常の条件
+		if(!tolerance) {
+			// 誤差の指定がない場合
+			// 簡易計算
+			{
+				const src_sign	= src.sign();
+				const tgt_sign	= tgt.sign();
+				if((src_sign === 0) && (src_sign === tgt_sign)) {
+					return 0;
+				}
+				else if(src_sign === 0) {
+					return - tgt_sign;
+				}
+				else if(tgt_sign === 0) {
+					return src_sign;
+				}
+			}
+			// 実際に計算する
+			if(src._scale === tgt._scale) {
+				return src.integer.compareTo(tgt.integer);
+			}
+			else if(src._scale > tgt._scale) {
+				const newdst = tgt.setScale(src._scale);
+				return src.integer.compareTo(newdst.integer);
+			}
+			else {
+				const newsrc = src.setScale(tgt._scale);
+				return newsrc.integer.compareTo(tgt.integer);
+			}
+		}
+		else {
+			const tolerance_ = BigDecimal._toBigDecimal(tolerance);
+			BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
+			const delta = src.sub(tgt);
+			BigDecimal.popDefaultContext();
+			const delta_abs = delta.abs();
+			if(delta_abs.compareTo(tolerance_) <= 0) {
+				return 0;
+			}
+			else {
+				return delta.sign();
+			}
+		}
+	}
+
+	/**
+	 * Maximum number.
+	 * @param {KBigDecimalInputData} number
+	 * @returns {BigDecimal} max([A, B])
+	 */
+	max(number) {
+		const val = BigDecimal._toBigDecimal(number);
+		if(this.isNaN() || val.isNaN()) {
+			return BigDecimal.NaN;
+		}
+		if(this.compareTo(val) >= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * Minimum number.
+	 * @param {KBigDecimalInputData} number 
+	 * @returns {BigDecimal} min([A, B])
+	 */
+	min(number) {
+		const val = BigDecimal._toBigDecimal(number);
+		if(this.isNaN() || val.isNaN()) {
+			return BigDecimal.NaN;
+		}
+		if(this.compareTo(val) <= 0) {
+			return this.clone();
+		}
+		else {
+			return val.clone();
+		}
+	}
+
+	/**
+	 * Clip number within range.
+	 * @param {KBigDecimalInputData} min
+	 * @param {KBigDecimalInputData} max
+	 * @returns {BigDecimal} min(max(x, min), max)
+	 */
+	clip(min, max) {
+		const min_ = BigDecimal._toBigDecimal(min);
+		const max_ = BigDecimal._toBigDecimal(max);
+		if(this.isNaN() || min_.isNaN() || max_.isNaN()) {
+			return BigDecimal.NaN;
+		}
+		const arg_check = min_.compareTo(max_);
+		if(arg_check === 1) {
+			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
+		}
+		else if(arg_check === 0) {
+			return min_;
+		}
+		if(this.compareTo(max_) === 1) {
+			return max_;
+		}
+		else if(this.compareTo(min_) === -1) {
+			return min_;
+		}
+		return this;
+	}
+
+	// ----------------------
+	// 丸め
+	// ----------------------
+	
+	/**
+	 * Change the scale.
+	 * @param {KBigDecimalInputData} new_scale - New scale.
+	 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
+	 * @returns {BigDecimal} 
+	 */
+	setScale(new_scale, rounding_mode) {
+		if(!this.isFinite()) {
+			return this;
+		}
+		const newScale = BigDecimal._toInteger(new_scale);
+		if(this.scale() === newScale) {
+			// scaleが同一なので処理の必要なし
+			return(this.clone());
+		}
+		const roundingMode = (rounding_mode !== undefined) ? RoundingMode.valueOf(rounding_mode) : RoundingMode.UNNECESSARY;
+		// 文字列を扱ううえで、符号があるとやりにくいので外しておく
+		let text		= this._getUnsignedIntegerString();
+		const sign		= this.sign();
+		const sign_text	= sign >= 0 ? "" : "-";
+		// scale の誤差
+		// 0 以上なら 0 を加えればいい。0未満なら0を削るか、四捨五入など丸めを行う
+		const delta		= newScale - this.scale();	// この桁分増やすといい
+		if(0 <= delta) {
+			// 0を加える
+			let i;
+			for(i = 0; i < delta; i++) {
+				text = text + "0";
+			}
+			return new BigDecimal([new BigInteger(sign_text + text), newScale]);
+		}
+		const keta = text.length + delta;		// 最終的な桁数
+		const keta_marume = keta + 1;
+		if(keta <= 0) {
+			// 指定した scale では設定できない場合
+			// 例えば "0.1".setScale(-2), "10".setScale(-3) としても表すことは不可能であるため、
+			// sign（-1, 0, +1）のどれかの数値を使用して丸める
+			const outdata = (sign + roundingMode.getAddNumber(sign)) / 10;
+			// 上記の式は、CEILINGなら必ず1、正でCEILINGなら1、負でFLOORなら1、それ以外は0となり、
+			// さらに元々の数値が 0 なら 0、切り捨て不能なら例外が返る計算式である。
+			// これは Java の動作をまねています。
+			return new BigDecimal([new BigInteger(outdata), newScale]);
+		}
+		{
+			// 0を削るだけで解決する場合
+			// 単純な切捨て(0を削るのみ)
+			const zeros			= text.match(/0+$/);
+			const zero_length		= (zeros !== null) ? zeros[0].length : 0;
+			if(( (zero_length + delta) >= 0 ) || (roundingMode === RoundingMode.DOWN)) {
+				return new BigDecimal([new BigInteger(sign_text + text.substring(0, keta)), newScale]);
+			}
+		}
+		{
+			// 丸め計算で解決する場合
+			// 12345 -> '123'45
+			text = text.substring(0, keta_marume);
+			// 丸め計算に必要な切り取る桁数(後ろの1～2桁を取得)
+			const cutsize = text.length > 1 ? 2 : 1;
+			// '123'45 -> 1'23'4
+			const number = parseInt(text.substring(text.length - cutsize, text.length)) * sign;
+			// 「元の数」と「丸めに必要な数」を足す
+			const x1 = new BigInteger(sign_text + text);
+			const x2 = new BigInteger(roundingMode.getAddNumber(number));
+			text = x1.add(x2).toString();
+			// 丸め後の桁数に戻して
+			return new BigDecimal([new BigInteger(text.substring(0, text.length - 1)), newScale]);
+		}
+	}
+
+	/**
+	 * Round with specified settings.
+	 * 
+	 * - This method is not a method round the decimal point.
+	 * - This method converts numbers in the specified Context and rounds unconvertible digits.
+	 * 
+	 * Use `this.setScale(0, RoundingMode.HALF_UP)` if you want to round the decimal point.
+	 * When the argument is omitted, such decimal point rounding operation is performed.
+	 * @param {MathContext} [mc] - New setting.
+	 * @returns {BigDecimal} 
+	 */
+	round(mc) {
+		if(!this.isFinite()) {
+			return this;
+		}
+		if(arguments.length === 1) {
+			if(mc !== undefined) {
+				// MathContext を設定した場合
+				if(!(mc instanceof MathContext)) {
+					throw "not MathContext";
+				}
+				const newPrecision	= mc.getPrecision();
+				const delta			= newPrecision - this.precision();
+				if((delta === 0)||(newPrecision === 0)) {
+					return this.clone();
+				}
+				const newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode());
+				/* 精度を上げる必要があるため、0を加えた場合 */
+				if(delta > 0) {
+					return newBigDecimal;
+				}
+				/* 精度を下げる必要があるため、丸めた場合は、桁の数が正しいか調べる */
+				if(newBigDecimal.precision() === mc.getPrecision()) {
+					return newBigDecimal;
+				}
+				/* 切り上げなどで桁数が１つ増えた場合 */
+				const sign_text	= newBigDecimal.integer.sign() >= 0 ? "" : "-";
+				const abs_text	= newBigDecimal._getUnsignedIntegerString();
+				const inte_text	= sign_text + abs_text.substring(0, abs_text.length - 1);
+				return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1]);
+			}
+			else {
+				return this;
+			}
+		}
+		else {
+			// 小数点以下を四捨五入する
+			return this.setScale(0, RoundingMode.HALF_UP);
+		}
+	}
+
+	/**
+	 * Floor.
+	 * @returns {BigDecimal} floor(A)
+	 */
+	floor() {
+		if(!this.isFinite()) {
+			return this;
+		}
+		return this.setScale(0, RoundingMode.FLOOR);
+	}
+
+	/**
+	 * Ceil.
+	 * @returns {BigDecimal} ceil(A)
+	 */
+	ceil() {
+		if(!this.isFinite()) {
+			return this;
+		}
+		return this.setScale(0, RoundingMode.CEILING);
+	}
+	
+	/**
+	 * To integer rounded down to the nearest.
+	 * @returns {BigDecimal} fix(A), trunc(A)
+	 */
+	fix() {
+		if(!this.isFinite()) {
+			return this;
+		}
+		return this.setScale(0, RoundingMode.DOWN);
+	}
+
+	/**
+	 * Fraction.
+	 * @returns {BigDecimal} fract(A)
+	 */
+	fract() {
+		if(!this.isFinite()) {
+			return BigDecimal.NaN;
+		}
+		return this.sub(this.floor());
+	}
+
+	// ----------------------
 	// 四則演算
 	// ----------------------
 	
@@ -1029,7 +1646,7 @@ export default class BigDecimal extends KonpeitoFloat {
 				result_divide	= result[0];
 				result_remaind	= result[1];
 				all_result = all_result.add(result_divide.scaleByPowerOfTen(-i));
-				if(result_remaind.compareTo(BigDecimal.ZERO) !== 0) {
+				if(!result_remaind.isZero()) {
 					if(precision === 0) {	// 精度無限大の場合は、循環小数のチェックが必要
 						if(result_map[result_remaind._getUnsignedIntegerString()]) {
 							is_error = true;
@@ -1153,615 +1770,6 @@ export default class BigDecimal extends KonpeitoFloat {
 		const output = this.clone();
 		output._scale = this.scale() - x;
 		return output;
-	}
-
-	// ----------------------
-	// 環境設定用
-	// ----------------------
-	
-	/**
-	 * Set default the MathContext.
-	 * - This is used if you do not specify MathContext when creating a new object.
-	 * @param {MathContext} [context=MathContext.DECIMAL128]
-	 */
-	static setDefaultContext(context) {
-		DEFAULT_CONTEXT_[DEFAULT_CONTEXT_.length - 1] = context ? context : MathContext.DECIMAL128;
-	}
-
-	/**
-	 * Return default MathContext class.
-	 * - Used when MathContext not specified explicitly.
-	 * @returns {MathContext}
-	 */
-	static getDefaultContext() {
-		return DEFAULT_CONTEXT_[DEFAULT_CONTEXT_.length - 1];
-	}
-
-	/**
-	 * Push default the MathContext.
-	 * - Use with `popDefaultContext` when you want to switch settings temporarily.
-	 * @param {MathContext} [context]
-	 */
-	static pushDefaultContext(context) {
-		DEFAULT_CONTEXT_.push(context);
-	}
-
-	/**
-	 * Pop default the MathContext.
-	 * - Use with `pushDefaultContext` when you want to switch settings temporarily.
-	 */
-	static popDefaultContext() {
-		DEFAULT_CONTEXT_.pop();
-	}
-
-	// ----------------------
-	// 他の型に変換用
-	// ----------------------
-	
-	/**
-	 * boolean value.
-	 * @returns {boolean}
-	 */
-	get booleanValue() {
-		return this.integer.booleanValue;
-	}
-
-	/**
-	 * 32-bit integer value.
-	 * @returns {number}
-	 */
-	get intValue() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
-		}
-		const bigintdata = this.toBigInteger();
-		const x = bigintdata.intValue;
-		return x & 0xFFFFFFFF;
-	}
-
-	/**
-	 * 32-bit integer value.
-	 * An error occurs if conversion fails.
-	 * @returns {number}
-	 */
-	get intValueExact() {
-		if(!this.isFinite()) {
-			throw "ArithmeticException";
-		}
-		const bigintdata = this.toBigInteger();
-		const x = bigintdata.intValue;
-		if((x < -2147483648) || (2147483647 < x)) {
-			throw "ArithmeticException";
-		}
-		return x;
-	}
-
-	/**
-	 * 32-bit floating point.
-	 * @returns {number}
-	 */
-	get floatValue() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
-		}
-		const p = this.precision();
-		if(MathContext.DECIMAL32.getPrecision() < p) {
-			return(this.sign() >= 0 ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY);
-		}
-		return parseFloat(this.toEngineeringString());
-	}
-
-	/**
-	 * 64-bit floating point.
-	 * @returns {number}
-	 */
-	get doubleValue() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
-		}
-		return parseFloat(this.toEngineeringString());
-	}
-
-	// ----------------------
-	// konpeito で扱う数値型へ変換
-	// ----------------------
-	
-	/**
-	 * return BigInteger.
-	 * @returns {BigInteger}
-	 */
-	toBigInteger() {
-		return this.integer.scaleByPowerOfTen(-this.scale());
-	}
-
-	/**
-	 * return BigDecimal.
-	 * @param {MathContext} [mc] - MathContext setting after calculation. 
-	 * @returns {BigDecimal}
-	 */
-	toBigDecimal(mc) {
-		if(mc) {
-			return this.round(mc);
-		}
-		else {
-			return this;
-		}
-	}
-	
-	/**
-	 * return Fraction.
-	 * @returns {Fraction}
-	 */
-	toFraction() {
-		return new Fraction(this);
-	}
-
-	/**
-	 * return Complex.
-	 * @returns {Complex}
-	 */
-	toComplex() {
-		return new Complex(this);
-	}
-	
-	/**
-	 * return Matrix.
-	 * @returns {Matrix}
-	 */
-	toMatrix() {
-		return new Matrix(this);
-	}
-
-	// ----------------------
-	// 比較
-	// ----------------------
-	
-	/**
-	 * Equals.
-	 * - Attention : Test for equality, including the precision and the scale. 
-	 * - Use the "compareTo" if you only want to find out whether they are also mathematically equal.
-	 * - If you specify a "tolerance", it is calculated by ignoring the test of the precision and the scale.
-	 * @param {KBigDecimalInputData} number 
-	 * @param {KBigDecimalInputData} [tolerance] - Calculation tolerance of calculation.
-	 * @returns {boolean} A === B
-	 */
-	equals(number, tolerance) {
-		// 誤差を指定しない場合は、厳密に調査
-		if(!tolerance) {
-			if((number instanceof BigDecimal) || (typeof number === "string")) {
-				const val = number instanceof BigDecimal ? number : BigDecimal._toBigDecimal(number);
-				if(this.isNaN() || val.isNaN()) {
-					return false;
-				}
-				else {
-					return (this.equalsState(val) && (this._scale === val._scale) && this.integer.equals(val.integer));
-				}
-			}
-			else {
-				return this.compareTo(number) === 0;
-			}
-		}
-		else {
-			return this.compareTo(number, tolerance) === 0;
-		}
-	}
-
-	/**
-	 * Numeric type match.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {boolean}
-	 */
-	equalsState(number) {
-		const x = this;
-		const y = BigDecimal._toBigDecimal(number);
-		return x.integer.equalsState(y.integer);
-	}
-
-	/**
-	 * Compare values.
-	 * @param {KBigDecimalInputData} number
-	 * @param {KBigDecimalInputData} [tolerance=0] - Calculation tolerance of calculation.
-	 * @returns {number} A > B ? 1 : (A === B ? 0 : -1)
-	 */
-	compareTo(number, tolerance) {
-		const src = this;
-		const tgt = BigDecimal._toBigDecimal(number);
-		// 特殊な条件
-		if(!src.isFinite() || !tgt.isFinite()) {
-			return src.integer.compareTo(tgt.integer);
-		}
-		// 通常の条件
-		if(!tolerance) {
-			// 誤差の指定がない場合
-			// 簡易計算
-			{
-				const src_sign	= src.sign();
-				const tgt_sign	= tgt.sign();
-				if((src_sign === 0) && (src_sign === tgt_sign)) {
-					return 0;
-				}
-				else if(src_sign === 0) {
-					return - tgt_sign;
-				}
-				else if(tgt_sign === 0) {
-					return src_sign;
-				}
-			}
-			// 実際に計算する
-			if(src._scale === tgt._scale) {
-				return src.integer.compareTo(tgt.integer);
-			}
-			else if(src._scale > tgt._scale) {
-				const newdst = tgt.setScale(src._scale);
-				return src.integer.compareTo(newdst.integer);
-			}
-			else {
-				const newsrc = src.setScale(tgt._scale);
-				return newsrc.integer.compareTo(tgt.integer);
-			}
-		}
-		else {
-			const tolerance_ = BigDecimal._toBigDecimal(tolerance);
-			BigDecimal.pushDefaultContext(MathContext.UNLIMITED);
-			const delta = src.sub(tgt);
-			BigDecimal.popDefaultContext();
-			const delta_abs = delta.abs();
-			if(delta_abs.compareTo(tolerance_) <= 0) {
-				return 0;
-			}
-			else {
-				return delta.sign();
-			}
-		}
-	}
-
-	/**
-	 * Maximum number.
-	 * @param {KBigDecimalInputData} number
-	 * @returns {BigDecimal} max([A, B])
-	 */
-	max(number) {
-		const val = BigDecimal._toBigDecimal(number);
-		if(this.isNaN() || val.isNaN()) {
-			return BigDecimal.NaN;
-		}
-		if(this.compareTo(val) >= 0) {
-			return this.clone();
-		}
-		else {
-			return val.clone();
-		}
-	}
-
-	/**
-	 * Minimum number.
-	 * @param {KBigDecimalInputData} number 
-	 * @returns {BigDecimal} min([A, B])
-	 */
-	min(number) {
-		const val = BigDecimal._toBigDecimal(number);
-		if(this.isNaN() || val.isNaN()) {
-			return BigDecimal.NaN;
-		}
-		if(this.compareTo(val) <= 0) {
-			return this.clone();
-		}
-		else {
-			return val.clone();
-		}
-	}
-
-	/**
-	 * Clip number within range.
-	 * @param {KBigDecimalInputData} min
-	 * @param {KBigDecimalInputData} max
-	 * @returns {BigDecimal} min(max(x, min), max)
-	 */
-	clip(min, max) {
-		const min_ = BigDecimal._toBigDecimal(min);
-		const max_ = BigDecimal._toBigDecimal(max);
-		if(this.isNaN() || min_.isNaN() || max_.isNaN()) {
-			return BigDecimal.NaN;
-		}
-		const arg_check = min_.compareTo(max_);
-		if(arg_check === 1) {
-			throw "clip(min, max) error. (min > max)->(" + min_ + " > " + max_ + ")";
-		}
-		else if(arg_check === 0) {
-			return min_;
-		}
-		if(this.compareTo(max_) === 1) {
-			return max_;
-		}
-		else if(this.compareTo(min_) === -1) {
-			return min_;
-		}
-		return this;
-	}
-
-	// ----------------------
-	// 文字列化
-	// ----------------------
-	
-	/**
-	 * Convert to string.
-	 * @returns {string} 
-	 */
-	toString() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
-		}
-		// 「調整された指数」
-		const x = - this.scale() + (this.precision() - 1);
-		// スケールが 0 以上で、「調整された指数」が -6 以上
-		if((this.scale() >= 0) && (x >= -6)) {
-			return this.toPlainString();
-		}
-		else {
-			return this.toScientificNotation(x);
-		}
-	}
-
-	/**
-	 * Convert to string using scientific notation.
-	 * @param {KBigDecimalInputData} e_len - Number of digits in exponent part.
-	 * @returns {string} 
-	 */
-	toScientificNotation(e_len) {
-		if(!this.isFinite()) {
-			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
-		}
-		const e		= BigDecimal._toInteger(e_len);
-		const text	= this._getUnsignedIntegerString();
-		let s		= this.scale();
-		const x		= [];
-		let i, k;
-		// -
-		if(this.sign() === -1) {
-			x[x.length] = "-";
-		}
-		// 表示上の桁数
-		s = - e - s;
-		// 小数点が付かない
-		if(s >= 0) {
-			x[x.length] = text;
-			for(i = 0; i < s; i++) {
-				x[x.length] = "0";
-			}
-		}
-		// 小数点が付く
-		else {
-			k = this.precision() + s;
-			if(0 < k) {
-				x[x.length] = text.substring(0, k);
-				x[x.length] = ".";
-				x[x.length] = text.substring(k, text.length);
-			}
-			else {
-				k = - k;
-				x[x.length] = "0.";
-				for(i = 0; i < k; i++) {
-					x[x.length] = "0";
-				}
-				x[x.length] = text;
-			}
-		}
-		x[x.length] = "E";
-		if(e >= 0) {
-			x[x.length] = "+";
-		}
-		x[x.length] = e;
-		return x.join("");
-	}
-
-	/**
-	 * Convert to string usding technical notation.
-	 * @returns {string} 
-	 */
-	toEngineeringString() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
-		}
-		// 「調整された指数」
-		const x = - this.scale() + (this.precision() - 1);
-		// スケールが 0 以上で、「調整された指数」が -6 以上
-		if((this.scale() >= 0) && (x >= -6)) {
-			return this.toPlainString();
-		}
-		else {
-			// 0 でない値の整数部が 1 〜 999 の範囲に収まるように調整
-			return this.toScientificNotation(Math.floor(x / 3) * 3);
-		}
-	}
-
-	/**
-	 * Convert to string without exponential notation.
-	 * @returns {string} 
-	 */
-	toPlainString() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
-		}
-		// スケールの変換なし
-		if(this.scale() === 0) {
-			if(this.sign() < 0) {
-				return "-" + this._getUnsignedIntegerString();
-			}
-			else {
-				return this._getUnsignedIntegerString();
-			}
-		}
-		// 指数0で文字列を作成後、Eの後ろの部分をとっぱらう
-		const text = this.toScientificNotation(0);
-		return text.match(/^[^E]*/)[0];
-	}
-
-	// ----------------------
-	// 丸め
-	// ----------------------
-	
-	/**
-	 * Change the scale.
-	 * @param {KBigDecimalInputData} new_scale - New scale.
-	 * @param {RoundingModeEntity} [rounding_mode=RoundingMode.UNNECESSARY] - Rounding method when converting precision.
-	 * @returns {BigDecimal} 
-	 */
-	setScale(new_scale, rounding_mode) {
-		if(!this.isFinite()) {
-			return this;
-		}
-		const newScale = BigDecimal._toInteger(new_scale);
-		if(this.scale() === newScale) {
-			// scaleが同一なので処理の必要なし
-			return(this.clone());
-		}
-		const roundingMode = (rounding_mode !== undefined) ? RoundingMode.valueOf(rounding_mode) : RoundingMode.UNNECESSARY;
-		// 文字列を扱ううえで、符号があるとやりにくいので外しておく
-		let text		= this._getUnsignedIntegerString();
-		const sign		= this.sign();
-		const sign_text	= sign >= 0 ? "" : "-";
-		// scale の誤差
-		// 0 以上なら 0 を加えればいい。0未満なら0を削るか、四捨五入など丸めを行う
-		const delta		= newScale - this.scale();	// この桁分増やすといい
-		if(0 <= delta) {
-			// 0を加える
-			let i;
-			for(i = 0; i < delta; i++) {
-				text = text + "0";
-			}
-			return new BigDecimal([new BigInteger(sign_text + text), newScale]);
-		}
-		const keta = text.length + delta;		// 最終的な桁数
-		const keta_marume = keta + 1;
-		if(keta <= 0) {
-			// 指定した scale では設定できない場合
-			// 例えば "0.1".setScale(-2), "10".setScale(-3) としても表すことは不可能であるため、
-			// sign（-1, 0, +1）のどれかの数値を使用して丸める
-			const outdata = (sign + roundingMode.getAddNumber(sign)) / 10;
-			// 上記の式は、CEILINGなら必ず1、正でCEILINGなら1、負でFLOORなら1、それ以外は0となり、
-			// さらに元々の数値が 0 なら 0、切り捨て不能なら例外が返る計算式である。
-			// これは Java の動作をまねています。
-			return new BigDecimal([new BigInteger(outdata), newScale]);
-		}
-		{
-			// 0を削るだけで解決する場合
-			// 単純な切捨て(0を削るのみ)
-			const zeros			= text.match(/0+$/);
-			const zero_length		= (zeros !== null) ? zeros[0].length : 0;
-			if(( (zero_length + delta) >= 0 ) || (roundingMode === RoundingMode.DOWN)) {
-				return new BigDecimal([new BigInteger(sign_text + text.substring(0, keta)), newScale]);
-			}
-		}
-		{
-			// 丸め計算で解決する場合
-			// 12345 -> '123'45
-			text = text.substring(0, keta_marume);
-			// 丸め計算に必要な切り取る桁数(後ろの1～2桁を取得)
-			const cutsize = text.length > 1 ? 2 : 1;
-			// '123'45 -> 1'23'4
-			const number = parseInt(text.substring(text.length - cutsize, text.length)) * sign;
-			// 「元の数」と「丸めに必要な数」を足す
-			const x1 = new BigInteger(sign_text + text);
-			const x2 = new BigInteger(roundingMode.getAddNumber(number));
-			text = x1.add(x2).toString();
-			// 丸め後の桁数に戻して
-			return new BigDecimal([new BigInteger(text.substring(0, text.length - 1)), newScale]);
-		}
-	}
-
-	/**
-	 * Round with specified settings.
-	 * 
-	 * - This method is not a method round the decimal point.
-	 * - This method converts numbers in the specified Context and rounds unconvertible digits.
-	 * 
-	 * Use `this.setScale(0, RoundingMode.HALF_UP)` if you want to round the decimal point.
-	 * When the argument is omitted, such decimal point rounding operation is performed.
-	 * @param {MathContext} [mc] - New setting.
-	 * @returns {BigDecimal} 
-	 */
-	round(mc) {
-		if(!this.isFinite()) {
-			return this;
-		}
-		if(arguments.length === 1) {
-			if(mc !== undefined) {
-				// MathContext を設定した場合
-				if(!(mc instanceof MathContext)) {
-					throw "not MathContext";
-				}
-				const newPrecision	= mc.getPrecision();
-				const delta			= newPrecision - this.precision();
-				if((delta === 0)||(newPrecision === 0)) {
-					return this.clone();
-				}
-				const newBigDecimal = this.setScale( this.scale() + delta, mc.getRoundingMode());
-				/* 精度を上げる必要があるため、0を加えた場合 */
-				if(delta > 0) {
-					return newBigDecimal;
-				}
-				/* 精度を下げる必要があるため、丸めた場合は、桁の数が正しいか調べる */
-				if(newBigDecimal.precision() === mc.getPrecision()) {
-					return newBigDecimal;
-				}
-				/* 切り上げなどで桁数が１つ増えた場合 */
-				const sign_text	= newBigDecimal.integer.sign() >= 0 ? "" : "-";
-				const abs_text	= newBigDecimal._getUnsignedIntegerString();
-				const inte_text	= sign_text + abs_text.substring(0, abs_text.length - 1);
-				return new BigDecimal([new BigInteger(inte_text), newBigDecimal.scale() - 1]);
-			}
-			else {
-				return this;
-			}
-		}
-		else {
-			// 小数点以下を四捨五入する
-			return this.setScale(0, RoundingMode.HALF_UP);
-		}
-	}
-
-	/**
-	 * Floor.
-	 * @returns {BigDecimal} floor(A)
-	 */
-	floor() {
-		if(!this.isFinite()) {
-			return this;
-		}
-		return this.setScale(0, RoundingMode.FLOOR);
-	}
-
-	/**
-	 * Ceil.
-	 * @returns {BigDecimal} ceil(A)
-	 */
-	ceil() {
-		if(!this.isFinite()) {
-			return this;
-		}
-		return this.setScale(0, RoundingMode.CEILING);
-	}
-	
-	/**
-	 * To integer rounded down to the nearest.
-	 * @returns {BigDecimal} fix(A), trunc(A)
-	 */
-	fix() {
-		if(!this.isFinite()) {
-			return this;
-		}
-		return this.setScale(0, RoundingMode.DOWN);
-	}
-
-	/**
-	 * Fraction.
-	 * @returns {BigDecimal} fract(A)
-	 */
-	fract() {
-		if(!this.isFinite()) {
-			return BigDecimal.NaN;
-		}
-		return this.sub(this.floor());
 	}
 
 	// ----------------------
@@ -2692,6 +2700,18 @@ export default class BigDecimal extends KonpeitoFloat {
 	}
 
 	// ----------------------
+	// 確率・統計系
+	// ----------------------
+	
+	/**
+	 * Logit function.
+	 * @returns {BigDecimal} logit(A)
+	 */
+	logit() {
+		return this.log().sub(BigDecimal.ONE.sub(this).log());
+	}
+
+	// ----------------------
 	// 信号処理系
 	// ----------------------
 	
@@ -2916,6 +2936,25 @@ export default class BigDecimal extends KonpeitoFloat {
 		const src		= this.round().toBigInteger();
 		const number	= BigDecimal._toInteger(n);
 		return new BigDecimal(src.shift(number));
+	}
+
+	// ----------------------
+	// factor
+	// ----------------------
+
+	/**
+	 * Factorization.
+	 * - Calculated as an integer.
+	 * - Calculate up to `9007199254740991`.
+	 * @returns {BigDecimal[]} factor
+	 */
+	factor() {
+		const x = this.round().toBigInteger().factor();
+		const y = [];
+		for(let i = 0; i < x.length; i++) {
+			y.push(new BigDecimal(x[i]));
+		}
+		return y;
 	}
 
 	// ----------------------

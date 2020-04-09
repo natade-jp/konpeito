@@ -313,6 +313,18 @@ export default class KonpeitoFloat extends KonpeitoInteger {
 	}
 
 	// ----------------------
+	// 確率・統計系
+	// ----------------------
+	
+	/**
+	 * Logit function.
+	 * @returns {KonpeitoFloat} logit(A)
+	 */
+	logit() {
+		return null;
+	}
+
+	// ----------------------
 	// 信号処理系
 	// ----------------------
 	

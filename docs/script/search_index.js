@@ -702,6 +702,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/bigdecimal.js~bigdecimal#factor",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-factor",
+    "src/math/core/BigDecimal.js~BigDecimal#factor",
+    "method"
+  ],
+  [
     "src/math/core/bigdecimal.js~bigdecimal#factorial",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-factorial",
     "src/math/core/BigDecimal.js~BigDecimal#factorial",
@@ -861,6 +867,12 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal#log2",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-log2",
     "src/math/core/BigDecimal.js~BigDecimal#log2",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#logit",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-logit",
+    "src/math/core/BigDecimal.js~BigDecimal#logit",
     "method"
   ],
   [
@@ -1119,6 +1131,12 @@ window.esdocSearchIndex = [
     "src/math/core/bigdecimal.js~bigdecimal#tofraction",
     "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-toFraction",
     "src/math/core/BigDecimal.js~BigDecimal#toFraction",
+    "method"
+  ],
+  [
+    "src/math/core/bigdecimal.js~bigdecimal#tojson",
+    "class/src/math/core/BigDecimal.js~BigDecimal.html#instance-method-toJSON",
+    "src/math/core/BigDecimal.js~BigDecimal#toJSON",
     "method"
   ],
   [
@@ -1506,6 +1524,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/biginteger.js~biginteger#factor",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-factor",
+    "src/math/core/BigInteger.js~BigInteger#factor",
+    "method"
+  ],
+  [
     "src/math/core/biginteger.js~biginteger#factorial",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-factorial",
     "src/math/core/BigInteger.js~BigInteger#factorial",
@@ -1660,12 +1684,6 @@ window.esdocSearchIndex = [
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-log2",
     "src/math/core/BigInteger.js~BigInteger#log2",
     "method"
-  ],
-  [
-    "src/math/core/biginteger.js~biginteger#longvalue",
-    "class/src/math/core/BigInteger.js~BigInteger.html#instance-get-longValue",
-    "src/math/core/BigInteger.js~BigInteger#longValue",
-    "member"
   ],
   [
     "src/math/core/biginteger.js~biginteger#max",
@@ -1857,6 +1875,12 @@ window.esdocSearchIndex = [
     "src/math/core/biginteger.js~biginteger#tofraction",
     "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-toFraction",
     "src/math/core/BigInteger.js~BigInteger#toFraction",
+    "method"
+  ],
+  [
+    "src/math/core/biginteger.js~biginteger#tojson",
+    "class/src/math/core/BigInteger.js~BigInteger.html#instance-method-toJSON",
+    "src/math/core/BigInteger.js~BigInteger#toJSON",
     "method"
   ],
   [
@@ -2316,6 +2340,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/complex.js~complex#factor",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-factor",
+    "src/math/core/Complex.js~Complex#factor",
+    "method"
+  ],
+  [
     "src/math/core/complex.js~complex#factorial",
     "class/src/math/core/Complex.js~Complex.html#instance-method-factorial",
     "src/math/core/Complex.js~Complex#factorial",
@@ -2547,6 +2577,12 @@ window.esdocSearchIndex = [
     "src/math/core/complex.js~complex#log2",
     "class/src/math/core/Complex.js~Complex.html#instance-method-log2",
     "src/math/core/Complex.js~Complex#log2",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#logit",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-logit",
+    "src/math/core/Complex.js~Complex#logit",
     "method"
   ],
   [
@@ -2835,6 +2871,12 @@ window.esdocSearchIndex = [
     "src/math/core/complex.js~complex#tofraction",
     "class/src/math/core/Complex.js~Complex.html#instance-method-toFraction",
     "src/math/core/Complex.js~Complex#toFraction",
+    "method"
+  ],
+  [
+    "src/math/core/complex.js~complex#tojson",
+    "class/src/math/core/Complex.js~Complex.html#instance-method-toJSON",
+    "src/math/core/Complex.js~Complex#toJSON",
     "method"
   ],
   [
@@ -3132,6 +3174,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#factor",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-factor",
+    "src/math/core/Fraction.js~Fraction#factor",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#factorial",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-factorial",
     "src/math/core/Fraction.js~Fraction#factorial",
@@ -3243,6 +3291,12 @@ window.esdocSearchIndex = [
     "src/math/core/fraction.js~fraction#isprobableprime",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-isProbablePrime",
     "src/math/core/Fraction.js~Fraction#isProbablePrime",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#isrepeatingdecimal",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-isRepeatingDecimal",
+    "src/math/core/Fraction.js~Fraction#isRepeatingDecimal",
     "method"
   ],
   [
@@ -3420,9 +3474,27 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/fraction.js~fraction#tofractionstring",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-toFractionString",
+    "src/math/core/Fraction.js~Fraction#toFractionString",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#tojson",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-toJSON",
+    "src/math/core/Fraction.js~Fraction#toJSON",
+    "method"
+  ],
+  [
     "src/math/core/fraction.js~fraction#tomatrix",
     "class/src/math/core/Fraction.js~Fraction.html#instance-method-toMatrix",
     "src/math/core/Fraction.js~Fraction#toMatrix",
+    "method"
+  ],
+  [
+    "src/math/core/fraction.js~fraction#toplainstring",
+    "class/src/math/core/Fraction.js~Fraction.html#instance-method-toPlainString",
+    "src/math/core/Fraction.js~Fraction#toPlainString",
     "method"
   ],
   [
@@ -4050,6 +4122,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#factor",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-factor",
+    "src/math/core/Matrix.js~Matrix#factor",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#factorial",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-factorial",
     "src/math/core/Matrix.js~Matrix#factorial",
@@ -4503,6 +4581,12 @@ window.esdocSearchIndex = [
     "src/math/core/matrix.js~matrix#log2",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-log2",
     "src/math/core/Matrix.js~Matrix#log2",
+    "method"
+  ],
+  [
+    "src/math/core/matrix.js~matrix#logit",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-logit",
+    "src/math/core/Matrix.js~Matrix#logit",
     "method"
   ],
   [
@@ -5082,6 +5166,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/matrix.js~matrix#tojson",
+    "class/src/math/core/Matrix.js~Matrix.html#instance-method-toJSON",
+    "src/math/core/Matrix.js~Matrix#toJSON",
+    "method"
+  ],
+  [
     "src/math/core/matrix.js~matrix#tomatrix",
     "class/src/math/core/Matrix.js~Matrix.html#instance-method-toMatrix",
     "src/math/core/Matrix.js~Matrix#toMatrix",
@@ -5526,6 +5616,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/math/core/base/konpeitofloat.js~konpeitofloat#logit",
+    "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-logit",
+    "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#logit",
+    "method"
+  ],
+  [
     "src/math/core/base/konpeitofloat.js~konpeitofloat#rsqrt",
     "class/src/math/core/base/KonpeitoFloat.js~KonpeitoFloat.html#instance-method-rsqrt",
     "src/math/core/base/KonpeitoFloat.js~KonpeitoFloat#rsqrt",
@@ -5733,6 +5829,12 @@ window.esdocSearchIndex = [
     "src/math/core/base/konpeitointeger.js~konpeitointeger#extgcd",
     "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-extgcd",
     "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#extgcd",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#factor",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-factor",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#factor",
     "method"
   ],
   [
@@ -5997,6 +6099,12 @@ window.esdocSearchIndex = [
     "src/math/core/base/konpeitointeger.js~konpeitointeger#tofraction",
     "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-toFraction",
     "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#toFraction",
+    "method"
+  ],
+  [
+    "src/math/core/base/konpeitointeger.js~konpeitointeger#tojson",
+    "class/src/math/core/base/KonpeitoInteger.js~KonpeitoInteger.html#instance-method-toJSON",
+    "src/math/core/base/KonpeitoInteger.js~KonpeitoInteger#toJSON",
     "method"
   ],
   [
@@ -6648,12 +6756,6 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/tools/random.js~random#nextfloat",
-    "class/src/math/core/tools/Random.js~Random.html#instance-method-nextFloat",
-    "src/math/core/tools/Random.js~Random#nextFloat",
-    "method"
-  ],
-  [
     "src/math/core/tools/random.js~random#nextgaussian",
     "class/src/math/core/tools/Random.js~Random.html#instance-method-nextGaussian",
     "src/math/core/tools/Random.js~Random#nextGaussian",
@@ -6666,22 +6768,10 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
-    "src/math/core/tools/random.js~random#nextlong",
-    "class/src/math/core/tools/Random.js~Random.html#instance-method-nextLong",
-    "src/math/core/tools/Random.js~Random#nextLong",
-    "method"
-  ],
-  [
     "src/math/core/tools/random.js~random#nextnextgaussian",
     "class/src/math/core/tools/Random.js~Random.html#instance-member-nextNextGaussian",
     "src/math/core/tools/Random.js~Random#nextNextGaussian",
     "member"
-  ],
-  [
-    "src/math/core/tools/random.js~random#nextshort",
-    "class/src/math/core/tools/Random.js~Random.html#instance-method-nextShort",
-    "src/math/core/tools/Random.js~Random#nextShort",
-    "method"
   ],
   [
     "src/math/core/tools/random.js~random#rand",

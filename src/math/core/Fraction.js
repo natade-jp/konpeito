@@ -526,7 +526,87 @@ export default class Fraction extends KonpeitoInteger {
 		if(!this.isFinite()) {
 			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
 		}
-		return this.numerator.toString() + " / " + this.denominator.toString();
+		if(this.isInteger()) {
+			return this.numerator.toString();
+		}
+		return this.toFractionString();
+	}
+
+	/**
+	 * Convert to JSON.
+	 * @returns {string} 
+	 */
+	toJSON() {
+		return this.toString();
+	}
+
+	/**
+	 * Convert to string. For example, output `1/3` if `0.333...`.
+	 * @returns {string} 
+	 */
+	toFractionString() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
+		return this.numerator.toString() + "/" + this.denominator.toString();
+	}
+
+	/**
+	 * Convert to string. For example, output `0.(3)` if `0.333...`.
+	 * @param {KFractionInputData} [depth_max] - Maximum number of divisions.
+	 * @returns {string} 
+	 */
+	toPlainString(depth_max) {
+		if(!this.isFinite()) {
+			return this.isNaN() ? "NaN" : (this.isPositiveInfinity() ? "Infinity" : "-Infinity");
+		}
+		if(this.isInteger()) {
+			return this.numerator.toString();
+		}
+		const sign = this.numerator.sign();
+		let src = this.numerator.abs();
+		const tgt = this.denominator;
+		let output = null;
+		const output_array = [];
+		/**
+		 * @type {any}
+		 */
+		const remaind_map = {};
+		let check_max;
+		if(depth_max !== undefined) {
+			check_max = Fraction._toInteger(depth_max);
+		}
+		else {
+			check_max = (src.toString().length + tgt.toString().length) * 10;
+		}
+		for(let i = 0; i < check_max; i++) {
+			const result = src.divideAndRemainder(tgt);
+			const result_divide		= result[0];
+			const result_remaind	= result[1];
+			const remstr = result_remaind.toString();
+			output_array.push(result_divide.toString());
+			// 同一の余りがあるということは循環小数
+			if(remaind_map[remstr] !== undefined) {
+				output = output_array.join("");
+				const n = output.indexOf(".") + remaind_map[remstr] + 1;
+				output = output.substr(0, n) + "(" + output.substr(n, output.length - n) + ")";
+				break;
+			}
+			else {
+				remaind_map[remstr] = i;
+			}
+			if(result_remaind.isZero()) {
+				break;
+			}
+			if(i === 0) {
+				output_array.push(".");
+			}
+			src = result_remaind.scaleByPowerOfTen(1);
+		}
+		if(output === null) {
+			output = output = output_array.join("");
+		}
+		return (sign < 0 ? "-" : "") + output;
 	}
 
 	// ----------------------
@@ -1233,6 +1313,17 @@ export default class Fraction extends KonpeitoInteger {
 		return this.numerator.isFinite();
 	}
 
+	/**
+	 * Return true if the value is repeating decimal.
+	 * @returns {boolean} 
+	 */
+	isRepeatingDecimal() {
+		if(!this.isFinite()) {
+			return false;
+		}
+		return !this.isInteger() && !(this.denominator.rem(2).isZero() || this.denominator.rem(5).isZero());
+	}
+
 	// ----------------------
 	// ビット演算系
 	// ----------------------
@@ -1300,6 +1391,25 @@ export default class Fraction extends KonpeitoInteger {
 		const src		= this.round().toBigInteger();
 		const number	= Fraction._toInteger(n);
 		return new Fraction(src.shift(number));
+	}
+	
+	// ----------------------
+	// factor
+	// ----------------------
+
+	/**
+	 * Factorization.
+	 * - Calculated as an integer.
+	 * - Calculate up to `9007199254740991`.
+	 * @returns {Fraction[]} factor
+	 */
+	factor() {
+		const x = this.round().toBigInteger().factor();
+		const y = [];
+		for(let i = 0; i < x.length; i++) {
+			y.push(new Fraction(x[i]));
+		}
+		return y;
 	}
 
 	// ----------------------
@@ -1384,7 +1494,7 @@ export default class Fraction extends KonpeitoInteger {
 	/**
 	 * Return true if the value is prime number.
 	 * - Calculated as an integer.
-	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * - Calculate up to `9007199254740991`.
 	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
 	 */
 	isPrime() {

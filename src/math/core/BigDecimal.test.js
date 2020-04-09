@@ -1081,3 +1081,16 @@ const testOperator3  = function(operator, x, p1, p2, y, tolerance) {
 	testOperator1("acsch",    5,  0.198690110349241, EPS);
 	testOperator1("acsch", Infinity, 0, EPS);
 }
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("logit", 0.3, -0.847297860387204, EPS);
+}
+
+{
+	const EPS = 1e-5;
+	test_count = 0;
+	testOperator1("sinc", 1.72, -0.142594175936666, EPS);
+	testOperator1("sinc", 0, 1);
+}

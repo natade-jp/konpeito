@@ -602,7 +602,87 @@ export default class Fraction extends KonpeitoInteger {
 		if(!this.isFinite()) {
 			return this.isNaN() ? &quot;NaN&quot; : (this.isPositiveInfinity() ? &quot;Infinity&quot; : &quot;-Infinity&quot;);
 		}
-		return this.numerator.toString() + &quot; / &quot; + this.denominator.toString();
+		if(this.isInteger()) {
+			return this.numerator.toString();
+		}
+		return this.toFractionString();
+	}
+
+	/**
+	 * Convert to JSON.
+	 * @returns {string} 
+	 */
+	toJSON() {
+		return this.toString();
+	}
+
+	/**
+	 * Convert to string. For example, output `1/3` if `0.333...`.
+	 * @returns {string} 
+	 */
+	toFractionString() {
+		if(!this.isFinite()) {
+			return this.isNaN() ? &quot;NaN&quot; : (this.isPositiveInfinity() ? &quot;Infinity&quot; : &quot;-Infinity&quot;);
+		}
+		return this.numerator.toString() + &quot;/&quot; + this.denominator.toString();
+	}
+
+	/**
+	 * Convert to string. For example, output `0.(3)` if `0.333...`.
+	 * @param {KFractionInputData} [depth_max] - Maximum number of divisions.
+	 * @returns {string} 
+	 */
+	toPlainString(depth_max) {
+		if(!this.isFinite()) {
+			return this.isNaN() ? &quot;NaN&quot; : (this.isPositiveInfinity() ? &quot;Infinity&quot; : &quot;-Infinity&quot;);
+		}
+		if(this.isInteger()) {
+			return this.numerator.toString();
+		}
+		const sign = this.numerator.sign();
+		let src = this.numerator.abs();
+		const tgt = this.denominator;
+		let output = null;
+		const output_array = [];
+		/**
+		 * @type {any}
+		 */
+		const remaind_map = {};
+		let check_max;
+		if(depth_max !== undefined) {
+			check_max = Fraction._toInteger(depth_max);
+		}
+		else {
+			check_max = (src.toString().length + tgt.toString().length) * 10;
+		}
+		for(let i = 0; i &lt; check_max; i++) {
+			const result = src.divideAndRemainder(tgt);
+			const result_divide		= result[0];
+			const result_remaind	= result[1];
+			const remstr = result_remaind.toString();
+			output_array.push(result_divide.toString());
+			// &#x540C;&#x4E00;&#x306E;&#x4F59;&#x308A;&#x304C;&#x3042;&#x308B;&#x3068;&#x3044;&#x3046;&#x3053;&#x3068;&#x306F;&#x5FAA;&#x74B0;&#x5C0F;&#x6570;
+			if(remaind_map[remstr] !== undefined) {
+				output = output_array.join(&quot;&quot;);
+				const n = output.indexOf(&quot;.&quot;) + remaind_map[remstr] + 1;
+				output = output.substr(0, n) + &quot;(&quot; + output.substr(n, output.length - n) + &quot;)&quot;;
+				break;
+			}
+			else {
+				remaind_map[remstr] = i;
+			}
+			if(result_remaind.isZero()) {
+				break;
+			}
+			if(i === 0) {
+				output_array.push(&quot;.&quot;);
+			}
+			src = result_remaind.scaleByPowerOfTen(1);
+		}
+		if(output === null) {
+			output = output = output_array.join(&quot;&quot;);
+		}
+		return (sign &lt; 0 ? &quot;-&quot; : &quot;&quot;) + output;
 	}
 
 	// ----------------------
@@ -1309,6 +1389,17 @@ export default class Fraction extends KonpeitoInteger {
 		return this.numerator.isFinite();
 	}
 
+	/**
+	 * Return true if the value is repeating decimal.
+	 * @returns {boolean} 
+	 */
+	isRepeatingDecimal() {
+		if(!this.isFinite()) {
+			return false;
+		}
+		return !this.isInteger() &amp;&amp; !(this.denominator.rem(2).isZero() || this.denominator.rem(5).isZero());
+	}
+
 	// ----------------------
 	// &#x30D3;&#x30C3;&#x30C8;&#x6F14;&#x7B97;&#x7CFB;
 	// ----------------------
@@ -1376,6 +1467,25 @@ export default class Fraction extends KonpeitoInteger {
 		const src		= this.round().toBigInteger();
 		const number	= Fraction._toInteger(n);
 		return new Fraction(src.shift(number));
+	}
+	
+	// ----------------------
+	// factor
+	// ----------------------
+
+	/**
+	 * Factorization.
+	 * - Calculated as an integer.
+	 * - Calculate up to `9007199254740991`.
+	 * @returns {Fraction[]} factor
+	 */
+	factor() {
+		const x = this.round().toBigInteger().factor();
+		const y = [];
+		for(let i = 0; i &lt; x.length; i++) {
+			y.push(new Fraction(x[i]));
+		}
+		return y;
 	}
 
 	// ----------------------
@@ -1460,7 +1570,7 @@ export default class Fraction extends KonpeitoInteger {
 	/**
 	 * Return true if the value is prime number.
 	 * - Calculated as an integer.
-	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * - Calculate up to `9007199254740991`.
 	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
 	 */
 	isPrime() {

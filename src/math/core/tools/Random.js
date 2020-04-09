@@ -148,15 +148,7 @@ export default class Random {
 		}
 		return y;
 	}
-
-	/**
-	 * 16-bit random number.
-	 * @returns {number}
-	 */
-	nextShort() {
-		return (this.next(16));
-	}
-
+	
 	/**
 	 * 32-bit random number.
 	 * @param {number} [x] - 指定した値未満の数値を作る
@@ -175,28 +167,12 @@ export default class Random {
 	}
 
 	/**
-	 * 64-bit random number.
-	 * @returns {number}
-	 */
-	nextLong() {
-		return this.next(64);
-	}
-
-	/**
 	 * Random boolean.
 	 * @returns {boolean}
 	 */
 	nextBoolean() {
 		// 1ビットのために、32ビット乱数を1回回すのはもったいない
 		return (this.next(1) !== 0);
-	}
-
-	/**
-	 * Float type random number in the range of [0, 1).
-	 * @returns {number}
-	 */
-	nextFloat() {
-		return (this.next(24) / 0x1000000);
 	}
 
 	/**

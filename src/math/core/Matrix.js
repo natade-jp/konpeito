@@ -345,7 +345,7 @@ class MatrixTool {
 	static toMatrixArrayFromString(text) {
 		// 前後のスペースを除去
 		const trimtext = text.replace(/^\s*|\s*$/g, "");
-		// ブランケットを外す
+		// ブラケットを外す
 		const withoutBracket = MatrixTool.trimBracket(trimtext);
 		if(withoutBracket) {
 			// 配列用の初期化
@@ -355,6 +355,10 @@ class MatrixTool {
 				array_data = (new Matrix(array_data)).T().matrix_array;
 			}
 			return array_data;
+		}
+		// ブラケットがないが、; や , が含まれていたり、数字と数字にスペースがある場合は配列としてみなす
+		else if(/[;,]|[0-9]\s+[0-9]/.test(text)) {
+			return MatrixTool.toMatrixArrayFromStringInBracket(text.replace(/[[\]]/g, "").replace(/,/g, " "));
 		}
 		else {
 			// スカラー用の初期化
@@ -651,6 +655,9 @@ export default class Matrix extends KonpeitoFloat {
 		if(this.string_cash) {
 			return this.string_cash;
 		}
+		if(this.isScalar()) {
+			return this.scalar.toString();
+		}
 		const exp_turn_point = 9;
 		const exp_turn_num = Math.pow(10, exp_turn_point);
 		const exp_point = 4;
@@ -794,6 +801,32 @@ export default class Matrix extends KonpeitoFloat {
 			}
 		}
 		output += " ]";
+		return output;
+	}
+
+	/**
+	 * Convert to JSON.
+	 * @returns {string} 
+	 */
+	toJSON() {
+		if(this.isScalar()) {
+			return this.scalar.toJSON();
+		}
+		let output = "[";
+		for(let row = 0; row < this.row_length; row++) {
+			for(let col = 0; col < this.column_length; col++) {
+				output += this.matrix_array[row][col].toJSON();
+				if(col < this.column_length - 1) {
+					output += ",";
+				}
+				else {
+					if(row < this.row_length - 1) {
+						output += ";";
+					}
+				}
+			}
+		}
+		output += "]";
 		return output;
 	}
 
@@ -2628,6 +2661,20 @@ export default class Matrix extends KonpeitoFloat {
 	}
 
 	// ----------------------
+	// 確率・統計系
+	// ----------------------
+	
+	/**
+	 * Logit function.
+	 * @returns {Matrix} logit(A)
+	 */
+	logit() {
+		return this.cloneMatrixDoEachCalculation(function(num) {
+			return num.logit();
+		});
+	}
+
+	// ----------------------
 	// 信号処理系
 	// ----------------------
 	
@@ -2646,7 +2693,7 @@ export default class Matrix extends KonpeitoFloat {
 	// ----------------------
 	
 	/**
-	 * Generate a matrix composed of random values with uniform random numbers.
+	 * Generate a matrix composed of random values [0, 1) with uniform random numbers.
 	 * @param {KMatrixInputData} dimension - Number of dimensions or rows.
 	 * @param {KMatrixInputData} [column_length] - Number of columns.
 	 * @param {Random} [random] - Class for creating random numbers.
@@ -4246,6 +4293,26 @@ export default class Matrix extends KonpeitoFloat {
 		return this.cloneMatrixDoEachCalculation(function(num) {
 			return num.shift(Matrix._toDouble(n));
 		});
+	}
+
+	// ----------------------
+	// factor
+	// ----------------------
+
+	/**
+	 * Factorization.
+	 * - Use only the first element.
+	 * - Calculated as an integer.
+	 * - Calculate up to `9007199254740991`.
+	 * @returns {Matrix[]} factor
+	 */
+	factor() {
+		const x = this.scalar.factor();
+		const y = [];
+		for(let i = 0; i < x.length; i++) {
+			y.push(new Matrix(x[i]));
+		}
+		return y;
 	}
 
 	// ----------------------

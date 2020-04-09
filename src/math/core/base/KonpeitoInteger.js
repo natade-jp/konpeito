@@ -55,6 +55,14 @@ export default class KonpeitoInteger {
 	}
 
 	/**
+	 * Convert to JSON.
+	 * @returns {string} 
+	 */
+	toJSON() {
+		return this.toString();
+	}
+
+	/**
 	 * Deep copy.
 	 * @returns {KonpeitoInteger}
 	 */
@@ -356,6 +364,19 @@ export default class KonpeitoInteger {
 	fract() {
 		return BigInteger.ZERO;
 	}
+	
+	// ----------------------
+	// factor
+	// ----------------------
+
+	/**
+	 * Factorization.
+	 * - Calculate up to `9007199254740991`.
+	 * @returns {KonpeitoInteger[]} factor
+	 */
+	factor() {
+		return null;
+	}
 
 	// ----------------------
 	// gcd, lcm
@@ -373,7 +394,7 @@ export default class KonpeitoInteger {
 	/**
 	 * Extended Euclidean algorithm.
 	 * @param {any} number 
-	 * @returns {Array<KonpeitoInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 * @returns {KonpeitoInteger[]} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
 	 */
 	extgcd(number) {
 		return null;
@@ -394,7 +415,7 @@ export default class KonpeitoInteger {
 	
 	/**
 	 * Return true if the value is prime number.
-	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * - Calculate up to `9007199254740991`.
 	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
 	 */
 	isPrime() {

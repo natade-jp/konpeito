@@ -8,6 +8,20 @@ let test_count = 0;
  * @param {*} x 
  * @param {*} y 
  */
+const testEQString = function(operator, x, y) {
+	test_count++;
+	// @ts-ignore
+	const X = $(x)[operator]();
+	const testname = operator + " " + test_count + " $(" + x + ")." + operator + "===" + y;
+	const out = X.toString() === y;
+	test(testname, () => { expect(out).toBe(true); });
+};
+
+/**
+ * @param {*} operator 
+ * @param {*} x 
+ * @param {*} y 
+ */
 const testEQ = function(operator, x, y) {
 	test_count++;
 	const X = $(x);
@@ -103,6 +117,22 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	testEQ("create", "-0.'3'", "-1/3");
 	testEQ("create", "-0.\"3\"", "-1/3");
 	testEQ("create", "-1/2", "1/-2");
+}
+
+{
+	test_count = 0;
+	testEQString("toFractionString", "10/3", "10/3");
+	testEQString("toFractionString", "1/3", "1/3");
+	testEQString("toFractionString", "1/30", "1/30");
+}
+
+{
+	test_count = 0;
+	testEQString("toPlainString", "10/3", "3.(3)");
+	testEQString("toPlainString", "1/3", "0.(3)");
+	testEQString("toPlainString", "1/30", "0.0(3)");
+	testEQString("toPlainString", "100/9999", "0.(0100)");
+	testEQString("toPlainString", "2.2(234)", "2.2(234)");
 }
 
 {
@@ -369,4 +399,12 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 {
 	test_count = 0;
 	testOperator1("factorial", 20, "2432902008176640000");
+}
+
+{
+	test_count = 0;
+	testBool("isRepeatingDecimal", "100", false);
+	testBool("isRepeatingDecimal", "11 / 2", false);
+	testBool("isRepeatingDecimal", "11 / 5", false);
+	testBool("isRepeatingDecimal", "11 / 7", true);
 }

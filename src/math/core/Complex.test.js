@@ -718,6 +718,11 @@ const testOperator1Bool  = function(operator, x, y) {
 
 {
 	test_count = 0;
+	testOperator1("logit", 0.3, -0.847297860387204);
+}
+
+{
+	test_count = 0;
 	testOperator1("sinc", "1.72", "-0.14259");
 	testOperator1("sinc", "0", "1");
 	testOperator1("sinc", "0.4j", "1.2848");

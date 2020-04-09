@@ -646,6 +646,14 @@ export default class BigInteger extends KonpeitoInteger {
 	}
 
 	/**
+	 * Convert to JSON.
+	 * @returns {string} 
+	 */
+	toJSON() {
+		return this.toString(10);
+	}
+
+	/**
 	 * Deep copy.
 	 * @returns {BigInteger}
 	 */
@@ -1529,7 +1537,7 @@ export default class BigInteger extends KonpeitoInteger {
 	}
 
 	/**
-	 * 32-bit integer value.
+	 * 64-bit integer value.
 	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
 	 * @returns {number}
 	 */
@@ -1537,28 +1545,11 @@ export default class BigInteger extends KonpeitoInteger {
 		if(!this.isFinite()) {
 			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
 		}
-		let x = this.getShort(0) + (this.getShort(1) << 16);
-		x &= 0xFFFFFFFF;
-		if((x > 0) && this.isNegative()) {
-			x = -x;
-		}
-		return x;
-	}
-
-	/**
-	 * 64-bit integer value.
-	 * - If it is outside the range of JavaScript Number, it will not be an accurate number.
-	 * @returns {number}
-	 * @deprecated
-	 */
-	get longValue() {
-		if(!this.isFinite()) {
-			return this.isNaN() ? NaN : (this.isPositiveInfinity() ? Infinity : -Infinity);
-		}
 		let x = 0;
 		for(let i = Math.min(3, this.element.length - 1); i >= 0; i--) {
+			// ビット演算にすると、32ビットに収まる可能性があるため掛け算で計算している
 			x *= 65536;
-			x += this.getShort(i);
+			x += this.element[i];
 		}
 		if(this.isNegative()) {
 			x = -x;
@@ -1854,6 +1845,54 @@ export default class BigInteger extends KonpeitoInteger {
 	}
 
 	// ----------------------
+	// factor
+	// ----------------------
+
+	/**
+	 * Factorization.
+	 * - Calculate up to `9007199254740991`.
+	 * @returns {BigInteger[]} factor
+	 */
+	factor() {
+		// 参考：奥村,"C言語による最新アルゴリズム事典",p154,技術評論社,1991
+		if(!this.isFinite()) {
+			return [BigInteger.NaN];
+		}
+		if(this.isZero()) {
+			return [BigInteger.ZERO];
+		}
+		if(this.isNegative()) {
+			return [this];
+		}
+		/**
+		 * @type {BigInteger[]}
+		 */
+		const output = [];
+		let x = this.intValue;
+		if(x > Number.MAX_SAFE_INTEGER) {
+			return [];
+		}
+		while(x >= 4 && x % 2 === 0) {
+			output.push(BigInteger.TWO);
+			x = Math.floor(x / 2);
+		}
+		let d = 3;
+		let q = Math.floor(x / d);
+		while(q >= d) {
+			if(x % d === 0) {
+				output.push(BigInteger.create(d));
+				x = q;
+			}
+			else {
+				d += 2;
+			}
+			q = Math.floor(x / d);
+		}
+		output.push(BigInteger.create(x));
+		return output;
+	}
+
+	// ----------------------
 	// gcd, lcm
 	// ----------------------
 	
@@ -1884,7 +1923,7 @@ export default class BigInteger extends KonpeitoInteger {
 	/**
 	 * Extended Euclidean algorithm.
 	 * @param {KBigIntegerInputData} number 
-	 * @returns {Array<BigInteger>} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
+	 * @returns {BigInteger[]} [a, b, gcd(x, y)], Result of calculating a*x + b*y = gcd(x, y).
 	 */
 	extgcd(number) {
 		const val = BigInteger._toBigInteger(number);
@@ -1956,7 +1995,7 @@ export default class BigInteger extends KonpeitoInteger {
 
 	/**
 	 * Return true if the value is prime number.
-	 * - Calculate up to `2251799813685248(=2^51)`.
+	 * - Calculate up to `9007199254740991`.
 	 * @returns {boolean} - If the calculation range is exceeded, null is returned.
 	 */
 	isPrime() {
@@ -1967,16 +2006,15 @@ export default class BigInteger extends KonpeitoInteger {
 		if(this.sign() <= 0) {
 			return false;
 		}
-		// 47453132.81212578 = Math.sqrt(Number.MAX_SAFE_INTEGER)
-		const limit = Math.sqrt(Math.pow(2, 51));
+		const limit = Math.sqrt(Number.MAX_SAFE_INTEGER);
 		const target_number = this.doubleValue;
 		const count_max = Math.ceil(Math.sqrt(target_number));
 		// 1, 2 -> true
 		if(target_number <= 2) {
 			return true;
 		}
-		// 指定した値より大きい場合は計算不可能として false を返す
-		if(count_max > limit) {
+		// 指定した値より大きい場合は計算不可能として null を返す
+		if(count_max >= limit) {
 			return null;
 		}
 		for(let i = 2; i <= count_max; i++) {
@@ -2170,6 +2208,9 @@ export default class BigInteger extends KonpeitoInteger {
 					}
 				}
 			}
+		}
+		if(x.length === 0) {
+			this.state = BIGINTEGER_NUMBER_STATE.ZERO;
 		}
 		return this;
 	}
