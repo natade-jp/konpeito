@@ -1910,12 +1910,10 @@ export default class BigInteger extends KonpeitoInteger {
 		 * @type {any}
 		 */
 		let x = this, y = val, z;
-		let i = 10;
-		while(y.sign() !== 0 && i) {
+		while(y.sign() !== 0) {
 			z = x.rem(y);
 			x = y;
 			y = z;
-			i--;
 		}
 		return x;
 	}

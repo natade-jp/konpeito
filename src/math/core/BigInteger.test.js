@@ -611,6 +611,7 @@ const testOperator3  = function(operator, x, p1, p2, y) {
 	test_count = 0;
 	testOperator2("gcd", 12, 18, 6);
 	testOperator2("gcd", 18, 12, 6);
+	testOperator2("gcd", 3*3*3*3*3*3*3*3, 3*5*7*11*13*17*19*23, 3);
 }
 
 {

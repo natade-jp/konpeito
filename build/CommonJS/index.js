@@ -1,5 +1,5 @@
 /*!
- * konpeito.js (version 6.0.0, 2020/4/9)
+ * konpeito.js (version 6.0.1, 2020/12/13)
  * https://github.com/natade-jp/konpeito
  * Copyright 2013-2020 natade < https://github.com/natade-jp >
  *
@@ -17612,12 +17612,10 @@ class BigInteger extends KonpeitoInteger {
 		 * @type {any}
 		 */
 		let x = this, y = val, z;
-		let i = 10;
-		while(y.sign() !== 0 && i) {
+		while(y.sign() !== 0) {
 			z = x.rem(y);
 			x = y;
 			y = z;
-			i--;
 		}
 		return x;
 	}

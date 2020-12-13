@@ -1,5 +1,10 @@
 # History
 
+## v6.0.1
+### 不具合
+- `BigInteger` の `gcd` が正しい計算をできない場合があったのを修正（[#5](https://github.com/natade-jp/konpeito/issues/5) zukky162様ご報告ありがとうございます。）
+- `Fraction` の上記の`gcd`の計算誤りによって、正規化が正しく実行されない場合があり計算結果に誤りが発生する場合があったのを修正
+
 ## v6.0.0
 ### 仕様変更
 - `Matrix` の`toString`がスカラーの場合は、1行で結果を出力するように変更
@@ -345,8 +350,8 @@
 - `Complex` `log(-1)`の計算結果が誤っていたのを修正
 - `Complex` `arg(-1)`の計算結果が誤っていたのを修正
 - `Complex` `isComplex`, `isComplexInteger` 関数の説明が分かりにくい部分を修正
-- `Complex` squareの複素数を入力したときの値が誤っていたのを修正
-- `Complex` sinc関数を非正規化 `sinc` 関数から、正規化 `sinc` 関数に変更
+- `Complex` `square` の複素数を入力したときの値が誤っていたのを修正
+- `Complex` `sinc` 関数を非正規化 `sinc` 関数から、正規化 `sinc` 関数に変更
 
 ## v0.1.1
 - 全体 ドキュメントの整備
