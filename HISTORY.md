@@ -1,5 +1,11 @@
 # History
 
+## v6.0.2
+### 不具合
+- `WSH JScript` でも正しく動作するように以下2点を修正
+- 内部で予約語 `delete` をメソッド名に用いていた箇所を `free` へ変更
+- 分散を表す `var` について `WSH` 向けのプログラムからは `variance` を使用してもらうように変更
+
 ## v6.0.1
 ### 不具合
 - `BigInteger` の `gcd` が正しい計算をできない場合があったのを修正（[#5](https://github.com/natade-jp/konpeito/issues/5) zukky162様ご報告ありがとうございます。）

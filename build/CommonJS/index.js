@@ -1,7 +1,7 @@
 /*!
- * konpeito.js (version 6.0.1, 2020/12/13)
+ * konpeito.js (version 6.0.3, 2021/5/25)
  * https://github.com/natade-jp/konpeito
- * Copyright 2013-2020 natade < https://github.com/natade-jp >
+ * Copyright 2013-2021 natade < https://github.com/natade-jp >
  *
  * The MIT license.
  * https://opensource.org/licenses/MIT
@@ -48,7 +48,8 @@ class Polyfill {
 		}
 		if(Number.isInteger === undefined) {
 			Number.isInteger = function(x) {
-				return isFinite(x) && ((x | 0) === x);
+				// @ts-ignore
+				return isFinite(x) && Math.trunc(x) === x;
 			};
 		}
 		if(Number.isNaN === undefined) {
@@ -69,20 +70,28 @@ class Polyfill {
 			// eslint-disable-next-line no-global-assign
 			Number.MIN_SAFE_INTEGER = -9007199254740991;
 		}
-		if(Number.MAX_SAFE_INTEGER === undefined) {
+		if(!Number.MAX_SAFE_INTEGER === undefined) {
 			// @ts-ignore
 			// eslint-disable-next-line no-global-assign
 			Number.MAX_SAFE_INTEGER = 9007199254740991;
 		}
-		if(Number.parseFloat === undefined) {
+		if(!Number.parseFloat === undefined) {
 			Number.parseFloat = parseFloat;
 		}
-		if(Number.parseInt === undefined) {
+		if(!Number.parseInt === undefined) {
 			Number.parseInt = parseInt;
+		}
+		if(!Number.isSafeInteger === undefined) {
+			// @ts-ignore
+			Number.isSafeInteger = function(x) {
+				// @ts-ignore
+				return Number.isInteger(x) && Math.abs(x) <= Number.MAX_SAFE_INTEGER;
+			};
 		}
 	}
 }
 
+// @ts-ignore
 Polyfill.run();
 
 /**
@@ -587,7 +596,7 @@ class Random {
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
  */
-
+ 
 /**
  * Base class for rounding mode for BigDecimal.
  */
@@ -4106,7 +4115,7 @@ class FFT {
 	/**
 	 * Frees the memory reserved.
 	 */
-	delete() {
+	free() {
 		delete this.size;
 		delete this.inv_size;
 		delete this.bit_size;
@@ -4309,7 +4318,7 @@ class FFTCache {
 		if(this.table.length === this.table_max) {
 			// 後ろのデータを消去
 			const delete_object = this.table.pop();
-			delete_object.delete();
+			delete_object.free();
 		}
 		// 前方に追加
 		this.table.unshift(new_object);
@@ -4371,7 +4380,7 @@ class DCT {
 	/**
 	 * Frees the memory reserved.
 	 */
-	delete() {
+	free() {
 		delete this.size;
 		delete this.dct_size;
 		delete this.dct_re;
@@ -22692,7 +22701,7 @@ class MultipleRegressionAnalysis {
 					MS : total_MS.doubleValue
 				},
 				F : regression_F.doubleValue,
-				significance_F : regression_significance_F.doubleValue,
+				significance_F : regression_significance_F.doubleValue
 			},
 			Ve : Ve.doubleValue,
 			standard_error : standard_error.doubleValue,

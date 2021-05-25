@@ -20,7 +20,7 @@ export default class Polyfill {
 	 * @ignore
 	 */
 	static run() {
-		if(!Math.imul) {
+		if(Math.imul === undefined) {
 			Math.imul = function(x1, x2) {
 				let y = ((x1 & 0xFFFF) * (x2 & 0xFFFF)) >>> 0;
 				let b = (x1 & 0xFFFF) * (x2 >>> 16);
@@ -30,50 +30,50 @@ export default class Polyfill {
 				return (y & 0xFFFFFFFF);
 			};
 		}
-		if(!Math.trunc) {
+		if(Math.trunc === undefined) {
 			Math.trunc = function(x) {
 				return x > 0 ? Math.floor(x) : Math.ceil(x);
 			};
 		}
-		if(!Number.isFinite) {
+		if(Number.isFinite === undefined) {
 			Number.isFinite = isFinite;
 		}
-		if(!Number.isInteger) {
+		if(Number.isInteger === undefined) {
 			Number.isInteger = function(x) {
 				// @ts-ignore
 				return isFinite(x) && Math.trunc(x) === x;
 			};
 		}
-		if(!Number.isNaN) {
+		if(Number.isNaN === undefined) {
 			Number.isNaN = isNaN;
 		}
-		if(!Number.NaN) {
+		if(Number.NaN === undefined) {
 			// @ts-ignore
 			// eslint-disable-next-line no-global-assign
 			Number.NaN = NaN;
 		}
-		if(!Number.EPSILON) {
+		if(Number.EPSILON === undefined) {
 			// @ts-ignore
 			// eslint-disable-next-line no-global-assign
 			Number.EPSILON = 2.220446049250313e-16;
 		}
-		if(!Number.MIN_SAFE_INTEGER) {
+		if(Number.MIN_SAFE_INTEGER === undefined) {
 			// @ts-ignore
 			// eslint-disable-next-line no-global-assign
 			Number.MIN_SAFE_INTEGER = -9007199254740991;
 		}
-		if(!Number.MAX_SAFE_INTEGER) {
+		if(!Number.MAX_SAFE_INTEGER === undefined) {
 			// @ts-ignore
 			// eslint-disable-next-line no-global-assign
 			Number.MAX_SAFE_INTEGER = 9007199254740991;
 		}
-		if(!Number.parseFloat) {
+		if(!Number.parseFloat === undefined) {
 			Number.parseFloat = parseFloat;
 		}
-		if(!Number.parseInt) {
+		if(!Number.parseInt === undefined) {
 			Number.parseInt = parseInt;
 		}
-		if(!Number.isSafeInteger) {
+		if(!Number.isSafeInteger === undefined) {
 			// @ts-ignore
 			Number.isSafeInteger = function(x) {
 				// @ts-ignore
@@ -83,5 +83,6 @@ export default class Polyfill {
 	}
 }
 
+// @ts-ignore
 Polyfill.run();
 
