@@ -1,5 +1,5 @@
 /*!
- * konpeito.js (version 6.0.3, 2021/5/25)
+ * konpeito.js (version 6.0.2, 2021/5/25)
  * https://github.com/natade-jp/konpeito
  * Copyright 2013-2021 natade < https://github.com/natade-jp >
  *
