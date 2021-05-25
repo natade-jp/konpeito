@@ -8,6 +8,7 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+import Polyfill from "../../tools/Polyfill.js";
 import Random from "../tools/Random.js";
 import MathContext from "../context/MathContext.js";
 import BigInteger from "../BigInteger.js";

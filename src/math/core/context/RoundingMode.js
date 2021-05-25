@@ -8,6 +8,8 @@
  *  The MIT license https://opensource.org/licenses/MIT
  */
 
+import Polyfill from "../../tools/Polyfill.js";
+ 
 /**
  * Base class for rounding mode for BigDecimal.
  */

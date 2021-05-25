@@ -7,6 +7,8 @@
  * LICENSE:
  *  The MIT license https://opensource.org/licenses/MIT
  */
+
+import Polyfill from "../../tools/Polyfill.js";
 import RoundingMode, {RoundingModeEntity} from "./RoundingMode.js";
 
 /**
