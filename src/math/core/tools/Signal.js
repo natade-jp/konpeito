@@ -116,7 +116,7 @@ class FFT {
 	/**
 	 * Frees the memory reserved.
 	 */
-	delete() {
+	free() {
 		delete this.size;
 		delete this.inv_size;
 		delete this.bit_size;
@@ -319,7 +319,7 @@ class FFTCache {
 		if(this.table.length === this.table_max) {
 			// 後ろのデータを消去
 			const delete_object = this.table.pop();
-			delete_object.delete();
+			delete_object.free();
 		}
 		// 前方に追加
 		this.table.unshift(new_object);
@@ -381,7 +381,7 @@ class DCT {
 	/**
 	 * Frees the memory reserved.
 	 */
-	delete() {
+	free() {
 		delete this.size;
 		delete this.dct_size;
 		delete this.dct_re;
