@@ -137,9 +137,9 @@ export default class MultipleRegressionAnalysis {
 		// 予測値(縦ベクトル) predicted values. (column vector)
 		const predicted_values = samples.mul(partial_regression_coefficient).add(bias);
 		// 目的変量の予測値の分散
-		const sY = predicted_values.variance(set_unbiased);
+		const sY = predicted_values.var(set_unbiased);
 		// 目的変量の実測値の分散
-		const sy = target.variance(set_unbiased);
+		const sy = target.var(set_unbiased);
 		// 重相関係数
 		const multiple_R = predicted_values.corrcoef(target, set_unbiased);
 		// 決定係数・寄与率
